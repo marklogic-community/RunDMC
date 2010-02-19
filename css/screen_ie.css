@@ -1,0 +1,13 @@
+#special_intro .nav,
+#main .single,
+#main .double,
+#footer,
+.popup #content
+	{zoom: 1;}
+legend {text-indent: -6px;}
+#footer {margin-top: 0;}
+#sub .head ul {margin-top: -1.5em;}
+#sub .section .body {float: none;}
+.doclist form {top: 5px;}
+#sub .body .download img {margin-top: -2em;}
+#sub .special {padding-bottom: 1em;}
