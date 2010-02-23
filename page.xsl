@@ -317,6 +317,35 @@
               <div class="more"><a href="">More Events&#160;&gt;</a></div>
               -->
 
+  <xsl:template match="ml:recent-tutorial">
+    <xsl:apply-templates mode="recent-tutorial" select="ml:latest-tutorial()/*"/>
+  </xsl:template>
+
+          <xsl:template mode="recent-tutorial" match="*">
+            <div class="single">
+              <h2>Learn This!</h2>
+              <h3>
+                <xsl:apply-templates select="title/node()"/>
+              </h3>
+              <div class="author">
+                <xsl:text>By </xsl:text>
+                <xsl:value-of select="author"/>
+              </div>
+              <p>
+                <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
+                                                                            else body/xhtml:p[1]/node()"/>
+                <xsl:text> </xsl:text>
+                <a class="more" href="{ml:external-uri(base-uri(.))}">Read&#160;more&#160;></a>
+              </p>
+            </div>
+          </xsl:template>
+
+
+  <xsl:template match="ml:read-more">
+    <a class="more" href="{@href}">Read&#160;more&#160;></a>
+  </xsl:template>
+
+
   <xsl:function name="ml:latest-news-doc">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/news/1234.xml')"/>
@@ -326,6 +355,12 @@
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/events/1234.xml')"/>
   </xsl:function>
+
+  <xsl:function name="ml:latest-tutorial">
+    <!-- TODO: implement this -->
+    <xsl:sequence select="document('/documents/1234.xml')"/>
+  </xsl:function>
+
 
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="internal-uri" as="xs:string"/>
