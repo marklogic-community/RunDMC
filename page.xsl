@@ -1,5 +1,4 @@
 <!DOCTYPE xsl:stylesheet [
-<!ENTITY  base-path "http://xqzone-new.marklogic.com">
 <!ENTITY  xhtml     "http://www.w3.org/1999/xhtml">
 <!ENTITY  mlns      "http://developer.marklogic.com/site/internal">
 ]>
@@ -9,22 +8,23 @@
   xmlns:xhtml="&xhtml;"
   xmlns:ml               ="&mlns;"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xdmp="http://marklogic.com/xdmp"
   xpath-default-namespace="&mlns;"
-  exclude-result-prefixes="ml"
-  xml:base="&base-path;">
+  exclude-result-prefixes="ml xdmp">
 
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
-  <xsl:variable name="template"   select="document('template.xhtml')"/>
-  <xsl:variable name="navigation" select="document('navigation.xml')"/>
+  <xsl:variable name="template"   select="document('/config/template.xhtml')"/>
+  <xsl:variable name="navigation" select="document('/config/navigation.xml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(base-uri(/))"/>
 
   <!-- The URI occurs in the hierarchy either explicitly or implicitly using a prefix.
        If exact URI is found, then use that; otherwise, look for the appropriate prefix. -->
   <xsl:variable name="page-in-navigation" select="($navigation//page    [@href eq $external-uri],
-                                                   $navigation//wildcard[starts-with($external-uri, @prefix)]) [1]"/>
+                                                   $navigation//uri-wildcard[starts-with($external-uri,
+                                                                                         concat(../@href,'/'))]) [1]"/>
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
@@ -90,7 +90,7 @@
           <xsl:template mode="breadcrumbs" match="page[@href eq '/']"/>
 
           <!-- But do display them on every other page -->
-          <xsl:template mode="breadcrumbs" match="page | wildcard">
+          <xsl:template mode="breadcrumbs" match="page | uri-wildcard">
             <div class="breadcrumb">
               <a href="/">Developer Community</a>
               <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
@@ -103,7 +103,7 @@
                     <xsl:value-of select="@display"/>
                   </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="wildcard">
+                  <xsl:template mode="breadcrumb-display" match="uri-wildcard">
                     <xsl:value-of select="$content/*/title"/>
                   </xsl:template>
 
@@ -363,8 +363,7 @@
 
 
   <xsl:function name="ml:external-uri" as="xs:string">
-    <xsl:param name="internal-uri" as="xs:string"/>
-    <xsl:variable name="doc-path"   select="substring-after($internal-uri, '&base-path;')"/>
+    <xsl:param name="doc-path" as="xs:string"/>
     <xsl:sequence select="if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')"/>
   </xsl:function>
 
