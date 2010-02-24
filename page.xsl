@@ -20,16 +20,21 @@
 
   <xsl:variable name="external-uri" select="ml:external-uri(base-uri(/))"/>
 
-  <!-- The URI occurs in the hierarchy either explicitly or implicitly using a prefix.
-       If exact URI is found, then use that; otherwise, look for the appropriate prefix. -->
-  <xsl:variable name="page-in-navigation" select="($navigation//page    [@href eq $external-uri],
-                                                   $navigation//uri-wildcard[starts-with($external-uri,
-                                                                                         concat(../@href,'/'))]) [1]"/>
+  <!-- The page occurs in the hierarchy either explicitly or as encompassed by a wildcard.
+
+       If the exact URI is found, then use that;
+       otherwise, look to see if the current page falls under a document-type wildcard;
+       otherwise, look for the appropriate URI prefix. -->
+  <xsl:variable name="page-in-navigation" select="($navigation//page             [@href eq $external-uri],
+                                                   $navigation//document-wildcard[ml:is-type($content, @type)],
+                                                   $navigation//uri-wildcard     [starts-with($external-uri,
+                                                                                              concat(../@href,'/'))]) [1]"/>
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
-    <!-- XSLT BUG WORKAROUND (outputs nothing) -->
-    <xsl:value-of select="substring-after($external-uri,$external-uri)"/>
+    <!-- XSLT BUG WORKAROUND (outputs nothing); works because it apparently forces evaluation earlier -->
+    <xsl:value-of select="$content/.."/> <!-- empty sequence -->
+    <xsl:value-of select="substring-after($external-uri,$external-uri)"/> <!-- empty string -->
 
     <xsl:apply-templates select="$template/*"/>
   </xsl:template>
@@ -43,9 +48,6 @@
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">
-    <!--
-    $external-uri: <xsl:value-of select="$external-uri"/>
-    -->
     <xsl:apply-templates mode="page-content" select="$content/*"/>
   </xsl:template>
 
@@ -103,7 +105,7 @@
                     <xsl:value-of select="@display"/>
                   </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="uri-wildcard">
+                  <xsl:template mode="breadcrumb-display" match="uri-wildcard | document-wildcard">
                     <xsl:value-of select="$content/*/title"/>
                   </xsl:template>
 
@@ -341,6 +343,10 @@
           </xsl:template>
 
 
+  <xsl:template match="ml:document-list">
+  </xsl:template>
+
+
   <xsl:template match="ml:read-more">
     <a class="more" href="{@href}">Read&#160;more&#160;></a>
   </xsl:template>
@@ -361,6 +367,12 @@
     <xsl:sequence select="document('/documents/1234.xml')"/>
   </xsl:function>
 
+
+  <xsl:function name="ml:is-type" as="xs:boolean">
+    <xsl:param name="doc"  as="document-node()"/>
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:sequence select="boolean($doc/document/@type eq $type)"/>
+  </xsl:function>
 
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>
