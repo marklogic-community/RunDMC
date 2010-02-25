@@ -12,7 +12,9 @@
   xpath-default-namespace="&mlns;"
   exclude-result-prefixes="ml xdmp">
 
-  <xsl:include href="/document-list.xsl"/>
+  <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+              omit-xml-declaration="yes"/>
 
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
@@ -32,8 +34,7 @@
                                                    $navigation//announcements[$content/announcement],
                                                    $navigation//events       [$content/event]
                                                   )
-                                                  [1]"
-                                                  as="element()"/>
+                                                  [1]"/>
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
@@ -127,17 +128,69 @@
                     </a>
                   </xsl:template>
 
+  <xsl:template match="sub-nav[$content/document]">
+    <h2>Document TOC</h2>
+    <!-- TODO: implement doc TOC -->
+  </xsl:template>
+
+  <xsl:template match="sub-nav">
+    <div class="subnav">
+      <xsl:apply-templates mode="sub-nav" select="$page-in-navigation/ancestor-or-self::page[group]/group"/>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="sub-nav" match="group">
+            <h2>
+              <xsl:value-of select="@display"/>
+            </h2>
+            <ul>
+              <xsl:apply-templates mode="sub-nav" select="page | group"/>
+            </ul>
+          </xsl:template>
+
+                  <xsl:template mode="sub-nav" match="group/group">
+                    <li>
+                      <span>
+                        <xsl:value-of select="@display"/>
+                      </span>
+                      <ul>
+                        <xsl:apply-templates mode="sub-nav" select="page"/>
+                      </ul>
+                    </li>
+                  </xsl:template>
+
+
+                  <!-- TODO: Find out whether nested lists should be supported. The JavaScript appears to be broken currently. -->
+                  <xsl:template mode="sub-nav" match="page">
+                    <li>
+                      <xsl:apply-templates mode="sub-nav-current-att" select="."/>
+                      <a href="{@href}">
+                        <xsl:value-of select="@display"/>
+                      </a>
+                    </li>
+                  </xsl:template>
+
+                          <xsl:template mode="sub-nav-current-att" match="page"/>
+                          <xsl:template mode="sub-nav-current-att" match="page[. intersect $page-in-navigation/ancestor-or-self::*]">
+                            <xsl:attribute name="class">current</xsl:attribute>
+                          </xsl:template>
+
 
   <!-- The <body> CSS class varies from page to page -->
   <xsl:template match="@ml:class">
     <xsl:attribute name="class">
       <xsl:apply-templates mode="body-class"        select="$page-in-navigation"/>
-      <xsl:apply-templates mode="body-class-extra"  select="$content/page/@css-class"/>
+      <xsl:apply-templates mode="body-class-extra"  select="$page-in-navigation"/>
     </xsl:attribute>
   </xsl:template>
 
           <xsl:template mode="body-class" match="navigation/page">main_page</xsl:template>
           <xsl:template mode="body-class" match="*"              >sub_page</xsl:template>
+
+          <xsl:template mode="body-class-extra" match="*"/>
+          <xsl:template mode="body-class-extra" match="page[@href eq '/']                                  "> home</xsl:template>
+          <xsl:template mode="body-class-extra" match="documents                                           "> layout2</xsl:template>
+          <xsl:template mode="body-class-extra" match="page[ancestor-or-self::page/@narrow-sidebar = 'yes']"> layout3</xsl:template>
 
           <xsl:template mode="body-class-extra" match="@css-class">
             <xsl:text> </xsl:text>
@@ -358,6 +411,74 @@
   </xsl:template>
 
 
+  <xsl:template match="document-list">
+    <xsl:variable name="docs" select="ml:lookup-docs(string(@type), string(@topic))"/>
+    <div class="doclist">
+      <h2>Documents</h2>
+      <!-- 2.0 feature TODO: add pagination -->
+      <span class="amount">
+        <xsl:value-of select="count($docs)"/>
+        <xsl:text> of </xsl:text>
+        <xsl:value-of select="count($docs)"/>
+        <xsl:text> documents</xsl:text>
+      </span>
+      <!--
+      <form action="" method="get">
+        <div>
+          <label for="kw_inp">Search documents by keyword</label>
+          <input id="kw_inp" type="text"/>
+          <input type="submit"/>
+        </div>
+      </form>
+      -->
+      <table>
+        <colgroup>
+          <col class="col1"/>
+          <col class="col2"/>
+          <col class="col3"/>
+          <col class="col4"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <!-- TODO: figure out why the rendered results aren't displaying quite right (border placement to the left of the "Title" heading)... -->
+            <th scope="col">Title</th>
+            <th scope="col">Document&#160;Type</th>
+            <th scope="col">Topic</th>
+            <th scope="col" class="sort">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:apply-templates mode="doc-listing" select="$docs">
+            <xsl:sort select="created-date" order="descending"/>
+          </xsl:apply-templates>
+        </tbody>
+      </table>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="doc-listing" match="document">
+            <tr>
+              <xsl:if test="position() mod 2 eq 0">
+                <xsl:attribute name="class">alt</xsl:attribute>
+              </xsl:if>
+              <th>
+                <a href="{ml:external-uri(base-uri())}">
+                  <xsl:value-of select="title"/>
+                </a>
+              </th>
+              <td>
+                <xsl:value-of select="replace(@type,' ','&#160;')"/>
+              </td>
+              <td>
+                <xsl:value-of select="replace(@topic,' ','&#160;')"/>
+              </td>
+              <td>
+                <xsl:value-of select="created-date"/>
+              </td>
+            </tr>
+          </xsl:template>
+
+
   <xsl:function name="ml:latest-announcement">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/news/1234.xml')"/>
@@ -370,15 +491,16 @@
 
   <xsl:function name="ml:latest-tutorial">
     <!-- TODO: implement this -->
-    <xsl:sequence select="document('/documents/1234.xml')"/>
+    <xsl:sequence select="document('/learn/intro.xml')"/>
   </xsl:function>
 
-
-  <xsl:function name="ml:is-type" as="xs:boolean">
-    <xsl:param name="doc"  as="document-node()"/>
-    <xsl:param name="type" as="xs:string"/>
-    <xsl:sequence select="boolean($doc/document/@type eq $type)"/>
+  <xsl:function name="ml:lookup-docs" as="element()*">
+    <xsl:param name="type"  as="xs:string"/>
+    <xsl:param name="topic" as="xs:string"/>
+    <xsl:sequence select="collection()/document[((@type  eq $type)  or not($type)) and
+                                                ((@topic eq $topic) or not($topic))]"/>
   </xsl:function>
+
 
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>
