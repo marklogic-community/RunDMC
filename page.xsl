@@ -25,12 +25,15 @@
   <!-- The page occurs in the hierarchy either explicitly or as encompassed by a wildcard.
 
        If the exact URI is found, then use that;
-       otherwise, look to see if the current page falls under a document-type wildcard;
-       otherwise, look for the appropriate URI prefix. -->
-  <xsl:variable name="page-in-navigation" select="($navigation//page             [@href eq $external-uri],
-                                                   $navigation//document-wildcard[ml:is-type($content, @type)],
-                                                   $navigation//uri-wildcard     [starts-with($external-uri,
-                                                                                              concat(../@href,'/'))]) [1]"/>
+       otherwise, look to see if the current page falls under a content-type wildcard.
+  -->
+  <xsl:variable name="page-in-navigation" select="($navigation//page         [@href eq $external-uri],
+                                                   $navigation//documents    [$content/document/@type eq @type],
+                                                   $navigation//announcements[$content/announcement],
+                                                   $navigation//events       [$content/event]
+                                                  )
+                                                  [1]"
+                                                  as="element()"/>
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
@@ -57,11 +60,16 @@
             <xsl:apply-templates/>
           </xsl:template>
 
-          <xsl:template mode="page-content" match="news">
+          <!--
+          <xsl:template mode="page-content" match="announcement">
           </xsl:template>
 
           <xsl:template mode="page-content" match="event">
           </xsl:template>
+
+          <xsl:template mode="page-content" match="document">
+          </xsl:template>
+          -->
 
 
   <xsl:template match="top-nav">
@@ -81,7 +89,7 @@
 
                   <xsl:template mode="current-page-att" match="page"/>
 
-                  <xsl:template mode="current-page-att" match="page[@href eq $external-uri]">
+                  <xsl:template mode="current-page-att" match="page[descendant-or-self::* intersect $page-in-navigation]">
                     <xsl:attribute name="class">current</xsl:attribute>
                   </xsl:template>
 
@@ -94,7 +102,7 @@
           <xsl:template mode="breadcrumbs" match="page[@href eq '/']"/>
 
           <!-- But do display them on every other page -->
-          <xsl:template mode="breadcrumbs" match="page | uri-wildcard">
+          <xsl:template mode="breadcrumbs" match="*">
             <div class="breadcrumb">
               <a href="/">Developer Community</a>
               <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
@@ -107,7 +115,7 @@
                     <xsl:value-of select="@display"/>
                   </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="uri-wildcard | document-wildcard">
+                  <xsl:template mode="breadcrumb-display" match="*">
                     <xsl:value-of select="$content/*/title"/>
                   </xsl:template>
 
@@ -128,8 +136,8 @@
     </xsl:attribute>
   </xsl:template>
 
-          <xsl:template mode="body-class" match="page"     >main_page</xsl:template>
-          <xsl:template mode="body-class" match="page//page">sub_page</xsl:template>
+          <xsl:template mode="body-class" match="navigation/page">main_page</xsl:template>
+          <xsl:template mode="body-class" match="*"              >sub_page</xsl:template>
 
           <xsl:template mode="body-class-extra" match="@css-class">
             <xsl:text> </xsl:text>
@@ -212,25 +220,25 @@
   </xsl:template>
 
   <xsl:template match="recent-news-and-events">
-    <xsl:variable name="news-doc" select="ml:latest-news-doc()"/>
-    <xsl:variable name="event-doc" select="ml:latest-event-doc()"/>
+    <xsl:variable name="announcement" select="ml:latest-announcement()"/>
+    <xsl:variable name="event"        select="ml:latest-event()"/>
     <div class="double">
       <div>
         <h2>Recent News</h2>
-        <xsl:apply-templates mode="news-excerpt" select="$news-doc">
+        <xsl:apply-templates mode="news-excerpt" select="$announcement">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
       </div>
       <div>
         <h2>Upcoming Events</h2>
-        <xsl:apply-templates mode="event-excerpt" select="$event-doc">
+        <xsl:apply-templates mode="event-excerpt" select="$event">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
       </div>
     </div>
   </xsl:template>
 
-          <xsl:template mode="news-excerpt" match="news">
+          <xsl:template mode="news-excerpt" match="announcement">
             <h3>
               <xsl:apply-templates select="title/node()"/>
             </h3>
@@ -278,11 +286,11 @@
                     </xsl:if>
                   </xsl:template>
 
-                          <xsl:template mode="more-link-href" match="event">/events</xsl:template>
-                          <xsl:template mode="more-link-href" match="news" >/news</xsl:template>
+                          <xsl:template mode="more-link-href" match="event"       >/events</xsl:template>
+                          <xsl:template mode="more-link-href" match="announcement">/news</xsl:template>
 
-                          <xsl:template mode="more-link-text" match="news" >More News</xsl:template>
-                          <xsl:template mode="more-link-text" match="event">More Events</xsl:template>
+                          <xsl:template mode="more-link-text" match="event"       >More Events</xsl:template>
+                          <xsl:template mode="more-link-text" match="announcement">More News</xsl:template>
 
 
                   <!-- TODO: For dates and times, consider use ISO 8601 format (in the source data) instead -->
@@ -350,12 +358,12 @@
   </xsl:template>
 
 
-  <xsl:function name="ml:latest-news-doc">
+  <xsl:function name="ml:latest-announcement">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/news/1234.xml')"/>
   </xsl:function>
 
-  <xsl:function name="ml:latest-event-doc">
+  <xsl:function name="ml:latest-event">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/events/1234.xml')"/>
   </xsl:function>
