@@ -12,6 +12,8 @@
   xpath-default-namespace="&mlns;"
   exclude-result-prefixes="ml xdmp">
 
+  <xsl:include href="/document-list.xsl"/>
+
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
@@ -319,7 +321,7 @@
               <div class="more"><a href="">More Events&#160;&gt;</a></div>
               -->
 
-  <xsl:template match="ml:recent-tutorial">
+  <xsl:template match="recent-tutorial">
     <xsl:apply-templates mode="recent-tutorial" select="ml:latest-tutorial()/*"/>
   </xsl:template>
 
@@ -343,11 +345,7 @@
           </xsl:template>
 
 
-  <xsl:template match="ml:document-list">
-  </xsl:template>
-
-
-  <xsl:template match="ml:read-more">
+  <xsl:template match="read-more">
     <a class="more" href="{@href}">Read&#160;more&#160;></a>
   </xsl:template>
 
