@@ -442,16 +442,15 @@
         </colgroup>
         <thead>
           <tr>
-            <!-- TODO: figure out why the rendered results aren't displaying quite right (border placement to the left of the "Title" heading)... -->
             <th scope="col">Title</th>
             <th scope="col">Document&#160;Type</th>
-            <th scope="col">Topic</th>
+            <th scope="col">Topic(s)</th>
             <th scope="col" class="sort">Date</th>
           </tr>
         </thead>
         <tbody>
           <xsl:apply-templates mode="doc-listing" select="$docs">
-            <xsl:sort select="created-date" order="descending"/>
+            <xsl:sort select="created" order="descending"/>
           </xsl:apply-templates>
         </tbody>
       </table>
@@ -472,10 +471,10 @@
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
               <td>
-                <xsl:value-of select="replace(@topic,' ','&#160;')"/>
+                <xsl:value-of select="topics/topic/replace(.,' ','&#160;')" separator=", "/>
               </td>
               <td>
-                <xsl:value-of select="created-date"/>
+                <xsl:value-of select="created"/>
               </td>
             </tr>
           </xsl:template>
@@ -499,8 +498,8 @@
   <xsl:function name="ml:lookup-docs" as="element()*">
     <xsl:param name="type"  as="xs:string"/>
     <xsl:param name="topic" as="xs:string"/>
-    <xsl:sequence select="collection()/document[((@type  eq $type)  or not($type)) and
-                                                ((@topic eq $topic) or not($topic))]"/>
+    <xsl:sequence select="collection()/document[(($type  eq @type)        or not($type)) and
+                                                (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
 
 
