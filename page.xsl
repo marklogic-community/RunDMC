@@ -1,16 +1,12 @@
-<!DOCTYPE xsl:stylesheet [
-<!ENTITY  xhtml     "http://www.w3.org/1999/xhtml">
-<!ENTITY  mlns      "http://developer.marklogic.com/site/internal">
-]>
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns      ="&xhtml;"
-  xmlns:xhtml="&xhtml;"
-  xmlns:ml               ="&mlns;"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xdmp="http://marklogic.com/xdmp"
-  xpath-default-namespace="&mlns;"
-  exclude-result-prefixes="ml xdmp">
+  xmlns      ="http://www.w3.org/1999/xhtml"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xpath-default-namespace="http://developer.marklogic.com/site/internal"
+  exclude-result-prefixes="xs ml xdmp">
 
   <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
@@ -46,11 +42,17 @@
   </xsl:template>
 
           <!-- By default, copy everything unchanged -->
-          <xsl:template match="@* | node()">
-            <xsl:copy>
-              <xsl:apply-templates select="@* | node()"/>
-            </xsl:copy>
+          <xsl:template match="@* | comment() | text() | processing-instruction()">
+            <xsl:copy/>
           </xsl:template>
+
+          <!-- For elements, "replicate" rather than copy, to prevent unwanted namespace nodes in output -->
+          <xsl:template match="*">
+            <xsl:element name="{name()}" namespace="{namespace-uri()}">
+              <xsl:apply-templates select="@* | node()"/>
+            </xsl:element>
+          </xsl:template>
+
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">
