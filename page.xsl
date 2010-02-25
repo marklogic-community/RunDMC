@@ -19,8 +19,8 @@
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
-  <xsl:variable name="template"   select="document('/config/template.xhtml')"/>
-  <xsl:variable name="navigation" select="document('/config/navigation.xml')"/>
+  <xsl:variable name="template"   select="document('/private/config/template.xhtml')"/>
+  <xsl:variable name="navigation" select="document('/private/config/navigation.xml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(base-uri(/))"/>
 
