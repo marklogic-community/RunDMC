@@ -69,10 +69,35 @@
 
           <xsl:template mode="page-content" match="event">
           </xsl:template>
+          -->
 
           <xsl:template mode="page-content" match="document">
+            <!-- TODO: What's the intention of this form? The whole document is on the client, but it has no client-side behavior
+            <form id="doc_search" action="" method="get">
+
+              <fieldset>
+                <legend><label for="ds_inp">Search current document</label></legend>
+                <input id="ds_inp" type="text" />
+                <input type="submit" />
+              </fieldset>
+            </form>
+            -->
+            <!-- placeholder for form to get CSS to display background -->
+            <div id="doc_search"/>
+
+            <h2>
+              <xsl:apply-templates select="title/node()"/>
+            </h2>
+            <div class="author">
+              <xsl:apply-templates select="author/node()"/>
+            </div>
+            <div class="date"> 
+              <xsl:text>Last updated </xsl:text>
+              <xsl:value-of select="last-updated"/>
+            </div>
+            <xsl:apply-templates select="body/node()"/>
           </xsl:template>
-          -->
+
 
 
   <xsl:template match="top-nav">
@@ -97,7 +122,16 @@
                   </xsl:template>
 
 
-  <xsl:template match="breadcrumbs">
+  <xsl:template match="doc-breadcrumbs">
+    <div id="content_title">
+      <xsl:call-template name="breadcrumbs"/>
+    </div>
+  </xsl:template>
+
+  <!-- For Learn content, breadcrumbs are handled elsewhere -->
+  <xsl:template match="breadcrumbs[$content/document]"/>
+
+  <xsl:template match="breadcrumbs" name="breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation"/>
   </xsl:template>
 
