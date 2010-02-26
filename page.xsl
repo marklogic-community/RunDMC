@@ -122,7 +122,9 @@
                   </xsl:template>
 
 
-  <xsl:template match="doc-breadcrumbs">
+  <xsl:template match="doc-breadcrumbs"/>
+  <!-- Only display this for Learn docs -->
+  <xsl:template match="doc-breadcrumbs[$content/document]">
     <div id="content_title">
       <xsl:call-template name="breadcrumbs"/>
     </div>
