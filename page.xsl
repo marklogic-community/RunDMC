@@ -258,8 +258,10 @@
 
             <div class="section" id="section{position()}">
               <xsl:apply-templates mode="feature-content" select="$feature/image,
-                                                                  $feature/main-points,
-                                                                  $feature/read-more"/>
+                                                                  $feature/(* except (title,image))"/><!--
+                                                                  $feature/read-more,
+                                                                  $feature/download-button"/>
+                                                                  -->
             </div>
           </xsl:template>
 
@@ -302,6 +304,14 @@
                               </a>
                             </li>
                           </xsl:template>
+
+                  <xsl:template mode="feature-content" match="download-button">
+                    <a class="download" href="{@href}">
+                      <img src="/images/b_download_now.png" alt="Download Now"/>
+                    </a>
+                  </xsl:template>
+
+
 
 
   <xsl:template match="announcement">
