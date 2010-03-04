@@ -385,6 +385,109 @@
     </div>
   </xsl:template>
 
+
+  <xsl:template match="top-threads">
+    <xsl:variable name="threads" select="ml:get-threads(@search,list)"/>
+    <div class="single">
+      <h2>Top Threads</h2>
+      <!-- TODO: Put the correct URL here -->
+      <a class="more" href="">All threads&#160;></a>
+      <table class="table3">
+        <thead>
+          <tr>
+            <th scope="col">
+              <span>Thread</span>
+              <br/>
+              Mailing List
+            </th>
+            <th scope="col">Latest Post</th>
+            <th scope="col">Replies</th>
+            <th class="last" scope="col">Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:apply-templates mode="display-thread" select="$threads"/>
+        </tbody>
+      </table>
+      <div class="action">
+        <!-- TODO: Put the correct URL here -->
+        <a href="">Start a new thread</a>
+      </div>
+    </div>
+  </xsl:template>
+
+
+          <xsl:template mode="display-thread" match="thread">            
+            <tr>
+              <xsl:if test="position() mod 2 eq 0">
+                <xsl:attribute name="class">alt</xsl:attribute>
+              </xsl:if>
+              <td>
+                <a class="thread" href="{@href}">
+                  <xsl:value-of select="@title"/>
+                </a>
+                <br/>
+                <a href="{list/@href}">
+                  <xsl:value-of select="list"/>
+                </a>
+              </td>
+              <td>
+                <span class="date">
+                  <xsl:apply-templates mode="display-date" select="@date-time"/>
+                </span>
+                <span class="time">
+                  <xsl:apply-templates mode="display-time" select="@date-time"/>
+                </span>
+                <a class="author" href="{author/@href}">
+                  <xsl:text>by </xsl:text>
+                  <xsl:value-of select="author"/>
+                </a>
+              </td>
+              <td>
+                <xsl:value-of select="@replies"/>
+              </td>
+              <td>
+                <xsl:value-of select="@views"/>
+              </td>
+            </tr>
+          </xsl:template>
+
+
+  <xsl:template match="upcoming-user-group-events">
+    <xsl:variable name="events" select="ml:upcoming-user-group-events()"/>
+    <div class="double">
+      <h2>Upcoming Events</h2>
+      <a class="more" href="/events">All events&#160;></a>
+      <xsl:for-each select="$events">
+        <div>
+          <xsl:apply-templates mode="event-excerpt" select=".">
+            <xsl:with-param name="suppress-more-link" select="true()" tunnel="yes"/>
+            <xsl:with-param name="suppress-description" select="true()" tunnel="yes"/>
+          </xsl:apply-templates>
+        </div>
+      </xsl:for-each>
+    </div>
+  </xsl:template>
+
+
+  <xsl:template match="latest-user-group-announcement">
+    <xsl:variable name="announcement" select="ml:latest-user-group-announcement()"/>
+    <div class="single">
+      <h2>Recent News</h2>
+      <a class="more" href="/news">All news&#160;></a>
+      <xsl:apply-templates mode="announcement-image" select="$announcement/image"/>
+      <xsl:apply-templates mode="news-excerpt" select="$announcement">
+        <xsl:with-param name="suppress-more-link" select="true()" tunnel="yes"/>
+        <xsl:with-param name="read-more-inline" select="true()" tunnel="yes"/>
+      </xsl:apply-templates>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="announcement-image" match="image">
+            <img class="align_left" src="/images/recent_news.jpg" alt="Recent news"/>
+          </xsl:template>
+
+
   <xsl:template match="recent-news-and-events">
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
     <xsl:variable name="event"        select="ml:latest-event()"/>
@@ -405,23 +508,37 @@
   </xsl:template>
 
           <xsl:template mode="news-excerpt" match="Announcement">
+            <xsl:param name="read-more-inline" tunnel="yes"/>
             <h3>
               <xsl:apply-templates select="title/node()"/>
             </h3>
             <p>
               <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
                                                                           else body/xhtml:p[1]/node()"/>
+              <xsl:if test="$read-more-inline">
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="read-more" select="."/>
+              </xsl:if>
             </p>
-            <a class="more" href="{ml:external-uri(base-uri(.))}">Read more&#160;></a>
+            <xsl:if test="not($read-more-inline)">
+              <xsl:apply-templates mode="read-more" select="."/>
+            </xsl:if>
             <xsl:apply-templates mode="more-link" select="."/>
           </xsl:template>
 
+                  <xsl:template mode="read-more" match="Announcement">
+                    <a class="more" href="{ml:external-uri(base-uri(.))}">Read more&#160;></a>
+                  </xsl:template>
+
+
           <xsl:template mode="event-excerpt" match="Event">
+            <xsl:param name="suppress-description" tunnel="yes"/>
             <h3>
               <xsl:apply-templates select="title/node()"/>
             </h3>
-            <!-- TODO: Possibly update this once I see some example events -->
-            <xsl:apply-templates select="description/node()"/>
+            <xsl:if test="not($suppress-description)">
+              <xsl:apply-templates select="description/node()"/>
+            </xsl:if>
             <dl>
               <xsl:apply-templates mode="event-details" select="details/*"/>
             </dl>
@@ -430,10 +547,7 @@
           </xsl:template>
 
                   <xsl:template mode="more-link" match="*">
-                    <xsl:param name="suppress-more-link"
-                               tunnel="yes"
-                               as="xs:boolean"
-                               select="false()"/>
+                    <xsl:param name="suppress-more-link" tunnel="yes" as="xs:boolean" select="false()"/>
                     <xsl:if test="not($suppress-more-link)">
                       <xsl:variable name="href">
                         <xsl:apply-templates mode="more-link-href" select="."/>
@@ -592,6 +706,16 @@
 
 
 
+  <xsl:function name="ml:latest-user-group-announcement">
+    <!-- TODO: implement this -->
+    <xsl:sequence select="document('/news/user-group-announcement.xml')"/>
+  </xsl:function>
+
+  <xsl:function name="ml:upcoming-user-group-events">
+    <!-- TODO: implement this -->
+    <xsl:sequence select="document('/events/denmark1.xml'), document('/events/markups1.xml')"/>
+  </xsl:function>
+
   <xsl:function name="ml:latest-announcement">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/news/1234.xml')"/>
@@ -599,7 +723,7 @@
 
   <xsl:function name="ml:latest-event">
     <!-- TODO: implement this -->
-    <xsl:sequence select="document('/events/1234.xml')"/>
+    <xsl:sequence select="document('/events/denmark1.xml')"/>
   </xsl:function>
 
   <xsl:function name="ml:latest-tutorial">
@@ -612,6 +736,33 @@
     <xsl:param name="topic" as="xs:string"/>
     <xsl:sequence select="collection()/Article[(($type  eq @type)        or not($type)) and
                                                (($topic =  topics/topic) or not($topic))]"/>
+  </xsl:function>
+
+
+  <xsl:function name="ml:get-threads">
+    <xsl:param name="search" as="xs:string?"/>
+    <xsl:param name="lists"  as="element()*"/>
+    <!-- TODO: offload this to an XQuery script authored by someone else -->
+    <ml:thread title="MarkLogic Server 4.1 Rocks!!" href="..." date-time="2010-03-04T11:22" replies="2" views="14">
+      <ml:author href="...">JoelH</ml:author>
+      <ml:list href="...">Mark Logic General</ml:list>
+    </ml:thread>
+    <ml:thread title="Issue with lorem ipsum dolor" date-time="2009-09-23T13:22" replies="2" views="15">
+      <ml:author href="...">Laderlappen</ml:author>
+      <ml:list href="...">Mark Logic General</ml:list>
+    </ml:thread>
+    <ml:thread title="Lorem ipsum dolor sit amet" date-time="2009-09-24T23:22" replies="1" views="1">
+      <ml:author href="...">Jane</ml:author>
+      <ml:list href="...">Mark Logic General</ml:list>
+    </ml:thread>
+    <ml:thread title="Useful tips for NY meets" date-time="2009-09-26T13:22" replies="12" views="134">
+      <ml:author href="...">JoelH</ml:author>
+      <ml:list href="...">Mark Logic General</ml:list>
+    </ml:thread>
+    <ml:thread title="Lorem ipsum dolor sit amet" date-time="2009-10-03T10:37" replies="0" views="12">
+      <ml:author href="...">JoelH</ml:author>
+      <ml:list href="...">Mark Logic General</ml:list>
+    </ml:thread>
   </xsl:function>
 
 
