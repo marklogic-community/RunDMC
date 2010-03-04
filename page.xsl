@@ -325,7 +325,9 @@
                           </xsl:template>
 
                   <xsl:template mode="feature-content" match="download-button">
-                    <a class="download" href="{@href}">
+                    <xsl:param name="is-widget" tunnel="yes"/>
+                    <xsl:variable name="button-class" select="if ($is-widget) then 'download' else 'button'"/>
+                    <a class="{$button-class}" href="{@href}">
                       <img src="/images/b_download_now.png" alt="Download Now"/>
                     </a>
                   </xsl:template>
@@ -343,7 +345,9 @@
                 </h2>
               </div>
               <div class="body">
-                <xsl:apply-templates mode="feature-content" select="document(@feature)/feature/(* except title)"/>
+                <xsl:apply-templates mode="feature-content" select="document(@feature)/feature/(* except title)">
+                  <xsl:with-param name="is-widget" select="true()" tunnel="yes"/>
+                </xsl:apply-templates>
               </div>
             </div>
           </xsl:template>
@@ -590,39 +594,36 @@
                           <xsl:template mode="event-detail-name" match="topic"    >Topic</xsl:template>
                           <xsl:template mode="event-detail-name" match="presenter">Presenter</xsl:template>
 
-              <!--
-              <h3>Denver Mark Logic User Group (DenMARK)</h3>
-              <p>The first instance of the Mark Logic user group in Denver will take place on October 12, 2009 at 7pm.  The main speaker will be Clark Richey, Mark Logic Community Champion who will talk about MarkLogic Application Services.</p>
-              <dl>
-                <dt>Date:</dt>
-                <dd>2009-10-12</dd>
-                <dt>Time:</dt>
-                <dd>7pm</dd>
-                <dt>Location:</dt>
-                <dd>Auraria Campus</dd>
-                <dt>Topic:</dt>
-                <dd>MarkLogic Application Services</dd>
-                <dt>Presenter:</dt>
-                <dd>Clark Richey</dd>
-              </dl>
-              <a class="more" href="">More information&#160;&gt;</a>
-              <div class="more"><a href="">More Events&#160;&gt;</a></div>
-              -->
 
-  <xsl:template match="recent-tutorial">
-    <xsl:apply-templates mode="recent-tutorial" select="ml:latest-tutorial()/*"/>
+  <xsl:template match="article-teaser">
+    <xsl:apply-templates mode="article-teaser" select="document(@href)">
+      <xsl:with-param name="heading" select="@heading"/>
+      <xsl:with-param name="suppress-byline" select="true()"/>
+    </xsl:apply-templates>
   </xsl:template>
 
-          <xsl:template mode="recent-tutorial" match="*">
+  <xsl:template match="recent-article">
+    <xsl:apply-templates mode="article-teaser" select="ml:latest-article(@type)/*">
+      <xsl:with-param name="heading" select="@heading"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+          <xsl:template mode="article-teaser" match="*">
+            <xsl:param name="heading" as="xs:string"/>
+            <xsl:param name="suppress-byline"/>
             <div class="single">
-              <h2>Learn This!</h2>
+              <h2>
+                <xsl:value-of select="$heading"/>
+              </h2>
               <h3>
                 <xsl:apply-templates select="title/node()"/>
               </h3>
-              <div class="author">
-                <xsl:text>By </xsl:text>
-                <xsl:value-of select="author"/>
-              </div>
+              <xsl:if test="not($suppress-byline)">
+                <div class="author">
+                  <xsl:text>By </xsl:text>
+                  <xsl:value-of select="author"/>
+                </div>
+              </xsl:if>
               <p>
                 <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
                                                                             else body/xhtml:p[1]/node()"/>
@@ -635,6 +636,16 @@
 
   <xsl:template match="read-more">
     <a class="more" href="{@href}">Read&#160;more&#160;></a>
+  </xsl:template>
+
+  <xsl:template match="license-options">
+    <div class="action">
+      <ul>
+        <li>
+          <a href="{@href}">License options</a>
+        </li>
+      </ul>
+    </div>
   </xsl:template>
 
 
@@ -726,7 +737,8 @@
     <xsl:sequence select="document('/events/denmark1.xml')"/>
   </xsl:function>
 
-  <xsl:function name="ml:latest-tutorial">
+  <xsl:function name="ml:latest-article">
+    <xsl:param name="type" as="xs:string?"/>
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/learn/intro.xml')"/>
   </xsl:function>
