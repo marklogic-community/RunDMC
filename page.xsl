@@ -15,8 +15,9 @@
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
-  <xsl:variable name="template"   select="document('/private/config/template.xhtml')"/>
-  <xsl:variable name="navigation" select="document('/private/config/navigation.xml')"/>
+  <xsl:variable name="template"      select="document('/private/config/template.xhtml')"/>
+  <xsl:variable name="navigation"    select="document('/private/config/navigation.xml')"/>
+  <xsl:variable name="widget-config" select="document('/private/config/widgets.xml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(base-uri(/))"/>
 
@@ -26,9 +27,9 @@
        otherwise, look to see if the current page falls under a content-type wildcard.
   -->
   <xsl:variable name="page-in-navigation" select="($navigation//page         [@href eq $external-uri],
-                                                   $navigation//documents    [$content/document/@type eq @type],
-                                                   $navigation//announcements[$content/announcement],
-                                                   $navigation//events       [$content/event]
+                                                   $navigation//Article      [$content/Article/@type eq @type],
+                                                   $navigation//Announcement [$content/Announcement],
+                                                   $navigation//Event        [$content/Event]
                                                   )
                                                   [1]"/>
 
@@ -64,14 +65,14 @@
           </xsl:template>
 
           <!--
-          <xsl:template mode="page-content" match="announcement">
+          <xsl:template mode="page-content" match="Announcement">
           </xsl:template>
 
-          <xsl:template mode="page-content" match="event">
+          <xsl:template mode="page-content" match="Event">
           </xsl:template>
           -->
 
-          <xsl:template mode="page-content" match="document">
+          <xsl:template mode="page-content" match="Article">
             <!-- TODO: What's the intention of this form? The whole document is on the client, but it has no client-side behavior
             <form id="doc_search" action="" method="get">
 
@@ -124,14 +125,14 @@
 
   <xsl:template match="doc-breadcrumbs"/>
   <!-- Only display this for Learn docs -->
-  <xsl:template match="doc-breadcrumbs[$content/document]">
+  <xsl:template match="doc-breadcrumbs[$content/Article]">
     <div id="content_title">
       <xsl:call-template name="breadcrumbs"/>
     </div>
   </xsl:template>
 
   <!-- For Learn content, breadcrumbs are handled elsewhere -->
-  <xsl:template match="breadcrumbs[$content/document]"/>
+  <xsl:template match="breadcrumbs[$content/Article]"/>
 
   <xsl:template match="breadcrumbs" name="breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation"/>
@@ -166,15 +167,28 @@
                     </a>
                   </xsl:template>
 
-  <xsl:template match="sub-nav[$content/document]">
+  <xsl:template match="sub-nav[$content/Article]">
     <h2>Document TOC</h2>
     <!-- TODO: implement doc TOC -->
   </xsl:template>
 
   <xsl:template match="sub-nav">
-    <div class="subnav">
-      <xsl:apply-templates mode="sub-nav" select="$page-in-navigation/ancestor-or-self::page[group]/group"/>
-    </div>
+    <xsl:variable name="children" select="$page-in-navigation/ancestor-or-self::page[group | page]/(group | page)"/>
+    <xsl:if test="$children">
+      <div class="subnav">
+        <xsl:choose>
+          <xsl:when test="$children/self::group">
+            <xsl:apply-templates mode="sub-nav" select="$children"/>
+          </xsl:when>
+          <!-- Otherwise, they're not grouped; they're just pages in one list -->
+          <xsl:otherwise>
+            <ul>
+              <xsl:apply-templates mode="sub-nav" select="$children"/>
+            </ul>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
+    </xsl:if>
   </xsl:template>
 
           <xsl:template mode="sub-nav" match="group">
@@ -215,7 +229,7 @@
 
 
   <!-- The <body> CSS class varies from page to page -->
-  <xsl:template match="@ml:class">
+  <xsl:template match="xhtml:body/@ml:class">
     <xsl:attribute name="class">
       <xsl:apply-templates mode="body-class"        select="$page-in-navigation"/>
       <xsl:apply-templates mode="body-class-extra"  select="$page-in-navigation"/>
@@ -227,13 +241,21 @@
 
           <xsl:template mode="body-class-extra" match="*"/>
           <xsl:template mode="body-class-extra" match="page[@href eq '/']                                  "> home</xsl:template>
-          <xsl:template mode="body-class-extra" match="documents                                           "> layout2</xsl:template>
+          <xsl:template mode="body-class-extra" match="Article                                             "> layout2</xsl:template>
           <xsl:template mode="body-class-extra" match="page[ancestor-or-self::page/@narrow-sidebar = 'yes']"> layout3</xsl:template>
 
           <xsl:template mode="body-class-extra" match="@css-class">
             <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
           </xsl:template>
+
+  <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
+    <xsl:variable name="last-widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]][last()]"/>
+    <!-- If the last widget is a "feature widget", we need to accordingly babysit the CSS class -->
+    <xsl:if test="$last-widget/@feature">
+      <xsl:attribute name="class">sub_special</xsl:attribute>
+    </xsl:if>
+  </xsl:template>
 
 
   <xsl:template match="tabbed-features">
@@ -257,19 +279,16 @@
             <xsl:variable name="feature" select="document(@href)/feature"/>
 
             <div class="section" id="section{position()}">
-              <xsl:apply-templates mode="feature-content" select="$feature/image,
-                                                                  $feature/(* except (title,image))"/><!--
-                                                                  $feature/read-more,
-                                                                  $feature/download-button"/>
-                                                                  -->
+              <div class="align_right">
+                <xsl:apply-templates mode="feature-content" select="$feature/image"/>
+              </div>
+              <xsl:apply-templates mode="feature-content" select="$feature/(* except (title,image))"/>
             </div>
           </xsl:template>
 
                   <xsl:template mode="feature-content" match="image">
-                    <div class="align_right">
-                      <img src="{@src}" alt="{@alt}"/>
-                      <xsl:apply-templates mode="feature-content" select="caption"/>
-                    </div>
+                    <img src="{@src}" alt="{@alt}"/>
+                    <xsl:apply-templates mode="feature-content" select="caption"/>
                   </xsl:template>
 
                           <xsl:template mode="feature-content" match="caption">
@@ -312,6 +331,52 @@
                   </xsl:template>
 
 
+  <xsl:template match="widgets">
+    <xsl:apply-templates mode="widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]]"/>
+  </xsl:template>
+
+          <xsl:template mode="widget" match="widget[@feature]">
+            <div class="section special">
+              <div class="head">
+                <h2>
+                  <xsl:apply-templates select="document(@feature)/feature/title/node()"/>
+                </h2>
+              </div>
+              <div class="body">
+                <xsl:apply-templates mode="feature-content" select="document(@feature)/feature/(* except title)"/>
+              </div>
+            </div>
+          </xsl:template>
+
+          <xsl:template mode="widget" match="widget">
+            <div class="section">
+              <xsl:apply-templates select="document(@href)/widget/node()"/>
+            </div>
+          </xsl:template>
+
+
+          <xsl:function name="ml:matches-current-page" as="xs:boolean">
+            <xsl:param name="element" as="element()"/>
+            <xsl:apply-templates mode="matches-current-page" select="$element"/>
+          </xsl:function>
+
+                  <xsl:template mode="matches-current-page" match="page[@href]">
+                    <xsl:sequence select="@href eq $external-uri"/>
+                  </xsl:template>
+
+                  <xsl:template mode="matches-current-page" match="page-tree">
+                    <xsl:sequence select="$external-uri = $navigation//page[@href eq current()/@root]/descendant-or-self::page/@href"/>
+                  </xsl:template>
+
+                  <xsl:template mode="matches-current-page" match="page-children">
+                    <xsl:sequence select="$external-uri = $navigation//page[@href eq current()/@parent]/descendant::page/@href"/>
+                  </xsl:template>
+
+                  <xsl:template mode="matches-current-page" match="*">
+                    <xsl:sequence select="node-name($content/*) eq node-name(.)"/>
+                  </xsl:template>
+
+
 
 
   <xsl:template match="announcement">
@@ -339,7 +404,7 @@
     </div>
   </xsl:template>
 
-          <xsl:template mode="news-excerpt" match="announcement">
+          <xsl:template mode="news-excerpt" match="Announcement">
             <h3>
               <xsl:apply-templates select="title/node()"/>
             </h3>
@@ -351,7 +416,7 @@
             <xsl:apply-templates mode="more-link" select="."/>
           </xsl:template>
 
-          <xsl:template mode="event-excerpt" match="event">
+          <xsl:template mode="event-excerpt" match="Event">
             <h3>
               <xsl:apply-templates select="title/node()"/>
             </h3>
@@ -387,11 +452,11 @@
                     </xsl:if>
                   </xsl:template>
 
-                          <xsl:template mode="more-link-href" match="event"       >/events</xsl:template>
-                          <xsl:template mode="more-link-href" match="announcement">/news</xsl:template>
+                          <xsl:template mode="more-link-href" match="Event"       >/events</xsl:template>
+                          <xsl:template mode="more-link-href" match="Announcement">/news</xsl:template>
 
-                          <xsl:template mode="more-link-text" match="event"       >More Events</xsl:template>
-                          <xsl:template mode="more-link-text" match="announcement">More News</xsl:template>
+                          <xsl:template mode="more-link-text" match="Event"       >More Events</xsl:template>
+                          <xsl:template mode="more-link-text" match="Announcement">More News</xsl:template>
 
 
                   <!-- TODO: For dates and times, consider use ISO 8601 format (in the source data) instead -->
@@ -460,7 +525,7 @@
 
 
   <xsl:template match="document-list">
-    <xsl:variable name="docs" select="ml:lookup-docs(string(@type), string(@topic))"/>
+    <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@topic))"/>
     <div class="doclist">
       <h2>Documents</h2>
       <!-- 2.0 feature TODO: add pagination -->
@@ -503,7 +568,7 @@
     </div>
   </xsl:template>
 
-          <xsl:template mode="doc-listing" match="document">
+          <xsl:template mode="doc-listing" match="Article">
             <tr>
               <xsl:if test="position() mod 2 eq 0">
                 <xsl:attribute name="class">alt</xsl:attribute>
@@ -526,6 +591,7 @@
           </xsl:template>
 
 
+
   <xsl:function name="ml:latest-announcement">
     <!-- TODO: implement this -->
     <xsl:sequence select="document('/news/1234.xml')"/>
@@ -541,11 +607,11 @@
     <xsl:sequence select="document('/learn/intro.xml')"/>
   </xsl:function>
 
-  <xsl:function name="ml:lookup-docs" as="element()*">
+  <xsl:function name="ml:lookup-articles" as="element()*">
     <xsl:param name="type"  as="xs:string"/>
     <xsl:param name="topic" as="xs:string"/>
-    <xsl:sequence select="collection()/document[(($type  eq @type)        or not($type)) and
-                                                (($topic =  topics/topic) or not($topic))]"/>
+    <xsl:sequence select="collection()/Article[(($type  eq @type)        or not($type)) and
+                                               (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
 
 
