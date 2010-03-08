@@ -11,3 +11,5 @@ legend {text-indent: -6px;}
 .doclist form {top: 5px;}
 #sub .body .download img {margin-top: -2em;}
 #sub .special {padding-bottom: 1em;}
+#special_intro .section, .special_img .section {padding-bottom:0}
+.special_img .section a.enlarge {bottom:15px;}

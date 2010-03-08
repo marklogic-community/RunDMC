@@ -26,7 +26,7 @@
        If the exact URI is found, then use that;
        otherwise, look to see if the current page falls under a content-type wildcard.
   -->
-  <xsl:variable name="page-in-navigation" select="($navigation//page         [@href eq $external-uri],
+  <xsl:variable name="page-in-navigation" select="($navigation//*            [@href eq $external-uri],
                                                    $navigation//Article      [$content/Article/@type eq @type],
                                                    $navigation//Announcement [$content/Announcement],
                                                    $navigation//Event        [$content/Event]
@@ -151,7 +151,7 @@
             </div>
           </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="page">
+                  <xsl:template mode="breadcrumb-display" match="page | generic-page">
                     <xsl:value-of select="@display"/>
                   </xsl:template>
 
@@ -237,6 +237,7 @@
   </xsl:template>
 
           <xsl:template mode="body-class" match="navigation/page">main_page</xsl:template>
+          <xsl:template mode="body-class" match="generic-page"   >generic</xsl:template>
           <xsl:template mode="body-class" match="*"              >sub_page</xsl:template>
 
           <xsl:template mode="body-class-extra" match="*"/>

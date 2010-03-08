@@ -115,7 +115,7 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 #header form {
 	position: absolute;
 	right: 15px;
-	bottom: 30px;
+	bottom: 6px;
 }
 .jsenbled #header form {bottom: 5px;}
 #header #s_inp {
@@ -299,12 +299,14 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	font-style: italic;
 	line-height: 164%;
 }
-#special_intro {
+#special_intro, .special_img {
 	background: url(../images/bg_special_intro_index_bottom.png) bottom left no-repeat;
 	padding-bottom: 7px;
 	width: 517px;
 	margin: 1em 0;
 }
+.special_img {font-size:0.8em;}
+.special_img img {float:left; margin-right:15px;}
 #special_intro .nav li {
 	float: left;
 	font: normal 1.5em Georgia, "Times New Roman", Times, Serif;
@@ -335,7 +337,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	cursor: default;
 	text-decoration: none;
 }
-#special_intro .section {
+#special_intro .section, .special_img .section {
 	clear: both;
 	padding: 15px;
 	background: #ECEFDA;
@@ -344,6 +346,26 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	overflow: hidden;
 	line-height: 140%;
 }
+.special_img .section {
+	border-width:0 1px;
+	padding: 8px 15px 15px 15px;
+	position:relative;
+	}
+.special_img .top {
+	height:7px; 
+	background:#FFF url(../images/bg_special_img_top.png) no-repeat top left;
+	}
+.special_img .section a.enlarge {
+	display:block;
+	position:absolute;
+	bottom:20px;
+	right:32px;
+	padding-left: 26px;
+	min-height:16px;
+	padding-top:10px;
+	background:url(../images/icon_enlarge.png) no-repeat bottom left;
+	color:#999;
+	}
 #special_intro div ul {
 	list-style: disc;
 	padding-left: 1em;
@@ -411,24 +433,29 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	margin: 0 0 2em;
 	clear: both;
 }
-#main .table1 thead th {
+#main table.table4 {margin-bottom:0;}
+#main p + table.table4 {margin-top: 30px;}
+#main .table1 thead th, #main .table4 thead th {
 	background: url(../images/bg_tablehead_gray.png) center top no-repeat;
 	padding: 0 8px;
 	font-size: .8em;
 	height: 29px;
 }
-#main .table1 thead th:first-child {background-position: left top;}
+#main .table1 thead th:first-child, #main .table4 thead th:first-child {background-position: left top;}
 #main .table1 thead th.size {width: 60px;}
-#main .table1 thead th.last {
+#main .table4 thead th:first-child {width:170px;}
+#main .table1 thead th.last, #main .table4 thead th.last {
 	background-position: right top;
 	width: 85px;
 }
-#main .table1 tbody td {
+#main .table1 tbody td, #main .table4 tbody td {
 	padding: 5px;
 	background: #F5F5F5;
 	font-size: .9em;
 	color: #828282;
 }
+#main .table4 tbody td {background:transparent;}
+#main .table4 tbody .alt td {background:#F5F5F5;;}
 #main .table1 a {color: #828282;}
 .table2 * {color: #333;}
 .table2 caption {padding-bottom: 1.5em;}
@@ -482,6 +509,7 @@ table + .action {
 	border-top-color: #999;
 	margin-top: 0;
 }
+table.table4 + .action {border:0;}
 .doclist table + .action {
 	border: solid #CCC;
 	border-width: 0 0 1px;
@@ -495,6 +523,7 @@ table + .action {
 	color: #666;
 	background: url(../images/arrow_right.gif) left center no-repeat;
 	padding-left: 10px;
+	padding-right:55px;
 }
 .post .action a {background-image: url(../images/arrow_down.gif);}
 .action a:hover {
