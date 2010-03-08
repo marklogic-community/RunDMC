@@ -250,6 +250,7 @@
             <xsl:value-of select="."/>
           </xsl:template>
 
+
   <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
     <xsl:variable name="last-widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]][last()]"/>
     <!-- If the last widget is a "feature widget", we need to accordingly babysit the CSS class -->
