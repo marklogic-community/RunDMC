@@ -100,6 +100,56 @@
           </xsl:template>
 
 
+          <xsl:template mode="page-content" match="Project">
+            <h2>
+              <xsl:value-of select="name"/>
+            </h2>
+            <xsl:apply-templates select="description/node()"/>
+            <table class="table4">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <xsl:value-of select="name"/>
+                  </th>
+                  <th class="size" scope="col">MarkLogic Version Needed</th>
+                  <th class="last" scope="col">Date Posted</th>
+                </tr>
+              </thead>
+              <tbody>
+                <xsl:apply-templates mode="project-version" select="versions/version"/>
+              </tbody>
+            </table>
+            <div class="action">
+              <a href="{contributors/@href}">Contributors</a>
+              <a href="{versions/@get-involved-href}">Get involved with this project</a>
+            </div>
+            <xsl:apply-templates select="top-threads"/>
+          </xsl:template>
+
+                  <xsl:template mode="project-version" match="version">
+                    <tr>
+                      <xsl:if test="position() mod 2 eq 1">
+                        <xsl:attribute name="class">alt</xsl:attribute>
+                      </xsl:if>
+                      <td>
+                        <a href="{@href}">
+                          <xsl:value-of select="@href"/>
+                        </a>
+                      </td>
+                      <td>
+                        <xsl:text>MarkLogic Server </xsl:text>
+                        <xsl:value-of select="@server-version"/>
+                        <xsl:text> or later</xsl:text>
+                      </td>
+                      <td>
+                        <xsl:value-of select="@date"/>
+                      </td>
+                    </tr>
+                  </xsl:template>
+
+
+
+
 
   <xsl:template match="top-nav">
     <ul>
@@ -169,8 +219,27 @@
 
   <xsl:template match="sub-nav[$content/Article]">
     <h2>Document TOC</h2>
-    <!-- TODO: implement doc TOC -->
+    <ul>
+      <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
+    </ul>
   </xsl:template>
+
+          <xsl:template mode="article-toc" match="xhtml:h3">
+            <li>
+              <a href="#{generate-id(.)}">
+                <xsl:value-of select="."/>
+              </a>
+            </li>
+          </xsl:template>
+
+          <xsl:template match="xhtml:h3">
+            <h3>
+              <a name="{generate-id(.)}"/>
+              <xsl:apply-templates select="@*"/>
+              <xsl:apply-templates/>
+            </h3>
+          </xsl:template>
+
 
   <xsl:template match="sub-nav">
     <xsl:variable name="children" select="$page-in-navigation/ancestor-or-self::page[group | page]/(group | page)"/>
@@ -332,6 +401,51 @@
                     <a class="{$button-class}" href="{@href}">
                       <img src="/images/b_download_now.png" alt="Download Now"/>
                     </a>
+                  </xsl:template>
+
+
+  <xsl:template match="product-info">
+    <h2>
+      <xsl:value-of select="@name"/>
+    </h2>
+
+    <a class="more" href="{@license-page}">License Options &gt;</a>
+
+    <xsl:apply-templates mode="product-platform" select="platform"/>
+  </xsl:template>
+
+          <xsl:template mode="product-platform" match="platform">
+            <table class="table1">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <xsl:value-of select="@name"/>
+                  </th>
+                  <th class="size" scope="col">File Size</th>
+                  <th class="last" scope="col">Date Posted</th>
+                </tr>
+              </thead>
+              <tbody>
+                <xsl:apply-templates mode="product-download" select="download"/>
+              </tbody>
+            </table>
+          </xsl:template>
+
+                  <xsl:template mode="product-download" match="download">
+                    <tr>
+                      <td>
+                        <a href="{@href}">
+                          <img src="/images/icon_download.png" alt="Download"/>
+                          <xsl:apply-templates/>
+                        </a>
+                      </td>
+                      <td>
+                        <xsl:value-of select="@size"/>
+                      </td>
+                      <td>
+                        <xsl:value-of select="@date"/>
+                      </td>
+                    </tr>
                   </xsl:template>
 
 
