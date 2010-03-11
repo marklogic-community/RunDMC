@@ -448,6 +448,30 @@
                     </tr>
                   </xsl:template>
 
+  <xsl:template match="product-documentation">
+    <table class="table2">
+      <caption>Documentation</caption>
+      <tbody>
+        <xsl:apply-templates mode="product-doc-entry" select="doc"/>
+      </tbody>
+    </table>
+  </xsl:template>
+
+          <xsl:template mode="product-doc-entry" match="doc">
+            <tr>
+              <td>
+                <!-- TODO: add support for displaying PDF documents -->
+                <xsl:value-of select="document(ml:internal-uri(@href))/*/title"/>
+              </td>
+              <td> 
+                <a href="{@href}">
+                  <!-- TODO: add support for displaying PDF documents -->
+                  <img src="/images/icon_browser.png" alt="view"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:template>
+
 
   <xsl:template match="widgets">
     <xsl:apply-templates mode="widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]]"/>
@@ -897,6 +921,11 @@
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>
     <xsl:sequence select="if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')"/>
+  </xsl:function>
+
+  <xsl:function name="ml:internal-uri" as="xs:string">
+    <xsl:param name="doc-path" as="xs:string"/>
+    <xsl:sequence select="if ($doc-path eq '/') then '/index.xml' else concat($doc-path, '.xml')"/>
   </xsl:function>
 
 </xsl:stylesheet>
