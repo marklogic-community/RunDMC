@@ -19,7 +19,7 @@ a:hover {text-decoration: underline;}
 	color: white;
 }
 a img {border: none;}
-img, input, textarea, select {vertical-align: middle;}
+img, input, textarea, select, button {vertical-align: middle;}
 input[type=text], input[type=password] {
 	font-style: italic;
 	border: 1px solid #999;
@@ -115,9 +115,9 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 #header form {
 	position: absolute;
 	right: 15px;
-	bottom: 6px;
+	bottom: 30px;
 }
-.jsenbled #header form {bottom: 5px;}
+.jsenabled #header form {bottom: 5px;}
 #header #s_inp {
 	color: #CBCBCB;
 	font-size: .85em;
@@ -181,7 +181,7 @@ legend,
 }
 .post #content h2, .generic #content h2, .layout2 #main h2 {margin-bottom: 1em !important;}
 .post #main h2 {color: #666;}
-h2.main_headline,  {margin: 2em 0 1em !important;}
+h2.main_headline {margin: 2em 0 1em !important;}
 .sub_page #main .date + h2, .generic #content h1 {
 	margin: 1em 0 2em;
 	color: #666;
@@ -972,7 +972,7 @@ table.table4 + .action {border:0;}
 	width: 225px;
 	padding: 2px;
 }
-.popup input[type=reset] {
+.popup input[type=reset], .popup input.cancel {
 	background: url(../images/b_cancel.png) no-repeat;
 	border: none;
 	padding: 0;
@@ -992,7 +992,7 @@ table.table4 + .action {border:0;}
 	padding-left: 0;
 	border-left: 0;
 }
-.overlay .close {
+.overlay > .close {
 	position: absolute;
 	top: 0;
 	right: -13px;
