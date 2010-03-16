@@ -15,16 +15,80 @@
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
-  <xsl:variable name="template"      select="document('/private/config/template.xhtml')"/>
-  <xsl:variable name="navigation"    select="document('/private/config/navigation.xml')"/>
+  <xsl:variable name="template"       select="document('/private/config/template.xhtml')"/>
+  <xsl:variable name="raw-navigation" select="document('/private/config/navigation.xml')"/>
+
+  <xsl:variable name="all-blog-posts" select="collection()/Post"/>
+
+  <xsl:variable name="navigation">
+    <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>
+  </xsl:variable>
+
+          <xsl:template mode="pre-process-navigation" match="@* | node()">
+            <xsl:copy>
+              <xsl:apply-templates mode="#current" select="@* | node()"/>
+            </xsl:copy>
+          </xsl:template>
+
+          <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-date">
+            <xsl:variable name="unique-years" select="distinct-values($all-blog-posts/date/year-from-date(.))"/>
+            <xsl:for-each select="$unique-years">
+              <xsl:sort select="." order="descending"/>
+              <xsl:variable name="posts-this-year" select="$all-blog-posts[year-from-date(date) eq current()]"/>
+              <ml:group display="{.}">
+                <xsl:variable name="unique-months" select="distinct-values($posts-this-year/date/month-from-date(.))"/>
+                <xsl:for-each select="$unique-months">
+                  <xsl:sort select="." order="descending"/>
+                  <xsl:variable name="posts-this-month" select="$posts-this-year[month-from-date(date) eq current()]"/>
+                  <ml:group display="{ml:month-name(.)} ({count($posts-this-month)})">
+                    <xsl:for-each select="$posts-this-month">
+                      <xsl:sort select="date" order="descending"/>
+                      <ml:page display="{title}" href="{ml:external-uri(.)}"/>
+                    </xsl:for-each>
+                  </ml:group>
+                </xsl:for-each>
+              </ml:group>
+            </xsl:for-each>
+          </xsl:template>
+
+          <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-author">
+            <xsl:variable name="unique-authors" select="distinct-values($all-blog-posts/author)"/>
+            <xsl:for-each select="$unique-authors">
+              <ml:group display="{.}">
+                <xsl:variable name="posts-by-author" select="$all-blog-posts[author eq current()]"/>
+                <xsl:for-each select="$posts-by-author">
+                  <xsl:sort select="date" order="descending"/>
+                  <ml:page display="{title}" href="{ml:external-uri(.)}"/>
+                </xsl:for-each>
+              </ml:group>
+            </xsl:for-each>
+          </xsl:template>
+
+          <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-category">
+            <xsl:variable name="unique-tags" select="distinct-values($all-blog-posts/tags/tag)"/>
+            <xsl:for-each select="$unique-tags">
+              <ml:group display="{.}">
+                <xsl:variable name="posts-with-tag" select="$all-blog-posts[tags/tag = current()]"/>
+                <xsl:for-each select="$posts-with-tag">
+                  <xsl:sort select="date" order="descending"/>
+                  <ml:page display="{title}" href="{ml:external-uri(.)}"/>
+                </xsl:for-each>
+              </ml:group>
+            </xsl:for-each>
+          </xsl:template>
+
+
+
   <xsl:variable name="widget-config" select="document('/private/config/widgets.xml')"/>
 
-  <xsl:variable name="external-uri" select="ml:external-uri(base-uri(/))"/>
+  <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 
   <!-- The page occurs in the hierarchy either explicitly or as encompassed by a wildcard.
 
        If the exact URI is found, then use that;
        otherwise, look to see if the current page falls under a content-type wildcard.
+
+       If the URI is found more than once (as may happen with blog posts), only the first one is chosen.
   -->
   <xsl:variable name="page-in-navigation" select="($navigation//*            [@href eq $external-uri],
                                                    $navigation//Article      [$content/Article/@type eq @type],
@@ -63,6 +127,97 @@
           <xsl:template mode="page-content" match="page">
             <xsl:apply-templates/>
           </xsl:template>
+
+
+          <xsl:template mode="page-content" match="Post">
+            <h1>Blog</h1>
+            <xsl:apply-templates mode="post-with-comments" select="."/>
+          </xsl:template>
+
+                  <xsl:template mode="post-with-comments" match="Post">
+                    <xsl:apply-templates mode="blog-post" select="."/>
+                    <xsl:if test="ml:comments-for-post(.)">
+                      <h3 id="comments">Comments</h3>
+                      <ol class="commentlist">
+                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(.)"/>
+                      </ol>
+                    </xsl:if>
+                    <form id="post_comment" action="" method="get">
+                      <fieldset>
+                        <legend>Post a Comment</legend>
+                        <div>
+                          <label for="pc_name">Name</label>
+                          <xsl:text> </xsl:text>
+                          <input id="pc_name" type="text"/>
+                        </div>
+                        <div>
+                          <label for="pc_url">URL</label>
+                          <xsl:text> </xsl:text>
+                          <input id="pc_url" type="text"/>
+                        </div>
+                        <div>
+                          <label for="pc_comment">Comment</label>
+                          <textarea cols="30" rows="5" id="pc_comment"/>
+                        </div>
+                      </fieldset>
+                      <div class="submit">
+                        <input type="image" src="/images/b_send.png" value="Send"/>
+                      </div>
+                    </form>
+                  </xsl:template>
+
+                          <xsl:template mode="blog-post" match="Post">
+                            <div class="post">
+                              <h2>
+                                <xsl:apply-templates select="title/node()"/>
+                              </h2>
+                              <span class="date">
+                                <xsl:value-of select="date"/>
+                              </span>
+                              <span class="author">
+                                <xsl:text>by </xsl:text>
+                                <xsl:value-of select="author"/>
+                              </span>
+                              <xsl:apply-templates select="body/node()"/>
+                              <div class="action">
+                                <ul>
+                                  <li>
+                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(.))"/>)</a>
+                                  </li>
+                                  <li>
+                                    <a href="{ml:external-uri(.)}#post_comment">Post a comment</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </xsl:template>
+
+                                  <xsl:function name="ml:comments-for-post" as="element()*">
+                                    <xsl:param name="post" as="element()"/>
+                                    <xsl:sequence select="collection()/Comment[@about eq ml:external-uri($post)]
+                                                                              [@status eq 'Approved']"/>
+                                  </xsl:function>
+
+
+                          <xsl:template mode="blog-comment" match="Comment">
+                            <li>
+                              <xsl:apply-templates/>
+                              <div class="comment_info">
+                                <span class="user">
+                                  <a class="tag-" href="">
+                                    <xsl:value-of select="author"/>,
+                                  </a>
+                                </span>
+                                <span class="time">
+                                  <xsl:value-of select="ml:display-time(posted-date)"/>,
+                                </span>
+                                <span class="date">
+                                  <xsl:value-of select="ml:display-date(posted-date)"/>
+                                </span>
+                              </div>
+                            </li>
+                          </xsl:template>
+
 
           <!--
           <xsl:template mode="page-content" match="Announcement">
@@ -149,8 +304,6 @@
 
 
 
-
-
   <xsl:template match="top-nav">
     <ul>
       <xsl:apply-templates mode="top-nav" select="$navigation/*/page"/>
@@ -159,16 +312,16 @@
 
           <xsl:template mode="top-nav" match="page">
             <li>
-              <xsl:apply-templates mode="current-page-att" select="."/>
+              <xsl:apply-templates mode="top-nav-current-att" select="."/>
               <a href="{@href}">
                 <xsl:value-of select="@display"/>
               </a>
             </li>
           </xsl:template>
 
-                  <xsl:template mode="current-page-att" match="page"/>
+                  <xsl:template mode="top-nav-current-att" match="page"/>
 
-                  <xsl:template mode="current-page-att" match="page[descendant-or-self::* intersect $page-in-navigation]">
+                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation]">
                     <xsl:attribute name="class">current</xsl:attribute>
                   </xsl:template>
 
@@ -243,6 +396,7 @@
 
   <xsl:template match="sub-nav">
     <xsl:variable name="children" select="$page-in-navigation/ancestor-or-self::page[group | page]/(group | page)"/>
+    <xsl:copy-of select="$navigation"/>
     <xsl:if test="$children">
       <div class="subnav">
         <xsl:choose>
@@ -275,7 +429,7 @@
                         <xsl:value-of select="@display"/>
                       </span>
                       <ul>
-                        <xsl:apply-templates mode="sub-nav" select="page"/>
+                        <xsl:apply-templates mode="sub-nav" select="page | group"/>
                       </ul>
                     </li>
                   </xsl:template>
@@ -292,9 +446,34 @@
                   </xsl:template>
 
                           <xsl:template mode="sub-nav-current-att" match="page"/>
+
                           <xsl:template mode="sub-nav-current-att" match="page[. intersect $page-in-navigation/ancestor-or-self::*]">
                             <xsl:attribute name="class">current</xsl:attribute>
                           </xsl:template>
+
+                          <!-- Special rule for blog posts, which occur in multiple locations in the navigation hierarchy:
+                                 Only highlight the instance under "Authors".
+                          -->
+                          <!-- To disable this special behavior and go back to just highlighting the first one, disable these two template rules. -->
+                          <xsl:template mode="sub-nav-current-att" match="page [@href eq '/blog']//page" priority="1"/>
+                          <xsl:template mode="sub-nav-current-att" match="page [@href eq '/blog']
+                                                                         /group[@display eq 'Authors']
+                                                                        //page [@href eq $external-uri]" priority="2">
+
+                            <!-- XSLT BUG workaround. This should ALWAYS be true, based on the match pattern, but
+                                 the match pattern predicate [@href eq $external-uri] is not properly filtering the nodes.
+                            -->
+                            <xsl:if test="@href eq $external-uri"> 
+                              <xsl:attribute name="class">current</xsl:attribute>
+                            </xsl:if>
+                          </xsl:template>
+
+
+
+          <xsl:template mode="sub-nav" match="blog-posts-grouped-by-date">
+            <xsl:variable name="tree">
+            </xsl:variable>
+          </xsl:template>
 
 
   <!-- The <body> CSS class varies from page to page -->
@@ -522,6 +701,16 @@
 
 
 
+  <xsl:template match="recent-blog-posts">
+    <xsl:variable name="count" select="@count" as="xs:integer"/>
+    <xsl:for-each select="collection()/Post">
+      <xsl:sort select="date" order="descending"/>
+      <xsl:if test="position() le $count">
+        <xsl:apply-templates mode="blog-post" select="."/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
 
   <xsl:template match="announcement">
     <div class="announcement single">
@@ -671,7 +860,7 @@
           </xsl:template>
 
                   <xsl:template mode="read-more" match="Announcement">
-                    <a class="more" href="{ml:external-uri(base-uri(.))}">Read more&#160;></a>
+                    <a class="more" href="{ml:external-uri(.)}">Read more&#160;></a>
                   </xsl:template>
 
 
@@ -686,7 +875,7 @@
             <dl>
               <xsl:apply-templates mode="event-details" select="details/*"/>
             </dl>
-            <a class="more" href="{ml:external-uri(base-uri(.))}">More information&#160;></a>
+            <a class="more" href="{ml:external-uri(.)}">More information&#160;></a>
             <xsl:apply-templates mode="more-link" select="."/>
           </xsl:template>
 
@@ -768,7 +957,7 @@
                 <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
                                                                             else body/xhtml:p[1]/node()"/>
                 <xsl:text> </xsl:text>
-                <a class="more" href="{ml:external-uri(base-uri(.))}">Read&#160;more&#160;></a>
+                <a class="more" href="{ml:external-uri(.)}">Read&#160;more&#160;></a>
               </p>
             </div>
           </xsl:template>
@@ -839,7 +1028,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <th>
-                <a href="{ml:external-uri(base-uri())}">
+                <a href="{ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
               </th>
@@ -917,9 +1106,39 @@
     </ml:thread>
   </xsl:function>
 
+  <xsl:function name="ml:month-name" as="xs:string">
+    <xsl:param name="month" as="xs:integer"/>
+    <xsl:sequence select="if ($month eq  1) then 'January'
+                     else if ($month eq  2) then 'February'
+                     else if ($month eq  3) then 'March'
+                     else if ($month eq  4) then 'April'
+                     else if ($month eq  5) then 'May'
+                     else if ($month eq  6) then 'June'
+                     else if ($month eq  7) then 'July'
+                     else if ($month eq  8) then 'August'
+                     else if ($month eq  9) then 'September'
+                     else if ($month eq 10) then 'October'
+                     else if ($month eq 11) then 'November'
+                     else if ($month eq 12) then 'December'
+                     else ()"/>
+  </xsl:function>
+
+
+  <xsl:function name="ml:display-date" as="xs:string">
+    <xsl:param name="date"/>
+    <!-- TODO: implement this -->
+    <xsl:sequence select="$date"/>
+  </xsl:function>
+
+  <xsl:function name="ml:display-time" as="xs:string">
+    <xsl:param name="date"/>
+    <!-- TODO: implement this -->
+    <xsl:sequence select="$date"/>
+  </xsl:function>
 
   <xsl:function name="ml:external-uri" as="xs:string">
-    <xsl:param name="doc-path" as="xs:string"/>
+    <xsl:param name="node" as="node()"/>
+    <xsl:variable name="doc-path" select="base-uri($node)"/>
     <xsl:sequence select="if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')"/>
   </xsl:function>
 
