@@ -36,6 +36,8 @@ ul {
 	padding: 0;
 	list-style: none;
 }
+#content #main ul {list-style:disc inside; padding-left:35px;}
+#content #main .action ul, #content #main #special_intro ul {padding-left:0}
 fieldset {
 	margin: 0;
 	padding: 0;
@@ -368,7 +370,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	}
 #special_intro div ul {
 	list-style: disc;
-	padding-left: 1em;
+	padding-left: 1em !important;
 	margin: 1em 0;
 }
 #special_intro div img, #sub .special .body img {
@@ -392,7 +394,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #special_intro ul.more {
 	list-style: none;
-	padding-left: 1.3em;
+	padding-left: 1.3em !important;
 	font-size: .8em;
 	font-weight: bold;
 	line-height: 180%;
