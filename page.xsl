@@ -12,6 +12,8 @@
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
               omit-xml-declaration="yes"/>
 
+  <xsl:param name="message"/>
+
   <xsl:variable name="content"    select="/"/>
   <xsl:variable name="base-uri"   select="base-uri($content)"/>
 
@@ -121,6 +123,11 @@
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">
+    <xsl:if test="string($message)">
+      <div class="alert">
+        <xsl:value-of select="$message"/>
+      </div>
+    </xsl:if>
     <xsl:apply-templates mode="page-content" select="$content/*"/>
   </xsl:template>
 
@@ -142,22 +149,23 @@
                         <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(.)"/>
                       </ol>
                     </xsl:if>
-                    <form id="post_comment" action="" method="get">
+                    <form id="post_comment" action="/post-comment.xqy" method="post">
+                      <input type="hidden" name="about" value="{ml:external-uri(.)}"/>
                       <fieldset>
                         <legend>Post a Comment</legend>
                         <div>
                           <label for="pc_name">Name</label>
                           <xsl:text> </xsl:text>
-                          <input id="pc_name" type="text"/>
+                          <input id="pc_name" type="text" name="author"/>
                         </div>
                         <div>
                           <label for="pc_url">URL</label>
                           <xsl:text> </xsl:text>
-                          <input id="pc_url" type="text"/>
+                          <input id="pc_url" type="text" name="url"/>
                         </div>
                         <div>
                           <label for="pc_comment">Comment</label>
-                          <textarea cols="30" rows="5" id="pc_comment"/>
+                          <textarea cols="30" rows="5" id="pc_comment" name="body"/>
                         </div>
                       </fieldset>
                       <div class="submit">
@@ -201,18 +209,18 @@
 
                           <xsl:template mode="blog-comment" match="Comment">
                             <li>
-                              <xsl:apply-templates/>
+                              <xsl:apply-templates select="body/node()"/>
                               <div class="comment_info">
                                 <span class="user">
-                                  <a class="tag-" href="">
-                                    <xsl:value-of select="author"/>,
-                                  </a>
+                                  <a class="tag-" href="{url}">
+                                    <xsl:value-of select="author"/>
+                                  </a>,
                                 </span>
                                 <span class="time">
-                                  <xsl:value-of select="ml:display-time(posted-date)"/>,
+                                  <xsl:value-of select="ml:display-time(date)"/>,
                                 </span>
                                 <span class="date">
-                                  <xsl:value-of select="ml:display-date(posted-date)"/>
+                                  <xsl:value-of select="ml:display-date(date)"/>
                                 </span>
                               </div>
                             </li>
@@ -396,7 +404,6 @@
 
   <xsl:template match="sub-nav">
     <xsl:variable name="children" select="$page-in-navigation/ancestor-or-self::page[group | page]/(group | page)"/>
-    <xsl:copy-of select="$navigation"/>
     <xsl:if test="$children">
       <div class="subnav">
         <xsl:choose>
