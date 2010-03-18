@@ -32,6 +32,7 @@
             </xsl:copy>
           </xsl:template>
 
+          <!-- These three rules smell. Consider refactoring -->
           <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-date">
             <xsl:variable name="unique-years" select="distinct-values($all-blog-posts/date/year-from-date(.))"/>
             <xsl:for-each select="$unique-years">
@@ -96,8 +97,7 @@
                                                    $navigation//Article      [$content/Article/@type eq @type],
                                                    $navigation//Announcement [$content/Announcement],
                                                    $navigation//Event        [$content/Event]
-                                                  )
-                                                  [1]"/>
+                                                  )"/>
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
@@ -134,6 +134,7 @@
       </div>
     </xsl:if>
     <xsl:apply-templates mode="page-content" select="$content/*"/>
+    <xsl:copy-of select="$navigation"/>
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
@@ -359,7 +360,7 @@
   <xsl:template match="breadcrumbs[$content/Article]"/>
 
   <xsl:template match="breadcrumbs" name="breadcrumbs">
-    <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation"/>
+    <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation[1]"/>
   </xsl:template>
 
           <!-- No breadcrumbs on home page -->
@@ -471,23 +472,10 @@
                             <xsl:attribute name="class">current</xsl:attribute>
                           </xsl:template>
 
-                          <!-- Special rule for blog posts, which occur in multiple locations in the navigation hierarchy:
-                                 Only highlight the instance under "Authors".
+                          <!-- Exception: don't expand when initial expansion is explicitly disabled. This is useful
+                               for the "Blog" navigation in particular, where a post may appear in multiple places in the sub-navigation.
                           -->
-                          <!-- To disable this special behavior and go back to just highlighting the first one, disable these two template rules. -->
-                          <xsl:template mode="sub-nav-current-att" match="page [@href eq '/blog']//page" priority="1"/>
-                          <xsl:template mode="sub-nav-current-att" match="page [@href eq '/blog']
-                                                                         /group[@display eq 'Authors']
-                                                                        //page [@href eq $external-uri]" priority="2">
-
-                            <!-- XSLT BUG workaround. This should ALWAYS be true, based on the match pattern, but
-                                 the match pattern predicate [@href eq $external-uri] is not properly filtering the nodes.
-                            -->
-                            <xsl:if test="@href eq $external-uri"> 
-                              <xsl:attribute name="class">current</xsl:attribute>
-                            </xsl:if>
-                          </xsl:template>
-
+                          <xsl:template mode="sub-nav-current-att" match="group[@disable-initial-expansion eq 'yes']//page" priority="1"/>
 
 
           <xsl:template mode="sub-nav" match="blog-posts-grouped-by-date">
