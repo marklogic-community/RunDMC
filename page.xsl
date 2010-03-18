@@ -374,16 +374,17 @@
                 <xsl:value-of select="$site-name"/>
               </a>
               <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
-              <xsl:text> > </xsl:text>
               <xsl:apply-templates mode="breadcrumb-display" select="."/>
             </div>
           </xsl:template>
 
                   <xsl:template mode="breadcrumb-display" match="page | generic-page">
+                    <xsl:text> > </xsl:text>
                     <xsl:value-of select="@display"/>
                   </xsl:template>
 
                   <xsl:template mode="breadcrumb-display" match="*">
+                    <xsl:text> > </xsl:text>
                     <xsl:value-of select="$content/*/title"/>
                   </xsl:template>
 

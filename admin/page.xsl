@@ -21,6 +21,9 @@
     </xsl:call-template>
   </xsl:template>
 
+  <!-- Don't display "Home" -->
+  <xsl:template mode="breadcrumb-display" match="page[@href eq '/']"/>
+
   <!-- Account for "/admin" prefix in internal/external URI mappings -->
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="node" as="node()"/>
