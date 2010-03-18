@@ -191,11 +191,12 @@ div.ce_description {padding-top: 1em;}
 }
 #addmedia ul {
 	border: 1px solid #CCC;
-	padding: 3px;
+	padding: 3px !important;
 	overflow: auto;
 	max-height: 200px;
 	max-width: 350px;
 	text-align: left;
+	list-style-type:none !important;
 }
 #addmedia div li {
 	clear: both;
