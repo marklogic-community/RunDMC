@@ -367,9 +367,12 @@
           <xsl:template mode="breadcrumbs" match="page[@href eq '/']"/>
 
           <!-- But do display them on every other page -->
-          <xsl:template mode="breadcrumbs" match="*">
+          <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
+            <xsl:param name="site-name" select="'Developer Community'"/>
             <div class="breadcrumb">
-              <a href="/">Developer Community</a>
+              <a href="/">
+                <xsl:value-of select="$site-name"/>
+              </a>
               <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
               <xsl:text> > </xsl:text>
               <xsl:apply-templates mode="breadcrumb-display" select="."/>

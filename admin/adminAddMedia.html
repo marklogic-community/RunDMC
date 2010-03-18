@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Mark Logic</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href="css/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/admin.css" rel="stylesheet" type="text/css" media="screen" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.1.2/tiny/jquery.tools.min.js"></script>
+		<script type="text/javascript" src="js/jquerydefaultvalue.js"></script>
+		<script type="text/javascript" src="js/functions.js"></script>
+		<!--[if lte IE 7]>
+		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+		<![endif]-->
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<a href="" title="Home page"><img src="images/logo.png" alt="MARK LOGIC developer community" title="" /></a>
+				<h1>Content Management</h1>
+				<ul>
+					<li><a href="">Home</a></li>
+					<li><a href="">Products</a></li>
+					<li class="current"><a href="">Code</a></li>
+					<li><a href="">Learn</a></li>
+					<li><a href="">Discuss</a></li>
+					<li><a href="">Meet</a></li>
+					<li><a href="">Blog</a></li>
+					<li><a href="">News&nbsp;&amp; Events</a></li>
+				</ul>
+			</div>
+			<hr />
+			<div id="content">
+				<div id="main">
+					<div class="breadcrumb"><a href="">Developer Community: Content Management</a>&nbsp;&gt; <a href="">Code</a>&nbsp;&gt; Edit: MarkLogic CQ – Add Media</div>
+					<form class="adminform" id="addmedia" action="" method="get">
+						<h1>Add Media</h1>
+						<p class="intro">Choose media from already uploaded assets or upload a new asset.</p>
+						<fieldset>
+							<div>
+								<span>In Media Library</span>
+								<ul>
+									<li>
+										<input id="media-1" type="radio" name="media_item" />
+										<label for="media-1"><img src="images/placeholder_media.png" alt="" /> cq_figure1.png</label>
+									</li>
+									<li>
+										<input id="media-2" type="radio" name="media_item" />
+										<label for="media-2"><img src="images/placeholder_media.png" alt="" /> cq_videoTutorial.flv</label>
+									</li>
+									<li>
+										<input id="media-3" type="radio" name="media_item" />
+										<label for="media-3"><img src="images/placeholder_media.png" alt="" /> cq_figure1.png</label>
+									</li>
+									<li>
+										<input id="media-4" type="radio" name="media_item" />
+										<label for="media-4"><img src="images/placeholder_media.png" alt="" /> cq_figure1.png</label>
+									</li>
+									<li>
+										<input id="media-5" type="radio" name="media_item" />
+										<label for="media-5"><img src="images/placeholder_media.png" alt="" /> cq_figure1.png</label>
+									</li>
+									<li>
+										<input id="media-6" type="radio" name="media_item" />
+										<label for="media-6"><img src="images/placeholder_media.png" alt="" /> cq_figure1.png</label>
+									</li>
+								</ul>
+							</div>
+							<div>
+								<label for="upload">Upload New</label>
+								<input id="upload" type="file" />
+							</div>
+						</fieldset>
+						<div class="submit">
+							<!--
+								The “add media” button stores the form data, sends the user to the code edit page, and displays the data there. The cancel button just brings them back to the other page.
+								If there’s something chosen in the file upload the “add media” button will upload and store it. The file upload takes precedence over any choice in the list.
+							-->
+							<input type="submit" name="media_cancel" value="Cancel" />
+							<input type="submit" name="media_add" value="Add media" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<hr />
+			<div id="footer">
+				<div id="copyright">Copyright &copy; 2010 Mark Logic Corporation. All rights reserved. | Powered by MarkLogic Server 4.1-2 Standard Edition  | <a href="">Contact Us</a></div>
+			</div>
+		</div>
+	</body>
+</html>
