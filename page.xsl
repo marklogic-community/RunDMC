@@ -113,6 +113,11 @@
             <xsl:copy/>
           </xsl:template>
 
+          <!-- Strip out inline custom tags (such as <ml:teaser>) -->
+          <xsl:template match="ml:*">
+            <xsl:apply-templates/>
+          </xsl:template>
+
           <!-- For elements, "replicate" rather than copy, to prevent unwanted namespace nodes in output -->
           <xsl:template match="*">
             <xsl:element name="{name()}" namespace="{namespace-uri()}">
@@ -228,9 +233,6 @@
 
 
           <!--
-          <xsl:template mode="page-content" match="Announcement">
-          </xsl:template>
-
           <xsl:template mode="page-content" match="Event">
           </xsl:template>
           -->
@@ -310,6 +312,17 @@
                     </tr>
                   </xsl:template>
 
+
+          <xsl:template mode="page-content" match="Announcement">
+            <h1>News</h1>
+            <div class="date">
+              <xsl:value-of select="ml:display-date(date)"/>
+            </div>
+            <h2>
+              <xsl:apply-templates select="title/node()"/>
+            </h2>
+            <xsl:apply-templates select="body/node()"/>
+          </xsl:template>
 
 
   <xsl:template match="top-nav">
@@ -719,6 +732,28 @@
   </xsl:template>
 
 
+  <xsl:template match="announcement-list">
+    <xsl:variable name="announcements" select="ml:recent-announcements(xs:integer(@past-months))"/>
+    <xsl:apply-templates mode="announcement-teaser" select="$announcements"/>
+  </xsl:template>
+
+          <xsl:template mode="announcement-teaser" match="Announcement">
+            <div class="newsitem">
+              <div class="date">
+                <xsl:value-of select="ml:display-date(date)"/>
+              </div>
+              <h3>
+                <xsl:apply-templates select="title/node()"/>
+              </h3>
+              <p>
+                <xsl:apply-templates select="body//teaser/node()"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="read-more" select="."/>
+              </p>
+            </div>
+          </xsl:template>
+
+
   <xsl:template match="announcement">
     <div class="announcement single">
       <xsl:apply-templates/>
@@ -1086,6 +1121,13 @@
                                                (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
 
+
+  <xsl:function name="ml:recent-announcements" as="element()*">
+    <xsl:param name="months" as="xs:integer"/>
+    <xsl:variable name="duration" select="concat('P', $months, 'M')"/>
+    <xsl:variable name="start-date" select="current-date() - xs:yearMonthDuration($duration)"/>
+    <xsl:sequence select="collection()/Announcement[xs:date(date) >= $start-date]"/>
+  </xsl:function>
 
   <xsl:function name="ml:get-threads">
     <xsl:param name="search" as="xs:string?"/>
