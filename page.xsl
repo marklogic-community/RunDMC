@@ -134,7 +134,6 @@
       </div>
     </xsl:if>
     <xsl:apply-templates mode="page-content" select="$content/*"/>
-    <xsl:copy-of select="$navigation"/>
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
