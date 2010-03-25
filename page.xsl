@@ -413,8 +413,8 @@
 
           <xsl:template match="xhtml:h3">
             <h3>
-              <a name="{generate-id(.)}"/>
               <xsl:apply-templates select="@*"/>
+              <a name="{generate-id(.)}"/>
               <xsl:apply-templates/>
             </h3>
           </xsl:template>
