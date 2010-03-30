@@ -20,6 +20,8 @@ let $params  := qp:load-params(),
 return
   (
     xdmp:document-insert($comment-uri,
-                         $comment-doc),
+                         $comment-doc,
+                         xdmp:default-permissions(),
+                         "http://developer.marklogic.com/content-collection"), (: The collection association doesn't appear to be working - why not?:)
     xdmp:redirect-response(concat($params/qp:about, '?message=Thank you for your comment. It has been submitted for moderation.'))
   )

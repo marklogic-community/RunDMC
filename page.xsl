@@ -19,8 +19,14 @@
 
   <xsl:variable name="template"       select="document('/private/config/template.xhtml')"/>
   <xsl:variable name="raw-navigation" select="document('/private/config/navigation.xml')"/>
+  <xsl:variable name="widget-config"  select="document('/private/config/widgets.xml')"/>
 
-  <xsl:variable name="all-blog-posts" select="collection()/Post"/>
+  <xsl:variable name="collection" select="collection()"/>
+  <!--
+  <xsl:variable name="collection" select="collection('http://developer.marklogic.com/content-collection')"/>
+  -->
+
+  <xsl:variable name="all-blog-posts" select="$collection/Post"/>
 
   <xsl:variable name="navigation">
     <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>
@@ -81,8 +87,6 @@
           </xsl:template>
 
 
-
-  <xsl:variable name="widget-config" select="document('/private/config/widgets.xml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 
@@ -207,8 +211,8 @@
 
                                   <xsl:function name="ml:comments-for-post" as="element()*">
                                     <xsl:param name="post" as="element()"/>
-                                    <xsl:sequence select="collection()/Comment[@about eq ml:external-uri($post)]
-                                                                              [@status eq 'Approved']"/>
+                                    <xsl:sequence select="$collection/Comment[@about eq ml:external-uri($post)]
+                                                                             [@status eq 'Approved']"/>
                                   </xsl:function>
 
 
@@ -714,7 +718,7 @@
 
   <xsl:template match="recent-blog-posts">
     <xsl:variable name="count" select="@count" as="xs:integer"/>
-    <xsl:for-each select="collection()/Post">
+    <xsl:for-each select="$collection/Post">
       <xsl:sort select="date" order="descending"/>
       <xsl:if test="position() le $count">
         <xsl:apply-templates mode="blog-post" select="."/>
@@ -1108,8 +1112,8 @@
   <xsl:function name="ml:lookup-articles" as="element()*">
     <xsl:param name="type"  as="xs:string"/>
     <xsl:param name="topic" as="xs:string"/>
-    <xsl:sequence select="collection()/Article[(($type  eq @type)        or not($type)) and
-                                               (($topic =  topics/topic) or not($topic))]"/>
+    <xsl:sequence select="$collection/Article[(($type  eq @type)        or not($type)) and
+                                              (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
 
 
@@ -1117,7 +1121,7 @@
     <xsl:param name="months" as="xs:integer"/>
     <xsl:variable name="duration" select="concat('P', $months, 'M')"/>
     <xsl:variable name="start-date" select="current-date() - xs:yearMonthDuration($duration)"/>
-    <xsl:sequence select="collection()/Announcement[xs:date(date) >= $start-date]"/>
+    <xsl:sequence select="$collection/Announcement[xs:date(date) >= $start-date]"/>
   </xsl:function>
 
   <xsl:function name="ml:get-threads">
