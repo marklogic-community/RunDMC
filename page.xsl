@@ -238,10 +238,17 @@
                           </xsl:template>
 
 
-          <!--
           <xsl:template mode="page-content" match="Event">
+            <h1>Events</h1>
+            <h2>
+              <xsl:apply-templates select="title/node()"/>
+            </h2>
+            <dl>
+              <xsl:apply-templates mode="event-details" select="details/*"/>
+            </dl>
+            <xsl:apply-templates select="description/node()"/>
           </xsl:template>
-          -->
+
 
           <xsl:template mode="page-content" match="Article">
             <!-- TODO: What's the intention of this form? The whole document is on the client, but it has no client-side behavior
@@ -729,9 +736,35 @@
   </xsl:template>
 
 
+  <xsl:template match="event-list">
+    <xsl:variable name="events" select="ml:recent-events(xs:integer(@past-months))"/>
+    <xsl:apply-templates mode="event-teaser" select="$events">
+      <xsl:sort select="details/date" order="descending"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+          <xsl:template mode="event-teaser" match="Event">
+            <div class="newsitem">
+              <h3>
+                <xsl:apply-templates select="title/node()"/>
+              </h3>
+              <dl>
+                <xsl:apply-templates mode="event-details" select="details/*"/>
+              </dl>
+              <p>
+                <xsl:apply-templates select="description//teaser/node()"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="read-more" select="."/>
+              </p>
+            </div>
+          </xsl:template>
+
+
   <xsl:template match="announcement-list">
     <xsl:variable name="announcements" select="ml:recent-announcements(xs:integer(@past-months))"/>
-    <xsl:apply-templates mode="announcement-teaser" select="$announcements"/>
+    <xsl:apply-templates mode="announcement-teaser" select="$announcements">
+      <xsl:sort select="date" order="descending"/>
+    </xsl:apply-templates>
   </xsl:template>
 
           <xsl:template mode="announcement-teaser" match="Announcement">
@@ -749,13 +782,6 @@
               </p>
             </div>
           </xsl:template>
-
-
-  <xsl:template match="announcement">
-    <div class="announcement single">
-      <xsl:apply-templates/>
-    </div>
-  </xsl:template>
 
 
   <xsl:template match="top-threads">
@@ -898,7 +924,7 @@
             <xsl:apply-templates mode="more-link" select="."/>
           </xsl:template>
 
-                  <xsl:template mode="read-more" match="Announcement">
+                  <xsl:template mode="read-more" match="Announcement | Event">
                     <a class="more" href="{ml:external-uri(.)}">Read more&#160;></a>
                   </xsl:template>
 
@@ -964,19 +990,19 @@
 
 
   <xsl:template match="article-teaser">
-    <xsl:apply-templates mode="article-teaser" select="document(@href)">
+    <xsl:apply-templates mode="article-teaser" select="document(@href)/Article">
       <xsl:with-param name="heading" select="@heading"/>
       <xsl:with-param name="suppress-byline" select="true()"/>
     </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template match="recent-article">
-    <xsl:apply-templates mode="article-teaser" select="ml:latest-article(@type)/*">
+    <xsl:apply-templates mode="article-teaser" select="ml:latest-article(string(@type))">
       <xsl:with-param name="heading" select="@heading"/>
     </xsl:apply-templates>
   </xsl:template>
 
-          <xsl:template mode="article-teaser" match="*">
+          <xsl:template mode="article-teaser" match="Article">
             <xsl:param name="heading" as="xs:string"/>
             <xsl:param name="suppress-byline"/>
             <div class="single">
@@ -1067,7 +1093,9 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <th>
-                <a href="{ml:external-uri(.)}">
+                <a href="{if (external-link/@href)
+                         then external-link/@href
+                         else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
               </th>
@@ -1084,31 +1112,55 @@
           </xsl:template>
 
 
+  <!-- TODO: refactor these repetitive functions -->
 
   <xsl:function name="ml:latest-user-group-announcement">
-    <!-- TODO: implement this -->
-    <xsl:sequence select="document('/news/user-group-announcement.xml')"/>
-  </xsl:function>
-
-  <xsl:function name="ml:upcoming-user-group-events">
-    <!-- TODO: implement this -->
-    <xsl:sequence select="document('/events/denmark1.xml'), document('/events/markups1.xml')"/>
+    <xsl:for-each select="$collection/Announcement[string(@user-group)]">
+      <xsl:sort select="date" order="descending"/>
+      <xsl:if test="position() eq 1">
+        <xsl:sequence select="."/>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:function>
 
   <xsl:function name="ml:latest-announcement">
-    <!-- TODO: implement this -->
-    <xsl:sequence select="document('/news/1234.xml')"/>
+    <xsl:for-each select="$collection/Announcement">
+      <xsl:sort select="date" order="descending"/>
+      <xsl:if test="position() eq 1">
+        <xsl:sequence select="."/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:function>
+
+  <xsl:function name="ml:upcoming-user-group-events">
+    <xsl:variable name="future-events" select="$collection/Event[string(@user-group)][xs:date(details/date) >= current-date()]"/>
+    <xsl:for-each select="$future-events">
+      <xsl:sort select="details/date"/>
+      <xsl:if test="position() le 2">
+        <xsl:sequence select="."/>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:function>
 
   <xsl:function name="ml:latest-event">
-    <!-- TODO: implement this -->
-    <xsl:sequence select="document('/events/denmark1.xml')"/>
+    <xsl:variable name="future-events" select="$collection/Event[xs:date(details/date) >= current-date()]"/>
+    <xsl:for-each select="$collection/Event">
+      <xsl:sort select="details/date" order="descending"/>
+      <xsl:if test="position() eq 1">
+        <xsl:sequence select="."/>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:function>
 
   <xsl:function name="ml:latest-article">
-    <xsl:param name="type" as="xs:string?"/>
-    <!-- TODO: implement this -->
-    <xsl:sequence select="document('/learn/intro.xml')"/>
+    <xsl:param name="type"  as="xs:string"/>
+    <xsl:variable name="articles" select="ml:lookup-articles($type, '')"/>
+    <xsl:for-each select="$articles">
+      <xsl:sort select="created" order="descending"/>
+      <xsl:if test="position() eq 1">
+        <xsl:sequence select="."/>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:function>
 
   <xsl:function name="ml:lookup-articles" as="element()*">
@@ -1118,6 +1170,13 @@
                                               (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
 
+
+  <xsl:function name="ml:recent-events" as="element()*">
+    <xsl:param name="months" as="xs:integer"/>
+    <xsl:variable name="duration" select="concat('P', $months, 'M')"/>
+    <xsl:variable name="start-date" select="current-date() - xs:yearMonthDuration($duration)"/>
+    <xsl:sequence select="$collection/Event[xs:date(details/date) >= $start-date]"/>
+  </xsl:function>
 
   <xsl:function name="ml:recent-announcements" as="element()*">
     <xsl:param name="months" as="xs:integer"/>
