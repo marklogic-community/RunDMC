@@ -155,7 +155,9 @@
                     <xsl:if test="ml:comments-for-post(.)">
                       <h3 id="comments">Comments</h3>
                       <ol class="commentlist">
-                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(.)"/>
+                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(.)">
+                          <xsl:sort select="date"/>
+                        </xsl:apply-templates>
                       </ol>
                     </xsl:if>
                     <form id="post_comment" action="/post-comment.xqy" method="post">
