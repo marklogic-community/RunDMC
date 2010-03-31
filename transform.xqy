@@ -5,7 +5,7 @@ let $params  := qp:load-params()
 let $doc-url := concat($params/qp:src, ".xml")
 return
 (
-  xdmp:xslt-invoke("page.xsl", doc($doc-url),
+  xdmp:xslt-invoke("xslt/page.xsl", doc($doc-url),
     map:map(
       (: TODO: Ensure there's no cross-site scripting risks :)
       <map:map xmlns:map="http://marklogic.com/xdmp/map">
