@@ -8,6 +8,8 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
+  <!-- TODO: reimplement this module in XQuery -->
+
   <xsl:variable name="collection" select="collection()"/>
   <!--
   <xsl:variable name="collection" select="collection('http://developer.marklogic.com/content-collection')"/>
@@ -35,9 +37,17 @@
     </xsl:for-each>
   </xsl:function>
 
-  <xsl:function name="ml:upcoming-user-group-events">
-    <xsl:variable name="future-events" select="$collection/Event[string(@user-group)][xs:date(details/date) >= current-date()]"/>
-    <xsl:for-each select="$future-events">
+
+  <xsl:function name="ml:future-events">
+    <xsl:sequence select="$collection/Event[xs:date(details/date) >= current-date()]"/>
+  </xsl:function>
+
+  <xsl:function name="ml:next-two-user-group-events">
+    <xsl:param name="group" as="xs:string"/>
+    <xsl:variable name="events" select="if ($group eq '')
+                                        then ml:future-events()[string(@user-group)]
+                                        else ml:future-events()[@user-group eq $group]"/>
+    <xsl:for-each select="$events">
       <xsl:sort select="details/date"/>
       <xsl:if test="position() le 2">
         <xsl:sequence select="."/>
@@ -45,15 +55,15 @@
     </xsl:for-each>
   </xsl:function>
 
-  <xsl:function name="ml:latest-event">
-    <xsl:variable name="future-events" select="$collection/Event[xs:date(details/date) >= current-date()]"/>
-    <xsl:for-each select="$collection/Event">
-      <xsl:sort select="details/date" order="descending"/>
+  <xsl:function name="ml:next-event">
+    <xsl:for-each select="ml:future-events()">
+      <xsl:sort select="details/date"/>
       <xsl:if test="position() eq 1">
         <xsl:sequence select="."/>
       </xsl:if>
     </xsl:for-each>
   </xsl:function>
+
 
   <xsl:function name="ml:latest-article">
     <xsl:param name="type"  as="xs:string"/>

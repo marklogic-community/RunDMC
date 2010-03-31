@@ -166,9 +166,8 @@
 
 
   <xsl:template match="event-list">
-    <xsl:variable name="events" select="ml:recent-events(xs:integer(@past-months))"/>
-    <xsl:apply-templates mode="event-teaser" select="$events">
-      <xsl:sort select="details/date" order="descending"/>
+    <xsl:apply-templates mode="event-teaser" select="ml:future-events()">
+      <xsl:sort select="details/date"/>
     </xsl:apply-templates>
   </xsl:template>
 
@@ -243,7 +242,6 @@
     </div>
   </xsl:template>
 
-
           <xsl:template mode="display-thread" match="thread">            
             <tr>
               <xsl:if test="position() mod 2 eq 0">
@@ -281,7 +279,7 @@
 
 
   <xsl:template match="upcoming-user-group-events">
-    <xsl:variable name="events" select="ml:upcoming-user-group-events()"/>
+    <xsl:variable name="events" select="ml:next-two-user-group-events(string(@group))"/>
     <div class="double">
       <h2>Upcoming Events</h2>
       <a class="more" href="/events">All events&#160;></a>
@@ -317,7 +315,7 @@
 
   <xsl:template match="recent-news-and-events">
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
-    <xsl:variable name="event"        select="ml:latest-event()"/>
+    <xsl:variable name="event"        select="ml:next-event()"/>
     <div class="double">
       <div>
         <h2>Recent News</h2>
