@@ -11,17 +11,18 @@ let $params  := qp:load-params(),
                       <ml:author>{ string($params/qp:author)     }</ml:author>
                       <ml:date>  { current-dateTime()            }</ml:date>
                       <ml:url>   { string($params/qp:url)        }</ml:url>
-                      <ml:body>  { xdmp:unquote(
-                                     concat('<temp>',$params/qp:body,'</temp>'),
-                                     "http://www.w3.org/1999/xhtml"
-                                   )/*/node()                    }</ml:body>
+                      <ml:body>  { xdmp:xslt-invoke(
+                                     "cleanup-comment.xsl",
+                                     xdmp:unquote(
+                                       concat('<temp>',$params/qp:body,'</temp>'),
+                                       "http://www.w3.org/1999/xhtml"
+                                     )
+                                   )                             }</ml:body>
                     </ml:Comment>
                     }
 return
   (
     xdmp:document-insert($comment-uri,
-                         $comment-doc,
-                         xdmp:default-permissions(),
-                         "http://developer.marklogic.com/content-collection"), (: The collection association doesn't appear to be working - why not?:)
+                         $comment-doc),
     xdmp:redirect-response(concat($params/qp:about, '?message=Thank you for your comment. It has been submitted for moderation.'))
   )
