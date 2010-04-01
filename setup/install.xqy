@@ -12,6 +12,7 @@ let $http-server-port := 8003
 let $webdav-server-name := "RunDMCWebDAV"
 let $webdav-server-port := 8005
 let $groupid := admin:group-get-id($config, "Default")
+let $rewriter := "/url_rewriter.xqy"
 
 return ( 
 try {
@@ -67,5 +68,8 @@ catch ($e) {
                 then fn:string-join(("Port for",$webdav-server-name,"in use, try changing the port number")," ")
         else (if (data($e/error:code) eq "ADMIN-DUPLICATEITEM") 
                 then fn:string-join(("WebDAV Server",$webdav-server-name,"already exists on different port")," ") else $e)
-}
+},
+let $config := admin:appserver-set-url-rewriter(admin:get-config(), xdmp:appserver($http-server-name), $rewriter)
+let $status := admin:save-configuration($config)
+return string-join("Successfully set http-server url rewriter to ", $rewriter)
 )
