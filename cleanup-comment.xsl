@@ -13,7 +13,7 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- But allow these -->
+  <!-- But allow these elements -->
   <!-- TODO: allow <a> but with restrictions -->
   <xsl:template match="p | em | strong | b | i | br | cite | blockquote">
     <xsl:copy>
