@@ -75,12 +75,10 @@
 
                   <xsl:template mode="post-with-comments" match="Post">
                     <xsl:apply-templates mode="blog-post" select="."/>
-                    <xsl:if test="ml:comments-for-post(.)">
+                    <xsl:if test="ml:comments-for-post(ml:external-uri(.))">
                       <h3 id="comments">Comments</h3>
                       <ol class="commentlist">
-                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(.)">
-                          <xsl:sort select="date"/>
-                        </xsl:apply-templates>
+                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(ml:external-uri(.))"/>
                       </ol>
                     </xsl:if>
                     <form id="post_comment" action="/post-comment.xqy" method="post">
@@ -124,7 +122,7 @@
                               <div class="action">
                                 <ul>
                                   <li>
-                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(.))"/>)</a>
+                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(ml:external-uri(.)))"/>)</a>
                                   </li>
                                   <li>
                                     <a href="{ml:external-uri(.)}#post_comment">Post a comment</a>
@@ -133,13 +131,6 @@
                               </div>
                             </div>
                           </xsl:template>
-
-                                  <xsl:function name="ml:comments-for-post" as="element()*">
-                                    <xsl:param name="post" as="element()"/>
-                                    <xsl:sequence select="$collection/Comment[@about eq ml:external-uri($post)]
-                                                                             [@status eq 'Approved']"/>
-                                  </xsl:function>
-
 
                           <xsl:template mode="blog-comment" match="Comment">
                             <li>

@@ -9,12 +9,12 @@
   exclude-result-prefixes="xs ml xdmp"
   extension-element-prefixes="xdmp">
 
-  <xdmp:import-module href="data-access.xqy" namespace="http://developer.marklogic.com/site/internal"/>
+  <xdmp:import-module href="../xquery/data-access.xqy" namespace="http://developer.marklogic.com/site/internal"/>
 
   <!-- TODO: reimplement this module in XQuery -->
 
-  <xsl:variable name="collection" select="collection()"/>
   <!--
+  <xsl:variable name="collection" select="collection()"/>
   <xsl:variable name="collection" select="collection('http://developer.marklogic.com/content-collection')"/>
   -->
 
@@ -74,6 +74,7 @@
   -->
 
 
+  <!--
   <xsl:function name="ml:latest-article">
     <xsl:param name="type"  as="xs:string"/>
     <xsl:variable name="articles" select="ml:lookup-articles($type, '')"/>
@@ -91,21 +92,18 @@
     <xsl:sequence select="$collection/Article[(($type  eq @type)        or not($type)) and
                                               (($topic =  topics/topic) or not($topic))]"/>
   </xsl:function>
+  -->
 
 
-  <xsl:function name="ml:recent-events" as="element()*">
-    <xsl:param name="months" as="xs:integer"/>
-    <xsl:variable name="duration" select="concat('P', $months, 'M')"/>
-    <xsl:variable name="start-date" select="current-date() - xs:yearMonthDuration($duration)"/>
-    <xsl:sequence select="$collection/Event[xs:date(details/date) >= $start-date]"/>
-  </xsl:function>
 
+  <!--
   <xsl:function name="ml:recent-announcements" as="element()*">
     <xsl:param name="months" as="xs:integer"/>
     <xsl:variable name="duration" select="concat('P', $months, 'M')"/>
     <xsl:variable name="start-date" select="current-date() - xs:yearMonthDuration($duration)"/>
     <xsl:sequence select="$collection/Announcement[xs:date(date) >= $start-date]"/>
   </xsl:function>
+  -->
 
   <xsl:function name="ml:get-threads">
     <xsl:param name="search" as="xs:string?"/>

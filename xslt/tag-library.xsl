@@ -156,7 +156,7 @@
 
   <xsl:template match="recent-blog-posts">
     <xsl:variable name="count" select="@count" as="xs:integer"/>
-    <xsl:for-each select="$collection/Post">
+    <xsl:for-each select="$ml:Posts">
       <xsl:sort select="date" order="descending"/>
       <xsl:if test="position() le $count">
         <xsl:apply-templates mode="blog-post" select="."/>
