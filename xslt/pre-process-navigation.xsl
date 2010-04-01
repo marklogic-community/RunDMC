@@ -16,10 +16,10 @@
 
   <!-- These three rules smell. Consider refactoring -->
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-date">
-    <xsl:variable name="unique-years" select="distinct-values($all-blog-posts/date/year-from-date(.))"/>
+    <xsl:variable name="unique-years" select="distinct-values($ml:all-blog-posts/date/year-from-date(.))"/>
     <xsl:for-each select="$unique-years">
       <xsl:sort select="." order="descending"/>
-      <xsl:variable name="posts-this-year" select="$all-blog-posts[year-from-date(date) eq current()]"/>
+      <xsl:variable name="posts-this-year" select="$ml:all-blog-posts[year-from-date(date) eq current()]"/>
       <ml:group display="{.}">
         <xsl:variable name="unique-months" select="distinct-values($posts-this-year/date/month-from-date(.))"/>
         <xsl:for-each select="$unique-months">
@@ -37,10 +37,10 @@
   </xsl:template>
 
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-author">
-    <xsl:variable name="unique-authors" select="distinct-values($all-blog-posts/author)"/>
+    <xsl:variable name="unique-authors" select="distinct-values($ml:all-blog-posts/author)"/>
     <xsl:for-each select="$unique-authors">
       <ml:group display="{.}">
-        <xsl:variable name="posts-by-author" select="$all-blog-posts[author eq current()]"/>
+        <xsl:variable name="posts-by-author" select="$ml:all-blog-posts[author eq current()]"/>
         <xsl:for-each select="$posts-by-author">
           <xsl:sort select="date" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>
@@ -50,10 +50,10 @@
   </xsl:template>
 
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-category">
-    <xsl:variable name="unique-tags" select="distinct-values($all-blog-posts/tags/tag)"/>
+    <xsl:variable name="unique-tags" select="distinct-values($ml:all-blog-posts/tags/tag)"/>
     <xsl:for-each select="$unique-tags">
       <ml:group display="{.}">
-        <xsl:variable name="posts-with-tag" select="$all-blog-posts[tags/tag = current()]"/>
+        <xsl:variable name="posts-with-tag" select="$ml:all-blog-posts[tags/tag = current()]"/>
         <xsl:for-each select="$posts-with-tag">
           <xsl:sort select="date" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>

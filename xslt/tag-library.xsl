@@ -166,9 +166,7 @@
 
 
   <xsl:template match="event-list">
-    <xsl:apply-templates mode="event-teaser" select="ml:future-events()">
-      <xsl:sort select="details/date"/>
-    </xsl:apply-templates>
+    <xsl:apply-templates mode="event-teaser" select="$ml:future-events-by-date"/>
   </xsl:template>
 
           <xsl:template mode="event-teaser" match="Event">

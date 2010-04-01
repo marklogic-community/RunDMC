@@ -6,7 +6,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="xs ml xdmp"
+  extension-element-prefixes="xdmp">
+
+  <xdmp:import-module href="data-access.xqy" namespace="http://developer.marklogic.com/site/internal"/>
 
   <!-- TODO: reimplement this module in XQuery -->
 
@@ -15,10 +18,13 @@
   <xsl:variable name="collection" select="collection('http://developer.marklogic.com/content-collection')"/>
   -->
 
+  <!--
   <xsl:variable name="all-blog-posts" select="$collection/Post"/>
+  -->
 
   <!-- TODO: refactor these repetitive functions -->
 
+  <!--
   <xsl:function name="ml:latest-user-group-announcement">
     <xsl:for-each select="$collection/Announcement[string(@user-group)]">
       <xsl:sort select="date" order="descending"/>
@@ -36,8 +42,10 @@
       </xsl:if>
     </xsl:for-each>
   </xsl:function>
+  -->
 
 
+  <!--
   <xsl:function name="ml:future-events">
     <xsl:sequence select="$collection/Event[xs:date(details/date) >= current-date()]"/>
   </xsl:function>
@@ -63,6 +71,7 @@
       </xsl:if>
     </xsl:for-each>
   </xsl:function>
+  -->
 
 
   <xsl:function name="ml:latest-article">
