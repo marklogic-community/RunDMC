@@ -211,11 +211,10 @@
 
 
   <xsl:template match="top-threads">
-    <xsl:variable name="threads" select="ml:get-threads(@search,list)"/>
+    <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <div class="single">
       <h2>Top Threads</h2>
-      <!-- TODO: Put the correct URL here -->
-      <a class="more" href="">All threads&#160;></a>
+      <a class="more" href="{$threads/@all-threads-href}">All threads&#160;></a>
       <table class="table3">
         <thead>
           <tr>
@@ -230,12 +229,11 @@
           </tr>
         </thead>
         <tbody>
-          <xsl:apply-templates mode="display-thread" select="$threads"/>
+          <xsl:apply-templates mode="display-thread" select="$threads/thread"/>
         </tbody>
       </table>
       <div class="action">
-        <!-- TODO: Put the correct URL here -->
-        <a href="">Start a new thread</a>
+        <a href="{$threads/@start-thread-href}">Start a new thread</a>
       </div>
     </div>
   </xsl:template>
