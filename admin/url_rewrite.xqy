@@ -1,5 +1,5 @@
 import module namespace qp="http://www.marklogic.com/ps/lib/queryparams"
-       at "/modules/queryparams.xqy";
+       at "../controller/modules/queryparams.xqy";
 
 let $params          := qp:load-params()
 let $path            := xdmp:get-request-path()  (: E.g., "/news" :)

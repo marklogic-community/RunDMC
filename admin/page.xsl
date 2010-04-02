@@ -8,7 +8,9 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
-  <xsl:import href="../page.xsl"/>
+  <xsl:import href="../view/page.xsl"/>
+
+  <xsl:include href="form.xsl"/>
 
   <xsl:variable name="template"       select="document('/private/config/admin/template.xhtml')"/>
   <xsl:variable name="raw-navigation" select="document('/private/config/admin/navigation.xml')"/>

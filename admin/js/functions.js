@@ -74,6 +74,7 @@ if(typeof jQuery != 'undefined') {
       });
       // end add media overlay
 		}// end “if jQuery overlay”
+    /*
 		// begin “add author” functionality
 		$('input[name=add_author]').replaceWith('<a class="add_remove add_author">+&nbsp;Add author</a>');
 		var removeAuthor = ' <a class="add_remove remove_author">-&nbsp;Remove author</a>';
@@ -89,6 +90,7 @@ if(typeof jQuery != 'undefined') {
 				}
 			});
 		});
+    */
 		// end “add author” functionality
 		// begin “add link” functionality
 		$('input[name=add_link]').replaceWith('<a class="add_remove add_link">+&nbsp;Add link</a>');

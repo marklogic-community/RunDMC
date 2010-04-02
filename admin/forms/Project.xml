@@ -1,0 +1,18 @@
+<Project xmlns      ="http://developer.marklogic.com/site/internal"
+         xmlns:form ="http://developer.marklogic.com/site/internal/form"
+         xmlns:label="http://developer.marklogic.com/site/internal/form/attribute-labels">
+  <name        form:label="Project Name"/>
+  <description form:label="Description"
+               form:type="textbox"/>
+  <versions><!-- get-involved-href="">-->
+    <version href=""           label:href          ="Link"
+             server-version="" label:server-version="Version needed"
+             date=""           label:date          ="Date"            form:repeating="yes"/>
+  </versions>
+  <contributors><!-- href="">-->
+    <contributor form:repeating="yes"
+                 form:heading="DOWNLOAD LINK(S)"
+                 form:label="Author"/>
+  </contributors>
+  <top-threads form:hide="yes"/>
+</Project>
