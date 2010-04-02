@@ -9,6 +9,6 @@
   exclude-result-prefixes="xs ml xdmp"
   extension-element-prefixes="xdmp">
 
-  <xdmp:import-module href="../xquery/data-access.xqy" namespace="http://developer.marklogic.com/site/internal"/>
+  <xdmp:import-module href="../model/data-access.xqy" namespace="http://developer.marklogic.com/site/internal"/>
 
 </xsl:stylesheet>

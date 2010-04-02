@@ -12,7 +12,7 @@ let $http-server-port := 8003
 let $webdav-server-name := "RunDMCWebDAV"
 let $webdav-server-port := 8005
 let $groupid := admin:group-get-id($config, "Default")
-let $rewriter := "/url_rewriter.xqy"
+let $rewriter := "/controller/url_rewriter.xqy"
 
 return ( 
 try {

@@ -1,5 +1,5 @@
 import module namespace qp="http://www.marklogic.com/ps/lib/queryparams"
-       at "/modules/queryparams.xqy";
+       at "modules/queryparams.xqy";
 
 let $params          := qp:load-params()
 let $path            := xdmp:get-request-path()  (: E.g., "/news" :)
@@ -12,9 +12,9 @@ let $doc-url2        := concat($path-stripped, ".xml")
 let $query-string    := string-join(for $param in $params/qp:* return concat('&amp;',local-name($param),'=',$param),'')
 
 return
-     if ($path eq "/")                   then concat("/transform.xqy?src=/index",             $query-string)
+     if ($path eq "/")                   then concat("/controller/transform.xqy?src=/index",             $query-string)
 else if (starts-with($path,'/private/')
       or starts-with($path,'/admin/'))   then $path
-else if (doc-available($doc-url))        then concat("/transform.xqy?src=",   $path,          $query-string)
-else if (doc-available($doc-url2))       then concat("/redirect.xqy?path=", $path-stripped, $query-string) (: e.g., redirect /news/ to /news :)
+else if (doc-available($doc-url))        then concat("/controller/transform.xqy?src=",   $path,          $query-string)
+else if (doc-available($doc-url2))       then concat("/controller/redirect.xqy?path=", $path-stripped, $query-string) (: e.g., redirect /news/ to /news :)
                                          else $path

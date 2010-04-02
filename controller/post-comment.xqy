@@ -1,5 +1,5 @@
 import module namespace qp="http://www.marklogic.com/ps/lib/queryparams"
-       at "/modules/queryparams.xqy";
+       at "modules/queryparams.xqy";
 
 let $params  := qp:load-params(),
     $comment-uri := concat('/private/comments/', current-dateTime(), '.xml'),

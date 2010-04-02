@@ -81,7 +81,7 @@
                         <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(ml:external-uri(.))"/>
                       </ol>
                     </xsl:if>
-                    <form id="post_comment" action="/post-comment.xqy" method="post">
+                    <form id="post_comment" action="/controller/post-comment.xqy" method="post">
                       <input type="hidden" name="about" value="{ml:external-uri(.)}"/>
                       <fieldset>
                         <legend>Post a Comment</legend>
