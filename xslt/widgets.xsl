@@ -1,11 +1,12 @@
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml">
+  exclude-result-prefixes="xs ml xdmp">
 
   <xsl:variable name="widget-config"  select="document('/private/config/widgets.xml')"/>
 
@@ -38,9 +39,23 @@
 
           <xsl:template mode="widget" match="widget">
             <div class="section">
-              <xsl:apply-templates select="document(@href)/widget/node()"/>
+              <xsl:apply-templates mode="widget-content" select="."/>
             </div>
           </xsl:template>
+
+                  <xsl:template mode="widget-content" match="widget">
+                    <xsl:apply-templates select="document(@href)/widget/node()"/>
+                  </xsl:template>
+
+                  <!-- TODO: Figure out why this doesn't work; it may be a server bug; it's trying to interpret the module as XSLT -->
+                  <xsl:template mode="widget-content" match="widget[@xquery]">
+                    <xsl:copy-of select="xdmp:invoke(concat('../dynamic-widgets/', @xquery))/widget/*"/>
+                  </xsl:template>
+
+                  <xsl:template mode="widget-content" match="widget[@xslt]">
+                    <!-- TODO: Figure out why this doesn't work, or returns empty content -->
+                    <xsl:copy-of select="xdmp:xslt-invoke(concat('../dynamic-widgetsfoo/', @xslt), .)/widget/*"/>
+                  </xsl:template>
 
 
           <xsl:function name="ml:matches-current-page" as="xs:boolean">

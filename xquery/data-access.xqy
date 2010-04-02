@@ -10,6 +10,15 @@ declare variable $Articles      := $collection/Article;      (: "Learn"  :)
 declare variable $Posts         := $collection/Post;         (: "Blog"   :)
 declare variable $Comments      := $collection/Comment;      (: blog comments :)
 
+        declare function recent-blog-posts($count as xs:integer)
+        {
+          let $posts-by-date := for $p in $Posts[@status eq 'Published']
+                                order by $p/date descending
+                                return $p
+          return
+            $posts-by-date[fn:position() le $count]
+        };
+
         declare function comments-for-post($post as xs:string)
         {
           for $c in $Comments[@about eq $post]
@@ -65,18 +74,17 @@ declare variable $future-events := $Events[xs:date(details/date) ge fn:current-d
 
 declare function lookup-articles($type as xs:string, $topic as xs:string)
 {
-  $Articles[(($type  eq @type)        or fn:not($type)) and
-            (($topic =  topics/topic) or fn:not($topic))]
+  let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type)) and
+                                      (($topic =  topics/topic) or fn:not($topic))]
+  return
+    for $a in $filtered-articles
+    order by $a/created descending
+    return $a
 };
 
         declare function latest-article($type as xs:string)
         {
-          let $articles         := ml:lookup-articles($type, ''),
-              $articles-by-date := for $a in $articles
-                                   order by $a/created descending
-                                   return $a
-          return
-            $articles-by-date[1]
+          ml:lookup-articles($type, '')[1]
         };
 
 

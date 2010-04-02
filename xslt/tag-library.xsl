@@ -127,6 +127,7 @@
                     </tr>
                   </xsl:template>
 
+
   <xsl:template match="product-documentation">
     <table class="table2">
       <caption>Documentation</caption>
@@ -137,31 +138,37 @@
   </xsl:template>
 
           <xsl:template mode="product-doc-entry" match="doc">
+            <xsl:variable name="source" select="document(@source)"/>
+            <xsl:variable name="url" select="if ($source/Article/external-link)
+                                            then $source/Article/external-link/@href
+                                            else ml:external-uri($source)"/>
             <tr>
               <td>
-                <!-- TODO: add support for displaying PDF documents -->
-                <xsl:value-of select="document(ml:internal-uri(@href))/*/title"/>
+                <xsl:value-of select="$source/Article/title"/>
               </td>
               <td> 
-                <a href="{@href}">
-                  <!-- TODO: add support for displaying PDF documents -->
-                  <img src="/images/icon_browser.png" alt="view"/>
+                <a href="{$url}">
+                  <xsl:apply-templates mode="product-doc-icon" select="$source/Article"/>
                 </a>
               </td>
             </tr>
           </xsl:template>
 
+                  <xsl:template mode="product-doc-icon" match="Article">
+                    <img src="/images/icon_browser.png" alt="View HTML for {title}"/>
+                  </xsl:template>
 
+                  <xsl:template mode="product-doc-icon" match="Article[ends-with(lower-case(external-link/@href), 'pdf')]">
+                    <img src="/images/icon_pdf.png" alt="View PDF for {title}"/>
+                  </xsl:template>
+
+                  <xsl:template mode="product-doc-icon" match="Article[ends-with(lower-case(external-link/@href), 'zip')]">
+                    <img src="/images/icon_zip.png" alt="Download zip file for {title}"/>
+                  </xsl:template>
 
 
   <xsl:template match="recent-blog-posts">
-    <xsl:variable name="count" select="@count" as="xs:integer"/>
-    <xsl:for-each select="$ml:Posts">
-      <xsl:sort select="date" order="descending"/>
-      <xsl:if test="position() le $count">
-        <xsl:apply-templates mode="blog-post" select="."/>
-      </xsl:if>
-    </xsl:for-each>
+    <xsl:apply-templates mode="blog-post" select="ml:recent-blog-posts(@count)"/>
   </xsl:template>
 
 
@@ -188,9 +195,7 @@
 
   <xsl:template match="announcement-list">
     <xsl:variable name="announcements" select="ml:recent-announcements(xs:integer(@past-months))"/>
-    <xsl:apply-templates mode="announcement-teaser" select="$announcements">
-      <xsl:sort select="date" order="descending"/>
-    </xsl:apply-templates>
+    <xsl:apply-templates mode="announcement-teaser" select="$announcements"/>
   </xsl:template>
 
           <xsl:template mode="announcement-teaser" match="Announcement">
@@ -502,9 +507,7 @@
           </tr>
         </thead>
         <tbody>
-          <xsl:apply-templates mode="doc-listing" select="$docs">
-            <xsl:sort select="created" order="descending"/>
-          </xsl:apply-templates>
+          <xsl:apply-templates mode="doc-listing" select="$docs"/>
         </tbody>
       </table>
     </div>
