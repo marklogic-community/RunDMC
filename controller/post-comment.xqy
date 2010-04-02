@@ -8,16 +8,16 @@ let $params  := qp:load-params(),
                       xmlns="http://www.w3.org/1999/xhtml"
                       status="Pending"
                       about="{$params/qp:about}">
-                      <ml:author>{ string($params/qp:author)     }</ml:author>
-                      <ml:date>  { current-dateTime()            }</ml:date>
-                      <ml:url>   { string($params/qp:url)        }</ml:url>
-                      <ml:body>  { xdmp:xslt-invoke(
-                                     "cleanup-comment.xsl",
-                                     xdmp:unquote(
-                                       concat('<temp>',$params/qp:body,'</temp>'),
-                                       "http://www.w3.org/1999/xhtml"
-                                     )
-                                   )                             }</ml:body>
+                      <ml:author> { string($params/qp:author)     }</ml:author>
+                      <ml:created>{ current-dateTime()            }</ml:created>
+                      <ml:url>    { string($params/qp:url)        }</ml:url>
+                      <ml:body>   { xdmp:xslt-invoke(
+                                      "cleanup-comment.xsl",
+                                      xdmp:unquote(
+                                        concat('<temp>',$params/qp:body,'</temp>'),
+                                        "http://www.w3.org/1999/xhtml"
+                                      )
+                                    )                             }</ml:body>
                     </ml:Comment>
                     }
 return

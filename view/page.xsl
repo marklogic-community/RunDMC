@@ -112,7 +112,7 @@
                                 <xsl:apply-templates select="title/node()"/>
                               </h2>
                               <span class="date">
-                                <xsl:value-of select="date"/>
+                                <xsl:value-of select="ml:display-date(created)"/>
                               </span>
                               <span class="author">
                                 <xsl:text>by </xsl:text>
@@ -142,10 +142,10 @@
                                   </a>,
                                 </span>
                                 <span class="time">
-                                  <xsl:value-of select="ml:display-time(date)"/>,
+                                  <xsl:value-of select="ml:display-time(created)"/>,
                                 </span>
                                 <span class="date">
-                                  <xsl:value-of select="ml:display-date(date)"/>
+                                  <xsl:value-of select="ml:display-date(created)"/>
                                 </span>
                               </div>
                             </li>

@@ -13,7 +13,7 @@ declare variable $Comments      := $collection/Comment;      (: blog comments :)
         declare function recent-blog-posts($count as xs:integer)
         {
           let $posts-by-date := for $p in $Posts[@status eq 'Published']
-                                order by $p/date descending
+                                order by $p/created descending
                                 return $p
           return
             $posts-by-date[fn:position() le $count]
