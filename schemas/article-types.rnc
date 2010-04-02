@@ -1,0 +1,18 @@
+article-type-att =
+attribute type {
+  article-types
+}
+
+article-types =
+( "Article"
+| "Code"
+| "Getting Started"
+| "Guide"
+| "Installation Guide"
+| "Release Notes"
+| "Technical Overview"
+| "Training"
+| "Tutorial"
+| "Use Case"
+| "Video"
+)

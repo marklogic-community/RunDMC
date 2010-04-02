@@ -1,0 +1,25 @@
+default namespace = "http://developer.marklogic.com/site/internal"
+
+include article-types.rnc
+include common.rnc
+
+element Article {
+  attribute type { article-types },
+
+  element title        { text },
+  element author       { text }*,
+  element created      { xsd:dateTime },
+  element last-updated { xsd:dateTime },
+  element topics {
+    element topic { text }*
+  }?,
+  abstract?,
+  ( body | external-link )
+}
+
+abstract = element abstract { mixedContent }
+body     = element body     { mixedContent }
+
+external-link = element external-link {
+                  attribute href { text }
+                }

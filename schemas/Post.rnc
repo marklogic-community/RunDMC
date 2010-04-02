@@ -1,0 +1,16 @@
+default namespace = "http://developer.marklogic.com/site/internal"
+
+include common.rnc
+
+element Post {
+  attribute status { "Draft" | "Published" },
+
+  element title        { text },
+  element author       { text }*,
+  element created      { xsd:dateTime },
+  element last-updated { xsd:dateTime },
+  element tags {
+    element tag { text }*
+  }?,
+  element body { mixedContent }
+}
