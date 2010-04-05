@@ -143,11 +143,19 @@ form .action input {margin-left: 5px;}
 	width: 166px;
 }
 .adminform select {color: #666;}
+
+.adminform input[type=text].wideText {
+	width: 700px;
+	font-weight: bold;
+	border-color: #CCC;
+}
+
 #ce_name {
 	width: 700px;
 	font-weight: bold;
 	border-color: #CCC;
 }
+
 #codeedit a[rel] {text-decoration: none;}
 #codeedit textarea {
 	margin: 8px 0 8px 112px;
