@@ -128,3 +128,17 @@ declare function get-threads-xml($search as xs:string?, $lists as xs:string*)
       </ml:thread>
     </ml:threads>
 };
+
+declare function xquery-widget($module as xs:string)
+{
+  let $result := xdmp:invoke(fn:concat('../widgets/',$module))
+  return
+    $result/node()
+};
+
+declare function xslt-widget($module as xs:string)
+{
+  let $result := xdmp:xslt-invoke(fn:concat('../widgets/',$module), document{()})
+  return
+    $result/ml:widget/node()
+};

@@ -47,14 +47,12 @@
                     <xsl:apply-templates select="document(@href)/widget/node()"/>
                   </xsl:template>
 
-                  <!-- TODO: Figure out why this doesn't work; it may be a server bug; it's trying to interpret the module as XSLT -->
                   <xsl:template mode="widget-content" match="widget[@xquery]">
-                    <xsl:copy-of select="xdmp:invoke(concat('../dynamic-widgets/', @xquery))/widget/*"/>
+                    <xsl:copy-of select="ml:xquery-widget(@xquery)"/>
                   </xsl:template>
 
                   <xsl:template mode="widget-content" match="widget[@xslt]">
-                    <!-- TODO: Figure out why this doesn't work, or returns empty content -->
-                    <xsl:copy-of select="xdmp:xslt-invoke(concat('../dynamic-widgetsfoo/', @xslt), .)/widget/*"/>
+                    <xsl:copy-of select="ml:xslt-widget(@xslt)"/>
                   </xsl:template>
 
 
