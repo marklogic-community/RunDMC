@@ -622,7 +622,9 @@ table.table4 + .action {border:0;}
 }
 .doclist thead th {border-left: 1px solid white;}
 .doclist thead th:first-child {border-left: none;}
-.doclist th.sort {background: #A4B243 url(../images/arrow_down_white.png) 100% 50% no-repeat; padding-right:21px}
+/* .doclist th.sort {background: #A4B243 url(../images/arrow_down_white.png) 100% 50% no-repeat; padding-right:21px} */
+.doclist th.sorting_asc {background: #A4B243 url(../images/arrow_up_white.png) 100% 50% no-repeat;}
+.doclist th.sorting_desc {background: #A4B243 url(../images/arrow_down_white.png) 100% 50% no-repeat;}
 .doclist tbody {
 	color: #333;
 	border: solid #CCC;

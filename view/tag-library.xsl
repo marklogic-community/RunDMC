@@ -518,13 +518,13 @@
               <xsl:if test="position() mod 2 eq 0">
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
-              <th>
+              <td>
                 <a href="{if (external-link/@href)
                          then external-link/@href
                          else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
-              </th>
+              </td>
               <td>
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
