@@ -138,20 +138,27 @@
   </xsl:template>
 
           <xsl:template mode="product-doc-entry" match="doc">
-            <xsl:variable name="source" select="document(@source)"/>
-            <xsl:variable name="url" select="if ($source/Article/external-link)
-                                            then $source/Article/external-link/@href
-                                            else ml:external-uri($source)"/>
-            <tr>
-              <td>
-                <xsl:value-of select="$source/Article/title"/>
-              </td>
-              <td> 
-                <a href="{$url}">
-                  <xsl:apply-templates mode="product-doc-icon" select="$source/Article"/>
-                </a>
-              </td>
-            </tr>
+            <xsl:choose>
+              <xsl:when test="doc-available(@source)">
+                <xsl:variable name="source" select="document(@source)"/>
+                <xsl:variable name="url" select="if ($source/Article/external-link)
+                                                then $source/Article/external-link/@href
+                                                else ml:external-uri($source)"/>
+                <tr>
+                  <td>
+                    <xsl:value-of select="$source/Article/title"/>
+                  </td>
+                  <td> 
+                    <a href="{$url}">
+                      <xsl:apply-templates mode="product-doc-icon" select="$source/Article"/>
+                    </a>
+                  </td>
+                </tr>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:message terminate="yes">Document (<xsl:value-of select="@source"/>) not found.</xsl:message>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:template>
 
                   <xsl:template mode="product-doc-icon" match="Article">
