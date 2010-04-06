@@ -491,7 +491,7 @@
         </div>
       </form>
       -->
-      <table>
+      <table class="sortable documentsTable">
         <colgroup>
           <col class="col1"/>
           <col class="col2"/>
