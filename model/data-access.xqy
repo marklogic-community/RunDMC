@@ -72,10 +72,12 @@ declare variable $future-events := $Events[xs:date(details/date) ge fn:current-d
         };
 
 
-declare function lookup-articles($type as xs:string, $topic as xs:string)
+declare function lookup-articles($type as xs:string, $server-version as xs:string, $topic as xs:string)
 {
-  let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type)) and
-                                      (($topic =  topics/topic) or fn:not($topic))]
+  let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type))
+                                and   (($server-version =
+                                         server-version)        or fn:not($server-version))
+                                and   (($topic =  topics/topic) or fn:not($topic))]
   return
     for $a in $filtered-articles
     order by $a/created descending
@@ -84,7 +86,7 @@ declare function lookup-articles($type as xs:string, $topic as xs:string)
 
         declare function latest-article($type as xs:string)
         {
-          ml:lookup-articles($type, '')[1]
+          ml:lookup-articles($type, '', '')[1]
         };
 
 

@@ -479,7 +479,7 @@
 
 
   <xsl:template match="document-list">
-    <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@topic))"/>
+    <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@server-version), string(@topic))"/>
     <div class="doclist">
       <h2>Documents</h2>
       <!-- 2.0 feature TODO: add pagination -->
@@ -509,7 +509,10 @@
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Document&#160;Type</th>
+            <th scope="col">Server Version(s)</th>
+            <!--
             <th scope="col">Topic(s)</th>
+            -->
             <th scope="col" class="sort">Date</th>
           </tr>
         </thead>
@@ -536,8 +539,13 @@
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
               <td>
+                <xsl:value-of select="if (server-version) then server-version else '&#8211;'" separator=", "/>
+              </td>
+              <!--
+              <td>
                 <xsl:value-of select="topics/topic/replace(.,' ','&#160;')" separator=", "/>
               </td>
+              -->
               <td>
                 <xsl:value-of select="created"/>
               </td>

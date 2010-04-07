@@ -7,13 +7,21 @@ element Article {
   attribute type { article-types },
 
   element title        { text },
+
   element author       { text }*,
+
   element created      { xsd:dateTime },
   element last-updated { xsd:dateTime },
+
+  element server-version { text }*,
+ 
+  # Deprecated for now; valid but will be ignored
   element topics {
     element topic { text }*
   }?,
+
   abstract?,
+
   ( body | external-link )
 }
 
