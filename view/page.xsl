@@ -182,7 +182,7 @@
               <xsl:apply-templates select="title/node()"/>
             </h2>
             <div class="author">
-              <xsl:apply-templates select="author/node()"/>
+              <xsl:apply-templates mode="author-listing" select="author"/>
             </div>
             <div class="date"> 
               <xsl:text>Last updated </xsl:text>
@@ -190,6 +190,20 @@
             </div>
             <xsl:apply-templates select="body/node()"/>
           </xsl:template>
+
+                  <xsl:template mode="author-listing" match="author[1]" priority="1">
+                    <xsl:apply-templates/>
+                  </xsl:template>
+
+                  <xsl:template mode="author-listing" match="author">
+                    <xsl:text>, </xsl:text>
+                    <xsl:apply-templates/>
+                  </xsl:template>
+
+                  <xsl:template mode="author-listing" match="author[last()]">
+                    <xsl:text> and </xsl:text>
+                    <xsl:apply-templates/>
+                  </xsl:template>
 
 
           <xsl:template mode="page-content" match="Project">
