@@ -508,8 +508,8 @@
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Document&#160;Type</th>
-            <th scope="col">Server Version(s)</th>
+            <th scope="col">Document&#160;Type&#160;&#160;&#160;&#160;</th> <!-- nbsp's to prevent overlap with sort arrow -->
+            <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <!--
             <th scope="col">Topic(s)</th>
             -->
