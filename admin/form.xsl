@@ -19,13 +19,43 @@
   </xsl:function>
 
   <xsl:template match="auto-form-scripts">
-    <xsl:for-each select="//auto-form">
+    <xsl:for-each select="$content//auto-form">
       <xsl:apply-templates mode="form-script" select="ml:form-template(@template)//*[@form:repeating eq 'yes']"/>
     </xsl:for-each>
   </xsl:template>
 
           <xsl:template mode="form-script" match="*">
-            <!-- Add JQuery stuff here -->
+            <!-- TODO: Is there a way I can do this inline without embedding it in a comment? -->
+            <xsl:variable name="name" select="local-name(.)"/>
+            <xsl:variable name="label" select="@form:label"/>
+
+            <!-- Variable is necessary as workaround for bug with <xsl:comment> instruction -->
+            <xsl:variable name="comment-content">
+              if(typeof jQuery != 'undefined') {
+                $(function() {
+
+                  $('input[name=add_<xsl:value-of select="$name"/>]').replaceWith('&lt;a class="add_remove add_<xsl:value-of select="$name"/>">+&#160;Add <xsl:value-of select="$label"/>&lt;/a>');
+                  var remove_<xsl:value-of select="$name"/>_anchor = ' &lt;a class="add_remove remove_<xsl:value-of select="$name"/>">-&#160;Remove <xsl:value-of select="$label"/>&lt;/a>';
+                  $('a.add_<xsl:value-of select="$name"/>').click(function() {
+                    $(this).parent().before('&lt;div>&lt;input name="<xsl:value-of select="$name"/>[]" type="text" />' + remove_<xsl:value-of select="$name"/>_anchor + '&lt;/div>');
+                      if($('input[name=<xsl:value-of select="$name"/>\[\]]').length == 2) {
+                        $('input[name=<xsl:value-of select="$name"/>\[\]]:first').after(remove_<xsl:value-of select="$name"/>_anchor);
+                      }
+                    $('a.remove_<xsl:value-of select="$name"/>').click(function() {
+                      $(this).parent().remove();
+                      if($('input[name=<xsl:value-of select="$name"/>\[\]]').length == 1) {
+                        $('a.remove_<xsl:value-of select="$name"/>').remove();
+                      }
+                    });
+                  });
+                });
+              }
+            </xsl:variable>
+            //<xsl:comment>
+                <xsl:text>&#xA;</xsl:text>
+                <xsl:value-of select="$comment-content"/>
+                <xsl:text>&#xA;</xsl:text>
+            //</xsl:comment>
           </xsl:template>
 
   <xsl:template match="auto-form">
@@ -87,11 +117,13 @@
                               <xsl:value-of select="local-name()"/>
                               <xsl:apply-templates mode="field-name-suffix" select="."/>
                             </xsl:variable>
-                            <input id ="{local-name()}_{generate-id()}"
-                                   name="{$field-name}"
-                                   type="text">
-                              <xsl:apply-templates mode="class-att" select="."/>
-                            </input>
+                            <div>
+                              <input id ="{local-name()}_{generate-id()}"
+                                     name="{$field-name}"
+                                     type="text">
+                                <xsl:apply-templates mode="class-att" select="."/>
+                              </input>
+                            </div>
                           </xsl:template>
 
                                   <xsl:template mode="field-name-suffix" match="@* | *"/>

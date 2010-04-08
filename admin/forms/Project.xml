@@ -17,7 +17,7 @@
     <versions><!-- get-involved-href="">-->
       <version href=""           label:href          ="Link"
                server-version="" label:server-version="Version needed" values:server-version="4.0-1 4.1 4.2"
-               date=""           label:date          ="Date"           form:repeating="yes"/>
+               date=""           label:date          ="Date"           form:repeating="yes" form:group-label="Link"/>
     </versions>
   </form:fieldset>
   <top-threads form:hide="yes"/>
