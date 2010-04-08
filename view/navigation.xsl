@@ -192,8 +192,8 @@
   <!-- The <body> CSS class varies from page to page -->
   <xsl:template match="xhtml:body/@ml:class">
     <xsl:attribute name="class">
-      <xsl:apply-templates mode="body-class"        select="$page-in-navigation"/>
-      <xsl:apply-templates mode="body-class-extra"  select="$page-in-navigation"/>
+      <xsl:apply-templates mode="body-class"        select="$page-in-navigation[1]"/>
+      <xsl:apply-templates mode="body-class-extra"  select="$page-in-navigation[1]"/>
     </xsl:attribute>
   </xsl:template>
 
