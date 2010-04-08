@@ -630,7 +630,7 @@ table.table4 + .action {border:0;}
 	border: solid #CCC;
 	border-width: 0 1px;
 }
-.doclist tbody th a {color: #333;}
+.doclist tbody th a, .doclist table.sortable tbody td a {font-weight:bold; color: #333;}
 .doclist tr.alt th, .doclist tr.alt td {background: #F2F2F2;}
 
 
@@ -675,14 +675,15 @@ table.table4 + .action {border:0;}
 	position: relative;
 	background-color: white;
 }
-#sub .special {
-	padding: 0;
+#sub .special {padding: 0;}
+.layout3 #sub .special {padding: 0 13px;}
+.sub_special #sub .special {
 	background: #ECEFDA url(../images/bg_sub_bottom.png) bottom right no-repeat;
 	color: #333;
 	line-height: 150%;
 }
-#sub .special:last-child {background: none;}
-#sub .special.last {background: none;}
+.sub_special #sub .special:last-child {background: none;}
+.sub_special #sub .special.last {background: none;}
 #sub .section:first-child {border-top: none;}
 #sub .section .head {position: relative;}
 #sub .section .head h2 {
@@ -693,7 +694,8 @@ table.table4 + .action {border:0;}
 	float: left;
 	letter-spacing: -1px;
 }
-#sub .special .head h2 {
+.layout3 #sub .special h2 {padding: 20px 10px 0 0;}
+.sub_special #sub .special .head h2 {
 	background: transparent url(../images/bg_tab_index_current.png) repeat-x;
 	border: 1px solid #CDD1BA;
 	border-bottom: none;
@@ -735,13 +737,19 @@ table.table4 + .action {border:0;}
 	width: 100%;
 	padding: 13px 0;
 }
-#sub .special .body {
+.sub_special #sub .special .body {
 	border: none;
 	padding: 0 19px 0 17px;
 	float: none;
 	width: auto;
 }
-.layout3 #sub .special .body {padding: 0 10px;}
+.layout3 #sub .special .body {
+	padding: 10px 0 0;
+	clear: both;
+	width: auto;
+	float: none;
+}
+.layout3 .sub_special #sub .special .body {padding: 0 10px;}
 #sub .body h3 {
 	color: #235BAB;
 	font-size: 1em;
