@@ -25,6 +25,8 @@
 
   <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 
+  <xsl:variable name="site-title" select="'Mark Logic Developer Community'"/>
+
 
   <!-- Start by processing the template page -->
   <xsl:template match="/">
@@ -51,6 +53,36 @@
               <xsl:apply-templates select="@* | node()"/>
             </xsl:element>
           </xsl:template>
+
+
+  <!-- What to put in the <title> tag -->
+  <xsl:template match="page-title">
+    <xsl:apply-templates mode="page-title" select="$content/*"/>
+  </xsl:template>
+
+          <xsl:template mode="page-title" match="page[$external-uri eq '/']">
+            <xsl:value-of select="$site-title"/>
+          </xsl:template>
+
+          <xsl:template mode="page-title" match="*">
+            <xsl:apply-templates mode="page-specific-title" select="."/>
+            <xsl:text> &#8212; </xsl:text>
+            <xsl:value-of select="$site-title"/>
+          </xsl:template>      
+
+                  <xsl:template mode="page-specific-title" match="page">
+                    <xsl:value-of select="( xhtml:h1
+                                          | xhtml:h2
+                                          )[1]"/>
+                  </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="Project">
+                    <xsl:value-of select="name"/>
+                  </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post">
+                    <xsl:value-of select="title"/>
+                  </xsl:template>
 
 
   <!-- Process page content when we hit the <ml:page-content> element -->
@@ -207,6 +239,7 @@
 
 
           <xsl:template mode="page-content" match="Project">
+            <h1>Code</h1>
             <h2>
               <xsl:value-of select="name"/>
             </h2>
