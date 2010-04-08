@@ -777,8 +777,9 @@ table.table4 + .action {border:0;}
 #sub .body a.download, #sub .body .download a {float: right;}
 #sub .body div.download {margin-top: 1em;}
 #sub .body .download img {margin-top: -.4em;}
-#sub .body .user, #sub .body .author, #sub .body .message, #sub .body .post_info {font-size: .9em;}
-#sub .body .user {font-weight: bold;}
+#sub .body .user, #sub .body .tweet-user, #sub .body .author, #sub .body .message, #sub .body .post_info {font-size: .9em;}
+#sub .body .user, #sub .body .tweet-user {font-weight: bold;}
+#sub .body .tweet-source {display:none;}
 #sub .body .author {font-style: italic;}
 #sub .body .message {color: #333;}
 #sub .body img {margin-top: 5px;}
