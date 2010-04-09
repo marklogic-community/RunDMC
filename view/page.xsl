@@ -244,6 +244,11 @@
               <xsl:value-of select="name"/>
             </h2>
             <xsl:apply-templates select="description/node()"/>
+            <div class="action">
+              <a href="{versions/@get-involved-href}">
+                Browse <xsl:value-of select="versions/@vcs-type"/> repository
+              </a>
+            </div>
             <table class="table4">
               <thead>
                 <tr>
@@ -260,7 +265,6 @@
             </table>
             <div class="action">
               <a href="{contributors/@href}">Contributors</a>
-              <a href="{versions/@get-involved-href}">Get involved with this project</a>
             </div>
             <xsl:apply-templates select="top-threads"/>
           </xsl:template>

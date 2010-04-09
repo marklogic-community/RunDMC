@@ -6,13 +6,14 @@
    Presumably in that case, the function should return the "top threads" for all ML-related
    mailing lists.
 :)
-declare variable $string as xs:string external;
+
+declare variable $search as xs:string external;
 declare variable $lists  as xs:string external;
 
 (: The results should look something like this; each @href value should be an absolute URL
    which will be used to generate a clickable link :)
 
-let $search := "marklogic order:date-backward"
+let $search := concat($search, " order:date-backward")
 let $url := concat("http://markmail.org/results.xqy?q=", $search)
 let $all := concat("http://markmail.org/search/", $search)
 let $doc := xdmp:http-get($url)[2]

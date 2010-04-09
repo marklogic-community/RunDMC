@@ -1,6 +1,6 @@
 module namespace ml = "http://developer.marklogic.com/site/internal";
 
-declare default element namespace "http://developer.marklogic.com/site/internal";
+declare default element namespace "ml";
 
 declare variable $collection    := fn:collection();
 
@@ -98,8 +98,8 @@ declare function get-threads-xml($search as xs:string?, $lists as xs:string*)
 {
   (: This is a workaround for not yet being able to import the XQuery directly. :)
   (: This is a bit nicer anyway, since the other can double as a main module... :)
-  xdmp:invoke('top-threads.xqy', (xs:QName('search'), fn:string-join($search,' '),
-                                  xs:QName('lists') , fn:string-join($lists ,' ')))
+  xdmp:invoke('top-threads.xqy', (fn:QName('', 'search'), fn:string-join($search,' '),
+                                  fn:QName('', 'lists') , fn:string-join($lists ,' ')))
 };
 
 declare function xquery-widget($module as xs:string)
