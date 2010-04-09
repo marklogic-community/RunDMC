@@ -4,7 +4,7 @@
   </div>
   <div class="twitStream 5" title="MarkLogic"></div>
   <div class="body">
-    <a class="more" href="">+ Show more</a>
+    <a class="more twitMore" href="#">+ Show more</a>
   </div>
 </ml:widget>
                                                                             

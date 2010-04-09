@@ -21,13 +21,14 @@ String.prototype.linktag=function(){
 	});
 };
 var showTweetLinks='none';
-function fetch_tweets(elem){
+function fetch_tweets(elem, num, offset){
 	elem=$(elem);
 	keyword=escape(elem.attr('title'));
-	num=elem.attr('class').split(' ').slice(-1);
 	var url="http://search.twitter.com/search.json?q="+keyword+"&rpp="+num+"&callback=?";
 	$.getJSON(url,function(json){
 		$(json.results).each(function(){
+            if (offset-- > 0)
+                return;
 			var tTime=new Date(Date.parse(this.created_at));
 			var cTime=new Date();
 			var sinceMin=Math.round((cTime-tTime)/60000);
@@ -85,6 +86,27 @@ $(function(){
 	if(showTweetLinks.indexOf('all')!=-1)
 		showTweetLinks='reply,view,rt';
 	$('.twitStream').each(function(){
-		fetch_tweets(this);
+	    elem=$(this);
+	    num=elem.attr('class').split(' ').slice(-1);
+		fetch_tweets(this, num, 0);
 	});
+
+    $('.twitMore').each(function(){
+        elem=$(this)
+        elem.click(function() {
+            moreTweets();
+            return false;
+        });
+    });
 });
+
+function moreTweets() {
+	$('.twitStream').each(function(){
+	    elem=$(this);
+	    num=elem.attr('class').split(' ').slice(-1);
+        elem.removeClass(num);
+        newNum = Number(num) + 5;
+		fetch_tweets(this, newNum, num);
+        elem.addClass(String(newNum));
+	});
+}
