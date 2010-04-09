@@ -1,6 +1,6 @@
 module namespace ml = "http://developer.marklogic.com/site/internal";
 
-declare default element namespace "ml";
+declare default element namespace "http://developer.marklogic.com/site/internal";
 
 declare variable $collection    := fn:collection();
 
