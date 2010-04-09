@@ -140,7 +140,7 @@ if(typeof jQuery != 'undefined') {
 
         if(jQuery().getFeed) {
             $.getFeed({
-                url: 'feed.xml',
+                url: 'http://markmail.org/atom/marklogic',
                 success: function(feed) {
                     /*$('#result').append('<h2>'
                         + '<a href="'

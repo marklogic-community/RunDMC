@@ -225,28 +225,31 @@
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <div class="single">
-      <h2>Top Threads</h2>
-      <a class="more" href="{$threads/@all-threads-href}">All threads&#160;></a>
+      <h2>Recent Messages</h2>
+      <a class="more" href="{$threads/@all-threads-href}">All messages&#160;></a>
       <table class="table3">
         <thead>
           <tr>
             <th scope="col">
-              <span>Thread</span>
+              <span>Subject</span>
               <br/>
-              Mailing List
+              List
             </th>
-            <th scope="col">Latest Post</th>
-            <th scope="col">Replies</th>
-            <th class="last" scope="col">Views</th>
+            <th scope="col"><span>Date</span>
+              <br/>
+              Author
+            </th>
           </tr>
         </thead>
         <tbody>
           <xsl:apply-templates mode="display-thread" select="$threads/thread"/>
         </tbody>
       </table>
+      <!--
       <div class="action">
         <a href="{$threads/@start-thread-href}">Start a new thread</a>
       </div>
+        -->
     </div>
   </xsl:template>
 
@@ -256,7 +259,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-                <a class="thread" href="{@href}">
+                <a class="thread" href="{@href}" title="{blurb}">
                   <xsl:value-of select="@title"/>
                 </a>
                 <br/>
@@ -266,22 +269,20 @@
               </td>
               <td>
                 <span class="date">
-                  <xsl:apply-templates mode="display-date" select="@date-time"/>
-                </span>
-                <span class="time">
-                  <xsl:apply-templates mode="display-time" select="@date-time"/>
+                  <xsl:value-of select="@date"/>
                 </span>
                 <a class="author" href="{author/@href}">
-                  <xsl:text>by </xsl:text>
                   <xsl:value-of select="author"/>
                 </a>
               </td>
+              <!--
               <td>
                 <xsl:value-of select="@replies"/>
               </td>
               <td>
                 <xsl:value-of select="@views"/>
               </td>
+              -->
             </tr>
           </xsl:template>
 

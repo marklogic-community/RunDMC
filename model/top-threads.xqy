@@ -12,25 +12,34 @@ declare variable $lists  as xs:string external;
 (: The results should look something like this; each @href value should be an absolute URL
    which will be used to generate a clickable link :)
 
-<ml:threads all-threads-href="..." start-thread-href="..." xmlns:ml="http://developer.marklogic.com/site/internal">
-  <ml:thread title="MarkLogic Server 4.1 Rocks!!" href="..." date-time="2010-03-04T11:22" replies="2" views="14">
-    <ml:author href="...">JoelH</ml:author>
-    <ml:list href="...">Mark Logic General</ml:list>
+let $search := "marklogic order:date-backward"
+let $url := concat("http://markmail.org/results.xqy?q=", $search)
+let $all := concat("http://markmail.org/search/", $search)
+let $doc := xdmp:http-get($url)[2]
+let $first := concat("http://markmail.org/message", string($doc/results/result/url))
+
+return
+<ml:threads all-threads-href="{$all}" start-thread-href="{$first}" xmlns:ml="http://developer.marklogic.com/site/internal">
+{
+for $result in $doc//result
+let $url := concat("http://markmail.org/message/", encode-for-uri($result/id/text()))
+let $title := string($result/subject)
+let $author := $result/from/text()
+let $list := $result/list/text()
+let $ahref := 
+        if  (matches($author, "@")) then
+            "#"
+        else
+            concat("http://markmail.org/search/?q=", 
+                encode-for-uri(concat('from:"', $author, '" order:date-backward')))
+
+let $lhref := concat("http://markmail.org/search/?q=", 
+                encode-for-uri(concat('list:"', $list, '" order:date-backward')))
+return
+  <ml:thread title="{$title}" href="{$url}" date="{$result/date}">
+    <ml:author href="{$ahref}" >{$author}</ml:author>
+    <ml:list href="{$lhref}" >{$result/list/text()}</ml:list>
+    <ml:blurb>{$result/blurb/*/text()}</ml:blurb>
   </ml:thread>
-  <ml:thread title="Issue with lorem ipsum dolor" href="..." date-time="2009-09-23T13:22" replies="2" views="15">
-    <ml:author href="...">Laderlappen</ml:author>
-    <ml:list href="...">Mark Logic General</ml:list>
-  </ml:thread>
-  <ml:thread title="Lorem ipsum dolor sit amet" href="..." date-time="2009-09-24T23:22" replies="1" views="1">
-    <ml:author href="...">Jane</ml:author>
-    <ml:list href="...">Mark Logic General</ml:list>
-  </ml:thread>
-  <ml:thread title="Useful tips for NY meets" href="..." date-time="2009-09-26T13:22" replies="12" views="134">
-    <ml:author href="...">JoelH</ml:author>
-    <ml:list href="...">Mark Logic General</ml:list>
-  </ml:thread>
-  <ml:thread title="Lorem ipsum dolor sit amet" href="..." date-time="2009-10-03T10:37" replies="0" views="12">
-    <ml:author href="...">JoelH</ml:author>
-    <ml:list href="...">Mark Logic General</ml:list>
-  </ml:thread>
+}
 </ml:threads>
