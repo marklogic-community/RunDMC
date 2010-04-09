@@ -65,7 +65,7 @@
           <xsl:template mode="generate-form" match="*">
             <form class="adminform" id="codeedit" action="" method="get" enctype="application/x-www-form-urlencoded">
               <input type="submit" name="add" value="Add new" />
-              <xsl:apply-templates mode="labeled-controls" select="*"/>
+              <xsl:apply-templates mode="labeled-controls" select="."/>
             </form>
           </xsl:template>
 
