@@ -7,7 +7,6 @@
                  form:wide="yes"/>
     <contributors><!-- href="">-->
       <contributor form:repeating="yes"
-                   form:heading="DOWNLOAD LINK(S)"
                    form:label="Author"/>
     </contributors>
     <description form:label="Description"
