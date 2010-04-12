@@ -4,9 +4,11 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:search="http://marklogic.com/appservices/search"
+  xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="xs ml xdmp qp search">
 
   <xsl:template match="tabbed-features">
     <div id="special_intro">
@@ -551,6 +553,16 @@
                 <xsl:value-of select="created"/>
               </td>
             </tr>
+          </xsl:template>
+
+  <xsl:template match="search-results">
+    <xsl:apply-templates mode="search-results" select="search:search($params/qp:q)"/>
+  </xsl:template>
+
+          <xsl:template mode="search-results" match="@* | node()">
+            <xsl:copy>
+              <xsl:apply-tempaltes mode="#current" select="@* | node()"/>
+            </xsl:copy>
           </xsl:template>
 
 </xsl:stylesheet>

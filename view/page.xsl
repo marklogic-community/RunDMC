@@ -4,9 +4,10 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="qp xs ml xdmp">
 
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>
@@ -17,7 +18,9 @@
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
               omit-xml-declaration="yes"/>
 
-  <xsl:param name="message"/>
+  <xsl:param name="params" as="element()"/>
+
+  <xsl:variable name="message" select="string($params/qp:message)"/>
 
   <xsl:variable name="content" select="/"/>
 
@@ -87,7 +90,7 @@
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">
-    <xsl:if test="string($message)">
+    <xsl:if test="$message">
       <div class="alert">
         <xsl:value-of select="$message"/>
       </div>

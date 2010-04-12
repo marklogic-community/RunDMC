@@ -10,8 +10,8 @@ return
       (: TODO: Ensure there's no cross-site scripting risks :)
       <map:map xmlns:map="http://marklogic.com/xdmp/map">
         <map:entry>
-          <map:key>message</map:key>
-          <map:value>{ string($params/qp:message) }</map:value>
+          <map:key>params</map:key>
+          <map:value>{ $params }</map:value>
         </map:entry>
       </map:map>
     )
