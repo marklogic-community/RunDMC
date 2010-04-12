@@ -555,13 +555,14 @@
             </tr>
           </xsl:template>
 
+
   <xsl:template match="search-results">
     <xsl:apply-templates mode="search-results" select="search:search($params/qp:q)"/>
   </xsl:template>
 
           <xsl:template mode="search-results" match="@* | node()">
             <xsl:copy>
-              <xsl:apply-tempaltes mode="#current" select="@* | node()"/>
+              <xsl:apply-templates mode="#current" select="@* | node()"/>
             </xsl:copy>
           </xsl:template>
 
