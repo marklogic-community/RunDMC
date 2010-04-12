@@ -12,7 +12,7 @@
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>
   <xsl:include href="tag-library.xsl"/>
-  <xsl:include href="data-access.xsl"/>
+  <xsl:include href="xquery-imports.xsl"/>
 
   <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
