@@ -10,6 +10,12 @@ declare variable $Articles      := $collection/Article;      (: "Learn"  :)
 declare variable $Posts         := $collection/Post;         (: "Blog"   :)
 declare variable $Comments      := $collection/Comment;      (: blog comments :)
 
+declare variable $live-documents := ( $Announcements
+                                    | $Events
+                                    | $Articles
+                                    | $Posts
+                                    )[@status eq 'Published'];
+
         declare function recent-blog-posts($count as xs:integer)
         {
           let $posts-by-date := for $p in $Posts[@status eq 'Published']

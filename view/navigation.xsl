@@ -29,7 +29,7 @@
 
   <xsl:template match="top-nav">
     <ul>
-      <xsl:apply-templates mode="top-nav" select="$navigation/*/page"/>
+      <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
     </ul>
   </xsl:template>
 

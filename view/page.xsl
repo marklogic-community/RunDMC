@@ -79,6 +79,12 @@
                                           )[1]"/>
                   </xsl:template>
 
+                  <xsl:template mode="page-specific-title" match="page[$external-uri eq '/search']">
+                    <xsl:text>Search results for "</xsl:text>
+                    <xsl:value-of select="$params/qp:q"/>
+                    <xsl:text>"</xsl:text>
+                  </xsl:template>
+
                   <xsl:template mode="page-specific-title" match="Project">
                     <xsl:value-of select="name"/>
                   </xsl:template>
@@ -87,6 +93,13 @@
                     <xsl:value-of select="title"/>
                   </xsl:template>
 
+
+  <!-- Pre-populate the search box, if applicable -->
+  <xsl:template match="xhtml:input[@name eq 'q']/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of select="$params/qp:q"/>
+    </xsl:attribute>
+  </xsl:template>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">

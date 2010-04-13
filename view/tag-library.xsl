@@ -5,10 +5,11 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:search="http://marklogic.com/appservices/search"
+  xmlns:cts   ="http://marklogic.com/cts"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search">
+  exclude-result-prefixes="xs ml xdmp qp search cts">
 
   <xsl:template match="tabbed-features">
     <div id="special_intro">
@@ -557,13 +558,89 @@
 
 
   <xsl:template match="search-results">
-    <xsl:apply-templates mode="search-results" select="search:search($params/qp:q)"/>
+    <xsl:variable name="results-per-page" select="10"/>
+    <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
+    <xsl:variable name="start" select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
+    <xsl:variable name="options" as="element()">
+      <options xmlns="http://marklogic.com/appservices/search">
+        <additional-query>
+          <xsl:copy-of select="cts:document-query($ml:live-documents/base-uri(.))"/>
+        </additional-query>
+      </options>
+    </xsl:variable>
+    <xsl:apply-templates mode="search-results" select="search:search($params/qp:q,
+                                                                     $options,
+                                                                     (:
+                                                                     search:get-default-options(),
+                                                                     :)
+                                                                     $start,
+                                                                     $results-per-page
+                                                                     )"/>
   </xsl:template>
 
-          <xsl:template mode="search-results" match="@* | node()">
-            <xsl:copy>
-              <xsl:apply-templates mode="#current" select="@* | node()"/>
-            </xsl:copy>
+          <xsl:template mode="search-results" match="search:response">
+            <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
+            <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
+                                                      else $last-in-full-page"/>
+            <div class="searchSummary">
+              <xsl:text>Results </xsl:text>
+              <strong>
+                <xsl:value-of select="@start"/>&#8211;<xsl:value-of select="$end-result-index"/>
+              </strong>
+              <xsl:text> of </xsl:text>
+              <strong>
+                <xsl:value-of select="@total"/>
+              </strong>
+              <xsl:text> for </xsl:text>
+              <strong>
+                <xsl:value-of select="search:qtext"/>
+              </strong>
+              <xsl:text>.</xsl:text>
+            </div>
+            <xsl:apply-templates mode="#current" select="search:result"/>
+            <xsl:apply-templates mode="prev-and-next" select="."/>
           </xsl:template>
+
+          <xsl:template mode="search-results" match="search:result">
+            <xsl:variable name="doc" select="doc(@uri)"/>
+            <div>
+              <div class="searchTitle">
+                <a href="{ml:external-uri($doc)}">
+                  <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+                </a>
+              </div>
+              <div class="snippets">
+                <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
+              </div>
+            </div>
+          </xsl:template>
+
+                  <xsl:template mode="search-snippet" match="search:match">
+                    <span class="snippet">
+                      <xsl:apply-templates mode="#current"/>
+                    </span>
+                    <xsl:if test="position() ne last()">...</xsl:if>
+                  </xsl:template>
+
+                  <xsl:template mode="search-snippet" match="search:highlight">
+                    <span class="highlight">
+                      <xsl:apply-templates mode="#current"/>
+                    </span>
+                  </xsl:template>
+
+
+                  <xsl:template mode="prev-and-next" match="search:response">              
+                    <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
+                    <xsl:if test="$page-number gt 1">
+                      <div class="prevPage">
+                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number - 1}">Prev</a>
+                      </div>
+                    </xsl:if>
+                    <xsl:if test="@total gt (@start + @page-length - 1)">
+                      <div class="nextPage">
+                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number + 1}">Next</a>
+                      </div>
+                    </xsl:if>
+                  </xsl:template>
 
 </xsl:stylesheet>
