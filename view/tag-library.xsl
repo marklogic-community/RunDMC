@@ -561,12 +561,12 @@
     <xsl:apply-templates mode="blog-post" select="ml:blog-posts($start, $results-per-page)"/>
 
     <xsl:if test="$ml:total-blog-count gt ($start + $results-per-page - 1)">
-      <div class="newerPosts">
+      <div class="olderPosts">
         <a href="/blog?p={$page-number + 1}">Older Entries</a>
       </div>
     </xsl:if>
     <xsl:if test="$page-number gt 1">
-      <div class="olderPosts">
+      <div class="newerPosts">
         <a href="/blog?p={$page-number - 1}">Newer Entries</a>
       </div>
     </xsl:if>
