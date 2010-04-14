@@ -33,7 +33,7 @@ declare variable $total-blog-count := fn:count($Posts);
         declare function comments-for-post($post as xs:string)
         {
           for $c in $Comments[@about eq $post]
-          order by $c/date
+          order by $c/created
           return $c
         };
 
