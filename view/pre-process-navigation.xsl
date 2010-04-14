@@ -37,10 +37,10 @@
   </xsl:template>
 
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-author">
-    <xsl:variable name="unique-authors" select="distinct-values($ml:Posts/author)"/>
+    <xsl:variable name="unique-authors" select="distinct-values($ml:Posts/author/normalize-space(.))"/>
     <xsl:for-each select="$unique-authors">
       <ml:group display="{.}">
-        <xsl:variable name="posts-by-author" select="$ml:Posts[author eq current()]"/>
+        <xsl:variable name="posts-by-author" select="$ml:Posts[normalize-space(author) eq current()]"/>
         <xsl:for-each select="$posts-by-author">
           <xsl:sort select="created" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>
@@ -50,10 +50,10 @@
   </xsl:template>
 
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-category">
-    <xsl:variable name="unique-tags" select="distinct-values($ml:Posts/tags/tag)"/>
+    <xsl:variable name="unique-tags" select="distinct-values($ml:Posts/tags/tag/normalize-space(.))"/>
     <xsl:for-each select="$unique-tags">
       <ml:group display="{.}">
-        <xsl:variable name="posts-with-tag" select="$ml:Posts[tags/tag = current()]"/>
+        <xsl:variable name="posts-with-tag" select="$ml:Posts[tags/tag/normalize-space(.) = current()]"/>
         <xsl:for-each select="$posts-with-tag">
           <xsl:sort select="created" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>
