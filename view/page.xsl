@@ -169,7 +169,7 @@
                               </span>
                               <span class="author">
                                 <xsl:text>by </xsl:text>
-                                <xsl:value-of select="author"/>
+                                <xsl:apply-templates select="author/node()"/>
                               </span>
                               <xsl:apply-templates select="body/node()"/>
                               <div class="action">

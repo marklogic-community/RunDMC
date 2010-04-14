@@ -9,7 +9,7 @@ element Article {
 
   element title        { text },
 
-  element author       { text }*,
+  element author       { mixedContent }*,
 
   element created      { xsd:dateTime },
   element last-updated { xsd:dateTime },
