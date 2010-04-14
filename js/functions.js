@@ -8,6 +8,12 @@ if(typeof jQuery != 'undefined') {
                 "Search documents by keyword"
             );
         }
+        $("#s_inp").addClass("default");
+						$("#s_inp").focus(function() {$("#s_inp").removeClass("default");} );
+						$("#s_inp").blur(function() {
+							if ($("#s_inp").val() == "Search the site" || $("#s_inp").val() == "")
+								$("#s_inp").addClass("default");
+				});
         $('#sub > div:last-child').addClass('last'); // only supposed to add some last-child functionality to IE
         if(jQuery().tabs) {
             $('#special_intro .nav').tabs('#special_intro > div',{

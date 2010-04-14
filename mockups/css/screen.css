@@ -121,11 +121,13 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 }
 .jsenabled #header form {bottom: 5px;}
 #header #s_inp {
-	color: #CBCBCB;
+	color:#666;
 	font-size: .85em;
 	padding: 2px 5px;
 	width: 13.7em;
+	font-style: normal;
 }
+#header #s_inp.default {color: #CBCBCB; font-style: italic;}
 .jsenabled #header input[type=submit] {display: none;}
 #content {
 	clear: both;
