@@ -198,7 +198,7 @@
                                   <xsl:value-of select="ml:display-time(created)"/>,
                                 </span>
                                 <span class="date">
-                                  <xsl:value-of select="ml:display-date(created)"/>
+                                  <xsl:value-of select="substring(created, 1, 10)"/>
                                 </span>
                               </div>
                             </li>
@@ -343,10 +343,10 @@
   </xsl:function>
 
 
-  <xsl:function name="ml:display-date" as="xs:string">
-    <xsl:param name="date"/>
-    <!-- TODO: implement this -->
-    <xsl:sequence select="$date"/>
+  <xsl:function name="ml:display-date">
+    <xsl:param name="date-or-dateTime" as="xs:string"/>
+    <xsl:variable name="date" select="xs:date(substring($date-or-dateTime, 1, 10))"/>
+    <xsl:sequence select="format-date($date, '[M01]/[D01]/[Y01]')"/>
   </xsl:function>
 
   <xsl:function name="ml:display-time" as="xs:string">
