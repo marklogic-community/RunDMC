@@ -16,21 +16,23 @@ declare variable $live-documents := ( $Announcements
                                     | $Articles
                                     | $Posts
                                     | $Projects
-                                    )[@status eq 'Published'];
+                                    );
 
-        declare function recent-blog-posts($count as xs:integer)
+declare variable $total-blog-count := fn:count($Posts);
+
+        declare function blog-posts($start as xs:integer, $count as xs:integer)
         {
-          let $posts-by-date := for $p in $Posts[@status eq 'Published']
+          let $posts-by-date := for $p in $Posts
                                 order by $p/created descending
                                 return $p
           return
-            $posts-by-date[fn:position() le $count]
+            $posts-by-date[fn:position() ge $start
+                       and fn:position() lt ($start + $count)]
         };
 
         declare function comments-for-post($post as xs:string)
         {
           for $c in $Comments[@about eq $post]
-                             [@status eq 'Published'] 
           order by $c/date
           return $c
         };

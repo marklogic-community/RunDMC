@@ -11,6 +11,8 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts">
 
+  <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
+
   <xsl:template match="tabbed-features">
     <div id="special_intro">
       <ul class="nav">
@@ -175,11 +177,6 @@
                   <xsl:template mode="product-doc-icon" match="Article[ends-with(lower-case(external-link/@href), 'zip')]">
                     <img src="/images/icon_zip.png" alt="Download zip file for {title}"/>
                   </xsl:template>
-
-
-  <xsl:template match="recent-blog-posts">
-    <xsl:apply-templates mode="blog-post" select="ml:recent-blog-posts(@count)"/>
-  </xsl:template>
 
 
   <xsl:template match="event-list">
@@ -557,10 +554,33 @@
           </xsl:template>
 
 
+  <xsl:template match="blog-posts">
+    <xsl:variable name="results-per-page" select="xs:integer(@posts-per-page)"/>
+    <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
+
+    <xsl:apply-templates mode="blog-post" select="ml:blog-posts($start, $results-per-page)"/>
+
+    <xsl:if test="$ml:total-blog-count gt ($start + $results-per-page - 1)">
+      <div class="newerPosts">
+        <a href="/blog?p={$page-number + 1}">Older Entries</a>
+      </div>
+    </xsl:if>
+    <xsl:if test="$page-number gt 1">
+      <div class="olderPosts">
+        <a href="/blog?p={$page-number - 1}">Newer Entries</a>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
+          <xsl:function name="ml:start-index" as="xs:integer">
+            <xsl:param name="results-per-page" as="xs:integer"/>
+            <xsl:sequence select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
+          </xsl:function>
+
+
   <xsl:template match="search-results">
     <xsl:variable name="results-per-page" select="10"/>
-    <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
-    <xsl:variable name="start" select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
+    <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
     <xsl:variable name="options" as="element()">
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
@@ -630,7 +650,6 @@
 
 
                   <xsl:template mode="prev-and-next" match="search:response">              
-                    <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
                     <xsl:if test="$page-number gt 1">
                       <div class="prevPage">
                         <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number - 1}">Prev</a>
