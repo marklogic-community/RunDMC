@@ -1,0 +1,251 @@
+body {background: #DADADA;}
+::selection {background: #235BAB;}
+::-moz-selection {background: #235BAB;}
+table {border: none !important;}
+caption {
+	color: #333;
+	text-align: left;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 1.1em;
+	padding: 1em 5px;
+}
+th, td {
+	font-size: .85em;
+	padding: 5px 10px;
+}
+thead th {
+	background: #C1C1C1;
+	color: #666;
+}
+th.last {white-space: nowrap;}
+tbody th, tbody td {
+	background: #F5F5F5;
+	height: 28px;
+}
+.alt th, .alt td {background: #EBECEC;}
+input {margin: 0;}
+input[type=text], input[type=password], textarea {
+	padding: 2px 3px;
+	font-size: 1em;
+}
+input[type=text]:focus, textarea:focus {border-color: #903 !important;}
+
+#container {font-size: 1.1em;}
+#header {
+	background: #A6001D url(../images/bg_header_admin.png) no-repeat;
+	min-height: 70px;
+	padding-top: 10px;
+}
+#header h1 {
+	color: white;
+	font: normal 18px Georgia, "Times New Roman", Times, Serif;
+	position: absolute;
+	right: 17px;
+	top: 30px;
+	margin: 0;
+}
+#header ul {
+	right: 17px;
+	font-size: 1em;
+}
+#content {
+	background-image: none;
+	padding-bottom: 2em;
+}
+#footer {font-size: .9em;}
+.breadcrumb {font-size: .9em;}
+#main {
+	width: auto;
+	float: none;
+	overflow: visible;
+}
+#content h1 {
+	color: #333;
+	font-size: 2.1em;
+	margin-bottom: .5em;
+}
+#content h2 {font-size: 1.7em;}
+p.intro {width: 75%;}
+.add_post {
+	float: right;
+	margin-bottom: 1em;
+}
+td.status {font-weight: bold;}
+td.pending, td.draft {color: #903;}
+#tbl_comments caption {padding-top: 5em;}
+#tbl_comments tbody th + td a {color: #666;}
+#content #tbl_status, #content #tbl_assets {
+	width: 47%;
+	float: left;
+	clear: none;
+}
+#content #tbl_assets {float: right;}
+#tbl_status caption, #tbl_assets caption {padding-top: 1.5em;}
+input[name=add] {float: right;}
+form .action {
+	border: none;
+	padding: 0;
+	text-align: right;
+	margin: 1em 0;
+}
+form .action input {margin-left: 5px;}
+.adminform fieldset {
+	clear: both;
+	padding: 1px 0;
+}
+#codeedit {margin-top: -3em;}
+#codeedit dl {
+	background: #EBEBEB;
+	text-align: right;
+	font-size: .85em;
+	padding: 5px 10px;
+	margin: 1em 0 1px;
+}
+#codeedit dt, #codeedit dd {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+#codeedit dt {
+	font-weight: bold;
+	margin: 0 0 0 10px;
+}
+#codeedit dt:after {content: ":";}
+.error {
+	color: #CB251F;
+	background: #ECCCD5;
+	padding: 10px;
+	margin: 0 0 1em !important;
+	font-size: .9em;
+}
+#codeedit .draft {
+	font-weight: bold;
+	color: #903;
+}
+.adminform div {
+	clear: both;
+	margin: 10px 0;
+}
+.adminform div.addLink {padding-left:112px; margin-top:0}
+.adminform div div {
+	clear: none;
+	margin: 10px 0 0 112px;
+}
+.adminform label {
+	float: left;
+	width: 107px;
+	margin-right: 5px;
+}
+.adminform input[type=text], .adminform textarea {
+	color: #666;
+	font-style: normal;
+	border: 1px solid #DFDFDF;
+	width: 166px;
+}
+.adminform select {color: #666;}
+#ce_name {
+	width: 700px;
+	font-weight: bold;
+	border-color: #CCC;
+}
+#codeedit a[rel] {text-decoration: none;}
+#codeedit textarea {
+	margin: 8px 0 8px 112px;
+	width: 700px;
+	height: 175px;
+	border-color: #CCC;
+	font: normal 1em Verdana, Arial, Helvetica, Sans-serif;
+}
+#ce_link {border-color: #CCC;}
+.add_remove {
+	border: none;
+	background: none;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 0;
+	color: #666;
+	font-size: .85em;
+	font-family: Verdana, Arial, Helvetica, Sans-serif;
+	cursor: pointer;
+}
+.add_remove:hover {text-decoration: underline;}
+input + .add_remove {margin-left: 10px;}
+div.ce_description {padding-top: 1em;}
+.adminform fieldset + fieldset legend {
+	display: block;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1em;
+	color: #666;
+}
+#addmedia div span:first-child, #addmedia div > label {
+	font-weight: bold;
+	font-size: 1.1em;
+	width: auto;
+	text-align: left;
+}
+#addmedia div span:first-child:after, #addmedia div > label:after {content: ":";}
+#addmedia div span:first-child {
+	display: block;
+	margin-bottom: 8px;
+}
+#addmedia ul {
+	border: 1px solid #CCC;
+	padding: 3px !important;
+	overflow: auto;
+	max-height: 200px;
+	max-width: 350px;
+	text-align: left;
+	list-style-type:none !important;
+}
+#addmedia div li {
+	clear: both;
+	padding: 5px;
+	margin-bottom: 1px;
+}
+#addmedia div li label {
+	float: none;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.adminform .submit {margin-left: 112px;}
+
+#overlay .close {z-index: 2;}
+#overlay {
+	background: url(../images/bg_popup_top.png) 0 10px no-repeat;
+	width: 397px;
+	padding-top: 27px;
+	margin: auto;
+	font-size: 1.2em;
+}
+#overlay #addmedia {
+	background: url(../images/bg_popup_middle.png) repeat-y;
+	position: relative;
+	padding: 1px 25px;
+	margin: 0;
+}
+.overlayContent {
+	background: url(../images/bg_popup_bottom.png) bottom left no-repeat;
+	padding: 0 0 17px;
+}
+#overlay h1 {
+	font: normal 2.1em Georgia, "Times New Roman", Times, Serif;
+	color: #666;
+	margin: .5em 0;
+}
+#overlay #addmedia div {text-align: right;}
+#overlay #addmedia div li {font-size: .9em;}
+#overlay #addmedia div li:hover {
+	background: #EEE;
+	cursor: pointer;
+}
+#overlay #addmedia div li.selected {
+	cursor: default;
+	background: #235BAB;
+	color: white;
+}
+#overlay #addmedia div li input {
+	position: absolute;
+	left: -999em;
+}

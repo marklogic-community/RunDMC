@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Mark Logic</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href="css/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/admin.css" rel="stylesheet" type="text/css" media="screen" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.1.2/tiny/jquery.tools.min.js"></script>
+		<script type="text/javascript" src="js/jquerydefaultvalue.js"></script>
+		<script type="text/javascript" src="js/functions.js"></script>
+		<!--[if lte IE 7]>
+		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+		<![endif]-->
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<a href="" title="Home page"><img src="images/logo.png" alt="MARK LOGIC developer community" title="" /></a>
+				<h1>Content Management</h1>
+				<ul>
+					<li><a href="">Home</a></li>
+					<li><a href="">Products</a></li>
+					<li class="current"><a href="">Code</a></li>
+					<li><a href="">Learn</a></li>
+					<li><a href="">Discuss</a></li>
+					<li><a href="">Meet</a></li>
+					<li><a href="">Blog</a></li>
+					<li><a href="">News&nbsp;&amp; Events</a></li>
+				</ul>
+			</div>
+			<hr />
+			<div id="content">
+				<div id="main">
+					<div class="breadcrumb"><a href="">Developer Community: Content Management</a>&nbsp;&gt; <a href="">Code</a>&nbsp;&gt; Edit: MarkLogic CQ</div>
+					<h1>Code Edit</h1>
+					<form class="adminform" id="codeedit" action="" method="get">
+						<input type="submit" name="add" value="Add new" />
+						<fieldset>
+							<legend>Edit</legend>
+							<dl>
+								<dt>Status</dt>
+								<dd class="draft">Draft</dd>
+								<dt>Modified</dt>
+								<dd>Jason Monberg (2010/03/01 1:04pm)</dd>
+								<dt>Created</dt>
+								<dd>2009/12/02</dd>
+							</dl>
+							<div class="error">
+								<strong>OOOPS:</strong> Please enter Project Type.<br />
+								Please enter at least one download link.
+							</div>
+							<div class="action">
+								<input type="submit" name="remove" value="Remove" />
+								<input type="submit" name="publish" value="Publish" />
+							</div>
+							<div>
+								<label for="ce_name">Project Name</label>
+								<input id="ce_name" type="text" />
+							</div>
+							<div>
+								<label for="ce_type">Project Type</label>
+								<input id="ce_type" type="text" />
+							</div>
+							<div>
+								<label for="ce_author">Author</label>
+								<div><input id="ce_author" name="author[]" type="text" /> <!-- <input class="add_remove" type="submit" name="remove_author[]" value="-&nbsp;Remove author" /> --></div>
+								<!--
+									The following commented out lines of HTML show the markup that is supposed to be added when the “add author” button below is clicked (one row at a time).
+									None of the inputs needs to have an ID but if they’ll get one, make sure each ID is unique.
+									The first (default) “add author” text input field above gets a remove button next to it (as shown – currently commented out) when a second “add author” row is added.
+									Note that the name attributes of the inputs are used in the JS functions to select the elements. If you decide to change these, don’t forget to change them in functions.js, too.
+
+								<div><input name="author[]" type="text" /> <input class="add_remove" type="submit" name="remove_author[]" value="-&nbsp;Remove author" /></div>
+								<div><input name="author[]" type="text" /> <input class="add_remove" type="submit" name="remove_author[]" value="-&nbsp;Remove author" /></div>
+								-->
+
+								<!--
+									The following submit button should submit the form and store all entered data in some PHP array/variable or whatever.
+									It should then return to this page displaying the entered data in the respective fields and adding another “add author” row as shown above.
+									If only one “add author” row is there (i. e. only one text input field), of course no remove button should be displayed.
+								-->
+								<div><input class="add_remove" type="submit" name="add_author" value="+&nbsp;Add author" /></div>
+							</div>
+							<div class="ce_description">
+								<label for="ce_description">Description</label>
+								<select>
+									<option value="">XHTML</option>
+								</select>
+								<!--
+									The “add media” button below should submit the form and store all entered data for later use.
+									It sends the user to the add media page (adminAddMedia.html) to add media, and when that form is submitted they’re sent back here,
+									showing all previously entered data plus the added media chosen on the other page.
+								-->
+								<input type="submit" name="add_media" value="Add media" /><br />
+								<textarea id="ce_description" cols="30" rows="5"></textarea>
+							</div>
+						</fieldset>
+						<fieldset class="link">
+							<legend>Download Link(s)</legend>
+							<div>
+								<label for="ce_link0">Link</label>
+								<div><input id="ce_link0" name="link[]" type="text" /></div>
+							</div>
+							<div>
+								<label for="ce_version0">Version needed</label>
+								<input id="ce_version0" type="text" name="ce_version[]" />
+							</div>
+							<div>
+								<label for="ce_date0">Date</label>
+								<input id="ce_date0" type="text" name="ce_date[]" />
+							</div>
+							<!--
+								The “add link” section works the same way as the “add author” section above.
+								By clicking the “add link” button below, another three rows is added (plus a remove button for first set of inputs).
+							 -->
+						</fieldset>
+						<div class="addLink"><input class="add_remove" type="submit" name="add_link" value="+&nbsp;Add link" /></div>
+						<!--<fieldset class="link">
+							<div>
+								<label for="ce_link1">Link</label>
+								<div><input id="ce_link1" name="link[]" type="text" /></div>
+							</div>
+							<div>
+								<label for="ce_version1">Version needed</label>
+								<input id="ce_version1" type="text" name="ce_version[]" />
+							</div>
+							<div>
+								<label for="ce_date1">Date</label>
+								<input id="ce_date1" type="text" name="ce_date[]" />
+							</div>
+
+						</fieldset>-->
+
+						<div class="submit">
+							<input type="submit" name="preview" value="Preview" />
+							<input type="submit" name="draft" value="Save draft" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<hr />
+			<div id="footer">
+				<div id="copyright">Copyright &copy; 2010 Mark Logic Corporation. All rights reserved. | Powered by MarkLogic Server 4.1-2 Standard Edition  | <a href="">Contact Us</a></div>
+			</div>
+		</div>
+	</body>
+</html>
