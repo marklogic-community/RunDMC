@@ -5,6 +5,7 @@ include common.rnc
 
 element Article {
   attribute type { article-types },
+  statusAttribute,
 
   element title        { text },
 

@@ -30,7 +30,7 @@ declare variable $live-documents := ( $Announcements
         declare function comments-for-post($post as xs:string)
         {
           for $c in $Comments[@about eq $post]
-                             [@status eq 'Approved'] 
+                             [@status eq 'Published'] 
           order by $c/date
           return $c
         };

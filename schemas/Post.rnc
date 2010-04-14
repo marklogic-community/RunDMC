@@ -3,7 +3,7 @@ default namespace = "http://developer.marklogic.com/site/internal"
 include common.rnc
 
 element Post {
-  attribute status { "Draft" | "Published" },
+  statusAttribute,
 
   element title        { text },
   element author       { text }*,

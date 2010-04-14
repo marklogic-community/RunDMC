@@ -3,8 +3,8 @@ default namespace = "http://developer.marklogic.com/site/internal"
 include common.rnc
 
 element Comment {
-  attribute status { "Pending" | "Approved" },
   attribute about { text },
+  statusAttribute,
 
   element author  { text },
   element created { xsd:dateTime },

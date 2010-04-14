@@ -4,6 +4,7 @@ include common.rnc
 
 element Announcement {
   attribute user-group { text }?,
+  statusAttribute,
 
   element title        { text },
   element author       { text }*,

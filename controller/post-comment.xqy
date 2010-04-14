@@ -6,7 +6,7 @@ let $params  := qp:load-params(),
     $comment-doc := document {<ml:Comment
                       xmlns:ml="http://developer.marklogic.com/site/internal"
                       xmlns="http://www.w3.org/1999/xhtml"
-                      status="Pending"
+                      status="Draft"
                       about="{$params/qp:about}">
                       <ml:author> { string($params/qp:author)     }</ml:author>
                       <ml:created>{ current-dateTime()            }</ml:created>
