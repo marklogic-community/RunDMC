@@ -20,6 +20,8 @@
 
   <xsl:param name="params" as="element()"/>
 
+  <xsl:variable name="DEBUG" select="false()"/>
+
   <xsl:variable name="message" select="string($params/qp:message)"/>
 
   <xsl:variable name="content" select="/"/>
@@ -103,6 +105,9 @@
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content">
+    <xsl:if test="$DEBUG">
+      <xsl:copy-of select="$params"/>
+    </xsl:if>
     <xsl:if test="$message">
       <div class="alert">
         <xsl:value-of select="$message"/>
