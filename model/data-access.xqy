@@ -8,12 +8,14 @@ declare variable $Announcements := $collection/Announcement; (: "News"   :)
 declare variable $Events        := $collection/Event;        (: "Events" :)
 declare variable $Articles      := $collection/Article;      (: "Learn"  :)
 declare variable $Posts         := $collection/Post;         (: "Blog"   :)
+declare variable $Projects      := $collection/Project;      (: "Code"   :)
 declare variable $Comments      := $collection/Comment;      (: blog comments :)
 
 declare variable $live-documents := ( $Announcements
                                     | $Events
                                     | $Articles
                                     | $Posts
+                                    | $Projects
                                     )[@status eq 'Published'];
 
         declare function recent-blog-posts($count as xs:integer)
