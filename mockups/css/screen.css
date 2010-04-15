@@ -1015,3 +1015,5 @@ table.sortable th.sorting_desc {background: #A4B243 url(../images/arrow_down_whi
 	height: 33px;
 	cursor: pointer;
 }
+
+a.highlight {	background: #A4B243; color: white;}
