@@ -4,12 +4,16 @@ declare default element namespace "http://developer.marklogic.com/site/internal"
 
 declare variable $collection    := fn:collection();
 
-declare variable $Announcements := $collection/Announcement; (: "News"   :)
-declare variable $Events        := $collection/Event;        (: "Events" :)
-declare variable $Articles      := $collection/Article;      (: "Learn"  :)
-declare variable $Posts         := $collection/Post;         (: "Blog"   :)
-declare variable $Projects      := $collection/Project;      (: "Code"   :)
-declare variable $Comments      := $collection/Comment;      (: blog comments :)
+(: TODO: Use a special server field with xdmp:get-server-field instead of hard-coding the server name :)
+declare variable $public-docs-only := if ("CommunitySitePublic" eq xdmp:server-name(xdmp:server())) then fn:true()
+                                                                                                    else fn:false();
+
+declare variable $Announcements := $collection/Announcement[filter-doc(.)]; (: "News"   :)
+declare variable $Events        := $collection/Event       [filter-doc(.)]; (: "Events" :)
+declare variable $Articles      := $collection/Article     [filter-doc(.)]; (: "Learn"  :)
+declare variable $Posts         := $collection/Post        [filter-doc(.)]; (: "Blog"   :)
+declare variable $Projects      := $collection/Project     [filter-doc(.)]; (: "Code"   :)
+declare variable $Comments      := $collection/Comment     [filter-doc(.)]; (: blog comments :)
 
 declare variable $live-documents := ( $Announcements
                                     | $Events
@@ -18,14 +22,20 @@ declare variable $live-documents := ( $Announcements
                                     | $Projects
                                     );
 
+declare function filter-doc($doc)
+{
+  if ($public-docs-only) then $doc[@status eq 'Published']
+                         else $doc
+};
+
 declare variable $total-blog-count := fn:count($Posts);
+
+declare variable $posts-by-date := for $p in $Posts
+                                   order by $p/created descending
+                                   return $p;
 
         declare function blog-posts($start as xs:integer, $count as xs:integer)
         {
-          let $posts-by-date := for $p in $Posts
-                                order by $p/created descending
-                                return $p
-          return
             $posts-by-date[fn:position() ge $start
                        and fn:position() lt ($start + $count)]
         };
