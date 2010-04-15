@@ -1,23 +1,26 @@
 <Project xmlns       ="http://developer.marklogic.com/site/internal"
          xmlns:form  ="http://developer.marklogic.com/site/internal/form"
          xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
-         xmlns:values="http://developer.marklogic.com/site/internal/form/values">
-  <form:fieldset legend="Edit">
-    <name        form:label="Project Name"
-                 form:wide="yes"/>
+         xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+         status=""
+         values:status="Draft Published"
+         label:status="Status">
+  <form:fieldset>
+    <name form:label="Project Name"
+          form:wide="yes"/>
     <contributors><!-- href="">-->
       <contributor form:repeating="yes"
-                   form:label="Author"/>
+                   form:label="Contributor"/>
     </contributors>
     <description form:label="Description"
                  form:type="textarea"/>
   </form:fieldset>
-  <form:fieldset legend="Download Link(s)">
-    <versions><!-- get-involved-href="">-->
-      <version href=""           label:href          ="Link"
-               server-version="" label:server-version="Version needed" values:server-version="4.0-1 4.1 4.2"
-               date=""           label:date          ="Date"           form:repeating="yes" form:group-label="Link"/>
-    </versions>
-  </form:fieldset>
+  <versions><!-- get-involved-href="">-->
+    <version href=""           label:href          ="Link"
+             server-version="" label:server-version="Version needed"
+             date=""           label:date          ="Date"
+             form:repeating="yes"
+             form:group-label="Link"/><!-- values:server-version="4.0-1 4.1 4.2"-->
+  </versions>
   <top-threads form:hide="yes"/>
 </Project>
