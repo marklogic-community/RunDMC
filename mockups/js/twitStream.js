@@ -78,7 +78,7 @@ function fetch_tweets(elem){
 			
 			var tweet='<div class="tweet body"><!--div class="tweet-avatar"><a target="_blank" href="http://twitter.com/'+this.from_user+'"><img width="48" height="48" alt="'+this.from_user+' on Twitter" src="'+this.profile_image_url+'" /></a></div--><div class="tweet-content">'+tweetBy+this.text.linkify().linkuser().linktag().replace(/<a/g,'<a target="_blank"')+tweetInfo+'</div></div>';
 			var regex = new RegExp('[^href="http://www.twitter.com/"|@]' + keyword, "gi");
-			var tweet = tweet.replace(regex, '<a href="http://twitter.com/#search?q=' + keyword + '" target="_blank" class="highlight">' + keyword + '</a>');
+			var tweet = tweet.replace(regex, ' <a href="http://twitter.com/#search?q=' + keyword + '" target="_blank" class="highlight">' + keyword + '</a>');
 			elem.append(tweet);
 		});
 	});
