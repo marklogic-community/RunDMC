@@ -11,10 +11,13 @@
   <xsl:import href="../view/page.xsl"/>
 
   <xsl:include href="form.xsl"/>
+  <xsl:include href="admin-tag-library.xsl"/>
 
   <xsl:variable name="template"       select="document('/private/config/admin/template.xhtml')"/>
   <xsl:variable name="raw-navigation" select="document('/private/config/admin/navigation.xml')"/>
 
+  <!-- Make everything a "main page" -->
+  <xsl:template mode="body-class" match="*">main_page</xsl:template>
 
   <!-- *Do* include breadcrumbs on the home page -->
   <xsl:template mode="breadcrumbs" match="*">
