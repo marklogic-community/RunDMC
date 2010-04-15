@@ -6,15 +6,18 @@ let $path-redir   :=
         substring($path, 1, string-length($path) - 1) (: For stripping the trailing slash :)
     else if (starts-with($path, '/blog') and ends-with($path, '.xqy')) then 
         substring($path, 1, string-length($path) - 4)
+    else if ($path = ("/download", "/downloads")) then
+        "/products"
     else 
         $path
 
 let $latest-prod-uri := "/products/marklogic-server/4.1"
 
 let $path            := 
-    if ($path eq "/products") then 
+    if ($path eq "/products") then
         $latest-prod-uri 
-    else $path
+    else 
+        $path
 
 let $doc-url         := concat($path,       ".xml")
 let $doc-url2        := concat($path-redir, ".xml")
