@@ -10,8 +10,10 @@
 
   <xsl:include href="pre-process-navigation.xsl"/>
 
+  <xsl:variable name="raw-navigation" select="document('/private/config/navigation.xml')"/>
+
   <xsl:variable name="navigation">
-    <xsl:apply-templates mode="pre-process-navigation" select="document('/private/config/navigation.xml')/*"/>
+    <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>
   </xsl:variable>
 
   <!-- The page occurs in the hierarchy either explicitly or as encompassed by a wildcard.
