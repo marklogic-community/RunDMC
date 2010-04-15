@@ -9,19 +9,11 @@ let $path-redir   :=
     else 
         $path
 
-let $latest-blog-uri := (
-    for $i in doc()/ml:Post/ml:created
-    order by $i descending
-    return base-uri($i)
-)[1]
-let $latest-blog-uri := substring($latest-blog-uri, 1, string-length($latest-blog-uri) - 4)
 let $latest-prod-uri := "/products/marklogic-server/4.1"
 
 let $path            := 
     if ($path eq "/products") then 
         $latest-prod-uri 
-    else if ($path eq "/blog") then 
-        $latest-blog-uri 
     else $path
 
 let $doc-url         := concat($path,       ".xml")
