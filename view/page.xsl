@@ -128,10 +128,11 @@
 
                   <xsl:template mode="post-with-comments" match="Post">
                     <xsl:apply-templates mode="blog-post" select="."/>
-                    <xsl:if test="ml:comments-for-post(ml:external-uri(.))">
+                    <xsl:variable name="comments-for-post" select="ml:comments-for-post(base-uri(.))"/>
+                    <xsl:if test="$comments-for-post">
                       <h3 id="comments">Comments</h3>
                       <ol class="commentlist">
-                        <xsl:apply-templates mode="blog-comment" select="ml:comments-for-post(ml:external-uri(.))"/>
+                        <xsl:apply-templates mode="blog-comment" select="$comments-for-post"/>
                       </ol>
                     </xsl:if>
                     <form id="post_comment" action="/controller/post-comment.xqy" method="post">
@@ -175,7 +176,7 @@
                               <div class="action">
                                 <ul>
                                   <li>
-                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(ml:external-uri(.)))"/>)</a>
+                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(base-uri(.)))"/>)</a>
                                   </li>
                                   <li>
                                     <a href="{ml:external-uri(.)}#post_comment">Post a comment</a>
