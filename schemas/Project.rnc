@@ -1,0 +1,24 @@
+default namespace = "http://developer.marklogic.com/site/internal"
+
+include common.rnc
+
+element Project {
+  statusAttribute,
+
+  element name        { text },
+  element contributors {
+    element contributor { text }+
+  },
+  element created      { xsd:dateTime },
+  element last-updated { xsd:dateTime },
+  element description { mixedContent },
+  element versions {
+    element version {
+      attribute href { text },
+      attribute server-version { text },
+      attribute date { text }
+    }*
+  },
+  element top-threads {
+  }
+}
