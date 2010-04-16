@@ -361,9 +361,8 @@
   </xsl:function>
 
   <xsl:function name="ml:display-time" as="xs:string">
-    <xsl:param name="date"/>
-    <!-- TODO: implement this -->
-    <xsl:sequence select="$date"/>
+    <xsl:param name="dateTime" as="xs:dateTime"/>
+    <xsl:sequence select="format-dateTime($dateTime, '[h]:[m][P]')"/>
   </xsl:function>
 
   <xsl:function name="ml:external-uri" as="xs:string">
