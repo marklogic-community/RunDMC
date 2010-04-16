@@ -51,7 +51,7 @@ declare variable $announcements-by-date := for $a in $Announcements
 
         declare function latest-user-group-announcement()
         {
-          $announcements-by-date[fn:string(@user-group)][1]
+          $announcements-by-date[fn:normalize-space(@user-group)][1]
         };
 
         declare function latest-announcement()
@@ -86,7 +86,7 @@ declare variable $future-events := $Events[xs:date(details/date) ge fn:current-d
         declare function next-two-user-group-events($group as xs:string)
         {
           let $events := if ($group eq '')
-                         then $future-events-by-date[fn:string(@user-group)]
+                         then $future-events-by-date[fn:normalize-space(@user-group)]
                          else $future-events-by-date[@user-group eq $group]
           return
             $events[fn:position() le 2]
