@@ -10,8 +10,7 @@ element Announcement {
   element author       { mixedContent }*,
   element created      { xsd:dateTime },
   element last-updated { xsd:dateTime },
-  element tags {
-    element tag { text }*
-  }?,
+  element date         { xsd:date },
+  element abstract     { mixedContent }?,
   element body { mixedContent }
 }
