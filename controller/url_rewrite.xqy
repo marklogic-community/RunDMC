@@ -28,6 +28,7 @@ let $query-string    := substring-after($orig-url, '?')
 
 return
      if ($path eq "/")                  then concat("/controller/transform.xqy?src=/index&amp;", $query-string)
+else if (starts-with($path,'/media/'))   then concat("/controller/get-db-file.xqy?uri=", $path)
 else if (starts-with($path,'/private/')
       or starts-with($path,'/admin/'))  then $orig-url
 else if (doc-available($doc-url) and
