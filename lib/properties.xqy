@@ -1,3 +1,5 @@
+xquery version "0.9-ml"
+
 (:~
  :
  : Copyright 2007 Ryan Grimm

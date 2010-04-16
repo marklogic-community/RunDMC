@@ -1,3 +1,5 @@
+xquery version "0.9-ml"
+
 module "http://markmail.org/util"
 declare namespace util = "http://markmail.org/util"
 import module namespace search = "http://markmail.org/search" at "/lib/search-lib.xqy"

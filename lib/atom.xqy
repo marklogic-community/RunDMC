@@ -1,95 +1,75 @@
-import module namespace util = "http://markmail.org/util" at "/lib/util.xqy"
-import module namespace search = "http://markmail.org/search" at "/lib/search-lib.xqy"
-import module namespace atomlib = "http://markmail.org/atom-lib" at "/lib/atom-lib.xqy"
-import module namespace prop = "http://xqdev.com/prop" at "/lib/properties.xqy"
+xquery version "1.0-ml";
 
-define variable $MAX_ENTRIES as xs:integer { 50 }
+declare namespace atom="http://www.marklogic.com/blog/atom";
+declare namespace ml= "http://developer.marklogic.com/site/internal";
+declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-define function display(
-	$node as node()?
-) as xs:string
-{
-	if($node)
-	then string($node)
-	else "(None)"
-}
+declare function atom:fakedLikeZulu($dt as xs:dateTime) as xs:dateTime {
+    $dt - implicit-timezone()
+};
+
+declare function atom:expireInSeconds ($s as xs:integer) as empty-sequence() {
+    let $DATE_HEADER := "%a, %d %b %Y %H:%M:%S"
+    let $duration := xs:dayTimeDuration(concat("PT", string($s), "S"))
+    let $set := xdmp:add-response-header("Date", xdmp:strftime($DATE_HEADER, atom:fakedLikeZulu(current-dateTime())))
+    let $set := xdmp:add-response-header("Expires", xdmp:strftime($DATE_HEADER, atom:fakedLikeZulu(current-dateTime() + $duration)))
+    let $public := xdmp:add-response-header("Cache-Control", "public")
+    return ()
+};
+
 
 xdmp:set-response-content-type("application/atom+xml"),
 
-let $expires := util:expireInSeconds(57 * 60)
+let $MAX_ENTRIES := 30
+let $expires := atom:expireInSeconds(60 * 60)
 
-let $rawRev := prop:get("external_file_revision")
-let $rev := if($rawRev) then concat("_", $rawRev) else ""
 
-let $domain := util:getSearchDomain()  (: returns something like _domain:tomcat :) 
-let $rawDomain := util:getRawDomain() 
-let $q := util:getRequestField("q", ()) 
-
-let $query := search:getQueryXML($q)
-let $cts := search:getCtsQuery(search:getQueryXML(concat($q, $domain)))
-let $idURL := concat("http://", prop:get("base_domain"), "/atom/")
-let $searchURL := concat("http://", prop:get("base_domain"), "/search/")
-let $msgRoot := concat("http://", prop:get("base_domain"), "/message/")
-
-(: Return all the messages in the last hour, or $MAX_ENTRIES, whichever is GREATER :)
-let $lastHourQuery :=
-	cts:element-attribute-range-query(
-		expanded-QName("", "message"),
-		expanded-QName("", "date"),
-		">=",
-		current-dateTime() - xdt:dayTimeDuration("PT1H")
-	)
-let $max := max((
-	xdmp:estimate(cts:search(collection("messages"), cts:and-query(($cts, $lastHourQuery))), $MAX_ENTRIES),
-	$MAX_ENTRIES
-))
 
 (: XXX The following may not be optimized :)
+(:
 let $messages := (
 	for $m in cts:search(collection("messages")/message, $cts)
 	order by xs:dateTime($m/@date) descending
 	return $m
 )[1 to $max]
+:)
 
+let $posts :=
+    for $r in fn:doc()/ml:Post[@status="Published"]
+    order by xs:dateTime($r/ml:created/text()) descending
+    return $r
 
 return
 <feed xmlns="http://www.w3.org/2005/Atom">
-	<title>MarkMail: { $q }</title>
-	<subtitle>We've Got Mail!</subtitle>
-	<link href="{ util:url((), (), $searchURL) }" rel="self"/>
+	<title>MarkLogic Developer Community Blog</title>
+	<subtitle></subtitle>
+	<link href="http://developer.marklogic.com/blog/atom.xml" rel="self"/>
 	<updated>{ current-dateTime() }</updated>
-	<id>{ util:url((), (), $idURL) }</id>
+	<id></id>
 
-	<generator uri="http://markmail.org/atom" version="1.0">MarkMail</generator>
-	<icon>http://markmail.org/favicon.ico</icon>
-	<logo>http://markmail.org/images/logo_red.gif</logo>
+	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Developer Community</generator>
+	<icon>http://developer.marklogic.com/favicon.ico</icon>
+	<logo>http://developer.marklogic.com/images/logo.gif</logo>
 	{
 		(: no author :)
 		(: no id :)
 	}
 	{
-		for $m in $messages
-		return
-		<entry>
-			<id>urn:uuid:markmail-{ string($m/@id) }</id>
-			<link href="{ util:url((), (), concat($msgRoot, $m/@id)) }"/>
-			<title>{ display($m/*:headers/*:subject) }</title>
-			<author><name>{ util:emailObfuscate(display($m/*:headers/*:from/@personal)) }</name></author>
-			<updated>{ string($m/@date) }</updated>
-			<published>{ string($m/@date) }</published>
-			<content type="html">{ xdmp:quote(
-				<div xmlns="intentional">{ atomlib:renderMessage($m, <search xmlns=""/>) }</div>
-			) }</content>
-		</entry>
+        for $p in $posts [1 to $MAX_ENTRIES]
+        order by xs:dateTime($p/ml:created/text()) descending 
+        return
+        <entry>
+            <id>{$p/ml:link/text()}</id>
+            <link href="{$p/ml:link/text()}"/>
+            <title>{$p/ml:title/text()}</title>
+            <author><name>{$p/ml:author/text()}</name></author>
+            <updated>{ string($p/ml:created/text()) }</updated>
+            <published>{ string($p/ml:created/text()) }</published>
+            <content type="html">
+                { xdmp:quote($p/ml:body)}
+            </content>
+        </entry>
 	}
 </feed>
 
-,
-util:logTime()
 
-(:
-	The email obfu link should take you to the msg w/ the captcha open (need Ryan).
-	The attachment view link should take you to the msg w/ the attachment open (need Ryan).
-	Put web bugs in the feeds
-	Setup a creation page
-:)
