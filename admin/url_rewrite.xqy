@@ -1,24 +1,17 @@
-import module namespace qp="http://www.marklogic.com/ps/lib/queryparams"
-       at "../controller/modules/queryparams.xqy";
+let $path            := xdmp:get-request-path()
 
-let $params          := qp:load-params()
-let $path            := xdmp:get-request-path()  (: E.g., "/news" :)
-let $path-stripped   := if (ends-with($path,"/"))
-                        then substring($path, 1, string-length($path) - 1) (: For stripping the trailing slash :)
-                        else $path
-
-let $doc-url         := concat('/admin', $path,          ".xml")
-let $doc-url2        := concat('/admin', $path-stripped, ".xml")
-let $query-string    := string-join(for $param in $params/qp:* return concat('&amp;',local-name($param),'=',$param),'')
+let $doc-url         := concat('/admin', $path, ".xml")
+let $orig-url        := xdmp:get-request-url()
+let $query-string    := substring-after($orig-url, '?')
 
 return
-     if ($path eq "/")                   then concat("/admin/transform.xqy?src=/admin/index",             $query-string)
-else if (starts-with($path,'/private/')) then $path
 
-else if (starts-with($path,'/css/')
+     if (starts-with($path,'/css/')
       or starts-with($path,'/images/')
-      or starts-with($path,'/js/'))      then concat('/admin',$path)
+      or starts-with($path,'/js/'))      then concat('/admin', $orig-url)
 
-else if (doc-available($doc-url))        then concat("/admin/transform.xqy?src=/admin",   $path,          $query-string)
-else if (doc-available($doc-url2))       then concat("/redirect.xqy?path=", $path-stripped, $query-string) (: e.g., redirect /news/ to /news :)
-                                         else $path
+else if (starts-with($path,'/media/'))   then concat("/controller/get-db-file.xqy?uri=", $path)
+
+else if ($path eq "/")                   then concat("/admin/transform.xqy?src=/admin/index")
+else if (doc-available($doc-url))        then concat("/admin/transform.xqy?src=/admin", $path, "&amp;", $query-string)
+                                         else $orig-url
