@@ -7,7 +7,6 @@ return
 (
   xdmp:xslt-invoke("/view/page.xsl", doc($doc-url),
     map:map(
-      (: TODO: Ensure there's no cross-site scripting risks :)
       <map:map xmlns:map="http://marklogic.com/xdmp/map">
         <map:entry>
           <map:key>params</map:key>

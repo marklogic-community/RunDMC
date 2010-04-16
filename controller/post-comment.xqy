@@ -24,5 +24,5 @@ return
   (
     xdmp:document-insert($comment-uri,
                          $comment-doc),
-    xdmp:redirect-response(concat($params/qp:about, '?message=Thank you for your comment. It has been submitted for moderation.'))
+    xdmp:redirect-response(concat($params/qp:about, '?commented=yes'))
   )

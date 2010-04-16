@@ -113,10 +113,15 @@
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$params"/>
     </xsl:if>
+    <!-- No need for this at the moment.
     <xsl:if test="$message">
       <div class="alert">
         <xsl:value-of select="$message"/>
       </div>
+    </xsl:if>
+    -->
+    <xsl:if test="$params/qp:commented">
+      <div class="alert">Thank you for your comment. It has been submitted for moderation.</div>
     </xsl:if>
     <xsl:apply-templates mode="page-content" select="$content/*"/>
   </xsl:template>
