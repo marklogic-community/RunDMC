@@ -11,8 +11,13 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
+  <xsl:variable name="staging-server" select="string($navigation/*/@staging-server)"/>
 
-  <xsl:template match="ml:post-list">
+  <xsl:template match="admin-project-list
+                     | admin-learn-list
+                     | admin-post-list
+                     | admin-announcement-list
+                     | admin-event-list">
     <table>
       <thead>
         <tr>
@@ -25,24 +30,70 @@
         </tr>
       </thead>
       <tbody>
-        <xsl:apply-templates mode="blog-post-listing" select="$ml:posts-by-date"/>
+        <xsl:variable name="docs" select="if (self::admin-project-list)      then $ml:projects-by-name
+                                     else if (self::admin-learn-list)        then ml:lookup-articles('','','')
+                                     else if (self::admin-post-list)         then $ml:posts-by-date
+                                     else if (self::admin-announcement-list) then $ml:announcements-by-date
+                                     else if (self::admin-event-list)        then $ml:events-by-date
+                                     else ()"/>
+        <!--
+        <xsl:variable name="docs" as="element()*">
+          <xsl:apply-templates mode="docs-by-type" select="."/>
+        </xsl:variable>
+        -->
+        <xsl:apply-templates mode="admin-listing" select="$docs">
+          <xsl:with-param name="edit-path">
+            <xsl:apply-templates mode="edit-path" select="."/>
+          </xsl:with-param>
+        </xsl:apply-templates>
       </tbody>
     </table>
   </xsl:template>
 
-          <xsl:template mode="blog-post-listing" match="Post">
-            <xsl:variable name="edit-link" select="concat('/blog/edit?path=', base-uri(.))"/>
+          <!--
+          <xsl:template mode="docs-by-type" match="admin-project-list">
+            <xsl:sequence select="$ml:Projects"/>
+          </xsl:template>
+
+          <xsl:template mode="docs-by-type" match="admin-learn-list">
+            <xsl:sequence select="$ml:Articles"/>
+          </xsl:template>
+
+          <xsl:template mode="docs-by-type" match="admin-post-list">
+            <xsl:sequence select="$ml:posts-by-date"/>
+          </xsl:template>
+
+          <xsl:template mode="docs-by-type" match="admin-announcement-list">
+            <xsl:sequence select="$ml:Announcements"/>
+          </xsl:template>
+
+          <xsl:template mode="docs-by-type" match="admin-event-list">
+            <xsl:sequence select="$ml:Events"/>
+          </xsl:template>
+          -->
+
+
+          <xsl:template mode="edit-path" match="admin-project-list"     >/code/edit</xsl:template>
+          <xsl:template mode="edit-path" match="admin-learn-list"       >/learn/edit</xsl:template>
+          <xsl:template mode="edit-path" match="admin-post-list"        >/blog/edit</xsl:template>
+          <xsl:template mode="edit-path" match="admin-announcement-list">/news/edit</xsl:template>
+          <xsl:template mode="edit-path" match="admin-event-list"       >/events/edit</xsl:template>
+
+
+          <xsl:template mode="admin-listing" match="*">
+            <xsl:param name="edit-path"/>
+            <xsl:variable name="edit-link" select="concat($edit-path, '?path=', base-uri(.))"/>
             <tr>
               <xsl:if test="position() mod 2 eq 0">
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <th>
                 <a href="{$edit-link}">
-                  <xsl:value-of select="title"/>
+                  <xsl:value-of select="if (self::Project) then name else title"/>
                 </a>
               </th>
               <td>
-                <xsl:value-of select="author"/>
+                <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
               </td>
               <td>
                 <xsl:value-of select="created"/>
@@ -51,30 +102,32 @@
               <td>
                 <xsl:value-of select="last-updated"/>
               </td>
-              <td class="status {lower-case(@status)}">
-                <xsl:value-of select="@status"/>
+              <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+              <td class="status {lower-case($effective-status)}">
+                <xsl:value-of select="$effective-status"/>
               </td>
               <td>
                 <a href="{$edit-link}">Edit</a>
-                <xsl:text> | </xsl:text>
+                <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: make preview work -->
-                <a href="#">Preview</a>
-                <xsl:text> | </xsl:text>
+                <a href="{$staging-server}{substring-before(base-uri(.), '.xml')}">Preview</a>
+                <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: make publish/unpublish work -->
                 <a href="#">
                   <xsl:choose>
-                    <xsl:when test="@status eq 'Published'">Unpublish</xsl:when>
-                    <xsl:otherwise>Publish</xsl:otherwise>
+                    <xsl:when test="@status eq 'Draft'">Publish</xsl:when>
+                    <xsl:otherwise>Unpublish</xsl:otherwise>
                   </xsl:choose>
                 </a>
                 <!-- TODO: make remove work -->
-                <xsl:text> | </xsl:text>
+                <xsl:text>&#160;|&#160;</xsl:text>
                 <a href="#">Remove</a>
               </td>
             </tr>
           </xsl:template>
 
-  <xsl:template match="ml:comment-list">
+
+  <xsl:template match="admin-comment-list">
     <table id="tbl_comments">
       <caption>Comments</caption>
       <thead> 
@@ -123,12 +176,12 @@
               </td>
               <td>
                 <a href="/blog/comment-edit?path={base-uri(.)}">Edit</a>
-                <xsl:text> | </xsl:text>
+                <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: Make approve/revoke work -->
                 <a href="#">
                   <xsl:value-of select="if (@status eq 'Published') then 'Revoke' else 'Approve'"/>
                 </a>
-                <xsl:text> | </xsl:text>
+                <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: Make remove work -->
                 <a href="#">Remove</a></td>
             </tr>            

@@ -21,6 +21,10 @@ declare variable $live-documents := ( $Announcements
                                     | $Projects
                                     );
 
+declare variable $projects-by-name := for $p in $Projects
+                                      order by $p/name
+                                      return $p;
+
 declare variable $total-blog-count := fn:count($Posts);
 
 declare variable $posts-by-date := for $p in $Posts
@@ -63,6 +67,10 @@ declare variable $announcements-by-date := for $a in $Announcements
             $announcements-by-date[xs:date(date) ge $start-date]
         };
 
+
+declare variable $events-by-date := for $e in $Events
+                                    order by $e/details/date descending
+                                    return $e;
 
 declare variable $future-events := $Events[xs:date(details/date) ge fn:current-date()];
 
