@@ -137,45 +137,58 @@
     <table class="table2">
       <caption>Documentation</caption>
       <tbody>
-        <xsl:apply-templates mode="product-doc-entry" select="doc"/>
+        <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
       </tbody>
     </table>
   </xsl:template>
 
-          <xsl:template mode="product-doc-entry" match="doc">
-            <xsl:choose>
-              <xsl:when test="doc-available(@source)">
-                <xsl:variable name="source" select="document(@source)"/>
-                <xsl:variable name="url" select="if ($source/Article/external-link)
-                                                then $source/Article/external-link/@href
-                                                else ml:external-uri($source)"/>
-                <tr>
-                  <td>
-                    <xsl:value-of select="$source/Article/title"/>
-                  </td>
-                  <td> 
-                    <a href="{$url}">
-                      <xsl:apply-templates mode="product-doc-icon" select="$source/Article"/>
-                    </a>
-                  </td>
-                </tr>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:message terminate="yes">Document (<xsl:value-of select="@source"/>) not found.</xsl:message>
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:template mode="product-doc-entry" match="*">
+            <xsl:variable name="title">
+              <xsl:apply-templates mode="product-doc-title" select="."/>
+            </xsl:variable>
+            <xsl:variable name="url">
+              <xsl:apply-templates mode="product-doc-url" select="."/>
+            </xsl:variable>
+            <tr>
+              <td>
+                <xsl:value-of select="$title"/>
+              </td>
+              <td> 
+                <a href="{$url}">
+                  <xsl:choose>
+                    <xsl:when test="ends-with(lower-case($url), 'pdf')">
+                      <img src="/images/icon_pdf.png" alt="View PDF for {$title}"/>
+                    </xsl:when>
+                    <xsl:when test="ends-with(lower-case($url), 'zip')">
+                      <img src="/images/icon_zip.png" alt="Download zip file for {$title}"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <img src="/images/icon_browser.png" alt="View HTML for {$title}"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </td>
+            </tr>
           </xsl:template>
 
-                  <xsl:template mode="product-doc-icon" match="Article">
-                    <img src="/images/icon_browser.png" alt="View HTML for {title}"/>
+                  <xsl:template mode="product-doc-title" match="old-doc">
+                    <xsl:value-of select="@desc"/>
                   </xsl:template>
 
-                  <xsl:template mode="product-doc-icon" match="Article[ends-with(lower-case(external-link/@href), 'pdf')]">
-                    <img src="/images/icon_pdf.png" alt="View PDF for {title}"/>
+                  <xsl:template mode="product-doc-title" match="doc">
+                    <xsl:value-of select="document(@source)/Article/title"/>
                   </xsl:template>
 
-                  <xsl:template mode="product-doc-icon" match="Article[ends-with(lower-case(external-link/@href), 'zip')]">
-                    <img src="/images/icon_zip.png" alt="Download zip file for {title}"/>
+
+                  <xsl:template mode="product-doc-url" match="old-doc">
+                    <xsl:value-of select="@path"/>
+                  </xsl:template>
+
+                  <xsl:template mode="product-doc-url" match="doc">
+                    <xsl:variable name="source" select="document(@source)"/>
+                    <xsl:value-of select="if ($source/Article/external-link)
+                                          then $source/Article/external-link/@href
+                                          else ml:external-uri($source)"/>
                   </xsl:template>
 
 
