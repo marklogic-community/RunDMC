@@ -120,8 +120,10 @@
                   </xsl:choose>
                 </a>
                 <!-- TODO: make remove work -->
+                <!-- Leave out "Remove" for v1.0
                 <xsl:text>&#160;|&#160;</xsl:text>
                 <a href="#">Remove</a>
+                -->
               </td>
             </tr>
           </xsl:template>
@@ -181,9 +183,12 @@
                 <a href="#">
                   <xsl:value-of select="if (@status eq 'Published') then 'Revoke' else 'Approve'"/>
                 </a>
-                <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: Make remove work -->
-                <a href="#">Remove</a></td>
+                <!-- Leave out "Remove" for v1.0
+                <xsl:text>&#160;|&#160;</xsl:text>
+                <a href="#">Remove</a>
+                -->
+              </td>
             </tr>            
           </xsl:template>
 
