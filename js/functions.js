@@ -22,7 +22,7 @@ if(typeof jQuery != 'undefined') {
             });
         }
         // accordion style menu
-        $('#sub .subnav h2, #sub .subnav li span').each(function() {
+        $('#sub .subnav.closed h2, #sub .subnav.closed li span').each(function() {
             if(!($(this).next().children().is('.current'))) {
                 $(this).addClass('closed').next().hide();
             }
