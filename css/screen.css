@@ -1017,5 +1017,5 @@ table.table4 + .action {border:0;}
 	cursor: pointer;
 }
 
-div.olderPosts {float:left;}
-div.newerPosts {float:right;}
+div.olderPosts {float:left; margin-bottom:1em;}
+div.newerPosts {float:right; margin-bottom:1em;}
