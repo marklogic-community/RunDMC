@@ -1,0 +1,30 @@
+<Event xmlns       ="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      status=""
+      label:status="Status"
+      values:status="Draft Published"
+      user-group=""
+      label:user-group="User Group"
+      values:user-group="_ bmug denmark markups mugfr novamug nymug">
+  <form:fieldset legend="Edit">
+    <title form:label="Title"
+           form:wide="yes"/>
+    <!--
+    <author form:repeating="yes"
+            form:label="Author"/>
+            -->
+    <created/>
+    <last-updated/>
+    <description form:label="Description"
+                 form:type="textarea"/>
+    <details>
+      <date form:label="Date"/>
+      <time form:label="Time"/>
+      <location form:label="Location"/>
+      <topic form:label="Topic" form:repeating="yes"/>
+      <presenter form:label="Presenter" form:repeating="yes"/>
+    </details>
+  </form:fieldset>
+</Event>

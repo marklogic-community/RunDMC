@@ -1,0 +1,17 @@
+<Comment xmlns       ="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      status=""
+      label:status="Status"
+      values:status="Draft Published"
+      about=""
+      label:about="About">
+  <form:fieldset legend="Edit">
+    <author form:label="Author"/>
+    <created/>
+    <url form:label="Author URL"/>
+    <body form:label="Body"
+          form:type="textarea"/>
+  </form:fieldset>
+</Comment>
