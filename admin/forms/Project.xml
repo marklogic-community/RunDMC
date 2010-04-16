@@ -2,7 +2,7 @@
          xmlns:form  ="http://developer.marklogic.com/site/internal/form"
          xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
          xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-         status=""
+         status="Published"
          values:status="Draft Published"
          label:status="Status">
   <form:fieldset>
@@ -10,17 +10,21 @@
           form:wide="yes"/>
     <contributors><!-- href="">-->
       <contributor form:repeating="yes"
-                   form:label="Contributor"/>
+                   form:label="Contributor">Joe Bloggs</contributor>
+      <contributor>John Doe</contributor>
     </contributors>
     <description form:label="Description"
                  form:type="textarea"/>
   </form:fieldset>
   <versions><!-- get-involved-href="">-->
-    <version href=""           label:href          ="Link"
-             server-version="" label:server-version="Version needed"
-             date=""           label:date          ="Date"
+    <version href="http://foo.com"           label:href          ="Link"
+             server-version="4.0" label:server-version="Version needed"
+             date="2010-02-01"           label:date          ="Date"
              form:repeating="yes"
              form:group-label="Link"/><!-- values:server-version="4.0-1 4.1 4.2"-->
+    <version href="http://example.com"
+             server-version="4.1"
+             date="2010-01-01"/>
   </versions>
   <top-threads form:hide="yes"/>
 </Project>
