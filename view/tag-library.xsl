@@ -93,7 +93,8 @@
       <xsl:value-of select="@name"/>
     </h2>
 
-    <a class="more" href="{@license-page}">License Options &gt;</a>
+    <a class="more" href="{@requirements-page}">System Requirements &gt;</a>
+    <br/><a class="more" href="{@license-page}">License Options &gt;</a>
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>
