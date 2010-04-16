@@ -10,6 +10,8 @@ let $path-redir   :=
         substring($path, 1, string-length($path) - 4)
     else if ($path = ("/download", "/downloads")) then
         "/products"
+    else if ($path = ("/cloudcomputing")) then
+        "/products/server-for-ec2"
     else 
         $path
 
