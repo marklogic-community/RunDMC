@@ -124,9 +124,10 @@
 
 
   <xsl:template match="sub-nav">
-    <xsl:variable name="children" select="$page-in-navigation/ancestor-or-self::page[group | page]/(group | page)"/>
+    <xsl:variable name="sub-nav-root" select="$page-in-navigation/ancestor-or-self::page[group | page]"/>
+    <xsl:variable name="children" select="$sub-nav-root/(group | page)"/>
     <xsl:if test="$children">
-      <div class="subnav">
+      <div class="subnav {if ($sub-nav-root/@closed eq 'yes') then 'closed' else ''}">
         <xsl:choose>
           <xsl:when test="$children/self::group">
             <xsl:apply-templates mode="sub-nav" select="$children"/>
