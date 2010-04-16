@@ -81,6 +81,11 @@
                                           )[1]"/>
                   </xsl:template>
 
+                  <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
+                  <xsl:template mode="page-specific-title" match="page[product-info]">
+                    <xsl:value-of select="product-info/@name"/>
+                  </xsl:template>
+
                   <xsl:template mode="page-specific-title" match="page[$external-uri eq '/search']">
                     <xsl:text>Search results for "</xsl:text>
                     <xsl:value-of select="$params/qp:q"/>
