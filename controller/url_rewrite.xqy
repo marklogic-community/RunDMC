@@ -1,4 +1,6 @@
-declare namespace ml = "http://developer.marklogic.com/site/internal";
+import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
+       at "../model/filter-drafts.xqy";
+
 let $path            := xdmp:get-request-path()  (: E.g., "/news" :)
 
 let $path-redir   := 
@@ -25,9 +27,11 @@ let $orig-url        := xdmp:get-request-url()
 let $query-string    := substring-after($orig-url, '?')
 
 return
-     if ($path eq "/")                   then concat("/controller/transform.xqy?src=/index&amp;", $query-string)
+     if ($path eq "/")                  then concat("/controller/transform.xqy?src=/index&amp;", $query-string)
 else if (starts-with($path,'/private/')
-      or starts-with($path,'/admin/'))   then $orig-url
-else if (doc-available($doc-url))        then concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
-else if (doc-available($doc-url2))       then concat("/controller/redirect.xqy?path=", $path-redir) (: e.g., redirect /news/ to /news :)
-                                         else $orig-url
+      or starts-with($path,'/admin/'))  then $orig-url
+else if (doc-available($doc-url) and
+         draft:allow(doc($doc-url)/*))  then concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
+else if (doc-available($doc-url2) and
+         draft:allow(doc($doc-url2)/*)) then concat("/controller/redirect.xqy?path=", $path-redir) (: e.g., redirect /news/ to /news :)
+                                        else $orig-url

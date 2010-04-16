@@ -1,19 +1,18 @@
 module namespace ml = "http://developer.marklogic.com/site/internal";
 
+import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
+       at "filter-drafts.xqy";
+
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
 declare variable $collection    := fn:collection();
 
-(: TODO: Use a special server field with xdmp:get-server-field instead of hard-coding the server name :)
-declare variable $public-docs-only := if ("CommunitySitePublic" eq xdmp:server-name(xdmp:server())) then fn:true()
-                                                                                                    else fn:false();
-
-declare variable $Announcements := $collection/Announcement[filter-doc(.)]; (: "News"   :)
-declare variable $Events        := $collection/Event       [filter-doc(.)]; (: "Events" :)
-declare variable $Articles      := $collection/Article     [filter-doc(.)]; (: "Learn"  :)
-declare variable $Posts         := $collection/Post        [filter-doc(.)]; (: "Blog"   :)
-declare variable $Projects      := $collection/Project     [filter-doc(.)]; (: "Code"   :)
-declare variable $Comments      := $collection/Comment     [filter-doc(.)]; (: blog comments :)
+declare variable $Announcements := $collection/Announcement[draft:allow(.)]; (: "News"   :)
+declare variable $Events        := $collection/Event       [draft:allow(.)]; (: "Events" :)
+declare variable $Articles      := $collection/Article     [draft:allow(.)]; (: "Learn"  :)
+declare variable $Posts         := $collection/Post        [draft:allow(.)]; (: "Blog"   :)
+declare variable $Projects      := $collection/Project     [draft:allow(.)]; (: "Code"   :)
+declare variable $Comments      := $collection/Comment     [draft:allow(.)]; (: blog comments :)
 
 declare variable $live-documents := ( $Announcements
                                     | $Events
@@ -21,12 +20,6 @@ declare variable $live-documents := ( $Announcements
                                     | $Posts
                                     | $Projects
                                     );
-
-declare function filter-doc($doc)
-{
-  if ($public-docs-only) then $doc[@status eq 'Published']
-                         else $doc
-};
 
 declare variable $total-blog-count := fn:count($Posts);
 
