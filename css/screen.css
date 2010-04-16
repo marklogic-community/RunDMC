@@ -1016,3 +1016,6 @@ table.table4 + .action {border:0;}
 	height: 33px;
 	cursor: pointer;
 }
+
+div.olderPosts {float:left;}
+div.newerPosts {float:right;}
