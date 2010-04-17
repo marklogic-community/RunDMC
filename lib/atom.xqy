@@ -23,17 +23,6 @@ xdmp:set-response-content-type("application/atom+xml"),
 let $MAX_ENTRIES := 30
 let $expires := atom:expireInSeconds(60 * 60)
 
-
-
-(: XXX The following may not be optimized :)
-(:
-let $messages := (
-	for $m in cts:search(collection("messages")/message, $cts)
-	order by xs:dateTime($m/@date) descending
-	return $m
-)[1 to $max]
-:)
-
 let $posts :=
     for $r in fn:doc()/ml:Post[@status="Published"]
     order by xs:dateTime($r/ml:created/text()) descending
@@ -62,8 +51,13 @@ return
             <id>{$p/ml:link/text()}</id>
             <link href="{$p/ml:link/text()}"/>
             <title>{$p/ml:title/text()}</title>
-            <author><name>{$p/ml:author/text()}</name></author>
-            <updated>{ string($p/ml:created/text()) }</updated>
+            <author><name>{$p/ml:author//text()}</name></author>
+            <updated>   {
+                if ($p/ml:last-updated/text())
+                then $p/ml:last-updated/text()
+                else string($p/ml:created/text())
+            }
+            </updated>
             <published>{ string($p/ml:created/text()) }</published>
             <content type="html">
                 { xdmp:quote($p/ml:body)}
