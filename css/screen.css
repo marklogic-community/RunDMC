@@ -1018,5 +1018,25 @@ table.table4 + .action {border:0;}
 	cursor: pointer;
 }
 
+
+.download-warn {
+    color: red;
+    font-weight: bold;
+}
+
+.download-confirmation {
+	font-size: 1.2em;
+}
+
+.download-quote {
+    margin: 20px;
+    padding: 10px;
+    border: solid 2px black;
+    background-color: #eee;
+    color: red;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
 div.olderPosts {float:left; margin-bottom:1em;}
 div.newerPosts {float:right; margin-bottom:1em;}

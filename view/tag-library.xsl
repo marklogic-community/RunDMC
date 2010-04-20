@@ -93,6 +93,30 @@
       <xsl:value-of select="@name"/>
     </h2>
 
+    <div class="download-confirmation" id="confirm-dialog" style="display: none">
+        <h1>MarkLogic Server Download Confirmation</h1>
+
+        <p>
+        Before downloading this MarkLogic Server 
+        Community Edition binary you must agree to the following terms.
+        During installation you will be presented the full
+        license and must agree to those terms of use to activate the software.
+        </p>
+        
+        <blockquote class="download-quote">
+        I agree that I will not use this download or other intellectual property or 
+        confidential information of Mark Logic for competitive analysis or reverse engineering in 
+        connection with development of products that are the same or similar to 
+        Mark Logic's products licensed herein. I also agree that I will not use this 
+        download in combination with a Community License, Trial License, or Academic License for 
+        commercial use.
+        </blockquote>
+        
+        <br/>
+        <span class="download-warn">You must confirm your acceptance of the above terms.</span> <br/>
+        <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
+    </div>
+
     <a class="more" href="{@requirements-page}">System Requirements &gt;</a>
     <br/><a class="more" href="{@license-page}">License Options &gt;</a>
 
@@ -119,7 +143,7 @@
                   <xsl:template mode="product-download" match="download">
                     <tr>
                       <td>
-                        <a href="{@href}">
+                        <a href="{@href}" class="confirm-download">
                           <img src="/images/icon_download.png" alt="Download"/>
                           <xsl:apply-templates/>
                         </a>

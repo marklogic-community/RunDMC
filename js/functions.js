@@ -33,6 +33,43 @@ if(typeof jQuery != 'undefined') {
             $(this).toggleClass('closed').next().toggle('normal');
         });
 
+        $("#confirm-dialog").dialog({
+            resizable: false,
+            autoOpen: false,
+            width: 550,
+            modal: true,
+            buttons: {
+                Download: function() {
+                    $(this).dialog('close');
+                    document.location = $(this).dialog.href;
+                },
+                Cancel: function() {
+                    $(this).dialog('close');
+                }
+           }
+        });
+
+        $("#iaccept").click(function() {
+            var b = $(":button:contains('Download')");
+            if (b.button('option', 'disabled')) {
+                b.button("enable");
+            } else {
+                b.button("disable");
+            }
+        });
+
+        $('a.confirm-download').each(function() {
+            var href = $(this).attr("href");
+            $(this).click(function() {
+                $(":button:contains('Download')").button('disable');
+                $("#iaccept").removeAttr('checked');
+                $("#confirm-dialog").dialog.href = href;
+                $("#confirm-dialog").dialog('open');
+                return false;
+            });
+        });
+
+
         // overlay functions
         if(jQuery().overlay) {
             $('body').append('<div class="overlay" id="overlay"><div class="overlayContent"></div></div>');
