@@ -622,18 +622,29 @@
     <xsl:variable name="options" as="element()">
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
-          <xsl:copy-of select="cts:document-query($ml:live-documents/base-uri(.))"/>
+          <!-- TODO: evaluate the performance of this approach; it could be bad -->
+          <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.)
+
+                                                   (: Re-enable this line to include URIs starting with /pubs/4.1
+                                                   , collection()[starts-with(base-uri(.),'/pubs/4.1')]/base-uri(.)
+                                                   :)
+                                                 ))"/>
         </additional-query>
       </options>
     </xsl:variable>
-    <xsl:apply-templates mode="search-results" select="search:search($params/qp:q,
-                                                                     $options,
-                                                                     (:
-                                                                     search:get-default-options(),
-                                                                     :)
-                                                                     $start,
-                                                                     $results-per-page
-                                                                     )"/>
+    <xsl:variable name="search-results" select="search:search($params/qp:q,
+                                                              $options,
+                                                              (:
+                                                              search:get-default-options(),
+                                                              :)
+                                                              $start,
+                                                              $results-per-page
+                                                             )"/>
+
+    <xsl:if test="$DEBUG">
+      <xsl:copy-of select="$search-results"/>
+    </xsl:if>
+    <xsl:apply-templates mode="search-results" select="$search-results"/>
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response">
@@ -660,11 +671,16 @@
           </xsl:template>
 
           <xsl:template mode="search-results" match="search:result">
+            <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <div>
               <div class="searchTitle">
-                <a href="{ml:external-uri($doc)}">
-                  <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+                <a href="{if ($is-flat-file) then @uri
+                                             else ml:external-uri($doc)}">
+                  <xsl:variable name="page-specific-title">
+                    <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+                  </xsl:variable>
+                  <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
                 </a>
               </div>
               <div class="snippets">
