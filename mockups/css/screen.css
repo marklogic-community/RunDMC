@@ -890,6 +890,7 @@ table.sortable th.sorting_desc {background: #A4B243 url(../images/arrow_down_whi
 	cursor: default;
 	background: none;
 	margin: 0;
+	padding-left: 15px;}
 }
 #sub .tag-1 {font-size: 1em;}
 #sub .tag-2 {font-size: 1.2em;}
