@@ -117,8 +117,8 @@
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
     </div>
 
-    <a class="more" href="{@requirements-page}">System Requirements &gt;</a>
-    <br/><a class="more" href="{@license-page}">License Options &gt;</a>
+    <a class="more hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a>
+    <br/><a class="more hide-if-href-empty" href="{@license-page}">License Options &gt;</a>
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>
