@@ -9,6 +9,8 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
+  <xdmp:import-module href="../lib/util-2.xqy" namespace="http://marklogic.com/rundmc/util"/>
+
   <xsl:variable name="widget-config"  select="u:get-doc('/private/config/widgets.xml')"/>
 
   <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
@@ -27,11 +29,11 @@
             <div class="section special">
               <div class="head">
                 <h2>
-                  <xsl:apply-templates select="document(@feature)/feature/title/node()"/>
+                  <xsl:apply-templates select="u:get-doc(@feature)/feature/title/node()"/>
                 </h2>
               </div>
               <div class="body">
-                <xsl:apply-templates mode="feature-content" select="document(@feature)/feature/(* except title)">
+                <xsl:apply-templates mode="feature-content" select="u:get-doc(@feature)/feature/(* except title)">
                   <xsl:with-param name="is-widget" select="true()" tunnel="yes"/>
                 </xsl:apply-templates>
               </div>
@@ -45,7 +47,7 @@
           </xsl:template>
 
                   <xsl:template mode="widget-content" match="widget">
-                    <xsl:apply-templates select="document(@href)/widget/node()"/>
+                    <xsl:apply-templates select="u:get-doc(@href)/widget/node()"/>
                   </xsl:template>
 
                   <xsl:template mode="widget-content" match="widget[@xquery]">

@@ -6,6 +6,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:search="http://marklogic.com/appservices/search"
   xmlns:cts   ="http://marklogic.com/cts"
+  xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
@@ -25,13 +26,13 @@
           <xsl:template mode="feature-tab" match="feature">
             <li>
               <a href="#section{position()}">
-                <xsl:value-of select="document(@href)/feature/title"/>
+                <xsl:value-of select="u:get-doc(@href)/feature/title"/>
               </a>
             </li>
           </xsl:template>
 
           <xsl:template mode="feature-tab-content" match="feature">
-            <xsl:variable name="feature" select="document(@href)/feature"/>
+            <xsl:variable name="feature" select="u:get-doc(@href)/feature"/>
 
             <div class="section" id="section{position()}">
               <div class="align_right">
