@@ -288,16 +288,20 @@
                     <xsl:value-of select="name"/>
                   </th>
                   <th class="size" scope="col">MarkLogic Version Needed</th>
+                  <!--
                   <th class="last" scope="col">Date Posted</th>
+                  -->
                 </tr>
               </thead>
               <tbody>
                 <xsl:apply-templates mode="project-version" select="versions/version"/>
               </tbody>
             </table>
+            <!--
             <div class="action">
               <a href="{contributors/@href}">Contributors</a>
             </div>
+            -->
             <xsl:apply-templates select="top-threads"/>
           </xsl:template>
 
@@ -316,9 +320,11 @@
                         <xsl:value-of select="@server-version"/>
                         <xsl:text> or later</xsl:text>
                       </td>
+                      <!--
                       <td>
                         <xsl:value-of select="@date"/>
                       </td>
+                      -->
                     </tr>
                   </xsl:template>
 
