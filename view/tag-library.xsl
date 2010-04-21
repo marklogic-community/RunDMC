@@ -529,11 +529,13 @@
   <xsl:template match="document-list">
     <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@server-version), string(@topic))"/>
     <div class="doclist">
-      <h2>Documents</h2>
+      <h2>All materials and resources</h2>
       <!-- 2.0 feature TODO: add pagination -->
       <span class="amount">
+        <!--
         <xsl:value-of select="count($docs)"/>
         <xsl:text> of </xsl:text>
+        -->
         <xsl:value-of select="count($docs)"/>
         <xsl:text> documents</xsl:text>
       </span>
