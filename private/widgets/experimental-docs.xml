@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <div class="head">
+    <a target="_blank" href="http://docs.marklogic.com/">Experimental Searchable Documentation Application!</a>
+  </div>
+</ml:widget>
