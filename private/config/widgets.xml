@@ -93,4 +93,7 @@
     <page-tree root="/learn"/>
   </widget>
 
+  <widget href="/private/widgets/experimental-docs.xml">
+    <page-tree root="/learn"/>
+  </widget>
 </widgets>
