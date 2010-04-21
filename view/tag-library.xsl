@@ -132,7 +132,9 @@
                     <xsl:value-of select="@name"/>
                   </th>
                   <th class="size" scope="col">File Size</th>
+                <!--
                   <th class="last" scope="col">Date Posted</th>
+                -->
                 </tr>
               </thead>
               <tbody>
@@ -150,11 +152,15 @@
                         </a>
                       </td>
                       <td>
-                        <xsl:value-of select="@size"/>
+                        <a href="{@href}" class="confirm-download">
+                            <xsl:value-of select="@size"/>
+                        </a>
                       </td>
+                     <!--
                       <td>
                         <xsl:value-of select="@date"/>
                       </td>
+                    -->
                     </tr>
                   </xsl:template>
 
@@ -177,7 +183,9 @@
             </xsl:variable>
             <tr>
               <td>
-                <xsl:value-of select="$title"/>
+                <a href="{$url}">
+                    <xsl:value-of select="$title"/>
+                </a>
               </td>
               <td> 
                 <a href="{$url}">
