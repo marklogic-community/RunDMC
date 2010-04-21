@@ -308,7 +308,7 @@
                       </xsl:if>
                       <td>
                         <a href="{@href}">
-                          <xsl:value-of select="@href"/>
+                          <xsl:value-of select="ml:file-from-path(@href)"/>
                         </a>
                       </td>
                       <td>
@@ -321,6 +321,12 @@
                       </td>
                     </tr>
                   </xsl:template>
+
+                          <xsl:function name="ml:file-from-path" as="xs:string">
+                            <xsl:param name="path" as="xs:string"/>
+                            <xsl:sequence select="if (contains($path, '/')) then ml:file-from-path(substring-after($path, '/'))
+                                                                            else $path"/>
+                          </xsl:function>
 
 
           <xsl:template mode="page-content" match="Announcement">
