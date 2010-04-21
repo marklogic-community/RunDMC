@@ -4,6 +4,7 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
@@ -13,8 +14,8 @@
   <xsl:include href="form.xsl"/>
   <xsl:include href="admin-tag-library.xsl"/>
 
-  <xsl:variable name="template"       select="document('/private/config/admin/template.xhtml')"/>
-  <xsl:variable name="raw-navigation" select="document('/private/config/admin/navigation.xml')"/>
+  <xsl:variable name="template"       select="u:get-doc('/private/config/admin/template.xhtml')"/>
+  <xsl:variable name="raw-navigation" select="u:get-doc('/private/config/admin/navigation.xml')"/>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>
