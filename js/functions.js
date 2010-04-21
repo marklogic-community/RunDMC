@@ -30,7 +30,7 @@ if(typeof jQuery != 'undefined') {
         
         $('#sub .current').parents().show();
         $('#sub .subnav h2, #sub .subnav li span').click(function() {
-            $(this).toggleClass('closed').next().toggle('normal');
+            $(this).toggleClass('closed').next().toggle();
         });
 
         $("#confirm-dialog").dialog({
@@ -41,12 +41,18 @@ if(typeof jQuery != 'undefined') {
             buttons: {
                 Download: function() {
                     $(this).dialog('close');
-                    document.location = $(this).dialog.href;
+                    document.location = $(this).dialog.href + '?r=dmc';
                 },
                 Cancel: function() {
                     $(this).dialog('close');
                 }
            }
+        });
+
+        $('.hide-if-href-empty').each(function() {
+            if ( $(this).attr('href') == "" ) {
+                $(this).hide();
+            }
         });
 
         $("#iaccept").click(function() {
