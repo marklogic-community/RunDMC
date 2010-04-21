@@ -2,10 +2,10 @@ xquery version "0.9-ml"
 
 module "http://markmail.org/util"
 declare namespace util = "http://markmail.org/util"
-import module namespace search = "http://markmail.org/search" at "/lib/search-lib.xqy"
-import module namespace stox = "http://marklogic.com/commons/query-xml" at "/lib/query-xml.xqy"
+(: import module namespace search = "http://markmail.org/search" at "/lib/search-lib.xqy" :)
+(: import module namespace stox = "http://marklogic.com/commons/query-xml" at "/lib/query-xml.xqy" :)
 import module namespace prop = "http://xqdev.com/prop" at "/lib/properties.xqy"
-import module "http://markmail.org/session" at "/MarkMail/session-lib.xqy"
+(: import module "http://markmail.org/session" at "/MarkMail/session-lib.xqy" :)
 
 default function namespace = "http://www.w3.org/2003/05/xpath-functions"
 
@@ -133,11 +133,14 @@ define function util:formattedTime(
 	$withSeconds as xs:boolean
 ) as xs:string
 {
-	let $sessionID := ($session:access)[1]
+	(: let $sessionID := ($session:access)[1] 
+	let $sessionID := ()
 	let $timeFormat :=
 		if($sessionID)
 		then $session:time-format
 		else ""
+    :)
+    let $timeFormat := ""
 	return
 		if($timeFormat = "written-24h")
 		then if($withSeconds) then xdmp:strftime("%R:%S", $date) else xdmp:strftime("%R", $date)
@@ -150,11 +153,14 @@ define function util:formattedDate(
 	$date as xs:dateTime
 ) as xs:string
 {
-	let $sessionID := ($session:access)[1]
+	(: let $sessionID := ($session:access)[1] 
+	let $sessionID := ()
 	let $dateFormat :=
 		if($sessionID)
 		then $session:date-format
 		else ""
+    :)
+    let $dateFormat := ""
 	return
 		if($dateFormat = "written-euro")
 		then xdmp:strftime("%e %b %Y", $date)
@@ -207,31 +213,6 @@ define function util:humanDateDuration(
 		else util:pluralizeAppend($secondsDiff, "second", ())
 	return 
 		concat($dateString, " later")
-}
-
-(: Is there's no session ID, we'll show ads :)
-define function util:showAds() as xs:boolean
-{
-	let $forceAds :=  boolean(xdmp:get-request-field("force-ads"))
-	let $sessionID := ($session:access)[1]
-	(: TODO: move this into a config parameter :)
-	(: let $startHour := hours-from-dateTime(session:get-start($sessionID)) :)
-	(: let $startHour := hours-from-dateTime(current-dateTime()) :)
-	(: let $oddHour := (math:fmod($startHour, 2) = 0) :)
-   
-	(: Set noAdSegment to true() to disable ads in all segments or :)
-	(: false() to turn them on for those who haven't hidden them :)
-	(: let $noAdSegment := $oddHour :)
-	let $noAdSegment := false()
-	
-	let $showAds :=
-	  if ($noAdSegment)
-	  then false()
-	  else if ($sessionID and $session:show-ads ne "show")
-	  then false()
-	  else true()
-
-	return ($showAds or $forceAds)
 }
 
 define function util:pluralize(
@@ -300,6 +281,7 @@ define function util:buildQueryString(
 	)
 }
 
+(:
 define function util:sanitizeReferQuery(
 	$query as xs:string
 ) as xs:string
@@ -322,6 +304,7 @@ define function util:sanitizeReferQuery(
 			else <term>{ string($term) }</term>
 	return search:constructQueryString($terms)
 }
+:)
 
 define function util:logTime(
 ) as empty()
@@ -763,6 +746,7 @@ define function util:getLatestThreadsIDsInList(
 	return $ids
 }
 
+(:
 define function util:getLatestThreadIDs(
 	$query as element(search),
 	$giveMe as xs:integer
@@ -784,6 +768,7 @@ define function util:getLatestThreadIDs(
 			else xdmp:set($ids, ($ids, $message/@thread-id))
 	return $ids
 }
+:)
 
 define function util:emailDotify(
 	$email as xs:string
