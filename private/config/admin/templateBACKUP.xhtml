@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <head>
+    <title><ml:page-title/></title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="/css/admin.css" rel="stylesheet" type="text/css" media="screen"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jquerytools.org/1.1.2/tiny/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
+    <script type="text/javascript" src="/js/functions.js"></script>
+    <!--[if lte IE 7]>
+		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+		<![endif]-->
+    <script type="text/javascript">
+    <ml:auto-form-scripts/>
+
+//<!--
+if(typeof jQuery != 'undefined') {
+  $(function() {
+
+    // begin “add author” functionality
+    $('input[name=add_author]').replaceWith('<a class="add_remove add_author">+&nbsp;Add author</a>');
+    var removeAuthor = ' <a class="add_remove remove_author">-&nbsp;Remove author</a>';
+    $('a.add_author').click(function() {
+      $(this).parent().before('<div><input name="author[]" type="text" />' + removeAuthor + '</div>');
+        if($('input[name=author\[\]]').length == 2) {
+          $('input[name=author\[\]]:first').after(removeAuthor);
+        }
+      $('a.remove_author').click(function() {
+        $(this).parent().remove();
+        if($('input[name=author\[\]]').length == 1) {
+          $('a.remove_author').remove();
+        }
+      });
+    });
+  });
+}
+//-->
+
+   </script>
+  </head>
+  <body ml:class="">
+		<div id="container">
+			<div id="header">
+				<a href="/" title="Home page"><img src="/images/logo.png" alt="Mark Logic Developer Community" title=""/></a>
+				<ul id="utilnav">
+	  <!--
+	  <li class="skip"><a href="">(skip to content)</a></li>
+	  <li class="signup"><a href="signup.html">Log in</a></li>
+	  <li class="prefs"><a href="">Preferences</a></li>
+    -->
+	</ul>
+        <!--
+				<form action="" method="get">
+	  <fieldset>
+            <legend><label for="s_inp">Search</label></legend>
+            <input id="s_inp" type="text"/>
+            <input type="submit"/>
+          </fieldset>
+	</form>
+  -->
+        <ml:top-nav/>
+			</div>
+			<hr/>
+			<div id="content" ml:class="">
+        <ml:doc-breadcrumbs/>
+				<div id="main">
+					<ml:breadcrumbs/>
+          <ml:page-content/>
+				</div>
+        <!--
+        <div id="sub">
+          <ml:sub-nav/>
+          <ml:widgets/>
+        </div>
+        -->
+			</div>
+			<hr/>
+			<div id="footer">
+				<div id="copyright">Copyright © 2010 Mark Logic Corporation. All rights reserved. | Powered by MarkLogic Server 4.1-2 Standard Edition  | <a href="">Contact Us</a></div>
+			</div>
+		</div>
+	</body>
+</html>

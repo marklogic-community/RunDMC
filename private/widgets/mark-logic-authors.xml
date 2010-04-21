@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <div class="head">
+    <h2>Mark Logic Authors</h2>
+    <!--
+    <a class="more" href="">View all</a>
+    -->
+  </div>
+  <div class="body">
+    <img class="align_left" src="/images/book1.jpg" alt=""/>
+    <h3><a href="">Querying XML</a></h3>
+    <div class="author">by Jim Melton and Stephen Buxton</div>
+
+    <div class="message">Mark Logic Executive Provides Expert Advice on Querying XML in this Best-Selling New Book.</div>
+  </div>
+  <div class="body">
+    <img class="align_left" src="/images/book2.jpg" alt=""/>
+    <h3><a href="">XForms essentials</a></h3>
+    <div class="author">by Micah Dubinko</div>
+    <div class="message">This unique introduction to W3C XForms provides the Web’s most accurate tutorial on XForms.</div>
+
+  </div>
+  <div class="body">
+    <img class="align_left" src="/images/book3.jpg" alt=""/>
+    <h3><a href="">Java Servlet Programming</a></h3>
+    <div class="author">by Jason Hunter</div>
+    <div class="message">Lorem ipsum dolor sit ametconsectetur adipisicing elit.</div>
+  </div>
+  <!--
+  <div class="body">
+    <a class="more" href="">+ Show more</a>
+  </div>
+  -->
+</ml:widget>
