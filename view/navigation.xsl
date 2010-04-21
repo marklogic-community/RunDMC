@@ -4,13 +4,14 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
   <xsl:include href="pre-process-navigation.xsl"/>
 
-  <xsl:variable name="raw-navigation" select="document('/private/config/navigation.xml')"/>
+  <xsl:variable name="raw-navigation" select="u:get-doc('/private/config/navigation.xml')"/>
 
   <xsl:variable name="navigation">
     <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>

@@ -5,6 +5,7 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
+  xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="qp xs ml xdmp">
@@ -26,7 +27,7 @@
 
   <xsl:variable name="content" select="/"/>
 
-  <xsl:variable name="template" select="document('/private/config/template.xhtml')"/>
+  <xsl:variable name="template" select="u:get-doc('/private/config/template.xhtml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 

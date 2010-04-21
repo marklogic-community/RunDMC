@@ -11,5 +11,6 @@
 
   <xdmp:import-module href="../model/data-access.xqy"                 namespace="http://developer.marklogic.com/site/internal"/>
   <xdmp:import-module href="/MarkLogic/appservices/search/search.xqy" namespace="http://marklogic.com/appservices/search"/>
+  <xdmp:import-module href="../lib/util-2.xqy" namespace="http://marklogic.com/rundmc/util"/>
 
 </xsl:stylesheet>

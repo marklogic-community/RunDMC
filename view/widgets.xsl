@@ -5,10 +5,11 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:u                ="http://marklogic.com/rundmc/util"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
-  <xsl:variable name="widget-config"  select="document('/private/config/widgets.xml')"/>
+  <xsl:variable name="widget-config"  select="u:get-doc('/private/config/widgets.xml')"/>
 
   <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
     <xsl:variable name="last-widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]][last()]"/>
