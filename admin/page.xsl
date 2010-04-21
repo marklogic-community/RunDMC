@@ -14,8 +14,8 @@
   <xsl:include href="form.xsl"/>
   <xsl:include href="admin-tag-library.xsl"/>
 
-  <xsl:variable name="template"       select="u:get-doc('/private/config/admin/template.xhtml')"/>
-  <xsl:variable name="raw-navigation" select="u:get-doc('/private/config/admin/navigation.xml')"/>
+  <xsl:variable name="template"       select="u:get-doc('/config/admin/template.xhtml')"/>
+  <xsl:variable name="raw-navigation" select="u:get-doc('/config/admin/navigation.xml')"/>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>
