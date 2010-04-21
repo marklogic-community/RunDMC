@@ -10,6 +10,8 @@ let $path-redir   :=
         substring($path, 1, string-length($path) - 4)
     else if ($path = ("/download", "/downloads")) then
         "/products"
+    else if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
+        "/blog"
     else if ($path = ("/cloudcomputing")) then
         "/products/server-for-ec2"
     else 
@@ -38,4 +40,5 @@ else if (doc-available($doc-url) and
          draft:allow(doc($doc-url)/*))  then concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
 else if (doc-available($doc-url2) and
          draft:allow(doc($doc-url2)/*)) then concat("/controller/redirect.xqy?path=", $path-redir) (: e.g., redirect /news/ to /news :)
-                                        else $orig-url
+else if ($path != $path-redir) then concat("/controller/redirect.xqy?path=", $path-redir) 
+else                                    $orig-url
