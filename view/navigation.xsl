@@ -27,7 +27,7 @@
                                                    $navigation//Article      [$content/Article/@type eq @type],
                                                    $navigation//Announcement [$content/Announcement],
                                                    $navigation//Event        [$content/Event]
-                                                  )"/>
+                                                  )[1]"/>
 
   <xsl:template match="top-nav">
     <ul>
