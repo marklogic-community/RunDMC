@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
+  <title>Veg-o-matic</title>
+  <main-points>
+    <point>Slices, dices</point>
+    <point>Does homework for you</point>
+    <point>Folds your clothes</point>
+    <point>Ok, not really</point>
+  </main-points>
+  <image src="http://i2.cdn.turner.com/money/galleries/2009/fortune/0904/gallery.okeefe_infomercial.fortune/images/veg-o-matic.jpg" alt="ActiveDocument">
+    <caption>Good for you, too!</caption>
+  </image>
+  <read-more>
+    <link href="/matic">TRY IT!</link>
+    <link href="http://code.google.com/p/narthex/">SVN REPOSITORY</link>
+    <link href="#">WATCH SCREENCAST</link>
+  </read-more>
+  
+</feature>

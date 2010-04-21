@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- This document configures the top- and sub-level navigation,
+     including breadcrumb hierarchy.
+--><navigation xmlns="http://developer.marklogic.com/site/internal">
+  <page display="Home" href="/"/>
+  <page display="Code" href="/code">
+    <group display="Open Source Projects">
+      <group display="Tools">
+        <page display="MarkLogic CQ" href="/code/cq"/>
+        <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
+        <page display="XQSync" href="/code/xqsync"/>
+        <page display="AutoLoader" href="/code/AutoLoader"/>
+        <page display="Loader" href="/code/loader"/>
+      </group>
+      <group display="Toolkits">
+        <page display="MarkLogic Toolkit for PowerPoint®" href="/code/marklogic-toolkit-for-powerpoint"/>
+        <page display="MarkLogic Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
+        <page display="MarkLogic Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
+      </group>
+      <group display="Connectors">
+        <page display="MLSQL" href="/code/mlsql"/>
+        <page display="MLJAM" href="/code/mljam"/>
+        <page display="libmlxcc - MarkLogic Connector for C, PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
+        <page display="XDBC: XQuery Database Connectivity (Official and Supported) [Legacy]" href="/code/xdbc"/>
+        <page display="phpxdbc: XDBC Connectivity for PHP" href="/code/phpxdbc"/>
+        <page display="perlxdbc: XDBC Connectivity for Perl" href="/code/perlxdbc"/>
+      </group>
+      <group display="Libraries">
+        <page display="Facebook XQuery Library" href="/code/facebook"/>
+        <page display="Feed" href="/code/feed"/>
+        <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/>
+        <page display="XQuery Commons" href="/code/commons"/>
+        <page display="SOAP Router" href="/code/soaprouter"/>
+        <page display="XQMVC" href="/code/xqmvc"/>
+      </group>
+      <group display="Miscellany">
+        <page display="MarkLogic xmlsh Extension Module" href="/code/marklogic-xmlsh-ext"/>
+        <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
+        <page display="MarkLogic XQuery JSP Tag Library" href="/code/jsp"/>
+        <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
+        <page display="Versi Design Template" href="/code/versi"/>
+        <page display="MarkLogic XQRunner Java XQuery Executor" href="/code/xqrunner"/>
+        <page display="Corb" href="/code/corb"/>
+        <page display="MLJCR - MarkLogic Java Content Repository (JSR-170)" href="/code/mljcr"/>
+        <page display="PerformanceMeters" href="/code/performance-meters"/>
+        <page display="JQEE" href="/code/jqee"/>
+        <page display="RecordLoader" href="/code/recordloader"/>
+        <page display="MarkLogic Performance Monitor" href="/code/MPM"/>
+        <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
+        <page display="jEdit XQuery Plugin" href="/code/jedit"/>
+      </group>
+      <group display="Applications">
+        <page display="MarkLogic XFaqtor" href="/code/xfaqtor"/>
+        <page display="Shakespeare Demo Application" href="/code/bill"/>
+        <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
+      </group>
+    </group>
+    <generic-page display="Licensing" href="/apache-2.0-license"/>
+  </page>
+  <page display="Downloads" href="/products">
+    <group display="MarkLogic Downloads">
+      <group display="MarkLogic Server">
+        <page display="4.1" href="/products/marklogic-server/4.1"/>
+        <page display="4.0" href="/products/marklogic-server/4.0"/>
+      </group>
+      <group display="Connectors and Toolkits">
+        <page display="XCC" href="/products/xcc/4.1"/>
+        <page display="SharePoint" href="/products/sharepoint/1.0"/>
+        <page display="Toolkit for Word" href="/code/marklogic-toolkit-for-word"/>
+        <page display="Toolkit for Excel" href="/code/marklogic-toolkit-for-excel"/>
+        <page display="Toolkit for PowerPoint" href="/code/marklogic-toolkit-for-powerpoint"/>
+      </group>
+      <group display="Cloud Computing">
+        <page display="Server for EC2" href="/products/server-for-ec2"/>
+      </group>
+    </group>
+    <generic-page display="Licensing" href="/licensing"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
+  </page>
+  <page display="Learn" href="/learn" narrow-sidebar="yes">
+    <group display="Document Types">
+      <page display="Getting Started" href="/learn/getting-started">
+        <Article type="Getting Started"/>
+      </page>
+      <page display="Guides" href="/learn/guides">
+        <Article type="Guide"/>
+      </page>
+      <page display="Installation Guides" href="/learn/installation-guides">
+        <Article type="Installation Guide"/>
+      </page>
+      <page display="Release Notes" href="/learn/release-notes">
+        <Article type="Release Notes"/>
+      </page>
+      <page display="Technical Overview" href="/learn/technical-overviews">
+        <Article type="Technical Overview"/>
+      </page>
+      <page display="Tutorials" href="/learn/tutorials">
+        <Article type="Tutorial"/>
+      </page>
+    </group>
+    <!--
+    <group display="Topics">
+      <page display="General" href="/learn/general"/>
+      <group display="MarkLogic Server">
+        <page display="4.2" href="/learn/server42"/>
+        <page display="4.1" href="/learn/server41"/>
+        <page display="4.0" href="/learn/server40"/>
+      </group>
+      <page display="Integration" href="/learn/integration"/>
+      <page display="XML" href="/learn/xml"/>
+      <page display="XQuery" href="/learn/xquery"/>
+    </group>
+    -->
+  </page>
+  <page display="Discuss" href="/discuss">
+    <group display="MarkLogic Mailing Lists">
+      <page display="General Mailing List" href="http://developer.marklogic.com/mailman/listinfo/general"/>
+      <page display="Announcements Mailing List" href="http://developer.marklogic.com/mailman/listinfo/announce"/>
+    </group>
+    <group display="User Group Mailing Lists">
+      <page display="DenMARK — Denver" href="http://developer.marklogic.com/mailman/listinfo/denmark"/>
+      <page display="Mark-UPS — Maryland" href="http://developer.marklogic.com/mailman/listinfo/markups"/>
+      <page display="NOVAMUG — Northern Virginia" href="http://developer.marklogic.com/mailman/listinfo/novamug"/>
+      <page display="NYMUG — New York" href="http://developer.marklogic.com/mailman/listinfo/nymug"/>
+      <page display="MUGFR — France" href="http://developer.marklogic.com/mailman/listinfo/mugfr"/>
+      <page display="BMUG — Boston" href="http://developer.marklogic.com/mailman/listinfo/bmug"/>
+    </group>
+  </page>
+  <page display="Meet" href="/meet">
+    <group display="MarkLogic User Groups">
+      <page display="DenMark — Denver User Group" href="/meet/denmark"/>
+      <page display="Mark-UPS — Maryland User Group" href="/meet/markups"/>
+      <page display="NOVAMUG — Northern Virginia User Group" href="/meet/novamug"/>
+      <page display="NYMUG — New York User Group" href="/meet/nymug"/>
+      <page display="MUGFR — Groupe D'Utilisateurs de France" href="/meet/mugfr"/>
+      <page display="BMUG — Boston User Group" href="/meet/bmug"/>
+    </group>
+    <generic-page display="Organize" href="/meet/organize"/>
+  </page>
+  <page display="Blog" href="/blog" closed="yes">
+    <group display="All Posts">
+      <blog-posts-grouped-by-date/>
+    </group>
+    <group display="Authors" disable-initial-expansion="yes">
+      <blog-posts-grouped-by-author/>
+    </group>
+    <group display="Categories" disable-initial-expansion="yes">
+      <blog-posts-grouped-by-category/>
+    </group>
+  </page>
+  <page display="News &amp; Events" href="/news-and-events">
+    <page display="News" href="/news">
+      <Announcement/>
+    </page>
+    <page display="Events" href="/events">
+      <Event/>
+    </page>
+  </page>
+
+  <page display="Search Results" href="/search" hide="yes"/>
+  <page display="Error" href="/error" hide="yes"/>
+
+</navigation>

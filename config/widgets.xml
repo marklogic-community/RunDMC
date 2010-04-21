@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><widgets xmlns="http://developer.marklogic.com/site/internal">
+
+  <widget href="/widgets/getting-started.xml">
+    <page href="/"/>
+  </widget>
+
+  <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
+    <page href="/"/>
+  </widget>
+
+  <!--
+  <widget href="/widgets/static-mockups/recent-blog-posts.xml">
+  -->
+  <!--
+  <widget xslt="recent-blog-posts.xsl">
+  -->
+  <widget xquery="recent-blog-posts.xqy">
+    <page href="/"/>
+    <page href="/news-and-events"/>
+    <page href="/news"/>
+    <page href="/events"/>
+  </widget>
+
+  <widget href="/widgets/mark-logic-authors.xml">
+    <page href="/"/>
+  </widget>
+
+  <!--
+  <widget href="/widgets/open-source-projects.xml">
+    <page-tree root="/products"/>
+  </widget>
+  -->
+
+  <widget href="/widgets/write-a-tutorial.xml">
+    <page-tree root="/learn"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-mailing-list.xml">
+    <page href="/discuss"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-general-user-group.xml">
+    <page href="/meet"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-denmark.xml">
+    <page href="/meet/denmark"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-markups.xml">
+    <page href="/meet/markups"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-mugfr.xml">
+    <page href="/meet/mugfr"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-bmug.xml">
+    <page href="/meet/bmug"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-novamug.xml">
+    <page href="/meet/novamug"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-nymug.xml">
+    <page href="/meet/nymug"/>
+  </widget>
+
+  <widget href="/widgets/start-a-user-group.xml">
+    <page href="/meet"/>
+  </widget>
+
+  <widget href="/widgets/mark-logic-bloggers.xml">
+    <page href="/blog"/>
+    <Post/>
+  </widget>
+
+ <!--
+  <widget href="/widgets/mark-logic-products.xml">
+    <page-tree root="/code"/>
+  </widget>
+ -->
+
+ <!--
+  <widget feature="/features/geospatial.xml">
+    <page-children parent="/products"/>
+    <Announcement/>
+  </widget>
+ -->
+
+  <widget feature="/features/ml-server.xml">
+    <page-tree root="/learn"/>
+  </widget>
+
+  <widget href="/widgets/experimental-docs.xml">
+    <page-tree root="/learn"/>
+  </widget>
+</widgets>

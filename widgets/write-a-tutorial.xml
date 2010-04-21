@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <div class="head">
+    <h2>Write a Tutorial</h2>
+  </div>
+  <div class="body">
+    <div>Use our Tutorial Template to write your own tutorial. Then upload it here.</div>
+    <div class="download">TEMPLATE <a href=""><img src="images/b_download2.png" alt="Download"/></a></div>
+  </div>
+  <div class="body">
+    <form id="tutorial_upload" action="" method="get">
+      <fieldset>
+        <legend><label for="tu_inp">Upload Tutorial</label></legend>
+        <input id="tu_inp" type="file"/>
+        <input class="submit" type="image" src="/images/b_submit.png"/>
+      </fieldset>
+    </form>
+  </div>
+</ml:widget>

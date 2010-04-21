@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
+  <title>Narthex</title>
+  <main-points>
+    <point>MarkLogic Database Explorer</point>
+  </main-points>
+   <!--
+  <image src="/images/map_home.jpg" alt="ActiveDocument">
+    <caption>ActiveDocument kicks you in the ass.</caption>
+  </image>
+    -->
+  <read-more>
+    <link href="/code/narthex/">READ MORE</link>
+    <link href="http://code.google.com/p/narthex/">SVN REPOSITORY</link>
+    <link href="#">WATCH SCREENCAST</link>
+  </read-more>
+  
+</feature>
