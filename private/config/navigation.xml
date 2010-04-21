@@ -158,5 +158,6 @@
   </page>
 
   <page display="Search Results" href="/search" hide="yes"/>
+  <page display="Error" href="/error" hide="yes"/>
 
 </navigation>
