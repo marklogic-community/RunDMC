@@ -176,8 +176,7 @@ if(typeof jQuery != 'undefined') {
               "aoColumns": [
                   {"sType": "html"},
                   {"sType": "string"},
-                  {"sType": "string"},
-                  {"sType": "date"}
+                  {"sType": "string"}
               ],
               "fnDrawCallback": function() {
                   $(".documentsTable tbody tr").removeClass("alt");

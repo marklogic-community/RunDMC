@@ -537,7 +537,14 @@
         <xsl:text> of </xsl:text>
         -->
         <xsl:value-of select="count($docs)"/>
-        <xsl:text> documents</xsl:text>
+        <xsl:choose>
+            <xsl:when test="count($docs) eq 1">
+                <xsl:text> document</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text> documents</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
       </span>
       <!--
       <form action="" method="get">
@@ -553,17 +560,19 @@
           <col class="col1"/>
           <col class="col2"/>
           <col class="col3"/>
+          <!--
           <col class="col4"/>
+          -->
         </colgroup>
         <thead>
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Document&#160;Type&#160;&#160;&#160;&#160;</th> <!-- nbsp's to prevent overlap with sort arrow -->
-            <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <!--
+            <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <th scope="col">Topic(s)</th>
             -->
-            <th scope="col" class="sort">Date</th>
+            <th scope="col" class="sort">Last updated for</th>
           </tr>
         </thead>
         <tbody>
@@ -589,15 +598,7 @@
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
               <td>
-                <xsl:value-of select="if (server-version) then server-version else '&#8211;'" separator=", "/>
-              </td>
-              <!--
-              <td>
-                <xsl:value-of select="topics/topic/replace(.,' ','&#160;')" separator=", "/>
-              </td>
-              -->
-              <td>
-                <xsl:value-of select="created"/>
+                ---
               </td>
             </tr>
           </xsl:template>

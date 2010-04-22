@@ -284,11 +284,12 @@
             </div>
 
             <xsl:if test="versions/version">
+            <h3>Downloads</h3>
             <table class="table4">
               <thead>
                 <tr>
                   <th scope="col">
-                    <xsl:value-of select="name"/>
+                    Download
                   </th>
                   <th class="size" scope="col">MarkLogic Version Needed</th>
                   <!--

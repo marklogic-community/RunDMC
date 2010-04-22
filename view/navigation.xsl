@@ -101,7 +101,7 @@
                   </xsl:template>
 
   <xsl:template match="sub-nav[$content/Article]">
-    <h2>Document TOC</h2>
+    <h2>Table of Contents</h2>
     <ul>
       <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
     </ul>
