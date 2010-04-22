@@ -4,7 +4,7 @@
   </div>
   <div class="body">
     <h3><a href="/code/narthex">Narthex</a></h3>
-    Mark Logic database explorer and <a href="http://atompub.org/">AtomPub</a> interface.
+    Mark Logic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
   </div>
   <div class="body">
     <h3><a href="/code/active-document">ActiveDocument</a></h3>
