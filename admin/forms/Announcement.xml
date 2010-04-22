@@ -17,7 +17,8 @@
     <last-updated/>
     <date form:label="Date"/>
     <abstract form:label="Abstract (optional)"
-              form:type="textarea"/>
+              form:type="textarea"
+              form:lines="4"/>
     <body form:label="Body"
           form:type="textarea"/>
   </form:fieldset>

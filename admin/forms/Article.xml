@@ -17,7 +17,8 @@
       <topic form:label="Topic" form:repeating="yes"/>
     </topics>
     <abstract form:label="Abstract (optional)"
-              form:type="textarea"/>
+              form:type="textarea"
+              form:lines="4"/>
     <body form:label="Body"
           form:type="textarea"/>
     <external-link href="" label:href="External link instead (body must be empty)"/>
