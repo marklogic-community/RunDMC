@@ -29,9 +29,11 @@
     <page-tree root="/products"/>
   </widget>
 
+  <!--
   <widget href="/widgets/write-a-tutorial.xml">
     <page-tree root="/learn"/>
   </widget>
+  -->
 
   <widget href="/widgets/subscribe-to-mailing-list.xml">
     <page href="/discuss"/>
@@ -85,13 +87,20 @@
     <page-children parent="/products"/>
     <Announcement/>
   </widget>
- -->
 
   <widget feature="/features/ml-server.xml">
     <page-tree root="/learn"/>
   </widget>
 
+ -->
+
+  <widget xquery="training-calendar.xqy"> 
+    <page href="/learn"/>
+  </widget>
+
+  <!-- Leave this one last -->
   <widget href="/widgets/experimental-docs.xml">
     <page-tree root="/learn"/>
   </widget>
+
 </widgets>

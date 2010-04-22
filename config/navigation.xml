@@ -79,9 +79,6 @@
   </page>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
-      <page display="Getting Started" href="/learn/getting-started">
-        <Article type="Getting Started"/>
-      </page>
       <page display="Guides" href="/learn/guides">
         <Article type="Guide"/>
       </page>
@@ -91,26 +88,10 @@
       <page display="Release Notes" href="/learn/release-notes">
         <Article type="Release Notes"/>
       </page>
-      <page display="Technical Overview" href="/learn/technical-overviews">
-        <Article type="Technical Overview"/>
-      </page>
       <page display="Tutorials" href="/learn/tutorials">
         <Article type="Tutorial"/>
       </page>
     </group>
-    <!--
-    <group display="Topics">
-      <page display="General" href="/learn/general"/>
-      <group display="MarkLogic Server">
-        <page display="4.2" href="/learn/server42"/>
-        <page display="4.1" href="/learn/server41"/>
-        <page display="4.0" href="/learn/server40"/>
-      </group>
-      <page display="Integration" href="/learn/integration"/>
-      <page display="XML" href="/learn/xml"/>
-      <page display="XQuery" href="/learn/xquery"/>
-    </group>
-    -->
   </page>
   <page display="Discuss" href="/discuss">
     <group display="MarkLogic Mailing Lists">
