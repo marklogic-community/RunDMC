@@ -25,11 +25,9 @@
     <page href="/"/>
   </widget>
 
-  <!--
   <widget href="/widgets/open-source-projects.xml">
     <page-tree root="/products"/>
   </widget>
-  -->
 
   <widget href="/widgets/write-a-tutorial.xml">
     <page-tree root="/learn"/>
