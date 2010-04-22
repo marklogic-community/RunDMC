@@ -447,7 +447,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #main .table1 thead th:first-child, #main .table4 thead th:first-child {background-position: left top;}
 #main .table1 thead th.size {width: 60px;}
-#main .table4 thead th:first-child {width:170px;}
+#main .table4 thead th:first-child {width:200px;}
 #main .table1 thead th.last, #main .table4 thead th.last {
 	background-position: right top;
 	width: 85px;
@@ -508,6 +508,9 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	text-transform: uppercase;
 	margin: 2em 0;
 	clear: both;
+}
+.repo {
+    font-size: 1em;
 }
 table + .action {
 	border-top-color: #999;

@@ -27,7 +27,7 @@
 
   <xsl:variable name="content" select="/"/>
 
-  <xsl:variable name="template" select="u:get-doc('/private/config/template.xhtml')"/>
+  <xsl:variable name="template" select="u:get-doc('/config/template.xhtml')"/>
 
   <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 
@@ -277,11 +277,13 @@
               <xsl:value-of select="name"/>
             </h2>
             <xsl:apply-templates select="description/node()"/>
-            <div class="action">
+            <div class="action repo">
               <a href="{versions/@get-involved-href}">
                 Browse <xsl:value-of select="versions/@vcs-type"/> repository
               </a>
             </div>
+
+            <xsl:if test="versions/version">
             <table class="table4">
               <thead>
                 <tr>
@@ -298,6 +300,7 @@
                 <xsl:apply-templates mode="project-version" select="versions/version"/>
               </tbody>
             </table>
+            </xsl:if>
             <!--
             <div class="action">
               <a href="{contributors/@href}">Contributors</a>
