@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="head">
-    <h2>Recent Open Source Projects</h2>
+    <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
-    <h3><a href="">Mark Logic CQ</a></h3>
-    <p>CQ is a web-based XQuery tool, which allow developers to write ad hoc queries without managing .xqy files. Leveraging the web browser’s built-in XML tree view, html view, and JavaScript engine, CQ is almost an IDE.</p>
+    <h3><a href="/code/narthex">Narthex</a></h3>
+    Mark Logic database explorer and <a href="http://atompub.org/">AtomPub</a> interface.
   </div>
   <div class="body">
-    <h3><a href="">MarkLogic JSP Tag Library</a></h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+    <h3><a href="/code/active-document">ActiveDocument</a></h3>
+    Mark Logic Ruby connector for search application.
   </div>
   <div class="body">
-    <h3><a href="">Mark Logic Lorem Ipsum</a></h3>
-    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</div>
+    <h3><a href="/code/rundmc">RunDMC</a></h3>
+    Sample XSLT/XQuery application used to run this site.
   </div>
   <div class="body">
-    <a class="more" href="">View all &gt;</a>
+    <a class="more" href="/code">View all &gt;</a>
   </div>
+
 </ml:widget>
