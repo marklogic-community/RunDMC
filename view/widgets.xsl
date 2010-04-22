@@ -11,7 +11,7 @@
 
   <xdmp:import-module href="../lib/util-2.xqy" namespace="http://marklogic.com/rundmc/util"/>
 
-  <xsl:variable name="widget-config"  select="u:get-doc('/private/config/widgets.xml')"/>
+  <xsl:variable name="widget-config"  select="u:get-doc('/config/widgets.xml')"/>
 
   <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
     <xsl:variable name="last-widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]][last()]"/>
