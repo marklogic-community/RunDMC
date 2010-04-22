@@ -253,6 +253,7 @@
               <xsl:text>Last updated </xsl:text>
               <xsl:value-of select="last-updated"/>
             </div>
+            <br/>
             <xsl:apply-templates select="body/node()"/>
           </xsl:template>
 
