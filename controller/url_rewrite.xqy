@@ -1,6 +1,10 @@
 import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
        at "../model/filter-drafts.xqy";
 
+(:
+TODO: redir /code/#proj to /code/proj
+TODO: redir /code#proj to /code/proj
+:)
 let $path            := xdmp:get-request-path()  (: E.g., "/news" :)
 
 let $path-redir   := 
