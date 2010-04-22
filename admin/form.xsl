@@ -117,7 +117,7 @@
   </xsl:template>
 
           <xsl:template mode="generate-form" match="*">
-            <form class="adminform" id="codeedit" action="" method="get" enctype="application/x-www-form-urlencoded">
+            <form class="adminform" action="" method="get" enctype="application/x-www-form-urlencoded">
               <!--
               <input type="submit" name="add" value="Add new" />
               -->
@@ -292,7 +292,7 @@
                                       <textarea id ="{form:field-name(.)}_{generate-id()}"
                                                 name="{form:field-name(.)}"
                                                 cols="30"
-                                                rows="5">
+                                                rows="{if (@form:lines) then @form:lines else 11}">
                                         <xsl:apply-templates mode="class-att" select="."/>
                                       </textarea>
                                   </xsl:template>

@@ -157,6 +157,7 @@ form .action input {margin-left: 5px;}
 }
 
 #codeedit a[rel] {text-decoration: none;}
+/*
 #codeedit textarea {
 	margin: 8px 0 8px 112px;
 	width: 700px;
@@ -164,6 +165,19 @@ form .action input {margin-left: 5px;}
 	border-color: #CCC;
 	font: normal 1em Verdana, Arial, Helvetica, Sans-serif;
 }
+*/
+.adminform textarea {
+	margin: 8px 0 8px 112px;
+	width: 700px;
+  /*
+	height: 175px;
+  */
+	border-color: #CCC;
+	font: normal 1em Verdana, Arial, Helvetica, Sans-serif;
+}
+
+
+
 #ce_link {border-color: #CCC;}
 .add_remove {
 	border: none;

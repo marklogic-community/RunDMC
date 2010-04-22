@@ -16,7 +16,8 @@
     <description form:label="Description"
                  form:type="textarea"/>
     <short-description form:label="Short Description"
-                       form:type="textarea"/>
+                       form:type="textarea"
+                       form:lines="2"/>
   </form:fieldset>
   <versions><!-- get-involved-href="">-->
     <version href="http://foo.com"           label:href          ="Link"
