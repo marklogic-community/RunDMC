@@ -42,8 +42,9 @@
         <page display="Corb" href="/code/corb"/>
         <page display="MLJCR - MarkLogic Java Content Repository (JSR-170)" href="/code/mljcr"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
+        <!--
         <page display="JQEE" href="/code/jqee"/>
-        <page display="MarkLogic Performance Monitor" href="/code/MPM"/>
+        -->
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
@@ -63,8 +64,8 @@
         <page display="4.0" href="/products/marklogic-server/4.0"/>
       </group>
       <group display="Connectors and Toolkits">
-        <page display="XCC" href="/products/xcc/4.1"/>
-        <page display="SharePoint" href="/products/sharepoint/1.0"/>
+        <page display="XCC Java/.NET Connectors" href="/products/xcc/4.1"/>
+        <page display="SharePoint Connector" href="/products/sharepoint/1.0"/>
         <page display="Toolkit for Word" href="/code/marklogic-toolkit-for-word"/>
         <page display="Toolkit for Excel" href="/code/marklogic-toolkit-for-excel"/>
         <page display="Toolkit for PowerPoint" href="/code/marklogic-toolkit-for-powerpoint"/>
