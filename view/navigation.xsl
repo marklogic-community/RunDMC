@@ -11,7 +11,7 @@
 
   <xsl:include href="pre-process-navigation.xsl"/>
 
-  <xsl:variable name="raw-navigation" select="u:get-doc('/private/config/navigation.xml')"/>
+  <xsl:variable name="raw-navigation" select="u:get-doc('/config/navigation.xml')"/>
 
   <xsl:variable name="navigation">
     <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>
