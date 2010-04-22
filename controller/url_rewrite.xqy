@@ -4,6 +4,39 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
 (:
 TODO: redir /code/#proj to /code/proj
 TODO: redir /code#proj to /code/proj
+
+/howto/tutorials/2004-07-jsptags.xqy /learn/jsp
+/howto/tutorials/2004-09-cisapache.xqy
+/howto/tutorials/2004-09-dates.xqy
+/howto/tutorials/2005-01-stylusstudio.xqy
+/howto/tutorials/2006-04-mlsql.xqy
+/howto/tutorials/2006-05-mljam-protocol.xqy
+/howto/tutorials/2006-05-mljam.xqy
+/howto/tutorials/2006-06-oxygen-xml-editor.xqy
+/howto/tutorials/2006-06-recordloader.xqy
+/howto/tutorials/2006-07-performancemeters.xqy
+/howto/tutorials/2006-08-xqsync.xqy
+/howto/tutorials/2006-09-paginated-search.xqy
+/howto/tutorials/2006-09-triggers.xqy
+/howto/tutorials/2007-04-schema.xqy
+/howto/tutorials/2007-08-images.xqy
+/howto/tutorials/2009-01-get-started-apps-2.xqy
+/howto/tutorials/2009-01-get-started-apps.xqy
+/howto/tutorials/2009-07-search-api-walkthrough.xqy
+/howto/tutorials/2009-11-xsltforms-walkthrough.xqy
+
+default.xqy
+/howto/tutorials/technical-overview.xqy
+
+/howto/tutorials/2006-08-xqsync-images
+/howto/tutorials/2006-06-oxygen-images
+/howto/tutorials/2006-05-mljam-images
+/howto/tutorials/2009-01-get-started-apps-images
+/howto/tutorials/2005-01-stylusstudio-images
+/howto/tutorials/2006-04-mlsql-images
+/howto/tutorials/2009-01-get-started-apps-2_files
+/howto/tutorials/2009-07-search-api-walkthrough_files
+/howto/tutorials/2004-09-cisapache_proxy-images
 :)
 let $path            := xdmp:get-request-path()  (: E.g., "/news" :)
 
