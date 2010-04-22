@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>Ruby connector</title>
   <main-points>
-    <point>Fresh code from Clark Richey</point>
-    <point>Object mapper for XML stores</point>
+    <point>Beautiful, simple search apps</point>
     <point>No XQuery required</point>
     <point>Gem available</point>
   </main-points>
