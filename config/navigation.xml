@@ -80,17 +80,17 @@
   </page>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
+      <page display="Installation" href="/learn/installation-guides">
+        <Article type="Installation Guide"/>
+      </page>
       <page display="Guides" href="/learn/guides">
         <Article type="Guide"/>
       </page>
-      <page display="Installation Guides" href="/learn/installation-guides">
-        <Article type="Installation Guide"/>
+      <page display="Tutorials" href="/learn/tutorials">
+        <Article type="Tutorial"/>
       </page>
       <page display="Release Notes" href="/learn/release-notes">
         <Article type="Release Notes"/>
-      </page>
-      <page display="Tutorials" href="/learn/tutorials">
-        <Article type="Tutorial"/>
       </page>
     </group>
     <generic-page display="MarkLogic Server Product Documentation" href="/docs" hide="yes"/>
