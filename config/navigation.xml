@@ -6,10 +6,12 @@
     <group display="Open Source Projects">
       <group display="Tools">
         <page display="MarkLogic CQ" href="/code/cq"/>
+        <page display="Narthex" href="/code/narthex"/>
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
         <page display="XQSync" href="/code/xqsync"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="Loader" href="/code/loader"/>
+        <page display="RecordLoader" href="/code/recordloader"/>
       </group>
       <group display="Toolkits">
         <page display="MarkLogic Toolkit for PowerPoint®" href="/code/marklogic-toolkit-for-powerpoint"/>
@@ -20,9 +22,10 @@
         <page display="MLSQL" href="/code/mlsql"/>
         <page display="MLJAM" href="/code/mljam"/>
         <page display="libmlxcc - MarkLogic Connector for C, PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
-        <page display="XDBC: XQuery Database Connectivity (Official and Supported) [Legacy]" href="/code/xdbc"/>
         <page display="phpxdbc: XDBC Connectivity for PHP" href="/code/phpxdbc"/>
         <page display="perlxdbc: XDBC Connectivity for Perl" href="/code/perlxdbc"/>
+        <page display="MarkLogic XQRunner Java XQuery Executor" href="/code/xqrunner"/>
+        <page display="MarkLogic XQuery JSP Tag Library" href="/code/jsp"/>
       </group>
       <group display="Libraries">
         <page display="Facebook XQuery Library" href="/code/facebook"/>
@@ -33,17 +36,13 @@
         <page display="XQMVC" href="/code/xqmvc"/>
       </group>
       <group display="Miscellany">
-        <page display="MarkLogic xmlsh Extension Module" href="/code/marklogic-xmlsh-ext"/>
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
-        <page display="MarkLogic XQuery JSP Tag Library" href="/code/jsp"/>
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
         <page display="Versi Design Template" href="/code/versi"/>
-        <page display="MarkLogic XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="Corb" href="/code/corb"/>
         <page display="MLJCR - MarkLogic Java Content Repository (JSR-170)" href="/code/mljcr"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
         <page display="JQEE" href="/code/jqee"/>
-        <page display="RecordLoader" href="/code/recordloader"/>
         <page display="MarkLogic Performance Monitor" href="/code/MPM"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
@@ -52,6 +51,7 @@
         <page display="MarkLogic XFaqtor" href="/code/xfaqtor"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
+        <page display="RunDMC" href="/code/rundmc"/>
       </group>
     </group>
     <generic-page display="Licensing" href="/apache-2.0-license"/>
