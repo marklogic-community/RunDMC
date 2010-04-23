@@ -94,7 +94,6 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page href="/docs"/>
     <page href="/news-and-events"/>
   </widget>
 
@@ -103,12 +102,11 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page href="/docs"/>
   </widget>
 
   <!-- Leave this one last -->
   <widget href="/widgets/experimental-docs.xml">
-    <page root="/learn"/>
+    <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
   </widget>
