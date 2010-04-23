@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>Ruby connector</title>
   <main-points>
-    <point>Beautiful, simple search apps</point>
+    <point>Beautifully-coded search apps</point>
     <point>No XQuery required</point>
     <point>Gem available</point>
   </main-points>
