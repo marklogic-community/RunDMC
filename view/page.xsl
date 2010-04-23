@@ -280,7 +280,7 @@
             <xsl:apply-templates select="description/node()"/>
             <div class="action repo">
               <a href="{versions/@get-involved-href}">
-                Browse <xsl:value-of select="versions/@vcs-type"/> repository
+                Browse <xsl:value-of select="versions/@repo"/> repository
               </a>
             </div>
 
