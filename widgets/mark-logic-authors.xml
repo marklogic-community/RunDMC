@@ -6,7 +6,7 @@
     -->
   </div>
   <div class="body">
-    <img class="align_left" src="/images/book1.jpg" alt=""/>
+    <img class="align_left" src="/media/book1.jpg" alt=""/>
     <h3><a href="">Querying XML</a></h3>
     <div class="author">by Jim Melton and Stephen Buxton</div>
 
@@ -23,6 +23,12 @@
     <img class="align_left" src="/images/book3.jpg" alt=""/>
     <h3><a href="">Java Servlet Programming</a></h3>
     <div class="author">by Jason Hunter</div>
+    <div class="message">The best book on Java servlets on the planet.</div>
+  </div>
+  <div class="body">
+    <!-- <img class="align_left" src="/media/book4.jpg" alt=""/> -->
+    <h3><a href="">DocBook, The Definite Guide</a></h3>
+    <div class="author">by Norman Walsh</div>
     <div class="message">Lorem ipsum dolor sit ametconsectetur adipisicing elit.</div>
   </div>
   <!--
