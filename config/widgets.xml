@@ -21,10 +21,6 @@
     <page href="/events"/>
   </widget>
 
-  <widget href="/widgets/mark-logic-authors.xml">
-    <page href="/"/>
-  </widget>
-
   <widget href="/widgets/open-source-projects.xml">
     <page-tree root="/products"/>
   </widget>
@@ -95,6 +91,13 @@
  -->
 
   <widget xquery="training-calendar.xqy"> 
+    <page href="/learn"/>
+    <page href="/docs"/>
+    <page href="/news-and-events"/>
+  </widget>
+
+  <widget href="/widgets/mark-logic-authors.xml">
+    <page href="/"/>
     <page href="/learn"/>
   </widget>
 
