@@ -92,6 +92,8 @@
 
   <widget xquery="training-calendar.xqy"> 
     <page href="/learn"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/tutorials"/>
     <page href="/docs"/>
     <page href="/news-and-events"/>
   </widget>
@@ -99,11 +101,16 @@
   <widget href="/widgets/mark-logic-authors.xml">
     <page href="/"/>
     <page href="/learn"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/tutorials"/>
+    <page href="/docs"/>
   </widget>
 
   <!-- Leave this one last -->
   <widget href="/widgets/experimental-docs.xml">
-    <page-tree root="/learn"/>
+    <page root="/learn"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/tutorials"/>
   </widget>
 
 </widgets>
