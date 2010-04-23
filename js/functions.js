@@ -75,6 +75,21 @@ if(typeof jQuery != 'undefined') {
             });
         });
 
+        $('a.stip[title]').qtip({ 
+            position: { 
+                corner: {
+                    target: 'bottomLeft',
+                    tooltip: 'topLeft'
+                },
+                adjust: {
+                    x: 25,  
+                    y: 7
+                }
+            },
+            style: {
+	            font: '1em Verdana, Arial, Helvetica, Sans-serif'
+            } 
+        })
 
         // overlay functions
         if(jQuery().overlay) {
