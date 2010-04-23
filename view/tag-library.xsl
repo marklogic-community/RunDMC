@@ -529,7 +529,7 @@
   <xsl:template match="document-list">
     <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@server-version), string(@topic))"/>
     <div class="doclist">
-      <h2>All materials and resources</h2>
+      <h2>&#160;</h2>
       <!-- 2.0 feature TODO: add pagination -->
       <span class="amount">
         <!--
@@ -593,6 +593,7 @@
                          else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
+                <i><xsl:value-of select="description"/></i>
               </td>
               <td>
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
