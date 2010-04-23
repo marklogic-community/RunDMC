@@ -1,8 +1,14 @@
 <ml:widget xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="head">
-    <h2>MarkLogic Training Calendar</h2>
+    <h2>Training Calendar<a href="http://www.eventbrite.com/rss/user_list_events/3692137304" 
+        title="Subscribe to upcoming courses"><img src="/images/feed_icon_small.png" alt="RSS" /></a></h2>
   </div>
-<div class="body events_listing" id="events_listing"> {
+<div class="body events_listing" id="events_listing"> 
+  <ul class="more">
+    <li><a href="http://www.marklogic.com/services/training.html">TRAINING HOME &gt;</a></li>
+  </ul>
+  <br/>
+{
 for $ticket at $i 
   in xdmp:tidy(xdmp:http-get("http://mlu.eventbrite.com/") [2]) //xhtml:tr [@class="ticket_row"]
 let $title    := fn:string($ticket//xhtml:h3)
