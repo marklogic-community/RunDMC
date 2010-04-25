@@ -83,7 +83,7 @@
       <page display="Installation" href="/learn/installation-guides">
         <Article type="Installation Guide"/>
       </page>
-      <page display="Docs" href="/learn/guides">
+      <page display="Guides" href="/learn/guides">
         <Article type="Guide"/>
       </page>
       <page display="Tutorials" href="/learn/tutorials">
@@ -93,6 +93,7 @@
         <Article type="Release Notes"/>
       </page>
     </group>
+    <page display="MarkLogic Server Product Documentation" href="/docs" hide="yes"/>
   </page>
   <page display="Discuss" href="/discuss">
     <group display="MarkLogic Mailing Lists">
@@ -141,6 +142,5 @@
 
   <page display="Search Results" href="/search" hide="yes"/>
   <generic-page display="Error" href="/error" hide="yes"/>
-  <generic-page display="MarkLogic Server Product Documentation" href="/docs" hide="yes"/>
 
 </navigation>

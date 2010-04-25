@@ -582,6 +582,45 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="document-table">
+    <xsl:variable name="docs" select="doc"/>
+    <div class="doclist">
+      <h2>&#160;</h2>
+      <span class="amount">
+        <xsl:value-of select="count($docs)"/>
+        <xsl:choose>
+            <xsl:when test="count($docs) eq 1">
+                <xsl:text> document</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text> documents</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+      </span>
+      <table>
+        <colgroup>
+          <col class="col1"/>
+          <col class="col2"/>
+          <col class="col3"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Document Type</th>
+            <th scope="col">Last updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:apply-templates mode="doc-listing-from-uri" select="doc"/>
+        </tbody>
+      </table>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="doc-listing-from-uri" match="doc">
+            <xsl:apply-templates mode="doc-listing" select="document(@href)/Article" />
+          </xsl:template>
+
           <xsl:template mode="doc-listing" match="Article">
             <tr>
               <xsl:if test="position() mod 2 eq 0">
