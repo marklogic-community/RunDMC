@@ -635,7 +635,7 @@ table.table4 + .action {border:0;}
 	border: solid #CCC;
 	border-width: 0 1px;
 }
-.doclist tbody th a, .doclist table.sortable tbody td a {font-weight:bold; color: #333;}
+.doclist tbody th a, .doclist table tbody td a {font-weight:bold; color: #333;}
 .doclist tr.alt th, .doclist tr.alt td {background: #F2F2F2;}
 
 
