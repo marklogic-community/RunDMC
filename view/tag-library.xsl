@@ -13,6 +13,7 @@
   exclude-result-prefixes="xs ml xdmp qp search cts">
 
   <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
+  <xsl:variable name="current-version" select="4.1"/>
 
   <xsl:template match="tabbed-features">
     <div id="special_intro">
@@ -555,7 +556,7 @@
         </div>
       </form>
       -->
-      <table class="sortable documentsTable">
+      <table class="sortable documentsList">
         <colgroup>
           <col class="col1"/>
           <col class="col2"/>
@@ -597,28 +598,63 @@
             </xsl:otherwise>
         </xsl:choose>
       </span>
-      <table>
+      <table class="documentsTable">
         <colgroup>
           <col class="col1"/>
-          <col class="col2"/>
-          <col class="col3"/>
+          <!-- Display last updated only on latest version -->
+          <xsl:if test="not(exists(@version))">
+            <col class="col2"/>
+          </xsl:if>
         </colgroup>
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Document Type</th>
-            <th scope="col">Last updated</th>
+            <!-- Display last updated only on latest version -->
+            <xsl:if test="not(exists(@version))">
+                <th scope="col">Last updated</th>
+            </xsl:if>
           </tr>
         </thead>
         <tbody>
-          <xsl:apply-templates mode="doc-listing-from-uri" select="doc"/>
+          <xsl:apply-templates mode="doc-table-listing" select="doc"/>
         </tbody>
       </table>
     </div>
   </xsl:template>
 
-          <xsl:template mode="doc-listing-from-uri" match="doc">
-            <xsl:apply-templates mode="doc-listing" select="document(@href)/Article" />
+          <xsl:template mode="doc-table-listing" match="doc">
+              <xsl:variable name="version" select="string(../@version)" />
+              <xsl:apply-templates mode="doc-table-entry" select="document(@path)/Article">
+                <xsl:with-param name="version" select="$version" />
+              </xsl:apply-templates>
+          </xsl:template>
+
+          <xsl:template mode="doc-table-entry" match="Article">
+            <xsl:param name="version" />
+            <tr>
+              <xsl:if test="position() mod 2 eq 0">
+                <xsl:attribute name="class">alt</xsl:attribute>
+              </xsl:if>
+              <td>
+                <a href="{replace(
+                            if (external-link/@href)
+                                then external-link/@href
+                                else ml:external-uri(.), 
+                            '4.1', 
+                            if (string($version)) then string($version) else '4.1' )
+                        }">
+                  <xsl:value-of select="title"/>
+                </a>
+                <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
+              </td>
+        
+              <!-- Display last updated only on latest version -->
+              <xsl:if test="$version eq ''">
+                <td>
+                    <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
+                </td>
+              </xsl:if>
+            </tr>
           </xsl:template>
 
           <xsl:template mode="doc-listing" match="Article">
@@ -632,7 +668,7 @@
                          else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
-                <i><xsl:value-of select="description"/></i>
+                <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
               </td>
               <td>
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>

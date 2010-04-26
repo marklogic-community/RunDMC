@@ -184,15 +184,27 @@ if(typeof jQuery != 'undefined') {
 
       // begin sortable table functionality
       if(jQuery().dataTable) {
-          $('.documentsTable').dataTable({
+          $('.documentsList').dataTable({
               "bPaginate": false,
               "bFilter": false,
               "bInfo": false,
+              "bSort": true,
               "aoColumns": [
                   {"sType": "html"},
                   {"sType": "string"},
                   {"sType": "string"}
               ],
+              "fnDrawCallback": function() {
+                  $(".documentsList tbody tr").removeClass("alt");
+                  $(".documentsList tbody tr:even").addClass("alt");
+               }
+            });
+
+          $('.documentsTable').dataTable({
+              "bPaginate": false,
+              "bFilter": false,
+              "bInfo": false,
+              "bSort": false,
               "fnDrawCallback": function() {
                   $(".documentsTable tbody tr").removeClass("alt");
                   $(".documentsTable tbody tr:even").addClass("alt");

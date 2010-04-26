@@ -384,7 +384,7 @@
   </xsl:function>
 
   <xsl:function name="ml:external-uri" as="xs:string">
-    <xsl:param name="node" as="node()"/>
+    <xsl:param name="node" as="node()*"/>
     <xsl:variable name="doc-path" select="base-uri($node)"/>
     <xsl:sequence select="if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')"/>
   </xsl:function>
