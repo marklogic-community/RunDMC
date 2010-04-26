@@ -10,7 +10,7 @@
     <h3><a href="">Querying XML</a></h3>
     <div class="author">by Jim Melton and Stephen Buxton</div>
 
-    <div class="message">Mark Logic Executive Provides Expert Advice on Querying XML in this Best-Selling New Book.</div>
+    <div class="message">Mark Logic Executive Provides Expert Advice on Querying XML in this Best-Selling Book.</div>
   </div>
   <div class="body">
     <img class="align_left" src="/images/book2.jpg" alt=""/>
@@ -29,7 +29,7 @@
     <!-- <img class="align_left" src="/media/book4.jpg" alt=""/> -->
     <h3><a href="">DocBook, The Definite Guide</a></h3>
     <div class="author">by Norman Walsh</div>
-    <div class="message">Lorem ipsum dolor sit ametconsectetur adipisicing elit.</div>
+    <div class="message">Official documentation for the popular semantic markup language for technical documentation.</div>
   </div>
   <!--
   <div class="body">
