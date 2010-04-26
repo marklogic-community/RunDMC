@@ -109,6 +109,12 @@
     <page href="/docs"/>
   </widget>
 
+  <widget href="/widgets/latest-docs.xml">
+    <page href="/docs/4.0"/>
+    <page href="/docs/3.2"/>
+  </widget>
+
+
   <!-- Leave this one last -->
   <widget href="/widgets/experimental-docs.xml">
     <page href="/learn"/>

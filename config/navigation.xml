@@ -135,5 +135,6 @@
   <page display="Search Results" href="/search" hide="yes"/>
   <generic-page display="Error" href="/error" hide="yes"/>
   <page display="4.0 Product Documentation" href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
+  <page display="3.2 Product Documentation" href="/docs/3.2"  hide="yes" narrow-sidebar="yes"/>
 
 </navigation>

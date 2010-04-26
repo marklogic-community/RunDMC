@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>Narthex</title>
   <main-points>
+    <point>Database explorer and editor</point>
     <point>Browse, search, and edit content</point>
+    <point>Edit XML documents in the browser</point>
+    <point>XML syntax highlighting</point>
     <point>AtomPub interface</point>
-    <point>Remove documents</point>
-    <point>Browse all documents or by collection</point>
-    <point>Full-text search over all documents or by collection</point>
-    <point>Update document XML (syntax highlighting in the browser)</point>
-    <point>Update document properties and metadata (permissions, collections, etc.)</point>
   </main-points>
   <image src="/media/9thImpDoorNarthex.jpg" alt="Narthex">
     <caption>A beautiful entrance to MarkLogic databases.</caption>

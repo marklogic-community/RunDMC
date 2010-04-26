@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <div class="head">
+    <b>Latest docs</b>
+    <br/>
+    <br/>
+    <a target="_blank" href="/docs">MarkLogic Server 4.1</a>
+    <br/>
+  </div>
+  <br/>
+</ml:widget>
+
