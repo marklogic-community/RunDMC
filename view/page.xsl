@@ -171,7 +171,7 @@
                     </form>
                   </xsl:template>
 
-                          <xsl:template mode="blog-post" match="Post">
+                          <xsl:template mode="blog-post paginated-list-item" match="Post">
                             <div class="post">
                               <h2>
                                 <xsl:apply-templates select="title/node()"/>

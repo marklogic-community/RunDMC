@@ -25,17 +25,9 @@ declare variable $projects-by-name := for $p in $Projects
                                       order by $p/name
                                       return $p;
 
-declare variable $total-blog-count := fn:count($Posts);
-
 declare variable $posts-by-date := for $p in $Posts
                                    order by $p/created descending
                                    return $p;
-
-        declare function blog-posts($start as xs:integer, $count as xs:integer)
-        {
-            $posts-by-date[fn:position() ge $start
-                       and fn:position() lt ($start + $count)]
-        };
 
         declare function comments-for-post($post as xs:string)
         {
@@ -43,6 +35,31 @@ declare variable $posts-by-date := for $p in $Posts
           order by $c/created
           return $c
         };
+
+
+
+declare function list-segment-of-docs($start as xs:integer, $count as xs:integer, $type as xs:string)
+{
+    (: TODO: Consider refactoring so we have generic "by-date" and "list-by-type" functions that can sort out the differences :)
+    let $docs := if ($type eq "Announcement") then $announcements-by-date
+            else if ($type eq "Event"       ) then $events-by-date
+            else if ($type eq "Post"        ) then $posts-by-date
+            else ()
+    return
+      $docs[fn:position() ge $start
+        and fn:position() lt ($start + $count)]
+};
+
+
+declare function total-doc-count($type as xs:string)
+{
+  let $docs := if ($type eq "Announcement") then $Announcements
+          else if ($type eq "Event"       ) then $Events
+          else if ($type eq "Post"        ) then $Posts
+          else ()
+  return
+    fn:count($docs)
+};
 
 
 declare variable $announcements-by-date := for $a in $Announcements
@@ -59,6 +76,7 @@ declare variable $announcements-by-date := for $a in $Announcements
           $announcements-by-date[1]
         };
 
+(: No longer used. Delete this soon...
         declare function recent-announcements($months as xs:integer)
         {
           let $duration := fn:concat('P', $months, 'M'),
@@ -66,6 +84,7 @@ declare variable $announcements-by-date := for $a in $Announcements
           return
             $announcements-by-date[xs:date(date) ge $start-date]
         };
+:)
 
 
 declare variable $events-by-date := for $e in $Events

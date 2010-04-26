@@ -227,49 +227,6 @@
                   </xsl:template>
 
 
-  <xsl:template match="event-list">
-    <xsl:apply-templates mode="event-teaser" select="$ml:future-events-by-date"/>
-  </xsl:template>
-
-          <xsl:template mode="event-teaser" match="Event">
-            <div class="newsitem">
-              <h3>
-                <xsl:apply-templates select="title/node()"/>
-              </h3>
-              <dl>
-                <xsl:apply-templates mode="event-details" select="details/*"/>
-              </dl>
-              <p>
-                <xsl:apply-templates select="description//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
-
-
-  <xsl:template match="announcement-list">
-    <xsl:variable name="announcements" select="ml:recent-announcements(xs:integer(@past-months))"/>
-    <xsl:apply-templates mode="announcement-teaser" select="$announcements"/>
-  </xsl:template>
-
-          <xsl:template mode="announcement-teaser" match="Announcement">
-            <div class="newsitem">
-              <div class="date">
-                <xsl:value-of select="ml:display-date(date)"/>
-              </div>
-              <h3>
-                <xsl:apply-templates select="title/node()"/>
-              </h3>
-              <p>
-                <xsl:apply-templates select="body//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
-
-
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <div class="single">
@@ -680,28 +637,69 @@
           </xsl:template>
 
 
-  <xsl:template match="blog-posts">
-    <xsl:variable name="results-per-page" select="xs:integer(@posts-per-page)"/>
+  <!-- Paginated list for blog posts, events, and news announcements -->
+  <xsl:template match="paginated-list">
+    <xsl:variable name="results-per-page" select="xs:integer(@results-per-page)"/>
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
 
-    <xsl:apply-templates mode="blog-post" select="ml:blog-posts($start, $results-per-page)"/>
+    <xsl:apply-templates mode="paginated-list-item" select="ml:list-segment-of-docs($start, $results-per-page, @type)"/>
 
-    <xsl:if test="$ml:total-blog-count gt ($start + $results-per-page - 1)">
+    <xsl:variable name="page-url">
+      <xsl:apply-templates mode="paginated-page-url" select="."/>
+    </xsl:variable>
+
+    <xsl:if test="ml:total-doc-count(@type) gt ($start + $results-per-page - 1)">
       <div class="olderPosts more">
-        <a href="/blog?p={$page-number + 1}">&lt; Older Entries</a>
+        <a href="{$page-url}?p={$page-number + 1}">&lt; Older Entries</a>
       </div>
     </xsl:if>
     <xsl:if test="$page-number gt 1">
       <div class="newerPosts more">
-        <a href="/blog?p={$page-number - 1}">Newer Entries &gt;</a>
+        <a href="{$page-url}?p={$page-number - 1}">Newer Entries &gt;</a>
       </div>
     </xsl:if>
   </xsl:template>
+
+          <xsl:template mode="paginated-page-url" match="Announcement">/news</xsl:template>
+          <xsl:template mode="paginated-page-url" match="Event"       >/events</xsl:template>
+          <xsl:template mode="paginated-page-url" match="Post"        >/blog</xsl:template>
 
           <xsl:function name="ml:start-index" as="xs:integer">
             <xsl:param name="results-per-page" as="xs:integer"/>
             <xsl:sequence select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
           </xsl:function>
+
+          <xsl:template mode="paginated-list-item" match="Event">
+            <div class="newsitem">
+              <h3>
+                <xsl:apply-templates select="title/node()"/>
+              </h3>
+              <dl>
+                <xsl:apply-templates mode="event-details" select="details/*"/>
+              </dl>
+              <p>
+                <xsl:apply-templates select="description//teaser/node()"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="read-more" select="."/>
+              </p>
+            </div>
+          </xsl:template>
+
+          <xsl:template mode="paginated-list-item" match="Announcement">
+            <div class="newsitem">
+              <div class="date">
+                <xsl:value-of select="ml:display-date(date)"/>
+              </div>
+              <h3>
+                <xsl:apply-templates select="title/node()"/>
+              </h3>
+              <p>
+                <xsl:apply-templates select="body//teaser/node()"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="read-more" select="."/>
+              </p>
+            </div>
+          </xsl:template>
 
 
   <xsl:template match="search-results">
