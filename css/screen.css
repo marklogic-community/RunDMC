@@ -305,7 +305,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #special_intro, .special_img {
 	background: url(../images/bg_special_intro_index_bottom.png) bottom left no-repeat;
-	padding-bottom: 7px;
+	padding-bottom: 6px;
 	width: 517px;
 	margin: 1em 0;
 }
@@ -1043,3 +1043,7 @@ table.table4 + .action {border:0;}
 
 div.olderPosts {float:left; margin-bottom:1em;}
 div.newerPosts {float:right; margin-bottom:1em;}
+
+.doc-desc {
+    padding-left: 25px;
+}
