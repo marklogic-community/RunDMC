@@ -84,6 +84,10 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (doc-available($doc-url) and draft:allow(doc($doc-url)/*)) then 
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
     (: Support / as /index.xml; TBD other directory indexes :)
+    else if ($path = ("/blog/atom.xml")) then
+        "/lib/atom.xqy?feed=blog"
+    else if ($path = ("/newsandevents/atom.xml", "/news/atom.xml", "/events/atom.xml")) then
+        "/lib/atom.xqy?feed=newsandevents"
     else
         $orig-url
 };
