@@ -38,11 +38,11 @@ then
     <feed xmlns="http://www.w3.org/2005/Atom">
     	<title>MarkLogic Developer Community Blog</title>
     	<subtitle></subtitle>
-    	<link href="http://developer.marklogic.com/blog/atom.xml?feed=blog" rel="self"/>
+    	<link href="http://developer.marklogic.com/blog/atom.xml" rel="self"/>
     	<updated>{ current-dateTime() }</updated>
     	<id></id>
     
-    	<generator uri="http://developer.marklogic.com/blog/atom.xml?feed=blog" version="1.0">MarkLogic Developer Community</generator>
+    	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Developer Community</generator>
     	<icon>http://developer.marklogic.com/favicon.ico</icon>
     	<logo>http://developer.marklogic.com/images/logo.gif</logo>
     	{
@@ -84,11 +84,11 @@ then
     <feed xmlns="http://www.w3.org/2005/Atom">
         <title>MarkLogic Developer News and Events</title>
         <subtitle></subtitle>
-        <link href="http://developer.marklogic.com/blog/atom.xml" rel="self"/>
+        <link href="http://developer.marklogic.com/newsandevents/atom.xml" rel="self"/>
         <updated>{ current-dateTime() }</updated>
         <id></id>
     
-        <generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Developer Community</generator>
+        <generator uri="http://developer.marklogic.com/newsandevents/atom.xml" version="1.0">MarkLogic Developer Community</generator>
         <icon>http://developer.marklogic.com/favicon.ico</icon>
         <logo>http://developer.marklogic.com/images/logo.gif</logo>
         {
