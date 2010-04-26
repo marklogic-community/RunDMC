@@ -168,7 +168,7 @@
 
   <xsl:template match="product-documentation">
     <table class="table2">
-      <caption>Documentation</caption>
+      <h2>Documentation</h2>
       <tbody>
         <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
       </tbody>
