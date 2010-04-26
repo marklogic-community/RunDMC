@@ -19,7 +19,7 @@
                        form:type="textarea"
                        form:lines="2"/>
   </form:fieldset>
-  <versions><!-- get-involved-href="">-->
+  <versions repo="" label:repo="Repository URL"><!-- get-involved-href="">-->
     <version href="http://foo.com"           label:href          ="Link"
              server-version="4.0" label:server-version="Version needed"
              date="2010-02-01"           label:date          ="Date"
