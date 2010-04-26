@@ -17,26 +17,37 @@
     <script type="text/javascript" src="/js/functions.js"></script>
     <!--[if lte IE 7]>
         <link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
-        <![endif]-->
+    <![endif]-->
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-6638631-1']);
+        _gaq.push(['_trackPageview']);
+        
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+     </script>
   </head>
   <body ml:class="">
         <div id="container">
             <div id="header">
                 <a href="/" title="Home page"><img src="/images/logo.png" alt="Mark Logic Developer Community" title=""/></a>
                 <ul id="utilnav">
-	  <!--
+      <!--
       <li class="skip"><a href="">(skip to content)</a></li>
       <li class="signup"><a href="signup.html">Log in</a></li>
       <li class="prefs"><a href="">Preferences</a></li>
     -->
-	</ul>
+    </ul>
                 <form action="/search" method="get">
-	  <fieldset>
+      <fieldset>
                             <legend><label for="s_inp">Search</label></legend>
                             <input name="q" id="s_inp" type="text" ml:value=""/>
                             <input type="submit"/>
                     </fieldset>
-	</form>
+    </form>
                 <ml:top-nav/>
             </div>
             <hr/>
