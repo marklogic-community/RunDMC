@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>Narthex</title>
   <main-points>
-    <point>MarkLogic Database Explorer</point>
+    <point>Browse, search, and edit content</point>
+    <point>AtomPub interface</point>
+    <point>Remove documents</point>
+    <point>Browse all documents or by collection</point>
+    <point>Full-text search over all documents or by collection</point>
+    <point>Update document XML (syntax highlighting in the browser)</point>
+    <point>Update document properties and metadata (permissions, collections, etc.)</point>
   </main-points>
-   <!--
-  <image src="/images/map_home.jpg" alt="ActiveDocument">
-    <caption>ActiveDocument kicks you in the ass.</caption>
+  <image src="/media/9thImpDoorNarthex.jpg" alt="Narthex">
+    <caption>A beautiful entrance to MarkLogic databases.</caption>
   </image>
-    -->
   <read-more>
     <link href="/code/narthex/">READ MORE</link>
     <link href="http://code.google.com/p/narthex/">SVN REPOSITORY</link>
+<!--
     <link href="#">WATCH SCREENCAST</link>
+-->
   </read-more>
   
 </feature>
