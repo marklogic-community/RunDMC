@@ -91,6 +91,7 @@
  -->
 
   <widget xquery="training-calendar.xqy"> 
+    <page href="/docs"/>
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
@@ -100,8 +101,12 @@
   <widget href="/widgets/mark-logic-authors.xml">
     <page href="/"/>
     <page href="/learn"/>
-    <page href="/learn/guides"/>
+    <page href="/docs"/>
     <page href="/learn/tutorials"/>
+  </widget>
+
+  <widget href="/widgets/old-docs.xml">
+    <page href="/docs"/>
   </widget>
 
   <!-- Leave this one last -->
@@ -109,6 +114,7 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
+    <page href="/docs"/>
   </widget>
 
 </widgets>
