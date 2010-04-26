@@ -321,9 +321,11 @@
                         </a>
                       </td>
                       <td>
-                        <xsl:text>MarkLogic Server </xsl:text>
-                        <xsl:value-of select="@server-version"/>
-                        <xsl:text> or later</xsl:text>
+                        <xsl:if test="@server-version">
+                            <xsl:text>MarkLogic Server </xsl:text>
+                            <xsl:value-of select="@server-version"/>
+                            <xsl:text> or later</xsl:text>
+                        </xsl:if>
                       </td>
                       <!--
                       <td>
