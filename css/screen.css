@@ -1047,3 +1047,16 @@ div.newerPosts {float:right; margin-bottom:1em;}
 .doc-desc {
     padding-left: 25px;
 }
+
+
+table#license-matrix th {
+	background-color:#ECEFDA;
+	color:#333333;
+}
+
+table#license-matrix th, table#license-matrix td {
+	border:1px solid #C7D08D;
+	font-family:Verdana,sans-serif;
+	padding:0.5em;
+	text-align:left;
+}
