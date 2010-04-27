@@ -8,17 +8,11 @@
     <page href="/"/>
   </widget>
 
-  <!--
-  <widget href="/widgets/static-mockups/recent-blog-posts.xml">
-  -->
-  <!--
-  <widget xslt="recent-blog-posts.xsl">
-  -->
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
-    <page href="/news-and-events"/>
-    <page href="/news"/>
-    <page href="/events"/>
+    <page-tree href="/news-and-events"/>
+    <page-tree href="/news"/>
+    <page-tree href="/events"/>
   </widget>
 
   <widget href="/widgets/open-source-projects.xml">
@@ -35,9 +29,11 @@
     <page href="/discuss"/>
   </widget>
 
+  <!--
   <widget href="/widgets/subscribe-to-general-user-group.xml">
     <page href="/meet"/>
   </widget>
+  -->
 
   <widget href="/widgets/subscribe-to-denmark.xml">
     <page href="/meet/denmark"/>
@@ -95,7 +91,7 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page href="/news-and-events"/>
+    <page-tree href="/news-and-events"/>
   </widget>
 
   <widget href="/widgets/mark-logic-authors.xml">
