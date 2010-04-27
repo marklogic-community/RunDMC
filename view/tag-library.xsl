@@ -334,8 +334,7 @@
               <xsl:apply-templates select="title/node()"/>
             </h3>
             <p>
-              <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
-                                                                          else body/xhtml:p[1]/node()"/>
+              <xsl:apply-templates select="body//teaser/node()"/>
               <xsl:if test="$read-more-inline">
                 <xsl:text> </xsl:text>
                 <xsl:apply-templates mode="read-more" select="."/>
@@ -358,7 +357,7 @@
               <xsl:apply-templates select="title/node()"/>
             </h3>
             <xsl:if test="not($suppress-description)">
-              <xsl:apply-templates select="description/node()"/>
+              <xsl:apply-templates select="description//teaser/node()"/>
             </xsl:if>
             <dl>
               <xsl:apply-templates mode="event-details" select="details/*"/>
@@ -412,20 +411,20 @@
                           <xsl:template mode="event-detail-name" match="presenter">Presenter</xsl:template>
 
 
-  <xsl:template match="article-teaser">
-    <xsl:apply-templates mode="article-teaser" select="document(@href)/Article">
+  <xsl:template match="article-abstract">
+    <xsl:apply-templates mode="article-abstract" select="document(@href)/Article">
       <xsl:with-param name="heading" select="@heading"/>
       <xsl:with-param name="suppress-byline" select="true()"/>
     </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template match="recent-article">
-    <xsl:apply-templates mode="article-teaser" select="ml:latest-article(string(@type))">
+    <xsl:apply-templates mode="article-abstract" select="ml:latest-article(string(@type))">
       <xsl:with-param name="heading" select="@heading"/>
     </xsl:apply-templates>
   </xsl:template>
 
-          <xsl:template mode="article-teaser" match="Article">
+          <xsl:template mode="article-abstract" match="Article">
             <xsl:param name="heading" as="xs:string"/>
             <xsl:param name="suppress-byline"/>
             <div class="single">

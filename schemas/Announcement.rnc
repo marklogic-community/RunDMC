@@ -11,6 +11,5 @@ element Announcement {
   element created      { xsd:dateTime },
   element last-updated { xsd:dateTime },
   element date         { xsd:date },
-  element abstract     { mixedContent }?,
   element body { mixedContent }
 }
