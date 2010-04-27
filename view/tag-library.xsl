@@ -318,7 +318,7 @@
 
 
   <xsl:template match="upcoming-user-group-events">
-    <xsl:variable name="events" select="ml:next-two-user-group-events(string(@group))"/>
+    <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
     <div class="double">
       <h2>Upcoming Events</h2>
       <a class="more" href="/events">All events&#160;></a>
@@ -336,7 +336,7 @@
 
   <xsl:template match="recent-news-and-events">
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
-    <xsl:variable name="event"        select="ml:next-event()"/>
+    <xsl:variable name="event"        select="ml:most-recent-event()"/>
     <div class="double">
       <div>
         <h2>Recent News</h2>
