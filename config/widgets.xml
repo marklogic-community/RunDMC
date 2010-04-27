@@ -25,9 +25,11 @@
   </widget>
   -->
 
+  <!--
   <widget href="/widgets/subscribe-to-mailing-list.xml">
     <page href="/discuss"/>
   </widget>
+  -->
 
   <!--
   <widget href="/widgets/subscribe-to-general-user-group.xml">
