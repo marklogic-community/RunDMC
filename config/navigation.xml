@@ -26,6 +26,7 @@
         <page display="perlxdbc: XDBC Connectivity for Perl" href="/code/perlxdbc"/>
         <page display="MarkLogic XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="MarkLogic XQuery JSP Tag Library" href="/code/jsp"/>
+        <page display="ActiveDocument" href="/code/active-document"/>
       </group>
       <group display="Libraries">
         <page display="Facebook XQuery Library" href="/code/facebook"/>
@@ -89,26 +90,29 @@
   </page>
   <page display="Discuss" href="/discuss">
     <group display="MarkLogic Mailing Lists">
-      <page display="General Mailing List" href="http://developer.marklogic.com/mailman/listinfo/general"/>
-      <page display="Announcements Mailing List" href="http://developer.marklogic.com/mailman/listinfo/announce"/>
+      <page display="General Mailing List" href="/mailman/listinfo/general"/>
+      <page display="Announcements Mailing List" href="/mailman/listinfo/announce"/>
     </group>
     <group display="User Group Mailing Lists">
-      <page display="DenMARK — Denver" href="http://developer.marklogic.com/mailman/listinfo/denmark"/>
-      <page display="Mark-UPS — Maryland" href="http://developer.marklogic.com/mailman/listinfo/markups"/>
-      <page display="NOVAMUG — Northern Virginia" href="http://developer.marklogic.com/mailman/listinfo/novamug"/>
-      <page display="NYMUG — New York" href="http://developer.marklogic.com/mailman/listinfo/nymug"/>
-      <page display="MUGFR — France" href="http://developer.marklogic.com/mailman/listinfo/mugfr"/>
-      <page display="BMUG — Boston" href="http://developer.marklogic.com/mailman/listinfo/bmug"/>
+      <page display="DenMARK — Denver" href="/mailman/listinfo/denmark"/>
+      <page display="Mark-UPS — Maryland" href="/mailman/listinfo/markups"/>
+      <page display="NOVAMUG — Northern Virginia" href="/mailman/listinfo/novamug"/>
+      <page display="NYMUG — New York" href="/mailman/listinfo/nymug"/>
+      <page display="MUGFR - France" href="/mailman/listinfo/mugfr"/>
+      <page display="BMUG — Boston" href="/mailman/listinfo/bmug"/>
     </group>
   </page>
   <page display="Meet" href="/meet">
     <group display="MarkLogic User Groups">
-      <page display="DenMark — Denver User Group" href="/meet/denmark"/>
-      <page display="Mark-UPS — Maryland User Group" href="/meet/markups"/>
-      <page display="NOVAMUG — Northern Virginia User Group" href="/meet/novamug"/>
-      <page display="NYMUG — New York User Group" href="/meet/nymug"/>
-      <page display="MUGFR — Groupe D'Utilisateurs de France" href="/meet/mugfr"/>
-      <page display="BMUG — Boston User Group" href="/meet/bmug"/>
+      <page display="DenMark - Denver User Group" href="/meet/denmark"/>
+      <page display="Mark-UPS - Maryland User Group" href="/meet/markups"/>
+      <page display="NOVAMUG - Northern Virginia User Group" href="/meet/novamug"/>
+      <page display="NYMUG - New York User Group" href="/meet/nymug"/>
+      <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
+        <page display="Français" href="/meet/mugfr/fr"/>
+        <page display="English" href="/meet/mugfr/en"/>
+      </group>
+      <page display="BMUG - Boston User Group" href="/meet/bmug"/>
     </group>
     <generic-page display="Organize" href="/meet/organize"/>
   </page>
