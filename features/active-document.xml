@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
+<?xml version="1.0" encoding="UTF-8"?>
+<feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
   <title>Ruby connector</title>
   <main-points>
-    <point>Beautifully-coded search apps</point>
+    <point>Beautifully-coded apps</point>
     <point>No XQuery required</point>
+    <point><x:a href="http://en.wikipedia.org/wiki/Active_record_pattern">ActiveRecord</x:a>-like API</point>
     <point>Gem available</point>
   </main-points>
   <image src="http://www.ruby-lang.org/images/logo.gif" alt="Ruby"> 
@@ -12,5 +14,6 @@
   <read-more>
     <link href="/code/active-document">READ MORE</link>
     <link href="http://rubygems.org/gems/activedocument">RUBY GEM</link>
+    <link href="http://wiki.github.com/crichey/ActiveDocument/activedocument-monologue">PROJECT WIKI</link>
   </read-more>
 </feature>
