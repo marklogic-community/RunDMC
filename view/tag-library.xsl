@@ -716,11 +716,10 @@
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
           <!-- TODO: evaluate the performance of this approach; it could be bad -->
-          <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.)
-
-                                                   (: Re-enable this line to include URIs starting with /pubs/4.1
-                                                   , collection()[starts-with(base-uri(.),'/pubs/4.1')]/base-uri(.)
-                                                   :)
+          <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.),
+                                                   collection()[starts-with(base-uri(.),'/pubs/4.1/apidocs')
+                                                             or starts-with(base-uri(.),'/pubs/4.1/dotnet')
+                                                             or starts-with(base-uri(.),'/pubs/4.1/javadoc')]/base-uri(.)
                                                  ))"/>
         </additional-query>
       </options>
@@ -781,6 +780,12 @@
               </div>
             </div>
           </xsl:template>
+
+                  <!-- Titles for flat HTML files (API docs usually); this doesn't appear to be working though, presumably because the HTML docs aren't loaded as XML? -->
+                  <xsl:template mode="page-specific-title" match="*:html">
+                    <xsl:value-of select="(//*:title)[1]"/>
+                  </xsl:template>
+
 
                   <xsl:template mode="search-snippet" match="search:match">
                     <span class="snippet">
