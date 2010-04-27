@@ -19,28 +19,37 @@ let $all := concat("http://markmail.org/search/", $search)
 let $doc := xdmp:http-get($url)[2]
 let $first := concat("http://markmail.org/message", string($doc/results/result/url))
 
+let $threads := map:map()
+
 return
 <ml:threads all-threads-href="{$all}" start-thread-href="{$first}" xmlns:ml="http://developer.marklogic.com/site/internal">
 {
 for $result in $doc//result
 let $url := concat("http://markmail.org/message/", encode-for-uri($result/id/text()))
-let $title := string($result/subject)
-let $author := $result/from/text()
-let $list := $result/list/text()
-let $ahref := 
-        if  (matches($author, "@")) then
-            "#"
-        else
-            concat("http://markmail.org/search/?q=", 
-                encode-for-uri(concat('from:"', $author, '" order:date-backward')))
+let $title := replace(string($result/subject), "RE:", "", "i")
+let $title := replace($title, "\[.*\]", "", "i")
 
-let $lhref := concat("http://markmail.org/search/?q=", 
-                encode-for-uri(concat('list:"', $list, '" order:date-backward')))
 return
-  <ml:thread title="{$title}" href="{$url}" date="{$result/date}">
-    <ml:author href="{$ahref}" >{$author}</ml:author>
-    <ml:list href="{$lhref}" >{$result/list/text()}</ml:list>
-    <ml:blurb>{$result/blurb/*/text()}</ml:blurb>
-  </ml:thread>
+    if (map:get($threads, $title)) then
+        ()
+    else
+        let $_ := map:put($threads, $title, <ok/>)
+        let $author := $result/from/text()
+        let $list := $result/list/text()
+        let $ahref := 
+                if  (matches($author, "@")) then
+                    "#"
+                else
+                    concat("http://markmail.org/search/?q=", 
+                        encode-for-uri(concat('from:"', $author, '" order:date-backward')))
+        
+        let $lhref := concat("http://markmail.org/search/?q=", 
+                        encode-for-uri(concat('list:"', $list, '" order:date-backward')))
+        return
+            <ml:thread title="{$title}" href="{$url}" date="{$result/date}">
+                <ml:author href="{$ahref}" >{$author}</ml:author>
+                <ml:list href="{$lhref}" >{$result/list/text()}</ml:list>
+                <ml:blurb>{$result/blurb/*/text()}</ml:blurb>
+            </ml:thread>
 }
 </ml:threads>
