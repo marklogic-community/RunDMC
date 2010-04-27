@@ -227,6 +227,31 @@
                   </xsl:template>
 
 
+  <xsl:template match="top-threads2">
+    <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
+    <div class="single">
+      <h2>Recent Messages</h2>
+      <a class="more" href="{$threads/@all-threads-href}">All messages&#160;></a>
+      <table id="threads" class="table3">
+        <thead>
+          <tr>
+            <th scope="col">
+              <span>Subject</span>
+              <br/>
+              List
+            </th>
+            <th scope="col"><span>Date</span>
+              <br/>
+              Author
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </xsl:template>
+
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <div class="single">
@@ -307,24 +332,6 @@
       </xsl:for-each>
     </div>
   </xsl:template>
-
-
-  <xsl:template match="latest-user-group-announcement">
-    <xsl:variable name="announcement" select="ml:latest-user-group-announcement()"/>
-    <div class="single">
-      <h2>Recent News</h2>
-      <a class="more" href="/news">All news&#160;></a>
-      <xsl:apply-templates mode="announcement-image" select="$announcement/image"/>
-      <xsl:apply-templates mode="news-excerpt" select="$announcement">
-        <xsl:with-param name="suppress-more-link" select="true()" tunnel="yes"/>
-        <xsl:with-param name="read-more-inline" select="true()" tunnel="yes"/>
-      </xsl:apply-templates>
-    </div>
-  </xsl:template>
-
-          <xsl:template mode="announcement-image" match="image">
-            <img class="align_left" src="/images/recent_news.jpg" alt="Recent news"/>
-          </xsl:template>
 
 
   <xsl:template match="recent-news-and-events">
@@ -625,7 +632,7 @@
                          else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
-                <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
+                <br/><div class="doc-desc"><p><xsl:value-of select="description"/></p></div>
               </td>
               <td>
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
