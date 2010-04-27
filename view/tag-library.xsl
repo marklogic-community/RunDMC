@@ -227,31 +227,6 @@
                   </xsl:template>
 
 
-  <xsl:template match="top-threads2">
-    <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
-    <div class="single">
-      <h2>Recent Messages</h2>
-      <a class="more" href="{$threads/@all-threads-href}">All messages&#160;></a>
-      <table id="threads" class="table3">
-        <thead>
-          <tr>
-            <th scope="col">
-              <span>Subject</span>
-              <br/>
-              List
-            </th>
-            <th scope="col"><span>Date</span>
-              <br/>
-              Author
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-    </div>
-  </xsl:template>
-
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <div class="single">
@@ -289,7 +264,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-                <a class="thread" href="{@href}" title="{blurb}">
+                <a class="thread stip" href="{@href}" title="{blurb}">
                   <xsl:value-of select="@title"/>
                 </a>
                 <br/>

@@ -13,7 +13,11 @@ declare variable $lists  as xs:string external;
 (: The results should look something like this; each @href value should be an absolute URL
    which will be used to generate a clickable link :)
 
-let $search := concat($search, " order:date-backward")
+let $listSearch := if ($lists) then
+    concat("list:", string-join((tokenize($lists, " ")), " list:"))
+else 
+    ""
+let $search := concat($search, $listSearch, " order:date-backward")
 let $url := concat("http://markmail.org/results.xqy?q=", $search)
 let $all := concat("http://markmail.org/search/", $search)
 let $doc := xdmp:http-get($url)[2]
