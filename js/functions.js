@@ -213,69 +213,6 @@ if(typeof jQuery != 'undefined') {
         }
         // end sortable table functionality
 
-        if(jQuery().getFeed) {
-            $.getFeed({
-                url: 'http://markmail.org/atom/marklogic',
-                success: function(feed) {
-                    /*$('#result').append('<h2>'
-                        + '<a href="'
-                        + feed.link
-                        + '">'
-                        + feed.title
-                        + '</a>'
-                        + '</h2>');*/
-                  
-                    var html = '';
-                  
-                    var threads = new Array();
-                  
-                    for(var i = 0; i < feed.items.length && threads.length < 5; i++) {
-                  
-                        var item = feed.items[i];
-                        var threadTitle = item.title.replace(/^RE: /i, '');
-                      
-                        if (threads.indexOf(threadTitle) == -1) {
-                            threads.push(threadTitle);
-      
-                            html += '<tr><td>'
-                                + '<a class="thread" href="'
-                                + item.link
-                                + '">'
-                                + threadTitle
-                                + '</a>'
-                                + '</td>';
-      
-                            var formattedDate = item.updated.match(/\d{4}-\d{2}-\d{2}/)[0];
-                            var dt = new Date(item.updated);
-                            var hours = dt.getHours();
-                            var suffix = "am";
-                            if (hours >= 12) {
-                                suffix = "pm";
-                                hours = dt.getHours - 12;
-                            }
-                            if (hours == 0)
-                                hours = 12;
-      
-                            var minutes = dt.getMinutes();
-                            if (minutes < 10)
-                                minutes = "0" + minutes;
-      
-                                var formattedTime = hours + ':' + minutes + suffix;
-      
-                                html += '<td>' +formattedDate + ' ' + formattedTime + '<br />';
-                                html += 'by ' + item.author + '</td>';
-      
-                                /*  html += '<td>?'
-                                 //+ item.author
-                                 + '</td><td>?</td>'; */
-                        }
-                   }
-                  
-                   $('#threads tbody').append(html);
-                }
-            });
-        } //end if
-
       // new functions should be added here
    });
 }
