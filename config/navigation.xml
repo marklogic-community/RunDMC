@@ -10,7 +10,6 @@
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
         <page display="XQSync" href="/code/xqsync"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
-        <page display="Loader" href="/code/loader"/>
         <page display="RecordLoader" href="/code/recordloader"/>
       </group>
       <group display="Toolkits">
@@ -43,7 +42,6 @@
         <page display="Corb" href="/code/corb"/>
         <page display="MLJCR - MarkLogic Java Content Repository (JSR-170)" href="/code/mljcr"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
-        <page display="JQEE" href="/code/jqee"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
@@ -140,5 +138,4 @@
   <generic-page display="Error" href="/error" hide="yes"/>
   <page display="4.0 Product Documentation" href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="3.2 Product Documentation" href="/docs/3.2"  hide="yes" narrow-sidebar="yes"/>
-
 </navigation>
