@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- This document configures the top- and sub-level navigation,
      including breadcrumb hierarchy.
 --><navigation xmlns="http://developer.marklogic.com/site/internal">
-  <page display="Home" href="/"/>
+  <page display="Docs" href="/docs"  narrow-sidebar="yes"/>
+  <page display="Downloads" href="/products">
+    <group display="MarkLogic Downloads">
+      <group display="MarkLogic Server">
+        <page display="4.1" href="/products/marklogic-server/4.1"/>
+        <page display="4.0" href="/products/marklogic-server/4.0"/>
+      </group>
+      <group display="Connectors and Toolkits">
+        <page display="XCC Java/.NET Connectors" href="/products/xcc/4.1"/>
+        <page display="SharePoint Connector" href="/products/sharepoint/1.0"/>
+        <page display="Toolkit for Excel" href="/code/marklogic-toolkit-for-excel"/>
+        <page display="Toolkit for PowerPoint" href="/code/marklogic-toolkit-for-powerpoint"/>
+        <page display="Toolkit for Word" href="/code/marklogic-toolkit-for-word"/>
+      </group>
+      <group display="Cloud Computing">
+        <page display="Server for EC2" href="/products/server-for-ec2"/>
+      </group>
+    </group>
+    <generic-page display="Licensing" href="/licensing"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
+  </page>
   <page display="Code" href="/code">
     <group display="Open Source Projects">
       <group display="Tools">
@@ -13,9 +34,9 @@
         <page display="RecordLoader" href="/code/recordloader"/>
       </group>
       <group display="Toolkits">
-        <page display="MarkLogic Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
-        <page display="MarkLogic Toolkit for PowerPoint®" href="/code/marklogic-toolkit-for-powerpoint"/>
-        <page display="MarkLogic Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
+        <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
+        <page display="MarkLogic Toolkit for PowerPoint®" pref="1" href="/code/marklogic-toolkit-for-powerpoint"/>
+        <page display="MarkLogic Toolkit for Word®" pref="1" href="/code/marklogic-toolkit-for-word"/>
       </group>
       <group display="Connectors">
         <page display="MLSQL" href="/code/mlsql"/>
@@ -54,28 +75,6 @@
     </group>
     <generic-page display="Licensing" href="/apache-2.0-license"/>
   </page>
-  <page display="Downloads" href="/products">
-    <group display="MarkLogic Downloads">
-      <group display="MarkLogic Server">
-        <page display="4.1" href="/products/marklogic-server/4.1"/>
-        <page display="4.0" href="/products/marklogic-server/4.0"/>
-      </group>
-      <group display="Connectors and Toolkits">
-        <page display="XCC Java/.NET Connectors" href="/products/xcc/4.1"/>
-        <page display="SharePoint Connector" href="/products/sharepoint/1.0"/>
-        <page display="Toolkit for Excel" href="/code/marklogic-toolkit-for-excel"/>
-        <page display="Toolkit for PowerPoint" href="/code/marklogic-toolkit-for-powerpoint"/>
-        <page display="Toolkit for Word" href="/code/marklogic-toolkit-for-word"/>
-      </group>
-      <group display="Cloud Computing">
-        <page display="Server for EC2" href="/products/server-for-ec2"/>
-      </group>
-    </group>
-    <generic-page display="Licensing" href="/licensing"/>
-    <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
-    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
-  </page>
-  <page display="Docs" href="/docs"  narrow-sidebar="yes"/>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
         <page display="Product Documentation" href="/docs" />
@@ -136,6 +135,7 @@
   </page>
 
   <page display="Search Results" href="/search" hide="yes"/>
+  <page display="Home" href="/" hide="yes"/>
   <generic-page display="Error" href="/error" hide="yes"/>
   <page display="4.0 Product Documentation" href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="3.2 Product Documentation" href="/docs/3.2"  hide="yes" narrow-sidebar="yes"/>

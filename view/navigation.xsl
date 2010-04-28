@@ -24,7 +24,8 @@
 
        If the URI is found more than once (as may happen with blog posts), only the first one is chosen.
   -->
-  <xsl:variable name="page-in-navigation" select="($navigation//*            [@href eq $external-uri],
+  <xsl:variable name="page-in-navigation" select="($navigation//*    [@pref eq '1'][@href eq $external-uri],
+                                                   $navigation//*            [@href eq $external-uri],
                                                    $navigation//Article      [$content/Article/@type eq @type],
                                                    $navigation//Announcement [$content/Announcement],
                                                    $navigation//Event        [$content/Event]
