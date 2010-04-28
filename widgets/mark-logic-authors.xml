@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="head">
-    <h2>Mark Logic Authors</h2>
+    <h2>MarkLogic Authors</h2>
     <!--
     <a class="more" href="">View all</a>
     -->
@@ -10,7 +10,7 @@
     <h3><a href="">Querying XML</a></h3>
     <div class="author">by Jim Melton and Stephen Buxton</div>
 
-    <div class="message">Mark Logic Executive Provides Expert Advice on Querying XML in this Best-Selling Book.</div>
+    <div class="message">MarkLogic Executive Provides Expert Advice on Querying XML in this Best-Selling Book.</div>
   </div>
   <div class="body">
     <img class="align_left" src="/images/book2.jpg" alt=""/>

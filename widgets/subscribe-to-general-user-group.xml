@@ -3,7 +3,7 @@
     <h2>Join “Usergroups”</h2>
   </div>
   <div class="body">
-    <p>Mark Logic’s General User Group list is for general announcements about Mark Logic user groups such as new user groups announcements, running user groups, participating in virtual events, and cross-regional best practices.</p>
+    <p>MarkLogic’s General User Group list is for general announcements about MarkLogic user groups such as new user groups announcements, running user groups, participating in virtual events, and cross-regional best practices.</p>
 
     <form action="" method="get">
       <div><label for="j_email">E-mail address</label> <input id="j_email" type="text"/></div>
