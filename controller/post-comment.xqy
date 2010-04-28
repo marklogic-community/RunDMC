@@ -22,7 +22,13 @@ let $params  := qp:load-params(),
                     }
 return
   (
+    (: Create the draft comment document :)
     xdmp:document-insert($comment-uri,
                          $comment-doc),
+
+    (: Send an email alert to the moderator :)
+    xdmp:email(doc('/private/comment-moderation-email.xml')/*),
+
+    (: Take the user back to the same page they commented on, and display an alert :)
     xdmp:redirect-response(concat($params/qp:about, '?commented=yes'))
   )
