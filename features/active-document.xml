@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
-  <title>Ruby connector</title>
+  <title>Ruby Connector</title>
   <main-points>
     <point>Beautifully-coded apps</point>
     <point>No XQuery required</point>
