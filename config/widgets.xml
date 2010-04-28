@@ -97,7 +97,10 @@
   </widget>
 
   <widget href="/widgets/mark-logic-authors.xml">
+<!--
+    this page is already pretty long
     <page href="/"/>
+-->
     <page href="/learn"/>
     <page href="/docs"/>
     <page href="/learn/tutorials"/>
