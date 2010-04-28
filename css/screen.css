@@ -1058,3 +1058,11 @@ table#license-matrix th, table#license-matrix td {
 	padding:0.5em;
 	text-align:left;
 }
+
+/* For alerts like "Your comment has been submitted" */
+div.alert {
+  font-weight: bold;
+  text-align: center;
+  color: #F86D07;
+}
+

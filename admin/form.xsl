@@ -152,17 +152,15 @@
 
                   <xsl:template mode="labeled-controls" match="*[@form:group-label]" name="repeated-control-group">
                     <xsl:apply-templates mode="repeated-control-group" select=". | form:repeating-elements(.)">
-                      <xsl:with-param name="primary-element" select="."/>
+                      <xsl:with-param name="primary-element" select="." tunnel="yes"/>
                     </xsl:apply-templates>
                     <xsl:apply-templates mode="add-more-button" select="."/>
                   </xsl:template>
 
                           <xsl:template mode="repeated-control-group" match="*">
-                            <xsl:param name="primary-element"/>
+                            <xsl:param name="primary-element" tunnel="yes"/>
                             <fieldset class="{form:field-name(.)}">
-                              <xsl:apply-templates mode="do-labeled-control" select="@*[form:is-attribute-field(., $primary-element)]">  <!-- | *">--> <!-- sub-elements not supported in repeating groups yet -->
-                                <xsl:with-param name="primary-element" select="$primary-element"/>
-                              </xsl:apply-templates>
+                              <xsl:apply-templates mode="do-labeled-control" select="@*[form:is-attribute-field(., $primary-element)]"/>  <!-- | *">--> <!-- sub-elements not supported in repeating groups yet -->
                             </fieldset>
                           </xsl:template>
 
@@ -178,7 +176,7 @@
                   <xsl:template mode="labeled-controls" match="* [@form:label]
                                                              | @*[form:is-attribute-field(., ..)]" name="control-with-label">
                     <xsl:apply-templates mode="do-labeled-control" select=".">
-                      <xsl:with-param name="primary-element" select="."/>
+                      <xsl:with-param name="primary-element" select="." tunnel="yes"/>
                     </xsl:apply-templates>
                   </xsl:template>
 
@@ -191,16 +189,18 @@
 
 
                           <xsl:template mode="do-labeled-control" match="@* | *">
-                            <xsl:param name="primary-element"/>
+                            <xsl:param name="primary-element" tunnel="yes"/>
                             <div>
                               <label for="{form:field-name(.)}_{generate-id()}">
-                                <xsl:apply-templates mode="control-label" select="$primary-element"/>
+                                <xsl:apply-templates mode="control-label" select="."/>
                               </label>
                               <xsl:variable name="control-nodes" select=". | form:repeating-elements(.)"/>
                               <xsl:apply-templates mode="form-control" select="$control-nodes">
                                 <xsl:with-param name="primary-element" select="." tunnel="yes"/>
                               </xsl:apply-templates>
+                              <!--
                               <xsl:apply-templates mode="add-more-button" select="$primary-element"/>
+                              -->
                             </div>
                           </xsl:template>
 
