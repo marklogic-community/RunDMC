@@ -31,7 +31,7 @@
 
   <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
 
-  <xsl:variable name="site-title" select="'Mark Logic Developer Community'"/>
+  <xsl:variable name="site-title" select="'MarkLogic Developer Community'"/>
 
 
   <!-- Start by processing the template page -->
