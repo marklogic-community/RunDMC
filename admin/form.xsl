@@ -8,21 +8,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:form             ="http://developer.marklogic.com/site/internal/form"
-  xmlns:label            ="http://developer.marklogic.com/site/internal/form/attribute-labels"
-  xmlns:values           ="http://developer.marklogic.com/site/internal/form/values"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
-    <xsl:sequence select="xdmp:document-get(concat(xdmp:modules-root(),
-                                                   '/admin/forms/',
-                                                   $template))"/>
+    <xsl:variable name="raw-form-spec" select="xdmp:document-get(concat(xdmp:modules-root(),
+                                                                        '/admin/forms/',
+                                                                        $template))"/>
+    <xsl:sequence select="xdmp:xslt-invoke('/admin/pre-process-form.xsl', $raw-form-spec)"/>
   </xsl:function>
 
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
-      <xsl:apply-templates mode="form-script" select="form:form-template(@template)//*[@form:repeating eq 'yes']"/>
+      <xsl:variable name="form-spec" select="form:form-template(@template)"/>
+      <xsl:copy-of select="$form-spec"/>
+      <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
 
@@ -39,7 +40,7 @@
                   <xsl:text>").last().after('&lt;fieldset class="</xsl:text>
                   <xsl:value-of select="$name"/>
                   <xsl:text>"></xsl:text>
-                  <xsl:for-each select="@*[not(namespace-uri(.))]"> <!-- FIXME: allow elements and be more precise; maybe call out to function -->
+                  <xsl:for-each select="*">
                     <xsl:text>&lt;div>&lt;label></xsl:text>
                     <xsl:apply-templates mode="control-label" select="."/>
                     <xsl:text>&lt;/label>&lt;input name="</xsl:text>
@@ -68,7 +69,7 @@
             <xsl:variable name="occurrence-test-name">
               <xsl:choose>
                 <xsl:when test="@form:group-label">
-                  <xsl:value-of select="form:field-name(@*[not(namespace-uri(.))][1])"/> <!-- FIXME: allow elements and be more precise; maybe call out to function -->
+                  <xsl:value-of select="form:field-name(*[1])"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="$name"/>
@@ -138,7 +139,7 @@
                   -->
 
                   <xsl:template mode="labeled-controls" match="*">
-                    <xsl:apply-templates mode="#current" select="(@* except (@label:*|@form:*|@values:*)) | *"/>
+                    <xsl:apply-templates mode="#current" select="*"/>
                   </xsl:template>
 
                   <xsl:template mode="labeled-controls" match="form:fieldset">
@@ -150,73 +151,59 @@
                     </fieldset>
                   </xsl:template>
 
-                  <xsl:template mode="labeled-controls" match="*[@form:group-label]" name="repeated-control-group">
-                    <xsl:apply-templates mode="repeated-control-group" select=". | form:repeating-elements(.)">
-                      <xsl:with-param name="primary-element" select="." tunnel="yes"/>
-                    </xsl:apply-templates>
-                    <xsl:apply-templates mode="add-more-button" select="."/>
+                  <xsl:template mode="labeled-controls" match="*[@form:label][not(@form:subsequent-item)]">
+                    <div>
+                      <label for="{form:field-name(.)}_{generate-id()}">
+                        <xsl:apply-templates mode="control-label" select="."/>
+                      </label>
+                      <xsl:apply-templates mode="form-control" select="."/>
+                      <xsl:if test="@form:repeating eq 'yes'">
+                        <!-- Process the repeating controls -->
+                        <xsl:apply-templates mode="form-control" select="following-sibling::*[node-name(.) eq node-name(current())]"/>
+                      </xsl:if>
+                      <xsl:apply-templates mode="add-more-button" select="."/>
+                    </div>
                   </xsl:template>
 
-                          <xsl:template mode="repeated-control-group" match="*">
-                            <xsl:param name="primary-element" tunnel="yes"/>
-                            <fieldset class="{form:field-name(.)}">
-                              <xsl:apply-templates mode="do-labeled-control" select="@*[form:is-attribute-field(., $primary-element)]"/>  <!-- | *">--> <!-- sub-elements not supported in repeating groups yet -->
-                            </fieldset>
-                          </xsl:template>
+                  <xsl:template mode="labeled-controls" match="*[@form:group-label]">
+                    <fieldset class="{form:field-name(.)}">
+                      <xsl:apply-templates mode="#current" select="*"/>
+                    </fieldset>
+                    <xsl:if test="form:is-last-group-in-repeating-group(.)">
+                      <xsl:apply-templates mode="add-more-button" select="."/>
+                    </xsl:if>
+                  </xsl:template>
 
+                          <xsl:function name="form:is-last-group-in-repeating-group" as="xs:boolean">
+                            <xsl:param name="e" as="element()"/>
+                            <xsl:sequence select="($e/@form:repeating eq 'yes') and not(node-name($e) eq node-name($e/following-sibling::*[1]))"/>
+                          </xsl:function>
+
+                          <!--
                           <xsl:function name="form:repeating-elements">
                             <xsl:param name="node"/>
                             <xsl:sequence select="if ($node/@form:repeating eq 'yes')
                                                   then $node/following-sibling::*[name(.) eq name($node)]
                                                   else ()"/>
                           </xsl:function>
-
-                  <xsl:template mode="labeled-controls" match="@*"/>
-
-                  <xsl:template mode="labeled-controls" match="* [@form:label]
-                                                             | @*[form:is-attribute-field(., ..)]" name="control-with-label">
-                    <xsl:apply-templates mode="do-labeled-control" select=".">
-                      <xsl:with-param name="primary-element" select="." tunnel="yes"/>
-                    </xsl:apply-templates>
-                  </xsl:template>
-
-                          <xsl:function name="form:is-attribute-field" as="xs:boolean">
-                            <xsl:param name="att" as="attribute()"/> 
-                            <xsl:param name="elt" as="element()"/>
-                            <xsl:variable name="filtered-by-name" select="$att except $att/../(@form:* | @label:* | @values:*)"/>
-                            <xsl:sequence select="exists($filtered-by-name) and form:field-name($att) = $elt/@label:*/form:field-name(.)"/>
-                          </xsl:function>
+                          -->
 
 
-                          <xsl:template mode="do-labeled-control" match="@* | *">
-                            <xsl:param name="primary-element" tunnel="yes"/>
-                            <div>
-                              <label for="{form:field-name(.)}_{generate-id()}">
-                                <xsl:apply-templates mode="control-label" select="."/>
-                              </label>
-                              <xsl:variable name="control-nodes" select=". | form:repeating-elements(.)"/>
-                              <xsl:apply-templates mode="form-control" select="$control-nodes">
-                                <xsl:with-param name="primary-element" select="." tunnel="yes"/>
-                              </xsl:apply-templates>
-                              <!--
-                              <xsl:apply-templates mode="add-more-button" select="$primary-element"/>
-                              -->
-                            </div>
-                          </xsl:template>
 
-                                  <xsl:template mode="add-more-button" match="@* | *"/>
-                                  <xsl:template mode="add-more-button" match="*[@form:repeating eq 'yes']" name="add-more-button">
+
+                                  <xsl:template mode="add-more-button" match="*"/>
+                                  <xsl:template mode="add-more-button" match="*[@form:repeating eq 'yes']">
                                     <div>
                                       <input class="add_remove" type="submit" name="add_{form:field-name(.)}" value="+ Add {@form:label | @form:group-label}"/>
                                     </div>
                                   </xsl:template>
 
 
-                                  <xsl:template mode="remove-button" match="*">
-                                    <xsl:param name="primary-element" tunnel="yes"/>
+                                  <xsl:template mode="remove-button" match="*"/>
+                                  <xsl:template mode="remove-button" match="*[@form:repeating eq 'yes']">
                                     <a class="add_remove remove_{form:field-name(.)}">
                                       <xsl:text>-&#160;Remove </xsl:text>
-                                      <xsl:value-of select="$primary-element/(@form:label | @form:group-label)"/>
+                                      <xsl:value-of select="@form:label | @form:group-label"/>
                                     </a>
                                   </xsl:template>
 
@@ -225,12 +212,8 @@
                                     <xsl:value-of select="@form:label"/>
                                   </xsl:template>
 
-                                  <xsl:template mode="control-label" match="@*">
-                                    <xsl:value-of select="../@label:*[form:field-name(.) eq form:field-name(current())]"/>
-                                  </xsl:template>
 
-
-                                  <xsl:template mode="form-control" match="@*[exists(form:enumerated-values(.))]">
+                                  <xsl:template mode="form-control" match="*[exists(form:enumerated-values(.))]">
                                     <xsl:variable name="given-value" select="string(.)"/>
                                     <select name="{form:field-name(.)}">
                                       <xsl:for-each select="form:enumerated-values(.)">
@@ -245,39 +228,38 @@
                                   </xsl:template>
 
                                           <xsl:function name="form:enumerated-values" as="xs:string*">
-                                            <xsl:param name="node"/>
-                                            <xsl:variable name="values-att" select="$node/../@values:*[local-name(.) eq local-name($node)]"/>
-                                            <xsl:sequence select="if ($values-att)
-                                                                  then for $v in tokenize($values-att,' ') return translate($v, '_', ' ')
+                                            <xsl:param name="element"/>
+                                            <xsl:sequence select="if ($element/@form:values)
+                                                                  then for $v in tokenize($element/@form:values,' ') return translate($v, '_', ' ')
                                                                   else ()"/>
                                           </xsl:function>
 
 
-                                  <xsl:template mode="form-control" match="* | @*">
-                                    <xsl:param name="primary-element" tunnel="yes"/>
+                                  <xsl:template mode="form-control" match="*">
                                     <xsl:variable name="field-name">
-                                      <xsl:value-of select="form:field-name($primary-element)"/>
-                                      <xsl:apply-templates mode="field-name-suffix" select="$primary-element"/>
+                                      <xsl:value-of select="form:field-name(.)"/>
+                                      <xsl:apply-templates mode="field-name-suffix" select="."/>
                                     </xsl:variable>
                                     <div>
                                       <input id ="{form:field-name(.)}_{generate-id()}"
                                              name="{$field-name}"
                                              type="text"
                                              value="{.}">
-                                        <xsl:apply-templates mode="class-att" select="$primary-element"/>
+                                        <xsl:apply-templates mode="class-att" select="."/>
                                       </input>
-                                      <!-- If we're processing a list of nodes, that means we have repeating elements -->
-                                      <xsl:if test="last() ne 1">
-                                        <xsl:apply-templates mode="remove-button" select="."/>
+                                      <!-- TODO: allow removal for other types of controls, not just text fields -->
+                                      <!-- Only insert one Remove button per group -->
+                                      <xsl:if test="(not(../@form:group-label) and count(../*[node-name(.) eq node-name(current())]) gt 1)
+                                                  or    (../@form:group-label and not(preceding-sibling::*))">
+                                        <xsl:apply-templates mode="remove-button" select="ancestor-or-self::*"/>
                                       </xsl:if>
                                     </div>
                                   </xsl:template>
 
-                                          <xsl:template mode="field-name-suffix" match="@* | *"/>
-                                          <xsl:template mode="field-name-suffix" match="*[   @form:repeating eq 'yes']
-                                                                                     | @*[../@form:repeating eq 'yes']">[]</xsl:template>
+                                          <xsl:template mode="field-name-suffix" match="*"/>
+                                          <xsl:template mode="field-name-suffix" match="*[(.|..)/@form:repeating eq 'yes']">[]</xsl:template>
 
-                                          <xsl:template mode="class-att" match="@* | *"/>
+                                          <xsl:template mode="class-att" match="*"/>
                                           <xsl:template mode="class-att" match="*[@form:wide eq 'yes']">
                                             <xsl:attribute name="class">wideText</xsl:attribute>
                                           </xsl:template>

@@ -11,7 +11,9 @@
     <contributors><!-- href="">-->
       <contributor form:repeating="yes"
                    form:label="Contributor">Joe Bloggs</contributor>
-      <contributor>John Doe</contributor>
+      <contributor form:repeating="yes"
+                   form:label="Contributor"
+                   form:subsequent-item="yes">John Doe</contributor>
     </contributors>
     <description form:label="Description"
                  form:type="textarea"/>
@@ -20,14 +22,17 @@
                        form:lines="2"/>
   </form:fieldset>
   <versions repo="" label:repo="Repository URL"><!-- get-involved-href="">-->
-    <version href="http://foo.com"           label:href          ="Link"
-             server-version="4.0" label:server-version="Version needed"
-             date="2010-02-01"           label:date          ="Date"
+    <version href="http://foo.com" label:href          ="Link"
+             server-version="4.0"  label:server-version="Version needed"
+             date="2010-02-01"     label:date          ="Date"
              form:repeating="yes"
              form:group-label="Link"/><!-- values:server-version="4.0-1 4.1 4.2"-->
-    <version href="http://example.com"
-             server-version="4.1"
-             date="2010-01-01"/>
+    <version href="http://example.com" label:href="Link"
+             server-version="4.1"      label:server-version="Version needed"
+             date="2010-01-01"         label:date="Date"
+             form:repeating="yes"
+             form:group-label="Link"
+             form:subsequent-item="yes"/>
   </versions>
   <top-threads form:hide="yes"/>
 </Project>
