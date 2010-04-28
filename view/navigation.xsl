@@ -101,10 +101,12 @@
                   </xsl:template>
 
   <xsl:template match="sub-nav[$content/Article]">
-    <h2>Table of Contents</h2>
-    <ul>
-      <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
-    </ul>
+    <xsl:if test="$content/Article//xhtml:h3">
+        <h2>Table of Contents</h2>
+        <ul>
+            <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
+        </ul>
+    </xsl:if>
   </xsl:template>
 
           <xsl:template mode="article-toc" match="xhtml:h3">
