@@ -107,9 +107,9 @@
         
         <blockquote class="download-quote">
         I agree that I will not use this download or other intellectual property or 
-        confidential information of Mark Logic for competitive analysis or reverse engineering in 
+        confidential information of MarkLogic for competitive analysis or reverse engineering in 
         connection with development of products that are the same or similar to 
-        Mark Logic's products licensed herein. I also agree that I will not use this 
+        MarkLogic's products licensed herein. I also agree that I will not use this 
         download in combination with a Community License, Trial License, or Academic License for 
         commercial use.
         </blockquote>
