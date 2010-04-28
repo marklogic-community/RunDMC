@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>XSLT</title>
   <main-points>
-    <point>Integrated directly into Mark Logic and available via XQuery as well</point>
+    <point>Integrated directly into MarkLogic and available via XQuery as well</point>
     <point>Work with your pre-existing style sheets</point>
     <point>High-performance</point>
   </main-points>
