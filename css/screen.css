@@ -174,10 +174,8 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 .layout2 #main h2,
 .sub_page #main .table2 caption,
 legend,
-.main_page #main h2,
 .sub_page #main .date + h2,
-.generic #content h1,
-.generic #content h2
+.generic #content h1
 {
 	font: normal 1.25em/120% Verdana, Arial, Helvetica, Sans-serif;
 	margin-bottom: 0;
