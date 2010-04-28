@@ -5,7 +5,11 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
 TODO: redir /code/#proj to /code/proj
 TODO: redir /code#proj to /code/proj
 TODO: /rss/feeds/general.xqy
+TODO: /rss
+/about/marklogic31.xqy
+/conference/2007
 default.xqy
+/news/standards/w3c.xqy
 :)
 
 declare function local:redir($path as xs:string) as xs:string
