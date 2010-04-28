@@ -229,6 +229,7 @@
 
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
+    <xsl:if test="count($threads/thread) gt 0">
     <div class="single">
       <h2>Recent Messages</h2>
       <a class="more" href="{$threads/@all-threads-href}">All messages&#160;></a>
@@ -256,6 +257,7 @@
       </div>
         -->
     </div>
+    </xsl:if>
   </xsl:template>
 
           <xsl:template mode="display-thread" match="thread">            
