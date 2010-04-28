@@ -19,7 +19,7 @@
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
               omit-xml-declaration="yes"/>
 
-  <xsl:param name="params" as="element()"/>
+  <xsl:param name="params" as="element()?"/>
 
   <xsl:variable name="DEBUG" select="false()"/>
 
