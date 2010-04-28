@@ -75,6 +75,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
   </page>
+  <page display="Docs" href="/docs"  narrow-sidebar="yes"/>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
         <page display="Product Documentation" href="/docs" />
