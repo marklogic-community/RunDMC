@@ -17,6 +17,7 @@ if(typeof jQuery != 'undefined') {
 		
 		$('#sub > div:last-child').addClass('last'); // only supposed to add some last-child functionality to IE
 		if(jQuery().tabs) {
+			$('#special_intro > div').hide();
 			$('#special_intro .nav').tabs('#special_intro > div',{
 				//effect: 'fade',
 				tabs: 'li'
