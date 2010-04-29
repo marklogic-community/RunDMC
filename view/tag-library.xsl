@@ -762,8 +762,8 @@
                   <xsl:template mode="page-specific-title" match="*:html">
                     <xsl:variable name="common-suffix" select="' - MarkLogic Server Online Documentation'"/>
                     <xsl:variable name="title" select="(//*:title)[1]" as="xs:string"/>
-                    <xsl:value-of select="if ends-with($title, $common-suffix) then substring-before($title, $common-suffix)
-                                                                               else $title"/>
+                    <xsl:value-of select="if (ends-with($title, $common-suffix)) then substring-before($title, $common-suffix)
+                                                                                 else $title"/>
                   </xsl:template>
 
 
