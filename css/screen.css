@@ -179,7 +179,7 @@ legend,
 .generic #content h1
 {
 	font: normal 1.25em/120% Verdana, Arial, Helvetica, Sans-serif;
-	margin-bottom: 0;
+	margin-bottom: 3px;
 	text-align: left;
 }
 .post #content h2, .generic #content h2, .layout2 #main h2 {margin-bottom: 1em !important;}
@@ -1098,4 +1098,8 @@ span.highlight {
 span.snippet {
   color: #666666;
   font-size: .9em;
+}
+
+#content ul {
+    padding-bottom: 15px;
 }
