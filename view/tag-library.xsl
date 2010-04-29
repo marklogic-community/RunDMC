@@ -119,8 +119,9 @@
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
     </div>
 
-    <a class="more hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a>
-    <br/><a class="more hide-if-href-empty" href="{@license-page}">License Options &gt;</a>
+    <a class="more hide-if-href-empty" href="{@license-page}">License Options &gt;</a>
+    <h4><a class="requirements hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a></h4>
+    <p/>
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>
@@ -741,7 +742,7 @@
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
-            <div>
+            <div class="searchResult">
               <div class="searchTitle">
                 <a href="{if ($is-flat-file) then @uri
                                              else ml:external-uri($doc)}">
@@ -789,5 +790,9 @@
                       </div>
                     </xsl:if>
                   </xsl:template>
+
+  <xsl:template match="elapsed-time">
+    <div style="display: none"><xsl:value-of select="xdmp:query-meters()/*:elapsed-time"/></div>
+  </xsl:template>
 
 </xsl:stylesheet>
