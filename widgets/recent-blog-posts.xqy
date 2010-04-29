@@ -6,9 +6,12 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/the-same-but-different">developer.marklogic.com: it's all new</a></h3>
-    <div class="author">by Eric Bloch, 04/27/10</div>
-    <div class="message">Tada!</div>
+    <h3><a href="/blog/change-is-good">Change You Can Believe In</a></h3>
+    <div class="author">by Eric Bloch, 04/29/10</div>
+    <div class="message">If you're reading this blog post directly on our site you'll notice
+a few changes.  And if you're reading it somewhere else, please <a href="http://developer.marklogic.com/blog">swing on by</a> for a look!
+In particular, we've...
+</div>
   </div>
   <div class="body">
     <h3><a href="http://newsletter.marklogic.com/2010/04/demojam-at-mark-logic-user-conference-2010/">DemoJam at MarkLogic User Conference 2010</a></h3>
