@@ -795,4 +795,6 @@
     <div style="display: none"><xsl:value-of select="xdmp:query-meters()/*:elapsed-time"/></div>
   </xsl:template>
 
+  <xsl:template match="short-description"/>
+
 </xsl:stylesheet>
