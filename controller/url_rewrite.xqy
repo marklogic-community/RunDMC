@@ -2,8 +2,6 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
        at "../model/filter-drafts.xqy";
 
 (:
-TODO: redir /code/#proj to /code/proj
-TODO: redir /code#proj to /code/proj
 TODO: /rss/feeds/general.xqy
 TODO: /rss
 /about/marklogic31.xqy
@@ -24,6 +22,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/blog"
     else if (starts-with($path, "/about")) then
         "/"
+    else if (starts-with($path, "/rss")) then
+        "/blog/atom.xml?feed=blog"
     else if (starts-with($path, "/legal")) then
         "/"
     else if (starts-with($path, "/people")) then
