@@ -22,8 +22,16 @@ declare function local:redir($path as xs:string) as xs:string
     (: permanent redirs :)
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
+    else if (starts-with($path, "/about")) then
+        "/"
+    else if (starts-with($path, "/legal")) then
+        "/"
+    else if (starts-with($path, "/people")) then
+        "/"
+    else if (starts-with($path, "/svn")) then
+        "/code"
     else if (starts-with($path, "/help")) then
-        concat("/learn", substring($orig-url, 6))
+        "/learn"
     else if (starts-with($path, "/user-groups")) then
         concat("/meet", substring($orig-url, 9))
     else if (starts-with($path, "/columns")) then
@@ -32,6 +40,8 @@ declare function local:redir($path as xs:string) as xs:string
         concat("/learn", substring($orig-url, 17))
     else if (starts-with($path, "/howto")) then
         concat("/learn", substring($orig-url, 7))
+    else if (ends-with($path, "/default.xqy")) then
+        substring($path, 1, string-length($path)- 12)
     else if ($path = ("/cloudcomputing")) then
         "/products/server-for-ec2"
     else if ((starts-with($path, '/blog') or starts-with($path, '/learn')) and ends-with($path, '.xqy')) then 
