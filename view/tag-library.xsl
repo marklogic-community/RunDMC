@@ -743,18 +743,18 @@
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <div class="searchResult">
-              <div class="searchTitle">
-                <a href="{if ($is-flat-file) then @uri
+              <a href="{if ($is-flat-file) then @uri
                                              else ml:external-uri($doc)}">
+              <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
                   </xsl:variable>
                   <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
-                </a>
               </div>
               <div class="snippets">
                 <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
               </div>
+              </a>
             </div>
           </xsl:template>
 

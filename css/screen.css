@@ -1068,12 +1068,19 @@ div.alert {
 }
 
 
+.searchTitle {
+  font-weight: bold;
+  color: #666666;
+  padding-bottom: 3px;
+  font-size: 1.1em;
+}
+
 .searchSummary {
     padding-bottom: 15px;
 }
 
 .searchResult {
-    padding-bottom: 15px;
+    padding-bottom: 18px;
 }
 
 .nextPage {
@@ -1082,4 +1089,13 @@ div.alert {
 
 .prefPage {
     float: left;
+}
+
+span.highlight {
+  color: red;
+  font-size: .9em;
+}
+span.snippet {
+  color: #666666;
+  font-size: .9em;
 }
