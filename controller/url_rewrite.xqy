@@ -2,13 +2,10 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
        at "../model/filter-drafts.xqy";
 
 (:
-TODO: /rss/feeds/general.xqy
-TODO: /rss
-/about/marklogic31.xqy
+TODO:
 /conference/2007
 default.xqy
 /news/standards/w3c.xqy
-/xfaqtor 
 :)
 
 declare function local:redir($path as xs:string) as xs:string
@@ -21,6 +18,10 @@ declare function local:redir($path as xs:string) as xs:string
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
     else if (starts-with($path, "/about")) then
+        "/"
+    else if (starts-with($path, "/xfaqtor")) then
+        "/learn"
+    else if (starts-with($path, "/default.xqy")) then
         "/"
     else if (starts-with($path, "/rss")) then
         "/blog/atom.xml?feed=blog"
