@@ -134,7 +134,7 @@
     </page>
   </page>
 
-  <page display="Search Results" href="/search" hide="yes"/>
+  <generic-page display="Search Results" href="/search" hide="yes" />
   <page display="Home" href="/" hide="yes"/>
   <generic-page display="Error" href="/error" hide="yes"/>
   <page display="4.0 Product Documentation" href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
