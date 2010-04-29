@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+  <title>Office Toolkits</title>
+  <main-points>
+    <point>Integrate with Microsoft Office</point>
+    <point>Search and re-used Office content</point>
+    <point>Simplify use of OpenXML</point>
+  </main-points>
+  <image src="/media/resources-tools.jpg" alt="Tools"> 
+    <caption>The sharpest tools in the shed.</caption>
+  </image>
+  <read-more>
+    <link href="/code/marklogic-toolkit-for-word">TOOLKIT FOR WORD MORE</link>
+    <link href="/code/marklogic-toolkit-for-excel">TOOLKIT FOR EXCEL</link>
+    <link href="/code/marklogic-toolkit-for-powerpoint">TOOLKIT FOR POWERPOINT</link>
+  </read-more>
+</feature>
