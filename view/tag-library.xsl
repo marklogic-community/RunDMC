@@ -779,16 +779,17 @@
 
 
                   <xsl:template mode="prev-and-next" match="search:response">              
-                    <xsl:if test="$page-number gt 1">
-                      <div class="prevPage">
-                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number - 1}">Prev</a>
-                      </div>
-                    </xsl:if>
                     <xsl:if test="@total gt (@start + @page-length - 1)">
                       <div class="nextPage">
                         <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number + 1}">Next</a>
                       </div>
                     </xsl:if>
+                    <xsl:if test="$page-number gt 1">
+                      <div class="prevPage">
+                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number - 1}">Prev</a>
+                      </div>
+                    </xsl:if>
+                    <p/>
                   </xsl:template>
 
   <xsl:template match="elapsed-time">
