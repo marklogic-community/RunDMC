@@ -745,22 +745,25 @@
             <div class="searchResult">
               <a href="{if ($is-flat-file) then @uri
                                              else ml:external-uri($doc)}">
-              <div class="searchTitle">
+                <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
                   </xsl:variable>
                   <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
-              </div>
-              <div class="snippets">
-                <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
-              </div>
+                </div>
+                <div class="snippets">
+                  <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
+                </div>
               </a>
             </div>
           </xsl:template>
 
-                  <!-- Titles for flat HTML files (API docs usually); this doesn't appear to be working though, presumably because the HTML docs aren't loaded as XML? -->
+                  <!-- Titles for flat HTML files (API docs usually) -->
                   <xsl:template mode="page-specific-title" match="*:html">
-                    <xsl:value-of select="(//*:title)[1]"/>
+                    <xsl:variable name="common-suffix" select="' - MarkLogic Server Online Documentation'"/>
+                    <xsl:variable name="title" select="(//*:title)[1]" as="xs:string"/>
+                    <xsl:value-of select="if ends-with($title, $common-suffix) then substring-before($title, $common-suffix)
+                                                                               else $title"/>
                   </xsl:template>
 
 
