@@ -71,6 +71,7 @@ a.more, div.more a {
 	color: #999;
 }
 a.more:hover, div.more a:hover {color: #235BAB !important;}
+a.requirements:hover {color: #235BAB !important;}
 .skip, hr {
 	position: absolute;
 	left: -999em;
@@ -1066,3 +1067,19 @@ div.alert {
   color: #F86D07;
 }
 
+
+.searchSummary {
+    padding-bottom: 15px;
+}
+
+.searchResult {
+    padding-bottom: 15px;
+}
+
+.nextPage {
+    float: right;
+}
+
+.prefPage {
+    float: left;
+}
