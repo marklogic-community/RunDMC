@@ -211,7 +211,7 @@
   </xsl:template>
 
           <xsl:template mode="body-class" match="navigation/page">main_page</xsl:template>
-          <xsl:template mode="body-class" match="generic-page"   >generic</xsl:template>
+          <xsl:template mode="body-class" match="generic-page"   >main_page</xsl:template> <!-- was generic, but looked bad -->
           <xsl:template mode="body-class" match="*"              >sub_page</xsl:template>
 
           <xsl:template mode="body-class-extra" match="*"/>
