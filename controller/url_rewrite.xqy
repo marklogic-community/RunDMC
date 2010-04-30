@@ -17,6 +17,8 @@ declare function local:redir($path as xs:string) as xs:string
     (: permanent redirs :)
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
+    else if ($path = ("/pubs", "/pubs/")) then
+        "/docs"
     else if (starts-with($path, "/about")) then
         "/"
     else if (starts-with($path, "/xfaqtor")) then
