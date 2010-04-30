@@ -21,7 +21,9 @@ let $region   := $ticket //xhtml:span [@class="region"]
 let $id       := fn:concat('event_', $i)
 return <div id="{$id}" class="event">
          <br/>
-         <h3 id="{fn:concat($id, '_title')}"> { $title } </h3>
+         <a href="http://www.marklogic.com/services/training.html">
+            <h3 id="{fn:concat($id, '_title')}"> { $title } </h3>
+         </a>
          <div class="when" id="{fn:concat($id, '_when')}"> 
            <span id="{fn:concat($id, '_start')}" class="start">
            { $start } </span> -
