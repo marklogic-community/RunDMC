@@ -696,6 +696,7 @@
           <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.),
                                                    collection()[starts-with(base-uri(.),'/pubs/4.1/apidocs')
                                                              or starts-with(base-uri(.),'/pubs/4.1/dotnet')
+                                                             or starts-with(base-uri(.),'/licensing')
                                                              or starts-with(base-uri(.),'/pubs/4.1/javadoc')]/base-uri(.)
                                                  ))"/>
         </additional-query>
