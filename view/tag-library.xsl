@@ -298,7 +298,7 @@
   <xsl:template match="upcoming-user-group-events">
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
     <div class="double">
-      <h2>Upcoming Events</h2>
+      <h2>Events</h2>
       <a class="more" href="/events">All events&#160;></a>
       <xsl:for-each select="$events">
         <div>
@@ -317,13 +317,13 @@
     <xsl:variable name="event"        select="ml:most-recent-event()"/>
     <div class="double">
       <div>
-        <h2>Recent News</h2>
+        <h2>News</h2>
         <xsl:apply-templates mode="news-excerpt" select="$announcement">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
       </div>
       <div>
-        <h2>Upcoming Events</h2>
+        <h2>Events</h2>
         <xsl:apply-templates mode="event-excerpt" select="$event">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
