@@ -17,8 +17,18 @@ declare function local:redir($path as xs:string) as xs:string
     (: permanent redirs :)
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
-    else if ($path = ("/pubs", "/pubs/")) then
+    else if ($path = ("/pubs", "/pubs/", "/pubs/4.1", "/pubs/4.1/")) then
         "/docs"
+    else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then
+        "/docs/4.0"
+    else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
+        "/docs/3.2"
+    else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
+        "/products/marklogic-server/requirements"
+    else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
+        "/products/marklogic-server/requirements-4.0"
+    else if ($path = ("/download/confirm.xqy")) then
+        "/download"
     else if (starts-with($path, "/about")) then
         "/"
     else if (starts-with($path, "/xfaqtor")) then
