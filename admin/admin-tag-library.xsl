@@ -179,10 +179,12 @@
               <td>
                 <a href="/blog/comment-edit?path={base-uri(.)}">Edit</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
-                <!-- TODO: Make approve/revoke work -->
-                <a href="#">
-                  <xsl:value-of select="if (@status eq 'Published') then 'Revoke' else 'Approve'"/>
+
+                <xsl:variable name="action" select="if (@status eq 'Published') then 'Revoke' else 'Approve'"/>
+                <a href="/admin/approve-revoke-comment.xqy?path={base-uri(.)}&amp;action={$action}">
+                  <xsl:value-of select="$action"/>
                 </a>
+
                 <!-- TODO: Make remove work -->
                 <!-- Leave out "Remove" for v1.0
                 <xsl:text>&#160;|&#160;</xsl:text>
