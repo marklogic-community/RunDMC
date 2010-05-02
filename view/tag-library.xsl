@@ -44,7 +44,10 @@
           </xsl:template>
 
                   <xsl:template mode="feature-content" match="image">
-                    <img src="{@src}" alt="{@alt}"/>
+                    <img src="{@src}" alt="{@alt}">
+                        <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
+                        <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
+                    </img>
                     <xsl:apply-templates mode="feature-content" select="caption"/>
                   </xsl:template>
 
@@ -62,7 +65,7 @@
 
                           <xsl:template mode="feature-content" match="point">
                             <li>
-                              <xsl:apply-templates/>
+                                <xsl:apply-templates/>
                             </li>
                           </xsl:template>
 
