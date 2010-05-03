@@ -13,7 +13,17 @@
   </div>
   
   <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blogs.avalonconsult.com/" target="_blank"><strong>Avalon Consulting LLC Blogs</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+
+  <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://www.kellblog.com/" target="_blank"><strong>David Kellogg's Kellblog</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+  
+  <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blog.xmlsh.org/" target="_blank"><strong>David Lee's XMLSH Blog</strong></a> <span class="date"></span>
     <div></div>
   </div>
   
@@ -78,20 +88,10 @@
   </div>
 
   <div class="body" style="border-top:0px;padding-top:0;">
-    <a href="http://blogs.avalonconsult.com/" target="_blank"><strong>Avalon Consulting LLC Blogs</strong></a> <span class="date"></span>
-    <div></div>
-  </div>
-
-  <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://xquerywebappdev.wordpress.com/" target="_blank"><strong>XQuery Web Application Development</strong></a> <span class="date"></span>
     <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
-    <a href="http://blog.xmlsh.org/" target="_blank"><strong>David Lee's XMLSH Blog</strong></a> <span class="date"></span>
-    <div></div>
-  </div>
-  
   
   <!--  JEM: removed 04/2010 there are no more to show, all blogs are listed
   <div class="body">
