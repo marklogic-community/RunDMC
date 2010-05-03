@@ -278,11 +278,13 @@
               <xsl:value-of select="name"/>
             </h2>
             <xsl:apply-templates select="description/node()"/>
+            <xsl:if test="versions/@get-involved-href">
             <div class="action repo">
               <a href="{versions/@get-involved-href}">
                 Browse <xsl:value-of select="versions/@repo"/> repository
               </a>
             </div>
+            </xsl:if>
 
             <xsl:if test="versions/version">
             <table class="table4">
