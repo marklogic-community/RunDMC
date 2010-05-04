@@ -19,6 +19,7 @@ let $end      := $when[2]
 let $locality := $ticket //xhtml:span [@class="locality"]
 let $region   := $ticket //xhtml:span [@class="region"]
 let $id       := fn:concat('event_', $i)
+where ($title ne "")
 return <div id="{$id}" class="event">
          <br/>
          <a href="http://www.marklogic.com/services/training.html">
