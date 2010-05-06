@@ -23,12 +23,20 @@ declare function local:redir($path as xs:string) as xs:string
         "/docs/4.0"
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
         "/docs/3.2"
+    else if ($path = ("/products/marklogic-server")) then
+        "/products/marklogic-server/4.1"
+    else if ($path = ("/download/4.1", "/download/4.1/")) then
+        "/products/marklogic-server/4.1"
+    else if ($path = ("/download/4.0", "/download/4.0/")) then
+        "/products/marklogic-server/4.0"
+    else if ($path = ("/download/3.2", "/download/3.2/")) then
+        "/products/marklogic-server/3.2"
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
         "/products/marklogic-server/requirements"
     else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.0"
     else if ($path = ("/download/confirm.xqy")) then
-        "/download"
+        "/products"
     else if (starts-with($path, "/about")) then
         "/"
     else if (starts-with($path, "/xfaqtor")) then
@@ -42,7 +50,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/people")) then
         "/"
     else if (starts-with($path, "/svn")) then
-        "/code"
+        concat("/code/", replace(substring($path, 6), "^([^/]*)/.*", "$1" ))
     else if (starts-with($path, "/help")) then
         "/learn"
     else if (starts-with($path, "/user-groups")) then
