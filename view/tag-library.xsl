@@ -12,7 +12,7 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts">
 
-  <xsl:variable name="page-number" select="if ($params/qp:p) then $params/qp:p else 1" as="xs:integer"/>
+  <xsl:variable name="page-number" select="if ($params[@name eq 'p']) then $params[@name eq 'p'] else 1" as="xs:integer"/>
   <xsl:variable name="current-version" select="4.1"/>
 
   <xsl:template match="tabbed-features">
@@ -705,7 +705,7 @@
         </additional-query>
       </options>
     </xsl:variable>
-    <xsl:variable name="search-results" select="search:search($params/qp:q,
+    <xsl:variable name="search-results" select="search:search($params[@name eq 'q'],
                                                               $options,
                                                               (:
                                                               search:get-default-options(),
@@ -788,12 +788,12 @@
                   <xsl:template mode="prev-and-next" match="search:response">              
                     <xsl:if test="@total gt (@start + @page-length - 1)">
                       <div class="nextPage">
-                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number + 1}">Next</a>
+                        <a href="/search?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number + 1}">Next</a>
                       </div>
                     </xsl:if>
                     <xsl:if test="$page-number gt 1">
                       <div class="prevPage">
-                        <a href="/search?q={encode-for-uri($params/qp:q)}&amp;p={$page-number - 1}">Prev</a>
+                        <a href="/search?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number - 1}">Prev</a>
                       </div>
                     </xsl:if>
                     <p/>

@@ -19,11 +19,9 @@
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
               omit-xml-declaration="yes"/>
 
-  <xsl:param name="params" as="element()?"/>
+  <xsl:param name="params" as="element()*"/>
 
   <xsl:variable name="DEBUG" select="false()"/>
-
-  <xsl:variable name="message" select="string($params/qp:message)"/>
 
   <xsl:variable name="content" select="/"/>
 
@@ -89,7 +87,7 @@
 
                   <xsl:template mode="page-specific-title" match="page[$external-uri eq '/search']">
                     <xsl:text>Search results for "</xsl:text>
-                    <xsl:value-of select="$params/qp:q"/>
+                    <xsl:value-of select="$params[@name eq 'q']"/>
                     <xsl:text>"</xsl:text>
                   </xsl:template>
 
@@ -105,7 +103,7 @@
   <!-- Pre-populate the search box, if applicable -->
   <xsl:template match="xhtml:input[@name eq 'q']/@ml:value">
     <xsl:attribute name="value">
-      <xsl:value-of select="$params/qp:q"/>
+      <xsl:value-of select="$params[@name eq 'q']"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -114,14 +112,7 @@
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$params"/>
     </xsl:if>
-    <!-- No need for this at the moment.
-    <xsl:if test="$message">
-      <div class="alert">
-        <xsl:value-of select="$message"/>
-      </div>
-    </xsl:if>
-    -->
-    <xsl:if test="$params/qp:commented">
+    <xsl:if test="$params[@name eq 'commented']">
       <div class="alert">Thank you for your comment. It has been submitted for moderation.</div>
     </xsl:if>
     <xsl:apply-templates mode="page-content" select="$content/*"/>
