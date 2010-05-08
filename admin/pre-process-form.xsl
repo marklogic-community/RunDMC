@@ -23,6 +23,8 @@
 
   <xsl:template match="@*[form:is-attribute-field(.)]">
     <xsl:element name="{name()}" namespace="{namespace-uri()}">
+      <!-- Flag it as an attribute, so it can be converted back later -->
+      <xsl:attribute name="form:is-attribute" select="'yes'"/>
       <xsl:apply-templates mode="element-annotation" select="../(@label:* | @values:*)[local-name(.) eq local-name(current())]"/>
       <xsl:value-of select="."/>
     </xsl:element>

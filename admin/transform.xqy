@@ -1,8 +1,9 @@
-import module namespace qp="http://www.marklogic.com/ps/lib/queryparams"
-       at "../controller/modules/queryparams.xqy";
+import module namespace param="http://marklogic.com/rundmc/params"
+       at "../controller/modules/params.xqy";
 
-let $params  := qp:load-params()
-let $doc-url := concat($params/qp:src, ".xml")
+let $params  := param:params()
+let $doc-url := concat($params[@name eq 'src'], ".xml")
+
 return
 (
   xdmp:xslt-invoke("page.xsl", doc($doc-url),

@@ -1,5 +1,17 @@
-<!-- This is half-baked and experimental, but it also gets the job done.
-     The idea has a lot of potential... -->
+<!-- ASSUMPTIONS:
+       * No mixed content (except with escaped markup to be edited as string)
+       * Repeating siblings are contiguous. This is okay: <foo><HI/><bat><HI/><HI/></bat></foo>
+                                            But this is not: <foo><HI/><bat/><HI/></foo>
+     LIMITATIONS:
+       * Can't edit comments or PIs
+       * Only supports one level deep of repeating groups.
+           E.g.: <group><field1/><field2/></group>
+                 <group><field1/><field2/></group>
+           In this case, field1 (and field2) may not contain elements or attributes.
+           Nor can they repeat (because they're already in a repeating group).
+       * Because attributes are first converted to elements, the no-mixed-content limitation
+         means you can't edit both an element's value and its attribute; you have to pick one.
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -11,18 +23,23 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
+  <xsl:variable name="path" select="$params[@name eq 'path']"/>
+
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
     <xsl:variable name="raw-form-spec" select="xdmp:document-get(concat(xdmp:modules-root(),
                                                                         '/admin/forms/',
                                                                         $template))"/>
-    <xsl:sequence select="xdmp:xslt-invoke('/admin/pre-process-form.xsl', $raw-form-spec)"/>
+    <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
+    <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
 
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
+      <!--
       <xsl:copy-of select="$form-spec"/>
+      -->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -45,7 +62,7 @@
                     <xsl:apply-templates mode="control-label" select="."/>
                     <xsl:text>&lt;/label>&lt;input name="</xsl:text>
                     <xsl:value-of select="form:field-name(.)"/>
-                    <xsl:text>[]" type="text" />' + </xsl:text>
+                    <xsl:text>[' + clickCount + ']" type="text" />' + </xsl:text>
                     <xsl:if test="position() eq 1">
                       <xsl:text>remove_</xsl:text>
                       <xsl:value-of select="$name"/>
@@ -55,7 +72,7 @@
                   </xsl:for-each>
                   <xsl:text>&lt;/fieldset>');</xsl:text>
                 </xsl:when>
-                <xsl:otherwise>$(this).parent().before('&lt;div>&lt;input name="<xsl:value-of select="$name"/>[]" type="text" />' + remove_<xsl:value-of select="$name"/>_anchor + '&lt;/div>');</xsl:otherwise>
+                <xsl:otherwise>$(this).parent().before('&lt;div>&lt;input name="<xsl:value-of select="$name"/>[' + clickCount + ']" type="text" />' + remove_<xsl:value-of select="$name"/>_anchor + '&lt;/div>');</xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
 
@@ -69,6 +86,7 @@
             <xsl:variable name="occurrence-test-name">
               <xsl:choose>
                 <xsl:when test="@form:group-label">
+                  <!-- Test for the presence of the first field in the group -->
                   <xsl:value-of select="form:field-name(*[1])"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -80,7 +98,7 @@
             <xsl:variable name="remove-script">
               $('a.remove_<xsl:value-of select="$name"/>').click(function() {
                 <xsl:value-of select="$remove-command"/>
-                if($('input[name=<xsl:value-of select="$occurrence-test-name"/>\[\]]').length == 1) {
+                if($('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]').length == 1) {
                   $('a.remove_<xsl:value-of select="$name"/>').remove();
                 }
               });
@@ -90,13 +108,16 @@
             <xsl:variable name="comment-content">
               if(typeof jQuery != 'undefined') {
                 $(function() {
+                  <!-- to keep track of the order of added elements -->
+                  var clickCount = <xsl:value-of select="count(../*[node-name(.) eq node-name(current())])"/>;
 
                   $('input[name=add_<xsl:value-of select="$name"/>]').replaceWith('&lt;a class="add_remove add_<xsl:value-of select="$name"/>">+&#160;Add <xsl:value-of select="$label"/>&lt;/a>');
                   var remove_<xsl:value-of select="$name"/>_anchor = '&lt;a class="add_remove remove_<xsl:value-of select="$name"/>">-&#160;Remove <xsl:value-of select="$label"/>&lt;/a>';
                   $('a.add_<xsl:value-of select="$name"/>').click(function() {
+                    clickCount++;
                     <xsl:value-of select="$insert-command"/>
-                    if($('input[name=<xsl:value-of select="$occurrence-test-name"/>\[\]]').length == 2) {
-                      $('input[name=<xsl:value-of select="$occurrence-test-name"/>\[\]]:first').after(remove_<xsl:value-of select="$name"/>_anchor);
+                    if($('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]').length == 2) {
+                      $('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]:first').after(remove_<xsl:value-of select="$name"/>_anchor);
                     }
                     <xsl:value-of select="$remove-script"/>
                   });
@@ -118,11 +139,14 @@
   </xsl:template>
 
           <xsl:template mode="generate-form" match="*">
-            <form class="adminform" action="" method="get" enctype="application/x-www-form-urlencoded">
+            <form class="adminform" action="/admin/edit.xqy" method="post" enctype="application/x-www-form-urlencoded">
+              <input type="hidden" name="~doc_uri" value="{$path}"/>
+              <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
               <!--
               <input type="submit" name="add" value="Add new" />
               -->
               <xsl:apply-templates mode="labeled-controls" select="."/>
+              <input type="submit" name="submit" value="Show edited doc"/>
             </form>
           </xsl:template>
 
@@ -250,14 +274,21 @@
                                       <!-- TODO: allow removal for other types of controls, not just text fields -->
                                       <!-- Only insert one Remove button per group -->
                                       <xsl:if test="(not(../@form:group-label) and count(../*[node-name(.) eq node-name(current())]) gt 1)
-                                                  or    (../@form:group-label and not(preceding-sibling::*))">
+                                                  or    (../@form:group-label and not(preceding-sibling::*) and count(../../*[node-name(.) eq node-name(current()/..)]) gt 1)">
                                         <xsl:apply-templates mode="remove-button" select="ancestor-or-self::*"/>
                                       </xsl:if>
                                     </div>
                                   </xsl:template>
 
                                           <xsl:template mode="field-name-suffix" match="*"/>
-                                          <xsl:template mode="field-name-suffix" match="*[(.|..)/@form:repeating eq 'yes']">[]</xsl:template>
+
+                                          <xsl:template mode="field-name-suffix" match="*[(.|..)/@form:repeating eq 'yes']">
+                                            <xsl:variable name="repeating-element" select="if (@form:repeating eq 'yes') then .
+                                                                                                                         else .."/>
+                                            <xsl:text>[</xsl:text>
+                                            <xsl:number select="$repeating-element"/> <!-- position relative to its like-named siblings -->
+                                            <xsl:text>]</xsl:text>
+                                          </xsl:template>
 
                                           <xsl:template mode="class-att" match="*"/>
                                           <xsl:template mode="class-att" match="*[@form:wide eq 'yes']">
@@ -282,7 +313,7 @@
 
   <xsl:function name="form:field-name">
     <xsl:param name="node"/>
-    <xsl:sequence select="translate(local-name($node), '-', '_')"/>
+    <xsl:sequence select="if ($node/@form:group-label) then translate(local-name($node), '-', '_') else $node/@form:name"/>
   </xsl:function>
 
 </xsl:stylesheet>
