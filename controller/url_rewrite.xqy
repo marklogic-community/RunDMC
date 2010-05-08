@@ -1,6 +1,8 @@
 import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
        at "../model/filter-drafts.xqy";
 
+import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
+
 (:
 TODO:
 /conference/2007
@@ -39,6 +41,14 @@ declare function local:redir($path as xs:string) as xs:string
         "/products"
     else if (starts-with($path, "/about")) then
         "/"
+    else if (starts-with($path, "/pubs/3.1")) then
+        replace($path, "/pubs/3.1", "/pubs/3.2")
+    else if (starts-with($path, "/3.1")) then
+        replace($path, "/3.1", "/pubs/3.2")
+    else if (starts-with($path, "/4.0")) then
+        replace($path, "/4.0", "/pubs/4.0")
+    else if (starts-with($path, "/4.1")) then
+        replace($path, "/4.1", "/pubs/4.1")
     else if (starts-with($path, "/xfaqtor")) then
         "/learn"
     else if (starts-with($path, "/default.xqy")) then
@@ -76,12 +86,17 @@ declare function local:rewrite($path as xs:string) as xs:string
     let $orig-url        := xdmp:get-request-url()
     let $query-string    := substring-after($orig-url, '?')
     let $doc-url         := concat($path, ".xml")
+    (: should assert path does not end in / :)
+    let $dir-url         := concat($path, "/")
+    let $index-url       := concat($dir-url, "index.xml")
     let $latest-prod-uri := "/products/marklogic-server/4.1"
 
     return
 
+    if ($path eq '/')  then 
+        "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /productsto latest product URI :)
-    if ($path = ("/download", "/downloads", "/products", "/product")) then
+    else if ($path = ("/download", "/downloads", "/products", "/product")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: Ignore these URLs :)
     else if (starts-with($path,'/private/') or starts-with($path,'/admin/')) then
@@ -94,6 +109,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Respond with DB contents for XML files that exist :)
     else if (doc-available($doc-url) and draft:allow(doc($doc-url)/*)) then 
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
+    (: Respond with DB contents for directories that have index.xml files :)
+    else if (u:is-directory($dir-url) and doc-available($index-url)) then 
+        concat("/controller/transform.xqy?src=", $index-url, "&amp;", $query-string)
     (: Support / as /index.xml; TBD other directory indexes :)
     else if ($path = ("/blog/atom.xml")) then
         "/lib/atom.xqy?feed=blog"
@@ -108,9 +126,7 @@ let $orig-url        := xdmp:get-request-url()
 let $query-string    := substring-after($orig-url, '?')
 
 return
-    if ($path eq "/")  then
-        concat('/controller/transform.xqy?src=/index&amp;', $query-string)
-    else if (ends-with($path, '/')) then
+    if (($path ne '/') and ends-with($path, '/')) then
         concat('/controller/redirect.xqy?path=', substring($path, 1, string-length($path) - 1), 
                 if ($query-string and $query-string != "") then concat('?', $query-string) else "")
     else if (local:redir($path) != $path) then
