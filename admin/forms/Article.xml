@@ -4,23 +4,29 @@
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
       status="" label:status="Status"      values:status="Draft Published"
       type=""   label:type="Document Type" values:type="Article Code Getting_Started Guide Installation_Guide Release_Notes Technical_Overview Training Tutorial Use_Case Video">
+  <!--
   <form:fieldset legend="Edit">
+  -->
     <title form:label="Title"
            form:wide="yes"/>
     <author form:repeating="yes"
             form:label="Author"/>
     <created/>
-    <last-updated/>
+    <last-updated form:label="Last Updated"/>
     <server-version form:label="Server Version"
                     form:repeating="yes"/>
     <topics>
       <topic form:label="Topic" form:repeating="yes"/>
     </topics>
+    <description form:label="Short description"
+                 form:wide="yes"/>
     <abstract form:label="Abstract (optional)"
               form:type="textarea"
               form:lines="4"/>
     <body form:label="Body"
           form:type="textarea"/>
-    <external-link href="" label:href="External link instead (body must be empty)"/>
+    <external-link href="" label:href="External link instead (body will be ignored)"/>
+  <!--
   </form:fieldset>
+  -->
 </Article>

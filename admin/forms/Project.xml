@@ -2,37 +2,27 @@
          xmlns:form  ="http://developer.marklogic.com/site/internal/form"
          xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
          xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-         status="Published"
-         values:status="Draft Published"
+         status=""
+         values:status="Published Draft"
          label:status="Status">
-  <form:fieldset>
-    <name form:label="Project Name"
-          form:wide="yes"/>
-    <contributors><!-- href="">-->
-      <contributor form:repeating="yes"
-                   form:label="Contributor">Joe Bloggs</contributor>
-      <contributor form:repeating="yes"
-                   form:label="Contributor"
-                   form:subsequent-item="yes">John Doe</contributor>
-    </contributors>
-    <description form:label="Description"
-                 form:type="textarea"/>
-    <short-description form:label="Short Description"
-                       form:type="textarea"
-                       form:lines="2"/>
-  </form:fieldset>
-  <versions repo="" label:repo="Repository URL"><!-- get-involved-href="">-->
-    <version href="http://foo.com" label:href          ="Link"
-             server-version="4.0"  label:server-version="Version needed"
-             date="2010-02-01"     label:date          ="Date"
+  <name form:label="Project Name"
+        form:wide="yes"/>
+  <contributors><!-- href="">-->
+    <contributor form:repeating="yes"
+                 form:label="Contributor"/>
+  </contributors>
+  <description form:label="Description"
+               form:type="textarea"/>
+  <short-description form:label="Short Description"
+                     form:type="textarea"
+                     form:lines="2"/>
+  <versions repo=""              label:repo="Repository site"             values:repo="_ github svn codeplex Google_Code"
+            get-involved-href="" label:get-involved-href="Repository URL">
+    <version href=""           label:href          ="Link"
+             server-version="" label:server-version="Version needed"
+             date=""           label:date          ="Date"
              form:repeating="yes"
-             form:group-label="Link"/><!-- values:server-version="4.0-1 4.1 4.2"-->
-    <version href="http://example.com" label:href="Link"
-             server-version="4.1"      label:server-version="Version needed"
-             date="2010-01-01"         label:date="Date"
-             form:repeating="yes"
-             form:group-label="Link"
-             form:subsequent-item="yes"/>
+             form:group-label="Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
   </versions>
   <top-threads form:hide="yes"/>
 </Project>

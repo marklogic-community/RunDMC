@@ -16,20 +16,25 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xdmp="http://marklogic.com/xdmp"
+  xmlns:map ="http://marklogic.com/xdmp/map"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:form             ="http://developer.marklogic.com/site/internal/form"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="xs ml xdmp map">
 
   <xsl:variable name="path" select="$params[@name eq 'path']"/>
 
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
-    <xsl:variable name="raw-form-spec" select="xdmp:document-get(concat(xdmp:modules-root(),
-                                                                        '/admin/forms/',
-                                                                        $template))"/>
+    <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
+                                                                                                              '/admin/forms/',
+                                                                                                              $template)))"/>
+    <xsl:variable name="map" select="map:map()"/>
+    <xsl:variable name="side-effect" select="map:put($map, 'template-doc', $template-doc)"/>
+    <xsl:variable name="raw-form-spec" select="if (doc-available($path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($path), $map)
+                                                                         else $template-doc"/>
     <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
@@ -37,9 +42,7 @@
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
-      <!--
-      <xsl:copy-of select="$form-spec"/>
-      -->
+<xsl:copy-of select="$form-spec"/>
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -239,7 +242,11 @@
 
                                   <xsl:template mode="form-control" match="*[exists(form:enumerated-values(.))]">
                                     <xsl:variable name="given-value" select="string(.)"/>
-                                    <select name="{form:field-name(.)}">
+                                    <xsl:variable name="field-name">
+                                      <xsl:value-of select="form:field-name(.)"/>
+                                      <xsl:apply-templates mode="field-name-suffix" select="."/>
+                                    </xsl:variable>
+                                    <select name="{$field-name}">
                                       <xsl:for-each select="form:enumerated-values(.)">
                                         <option value="{.}">
                                           <xsl:if test=". eq $given-value">
@@ -307,6 +314,7 @@
                                                 cols="30"
                                                 rows="{if (@form:lines) then @form:lines else 11}">
                                         <xsl:apply-templates mode="class-att" select="."/>
+                                        <xsl:value-of select="."/>
                                       </textarea>
                                   </xsl:template>
 

@@ -225,7 +225,7 @@
 
                   <xsl:template mode="product-doc-url" match="doc">
                     <xsl:variable name="source" select="document(@source)"/>
-                    <xsl:value-of select="if ($source/Article/external-link)
+                    <xsl:value-of select="if ($source/Article/external-link/@href/normalize-space(.))
                                           then $source/Article/external-link/@href
                                           else ml:external-uri($source)"/>
                   </xsl:template>
@@ -581,7 +581,7 @@
               </xsl:if>
               <td>
                 <a href="{replace(
-                            if (external-link/@href)
+                            if (external-link/@href/normalize-space(.))
                                 then external-link/@href
                                 else ml:external-uri(.), 
                             '4.1', 
@@ -607,7 +607,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-                <a href="{if (external-link/@href)
+                <a href="{if (external-link/@href/normalize-space(.))
                          then external-link/@href
                          else ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
