@@ -20,3 +20,13 @@ declare function u:get-doc($path as xs:string) as node() {
     let $root := xdmp:modules-root()
     return xdmp:document-get(fn:concat($root, $path))
 };
+
+(: 
+ : @param $dir-uri 
+ :
+ : @return true if the uri is a directory in the current DB
+ : to the current ML modules root
+ :)
+declare function u:is-directory($uri as xs:string) as xs:boolean {
+    xdmp:exists(xdmp:directory($uri, 'infinity'))
+};
