@@ -61,7 +61,6 @@
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
         <page display="Versi Design Template" href="/code/versi"/>
         <page display="Corb" href="/code/corb"/>
-        <page display="MLJCR - MarkLogic Java Content Repository (JSR-170)" href="/code/mljcr"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
