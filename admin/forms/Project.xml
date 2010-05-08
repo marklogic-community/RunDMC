@@ -2,9 +2,7 @@
          xmlns:form  ="http://developer.marklogic.com/site/internal/form"
          xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
          xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-         status=""
-         values:status="Published Draft"
-         label:status="Status">
+         status="Draft" values:status="Published Draft" label:status="Status">
   <name form:label="Project Name"
         form:wide="yes"/>
   <contributors><!-- href="">-->
@@ -18,11 +16,11 @@
                      form:lines="2"/>
   <versions repo=""              label:repo="Repository site"             values:repo="_ github svn codeplex Google_Code"
             get-involved-href="" label:get-involved-href="Repository URL">
-    <version href=""           label:href          ="Link"
+    <version href=""           label:href          ="Download URL"
              server-version="" label:server-version="Version needed"
              date=""           label:date          ="Date"
              form:repeating="yes"
-             form:group-label="Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
+             form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
   </versions>
   <top-threads form:hide="yes"/>
 </Project>

@@ -45,6 +45,7 @@
           <xsl:with-param name="edit-path">
             <xsl:apply-templates mode="edit-path" select="."/>
           </xsl:with-param>
+          <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
         </xsl:apply-templates>
       </tbody>
     </table>
@@ -82,6 +83,7 @@
 
           <xsl:template mode="admin-listing" match="*">
             <xsl:param name="edit-path"/>
+            <xsl:param name="current-page-url"/>
             <xsl:variable name="edit-link" select="concat($edit-path, '?path=', base-uri(.))"/>
             <tr>
               <xsl:if test="position() mod 2 eq 0">
@@ -112,13 +114,12 @@
                 <!-- TODO: make preview work -->
                 <a href="{$staging-server}{substring-before(base-uri(.), '.xml')}">Preview</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
-                <!-- TODO: make publish/unpublish work -->
-                <a href="#">
-                  <xsl:choose>
-                    <xsl:when test="@status eq 'Draft'">Publish</xsl:when>
-                    <xsl:otherwise>Unpublish</xsl:otherwise>
-                  </xsl:choose>
+
+                <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+                <a href="/admin/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+                  <xsl:value-of select="$action"/>
                 </a>
+
                 <!-- TODO: make remove work -->
                 <!-- Leave out "Remove" for v1.0
                 <xsl:text>&#160;|&#160;</xsl:text>
@@ -180,9 +181,10 @@
                 <a href="/blog/comment-edit?path={base-uri(.)}">Edit</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
 
-                <xsl:variable name="action" select="if (@status eq 'Published') then 'Revoke' else 'Approve'"/>
-                <a href="/admin/approve-revoke-comment.xqy?path={base-uri(.)}&amp;action={$action}">
-                  <xsl:value-of select="$action"/>
+                <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+                <a href="/admin/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect=/blog%23tbl_comments">
+                  <xsl:value-of select="if (@status eq 'Published') then 'Revoke'
+                                                                    else 'Approve'"/>
                 </a>
 
                 <xsl:text>&#160;|&#160;</xsl:text>

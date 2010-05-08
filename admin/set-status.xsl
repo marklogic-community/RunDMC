@@ -17,6 +17,8 @@
   <xsl:template match="@* | node()">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
+      <!-- Added after existing attributes, so if "status" already exists,
+           this one (added after) will take precedence -->
       <xsl:apply-templates mode="add-attribute" select="."/>
       <xsl:apply-templates/>
     </xsl:copy>

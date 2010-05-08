@@ -2,11 +2,8 @@
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-      status=""
-      label:status="Status"
-      values:status="Draft Published"
-      about=""
-      label:about="About">
+      status="Draft" label:status="Status" values:status="Draft Published"
+      about=""       label:about="About">
   <author form:label="Author"/>
   <created/>
   <url form:label="Author URL"/>
