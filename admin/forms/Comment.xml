@@ -7,11 +7,9 @@
       values:status="Draft Published"
       about=""
       label:about="About">
-  <form:fieldset legend="Edit">
-    <author form:label="Author"/>
-    <created/>
-    <url form:label="Author URL"/>
-    <body form:label="Body"
-          form:type="textarea"/>
-  </form:fieldset>
+  <author form:label="Author"/>
+  <created/>
+  <url form:label="Author URL"/>
+  <body form:label="Body"
+        form:type="textarea"/>
 </Comment>

@@ -5,18 +5,16 @@
       status=""
       label:status="Status"
       values:status="Draft Published">
-  <form:fieldset legend="Edit">
-    <title form:label="Title"
-           form:wide="yes"/>
-    <author form:repeating="yes"
-            form:label="Author"/>
-    <created/>
-    <last-updated/>
-    <tags>
-      <tag form:label="Tag"
-           form:repeating="yes"/>
-    </tags>
-    <body form:label="Body"
-          form:type="textarea"/>
-  </form:fieldset>
+  <title form:label="Title"
+         form:wide="yes"/>
+  <author form:repeating="yes"
+          form:label="Author"/>
+  <created/>
+  <last-updated/>
+  <tags>
+    <tag form:label="Tag"
+         form:repeating="yes"/>
+  </tags>
+  <body form:label="Body"
+        form:type="textarea"/>
 </Post>

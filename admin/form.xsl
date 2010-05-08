@@ -42,7 +42,9 @@
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
+<!--
 <xsl:copy-of select="$form-spec"/>
+-->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -169,6 +171,7 @@
                     <xsl:apply-templates mode="#current" select="*"/>
                   </xsl:template>
 
+                  <!-- No longer used...
                   <xsl:template mode="labeled-controls" match="form:fieldset">
                     <fieldset>
                       <legend>
@@ -177,6 +180,7 @@
                       <xsl:apply-templates mode="#current" select="*"/>
                     </fieldset>
                   </xsl:template>
+                  -->
 
                   <xsl:template mode="labeled-controls" match="*[@form:label][not(@form:subsequent-item)]">
                     <div>
