@@ -11,3 +11,7 @@ declare function allow($doc) as element()?
                          else $doc
 };
 
+declare function listed($doc) as element()?
+{
+  $doc[allow(.) and fn:not(@preview-only)]
+};

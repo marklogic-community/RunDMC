@@ -27,7 +27,10 @@
 
   <xsl:variable name="template" select="u:get-doc('/config/template.xhtml')"/>
 
-  <xsl:variable name="external-uri" select="ml:external-uri(/)"/>
+  <xsl:variable name="preview-context" select="$params[@name eq 'preview-as-if-at']"/>
+
+  <xsl:variable name="external-uri" select="if (normalize-space($preview-context)) then $preview-context
+                                                                                   else ml:external-uri(/)"/>
 
   <xsl:variable name="site-title" select="'MarkLogic Developer Community'"/>
 

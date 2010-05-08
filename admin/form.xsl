@@ -1,5 +1,5 @@
 <!-- ASSUMPTIONS:
-       * No mixed content (except with escaped markup to be edited as string)
+       * No mixed content (except with escaped markup to be edited as string, signified using @form:type="textarea")
        * Repeating siblings are contiguous. This is okay: <foo><HI/><bat><HI/><HI/></bat></foo>
                                             But this is not: <foo><HI/><bat/><HI/></foo>
      LIMITATIONS:
@@ -144,14 +144,39 @@
   </xsl:template>
 
           <xsl:template mode="generate-form" match="*">
-            <form class="adminform" action="/admin/edit.xqy" method="post" enctype="application/x-www-form-urlencoded">
-              <input type="hidden" name="~doc_uri" value="{$path}"/>
+            <form class="adminform" method="post" enctype="application/x-www-form-urlencoded">
+              <xsl:choose>
+                <xsl:when test="@form:uri-prefix-for-timestamped-named-docs">
+                  <input type="hidden" name="~timestamped-file-name" value="yes"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <div>
+                    <label for="slug">URI path</label>
+                    <strong>
+                      <xsl:choose>
+                        <xsl:when test="string($path)">
+                          <xsl:variable name="external-uri" select="substring-before($path, '.xml')"/>
+                          <a href="{$staging-server}{$external-uri}" target="_blank">
+                            <xsl:value-of select="$external-uri"/>
+                          </a>
+                          <input type="hidden" name="~existing_doc_uri" value="{$path}"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="/*/@form:uri-prefix-for-new-docs"/>
+                          <input name="~new_doc_slug"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </strong>
+                  </div>
+                </xsl:otherwise>
+              </xsl:choose>
               <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
               <!--
               <input type="submit" name="add" value="Add new" />
               -->
               <xsl:apply-templates mode="labeled-controls" select="."/>
-              <input type="submit" name="submit" value="Show edited doc"/>
+              <input type="submit" name="submit" value="Show edited XML" onclick="this.form.action = '/admin/edit.xqy';    this.form.target = '_self';"/>
+              <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
             </form>
           </xsl:template>
 
@@ -259,6 +284,12 @@
                                           <xsl:value-of select="."/>
                                         </option>
                                       </xsl:for-each>
+                                      <!-- If the given value is not found among the enumerated ones, don't clobber it; add it -->
+                                      <xsl:if test="normalize-space(.) and not(. = form:enumerated-values(.))">
+                                        <option value="{.}" selected="selected">
+                                          <xsl:value-of select="."/>
+                                        </option>
+                                      </xsl:if>
                                     </select>
                                   </xsl:template>
 

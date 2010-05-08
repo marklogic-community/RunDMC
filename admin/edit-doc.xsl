@@ -1,3 +1,8 @@
+<!-- This stylesheet constructs an XML document from a set of name/value $params.
+     One of the params is ~xml_to_edit, which dictates the resulting structure.
+     The rest of the params are used to replace values and/or add new elements
+     to the result.
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -11,7 +16,7 @@
 
   <xsl:param name="params"/>
 
-  <xsl:variable name="doc-path" select="$params[@name eq '~doc_uri']"/>
+  <xsl:variable name="doc-path" select="$params[@name eq '~existing_doc_uri']"/>
 
   <xsl:variable name="base-doc" select="xdmp:unquote(string($params[@name eq '~xml_to_edit']))"/>
 

@@ -2,7 +2,8 @@
          xmlns:form  ="http://developer.marklogic.com/site/internal/form"
          xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
          xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-         status="Draft" values:status="Published Draft" label:status="Status">
+         status="Draft" values:status="Published Draft" label:status="Status"
+         form:uri-prefix-for-new-docs="/code/">
   <name form:label="Project Name"
         form:wide="yes"/>
   <contributors><!-- href="">-->

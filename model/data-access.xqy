@@ -7,12 +7,12 @@ declare default element namespace "http://developer.marklogic.com/site/internal"
 
 declare variable $collection    := fn:collection();
 
-declare variable $Announcements := $collection/Announcement[draft:allow(.)]; (: "News"   :)
-declare variable $Events        := $collection/Event       [draft:allow(.)]; (: "Events" :)
-declare variable $Articles      := $collection/Article     [draft:allow(.)]; (: "Learn"  :)
-declare variable $Posts         := $collection/Post        [draft:allow(.)]; (: "Blog"   :)
-declare variable $Projects      := $collection/Project     [draft:allow(.)]; (: "Code"   :)
-declare variable $Comments      := $collection/Comment     [draft:allow(.)]; (: blog comments :)
+declare variable $Announcements := $collection/Announcement[draft:listed(.)]; (: "News"   :)
+declare variable $Events        := $collection/Event       [draft:listed(.)]; (: "Events" :)
+declare variable $Articles      := $collection/Article     [draft:listed(.)]; (: "Learn"  :)
+declare variable $Posts         := $collection/Post        [draft:listed(.)]; (: "Blog"   :)
+declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
+declare variable $Comments      := $collection/Comment     [draft:listed(.)]; (: blog comments :)
 
 declare variable $live-documents := ( $Announcements
                                     | $Events
