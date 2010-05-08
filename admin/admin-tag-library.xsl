@@ -185,11 +185,8 @@
                   <xsl:value-of select="$action"/>
                 </a>
 
-                <!-- TODO: Make remove work -->
-                <!-- Leave out "Remove" for v1.0
                 <xsl:text>&#160;|&#160;</xsl:text>
-                <a href="#">Remove</a>
-                -->
+                <a href="javascript:if (confirm('Are you sure you want to delete this comment?')) {{ window.location = '/admin/delete-comment.xqy?path={base-uri(.)}'; }}">Remove</a>
               </td>
             </tr>            
           </xsl:template>
