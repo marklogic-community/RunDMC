@@ -26,15 +26,31 @@
 
   <xsl:variable name="orig-path" select="$params[@name eq '~orig_path']"/>
 
+  <xsl:variable name="doc-already-exists-error" select="'yes' = $params[@name eq '~doc_already_exists']"/>
+
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
     <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
                                                                                                               '/admin/forms/',
                                                                                                               $template)))"/>
-    <xsl:variable name="map" select="map:map()"/>
-    <xsl:variable name="side-effect" select="map:put($map, 'template-doc', $template-doc)"/>
-    <xsl:variable name="raw-form-spec" select="if (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $map)
-                                                                             else $template-doc"/>
+    <xsl:variable name="template-doc-map" select="map:map()"/>
+    <xsl:variable name="params-map" select="map:map()"/>
+    <xsl:variable name="side-effects" select="map:put($template-doc-map, 'template-doc', $template-doc),
+                                              map:put($params-map,       'params',       $params)"/>
+    <xsl:variable name="empty-doc">
+      <empty/>
+    </xsl:variable>
+    <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
+                                               if ($doc-already-exists-error) then xdmp:xslt-invoke('annotate-doc.xsl',
+                                                                                                    xdmp:xslt-invoke('edit-doc.xsl', $empty-doc, $params-map),
+                                                                                                    $template-doc-map)
+                                                                                     
+                                               (: If the user is replacing an existing doc :)
+                                          else if  (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $template-doc-map)
+
+                                               (: If the user is loading the empty form for creating a new doc :)
+                                          else $template-doc"/>
+
     <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
@@ -42,9 +58,7 @@
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
-<!-- DEBUGGING
 <xsl:copy-of select="$form-spec"/>
--->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -159,13 +173,12 @@
                 </div>
               </xsl:if>
 
-              <!--
-              <div class="error">
-                <strong>OOOPS:</strong> Please enter Project Type.<br />
-                Please enter at least one download link.
-              </div>
-              -->
-
+              <xsl:if test="$doc-already-exists-error">
+                <div class="error">
+                  <strong>OOPS:</strong> A document at this URI already exists.<br />
+                  Please enter a different URI path.
+                </div>
+              </xsl:if>
 
               <xsl:choose>
                 <xsl:when test="@form:uri-prefix-for-timestamped-named-docs">

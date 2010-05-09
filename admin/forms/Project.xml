@@ -23,5 +23,7 @@
              form:repeating="yes"
              form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
   </versions>
+  <!--
   <top-threads form:hide="yes"/>
+  -->
 </Project>
