@@ -40,7 +40,9 @@
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
+<!-- DEBUGGING
 <xsl:copy-of select="$form-spec"/>
+-->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
