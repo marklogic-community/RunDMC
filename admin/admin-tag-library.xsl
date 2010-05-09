@@ -17,14 +17,17 @@
                      | admin-learn-list
                      | admin-post-list
                      | admin-announcement-list
-                     | admin-event-list">
+                     | admin-event-list
+                     | admin-page-list">
     <table>
       <thead>
         <tr>
           <th scope="col">Title</th>
-          <th scope="col">Author</th>
-          <th scope="col">Created</th>
-          <th scope="col">Last&#160;Updated</th>
+          <xsl:if test="not(self::admin-page-list)">
+            <th scope="col">Author</th>
+            <th scope="col">Created</th>
+            <th scope="col">Last&#160;Updated</th>
+          </xsl:if>
           <th scope="col">Status</th>
           <th class="last">&#160;</th>
         </tr>
@@ -35,6 +38,7 @@
                                      else if (self::admin-post-list)         then $ml:posts-by-date
                                      else if (self::admin-announcement-list) then $ml:announcements-by-date
                                      else if (self::admin-event-list)        then $ml:events-by-date
+                                     else if (self::admin-page-list)         then $ml:pages
                                      else ()"/>
         <!--
         <xsl:variable name="docs" as="element()*">
@@ -79,6 +83,7 @@
           <xsl:template mode="edit-path" match="admin-post-list"        >/blog/edit</xsl:template>
           <xsl:template mode="edit-path" match="admin-announcement-list">/news/edit</xsl:template>
           <xsl:template mode="edit-path" match="admin-event-list"       >/events/edit</xsl:template>
+          <xsl:template mode="edit-path" match="admin-page-list"        >/pages/edit</xsl:template>
 
 
           <xsl:template mode="admin-listing" match="*">
@@ -91,19 +96,27 @@
               </xsl:if>
               <th>
                 <a href="{$edit-link}">
-                  <xsl:value-of select="if (self::Project) then name else title"/>
+                  <xsl:value-of select="if (self::Project) then name
+                                   else if (self::page) then ( //*:h1
+                                                             | //*:h2
+                                                             | //*:h3
+                                                             | //product-info/@name
+                                                             )[1]
+                                   else title"/>
                 </a>
               </th>
-              <td>
-                <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
-              </td>
-              <td>
-                <xsl:value-of select="created"/>
-              </td>
+              <xsl:if test="not(self::page)">
+                <td>
+                  <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
+                </td>
+                <td>
+                  <xsl:value-of select="created"/>
+                </td>
 
-              <td>
-                <xsl:value-of select="last-updated"/>
-              </td>
+                <td>
+                  <xsl:value-of select="last-updated"/>
+                </td>
+              </xsl:if>
               <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
               <td class="status {lower-case($effective-status)}">
                 <xsl:value-of select="$effective-status"/>

@@ -7,10 +7,11 @@ declare variable $public-docs-only := if ("CommunitySitePublic" eq xdmp:server-n
 (: Hide "Draft" documents, if applicable :)
 declare function allow($doc) as element()?
 {
-  if ($public-docs-only) then $doc[fn:not(@status eq 'Draft')]
+  if ($public-docs-only) then $doc[fn:not(@status eq 'Draft') and fn:not(@preview-only)]
                          else $doc
 };
 
+(: Hide preview-only docs from being listed on the site and admin interface :)
 declare function listed($doc) as element()?
 {
   $doc[allow(.) and fn:not(@preview-only)]

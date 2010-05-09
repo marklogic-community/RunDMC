@@ -52,12 +52,20 @@
 
           <!-- But for fields with names, insert value from the corresponding request parameter -->
           <xsl:template mode="populate-content" match="*[@form:name]">
+            <!-- First, process attribute-cum-element fields -->
+            <xsl:apply-templates mode="populate" select="*"/>
+
+            <!-- Then get the value of this element -->
             <xsl:copy-of select="form:get-value(., string($params[@name eq current()/@form:name]))"/>
           </xsl:template>
 
           <!-- For elements that are children of (part of) a repeating group -->
           <xsl:template mode="populate-content" match="*[@form:group-label]/*[@form:name]" priority="1">
             <xsl:param name="position" tunnel="yes"/>
+            <!-- First, process attribute-cum-element fields -->
+            <xsl:apply-templates mode="populate" select="*"/>
+
+            <!-- Then get the value of this element -->
             <xsl:copy-of select="form:get-value(., string($params[@name eq concat(current()/@form:name,'[',$position,']')]))"/>
           </xsl:template>
 

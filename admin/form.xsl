@@ -42,9 +42,7 @@
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
-<!--
 <xsl:copy-of select="$form-spec"/>
--->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -156,8 +154,10 @@
                       <xsl:choose>
                         <xsl:when test="string($path)">
                           <xsl:variable name="external-uri" select="substring-before($path, '.xml')"/>
+                          <xsl:value-of select="$external-uri"/>
+                          <xsl:text> </xsl:text>
                           <a href="{$staging-server}{$external-uri}" target="_blank">
-                            <xsl:value-of select="$external-uri"/>
+                            <span>(view original)</span>
                           </a>
                           <input type="hidden" name="~existing_doc_uri" value="{$path}"/>
                         </xsl:when>
@@ -171,43 +171,20 @@
                 </xsl:otherwise>
               </xsl:choose>
               <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
-              <!--
-              <input type="submit" name="add" value="Add new" />
-              -->
               <xsl:apply-templates mode="labeled-controls" select="."/>
               <input type="submit" name="submit" value="Show edited XML" onclick="this.form.action = '/admin/edit.xqy';    this.form.target = '_self';"/>
               <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
             </form>
           </xsl:template>
 
-                  <!-- to force "Status" into fieldset container; better handled by fix in CSS
-                  <xsl:template mode="labeled-controls" match="/*">
-                    <xsl:if test="@* except (@label:* | @form:* | @values:*)">
-                      <fieldset>
-                        <legend>Edit</legend>
-                        <xsl:apply-templates mode="#current" select="(@* except (@label:*|@form:*|@values:*))"/>
-                      </fieldset>
-                    </xsl:if>
-                    <xsl:apply-templates mode="#current" select="*"/>
-                  </xsl:template>
-                  -->
-
                   <xsl:template mode="labeled-controls" match="*">
                     <xsl:apply-templates mode="#current" select="*"/>
                   </xsl:template>
 
-                  <!-- No longer used...
-                  <xsl:template mode="labeled-controls" match="form:fieldset">
-                    <fieldset>
-                      <legend>
-                        <xsl:value-of select="@legend"/>
-                      </legend>
-                      <xsl:apply-templates mode="#current" select="*"/>
-                    </fieldset>
-                  </xsl:template>
-                  -->
-
                   <xsl:template mode="labeled-controls" match="*[@form:label][not(@form:subsequent-item)]">
+                    <!-- Process attribute-cum-element fields -->
+                    <xsl:apply-templates mode="labeled-controls" select="*"/>
+
                     <div>
                       <label for="{form:field-name(.)}_{generate-id()}">
                         <xsl:apply-templates mode="control-label" select="."/>
@@ -235,18 +212,6 @@
                             <xsl:sequence select="($e/@form:repeating eq 'yes') and not(node-name($e) eq node-name($e/following-sibling::*[1]))"/>
                           </xsl:function>
 
-                          <!--
-                          <xsl:function name="form:repeating-elements">
-                            <xsl:param name="node"/>
-                            <xsl:sequence select="if ($node/@form:repeating eq 'yes')
-                                                  then $node/following-sibling::*[name(.) eq name($node)]
-                                                  else ()"/>
-                          </xsl:function>
-                          -->
-
-
-
-
                                   <xsl:template mode="add-more-button" match="*"/>
                                   <xsl:template mode="add-more-button" match="*[@form:repeating eq 'yes']">
                                     <div>
@@ -270,7 +235,8 @@
 
 
                                   <xsl:template mode="form-control" match="*[exists(form:enumerated-values(.))]">
-                                    <xsl:variable name="given-value" select="string(.)"/>
+                                    <!-- Don't include attribute-cum-element fields in value -->
+                                    <xsl:variable name="given-value" select="string-join(text(),'')"/>
                                     <xsl:variable name="field-name">
                                       <xsl:value-of select="form:field-name(.)"/>
                                       <xsl:apply-templates mode="field-name-suffix" select="."/>
@@ -310,7 +276,7 @@
                                       <input id ="{form:field-name(.)}_{generate-id()}"
                                              name="{$field-name}"
                                              type="text"
-                                             value="{.}">
+                                             value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
                                         <xsl:apply-templates mode="class-att" select="."/>
                                       </input>
                                       <!-- TODO: allow removal for other types of controls, not just text fields -->
@@ -349,7 +315,7 @@
                                                 cols="30"
                                                 rows="{if (@form:lines) then @form:lines else 11}">
                                         <xsl:apply-templates mode="class-att" select="."/>
-                                        <xsl:value-of select="."/>
+                                        <xsl:value-of select="string-join(text(),'')"/> <!-- don't include attribute-cum-element fields in value -->
                                       </textarea>
                                   </xsl:template>
 

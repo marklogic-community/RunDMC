@@ -14,6 +14,9 @@ declare variable $Posts         := $collection/Post        [draft:listed(.)]; (:
 declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
 declare variable $Comments      := $collection/Comment     [draft:listed(.)]; (: blog comments :)
 
+declare variable $pages         := $collection/page[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
+                                                           [draft:listed(.)]; (: regular pages :)
+
 declare variable $live-documents := ( $Announcements
                                     | $Events
                                     | $Articles
