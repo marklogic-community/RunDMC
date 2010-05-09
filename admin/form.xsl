@@ -194,11 +194,11 @@
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
                           <a href="{$staging-server}{$external-uri}" target="_blank">
-                            <span>(view current)</span>
+                            <span>(view original)</span>
                           </a>
                           <xsl:text> </xsl:text>
-                          <a href="{$webdav-server}{$external-uri}.xml" target="_blank">
-                            <span>(view XML source)</span>
+                          <a href="{$webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
+                            <span>(view original's XML source)</span>
                           </a>
                           <input type="hidden" name="~existing_doc_uri" value="{$doc-path}"/>
                         </xsl:when>
