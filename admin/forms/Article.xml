@@ -10,7 +10,10 @@
     <author form:repeating="yes"
             form:label="Author"/>
     <created/>
-    <last-updated form:label="Last Updated"/>
+    <last-updated form:label="Last Updated"/>  <!-- By putting a label on this field, we're taking manual control
+                                                    (no auto-timestamps for <ml:last-updated/> on Article docs, due
+                                                    to the way this field is currently being used "in the wild":
+                                                    sometimes a date, sometimes a server version number, etc.). -->
     <server-version form:label="Server Version"
                     form:repeating="yes"/>
     <topics>

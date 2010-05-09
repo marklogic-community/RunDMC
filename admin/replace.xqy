@@ -2,7 +2,6 @@ import module namespace param="http://marklogic.com/rundmc/params"
        at "../controller/modules/params.xqy";
 
 let $params  := param:params()
-let $doc-url := $params[@name eq 'path']/string(.)
 let $map     := map:map()
 
 return
@@ -14,8 +13,11 @@ return
     if (normalize-space($existing-doc-path) and doc-available($existing-doc-path))
     then ( xdmp:document-insert($existing-doc-path, $new-doc),
            xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
-                                         "&amp;~updated=yes")
+                                         "?~doc_path=",
+                                         $existing-doc-path,
+                                         "&amp;~updated=",
+                                         current-dateTime())
                                  )
          )
-    else error((),"I haven't handled this scenario yet...")
+    else error((),"You're trying to overwrite a document that doesn't exist...")
 )

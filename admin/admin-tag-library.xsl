@@ -90,7 +90,7 @@
           <xsl:template mode="admin-listing" match="*">
             <xsl:param name="edit-path"/>
             <xsl:param name="current-page-url"/>
-            <xsl:variable name="edit-link" select="concat($edit-path, '?path=', base-uri(.))"/>
+            <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
             <tr>
               <xsl:if test="position() mod 2 eq 0">
                 <xsl:attribute name="class">alt</xsl:attribute>
@@ -176,7 +176,7 @@
                 </a>
               </th>
               <td>
-                <a href="/blog/edit?path={@about}" title="{substring($post/body, 1, 200)}..."> 
+                <a href="/blog/edit?~doc_path={@about}" title="{substring($post/body, 1, 200)}..."> 
                   <xsl:value-of select="$post/title"/>
                 </a>
               </td>
@@ -192,7 +192,7 @@
                 <xsl:value-of select="$status"/>
               </td>
               <td>
-                <a href="/blog/comment-edit?path={base-uri(.)}">Edit</a>
+                <a href="/blog/comment-edit?~doc_path={base-uri(.)}">Edit</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
 
                 <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>

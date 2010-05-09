@@ -22,9 +22,9 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp map">
 
-  <xsl:variable name="path" select="$params[@name eq 'path']"/>
+  <xsl:variable name="doc-path" select="$params[@name eq '~doc_path']"/>
 
-  <xsl:variable name="orig-url" select="$params[@name eq 'orig-url']"/>
+  <xsl:variable name="orig-path" select="$params[@name eq '~orig_path']"/>
 
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
@@ -33,8 +33,8 @@
                                                                                                               $template)))"/>
     <xsl:variable name="map" select="map:map()"/>
     <xsl:variable name="side-effect" select="map:put($map, 'template-doc', $template-doc)"/>
-    <xsl:variable name="raw-form-spec" select="if (doc-available($path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($path), $map)
-                                                                         else $template-doc"/>
+    <xsl:variable name="raw-form-spec" select="if (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $map)
+                                                                             else $template-doc"/>
     <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
@@ -145,14 +145,19 @@
 
           <xsl:template mode="generate-form" match="*">
             <form class="adminform" method="post" enctype="application/x-www-form-urlencoded">
-            <xsl:if test="$params[@name eq '~updated']">
-              <div id="codeedit">
-              <dl>
-                <dt>Saved</dt>
-                <dd> <xsl:value-of select="substring-before(string(current-dateTime()), '.')"/></dd>
-              </dl>
-              </div>
-            </xsl:if>
+              <input type="hidden" name="~edit_form_url" value="{$orig-path}"/>
+
+              <xsl:if test="$params[@name eq '~updated']">
+                <div id="codeedit">
+                <dl>
+                  <dt>LAST SAVED</dt>
+                  <xsl:text> </xsl:text>
+                  <dd>
+                    <xsl:value-of select="substring-before($params[@name eq '~updated'], '.')"/>
+                  </dd>
+                </dl>
+                </div>
+              </xsl:if>
 
               <!--
               <div class="error">
@@ -171,8 +176,8 @@
                     <label for="slug">URI path</label>
                     <strong>
                       <xsl:choose>
-                        <xsl:when test="string($path)">
-                          <xsl:variable name="external-uri" select="substring-before($path, '.xml')"/>
+                        <xsl:when test="string($doc-path)">
+                          <xsl:variable name="external-uri" select="substring-before($doc-path, '.xml')"/>
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
                           <a href="{$staging-server}{$external-uri}" target="_blank">
@@ -182,12 +187,12 @@
                           <a href="{$webdav-server}{$external-uri}.xml" target="_blank">
                             <span>(view XML source)</span>
                           </a>
-                          <input type="hidden" name="~existing_doc_uri" value="{$path}"/>
-                          <input type="hidden" name="~edit_form_url" value="{$orig-url}"/>
+                          <input type="hidden" name="~existing_doc_uri" value="{$doc-path}"/>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="/*/@form:uri-prefix-for-new-docs"/>
-                          <input name="~new_doc_slug"/>
+                          <input type="hidden" name="~uri_prefix" value="{/*/@form:uri-prefix-for-new-docs}"/>
+                          <input name="~new_doc_slug" value="{$params[@name eq '~new_doc_slug']}"/> <!-- empty at first -->
                         </xsl:otherwise>
                       </xsl:choose>
                     </strong>
@@ -196,9 +201,14 @@
               </xsl:choose>
               <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
               <xsl:apply-templates mode="labeled-controls" select="."/>
-              <xsl:if test="$path">
-                <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/replace.xqy'; this.form.target = '_self';"/>
-              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="string($doc-path)">
+                  <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/replace.xqy'; this.form.target = '_self';"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/create.xqy'; this.form.target = '_self';"/>
+                </xsl:otherwise>
+              </xsl:choose>
               <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
             </form>
           </xsl:template>
