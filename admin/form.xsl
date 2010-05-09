@@ -9,8 +9,6 @@
                  <group><field1/><field2/></group>
            In this case, field1 (and field2) may not contain elements or attributes.
            Nor can they repeat (because they're already in a repeating group).
-       * Because attributes are first converted to elements, the no-mixed-content limitation
-         means you can't edit both an element's value and its attribute; you have to pick one.
 -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
