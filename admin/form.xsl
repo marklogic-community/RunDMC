@@ -24,6 +24,8 @@
 
   <xsl:variable name="path" select="$params[@name eq 'path']"/>
 
+  <xsl:variable name="orig-url" select="$params[@name eq 'orig-url']"/>
+
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
     <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
@@ -143,6 +145,23 @@
 
           <xsl:template mode="generate-form" match="*">
             <form class="adminform" method="post" enctype="application/x-www-form-urlencoded">
+            <xsl:if test="$params[@name eq '~updated']">
+              <div id="codeedit">
+              <dl>
+                <dt>Saved</dt>
+                <dd> <xsl:value-of select="substring-before(string(current-dateTime()), '.')"/></dd>
+              </dl>
+              </div>
+            </xsl:if>
+
+              <!--
+              <div class="error">
+                <strong>OOOPS:</strong> Please enter Project Type.<br />
+                Please enter at least one download link.
+              </div>
+              -->
+
+
               <xsl:choose>
                 <xsl:when test="@form:uri-prefix-for-timestamped-named-docs">
                   <input type="hidden" name="~timestamped-file-name" value="yes"/>
@@ -157,9 +176,14 @@
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
                           <a href="{$staging-server}{$external-uri}" target="_blank">
-                            <span>(view original)</span>
+                            <span>(view current)</span>
+                          </a>
+                          <xsl:text> </xsl:text>
+                          <a href="{$webdav-server}{$external-uri}.xml" target="_blank">
+                            <span>(view XML source)</span>
                           </a>
                           <input type="hidden" name="~existing_doc_uri" value="{$path}"/>
+                          <input type="hidden" name="~edit_form_url" value="{$orig-url}"/>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="/*/@form:uri-prefix-for-new-docs"/>
@@ -172,7 +196,9 @@
               </xsl:choose>
               <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
               <xsl:apply-templates mode="labeled-controls" select="."/>
-              <input type="submit" name="submit" value="Show edited XML" onclick="this.form.action = '/admin/edit.xqy';    this.form.target = '_self';"/>
+              <xsl:if test="$path">
+                <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/replace.xqy'; this.form.target = '_self';"/>
+              </xsl:if>
               <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
             </form>
           </xsl:template>
@@ -236,7 +262,7 @@
 
                                   <xsl:template mode="form-control" match="*[exists(form:enumerated-values(.))]">
                                     <!-- Don't include attribute-cum-element fields in value -->
-                                    <xsl:variable name="given-value" select="string-join(text(),'')"/>
+                                    <xsl:variable name="given-value" select="normalize-space(string-join(text(),''))"/>
                                     <xsl:variable name="field-name">
                                       <xsl:value-of select="form:field-name(.)"/>
                                       <xsl:apply-templates mode="field-name-suffix" select="."/>
@@ -251,9 +277,9 @@
                                         </option>
                                       </xsl:for-each>
                                       <!-- If the given value is not found among the enumerated ones, don't clobber it; add it -->
-                                      <xsl:if test="normalize-space(.) and not(. = form:enumerated-values(.))">
-                                        <option value="{.}" selected="selected">
-                                          <xsl:value-of select="."/>
+                                      <xsl:if test="$given-value and not($given-value = form:enumerated-values(.))">
+                                        <option value="{$given-value}" selected="selected">
+                                          <xsl:value-of select="$given-value"/>
                                         </option>
                                       </xsl:if>
                                     </select>
@@ -262,7 +288,7 @@
                                           <xsl:function name="form:enumerated-values" as="xs:string*">
                                             <xsl:param name="element"/>
                                             <xsl:sequence select="if ($element/@form:values)
-                                                                  then for $v in tokenize($element/@form:values,' ') return translate($v, '_', ' ')
+                                                                  then for $v in tokenize($element/@form:values,' ') return normalize-space(translate($v, '_', ' '))
                                                                   else ()"/>
                                           </xsl:function>
 

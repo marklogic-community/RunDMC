@@ -9,5 +9,5 @@ return
      if (starts-with($path,'/media/'))   then concat("/controller/get-db-file.xqy?uri=", $path)
 
 else if ($path eq "/")                   then concat("/admin/transform.xqy?src=/admin/index")
-else if (doc-available($doc-url))        then concat("/admin/transform.xqy?src=/admin", $path, "&amp;", $query-string)
+else if (doc-available($doc-url))        then concat("/admin/transform.xqy?src=/admin", $path, "&amp;", $query-string, "&amp;orig-url=", xdmp:url-encode($orig-url))
                                          else $orig-url

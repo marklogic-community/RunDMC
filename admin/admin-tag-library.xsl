@@ -12,6 +12,7 @@
   exclude-result-prefixes="xs ml xdmp">
 
   <xsl:variable name="staging-server" select="string($navigation/*/@staging-server)"/>
+  <xsl:variable name="webdav-server" select="string($navigation/*/@webdav-server)"/>
 
   <xsl:template match="admin-project-list
                      | admin-learn-list

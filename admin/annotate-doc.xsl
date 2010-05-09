@@ -45,7 +45,10 @@
             </xsl:variable>
             <xsl:copy-of select="xdmp:xslt-invoke('strip-namespaces.xsl', $doc)"/>
           </xsl:variable>
-          <xsl:value-of select="$content-stripped/*/node()/xdmp:quote(.)" separator=""/>
+          <xsl:value-of select="substring-before(
+                                  substring-after(xdmp:quote($content-stripped/*), '>'),
+                                  '&lt;/doc>'
+                                )"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates/>

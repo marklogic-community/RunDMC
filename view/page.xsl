@@ -317,7 +317,7 @@
                         </a>
                       </td>
                       <td>
-                        <xsl:if test="@server-version">
+                        <xsl:if test="normalize-space(@server-version)">
                             <xsl:text>MarkLogic Server </xsl:text>
                             <xsl:value-of select="@server-version"/>
                             <xsl:text> or later</xsl:text>
