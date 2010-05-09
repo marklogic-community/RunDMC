@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- This document configures the top- and sub-level navigation,
      including breadcrumb hierarchy.
---><navigation staging-server="http://developer-draft.marklogic.com" xmlns="http://developer.marklogic.com/site/internal">
+--><navigation staging-server="http://developer-draft.marklogic.com" webdav-server="http://dmc-stage.marklogic.com:8005" xmlns="http://developer.marklogic.com/site/internal">
   <page display="Home" href="/"/>
   <page display="Code" href="/code">
     <page display="Code Edit" href="/code/edit"/>
