@@ -1,0 +1,10 @@
+<page xmlns       ="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      status="Draft" label:status="Status" values:status="Draft Published"
+      form:label="HTML content"
+      form:type="textarea"
+      form:lines="20"
+      form:uri-prefix-for-new-docs="/">
+</page>
