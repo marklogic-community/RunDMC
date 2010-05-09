@@ -7,7 +7,7 @@ declare variable $public-docs-only := if ("CommunitySitePublic" eq xdmp:server-n
 (: Hide "Draft" documents, if applicable :)
 declare function allow($doc) as element()?
 {
-  if ($public-docs-only) then $doc[fn:not(@status eq 'Draft') and fn:not(@preview-only)]
+  if ($public-docs-only) then $doc[(@status eq 'Published') and fn:not(@preview-only)]
                          else $doc
 };
 
