@@ -185,11 +185,13 @@
                 </div>
               </xsl:if>
 
+              <!-- Decided against this for now.
               <xsl:choose>
                 <xsl:when test="@form:uri-prefix-for-timestamped-named-docs">
                   <input type="hidden" name="~timestamped-file-name" value="yes"/>
                 </xsl:when>
                 <xsl:otherwise>
+                -->
                   <div>
                     <label for="slug">URI path</label>
                     <strong>
@@ -217,8 +219,10 @@
                       </xsl:choose>
                     </strong>
                   </div>
+                <!--
                 </xsl:otherwise>
               </xsl:choose>
+              -->
               <input type="hidden" name="~xml_to_edit" value="{xdmp:quote(.)}"/>
               <xsl:apply-templates mode="labeled-controls" select="."/>
               <xsl:choose>

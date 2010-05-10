@@ -23,7 +23,9 @@
              form:repeating="yes"
              form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
   </versions>
-  <!--
-  <top-threads form:hide="yes"/>
-  -->
+<!-- Disabled for now, since none of the existing Code pages show top threads. Maybe it's not wanted here after all.
+  <top-threads search=""><!- - label:search="Search (optional)"> Disabled for now, because the resulting behavior doesn't appear to work correctly (bug in top-threads.xqy?)- ->
+    <list form:repeating="yes" form:label="Mailing list"/>
+  </top-threads>
+-->
 </Project>

@@ -1,10 +1,12 @@
-<Comment xmlns       ="http://developer.marklogic.com/site/internal"
+<Comment xmlns    ="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
       status="Draft" label:status="Status" values:status="Draft Published"
-      about=""       label:about="About"
+      about=""       label:about="About">
+      <!-- Decided against this for now.
       form:uri-prefix-for-timestamp-named-docs="/private/comments/">
+      -->
   <author form:label="Author"/>
   <created/>
   <url form:label="Author URL"/>
