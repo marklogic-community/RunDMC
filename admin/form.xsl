@@ -193,10 +193,12 @@
                           <xsl:variable name="external-uri" select="substring-before($doc-path, '.xml')"/>
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
-                          <a href="{$staging-server}{$external-uri}" target="_blank">
-                            <span>(view original)</span>
-                          </a>
-                          <xsl:text> </xsl:text>
+                          <xsl:if test="not(self::Comment)"> <!-- Hack to prevent link for Comments, which are special (not viewable directly on site) -->
+                            <a href="{$staging-server}{$external-uri}" target="_blank">
+                              <span>(view original)</span>
+                            </a>
+                            <xsl:text> </xsl:text>
+                          </xsl:if>
                           <a href="{$webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
                             <span>(view original's XML source)</span>
                           </a>
@@ -222,7 +224,9 @@
                   <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/create.xqy'; this.form.target = '_self';"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
+              <xsl:if test="not(self::Comment)"> <!-- Hack to prevent preview for Comment changes, which are special (not viewable directly on site) -->
+                <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
+              </xsl:if>
             </form>
           </xsl:template>
 
