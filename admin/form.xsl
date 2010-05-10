@@ -30,9 +30,11 @@
 
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
+    <!-- This is the form config file -->
     <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
                                                                                                               '/admin/forms/',
                                                                                                               $template)))"/>
+    <!-- Initialize some parameters we'll be passing to xslt-invoke -->
     <xsl:variable name="template-doc-map" select="map:map()"/>
     <xsl:variable name="params-map" select="map:map()"/>
     <xsl:variable name="side-effects" select="map:put($template-doc-map, 'template-doc', $template-doc),
@@ -40,17 +42,20 @@
     <xsl:variable name="empty-doc">
       <empty/>
     </xsl:variable>
+
+    <!-- The form source we use depends on if this is a new or existing document -->
     <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
                                                if ($doc-already-exists-error) then xdmp:xslt-invoke('annotate-doc.xsl',
                                                                                                     xdmp:xslt-invoke('edit-doc.xsl', $empty-doc, $params-map),
                                                                                                     $template-doc-map)
                                                                                      
-                                               (: If the user is replacing an existing doc :)
+                                               (: If the user is editing an existing doc :)
                                           else if  (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $template-doc-map)
 
                                                (: If the user is loading the empty form for creating a new doc :)
                                           else $template-doc"/>
 
+    <!-- Once we've decided what source to use, perform some translation (attribute fields to element fields, etc.) -->
     <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
@@ -358,8 +363,7 @@
 
 
                                   <xsl:template mode="form-control" match="*[@form:type eq 'textarea']">
-                                      <!-- Leave this button out until I can implement it
-                                      TODO: Implement media upload
+                                      <!-- TODO: Implement media library and media upload
                                       <input type="submit" name="add_media" value="Add media"/>
                                       <br/>
                                       -->

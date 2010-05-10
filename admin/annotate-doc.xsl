@@ -1,3 +1,7 @@
+<!-- This stylesheet takes an existing XML document and adds all
+     the form configuration annotations to it (form field labels,
+     enumerated values, form control type, etc.).
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
