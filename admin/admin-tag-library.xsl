@@ -79,8 +79,10 @@
             <xsl:if test="not(self::admin-event-list)">
               <th scope="col">Author</th>
             </xsl:if>
-            <th scope="col">Created</th>
-            <th scope="col">Last&#160;Updated</th>
+            <xsl:if test="not(self::admin-project-list)">
+              <th scope="col">Created</th>
+              <th scope="col">Last&#160;Updated</th>
+            </xsl:if>
           </xsl:if>
           <th scope="col">Status</th>
           <th class="last">&#160;</th>
@@ -160,13 +162,15 @@
                     <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
                   </td>
                 </xsl:if>
-                <td>
-                  <xsl:value-of select="created"/>
-                </td>
+                <xsl:if test="not(self::Project)">
+                  <td>
+                    <xsl:value-of select="created"/>
+                  </td>
 
-                <td>
-                  <xsl:value-of select="last-updated"/>
-                </td>
+                  <td>
+                    <xsl:value-of select="last-updated"/>
+                  </td>
+                </xsl:if>
               </xsl:if>
               <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
               <td class="status {lower-case($effective-status)}">
