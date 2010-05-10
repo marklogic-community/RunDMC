@@ -29,7 +29,7 @@
         <xsl:variable name="sections" xmlns="">
           <Code          doc-type="Project"      path="/code"/>
           <Blog          doc-type="Post"         path="/blog"/>
-          <Blog_Comments doc-type="Comment"      path="/blog#tbl_comments" edit-path="/blog/comment-edit"/>
+          <Blog_Comments doc-type="Comment"      path="/blog#tbl_comments"/>
           <Learn         doc-type="Article"      path="/learn"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
@@ -44,7 +44,7 @@
             <xsl:variable name="docs" select="ml:docs-by-type(@doc-type)"/>
             <tr>
               <th scope="row">
-                <a href="#">
+                <a href="{@path}">
                   <xsl:value-of select="translate(local-name(.),'_',' ')"/>
                 </a>
               </th>
@@ -56,8 +56,12 @@
               </td>
               <td>
                 <a href="{@path}">List</a>
-                <xsl:text> | </xsl:text>
-                <a href="{if (@edit-path) then @edit-path else concat(@path,'/edit')}">Add new</a></td>
+                <!-- Comments are special. You can only approve/revoke/delete/edit them, but not add new ones (except through the main site) -->
+                <xsl:if test="not(@doc-type eq 'Comment')">
+                  <xsl:text> | </xsl:text>
+                  <a href="{concat(@path,'/edit')}">Add new</a>
+                </xsl:if>
+              </td>
             </tr>
           </xsl:template>
 
