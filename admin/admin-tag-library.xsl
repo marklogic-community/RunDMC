@@ -14,6 +14,53 @@
   <xsl:variable name="staging-server" select="string($navigation/*/@staging-server)"/>
   <xsl:variable name="webdav-server" select="string($navigation/*/@webdav-server)"/>
 
+  <xsl:template match="admin-page-listings">
+    <table id="tbl_status">
+      <caption>Page Status</caption>
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Published</th>
+          <th scope="col">Pending</th>
+          <th class="last">&#160;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="sections" xmlns="">
+          <Code          doc-type="Project"      path="/code"/>
+          <Blog          doc-type="Post"         path="/blog"/>
+          <Blog_Comments doc-type="Comment"      path="/blog#tbl_comments" edit-path="/blog/comment-edit"/>
+          <Learn         doc-type="Article"      path="/learn"/>
+          <News          doc-type="Announcement" path="/news"/>
+          <Events        doc-type="Event"        path="/events"/>
+          <Pages         doc-type="page"         path="/pages"/>
+        </xsl:variable>
+        <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
+      </tbody>
+    </table>
+  </xsl:template>
+
+          <xsl:template mode="admin-page-listing" match="*">
+            <xsl:variable name="docs" select="ml:docs-by-type(@doc-type)"/>
+            <tr>
+              <th scope="row">
+                <a href="#">
+                  <xsl:value-of select="translate(local-name(.),'_',' ')"/>
+                </a>
+              </th>
+              <td>
+                <xsl:value-of select="count($docs[@status eq 'Published'])"/>
+              </td>
+              <td class="status pending">
+                <xsl:value-of select="count($docs[@status eq 'Draft'])"/>
+              </td>
+              <td>
+                <a href="{@path}">List</a>
+                <xsl:text> | </xsl:text>
+                <a href="{if (@edit-path) then @edit-path else concat(@path,'/edit')}">Add new</a></td>
+            </tr>
+          </xsl:template>
+
   <xsl:template match="admin-project-list
                      | admin-learn-list
                      | admin-post-list
@@ -25,7 +72,9 @@
         <tr>
           <th scope="col">Title</th>
           <xsl:if test="not(self::admin-page-list)">
-            <th scope="col">Author</th>
+            <xsl:if test="not(self::admin-event-list)">
+              <th scope="col">Author</th>
+            </xsl:if>
             <th scope="col">Created</th>
             <th scope="col">Last&#160;Updated</th>
           </xsl:if>
@@ -34,18 +83,14 @@
         </tr>
       </thead>
       <tbody>
-        <xsl:variable name="docs" select="if (self::admin-project-list)      then $ml:projects-by-name
-                                     else if (self::admin-learn-list)        then ml:lookup-articles('','','')
-                                     else if (self::admin-post-list)         then $ml:posts-by-date
-                                     else if (self::admin-announcement-list) then $ml:announcements-by-date
-                                     else if (self::admin-event-list)        then $ml:events-by-date
-                                     else if (self::admin-page-list)         then $ml:pages
-                                     else ()"/>
-        <!--
-        <xsl:variable name="docs" as="element()*">
-          <xsl:apply-templates mode="docs-by-type" select="."/>
-        </xsl:variable>
-        -->
+        <xsl:variable name="doc-type" select="if (self::admin-project-list)      then 'Project'
+                                         else if (self::admin-learn-list)        then 'Article'
+                                         else if (self::admin-post-list)         then 'Post'
+                                         else if (self::admin-announcement-list) then 'Announcement'
+                                         else if (self::admin-event-list)        then 'Event'
+                                         else if (self::admin-page-list)         then 'page'
+                                         else ()"/>
+        <xsl:variable name="docs" select="ml:docs-by-type($doc-type)"/>
         <xsl:apply-templates mode="admin-listing" select="$docs">
           <xsl:with-param name="edit-path">
             <xsl:apply-templates mode="edit-path" select="."/>
@@ -56,27 +101,18 @@
     </table>
   </xsl:template>
 
-          <!--
-          <xsl:template mode="docs-by-type" match="admin-project-list">
-            <xsl:sequence select="$ml:Projects"/>
-          </xsl:template>
+          <xsl:function name="ml:docs-by-type" as="element()*">
+            <xsl:param name="doc-type"/>
+            <xsl:sequence select="if ($doc-type eq 'Project')      then $ml:projects-by-name
+                             else if ($doc-type eq 'Article')      then ml:lookup-articles('','','')
+                             else if ($doc-type eq 'Post')         then $ml:posts-by-date
+                             else if ($doc-type eq 'Announcement') then $ml:announcements-by-date
+                             else if ($doc-type eq 'Event')        then $ml:events-by-date
+                             else if ($doc-type eq 'page')         then $ml:pages
+                             else if ($doc-type eq 'Comment')      then $ml:Comments
+                             else ()"/>
+          </xsl:function>
 
-          <xsl:template mode="docs-by-type" match="admin-learn-list">
-            <xsl:sequence select="$ml:Articles"/>
-          </xsl:template>
-
-          <xsl:template mode="docs-by-type" match="admin-post-list">
-            <xsl:sequence select="$ml:posts-by-date"/>
-          </xsl:template>
-
-          <xsl:template mode="docs-by-type" match="admin-announcement-list">
-            <xsl:sequence select="$ml:Announcements"/>
-          </xsl:template>
-
-          <xsl:template mode="docs-by-type" match="admin-event-list">
-            <xsl:sequence select="$ml:Events"/>
-          </xsl:template>
-          -->
 
 
           <xsl:template mode="edit-path" match="admin-project-list"     >/code/edit</xsl:template>
@@ -107,9 +143,11 @@
                 </a>
               </th>
               <xsl:if test="not(self::page)">
-                <td>
-                  <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
-                </td>
+                <xsl:if test="not(self::Event)">
+                  <td>
+                    <xsl:value-of select="if (self::Project) then contributors/contributor else author" separator=", "/>
+                  </td>
+                </xsl:if>
                 <td>
                   <xsl:value-of select="created"/>
                 </td>
