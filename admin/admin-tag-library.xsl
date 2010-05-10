@@ -96,6 +96,8 @@
                                          else ()"/>
         <xsl:variable name="docs" select="ml:docs-by-type($doc-type)"/>
         <xsl:apply-templates mode="admin-listing" select="$docs">
+          <!-- Only sort if we're listing "page" docs; otherwise, don't change the order. -->
+          <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
           <xsl:with-param name="edit-path">
             <xsl:apply-templates mode="edit-path" select="."/>
           </xsl:with-param>
@@ -104,6 +106,18 @@
       </tbody>
     </table>
   </xsl:template>
+
+          <xsl:function name="ml:admin-doc-title" as="xs:string">
+            <xsl:param name="e" as="element()"/>
+            <xsl:sequence select="string(   if ($e/self::Project) then $e/name
+                                       else if ($e/self::page) then ( $e//*:h1
+                                                                    | $e//*:h2
+                                                                    | $e//*:h3
+                                                                    | $e//product-info/@name
+                                                                    )[1]
+                                       else $e/title
+                                        )"/>
+          </xsl:function>
 
           <xsl:function name="ml:docs-by-type" as="element()*">
             <xsl:param name="doc-type"/>
@@ -137,13 +151,7 @@
               </xsl:if>
               <th>
                 <a href="{$edit-link}">
-                  <xsl:value-of select="if (self::Project) then name
-                                   else if (self::page) then ( //*:h1
-                                                             | //*:h2
-                                                             | //*:h3
-                                                             | //product-info/@name
-                                                             )[1]
-                                   else title"/>
+                  <xsl:value-of select="ml:admin-doc-title(.)"/>
                 </a>
               </th>
               <xsl:if test="not(self::page)">
