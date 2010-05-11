@@ -12,7 +12,7 @@ let $new-doc-url := $params[@name eq '~new_doc_url']
 let $map         := map:map()
 
 (: Create the XML from the given POST parameters :)
-let $new-doc     := xdmp:xslt-invoke("../view/edit-doc.xsl",
+let $new-doc     := xdmp:xslt-invoke("edit-doc.xsl",
                                      document{ <empty/> },
                                      (map:put($map, "params", $params),$map)
                                     )
