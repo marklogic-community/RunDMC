@@ -369,15 +369,28 @@
   </xsl:function>
 
 
-  <xsl:function name="ml:display-date">
-    <xsl:param name="date-or-dateTime" as="xs:string"/>
-    <xsl:variable name="date" select="xs:date(substring($date-or-dateTime, 1, 10))"/>
-    <xsl:sequence select="format-date($date, '[M01]/[D01]/[Y01]')"/>
+  <xsl:function name="ml:display-date" as="xs:string">
+    <xsl:param name="date-or-dateTime" as="xs:string?"/>
+    <xsl:variable name="date-part" select="substring($date-or-dateTime, 1, 10)"/>
+    <xsl:variable name="castable" select="$date-part castable as xs:date"/>
+    <xsl:sequence select="if ($castable) then format-date(xs:date($date-part), '[M01]/[D01]/[Y01]')
+                                         else $date-or-dateTime"/>
   </xsl:function>
 
   <xsl:function name="ml:display-time" as="xs:string">
-    <xsl:param name="dateTime" as="xs:dateTime"/>
-    <xsl:sequence select="format-dateTime($dateTime, '[h]:[m][P]')"/>
+    <xsl:param name="dateTime" as="xs:string?"/>
+    <xsl:sequence select="if ($dateTime castable as xs:dateTime) then format-dateTime(xs:dateTime($dateTime), '[h]:[m][P]')
+                                                                 else $dateTime"/>
+  </xsl:function>
+
+  <xsl:function name="ml:display-date-with-time" as="xs:string">
+    <xsl:param name="dateTimeGiven"/>
+    <xsl:variable name="dateTime" select="string($dateTimeGiven)"/>
+    
+    <xsl:sequence select="if ($dateTime castable as xs:dateTime)
+                          then concat(ml:display-date($dateTime),'&#160;',
+                                      ml:display-time($dateTime))
+                          else $dateTime"/>
   </xsl:function>
 
   <xsl:function name="ml:external-uri" as="xs:string">

@@ -161,11 +161,11 @@
                 </xsl:if>
                 <xsl:if test="not(self::Project)">
                   <td>
-                    <xsl:value-of select="created"/>
+                    <xsl:value-of select="ml:display-date-with-time(created)"/>
                   </td>
 
                   <td>
-                    <xsl:value-of select="last-updated"/>
+                    <xsl:value-of select="ml:display-date-with-time(last-updated)"/>
                   </td>
                 </xsl:if>
               </xsl:if>
@@ -236,7 +236,7 @@
                 <xsl:text>...</xsl:text>
               </td>
               <td>
-                <xsl:value-of select="created"/>
+                <xsl:value-of select="ml:display-date-with-time(created)"/>
               </td>
               <xsl:variable name="status" select="if (@status eq 'Published') then 'Approved' else 'Pending'"/>
               <td class="status {lower-case($status)}">
