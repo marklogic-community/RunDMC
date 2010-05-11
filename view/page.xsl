@@ -175,7 +175,7 @@
                               </span>
                               <span class="author">
                                 <xsl:text>by </xsl:text>
-                                <xsl:apply-templates select="author/node()"/>
+                                <xsl:apply-templates mode="author-listing" select="author"/>
                               </span>
                               <xsl:apply-templates select="body/node()"/>
                               <div class="action">

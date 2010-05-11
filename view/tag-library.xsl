@@ -443,7 +443,7 @@
               <xsl:if test="not($suppress-byline)">
                 <div class="author">
                   <xsl:text>By </xsl:text>
-                  <xsl:value-of select="author"/>
+                  <xsl:apply-templates mode="author-listing" select="author"/>
                 </div>
               </xsl:if>
               <p>

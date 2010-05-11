@@ -40,7 +40,7 @@
     <xsl:variable name="unique-authors" select="distinct-values($ml:Posts/author/normalize-space(.))"/>
     <xsl:for-each select="$unique-authors">
       <ml:group display="{.}">
-        <xsl:variable name="posts-by-author" select="$ml:Posts[normalize-space(author) eq current()]"/>
+        <xsl:variable name="posts-by-author" select="$ml:Posts[author/normalize-space(.) = current()]"/>
         <xsl:for-each select="$posts-by-author">
           <xsl:sort select="created" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>
