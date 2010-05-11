@@ -179,7 +179,7 @@
                   <dt>LAST SAVED</dt>
                   <xsl:text> </xsl:text>
                   <dd>
-                    <xsl:value-of select="substring-before($params[@name eq '~updated'], '.')"/>
+                    <xsl:value-of select="ml:display-date-with-time($params[@name eq '~updated'])"/>
                   </dd>
                 </dl>
                 </div>
