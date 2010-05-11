@@ -30,36 +30,39 @@
 
   <xsl:function name="form:form-template">
     <xsl:param name="template"/>
-    <!-- This is the form config file -->
-    <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
+
+    <!-- STAGE 1: Strip comments from the form config file -->
+    <xsl:variable name="form-config" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
                                                                                                               '/admin/config/forms/',
                                                                                                               $template)))"/>
     <!-- Initialize some parameters we'll be passing to xslt-invoke -->
-    <xsl:variable name="template-doc-map" select="map:map()"/>
+    <xsl:variable name="form-config-map" select="map:map()"/>
     <xsl:variable name="params-map" select="map:map()"/>
-    <xsl:variable name="side-effects" select="map:put($template-doc-map, 'template-doc', $template-doc),
-                                              map:put($params-map,       'params',       $params)"/>
+    <xsl:variable name="side-effects" select="map:put($form-config-map, 'form-config', $form-config),
+                                              map:put($params-map,      'params',      $params)"/>
     <xsl:variable name="empty-doc">
       <empty/>
     </xsl:variable>
 
-    <!-- The form source we use depends on if this is a new or existing document -->
+    <!-- STAGE 2: Determine the source of the form template; it depends on whether this is a new or existing document -->
     <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
                                                if ($doc-already-exists-error) then xdmp:xslt-invoke('annotate-doc.xsl',
                                                                                                     xdmp:xslt-invoke('../model/construct-xml.xsl', $empty-doc, $params-map),
-                                                                                                    $template-doc-map)
+                                                                                                    $form-config-map)
                                                                                      
                                                (: If the user is editing an existing doc :)
-                                          else if  (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $template-doc-map)
+                                          else if  (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $form-config-map)
 
                                                (: If ~doc_path is set to a document that doesn't exist (shouldn't normally happen) :)
                                           else if (string($doc-path)) then error((), 'You are attempting to edit a document that does not exist.')
 
                                                (: If the user is loading the empty form for creating a new doc :)
-                                          else $template-doc"/>
+                                          else $form-config"/>
 
-    <!-- Once we've decided what source to use, perform some translation (attribute fields to element fields, etc.) -->
-    <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('simplify-form-spec.xsl', $raw-form-spec)"/>
+    <!-- STAGE 3: Normalize the form spec (attribute fields to element fields, etc.) -->
+    <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('normalize-form-spec.xsl', $raw-form-spec)"/>
+
+    <!-- STAGE 4: Finally, add a unique ID to each field so we can re-associate field names with XML elements later on -->
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
 

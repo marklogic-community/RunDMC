@@ -12,12 +12,13 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp form xhtml">
 
-  <xsl:param name="template-doc"/>
+  <!-- The form configuration document is passed in as a top-level parameter. -->
+  <xsl:param name="form-config"/>
 
 <!--
 <xsl:template match="/">
-<xsl:copy-of select="$template-doc"/>
-<xsl:apply-templates select="$template-doc/*"/>
+<xsl:copy-of select="$form-config"/>
+<xsl:apply-templates select="$form-config/*"/>
 </xsl:template>
 -->
 
@@ -28,8 +29,8 @@
   </xsl:template>
 
   <xsl:template match="ml:*">
-    <xsl:variable name="config-node" select="$template-doc//*[deep-equal(form:path-to-me(.),
-                                                                         form:path-to-me(current()))][1]"/>
+    <xsl:variable name="config-node" select="$form-config//*[deep-equal(form:path-to-me(.),
+                                                                        form:path-to-me(current()))][1]"/>
     <xsl:copy>
       <!-- Add applicable annotations to each element -->
       <xsl:apply-templates select="$config-node/@*"/>
