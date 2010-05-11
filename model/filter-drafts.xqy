@@ -1,8 +1,8 @@
+(: These functions filter out draft and/or preview-only documents, when applicable. :)
 module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts";
 
 (: TODO: Use a special server field with xdmp:get-server-field instead of hard-coding the server name :)
-declare variable $public-docs-only := if ("CommunitySitePublic" eq xdmp:server-name(xdmp:server())) then fn:true()
-                                                                                                    else fn:false();
+declare variable $public-docs-only := "CommunitySitePublic" eq xdmp:server-name(xdmp:server());
 
 (: Hide "Draft" documents, if applicable :)
 declare function allow($doc) as element()?
