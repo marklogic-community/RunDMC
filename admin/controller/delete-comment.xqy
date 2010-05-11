@@ -1,5 +1,5 @@
 import module namespace param="http://marklogic.com/rundmc/params"
-       at "../controller/modules/params.xqy";
+       at "../../controller/modules/params.xqy";
 
 let $params := param:params()
 let $comment-uri := $params[@name eq 'path']

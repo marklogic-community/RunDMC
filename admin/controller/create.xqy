@@ -5,14 +5,14 @@
    given URI.
 :)
 import module namespace param="http://marklogic.com/rundmc/params"
-       at "../controller/modules/params.xqy";
+       at "../../controller/modules/params.xqy";
 
 let $params      := param:params()
 let $new-doc-url := $params[@name eq '~new_doc_url']
 let $map         := map:map()
 
 (: Create the XML from the given POST parameters :)
-let $new-doc     := xdmp:xslt-invoke("edit-doc.xsl",
+let $new-doc     := xdmp:xslt-invoke("../view/edit-doc.xsl",
                                      document{ <empty/> },
                                      (map:put($map, "params", $params),$map)
                                     )

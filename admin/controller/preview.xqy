@@ -1,11 +1,11 @@
 import module namespace param="http://marklogic.com/rundmc/params"
-       at "../controller/modules/params.xqy";
+       at "../../controller/modules/params.xqy";
 import module namespace mem = "http://xqdev.com/in-mem-update"
        at "/MarkLogic/appservices/utils/in-mem-update.xqy";
 
 let $params  := param:params()
 let $doc-url := concat('/preview/', current-dateTime(), '.xml')
-let $config  := xdmp:document-get(concat(xdmp:modules-root(),'/config/admin/navigation.xml'))
+let $config  := xdmp:document-get(concat(xdmp:modules-root(),'/admin/config/navigation.xml'))
 let $external-uri := concat($config/*/@staging-server, substring-before($doc-url, '.xml'))
 let $map     := map:map()
 

@@ -1,5 +1,5 @@
 import module namespace param="http://marklogic.com/rundmc/params"
-       at "../controller/modules/params.xqy";
+       at "../../controller/modules/params.xqy";
 
 declare namespace map = "http://marklogic.com/xdmp/map";
 

@@ -2,7 +2,7 @@
    submitted from the Edit page for the original document.
 :)
 import module namespace param="http://marklogic.com/rundmc/params"
-       at "../controller/modules/params.xqy";
+       at "../../controller/modules/params.xqy";
 
 let $params  := param:params()
 let $map     := map:map()

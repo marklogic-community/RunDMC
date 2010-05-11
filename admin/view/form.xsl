@@ -32,7 +32,7 @@
     <xsl:param name="template"/>
     <!-- This is the form config file -->
     <xsl:variable name="template-doc" select="xdmp:xslt-invoke('strip-comments.xsl', xdmp:document-get(concat(xdmp:modules-root(),
-                                                                                                              '/admin/forms/',
+                                                                                                              '/admin/config/forms/',
                                                                                                               $template)))"/>
     <!-- Initialize some parameters we'll be passing to xslt-invoke -->
     <xsl:variable name="template-doc-map" select="map:map()"/>
@@ -46,7 +46,7 @@
     <!-- The form source we use depends on if this is a new or existing document -->
     <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
                                                if ($doc-already-exists-error) then xdmp:xslt-invoke('annotate-doc.xsl',
-                                                                                                    xdmp:xslt-invoke('edit-doc.xsl', $empty-doc, $params-map),
+                                                                                                    xdmp:xslt-invoke('../controller/edit-doc.xsl', $empty-doc, $params-map),
                                                                                                     $template-doc-map)
                                                                                      
                                                (: If the user is editing an existing doc :)
@@ -59,7 +59,7 @@
                                           else $template-doc"/>
 
     <!-- Once we've decided what source to use, perform some translation (attribute fields to element fields, etc.) -->
-    <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('pre-process-form.xsl', $raw-form-spec)"/>
+    <xsl:variable name="pre-processed" select="xdmp:xslt-invoke('simplify-form-spec.xsl', $raw-form-spec)"/>
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
 
@@ -230,14 +230,14 @@
               <xsl:apply-templates mode="labeled-controls" select="."/>
               <xsl:choose>
                 <xsl:when test="string($doc-path)">
-                  <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/replace.xqy'; this.form.target = '_self';"/>
+                  <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/controller/replace.xqy'; this.form.target = '_self';"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/create.xqy'; this.form.target = '_self';"/>
+                  <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/controller/create.xqy'; this.form.target = '_self';"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:if test="not(self::Comment)"> <!-- Hack to prevent preview for Comment changes, which are special (not viewable directly on site) -->
-                <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/preview.xqy'; this.form.target = '_blank';"/>
+                <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/controller/preview.xqy'; this.form.target = '_blank';"/>
               </xsl:if>
             </form>
           </xsl:template>

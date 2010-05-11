@@ -5,9 +5,6 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xmlns:form             ="http://developer.marklogic.com/site/internal/form"
-  xmlns:label            ="http://developer.marklogic.com/site/internal/form/attribute-labels"
-  xmlns:values           ="http://developer.marklogic.com/site/internal/form/values"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
@@ -184,7 +181,7 @@
                 <xsl:text>&#160;|&#160;</xsl:text>
 
                 <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-                <a href="/admin/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+                <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
                   <xsl:value-of select="$action"/>
                 </a>
 
@@ -250,13 +247,13 @@
                 <xsl:text>&#160;|&#160;</xsl:text>
 
                 <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-                <a href="/admin/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect=/blog%23tbl_comments">
+                <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect=/blog%23tbl_comments">
                   <xsl:value-of select="if (@status eq 'Published') then 'Revoke'
                                                                     else 'Approve'"/>
                 </a>
 
                 <xsl:text>&#160;|&#160;</xsl:text>
-                <a href="javascript:if (confirm('Are you sure you want to delete this comment?')) {{ window.location = '/admin/delete-comment.xqy?path={base-uri(.)}'; }}">Remove</a>
+                <a href="javascript:if (confirm('Are you sure you want to delete this comment?')) {{ window.location = '/admin/controller/delete-comment.xqy?path={base-uri(.)}'; }}">Remove</a>
               </td>
             </tr>            
           </xsl:template>

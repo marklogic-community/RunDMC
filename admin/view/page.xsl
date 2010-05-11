@@ -9,13 +9,13 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
-  <xsl:import href="../view/page.xsl"/>
+  <xsl:import href="../../view/page.xsl"/>
 
   <xsl:include href="form.xsl"/>
-  <xsl:include href="admin-tag-library.xsl"/>
+  <xsl:include href="tag-library.xsl"/>
 
-  <xsl:variable name="template"       select="u:get-doc('/config/admin/template.xhtml')"/>
-  <xsl:variable name="raw-navigation" select="u:get-doc('/config/admin/navigation.xml')"/>
+  <xsl:variable name="template"       select="u:get-doc('/admin/config/template.xhtml')"/>
+  <xsl:variable name="raw-navigation" select="u:get-doc('/admin/config/navigation.xml')"/>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>

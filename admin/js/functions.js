@@ -51,7 +51,7 @@ if(typeof jQuery != 'undefined') {
     	// invoke specific submission prevention
     	preventSubmit('form#codeedit','add_media');
       // begin add media overlay
-      $('input[name=add_media]').wrap('<a href="/admin/adminAddMedia.html" rel="#overlay"></a>"');
+      $('input[name=add_media]').wrap('<a href="/admin/view/adminAddMedia.html" rel="#overlay"></a>"');
 			$('input[name=add_media]').parent('a[rel]').overlay({
 				expose: 'black',
 				left: 'center',
