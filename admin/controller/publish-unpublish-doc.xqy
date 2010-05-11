@@ -20,7 +20,7 @@ return
 
   xdmp:node-replace(
     $doc,
-    xdmp:xslt-invoke("set-doc-attribute.xsl", $doc, $map)
+    xdmp:xslt-invoke("../model/set-doc-attribute.xsl", $doc, $map)
   ),
 
   xdmp:redirect-response($redirect)

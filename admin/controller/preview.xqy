@@ -12,7 +12,7 @@ let $map     := map:map()
 return
 (
   map:put($map, "params", $params),
-  let $new-doc := xdmp:xslt-invoke("edit-doc.xsl", document{ <empty/> }, $map)
+  let $new-doc := xdmp:xslt-invoke("../model/construct-xml.xsl", document{ <empty/> }, $map)
   let $map := map:map()
 
     return
@@ -20,7 +20,7 @@ return
       map:put($map, "att-name", "preview-only"),
       map:put($map, "att-value", "yes"),
 
-      xdmp:document-insert($doc-url, xdmp:xslt-invoke("set-doc-attribute.xsl", $new-doc, $map)),
+      xdmp:document-insert($doc-url, xdmp:xslt-invoke("../model/set-doc-attribute.xsl", $new-doc, $map)),
 
       xdmp:redirect-response(concat($external-uri, "?preview-as-if-at=", substring-before($params[@name eq "~existing_doc_uri"], '.xml')))
     )

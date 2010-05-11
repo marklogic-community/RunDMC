@@ -46,7 +46,7 @@
     <!-- The form source we use depends on if this is a new or existing document -->
     <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
                                                if ($doc-already-exists-error) then xdmp:xslt-invoke('annotate-doc.xsl',
-                                                                                                    xdmp:xslt-invoke('../controller/edit-doc.xsl', $empty-doc, $params-map),
+                                                                                                    xdmp:xslt-invoke('../model/construct-xml.xsl', $empty-doc, $params-map),
                                                                                                     $template-doc-map)
                                                                                      
                                                (: If the user is editing an existing doc :)

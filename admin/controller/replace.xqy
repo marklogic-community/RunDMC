@@ -10,7 +10,7 @@ let $map     := map:map()
 return
 (
   (: Create the new XML from the POST parameters :)
-  let $new-doc := xdmp:xslt-invoke("edit-doc.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
+  let $new-doc := xdmp:xslt-invoke("../model/construct-xml.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
 
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
   return
