@@ -52,6 +52,9 @@
                                                (: If the user is editing an existing doc :)
                                           else if  (doc-available($doc-path)) then xdmp:xslt-invoke('annotate-doc.xsl', doc($doc-path), $template-doc-map)
 
+                                               (: If ~doc_path is set to a document that doesn't exist (shouldn't normally happen) :)
+                                          else if (string($doc-path)) then error((), 'You are attempting to edit a document that does not exist.')
+
                                                (: If the user is loading the empty form for creating a new doc :)
                                           else $template-doc"/>
 
@@ -202,12 +205,12 @@
                           <xsl:text> </xsl:text>
                           <xsl:if test="not(self::Comment)"> <!-- Hack to prevent link for Comments, which are special (not viewable directly on site) -->
                             <a href="{$staging-server}{$external-uri}" target="_blank">
-                              <span>(view original)</span>
+                              <span>(view current)</span>
                             </a>
                             <xsl:text> </xsl:text>
                           </xsl:if>
                           <a href="{$webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
-                            <span>(view original's XML source)</span>
+                            <span>(view current XML source)</span>
                           </a>
                           <input type="hidden" name="~existing_doc_uri" value="{$doc-path}"/>
                         </xsl:when>
