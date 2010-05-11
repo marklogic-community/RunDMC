@@ -5,8 +5,11 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
+(: We're not currently using collections, so just start with all docs in the database :)
 declare variable $collection    := fn:collection();
 
+                                                           (: filter out temporary, preview-only docs, and
+                                                              filter "Draft" docs when applicable :)
 declare variable $Announcements := $collection/Announcement[draft:listed(.)]; (: "News"   :)
 declare variable $Events        := $collection/Event       [draft:listed(.)]; (: "Events" :)
 declare variable $Articles      := $collection/Article     [draft:listed(.)]; (: "Learn"  :)
@@ -14,9 +17,12 @@ declare variable $Posts         := $collection/Post        [draft:listed(.)]; (:
 declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
 declare variable $Comments      := $collection/Comment     [draft:listed(.)]; (: blog comments :)
 
+                                                    (: Exclude admin pages themselves, so you can't change,
+                                                       or break, the Admin UI through the Admin UI :)
 declare variable $pages         := $collection/page[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
                                                            [draft:listed(.)]; (: regular pages :)
 
+(: Used to limit what documents are exposed via Search :)
 declare variable $live-documents := ( $Announcements
                                     | $Events
                                     | $Articles
@@ -24,10 +30,12 @@ declare variable $live-documents := ( $Announcements
                                     | $Projects
                                     );
 
+(: Used to discover Project docs in the Admin UI :)
 declare variable $projects-by-name := for $p in $Projects
                                       order by $p/name
                                       return $p;
 
+(: Blog posts :)
 declare variable $posts-by-date := for $p in $Posts
                                    order by $p/created descending
                                    return $p;
@@ -41,6 +49,7 @@ declare variable $posts-by-date := for $p in $Posts
 
 
 
+(: Get a range of documents for paginated parts of the site; used for Blog, News, and Events :)
 declare function list-segment-of-docs($start as xs:integer, $count as xs:integer, $type as xs:string)
 {
     (: TODO: Consider refactoring so we have generic "by-date" and "list-by-type" functions that can sort out the differences :)
@@ -80,16 +89,6 @@ declare variable $announcements-by-date := for $a in $Announcements
           $announcements-by-date[1]
         };
 
-(: No longer used. Delete this soon...
-        declare function recent-announcements($months as xs:integer)
-        {
-          let $duration := fn:concat('P', $months, 'M'),
-              $start-date := fn:current-date() - xs:yearMonthDuration($duration)
-          return
-            $announcements-by-date[xs:date(date) ge $start-date]
-        };
-:)
-
 
 declare variable $events-by-date := for $e in $Events
                                     order by $e/details/date descending
@@ -110,6 +109,7 @@ declare variable $events-by-date := for $e in $Events
         };
 
 
+(: Filtered documents by type and/or topic. Used in the "Learn" section of the site. :)
 declare function lookup-articles($type as xs:string, $server-version as xs:string, $topic as xs:string)
 {
   let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type))
@@ -128,10 +128,7 @@ declare function lookup-articles($type as xs:string, $server-version as xs:strin
         };
 
 
-(: TODO: Figure out how to put this in its own module, e.g., top-threads.xqy,
-   without having to use a different target namespace. Can <xdmp:import>
-   support multiple modules with the same target NS?
-:)
+(: Used to implement the <ml:top-threads/> tag :)
 declare function get-threads-xml($search as xs:string?, $lists as xs:string*)
 {
   (: This is a workaround for not yet being able to import the XQuery directly. :)
