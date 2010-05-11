@@ -1,4 +1,4 @@
-(: This query handles the creation of new documents from the Admin UI;
+(: This script handles the creation of new documents from the Admin UI;
 
    NOTE: the URL rewriter ensures that, if we get this far, that means
    there won't be any conflict with storing the new document at the

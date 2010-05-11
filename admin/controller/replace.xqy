@@ -1,4 +1,4 @@
-(: This query replaces an existing document with a newly edited one,
+(: This script replaces an existing document with a newly edited one,
    submitted from the Edit page for the original document.
 :)
 import module namespace param="http://marklogic.com/rundmc/params"

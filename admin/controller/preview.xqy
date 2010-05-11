@@ -1,4 +1,4 @@
-(: This query creates a preview of document edits, whether new or existing, published or draft.
+(: This script creates a preview of document edits, whether new or existing, published or draft.
 
    It creates an XML document annotated as a preview-only document, so it's not discoverable
    in the public site or Admin UI. The XML document is meant to be temporary; some other process
@@ -13,7 +13,7 @@ let $map     := map:map()
 (: Where we'll store the temporary XML document. :)
 let $doc-url := concat('/preview/', current-dateTime(), '.xml')
 
-(: Consult the config file for the staging server URL :)
+(: Consult the config file to get the staging server URL :)
 let $config  := xdmp:document-get(concat(xdmp:modules-root(),'/admin/config/navigation.xml'))
 let $external-uri := concat($config/*/@staging-server, substring-before($doc-url, '.xml'))
 
