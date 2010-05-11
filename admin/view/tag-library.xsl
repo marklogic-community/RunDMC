@@ -178,7 +178,7 @@
                 <a href="{$edit-link}">Edit</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: make preview work -->
-                <a href="{$staging-server}{substring-before(base-uri(.), '.xml')}">Preview</a>
+                <a href="{$staging-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
 
                 <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
