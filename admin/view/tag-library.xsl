@@ -165,7 +165,8 @@
                   </td>
 
                   <td>
-                    <xsl:value-of select="ml:display-date-with-time(last-updated)"/>
+                    <xsl:value-of select="if (created eq last-updated) then ()
+                                                                       else ml:display-date-with-time(last-updated)"/>
                   </td>
                 </xsl:if>
               </xsl:if>
