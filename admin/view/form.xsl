@@ -63,10 +63,13 @@
     <xsl:sequence select="xdmp:xslt-invoke('add-ids.xsl', $pre-processed)"/>
   </xsl:function>
 
+  <!-- This is for generating page-specific JS code. See the main XHTML template config file. -->
   <xsl:template match="auto-form-scripts">
     <xsl:for-each select="$content//auto-form">
       <xsl:variable name="form-spec" select="form:form-template(@template)"/>
+<!-- FOR DEBUGGING ONLY
 <xsl:copy-of select="$form-spec"/>
+-->
       <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
     </xsl:for-each>
   </xsl:template>
@@ -161,6 +164,7 @@
           </xsl:template>
 
 
+  <!-- For generating a form within a page. E.g., <ml:auto-form template="Article.xml"/> -->
   <xsl:template match="auto-form">
     <xsl:apply-templates mode="generate-form" select="form:form-template(@template)"/>
   </xsl:template>
