@@ -20,7 +20,7 @@ let $external-uri := concat($config/*/@staging-server, substring-before($doc-url
 return
 (
   (: Construct the XML based on the submitted parameters :)
-  let $new-doc := xdmp:xslt-invoke("../model/construct-xml.xsl", document{ <empty/> }, (map:put($map,"params",$params),$map))
+  let $new-doc := xdmp:xslt-invoke("../model/form2xml.xsl", document{ <empty/> }, (map:put($map,"params",$params),$map))
   let $map := map:map()
 
     return
