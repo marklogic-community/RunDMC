@@ -18,7 +18,7 @@
 
   <xsl:variable name="orig-path" select="$params[@name eq '~orig_path']"/>
 
-  <xsl:variable name="doc-already-exists-error" select="'yes' = $params[@name eq '~doc_already_exists']"/>
+  <xsl:variable name="error-code" select="$params[@name eq '~error_code']"/>
 
 
   <!-- This is for generating page-specific JS code. See the main XHTML template config file. -->
@@ -143,10 +143,18 @@
                 </div>
               </xsl:if>
 
-              <xsl:if test="$doc-already-exists-error">
+              <xsl:if test="$error-code">
                 <div class="error">
-                  <strong>OOPS:</strong> A document at this URI already exists.<br />
-                  Please enter a different URI path.
+                  <strong>OOPS:</strong>
+                  <xsl:choose>
+                    <xsl:when test="$error-code eq 'no-slug'">
+                      You must specify a URI path. 
+                    </xsl:when>
+                    <xsl:when test="$error-code eq 'doc-exists'">
+                      A document at this URI already exists.<br />
+                      Please enter a different URI path.
+                    </xsl:when>
+                  </xsl:choose>
                 </div>
               </xsl:if>
 
