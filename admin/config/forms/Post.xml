@@ -10,7 +10,7 @@
           form:label="Author"/>
   <created/>
   <last-updated/>
-  <tags>
+  <tags form:optional="yes">
     <tag form:label="Tag"
          form:repeating="yes"/>
   </tags>

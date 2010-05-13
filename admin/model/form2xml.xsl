@@ -171,6 +171,12 @@
     <xsl:copy/>
   </xsl:template>
 
+  <!-- Strip out optional fields that don't have a value set -->
+  <xsl:template mode="clean-up" match="*[@form:optional eq 'yes']
+                                        [not(normalize-space(.))]
+                                        [not((.//@* except .//@form:*)[normalize-space(.)]
+                                            )]"/>
+
   <!-- Convert elements back to attributes -->
   <xsl:template mode="clean-up" match="*[@form:is-attribute]">
     <xsl:attribute name="{name()}" namespace="{namespace-uri(.)}">

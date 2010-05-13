@@ -9,12 +9,13 @@
          form:wide="yes"/>
   <author form:repeating="yes"
           form:label="Author"/>
-  <created/>
-  <last-updated/>
   <date form:label="Date"/>
   <abstract form:label="Abstract (optional)"
             form:type="textarea"
-            form:lines="4"/>
+            form:lines="4"
+            form:optional="yes"/>
   <body form:label="Body"
         form:type="textarea"/>
+  <created/>
+  <last-updated/>
 </Announcement>
