@@ -24,7 +24,7 @@ SETUP NOTES
     /admin/config/navigation.xml.
     
 
-  [A sample database will be provided...]
+  [An updated sample database should be provided...]
 
 
 CODE NOTES
