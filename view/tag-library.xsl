@@ -1,3 +1,8 @@
+<!-- This stylesheet contains a large list of rules for processing
+     custom tags that can appear anywhere in the XML source document for
+     a page on the website. These are used to insert dynamic content
+     (content assembled from one or many other documents).
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"

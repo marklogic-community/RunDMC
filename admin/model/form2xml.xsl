@@ -1,7 +1,8 @@
 <!-- This stylesheet constructs an XML document from a set of name/value $params.
      One of the params is ~xml_to_edit, which dictates the resulting structure.
      The rest of the params are used to replace values and/or add new elements
-     to the result.
+     to the result. In a final stage, we perform cleanup and convert elements
+     back to attributes where applicable.
 -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

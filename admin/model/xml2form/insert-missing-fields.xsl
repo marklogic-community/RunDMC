@@ -20,9 +20,6 @@
 
   <xsl:template match="/">
     <xsl:variable name="missing-fields" select="$flagged-form-config//*[not(@form:found eq 'yes')]"/>
-    <!--
-    <xsl:copy-of select="$flagged-form-config"/>
-    -->
     <xsl:copy-of select="form:insert-fields(/, $missing-fields)"/>
   </xsl:template>
 

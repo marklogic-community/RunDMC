@@ -47,7 +47,7 @@
     </xsl:variable>
 
     <!-- STAGE 2: Determine the source of the form template; it depends on whether this is a new or existing document -->
-    <xsl:variable name="raw-form-spec" select="(: If the user just tried to create a new doc at a URI that is already taken... :)
+    <xsl:variable name="raw-form-spec" select="(: If the user didn't specify the URI path or tried to create a new doc at a URI that is already taken... :)
                                                if ($error-code) then xdmp:xslt-invoke(concat($base-path,'/annotate-doc.xsl'),
                                                                                       xdmp:xslt-invoke(concat($base-path,'/../form2xml.xsl'),
                                                                                                        $empty-doc,

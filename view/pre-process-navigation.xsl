@@ -1,3 +1,7 @@
+<!-- This stylesheet pre-processes navigation.xml, specifically so it
+     can be populated with blog post links, grouped in the various
+     supported ways (by date, author, and category)>
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"

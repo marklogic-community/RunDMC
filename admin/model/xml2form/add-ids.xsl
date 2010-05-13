@@ -1,3 +1,10 @@
+<!-- This stylesheet adds a unique field name (ID) for each field
+     in the form spec. It's the last stage that's applied before
+     rendering the form to XHTML. The field IDs are what enable
+     us to re-populate the XML document (stored in the hidden
+     ~xml_to_edit field) with values supplied by the user in the
+     other request parameters.
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:form="http://developer.marklogic.com/site/internal/form">

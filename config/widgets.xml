@@ -8,9 +8,11 @@
     <page href="/"/>
   </widget>
 
+  <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
+
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
-    <page-tree href="/news-and-events"/>
+    <page-tree href="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
     <page-tree href="/news"/>
     <page-tree href="/events"/>
   </widget>

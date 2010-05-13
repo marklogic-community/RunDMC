@@ -15,13 +15,6 @@
   <!-- The form configuration document is passed in as a top-level parameter. -->
   <xsl:param name="form-config"/>
 
-<!--
-<xsl:template match="/">
-<xsl:copy-of select="$form-config"/>
-<xsl:apply-templates select="$form-config/*"/>
-</xsl:template>
--->
-
   <xsl:template match="@* | node()">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
@@ -61,22 +54,6 @@
       </xsl:choose>
     </xsl:copy>
   </xsl:template>
-
-          <!--
-          <xsl:template mode="strip-namespaces" match="@* | node()">
-            <xsl:copy>
-              <xsl:apply-templates mode="#current" select="@* | node()"/>
-            </xsl:copy>
-          </xsl:template>
-
-          <xsl:template mode="strip-namespaces" match="xhtml:*">
-            <xsl:element name="{local-name()}" namespace="">
-              <xsl:apply-templates mode="#current" select="@*"/>
-              <xsl:apply-templates mode="#current"/>
-            </xsl:element>
-          </xsl:template>
-          -->
-
 
   <xsl:function name="form:path-to-me" as="xs:QName+">
     <xsl:param name="element"/>

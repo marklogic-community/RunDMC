@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- This document configures the top- and sub-level navigation,
+<!-- This document configures the top- and sub-level navigation,
      including breadcrumb hierarchy.
---><navigation xmlns="http://developer.marklogic.com/site/internal">
+-->
+<navigation xmlns="http://developer.marklogic.com/site/internal">
   <page display="Docs" href="/docs"  narrow-sidebar="yes"/>
   <page display="Downloads" href="/products">
     <group display="MarkLogic Downloads">

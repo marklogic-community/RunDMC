@@ -1,3 +1,8 @@
+<!-- This stylesheet implements the <ml:widgets/> custom tag
+     for inserting widgets into the site's sidebar. The widget
+     configuration file is consulted to determine which widgets
+     should be displayed on the current page.
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"

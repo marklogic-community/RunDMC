@@ -1,3 +1,7 @@
+<!-- The main, top-level stylesheet that's invoked for rendering
+     every page of the site. Called directly by the controller scripts
+     (transform.xqy).
+-->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
