@@ -102,8 +102,11 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (matches($path, '^/(js|css|images|media)/v-[0-9]*/.*'))  then 
         replace($path, '/v-[0-9]*', '')
     (: Ignore these URLs :)
-    else if (starts-with($path,'/private/') or starts-with($path,'/admin/')) then
+    else if (starts-with($path,'/private/')) then
         $orig-url
+    (: Deny access to the Admin site scripts from this server :)
+    else if (starts-with($path,'/admin/')) then
+        error((), "Access denied.")
     (: Respond with DB contents for /media and /pubs :)
     else if (starts-with($path, '/media/')) then 
         concat("/controller/get-db-file.xqy?uri=", $path)
