@@ -83,11 +83,14 @@ a.requirements:hover {color: #235BAB !important;}
 	margin: auto;
 	width: 900px;
 }
+#badge {
+    padding-left: 7px;
+    padding-top: 5px;
+}
 #header {
 	background: #A4B243 url(../images/bg_header.png) no-repeat;
 	min-height: 80px;
 	position: relative;
-	padding: 15px 15px 5px 30px;
 }
 #header ul {
 	position: absolute;
