@@ -98,6 +98,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Support /download[s] and map them and /productsto latest product URI :)
     else if ($path = ("/download", "/downloads", "/products", "/product")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
+    (: remove version from the URL for versioned assets :)
+    else if (matches($path, '/.*/v-[0-9]*/.*'))  then 
+        replace($path, '/v-[0-9]*', '')
     (: Ignore these URLs :)
     else if (starts-with($path,'/private/') or starts-with($path,'/admin/')) then
         $orig-url
