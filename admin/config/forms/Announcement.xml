@@ -10,10 +10,6 @@
   <author form:repeating="yes"
           form:label="Author"/>
   <date form:label="Date"/>
-  <abstract form:label="Abstract (optional)"
-            form:type="textarea"
-            form:lines="4"
-            form:optional="yes"/>
   <body form:label="Body"
         form:type="textarea"/>
   <created/>
