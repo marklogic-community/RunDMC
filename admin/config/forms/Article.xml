@@ -1,33 +1,34 @@
-<Article xmlns    ="http://developer.marklogic.com/site/internal"
+<ml:Article xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"      values:status="Draft Published"
       type=""        label:type="Document Type" values:type="_ Reference Tutorial Book"
       form:uri-prefix-for-new-docs="/learn/">
-    <title form:label="Title"
-           form:wide="yes"/>
-    <author form:repeating="yes"
-            form:label="Author"/>
-    <created/>
-    <last-updated form:label="Last Updated"/>  <!-- By putting a label on this field, we're taking manual control
+    <ml:title form:label="Title"
+              form:wide="yes"/>
+    <ml:author form:repeating="yes"
+               form:label="Author"/>
+    <ml:created/>
+    <ml:last-updated form:label="Last Updated"/>  <!-- By putting a label on this field, we're taking manual control
                                                     (no auto-timestamps for <ml:last-updated/> on Article docs, due
                                                     to the way this field is currently being used "in the wild":
                                                     sometimes a date, sometimes a server version number, etc.). -->
-    <server-version form:label="Server Version"
-                    form:repeating="yes"
-                    form:optional="yes"/>
-    <topics form:optional="yes">
-      <topic form:label="Topic" form:repeating="yes"/>
-    </topics>
-    <description form:label="Short description"
-                 form:wide="yes"/>
-    <abstract form:label="Abstract (optional)"
-              form:type="textarea"
-              form:lines="4"
-              form:optional="yes"/>
-    <body form:label="Body"
-          form:type="textarea"/>
-    <external-link href="" label:href="External link instead (body will be ignored)"
-                   form:optional="yes"/>
-</Article>
+    <ml:server-version form:label="Server Version"
+                       form:repeating="yes"
+                       form:optional="yes"/>
+    <ml:topics form:optional="yes">
+      <ml:topic form:label="Topic" form:repeating="yes"/>
+    </ml:topics>
+    <ml:description form:label="Short description"
+                    form:wide="yes"/>
+    <ml:abstract form:label="Abstract (optional)"
+                 form:type="textarea"
+                 form:lines="4"
+                 form:optional="yes"/>
+    <ml:body form:label="Body"
+             form:type="textarea"/>
+    <ml:external-link href="" label:href="External link instead (body will be ignored)"
+                      form:optional="yes"/>
+</ml:Article>

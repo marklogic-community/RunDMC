@@ -1,15 +1,16 @@
-<Comment xmlns    ="http://developer.marklogic.com/site/internal"
+<ml:Comment xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status" values:status="Draft Published"
       about=""       label:about="About">
       <!-- Decided against this for now.
       form:uri-prefix-for-timestamp-named-docs="/private/comments/">
       -->
-  <author form:label="Author"/>
-  <created/>
-  <url form:label="Author URL"/>
-  <body form:label="Body"
-        form:type="textarea"/>
-</Comment>
+  <ml:author form:label="Author"/>
+  <ml:created/>
+  <ml:url form:label="Author URL"/>
+  <ml:body form:label="Body"
+           form:type="textarea"/>
+</ml:Comment>

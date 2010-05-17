@@ -1,25 +1,22 @@
-<Event xmlns       ="http://developer.marklogic.com/site/internal"
+<ml:Event xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"         values:status="Draft Published"
       user-group=""  label:user-group="User Group" values:user-group="_ bmug denmark markups mugfr novamug nymug"
       form:uri-prefix-for-new-docs="/events/">
-  <title form:label="Title"
-         form:wide="yes"/>
-  <!--
-  <author form:repeating="yes"
-          form:label="Author"/>
-          -->
-  <created/>
-  <last-updated/>
-  <description form:label="Description"
-               form:type="textarea"/>
-  <details>
-    <date form:label="Date"/>
-    <time form:label="Time"/>
-    <location form:label="Location"/>
-    <topic form:label="Topic" form:repeating="yes"/>
-    <presenter form:label="Presenter" form:repeating="yes"/>
-  </details>
-</Event>
+  <ml:title form:label="Title"
+            form:wide="yes"/>
+  <ml:created/>
+  <ml:last-updated/>
+  <ml:description form:label="Description"
+                  form:type="textarea"/>
+  <ml:details>
+    <ml:date form:label="Date"/>
+    <ml:time form:label="Time"/>
+    <ml:location form:label="Location"/>
+    <ml:topic form:label="Topic" form:repeating="yes"/>
+    <ml:presenter form:label="Presenter" form:repeating="yes"/>
+  </ml:details>
+</ml:Event>

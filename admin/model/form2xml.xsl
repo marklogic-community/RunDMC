@@ -4,14 +4,18 @@
      to the result. In a final stage, we perform cleanup and convert elements
      back to attributes where applicable.
 -->
+<!DOCTYPE xsl:stylesheet
+[
+<!ENTITY mlns "http://developer.marklogic.com/site/internal">
+]>
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:ml               ="&mlns;"
   xmlns:form             ="http://developer.marklogic.com/site/internal/form"
-  xpath-default-namespace="http://developer.marklogic.com/site/internal"
+  xpath-default-namespace="&mlns;"
   exclude-result-prefixes="xs ml xdmp xhtml form"> <!-- XSLTBUG workaround: exclude-result-prefixes (wrongly) affects nodes copied from the source tree;
                                                                             conversely, <xsl:element> is copying namespace nodes from the stylesheet (also wrongly). -->
 
@@ -77,7 +81,7 @@
                     <xsl:variable name="is-xml-valued" select="$config-node/@form:type eq 'textarea'"/>
                     <!-- XSLTBUG: xdmp:unquote() apparently strips out whitespace-only text nodes, at least at the top level :-( -->
                     <xsl:variable name="unquoted-doc">
-                      <xsl:variable name="quoted-doc" select="concat('&lt;docWrapper>', $param-value, '&lt;/docWrapper>')"/>
+                      <xsl:variable name="quoted-doc" select="concat('&lt;docWrapper xmlns:ml=&quot;&mlns;&quot;>', $param-value, '&lt;/docWrapper>')"/>
                       <xsl:if test="$is-xml-valued">
                         <xsl:copy-of select="xdmp:unquote($quoted-doc, 'http://www.w3.org/1999/xhtml')"/>
                       </xsl:if>

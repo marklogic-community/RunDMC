@@ -1,31 +1,32 @@
-<Project xmlns       ="http://developer.marklogic.com/site/internal"
-         xmlns:form  ="http://developer.marklogic.com/site/internal/form"
-         xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
-         xmlns:values="http://developer.marklogic.com/site/internal/form/values"
-         status="Draft" values:status="Published Draft" label:status="Status"
-         form:uri-prefix-for-new-docs="/code/">
-  <name form:label="Project Name"
-        form:wide="yes"/>
-  <contributors><!-- href="">-->
-    <contributor form:repeating="yes"
-                 form:label="Contributor"/>
-  </contributors>
-  <description form:label="Description"
-               form:type="textarea"/>
-  <short-description form:label="Short Description"
-                     form:type="textarea"
-                     form:lines="2"/>
-  <versions repo=""              label:repo="Repository site"             values:repo="_ github svn codeplex Google_Code"
-            get-involved-href="" label:get-involved-href="Repository URL">
-    <version href=""           label:href          ="Download URL"
-             server-version="" label:server-version="Version needed"
-             date=""           label:date          ="Date"
-             form:repeating="yes"
-             form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
-  </versions>
+<ml:Project xmlns:ml="http://developer.marklogic.com/site/internal"
+            xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+            xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+            xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+            xmlns="http://www.w3.org/1999/xhtml"
+            status="Draft" values:status="Published Draft" label:status="Status"
+            form:uri-prefix-for-new-docs="/code/">
+  <ml:name form:label="Project Name"
+           form:wide="yes"/>
+  <ml:contributors><!-- href="">-->
+    <ml:contributor form:repeating="yes"
+                    form:label="Contributor"/>
+  </ml:contributors>
+  <ml:description form:label="Description"
+                  form:type="textarea"/>
+  <ml:short-description form:label="Short Description"
+                        form:type="textarea"
+                        form:lines="2"/>
+  <ml:versions repo=""              label:repo="Repository site"             values:repo="_ github svn codeplex Google_Code"
+               get-involved-href="" label:get-involved-href="Repository URL">
+    <ml:version href=""           label:href          ="Download URL"
+                server-version="" label:server-version="Version needed"
+                date=""           label:date          ="Date"
+                form:repeating="yes"
+                form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
+  </ml:versions>
 <!-- Disabled for now, since none of the existing Code pages show top threads. Maybe it's not wanted here after all.
-  <top-threads search=""><!- - label:search="Search (optional)"> Disabled for now, because the resulting behavior doesn't appear to work correctly (bug in top-threads.xqy?)- ->
-    <list form:repeating="yes" form:label="Mailing list"/>
-  </top-threads>
+  <ml:top-threads search=""><!- - label:search="Search (optional)"> Disabled for now, because the resulting behavior doesn't appear to work correctly (bug in top-threads.xqy?)- ->
+    <ml:list form:repeating="yes" form:label="Mailing list"/>
+  </ml:top-threads>
 -->
-</Project>
+</ml:Project>

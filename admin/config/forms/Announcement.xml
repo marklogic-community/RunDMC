@@ -1,17 +1,18 @@
-<Announcement xmlns       ="http://developer.marklogic.com/site/internal"
+<ml:Announcement xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"         values:status="Draft Published"
       user-group=""  label:user-group="User Group" values:user-group="_ bmug denmark markups mugfr novamug nymug"
       form:uri-prefix-for-new-docs="/news/">
-  <title form:label="Title"
-         form:wide="yes"/>
-  <author form:repeating="yes"
-          form:label="Author"/>
-  <date form:label="Date"/>
-  <body form:label="Body"
-        form:type="textarea"/>
-  <created/>
-  <last-updated/>
-</Announcement>
+  <ml:title form:label="Title"
+            form:wide="yes"/>
+  <ml:author form:repeating="yes"
+             form:label="Author"/>
+  <ml:date form:label="Date"/>
+  <ml:body form:label="Body"
+           form:type="textarea"/>
+  <ml:created/>
+  <ml:last-updated/>
+</ml:Announcement>

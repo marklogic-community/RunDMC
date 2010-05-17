@@ -8,9 +8,11 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:form             ="http://developer.marklogic.com/site/internal/form"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp form xhtml">
+  exclude-result-prefixes="xs xdmp form xhtml"> <!-- do NOT exclude "ml", because we rely on it being 
+                                                     included in the doc wrapper passed to xdmp:quote -->
 
   <!-- The form configuration document is passed in as a top-level parameter. -->
   <xsl:param name="form-config"/>
@@ -36,13 +38,11 @@
         <xsl:when test="$config-node/@form:type eq 'textarea'">
           <!-- XSLTBUG workaround: whitespace-only text nodes are getting erroneously stripped unless I do it this way -->
           <xsl:variable name="content-stripped">
-            <xsl:variable name="doc">
-              <doc xmlns="">
-                <xsl:copy-of select="node()"/>
-              </doc>
-            </xsl:variable>
-            <xsl:copy-of select="xdmp:xslt-invoke('strip-namespaces.xsl', $doc)"/>
+            <doc> <!-- wrapper to preserve whitespace and to preserve namespace context (so all ns declarations appear at top) -->
+              <xsl:copy-of select="node()"/>
+            </doc>
           </xsl:variable>
+          <!-- Display everything but the outer wrapper element (which includes all the namespace declarations) -->
           <xsl:value-of select="substring-before(
                                   substring-after(xdmp:quote($content-stripped/*), '>'),
                                   '&lt;/doc>'
