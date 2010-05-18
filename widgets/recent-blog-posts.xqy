@@ -14,9 +14,9 @@ In particular, we've...
 </div>
   </div>
   <div class="body">
-    <h3><a href="http://newsletter.marklogic.com/2010/04/demojam-at-mark-logic-user-conference-2010/">DemoJam at MarkLogic User Conference 2010</a></h3>
-    <div class="author">by Cleo Haynal, April, 2010</div>
-    <div class="message">MarkLogic will hold a demo contest, sponsored by Avalon Consulting LLC at the opening reception of the MarkLogic User Conference 2010. Submit your demo and enter to win an iPad!</div>
+    <h3><a href="http://robotbeerbash.wordpress.com/2010/05/11/aint-no-party-like-a-marklogic-party/">Ain't No Party Like a MarkLogic Party!</a></h3>
+    <div class="author">by Pete Aven, May 11, 2010</div>
+    <div class="message">Last week we had the 2010 MarkLogic User Conference and it was awesome!  You can read all about it here and get some sense of the action (for a few days at least) here.  If you were in attendance, thanks...</div>
   </div>
   <div class="body">
     <h3><a href="http://www.kellblog.com/2010/04/11/yes-virginia-marklogic-is-a-nosql-system/">Yes Virginia, MarkLogic is a NoSQL System</a></h3>
