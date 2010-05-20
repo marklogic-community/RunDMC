@@ -171,9 +171,12 @@
 
                           <xsl:template mode="blog-post paginated-list-item" match="Post">
                             <div class="post">
-                              <h2>
-                                <xsl:apply-templates select="title/node()"/>
-                              </h2>
+                                <h2 class="title-with-links">
+                                    <xsl:apply-templates select="title/node()"/>
+                                    <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
+                                        <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
+                                    </a>
+                                </h2>
                               <span class="date">
                                 <xsl:value-of select="ml:display-date(created)"/>
                               </span>
