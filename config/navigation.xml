@@ -87,11 +87,11 @@
     </group>
   </page>
   <page display="Discuss" href="/discuss">
-    <group display="MarkLogic Mailing Lists">
-      <page display="General Mailing List" href="/mailman/listinfo/general"/>
-      <page display="Announcements Mailing List" href="/mailman/listinfo/announce"/>
+    <group display="MarkLogic Lists">
+      <page display="General List" href="/mailman/listinfo/general"/>
+      <page display="Announcements List" href="/mailman/listinfo/announce"/>
     </group>
-    <group display="User Group Mailing Lists">
+    <group display="User Group Lists">
       <page display="DenMARK — Denver" href="/mailman/listinfo/denmark"/>
       <page display="Mark-UPS — Maryland" href="/mailman/listinfo/markups"/>
       <page display="NOVAMUG — Northern Virginia" href="/mailman/listinfo/novamug"/>
