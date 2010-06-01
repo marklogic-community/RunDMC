@@ -67,7 +67,8 @@
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Applications">
-        <page display="MarkLogic XFaqtor" href="/code/xfaqtor"/>
+        <page display="Authoring App for Word" href="/code/marklogic-sample-authoring"/>
+        <page display="XFaqtor" href="/code/xfaqtor"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
         <page display="RunDMC" href="/code/rundmc"/>
