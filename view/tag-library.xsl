@@ -65,6 +65,7 @@
                   <xsl:template mode="feature-content" match="main-points">
                     <ul>
                       <xsl:apply-templates mode="feature-content" select="point"/>
+                      <xsl:apply-templates mode="feature-content" select="read-more"/>
                     </ul>
                   </xsl:template>
 
@@ -408,7 +409,7 @@
                   <xsl:template mode="event-details" match="*">
                     <dt>
                       <xsl:apply-templates mode="event-detail-name" select="."/>
-                      <xsl:text>:</xsl:text>
+                      <xsl:text>:&#160;</xsl:text>
                     </dt>
                     <dd>
                       <xsl:apply-templates/>
@@ -663,8 +664,11 @@
 
           <xsl:template mode="paginated-list-item" match="Event">
             <div class="newsitem">
-              <h3>
+              <h3 class="title-with-links">
                 <xsl:apply-templates select="title/node()"/>
+                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
+                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
+                </a>
               </h3>
               <dl>
                 <xsl:apply-templates mode="event-details" select="details/*"/>
@@ -681,8 +685,11 @@
             <div class="newsitem">
               <div class="date">
                 <xsl:value-of select="ml:display-date(date)"/>
+                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
+                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
+                </a>
               </div>
-              <h3>
+              <h3 class="title-with-links">
                 <xsl:apply-templates select="title/node()"/>
               </h3>
               <p>
