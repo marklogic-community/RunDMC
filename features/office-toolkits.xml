@@ -3,15 +3,19 @@
   <title>Office Toolkits</title>
   <main-points>
     <point>Integrate with Microsoft Office</point>
-    <point>Search and re-used Office content</point>
+    <point>Search and re-use Office content</point>
     <point>Simplify use of OpenXML</point>
+    <point>Toolkits for</point>
+        <read-more>
+            <link href="/code/marklogic-toolkit-for-word">WORD</link>
+            <link href="/code/marklogic-toolkit-for-excel">EXCEL</link>
+            <link href="/code/marklogic-toolkit-for-powerpoint">POWERPOINT</link>
+        </read-more>
   </main-points>
   <image src="/media/resources-tools.jpg" alt="Tools"> 
     <caption>The sharpest tools in the shed.</caption>
   </image>
   <read-more>
-    <link href="/code/marklogic-toolkit-for-word">WORD </link>
-    <link href="/code/marklogic-toolkit-for-excel">EXCEL</link>
-    <link href="/code/marklogic-toolkit-for-powerpoint">POWERPOINT</link>
+    <link href="/code/marklogic-sample-app-for-word">SAMPLE APP for WORD</link>
   </read-more>
 </feature>
