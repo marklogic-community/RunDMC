@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
+  <title>XQDebug</title>
+  <main-points>
+    <point>Browser-based, source-level debugger</point>
+    <point>Set breakponts</point>
+    <point>View full XQuery call-stack</point>
+    <point>Set watch expressions</point>
+  </main-points>
+  <image src="http://code.google.com/p/xqdebug/logo?logo_id=1273689225" alt="XQDebug">
+    <caption>Buh-bye bugs</caption>
+  </image>
+  <read-more>
+    <link href="/code/xqdebug/">READ MORE</link>
+    <link href="http://code.google.com/p/xqdebug/">SVN REPOSITORY</link>
+    <link href="http://events.digitallyspeaking.com/marklogic/uc10/player.html?xml=ml_wed_th_0130_1273091012250UVXL.xml">WATCH PRESENTATION</link>
+  </read-more>
+  
+</feature>
