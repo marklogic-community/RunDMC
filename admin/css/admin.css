@@ -21,7 +21,7 @@ thead th {
 th.last {white-space: nowrap;}
 tbody th, tbody td {
 	background: #F5F5F5;
-	height: 28px;
+	xheight: 28px;
 }
 .alt th, .alt td {background: #EBECEC;}
 input {margin: 0;}
@@ -127,7 +127,7 @@ form .action input {margin-left: 5px;}
 	clear: both;
 	margin: 10px 0;
 }
-.adminform div div {
+.adminform .control-container {
 	clear: none;
 	margin: 10px 0 0 112px;
 }

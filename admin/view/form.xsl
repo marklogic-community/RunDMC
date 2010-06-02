@@ -249,7 +249,7 @@
 
                                   <xsl:template mode="add-more-button" match="*"/>
                                   <xsl:template mode="add-more-button" match="*[@form:repeating eq 'yes']">
-                                    <div>
+                                    <div class="control-container">
                                       <input class="add_remove" type="submit" name="add_{form:field-name(.)}" value="+ Add {@form:label | @form:group-label}"/>
                                     </div>
                                   </xsl:template>
@@ -307,7 +307,7 @@
                                       <xsl:value-of select="form:field-name(.)"/>
                                       <xsl:apply-templates mode="field-name-suffix" select="."/>
                                     </xsl:variable>
-                                    <div>
+                                    <div class="control-container">
                                       <input id ="{form:field-name(.)}_{generate-id()}"
                                              name="{$field-name}"
                                              type="text"
@@ -344,13 +344,16 @@
                                       <input type="submit" name="add_media" value="Add media"/>
                                       <br/>
                                       -->
+                                      <div id="control-container" 
+                                            style="margin-left: 112px; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC">
                                       <textarea id ="{form:field-name(.)}_{generate-id()}"
                                                 name="{form:field-name(.)}"
-                                                cols="30"
-                                                rows="{if (@form:lines) then @form:lines else 11}">
+                                                style="width: 100%"
+                                                rows="{if (@form:lines) then @form:lines else 13}">
                                         <xsl:apply-templates mode="class-att" select="."/>
                                         <xsl:value-of select="string-join(text(),'')"/> <!-- don't include attribute-cum-element fields in value -->
                                       </textarea>
+                                      </div>
                                   </xsl:template>
 
 

@@ -430,7 +430,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 #main table {
 	width: 100%;
 	border-bottom: 1px solid #CCC;
-	margin: 0 0 2em;
+	margin: 0 0;
 	clear: both;
 }
 #main table.table4 {margin-bottom:0;}
