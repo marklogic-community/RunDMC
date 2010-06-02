@@ -28,6 +28,7 @@
     <group display="Open Source Projects">
       <group display="Tools">
         <page display="MarkLogic CQ" href="/code/cq"/>
+        <page display="XQDebug" href="/code/xqdebug"/>
         <page display="Narthex" href="/code/narthex"/>
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
         <page display="XQSync" href="/code/xqsync"/>
@@ -72,6 +73,9 @@
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
         <page display="RunDMC" href="/code/rundmc"/>
+        <!--
+        <page display="MarkMail" href="/code/markmail"/>
+        -->
       </group>
     </group>
     <generic-page display="Licensing" href="/apache-2.0-license"/>
