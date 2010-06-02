@@ -3,6 +3,10 @@
     <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
+    <h3><a href="/code/xqdebug">XQDebug</a></h3>
+    Browser-based, source-level XQuery debugger.
+  </div>
+  <div class="body">
     <h3><a href="/code/narthex">Narthex</a></h3>
     MarkLogic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
   </div>
