@@ -18,7 +18,7 @@ declare function atom:expireInSeconds ($s as xs:integer) as empty-sequence() {
 };
 
 
-xdmp:set-response-content-type("application/atom+xml"),
+xdmp:set-response-content-type("application/atom+xml; charset=utf-8"),
 
 let $MAX_ENTRIES := 30
 let $expires := atom:expireInSeconds(60 * 60)
