@@ -6,11 +6,9 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/change-is-good">Change You Can Believe In</a></h3>
-    <div class="author">by Eric Bloch, 04/29/10</div>
-    <div class="message">If you're reading this blog post directly on our site you'll notice
-a few changes.  And if you're reading it somewhere else, please <a href="http://developer.marklogic.com/blog">swing on by</a> for a look!
-In particular, we've...
+    <h3><a href="/blog/marklogic-beyond-nosql">MarkLogic: Beyond NoSQL</a></h3>
+    <div class="author">by Eric Bloch, 06/02/10</div>
+    <div class="message">Even though the term, NoSQL, has issues, it's become important.  Recently, leaders from several NoSQL projects (Riak, HBase, CouchDB, Neo4j) came together for a session at Gluecon...
 </div>
   </div>
   <div class="body">
