@@ -79,6 +79,7 @@
       </group>
     </group>
     <generic-page display="Licensing" href="/apache-2.0-license"/>
+    <generic-page display="Microsoft Office Integration" href="/microsoft-office-integration"/>
   </page>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
