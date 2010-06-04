@@ -69,7 +69,7 @@
       </group>
       <group display="Applications">
         <page display="Authoring App for Word" href="/code/marklogic-sample-authoring"/>
-        <page display="AtomPub Server href="/code/atompub-server"/>
+        <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="XFaqtor" href="/code/xfaqtor"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
