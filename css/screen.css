@@ -1116,7 +1116,7 @@ span.snippet {
   white-space: pre;
   overflow: auto;
   font-family: monospace, -moz-fixed !important;
-  font-size: 100%;
+  font-size: 110%;
 }
 
 .nested-code-block
@@ -1124,7 +1124,7 @@ span.snippet {
   border: 0;
   margin: 0;
   padding: 0;
-  font-size: 100% !important;
+  font-size: 110% !important;
 }
 
 a.permalink {
