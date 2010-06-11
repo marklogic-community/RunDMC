@@ -32,6 +32,7 @@ if ($feed = "blog" or $feed = "")
 then
     let $posts :=
         for $r in fn:doc()/ml:Post[@status="Published"]
+        where not(starts-with(base-uri($r), "/preview"))
         order by xs:dateTime($r/ml:created/text()) descending
         return $r
     return
@@ -44,7 +45,7 @@ then
     
     	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Developer Community</generator>
     	<icon>http://developer.marklogic.com/favicon.ico</icon>
-    	<logo>http://developer.marklogic.com/images/logo.gif</logo>
+    	<logo>http://developer.marklogic.com/media/marklogic-community-badge.png</logo>
     	{
             for $p in $posts [1 to $MAX_ENTRIES]
             order by xs:dateTime($p/ml:created/text()) descending 
@@ -75,9 +76,10 @@ then
     </feed>
 else if ($feed="newsandevents")
 then
-(: TODO: add published status to this query -> [@status="Published"]:)
     let $newsevents :=
         for $r in (fn:doc()/ml:Announcement, fn:doc()/ml:Event)
+        where not(starts-with(base-uri($r), "/preview"))
+           and $r/@status = "Published"
         order by xs:dateTime($r/ml:created/text()) descending
         return $r
     return
@@ -90,7 +92,7 @@ then
     
         <generator uri="http://developer.marklogic.com/newsandevents/atom.xml" version="1.0">MarkLogic Developer Community</generator>
         <icon>http://developer.marklogic.com/favicon.ico</icon>
-        <logo>http://developer.marklogic.com/images/logo.gif</logo>
+        <logo>http://developer.marklogic.com/media/marklogic-community-badge.png</logo>
         {
             for $ne in $newsevents [1 to $MAX_ENTRIES]
             order by xs:date($ne/ml:date/text()) descending 
