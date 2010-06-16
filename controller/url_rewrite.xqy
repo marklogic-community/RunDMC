@@ -71,6 +71,8 @@ declare function local:redir($path as xs:string) as xs:string
         concat("/learn", substring($orig-url, 17))
     else if (starts-with($path, "/howto")) then
         concat("/learn", substring($orig-url, 7))
+    else if (starts-with($path, "/%20howto/tutorials")) then
+        concat("/learn", substring($orig-url, 20))
     else if (ends-with($path, "/default.xqy")) then
         substring($path, 1, string-length($path)- 12)
     else if ($path = ("/cloudcomputing")) then
