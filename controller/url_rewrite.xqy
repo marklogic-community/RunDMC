@@ -50,7 +50,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/4.1")) then
         replace($path, "/4.1", "/pubs/4.1")
     else if (starts-with($path, '/pubs/4.2')) then
-        concat("http://support.marklogic.com", substring($path, 10))
+        "http://support.marklogic.com/"
     else if (starts-with($path, "/xfaqtor")) then
         "/learn"
     else if (starts-with($path, "/default.xqy")) then
