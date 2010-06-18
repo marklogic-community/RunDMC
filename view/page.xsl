@@ -191,7 +191,7 @@
                                     <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(base-uri(.)))"/>)</a>
                                   </li>
                                   <li>
-                                    <a href="{ml:external-uri(.)}#post_comment">Post a comment</a>
+                                    <a rel="nofollow" href="{ml:external-uri(.)}#post_comment">Post a comment</a>
                                   </li>
                                 </ul>
                               </div>
