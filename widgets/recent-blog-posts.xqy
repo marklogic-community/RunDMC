@@ -6,20 +6,21 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/marklogic-beyond-nosql">MarkLogic: Beyond NoSQL</a></h3>
-    <div class="author">by Eric Bloch, 06/02/10</div>
-    <div class="message">Even though the term, NoSQL, has issues, it's become important.  Recently, leaders from several NoSQL projects (Riak, HBase, CouchDB, Neo4j) came together for a session at Gluecon...
+    <h3><a href="http://www.kellblog.com/2010/06/18/six-thoughts-on-the-nosql-movement/">Six Thoughts on the NoSQL Movement</a></h3>
+    <div class="author">by David Kellogg, Jun 18, 2010</div>
+    <div class="message">We are in the middle of one of our periodic analyst tours at MarkLogic, where we meet about 50 top software industry analysts focused in areas like enterprise search, enterprise content management, and database management systems...
 </div>
   </div>
   <div class="body">
-    <h3><a href="http://robotbeerbash.wordpress.com/2010/05/11/aint-no-party-like-a-marklogic-party/">Ain't No Party Like a MarkLogic Party!</a></h3>
-    <div class="author">by Pete Aven, May 11, 2010</div>
-    <div class="message">Last week we had the 2010 MarkLogic User Conference and it was awesome!  You can read all about it here and get some sense of the action (for a few days at least) here.  If you were in attendance, thanks...</div>
+    <h3><a href="/blog/marklogic-indexing-pt2">MarkLogic: Beyond NoSQL, Pt. 2</a></h3>
+    <div class="author">by Eric Bloch, Jun 18, 2010</div>
+    <div class="message">In this clip, Chris Biow introduces MarkLogic's Universal Index. He reviews the design of basic search engine functionality, starting with inverted indices.  He goes on to explain how that same index, as extended in MarkLogic, can provide the substrate for queries on...
+</div>
   </div>
   <div class="body">
-    <h3><a href="http://www.kellblog.com/2010/04/11/yes-virginia-marklogic-is-a-nosql-system/">Yes Virginia, MarkLogic is a NoSQL System</a></h3>
-    <div class="author">by Dave Kellogg, 04/11/10</div>
-    <div class="message">The other day I noticed a taxonomy used on one of the NoSQL Database blogs that went like this...</div>
+    <h3><a href="http://robotbeerbash.wordpress.com/2010/05/18/marklogic-toolkits-for-word-excel-and-powerpoint/">MarkLogic Toolkits for Word, Excel, and PowerPoint</a></h3>
+    <div class="author">by Pete Aven, May 18, 2010</div>
+    <div class="message">A Toolkit is a set of tools for jumpstarting your development with MarkLogic Server and Microsoft Office 2007 / Office 2010 / Open XML.  There are currently 3 Office Toolkits...</div>
   </div>
 {(:
   <div class="body">
