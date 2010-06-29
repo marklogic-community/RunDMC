@@ -34,6 +34,7 @@
         <page display="XQSync" href="/code/xqsync"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="RecordLoader" href="/code/recordloader"/>
+        <page display="Pomegranate" href="/code/pomegranate"/>
       </group>
       <group display="Toolkits">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
@@ -55,6 +56,7 @@
         <page display="Feed" href="/code/feed"/>
         <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/>
         <page display="XQuery Commons" href="/code/commons"/>
+        <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
         <page display="XQMVC" href="/code/xqmvc"/>
       </group>
