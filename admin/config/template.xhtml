@@ -35,9 +35,11 @@
             theme_advanced_resizing : true,
              
             entity_encoding : "numeric",
-            extended_valid_elements : 'ml:teaser',
-            custom_elements: "ml:teaser",
-            content_css : "../../css/screen.css"
+            extended_valid_elements : 'ml:teaser,ml:tabbed-features,ml:feature[href],ml:short-description',
+            custom_elements:          'ml:teaser,ml:tabbed-features,~ml:feature,ml:short-description',
+            relative_urls: false,
+            remove_linebreaks: false,
+            xcontent_css : "../../css/screen.css"
        });
     </script>
   </head>
