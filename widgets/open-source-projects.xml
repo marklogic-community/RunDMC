@@ -11,12 +11,16 @@
     MarkLogic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
   </div>
   <div class="body">
-    <h3><a href="/code/active-document">ActiveDocument</a></h3>
-    MarkLogic Ruby connector for search application.
+    <h3><a href="/code/semantic">Semantic</a></h3>
+    XQuery and Java code for storage and retieval of semantic content.
   </div>
   <div class="body">
-    <h3><a href="/code/rundmc">RunDMC</a></h3>
-    Sample XSLT/XQuery application used to run this site.
+    <h3><a href="/code/pomegranate">Pomegranate</a></h3>
+    Configuration management for MarkLogic Server.
+  </div>
+  <div class="body">
+    <h3><a href="/code/active-document">ActiveDocument</a></h3>
+    MarkLogic Ruby connector for search application.
   </div>
   <div class="body">
     <a class="more" href="/code">View all &gt;</a>
