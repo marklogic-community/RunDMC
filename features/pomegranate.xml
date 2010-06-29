@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+  <title>Pomegranate</title>
+  <main-points>
+    <point>System configuration and application deployment</point>
+    <point>Consistent, reliable, and repeatable</point>
+    <point>Interfaces for deployment automation</point>
+    <point>Includes a sample application</point>
+  </main-points>
+  <image src="http://dranderson.github.com/Pomegranate/images/pom.png" alt="Tools"> 
+    <caption>Organized configuration of your fruit.</caption>
+  </image>
+  <read-more>
+    <link href="http://wiki.github.com/dranderson/Pomegranate/">PROJECT WIKI</link>
+    <link href="http://github.com/dranderson/Pomegranate/downloads">DOWNLOAD</link>
+    <link href="http://wiki.github.com/dranderson/Pomegranate/installation">INSTALL</link>
+  </read-more>
+</feature>
