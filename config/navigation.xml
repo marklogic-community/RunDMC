@@ -103,7 +103,7 @@
     </group>
     <group display="User Group Lists">
       <page display="DenMARK — Denver" href="/mailman/listinfo/denmark"/>
-      <page display="Mark-UPS — Maryland" href="/mailman/listinfo/markups"/>
+      <page display="Mark-UPS — Maryland" href="/mailman/listinfo/mark-ups"/>
       <page display="NOVAMUG — Northern Virginia" href="/mailman/listinfo/novamug"/>
       <page display="NYMUG — New York" href="/mailman/listinfo/nymug"/>
       <page display="MUGFR - France" href="/mailman/listinfo/mugfr"/>
