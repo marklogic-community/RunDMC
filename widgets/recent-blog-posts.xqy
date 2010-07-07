@@ -6,9 +6,9 @@
   </div>
 
   <div class="body">
-    <h3><a href="http://www.kellblog.com/2010/06/18/six-thoughts-on-the-nosql-movement/">Six Thoughts on the NoSQL Movement</a></h3>
-    <div class="author">by David Kellogg, Jun 18, 2010</div>
-    <div class="message">We are in the middle of one of our periodic analyst tours at MarkLogic, where we meet about 50 top software industry analysts focused in areas like enterprise search, enterprise content management, and database management systems...
+    <h3><a href="http://www.kellblog.com/2010/06/28/marklogic-nosql-before-nosql-was-cool">MarkLogic: NoSQL Before NoSQL Was Cool</a></h3>
+    <div class="author">by David Kellogg, Jun 28, 2010</div>
+    <div class="message">Long-term <a href="http://portal.acm.org/citation.cfm?id=894723">database guy</a> and MarkLogic <a href="http://www.marklogic.com/company/leadership.html">VP of Engineering</a> Ron Avnur said that at our last user conference that MarkLogic was "NoSQL before NoSQL was cool."  He even made up about 500 t-shirts...
 </div>
   </div>
   <div class="body">
