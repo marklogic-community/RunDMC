@@ -90,6 +90,14 @@
 
  -->
 
+  <widget href="/widgets/quick-references.xml">
+    <page href="/docs"/>
+    <page href="/learn"/>
+    <page href="/learn/tutorials"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/references"/>
+  </widget>
+
   <widget xquery="training-calendar.xqy"> 
     <page href="/docs"/>
     <page href="/learn"/>
@@ -117,6 +125,12 @@
     <page href="/docs/3.2"/>
   </widget>
 
+ <!--
+  <widget href="/widgets/mugfr-flickr.xml">
+    <page href="/meet/mugfr/en"/>
+    <page href="/meet/mugfr/fr"/>
+  </widget>
+  -->
 
   <!-- Leave this one last -->
   <widget href="/widgets/experimental-docs.xml">
