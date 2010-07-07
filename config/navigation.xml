@@ -35,6 +35,7 @@
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Pomegranate" href="/code/pomegranate"/>
+        <page display="xmlsh extension" href="/code/xmlsh-ext"/>
       </group>
       <group display="Toolkits">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
