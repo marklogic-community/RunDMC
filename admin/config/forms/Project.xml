@@ -14,7 +14,7 @@
   <ml:description form:label="Description"
                   form:type="textarea"/>
   <ml:short-description form:label="Short Description" form:wide="yes" />
-  <ml:versions repo=""              label:repo="Repository site"             values:repo="_ github svn codeplex Google_Code"
+  <ml:versions repo=""              label:repo="Repository site"             values:repo="_ SourceForge github svn codeplex Google_Code"
                get-involved-href="" label:get-involved-href="Repository URL">
     <ml:version href=""           label:href          ="Download URL"
                 server-version="" label:server-version="Version needed"
