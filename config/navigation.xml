@@ -77,6 +77,7 @@
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
         <page display="RunDMC" href="/code/rundmc"/>
+        <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
         <!--
         <page display="MarkMail" href="/code/markmail"/>
         -->
