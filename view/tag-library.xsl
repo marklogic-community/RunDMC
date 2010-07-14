@@ -708,11 +708,14 @@
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
           <!-- TODO: evaluate the performance of this approach; it could be bad -->
+          <!-- TODO: move pubs URIs to config -->
           <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.),
-                                                   collection()[starts-with(base-uri(.),'/pubs/4.1/apidocs')
+                                                   collection()[
+                                                             starts-with(base-uri(.),'/pubs/4.1/apidocs')
                                                              or starts-with(base-uri(.),'/pubs/4.1/dotnet')
+                                                             or starts-with(base-uri(.),'/pubs/4.1/javadoc')
                                                              or starts-with(base-uri(.),'/licensing')
-                                                             or starts-with(base-uri(.),'/pubs/4.1/javadoc')]/base-uri(.)
+                                                   ]/base-uri(.)
                                                  ))"/>
         </additional-query>
       </options>
