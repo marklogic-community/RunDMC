@@ -287,7 +287,7 @@
             </div>
             </xsl:if>
 
-            <xsl:if test="versions/version">
+            <xsl:if test="versions/version/@href">
             <table class="table4">
               <thead>
                 <tr>
