@@ -22,7 +22,7 @@ declare function pubs:load-dir($dir as xs:string) {
                 "text"
             else
                 "binary"
-    let $format := if (fn:starts-with($uri, "/pubs/4.1/javadoc") and fn:ends-with($uri, ".html")) then
+    let $format := if (fn:contains($uri, "/javadoc/") and fn:ends-with($uri, ".html")) then
                        "text"
                    else
                        $format
