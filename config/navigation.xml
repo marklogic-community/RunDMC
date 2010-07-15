@@ -10,7 +10,8 @@
         <page display="4.0" href="/products/marklogic-server/4.0"/>
       </group>
       <group display="Connectors and Toolkits">
-        <page display="XCC Java/.NET Connectors" href="/products/xcc/4.1"/>
+        <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
+        <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint/1.0"/>
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
         <page display="Toolkit for PowerPoint®"  href="/code/marklogic-toolkit-for-powerpoint"/>
