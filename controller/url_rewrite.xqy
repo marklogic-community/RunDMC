@@ -81,6 +81,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/products/server-for-ec2"
     else if ((starts-with($path, '/blog') or starts-with($path, '/learn')) and ends-with($path, '.xqy')) then 
         substring($path, 1, string-length($path) - 4)
+    else if ($path = '/pubs/training/eclipse-xqdt-setup.pdf') then
+        "/learn/xqdt-setup"
     else
         $path
 };
