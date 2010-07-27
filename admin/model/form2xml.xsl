@@ -169,7 +169,8 @@
     <xsl:element name="{name()}" namespace="{namespace-uri(.)}">
       <!-- Keep the XHTML namespace around so we don't have to see re-declarations all over in the body -->
       <xsl:copy-of select="namespace::*[. eq 'http://www.w3.org/1999/xhtml']"/>
-      <xsl:apply-templates mode="#current" select="@* | node()"/>
+      <xsl:apply-templates mode="#current" select="*[@form:is-attribute]"/>
+      <xsl:apply-templates mode="#current" select="@* | node()[not(@form:is-attribute)]"/>
     </xsl:element>
   </xsl:template>
   <xsl:template mode="clean-up" match="@* | comment() | text() | processing-instruction()">
@@ -197,4 +198,4 @@
     <xsl:apply-templates mode="clean-up"/>
   </xsl:template>
 
-</xsl:stylesheet>
+  </xsl:stylesheet>
