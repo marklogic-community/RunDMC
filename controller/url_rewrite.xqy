@@ -83,6 +83,8 @@ declare function local:redir($path as xs:string) as xs:string
         substring($path, 1, string-length($path) - 4)
     else if ($path = '/pubs/training/eclipse-xqdt-setup.pdf') then
         "/learn/xqdt-setup"
+    else if ($path = '/events/markups-2010-09-11') then
+        "/events/markups-2010-08-11"
     else
         $path
 };
