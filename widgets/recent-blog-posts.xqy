@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="body">
-    <h3><a href="/blog/marklogic-indexing-pt2">MarkLogic: Beyond NoSQL, Part. 3</a></h3>
+    <h3><a href="/blog/marklogic-universal-index-pt3">MarkLogic: Beyond NoSQL, Part. 3</a></h3>
     <div class="author">by Eric Bloch and Chris Biow, July 27, 2010</div>
     <div class="message">In the final excerpt from his talk on the MarkLogic Universal Index, Chris Biow describes geospatial queries, registered queries as well as reverse queries and their use for alerts...
     </div>
