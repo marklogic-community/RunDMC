@@ -83,7 +83,9 @@
 
                   <xsl:template mode="page-specific-title" match="page">
                     <xsl:value-of select="( xhtml:h1
+                                          | xhtml:div/xhtml:h1
                                           | xhtml:h2
+                                          | xhtml:div/xhtml:h2
                                           )[1]"/>
                   </xsl:template>
 
