@@ -28,7 +28,7 @@
   <page display="Code" href="/code">
     <group display="Open Source Projects">
       <group display="Tools">
-        <page display="MarkLogic CQ" href="/code/cq"/>
+        <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
         <page display="XQDebug" href="/code/xqdebug"/>
         <page display="Narthex" href="/code/narthex"/>
