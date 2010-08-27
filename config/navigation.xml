@@ -47,13 +47,13 @@
       <group display="Connectors">
         <page display="MLSQL" href="/code/mlsql"/>
         <page display="MLJAM" href="/code/mljam"/>
-        <page display="libmlxcc - MarkLogic Connector for C, PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
+        <page display="libmlxcc and connectors for PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
         <!--
         <page display="phpxdbc: XDBC Connectivity for PHP" href="/code/phpxdbc"/>
         <page display="perlxdbc: XDBC Connectivity for Perl" href="/code/perlxdbc"/>
         -->
-        <page display="MarkLogic XQRunner Java XQuery Executor" href="/code/xqrunner"/>
-        <page display="MarkLogic XQuery JSP Tag Library" href="/code/jsp"/>
+        <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
+        <page display="XQuery JSP Tag Library" href="/code/jsp"/>
         <page display="ActiveDocument" href="/code/active-document"/>
       </group>
       <group display="Libraries">
