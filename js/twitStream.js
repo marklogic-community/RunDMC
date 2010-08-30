@@ -16,8 +16,8 @@ String.prototype.linkuser=function(){
 	});
 };
 String.prototype.linktag=function(){
-	return this.replace(/[]+[A-Za-z0-9-_]+/,function(t){
-		return t;
+	return this.replace(/[#]+[A-Za-z0-9-_]+/g,function(t){
+		return t.link("http://twitter.com/#search?q="+t.replace("#",""));
 	});
 };
 var showTweetLinks='none';
