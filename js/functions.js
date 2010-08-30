@@ -79,16 +79,22 @@ if(typeof jQuery != 'undefined') {
         $('a.stip[title]').qtip({ 
             position: { 
                 corner: {
-                    target: 'bottomLeft',
-                    tooltip: 'topLeft'
+                    target: 'topRight',
+                    tooltip: 'bottomLeft'
                 },
                 adjust: {
-                    x: 25,  
-                    y: 7
+                    x: -2,  
+                    y: 2
                 }
             },
             style: {
-	            font: '1em Verdana, Arial, Helvetica, Sans-serif'
+	            font: '1em Verdana, Arial, Helvetica, Sans-serif',
+                padding: 3,
+                border: {
+                    width: 2,
+                    radius: 3,
+                    color: '#CDD1B4'
+                }
             } 
         })
 
