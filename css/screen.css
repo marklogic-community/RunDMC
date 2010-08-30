@@ -66,11 +66,10 @@ code {font: normal 1.1em "Courier New", Courier, Monospace;}
 }
 a.more, div.more a {
 	font-size: .8em;
-	text-decoration: none;
 	font-weight: bold;
-	color: #999;
+	color: #235BAB;
 }
-a.more:hover, div.more a:hover {color: #235BAB !important;}
+/* a.more:hover, div.more a:hover {color: #235BAB !important;} */
 a.requirements:hover {color: #235BAB !important;}
 .skip, hr {
 	position: absolute;
@@ -277,7 +276,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 #main .single .align_left {margin-right: 20px;}
 #main .single .more, #main .double .more {
 	font-weight: bold;
-	color: #999;
+	color: #235BAB;
 }
 #main .single h3, #main .double h3 {margin-bottom: 1.5em;}
 #main .single .more:hover, #main .double .more:hover {color: #235BAB;}
@@ -776,10 +775,11 @@ table.table4 + .action {border:0;}
 	font-size: .8em;
 	line-height: 140%;
 }
-#sub .body .more, #sub .body .more a {color: #999;}
+#sub .body .more, #sub .body .more a {
+    color: #235BAB;
+}
 #sub .body a.more:hover, #sub .body .more a:hover {
 	color: #235BAB;
-	text-decoration: none;
 }
 #sub .body a.download, #sub .body .download a {float: right;}
 #sub .body div.download {margin-top: 1em;}
@@ -1131,6 +1131,7 @@ a.permalink {
     float: right;
 }
 
-h2.title-with-links {
+h3.title-with-links, h2.title-with-links {
     display: block;
 }
+
