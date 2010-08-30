@@ -79,11 +79,11 @@ if(typeof jQuery != 'undefined') {
         $('a.stip[title]').qtip({ 
             position: { 
                 corner: {
-                    target: 'topRight',
+                    target: 'topLeft',
                     tooltip: 'bottomLeft'
                 },
                 adjust: {
-                    x: -2,  
+                    x: 9,  
                     y: 2
                 }
             },
