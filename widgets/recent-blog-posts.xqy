@@ -7,7 +7,7 @@
 
   <div class="body">
     <h3><a href="/blog/back-to-school-bounties">Back-to-school XQuery Syntax Bounties</a></h3>
-    <div class="author">by Eric Bloch August 9, 2010</div>
+    <div class="author">by Eric Bloch September 9, 2010</div>
     <div class="message">September is back-to-school month. In recognition of the joy of learning, we're offering up some enticements for MarkLogic and XQuery community folk to go learn something new (or for some, re-visit something old)...
     </div>
   </div>
