@@ -24,6 +24,9 @@
               omit-xml-declaration="yes"/>
 
   <xsl:param name="params" as="element()*"/>
+  <xsl:param name="error" as="xs:string*"/>
+  <xsl:param name="errorMessage" as="xs:string*"/>
+  <xsl:param name="errorDetail" as="xs:string*"/>
 
   <xsl:variable name="DEBUG" select="false()"/>
 
@@ -108,6 +111,17 @@
                     <xsl:value-of select="title"/>
                   </xsl:template>
 
+  <!-- Handle errors -->
+  <xsl:template match="errors">
+     <h2>
+         <xsl:value-of select="$error"/>
+         <xsl:text> &#8212; </xsl:text>
+         <xsl:value-of select="$errorMessage"/>
+     </h2>
+     <pre>
+        <xsl:value-of select="$errorDetail"/>
+     </pre>
+  </xsl:template>
 
   <!-- Pre-populate the search box, if applicable -->
   <xsl:template match="xhtml:input[@name eq 'q']/@ml:value">

@@ -28,11 +28,7 @@ let $error := xdmp:get-response-code()[1]
 let $errorMessage := xdmp:get-response-code()[2]
 
 let $_ := xdmp:add-response-header("content-type", "text/html")
-return <pre>{($error, $errorMessage, local:renderErrors())}</pre>
 
-
-(:
-return <pre>{local:renderErrors()}</pre>
 return
   xdmp:xslt-invoke("/view/page.xsl", doc("/error.xml"),
     map:map(
@@ -42,14 +38,22 @@ return
           <map:value>{ $params }</map:value>
         </map:entry>
         <map:entry>
+          <map:key>error</map:key>
+          <map:value>{ $error }</map:value>
+        </map:entry>
+        <map:entry>
+          <map:key>errorMessage</map:key>
+          <map:value>{ $errorMessage }</map:value>
+        </map:entry>
+        <map:entry>
           <map:key>errors</map:key>
           <map:value>{ $error:errors }</map:value>
         </map:entry>
         <map:entry>
-          <map:key>errorsString</map:key>
+          <map:key>errorDetail</map:key>
           <map:value>{ local:renderErrors() }</map:value>
         </map:entry>
       </map:map>
     )
   )
-:)
+
