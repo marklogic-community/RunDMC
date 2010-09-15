@@ -3,6 +3,10 @@
     <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
+    <h3><a href="/code/comoms">CoMoms</a></h3>
+    Web CMS Toolkit for MarkLogic.
+  </div>
+  <div class="body">
     <h3><a href="/code/xqdebug">XQDebug</a></h3>
     Browser-based, source-level XQuery debugger.
   </div>
@@ -17,10 +21,6 @@
   <div class="body">
     <h3><a href="/code/pomegranate">Pomegranate</a></h3>
     Configuration management for MarkLogic Server.
-  </div>
-  <div class="body">
-    <h3><a href="/code/active-document">ActiveDocument</a></h3>
-    MarkLogic Ruby connector for search application.
   </div>
   <div class="body">
     <a class="more" href="/code">View all &gt;</a>
