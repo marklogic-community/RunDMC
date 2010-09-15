@@ -189,6 +189,21 @@ if(typeof jQuery != 'undefined') {
       });
       // end “add link” functionality
 
+     $('input.url-to-copy').each(function(){
+        $(this).click(function(){
+            $(this).focus();
+            $(this).select();
+        });
+        $(this).focus(function(){
+            if (! $(this).hasClass('focus')) {
+                $(this).addClass('focus');
+            }
+        });
+        $(this).blur(function(){
+            $(this).removeClass('focus');
+        });
+     });
+
       // begin sortable table functionality
       if(jQuery().dataTable) {
           $('.documentsList').dataTable({

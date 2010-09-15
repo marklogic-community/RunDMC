@@ -161,6 +161,9 @@
                           <img src="/images/icon_download.png" alt="Download"/>
                           <xsl:apply-templates/>
                         </a>
+                       <xsl:if test="@url-to-copy">
+                            &#160;<input readonly="true" size="40" class="url-to-copy" type="text" value="{@url-to-copy}" />
+                        </xsl:if>
                       </td>
                       <td>
                         <a href="{@href}" class="confirm-download">
@@ -715,6 +718,7 @@
                                                              or starts-with(base-uri(.),'/pubs/4.1/dotnet')
                                                              or starts-with(base-uri(.),'/pubs/4.1/javadoc')
                                                              or starts-with(base-uri(.),'/licensing')
+                                                             or starts-with(base-uri(.),'/pubs/code')
                                                    ]/base-uri(.)
                                                  ))"/>
         </additional-query>

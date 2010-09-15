@@ -1135,3 +1135,16 @@ h3.title-with-links, h2.title-with-links {
     display: block;
 }
 
+input[type='text'].url-to-copy {
+    border: 0px;
+	font-style: normal;
+	color: #999;
+    font-size:0.9em;
+}
+
+input[type='text'].focus {
+    border: 1px solid black;
+    color: green;
+    font-style: italic;
+    font-size:0.9em;
+}
