@@ -18,6 +18,11 @@
   </div>
 
   <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blog.davidcassel.net/" target="_blank"><strong>David Cassel's Blog</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+  
+  <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://www.kellblog.com/" target="_blank"><strong>David Kellogg's Kellblog</strong></a> <span class="date"></span>
     <div></div>
   </div>
