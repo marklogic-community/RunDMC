@@ -22,18 +22,25 @@ declare function local:renderErrors()
 
 let $error := xdmp:get-response-code()[1]
 let $errorMessage := xdmp:get-response-code()[2]
-    
+
+let $ok := ($error le 401)
+
+let $_ := if (not($ok))
+    then
+        (xdmp:add-response-header("content-type", "text/html"),
+        util:expireInSeconds(0))
+    else
+        ()
+
+let $params  := qp:load-params()
+
 return
-try {
-
-    let $_ := util:expireInSeconds(0)  (: error page :)
-    let $params  := qp:load-params()
-    
-    let $_ := xdmp:add-response-header("content-type", "text/html")
-
-    return
-      xdmp:xslt-invoke("/view/page.xsl", doc("/error.xml"),
-        map:map(
+  try {
+      if ($ok) then
+        ($error, $errorMessage)
+      else
+        xdmp:xslt-invoke("/view/page.xsl", doc("/error.xml"),
+         map:map(
           <map:map xmlns:map="http://marklogic.com/xdmp/map">
             <map:entry>
               <map:key>params</map:key>
@@ -56,9 +63,7 @@ try {
               <map:value>{ local:renderErrors() }</map:value>
             </map:entry>
           </map:map>
-        )
-      )
-}
-catch ($e) {
-    ($error, $errorMessage)
-}
+        ))
+    } catch ($e) {
+        ($error, $errorMessage)
+    }
