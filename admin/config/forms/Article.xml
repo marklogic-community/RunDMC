@@ -5,7 +5,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"      values:status="Draft Published"
       type=""        label:type="Document Type" values:type="_ Reference Tutorial Book"
-      form:uri-prefix-for-new-docs="/">
+      form:uri-prefix-for-new-docs="/learn/">
     <ml:title form:label="Title"
               form:wide="yes"/>
     <ml:author form:repeating="yes"
@@ -26,5 +26,7 @@
     <ml:body form:label="Body"
              form:type="textarea"/>
     <ml:external-link href="" label:href="External link instead (body will be ignored)"
-                      form:optional="yes"/>
+                      form:wide="yes" form:optional="yes"/>
+    <ml:internal-uri href="" label:href="Database URI for internal copy"
+                      form:wide="yes" form:optional="yes"/>
 </ml:Article>
