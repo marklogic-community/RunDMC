@@ -14,6 +14,7 @@ declare function local:redir($path as xs:string) as xs:string
 {
     let $path            := xdmp:get-request-path()  
     let $orig-url        := xdmp:get-request-url()
+    let $external-link   :=  //*:Article[*:internal-uri/@*:href = $path]//*:external-link/@*:href
 
     return
     (: permanent redirs :)
@@ -85,8 +86,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/learn/xqdt-setup"
     else if ($path = '/events/markups-2010-09-11') then
         "/events/markups-2010-08-11"
-    else if (starts-with($path, "/pubs/external") and doc-available($path)) then
-        string(doc($path)//*:external-link/@*:href) 
+    else if (exists($external-link)) then
+        string($external-link)
     else
         $path
 };
