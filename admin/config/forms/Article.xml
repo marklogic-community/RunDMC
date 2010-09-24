@@ -5,7 +5,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"      values:status="Draft Published"
       type=""        label:type="Document Type" values:type="_ Reference Tutorial Book"
-      form:uri-prefix-for-new-docs="/learn/">
+      form:uri-prefix-for-new-docs="/">
     <ml:title form:label="Title"
               form:wide="yes"/>
     <ml:author form:repeating="yes"
