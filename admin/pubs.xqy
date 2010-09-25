@@ -4,9 +4,9 @@ module namespace pubs='http://developer.marklogic.com/pubs';
 
 declare function pubs:load-dir($dir as xs:string) {
     for $entry in xdmp:filesystem-directory($dir)//*:entry
-    let $path := $entry/*:pathname/text()
-    let $file := $entry/*:filename/text()
-    let $type := $entry/*:type/text()
+    let $path := fn:string($entry/*:pathname)
+    let $file := fn:string($entry/*:filename)
+    let $type := fn:string($entry/*:type)
     let $uri := fn:substring($path, fn:string-length("/space/"))
     let $encoding := 
         if (fn:ends-with($file, ".js")) then
