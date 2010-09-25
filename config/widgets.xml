@@ -6,15 +6,18 @@
 
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
     <page href="/"/>
+    <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
+    <page-tree root="/news"/>
+    <page-tree root="/events"/>
   </widget>
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
 
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
-    <page-tree href="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
-    <page-tree href="/news"/>
-    <page-tree href="/events"/>
+    <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
+    <page-tree root="/news"/>
+    <page-tree root="/events"/>
   </widget>
 
   <widget href="/widgets/open-source-projects.xml">
@@ -103,7 +106,7 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page-tree href="/news-and-events"/>
+    <page-tree root="/news-and-events"/>
   </widget>
 
   <widget href="/widgets/mark-logic-authors.xml">
