@@ -162,7 +162,7 @@
                           <xsl:apply-templates/>
                         </a>
                        <xsl:if test="@url-to-copy">
-                            &#160;<input readonly="true" size="40" class="url-to-copy" type="text" value="{@url-to-copy}" />
+                            &#160;<input readonly="true" size="47" class="url-to-copy" type="text" value="{@url-to-copy}" />
                         </xsl:if>
                       </td>
                       <td>
