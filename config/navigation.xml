@@ -9,13 +9,17 @@
         <page display="4.1" href="/products/marklogic-server/4.1"/>
         <page display="4.0" href="/products/marklogic-server/4.0"/>
       </group>
-      <group display="Connectors and Toolkits">
+      <group display="Connectors">
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint/1.0"/>
+      </group>
+      <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
         <page display="Toolkit for PowerPoint®"  href="/code/marklogic-toolkit-for-powerpoint"/>
         <page display="Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
+        <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
+        <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Cloud Computing">
         <page display="Server for EC2" href="/products/server-for-ec2"/>
@@ -39,10 +43,12 @@
         <page display="Pomegranate" href="/code/pomegranate"/>
         <page display="xmlsh extension" href="/code/xmlsh-ext"/>
       </group>
-      <group display="Toolkits">
+      <group display="Microsoft Office® Integration">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
         <page display="MarkLogic Toolkit for PowerPoint®" pref="1" href="/code/marklogic-toolkit-for-powerpoint"/>
-        <page display="MarkLogic Toolkit for Word®" pref="1" href="/code/marklogic-toolkit-for-word"/>
+        <page display="MarkLogic Toolkit for Word®" href="/code/marklogic-sample-authoring"/>
+        <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
+        <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Connectors">
         <page display="MLSQL" href="/code/mlsql"/>
@@ -72,7 +78,6 @@
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Applications">
-        <page display="Authoring App for Word" href="/code/marklogic-sample-authoring"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="XFaqtor" href="/code/xfaqtor"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
@@ -85,7 +90,7 @@
       </group>
     </group>
     <generic-page display="Licensing" href="/apache-2.0-license"/>
-    <generic-page display="Microsoft Office Integration" href="/microsoft-office-integration"/>
+    <generic-page display="Microsoft Office® Integration" href="/microsoft-office-integration"/>
   </page>
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
