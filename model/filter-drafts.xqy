@@ -2,7 +2,7 @@
 module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts";
 
 (: TODO: Use a special server field with xdmp:get-server-field instead of hard-coding the server name :)
-declare variable $public-docs-only := "CommunitySitePublic" eq xdmp:server-name(xdmp:server());
+declare variable $public-docs-only := xdmp:server-name(xdmp:server()) = ("CommunitySitePublic", "RunDMC-Public");
 
 (: Hide "Draft" documents, if applicable :)
 declare function allow($doc) as element()?
