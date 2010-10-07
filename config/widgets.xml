@@ -106,6 +106,7 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
+    <page href="/learn/inside-marklogic"/>
     <page-tree root="/news-and-events"/>
   </widget>
 
