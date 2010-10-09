@@ -13,9 +13,11 @@ declare function local:fail ($e) {
 
     let $_ := xdmp:log("#training-agenda not fetched")
 
+    let $host := xdmp:host-name(xdmp:host())
+
     return xdmp:email(
     <em:Message xmlns:em="URN:ietf:params:email-xml:" xmlns:rf="URN:ietf:params:rfc822:">
-      <rf:subject>Failed to fetch training calendar</rf:subject>
+      <rf:subject>Failed to fetch training calendar on {$host}</rf:subject>
       <rf:from>
         <em:Address>
           <em:name>MarkLogic Developer Community</em:name>
