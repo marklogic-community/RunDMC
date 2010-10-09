@@ -6,6 +6,14 @@
     -->
   </div>
   <div class="body">
+<!--
+    <img class="align_left" src="/media/docbook.png" alt="Docbook"/> 
+-->
+    <h3><a href="http://www.amazon.com/gp/product/0596805020/">DocBook, The Definite Guide</a></h3>
+    <div class="author">by Norman Walsh</div>
+    <div class="message">Official documentation for the popular semantic markup language for technical documentation.</div>
+  </div>
+  <div class="body">
     <img class="align_left" src="/media/book1.jpg" alt="Querying XML"/>
     <h3><a href="http://www.amazon.com/Querying-XML-context-Kaufmann-Management/dp/1558607110">Querying XML</a></h3>
     <div class="author">by Jim Melton and Stephen Buxton</div>
@@ -24,14 +32,6 @@
     <h3><a href="http://www.oreilly.com/catalog/jservlet2/">Java Servlet Programming</a></h3>
     <div class="author">by Jason Hunter</div>
     <div class="message">The best book on Java servlets on the planet.</div>
-  </div>
-  <div class="body">
-<!--
-    <img class="align_left" src="/media/docbook.png" alt="Docbook"/> 
--->
-    <h3><a href="http://www.amazon.com/gp/product/0596805020/">DocBook, The Definite Guide</a></h3>
-    <div class="author">by Norman Walsh</div>
-    <div class="message">Official documentation for the popular semantic markup language for technical documentation.</div>
   </div>
   <!--
   <div class="body">
