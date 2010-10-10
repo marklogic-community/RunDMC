@@ -28,6 +28,7 @@ let $feed := xdmp:get-request-field("feed", "")
 
 (: JEM: for now just creating two separate feed paths. "feed" or empty is the blog. "newsandevents" is news and events :) 
 return
+('<?xml version="1.0" encoding="UTF-8"?>',
 if ($feed = "blog" or $feed = "")
 then
     let $posts :=
@@ -69,7 +70,7 @@ then
                 </updated>
                 <published>{ string($p/ml:created/text()) }</published>
                 <content type="html">
-                    { xdmp:quote($p/ml:body)}
+                    { xdmp:quote($p/ml:body, <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)}
                 </content>
             </entry>
     	}
@@ -125,4 +126,4 @@ then
     </feed>
  else 
     ()
-
+)
