@@ -41,10 +41,15 @@ if(typeof jQuery != 'undefined') {
             modal: true,
             buttons: {
                 Download: function() {
+                    var u = $(this).dialog.href;
+                    _gaq.push(['_trackPageview', u],
+                              ['_trackEvent', 'start-download', u]);
                     $(this).dialog('close');
-                    document.location = $(this).dialog.href + '?r=dmc';
+                    document.location = u + '?r=dmc';
                 },
                 Cancel: function() {
+                    var u = $(this).dialog.href;
+                    _gaq.push(['_trackEvent', 'cancel-download', u]);
                     $(this).dialog('close');
                 }
            }
