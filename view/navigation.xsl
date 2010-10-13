@@ -178,7 +178,7 @@
 
 
                   <!-- TODO: Find out whether nested lists should be supported. The JavaScript appears to be broken currently. -->
-                  <xsl:template mode="sub-nav" match="page">
+                  <xsl:template mode="sub-nav" match="page[ not(exists(./@hide)) ] ">
                     <li>
                         <xsl:apply-templates mode="sub-nav-current-att" select="."/>
                             <a href="{@href}">
