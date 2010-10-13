@@ -94,7 +94,10 @@
  -->
 
   <widget href="/widgets/quick-references.xml">
-    <page href="/docs"/>
+    <page href="/docs/4.2"/>
+    <page href="/docs/4.1"/>
+    <page href="/docs/4.0"/>
+    <page href="/docs/3.2"/>
     <page href="/learn"/>
     <page href="/learn/tutorials"/>
     <page href="/learn/guides"/>
@@ -102,12 +105,17 @@
   </widget>
 
   <widget xquery="training-calendar.xqy"> 
-    <page href="/docs"/>
+    <page href="/docs/4.2"/>
+    <page href="/docs/4.1"/>
+    <page href="/docs/4.0"/>
+    <page href="/docs/3.2"/>
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
     <page href="/learn/inside-marklogic"/>
     <page-tree root="/news-and-events"/>
+    <page-tree root="/news"/>
+    <page-tree root="/events"/>
   </widget>
 
   <widget href="/widgets/mark-logic-authors.xml">
@@ -116,12 +124,15 @@
     <page href="/"/>
 -->
     <page href="/learn"/>
-    <page href="/docs"/>
+    <page href="/docs/4.2"/>
+    <page href="/docs/4.1"/>
+    <page href="/docs/4.0"/>
+    <page href="/docs/3.2"/>
     <page href="/learn/tutorials"/>
   </widget>
 
   <widget href="/widgets/old-docs.xml">
-    <page href="/docs"/>
+    <page href="/docs/4.1"/>
   </widget>
 
   <widget href="/widgets/latest-docs.xml">
@@ -141,7 +152,7 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page href="/docs"/>
+    <page href="/docs/4.1"/>
   </widget>
 
 </widgets>
