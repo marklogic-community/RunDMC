@@ -20,24 +20,32 @@ declare function local:redir($path as xs:string) as xs:string
     (: permanent redirs :)
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
-    else if ($path = ("/pubs", "/pubs/", "/pubs/4.1", "/pubs/4.1/")) then
+    else if ($path = ("/pubs", "/pubs/")) then
         "/docs"
+    else if ($path = ("/pubs/4.2", "/pubs/4.2/")) then
+        "/docs/4.2"
+    else if ($path = ("/pubs/4.1", "/pubs/4.1/")) then
+        "/docs/4.1"
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then
         "/docs/4.0"
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
         "/docs/3.2"
-    else if ($path = ("/products/marklogic-server")) then
-        "/products/marklogic-server/4.1"
+    else if ($path = ("/download/4.2", "/download/4.2/")) then
+        "/products/marklogic-server/4.2"
     else if ($path = ("/download/4.1", "/download/4.1/")) then
         "/products/marklogic-server/4.1"
     else if ($path = ("/download/4.0", "/download/4.0/")) then
         "/products/marklogic-server/4.0"
     else if ($path = ("/download/3.2", "/download/3.2/")) then
         "/products/marklogic-server/3.2"
+
+    else if ($path = ("/download/binaries/4.2/requirements.xqy")) then
+        "/products/marklogic-server/requirements-4.2"
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
-        "/products/marklogic-server/requirements"
+        "/products/marklogic-server/requirements-4.1"
     else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.0"
+
     else if ($path = ("/download/confirm.xqy")) then
         "/products"
     else if (starts-with($path, "/about")) then
@@ -51,7 +59,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/4.1")) then
         replace($path, "/4.1", "/pubs/4.1")
     else if (starts-with($path, '/pubs/4.2')) then
-        "http://support.marklogic.com/"
+        replace($path, "/4.2", "/pubs/4.2")
     else if (starts-with($path, "/xfaqtor")) then
         "/learn"
     else if (starts-with($path, "/default.xqy")) then
@@ -94,20 +102,35 @@ declare function local:redir($path as xs:string) as xs:string
 
 declare function local:rewrite($path as xs:string) as xs:string
 {
+    let $latest-version := "4.1"
+
+    (: Defaults for /docs and /producs :)
+    let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version)
+    let $latest-doc-uri  := concat("/docs/", $latest-version)
+    let $latest-requirements-uri  := concat("/products/marklogic-server/requirements-", $latest-version) 
+
+    let $path := if ($path = "/docs") then
+        $latest-doc-uri
+    else if ($path = "/products/marklogic-server") then
+        $latest-prod-uri
+    else if ($path = "/products/marklogic-server/requirements") then
+        $latest-requirements-uri
+    else 
+        $path
+
     let $orig-url        := xdmp:get-request-url()
     let $query-string    := substring-after($orig-url, '?')
     let $doc-url         := concat($path, ".xml")
     (: should assert path does not end in / :)
     let $dir-url         := concat($path, "/")
     let $index-url       := concat($dir-url, "index.xml")
-    let $latest-prod-uri := "/products/marklogic-server/4.1"
 
     return
 
     if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
-    (: Support /download[s] and map them and /productsto latest product URI :)
-    else if ($path = ("/download", "/downloads", "/products", "/product")) then
+    (: Support /download[s] and map them and /products to latest product URI :)
+    else if ($path = ("/download", "/downloads", "/products", "/product", "/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
     else if (matches($path, '^/(js|css|images|media)/v-[0-9]*/.*'))  then 
