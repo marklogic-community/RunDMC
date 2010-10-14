@@ -58,7 +58,7 @@ declare function local:redir($path as xs:string) as xs:string
         replace($path, "/4.0", "/pubs/4.0")
     else if (starts-with($path, "/4.1")) then
         replace($path, "/4.1", "/pubs/4.1")
-    else if (starts-with($path, '/pubs/4.2')) then
+    else if (starts-with($path, '/4.2')) then
         replace($path, "/4.2", "/pubs/4.2")
     else if (starts-with($path, "/xfaqtor")) then
         "/learn"
