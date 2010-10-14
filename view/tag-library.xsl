@@ -481,7 +481,7 @@
 
 
   <xsl:template match="document-list">
-    <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@server-version), string(@topic))"/>
+    <xsl:variable name="docs" select="ml:lookup-articles(string(@type), string(@server-version), string(@topic), boolean(@allow-unversioned-docs))"/>
     <div class="doclist">
       <h2>&#160;</h2>
       <!-- 2.0 feature TODO: add pagination -->

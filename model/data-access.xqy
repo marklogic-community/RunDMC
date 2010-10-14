@@ -110,11 +110,13 @@ declare variable $events-by-date := for $e in $Events
 
 
 (: Filtered documents by type and/or topic. Used in the "Learn" section of the site. :)
-declare function lookup-articles($type as xs:string, $server-version as xs:string, $topic as xs:string)
+declare function lookup-articles($type as xs:string, $server-version as xs:string, $topic as xs:string,
+    $allow-unversioned as xs:boolean)
 {
   let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type))
                                 and   (($server-version =
-                                         server-version)        or fn:not($server-version))
+                                         server-version)        or fn:not($server-version) or 
+                                        ($allow-unversioned and fn:empty(server-version)))
                                 and   (($topic =  topics/topic) or fn:not($topic))]
   return
     for $a in $filtered-articles
@@ -124,7 +126,7 @@ declare function lookup-articles($type as xs:string, $server-version as xs:strin
 
         declare function latest-article($type as xs:string)
         {
-          ml:lookup-articles($type, '', '')[1]
+          ml:lookup-articles($type, '', '', ())[1]
         };
 
 
