@@ -121,7 +121,7 @@
           <xsl:function name="ml:docs-by-type" as="element()*">
             <xsl:param name="doc-type"/>
             <xsl:sequence select="if ($doc-type eq 'Project')      then $ml:projects-by-name
-                             else if ($doc-type eq 'Article')      then ml:lookup-articles('','','', ())
+                             else if ($doc-type eq 'Article')      then ml:lookup-articles('','','', false())
                              else if ($doc-type eq 'Post')         then $ml:posts-by-date
                              else if ($doc-type eq 'Announcement') then $ml:announcements-by-date
                              else if ($doc-type eq 'Event')        then $ml:events-by-date
