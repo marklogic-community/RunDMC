@@ -12,7 +12,7 @@
   <image src="http://i2.cdn.turner.com/money/galleries/2009/fortune/0904/gallery.okeefe_infomercial.fortune/images/veg-o-matic.jpg" alt="ActiveDocument">
   <image src="/media/xqdt.png" alt="Eclipse">
   -->
-  <image src="/media/eclipse.png" alt="Eclipse">
+  <image src="/media/eclipse.png" alt="Eclipse" href="/learn/xqdt-setup">
     <caption>Explore the universe!</caption>
   </image>
   <read-more>
