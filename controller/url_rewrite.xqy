@@ -102,7 +102,7 @@ declare function local:redir($path as xs:string) as xs:string
 
 declare function local:rewrite($path as xs:string) as xs:string
 {
-    let $latest-version := "4.1"
+    let $latest-version := "4.2"
 
     (: Defaults for /docs and /producs :)
     let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version)
