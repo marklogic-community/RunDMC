@@ -107,7 +107,7 @@
                     <xsl:param name="is-widget" tunnel="yes"/>
                     <xsl:variable name="button-class" select="if ($is-widget) then 'download' else 'button'"/>
                     <a class="{$button-class}" href="{@href}">
-                      <img src="/images/b_download.png" alt="Download"/>
+                      <img src="/images/b_download_now.png" alt="Download"/>
                     </a>
                   </xsl:template>
 
