@@ -3,6 +3,10 @@
     <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
+    <h3><a href="/code/tunage">Tunage</a></h3>
+    Music search and player interface.
+  </div>
+  <div class="body">
     <h3><a href="/code/comoms">CoMoms</a></h3>
     Web CMS Toolkit for MarkLogic.
   </div>
@@ -17,10 +21,6 @@
   <div class="body">
     <h3><a href="/code/semantic">Semantic</a></h3>
     XQuery and Java code for storage and retieval of semantic content.
-  </div>
-  <div class="body">
-    <h3><a href="/code/pomegranate">Pomegranate</a></h3>
-    Configuration management for MarkLogic Server.
   </div>
   <div class="body">
     <a class="more" href="/code">View all &gt;</a>
