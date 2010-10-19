@@ -6,14 +6,14 @@
   <page display="Downloads" href="/products">
     <group display="MarkLogic Downloads">
       <group display="MarkLogic Server">
-        <page display="4.2" href="/products/marklogic-server/4.2" hide="true" />
+        <page display="4.2" href="/products/marklogic-server/4.2" />
         <page display="4.1" href="/products/marklogic-server/4.1"/>
-        <page display="4.0" href="/products/marklogic-server/4.0"/>
+        <page display="4.0" href="/products/marklogic-server/4.0" hide="true"/>
       </group>
       <group display="Connectors">
-        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" hide="true" />
+        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" />
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
-        <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
+        <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0" hide="true"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint/1.0"/>
       </group>
       <group display="Microsoft Office Integration">
@@ -30,6 +30,8 @@
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.1"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.2"/>
   </page>
   <page display="Code" href="/code">
     <group display="Open Source Projects">
