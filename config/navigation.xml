@@ -82,6 +82,7 @@
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Applications">
+        <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="XFaqtor" href="/code/xfaqtor"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
