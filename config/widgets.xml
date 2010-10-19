@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><widgets xmlns="http://developer.marklogic.com/site/internal">
 
   <widget href="/widgets/getting-started.xml">
-    <page href="/"/>
+    <!-- <page href="/"/> -->
   </widget>
 
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
@@ -132,10 +132,12 @@
   </widget>
 
   <widget href="/widgets/old-docs.xml">
-    <page href="/docs/4.1"/>
+    <page href="/docs/4.2"/>
+    <page href="/docs"/>
   </widget>
 
   <widget href="/widgets/latest-docs.xml">
+    <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
     <page href="/docs/3.2"/>
   </widget>
@@ -152,6 +154,8 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
+    <page href="/docs"/>
+    <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
   </widget>
 
