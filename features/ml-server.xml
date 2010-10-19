@@ -10,10 +10,11 @@
   <read-more>
     <link href="/docs">DOCUMENTATION</link>
     <link href="/learn/technical-overview">TECHNICAL OVERVIEW</link>
+    <link href="/licensing">LICENSE</link>
 <!--
     <link href="/learn/inside-marklogic">INSIDE MARKLOGIC SERVER</link>
 -->
-    <link href="/licensing">LICENSE</link>
+    <link href="/learn/5-minute-infostudio-walkthrough">Information Studio Walkthru</link>
   </read-more>
   <download-button href="/products"/>
 </feature>
