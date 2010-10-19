@@ -468,10 +468,12 @@
                   <xsl:apply-templates mode="author-listing" select="author"/>
                 </div>
               </xsl:if>
-              <p>
+              <p style="line-height: 150%">
                 <xsl:apply-templates select="if (normalize-space(abstract)) then abstract/node()
                                                                             else body/xhtml:p[1]/node()"/>
                 <xsl:text> </xsl:text>
+              </p>
+              <p>
                 <a class="more" href="{ml:external-uri(.)}">Read&#160;more&#160;></a>
               </p>
             </div>
