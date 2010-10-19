@@ -18,7 +18,7 @@
   exclude-result-prefixes="xs ml xdmp qp search cts">
 
   <xsl:variable name="page-number" select="if ($params[@name eq 'p']) then $params[@name eq 'p'] else 1" as="xs:integer"/>
-  <xsl:variable name="current-version" select="4.1"/>
+  <xsl:variable name="current-version" select="4.2"/>
 
   <xsl:template match="tabbed-features">
     <div id="special_intro">
@@ -49,10 +49,23 @@
           </xsl:template>
 
                   <xsl:template mode="feature-content" match="image">
-                    <img src="{@src}" alt="{@alt}">
-                        <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
-                        <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
-                    </img>
+                    <xsl:choose>
+                    <xsl:when test="@href">
+                        <a href="{@href}">
+                        <img src="{@src}" alt="{@alt}">
+                            <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
+                            <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
+                        </img>
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="{@src}" alt="{@alt}">
+                            <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
+                            <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
+                        </img>
+                    </xsl:otherwise>
+                    </xsl:choose>
+
                     <xsl:apply-templates mode="feature-content" select="caption"/>
                   </xsl:template>
 
@@ -94,7 +107,7 @@
                     <xsl:param name="is-widget" tunnel="yes"/>
                     <xsl:variable name="button-class" select="if ($is-widget) then 'download' else 'button'"/>
                     <a class="{$button-class}" href="{@href}">
-                      <img src="/images/b_download_now.png" alt="Download Now"/>
+                      <img src="/images/b_download.png" alt="Download"/>
                     </a>
                   </xsl:template>
 
@@ -562,10 +575,7 @@
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <!-- Display last updated only on latest version -->
-            <xsl:if test="not(exists(@version))">
-                <th scope="col">Last updated</th>
-            </xsl:if>
+            <th scope="col">Last updated</th>
           </tr>
         </thead>
         <tbody>
@@ -589,24 +599,15 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-                <a href="{replace(
-                            if (external-link/@href/normalize-space(.))
-                                then external-link/@href
-                                else ml:external-uri(.), 
-                            '4.1', 
-                            if (string($version)) then string($version) else '4.1' )
-                        }">
+                <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
                 <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
               </td>
         
-              <!-- Display last updated only on latest version -->
-              <xsl:if test="$version eq ''">
-                <td>
-                    <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
-                </td>
-              </xsl:if>
+              <td>
+                  <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
+              </td>
             </tr>
           </xsl:template>
 
@@ -616,9 +617,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-                <a href="{if (external-link/@href/normalize-space(.))
-                         then external-link/@href
-                         else ml:external-uri(.)}">
+                <a href="{ ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
                 <br/><div class="doc-desc"><p><xsl:value-of select="description"/></p></div>
@@ -714,9 +713,9 @@
           <!-- TODO: move pubs URIs to config -->
           <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.),
                                                    collection()[
-                                                             starts-with(base-uri(.),'/pubs/4.1/apidocs')
-                                                             or starts-with(base-uri(.),'/pubs/4.1/dotnet')
-                                                             or starts-with(base-uri(.),'/pubs/4.1/javadoc')
+                                                             starts-with(base-uri(.),'/pubs/4.2/apidocs')
+                                                             or starts-with(base-uri(.),'/pubs/4.2/dotnet')
+                                                             or starts-with(base-uri(.),'/pubs/4.2/javadoc')
                                                              or starts-with(base-uri(.),'/licensing')
                                                              or starts-with(base-uri(.),'/pubs/code')
                                                    ]/base-uri(.)
