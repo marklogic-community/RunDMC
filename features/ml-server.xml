@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>MarkLogic Server</title>
-  <main-points>
-    <point>MarkLogic Server 4.1</point>
-    <point>One binary per OS platform</point>
-    <point>Now available on the Amazon EC2 platform</point>
-    <point>Receive a free Community or Trial license</point>
-  </main-points>
-  <image src="/images/marklogic-server.jpg">
-    <caption>Lorem ipsum dolor sit amet. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nis.</caption>
+  <image src="/media/4.2.png" href="/download">
+    <!--
+    <caption>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Now!</caption>
+    <caption>And more four-point-two-ier than before!</caption>
+    -->
+    <caption></caption>
   </image>
   <read-more>
-    <link href="...">DOCUMENTATION</link>
-    <link href="...">TECHNICAL OVERVIEW</link>
-    <link href="...">LICENSE OPTIONS</link>
+    <link href="/docs">DOCUMENTATION</link>
+    <link href="/learn/technical-overview">TECHNICAL OVERVIEW</link>
+<!--
+    <link href="/learn/inside-marklogic">INSIDE MARKLOGIC SERVER</link>
+-->
+    <link href="/licensing">LICENSE</link>
   </read-more>
-  <download-button href="..."/>
+  <download-button href="/products"/>
 </feature>
