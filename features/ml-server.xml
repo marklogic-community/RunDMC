@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal">
   <title>MarkLogic Server</title>
   <image src="/media/4.2.png" href="/download">
-    <!--
-    <caption>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Now!</caption>
-    <caption>And more four-point-two-ier than before!</caption>
-    -->
     <caption></caption>
   </image>
   <read-more>
     <link href="/docs">DOCUMENTATION</link>
+<!--
     <link href="/learn/technical-overview">TECHNICAL OVERVIEW</link>
+-->
+    <link href="/learn/2009-01-get-started-apps">GETTING STARTED</link>
     <link href="/licensing">LICENSE</link>
 <!--
     <link href="/learn/inside-marklogic">INSIDE MARKLOGIC SERVER</link>
