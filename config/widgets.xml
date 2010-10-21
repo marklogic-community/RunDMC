@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><widgets xmlns="http://developer.marklogic.com/site/internal">
 
+  <!-- Leave this one first for now -->
+  <widget href="/widgets/experimental-docs.xml">
+    <page href="/learn"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/tutorials"/>
+    <page href="/docs"/>
+    <page href="/docs/4.2"/>
+    <page href="/docs/4.1"/>
+  </widget>
+
   <widget href="/widgets/getting-started.xml">
     <!-- <page href="/"/> -->
   </widget>
@@ -149,14 +159,5 @@
   </widget>
   -->
 
-  <!-- Leave this one last -->
-  <widget href="/widgets/experimental-docs.xml">
-    <page href="/learn"/>
-    <page href="/learn/guides"/>
-    <page href="/learn/tutorials"/>
-    <page href="/docs"/>
-    <page href="/docs/4.2"/>
-    <page href="/docs/4.1"/>
-  </widget>
 
 </widgets>
