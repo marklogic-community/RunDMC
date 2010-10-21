@@ -6,7 +6,7 @@
   <div class="head">
     <br/>
     <span style="font-size: .9em">Try out the </span><strong style="font-size: .9em"><a target="_blank" title="New experimental documentation search application!" href="http://docs.marklogic.com/">searchable docs!</a></strong>
-    <br/><span style="font-size: .9em">(This application is <a href="http://docs.marklogic.com/4.2doc/about.xqy">experimental.</a></span>)
+    <br/><span style="font-size: .9em">(This application is <a href="http://docs.marklogic.com/4.2doc/about.xqy">experimental</a>.</span>)
   </div>
   <br/>
 </ml:widget>
