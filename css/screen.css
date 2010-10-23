@@ -80,7 +80,7 @@ a.requirements:hover {color: #235BAB !important;}
 #container {
 	font-size: 1.2em;
 	margin: auto;
-	width: 900px;
+	width: 1000px;
 }
 #badge {
     padding-left: 7px;
@@ -134,7 +134,7 @@ a.requirements:hover {color: #235BAB !important;}
 .jsenabled #header input[type=submit] {display: none;}
 #content {
 	clear: both;
-	background: white url(/images/bg_content.gif) 597px 0 repeat-y;
+	background: white url(/images/bg_content.gif) 697px 0 repeat-y;
 	float: left;
 	width: 100%;
 	margin: 6px 0;
@@ -144,7 +144,7 @@ a.requirements:hover {color: #235BAB !important;}
 	background: white url(/images/bg_content_layout2.gif) repeat-y;
 	border-bottom: 1px solid white;
 }
-.layout3 #content {background-position: 665px 0;}
+.layout3 #content {background-position: 765px 0;}
 .layout3 #content.sub_special {background: white url(/images/bg_sub_bottom_narrow.png) right bottom no-repeat;}
 .generic #content {background-image: none;}
 #content_title {
@@ -210,7 +210,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	color: #235BAB;
 }
 #main {
-	width: 517px;
+	width: 617px;
 	float: left;
 	padding: 0 40px;
 	position: relative;
@@ -218,12 +218,12 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 .layout2 #main {
 	float: right;
-	width: 610px;
+	width: 710px;
 	padding: 40px 20px 0;
 	overflow: visible;
 }
 .layout3 #main {
-	width: 615px;
+	width: 715px;
 	padding: 0 10px 0 40px;
 }
 #main h2 + .more, #main br + .more {
@@ -305,9 +305,9 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	line-height: 164%;
 }
 #special_intro, .special_img {
-	background: url(/images/bg_special_intro_index_bottom.png) bottom left no-repeat;
+	background: url(/images/bg_special_intro_index_bottom.gif) bottom left no-repeat;
 	padding-bottom: 6px;
-	width: 517px;
+	width: 616px;
 	margin: 1em 0;
 }
 .special_img {font-size:0.8em;}
@@ -326,7 +326,7 @@ h2.main_headline {margin: 2em 0 1em !important;}
 #special_intro .nav li a {
 	display: block;
 	padding: 10px;
-	width: 148px;
+	width: 181px;
 	color: #333;
 	float: left;
 }
@@ -573,8 +573,13 @@ table.table4 + .action {border:0;}
 	color: #333;
 	font-style: normal;
 }
+
+#post_comment input[type=text] {
+    width: 250px;
+}
+
 #post_comment textarea {
-	width: 426px;
+	width: 526px;
 	height: 170px;
 	float: right;
 	padding: 2px;
@@ -589,13 +594,13 @@ table.table4 + .action {border:0;}
 }
 .doclist {
 	position: relative;
-	width: 618px;
+	width: 718px;
 }
 #main .doclist h2 {
 	color: white;
 	font: bold 1em Verdana, Arial, Helvetica, Sans-serif;
 	text-transform: uppercase;
-	background: #6E782F url(/images/bg_header_doclist.png) no-repeat;
+	background: #6E782F url(/images/bg_header_doclist.gif) no-repeat;
 	padding: 9px 10px;
 	margin: 0;
 }
