@@ -541,7 +541,7 @@
             <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <th scope="col">Topic(s)</th>
             -->
-            <th scope="col" class="sort">Last updated</th>
+            <th scope="col" class="sort">Last&#160;updated</th>
           </tr>
         </thead>
         <tbody>
@@ -577,7 +577,7 @@
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Last updated</th>
+            <th scope="col">Last&#160;updated</th>
           </tr>
         </thead>
         <tbody>
