@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" class="experimental-docs">
 
-  <div class="head">
-<div name="toc-main" class="wpTableOfContents">
             <h2>Table of Contents</h2>
+            <div name="toc-main">
             <p><strong>What Is MarkLogic Server?</strong></p>
-            <ul>
+            <ul style="padding-left: 10px; list-style: disc inside">
                 <li>Document-Centric</li>
 
                 <li>Transactional</li>
@@ -19,11 +18,9 @@
                 <li>Database Server</li>
             </ul>
             <p><strong>Core Topics</strong></p>
-            <ul>
-                <li>
-                    Indexing Text and Structure
-                    <ul>
-
+            <ul style="padding-left: 10px; list-style: disc inside">
+                <li>Indexing Text and Structure
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Indexing Words</li>
                         <li>Indexing Phrases</li>
                         <li>Indexing Longer Phrases</li>
@@ -37,10 +34,8 @@
                         <li>Lifecycle of a Query</li>
                     </ul>
                 </li>
-                <li>
-
-                   Indexing Document Metadata
-                    <ul>
+                <li>Indexing Document Metadata
+                   <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Collection Indexes</li>
                         <li>Directory Indexes</li>
                         <li>Security Indexes</li>
@@ -48,18 +43,16 @@
                     </ul>
                 </li>
 
-                <li>
-                    Fragmentation
-                    <ul>
+                <li>Fragmentation
+                   <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Fragment vs. Document</li>
                         <li>Estimate and Count</li>
                         <li>Unfiltered</li>
                     </ul>
                 </li>
 
-                <li>
-                    The Range Index
-                    <ul>
+                <li>The Range Index
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Range Queries</li>
                         <li>Extracting Values</li>
                         <li>Optimized "Order By"</li>
@@ -67,9 +60,8 @@
                     </ul>
 
                 </li>
-                <li>
-                    Data Management
-                    <ul>
+                <li>Data Management
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>What's on Disk: Databases, Forests, and Stands</li>
                         <li>Ingesting Data</li>
                         <li>Modifying Data</li>
@@ -82,10 +74,8 @@
                         <li>Lifecycle of a Document</li>          
                     </ul>
                 </li>    
-                <li>
-
-                    Clustering and Caching
-                    <ul>
+                <li>Clustering and Caching
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Cluster Management</li>
                         <li>Caching</li>
                         <li>Cache Partitions</li>
@@ -96,9 +86,8 @@
                         <li>Lifecycle of an Update in a Cluster</li>
                     </ul>
                 </li>
-                <li>
-                    Coding and Connecting to MarkLogic
-                    <ul>
+                <li>Coding and Connecting to MarkLogic
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>XQuery and XSLT</li>
 
                         <li>Modules and Deployment</li>
@@ -112,10 +101,9 @@
                 </li>
             </ul>
             <p><strong>Advanced Topics</strong></p>
-            <ul>
-                <li>
-                    Advanced Text Handling
-                    <ul>
+            <ul style="padding-left: 10px; list-style: disc inside">
+                <li>Advanced Text Handling
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Text Sensitivity Options</li>
 
                         <li>Stemmed Indexes</li>
@@ -126,9 +114,8 @@
                 <li>Registered Queries</li>
                 <li>The Geospatial Index</li>
 
-                <li>
-                    The Reverse Index
-                    <ul>
+                <li>The Reverse Index
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Reverse Query Use Cases</li>
                         <li>A Reverse Query Carpool Match</li>
                         <li>The Reverse Index</li>
@@ -136,17 +123,15 @@
 
                     </ul>
                 </li>
-                <li>
-                    Managing Backups
-                    <ul>
+                <li>Managing Backups
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Typical Backup</li>
                         <li>Flash Backup</li>
                     </ul>
 
                 </li>
-                <li>
-                    Failover and Replication
-                    <ul>
+                <li>Failover and Replication
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Shared-Disk Failover</li>
                         <li>Local-Disk Failover</li>
                         <li>Flexible Replication</li>
@@ -154,9 +139,8 @@
 
                 </li>
                 <li>Low-Level System Control</li>
-                <li>
-                    Outside the Core
-                    <ul>
+                <li>Outside the Core
+                    <ul style="padding-left: 10px; list-style: disc inside">
                         <li>Application Services</li>
                         <li>Content Processing Framework</li>
                         <li>Office Toolkits</li>
@@ -167,9 +151,7 @@
                 </li>
                 <li>But Wait, There's More...</li>
             </ul>
-
-            <a href="#toc-main">Back to Top &raquo;</a>  
-        </div> <!-- wpTableOfContents -->
-  </div>
-  <br/>
+            <a href="#toc-main">Back to Top</a>  
+  <br/> &#160; <br/>
+   </div>
 </ml:widget>
