@@ -10,7 +10,9 @@ let $default-params :=
         "task_subject=DL%20-%2010%204Q%20-%20Inside%20MarkLogic%20Server%20WP",
         "task_status=Not%20started",
         "task_priority=Normal",
-        "member_status=DL%20-%20Inside%20MarkLogic%20Server%20WP"
+        "member_status=DL%20-%20Inside%20MarkLogic%20Server%20WP",
+        "encoding=UTF-8",
+        "debugEmail=matt.leshinskie@marklogic.com"
         ), "&amp;")
 
 let $url := 
