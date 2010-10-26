@@ -122,7 +122,6 @@
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
-    <page href="/learn/inside-marklogic"/>
     <page-tree root="/news-and-events"/>
     <page-tree root="/news"/>
     <page-tree root="/events"/>
@@ -158,6 +157,9 @@
     <page href="/meet/mugfr/fr"/>
   </widget>
   -->
+  <widget href="/widgets/inside-marklogic-server-toc.xml">
+    <page href="/learn/inside-marklogic"/>
+  </widget>
 
 
 </widgets>
