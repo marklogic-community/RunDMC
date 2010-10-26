@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" class="experimental-docs">
+
+  <div class="head">
+<div name="toc-main" class="wpTableOfContents">
+            <h2>Table of Contents</h2>
+            <p><strong>What Is MarkLogic Server?</strong></p>
+            <ul>
+                <li>Document-Centric</li>
+
+                <li>Transactional</li>
+                <li>Search-Centric</li>
+                <li>Structure-Aware</li>
+                <li>Schema-Agnostic</li>
+                <li>XQuery- and XSLT-Driven</li>
+                <li>High Performance</li>
+
+                <li>Clustered</li>
+                <li>Database Server</li>
+            </ul>
+            <p><strong>Core Topics</strong></p>
+            <ul>
+                <li>
+                    Indexing Text and Structure
+                    <ul>
+
+                        <li>Indexing Words</li>
+                        <li>Indexing Phrases</li>
+                        <li>Indexing Longer Phrases</li>
+                        <li>Indexing Structure</li>
+                        <li>Indexing Values</li>
+                        <li>Indexing Text with Structure</li>
+
+                        <li>Index Size</li>
+                        <li>Reindexing</li>
+                        <li>Relevance</li>
+                        <li>Lifecycle of a Query</li>
+                    </ul>
+                </li>
+                <li>
+
+                   Indexing Document Metadata
+                    <ul>
+                        <li>Collection Indexes</li>
+                        <li>Directory Indexes</li>
+                        <li>Security Indexes</li>
+                        <li>Properties Indexes</li>  
+                    </ul>
+                </li>
+
+                <li>
+                    Fragmentation
+                    <ul>
+                        <li>Fragment vs. Document</li>
+                        <li>Estimate and Count</li>
+                        <li>Unfiltered</li>
+                    </ul>
+                </li>
+
+                <li>
+                    The Range Index
+                    <ul>
+                        <li>Range Queries</li>
+                        <li>Extracting Values</li>
+                        <li>Optimized "Order By"</li>
+                        <li>Using Range Indexes for Joins</li> 
+                    </ul>
+
+                </li>
+                <li>
+                    Data Management
+                    <ul>
+                        <li>What's on Disk: Databases, Forests, and Stands</li>
+                        <li>Ingesting Data</li>
+                        <li>Modifying Data</li>
+                        <li>Multi-Version Concurrency Control</li>
+
+                        <li>Time Travel</li>
+                        <li>Locking</li>
+                        <li>Updates</li>
+                        <li>Documents are Like Rows</li>
+                        <li>Lifecycle of a Document</li>          
+                    </ul>
+                </li>    
+                <li>
+
+                    Clustering and Caching
+                    <ul>
+                        <li>Cluster Management</li>
+                        <li>Caching</li>
+                        <li>Cache Partitions</li>
+                        <li>No Need for Global Cache Invalidation</li>
+                        <li>Locks and Timestamps in a Cluster</li>
+
+                        <li>Lifecycle of a Query in a Cluster</li>
+                        <li>Lifecycle of an Update in a Cluster</li>
+                    </ul>
+                </li>
+                <li>
+                    Coding and Connecting to MarkLogic
+                    <ul>
+                        <li>XQuery and XSLT</li>
+
+                        <li>Modules and Deployment</li>
+                        <li>Output Options</li>
+                        <li>Single-Tier Web Deployment</li>
+                        <li>Multi-Tier Programmatic Deployment</li>
+                        <li>Remote Filesystem Access</li>
+                        <li>CQ for Remote Coding</li>
+
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Advanced Topics</strong></p>
+            <ul>
+                <li>
+                    Advanced Text Handling
+                    <ul>
+                        <li>Text Sensitivity Options</li>
+
+                        <li>Stemmed Indexes</li>
+                        <li>Relevance Scoring</li>
+                    </ul>
+                </li>   
+                <li>Fields</li>
+                <li>Registered Queries</li>
+                <li>The Geospatial Index</li>
+
+                <li>
+                    The Reverse Index
+                    <ul>
+                        <li>Reverse Query Use Cases</li>
+                        <li>A Reverse Query Carpool Match</li>
+                        <li>The Reverse Index</li>
+                        <li>Range Queries in Reverse Indexes</li>
+
+                    </ul>
+                </li>
+                <li>
+                    Managing Backups
+                    <ul>
+                        <li>Typical Backup</li>
+                        <li>Flash Backup</li>
+                    </ul>
+
+                </li>
+                <li>
+                    Failover and Replication
+                    <ul>
+                        <li>Shared-Disk Failover</li>
+                        <li>Local-Disk Failover</li>
+                        <li>Flexible Replication</li>
+                    </ul>
+
+                </li>
+                <li>Low-Level System Control</li>
+                <li>
+                    Outside the Core
+                    <ul>
+                        <li>Application Services</li>
+                        <li>Content Processing Framework</li>
+                        <li>Office Toolkits</li>
+
+                        <li>Connector for SharePoint</li>
+                        <li>Unofficial Projects</li>
+                    </ul>
+                </li>
+                <li>But Wait, There's More...</li>
+            </ul>
+
+            <a href="#toc-main">Back to Top &raquo;</a>  
+        </div> <!-- wpTableOfContents -->
+  </div>
+  <br/>
+</ml:widget>
