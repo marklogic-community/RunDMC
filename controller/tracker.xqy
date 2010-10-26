@@ -19,4 +19,4 @@ let $url :=
 
 let $_ := xdmp:http-get($url)
 
-return xdmp:redirect-response("/pubs/architecture/Inside%20MarkLogic%20Server.pdf")
+return "tracked"
