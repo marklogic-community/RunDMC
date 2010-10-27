@@ -4,13 +4,11 @@
     <caption></caption>
   </image>
   <read-more>
-    <link href="/docs">READ DOCUMENTATION</link>
-    <link href="/learn/2009-01-get-started-apps">READ Get Started Tutorial</link>
-    <link href="/licensing">LICENSE</link>
-<!--
-    <link href="/learn/inside-marklogic">INSIDE MARKLOGIC SERVER</link>
--->
-    <link href="/learn/5-minute-infostudio-walkthrough">CHECK OUT the Information Studio Walkthru</link>
+    <link href="/docs">READ THE DOCS</link>
+    <link href="/learn/2009-01-get-started-apps">New? READ AN INTRO</link>
+    <link href="/learn/5-minute-infostudio-walkthrough">READ ABOUT 4.2's Information Studio Tool</link>
+    <link href="/inside-marklogic">LEARN WHAT'S INSIDE MARKLOGIC</link>
+    <link href="/licensing">CHECK OUT THE LICENSE</link>
   </read-more>
   <download-button href="/products"/>
 </feature>
