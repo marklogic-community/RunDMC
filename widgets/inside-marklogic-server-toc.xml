@@ -2,7 +2,7 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" class="experimental-docs">
 
             <h2>Table of Contents</h2>
-            <div name="toc-main">
+            <div id="toc-main">
             <p><strong>What Is MarkLogic Server?</strong></p>
             <ul style="padding-left: 10px; list-style: disc inside">
                 <li>Document-Centric</li>
@@ -20,7 +20,7 @@
             <p><strong>Core Topics</strong></p>
             <ul style="padding-left: 10px; list-style: disc inside">
                 <li>Indexing Text and Structure
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Indexing Words</li>
                         <li>Indexing Phrases</li>
                         <li>Indexing Longer Phrases</li>
@@ -35,7 +35,7 @@
                     </ul>
                 </li>
                 <li>Indexing Document Metadata
-                   <ul style="padding-left: 10px; list-style: disc inside">
+                   <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Collection Indexes</li>
                         <li>Directory Indexes</li>
                         <li>Security Indexes</li>
@@ -44,7 +44,7 @@
                 </li>
 
                 <li>Fragmentation
-                   <ul style="padding-left: 10px; list-style: disc inside">
+                   <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Fragment vs. Document</li>
                         <li>Estimate and Count</li>
                         <li>Unfiltered</li>
@@ -52,7 +52,7 @@
                 </li>
 
                 <li>The Range Index
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Range Queries</li>
                         <li>Extracting Values</li>
                         <li>Optimized "Order By"</li>
@@ -61,7 +61,7 @@
 
                 </li>
                 <li>Data Management
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>What's on Disk: Databases, Forests, and Stands</li>
                         <li>Ingesting Data</li>
                         <li>Modifying Data</li>
@@ -75,7 +75,7 @@
                     </ul>
                 </li>    
                 <li>Clustering and Caching
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Cluster Management</li>
                         <li>Caching</li>
                         <li>Cache Partitions</li>
@@ -87,7 +87,7 @@
                     </ul>
                 </li>
                 <li>Coding and Connecting to MarkLogic
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>XQuery and XSLT</li>
 
                         <li>Modules and Deployment</li>
@@ -103,7 +103,7 @@
             <p><strong>Advanced Topics</strong></p>
             <ul style="padding-left: 10px; list-style: disc inside">
                 <li>Advanced Text Handling
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Text Sensitivity Options</li>
 
                         <li>Stemmed Indexes</li>
@@ -115,7 +115,7 @@
                 <li>The Geospatial Index</li>
 
                 <li>The Reverse Index
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Reverse Query Use Cases</li>
                         <li>A Reverse Query Carpool Match</li>
                         <li>The Reverse Index</li>
@@ -124,14 +124,14 @@
                     </ul>
                 </li>
                 <li>Managing Backups
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Typical Backup</li>
                         <li>Flash Backup</li>
                     </ul>
 
                 </li>
                 <li>Failover and Replication
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Shared-Disk Failover</li>
                         <li>Local-Disk Failover</li>
                         <li>Flexible Replication</li>
@@ -140,7 +140,7 @@
                 </li>
                 <li>Low-Level System Control</li>
                 <li>Outside the Core
-                    <ul style="padding-left: 10px; list-style: disc inside">
+                    <ul style="padding-left: 10px; list-style: circle inside">
                         <li>Application Services</li>
                         <li>Content Processing Framework</li>
                         <li>Office Toolkits</li>
