@@ -19,6 +19,6 @@ let $url :=
     concat(
         "http://salesforce.ringlead.com/cgi-bin/77/1/dedup.pl?", $params, "&amp;", $default-params)
 
-let $_ := xdmp:http-get($url)
+(: let $_ := xdmp:http-get($url) :)
 
 return "tracked"
