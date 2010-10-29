@@ -6,6 +6,13 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://newsletter.marklogic.com/2010/10/fernando-mesa-presents-how-to-build-an-enterprise-grade-mobile-platform-with-marklogic/">Fernando Mesa Presents How to Build an Enterprise-Grade Mobile Platform with MarkLogic</a></h3>
+    <div class="author">by Cleo Haynal, October 28, 2010</div>
+    <br/>
+    <div class="message"><i>I chose to sit on Fernando’s session because his enthusiasm is always worth a sit-in.  It is impossible to successfully deliver information for the user without asking the user what he or she wants</i> is the premise of his talk. As Chris Anderson had talked about in his session, we are now in a new era and the advent of the mobile application enables us to have new data....
+    </div>
+  </div>
+  <div class="body">
     <h3><a href="http://norman.walsh.name/2010/10/22/infostudio">Building a Web Analytics Tool with MarkLogic Server V4.2</a></h3>
     <div class="author">by Norm Walsh, October 22, 2010</div>
     <br/>
@@ -21,12 +28,6 @@
 tools and high-level APIs that allow you to easily collect, transform, and load information from a variety of sources. Combined with 
 <a href="http://www.marklogic.com/product/application-builder.html">Application Builder</a>, Information Studio changes how you build rich, interactive information applications...
     </div>
-  </div>
-  <div class="body">
-    <h3><a href="/blog/warrior-gateway-code-bash-2010">Warrior Gateway Code Bash 2010 - <br/>It's a wrap!</a></h3>
-    <div class="author">by Eric Bloch, October 3, 2010</div>
-    <br/>
-    <div class="message">I spent this past weekend in Fairfax, VA with a number of MarkLogic employees, partners, and friends participating in the Warrior Gateway  Code Bash.  The Warrior Gateway is a non-profit site devoted to connecting returning military personnel and their families with services they need.  This was the first time any of us had participated in an event like this so we weren't sure...</div>
   </div>
 {(:
   <div class="body">
