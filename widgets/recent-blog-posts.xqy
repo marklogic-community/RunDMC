@@ -6,6 +6,20 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://blogs.avalonconsult.com/blog/generic/realtime-push-with-marklogic-and-nodejs-via-websockets/">Realtime Push with MarkLogic and Node.js via Websockets</a></h3>
+    <div class="author">by Mike Brevoort, November 16, 2010</div>
+    <br/>
+    <div class="message">
+    <p>
+MarkLogic has an awesome alerting feature that enables you to trigger an event when new or updated database content matches certain criteria. Once a rule’s criteria is met, an action is triggered that executes an arbitrary XQuery module. You can send an email, an SMS message, perhaps place a phone call with the <a href="http://www.twilio.com/">Twillio API</a>, modify other content in the database, whatever your heart desires. But what if you want to deliver realtime notifications to a user in a browser?
+    </p>
+    <p>
+    Enter <a href="http://dev.w3.org/html5/websockets/">Websockets</a>...
+    </p>
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/">Announcing the availability of MarkLogic Server 4.2 Standard Edition AMI for EC2</a></h3>
     <div class="author">by Dipti Borkar, November 9, 2010</div>
     <br/>
@@ -21,13 +35,6 @@
     </div>
   </div>
 
-  <div class="body">
-    <h3><a href="http://norman.walsh.name/2010/10/22/infostudio">Building a Web Analytics Tool with MarkLogic Server V4.2</a></h3>
-    <div class="author">by Norm Walsh, October 22, 2010</div>
-    <br/>
-    <div class="message">A few weeks ago, at the most recent <a href="/meet/nymug">New York MarkLogic User Group</a>&#160;<a href="http://www.meetup.com/NY-MUG/calendar/14780192/">meeting</a>, I demonstrated how to build a web analytics tool in about ten minutes using Information Studio and Application Builder in MarkLogic Server V4.2. Here's a summary, but you'll have to provide your own pizza and beer, I'm afraid...
-    </div>
-  </div>
 {(:
   <div class="body">
     <a class="more" href="">+ Show more</a>
