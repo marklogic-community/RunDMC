@@ -424,7 +424,7 @@
                   <!-- TODO: For dates and times, consider use ISO 8601 format (in the source data) instead -->
                   <xsl:template mode="event-details" match="*">
                     <dt>
-                      <xsl:apply-templates mode="event-detail-name" select="."/>
+                      <strong><xsl:apply-templates mode="event-detail-name" select="."/></strong>
                       <xsl:text>:&#160;</xsl:text>
                     </dt>
                     <dd>
