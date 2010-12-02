@@ -108,18 +108,10 @@
     </group>
   </page>
   <page display="Discuss" href="/discuss">
-    <group display="MarkLogic Lists">
+    <group display="Lists">
       <page display="General Development" href="/mailman/listinfo/general"/>
       <page display="Announcements" href="/mailman/listinfo/announce"/>
       <page display="Commits" href="/mailman/listinfo/commits"/>
-    </group>
-    <group display="User Group Lists">
-      <page display="DenMARK — Denver" href="/mailman/listinfo/denmark"/>
-      <page display="Mark-UPS — Maryland" href="/mailman/listinfo/mark-ups"/>
-      <page display="NOVAMUG — Northern Virginia" href="/mailman/listinfo/novamug"/>
-      <page display="NYMUG — New York" href="/meet/nymug"/>
-      <page display="MUGFR - France" href="/mailman/listinfo/mugfr"/>
-      <page display="BMUG — Boston" href="/mailman/listinfo/bmug"/>
     </group>
   </page>
   <page display="Meet" href="/meet">
