@@ -51,18 +51,22 @@
                   <xsl:template mode="feature-content" match="image">
                     <xsl:choose>
                     <xsl:when test="@href">
+                        <p align="center">
                         <a href="{@href}">
                         <img src="{@src}" alt="{@alt}">
                             <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
                             <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
                         </img>
                         </a>
+                        </p>
                     </xsl:when>
                     <xsl:otherwise>
+                        <p align="center">
                         <img src="{@src}" alt="{@alt}">
                             <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
                             <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
                         </img>
+                        </p>
                     </xsl:otherwise>
                     </xsl:choose>
 
