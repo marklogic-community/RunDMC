@@ -2,7 +2,23 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="head">
     <h2>Recent Blog Posts</h2>
-    <a class="more" href="/blog">View all</a>
+    <a class="more" href="/blog">View blog</a>
+  </div>
+
+  <div class="body">
+    <h3><a href="http://blog.jclark.com/2010/11/xml-vs-web_24.html">XML vs. the Web</a></h3>
+    <div class="author">by Jim Clark, November 11, 2010</div>
+    <br/>
+    <div class="message">
+        <p>
+        Twitter and Foursquare recently removed XML support from their Web APIs, and now support only JSON.  This prompted Norman Walsh 
+        to write an <a href="http://norman.walsh.name/2010/11/17/deprecatingXML">interesting post</a>, in which he summarised his reaction as 
+        <a href="http://en.wikipedia.org/wiki/Meh">"Meh"</a>. I won't try to summarise his post; it's short and well-worth reading.
+        </p>
+        <p>
+        From one perspective, it's hard to disagree.  If you're an XML wizard with a decade or two of experience...
+        </p>
+    </div>
   </div>
 
   <div class="body">
@@ -24,14 +40,6 @@ MarkLogic has an awesome alerting feature that enables you to trigger an event w
     <div class="author">by Dipti Borkar, November 9, 2010</div>
     <br/>
     <div class="message">We are pleased to announce the availability of <a href="/products/server-for-ec2">MarkLogic Server 4.2 Standard Edition AMI (Amazon Machine Image) on EC2</a>. MarkLogic Server 4.2 brings you increased agility...
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="http://newsletter.marklogic.com/2010/10/fernando-mesa-presents-how-to-build-an-enterprise-grade-mobile-platform-with-marklogic/">Fernando Mesa Presents How to Build an Enterprise-Grade Mobile Platform with MarkLogic</a></h3>
-    <div class="author">by Cleo Haynal, October 28, 2010</div>
-    <br/>
-    <div class="message"><i>I chose to sit on Fernando’s session because his enthusiasm is always worth a sit-in.  It is impossible to successfully deliver information for the user without asking the user what he or she wants</i> is the premise of his talk. As Chris Anderson had talked about in his session, we are now in a new era and the advent of the mobile application enables us to have new data....
     </div>
   </div>
 
