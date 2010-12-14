@@ -209,6 +209,10 @@
               <xsl:if test="not(self::Comment)"> <!-- Hack to prevent preview for Comment changes, which are special (not viewable directly on site) -->
                 <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/controller/preview.xqy'; this.form.target = '_blank';"/>
               </xsl:if>
+              <xsl:if test="(self::Comment)"> <!-- Hack to enable comment deletion from this form -->
+                  <input type="submit" name="submit" value="Permanently delete"  
+                         onclick="if (confirm('Do you want to delete this comment')) {{ this.form.action = '/admin/controller/delete-comment.xqy?path={$doc-path}'; this.form.target = '_self'; return true; }} else {{ return false; }} " />
+              </xsl:if>
             </form>
           </xsl:template>
 
@@ -340,19 +344,22 @@
 
 
                                   <xsl:template mode="form-control" match="*[@form:type eq 'textarea']">
+                                      <xsl:variable name="textarea-id" select="generate-id()"/>
                                       <!-- TODO: Implement media library and media upload
                                       <input type="submit" name="add_media" value="Add media"/>
                                       <br/>
                                       -->
                                       <div id="control-container" 
                                             style="margin-left: 112px; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC">
-                                      <textarea id ="{form:field-name(.)}_{generate-id()}"
+                                      <textarea id="{form:field-name(.)}_{$textarea-id}"
                                                 name="{form:field-name(.)}"
                                                 style="width: 100%"
                                                 rows="{if (@form:lines) then @form:lines else 13}">
                                         <xsl:apply-templates mode="class-att" select="."/>
                                         <xsl:value-of select="string-join(text(),'')"/> <!-- don't include attribute-cum-element fields in value -->
                                       </textarea>
+                                      <br/>
+                                      <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
                                       </div>
                                   </xsl:template>
 
