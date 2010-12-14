@@ -46,11 +46,15 @@ let $email :=
     </em:Address>
   </rf:to>
 <em:content>
-     Please review pending comments here: http://{$admin-host}/blog#tbl_comments
-
+     Pending comment is below:
      -----------------------
  
-{$comment-doc}
+{xdmp:quote($comment-doc)}
+
+     -----------------------
+
+     Moderate this pending comment -> http://{$admin-host}/blog/comment-edit?~doc_path={$comment-uri} 
+
   </em:content>
 </em:Message>
 
