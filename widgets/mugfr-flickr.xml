@@ -6,10 +6,23 @@
                     <a href="http://www.flickr.com/photos/49650573@N02/4554504251/" title="P1000788"><img src="http://farm5.static.flickr.com/4045/4554504251_a6672f177b_s.jpg" alt="P1000788"/></a>
                     <a href="http://www.flickr.com/photos/49650573@N02/4555134980/" title="P1000787"><img src="http://farm4.static.flickr.com/3141/4555134980_438505ab3c_s.jpg" alt="P1000787"/></a>
                     <a href="http://www.flickr.com/photos/49650573@N02/4555133790/" title="P1000786"><img src="http://farm4.static.flickr.com/3225/4555133790_7bfa2a3767_s.jpg" alt="P1000786"/></a>
-                    <div class="ac">
-                        <img src="http://www.mug-fr.org/wp-content/themes/convergence/images/ico-flickr.gif" alt="" />
-                        <small><a href="http://www.flickr.com/photos/49650573@N02/" target="_blank">Plus de photos du groupe</a></small>
-                    </div>
             </div>
-
+            <div class="head">
+                <object width="240" height="180"> 
+                        <param name="flashvars" value="offsite=true&amp;lang=en-us&amp;page_show_url=%2Fphotos%2F49650573%40N02%2Fshow%2Fwith%2F5243707872%2F&amp;page_show_back_url=%2Fphotos%2F49650573%40N02%2Fwith%2F5243707872%2F&amp;user_id=49650573@N02&amp;jump_to=5243707872"></param> 
+                        <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=71649"></param> 
+                        <param name="allowFullScreen" value="true"></param>
+                        <embed type="application/x-shockwave-flash" 
+                                    src="http://www.flickr.com/apps/slideshow/show.swf?v=71649" 
+                                    allowFullScreen="true" 
+                                    flashvars="offsite=true&amp;lang=en-us&amp;page_show_url=%2Fphotos%2F49650573%40N02%2Fshow%2Fwith%2F5243707872%2F&amp;page_show_back_url=%2Fphotos%2F49650573%40N02%2Fwith%2F5243707872%2F&amp;user_id=49650573@N02&amp;jump_to=5243707872" 
+                                    width="240" height="180">
+                        </embed>
+                  </object>
+            </div>
+            <div class="ac">
+               <img src="http://www.mug-fr.org/wp-content/themes/convergence/images/ico-flickr.gif" alt="" />
+               <small><a href="http://www.flickr.com/photos/49650573@N02/" target="_blank">Plus de photos du groupe</a></small>
+            </div>
+            <div>&#160;</div>
 </ml:widget>
