@@ -151,12 +151,11 @@
     <page href="/docs/3.2"/>
   </widget>
 
- <!--
   <widget href="/widgets/mugfr-flickr.xml">
     <page href="/meet/mugfr/en"/>
     <page href="/meet/mugfr/fr"/>
   </widget>
-  -->
+
   <widget href="/widgets/inside-marklogic-server-toc.xml">
     <page href="/inside-marklogic"/>
   </widget>
