@@ -11,7 +11,7 @@
   </widget>
 
   <widget href="/widgets/getting-started.xml">
-    <!-- <page href="/"/> -->
+    <page href="/"/> 
   </widget>
 
   <widget xquery="recent-blog-posts.xqy">
