@@ -1157,3 +1157,7 @@ input[type='text'].focus {
     font-style: italic;
     font-size:0.9em;
 }
+
+.feature {
+    margin-right: 1em;
+}
