@@ -4,10 +4,12 @@
   </div>
   <div class="body">
     <h3>MarkLogic Server – Release 4.2</h3>
-    <p>Download MarkLogic Server today and be up and running in no time. MarkLogic Server comes in two major editions with several 
+    <p>Download MarkLogic Server today for free and be up and running in no time. MarkLogic Server comes in two major editions with several 
         <a href="/licensing">licensing</a> options to accommodate small to extensive deployments.</p>
     <ul class="more">
-      <li><a href="/learn">Documentation &gt;</a></li>
+      <li><a href="/docs">Read the docs &gt;</a></li>
+      <li><a href="/learn/tutorials">Check out a tutorial &gt;</a></li>
+      <li><a href="/inside-marklogic">Learn what's inside MarkLogic &gt;</a></li>
     </ul>
     <a class="download" href="/products"><img src="/images/b_download.png" alt="Download" title=""/></a>
   </div>
