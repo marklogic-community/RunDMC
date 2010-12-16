@@ -6,17 +6,22 @@
   </div>
 
   <div class="body">
-    <h3><a href="http://blog.jclark.com/2010/11/xml-vs-web_24.html">XML vs. the Web</a></h3>
-    <div class="author">by Jim Clark, November 11, 2010</div>
+    <h3><a href="http://developer.marklogic.com/blog/marklogic-toolkits-update-dec2010">Office 2010 support added to MarkLogic Toolkits for Word and Excel</a></h3>
+    <div class="author">by Dipti Borkar, December 15, 2010</div>
+    <br/>
+    <div class="message"><p>Today, we announce the release of MarkLogic Toolkit for Word version 1.2-2 and MarkLogic Toolkit for Excel version 1.0-3 with Office 2010 support.  
+        MarkLogic toolkits allow rapid creation...
+    </p>
+    </div>
+  </div>
+  <div class="body">
+    <h3><a href="http://developer.marklogic.com/blog/mugfr-recap-2010-12-07">Recap of the French MarkLogic User Group December 2010 Meeting</a></h3>
+    <div class="author">by Marie Licthle, December 14, 2010</div>
     <br/>
     <div class="message">
         <p>
-        Twitter and Foursquare recently removed XML support from their Web APIs, and now support only JSON.  This prompted Norman Walsh 
-        to write an <a href="http://norman.walsh.name/2010/11/17/deprecatingXML">interesting post</a>, in which he summarised his reaction as 
-        <a href="http://en.wikipedia.org/wiki/Meh">"Meh"</a>. I won't try to summarise his post; it's short and well-worth reading.
-        </p>
-        <p>
-        From one perspective, it's hard to disagree.  If you're an XML wizard with a decade or two of experience...
+            Thirty-five people gathered to discuss MarkLogic implementation examples as part of a series of four presentations.  The first presentation was done by Ron Avnur, 
+            MarkLogic VP of Engineering, who was attending his first MarkLogic User Group...
         </p>
     </div>
   </div>
@@ -35,13 +40,6 @@ MarkLogic has an awesome alerting feature that enables you to trigger an event w
     </div>
   </div>
 
-  <div class="body">
-    <h3><a href="/blog/">Announcing the availability of MarkLogic Server 4.2 Standard Edition AMI for EC2</a></h3>
-    <div class="author">by Dipti Borkar, November 9, 2010</div>
-    <br/>
-    <div class="message">We are pleased to announce the availability of <a href="/products/server-for-ec2">MarkLogic Server 4.2 Standard Edition AMI (Amazon Machine Image) on EC2</a>. MarkLogic Server 4.2 brings you increased agility...
-    </div>
-  </div>
 
 {(:
   <div class="body">
