@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+  <title>User Conference 2011!</title>
+  <main-points>
+    <point>April 26-29 in San Francisco</point>
+    <point>Thursday Evening Party</point>
+    <point>Learn from leading developers</point>
+    <point>Experience DemoJam</point>
+  </main-points>
+
+
+  <!--
+  <image src="/media/logo.gif" alt="MarkLogic"> 
+  <image src="http://dsc.discovery.com/tv/how-stuff-works/images/beer.jpg" alt="MarkLogic"> 
+    <caption>Occasionally we think about beer during our conference.</caption>
+  <image src="http://www.graffiti.org/canada/1demo2.jpg" alt="MarkLogic"> 
+  <image src="http://lol.www.graffiti.org/canada/1demo2x.jpg" alt="MarkLogic"> 
+    <caption>We do it.</caption>
+  </image>
+  <image src="http://profile.ak.fbcdn.net/object3/272/5/n96043662659_2981.jpg" alt="MarkLogic"> 
+  <image src="/media/logo.gif" alt="MarkLogic"> 
+    <caption>MarkLogic.</caption>
+  </image>
+  <image src="http://www.throwshapes.com.au/wp-content/gallery/post-images/high_and_dry__street_jam_sandwich2.jpg" alt="Jam"> 
+  <image src="http://i599.photobucket.com/albums/tt77/PabloXV/jam.jpg" alt="MarkLogic"> 
+  <image src="http://sarcasticgamer.com/wp/wp-content/uploads/2008/11/demos.jpg" alt="Jam"> 
+    <caption>Demos.</caption>
+  </image>
+  <image src="http://www.marklogic.com/UserConference2011/images/twitterTagBig.jpg" alt="Demo">
+  -->
+  <image src="http://www.marklogicevents.com/img/logo.png" alt="MLUC11" href="http://www.marklogicevents.com/" >
+    <!-- <caption>MarkLogic User's Conference.</caption> -->
+    <caption>Don't get left behind.</caption> 
+  </image>
+<!--
+  <image width="128" height="150" src="/media/demo-jam.jpg" alt="Demo Jam"> 
+    <caption>And DemoJam!<br/></caption>
+  </image>
+-->
+
+  <read-more>
+    <link href="http://www.marklogicevents.com/">READ MORE</link>
+    <link href="http://www.marklogicevents.com/?event=content.agenda">CHECK OUT THE AGENDA</link> 
+<!--
+    <link href="http://newsletter.marklogic.com/2011/04/demojam-at-mark-logic-user-conference-2010/">SEE DEMOJAM DETAILS</link>
+-->
+  </read-more>
+
+<!--
+  <read-more>
+    <link href="http://itunes.apple.com/us/app/mluc-10/id367932084?mt=8">GET THE IPHONE APP</link> 
+    <link href="http://dsc.discovery.com/tv/how-stuff-works/images/beer.jpg">3 BEERS THAT LOOK NICE</link> 
+  </read-more>
+-->
+
+</feature>
