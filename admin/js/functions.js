@@ -111,3 +111,15 @@ if(typeof jQuery != 'undefined') {
 		// new functions should be added here
 	});
 }
+
+
+function bulkDeleteComment() {
+    if ($('input:checked').length > 0 && 
+          confirm('Are you sure you want to PERMANENTLY DELETE ' 
+                + $('input:checked').length 
+                + ' selected comment(s)?')) { 
+
+        var q = $.param($.map($('input:checked'), function(x){ return {name: 'path', value: x.value} } ) );
+        window.location = '/admin/controller/bulk-delete-comment.xqy?' + q; 
+    }
+}
