@@ -207,13 +207,17 @@
 
           <th scope="col">Posted Date</th>
           <th scope="col">Status</th>
-          <th class="last">&#160;</th>
+          <th scope="col">&#160;</th>
+          <th class="last">Bulk</th>
         </tr>
       </thead> 
       <tbody>
         <xsl:apply-templates mode="comment-listing" select="for $p in $ml:posts-by-date return ml:comments-for-post(base-uri($p))"/> 
       </tbody>
     </table>
+    <br/>
+    <input type="button" value="Bulk delete" class="bulk-delete align_right" 
+           onclick="javascript:bulkDeleteComment();"/>
   </xsl:template>
 
           <xsl:template mode="comment-listing" match="Comment">
@@ -256,6 +260,10 @@
                 <xsl:text>&#160;|&#160;</xsl:text>
                 <a href="javascript:if (confirm('Are you sure you want to delete this comment?')) {{ window.location = '/admin/controller/delete-comment.xqy?path={base-uri(.)}'; }}">Remove</a>
               </td>
+              <td>
+                  <input type="checkbox" value="{base-uri(.)}" />
+              </td>
+               
             </tr>            
           </xsl:template>
 
