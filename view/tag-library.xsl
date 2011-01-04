@@ -829,4 +829,8 @@
 
   <xsl:template match="short-description"/>
 
+  <xsl:template match="server-version">
+    <span class="server-version"><xsl:value-of select="xdmp:version()"/></span>
+  </xsl:template>
+
 </xsl:stylesheet>
