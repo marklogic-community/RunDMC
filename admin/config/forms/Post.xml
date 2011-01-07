@@ -16,5 +16,6 @@
             form:repeating="yes"/>
   </ml:tags>
   <ml:body form:label="Body"
-           form:type="textarea"/>
+           form:type="textarea"
+           form:class="richtext"/>
 </ml:Post>

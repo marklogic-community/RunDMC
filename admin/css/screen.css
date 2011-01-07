@@ -568,7 +568,7 @@ table.table4 + .action {border:0;}
 #post_comment textarea {
 	width: 426px;
 	height: 170px;
-	float: right;
+	float: left;
 	padding: 2px;
 	margin-bottom: 1em;
 	border: 1px solid #999;

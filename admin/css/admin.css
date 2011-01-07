@@ -2,6 +2,12 @@ body {background: #DADADA;}
 ::selection {background: #235BAB;}
 ::-moz-selection {background: #235BAB;}
 table {border: none !important;}
+
+table.mceLayout {
+    border: 1px solid #CCC !important;
+    width: 'auto';
+}
+
 caption {
 	color: #333;
 	text-align: left;
@@ -167,7 +173,7 @@ form .action input {margin-left: 5px;}
 }
 */
 .adminform textarea {
-	margin: 8px 0 8px 112px;
+	margin: 8px 0 8px 0; /* 112px; */
 	width: 700px;
   /*
 	height: 175px;

@@ -12,7 +12,8 @@
                     form:label="Contributor"/>
   </ml:contributors>
   <ml:description form:label="Description"
-                  form:type="textarea"/>
+                  form:type="textarea"
+                  form:class="richtext"/>
   <ml:short-description form:label="Short Description" form:wide="yes" />
   <ml:versions repo=""              label:repo="Repository site"             values:repo="_ SourceForge github svn codeplex Google_Code"
                get-involved-href="" label:get-involved-href="Repository URL">

@@ -12,5 +12,5 @@
   <ml:created/>
   <ml:url form:label="Author URL"/>
   <ml:body form:label="Body"
-           form:type="textarea"/>
+           form:type="textarea" form:class="richtext"/>
 </ml:Comment>

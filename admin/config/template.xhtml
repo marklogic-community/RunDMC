@@ -17,10 +17,19 @@
     <script type="text/javascript">
       <ml:auto-form-scripts/>
 
+       function toggleEditor(id) {
+           if (!tinyMCE.get(id)) {
+               tinyMCE.execCommand('mceAddControl', false, id);
+           } else {
+               tinyMCE.execCommand('mceRemoveControl', false, id);
+           }
+       }
+
        tinyMCE.init({
 
             // General options
-            mode : "textareas",
+            mode : "specific_textareas",
+            editor_selector : "richtext",
             theme : "advanced",
             plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
              

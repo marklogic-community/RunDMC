@@ -349,17 +349,19 @@
                                       <input type="submit" name="add_media" value="Add media"/>
                                       <br/>
                                       -->
-                                      <div id="control-container" 
-                                            style="margin-left: 112px; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC">
+                                      <div id="control-container" style="margin-left: 112px;">
                                       <textarea id="{form:field-name(.)}_{$textarea-id}"
                                                 name="{form:field-name(.)}"
                                                 style="width: 100%"
+                                                class="{@form:class}"
                                                 rows="{if (@form:lines) then @form:lines else 13}">
                                         <xsl:apply-templates mode="class-att" select="."/>
-                                        <xsl:value-of select="string-join(text(),'')"/> <!-- don't include attribute-cum-element fields in value -->
+                                        <xsl:value-of select="string-join(text(),'')"/><!-- don't include attribute-cum-element fields in value -->
                                       </textarea>
-                                      <br/>
-                                      <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
+                                      <xsl:if test="@form:class = 'richtext'">
+                                         <br/>
+                                         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
+                                      </xsl:if>
                                       </div>
                                   </xsl:template>
 
