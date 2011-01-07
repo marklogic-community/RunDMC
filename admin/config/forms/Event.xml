@@ -15,7 +15,7 @@
   <ml:details>
     <ml:date form:label="Date"/>
     <ml:time form:label="Time"/>
-    <ml:location form:label="Location"/>
+    <ml:location form:label="Location" form:type="textarea"/>
     <ml:topic form:label="Topic" form:repeating="yes"/>
     <ml:presenter form:label="Presenter" form:repeating="yes"/>
   </ml:details>
