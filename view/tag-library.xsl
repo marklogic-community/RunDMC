@@ -145,21 +145,24 @@
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
     </div>
 
-    <a class="more hide-if-href-empty" href="{@license-page}">License Options &gt;</a>
-    <h4><a class="requirements hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a></h4>
+    <div id="downloads-misc">
+    <ul class="downloads-misc" ><li><a class="more hide-if-href-empty license-options" href="{@license-page}">License Options &gt;</a></li>
+    <li><a class="more hide-if-href-empty requirements" href="{@requirements-page}">System Requirements &gt;</a></li></ul>
+    </div>
+    <!-- <h4><a class="requirements hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a></h4> -->
     <p/>
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>
 
           <xsl:template mode="product-platform" match="platform">
-            <table class="table1">
+            <table class="downloads">
               <thead>
                 <tr>
                   <th scope="col">
                     <xsl:value-of select="@name"/>
                   </th>
-                  <th class="size" scope="col">File Size</th>
+                  <th class="size" scope="col">&#160;</th>
                 <!--
                   <th class="last" scope="col">Date Posted</th>
                 -->
@@ -175,7 +178,6 @@
                     <tr>
                       <td>
                         <a href="{@href}" class="confirm-download">
-                          <img src="/images/icon_download.png" alt="Download"/>
                           <xsl:apply-templates/>
                         </a>
                        <xsl:if test="@url-to-copy">

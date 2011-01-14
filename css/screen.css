@@ -69,8 +69,20 @@ a.more, div.more a {
 	font-weight: bold;
 	color: #235BAB;
 }
-/* a.more:hover, div.more a:hover {color: #235BAB !important;} */
-a.requirements:hover {color: #235BAB !important;}
+
+#downloads-misc {
+    float: right;
+	font: normal 100% Verdana, Arial, Helvetica, Sans-serif;
+    margin-top: -3.5em;
+}
+
+#downloads-misc ul {
+    padding-bottom: 0px;
+    padding-left: 0px;
+    list-style: none !important;
+    font-size: 1em;
+}
+    
 .skip, hr {
 	position: absolute;
 	left: -999em;
@@ -440,20 +452,37 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #main table.table4 {margin-bottom:0;}
 #main p + table.table4 {margin-top: 30px;}
-#main .table1 thead th, #main .table4 thead th {
-	background: url(/images/bg_tablehead_gray.png) center top no-repeat;
-	padding: 0 8px;
-	font-size: .8em;
-	height: 29px;
+
+.downloads {
+    border-bottom: solid 0px !important;
 }
-#main .table1 thead th:first-child, #main .table4 thead th:first-child {background-position: left top;}
-#main .table1 thead th.size {width: 60px;}
-#main .table4 thead th:first-child {width:200px;}
-#main .table1 thead th.last, #main .table4 thead th.last {
+
+.downloads tr {
+    border-bottom: solid 1px #dddddd !important;
+}
+
+#main .downloads thead th:first-child {background-position: left top;}
+#main .downloads thead th.size {width: 60px;}
+
+#main .downloads thead th {
+    padding-bottom: .25em;
+}
+#main .downloads thead th.last {
 	background-position: right top;
 	width: 85px;
 }
-#main .table1 tbody td, #main .table4 tbody td {
+#main .downloads tbody td {
+	padding: 5px;
+	font-size: 1em;
+}
+
+#main .table4 thead th:first-child {background-position: left top;}
+#main .table4 thead th:first-child {width:200px;}
+#main .table4 thead th.last {
+	background-position: right top;
+	width: 85px;
+}
+#main .table4 tbody td {
 	padding: 5px;
 	background: #F5F5F5;
 	font-size: .9em;
@@ -461,8 +490,6 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #main .table4 tbody td {background:transparent;}
 #main .table4 tbody .alt td {background:#F5F5F5;;}
-#main .table1 a {color: #828282;}
-.table2 * {color: #333;}
 .table2 caption {padding-bottom: 1.5em;}
 .table2 tbody tr:last-child td {padding-bottom: 2.5em;}
 .table2 td {text-align: right;}
@@ -1148,14 +1175,14 @@ input[type='text'].url-to-copy {
     border: 0px;
 	font-style: normal;
 	color: #999;
-    font-size:0.9em;
+    font-size:1em;
 }
 
 input[type='text'].focus {
     border: 1px solid black;
     color: green;
     font-style: italic;
-    font-size:0.9em;
+    font-size:1em;
 }
 
 .feature {
