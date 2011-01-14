@@ -243,4 +243,3 @@ if(typeof jQuery != 'undefined') {
       // new functions should be added here
    });
 }
-
