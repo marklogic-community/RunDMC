@@ -19,12 +19,14 @@ as xs:string+
     let $dir := fn:concat($root, $version)
     let $literal := fn:concat("/pubs/", $version)
 
+    (: some of this js is not utf-8 :)
     let $encoding := 
         if (fn:ends-with($source-location, ".js")) then
             "ISO-8859-1"
         else
             "UTF-8"
 
+    (: xhtml is xml :)
     let $format := 
         if (fn:ends-with($source-location, ".html")) then
             "xml"
@@ -39,6 +41,8 @@ as xs:string+
                 "text"
             else
                 "binary"
+
+    (: except that javadoc html is not xhtml :)
     let $format := if (fn:contains($source-location, "/javadoc/") and fn:ends-with($source-location, ".html")) then
                        "text"
                    else
@@ -60,10 +64,7 @@ as xs:string+
          </options>
     
     return 
-        if (fn:ends-with($source-location, ".zip")) then  (: skip .zip files :)
-            ()
-        else
-            infodev:ingest($document,$source-location,$ticket-id,$delta)
+        infodev:ingest($document,$source-location,$ticket-id,$delta)
 };
 
 
