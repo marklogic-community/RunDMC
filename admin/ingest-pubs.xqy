@@ -59,7 +59,11 @@ as xs:string+
              </uri>
          </options>
     
-    return infodev:ingest($document,$source-location,$ticket-id,$delta)
+    return 
+        if (fn:ends-with($source-location, ".zip")) then  (: skip .zip files :)
+            ()
+        else
+            infodev:ingest($document,$source-location,$ticket-id,$delta)
 };
 
 
@@ -73,7 +77,7 @@ declare function local:load-dir($root as xs:string, $version as xs:string) {
 
     let $function := xdmp:function(xs:QName("local:process-file"))
 
-    return (infodev:filesystem-walk($dir,$ticket-id,$function,(),$ctxt),concat("Ticket id: ", $ticket-id))
+    return (infodev:filesystem-walk($dir,$ticket-id,$function,(),$ctxt), $ticket-id)
 };
 
 let $version := xdmp:get-request-field("version", "no-version")
@@ -82,4 +86,5 @@ return
     if ($version = 'no-version') then
         "Must specify version query string"
     else
-        local:load-dir("/Users/ebloch/pubs/", $version)
+        let $ticket := local:load-dir("/space/pubs/", $version)
+        return xdmp:redirect-response(concat("ingest-pubs-status.xqy?t=", $ticket))
