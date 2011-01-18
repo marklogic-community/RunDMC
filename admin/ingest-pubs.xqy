@@ -14,6 +14,11 @@ declare function local:process-file(
    $context as item()?)
 as xs:string+
 {
+    let $root := $context[1]
+    let $version := $context[2]
+    let $dir := fn:concat($root, $version)
+    let $literal := fn:concat("/pubs/", $version)
+
     let $encoding := 
         if (fn:ends-with($source-location, ".js")) then
             "ISO-8859-1"
@@ -35,21 +40,8 @@ as xs:string+
 
     let $delta :=
          <options xmlns="http://marklogic.com/appservices/infostudio">
-            <format>{$format}</format>
-            <encoding>{$encoding}</encoding>
-         </options>
-    
-    return infodev:ingest($document,$source-location,$ticket-id,$policy-deltas)
-};
-
-
-declare function local:load-dir($root as xs:string, $version as xs:string) {
-    
-    let $dir := fn:concat($root, $version)
-    let $literal := fn:concat("/pubs/", $version)
-
-    let $delta := 
-         <options xmlns="http://marklogic.com/appservices/infostudio">
+             <format>{$format}</format>
+             <encoding>{$encoding}</encoding>
              <uri>
                  <literal>{$literal}</literal>
                  <path>
@@ -60,13 +52,21 @@ declare function local:load-dir($root as xs:string, $version as xs:string) {
                  <dot-ext/>
              </uri>
          </options>
+    
+    return infodev:ingest($document,$source-location,$ticket-id,$delta)
+};
+
+
+declare function local:load-dir($root as xs:string, $version as xs:string) {
+    
+    let $context := ($root, $version)
 
     let $annotation := <info:annotation>"Loading DMC docs"</info:annotation>
     let $ticket-id := infodev:ticket-create($annotation, "RunDMC", (), ())
 
     let $function := xdmp:function(xs:QName("local:process-file"))
 
-    return (infodev:filesystem-walk($dir,$ticket-id,$function,$delta,()), concat("Ticket id: ", $ticket-id))
+    return (infodev:filesystem-walk($dir,$ticket-id,$function,(),$ctxt,concat("Ticket id: ", $ticket-id))
 };
 
 let $version := xdmp:get-request-field("version", "no-version")
