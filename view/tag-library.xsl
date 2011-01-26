@@ -218,6 +218,8 @@
               <td>
                 <a href="{$url}">
                     <xsl:value-of select="$title"/>
+                    &#160;
+                    <xsl:value-of select="@version"/>
                 </a>
               </td>
               <td> 
