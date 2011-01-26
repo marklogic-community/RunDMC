@@ -39,6 +39,12 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/download/3.2", "/download/3.2/")) then
         "/products/marklogic-server/3.2"
 
+    else if ($path = ("/products/sharepoint/1.0")) then
+        "/products/sharepoint"
+
+    else if ($path = ("/learn/sharepoint-install-guide")) then
+        "/docs/sharepoint-connector/admin-guide"
+
     else if ($path = ("/download/binaries/4.2/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.2"
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
@@ -103,11 +109,14 @@ declare function local:redir($path as xs:string) as xs:string
 declare function local:rewrite($path as xs:string) as xs:string
 {
     let $latest-version := "4.2"
+    let $latest-sharepoint-connector-version := "1.1-1"
 
     (: Defaults for /docs and /producs :)
     let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version)
     let $latest-doc-uri  := concat("/docs/", $latest-version)
     let $latest-requirements-uri  := concat("/products/marklogic-server/requirements-", $latest-version) 
+
+    let $latest-sharepoint-connector-doc-uri  := concat("/docs/sharepoint-connector/", $latest-sharepoint-connector-version) 
 
     let $path := if ($path = "/docs") then
         $latest-doc-uri
@@ -116,6 +125,12 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if ($path = "/products/marklogic-server/requirements") then
         $latest-requirements-uri
     else 
+        $path
+
+    (: Could rework if/when this has more docs :)
+    let $path := if ($path = "/docs/sharepoint-connector/admin-guide") then
+        concat($latest-sharepoint-connector-doc-uri, "/admin-guide")
+    else
         $path
 
     let $orig-url        := xdmp:get-request-url()

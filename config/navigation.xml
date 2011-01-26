@@ -14,7 +14,7 @@
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" />
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0" />
-        <page display="Connector for SharePoint®" href="/products/sharepoint/1.0"/>
+        <page display="Connector for SharePoint®" href="/products/sharepoint"/>
       </group>
       <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
