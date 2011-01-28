@@ -360,6 +360,16 @@
         <xsl:apply-templates mode="event-excerpt" select="$event">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
+        <if test="@include-second-event">
+            <br/>
+            &#160;
+            <br/>
+            &#160;
+            <br/>
+            <xsl:apply-templates mode="event-excerpt" select="ml:second-most-recent-event()">
+              <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
+            </xsl:apply-templates>
+        </if>
       </div>
     </div>
   </xsl:template>
