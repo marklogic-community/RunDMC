@@ -348,6 +348,7 @@
   <xsl:template match="recent-news-and-events">
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
     <xsl:variable name="event"        select="ml:most-recent-event()"/>
+    <xsl:variable name="events-by-date" select="ml:events-by-date()"/>
     <div class="double">
       <div>
         <h2>News</h2>
@@ -357,19 +358,9 @@
       </div>
       <div>
         <h2>Events</h2>
-        <xsl:apply-templates mode="event-excerpt" select="$event">
+        <xsl:apply-templates mode="event-excerpt" select="$event | $events-by-date[2][current()/@include-second-event] ">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
-        <if test="@include-second-event">
-            <br/>
-            &#160;
-            <br/>
-            &#160;
-            <br/>
-            <xsl:apply-templates mode="event-excerpt" select="ml:second-most-recent-event()">
-              <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
-            </xsl:apply-templates>
-        </if>
       </div>
     </div>
   </xsl:template>
@@ -410,6 +401,9 @@
             </dl>
             <a class="more" href="{ml:external-uri(.)}">More information&#160;></a>
             <xsl:apply-templates mode="more-link" select="."/>
+            <xsl:if test="position() != last()">
+                <br/> &#160; <br/> &#160; <br/>
+            </xsl:if>
           </xsl:template>
 
                   <xsl:template mode="more-link" match="*">

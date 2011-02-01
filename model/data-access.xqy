@@ -94,14 +94,14 @@ declare variable $events-by-date := for $e in $Events
                                     order by $e/details/date descending
                                     return $e;
 
+        declare function events-by-date()
+        {
+          $events-by-date
+        };
+
         declare function most-recent-event()
         {
           $events-by-date[1]
-        };
-
-        declare function second-most-recent-event()
-        {
-          $events-by-date[2]
         };
 
         declare function most-recent-two-user-group-events($group as xs:string)
