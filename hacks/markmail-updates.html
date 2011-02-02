@@ -1,0 +1,98 @@
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <head>
+    <title>MarkMail Updates Hack</title>
+    <meta name="description" content=""/>
+    <link rel="SHORTCUT ICON" href="/images/v-1/favicon.ico"/>
+    <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
+    <link rel="alternate" type="application/atom+xml" href="/news/atom.xml" title="MarkLogic Developer Community News" />
+    <link rel="alternate" type="application/atom+xml" href="/events/atom.xml" title="MarkLogic Developer Community Events" />
+    <link rel="alternate" type="application/atom+xml" href="/newsandevents/atom.xml" title="MarkLogic Developer Community News and Events" />
+    <meta name="keywords" content=""/>
+    <link href="/css/v-4/screen.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link type="text/css" href="/css/v-1/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/v-1/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/js/v-1/jquery.qtip-1.0.0-rc3.js"></script>
+    <script type="text/javascript" src="/js/v-1/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="/js/v-1/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="/js/v-1/jquerydefaultvalue.js"></script>
+    <script type="text/javascript" src="/js/v-1/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/js/v-1/flowplayer-3.2.4.min.js"></script>
+    <script type="text/javascript" src="/js/v-1/twitStream.js"></script>
+    <script type="text/javascript" src="/js/v-1/functions.js"></script>
+    <!--[if lte IE 7]>
+        <link href="/css/v-1/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
+    <script type="text/javascript">
+        var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
+        var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', acct], ['_trackPageview']);
+        
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+     </script>
+  </head>
+  <body>
+        <div id="container">
+            <div id="header">
+                <div id="badge"><a href="/" title="Home"><img width="207" height="68" src="/media/marklogic-community-badge.png" alt="MarkLogic Developer Community"/></a></div>
+                <ul id="utilnav"></ul>
+                <form action="/search" method="get">
+                    <fieldset>
+                            <legend><label for="s_inp">Search</label></legend>
+                            <input name="q" id="s_inp" type="text" />
+                            <input type="submit"/>
+                    </fieldset>
+                 </form>
+            </div>
+            <hr/>
+            <h2 id="lists">
+            </h2>
+            <hr/>
+            <div id="footer"> 
+                <div id="copyright">Copyright © 2010 <a href="http://www.marklogic.com/">MarkLogic Corporation</a>. All rights reserved. | Powered by <a href="/products">MarkLogic Server </a> and <a href="/code/rundmc">rundmc</a></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function() {
+
+            function addCommas(nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            }
+
+            var mylists;
+
+            $.getJSON('http://markmail.org/dbrowse.xqy?callback=?', function(data) {
+                 mylists = data;
+            });
+
+            window.setInterval(function() {
+                $.getJSON('http://markmail.org/dbrowse.xqy?callback=?', function(data) {
+
+                    for(var prop in data) {
+                        if(data.hasOwnProperty(prop)) {
+                            if (mylists[prop] != data[prop]) {
+                                $('#lists').append('<a target="_blank" href="http:/markmail.org/search?list:' + prop + '">' + prop + '</a>: ' 
+                                        + '+' + (data[prop] - mylists[prop]) + " to: " + addCommas(data[prop]) + '<br/>');
+                            }
+                        }
+                    }
+                    mylists = data;
+                });
+            }, 10000);
+
+        });
+    </script>
+</html>
