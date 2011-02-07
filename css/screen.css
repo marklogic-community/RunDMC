@@ -284,7 +284,10 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	clear: left;
 	margin-right: .3em;
 }
-#main .double dd {margin: 0;}
+#main .double dd {
+    margin: 0;
+    padding-left: 1em;
+}
 #main .single .align_left {margin-right: 20px;}
 #main .single .more, #main .double .more {
 	font-weight: bold;
