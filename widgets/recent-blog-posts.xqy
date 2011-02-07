@@ -6,6 +6,15 @@
   </div>
 
   <div class="body">
+    <h3><a href="/blog/boingboing-demo">Exploring Eleven Years of Boing Boing</a></h3>
+    <div class="author">by Justin Makeig, January 7, 2011</div>
+    <br/>
+    <div class="message">
+<p>As part of their bloggaversary the&#160;creators behind the seminal blog <a title="Boing Boing" href="http://boingboing.net/">Boing Boing</a> have <a href="http://www.boingboing.net/2011/01/25/eleven-years-worth-o.html">released 11 years worth of content for remixing and tinkering</a> (non-commercially, of course). I put together a quick search application using Information Studio to load and process the content and Application Builder to generate the actual app. You can see the results at <a title="Boing Boing MarkLogic Server demo" href="http://boingboing.demo.marklogic.com">boingboing.demo.marklogic.com</a>...</p>
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/marklogic-sharepoint-connector-update-jan2011">MarkLogic Connector for SharePoint version 1.1-1 released</a></h3>
     <div class="author">by Dipti Borkar, January 27, 2011</div>
     <br/>
@@ -38,15 +47,6 @@
     </div>
   </div>
 
-  <div class="body">
-    <h3><a href="http://developer.marklogic.com/blog/marklogic-toolkits-update-dec2010">Office 2010 support added to MarkLogic Toolkits for Word and Excel</a></h3>
-    <div class="author">by Dipti Borkar, December 15, 2010</div>
-    <br/>
-    <div class="message"><p>Today, we announce the release of MarkLogic Toolkit for Word version 1.2-2 and MarkLogic Toolkit for Excel version 1.0-3 with Office 2010 support.  
-        MarkLogic toolkits allow rapid creation...
-    </p>
-    </div>
-  </div>
 
 
 
