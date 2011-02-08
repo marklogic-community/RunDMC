@@ -362,6 +362,10 @@
                                          <br/>
                                          <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
                                       </xsl:if>
+                                      <xsl:if test="@form:class = 'optional-richtext'">
+                                         <br/>
+                                         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
+                                      </xsl:if>
                                       </div>
                                   </xsl:template>
 
