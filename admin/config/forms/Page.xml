@@ -6,7 +6,7 @@
       status="Draft" label:status="Status" values:status="Draft Published"
       form:label="HTML content"
       form:type="textarea"
-      form:class="richtext"
       form:lines="20"
+      form:class="optional-richtext"
       form:uri-prefix-for-new-docs="/">
 </ml:page>

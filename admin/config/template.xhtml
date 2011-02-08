@@ -25,7 +25,9 @@
            }
        }
 
-       tinyMCE.init({
+       $(document).ready(function() {
+
+           tinyMCE.init({
 
             // General options
             mode : "specific_textareas",
@@ -49,7 +51,9 @@
             relative_urls: false,
             remove_linebreaks: false,
             xcontent_css : "../../css/screen.css"
-       });
+           });
+      });
+
     </script>
   </head>
   <body ml:class="">
