@@ -1,7 +1,7 @@
 LICENSE
 
-  All original code in this repository is Copyright MarkLogic 2010-2011.  All Rights Reserved.  It is made available here for your use via
-  an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0.html)
+  All original code in this repository is Copyright MarkLogic 2010-2011.  All Rights Reserved.  It is made available 
+  for your use via an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 
 SETUP NOTES
