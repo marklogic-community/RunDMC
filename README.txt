@@ -1,3 +1,9 @@
+LICENSE
+
+  All original code in this repository is licensed Copyright MarkLogic, All Rights Reserved and is available via
+  an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0.html)
+
+
 SETUP NOTES
 
   Main server:
