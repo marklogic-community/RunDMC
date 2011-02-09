@@ -1,7 +1,7 @@
 SETUP NOTES
 
   Main server:
-    HTTP app server must be named "CommunitySitePublic" in order for
+    HTTP app server must be named "CommunitySitePublic" or "RunDMC-Public" in order for
     "Draft" documents to be filtered out. App server root should
     be set to the root of this distribution, on the filesystem.
     The URL rewriter should be set to "/controller/url_rewrite.xqy".
