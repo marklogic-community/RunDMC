@@ -10,9 +10,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:dq   ="http://marklogic.com/disqus"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="qp xs ml xdmp">
+  exclude-result-prefixes="qp xs ml xdmp dq">
 
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>
@@ -153,37 +154,71 @@
 
                   <xsl:template mode="post-with-comments" match="Post">
                     <xsl:apply-templates mode="blog-post" select="."/>
-                    <xsl:variable name="comments-for-post" select="ml:comments-for-post(base-uri(.))"/>
-                    <xsl:if test="$comments-for-post">
-                      <h3 id="comments">Comments</h3>
-                      <ol class="commentlist">
-                        <xsl:apply-templates mode="blog-comment" select="$comments-for-post"/>
-                      </ol>
-                    </xsl:if>
-                    <form id="post_comment" action="/controller/post-comment.xqy" method="post">
-                      <input type="hidden" name="about" value="{ml:external-uri(.)}"/>
-                      <fieldset>
-                        <legend>Post a Comment</legend>
-                        <div>
-                          <label for="pc_name">Name</label>
-                          <xsl:text> </xsl:text>
-                          <input id="pc_name" type="text" name="author"/>
-                        </div>
-                        <div>
-                          <label for="pc_url">URL</label>
-                          <xsl:text> </xsl:text>
-                          <input id="pc_url" type="text" name="url"/>
-                        </div>
-                        <div>
-                          <label for="pc_comment">Comment</label>
-                          <textarea cols="30" rows="5" id="pc_comment" name="body"/>
-                        </div>
-                      </fieldset>
-                      <div class="submit">
-                        <input type="image" src="/images/b_send.png" value="Send"/>
+
+                    <a name="post_comment"/>
+                    <!-- This will get replaced in the browser by Disqus's widget -->
+                    <div id="disqus_thread">
+                      <div id="dsq-content">
+                        <ul id="dsq-comments">
+                          <xsl:apply-templates select="ml:comments-for-page(.)/dq:reply"/>
+                        </ul>
                       </div>
-                    </form>
+                    </div>
+
+                    <!-- See http://docs.disqus.com/developers/universal/ -->
+                    <script type="text/javascript">
+                        var disqus_shortname = 'marklogicdev';
+
+                        var disqus_developer = 1;
+
+                        // The following are highly recommended additional parameters. Remove the slashes in front to use.
+                        var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(.)"/>';
+                        var disqus_url = 'http://developer.marklogic.com<xsl:value-of select="ml:external-uri(.)"/>';
+
+                        function disqus_config() {
+                            this.callbacks.onNewComment = [function() { setTimeout(
+                                                                          function(){ $.ajax({ url: "/updateDisqusThreads" });},
+                                                                          10000); } ];
+                                                                          <!-- It takes a while before the API makes it available -->
+                                                                          <!-- No sweat if this doesn't get called, as the scheduled
+                                                                               task will pick it up. -->
+                        }
+
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
                   </xsl:template>
+
+                          <!-- This format is a hybrid of Wordpress and Disqus's own dynamic embed code; whatever :-) -->
+                          <xsl:template match="dq:reply">
+                            <li id="dsq-comment-{dq:id}">
+                              <div id="dsq-comment-body-{dq:id}" class="dsq-comment-body">
+                                <div class="dsq-comment-header">
+                                  <div class="dsq-cite-{dq:id}">
+                                    <span class="dsq-commenter-name">
+                                      <a id="dsq-author-user-{dq:id}" href="{dq:author/dq:url}" target="_blank" rel="nofollow">
+                                        <xsl:value-of select="dq:author/dq:username"/>
+                                      </a>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>   
+                              <div id="dsq-comment-message-{dq:id}" class="dsq-comment-message">
+                                <xsl:value-of select="dq:message" disable-output-escaping="yes"/> <!-- Does this not work? Do we care in this case? -->
+                              </div>
+                              <!-- Nested replies -->
+                              <xsl:if test="dq:reply">
+                                <ul>
+                                  <xsl:apply-templates select="dq:reply"/>
+                                </ul>
+                              </xsl:if>
+                            </li>
+                          </xsl:template>
+
 
                           <xsl:template mode="blog-post paginated-list-item" match="Post">
                             <div class="post">
@@ -204,33 +239,28 @@
                               <div class="action">
                                 <ul>
                                   <li>
-                                    <a href="{ml:external-uri(.)}#comments">Comments (<xsl:value-of select="count(ml:comments-for-post(base-uri(.)))"/>)</a>
+                                    <!-- This will get replaced by the actual comment count from Disqus, as described here: http://docs.disqus.com/developers/universal/#comment-count -->
+                                    <a href="{ml:external-uri(.)}#disqus_thread" data-disqus-identifier="{ml:disqus-identifier(.)}">
+                                      <xsl:value-of select="count(ml:comments-for-page(.)//dq:reply)"/> comments<xsl:text/>
+                                    </a>
                                   </li>
                                   <li>
                                     <a rel="nofollow" href="{ml:external-uri(.)}#post_comment">Post a comment</a>
                                   </li>
                                 </ul>
                               </div>
-                            </div>
-                          </xsl:template>
+                              <!-- Script from here: http://docs.disqus.com/developers/universal/#comment-count -->
+                              <script type="text/javascript">
+                                  var disqus_shortname = 'marklogicdev';
 
-                          <xsl:template mode="blog-comment" match="Comment">
-                            <li>
-                              <xsl:apply-templates select="body/node()"/>
-                              <div class="comment_info">
-                                <span class="user">
-                                  <a class="tag-" href="{url}">
-                                    <xsl:value-of select="author"/>
-                                  </a>,
-                                </span>
-                                <span class="time">
-                                  <xsl:value-of select="ml:display-time(created)"/>,
-                                </span>
-                                <span class="date">
-                                  <xsl:value-of select="substring(created, 1, 10)"/>
-                                </span>
-                              </div>
-                            </li>
+                                  (function () {
+                                      var s = document.createElement('script'); s.async = true;
+                                      s.type = 'text/javascript';
+                                      s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+                                      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+                                  }());
+                              </script>
+                            </div>
                           </xsl:template>
 
 

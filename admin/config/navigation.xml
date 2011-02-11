@@ -10,7 +10,6 @@
   </page>
   <page display="Blog" href="/blog">
     <page display="Blog Edit" href="/blog/edit"/>
-    <page display="Blog Comment Edit" href="/blog/comment-edit"/>
   </page>
   <page display="News" href="/news">
     <page display="News Edit" href="/news/edit"/>

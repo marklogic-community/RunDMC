@@ -173,12 +173,10 @@
                           <xsl:variable name="external-uri" select="substring-before($doc-path, '.xml')"/>
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
-                          <xsl:if test="not(self::Comment)"> <!-- Hack to prevent link for Comments, which are special (not viewable directly on site) -->
-                            <a href="{$staging-server}{$external-uri}" target="_blank">
-                              <span>(view current)</span>
-                            </a>
-                            <xsl:text> </xsl:text>
-                          </xsl:if>
+                          <a href="{$staging-server}{$external-uri}" target="_blank">
+                            <span>(view current)</span>
+                          </a>
+                          <xsl:text> </xsl:text>
                           <a href="{$webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
                             <span>(view current XML source)</span>
                           </a>
@@ -206,13 +204,7 @@
                   <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/controller/create.xqy'; this.form.target = '_self';"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <xsl:if test="not(self::Comment)"> <!-- Hack to prevent preview for Comment changes, which are special (not viewable directly on site) -->
-                <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/controller/preview.xqy'; this.form.target = '_blank';"/>
-              </xsl:if>
-              <xsl:if test="(self::Comment)"> <!-- Hack to enable comment deletion from this form -->
-                  <input type="submit" name="submit" value="Permanently delete"  
-                         onclick="if (confirm('Do you want to delete this comment')) {{ this.form.action = '/admin/controller/delete-comment.xqy?path={$doc-path}'; this.form.target = '_self'; return true; }} else {{ return false; }} " />
-              </xsl:if>
+              <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/controller/preview.xqy'; this.form.target = '_blank';"/>
             </form>
           </xsl:template>
 

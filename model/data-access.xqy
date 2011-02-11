@@ -15,7 +15,7 @@ declare variable $Events        := $collection/Event       [draft:listed(.)]; (:
 declare variable $Articles      := $collection/Article     [draft:listed(.)]; (: "Learn"  :)
 declare variable $Posts         := $collection/Post        [draft:listed(.)]; (: "Blog"   :)
 declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
-declare variable $Comments      := $collection/Comment     [draft:listed(.)]; (: blog comments :)
+declare variable $Comments      := $collection/Comments    [draft:listed(.)]; (: backed-up Disqus conversations :)
 
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
@@ -40,14 +40,18 @@ declare variable $posts-by-date := for $p in $Posts
                                    order by $p/created descending
                                    return $p;
 
-        declare function comments-for-post($post as xs:string)
-        {
-          for $c in $Comments[@about eq $post]
-          order by $c/created
-          return $c
-        };
 
+(: Backed-up Disqus conversations :)
+declare function comments-for-page($page as node())
+{
+  (: Associated with a page by using the same relative URI path but inside /private/comments :)
+  $Comments[fn:base-uri(.) eq fn:concat('/private/comments',
+                                        fn:base-uri($page))]
+};
 
+declare function disqus-identifier($node as node()) {
+  comments-for-page($node)/@disqus_identifier/fn:string(.)
+};
 
 (: Get a range of documents for paginated parts of the site; used for Blog, News, and Events :)
 declare function list-segment-of-docs($start as xs:integer, $count as xs:integer, $type as xs:string)

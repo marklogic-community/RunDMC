@@ -26,7 +26,6 @@
         <xsl:variable name="sections" xmlns="">
           <Code          doc-type="Project"      path="/code"/>
           <Blog          doc-type="Post"         path="/blog"/>
-          <Blog_Comments doc-type="Comment"      path="/blog#tbl_comments"/>
           <Learn         doc-type="Article"      path="/learn"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
@@ -53,11 +52,8 @@
               </td>
               <td>
                 <a href="{@path}">List</a>
-                <!-- Comments are special. You can only approve/revoke/delete/edit them, but not add new ones (except through the main site) -->
-                <xsl:if test="not(@doc-type eq 'Comment')">
-                  <xsl:text> | </xsl:text>
-                  <a href="{concat(@path,'/edit')}">Add new</a>
-                </xsl:if>
+                <xsl:text> | </xsl:text>
+                <a href="{concat(@path,'/edit')}">Add new</a>
               </td>
             </tr>
           </xsl:template>
@@ -126,7 +122,6 @@
                              else if ($doc-type eq 'Announcement') then $ml:announcements-by-date
                              else if ($doc-type eq 'Event')        then $ml:events-by-date
                              else if ($doc-type eq 'page')         then $ml:pages
-                             else if ($doc-type eq 'Comment')      then $ml:Comments
                              else ()"/>
           </xsl:function>
 
@@ -193,78 +188,6 @@
                 -->
               </td>
             </tr>
-          </xsl:template>
-
-
-  <xsl:template match="admin-comment-list">
-    <table id="tbl_comments">
-      <caption>Comments</caption>
-      <thead> 
-        <tr>
-          <th scope="col">Author</th>
-          <th scope="col">Comment On</th>
-          <th scope="col">Comment</th>
-
-          <th scope="col">Posted Date</th>
-          <th scope="col">Status</th>
-          <th scope="col">&#160;</th>
-          <th class="last">Bulk</th>
-        </tr>
-      </thead> 
-      <tbody>
-        <xsl:apply-templates mode="comment-listing" select="for $p in $ml:posts-by-date return ml:comments-for-post(base-uri($p))"/> 
-      </tbody>
-    </table>
-    <br/>
-    <input type="button" value="Bulk delete" class="bulk-delete align_right" 
-           onclick="javascript:bulkDeleteComment();"/>
-  </xsl:template>
-
-          <xsl:template mode="comment-listing" match="Comment">
-            <xsl:variable name="post" select="doc(@about)/Post"/>
-            <tr>            
-              <xsl:if test="position() mod 2 eq 0">
-                <xsl:attribute name="class">alt</xsl:attribute>
-              </xsl:if>
-              <th scope="row">
-                <a href="{url}">
-                  <xsl:value-of select="author"/>
-                </a>
-              </th>
-              <td>
-                <a href="/blog/edit?~doc_path={@about}" title="{substring($post/body, 1, 200)}..."> 
-                  <xsl:value-of select="$post/title"/>
-                </a>
-              </td>
-              <td>
-                <xsl:value-of select="substring(body, 1, 100)"/>
-                <xsl:text>...</xsl:text>
-              </td>
-              <td>
-                <xsl:value-of select="ml:display-date-with-time(created)"/>
-              </td>
-              <xsl:variable name="status" select="if (@status eq 'Published') then 'Approved' else 'Pending'"/>
-              <td class="status {lower-case($status)}">
-                <xsl:value-of select="$status"/>
-              </td>
-              <td>
-                <a href="/blog/comment-edit?~doc_path={base-uri(.)}">Edit</a>
-                <xsl:text>&#160;|&#160;</xsl:text>
-
-                <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-                <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect=/blog%23tbl_comments">
-                  <xsl:value-of select="if (@status eq 'Published') then 'Revoke'
-                                                                    else 'Approve'"/>
-                </a>
-
-                <xsl:text>&#160;|&#160;</xsl:text>
-                <a href="javascript:if (confirm('Are you sure you want to delete this comment?')) {{ window.location = '/admin/controller/delete-comment.xqy?path={base-uri(.)}'; }}">Remove</a>
-              </td>
-              <td>
-                  <input type="checkbox" value="{base-uri(.)}" />
-              </td>
-               
-            </tr>            
           </xsl:template>
 
 </xsl:stylesheet>

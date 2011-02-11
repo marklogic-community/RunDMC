@@ -21,6 +21,10 @@ return
   (: Insert the new document :)
   xdmp:document-insert($new-doc-url, $new-doc),
 
+  (: Insert a container for corresponding conversations (comments) :)
+  xdmp:document-insert(concat('/private/comments',$new-doc-url),
+                       document{ <ml:Comments disqus_identifier="disqus-{$new-doc-url}"/> }),
+
   (: Redirect to the Edit page for the newly created document :)
   xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
                                 "?~doc_path=", $new-doc-url,
