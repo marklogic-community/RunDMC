@@ -200,8 +200,13 @@
                                 <div class="dsq-comment-header">
                                   <div class="dsq-cite-{dq:id}">
                                     <span class="dsq-commenter-name">
-                                      <a id="dsq-author-user-{dq:id}" href="{dq:author/dq:url}" target="_blank" rel="nofollow">
-                                        <xsl:value-of select="dq:author/dq:username"/>
+                                      <a id="dsq-author-user-{dq:id}" href="{(dq:author|dq:anonymous_author)/dq:url}" target="_blank" rel="nofollow">
+                                        <!-- Pick the first one from among these different possible sources for the author name -->
+                                        <xsl:value-of select="( dq:author/( dq:display_name[normalize-space(.)]
+                                                                          , dq:username
+                                                                          )
+                                                              , dq:anonymous_author/dq:name
+                                                              )[1]"/>
                                       </a>
                                     </span>
                                   </div>
