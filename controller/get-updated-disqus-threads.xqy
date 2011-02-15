@@ -30,7 +30,7 @@ declare function ml:get-json-xml($uri) {
 };
 
 (: Change this to true to output more info in the result :)
-declare variable $DEBUG := false();
+declare variable $DEBUG := true();
 
 (: Change this to true to force-update all threads. :)
 declare variable $forceUpdateAllThreads := false();

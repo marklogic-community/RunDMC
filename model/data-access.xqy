@@ -15,7 +15,8 @@ declare variable $Events        := $collection/Event       [draft:listed(.)]; (:
 declare variable $Articles      := $collection/Article     [draft:listed(.)]; (: "Learn"  :)
 declare variable $Posts         := $collection/Post        [draft:listed(.)]; (: "Blog"   :)
 declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
-declare variable $Comments      := $collection/Comments    [draft:listed(.)]; (: backed-up Disqus conversations :)
+
+declare variable $Comments      := $collection/Comments; (: backed-up Disqus conversations :)
 
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
