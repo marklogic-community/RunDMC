@@ -6,10 +6,11 @@
   xmlns:map ="http://marklogic.com/xdmp/map"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:srv="http://marklogic.com/rundmc/server-urls"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:form             ="http://developer.marklogic.com/site/internal/form"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp map">
+  exclude-result-prefixes="xs ml xdmp map srv">
 
   <!-- This included stylesheet does all the heavy-lifting, i.e. everything before we start generating HTML -->
   <xsl:include href="../model/xml2form.xsl"/>
@@ -173,11 +174,11 @@
                           <xsl:variable name="external-uri" select="substring-before($doc-path, '.xml')"/>
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
-                          <a href="{$staging-server}{$external-uri}" target="_blank">
+                          <a href="{$srv:draft-server}{$external-uri}" target="_blank">
                             <span>(view current)</span>
                           </a>
                           <xsl:text> </xsl:text>
-                          <a href="{$webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
+                          <a href="{$srv:webdav-server}{$external-uri}.xml?cache-invalidate={current-dateTime()}" target="_blank">
                             <span>(view current XML source)</span>
                           </a>
                           <input type="hidden" name="~existing_doc_uri" value="{$doc-path}"/>

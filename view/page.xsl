@@ -167,9 +167,9 @@
 
                     <!-- See http://docs.disqus.com/developers/universal/ -->
                     <script type="text/javascript">
-                        var disqus_shortname = 'marklogicdev';
+                        var disqus_shortname = '<xsl:value-of select="$dq:shortname"/>';
 
-                        var disqus_developer = 1;
+                        var disqus_developer = <xsl:value-of select="$dq:developer_0_or_1"/>;
 
                         // The following are highly recommended additional parameters. Remove the slashes in front to use.
                         var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(.)"/>';
@@ -251,7 +251,7 @@
                               </div>
                               <!-- Script from here: http://docs.disqus.com/developers/universal/#comment-count -->
                               <script type="text/javascript">
-                                  var disqus_shortname = 'marklogicdev';
+                                  var disqus_shortname = '<xsl:value-of select="$dq:shortname"/>';
 
                                   (function () {
                                       var s = document.createElement('script'); s.async = true;

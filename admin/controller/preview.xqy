@@ -7,15 +7,17 @@
 import module namespace param="http://marklogic.com/rundmc/params"
        at "../../controller/modules/params.xqy";
 
+(: Import the definition of $srv:draft-server :)
+import module namespace srv="http://marklogic.com/rundmc/server-urls"
+       at "../../controller/server-urls.xqy";
+
 let $params  := param:params()
 let $map     := map:map()
 
 (: Where we'll store the temporary XML document. :)
 let $doc-url := concat('/preview/', current-dateTime(), '.xml')
 
-(: Consult the config file to get the staging server URL :)
-let $config  := xdmp:document-get(concat(xdmp:modules-root(),'/admin/config/navigation.xml'))
-let $external-uri := concat($config/*/@staging-server, substring-before($doc-url, '.xml'))
+let $external-uri := concat($srv:draft-server, substring-before($doc-url, '.xml'))
 
 return
 (
@@ -30,7 +32,7 @@ return
                                                                                                    map:put($map, "att-value", "yes"),
                                                                                                    $map))),
 
-      (: Render the document on the staging server, utilizing contextual navigation rendering if possible (i.e. if it's an edit to an existing document) :)
+      (: Render the document on the draft server, utilizing contextual navigation rendering if possible (i.e. if it's an edit to an existing document) :)
       xdmp:redirect-response(concat($external-uri, "?preview-as-if-at=", substring-before($params[@name eq "~existing_doc_uri"], '.xml')))
     )
 )

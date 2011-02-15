@@ -4,12 +4,14 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:srv="http://marklogic.com/rundmc/server-urls"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="xs ml xdmp srv"
+  extension-element-prefixes="xdmp">
 
-  <xsl:variable name="staging-server" select="string($navigation/*/@staging-server)"/>
-  <xsl:variable name="webdav-server" select="string($navigation/*/@webdav-server)"/>
+  <!-- Import the definition of $srv:draft-server and $srv:webdav-server -->
+  <xdmp:import-module href="/controller/server-urls.xqy" namespace="http://marklogic.com/rundmc/server-urls"/>
 
   <xsl:template match="admin-page-listings">
     <table id="tbl_status">
@@ -173,7 +175,7 @@
                 <a href="{$edit-link}">Edit</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: make preview work -->
-                <a href="{$staging-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+                <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
                 <xsl:text>&#160;|&#160;</xsl:text>
 
                 <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>

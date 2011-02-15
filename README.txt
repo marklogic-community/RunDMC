@@ -12,12 +12,12 @@ SETUP NOTES
     be set to the root of this distribution, on the filesystem.
     The URL rewriter should be set to "/controller/url_rewrite.xqy".
 
-  Staging server:
+  Draft server:
     On another port, same exact configuration as main server but
     with a different server name. "Draft" documents will be visible
     on this server. For "preview" to work in the Admin UI, update
-    /admin/config/navigation.xml with the correct staging server
-    URL.
+    /config/server-urls.xml with the correct host name and corresponding
+    draft server URL.
 
   Admin interface (CMS) server:
     For the Admin interface, set up a different HTTP app server,
@@ -57,7 +57,7 @@ Another important directory is "config":
 
   config
     Contains the sitemap configuration, XHTML template configuration,
-    and widget configuration.
+    server URL configuration, and widget configuration.
 
 
 On the content management side:

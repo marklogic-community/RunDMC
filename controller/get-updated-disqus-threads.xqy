@@ -14,6 +14,10 @@ import module namespace ml = "http://developer.marklogic.com/site/internal"
 import module namespace u = "http://marklogic.com/rundmc/util"
        at "../lib/util-2.xqy";
 
+import module namespace dq = "http://marklogic.com/disqus"
+       at "disqus-info.xqy";
+
+
 declare function ml:get-json($uri) {
   xdmp:http-get($uri, <options xmlns="xdmp:document-get">
                         <format>text</format>
@@ -38,15 +42,12 @@ declare variable $sinceDate       := if (not(empty($lastCommentDate)) and
                                      then substring(string($lastCommentDate),1,16) (: truncate seconds for Disqus's sake :)
                                      else '2010-01-01T00:00'; (: a date before we started using Disqus :)
 
-declare variable $disqusInfo      := doc('/private/disqus-info.xml')/keys;
-declare variable $userAPIKey      := $disqusInfo/user_api_key;
-declare variable $forumId         := $disqusInfo/forum_id;
 
-declare variable $commonURIParams := concat('&amp;user_api_key=',$userAPIKey,
+declare variable $commonURIParams := concat('&amp;user_api_key=',$dq:userAPIKey,
                                             '&amp;api_version=1.1');
 
 declare variable $updatedThreadsURI := concat('http://disqus.com/api/get_updated_threads?',
-                                              'forum_id=',  $forumId,
+                                              'forum_id=',  $dq:forumId,
                                               '&amp;since=',$sinceDate,
                                               $commonURIParams
                                              );

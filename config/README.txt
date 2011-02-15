@@ -13,3 +13,9 @@ navigation.xml
 
 widgets.xml
   This file determines on what page(s) each widget will appear.
+
+disqus-info.xml
+  This file contains the user API key, forum API key, and forum ID
+  for each Disqus forum. It also allows you to configure a different
+  forum based on the current host type (development, staging, or
+  production).
