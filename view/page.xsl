@@ -177,7 +177,8 @@
 
                         function disqus_config() {
                             this.callbacks.onNewComment = [function() { setTimeout(
-                                                                          function(){ $.ajax({ url: "/updateDisqusThreads" });},
+                                                                          function(){ $.ajax({ type: "POST",
+                                                                                               url: "/updateDisqusThreads" });},
                                                                           10000); } ];
                                                                           <!-- It takes a while before the API makes it available -->
                                                                           <!-- No sweat if this doesn't get called, as the scheduled
