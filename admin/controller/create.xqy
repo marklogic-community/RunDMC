@@ -7,6 +7,8 @@
 import module namespace param="http://marklogic.com/rundmc/params"
        at "../../controller/modules/params.xqy";
 
+declare namespace ml = "http://developer.marklogic.com/site/internal";
+
 let $params      := param:params()
 let $new-doc-url := $params[@name eq '~new_doc_url']
 let $map         := map:map()
