@@ -71,6 +71,7 @@
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
         <page display="XQMVC" href="/code/xqmvc"/>
+        <page display="xquery-unit" href="/code/xquery-unit"/>
       </group>
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
