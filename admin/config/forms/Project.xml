@@ -21,6 +21,7 @@
                 server-version="" label:server-version="Version needed"
                 date=""           label:date          ="Date"
                 form:repeating="yes"
+                form:optional="yes"
                 form:group-label="Download Link" values:server-version="_ 3.2 4.0 4.1 4.2"/>
   </ml:versions>
 <!-- Disabled for now, since none of the existing Code pages show top threads. Maybe it's not wanted here after all.
