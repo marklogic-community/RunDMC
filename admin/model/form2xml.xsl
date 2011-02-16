@@ -189,9 +189,9 @@
                                                                       an attribute; if they're all empty, then
                                                                       we strip it out :)
 
-                                        [not((.//@* except .//@form:*)  (: This test is still necessary in case
-                                             [normalize-space(.)]          there are hard-coded (fixed and non-
-                                            )]                             editable) attribute values in the template :)
+                                        [not((.//@* except .//@form:*)  (: This test is still necessary in case       :)
+                                             [normalize-space(.)]       (: there are hard-coded (fixed and non-       :)
+                                            )]                          (: editable) attribute values in the template :)
                                             "/>
 
   <!-- Convert elements back to attributes -->
