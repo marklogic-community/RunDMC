@@ -169,19 +169,30 @@
     <xsl:element name="{name()}" namespace="{namespace-uri(.)}">
       <!-- Keep the XHTML namespace around so we don't have to see re-declarations all over in the body -->
       <xsl:copy-of select="namespace::*[. eq 'http://www.w3.org/1999/xhtml']"/>
+      <!-- Process the attributes-disguised-as-elements first -->
       <xsl:apply-templates mode="#current" select="*[@form:is-attribute]"/>
+      <!-- Then process the rest of the elements -->
       <xsl:apply-templates mode="#current" select="@* | node()[not(@form:is-attribute)]"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template mode="clean-up" match="@* | comment() | text() | processing-instruction()">
     <xsl:copy/>
   </xsl:template>
 
   <!-- Strip out optional fields that don't have a value set -->
   <xsl:template mode="clean-up" match="*[@form:optional eq 'yes']
-                                        [not(normalize-space(.))]
-                                        [not((.//@* except .//@form:*)[normalize-space(.)]
-                                            )]"/>
+
+                                        [not(normalize-space(.))]  (: This tests for any non-whitespace text,
+                                                                      whether directly contained, inside a child
+                                                                      element, or inside (what will be converted to)
+                                                                      an attribute; if they're all empty, then
+                                                                      we strip it out :)
+
+                                        [not((.//@* except .//@form:*)  (: This test is still necessary in case
+                                             [normalize-space(.)]          there are hard-coded (fixed and non-
+                                            )]                             editable) attribute values in the template :)
+                                            "/>
 
   <!-- Convert elements back to attributes -->
   <xsl:template mode="clean-up" match="*[@form:is-attribute]">
