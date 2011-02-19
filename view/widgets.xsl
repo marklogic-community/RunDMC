@@ -18,6 +18,8 @@
 
   <xsl:variable name="widget-config"  select="u:get-doc('/config/widgets.xml')"/>
 
+  <xsl:variable name="current-page" select="$navigation//page[@href eq $external-uri]"/>
+
   <xsl:template match="xhtml:div[@id eq 'content']/@ml:class">
     <xsl:variable name="last-widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]][last()]"/>
     <!-- If the last widget is a "feature widget", we need to accordingly babysit the CSS class -->
@@ -79,11 +81,11 @@
                   </xsl:template>
 
                   <xsl:template mode="matches-current-page" match="page-tree">
-                    <xsl:sequence select="$external-uri = $navigation//page[@href eq current()/@root]/descendant-or-self::page/@href"/>
+                    <xsl:sequence select="@root = $current-page/ancestor-or-self::page/@href"/>
                   </xsl:template>
 
                   <xsl:template mode="matches-current-page" match="page-children">
-                    <xsl:sequence select="$external-uri = $navigation//page[@href eq current()/@parent]/descendant::page/@href"/>
+                    <xsl:sequence select="@parent = $current-page/ancestor::page/@href"/>
                   </xsl:template>
 
                   <xsl:template mode="matches-current-page" match="*">
