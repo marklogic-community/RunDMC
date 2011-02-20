@@ -12,13 +12,9 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
-  <xsl:include href="pre-process-navigation.xsl"/>
-
-  <xsl:variable name="raw-navigation" select="u:get-doc('/config/navigation.xml')"/>
-
-  <xsl:variable name="navigation">
-    <xsl:apply-templates mode="pre-process-navigation" select="$raw-navigation/*"/>
-  </xsl:variable>
+  <!-- For performance reasons, we no longer pre-process the navigation config on every request;
+       it is now an, er, PRE-process. -->
+  <xsl:variable name="navigation" select="xdmp:invoke('../model/get-navigation.xqy')"/>
 
   <!-- The page occurs in the hierarchy either explicitly or as encompassed by a wildcard.
 
