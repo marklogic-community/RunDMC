@@ -22,7 +22,7 @@
 
     <!-- Also, create the new all-*.js file -->
     <xsl:result-document href="..{$filename}" method="text">
-      <xsl:copy-of select="../script/@src/unparsed-text(concat('..', .))"/>
+      <xsl:value-of select="../script/@src/unparsed-text(concat('..', .))" separator="&#xA;"/>
     </xsl:result-document>
   </xsl:template>
 
