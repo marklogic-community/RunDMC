@@ -33,7 +33,9 @@
 
   <xsl:variable name="content" select="/"/>
 
-  <xsl:variable name="template" select="u:get-doc('/config/template.xhtml')"/>
+  <xsl:variable name="template" select="if (xdmp:uri-is-file('/config/template.optimized.xhtml'))
+                                              then u:get-doc('/config/template.optimized.xhtml') 
+                                              else u:get-doc('/config/template.xhtml')"/>
 
   <xsl:variable name="preview-context" select="$params[@name eq 'preview-as-if-at']"/>
 
