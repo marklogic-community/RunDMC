@@ -40,10 +40,14 @@ return
         (: let $_ := xdmp:add-response-header("X-Debug1", xs:string($last-modified)) :)
         (: let $_ := xdmp:add-response-header("X-Debug2", xs:string($if-modified-since)) :)
 
-        let $last-modified-fmt := fn:format-dateTime($last-modified, 
-                 "[FNn,*-3], [D01] [MNn,*-3] [Y0001] [H01]:[m01]:[s01] GMT","en","AD","US")
+        let $_ := if (not(empty($last-modified))) 
+            then 
+                let $last-modified-fmt := fn:format-dateTime($last-modified, 
+                    "[FNn,*-3], [D01] [MNn,*-3] [Y0001] [H01]:[m01]:[s01] GMT","en","AD","US")
+                return xdmp:add-response-header("Last-Modified", $last-modified-fmt) 
+            else 
+                ()
 
-        let $_ := xdmp:add-response-header("Last-Modified", $last-modified-fmt) 
         (: let $_ := xdmp:set-response-header("Expires", "3600") :)
         return if ($not-modified)
             then 
