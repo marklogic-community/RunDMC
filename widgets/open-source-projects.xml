@@ -3,6 +3,14 @@
     <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
+    <h3><a href="/code/booster">Booster</a></h3>
+    A thin API wrapper for remote server administration via HTTP
+  </div>
+  <div class="body">
+    <h3><a href="/code/xquery-unit">xquery-unit</a></h3>
+    MarkLogic XQuery Unit Test Framework
+  </div>
+  <div class="body">
     <h3><a href="/code/tunage">Tunage</a></h3>
     Music search and player interface.
   </div>
@@ -20,7 +28,7 @@
   </div>
   <div class="body">
     <h3><a href="/code/semantic">Semantic</a></h3>
-    XQuery and Java code for storage and retieval of semantic content.
+    XQuery and Java code for storage and retrieval of semantic content.
   </div>
   <div class="body">
     <a class="more" href="/code">View all &gt;</a>
