@@ -43,6 +43,23 @@
   <xsl:variable name="site-title" select="'MarkLogic Developer Community'"/>
 
 
+  <!-- WORKAROUND for XSLTBUG 12857. These variable definitions really belong in navigation.xsl;
+       they're only included here as a workaround. -->
+
+        <!-- For performance reasons, we no longer pre-process the navigation config on every request;
+             it is now an, er, PRE-process. -->
+        <xsl:variable name="navigation" select="if ($navigation-cached) then $navigation-cached
+                                                                        else ($populated-navigation,
+                                                                              ml:save-cached-navigation($populated-navigation))"/>
+
+                <xsl:variable name="navigation-cached" select="ml:get-cached-navigation()"/>
+
+                <xsl:variable name="populated-navigation">
+                  <xsl:apply-templates mode="pre-process-navigation" select="$ml:raw-navigation"/>
+                </xsl:variable>
+  <!-- END WORKAROUND -->
+
+
   <!-- Start by processing the template page -->
   <xsl:template match="/">
     <!-- XSLT BUG WORKAROUND (outputs nothing); works because it apparently forces evaluation earlier -->
