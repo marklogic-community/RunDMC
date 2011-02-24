@@ -12,12 +12,6 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp">
 
-  <xsl:import href="page.xsl"/>
-
-  <xsl:template match="/">
-    <xsl:apply-templates mode="pre-process-navigation"/>
-  </xsl:template>
-
   <xsl:template mode="pre-process-navigation" match="@* | node()">
     <xsl:copy>
       <xsl:apply-templates mode="#current" select="@* | node()"/>

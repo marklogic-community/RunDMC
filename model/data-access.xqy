@@ -5,6 +5,10 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
+declare namespace prop="http://marklogic.com/xdmp/property";
+declare namespace dir ="http://marklogic.com/xdmp/directory";
+declare namespace xdmp="http://marklogic.com/xdmp";
+
 (: We're not currently using collections, so just start with all docs in the database :)
 declare variable $collection    := fn:collection();
 
@@ -161,4 +165,64 @@ declare function xslt-widget($module as xs:string)
   let $result := xdmp:xslt-invoke(fn:concat('../widgets/',$module), document{()})
   return
     $result/ml:widget/node()
+};
+
+
+(: Everything below is concerned with caching our navigation XML :)
+declare variable $code-dir       := xdmp:modules-root();
+declare variable $config-file    := "navigation.xml";
+declare variable $config-dir     := fn:concat($code-dir,'config/');
+declare variable $raw-navigation := xdmp:document-get(fn:concat($config-dir,$config-file));
+declare variable $pre-generated-location := if ($draft:public-docs-only)
+                                            then "/private/public-navigation.xml"
+                                            else "/private/draft-navigation.xml";
+
+(: This function implements a basic caching mechanism for our $navigation info.
+   It checks to see if the files and documents on which $navigation depends
+   have been updated since the last time we pre-generated the $navigation,
+   whether the draft version or the public-only version. If navigation.xml
+   or any of the docs on which it depends have been updated since the last
+   time we generated the fully populated navigation, then we must re-generate
+   it afresh. Otherwise, we serve up the pre-generated navigation, thereby
+   avoiding this costly operation on most server requests.
+:) 
+declare function get-cached-navigation()
+{
+let $pre-generated-navigation := fn:doc($pre-generated-location),
+
+    $last-generated := xdmp:document-properties($pre-generated-location)/*/prop:last-modified,
+
+    $last-update :=
+
+      let $config-last-updated := xdmp:filesystem-directory($config-dir)
+                                  /dir:entry [dir:filename eq $config-file]
+                                  /dir:last-modified,
+
+          (: A happy side effect of using git is that any time we push
+             code, the .git directory should show a new last-modified date;
+             this should ensure that any and all code updates will invalidate
+             the navigation cache :)
+          $code-last-updated := xdmp:filesystem-directory($code-dir)
+                                /dir:entry
+                                /dir:last-modified,
+
+          $doc-uris := fn:distinct-values($pre-generated-navigation//page/@href/fn:concat(.,'.xml')),
+
+          $docs-last-updated := fn:max(xdmp:document-properties($doc-uris)/*/prop:last-modified)
+
+      return
+         fn:max(($config-last-updated,
+                 $code-last-updated,
+                 $docs-last-updated))
+
+return
+   if (fn:exists($pre-generated-navigation) and $last-generated gt $last-update)
+   then $pre-generated-navigation
+   else ()
+};
+
+(: When first populating the navigation, cache it in the database :)
+declare function save-cached-navigation($doc)
+{
+  xdmp:document-insert($pre-generated-location, $doc)
 };
