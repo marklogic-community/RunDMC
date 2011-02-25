@@ -1,0 +1,4 @@
+#!/bin/sh
+cd ..
+export GIT_DIR=".git"
+git checkout -f
