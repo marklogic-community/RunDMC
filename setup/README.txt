@@ -1,0 +1,31 @@
+Files in this directory:
+
+  - install.xqy
+
+    Intended to auto-configure a server for use with RunDMC.
+    This hasn't been updated for a while and is likely stale.
+
+  - optimize-js.sh
+
+    Run the optimize-js.sh script (from within this directory) to create
+    /config/template.optimized.xhtml, which combines all the external JS <script>
+    tags into one and creates a new file in /js/optimized called all-XXXXX.js
+    (where "XXXX" is the current date/time).
+
+    The server code (/view/page.xsl) checks to see if /config/template.optimized.xhtml
+    is present and, if so, uses it. Otherwise, it uses /config/template.xhtml.
+    On the production machine, we will want to run the optimization script every
+    time we update the JavaScript to force browsers to download the latest JS.
+
+    Note: this script requires Saxon to be installed on your machine as a script
+    called "Transform". Download Saxon-HE from http://saxon.sf.net and read the
+    comment at the top of optimize-js.sh for an example of how to set this up.
+
+  - optimize-js-requests.xsl
+
+    What optimize-js.sh invokes to do its work.
+    
+  - retroactively-create-comment-doc-infrastructure.xqy
+
+    A one-time use script that allowed us to transition to using Disqus-based comments.
+    See comments at top of the file for details.
