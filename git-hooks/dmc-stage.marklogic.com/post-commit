@@ -1,4 +1,5 @@
 #!/bin/sh
-cd ../setup
+export PATH=/usr/local/bin:$PATH
+cd ../../setup
 ./optimize-js.sh
 
