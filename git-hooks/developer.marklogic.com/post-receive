@@ -2,3 +2,6 @@
 cd ..
 export GIT_DIR=".git"
 git checkout -f
+export PATH=/usr/local/bin:$PATH
+cd /space/git/rundmc.git/setup
+./optimize-js.sh
