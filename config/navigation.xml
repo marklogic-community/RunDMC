@@ -48,6 +48,7 @@
         <page display="xquery-unit" href="/code/xquery-unit"/>
         <page display="xmlsh extension" href="/code/xmlsh-ext"/>
         <page display="Booster" href="/code/booster"/>
+        <page display="mustache.xq" href="/code/mustache.xq"/>
       </group>
       <group display="Microsoft Office® Integration">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
