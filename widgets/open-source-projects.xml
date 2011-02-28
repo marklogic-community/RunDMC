@@ -3,6 +3,10 @@
     <h2>New Open Source Projects</h2>
   </div>
   <div class="body">
+    <h3><a href="/code/mustache.xq">mustache.xq</a></h3>
+    The Mustache template language implemented in XQuery
+  </div>
+  <div class="body">
     <h3><a href="/code/booster">Booster</a></h3>
     A thin API wrapper for remote server administration via HTTP
   </div>
@@ -22,6 +26,7 @@
     <h3><a href="/code/xqdebug">XQDebug</a></h3>
     Browser-based, source-level XQuery debugger.
   </div>
+  <!--
   <div class="body">
     <h3><a href="/code/narthex">Narthex</a></h3>
     MarkLogic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
@@ -30,6 +35,7 @@
     <h3><a href="/code/semantic">Semantic</a></h3>
     XQuery and Java code for storage and retrieval of semantic content.
   </div>
+  -->
   <div class="body">
     <a class="more" href="/code">View all &gt;</a>
   </div>
