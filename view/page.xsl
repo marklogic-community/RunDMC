@@ -233,7 +233,7 @@
                                 </div>
                               </div>   
                               <div id="dsq-comment-message-{dq:id}" class="dsq-comment-message">
-                                <xsl:value-of select="dq:message" disable-output-escaping="yes"/> <!-- Does this not work? Do we care in this case? -->
+                                <xsl:value-of select="dq:message"/>
                               </div>
                               <!-- Nested replies -->
                               <xsl:if test="dq:reply">
