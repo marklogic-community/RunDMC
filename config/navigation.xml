@@ -119,15 +119,15 @@
   </page>
   <page display="Meet" href="/meet">
     <group display="MarkLogic User Groups">
-      <page display="DenMark - Denver User Group" href="/meet/denmark"/>
-      <page display="Mark-UPS - Maryland User Group" href="/meet/markups"/>
-      <page display="NOVAMUG - Northern Virginia User Group" href="/meet/novamug"/>
-      <page display="NYMUG - New York User Group" href="/meet/nymug"/>
+      <page display="DenMark - Denver" href="/meet/denmark"/>
+      <page display="Mark-UPS - Maryland" href="/meet/markups"/>
+      <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
+      <page display="NYMUG - New York" href="/meet/nymug"/>
       <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
         <page display="Français" href="/meet/mugfr/fr"/>
         <page display="English" href="/meet/mugfr/en"/>
       </group>
-      <page display="BMUG - Boston User Group" href="/meet/bmug"/>
+      <page display="BMLUG - Boston" href="/meet/bmug"/>
     </group>
     <generic-page display="Organize" href="/meet/organize"/>
   </page>

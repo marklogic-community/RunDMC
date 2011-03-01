@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-            <div class="head">
-              <h2>Subscribe to “BMUG”</h2>
-            </div>
-            <div class="body">
-              <p>Subscribe to BMUG by filling out the following form</p>
-
-              <form action="" method="get">
-      <div><label for="ss_email">E-mail address</label> <input id="ss_email" type="text"/></div>
-      <div><label for="ss_name">Name (optional)</label> <input id="ss_name" type="text"/></div>
-      <div><label for="ss_pass">Password</label> <input id="ss_pass" type="password"/></div>
-      <div class="submit"><input type="image" src="/images/b_subscribe.png"/></div>
-    </form>
-
-            </div>
-
+    <div class="head">
+        <h2>Join the “BMLUG” User Group</h2>
+    </div>
+    <div class="body">
+        The BMLUG User Group uses <a href="http://meetup.com/b-mlug">meetup.com</a> to organize its meetings.
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        See <a href="http://meetup.com/b-mlug" title="meetup" alt="b-mlug"><img src="/media/meetup-63x42.png" title="meetup" alt="meetup" width="63" height="42" /></a>
+        for more details.
+    </div>
 </ml:widget>
