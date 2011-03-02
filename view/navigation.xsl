@@ -39,10 +39,12 @@
             <li>
               <xsl:apply-templates mode="top-nav-current-att" select="."/>
               <a href="{@href}">
-                <xsl:if test="document(concat(@href, '.xml'))//ml:short-description">
+                <xsl:variable name="short-description"
+                              select="document(concat(@href, '.xml'))//ml:short-description"/>
+                <xsl:if test="$short-description">
                     <xsl:attribute name="class">stip</xsl:attribute>
                     <xsl:attribute name="title">
-                        <xsl:value-of select="document(concat(@href, '.xml'))//ml:short-description" />
+                        <xsl:value-of select="$short-description"/>
                     </xsl:attribute>
                 </xsl:if>
                 <xsl:value-of select="@display"/>
@@ -177,10 +179,12 @@
                     <li>
                         <xsl:apply-templates mode="sub-nav-current-att" select="."/>
                             <a href="{@href}">
-                                <xsl:if test="document(concat(@href, '.xml'))//ml:short-description">
+                               <xsl:variable name="short-description"
+                                             select="document(concat(@href, '.xml'))//ml:short-description"/>
+                               <xsl:if test="$short-description">
                                     <xsl:attribute name="class">stip</xsl:attribute>
                                     <xsl:attribute name="title">
-                                        <xsl:value-of select="document(concat(@href, '.xml'))//ml:short-description" />
+                                        <xsl:value-of select="$short-description"/>
                                     </xsl:attribute>
                                 </xsl:if>
                                 <xsl:value-of select="@display"/>
