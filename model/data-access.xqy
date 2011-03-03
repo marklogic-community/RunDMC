@@ -9,23 +9,20 @@ declare namespace prop="http://marklogic.com/xdmp/property";
 declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
 
-(: We're not currently using collections, so just start with all docs in the database :)
-declare variable $collection    := fn:collection();
-
                                                            (: filter out temporary, preview-only docs, and
                                                               filter "Draft" docs when applicable :)
-declare variable $Announcements := $collection/Announcement[draft:listed(.)]; (: "News"   :)
-declare variable $Events        := $collection/Event       [draft:listed(.)]; (: "Events" :)
-declare variable $Articles      := $collection/Article     [draft:listed(.)]; (: "Learn"  :)
-declare variable $Posts         := $collection/Post        [draft:listed(.)]; (: "Blog"   :)
-declare variable $Projects      := $collection/Project     [draft:listed(.)]; (: "Code"   :)
+declare variable $Announcements := /Announcement/self::*[draft:listed(.)]; (: "News"   :)
+declare variable $Events        := /Event       /self::*[draft:listed(.)]; (: "Events" :)
+declare variable $Articles      := /Article     /self::*[draft:listed(.)]; (: "Learn"  :)
+declare variable $Posts         := /Post        /self::*[draft:listed(.)]; (: "Blog"   :)
+declare variable $Projects      := /Project     /self::*[draft:listed(.)]; (: "Code"   :)
 
-declare variable $Comments      := $collection/Comments; (: backed-up Disqus conversations :)
+declare variable $Comments      := /Comments; (: backed-up Disqus conversations :)
 
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
-declare variable $pages         := $collection/page[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
-                                                           [draft:listed(.)]; (: regular pages :)
+declare variable $pages         := /page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
+                                                [draft:listed(.)]; (: regular pages :)
 
 (: Used to limit what documents are exposed via Search :)
 declare variable $live-documents := ( $Announcements
