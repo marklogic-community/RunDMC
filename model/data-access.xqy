@@ -9,14 +9,25 @@ declare namespace prop="http://marklogic.com/xdmp/property";
 declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
 
+
+declare variable $Announcements := docs('Announcement');
+declare variable $Events        := docs('Event');
+declare variable $Articles      := docs('Article');
+declare variable $Posts         := docs('Post');
+declare variable $Projects      := docs('Project');
+
+declare function docs($element-name) {
+  let $non-previews := fn:concat('/',$element-name,'[fn:not(@preview-only)]'),
+      $expr := fn:concat('if ($draft:public-docs-only)',
+                         'then ',$non-previews,'[@status eq "Published"]',
+                         'else ',$non-previews
+                        )
+  return
+    xdmp:value($expr)
+};
+
                                                            (: filter out temporary, preview-only docs, and
                                                               filter "Draft" docs when applicable :)
-declare variable $Announcements := /Announcement/self::*[draft:listed(.)]; (: "News"   :)
-declare variable $Events        := /Event       /self::*[draft:listed(.)]; (: "Events" :)
-declare variable $Articles      := /Article     /self::*[draft:listed(.)]; (: "Learn"  :)
-declare variable $Posts         := /Post        /self::*[draft:listed(.)]; (: "Blog"   :)
-declare variable $Projects      := /Project     /self::*[draft:listed(.)]; (: "Code"   :)
-
 declare variable $Comments      := /Comments; (: backed-up Disqus conversations :)
 
                                                     (: Exclude admin pages themselves, so you can't change,
