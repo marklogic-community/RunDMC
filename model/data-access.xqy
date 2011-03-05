@@ -16,8 +16,9 @@ declare variable $Articles      := docs('Article');
 declare variable $Posts         := docs('Post');
 declare variable $Projects      := docs('Project');
 
+(: filter out temporary, preview-only docs, and filter "Draft" docs when applicable :)
 declare function docs($element-name) {
-  let $non-previews := fn:concat('/',$element-name,'[fn:not(@preview-only)]'),
+  let $non-previews := fn:concat('fn:collection()/',$element-name,'[fn:not(@preview-only)]'),
       $expr := fn:concat('if ($draft:public-docs-only)',
                          'then ',$non-previews,'[@status eq "Published"]',
                          'else ',$non-previews
@@ -26,14 +27,12 @@ declare function docs($element-name) {
     xdmp:value($expr)
 };
 
-                                                           (: filter out temporary, preview-only docs, and
-                                                              filter "Draft" docs when applicable :)
-declare variable $Comments      := /Comments; (: backed-up Disqus conversations :)
+declare variable $Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
 
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
-declare variable $pages         := /page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
-                                                [draft:listed(.)]; (: regular pages :)
+declare variable $pages    := fn:collection()/page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
+                                                          [draft:listed(.)]; (: regular pages :)
 
 (: Used to limit what documents are exposed via Search :)
 declare variable $live-documents := ( $Announcements
