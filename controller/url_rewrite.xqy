@@ -176,6 +176,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/lib/atom.xqy?feed=newsandevents"
     else if ($path eq "/updateDisqusThreads") then
         "/controller/get-updated-disqus-threads.xqy"
+    else if ($path eq "/invalidateNavigationCache") then
+        "/controller/invalidate-navigation-cache.xqy"
     else
         $orig-url
 };
