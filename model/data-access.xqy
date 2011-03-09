@@ -180,18 +180,23 @@ declare variable $code-dir       := xdmp:modules-root();
 declare variable $config-file    := "navigation.xml";
 declare variable $config-dir     := fn:concat($code-dir,'config/');
 declare variable $raw-navigation := xdmp:document-get(fn:concat($config-dir,$config-file));
+declare variable $public-nav-location := "/private/public-navigation.xml";
+declare variable $draft-nav-location  := "/private/draft-navigation.xml";
 declare variable $pre-generated-location := if ($draft:public-docs-only)
-                                            then "/private/public-navigation.xml"
-                                            else "/private/draft-navigation.xml";
+                                            then $public-nav-location
+                                            else $draft-nav-location;
 
 (: This function implements a basic caching mechanism for our $navigation info.
-   It checks to see if the files and documents on which $navigation depends
-   have been updated since the last time we pre-generated the $navigation,
-   whether the draft version or the public-only version. If navigation.xml
-   or any of the docs on which it depends have been updated since the last
+   It checks to see if the code has changed since the last time we pre-generated
+   the $navigation, whether the draft version or the public-only version. If
+   navigation.xml or any of the other code has been updated since the last
    time we generated the fully populated navigation, then we must re-generate
    it afresh. Otherwise, we serve up the pre-generated navigation, thereby
    avoiding this costly operation on most server requests.
+
+   We no longer try to detect database changes but leave it up to the admin UI
+   to call invalidate-navigation-cache. To manually invalidate, just delete
+   public-navigation.xml and draft-navigation.xml
 :) 
 declare function get-cached-navigation()
 {
@@ -211,16 +216,22 @@ let $pre-generated-navigation := fn:doc($pre-generated-location),
              the navigation cache :)
           $code-last-updated := xdmp:filesystem-directory($code-dir)
                                 /dir:entry
-                                /dir:last-modified,
+                                /dir:last-modified
 
-          $doc-uris := fn:distinct-values($pre-generated-navigation//page/@href/fn:concat(.,'.xml')),
+          (: Let the admin controller code explicitly invalidate the cache rather than
+             checking the document properties all the time, which is expensive. It's also
+             insufficient, because this approach doesn't detect new documents, e.g., a new blog post.
+          ,$doc-uris := fn:distinct-values($pre-generated-navigation//page/@href/fn:concat(.,'.xml')),
 
           $docs-last-updated := fn:max(xdmp:document-properties($doc-uris)/*/prop:last-modified)
+          :)
 
       return
          fn:max(($config-last-updated,
-                 $code-last-updated,
-                 $docs-last-updated))
+                 $code-last-updated
+                 (:,
+                 $docs-last-updated):)
+               ))
 
 return
    if (fn:exists($pre-generated-navigation) and $last-generated gt $last-update)
@@ -232,4 +243,13 @@ return
 declare function save-cached-navigation($doc)
 {
   xdmp:document-insert($pre-generated-location, $doc)
+};
+
+(: Call this to explicitly invalidate the cached navigation :)
+declare function invalidate-cached-navigation()
+{
+       if (fn:doc-available($public-nav-location))
+  then xdmp:document-delete($public-nav-location) else (),
+       if (fn:doc-available($draft-nav-location))
+  then xdmp:document-delete($draft-nav-location) else ()
 };

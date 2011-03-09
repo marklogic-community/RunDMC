@@ -7,7 +7,8 @@
 import module namespace param="http://marklogic.com/rundmc/params"
        at "../../controller/modules/params.xqy";
 
-declare namespace ml = "http://developer.marklogic.com/site/internal";
+import module namespace ml="http://developer.marklogic.com/site/internal"
+       at "../../model/data-access.xqy";
 
 let $params      := param:params()
 let $new-doc-url := $params[@name eq '~new_doc_url']
@@ -26,6 +27,9 @@ return
   (: Insert a container for corresponding conversations (comments) :)
   xdmp:document-insert(concat('/private/comments',$new-doc-url),
                        document{ <ml:Comments disqus_identifier="disqus-{$new-doc-url}"/> }),
+
+  (: Invalidate the navigation cache :)
+  ml:invalidate-cached-navigation(),
 
   (: Redirect to the Edit page for the newly created document :)
   xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],

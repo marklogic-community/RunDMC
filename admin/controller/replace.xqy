@@ -4,6 +4,9 @@
 import module namespace param="http://marklogic.com/rundmc/params"
        at "../../controller/modules/params.xqy";
 
+import module namespace ml="http://developer.marklogic.com/site/internal"
+       at "../../model/data-access.xqy";
+
 let $params  := param:params()
 let $map     := map:map()
 
@@ -18,6 +21,9 @@ return
     then (
            (: Replace the existing document :)
            xdmp:document-insert($existing-doc-path, $new-doc),
+
+           (: Invalidate the navigation cache :)
+           ml:invalidate-cached-navigation(),
 
            (: Redirect right back to the Edit page for the newly replaced document :)
            xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
