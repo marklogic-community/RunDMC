@@ -78,6 +78,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/"
     else if (starts-with($path, "/svn")) then
         concat("/code/", replace(substring($path, 6), "^([^/]*)/.*", "$1" ))
+    else if ($path = ("/code/comoms")) then
+        "/code/marker"
     else if (starts-with($path, "/help")) then
         "/learn"
     else if (starts-with($path, "/user-groups")) then

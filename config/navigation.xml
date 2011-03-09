@@ -35,20 +35,25 @@
   </page>
   <page display="Code" href="/code">
     <group display="Open Source Projects">
-      <group display="Tools">
+      <group display="Debugging, profiling, and exploring tools">
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
         <page display="XQDebug" href="/code/xqdebug"/>
         <page display="Narthex" href="/code/narthex"/>
-        <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
-        <page display="XQSync" href="/code/xqsync"/>
-        <page display="AutoLoader" href="/code/AutoLoader"/>
-        <page display="RecordLoader" href="/code/recordloader"/>
-        <page display="Pomegranate" href="/code/pomegranate"/>
+      </group>
+      <group display="Testing tools">
         <page display="xquery-unit" href="/code/xquery-unit"/>
-        <page display="xmlsh extension" href="/code/xmlsh-ext"/>
+        <page display="PerformanceMeters" href="/code/performance-meters"/>
+      </group>
+      <group display="Loading and processing tools">
+        <page display="AutoLoader" href="/code/AutoLoader"/>
+        <page display="Corb" href="/code/corb"/>
+        <page display="RecordLoader" href="/code/recordloader"/>
+        <page display="XQSync" href="/code/xqsync"/>
+      </group>
+      <group display="Deployment and configuration">
         <page display="Booster" href="/code/booster"/>
-        <page display="mustache.xq" href="/code/mustache.xq"/>
+        <page display="Pomegranate" href="/code/pomegranate"/>
       </group>
       <group display="Microsoft Office® Integration">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
@@ -63,28 +68,31 @@
         <page display="libmlxcc and connectors for PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
-        <page display="ActiveDocument" href="/code/active-document"/>
+        <page display="ActiveDocument (ruby)" href="/code/active-document"/>
+        <page display="xmlsh extension" href="/code/xmlsh-ext"/>
+        <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
       </group>
-      <group display="Libraries">
-        <page display="Comoms" href="/code/comoms"/>
+      <group display="Libraries and Toolkits">
+        <page display="Marker" href="/code/marker"/>
         <page display="Facebook XQuery Library" href="/code/facebook"/>
         <page display="Feed" href="/code/feed"/>
         <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/>
         <page display="XQuery Commons" href="/code/commons"/>
+        <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
         <page display="XQMVC" href="/code/xqmvc"/>
+        <page display="OAuth" href="/code/oauth2"/>
       </group>
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
         <page display="Versi Design Template" href="/code/versi"/>
-        <page display="Corb" href="/code/corb"/>
-        <page display="PerformanceMeters" href="/code/performance-meters"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Applications">
+        <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="XFaqtor" href="/code/xfaqtor"/>
