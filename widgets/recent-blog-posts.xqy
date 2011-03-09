@@ -24,16 +24,14 @@
     </div>
   </div>
 
-  <!--
   <div class="body">
-    <h3><a href="http://blogs.marklogic.com/2011/02/24/markups-user-groups-and-office-integrations/">MarkUPS, User Groups, and Office Integrations</a></h3>
+    <h3><a href="http://blogs.marklogic.com/2011/02/24/markups-user-groups-and-office-integrations/" target="_blank">MarkUPS, User Groups, and Office Integrations</a></h3>
     <div class="author">by Pete Aven, February 24, 2011</div>
     <br/>
     <div class="message">
       <p>Last week I had the privilege of speaking at the <a title="MarkUPS Info" href="http://developer.marklogic.com/meet/markups">Maryland MarkLogic User&#8217;s Group</a> a.k.a.<a title="MarkUPS 2-16" href="http://developer.marklogic.com/events/markups-2011-02-16"> Mark-UPS</a>.  It was a great experience.  If you have a chance to checkout a <a title="MarkLogic User Groups" href="http://developer.marklogic.com/meet">User Group</a> in your area, I&#8217;d highly recommend it.  It&#8217;s a chance to connect with others who are using <a title="Download MarkLogic Server" href="http://developer.marklogic.com/products">the technology</a>, to ask and answer questions, brainstorm, and share experiences ( as well as code <img src='http://blogs.marklogic.com/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' />  )...</p>
     </div>
   </div>
-  -->
 
   <div class="body">
     <h3><a href="/blog/boingboing-demo">Exploring Eleven Years of Boing Boing</a></h3>
