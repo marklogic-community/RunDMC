@@ -111,7 +111,8 @@ if(typeof jQuery != 'undefined') {
                 }
             },
             style: {
-	            font: '1em Verdana, Arial, Helvetica, Sans-serif',
+	        font: '1em Verdana, Arial, Helvetica, Sans-serif',
+		color: '#666666',
                 padding: 3,
                 border: {
                     width: 2,
