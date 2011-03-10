@@ -20,7 +20,7 @@
     <br/>
 
     <div class="message">
-<p>Last week I was excited to see <a href="http://twitter.com/xquerywebappdev">@xquerywebappdev</a> announce he&#8217;s authoring <a href="http://bit.ly/gthEw3">a new book on MarkLogic</a> titled: &#8220;&#8221;MarkLogic Server 4.2: XQuery Application Development&#8221;. I&#8217;ve often thought of authoring a book on <a href="http://www.marklogic.com/products/overview.html#">MarkLogic</a> myself...</p>
+<p>Last week I was excited to see <a href="http://twitter.com/xquerywebappdev">@xquerywebappdev</a> announce he&#8217;s authoring <a href="http://bit.ly/gthEw3">a new book on MarkLogic</a> titled: &#8220;MarkLogic Server 4.2: XQuery Application Development&#8221;. I&#8217;ve often thought of authoring a book on <a href="http://www.marklogic.com/products/overview.html#">MarkLogic</a> myself...</p>
     </div>
   </div>
 
