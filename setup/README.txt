@@ -17,6 +17,11 @@ Files in this directory:
     On the production machine, we will want to run the optimization script every
     time we update the JavaScript to force browsers to download the latest JS.
 
+    The script checks to see if the resulting combined JS has actually changed since
+    the last time the script was run. If it has, then it creates a new all-XXXX.js file.
+    If it hasn't, then it keeps using the previously generated one, so as not to
+    force users to download a new JS file that hasn't actually changed.
+
     Note: this script requires Saxon to be installed on your machine as a script
     called "Transform". Download Saxon-HE from http://saxon.sf.net and read the
     comment at the top of optimize-js.sh for an example of how to set this up.
