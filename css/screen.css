@@ -654,7 +654,7 @@ table.table4 + .action {border:0;}
 	position: absolute;
 	left: -999em;
 }
-.doclist table {font-size: 10px;}
+.doclist table {font-size: .9em;}
 .doclist th, .doclist td {padding: 6px 5px;}
 .doclist th:first-child {padding-left: 10px;}
 .doclist thead {
@@ -667,7 +667,6 @@ table.table4 + .action {border:0;}
 .doclist th.sorting_asc {background: #A4B243 url(/images/arrow_up_white.png) 100% 50% no-repeat;}
 .doclist th.sorting_desc {background: #A4B243 url(/images/arrow_down_white.png) 100% 50% no-repeat;}
 .doclist tbody {
-	color: #333;
 	border: solid #CCC;
 	border-width: 0 1px;
 }
@@ -771,7 +770,6 @@ table.table4 + .action {border:0;}
 #sub .head ul li span {color: black;}
 #sub .head .more {
 	float: right;
-	color: #828282;
 	padding-top: .4em;
 	font-weight: normal;
 }
@@ -826,8 +824,10 @@ table.table4 + .action {border:0;}
 #sub .body .user, #sub .body .tweet-user, #sub .body .author, #sub .body .message, #sub .body .post_info {font-size: .9em;}
 #sub .body .user, #sub .body .tweet-user {font-weight: bold;}
 #sub .body .tweet-source {display:none;}
-#sub .body .author {font-style: italic;}
-#sub .body .message {color: #333;}
+#sub .body .author {
+	font-style: italic;
+	padding-bottom: 1em;
+}
 #sub .body img {margin-top: 5px;}
 #sub .special .body ul {
 	padding-left: 16px;
