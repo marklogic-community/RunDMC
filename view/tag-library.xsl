@@ -349,10 +349,11 @@
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
     <xsl:variable name="event"        select="ml:most-recent-event()"/>
     <xsl:variable name="events-by-date" select="ml:events-by-date()"/>
+    <xsl:variable name="announcements-by-date" select="ml:announcements-by-date()"/>
     <div class="double">
       <div>
         <h2>News</h2>
-        <xsl:apply-templates mode="news-excerpt" select="$announcement">
+        <xsl:apply-templates mode="news-excerpt" select="$announcement | $announcements-by-date[2][current()/@include-second-announcement]">
           <xsl:with-param name="suppress-more-link" select="string(@suppress-more-links) eq 'yes'" tunnel="yes"/>
         </xsl:apply-templates>
       </div>

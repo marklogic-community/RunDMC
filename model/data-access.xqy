@@ -94,6 +94,11 @@ declare variable $announcements-by-date := for $a in $Announcements
                                            order by $a/date descending
                                            return $a;
 
+        declare function announcements-by-date()
+        {
+          $announcements-by-date
+        };
+
         (: Apparently no longer used (see change in revision 240) :)
         declare function latest-user-group-announcement()
         {
