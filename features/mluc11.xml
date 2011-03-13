@@ -5,7 +5,7 @@
     <point>April 26-29 in San Francisco</point>
     <point>Party Thursday Evening</point>
     <point>Developer Labs &amp; Lounge, Wednesday-Friday</point>
-    <point><a href="/news/mluc11-demojam">DemoJam Tuesday Evening at the reception</a></point>
+    <point><a href="/news/mluc11-demojam-announce">DemoJam Tuesday Evening at the reception</a></point>
   </main-points>
 
 
@@ -33,7 +33,7 @@
     <!-- <caption>MarkLogic User's Conference.</caption> -->
     <caption>Don't get left behind.</caption> 
   </image>
-  <image src="/media/demojam-logo.png" width="100" alt="DemoJam!" href="/news/mluc11-demojam" >
+  <image src="/media/demojam-logo.png" width="100" alt="DemoJam!" href="/news/mluc11-demojam-announce" >
   </image>
 <!--
   <image width="128" height="150" src="/media/demo-jam.jpg" alt="Demo Jam"> 
