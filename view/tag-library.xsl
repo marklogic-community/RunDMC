@@ -88,7 +88,7 @@
 
                           <xsl:template mode="feature-content" match="point">
                             <li>
-                                <xsl:apply-templates/>
+                                <xsl:copy-of select="./node()"/>
                             </li>
                           </xsl:template>
 
