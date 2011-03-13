@@ -378,9 +378,11 @@
                 <xsl:apply-templates mode="read-more" select="."/>
               </xsl:if>
             </p>
+            <p>
             <xsl:if test="not($read-more-inline)">
               <xsl:apply-templates mode="read-more" select="."/>
             </xsl:if>
+            </p>
             <xsl:apply-templates mode="more-link" select="."/>
           </xsl:template>
 
