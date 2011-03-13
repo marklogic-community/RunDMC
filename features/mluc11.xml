@@ -5,7 +5,7 @@
     <point>April 26-29 in San Francisco</point>
     <point>Party Thursday Evening</point>
     <point>Developer Labs &amp; Lounge, Wednesday-Friday</point>
-    <point>DemoJam details forthcoming</point>
+    <point><a href="/news/mluc11-demojam">DemoJam Tuesday Evening at the reception</a></point>
   </main-points>
 
 
@@ -27,12 +27,13 @@
     <caption>Demos.</caption>
   </image>
   <image src="http://www.marklogic.com/UserConference2011/images/twitterTagBig.jpg" alt="Demo">
-  -->
   <image src="http://www.marklogicevents.com/img/logo.png" alt="MLUC11" href="http://www.marklogicevents.com/" >
+  -->
+  <image src="/media/twitter-hashtag-mluc11.jpg" alt="mluc11" href="http://twitter.com/#search?q=mluc11">
     <!-- <caption>MarkLogic User's Conference.</caption> -->
     <caption>Don't get left behind.</caption> 
   </image>
-  <image src="/media/twitter-hashtag-mluc11.jpg" alt="mluc11" href="http://twitter.com/#search?q=mluc11">
+  <image src="/media/demojam-logo.png" width="100" alt="DemoJam!" href="/news/mluc11-demojam" >
   </image>
 <!--
   <image width="128" height="150" src="/media/demo-jam.jpg" alt="Demo Jam"> 
