@@ -34,8 +34,7 @@ else
   JAVA=java
 fi
 
-# DMC XDBC servers on port 10k
-F=dmc-stage.marklogic.com:10000
+F=dmc-stage.marklogic.com:8007
 T=${1}:${2}
 # And some credentials
 FCREDS='reader:read3r'
