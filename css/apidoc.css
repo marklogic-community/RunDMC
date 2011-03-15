@@ -1,0 +1,23 @@
+#content {
+ background: white;
+}
+
+#container {
+  width: auto;
+}
+
+#main {
+  width: 80%;
+  float: right;
+  padding: 0px;
+}
+
+#sub {
+	width: 15%;
+	float: left;
+  padding: 5px;
+}
+
+#apidoc_toc {
+  padding: 10px;
+}

@@ -155,8 +155,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Ignore these URLs :)
     else if (starts-with($path,'/private/')) then
         $orig-url
-    (: Deny access to the Admin site scripts from this server :)
-    else if (starts-with($path,'/admin/')) then
+    (: Deny access to the Admin site scripts and API docs from this server :)
+    else if (starts-with($path,'/admin/') or
+             starts-with($path,'/apidoc/')) then
         error((), "Access denied.")
     (: Respond with DB contents for /media and /pubs :)
     else if (starts-with($path, '/media/')) then 
