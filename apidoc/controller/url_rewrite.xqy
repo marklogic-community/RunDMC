@@ -13,7 +13,7 @@ else if (starts-with($path, '/media/')) then
    concat("/controller/get-db-file.xqy?uri=", $path)
 (: If doc is found, then transform it :)
 else if (doc-available($doc-url)) then 
-  concat("/apidoc/controller/transform.xqy?src=", $path, "&amp;", $query-string)
+  concat("/apidoc/controller/transform.xqy?src=/apidoc", $path, "&amp;", $query-string)
 (: remove version from the URL for versioned assets :)
 else if (matches($path, '^/(js|css|images|media)/v-[0-9]*/.*'))  then 
     replace($path, '/v-[0-9]*', '')

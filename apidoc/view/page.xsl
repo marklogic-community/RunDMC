@@ -10,6 +10,7 @@
   exclude-result-prefixes="xs ml xdmp">
 
   <xsl:import href="../../view/page.xsl"/>
+  <xsl:import href="xquery-imports.xsl"/>
 
   <xsl:include href="tag-library.xsl"/>
 

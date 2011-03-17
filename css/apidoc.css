@@ -21,3 +21,9 @@
 #apidoc_toc {
   padding: 10px;
 }
+
+.function_name {
+font: normal 1em "Courier New", Courier, Monospace;
+white-space: nowrap;
+font-weight: bold;
+}
