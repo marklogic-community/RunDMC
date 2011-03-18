@@ -155,9 +155,6 @@
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$params"/>
     </xsl:if>
-    <xsl:if test="$params[@name eq 'commented']">
-      <div class="alert">Thank you for your comment. It has been submitted for moderation.</div>
-    </xsl:if>
     <xsl:apply-templates mode="page-content"    select="$content/*"/>
     <xsl:apply-templates mode="comment-section" select="$content/*"/>
   </xsl:template>
