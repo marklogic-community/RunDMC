@@ -6,24 +6,22 @@
   width: auto;
 }
 
+#page_content {
+  padding: 0px 30px;
+}
+
 #main {
   width: 80%;
-  /*
-  left:20%;
-  */
   float: none;
   padding: 0px;
   right: 0px;
-  overflow-y: auto;
-  overflow-x: auto;
 }
 
 #sub {
-	width: 15%;
+	width: 20%;
   /*
 	float: left;
   */
-  padding: 5px;
 
   font-weight: bold;
   color: #333333;
@@ -39,6 +37,7 @@
 }
 
 #apidoc_toc {
+  padding: 8px;
 }
 
 .function_name {
@@ -53,4 +52,14 @@ font-weight: bold;
 
 .currentPage {
   color: #F86D07;
+}
+
+code.syntax {
+  white-space: pre;
+  font-size: 1.4em;
+}
+
+.example pre {
+  font-size: 1.3em;
+  line-height: 140%;
 }

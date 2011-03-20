@@ -25,7 +25,7 @@
             $.cookie("tocScroll", $("#sub").scrollTop(), { expires: 7 });
         }
 
-        $('#sub').load('<xsl:value-of select="$api:toc-url"/>', function() {
+        $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
           $("#sub").scrollTop($.cookie("tocScroll"));
           $("#sub a[href='/<xsl:value-of select="substring-after(ml:external-uri($content),'/')"/>']").addClass("currentPage");
         });
@@ -34,6 +34,9 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="api:function-list-page">
+    <!--
+    <div class="downloads">
+    -->
     <div class="doclist">
       <h2>&#160;</h2>
       <span class="amount">
@@ -72,6 +75,82 @@
               </td>
             </tr>
           </xsl:template>
+
+
+  <xsl:template mode="page-content" match="api:function-page">
+    <h1>
+      <xsl:value-of select="(api:function/@fullname)[1]"/> <!-- two are present if *:polygon() -->
+    </h1>
+    <xsl:apply-templates select="api:function"/>
+  </xsl:template>
+
+          <xsl:template match="api:function">
+            <code class="syntax">
+              <strong>
+                <xsl:value-of select="@fullname"/>
+              </strong>
+              <xsl:text>(</xsl:text>
+              <xsl:if test="api:params/api:param">
+                <xsl:text>&#xA;</xsl:text>
+              </xsl:if>
+              <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
+              <xsl:text>) as </xsl:text>
+              <xsl:value-of select="normalize-space(api:return)"/>
+            </code>
+            <xsl:apply-templates select="api:summary, api:params, api:usage, api:example"/>
+            <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
+              <br/>
+              <br/>
+              <hr/>
+            </xsl:if>
+          </xsl:template>
+
+                  <xsl:template mode="syntax" match="api:param">
+                    <xsl:text>   </xsl:text>
+                    <xsl:if test="@optional eq 'true'">[</xsl:if>
+                    <xsl:text>$</xsl:text>
+                    <xsl:value-of select="@name"/>
+                    <xsl:text> as </xsl:text>
+                    <xsl:value-of select="@type"/>
+                    <xsl:if test="@optional eq 'true'">]</xsl:if>
+                    <xsl:if test="position() ne last()">,</xsl:if>
+                    <xsl:text>&#xA;</xsl:text>
+                  </xsl:template>
+
+                  <xsl:template match="api:summary">
+                    <h2>Summary</h2>
+                    <xsl:apply-templates/>
+                  </xsl:template>
+
+                  <xsl:template match="api:params">
+                    <h2>Parameters</h2>
+                    <ol>
+                      <xsl:apply-templates select="api:param"/>
+                    </ol>
+                  </xsl:template>
+
+                          <xsl:template match="api:param">
+                            <li class="parameter">
+                              <code>
+                                  <xsl:text>$</xsl:text>
+                                  <xsl:value-of select="@name"/>
+                              </code>
+                              <xsl:text>: </xsl:text>
+                              <xsl:apply-templates/>
+                            </li>
+                          </xsl:template>
+
+                  <xsl:template match="api:usage">
+                    <h2>Usage notes</h2>
+                    <xsl:apply-templates/>
+                  </xsl:template>
+
+                  <xsl:template match="api:example">
+                    <h2>Example</h2>
+                    <div class="example">
+                      <xsl:apply-templates/>
+                    </div>
+                  </xsl:template>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>
