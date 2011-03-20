@@ -6,13 +6,21 @@
   exclude-result-prefixes="xs apidoc">
 
   <xsl:template match="/">
-    <xsl:apply-templates select="apidoc:module/apidoc:function"/>
+                                                              <!-- Function names aren't unique thanks to the way *:polygon()
+                                                                   is documented. -->
+    <xsl:apply-templates select="apidoc:module/apidoc:function[not(@fullname = preceding-sibling::apidoc:function/@fullname)]"/>
   </xsl:template>
 
   <!-- Extract each function as its own document -->
   <xsl:template match="apidoc:function">
     <xsl:result-document href="/apidoc/{@lib}:{@name}.xml">
-      <xsl:apply-templates mode="copy" select="."/>
+      <!-- This wrapper is necessary because the *:polygon() functions
+           are each (dubiously) documented as two separate functions so
+           that raises the possibility of needing to include two different
+           <api:function> elements in the same page. -->
+      <api:function-page>
+        <xsl:apply-templates mode="copy" select="../apidoc:function[@fullname eq current()/@fullname]"/>
+      </api:function-page>
     </xsl:result-document>
   </xsl:template>
 

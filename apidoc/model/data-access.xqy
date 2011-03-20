@@ -40,7 +40,7 @@ declare function function-count-for-module($module, $builtin) {
   let $query := if ($builtin) then $api:query-for-builtin-functions
                               else $api:query-for-library-functions
   return
-  xdmp:estimate(cts:search(fn:collection()/api:function[@lib eq $module], $query))
+  xdmp:estimate(cts:search(fn:collection()/api:function-page/api:function[@lib eq $module], $query))
 };
 
 declare function function-names-for-module($module, $builtin) {
