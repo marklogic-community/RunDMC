@@ -1,6 +1,9 @@
 xquery version "1.0-ml";
 module namespace api = "http://marklogic.com/rundmc/api";
 
+declare variable $api:toc-url-location := "/apidoc/private/tocURL.xml";
+declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
+
 declare variable $api:query-for-builtin-functions :=
   cts:element-attribute-value-query(xs:QName("api:function"),
                                     xs:QName("type"),
@@ -24,10 +27,13 @@ declare function get-modules($query, $builtin) {
                                          xs:QName("lib"), (), "ascending",
                                          $query)
   return
-    <api:module>{
-       if ($builtin) then attribute is-built-in { "yes" } else (),
-       $m
-    }</api:module>
+    <wrapper> <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
+      <api:module>{
+         if ($builtin) then attribute built-in { "yes" } else (),
+         $m
+      }</api:module>
+    </wrapper>
+    /api:module
 };
 
 declare function function-count-for-module($module, $builtin) {

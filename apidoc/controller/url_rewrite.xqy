@@ -7,10 +7,13 @@ return
 
 (: "/" means "/index.xml" (inside /apidoc) :)
 if ($path eq '/') then 
-  "/apidoc/controller/transform.xqy?src=/apidoc/index"
+  concat("/apidoc/controller/transform.xqy?src=/apidoc/index&amp;", $query-string)
 (: Respond with DB contents for /media :)
 else if (starts-with($path, '/media/')) then 
    concat("/controller/get-db-file.xqy?uri=", $path)
+(: Ignore these URLs :)
+else if (starts-with($path,'/private/')) then
+    $orig-url
 (: If doc is found, then transform it :)
 else if (doc-available($doc-url)) then 
   concat("/apidoc/controller/transform.xqy?src=/apidoc", $path, "&amp;", $query-string)

@@ -8,22 +8,49 @@
 
 #main {
   width: 80%;
-  float: right;
+  /*
+  left:20%;
+  */
+  float: none;
   padding: 0px;
+  right: 0px;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 #sub {
 	width: 15%;
+  /*
 	float: left;
+  */
   padding: 5px;
+
+  font-weight: bold;
+  color: #333333;
+  font-size: 0.9em;
+}
+
+#main, #sub {
+  overflow:auto;
+  position:fixed;
+  bottom:0px;
+  top:90px;
+  background: none repeat scroll 0 0 white;
 }
 
 #apidoc_toc {
-  padding: 10px;
 }
 
 .function_name {
-font: normal 1em "Courier New", Courier, Monospace;
+/*font: normal 1em "Courier New", Courier, Monospace;*/
 white-space: nowrap;
 font-weight: bold;
+}
+
+.doclist {
+  width: auto;
+}
+
+.currentPage {
+  color: #F86D07;
 }
