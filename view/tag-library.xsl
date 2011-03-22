@@ -499,6 +499,7 @@
     <a class="more" href="{@href}">Read&#160;more&#160;></a>
   </xsl:template>
 
+  <!-- Not currently used
   <xsl:template match="license-options">
     <div class="action">
       <ul>
@@ -508,6 +509,7 @@
       </ul>
     </div>
   </xsl:template>
+  -->
 
 
   <xsl:template match="document-list">
@@ -654,7 +656,9 @@
     <xsl:variable name="results-per-page" select="xs:integer(@results-per-page)"/>
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
 
-    <xsl:apply-templates mode="paginated-list-item" select="ml:list-segment-of-docs($start, $results-per-page, @type)"/>
+    <xsl:apply-templates mode="paginated-list-item" select="ml:list-segment-of-docs($start, $results-per-page, @type)">
+      <xsl:with-param name="disable-comment-count" select="false()"/> <!-- applicable just to blog posts for now -->
+    </xsl:apply-templates>
 
     <xsl:variable name="page-url">
       <xsl:apply-templates mode="paginated-page-url" select="."/>

@@ -543,10 +543,12 @@ h2.main_headline {margin: 2em 0 1em !important;}
 .repo {
     font-size: 1em;
 }
+/*
 table + .action {
 	border-top-color: #999;
 	margin-top: 0;
 }
+*/
 table.table4 + .action {border:0;}
 .doclist table + .action {
 	border: solid #CCC;

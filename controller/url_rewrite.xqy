@@ -155,10 +155,6 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Ignore these URLs :)
     else if (starts-with($path,'/private/')) then
         $orig-url
-    (: Deny access to the Admin site scripts and API docs from this server :)
-    else if (starts-with($path,'/admin/') or
-             starts-with($path,'/apidoc/')) then
-        error((), "Access denied.")
     (: Respond with DB contents for /media and /pubs :)
     else if (starts-with($path, '/media/')) then 
         concat("/controller/get-db-file.xqy?uri=", $path)
@@ -168,8 +164,11 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (doc-available($doc-url) and draft:allow(doc($doc-url)/*)) then 
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
     (: Respond with DB contents for directories that have index.xml files :)
+(: EDL: I don't see where this is used; right now, it just creates false positives (as with /admin/index.xml)
+        Also, it was including ".xml" in the "src" parameter, so it wasn't working anyway.
     else if (u:is-directory($dir-url) and doc-available($index-url)) then 
-        concat("/controller/transform.xqy?src=", $index-url, "&amp;", $query-string)
+        concat("/controller/transform.xqy?src=", substring-before($index-url,'.xml'), "&amp;", $query-string)
+:)
     (: Support / as /index.xml; TBD other directory indexes :)
     else if ($path = ("/blog/atom.xml")) then
         "/lib/atom.xqy?feed=blog"
@@ -179,6 +178,9 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/get-updated-disqus-threads.xqy"
     else if ($path eq "/invalidateNavigationCache") then
         "/controller/invalidate-navigation-cache.xqy"
+    (: Control the visibility of files in the code base :)
+    else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
+        "/controller/notfound.xqy"
     else
         $orig-url
 };

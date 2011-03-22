@@ -22,11 +22,17 @@ fi
     PHYS_DIR=`pwd -P`
     RESULT=$PHYS_DIR/$TARGET_FILE
 
-BASE=$PHYS_DIR
+if [ "{$OS}" == "windowsnt" ]; then
+    SEP=';'
+    BASE="." # assume we're in the directory of the script for now
+else
+    BASE=$PHYS_DIR
+    SEP=':'
+fi
 
 CP=$BASE/lib/xcc.jar
-CP=$CP:$BASE/lib/xstream-1.3.1.jar
-CP=$CP:$BASE/lib/xqsync.jar
+CP=${CP}${SEP}${BASE}/lib/xstream-1.3.1.jar
+CP=${CP}${SEP}${BASE}/lib/xqsync.jar
 
 if [ -d "$JAVA_HOME" ]; then
   JAVA=$JAVA_HOME/bin/java

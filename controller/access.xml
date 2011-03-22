@@ -1,0 +1,12 @@
+<!-- Only file paths that begin with one of these
+     prefixes will be externally visible. -->
+<paths>
+  <prefix>/css/</prefix>
+  <prefix>/js/</prefix>
+  <prefix>/images/</prefix>
+  <prefix>/favicon.ico</prefix>
+  <prefix>/google978d12d96932d00a.html</prefix>
+  <prefix>/maven-license.html</prefix>
+  <prefix>/robots.txt</prefix>
+  <prefix>/controller/tracker.xqy</prefix>
+</paths>

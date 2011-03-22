@@ -45,4 +45,7 @@
   <!-- Don't ever add any special CSS classes -->
   <xsl:template mode="body-class-extra" match="*"/>
 
+  <!-- Always disable comments in the Admin UI -->
+  <xsl:template mode="comment-section" match="*"/>
+
 </xsl:stylesheet>
