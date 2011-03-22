@@ -108,8 +108,10 @@
                   <xsl:template mode="syntax" match="api:param">
                     <xsl:text>   </xsl:text>
                     <xsl:if test="@optional eq 'true'">[</xsl:if>
-                    <xsl:text>$</xsl:text>
-                    <xsl:value-of select="@name"/>
+                    <a href="#{@name}">
+                      <xsl:text>$</xsl:text>
+                      <xsl:value-of select="@name"/>
+                    </a>
                     <xsl:text> as </xsl:text>
                     <xsl:value-of select="@type"/>
                     <xsl:if test="@optional eq 'true'">]</xsl:if>
@@ -131,6 +133,7 @@
 
                           <xsl:template match="api:param">
                             <li class="parameter">
+                              <a name="{@name}"/>
                               <code>
                                   <xsl:text>$</xsl:text>
                                   <xsl:value-of select="@name"/>
