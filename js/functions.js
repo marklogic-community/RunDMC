@@ -260,5 +260,21 @@ if(typeof jQuery != 'undefined') {
         // end sortable table functionality
 
       // new functions should be added here
+
+      $(document).ready(function() {
+          // Could do with s tighter selector I spose
+          $('div.example pre').each(function(i, me) {
+              var editor = new CodeMirror(CodeMirror.replace(this), {
+                  path: "/js/CodeMirror-0.94/js/",
+                  parserfile: ["../contrib/xquery/js/tokenizexquery.js", 
+                                "../contrib/xquery/js/parsexquery.js"],
+                  stylesheet: "/js/CodeMirror-0.94/contrib/xquery/css/xqcolors.css",
+                  readOnly: true,
+                  lineNumbers: false,
+                  content: $(this).text()
+              });
+          });
+      });
+      
    });
 }
