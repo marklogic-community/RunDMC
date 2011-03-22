@@ -65,6 +65,18 @@ declare function disqus-identifier($node as node()) {
   comments-for-page($node)/@disqus_identifier/fn:string(.)
 };
 
+(: Insert a container for conversations pertaining to the given document (i.e. comments) :)
+declare function insert-comment-doc($doc-uri) {
+  let $comment-doc-uri := fn:concat('/private/comments', $doc-uri) return
+
+  (: Only insert a comments doc if there isn't one already present :)
+  if (fn:not(fn:doc-available($comment-doc-uri)))
+  then xdmp:document-insert($comment-doc-uri,
+                            document{ <ml:Comments disqus_identifier="disqus-{$doc-uri}"/> })
+  else ()
+};
+
+
 (: Get a range of documents for paginated parts of the site; used for Blog, News, and Events :)
 declare function list-segment-of-docs($start as xs:integer, $count as xs:integer, $type as xs:string)
 {

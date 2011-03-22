@@ -2,6 +2,8 @@ xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
        at "../model/data-access.xqy";
+import module namespace ml="http://developer.marklogic.com/site/internal"
+       at "../../model/data-access.xqy";
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
@@ -40,10 +42,13 @@ declare function local:make-list-page($functions) {
 };
 
  
-"Inserting function docs...",
+"Inserting function docs and associated comment thread containers...",
 for $doc in $raw-docs return 
   for $func in xdmp:xslt-invoke("extract-functions.xsl", $doc) return
+  (
     xdmp:document-insert(fn:base-uri($func), $func),
+    ml:insert-comment-doc(fn:base-uri($func))
+  ),
 
 "Inserting master list...",
 xdmp:document-insert("/apidoc/index.xml", local:make-list-page($all-functions)),

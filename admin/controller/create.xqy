@@ -25,8 +25,7 @@ return
   xdmp:document-insert($new-doc-url, $new-doc),
 
   (: Insert a container for corresponding conversations (comments) :)
-  xdmp:document-insert(concat('/private/comments',$new-doc-url),
-                       document{ <ml:Comments disqus_identifier="disqus-{$new-doc-url}"/> }),
+  ml:insert-comment-doc($new-doc-url),
 
   (: Invalidate the navigation cache :)
   ml:invalidate-cached-navigation(),

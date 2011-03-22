@@ -21,6 +21,5 @@ declare variable $docs := ($ml:live-documents | $ml:pages);
 for $doc in $docs return (
   (: concat('/private/comments',base-uri($doc)):)
 
-  xdmp:document-insert(concat('/private/comments',base-uri($doc)),
-                       document{ <ml:Comments disqus_identifier="disqus-{base-uri($doc)}"/> })
+  ml:insert-comment-doc(base-uri($doc))
 )
