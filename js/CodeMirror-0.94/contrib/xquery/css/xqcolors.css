@@ -30,7 +30,11 @@ span.word {
 }
 
 span.xqueryKeyword {
+  /* EL changed: */
+  color: #F86D07; 
+  /*
   color: red; /* #1240AB; */
+  */
   /* font-weight: bold; */
 }
 
@@ -77,7 +81,11 @@ span.xqueryFunction {
 
 
 span.xqueryOperator {
+  /* EL changed: */
+  color: #F86D07; 
+    /*
     color: red;
+    */
 }
 
 span.xqueryPunctuation {
