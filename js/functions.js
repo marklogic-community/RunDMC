@@ -268,6 +268,7 @@ if(typeof jQuery != 'undefined') {
                   path: "/js/CodeMirror-0.94/js/",
                   parserfile: ["../contrib/xquery/js/tokenizexquery.js", 
                                 "../contrib/xquery/js/parsexquery.js"],
+                  height: "dynamic",
                   stylesheet: "/js/CodeMirror-0.94/contrib/xquery/css/xqcolors.css",
                   readOnly: true,
                   lineNumbers: false,
