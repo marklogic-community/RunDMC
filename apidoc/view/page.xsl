@@ -74,8 +74,11 @@
 
           <xsl:template match="api:function-listing">
             <tr>
-              <td>
+              <td style="white-space: nowrap;">
                 <a href="/{api:name}">
+                  <xsl:if test="api:name/@indent">
+                    <xsl:attribute name="class" select="'indented_function'"/>
+                  </xsl:if>
                   <xsl:value-of select="api:name"/>
                 </a>
               </td>

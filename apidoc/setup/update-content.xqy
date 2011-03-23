@@ -39,7 +39,14 @@ declare function local:make-list-page($functions, $descriptor, $are-namespace-sp
 
       for $func in $functions order by $func/@fullname return
         <api:function-listing>
-          <api:name>{fn:string($func/@fullname)}</api:name>
+          <api:name>{
+            (: Special-case the cts accessor functions; they should be indented :)
+            if ($func/@lib eq 'cts' and contains($func/@fullname,"-query-"))
+            then attribute indent {"yes"}
+            else (),
+
+            fn:string($func/@fullname)
+          }</api:name>
           <api:description>{
             (: Use the same code that docapp uses for extracting the summary (first line) :)
             fn:concat(fn:tokenize($func/apidoc:summary,"\.(\s+|\s*$)")[1], ".")

@@ -63,3 +63,7 @@ code.syntax {
   font-size: 1.3em;
   line-height: 140%;
 }
+
+.indented_function {
+  margin-left: 2em;
+}
