@@ -34,7 +34,7 @@
   </xsl:template>
 
   <xsl:template mode="page-specific-title" match="api:function-list-page">
-    <xsl:value-of select="@prefix"/>
+    <xsl:value-of select="@title-prefix"/>
     <xsl:text> functions</xsl:text>
   </xsl:template>
 

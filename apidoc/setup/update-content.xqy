@@ -23,13 +23,19 @@ declare variable $library-functions  := $raw-docs/*/apidoc:function[not(@type eq
 declare variable $built-in-modules := distinct-values($built-in-functions/@lib);
 declare variable $library-modules  := distinct-values($library-functions/@lib);
 
-declare function local:make-list-page($functions) {
-  let $prefix := fn:string($functions[1]/@lib),
-      $ns-uri := api:uri-for-prefix($prefix) return
+declare function local:make-list-page($functions, $descriptor, $are-namespace-specific) {
 
   document {
     (: Being careful to avoid the element name "api:function", which we've reserved already :)
-    <api:function-list-page namespace="{$ns-uri}" prefix="{$prefix}" disable-comments="yes">{
+    <api:function-list-page title-prefix="{$descriptor}" disable-comments="yes">{
+
+      if ($are-namespace-specific) then
+        let $prefix := $descriptor,
+            $ns-uri := api:uri-for-prefix($prefix) return
+         (attribute namespace { $ns-uri },
+          attribute prefix    { $prefix }
+         )
+      else (),
 
       for $func in $functions order by $func/@fullname return
         <api:function-listing>
@@ -54,12 +60,12 @@ for $doc in $raw-docs return
   ),
 
 "Inserting master list...",
-xdmp:document-insert("/apidoc/index.xml", local:make-list-page($all-functions)),
+xdmp:document-insert("/apidoc/index.xml", local:make-list-page($all-functions, "All", false())),
 
 "Inserting list for each built-in module...",
 for $m in $built-in-modules return
   xdmp:document-insert(fn:concat("/apidoc/", $m, ".xml"),
-                       local:make-list-page($built-in-functions[@lib eq $m])
+                       local:make-list-page($built-in-functions[@lib eq $m], $m, true())
                       ),
 
 "Inserting list for each library module...",
@@ -67,14 +73,14 @@ for $m in $library-modules return
   (: Workaround for "spell" which includes both built-in and library functions :)
   let $path := if ($m eq 'spell') then 'spell-lib' else $m return
   xdmp:document-insert(fn:concat("/apidoc/", $path, ".xml"),
-                       local:make-list-page($library-functions[@lib eq $m])
+                       local:make-list-page($library-functions[@lib eq $m], $m, true())
                       ),
 
 "Inserting built-in master list...",
-xdmp:document-insert("/apidoc/built-in.xml", local:make-list-page($built-in-functions)),
+xdmp:document-insert("/apidoc/built-in.xml", local:make-list-page($built-in-functions, "All built-in", false())),
 
 "Inserting library master list...",
-xdmp:document-insert("/apidoc/library.xml", local:make-list-page($library-functions)),
+xdmp:document-insert("/apidoc/library.xml", local:make-list-page($library-functions, "All library", false())),
 
 (: Run as a subsequent transaction, because it depends on the documents inserted above. :)
 xdmp:invoke("update-toc.xqy")
