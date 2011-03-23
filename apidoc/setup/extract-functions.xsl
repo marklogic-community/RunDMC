@@ -3,7 +3,11 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:api="http://marklogic.com/rundmc/api"
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs apidoc">
+
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
 
   <xsl:template match="/">
                                                               <!-- Function names aren't unique thanks to the way *:polygon()
@@ -34,8 +38,18 @@
   <!-- Copy elements, but rename "apidoc" to "api" so we never have any namespace clashes -->
   <xsl:template mode="copy" match="apidoc:*">
     <xsl:element name="{name()}" namespace="http://marklogic.com/rundmc/api">
-      <xsl:apply-templates mode="#current" select="@* | node()"/>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="add-att" select="."/>
+      <xsl:apply-templates mode="#current"/>
     </xsl:element>
   </xsl:template>
+
+          <!-- By default, don't add any attributes -->
+          <xsl:template mode="add-att" match="*"/>
+
+          <!-- Add the namespace URI of the function to the <api:function> result -->
+          <xsl:template mode="add-att" match="apidoc:function">
+            <xsl:attribute name="namespace" select="api:uri-for-prefix(@lib)"/>
+          </xsl:template>
 
 </xsl:stylesheet>

@@ -24,9 +24,12 @@ declare variable $built-in-modules := distinct-values($built-in-functions/@lib);
 declare variable $library-modules  := distinct-values($library-functions/@lib);
 
 declare function local:make-list-page($functions) {
+  let $prefix := fn:string($functions[1]/@lib),
+      $ns-uri := api:uri-for-prefix($prefix) return
+
   document {
     (: Being careful to avoid the element name "api:function", which we've reserved already :)
-    <api:function-list-page>{
+    <api:function-list-page namespace="{$ns-uri}" prefix="{$prefix}">{
 
       for $func in $functions order by $func/@fullname return
         <api:function-listing>

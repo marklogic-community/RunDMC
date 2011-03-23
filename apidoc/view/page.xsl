@@ -13,7 +13,7 @@
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
 
-  <xsl:include href="tag-library.xsl"/>
+  <xsl:variable name="site-title" select="'MarkLogic API Documentation'"/>
 
   <xsl:variable name="template"   select="u:get-doc('/apidoc/config/template.xhtml')"/>
 
@@ -31,6 +31,15 @@
         });
       </script>
     </div>
+  </xsl:template>
+
+  <xsl:template mode="page-specific-title" match="api:function-list-page">
+    <xsl:value-of select="@prefix"/>
+    <xsl:text> functions</xsl:text>
+  </xsl:template>
+
+  <xsl:template mode="page-specific-title" match="api:function-page">
+    <xsl:value-of select="api:function[1]/@fullname"/>
   </xsl:template>
 
   <xsl:template mode="page-content" match="api:function-list-page">

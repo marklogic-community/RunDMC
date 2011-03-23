@@ -60,7 +60,7 @@
               <xsl:variable name="href">
                 <xsl:apply-templates mode="module-href" select="."/>
               </xsl:variable>
-              <a href="/{$href}">
+              <a href="/{$href}" title="{api:uri-for-prefix(.)}">
                 <xsl:value-of select="."/>: (<xsl:value-of select="api:function-count-for-module(.,@built-in)"/>)
               </a>
               <ul>

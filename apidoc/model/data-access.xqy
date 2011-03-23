@@ -1,5 +1,10 @@
 xquery version "1.0-ml";
-module namespace api = "http://marklogic.com/rundmc/api";
+
+              module namespace api = "http://marklogic.com/rundmc/api";
+declare default function namespace "http://marklogic.com/rundmc/api";
+
+import module namespace u = "http://marklogic.com/rundmc/util"
+       at "../../lib/util-2.xqy";
 
 declare variable $api:toc-url-location := "/apidoc/private/tocURL.xml";
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
@@ -60,4 +65,11 @@ declare function function-names-for-module($module, $builtin) {
                                             $query)
     return
       <api:function-name>{ $func }</api:function-name>
+};
+
+
+(: Returns the namespace URI at least conventionally associated with the given prefix :)
+declare function uri-for-prefix($prefix) {
+  fn:string(u:get-doc("/apidoc/config/namespace-mappings.xml")
+            /namespaces/namespace[@prefix eq $prefix]/@uri)
 };
