@@ -7,6 +7,12 @@ xquery version "1.0-ml";
 
 ; (: Create the new TOC :)
 
+"Generating XML TOC...",
+xdmp:document-insert("/media/apiTOC/toc.xml",
+                     xdmp:xslt-invoke("toc.xsl", document{ <empty/> }))
+
+; (: New transaction since this depends on toc.xml which we just created :)
+
 import module namespace api="http://marklogic.com/rundmc/api"
        at "../model/data-access.xqy";
 
@@ -18,6 +24,6 @@ xdmp:document-insert(
   document { <api:toc-url>{$toc-url}</api:toc-url>}
 ),
 
-"Generating TOC...",
+"Generating HTML TOC...",
 xdmp:document-insert($toc-url,
-                     xdmp:xslt-invoke("toc.xsl", document{ <empty/> }))
+                     xdmp:xslt-invoke("render-toc.xsl", doc("/media/apiTOC/toc.xml")))

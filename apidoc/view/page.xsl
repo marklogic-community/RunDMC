@@ -33,7 +33,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template mode="page-specific-title" match="api:function-list-page">
+  <xsl:template mode="page-specific-title" match="api:list-page">
     <xsl:value-of select="@title-prefix"/>
     <xsl:text> functions</xsl:text>
   </xsl:template>
@@ -42,14 +42,18 @@
     <xsl:value-of select="api:function[1]/@fullname"/>
   </xsl:template>
 
-  <xsl:template mode="page-content" match="api:function-list-page">
+  <xsl:template mode="page-content" match="api:list-page">
     <!--
     <div class="downloads">
     -->
+    <h1>
+      <xsl:apply-templates mode="page-specific-title" select="."/>
+    </h1>
+    <xsl:apply-templates select="api:intro"/>
     <div class="doclist">
       <h2>&#160;</h2>
       <span class="amount">
-        <xsl:variable name="count" select="count(api:function-listing)"/>
+        <xsl:variable name="count" select="count(api:list-entry)"/>
         <xsl:value-of select="$count"/>
         <xsl:text> function</xsl:text>
         <xsl:if test="$count gt 1">s</xsl:if>
@@ -66,13 +70,17 @@
           </tr>
         </thead>
         <tbody>
-          <xsl:apply-templates select="api:function-listing"/>
+          <xsl:apply-templates select="api:list-entry"/>
         </tbody>
       </table>
     </div>
   </xsl:template>
 
-          <xsl:template match="api:function-listing">
+          <xsl:template match="api:intro">
+            <xsl:copy-of select="node()"/>
+          </xsl:template>
+
+          <xsl:template match="api:list-entry">
             <tr>
               <td style="white-space: nowrap;">
                 <a href="/{api:name}">

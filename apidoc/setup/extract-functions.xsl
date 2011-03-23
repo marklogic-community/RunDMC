@@ -38,7 +38,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Copy elements, but rename "apidoc" to "api" so we never have any namespace clashes -->
+  <!-- Rename "apidoc" elements to "api" so it's clear which docs we're dealing with later -->
   <xsl:template mode="copy" match="apidoc:*">
     <xsl:element name="{name()}" namespace="http://marklogic.com/rundmc/api">
       <xsl:apply-templates mode="#current" select="@*"/>
@@ -52,7 +52,13 @@
 
           <!-- Add the namespace URI of the function to the <api:function> result -->
           <xsl:template mode="add-att" match="apidoc:function">
-            <xsl:attribute name="namespace" select="api:uri-for-prefix(@lib)"/>
+            <xsl:attribute name="prefix" select="@lib"/>
+            <xsl:attribute name="namespace" select="api:uri-for-lib(@lib)"/>
           </xsl:template>
+
+  <!-- Change the "spell" library to "spell-lib" to disambiguate from the built-in "spell" module -->
+  <xsl:template mode="copy" match="apidoc:function[@lib eq 'spell' and not(@type eq 'builtin')]/@lib">
+    <xsl:attribute name="lib" select="'spell-lib'"/>
+  </xsl:template>
 
 </xsl:stylesheet>

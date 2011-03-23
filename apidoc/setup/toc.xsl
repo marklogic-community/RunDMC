@@ -1,194 +1,62 @@
-<!-- This stylesheet generates the TOC based on the current
+<!-- This stylesheet generates the XML-based TOC based on the current
      database contents. It is not run at user request time;
      we invoke it as part of the bulk content update process
      in /apidoc/setup/update-content.xqy.
+
+     It is used both in rendering the HTML TOC as well as in
+     driving the generation of function list pages.
 -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns      ="http://www.w3.org/1999/xhtml"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:docapp="http://marklogic.com/docapp/contents"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xmlns:cts="http://marklogic.com/cts"
   xmlns:api="http://marklogic.com/rundmc/api"
-  exclude-result-prefixes="xs ml xdmp docapp cts api"
-  extension-element-prefixes="xdmp">
+  exclude-result-prefixes="xs api">
 
   <xsl:import href="../view/page.xsl"/>
 
-  <xsl:template match="/">
-    <div>
-      <script type="text/javascript">
-      $(function() {
-        $("#apidoc_tree").treeview({
-          collapsed: true,
-  /*        animated: "medium",*/
-  /*        control:"#sidetreecontrol",*/
-          persist: "cookie"
-        });
-      })
-      </script>
+  <xsl:include href="tocByCategory.xsl"/>
 
-      <div>API Reference</div>
-      <ul id="apidoc_tree">
-        <li>
-          <a href="/built-in">Built-in functions (<xsl:value-of select="$api:built-in-function-count"/>)</a>
-          <ul>
-            <xsl:apply-templates select="$api:built-in-modules"/>
-          </ul>
-        </li>
-        <li>
-          <a href="/library">Library functions (<xsl:value-of select="$api:library-function-count"/>)</a>
-          <ul>
-            <xsl:apply-templates select="$api:library-modules"/>
-          </ul>
-        </li>
-      <!--
-      <xsl:apply-templates mode="convert-toc-tree" select="xdmp:invoke('../model/contents.xqy', (), $options)"/>
-      -->
-        <li>
-          <!-- This is bound to be slow, but that's okay, because we pre-generate this TOC -->
-          <span>Functions by category</span>
-          <ul>
-            <xsl:variable name="functions" select="collection()/api:function-page/api:function"/>
-            <xsl:variable name="forced-order" select="('XQuery Library Modules', 'MarkLogic Built-In Functions')"/>
-            <xsl:for-each select="distinct-values($functions/@bucket)">
-              <xsl:sort select="index-of($forced-order, .)" order="descending"/>
-              <xsl:sort select="."/>
-              <li>
-                <a href="">
-                  <xsl:value-of select="."/>
-                </a>
-                <ul>
-                  <xsl:variable name="in-this-bucket" select="$functions[@bucket eq current()]"/>
-                  <xsl:for-each select="distinct-values($in-this-bucket/@category)">
-                    <xsl:sort select="."/>
-                    <li>
-                      <a href="">
-                        <xsl:value-of select="."/>
-                      </a>
-                      <xsl:variable name="in-this-category" select="$in-this-bucket[@category eq current()]"/>
-                      <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
-                      <xsl:choose>
-                        <xsl:when test="$sub-categories">
-                          <ul>
-                            <xsl:for-each select="$sub-categories">
-                              <xsl:sort select="."/>
-                              <li>
-                                <a href="">
-                                  <xsl:value-of select="."/>
-                                </a>
-                                <ul>
-                                  <xsl:for-each select="$in-this-category[@subcategory eq current()]">
-                                    <xsl:sort select="@fullname"/>
-                                    <li>
-                                      <a href="/{@fullname}">
-                                        <xsl:value-of select="@fullname"/>
-                                      </a>
-                                    </li>
-                                  </xsl:for-each>
-                                </ul>
-                              </li>
-                            </xsl:for-each>
-                          </ul>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <ul>
-                            <xsl:for-each select="$in-this-category">
-                              <xsl:sort select="@fullname"/>
-                              <li>
-                                <a href="/{@fullname}">
-                                  <xsl:value-of select="@fullname"/>
-                                </a>
-                              </li>
-                            </xsl:for-each>
-                          </ul>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </li>
-                  </xsl:for-each>
-                </ul>
-              </li>
-            </xsl:for-each>
-          </ul>
-        </li>
-        <li>User Guides</li>
-      </ul>
-    </div>
+  <xsl:template match="/">
+    <toc>
+      <node hidden="yes" href="/" title-prefix="All">
+        <intro>
+          <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
+        </intro>
+        <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title-prefix="All built-in">
+          <intro>
+            <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
+          </intro>
+          <xsl:apply-templates select="$api:built-in-libs"/>
+        </node>
+        <node href="/library" display="Library functions ({$api:library-function-count})" title-prefix="All library">
+          <intro>
+            <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
+          </intro>
+          <xsl:apply-templates select="$api:library-libs"/>
+        </node>
+      </node>
+      <node display="Functions by category">
+        <xsl:call-template name="functions-by-category"/>
+      </node>
+      <node href="/guides" display="User Guides">
+        <node href="/guides/app-dev" display="Application Developer's Guide"/>
+      </node>
+    </toc>
   </xsl:template>
 
-          <xsl:template match="api:module">
-            <li>
-              <xsl:variable name="href">
-                <xsl:apply-templates mode="module-href" select="."/>
-              </xsl:variable>
-              <a href="/{$href}" title="{api:uri-for-prefix(.)}">
-                <xsl:value-of select="."/>: (<xsl:value-of select="api:function-count-for-module(.,@built-in)"/>)
-              </a>
-              <ul>
-                <xsl:apply-templates select="api:function-names-for-module(.,@built-in)"/>
-              </ul>
-            </li>
+          <xsl:template match="api:lib">
+            <node href="/{.}" display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})" namespace="{api:uri-for-lib(.)}" title-prefix="{api:prefix-for-lib(.)}">
+              <intro>
+                <!--
+                <xsl:copy-of select="api:get-summary-for-lib(.)"/>
+                -->
+              </intro>
+              <xsl:apply-templates select="api:function-names-for-lib(.)"/>
+            </node>
           </xsl:template>
-
-
-                  <!-- By default, just use the name of the module -->
-                  <xsl:template mode="module-href" match="api:module">
-                    <xsl:value-of select="."/>
-                  </xsl:template>
-
-                  <!-- But special-case the "spell" library, since "spell" also appears as a built-in module,
-                       and we need to disambiguate the two -->
-                  <xsl:template mode="module-href" match="api:module[. eq 'spell'][not(@built-in)]">
-                    <xsl:text>spell-lib</xsl:text>
-                  </xsl:template>
-
 
                   <xsl:template match="api:function-name">
-                    <li class="function_name" id="{.}">
-                      <a href="/{.}">
-                        <xsl:value-of select="."/>
-                      </a>
-                    </li>
+                    <node href="/{.}" display="{.}" type="function"/>
                   </xsl:template>
 
-
-          <xsl:template mode="convert-toc-tree" match="all">
-            <ul id="apidoc_tree">
-              <xsl:apply-templates mode="#current"/>
-            </ul>
-          </xsl:template>
-
-          <xsl:template mode="convert-toc-tree" match="top | sections | section | subsection | subsubsection">
-            <li>
-              <a href="?{@uri}">
-                <xsl:value-of select="@label"/>
-              </a>
-              <xsl:if test="*">
-                <ul>
-                  <xsl:apply-templates mode="#current"/>
-                </ul>
-              </xsl:if>
-            </li>
-          </xsl:template>
-
-          <xsl:template mode="convert-toc-tree" match="xhtml:div[@class eq 'treeNode']">
-            <li>
-              <xsl:apply-templates mode="#current"/>
-            </li>
-          </xsl:template>
-
-          <xsl:template mode="convert-toc-tree" match="xhtml:img"/>
-
-          <xsl:template mode="convert-toc-tree" match="xhtml:a">
-            <xsl:copy>
-              <xsl:apply-templates mode="#current"/>
-            </xsl:copy>
-          </xsl:template>
-
-
 </xsl:stylesheet>
-
