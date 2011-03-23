@@ -29,7 +29,7 @@ declare function local:make-list-page($functions) {
 
   document {
     (: Being careful to avoid the element name "api:function", which we've reserved already :)
-    <api:function-list-page namespace="{$ns-uri}" prefix="{$prefix}">{
+    <api:function-list-page namespace="{$ns-uri}" prefix="{$prefix}" disable-comments="yes">{
 
       for $func in $functions order by $func/@fullname return
         <api:function-listing>
