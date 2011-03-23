@@ -28,6 +28,9 @@
     </xsl:result-document>
   </xsl:template>
 
+  <!-- Ignore hidden functions -->
+  <xsl:template match="apidoc:function[@hidden eq true()]"/>
+
   <!-- By default, copy everything unchanged -->
   <xsl:template mode="copy" match="@* | node()">
     <xsl:copy>
