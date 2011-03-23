@@ -49,7 +49,72 @@
       <!--
       <xsl:apply-templates mode="convert-toc-tree" select="xdmp:invoke('../model/contents.xqy', (), $options)"/>
       -->
-        <li>Functions by category</li>
+        <li>
+          <!-- This is bound to be slow, but that's okay, because we pre-generate this TOC -->
+          <span>Functions by category</span>
+          <ul>
+            <xsl:variable name="functions" select="collection()/api:function-page/api:function"/>
+            <xsl:variable name="forced-order" select="('XQuery Library Modules', 'MarkLogic Built-In Functions')"/>
+            <xsl:for-each select="distinct-values($functions/@bucket)">
+              <xsl:sort select="index-of($forced-order, .)" order="descending"/>
+              <xsl:sort select="."/>
+              <li>
+                <a href="">
+                  <xsl:value-of select="."/>
+                </a>
+                <ul>
+                  <xsl:variable name="in-this-bucket" select="$functions[@bucket eq current()]"/>
+                  <xsl:for-each select="distinct-values($in-this-bucket/@category)">
+                    <xsl:sort select="."/>
+                    <li>
+                      <a href="">
+                        <xsl:value-of select="."/>
+                      </a>
+                      <xsl:variable name="in-this-category" select="$in-this-bucket[@category eq current()]"/>
+                      <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
+                      <xsl:choose>
+                        <xsl:when test="$sub-categories">
+                          <ul>
+                            <xsl:for-each select="$sub-categories">
+                              <xsl:sort select="."/>
+                              <li>
+                                <a href="">
+                                  <xsl:value-of select="."/>
+                                </a>
+                                <ul>
+                                  <xsl:for-each select="$in-this-category[@subcategory eq current()]">
+                                    <xsl:sort select="@fullname"/>
+                                    <li>
+                                      <a href="/{@fullname}">
+                                        <xsl:value-of select="@fullname"/>
+                                      </a>
+                                    </li>
+                                  </xsl:for-each>
+                                </ul>
+                              </li>
+                            </xsl:for-each>
+                          </ul>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <ul>
+                            <xsl:for-each select="$in-this-category">
+                              <xsl:sort select="@fullname"/>
+                              <li>
+                                <a href="/{@fullname}">
+                                  <xsl:value-of select="@fullname"/>
+                                </a>
+                              </li>
+                            </xsl:for-each>
+                          </ul>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </li>
+                  </xsl:for-each>
+                </ul>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </li>
         <li>User Guides</li>
       </ul>
     </div>
