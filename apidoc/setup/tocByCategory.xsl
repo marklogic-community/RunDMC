@@ -7,7 +7,13 @@
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
   xmlns:u  ="http://marklogic.com/rundmc/util"
-  exclude-result-prefixes="xs api apidoc toc u">
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  xmlns:docapp="http://marklogic.com/rundmc/docapp-data-access"
+  extension-element-prefixes="xdmp"
+  exclude-result-prefixes="xs api apidoc toc u docapp">
+
+  <!-- We look back into the docapp database to get the introductory content for each function list page -->
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/docapp-data-access" href="/apidoc/setup/docapp-data-access.xqy"/>
 
   <xsl:variable name="all-functions" select="collection()/api:function-page/api:function"/>
 
@@ -60,9 +66,7 @@
 
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
                 <intro>
-                  <!--
-                  <xsl:copy-of select="api:get-summary-for-category(.)"/>
-                  -->
+                  <xsl:copy-of select="toc:get-summary-for-category(.,())/node()"/>
                 </intro>
               </xsl:when>
               <!-- otherwise, don't create a page/link for this category -->
@@ -99,9 +103,7 @@
                     <xsl:if test="not($is-exhaustive)">
                       <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
                       <intro>
-                        <!--
-                        <xsl:copy-of select="api:get-summary-for-sub-category(.)"/>
-                        -->
+                        <xsl:copy-of select="toc:get-summary-for-category($category, $subcategory)/node()"/>
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->
@@ -189,6 +191,16 @@
             <xsl:param name="lib-for-all" as="xs:string?"/>
             <xsl:sequence select="if ($lib-for-all) then concat(' (', api:prefix-for-lib($lib-for-all), ':)')
                                                     else ()"/>
+          </xsl:function>
+
+          <xsl:function name="toc:get-summary-for-category" as="element()*">
+            <xsl:param name="cat"/>
+            <xsl:param name="subcat"/>
+            <xsl:variable name="summaries-with-category" select="$docapp:docs/apidoc:module/apidoc:summary[@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
+            <xsl:variable name="modules-with-category"   select="$docapp:docs/apidoc:module               [@category eq $cat]"/>
+            <xsl:sequence select="if ($summaries-with-category)
+                                 then $summaries-with-category
+                                 else $modules-with-category/apidoc:summary"/>
           </xsl:function>
 
 </xsl:stylesheet>
