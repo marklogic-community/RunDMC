@@ -30,20 +30,20 @@
           <xsl:variable name="category" select="."/>
           <xsl:variable name="in-this-category" select="$in-this-bucket[@category eq $category]"/>
 
-          <xsl:variable name="lib-for-all" select="toc:lib-for-all($in-this-category)"/>
+          <xsl:variable name="single-lib-for-category" select="toc:lib-for-all($in-this-category)"/>
 
-          <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, (), $lib-for-all)"/>
+          <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, (), $single-lib-for-category)"/>
 
           <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
-          <node display="{toc:display-category(.)}{toc:display-suffix($lib-for-all)}">
+          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}">
 
             <!-- When there are sub-categories, don't create a new page for the category (they tend to be useless);
                  only create a link if it corresponds to a full lib page -->
             <xsl:choose>
               <xsl:when test="$is-exhaustive">
-                <xsl:attribute name="href" select="concat('/',$lib-for-all)"/>
+                <xsl:attribute name="href" select="concat('/',$single-lib-for-category)"/>
               </xsl:when>
               <!-- Create a new page for this category if it doesn't contain sub-categories
                    and does not already correspond to a full lib page -->
@@ -70,14 +70,19 @@
 
                   <xsl:variable name="in-this-subcategory" select="$in-this-category[@subcategory eq $subcategory]"/>
 
-                  <xsl:variable name="lib-for-all" select="toc:lib-for-all($in-this-subcategory)"/>
+                  <xsl:variable name="single-lib-for-subcategory" select="toc:lib-for-all($in-this-subcategory)"/>
 
-                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $lib-for-all)"/>
+                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $single-lib-for-subcategory)"/>
 
-                  <xsl:variable name="href" select="if ($is-exhaustive) then concat('/',$lib-for-all)
+                  <xsl:variable name="href" select="if ($is-exhaustive) then concat('/',$single-lib-for-subcategory)
                                                                         else toc:path-for-sub-category(.)"/>
 
-                  <node href="{$href}" display="{toc:display-category(.)}{toc:display-suffix($lib-for-all)}">
+                                                      <!-- Don't display, e.g, "(xdmp:)" if the parent node already has it -->
+                  <xsl:variable name="suffix" select="if ($single-lib-for-subcategory and not($single-lib-for-category))
+                                                      then toc:display-suffix($single-lib-for-subcategory)
+                                                      else ()"/>
+
+                  <node href="{$href}" display="{toc:display-category(.)}{$suffix}">
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
                       <intro>
@@ -126,9 +131,12 @@
           </xsl:function>
 
 
+          <!-- Returns true if all the functions are in the same library (special case: not counting "exsl") -->
           <xsl:function name="toc:lib-for-all" as="xs:string?">
             <xsl:param name="functions"/>
-            <xsl:sequence select="if (count(distinct-values($functions/@lib)) eq 1)
+            <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
+            <xsl:sequence select="if (count($libs) eq 1
+                                   or count($libs) eq 2 and $libs = 'exsl') (: special-case: don't let the presence of exsl count :)
                                   then string($functions[1]/@lib)
                                   else ()"/>
           </xsl:function>
