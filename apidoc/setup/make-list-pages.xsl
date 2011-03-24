@@ -1,3 +1,7 @@
+<!-- This stylesheet constructs the XML-based TOC, including
+     introductory HTML for each section. This is used to generate
+     both the HTML TOC and the "list" pages with their introductory
+     content. -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"

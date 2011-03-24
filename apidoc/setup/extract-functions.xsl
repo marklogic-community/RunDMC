@@ -1,3 +1,6 @@
+<!-- This stylesheet processes an <apidoc:module> document (from the docapp database)
+     and creates a new <api:function> document for each uniquely-named <apidoc:function>
+     element it finds. -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"

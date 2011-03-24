@@ -1,7 +1,7 @@
 <!-- This stylesheet generates the XML-based TOC based on the current
      database contents. It is not run at user request time;
      we invoke it as part of the bulk content update process
-     in /apidoc/setup/update-content.xqy.
+     in the /apidoc/setup scripts.
 
      It is used both in rendering the HTML TOC as well as in
      driving the generation of function list pages.
