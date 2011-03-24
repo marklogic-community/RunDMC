@@ -24,8 +24,7 @@
   </xsl:template>
 
   <xsl:template match="node">
-                            <!-- TODO: add @title-prefix to more cases in the input -->
-    <api:list-page title-prefix="{@title-prefix}" disable-comments="yes">
+    <api:list-page title="{@title}" disable-comments="yes">
 
       <!-- TODO: add these to the input when applicable (toc-generation code) -->
       <xsl:copy-of select="@prefix | @namespace"/>

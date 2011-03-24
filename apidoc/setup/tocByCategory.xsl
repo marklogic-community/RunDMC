@@ -53,9 +53,12 @@
                    and does not already correspond to a full lib page -->
               <xsl:when test="not($sub-categories)">
 
-                <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch -->
+                <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch;
+                                 in other words, every function list page only pertains to one library, at least ostensibly ("exsl" exception below). -->
                 <xsl:attribute name="href" select="concat('/',$single-lib-for-category,
                                                           '/',toc:path-for-category(.))"/>
+
+                <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
                 <intro>
                   <!--
                   <xsl:copy-of select="api:get-summary-for-category(.)"/>
@@ -94,6 +97,7 @@
                   <node href="{$href}" display="{toc:display-category(.)}{$suffix}">
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
+                      <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
                       <intro>
                         <!--
                         <xsl:copy-of select="api:get-summary-for-sub-category(.)"/>
@@ -125,6 +129,15 @@
                                  else translate(lower-case(toc:display-category($cat)), ' ', '-')"/>
           </xsl:function>
 
+          <xsl:function name="toc:category-page-title">
+            <xsl:param name="cat"/>
+            <xsl:param name="lib"/>
+            <xsl:value-of select="$lib"/>
+            <xsl:text> functions (</xsl:text>
+            <xsl:value-of select="toc:display-category($cat)"/>
+            <xsl:text>)</xsl:text>
+          </xsl:function>
+
           <xsl:function name="toc:function-name-nodes">
             <xsl:param name="functions"/>
             <xsl:for-each select="$functions">
@@ -142,7 +155,10 @@
             <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
             <xsl:sequence select="if (count($libs) eq 1 
                                    or count($libs) eq 2 and $libs = 'exsl') (: special-case: don't let the presence of exsl count :)
-                                  then string($functions[1]/@lib)
+                                  then string(($functions/@lib
+                                                        [. ne 'exsl' or (every $lib in $functions/@lib satisfies ($lib eq 'exsl'))]
+                                              )[1]
+                                             )
                                   else ()"/>
           </xsl:function>
 

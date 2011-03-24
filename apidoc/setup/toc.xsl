@@ -18,17 +18,17 @@
 
   <xsl:template match="/">
     <toc>
-      <node hidden="yes" href="/" title-prefix="All">
+      <node hidden="yes" href="/" title="All functions">
         <intro>
           <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
         </intro>
-        <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title-prefix="All built-in">
+        <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
           <intro>
             <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
           </intro>
           <xsl:apply-templates select="$api:built-in-libs"/>
         </node>
-        <node href="/library" display="Library functions ({$api:library-function-count})" title-prefix="All library">
+        <node href="/library" display="Library functions ({$api:library-function-count})" title="All library functions">
           <intro>
             <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
           </intro>
@@ -45,7 +45,7 @@
   </xsl:template>
 
           <xsl:template match="api:lib">
-            <node href="/{.}" display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})" namespace="{api:uri-for-lib(.)}" title-prefix="{api:prefix-for-lib(.)}">
+            <node href="/{.}" display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})" namespace="{api:uri-for-lib(.)}" title="{api:prefix-for-lib(.)} functions">
               <intro>
                 <!--
                 <xsl:copy-of select="api:get-summary-for-lib(.)"/>

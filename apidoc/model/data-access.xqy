@@ -71,38 +71,3 @@ declare function uri-for-lib($lib) {
 declare function prefix-for-lib($lib) {
   fn:string($namespace-mappings[@lib eq $lib]/(if (@prefix) then @prefix else $lib))
 };
-
-
-declare function make-list-page($functions, $descriptor, $are-namespace-specific) {
-
-  document {
-    (: Being careful to avoid the element name "api:function", which we've reserved already :)
-    <api:function-list-page title-prefix="{$descriptor}" disable-comments="yes">{
-
-      if ($are-namespace-specific) then
-        let $prefix := $descriptor,
-            $ns-uri := api:uri-for-lib($prefix) return
-         (attribute namespace { $ns-uri },
-          attribute prefix    { $prefix }
-         )
-      else (),
-
-      for $func in $functions order by $func/@fullname return
-        <api:function-listing>
-          <api:name>{
-            (: Special-case the cts accessor functions; they should be indented :)
-            if ($func/@lib eq 'cts' and fn:contains($func/@fullname,"-query-"))
-            then attribute indent {"yes"}
-            else (),
-
-            fn:string($func/@fullname)
-          }</api:name>
-          <api:description>{
-            (: Use the same code that docapp uses for extracting the summary (first line) :)
-            fn:concat(fn:tokenize($func/apidoc:summary,"\.(\s+|\s*$)")[1], ".")
-          }</api:description>
-        </api:function-listing>
-
-    }</api:function-list-page>
-  }
-};
