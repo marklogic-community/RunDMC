@@ -1,0 +1,26 @@
+<!-- This is for specifying exceptions to the automated mappings of categories to URLs -->
+<category-page-urls>
+
+  <!-- xdmp -->
+  <category from="Document Conversion"                           to="conversion"/>
+  <category from="Documents, Directories, Properties, and Locks" to="documents"/>
+  <category from="MarkLogic Server"                              to="server"/>
+  <category from="XQuery Context"                                to="context"/>
+
+  <!-- cts -->
+  <category from="cts:query Constructors" to="constructors"/>
+
+  <!-- dls -->
+  <category from="cts:query Constructor" to="constructors"/>
+  <category from="Document Management"   to="management"/>
+  <category from="Document Update"       to="update"/>
+  <category from="Retention Policy"      to="retention"/>
+
+  <!-- ooxml -->
+  <category from="WordProcessingML" to="wordml"/>
+  <category from="ZIP Package"      to="zip"/>
+
+  <!-- fn -->
+  <category from="DurationDateTimeBuiltins" to="dates"/>
+
+</category-page-urls>

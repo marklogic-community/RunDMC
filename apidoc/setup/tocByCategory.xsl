@@ -6,9 +6,13 @@
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
-  exclude-result-prefixes="xs api apidoc toc">
+  xmlns:u  ="http://marklogic.com/rundmc/util"
+  exclude-result-prefixes="xs api apidoc toc u">
 
   <xsl:variable name="all-functions" select="collection()/api:function-page/api:function"/>
+
+  <!-- This is for specifying exceptions to the automated mappings of categories to URLs -->
+  <xsl:variable name="category-mappings" select="u:get-doc('/apidoc/config/category-mappings.xml')/*/category"/>
 
   <!-- This is bound to be slow, but that's okay, because we pre-generate this TOC -->
   <xsl:template name="functions-by-category">
@@ -48,16 +52,20 @@
               <!-- Create a new page for this category if it doesn't contain sub-categories
                    and does not already correspond to a full lib page -->
               <xsl:when test="not($sub-categories)">
-                <xsl:attribute name="href" select="toc:path-for-category(.)"/>
+
+                <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch -->
+                <xsl:attribute name="href" select="concat('/',$single-lib-for-category,
+                                                          '/',toc:path-for-category(.))"/>
                 <intro>
                   <!--
                   <xsl:copy-of select="api:get-summary-for-category(.)"/>
                   -->
                 </intro>
               </xsl:when>
+              <!-- otherwise, don't create a page/link for this category -->
             </xsl:choose>
 
-            <!-- A category has either functions as children or sub-categories, never both -->
+            <!-- ASSUMPTION: A category has either functions as children or sub-categories, never both -->
             <xsl:choose>
               <xsl:when test="not($sub-categories)">
                 <!-- function TOC nodes -->
@@ -70,17 +78,20 @@
 
                   <xsl:variable name="in-this-subcategory" select="$in-this-category[@subcategory eq $subcategory]"/>
 
-                  <xsl:variable name="single-lib-for-subcategory" select="toc:lib-for-all($in-this-subcategory)"/>
+                  <!-- ASSUMPTION: sub-categories always only contain functions from one library/namespace; we ignore one exception: "exsl" when present with another lib -->
+                  <xsl:variable name="subcategory-lib" select="($in-this-subcategory/@lib
+                                                                [. ne 'exsl' or (every $lib in $in-this-subcategory/@lib satisfies ($lib eq 'exsl'))]
+                                                               )[1]"/>
 
-                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $single-lib-for-subcategory)"/>
+                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $subcategory-lib)"/>
 
-                  <xsl:variable name="href" select="if ($is-exhaustive) then concat('/',$single-lib-for-subcategory)
-                                                                        else toc:path-for-sub-category(.)"/>
+                  <xsl:variable name="href" select="concat('/', $subcategory-lib,
+                   if ($is-exhaustive) then () else concat('/', toc:path-for-category(.)))"/>
 
                                                       <!-- Don't display, e.g, "(xdmp:)" if the parent node already has it -->
-                  <xsl:variable name="suffix" select="if ($single-lib-for-subcategory and not($single-lib-for-category))
-                                                      then toc:display-suffix($single-lib-for-subcategory)
-                                                      else ()"/>
+                  <xsl:variable name="suffix" select="if ($single-lib-for-category)
+                                                      then ()
+                                                      else toc:display-suffix($subcategory-lib)"/>
 
                   <node href="{$href}" display="{toc:display-category(.)}{$suffix}">
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
@@ -108,16 +119,12 @@
             <xsl:sequence select="if (ends-with($cat,'Builtins')) then substring-before($cat,'Builtins') else $cat"/>
           </xsl:function>
 
-          <!-- TODO: Make pretty/meaningful URLs -->
           <xsl:function name="toc:path-for-category">
             <xsl:param name="cat"/>
-            <xsl:sequence select="concat('/',$cat)"/>
-          </xsl:function>
-
-          <!-- TODO: Make pretty/meaningful URLs -->
-          <xsl:function name="toc:path-for-sub-category">
-            <xsl:param name="cat"/>
-            <xsl:sequence select="concat('/',$cat)"/>
+            <xsl:variable name="explicitly-specified" select="$category-mappings[@from eq $cat]/@to"/>
+            <xsl:sequence select="if ($explicitly-specified)
+                                 then $explicitly-specified
+                                 else translate(lower-case(toc:display-category($cat)), ' ', '-')"/>
           </xsl:function>
 
           <xsl:function name="toc:function-name-nodes">
@@ -131,12 +138,11 @@
           </xsl:function>
 
 
-          <!-- Returns true if all the functions are in the same library (special case: not counting "exsl") -->
+          <!-- Returns true if all the functions are in the same library -->
           <xsl:function name="toc:lib-for-all" as="xs:string?">
             <xsl:param name="functions"/>
             <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
-            <xsl:sequence select="if (count($libs) eq 1
-                                   or count($libs) eq 2 and $libs = 'exsl') (: special-case: don't let the presence of exsl count :)
+            <xsl:sequence select="if (count($libs) eq 1)
                                   then string($functions[1]/@lib)
                                   else ()"/>
           </xsl:function>
