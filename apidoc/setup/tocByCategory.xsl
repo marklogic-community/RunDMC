@@ -78,17 +78,15 @@
 
                   <xsl:variable name="in-this-subcategory" select="$in-this-category[@subcategory eq $subcategory]"/>
 
-                  <!-- ASSUMPTION: sub-categories always only contain functions from one library/namespace; we ignore one exception: "exsl" when present with another lib -->
-                  <xsl:variable name="subcategory-lib" select="($in-this-subcategory/@lib
-                                                                [. ne 'exsl' or (every $lib in $in-this-subcategory/@lib satisfies ($lib eq 'exsl'))]
-                                                               )[1]"/>
+                  <xsl:variable name="subcategory-lib" select="toc:lib-for-all($in-this-subcategory)"/>
 
                   <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $subcategory-lib)"/>
 
                   <xsl:variable name="href" select="concat('/', $subcategory-lib,
                    if ($is-exhaustive) then () else concat('/', toc:path-for-category(.)))"/>
 
-                                                      <!-- Don't display, e.g, "(xdmp:)" if the parent node already has it -->
+                  <!-- Don't display, e.g, "(xdmp:)" if the parent node already has it -->
+                  <!-- ASSUMPTION: $subcategory-lib will always be supplied: subcategories always pertain to only one lib, except for the "exsl" exception (see below) -->
                   <xsl:variable name="suffix" select="if ($single-lib-for-category)
                                                       then ()
                                                       else toc:display-suffix($subcategory-lib)"/>
@@ -138,11 +136,12 @@
           </xsl:function>
 
 
-          <!-- Returns true if all the functions are in the same library -->
+          <!-- Returns true if all the functions are in the same library (special case: not counting "exsl") -->
           <xsl:function name="toc:lib-for-all" as="xs:string?">
             <xsl:param name="functions"/>
             <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
-            <xsl:sequence select="if (count($libs) eq 1)
+            <xsl:sequence select="if (count($libs) eq 1 
+                                   or count($libs) eq 2 and $libs = 'exsl') (: special-case: don't let the presence of exsl count :)
                                   then string($functions[1]/@lib)
                                   else ()"/>
           </xsl:function>
