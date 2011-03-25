@@ -97,7 +97,14 @@
 
   <xsl:template mode="page-content" match="api:function-page">
     <h1>
-      <xsl:value-of select="(api:function/@fullname)[1]"/> <!-- two are present if *:polygon() -->
+      <xsl:variable name="name" select="api:function[1]/@fullname"/>
+      <xsl:variable name="prefix" select="substring-before($name,':')"/>
+      <xsl:variable name="local"  select="substring-after ($name,':')"/>
+      <a href="/{$prefix}">
+        <xsl:value-of select="$prefix"/>
+      </a>
+      <xsl:text>:</xsl:text>
+      <xsl:value-of select="$local"/>
     </h1>
     <xsl:apply-templates select="api:function"/>
   </xsl:template>

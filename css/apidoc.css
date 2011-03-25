@@ -50,7 +50,7 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage, .footnote_marker {
+.currentPage, .footnote_marker, h1 a {
   color: #F86D07;
 }
 
@@ -71,3 +71,5 @@ code.syntax {
 .indented_function {
   margin-left: 2em;
 }
+
+h1 a { text-decoration: underline; }
