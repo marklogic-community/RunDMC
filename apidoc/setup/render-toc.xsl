@@ -24,6 +24,11 @@
       <ul id="apidoc_tree">
         <xsl:apply-templates select="/toc/node"/>
       </ul>
+      <div id="toc_footnote">
+        <span class="footnote_marker">*</span>
+        <xsl:text> </xsl:text>
+        <span class="footnote">Built-in functions (not implemented in XQuery)</span>
+      </div>
     </div>
   </xsl:template>
 
@@ -41,6 +46,9 @@
           </xsl:template>
 
                   <xsl:template mode="class-att" match="node"/>
+                  <xsl:template mode="class-att" match="node[@initially-expanded]">
+                    <xsl:attribute name="class" select="'open'"/>
+                  </xsl:template>
                   <!-- re-enable should we need this
                   <xsl:template mode="class-att" match="node[@type eq 'function']">
                     <xsl:attribute name="class" select="'function_name'"/>
@@ -58,6 +66,9 @@
                       <xsl:apply-templates mode="title-att" select="."/>
                       <xsl:value-of select="@display"/>
                     </a>
+                    <xsl:if test="@footnote">
+                      <a href="#toc_footnote" class="footnote_marker" title="Built-in functions">*</a>
+                    </xsl:if>
                   </xsl:template>
 
                           <xsl:template mode="title-att" match="node"/>

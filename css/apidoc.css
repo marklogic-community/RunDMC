@@ -50,8 +50,12 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage {
+.currentPage, .footnote_marker {
   color: #F86D07;
+}
+
+.footnote {
+  font-size: .5em;
 }
 
 code.syntax {

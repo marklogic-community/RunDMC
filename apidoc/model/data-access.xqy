@@ -36,6 +36,7 @@ declare function get-libs($query, $builtin) {
   return
     <wrapper> <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
       <api:lib>{
+         if ($builtin) then attribute built-in { "yes" } else (),
          $lib
       }</api:lib>
     </wrapper>

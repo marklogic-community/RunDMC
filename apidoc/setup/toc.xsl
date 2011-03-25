@@ -23,10 +23,17 @@
 
   <xsl:template match="/">
     <toc>
-      <node hidden="yes" href="/" title="All functions">
+      <node href="/"
+            title="All functions"
+            display="All functions ({$api:built-in-function-count + $api:library-function-count})"
+            initially-expanded="yes"><!-- hidden="yes">-->
         <intro>
           <p xmlns="http://www.w3.org/1999/xhtml">The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
         </intro>
+        <xsl:apply-templates select="$api:built-in-libs | $api:library-libs">
+          <xsl:sort select="."/>
+        </xsl:apply-templates>
+        <!--
         <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
           <intro>
             <p xmlns="http://www.w3.org/1999/xhtml">The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
@@ -39,6 +46,7 @@
           </intro>
           <xsl:apply-templates select="$api:library-libs"/>
         </node>
+        -->
       </node>
       <node display="Functions by category">
         <xsl:call-template name="functions-by-category"/>
@@ -50,7 +58,13 @@
   </xsl:template>
 
           <xsl:template match="api:lib">
-            <node href="/{.}" display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})" namespace="{api:uri-for-lib(.)}" title="{api:prefix-for-lib(.)} functions">
+            <node href="/{.}"
+                  display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})"
+                  namespace="{api:uri-for-lib(.)}"
+                  title="{api:prefix-for-lib(.)} functions">
+              <xsl:if test="@built-in">
+                <xsl:attribute name="footnote" select="'yes'"/>
+              </xsl:if>
               <intro>
                 <!--
                 <xsl:apply-templates mode="render-summary" select="api:get-summary-for-lib(.)"/>
