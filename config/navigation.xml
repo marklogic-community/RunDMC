@@ -83,6 +83,7 @@
         <page display="SOAP Router" href="/code/soaprouter"/>
         <page display="XQMVC" href="/code/xqmvc"/>
         <page display="OAuth" href="/code/oauth2"/>
+        <page display="rewrite" href="/code/rewrite"/>
       </group>
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
