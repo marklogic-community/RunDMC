@@ -66,7 +66,7 @@
 
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
                 <intro>
-                  <xsl:copy-of select="toc:get-summary-for-category(.,())/node()"/>
+                  <xsl:copy-of select="toc:get-summary-for-category($category,())/node()"/>
                 </intro>
               </xsl:when>
               <!-- otherwise, don't create a page/link for this category -->
@@ -197,7 +197,7 @@
             <xsl:param name="cat"/>
             <xsl:param name="subcat"/>
             <xsl:variable name="summaries-with-category" select="$docapp:docs/apidoc:module/apidoc:summary[@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
-            <xsl:variable name="modules-with-category"   select="$docapp:docs/apidoc:module               [@category eq $cat]"/>
+            <xsl:variable name="modules-with-category"   select="$docapp:docs/apidoc:module               [@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
             <xsl:sequence select="if ($summaries-with-category)
                                  then $summaries-with-category
                                  else $modules-with-category/apidoc:summary"/>
