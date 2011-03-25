@@ -10,11 +10,16 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:api="http://marklogic.com/rundmc/api"
-  exclude-result-prefixes="xs api">
+  xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
+  xpath-default-namespace="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="xs api apidoc">
 
   <xsl:import href="../view/page.xsl"/>
 
   <xsl:include href="tocByCategory.xsl"/>
+
+  <!-- Implements some common content fixup rules -->
+  <xsl:include href="fixup.xsl"/>
 
   <xsl:template match="/">
     <toc>
@@ -48,12 +53,24 @@
             <node href="/{.}" display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})" namespace="{api:uri-for-lib(.)}" title="{api:prefix-for-lib(.)} functions">
               <intro>
                 <!--
-                <xsl:apply-templates mode="fixup" select="api:get-summary-for-lib(.)/node()"/>
+                <xsl:apply-templates mode="render-summary" select="api:get-summary-for-lib(.)"/>
                 -->
               </intro>
               <xsl:apply-templates select="api:function-names-for-lib(.)"/>
             </node>
           </xsl:template>
+
+                  <!-- Wrap summary content with <p> if not already present -->
+                  <xsl:template mode="render-summary" match="apidoc:summary[not(p)]">
+                    <p xmlns="http://www.w3.org/1999/xhtml">
+                      <xsl:next-match/>
+                    </p>
+                  </xsl:template>
+
+                  <xsl:template mode="render-summary" match="apidoc:summary">
+                    <xsl:apply-templates mode="fixup"/>
+                  </xsl:template>
+
 
                   <xsl:template match="api:function-name">
                     <node href="/{.}" display="{.}" type="function"/>
