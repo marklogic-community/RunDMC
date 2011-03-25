@@ -61,8 +61,18 @@
 
   <xsl:template match="intro">
     <api:intro>
-      <xsl:copy-of select="node()"/>
+      <xsl:apply-templates mode="to-xhtml"/>
     </api:intro>
   </xsl:template>
+
+          <xsl:template mode="to-xhtml" match="@* | text()">
+            <xsl:copy/>
+          </xsl:template>
+
+          <xsl:template mode="to-xhtml" match="*">
+            <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
+              <xsl:apply-templates mode="#current" select="@* | node()"/>
+            </xsl:element>
+          </xsl:template>
 
 </xsl:stylesheet>

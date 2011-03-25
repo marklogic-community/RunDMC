@@ -135,6 +135,9 @@
             <xsl:param name="cat"/>
             <xsl:param name="lib"/>
             <xsl:value-of select="$lib"/>
+            <!-- toc.xsl depends on this format (category name in parentheses)
+                 to determine what sub-pages to list on the main lib page;
+                 so don't change this without changing it there also -->
             <xsl:text> functions (</xsl:text>
             <xsl:value-of select="toc:display-category($cat)"/>
             <xsl:text>)</xsl:text>

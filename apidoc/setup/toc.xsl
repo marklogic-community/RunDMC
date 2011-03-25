@@ -11,8 +11,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
-  xpath-default-namespace="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs api apidoc">
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="xs api apidoc xhtml">
 
   <xsl:import href="../view/page.xsl"/>
 
@@ -21,6 +21,12 @@
   <!-- Implements some common content fixup rules -->
   <xsl:include href="fixup.xsl"/>
 
+  <!-- Compute this first so we can glean the category info from the result
+       and list the sub-categories on the main page intro for each lib -->
+  <xsl:variable name="by-category">
+    <xsl:call-template name="functions-by-category"/>
+  </xsl:variable>
+
   <xsl:template match="/">
     <toc>
       <node href="/"
@@ -28,7 +34,7 @@
             display="All functions ({$api:built-in-function-count + $api:library-function-count})"
             initially-expanded="yes"><!-- hidden="yes">-->
         <intro>
-          <p xmlns="http://www.w3.org/1999/xhtml">The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
+          <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
         </intro>
         <xsl:apply-templates select="$api:built-in-libs | $api:library-libs">
           <xsl:sort select="."/>
@@ -36,20 +42,20 @@
         <!--
         <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
           <intro>
-            <p xmlns="http://www.w3.org/1999/xhtml">The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
+            <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
           </intro>
           <xsl:apply-templates select="$api:built-in-libs"/>
         </node>
         <node href="/library" display="Library functions ({$api:library-function-count})" title="All library functions">
           <intro>
-            <p xmlns="http://www.w3.org/1999/xhtml">The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
+            <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
           </intro>
           <xsl:apply-templates select="$api:library-libs"/>
         </node>
         -->
       </node>
       <node display="Functions by category">
-        <xsl:call-template name="functions-by-category"/>
+        <xsl:copy-of select="$by-category"/>
       </node>
       <node href="/guides" display="User Guides">
         <node href="/guides/app-dev" display="Application Developer's Guide"/>
@@ -69,14 +75,40 @@
                 <!--
                 <xsl:apply-templates mode="render-summary" select="api:get-summary-for-lib(.)"/>
                 -->
+                <xsl:variable name="modifier" select="if (@built-in) then 'built-in' else 'XQuery library'"/>
+                <p>The table below lists all the "<xsl:value-of select="api:prefix-for-lib(.)"/>" <xsl:value-of select="$modifier"/> functions (in this namespace: <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).</p>
+
+                <xsl:variable name="sub-pages" select="$by-category//node[starts-with(@href, concat('/',current(),'/'))]"/>
+                <xsl:if test="$sub-pages">
+                  <p>You can also view these functions broken down by category:</p>
+                  <ul>
+                    <xsl:apply-templates mode="sub-page" select="$sub-pages">
+                      <xsl:sort select="@title"/>
+                    </xsl:apply-templates>
+                  </ul>
+                </xsl:if>
               </intro>
               <xsl:apply-templates select="api:function-names-for-lib(.)"/>
             </node>
           </xsl:template>
 
+                  <xsl:template mode="sub-page" match="node"> 
+                    <li>
+                      <a href="{@href}">
+                        <xsl:value-of select="substring-after(
+                                                substring-before(@title, ')'),
+                                                '(')"/>
+                      </a>
+                    </li>
+                    <!--
+                    <xsl:if test="position() ne last()">, </xsl:if>
+                    <xsl:if test="position() eq (last() - 1)">and </xsl:if> 
+                    -->
+                  </xsl:template>
+
                   <!-- Wrap summary content with <p> if not already present -->
-                  <xsl:template mode="render-summary" match="apidoc:summary[not(p)]">
-                    <p xmlns="http://www.w3.org/1999/xhtml">
+                  <xsl:template mode="render-summary" match="apidoc:summary[not(xhtml:p)]">
+                    <p>
                       <xsl:next-match/>
                     </p>
                   </xsl:template>
