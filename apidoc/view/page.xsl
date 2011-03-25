@@ -2,12 +2,11 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns      ="http://www.w3.org/1999/xhtml"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:u="http://marklogic.com/rundmc/util"
   xmlns:api="http://marklogic.com/rundmc/api"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xpath-default-namespace="http://developer.marklogic.com/site/internal"
+  xmlns:ml="http://developer.marklogic.com/site/internal"
+  xpath-default-namespace="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="xs ml xdmp api">
 
   <xsl:import href="../../view/page.xsl"/>
@@ -76,7 +75,7 @@
   </xsl:template>
 
           <xsl:template match="api:intro">
-            <xsl:copy-of select="node()"/>
+            <xsl:apply-templates/>
           </xsl:template>
 
           <xsl:template match="api:list-entry">
@@ -173,6 +172,12 @@
                       <xsl:apply-templates/>
                     </div>
                   </xsl:template>
+
+
+  <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
+  <xsl:template match="a/@href[starts-with(.,'#')]">
+    <xsl:attribute name="href" select="translate(.,'#','/')"/>
+  </xsl:template>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>
