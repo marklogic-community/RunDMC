@@ -169,15 +169,17 @@
                   <xsl:template match="api:example">
                     <h2>Example</h2>
                     <div class="example">
+                      <!-- Move the <pre> ID to its parent, so it doesn't get stripped
+                           off by the syntax-highlighting code (thereby breaking any links to it). -->
+                      <xsl:copy-of select="((pre|pre/a)/@id)[1]"/>
                       <xsl:apply-templates/>
                     </div>
                   </xsl:template>
 
+                          <!-- Strip the @id off the example pre (because we've reassigned it) -->
+                          <xsl:template match="api:example/pre  /@id
+                                             | api:example/pre/a/@id"/>
 
-  <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
-  <xsl:template match="a/@href[starts-with(.,'#')]">
-    <xsl:attribute name="href" select="translate(.,'#','/')"/>
-  </xsl:template>
 
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>

@@ -15,6 +15,9 @@
   <!-- We look back into the docapp database to get the introductory content for each function list page -->
   <xdmp:import-module namespace="http://marklogic.com/rundmc/docapp-data-access" href="/apidoc/setup/docapp-data-access.xqy"/>
 
+  <!-- Implements some common content fixup rules -->
+  <xsl:include href="fixup.xsl"/>
+
   <xsl:variable name="all-functions" select="collection()/api:function-page/api:function"/>
 
   <!-- This is for specifying exceptions to the automated mappings of categories to URLs -->
@@ -66,7 +69,7 @@
 
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
                 <intro>
-                  <xsl:copy-of select="toc:get-summary-for-category($category,())/node()"/>
+                  <xsl:apply-templates mode="fixup" select="toc:get-summary-for-category($category,())/node()"/>
                 </intro>
               </xsl:when>
               <!-- otherwise, don't create a page/link for this category -->
@@ -103,7 +106,7 @@
                     <xsl:if test="not($is-exhaustive)">
                       <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
                       <intro>
-                        <xsl:copy-of select="toc:get-summary-for-category($category, $subcategory)/node()"/>
+                        <xsl:apply-templates mode="fixup" select="toc:get-summary-for-category($category, $subcategory)/node()"/>
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->

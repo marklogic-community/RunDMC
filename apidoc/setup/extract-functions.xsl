@@ -12,6 +12,9 @@
 
   <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
 
+  <!-- Implements some common content fixup rules -->
+  <xsl:include href="fixup.xsl"/>
+
   <xsl:template match="/">
                                                               <!-- Function names aren't unique thanks to the way *:polygon()
                                                                    is documented. -->
@@ -26,7 +29,7 @@
            that raises the possibility of needing to include two different
            <api:function> elements in the same page. -->
       <api:function-page>
-        <xsl:apply-templates mode="copy" select="../apidoc:function[@fullname eq current()/@fullname]"/>
+        <xsl:apply-templates mode="fixup" select="../apidoc:function[@fullname eq current()/@fullname]"/>
       </api:function-page>
     </xsl:result-document>
   </xsl:template>
@@ -34,34 +37,22 @@
   <!-- Ignore hidden functions -->
   <xsl:template match="apidoc:function[@hidden eq true()]"/>
 
-  <!-- By default, copy everything unchanged -->
-  <xsl:template mode="copy" match="@* | node()">
-    <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@* | node()"/>
-    </xsl:copy>
-  </xsl:template>
-
   <!-- Rename "apidoc" elements to "api" so it's clear which docs we're dealing with later -->
-  <xsl:template mode="copy" match="apidoc:*">
+  <xsl:template mode="fixup" match="apidoc:*">
     <xsl:element name="{name()}" namespace="http://marklogic.com/rundmc/api">
-      <xsl:apply-templates mode="#current" select="@*"/>
-      <xsl:apply-templates mode="add-att" select="."/>
-      <xsl:apply-templates mode="#current"/>
+      <xsl:apply-templates mode="fixup-content-etc" select="."/>
     </xsl:element>
   </xsl:template>
 
-          <!-- By default, don't add any attributes -->
-          <xsl:template mode="add-att" match="*"/>
-
-          <!-- Add the namespace URI of the function to the <api:function> result -->
-          <xsl:template mode="add-att" match="apidoc:function">
-            <xsl:attribute name="prefix" select="@lib"/>
-            <xsl:attribute name="namespace" select="api:uri-for-lib(@lib)"/>
-          </xsl:template>
+  <!-- Add the namespace URI of the function to the <api:function> result -->
+  <xsl:template mode="fixup-add-atts" match="apidoc:function">
+    <xsl:attribute name="prefix" select="@lib"/>
+    <xsl:attribute name="namespace" select="api:uri-for-lib(@lib)"/>
+  </xsl:template>
 
   <!-- Change the "spell" library to "spell-lib" to disambiguate from the built-in "spell" module -->
-  <xsl:template mode="copy" match="apidoc:function[@lib eq 'spell' and not(@type eq 'builtin')]/@lib">
-    <xsl:attribute name="lib" select="'spell-lib'"/>
+  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq 'spell' and not(@type eq 'builtin')]/@lib">
+    <xsl:text>spell-lib</xsl:text>
   </xsl:template>
 
 </xsl:stylesheet>
