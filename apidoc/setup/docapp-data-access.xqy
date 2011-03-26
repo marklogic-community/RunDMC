@@ -6,8 +6,10 @@ xquery version "1.0-ml";
 module namespace docapp = "http://marklogic.com/rundmc/docapp-data-access";
 
 declare variable $docapp:docs :=
-  let $query := 'declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-                 fn:collection()[apidoc:module]'
+  let $query := ' declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+                  let $version := "4.2" return
+                  xdmp:directory(fn:concat("http://pubs/",$version,"doc/apidoc/"),"infinity") [apidoc:module]
+                '
   return
     xdmp:eval($query, (), <options xmlns="xdmp:eval">
                             <database>{xdmp:database("docapp")}</database>
