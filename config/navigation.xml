@@ -65,6 +65,7 @@
       <group display="Connectors">
         <page display="MLSQL" href="/code/mlsql"/>
         <page display="MLJAM" href="/code/mljam"/>
+        <page display="MLJSON - A JSON Facade on top of MarkLogic" href="/code/mljson"/>
         <page display="libmlxcc and connectors for PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
