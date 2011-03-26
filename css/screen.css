@@ -53,7 +53,7 @@ p {
 	margin: 1em 0;
 	line-height: 133%;
 }
-code {font: normal 1.1em "Courier New", Courier, Monospace;}
+code, pre {font: normal 1.1em "Courier New", Courier, Monospace;}
 .align_right {
 	float: right;
 	margin-left: 1em;

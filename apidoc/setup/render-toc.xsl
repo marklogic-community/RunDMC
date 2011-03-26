@@ -27,7 +27,7 @@
       <div id="toc_footnote">
         <span class="footnote_marker">*</span>
         <xsl:text> </xsl:text>
-        <span class="footnote">Built-in functions (not implemented in XQuery)</span>
+        <span class="footnote">Built-in functions (not written in XQuery)</span>
       </div>
     </div>
   </xsl:template>
