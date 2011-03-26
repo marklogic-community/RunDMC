@@ -66,7 +66,7 @@
 
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
                 <intro>
-                  <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,())"/>
+                  <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
                 </intro>
               </xsl:when>
               <!-- otherwise, don't create a page/link for this category -->
@@ -103,7 +103,7 @@
                     <xsl:if test="not($is-exhaustive)">
                       <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
                       <intro>
-                        <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory)"/>
+                        <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $subcategory-lib)"/>
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->
@@ -199,11 +199,64 @@
           <xsl:function name="toc:get-summary-for-category" as="element()*">
             <xsl:param name="cat"/>
             <xsl:param name="subcat"/>
+            <xsl:param name="lib"/>
             <xsl:variable name="summaries-with-category" select="$docapp:docs/apidoc:module/apidoc:summary[@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
             <xsl:variable name="modules-with-category"   select="$docapp:docs/apidoc:module               [@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
+
+            <!-- Fallback boilerplate is different for library modules than for built-in libs  -->
+            <xsl:variable name="fallback">
+              <xsl:choose>
+                <!-- the admin library sub-pages don't have their own descriptions currently; use this boilerplate instead -->
+                <xsl:when test="$lib = $all-libs[not(@built-in)]">
+                  <apidoc:summary>
+                    <p>For information on how to import the functions in this module, refer to the main <a href="/{$lib}"><xsl:value-of select="$lib"/> library page</a>.</p>
+                  </apidoc:summary>
+                </xsl:when>
+                <!-- some of the xdmp sub-pages don't have descriptions either, so use this -->
+                <xsl:otherwise>
+                  <apidoc:summary>
+                    <p>For the complete list of functions and categories in this namespace, refer to the main <a href="/{$lib}"><xsl:value-of select="$lib"/> functions page</a>.</p>
+                  </apidoc:summary>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+
             <xsl:sequence select="if ($summaries-with-category)
                                  then $summaries-with-category
-                                 else $modules-with-category/apidoc:summary"/>
+                             else if ($modules-with-category/apidoc:summary)
+                                 then $modules-with-category/apidoc:summary
+                             else $fallback/apidoc:summary"/>
           </xsl:function>
+
+
+          <!-- We only want to see one summary -->
+          <xsl:function name="toc:get-summary-for-lib" as="element()?">
+            <xsl:param name="lib"/>
+
+            <!-- exceptional ("spell" built-in) -->
+            <xsl:variable name="summaries-by-module-cat"  select="$docapp:docs/apidoc:module[@category eq toc:hard-coded-category($lib)]/apidoc:summary"/>
+            <!-- the most common case -->
+            <xsl:variable name="summaries-by-module-lib"  select="$docapp:docs/apidoc:module               [@lib eq api:prefix-for-lib($lib)]/apidoc:summary"/>
+            <!-- exceptional ("map") -->
+            <xsl:variable name="summaries-by-summary-lib" select="$docapp:docs/apidoc:module/apidoc:summary[@lib eq api:prefix-for-lib($lib)]"/>
+            <!-- exceptional ("dls") -->
+            <xsl:variable name="summaries-by-module-lib-no-subcat" select="$summaries-by-module-lib[not(@subcategory)]"/>
+
+            <xsl:sequence select="if (count($summaries-by-module-cat) eq 1)
+                                       then $summaries-by-module-cat
+                             else if (count($summaries-by-module-lib) eq 1)
+                                       then $summaries-by-module-lib
+                             else if (count($summaries-by-summary-lib) eq 1)
+                                       then $summaries-by-summary-lib
+                             else if (count($summaries-by-module-lib-no-subcat) eq 1)
+                                       then $summaries-by-module-lib-no-subcat
+                             else ()"/>
+          </xsl:function>
+
+                  <!-- Look in the  namespaces/libs config file to see if we've forced a hard-coded category (for summary-lookup purposes) -->
+                  <xsl:function name="toc:hard-coded-category" as="xs:string?">
+                    <xsl:param name="lib"/>
+                    <xsl:sequence select="$api:namespace-mappings[@lib eq $lib]/@category/string(.)"/>
+                  </xsl:function>
 
 </xsl:stylesheet>

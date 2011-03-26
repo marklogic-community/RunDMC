@@ -36,7 +36,9 @@
   <namespace lib="search" uri="http://marklogic.com/appservices/search"/>
   <namespace lib="sec" uri="http://marklogic.com/xdmp/security"/>
 
-  <namespace lib="spell"     uri="http://marklogic.com/xdmp/spell"/>
+                                                                   <!-- for summary lookup purposes, since this is exceptional -->
+  <namespace lib="spell"     uri="http://marklogic.com/xdmp/spell" category="SpellBuiltins"/>
+
   <namespace lib="spell-lib" uri="http://marklogic.com/xdmp/spell" prefix="spell"/>
 
   <namespace lib="thsr" uri="http://marklogic.com/xdmp/thesaurus"/>

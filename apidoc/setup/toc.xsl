@@ -12,7 +12,8 @@
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs api apidoc xhtml">
+  xmlns:toc="http://marklogic.com/rundmc/api/toc"
+  exclude-result-prefixes="xs api apidoc xhtml toc">
 
   <xsl:import href="../view/page.xsl"/>
 
@@ -27,16 +28,19 @@
     <xsl:call-template name="functions-by-category"/>
   </xsl:variable>
 
+  <xsl:variable name="all-libs"            select="$api:built-in-libs | $api:library-libs"/>
+  <xsl:variable name="all-functions-count" select="$api:built-in-function-count + $api:library-function-count"/>
+
   <xsl:template match="/">
     <toc>
       <node href="/"
             title="All functions"
-            display="All functions ({$api:built-in-function-count + $api:library-function-count})"
+            display="All functions ({$all-functions-count})"
             initially-expanded="yes"><!-- hidden="yes">-->
         <intro>
           <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
         </intro>
-        <xsl:apply-templates select="$api:built-in-libs | $api:library-libs">
+        <xsl:apply-templates select="$all-libs">
           <xsl:sort select="."/>
         </xsl:apply-templates>
         <!--
@@ -72,9 +76,6 @@
                 <xsl:attribute name="footnote" select="'yes'"/>
               </xsl:if>
               <intro>
-                <!--
-                <xsl:apply-templates mode="render-summary" select="api:get-summary-for-lib(.)"/>
-                -->
                 <xsl:variable name="modifier" select="if (@built-in) then 'built-in' else 'XQuery library'"/>
                 <p>The table below lists all the "<xsl:value-of select="api:prefix-for-lib(.)"/>" <xsl:value-of select="$modifier"/> functions (in this namespace: <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).</p>
 
@@ -87,6 +88,9 @@
                     </xsl:apply-templates>
                   </ul>
                 </xsl:if>
+
+                <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-lib(.)"/>
+
               </intro>
               <xsl:apply-templates select="api:function-names-for-lib(.)"/>
             </node>
