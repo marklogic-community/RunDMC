@@ -65,6 +65,10 @@
                                                           '/',toc:path-for-category(.))"/>
 
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
+
+                <!-- Used to trigger adding a link to the title of the resulting page -->
+                <xsl:attribute name="type" select="'function-category'"/>
+
                 <intro>
                   <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
                 </intro>
@@ -102,6 +106,10 @@
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
                       <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
+
+                      <!-- Used to trigger adding a link to the title of the resulting page -->
+                      <xsl:attribute name="type" select="'function-category'"/>
+
                       <intro>
                         <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $subcategory-lib)"/>
                       </intro>

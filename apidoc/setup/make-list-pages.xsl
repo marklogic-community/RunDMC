@@ -26,6 +26,9 @@
   <xsl:template match="node">
     <api:list-page title="{@title}" disable-comments="yes">
 
+      <!-- can be used to trigger different display options -->
+      <xsl:copy-of select="@type"/>
+
       <!-- TODO: add these to the input when applicable (toc-generation code) -->
       <xsl:copy-of select="@prefix | @namespace"/>
 

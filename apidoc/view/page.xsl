@@ -45,7 +45,7 @@
     <div class="downloads">
     -->
     <h1>
-      <xsl:apply-templates mode="page-specific-title" select="."/>
+      <xsl:apply-templates mode="list-page-heading" select="."/>
     </h1>
     <xsl:apply-templates select="api:intro"/>
     <div class="doclist">
@@ -73,6 +73,29 @@
       </table>
     </div>
   </xsl:template>
+
+          <!-- By default, just display the page title -->
+          <xsl:template mode="list-page-heading" match="api:list-page">
+            <xsl:apply-templates mode="page-specific-title" select="."/>
+          </xsl:template>
+
+          <!-- But for function category pages, include a link back to the main lib page -->
+          <!-- ASSUMPTION: URL for function category pages follows this two-step format: "/cts/geospatial"
+               ASSUMPTION: Heading for function category pages follows this format:      "cts functions (Geospatial)"
+                                                                                  (i.e. first word is the lib prefix) -->
+          <xsl:template mode="list-page-heading" match="api:list-page[@type eq 'function-category']">
+            <xsl:variable name="heading">
+              <xsl:next-match/>
+            </xsl:variable>
+            <!-- in case spell-lib is the library, get the path from the current URL, not the heading -->
+            <a href="/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}">
+              <xsl:value-of select="substring-before($heading,' ')"/>
+            </a>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="substring-after($heading,' ')"/>
+          </xsl:template>
+
+
 
           <xsl:template match="api:intro">
             <xsl:apply-templates/>
