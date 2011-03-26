@@ -55,7 +55,8 @@ font-weight: bold;
 }
 
 .footnote {
-  font-size: .5em;
+/*  font-size: .5em;*/
+  font-size: 9px;
 }
 
 code.syntax {
