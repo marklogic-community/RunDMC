@@ -14,6 +14,8 @@
 
   <xsl:variable name="site-title" select="'MarkLogic API Documentation'"/>
 
+  <xsl:variable name="site-url-for-disqus" select="'http://api.marklogic.com'"/>
+
   <xsl:variable name="template"   select="u:get-doc('/apidoc/config/template.xhtml')"/>
 
   <xsl:template match="ml:api-toc">

@@ -15,6 +15,8 @@
   exclude-result-prefixes="qp xs ml xdmp dq">
 
 
+  <xsl:variable name="site-url-for-disqus" select="'http://developer.marklogic.com'"/>
+
   <!-- Disable comments on pages that explicitly disable them -->
   <xsl:template mode="comment-section" match="*[@disable-comments]"/>
 
@@ -41,7 +43,7 @@
 
         // The following are highly recommended additional parameters. Remove the slashes in front to use.
         var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(.)"/>';
-        var disqus_url = 'http://developer.marklogic.com<xsl:value-of select="ml:external-uri(.)"/>';
+        var disqus_url = '<xsl:value-of select="$site-url-for-disqus"/><xsl:value-of select="ml:external-uri(.)"/>';
 
         function disqus_config() {
             this.callbacks.onNewComment = [function() { setTimeout(
