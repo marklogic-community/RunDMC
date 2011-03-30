@@ -6,7 +6,7 @@ xquery version "1.0-ml";
 
 (: E.g., to re-render the HTML TOC from the XML, make this request:
 
-    http://localhost:8008/apidoc/test-steps.xqy?step=render-toc
+    http://localhost:8008/apidoc/setup/test-steps.xqy?step=render-toc
 
   (replacing the port with the port of a maintenance-only app server)
 :)
