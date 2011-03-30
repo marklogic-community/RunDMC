@@ -53,7 +53,7 @@ p {
 	margin: 1em 0;
 	line-height: 133%;
 }
-code {font: normal 1.1em "Courier New", Courier, Monospace;}
+code, pre {font: normal 1.1em "Courier New", Courier, Monospace;}
 .align_right {
 	float: right;
 	margin-left: 1em;
@@ -452,6 +452,9 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	border-bottom: 1px solid #CCC;
 	margin: 0 0 2em;
 	clear: both;
+}
+#main table.plain {
+  border-style: none;
 }
 #main table.table4 {margin-bottom:0;}
 #main p + table.table4 {margin-top: 30px;}
