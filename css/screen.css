@@ -453,6 +453,9 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	margin: 0 0 2em;
 	clear: both;
 }
+#main table.plain {
+  border-style: none;
+}
 #main table.table4 {margin-bottom:0;}
 #main p + table.table4 {margin-top: 30px;}
 

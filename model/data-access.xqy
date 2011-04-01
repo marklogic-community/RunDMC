@@ -259,7 +259,10 @@ return
 (: When first populating the navigation, cache it in the database :)
 declare function save-cached-navigation($doc)
 {
-  xdmp:document-insert($pre-generated-location, $doc)
+  (: Force the insert to occur in a separate transaction to prevent every request
+     from being marked as an update :)
+  xdmp:invoke("document-insert.xqy", (fn:QName("","uri"),      $pre-generated-location,
+                                      fn:QName("","document"), $doc))
 };
 
 (: Call this to explicitly invalidate the cached navigation :)
