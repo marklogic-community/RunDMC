@@ -496,6 +496,9 @@ h2.main_headline {margin: 2em 0 1em !important;}
 }
 #main .table4 tbody td {background:transparent;}
 #main .table4 tbody .alt td {background:#F5F5F5;;}
+
+td.sched-time { width: 70px; }
+
 .table2 caption {padding-bottom: 1.5em;}
 .table2 tbody tr:last-child td {padding-bottom: 2.5em;}
 .table2 td {text-align: right;}
