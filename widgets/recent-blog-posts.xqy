@@ -9,7 +9,7 @@
     <h3><a href="/blog/mluc11-app">Announcing the MLUC11 Conference App</a></h3>
     <div class="author">by Eric Bloch, April 13, 2011</div>
     <div class="message">
-      <p>We just turned the MLUC11 Conference Application at <a href="http://mluc11.marklogic.com/"><span>http://mluc11.marklogic.com</span></a> live...The application is built on MarkLogic Server 4.2 and uses MLJSON - a JSON Facade on top of MarkLogic for all interaction with MarkLogic Server, including search of JSON data...</p>
+      <p>We just turned the MLUC11 Conference Application at <a href="http://mluc11.marklogic.com/">http://mluc11.marklogic.com</a> live...The application is built on MarkLogic Server 4.2 and uses <a href="http://developer.marklogic.com/code/mljson">MLJSON</a> - a JSON Facade on top of MarkLogic for all interaction with MarkLogic Server, including search of JSON data...</p>
     </div>
   </div>
 
