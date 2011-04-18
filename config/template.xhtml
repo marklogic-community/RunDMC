@@ -93,7 +93,8 @@
             document.getElementsByTagName('head')[0].appendChild(s);
         }
         _loadSuper = window.onload;
-        // window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+        if (window.location.hostname == 'dmc-stage.marklogic.com') 
+            window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
         </script>
 <ml:elapsed-time/>
     </body>
