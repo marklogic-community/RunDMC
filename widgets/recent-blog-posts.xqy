@@ -6,6 +6,15 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://blogs.marklogic.com/2011/04/15/followanyday-mluc11-developer-lounge-labs/">#FollowAnyDay MLUC11 Developer Lounge &amp; Labs</a></h3>
+    <div class="author">by Pete Aven, April 15, 2011</div>
+    <div class="message">
+       <p><a href="http://www.marklogicevents.com/" target="_blank">MarkLogic User Conference 2011</a> (<a href="http://twitter.com/#search?q=%23MLUC11" target="_blank">#MLUC11</a>) is less than 2 weeks away!</p> 
+       <p>This year&#8217;s conference is shaping up to be an overdose of awesome.  In addition to the <a href="http://www.marklogicevents.com/?event=content.training" target="_blank">Pre-Conference Training</a>, <a href="http://www.marklogicevents.com/?event=content.keynotes" target="_blank">Keynotes</a>, <a href="http://www.marklogicevents.com/?event=content.breakouts1" target="_blank">Breakout Sessions</a>, Birds of a Feather tables, and our usual roundup of the remarkable,  this year includes a <a href="http://developer.marklogic.com/events/mluc11-labs-and-lounge-schedule" target="_blank">Developer Lounge and Labs</a>.  This will be a place for developer&#8217;s to hang and hack and get their questions answered from the experts.  Lounge activities include Lightning-Talks given by hands on engineers and self-paced Labs to provide attendees with experience, working code, and a forum for asking any questions they may have... <a href="http://blogs.marklogic.com/2011/04/15/followanyday-mluc11-developer-lounge-labs/">read more</a></p> 
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/mluc11-app">Announcing the MLUC11 Conference App</a></h3>
     <div class="author">by Eric Bloch, April 13, 2011</div>
     <div class="message">
@@ -19,22 +28,6 @@
     <div class="author">by Ryan Semerau, April 7, 2011</div>
     <div class="message">
 <p>If you have a problem, but no one realizes it or acknowledges it, do you really have a problem? What if no one in your organization or in the marketplace thinks so? ...</p>
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="http://blogs.marklogic.com/2011/04/02/jet-setting-bigdata-trends-from-gigaom-nyc-and-sdforum-sv/">Jet Setting: BigData Trends from GigaOm NYC and SDForum SV</a></h3>
-    <div class="author">by Jason Monberg, April 2, 2011</div>
-    <div class="message">
-    <p>Last week several of us were jet setting between San Francisco and New York. Well, if you call jet setting praying for an upgrade and remaining in economy combined with endless high speed pothole laden rides in taxis then we were jet setting. We were doing this so we could attend both the <a href="http://bit.ly/f4Km1w">GigaOm: Structure BigData</a> conference and the <a href="http://bit.ly/h8YYHD">SDForum: Analytics &#8220;The Next Wave&#8221;</a> conference. Both of these conferences embodied the incredible energy going into the theme of BigData and illustrated early but recurring trends. Scrunched into my jet setters 20 inches of leg room seat I&#8217;ve highlighted a few key trends that caught my eye over the week...</p>
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="http://blogs.marklogic.com/2011/03/17/a-practical-guide-to-nosql/">A practical guide to noSQL</a></h3>
-    <div class="author">by Denise Miura, March 17, 2011</div>
-    <div class="message">
-<p>I’ve been itching to write up a post about the noSQL (“not only SQL”) category of technologies because there’s such a dearth of practical and specific information on this topic, and because so many people are unclear about how MarkLogic compares to these technologies...</p> 
     </div>
   </div>
 
