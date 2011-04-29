@@ -14,10 +14,6 @@
     <page href="/"/> 
   </widget>
 
-  <widget href="/widgets/insidehack-2011.xml">
-    <page href="/"/> 
-  </widget>
-
 
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
