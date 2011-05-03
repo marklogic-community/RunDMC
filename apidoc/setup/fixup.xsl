@@ -18,7 +18,7 @@
     <xsl:value-of select="fixup:output-and-report(., $result)"/>
   </xsl:template>
 
-  <!-- Otherwise, fragments links point to a location within the same <apidoc:module> document -->
+  <!-- Otherwise, fragment links point to a location within the same <apidoc:module> document -->
   <xsl:template mode="fixup-att-value" match="a/@href[starts-with(.,'#')]" priority="2">
     <xsl:variable name="relevant-function"
                   select="/apidoc:module/apidoc:function

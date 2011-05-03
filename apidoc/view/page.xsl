@@ -12,11 +12,20 @@
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
 
+  <!-- Include the version prefix (e.g., "/4.2") when explicitly specified; otherwise don't -->
+  <xsl:variable name="version-prefix" select="if (not($api:version-specified)) then '' else concat('/',$api:version-specified)"/>
+
   <xsl:variable name="site-title" select="'MarkLogic API Documentation'"/>
 
   <xsl:variable name="site-url-for-disqus" select="'http://api.marklogic.com'"/>
 
   <xsl:variable name="template"   select="u:get-doc('/apidoc/config/template.xhtml')"/>
+
+  <!-- Links in content (function descriptions and list page intros) may need to be rewritten
+       to include the current explicitly specified version -->
+  <xsl:template match="a/@href[starts-with(.,'/')]">
+    <xsl:attribute name="href" select="concat($version-prefix,.)"/>
+  </xsl:template>
 
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
@@ -28,7 +37,7 @@
 
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
           $("#sub").scrollTop($.cookie("tocScroll"));
-          $("#sub a[href='/<xsl:value-of select="substring-after(ml:external-uri($content),'/')"/>']").addClass("currentPage");
+          $("#sub a[href='<xsl:value-of select="$version-prefix"/><xsl:value-of select="ml:external-uri($content)"/>']").addClass("currentPage");
         });
       </script>
     </div>
@@ -90,7 +99,7 @@
               <xsl:next-match/>
             </xsl:variable>
             <!-- in case spell-lib is the library, get the path from the current URL, not the heading -->
-            <a href="/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}">
+            <a href="{$version-prefix}/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}">
               <xsl:value-of select="substring-before($heading,' ')"/>
             </a>
             <xsl:text> </xsl:text>
@@ -106,7 +115,7 @@
           <xsl:template match="api:list-entry">
             <tr>
               <td style="white-space: nowrap;">
-                <a href="/{api:name}">
+                <a href="{$version-prefix}/{api:name}">
                   <xsl:if test="api:name/@indent">
                     <xsl:attribute name="class" select="'indented_function'"/>
                   </xsl:if>
@@ -125,7 +134,7 @@
       <xsl:variable name="name" select="api:function[1]/@fullname"/>
       <xsl:variable name="prefix" select="substring-before($name,':')"/>
       <xsl:variable name="local"  select="substring-after ($name,':')"/>
-      <a href="/{$prefix}">
+      <a href="{$version-prefix}/{$prefix}">
         <xsl:value-of select="$prefix"/>
       </a>
       <xsl:text>:</xsl:text>
@@ -220,13 +229,25 @@
   <!-- Account for "/apidoc" prefix in internal/external URI mappings -->
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="node" as="node()"/>
-    <xsl:variable name="doc-path" select="base-uri($node)"/>
-    <xsl:sequence select="if ($doc-path eq '/apidoc/index.xml') then '/' else substring-before(substring-after($doc-path,'/apidoc'), '.xml')"/>
+    <xsl:variable name="doc-uri" select="base-uri($node)"/>
+
+    <xsl:variable name="version" select="substring-before(substring-after($doc-uri,'/apidoc/'),'/')"/>
+    <xsl:variable name="versionless-path" select="substring-after($doc-uri,concat('/apidoc/',$version,'/'))"/>
+
+    <xsl:value-of>
+      <!-- Map "/" to index.xml and "/foo" to /foo.xml -->
+      <xsl:value-of select="if ($versionless-path eq 'index.xml') then '/' else concat($versionless-path, '.xml')"/>
+    </xsl:value-of>
   </xsl:function>
 
+  <!-- ASSUMPTION: This is only called on version-less paths (as they appear in the XML TOCs). -->
   <xsl:function name="ml:internal-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>
-    <xsl:sequence select="if ($doc-path eq '/') then '/apidoc/index.xml' else concat('/apidoc', $doc-path, '.xml')"/>
+    <xsl:variable name="version-path" select="concat('/apidoc/', $api:version)"/>
+    <xsl:value-of>
+      <xsl:value-of select="$version-path"/>
+      <xsl:value-of select="if ($doc-path eq '/') then '/index.xml' else concat($doc-path,'.xml')"/>
+    </xsl:value-of>
   </xsl:function>
 
   <!-- Don't ever add any special CSS classes -->

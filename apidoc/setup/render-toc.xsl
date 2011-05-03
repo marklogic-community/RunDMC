@@ -7,6 +7,9 @@
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="xs">
 
+  <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
+  <xsl:param name="prefix-for-hrefs"/>
+
   <xsl:template match="/">
     <div>
       <script type="text/javascript">
@@ -62,7 +65,7 @@
                   </xsl:template>
 
                   <xsl:template mode="link" match="node[@href]">
-                    <a href="{@href}">
+                    <a href="{$prefix-for-hrefs}{@href}">
                       <xsl:apply-templates mode="title-att" select="."/>
                       <xsl:value-of select="@display"/>
                     </a>

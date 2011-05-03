@@ -16,6 +16,7 @@
   <xsl:include href="fixup.xsl"/>
 
   <xsl:template match="/">
+<xsl:value-of select="xdmp:log(concat('$api:version: ',$api:version))"/>
                                                               <!-- Function names aren't unique thanks to the way *:polygon()
                                                                    is documented. -->
     <xsl:apply-templates select="apidoc:module/apidoc:function[not(@fullname = preceding-sibling::apidoc:function/@fullname)]"/>
@@ -23,7 +24,7 @@
 
   <!-- Extract each function as its own document -->
   <xsl:template match="apidoc:function">
-    <xsl:result-document href="/apidoc/{@lib}:{@name}.xml">
+    <xsl:result-document href="/apidoc/{$api:version}/{@lib}:{@name}.xml">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
            that raises the possibility of needing to include two different

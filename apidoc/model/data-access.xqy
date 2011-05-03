@@ -8,7 +8,18 @@ declare namespace apidoc = "http://marklogic.com/xdmp/apidoc";
 import module namespace u = "http://marklogic.com/rundmc/util"
        at "../../lib/util-2.xqy";
 
-declare variable $api:toc-url-location := "/apidoc/private/tocURL.xml";
+declare variable $api:default-version   as xs:string  := fn:string(u:get-doc("/apidoc/config/default-version.xml")/version);
+declare variable $api:version-specified as xs:string? := xdmp:get-request-field("version"); (: uniformly accessed in both the setup and view code
+                                                                                               rather than using $params which only the view code uses :)
+declare variable $api:version           as xs:string  := if ($api:version-specified) then $api:version-specified
+                                                                                     else $api:default-version;
+
+(: This variable is only used by the setup script, because it's only in the setup scripts that we ever care about more than one TOC URL at a time :)
+(: Its value must be the same as $api:toc-url-location when $api:version-specified is empty, so the view code will get the right default TOC. :)
+declare variable $api:toc-url-default-version-location := fn:concat("/apidoc/private/",                       "toc-url.xml");
+declare variable $api:toc-url-location                 := fn:concat("/apidoc/private/",$api:version-specified,"toc-url.xml");
+
+(: The URL of the current TOC (based on whatever version the user has requested) :)
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
 
 declare variable $api:query-for-builtin-functions :=

@@ -3,7 +3,7 @@
      we invoke it as part of the bulk content update process
      in the /apidoc/setup scripts.
 
-     It is used both in rendering the HTML TOC as well as in
+     The result is used both in rendering the HTML TOC as well as in
      driving the generation of function list pages.
 -->
 <xsl:stylesheet version="2.0"

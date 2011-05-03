@@ -8,7 +8,7 @@ declare namespace map = "http://marklogic.com/xdmp/map";
 
 let $map     := map:map()
 let $params  := param:params()
-let $doc-url := concat($params[@name eq 'src'], ".xml")
+let $doc-url := $params[@name eq 'src']
 
 return
   xdmp:xslt-invoke("../view/page.xsl", doc($doc-url), (map:put($map,"params",$params),$map))

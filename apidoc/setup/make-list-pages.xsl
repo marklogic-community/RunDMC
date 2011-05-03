@@ -14,7 +14,7 @@
   <xsl:variable name="root" select="/"/>
 
   <xsl:template match="/">
-    <!-- Find each unique container page (not a leaf/function) -->
+    <!-- Find each unique container (list) page (not a leaf/function) -->
     <xsl:for-each select="distinct-values(//node[node]/@href)">
       <xsl:result-document href="{ml:internal-uri(.)}">
         <!-- Process the first one of each; it contains the intro text we need, etc. -->
