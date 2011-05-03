@@ -1,3 +1,9 @@
-<!-- The server version we serve up documentation for when the request URL
-     is not version-specific -->
-<version>4.2</version>
+<!-- Legal version numbers of the Server that we have documentation for -->
+<versions>
+  <version number="3.2"/>
+  <version number="4.0"/>
+  <version number="4.1"/>
+  <version number="4.2" default="yes"/> <!-- what we serve when the request URL
+                                             does not explicitly specify a version -->
+  <version number="5.0"/>
+</versions>
