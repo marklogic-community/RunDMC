@@ -6,7 +6,7 @@ declare variable $path            := xdmp:get-request-path();
 declare variable $orig-url        := xdmp:get-request-url();
 declare variable $query-string    := substring-after($orig-url, '?');
 
-declare variable $default-version := fn:string(u:get-doc("/apidoc/config/default-version.xml")/version);
+declare variable $default-version := fn:string(u:get-doc("/apidoc/config/server-versions.xml")/version);
 
 declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) then substring-after($path,'/')
                                   else if (matches($path, '^/[0-9]\.[0-9]/')) then substring-before(substring-after($path,'/'),'/')
