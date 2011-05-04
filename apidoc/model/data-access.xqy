@@ -65,11 +65,8 @@ declare function get-libs($query, $builtin) {
 };
 
 declare function function-count-for-lib($lib) {
-  let $estimate-call := fn:concat('xdmp:estimate(xdmp:directory("',$api:version-dir,'","1")/api:function-page/api:function[@lib eq $lib])') return
-  xdmp:value($estimate-call)
-  (: Above is a workaround for a bug in which xdmp:directory becomes unsearchable when passing it a non-literal
-  xdmp:estimate(xdmp:directory($api:version-dir,"1")/api:function-page/api:function[@lib eq $lib])
-  :)
+  let $dir := $api:version-dir return (: This line is necessary as a workaround for Bug #13385 :)
+  xdmp:estimate(xdmp:directory($dir,"1")/api:function-page/api:function[@lib eq $lib])
 };
 
 declare function function-names-for-lib($lib) {
