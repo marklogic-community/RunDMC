@@ -22,17 +22,27 @@ declare variable $api:toc-url-location                 := fn:concat("/apidoc/pri
 (: The URL of the current TOC (based on whatever version the user has requested) :)
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
 
-declare variable $api:query-for-builtin-functions :=
-  cts:element-attribute-value-query(xs:QName("api:function"),
-                                    xs:QName("type"),
-                                    "builtin");
+declare variable $api:version-dir := fn:concat("/apidoc/",$api:version,"/");
+declare variable $api:version-dir-query :=
+  cts:directory-query($api:version-dir,"1");
 
-(: Every function that's not a built-in function is a library function :)
+declare variable $api:query-for-builtin-functions :=
+  cts:and-query((
+    $api:version-dir-query,
+    cts:element-attribute-value-query(xs:QName("api:function"),
+                                      xs:QName("type"),
+                                      "builtin")
+  ));
+
 declare variable $api:query-for-library-functions :=
-   cts:element-query(
-     xs:QName("api:function"),
-     cts:not-query($api:query-for-builtin-functions)
-   );
+  cts:and-query((
+    $api:version-dir-query,
+    cts:element-query(
+      xs:QName("api:function"),
+      (: Every function that's not a built-in function is a library function :)
+      cts:not-query($api:query-for-builtin-functions)
+    )
+  ));
 
 declare variable $api:built-in-function-count  := xdmp:estimate(cts:search(fn:collection(),$api:query-for-builtin-functions));
 declare variable $api:library-function-count   := xdmp:estimate(cts:search(fn:collection(),$api:query-for-library-functions));
@@ -55,7 +65,11 @@ declare function get-libs($query, $builtin) {
 };
 
 declare function function-count-for-lib($lib) {
-  xdmp:estimate(fn:collection()/api:function-page/api:function[@lib eq $lib])
+  let $estimate-call := fn:concat('xdmp:estimate(xdmp:directory("',$api:version-dir,'","1")/api:function-page/api:function[@lib eq $lib])') return
+  xdmp:value($estimate-call)
+  (: Above is a workaround for a bug in which xdmp:directory becomes unsearchable when passing it a non-literal
+  xdmp:estimate(xdmp:directory($api:version-dir,"1")/api:function-page/api:function[@lib eq $lib])
+  :)
 };
 
 declare function function-names-for-lib($lib) {
