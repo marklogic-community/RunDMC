@@ -6,7 +6,8 @@ declare variable $path            := xdmp:get-request-path();
 declare variable $orig-url        := xdmp:get-request-url();
 declare variable $query-string    := substring-after($orig-url, '?');
 
-declare variable $default-version := fn:string(u:get-doc("/apidoc/config/server-versions.xml")/*/version[@default eq 'yes']/@number);
+declare variable $legal-versions  := u:get-doc("/apidoc/config/server-versions.xml")/*/version/@number;
+declare variable $default-version := fn:string($legal-versions[../@default eq 'yes']);
 
 declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) then substring-after($path,'/')
                                   else if (matches($path, '^/[0-9]\.[0-9]/')) then substring-before(substring-after($path,'/'),'/')
@@ -47,8 +48,8 @@ declare function local:transform($source-doc) as xs:string {
     else if ($path eq '/') then 
       local:transform($root-doc-url)
 
-    (: If the version is specified in the path, then proceed accordingly :)
-    else if ($version-specified) then
+    (: If the version is specified in the path and it's legal, then proceed accordingly :)
+    else if ($version-specified = $legal-versions) then
 
         (: If the version-specific doc path requested, e.g., /4.2/foo, is available, then serve it :)
         if (doc-available($doc-url)) then
