@@ -232,11 +232,11 @@
     <xsl:variable name="doc-uri" select="base-uri($node)"/>
 
     <xsl:variable name="version" select="substring-before(substring-after($doc-uri,'/apidoc/'),'/')"/>
-    <xsl:variable name="versionless-path" select="substring-after($doc-uri,concat('/apidoc/',$version,'/'))"/>
+    <xsl:variable name="versionless-path" select="substring-after($doc-uri,concat('/apidoc/',$version))"/>
 
     <xsl:value-of>
-      <!-- Map "/" to index.xml and "/foo" to /foo.xml -->
-      <xsl:value-of select="if ($versionless-path eq 'index.xml') then '/' else concat($versionless-path, '.xml')"/>
+      <!-- Map "/index.xml" to "/" and "/foo.xml" to "/foo" -->
+      <xsl:value-of select="if ($versionless-path eq '/index.xml') then '/' else substring-before($versionless-path, '.xml')"/>
     </xsl:value-of>
   </xsl:function>
 
