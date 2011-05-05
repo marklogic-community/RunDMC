@@ -31,7 +31,7 @@
 
   <xsl:variable name="DEBUG" select="false()"/>
 
-  <xsl:variable name="highlight-search" select="$params[@name eq 'q']"/>
+  <xsl:variable name="highlight-search" select="string($params[@name eq 'hl'])"/>
   <xsl:variable name="content" select="if ($highlight-search) then u:highlight-doc(/, $highlight-search) else /"/>
 
   <xsl:variable name="template" select="if (xdmp:uri-is-file('/config/template.optimized.xhtml'))
