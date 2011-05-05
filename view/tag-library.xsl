@@ -787,7 +787,7 @@
             <xsl:variable name="doc" select="doc(@uri)"/>
             <div class="searchResult">
               <a href="{if ($is-flat-file) then @uri
-                                             else ml:external-uri($doc)}">
+                                             else ml:external-uri($doc)}?q={encode-for-uri($params[@name eq 'q'])}"> <!-- Send query term -->
                 <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>

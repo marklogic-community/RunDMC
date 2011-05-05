@@ -30,3 +30,7 @@ declare function u:get-doc($path as xs:string) as node() {
 declare function u:is-directory($uri as xs:string) as xs:boolean {
     xdmp:exists(xdmp:directory($uri, 'infinity'))
 };
+
+declare function u:highlight-doc($doc, $highlight-search as xs:string) {
+  cts:highlight($doc, $highlight-search, <span style="background-color:yellow">{$cts:text}</span>)
+};
