@@ -23,6 +23,7 @@
   <namespace lib="kml" uri="http://earth.google.com/kml/2.0"/>
   <namespace lib="lnk" uri="http://marklogic.com/cpf/links"/>
   <namespace lib="map" uri="http://marklogic.com/xdmp/map"/>
+  <namespace lib="magick" uri="http://marklogic.com/magick"/>
   <namespace lib="math" uri="http://marklogic.com/xdmp/math"/>
   <namespace lib="mcgm" uri="http://marklogic.com/geospatial/mcgm"/>
   <namespace lib="msword" uri="http://marklogic.com/cpf/msword"/>
@@ -33,6 +34,7 @@
   <namespace lib="plugin" uri="http://marklogic.com/extension/plugin"/>
   <namespace lib="ppt" uri="http://marklogic.com/cpf/powerpoint"/>
   <namespace lib="prof" uri="http://marklogic.com/xdmp/profile"/>
+  <namespace lib="rest" uri="http://marklogic.com/appservices/rest"/>
   <namespace lib="search" uri="http://marklogic.com/appservices/search"/>
   <namespace lib="sec" uri="http://marklogic.com/xdmp/security"/>
 
