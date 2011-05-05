@@ -54,6 +54,9 @@ p {
 	line-height: 133%;
 }
 code, pre {font: normal 1.1em "Courier New", Courier, Monospace;}
+
+pre { overflow-x: auto; }
+
 .align_right {
 	float: right;
 	margin-left: 1em;
