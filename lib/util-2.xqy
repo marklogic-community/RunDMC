@@ -2,6 +2,9 @@ xquery version "1.0-ml";
 
 module namespace u="http://marklogic.com/rundmc/util";
 
+import module namespace search = "http://marklogic.com/appservices/search"
+       at "/MarkLogic/appservices/search/search.xqy";
+
 (: 
  : @author Eric Bloch
  : @date 21 April 2010
@@ -32,5 +35,6 @@ declare function u:is-directory($uri as xs:string) as xs:boolean {
 };
 
 declare function u:highlight-doc($doc, $highlight-search as xs:string) {
-  cts:highlight($doc, $highlight-search, <span style="background-color:yellow">{$cts:text}</span>)
+  cts:highlight($doc, cts:query(search:parse($highlight-search, search:get-default-options())),
+                      <span style="background-color:yellow">{$cts:text}</span>)
 };
