@@ -1,11 +1,16 @@
 <!-- Legal version numbers of the Server that we have documentation for -->
+<!-- When you change the default version, you'll need to re-generate the
+     TOC for the new default version. -->
 <versions>
-  <!--
+  <!-- Not currently importing this content (not conveniently available)
   <version number="3.2"/>
   <version number="4.0"/>
   -->
   <version number="4.1"/>
   <version number="4.2" default="yes"/> <!-- what we serve when the request URL
                                              does not explicitly specify a version -->
+
+  <!-- should disable this when we go live...until we release 5.0,
+       at which point we'll make it the new default -->
   <version number="5.0"/>
 </versions>
