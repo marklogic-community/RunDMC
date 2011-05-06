@@ -23,7 +23,9 @@
       })
       </script>
 
+      <!--
       <div>API Reference</div>
+      -->
       <ul id="apidoc_tree">
         <xsl:apply-templates select="/toc/node"/>
       </ul>

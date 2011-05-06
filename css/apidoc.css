@@ -36,8 +36,18 @@
   background: none repeat scroll 0 0 white;
 }
 
+.version {
+  font-size: 0.8em;
+}
+
+#version_list {
+  padding-top: 8px;
+  padding-left: 8px;
+}
 #apidoc_toc {
-  padding: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .function_name {
@@ -50,7 +60,7 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage, .footnote_marker, h1 a {
+.currentPage, .footnote_marker, .currentVersion, h1 a {
   color: #F86D07;
 }
 

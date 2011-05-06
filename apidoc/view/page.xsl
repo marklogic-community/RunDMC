@@ -6,14 +6,16 @@
   xmlns:u="http://marklogic.com/rundmc/util"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:ml="http://developer.marklogic.com/site/internal"
-  xpath-default-namespace="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs ml xdmp api">
+  xmlns:x="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="x xs ml xdmp api">
 
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
 
   <!-- Include the version prefix (e.g., "/4.2") when explicitly specified; otherwise don't -->
   <xsl:variable name="version-prefix" select="if (not($api:version-specified)) then '' else concat('/',$api:version-specified)"/>
+
+  <xsl:variable name="versions" select="u:get-doc('/apidoc/config/server-versions.xml')/versions/version"/>
 
   <xsl:variable name="site-title" select="'MarkLogic API Documentation'"/>
 
@@ -23,9 +25,34 @@
 
   <!-- Links in content (function descriptions and list page intros) may need to be rewritten
        to include the current explicitly specified version -->
-  <xsl:template match="a/@href[starts-with(.,'/')]">
+  <xsl:template match="x:a/@href[starts-with(.,'/')]">
     <xsl:attribute name="href" select="concat($version-prefix,.)"/>
   </xsl:template>
+
+  <xsl:template match="ml:version-list">
+    <div id="version_list">
+      <span>API Reference </span>
+      <span class="version">
+        <xsl:text>(version: </xsl:text>
+        <xsl:apply-templates mode="version-list-item" select="$versions"/>
+        <xsl:text>)</xsl:text>
+      </span>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="version-list-item" match="version">
+            <a href="/{@number}">
+              <xsl:apply-templates mode="version-selected-class" select="."/>
+              <xsl:value-of select="@number"/>
+            </a>
+            <xsl:if test="position() ne last()"> | </xsl:if>
+          </xsl:template>
+
+                  <xsl:template mode="version-selected-class" match="version"/>
+                  <xsl:template mode="version-selected-class" match="version[@number eq $api:version]">
+                    <xsl:attribute name="class" select="'currentVersion'"/>
+                  </xsl:template>
+
 
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
