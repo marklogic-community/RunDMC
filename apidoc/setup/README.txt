@@ -7,6 +7,6 @@ comments in setup.xqy.
 For development purposes, you don't always want to re-generate all the
 content just to test one code change. For example, if you make a change
 to how the TOC is (pre-)rendered, you don't want to have to run the whole
-setup.xqy script which can take over a minute to run. For that purpose, I
-created test-steps.xqy which allows you to invoke just one step in the
-sequence. See the comments at the top of test-steps.xqy for details.
+setup.xqy script which can take over a minute to run. In that case, you
+can run just one of the individual XQuery scripts that setup.xqy calls,
+e.g., render-toc.xqy.
