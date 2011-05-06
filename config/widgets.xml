@@ -14,11 +14,13 @@
     <page href="/"/> 
   </widget>
 
+
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
     <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
     <page-tree root="/news"/>
     <page-tree root="/events"/>
+    <page href="/events/mluc11-labs-and-lounge-schedule"/>
   </widget>
 
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
@@ -26,6 +28,7 @@
     <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
     <page-tree root="/news"/>
     <page-tree root="/events"/>
+    <page href="/events/mluc11-labs-and-lounge-schedule"/>
   </widget>
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->

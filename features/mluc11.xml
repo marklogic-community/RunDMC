@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
   <title>User Conference 2011!</title>
+
   <main-points>
     <point>April 26-29 in San Francisco</point>
     <point><a href="/events/insidehack-2011">InsideHack</a> for Developers and Students, Apr 28</point>
     <point>Party Thursday Evening</point>
-    <point>Developer Labs &amp; Lounge, Wednesday-Friday</point>
+    <point><a href="/news/mluc11-developer-labs-and-lounge">Developer Labs &amp; Lounge</a>, <a href="/events/mluc11-labs-and-lounge-schedule">Wednesday-Friday</a></point>
     <point><a href="/news/mluc11-demojam-announce">DemoJam Tuesday Evening at the reception</a></point>
+    <point><a href="/events/mluc11-bof">Birds of a Feather lunch on Thursday</a></point>
   </main-points>
 
 
@@ -46,6 +48,7 @@
     <link href="http://www.marklogicevents.com/">READ MORE</link>
     <link href="http://www.marklogicevents.com/?event=content.agenda">CHECK OUT THE AGENDA</link> 
     <link href="/news/mluc11-developer-labs-and-lounge">SEE LAB &amp; LOUNGE DETAILS</link> 
+    <link href="http://mluc11.marklogic.com">CHECK OUT THE NEW MLUC11 CONFERENCE APP</link>
 <!--
     <link href="http://newsletter.marklogic.com/2011/04/demojam-at-mark-logic-user-conference-2010/">SEE DEMOJAM DETAILS</link>
 -->

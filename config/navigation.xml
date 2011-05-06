@@ -165,6 +165,7 @@
   <page display="Home" href="/" hide="yes"/>
   <generic-page display="Search Results" href="/search" hide="yes" />
   <generic-page display="Error" href="/error" hide="yes"/>
+  <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="4.2 Product Documentation" href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.1 Product Documentation" href="/docs/4.1"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.0 Product Documentation" href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
