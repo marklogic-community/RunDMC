@@ -29,13 +29,12 @@
   </xsl:variable>
 
   <xsl:variable name="all-libs"            select="$api:built-in-libs | $api:library-libs"/>
-  <xsl:variable name="all-functions-count" select="$api:built-in-function-count + $api:library-function-count"/>
 
   <xsl:template match="/">
     <toc>
       <node href="/"
             title="All functions"
-            display="All functions ({$all-functions-count})"
+            display="All functions ({$api:all-functions-count})"
             initially-expanded="yes"><!-- hidden="yes">-->
         <intro>
           <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>

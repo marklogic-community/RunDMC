@@ -23,29 +23,34 @@ declare variable $api:toc-url-location                 := fn:concat("/apidoc/pri
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
 
 declare variable $api:version-dir := fn:concat("/apidoc/",$api:version,"/");
-declare variable $api:version-dir-query :=
-  cts:directory-query($api:version-dir,"1");
+
+declare variable $api:query-for-all-functions :=
+  cts:and-query((
+    cts:directory-query($api:version-dir,"1"),
+    cts:element-query(xs:QName("api:function"),cts:and-query(()))
+  ));
 
 declare variable $api:query-for-builtin-functions :=
   cts:and-query((
-    $api:version-dir-query,
+    $api:query-for-all-functions,
     cts:element-attribute-value-query(xs:QName("api:function"),
                                       xs:QName("type"),
                                       "builtin")
   ));
 
+(: Every function that's not a built-in function is a library function :)
 declare variable $api:query-for-library-functions :=
-  cts:and-query((
-    $api:version-dir-query,
-    cts:element-query(
-      xs:QName("api:function"),
-      (: Every function that's not a built-in function is a library function :)
-      cts:not-query($api:query-for-builtin-functions)
-    )
-  ));
+  cts:and-not-query(
+    $api:query-for-all-functions,
+    $api:query-for-builtin-functions
+  );
 
-declare variable $api:built-in-function-count  := xdmp:estimate(cts:search(fn:collection(),$api:query-for-builtin-functions));
-declare variable $api:library-function-count   := xdmp:estimate(cts:search(fn:collection(),$api:query-for-library-functions));
+(: Used only by TOC-generating code :)
+declare variable $api:all-function-docs := cts:search(fn:collection(),$api:query-for-all-functions,"unfiltered");
+
+declare variable $api:all-functions-count     := xdmp:estimate(cts:search(fn:collection(),$api:query-for-all-functions));
+declare variable $api:built-in-function-count := xdmp:estimate(cts:search(fn:collection(),$api:query-for-builtin-functions));
+declare variable $api:library-function-count  := xdmp:estimate(cts:search(fn:collection(),$api:query-for-library-functions));
 
 declare variable $api:built-in-libs := get-libs($api:query-for-builtin-functions, fn:true() );
 declare variable $api:library-libs  := get-libs($api:query-for-library-functions, fn:false());
@@ -71,9 +76,11 @@ declare function function-count-for-lib($lib) {
 
 declare function function-names-for-lib($lib) {
 
-  let $query := cts:element-attribute-value-query(xs:QName("api:function"),
-                                                  xs:QName("lib"),
-                                                  $lib)
+  let $query := cts:and-query((
+                  $api:query-for-all-functions,
+                  cts:element-attribute-value-query(xs:QName("api:function"),
+                                                    xs:QName("lib"),
+                                                    $lib)))
   return
   for $func in cts:element-attribute-values(xs:QName("api:function"),
                                             xs:QName("fullname"), (), "ascending",
