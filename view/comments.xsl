@@ -20,6 +20,13 @@
   <!-- Disable comments on pages that explicitly disable them -->
   <xsl:template mode="comment-section" match="*[@disable-comments]"/>
 
+  <!-- Overridden by apidoc's XSLT -->
+  <xsl:function name="ml:uri-for-commenting-purposes" as="xs:string">
+    <xsl:param name="node"/>
+    <!-- Normally, we just use the document URI -->
+    <xsl:sequence select="base-uri($node)"/>
+  </xsl:function>
+
   <!-- But allow comments everywhere else -->
   <xsl:template mode="comment-section" match="*">
 
@@ -30,7 +37,7 @@
     <div id="disqus_thread">
       <div id="dsq-content">
         <ul id="dsq-comments">
-          <xsl:apply-templates select="ml:comments-for-page(.)/dq:reply"/>
+          <xsl:apply-templates select="ml:comments-for-doc-uri(ml:uri-for-commenting-purposes(.))/dq:reply"/>
         </ul>
       </div>
     </div>
@@ -42,7 +49,7 @@
         var disqus_developer = <xsl:value-of select="$dq:developer_0_or_1"/>;
 
         // The following are highly recommended additional parameters. Remove the slashes in front to use.
-        var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(.)"/>';
+        var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(ml:uri-for-commenting-purposes(.))"/>';
         var disqus_url = '<xsl:value-of select="$site-url-for-disqus"/><xsl:value-of select="ml:external-uri(.)"/>';
 
         function disqus_config() {
@@ -106,8 +113,8 @@
       <ul>
         <li>
           <!-- This will get replaced by the actual comment count from Disqus, as described here: http://docs.disqus.com/developers/universal/#comment-count -->
-          <a href="{ml:external-uri(.)}#disqus_thread" data-disqus-identifier="{ml:disqus-identifier(.)}">
-            <xsl:value-of select="count(ml:comments-for-page(.)//dq:reply)"/> comments<xsl:text/>
+          <a href="{ml:external-uri(.)}#disqus_thread" data-disqus-identifier="{ml:disqus-identifier(ml:uri-for-commenting-purposes(.))}">
+            <xsl:value-of select="count(ml:comments-for-doc-uri(ml:uri-for-commenting-purposes(.))//dq:reply)"/> comments<xsl:text/>
           </a>
         </li>
         <li>

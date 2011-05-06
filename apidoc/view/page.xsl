@@ -283,6 +283,14 @@
     </xsl:value-of>
   </xsl:function>
 
+  <!-- Don't include the version in the comments doc URI; use just one conversation thread per function, regardless of server version -->
+  <!-- Redefines the function in ../../view/comments.xsl -->
+  <xsl:function name="ml:uri-for-commenting-purposes" as="xs:string">
+    <xsl:param name="node"/>
+    <!-- Remove the version from the path -->
+    <xsl:sequence select="u:strip-version-from-path(base-uri($node))"/>
+  </xsl:function>
+
   <!-- Don't ever add any special CSS classes -->
   <xsl:template mode="body-class-extra" match="*"/>
 

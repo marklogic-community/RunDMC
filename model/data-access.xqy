@@ -27,8 +27,6 @@ declare function docs($element-name) {
     xdmp:value($expr)
 };
 
-declare variable $Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
-
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
 declare variable $pages    := fn:collection()/page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
@@ -54,15 +52,14 @@ declare variable $posts-by-date := for $p in $Posts
 
 
 (: Backed-up Disqus conversations :)
-declare function comments-for-page($page as node())
+declare function comments-for-doc-uri($uri as xs:string)
 {
   (: Associated with a page by using the same relative URI path but inside /private/comments :)
-  $Comments[fn:base-uri(.) eq fn:concat('/private/comments',
-                                        fn:base-uri($page))]
+  fn:doc(fn:concat('/private/comments',$uri))/Comments
 };
 
-declare function disqus-identifier($node as node()) {
-  comments-for-page($node)/@disqus_identifier/fn:string(.)
+declare function disqus-identifier($uri as xs:string) {
+  comments-for-doc-uri($uri)/@disqus_identifier/fn:string(.)
 };
 
 (: Insert a container for conversations pertaining to the given document (i.e. comments) :)

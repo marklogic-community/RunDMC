@@ -30,3 +30,7 @@ declare function u:get-doc($path as xs:string) as node() {
 declare function u:is-directory($uri as xs:string) as xs:boolean {
     xdmp:exists(xdmp:directory($uri, 'infinity'))
 };
+
+declare function u:strip-version-from-path($path as xs:string) {
+  fn:replace($path,'/[0-9]+\.[0-9]+/','/')
+};
