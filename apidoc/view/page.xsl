@@ -13,7 +13,13 @@
   <xsl:import href="xquery-imports.xsl"/>
 
   <!-- Include the version prefix (e.g., "/4.2") when explicitly specified; otherwise don't -->
+  <!--
   <xsl:variable name="version-prefix" select="if (not($api:version-specified)) then '' else concat('/',$api:version-specified)"/>
+  -->
+
+  <!-- Alternative behavior: if current version is the default version (whether explicitly specified or not),
+       then don't include the version prefix in links; see also $api:toc-url in data-access.xqy -->
+  <xsl:variable name="version-prefix" select="if ($api:version eq $api:default-version) then '' else concat('/',$api:version-specified)"/>
 
   <xsl:variable name="versions" select="u:get-doc('/apidoc/config/server-versions.xml')/versions/version"/>
 
