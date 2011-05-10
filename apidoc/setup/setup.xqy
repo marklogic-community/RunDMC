@@ -6,7 +6,7 @@ import module namespace setup = "http://marklogic.com/rundmc/api/setup"
 (: Make sure the version param was specified, particularly for the sake of render-toc.xqy below :)
 $setup:errorCheck,
 
-(: Extract the functions from the "docapp" database and prepare for our use :)
+(: Extract the functions from the raw docs database and prepare for our use :)
 xdmp:invoke("pull-function-docs.xqy"),
 
 (: Create the XML TOC as a subsequent transaction, since it depends on the documents inserted above. :)

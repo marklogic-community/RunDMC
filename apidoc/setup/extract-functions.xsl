@@ -1,4 +1,4 @@
-<!-- This stylesheet processes an <apidoc:module> document (from the docapp database)
+<!-- This stylesheet processes an <apidoc:module> document (from the raw docs database)
      and creates a new <api:function> document for each uniquely-named <apidoc:function>
      element it finds. -->
 <xsl:stylesheet version="2.0"

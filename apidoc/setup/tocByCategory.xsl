@@ -8,12 +8,12 @@
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
   xmlns:u  ="http://marklogic.com/rundmc/util"
   xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns:docapp="http://marklogic.com/rundmc/docapp-data-access"
+  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs api apidoc toc u docapp">
+  exclude-result-prefixes="xs api apidoc toc u raw">
 
-  <!-- We look back into the docapp database to get the introductory content for each function list page -->
-  <xdmp:import-module namespace="http://marklogic.com/rundmc/docapp-data-access" href="/apidoc/setup/raw-docs-access.xqy"/>
+  <!-- We look back into the raw docs database to get the introductory content for each function list page -->
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/raw-docs-access" href="/apidoc/setup/raw-docs-access.xqy"/>
 
   <xsl:variable name="all-functions" select="$api:all-function-docs/api:function-page/api:function"/>
 
@@ -208,8 +208,8 @@
             <xsl:param name="cat"/>
             <xsl:param name="subcat"/>
             <xsl:param name="lib"/>
-            <xsl:variable name="summaries-with-category" select="$docapp:docs/apidoc:module/apidoc:summary[@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
-            <xsl:variable name="modules-with-category"   select="$docapp:docs/apidoc:module               [@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
+            <xsl:variable name="summaries-with-category" select="$raw:api-docs/apidoc:module/apidoc:summary[@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
+            <xsl:variable name="modules-with-category"   select="$raw:api-docs/apidoc:module               [@category eq $cat][@subcategory eq $subcat or not($subcat)]"/>
 
             <!-- Fallback boilerplate is different for library modules than for built-in libs  -->
             <xsl:variable name="fallback">
@@ -242,11 +242,11 @@
             <xsl:param name="lib"/>
 
             <!-- exceptional ("spell" built-in) -->
-            <xsl:variable name="summaries-by-module-cat"  select="$docapp:docs/apidoc:module[@category eq toc:hard-coded-category($lib)]/apidoc:summary"/>
+            <xsl:variable name="summaries-by-module-cat"  select="$raw:api-docs/apidoc:module[@category eq toc:hard-coded-category($lib)]/apidoc:summary"/>
             <!-- the most common case -->
-            <xsl:variable name="summaries-by-module-lib"  select="$docapp:docs/apidoc:module               [@lib eq api:prefix-for-lib($lib)]/apidoc:summary"/>
+            <xsl:variable name="summaries-by-module-lib"  select="$raw:api-docs/apidoc:module               [@lib eq api:prefix-for-lib($lib)]/apidoc:summary"/>
             <!-- exceptional ("map") -->
-            <xsl:variable name="summaries-by-summary-lib" select="$docapp:docs/apidoc:module/apidoc:summary[@lib eq api:prefix-for-lib($lib)]"/>
+            <xsl:variable name="summaries-by-summary-lib" select="$raw:api-docs/apidoc:module/apidoc:summary[@lib eq api:prefix-for-lib($lib)]"/>
             <!-- exceptional ("dls") -->
             <xsl:variable name="summaries-by-module-lib-no-subcat" select="$summaries-by-module-lib[not(@subcategory)]"/>
 
