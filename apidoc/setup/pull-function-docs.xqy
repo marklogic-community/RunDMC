@@ -6,7 +6,7 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
        at "../../model/data-access.xqy";
 
 import module namespace docapp="http://marklogic.com/rundmc/docapp-data-access"
-       at "docapp-data-access.xqy";
+       at "raw-docs-access.xqy";
 
 import module namespace u="http://marklogic.com/rundmc/util"
        at "../../lib/util-2.xqy";
