@@ -11,6 +11,12 @@
   xpath-default-namespace="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="xs apidoc fixup">
 
+  <!-- The fullname is a derived value -->
+  <xsl:function name="fixup:fullname">
+    <xsl:param name="element"/>
+    <xsl:sequence select="concat($element/@lib,':',$element/@name)"/>
+  </xsl:function>
+
   <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
   <!-- ASSUMPTION: If the fragment id contains a colon, then this is a link to a function page -->
   <xsl:template mode="fixup-att-value" match="a/@href[starts-with(.,'#') and contains(.,':')]" priority="3">
@@ -29,7 +35,7 @@
         <xsl:if test="not(ancestor::apidoc:function is $relevant-function)">
           <xsl:text>/</xsl:text>
           <!-- path to function page -->
-          <xsl:value-of select="$relevant-function/@fullname"/>
+          <xsl:value-of select="$relevant-function/fixup:fullname(.)"/>
         </xsl:if>
         <!-- fragment id -->
         <xsl:value-of select="."/>

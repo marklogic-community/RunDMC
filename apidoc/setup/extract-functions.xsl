@@ -7,8 +7,9 @@
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:xdmp="http://marklogic.com/xdmp"
+  xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs apidoc">
+  exclude-result-prefixes="xs apidoc fixup">
 
   <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
 
@@ -19,7 +20,7 @@
 <xsl:value-of select="xdmp:log(concat('$api:version: ',$api:version))"/>
                                                               <!-- Function names aren't unique thanks to the way *:polygon()
                                                                    is documented. -->
-    <xsl:apply-templates select="apidoc:module/apidoc:function[not(@fullname = preceding-sibling::apidoc:function/@fullname)]"/>
+    <xsl:apply-templates select="apidoc:module/apidoc:function[not(fixup:fullname(.) = preceding-sibling::apidoc:function/fixup:fullname(.))]"/>
   </xsl:template>
 
   <!-- Extract each function as its own document -->
@@ -30,7 +31,7 @@
            that raises the possibility of needing to include two different
            <api:function> elements in the same page. -->
       <api:function-page>
-        <xsl:apply-templates mode="fixup" select="../apidoc:function[@fullname eq current()/@fullname]"/>
+        <xsl:apply-templates mode="fixup" select="../apidoc:function[fixup:fullname(.) eq current()/fixup:fullname(.)]"/>
       </api:function-page>
     </xsl:result-document>
   </xsl:template>
@@ -49,6 +50,8 @@
   <xsl:template mode="fixup-add-atts" match="apidoc:function">
     <xsl:attribute name="prefix" select="@lib"/>
     <xsl:attribute name="namespace" select="api:uri-for-lib(@lib)"/>
+    <!-- Add the @fullname attribute, which we depend on later. -->
+    <xsl:attribute name="fullname" select="fixup:fullname(.)"/>
   </xsl:template>
 
   <!-- Change the "spell" library to "spell-lib" to disambiguate from the built-in "spell" module -->

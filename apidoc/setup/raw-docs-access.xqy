@@ -16,7 +16,7 @@ declare variable $raw:db-name := fn:string(u:get-doc("/apidoc/config/source-data
 declare variable $raw:api-docs :=
   let $query := 'import module namespace api = "http://marklogic.com/rundmc/api" at "/apidoc/model/data-access.xqy";
                  declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-                 xdmp:directory(fn:concat("http://pubs/",$api:version,"doc/apidoc/"),"infinity") [apidoc:module]
+                 xdmp:directory(fn:concat("/",$api:version,"/apidoc/")) [apidoc:module]
                 '
   return
     xdmp:eval($query, (), <options xmlns="xdmp:eval">
