@@ -27,6 +27,9 @@ declare function docs($element-name) {
     xdmp:value($expr)
 };
 
+(: used by get-updated-disqus-threads.xqy :)
+declare variable $Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
+
                                                     (: Exclude admin pages themselves, so you can't change,
                                                        or break, the Admin UI through the Admin UI :)
 declare variable $pages    := fn:collection()/page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
