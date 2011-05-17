@@ -13,23 +13,27 @@ import module namespace u="http://marklogic.com/rundmc/util"
 
 declare variable $raw:db-name := fn:string(u:get-doc("/apidoc/config/source-database.xml"));
 
+declare variable $raw:common-import :=
+                 'import module namespace api = "http://marklogic.com/rundmc/api" at "/apidoc/model/data-access.xqy";
+                  declare namespace apidoc="http://marklogic.com/xdmp/apidoc";';
+
+declare variable $raw:common-options := <options xmlns="xdmp:eval">
+                                          <database>{xdmp:database($raw:db-name)}</database>
+                                        </options>;
+
 declare variable $raw:api-docs :=
-  let $query := 'import module namespace api = "http://marklogic.com/rundmc/api" at "/apidoc/model/data-access.xqy";
-                 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-                 xdmp:directory(fn:concat("/",$api:version,"/apidoc/")) [apidoc:module]
-                '
+  let $query := fn:concat($raw:common-import, 'xdmp:directory(fn:concat("/",$api:version,"/apidoc/")) [apidoc:module]')
   return
-    xdmp:eval($query, (), <options xmlns="xdmp:eval">
-                            <database>{xdmp:database($raw:db-name)}</database>
-                          </options>);
+    xdmp:eval($query, (), $raw:common-options);
 
 declare variable $raw:guide-docs :=
-  let $query := 'import module namespace api = "http://marklogic.com/rundmc/api" at "/apidoc/model/data-access.xqy";
-                 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-                 xdmp:directory(fn:concat("/",$api:version,"/guides/"))
-                '
+  let $query := fn:concat($raw:common-import, 'xdmp:directory(fn:concat("/",$api:version,"/guides/"))')
   return
-    xdmp:eval($query, (), <options xmlns="xdmp:eval">
-                            <database>{xdmp:database($raw:db-name)}</database>
-                          </options>);
+    xdmp:eval($query, (), $raw:common-options);
 
+
+declare function get-doc($uri) {
+  let $query := fn:concat('fn:doc("',$uri,'")')
+  return 
+    xdmp:eval($query, (), $raw:common-options)
+};

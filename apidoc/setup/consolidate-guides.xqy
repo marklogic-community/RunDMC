@@ -33,7 +33,7 @@ for $dir in $sub-dirs return
     (
       xdmp:log(concat("Combining fragments into ",$target-url)),
       xdmp:document-insert($target-url,
-        <guide>{
+        <guide original-dir="{$dir}">{
           <title>{$title}</title>,
           (: Get each XML doc in order, except for the title doc :)
           for $doc in xdmp:directory($dir)[XML] except $title-doc

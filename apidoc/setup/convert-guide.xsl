@@ -16,5 +16,8 @@
     </xsl:copy>
   </xsl:template>
 
+  <!-- Don't need this attribute at this stage; only used to resolve URIs of images being copied over -->
+  <xsl:template match="/guide/@original-dir"/>
+
 </xsl:stylesheet>
 

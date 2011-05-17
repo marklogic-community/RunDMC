@@ -110,3 +110,8 @@ declare function uri-for-lib($lib) {
 declare function prefix-for-lib($lib) {
   fn:string($namespace-mappings[@lib eq $lib]/(if (@prefix) then @prefix else $lib))
 };
+
+declare function guide-image-dir($guide as node()) {
+  let $path := fn:substring-before(fn:base-uri($guide), ".xml") return
+  fn:concat("/media",$path,"/")
+};
