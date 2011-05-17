@@ -13,6 +13,10 @@
 
      The <added-in> element is used to filter out parts of the description that
      aren't applicable to older server versions.
+
+     If a guide is not included in this list, that won't prevent it from being
+     imported and rendered (but it will prevent it from being included in the
+     table). If you want to explicitly exclude a guide, use the @exclude flag.
 -->
 <docs>
   <entry href="/all" title="MarkLogic XQuery and XSLT Function Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>

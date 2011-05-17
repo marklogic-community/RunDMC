@@ -15,8 +15,10 @@ xdmp:invoke("consolidate-guides.xqy", (), <options xmlns="xdmp:eval">
                                           </options>),
 
 (: Convert each combined guide into the XML that's convenient to render :)
-(:
 xdmp:invoke("convert-guides.xqy"),
+
+(:
+xdmp:invoke("copy-guide-images.xqy"),
 :)
 
 (: TODO: maybe not here, but update the TOC code so that it includes the guide sections;

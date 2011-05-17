@@ -26,7 +26,7 @@ declare variable $raw:api-docs :=
 declare variable $raw:guide-docs :=
   let $query := 'import module namespace api = "http://marklogic.com/rundmc/api" at "/apidoc/model/data-access.xqy";
                  declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-                 xdmp:directory(fn:concat("/",$api:version,"/combined/"))
+                 xdmp:directory(fn:concat("/",$api:version,"/guides/"))
                 '
   return
     xdmp:eval($query, (), <options xmlns="xdmp:eval">
