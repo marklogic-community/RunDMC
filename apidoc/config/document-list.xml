@@ -40,6 +40,9 @@
   <guide url-name="sharepoint"      source-names="SharePoint-Connector">The documentation for the MarkLogic Connector for SharePoint®, which allows you to mirror documents from a Microsoft SharePoint repository in MarkLogic Server.</guide>
   <guide url-name="relnotes"        source-names="relnotes">Contains a summary of new features, upgrade compatibility information, and other information about this release.</guide>
 
+  <!-- This doesn't seem to add any value; explicitly excluding it -->
+  <guide exclude="yes"              source-names="shared"/>
+
   <entry title="ZIP File of All MarkLogic Product Documentation">A zip file containing the latest MarkLogic Server 4.2 documentation.</entry>
 
 </docs>
