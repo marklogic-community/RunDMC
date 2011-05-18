@@ -111,7 +111,8 @@ declare function prefix-for-lib($lib) {
   fn:string($namespace-mappings[@lib eq $lib]/(if (@prefix) then @prefix else $lib))
 };
 
-declare function guide-image-dir($guide as node()) {
-  let $path := fn:substring-before(fn:base-uri($guide), ".xml") return
+(: E.g., store the images for /apidoc/4.2/guides/performance.xml in /media/apidoc/4.2/guides/performance/ :)
+declare function guide-image-dir($page-uri) {
+  let $path := fn:substring-before($page-uri, ".xml") return
   fn:concat("/media",$path,"/")
 };

@@ -37,3 +37,9 @@ declare function get-doc($uri) {
   return 
     xdmp:eval($query, (), $raw:common-options)
 };
+
+(: Translate the URI of the raw, combined guide to the URI of the final target guide;
+   store all the final guides in /apidoc :)
+declare function target-guide-uri($guide as document-node()) {
+  fn:concat("/apidoc",fn:base-uri($guide))
+};

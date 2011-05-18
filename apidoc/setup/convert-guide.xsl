@@ -1,11 +1,16 @@
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xs">
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+  extension-element-prefixes="xdmp"
+  exclude-result-prefixes="xs raw">
+
+  <xdmp:import-module href="/apidoc/setup/raw-docs-access.xqy" namespace="http://marklogic.com/rundmc/raw-docs-access"/>
 
   <xsl:template match="/">
-    <!-- We're reading from a doc in one database and writing to a doc in a different database, using the same URI -->
-    <xsl:result-document href="{base-uri(.)}">
+    <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
+    <xsl:result-document href="{raw:target-guide-uri(.)}">
       <xsl:apply-templates/>
     </xsl:result-document>
   </xsl:template>
