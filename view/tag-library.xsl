@@ -455,7 +455,7 @@
 
 
   <xsl:template match="article-abstract">
-    <xsl:apply-templates mode="article-abstract" select="document(@href)/Article">
+    <xsl:apply-templates mode="article-abstract" select="document(@href)/*">
       <xsl:with-param name="heading" select="@heading"/>
       <xsl:with-param name="suppress-byline" select="true()"/>
     </xsl:apply-templates>
@@ -467,7 +467,7 @@
     </xsl:apply-templates>
   </xsl:template>
 
-          <xsl:template mode="article-abstract" match="Article">
+          <xsl:template mode="article-abstract" match="Article | Post">
             <xsl:param name="heading" as="xs:string"/>
             <xsl:param name="suppress-byline"/>
             <div class="single">
