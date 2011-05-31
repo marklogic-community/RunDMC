@@ -6,16 +6,10 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/xpath-punctuation-part-1">Punctuation in XPath, Part 1: dot (".")</a></h3>
-    <div class="author">by Evan Lenz, May 24, 2011</div>
+    <h3><a href="/blog/xpath-punctuation-part-2">Punctuation in XPath, part 2: slash ("/")</a></h3>
+    <div class="author">by Evan Lenz, May 31, 2011</div>
     <div class="message">
-       <p>When
-       you write XQuery, a large subset of what you're writing is actually
-       XPath 2.0. In fact, XQuery 1.0 is defined formally as an extension
-       to, or superset of, XPath 2.0.</p> 
-       <p>In
-       this series of blog posts, I'm going to talk about the
-       "punctuation" of XPath...</p>
+       <p>The slash operator ("/") in XPath is the connector you use to connect steps in a path expression. A path expression can return a sequence of nodes or atomic values (but not both). Let's look at some examples, based on the following simple document...</p>
     </div>
   </div>
 
