@@ -6,6 +6,15 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://blogs.marklogic.com/2011/06/01/marklogic-user-conference-2011-reloaded/" target="_blank">MarkLogic User Conference 2011 Reloaded</a></h3>
+    <div class="author">by Pete Aven, June 1, 2011</div>
+    <div class="message">
+       <p>We came, we saw, <a title="We Came, We Saw ..." href="http://www.youtube.com/watch?v=-xMGRA_FePw" target="_blank">we kicked Unstructured Information&#8217;s A$$!</a></p> 
+       <p>The momentum keeps growing and our annual conference keeps getting bigger and better.  It was a great conference and a great event to be a part of.  Though the <a href="http://www.marklogicevents.com/?event=content.home" target="_blank">conference</a> took place a month ago, I&#8217;m still fired up from the experience, so I thought I&#8217;d take a moment share some of the links and love...</p> 
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/xpath-punctuation-part-2">Punctuation in XPath, part 2: slash ("/")</a></h3>
     <div class="author">by Evan Lenz, May 31, 2011</div>
     <div class="message">
