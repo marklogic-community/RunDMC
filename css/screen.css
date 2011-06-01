@@ -36,7 +36,7 @@ ul {
 	padding: 0;
 	list-style: none;
 }
-#content #main ul {list-style:disc inside; padding-left:35px;}
+#content #main ul {list-style:disc; padding-left:35px;}
 #content #main .action ul, #content #main #special_intro ul {padding-left:0}
 fieldset {
 	margin: 0;
