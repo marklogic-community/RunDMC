@@ -36,8 +36,8 @@ SETUP NOTES
     the live developer site, you'll need an XDBC server.
     
 
-  Instructions for copying a database from the developer (or staging site)
-  is TBD...
+  To copy a database from the staging site, use the script in the tools
+  directory.
 
 
 CODE NOTES
