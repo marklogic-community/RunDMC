@@ -52,7 +52,7 @@
                     <xsl:choose>
                     <xsl:when test="@href">
                         <p align="center" class="feature">
-                        <a href="{@href}">
+                        <a href="{@href}" title="{@title}">
                         <img src="{@src}" alt="{@alt}">
                             <xsl:if test="@height"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
                             <xsl:if test="@width"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
