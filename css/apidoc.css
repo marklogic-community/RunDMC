@@ -60,7 +60,7 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage, .footnote_marker, .currentVersion, h1 a {
+.currentPage, .footnote_marker, .currentVersion, h1 a, .toc_highlight {
   color: #F86D07;
 }
 
@@ -84,3 +84,7 @@ code.syntax {
 }
 
 h1 a { text-decoration: underline; }
+
+.hide-detail { display: none; }
+
+#config-filter { width: 100px; }

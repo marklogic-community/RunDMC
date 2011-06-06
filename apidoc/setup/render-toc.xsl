@@ -17,15 +17,23 @@
         $("#apidoc_tree").treeview({
           collapsed: true,
   /*        animated: "medium",*/
-  /*        control:"#sidetreecontrol",*/
+          control:"#treecontrol",
           persist: "cookie"
         });
       })
       </script>
+      <script type="text/javascript" src="/js/apidoc/toc_filter.js"></script>
 
       <!--
       <div>API Reference</div>
       -->
+      <div id="treecontrol" style="margin-bottom:0px">
+        <input id="config-filter" name="config-filter"/>
+        <xsl:text>&#160;</xsl:text>
+        <a title="Collapse the entire tree below" href="#"><img src="/css/apidoc/images/minus.gif" /> Collapse</a>
+        <xsl:text>&#160;</xsl:text>
+        <a title="Expand the entire tree below" href="#"><img src="/css/apidoc/images/plus.gif" /> Expand</a>
+      </div>
       <ul id="apidoc_tree">
         <xsl:apply-templates select="/toc/node"/>
       </ul>

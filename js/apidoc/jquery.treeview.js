@@ -39,7 +39,9 @@
 			animated ?
 				this.animate({ height: "toggle" }, animated, callback) :
 				this.each(function(){
-					jQuery(this)[ jQuery(this).is(":hidden") ? "show" : "hide" ]();
+          // EDL bug fix - http://docs.jquery.com/Release:jQuery_1.3.2#:visible.2F:hidden_Overhauled
+					//jQuery(this)[ jQuery(this).is(":hidden") ? "show" : "hide" ]();
+					  jQuery(this)[ jQuery(this).css("display")=="none" ? "show" : "hide" ]();
 					if(callback)
 						callback.apply(this, arguments);
 				});
@@ -118,7 +120,10 @@
 					return function() {
 						// reuse toggle event handler, applying the elements to toggle
 						// start searching for all hitareas
-						toggler.apply( $("div." + CLASSES.hitarea, tree).filter(function() {
+            //
+            // EDL: Restrict expand/collapse behavior to the first TOC section (functions by name)
+						//toggler.apply( $("div." + CLASSES.hitarea, tree).filter(function() {
+              toggler.apply( tree.children("li:first").find(">ul").find("div." + CLASSES.hitarea, tree).filter(function() {
 							// for plain toggle, no filter is provided, otherwise we need to check the parent element
 							return filter ? $(this).parent("." + filter).length : true;
 						}) );
