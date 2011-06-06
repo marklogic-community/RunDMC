@@ -6,28 +6,37 @@
   </div>
 
   <div class="body">
-    <h3><a href="http://blogs.marklogic.com/2011/04/15/followanyday-mluc11-developer-lounge-labs/">#FollowAnyDay MLUC11 Developer Lounge &amp; Labs</a></h3>
-    <div class="author">by Pete Aven, April 15, 2011</div>
+    <h3><a href="http://blogs.marklogic.com/2011/06/01/marklogic-user-conference-2011-reloaded/" target="_blank">MarkLogic User Conference 2011 Reloaded</a></h3>
+    <div class="author">by Pete Aven, June 1, 2011</div>
     <div class="message">
-       <p><a href="http://www.marklogicevents.com/" target="_blank">MarkLogic User Conference 2011</a> (<a href="http://twitter.com/#search?q=%23MLUC11" target="_blank">#MLUC11</a>) is less than 2 weeks away!</p> 
-       <p>This year&#8217;s conference is shaping up to be an overdose of awesome.  In addition to the <a href="http://www.marklogicevents.com/?event=content.training" target="_blank">Pre-Conference Training</a>, <a href="http://www.marklogicevents.com/?event=content.keynotes" target="_blank">Keynotes</a>, <a href="http://www.marklogicevents.com/?event=content.breakouts1" target="_blank">Breakout Sessions</a>, Birds of a Feather tables, and our usual roundup of the remarkable,  this year includes a <a href="http://developer.marklogic.com/events/mluc11-labs-and-lounge-schedule" target="_blank">Developer Lounge and Labs</a>.  This will be a place for developer&#8217;s to hang and hack and get their questions answered from the experts.  Lounge activities include Lightning-Talks given by hands on engineers and self-paced Labs to provide attendees with experience, working code, and a forum for asking any questions they may have... <a href="http://blogs.marklogic.com/2011/04/15/followanyday-mluc11-developer-lounge-labs/">read more</a></p> 
+       <p>We came, we saw, <a title="We Came, We Saw ..." href="http://www.youtube.com/watch?v=-xMGRA_FePw" target="_blank">we kicked Unstructured Information&#8217;s A$$!</a></p> 
+       <p>The momentum keeps growing and our annual conference keeps getting bigger and better.  It was a great conference and a great event to be a part of.  Though the <a href="http://www.marklogicevents.com/?event=content.home" target="_blank">conference</a> took place a month ago, I&#8217;m still fired up from the experience, so I thought I&#8217;d take a moment share some of the links and love...</p> 
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="/blog/mluc11-app">Announcing the MLUC11 Conference App</a></h3>
-    <div class="author">by Eric Bloch, April 13, 2011</div>
+    <h3><a href="/blog/xpath-punctuation-part-2">Punctuation in XPath, part 2: slash ("/")</a></h3>
+    <div class="author">by Evan Lenz, May 31, 2011</div>
     <div class="message">
-      <p>We just turned the MLUC11 Conference Application at <a href="http://mluc11.marklogic.com/">http://mluc11.marklogic.com</a> live...The application is built on MarkLogic Server 4.2 and uses <a href="http://developer.marklogic.com/code/mljson">MLJSON</a> - a JSON Facade on top of MarkLogic for all interaction with MarkLogic Server, including search of JSON data...</p>
+       <p>The slash operator ("/") in XPath is the connector you use to connect steps in a path expression. A path expression can return a sequence of nodes or atomic values (but not both). Let's look at some examples, based on the following simple document...</p>
+    </div>
+  </div>
+
+  <div class="body">
+    <h3><a href="/blog/how-to-write-fast-queries">How to write fast queries (by leveraging indexes)</a></h3>
+    <div class="author">by Evan Lenz, May 20, 2011</div>
+    <div class="message">
+    <p>In my last article on <a href="/blog/how-indexing-makes-xpath-fast/">how indexing makes XPath fast</a>, I described the general role that MarkLogic's Universal Index plays. I also promised to show you how to write searchable (and thus fast) expressions. That's what this post is about.</p> 
     </div>
   </div>
 
 
   <div class="body">
-    <h3><a href="http://xquerywebappdev.wordpress.com/2011/04/07/marklogic-solves-problems-you-didnt-even-know-you-had/">MarkLogic Solves Problems You Didn’t Even Know You Had</a></h3>
-    <div class="author">by Ryan Semerau, April 7, 2011</div>
+    <h3><a href="/blog/mluc11-lounge-slides">Lightning talk slides now available</a></h3>
+    <div class="author">by Evan Lenz, May 9, 2011</div>
     <div class="message">
-<p>If you have a problem, but no one realizes it or acknowledges it, do you really have a problem? What if no one in your organization or in the marketplace thinks so? ...</p>
+    <p>We've just posted the slides from the Developer Lounge Lightning Talks at the MarkLogic User Conference 2011. Thanks to everyone who participated.</p> 
+    <p>To get the slides, look for the PDF icons in the schedule on this page: <a href="/events/mluc11-labs-and-lounge-schedule#talks">User Conference 2011 Labs &amp; Lounge Schedule</a>.</p>
     </div>
   </div>
 

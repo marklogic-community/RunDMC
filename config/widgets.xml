@@ -10,10 +10,11 @@
     <page href="/docs/4.1"/>
   </widget>
 
+  <!--
   <widget href="/widgets/getting-started.xml">
     <page href="/"/> 
   </widget>
-
+  -->
 
   <widget xquery="recent-blog-posts.xqy">
     <page href="/"/>
