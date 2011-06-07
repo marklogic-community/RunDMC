@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><feature xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://http://www.w3.org/1999/xhtml">
+  <title>Semantic Toolkit</title>
+
+  <main-points>
+    <point>Loader for semantic tuples</point>
+    <point>XQuery library for semantic queries and joins</point>
+    <point>Substrate for inferencing</point>
+  </main-points>
+  <image width="100" height="100" src="/media/semantic.jpg" alt="Semantic web" href="/code/semantic">
+    <caption>Meaning from data!</caption>
+  </image>
+  <read-more>
+    <link href="http://github.com/marklogic/semantic">BROWSE CODE</link>
+    <link href="http://marklogic.github.com/semantic">VIEW THE README</link>
+  </read-more>
+</feature>
