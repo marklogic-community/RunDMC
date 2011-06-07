@@ -68,6 +68,10 @@
     <page href="/meet/mugfr"/>
   </widget>
 
+  <widget href="/widgets/subscribe-to-mugl.xml">
+    <page href="/meet/mugl"/>
+  </widget>
+
   <widget href="/widgets/subscribe-to-bmug.xml">
     <page href="/meet/bmug"/>
   </widget>
