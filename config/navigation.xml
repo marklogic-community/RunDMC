@@ -131,6 +131,7 @@
     <group display="MarkLogic User Groups">
       <page display="DenMark - Denver" href="/meet/denmark"/>
       <page display="Mark-UPS - Maryland" href="/meet/markups"/>
+      <page display="MUGL - London" href="/meet/mugl"/>
       <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
       <page display="NYMUG - New York" href="/meet/nymug"/>
       <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
