@@ -12,6 +12,8 @@
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
 
+  <xsl:include href="guide.xsl"/>
+
   <!-- Include the version prefix (e.g., "/4.2") when explicitly specified; otherwise don't -->
   <!--
   <xsl:variable name="version-prefix" select="if (not($api:version-specified)) then '' else concat('/',$api:version-specified)"/>

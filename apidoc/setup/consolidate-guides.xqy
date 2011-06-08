@@ -1,5 +1,8 @@
 xquery version "1.0-ml";
 
+(: This script is run in the raw database, combining all the XML
+   files for each guide into one document per guide. :)
+
 import module namespace api="http://marklogic.com/rundmc/api"
        at "../model/data-access.xqy";
 
