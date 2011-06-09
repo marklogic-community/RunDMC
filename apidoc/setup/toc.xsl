@@ -15,7 +15,8 @@
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
   xmlns:u  ="http://marklogic.com/rundmc/util"
   xmlns:ml="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs api apidoc xhtml toc u ml">
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  exclude-result-prefixes="xs api apidoc xhtml toc u ml xdmp">
 
   <xsl:import href="../view/page.xsl"/>
 
@@ -33,6 +34,12 @@
   <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs"/>
 
   <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/guide"/>
+
+  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/guides/',$c/@url-name,'.xml'))"/>
+  <xsl:variable name="guide-docs-all"                            select="xdmp:directory(concat('/apidoc/',$api:version,'/guides/'))[guide]"/>
+
+  <!-- Append unconfigured guides to the end (so new ones are easily discoverable -->
+  <xsl:variable name="guide-docs-ordered" select="$guide-docs-configured, $guide-docs-all except $guide-docs-configured"/>
 
   <xsl:template match="/">
     <toc>
@@ -65,7 +72,7 @@
         <xsl:copy-of select="$by-category"/>
       </node>
       <node display="User Guides">
-        <xsl:for-each select="for $config in $guide-configs return doc(concat('/apidoc/',$api:version,'/guides/',$config/@url-name,'.xml'))">
+        <xsl:for-each select="$guide-docs-ordered">
           <node href="{ml:external-uri(.)}" display="{/guide/title}">
             <xsl:apply-templates mode="guide-toc"/>
           </node>
@@ -76,7 +83,7 @@
 
           <xsl:template mode="guide-toc" match="text()"/>
           <xsl:template mode="guide-toc" match="xhtml:div[@class eq 'section']">
-            <node href="{ml:external-uri(.)}#{*[1]/xhtml:a[2]/@id}" display="{*[1]}">
+            <node href="{ml:external-uri(.)}#{*[1]/xhtml:a[last()]/@id}" display="{*[1]}">
               <xsl:apply-templates mode="#current"/>
             </node>
           </xsl:template>
