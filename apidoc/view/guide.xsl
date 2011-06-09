@@ -10,34 +10,35 @@
 
   <xsl:output indent="no"/>
 
+  <xsl:variable name="convert-at-render-time-for-development-purposes" select="false()"/>
+
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
   </xsl:template>
 
   <xsl:template mode="page-content" match="/guide">
-    <!-- eventually switch to using just this
-    <xsl:apply-templates mode="guide"/>
-    -->
-    <!-- Everything below is temporary, for development purposes. Later, assume that the guide is already converted (in the setup phase). -->
-    <xsl:variable name="params">
-      <!-- Ensure result of converted guide has the same URI -->
-      <map:map>
-        <map:entry>
-          <map:key>output-uri</map:key>
-          <map:value>
-            <xsl:value-of select="base-uri(.)"/>
-          </map:value>
-        </map:entry>
-      </map:map>
-    </xsl:variable>
-    <!-- Convert and render the guide by directly calling the setup/conversion code -->
-    <xsl:copy-of select="xdmp:xslt-invoke('../setup/convert-guide.xsl', /, map:map($params/map:map))
-                         /guide/(node() except title)"/>
-    <!--
-    <xsl:apply-templates mode="guide" select="xdmp:xslt-invoke('../setup/convert-guide.xsl', /,
-                                                               map:map($params/map:map))
-                                             /guide/(node() except title)"/>
-                                             -->
+    <xsl:choose>
+      <xsl:when test="not($convert-at-render-time-for-development-purposes)">
+        <xsl:apply-templates mode="guide"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- Everything below is temporary, for development purposes. Later, assume that the guide is already converted (in the setup phase). -->
+        <xsl:variable name="params">
+          <!-- Ensure result of converted guide has the same URI -->
+          <map:map>
+            <map:entry>
+              <map:key>output-uri</map:key>
+              <map:value>
+                <xsl:value-of select="base-uri(.)"/>
+              </map:value>
+            </map:entry>
+          </map:map>
+        </xsl:variable>
+        <!-- Convert and render the guide by directly calling the setup/conversion code -->
+        <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl', /, map:map($params/map:map))
+                                                   /guide/(node() except title)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Resolve the relative image URI according to the current guide -->
