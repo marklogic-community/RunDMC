@@ -13,7 +13,9 @@
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
-  exclude-result-prefixes="xs api apidoc xhtml toc">
+  xmlns:u  ="http://marklogic.com/rundmc/util"
+  xmlns:ml="http://developer.marklogic.com/site/internal"
+  exclude-result-prefixes="xs api apidoc xhtml toc u ml">
 
   <xsl:import href="../view/page.xsl"/>
 
@@ -28,7 +30,9 @@
     <xsl:call-template name="functions-by-category"/>
   </xsl:variable>
 
-  <xsl:variable name="all-libs"            select="$api:built-in-libs | $api:library-libs"/>
+  <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs"/>
+
+  <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/guide"/>
 
   <xsl:template match="/">
     <toc>
@@ -60,11 +64,23 @@
       <node display="Functions by category">
         <xsl:copy-of select="$by-category"/>
       </node>
-      <node href="/guides" display="User Guides">
-        <node href="/guides/app-dev" display="Application Developer's Guide"/>
+      <node display="User Guides">
+        <xsl:for-each select="for $config in $guide-configs return doc(concat('/apidoc/',$api:version,'/guides/',$config/@url-name,'.xml'))">
+          <node href="{ml:external-uri(.)}" display="{/guide/title}">
+            <xsl:apply-templates mode="guide-toc"/>
+          </node>
+        </xsl:for-each>
       </node>
     </toc>
   </xsl:template>
+
+          <xsl:template mode="guide-toc" match="text()"/>
+          <xsl:template mode="guide-toc" match="xhtml:div[@class eq 'section']">
+            <node href="{ml:external-uri(.)}#{*[1]/xhtml:a[2]/@id}" display="{*[1]}">
+              <xsl:apply-templates mode="#current"/>
+            </node>
+          </xsl:template>
+
 
           <xsl:template match="api:lib">
             <node href="/{.}"
