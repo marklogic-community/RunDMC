@@ -17,7 +17,23 @@
         $("#apidoc_tree").treeview({
           collapsed: true,
   /*        animated: "medium",*/
-          control:"#treecontrol",
+          control:"#treecontrol1",
+          persist: "cookie"
+        });
+      })
+      $(function() {
+        $("#apidoc_tree2").treeview({
+          collapsed: true,
+  /*        animated: "medium",*/
+          control:"#treecontrol2",
+          persist: "cookie"
+        });
+      })
+      $(function() {
+        $("#apidoc_tree3").treeview({
+          collapsed: true,
+  /*        animated: "medium",*/
+          control:"#treecontrol3",
           persist: "cookie"
         });
       })
@@ -27,21 +43,25 @@
       <!--
       <div>API Reference</div>
       -->
-      <div id="treecontrol" style="margin-bottom:0px">
-        <input id="config-filter" name="config-filter"/>
-        <xsl:text>&#160;</xsl:text>
-        <a title="Collapse the entire tree below" href="#"><img src="/css/apidoc/images/minus.gif" /> Collapse</a>
-        <xsl:text>&#160;</xsl:text>
-        <a title="Expand the entire tree below" href="#"><img src="/css/apidoc/images/plus.gif" /> Expand</a>
-      </div>
+      <input id="config-filter" name="config-filter"/>
       <ul id="apidoc_tree">
-        <xsl:apply-templates select="/toc/node"/>
+        <xsl:apply-templates select="/toc/node[1]"/>
       </ul>
+      <input id="config-filter2" name="config-filter2"/>
+      <ul id="apidoc_tree2">
+        <xsl:apply-templates select="/toc/node[2]"/>
+      </ul>
+      <input id="config-filter3" name="config-filter3"/>
+      <ul id="apidoc_tree3">
+        <xsl:apply-templates select="/toc/node[3]"/>
+      </ul>
+      <!--
       <div id="toc_footnote">
         <span class="footnote_marker">*</span>
         <xsl:text> </xsl:text>
         <span class="footnote">Built-in functions (not written in XQuery)</span>
       </div>
+      -->
     </div>
   </xsl:template>
 
@@ -54,6 +74,7 @@
             <li>
               <xsl:apply-templates mode="class-att" select="."/>
               <xsl:apply-templates mode="link"      select="."/>
+              <xsl:apply-templates mode="control"   select="."/>
               <xsl:apply-templates mode="children"  select="."/>
             </li>
           </xsl:template>
@@ -80,7 +101,7 @@
                       <xsl:value-of select="@display"/>
                     </a>
                     <xsl:if test="@footnote">
-                      <a href="#toc_footnote" class="footnote_marker" title="Built-in functions">*</a>
+                      <a href="#" class="footnote_marker" title="Built-in functions (not written in XQuery)">*</a>
                     </xsl:if>
                   </xsl:template>
 
@@ -88,6 +109,21 @@
                           <xsl:template mode="title-att" match="node[@namespace]">
                             <xsl:attribute name="title" select="@namespace"/>
                           </xsl:template>
+
+                  <xsl:template mode="control" match="node"/>
+                  <xsl:template mode="control" match="toc/node[1]      (: Functions :)
+                                                    | toc/node[3]      (: Functions by category :)
+                                                    | toc/node[2]/node (: Individual user guides :)">
+                    <xsl:variable name="position">
+                      <xsl:number count="toc/node"/>
+                    </xsl:variable>
+                    <div id="treecontrol{$position}" style="font-size:.8em" class="treecontrol treecontrol{$position}">
+                      <xsl:text>&#160;</xsl:text>
+                      <a title="Collapse the entire tree below" href="#"><img src="/css/apidoc/images/minus.gif" /> collapse</a>
+                      <xsl:text>&#160;</xsl:text>
+                      <a title="Expand the entire tree below" href="#"><img src="/css/apidoc/images/plus.gif" /> expand</a>
+                    </div>
+                  </xsl:template>
 
                   <xsl:template mode="children" match="node"/>
                   <xsl:template mode="children" match="node[node]">

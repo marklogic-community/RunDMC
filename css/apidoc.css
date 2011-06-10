@@ -87,4 +87,8 @@ h1 a { text-decoration: underline; }
 
 .hide-detail { display: none; }
 
-#config-filter { width: 100px; }
+#config-filter, #config-filter2, #config-filter3 { width: 100px; }
+
+#config-filter2, #config-filter3 { margin-top: 1em }
+
+li.expandable .treecontrol { display: none; }

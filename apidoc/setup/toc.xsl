@@ -68,15 +68,15 @@
         </node>
         -->
       </node>
-      <node display="Functions by category">
-        <xsl:copy-of select="$by-category"/>
-      </node>
       <node display="User Guides">
         <xsl:for-each select="$guide-docs-ordered">
           <node href="{ml:external-uri(.)}" display="{/guide/title}">
             <xsl:apply-templates mode="guide-toc"/>
           </node>
         </xsl:for-each>
+      </node>
+      <node display="Functions by category">
+        <xsl:copy-of select="$by-category"/>
       </node>
     </toc>
   </xsl:template>

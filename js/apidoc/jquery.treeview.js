@@ -233,7 +233,8 @@
 			// if control option is set, create the treecontroller and show it
 			if ( settings.control ) {
 				treeController(this, settings.control);
-				$(settings.control).show();
+  		// EDL: I'll decide whether to show it or not, thank you very much
+  		//		$(settings.control).show();
 			}
 			
 			return this;
@@ -257,5 +258,5 @@
 		last: "last",
 		hitarea: "hitarea"
 	});
-	
+
 })(jQuery);
