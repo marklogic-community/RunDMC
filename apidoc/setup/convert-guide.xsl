@@ -3,9 +3,13 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+  xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:my="http://localhost"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs raw">
+  exclude-result-prefixes="xs raw my">
+
+  <xsl:import href="../view/page.xsl"/>
 
   <xdmp:import-module href="/apidoc/setup/raw-docs-access.xqy" namespace="http://marklogic.com/rundmc/raw-docs-access"/>
 
@@ -45,9 +49,30 @@
   <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
     <xsl:variable name="heading-level" select="1 + number(substring-after(local-name(.),'-'))"/>
     <xsl:element name="h{$heading-level}">
-      <xsl:apply-templates/>
+      <xsl:apply-templates mode="heading-content" select="."/>
     </xsl:element>
   </xsl:template>
+
+          <!-- Insert top-level anchor based on the original file name (special case so no extraneous number ID is appended) -->
+          <xsl:template mode="heading-content" match="Heading-1">
+            <a id="{my:anchor-id-for-top-level-heading(.)}"/>
+            <xsl:next-match/>
+          </xsl:template>
+
+          <xsl:template mode="heading-content" match="*">
+            <xsl:apply-templates mode="#default"/>
+          </xsl:template>
+
+                  <xsl:function name="my:anchor-id-for-top-level-heading">
+                    <xsl:param name="heading-1" as="element(Heading-1)"/>
+                    <xsl:sequence select="my:basename-stem($heading-1/parent::XML/@original-file)"/>
+                  </xsl:function>
+
+                  <xsl:function name="my:basename-stem">
+                    <xsl:param name="url"/>
+                    <xsl:sequence select="substring-before(tokenize($url,'/')[last()],'.xml')"/>
+                  </xsl:function>
+
 
   <xsl:template match="IMAGE">
     <img src="{@href}"/>
@@ -93,6 +118,9 @@
   <!-- Strip out isolated line breaks in Code elements -->
   <xsl:template match="Code/text()[not(normalize-space(.))]"/>
 
+  <!-- Remove existing top-level anchors; we'll use filename-based ones instead. -->
+  <xsl:template match="Heading-1/A"/><!-- | A[starts-with(@ID,'pgfId-')]"/>--> <!-- Retain the pfgId ones, they're not necessarily dispensable after all. -->
+
   <xsl:template match="A">
     <a>
       <xsl:apply-templates select="@ID | @href"/>
@@ -101,12 +129,55 @@
   </xsl:template>
 
           <xsl:template match="A/@ID">
-            <xsl:attribute name="id" select="concat('ID_',.)"/>
+            <xsl:attribute name="id" select="my:full-anchor-id(.)"/>
           </xsl:template>
 
-          <xsl:template match="A/@href[contains(.,'#id(')]">
-            <xsl:attribute name="href" select="concat('#ID_',substring-before(substring-after(.,'#id('),')'))"/>
+                  <xsl:function name="my:full-anchor-id">
+                    <xsl:param name="ID-att"/>
+                    <xsl:sequence select="concat(my:anchor-id-for-top-level-heading($ID-att/ancestor::XML/Heading-1),'_',$ID-att)"/>
+                  </xsl:function>
+
+
+          <!-- Links within the same guide -->
+          <xsl:template match="A/@href[contains(.,'#id(')]" priority="1">
+            <xsl:attribute name="href" select="concat('#',my:anchor-id-from-href(.))"/>
           </xsl:template>
+
+          <!-- Links to other guides -->
+          <xsl:template match="A/@href[starts-with(.,'../')]" priority="2">
+            <xsl:attribute name="href" select="concat(my:referenced-guide-url(.),'#',my:anchor-id-from-href(.))"/>
+          </xsl:template>
+
+                  <xsl:function name="my:referenced-guide-url">
+                    <xsl:param name="href" as="attribute(href)"/>
+                    <xsl:variable name="referenced-guide" select="$raw:guide-docs[starts-with(my:fully-resolved-href($href), guide/@original-dir)]"/>
+                    <xsl:if test="not($referenced-guide)">
+                      <xsl:message>BAD LINK FOUND! Unable to find referenced guide for this link: <xsl:value-of select="$href"/></xsl:message>
+                    </xsl:if>
+                    <xsl:sequence select="$referenced-guide/ml:external-uri-for-string(raw:target-guide-uri(.))"/>
+                  </xsl:function>
+
+                          <xsl:function name="my:fully-resolved-href">
+                            <xsl:param name="href" as="attribute(href)"/>
+                            <xsl:sequence select="resolve-uri($href, $href/ancestor::XML/@original-file)"/>
+                          </xsl:function>
+
+                  <xsl:function name="my:anchor-id-from-href" as="xs:string">
+                    <xsl:param name="href" as="attribute(href)"/>
+                    <xsl:variable name="exclude-id-suffix" select="my:fully-resolved-href($href) = $fully-resolved-top-level-heading-references"/>
+                    <!-- Leave out the _12345 part if we're linking to a top-level section -->
+                    <xsl:sequence select="concat(my:basename-stem($href),
+                                                 if ($exclude-id-suffix) then () else concat('_',my:number-from-href($href)))"/>
+                  </xsl:function>
+
+                          <xsl:function name="my:number-from-href">
+                            <xsl:param name="href" as="xs:string"/>
+                            <xsl:sequence select="substring-before(substring-after($href,'#id('),')')"/>
+                          </xsl:function>
+
+                          <xsl:variable name="fully-resolved-top-level-heading-references" as="xs:string*"
+                                        select="$raw:guide-docs/guide/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
+
 
   <xsl:template match="Hyperlink">
     <xsl:apply-templates/>

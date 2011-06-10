@@ -41,7 +41,9 @@ for $dir in $sub-dirs return
           (: Get each XML doc in order, except for the title doc :)
           for $doc in xdmp:directory($dir)[XML] except $title-doc
           order by number(normalize-space($doc/XML/pagenum))
-          return $doc
+          return <XML original-file="{base-uri($doc)}">{
+                   $doc/XML/node()
+                 }</XML>
         }</guide>
       ),
       xdmp:log("Done.")
