@@ -45,15 +45,6 @@
   </div>
 
 
-  <div class="body">
-    <h3><a href="/blog/mluc11-lounge-slides">Lightning talk slides now available</a></h3>
-    <div class="author">by Evan Lenz, May 9, 2011</div>
-    <div class="message">
-    <p>We've just posted the slides from the Developer Lounge Lightning Talks at the MarkLogic User Conference 2011. Thanks to everyone who participated.</p> 
-    <p>To get the slides, look for the PDF icons in the schedule on this page: <a href="/events/mluc11-labs-and-lounge-schedule#talks">User Conference 2011 Labs &amp; Lounge Schedule</a>.</p>
-    </div>
-  </div>
-
 
 
 {(:
