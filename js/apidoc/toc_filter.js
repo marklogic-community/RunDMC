@@ -40,24 +40,17 @@ console.log(allFunctionsRoot);
         */
         if (filter !== '') {
             if (hasText($(this),filter)) {
-                if ($(this).find("ul").length == 0)
-                    "do nothing"
                     /* Temporarily disable highlighting as it's too slow (particularly when removing the highlight).
                      * Also, buggy in its interaction with the treeview control: branches may no longer respond to clicks
                      * (presumably due to the added spans).
+                /*
+                if ($(this).find("ul").length == 0)
+                    "do nothing"
                     addHighlightToText($(this),filter); // then this is a leaf node, so u can perform highlight
-                    */
                 else {
-                    // Expand the TOC sub-tree
-                    // TODO: Figure out how to directly call the "toggler" method from the treeview code rather than using this
-                    //       implementation-specific code (also, buggy w.r.t. last child - "xp" in TOC)
-                    expandSubTree($(this));
-                    /*
-                    $(this).removeClass("expandable").addClass("collapsable");//.addClass("open");
-                    $(this).children("div").removeClass("expandable-hitarea").addClass("collapsable-hitarea");
-                    $(this).children("ul").css("display","block");
                     */
-                }
+                    // Expand the TOC sub-tree
+                    expandSubTree($(this));
             } else {
                 /*
                 removeHighlightToText($(this));
@@ -69,15 +62,83 @@ console.log(allFunctionsRoot);
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
-function expandSubTree(item) {
-  item.removeClass("expandable").addClass("collapsable");//.addClass("open");
-  if (item.is(".lastExpandable"))
-    item.removeClass("lastExpandable").addClass("lastCollapsable");
-  item.children("div").removeClass("expandable-hitarea").addClass("collapsable-hitarea");
-  if (item.is(".lastExpandable-hitarea"))
-    item.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsable-hitarea");
-  item.children("ul").css("display","block");
+function expandSubTree(li) {
+  if (li.children().is("ul")) {
+    li.removeClass("expandable").addClass("collapsable");//.addClass("open");
+    if (li.is(".lastExpandable"))
+      li.removeClass("lastExpandable").addClass("lastCollapsable");
+    li.children("div").removeClass("expandable-hitarea").addClass("collapsable-hitarea");
+    if (li.is(".lastExpandable-hitarea"))
+      li.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsable-hitarea");
+    li.children("ul").css("display","block");
+  }
 }
+
+function collapseSubTree(li) {
+  if (li.children().is("ul")) {
+    li.removeClass("collapsable").addClass("expandable");//.addClass("open");
+    if (li.is(".lastCollapsable"))
+      li.removeClass("lastCollapsable").addClass("lastExpandable");
+    li.children("div").removeClass("collapsable-hitarea").addClass("expandable-hitarea");
+    if (li.is(".lastCollapsable-hitarea"))
+      li.children("div").removeClass("lastCollapsable-hitarea").addClass("lastExpandable-hitarea");
+    li.children("ul").css("display","none");
+  }
+}
+
+
+/* These functions implement the expand/collapse buttons */
+function shallowExpandAll(ul) {
+  ul.children("li").each(function(index) {
+    expandSubTree($(this));
+  });
+}
+
+function shallowCollapseAll(ul) {
+  ul.children("li").each(function(index) {
+    collapseSubTree($(this));
+  });
+}
+
+function expandAll(ul) {
+  shallowExpandAll(ul);
+  if (ul.children("li").children().is("ul"))
+    ul.children("li").children("ul").each(function() {
+      shallowExpandAll($(this));
+    });
+}
+
+function collapseAll(ul) {
+  shallowCollapseAll(ul);
+  if (ul.children("li").children().is("ul"))
+    ul.children("li").children("ul").each(function() {
+      shallowCollapseAll($(this));
+    });
+}
+
+$(document).ready(function(){
+  $(".shallowExpand").click(function(event){
+    shallowExpandAll($(this).parent().nextAll("ul"));
+  });
+  $(".shallowCollapse").click(function(event){
+    shallowCollapseAll($(this).parent().nextAll("ul"));
+  });
+  $(".expand").click(function(event){
+    expandAll($(this).parent().nextAll("ul"));
+  });
+  $(".collapse").click(function(event){
+    collapseAll($(this).parent().nextAll("ul"));
+  });
+});
+
+
+/*
+function expandAll(item) {
+  item
+}
+*/
+
+
 
 function hasText(item,text) {
     var fieldTxt = item.text().toLowerCase();

@@ -111,19 +111,39 @@
                           </xsl:template>
 
                   <xsl:template mode="control" match="node"/>
-                  <xsl:template mode="control" match="toc/node[1]      (: Functions :)
-                                                    | toc/node[3]      (: Functions by category :)
-                                                    | toc/node[2]/node (: Individual user guides :)">
+                  <!-- Expand/collapse buttons are enabled for all top-level menus, plus individual user guides -->
+                  <xsl:template mode="control" match="toc/node | toc/node[2]/node">
                     <xsl:variable name="position">
                       <xsl:number count="toc/node"/>
                     </xsl:variable>
-                    <div id="treecontrol{$position}" style="font-size:.8em" class="treecontrol treecontrol{$position}">
+                    <xsl:variable name="collapse-class">
+                      <xsl:apply-templates mode="collapse-class" select="."/>
+                    </xsl:variable>
+                    <xsl:variable name="expand-class">
+                      <xsl:apply-templates mode="expand-class" select="."/>
+                    </xsl:variable>
+                    <xsl:variable name="all-suffix">
+                      <xsl:apply-templates mode="all-suffix" select="."/>
+                    </xsl:variable>
+                    <div style="font-size:.8em" class="treecontrol"><!--id="treecontrol{$position}" -->
                       <xsl:text>&#160;</xsl:text>
-                      <a title="Collapse the entire tree below" href="#"><img src="/css/apidoc/images/minus.gif" /> collapse</a>
+                      <a title="Collapse the entire tree below" href="#" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></a>
                       <xsl:text>&#160;</xsl:text>
-                      <a title="Expand the entire tree below" href="#"><img src="/css/apidoc/images/plus.gif" /> expand</a>
+                      <a title="Expand the entire tree below" href="#" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></a>
                     </div>
                   </xsl:template>
+
+                          <!-- Shallow for first and second top-level menus ("All functions" and "User guides") -->
+                          <xsl:template mode="collapse-class" match="toc/node[1] | toc/node[2]">shallowCollapse</xsl:template>
+                          <xsl:template mode="expand-class"   match="toc/node[1] | toc/node[2]">shallowExpand</xsl:template>
+                          <xsl:template mode="all-suffix"                   match="toc/node[2]"/> <!-- User guide menu is the only one we don't say "all" with -->
+
+                          <!-- Recursive (full) for everything else (individual user guides and "functions by category" -->
+                          <xsl:template mode="collapse-class" match="node">collapse</xsl:template>
+                          <xsl:template mode="expand-class"   match="node">expand</xsl:template>
+                          <xsl:template mode="all-suffix"     match="node"> all</xsl:template>
+
+
 
                   <xsl:template mode="children" match="node"/>
                   <xsl:template mode="children" match="node[node]">
