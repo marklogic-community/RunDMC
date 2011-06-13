@@ -92,7 +92,7 @@ function expandAll(ul) {
   shallowExpandAll(ul);
   if (ul.children("li").children().is("ul"))
     ul.children("li").children("ul").each(function() {
-      shallowExpandAll($(this));
+      expandAll($(this));
     });
 }
 
@@ -100,7 +100,7 @@ function collapseAll(ul) {
   shallowCollapseAll(ul);
   if (ul.children("li").children().is("ul"))
     ul.children("li").children("ul").each(function() {
-      shallowCollapseAll($(this));
+      collapseAll($(this));
     });
 }
 
