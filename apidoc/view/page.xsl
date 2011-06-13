@@ -65,10 +65,12 @@
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
       <script type="text/javascript">
+        <!--
         window.onbeforeunload = function () {
             // Get current TOC scroll position
             $.cookie("tocScroll", $("#sub").scrollTop(), { expires: 7 });
         }
+        -->
 
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
           <!--
