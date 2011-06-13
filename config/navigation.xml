@@ -121,7 +121,7 @@
     </group>
   </page>
   <page display="Discuss" href="/discuss">
-    <group display="Lists">
+    <group display="Subscribe">
       <page display="General Development" href="/mailman/listinfo/general"/>
       <page display="Announcements" href="/mailman/listinfo/announce"/>
       <page display="Commits" href="/mailman/listinfo/commits"/>
