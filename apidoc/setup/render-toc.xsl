@@ -18,7 +18,7 @@
           collapsed: true,
   /*        animated: "medium",*/
           control:"#treecontrol1",
-          persist: "cookie"
+          persist: "location"
         });
       })
       $(function() {
@@ -26,7 +26,7 @@
           collapsed: true,
   /*        animated: "medium",*/
           control:"#treecontrol2",
-          persist: "cookie"
+          persist: "location"
         });
       })
       $(function() {
@@ -34,9 +34,14 @@
           collapsed: true,
   /*        animated: "medium",*/
           control:"#treecontrol3",
-          persist: "cookie"
+          persist: "location"
         });
       })
+
+      // starting the script on page load
+      $(document).ready(function(){
+        tooltip();
+      });
       </script>
       <script type="text/javascript" src="/js/apidoc/toc_filter.js"></script>
 
@@ -80,9 +85,11 @@
           </xsl:template>
 
                   <xsl:template mode="class-att" match="node"/>
+                  <!--
                   <xsl:template mode="class-att" match="node[@initially-expanded]">
                     <xsl:attribute name="class" select="'open'"/>
                   </xsl:template>
+                  -->
                   <!-- re-enable should we need this
                   <xsl:template mode="class-att" match="node[@type eq 'function']">
                     <xsl:attribute name="class" select="'function_name'"/>
@@ -101,7 +108,7 @@
                       <xsl:value-of select="@display"/>
                     </a>
                     <xsl:if test="@footnote">
-                      <a href="#" class="footnote_marker" title="Built-in functions (not written in XQuery)">*</a>
+                      <a class="footnote_marker tooltip" title="Built-in functions (not written in XQuery)">*</a>
                     </xsl:if>
                   </xsl:template>
 
@@ -127,9 +134,9 @@
                     </xsl:variable>
                     <div style="font-size:.8em" class="treecontrol"><!--id="treecontrol{$position}" -->
                       <xsl:text>&#160;</xsl:text>
-                      <a title="Collapse the entire tree below" href="#" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></a>
+                      <span title="Collapse the entire tree below" href="#" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></span>
                       <xsl:text>&#160;</xsl:text>
-                      <a title="Expand the entire tree below" href="#" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></a>
+                      <span title="Expand the entire tree below" href="#" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></span>
                     </div>
                   </xsl:template>
 

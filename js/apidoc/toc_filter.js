@@ -20,7 +20,6 @@ function filterConfigDetails(text, treeSelector) {
     /*
     if (allFunctionsRoot.is(".expandable")) {
     */
-console.log(allFunctionsRoot);
       expandSubTree(allFunctionsRoot);
       /*
       allFunctionsRoot.removeClass("expandable").addClass("collapsable");

@@ -60,8 +60,23 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage, .footnote_marker, .currentVersion, h1 a, .toc_highlight {
+.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {
   color: #F86D07;
+}
+.footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {
+  cursor: pointer;
+}
+
+a.footnote_marker:hover { text-decoration: none; }
+
+#tooltip {
+  position: fixed;
+  z-index: 3000;
+  border: 1px solid #666;
+  color: #FFF;
+  background-color: #A4B243;
+  padding: 5px;
+  font-weight: normal;
 }
 
 .footnote {
@@ -92,3 +107,4 @@ h1 a { text-decoration: underline; }
 #config-filter2, #config-filter3 { margin-top: 1em }
 
 li.expandable .treecontrol { display: none; }
+
