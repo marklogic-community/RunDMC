@@ -145,9 +145,9 @@
                     </xsl:variable>
                     <div style="font-size:.8em" class="treecontrol"><!--id="treecontrol{$position}" -->
                       <xsl:text>&#160;</xsl:text>
-                      <span title="Collapse the entire tree below" href="#" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></span>
+                      <span title="Collapse the entire tree below" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></span>
                       <xsl:text>&#160;</xsl:text>
-                      <span title="Expand the entire tree below" href="#" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></span>
+                      <span title="Expand the entire tree below" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></span>
                     </div>
                   </xsl:template>
 

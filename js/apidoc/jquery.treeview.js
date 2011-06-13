@@ -121,9 +121,7 @@
 						// reuse toggle event handler, applying the elements to toggle
 						// start searching for all hitareas
             //
-            // EDL: Restrict expand/collapse behavior to the first TOC section (functions by name)
-						//toggler.apply( $("div." + CLASSES.hitarea, tree).filter(function() {
-              toggler.apply( tree.children("li:first").find(">ul").find("div." + CLASSES.hitarea, tree).filter(function() {
+						toggler.apply( $("div." + CLASSES.hitarea, tree).filter(function() {
 							// for plain toggle, no filter is provided, otherwise we need to check the parent element
 							return filter ? $(this).parent("." + filter).length : true;
 						}) );
@@ -214,7 +212,9 @@
 				});
 				if ( current.length ) {
 					// TODO update the open/closed classes
-					var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
+          // EDL: make sure we show the <ul>, not my custom expand/collapse buttons
+					//var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
+					  var items = current.addClass("selected").parents("ul, li").add( current.nextAll("ul") ).show();
 					if (settings.prerendered) {
 						// if prerendered is on, replicate the basic class swapping
 						items.filter("li")
@@ -222,11 +222,7 @@
 							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
 							.find(">.hitarea")
 								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea )
-              //EDL: added this apparently missing bit
-              .end()
-              .find( ">ul" )
-              .show();
+								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea );
 					}
 				}
 				break;
@@ -237,8 +233,7 @@
 			// if control option is set, create the treecontroller and show it
 			if ( settings.control ) {
 				treeController(this, settings.control);
-  		// EDL: I'll decide whether to show it or not, thank you very much
-  		//		$(settings.control).show();
+  				$(settings.control).show();
 			}
 			
 			return this;

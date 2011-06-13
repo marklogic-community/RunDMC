@@ -17,18 +17,7 @@ function filterConfigDetails(text, treeSelector) {
     // Make sure "All functions" container after each search (even if empty results)
     // TODO: Figure out how to directly call the "toggler" method from the treeview code rather than using this
     //       implementation-specific stuff
-    /*
-    if (allFunctionsRoot.is(".expandable")) {
-    */
-      expandSubTree(allFunctionsRoot);
-      /*
-      allFunctionsRoot.removeClass("expandable").addClass("collapsable");
-      allFunctionsRoot.children("div").removeClass("expandable-hitarea").addClass("collapsable-hitarea");
-      allFunctionsRoot.children("ul").css("display","block");
-      */
-    /*
-    };
-    */
+    expandSubTree(allFunctionsRoot);
 
     allFunctionsRoot.find("li").each(function() {
         $(this).removeClass("hide-detail");
