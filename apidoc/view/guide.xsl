@@ -43,7 +43,7 @@
 
   <!-- Resolve the relative image URI according to the current guide -->
   <xsl:template mode="guide-att-value" match="x:img/@src">
-    <xsl:value-of select="concat(api:guide-image-dir(base-uri(.)), @src)"/>
+    <xsl:value-of select="concat(api:guide-image-dir(base-uri(.)), .)"/>
   </xsl:template>
 
 
