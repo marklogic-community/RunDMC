@@ -153,7 +153,11 @@
                   </xsl:template>
 
                   <xsl:template mode="link" match="node[@href]">
-                    <a href="{$prefix-for-hrefs}{@href}">
+                    <xsl:variable name="href">
+                      <xsl:value-of select="$prefix-for-hrefs"/>
+                      <xsl:apply-templates mode="link-href" select="."/>
+                    </xsl:variable>
+                    <a href="{$href}">
                       <xsl:apply-templates mode="title-att" select="."/>
                       <xsl:value-of select="@display"/>
                     </a>
@@ -161,6 +165,15 @@
                       <a class="footnote_marker tooltip" title="Built-in functions (not written in XQuery)">*</a>
                     </xsl:if>
                   </xsl:template>
+
+                          <!-- For most cases, just append the @href value after the optional version prefix -->
+                          <xsl:template mode="link-href" match="node">
+                            <xsl:value-of select="@href"/>
+                          </xsl:template>
+
+                          <!-- But when the @href value is just "/", leave it out when the version is specified explicitly (e.g., /4.2 instead of /4.2/) -->
+                          <xsl:template mode="link-href" match="node[string($prefix-for-hrefs)][@href eq '/']"/>
+
 
                           <xsl:template mode="title-att" match="node"/>
                           <xsl:template mode="title-att" match="node[@namespace]">
