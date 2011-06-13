@@ -42,43 +42,49 @@
   <xsl:variable name="guide-docs-ordered" select="$guide-docs-configured, $guide-docs-all except $guide-docs-configured"/>
 
   <xsl:template match="/">
-    <toc>
-      <node href="/"
-            title="All functions"
-            display="All functions ({$api:all-functions-count})"
-            initially-expanded="yes"><!-- hidden="yes">-->
-        <intro>
-          <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
-        </intro>
-        <xsl:apply-templates select="$all-libs">
-          <xsl:sort select="."/>
-        </xsl:apply-templates>
-        <!--
-        <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
+    <all-tocs>
+      <toc>
+        <node href="/"
+              title="All functions"
+              display="All functions ({$api:all-functions-count})"
+              initially-expanded="yes"><!-- hidden="yes">-->
           <intro>
-            <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
+            <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
           </intro>
-          <xsl:apply-templates select="$api:built-in-libs"/>
-        </node>
-        <node href="/library" display="Library functions ({$api:library-function-count})" title="All library functions">
-          <intro>
-            <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
-          </intro>
-          <xsl:apply-templates select="$api:library-libs"/>
-        </node>
-        -->
-      </node>
-      <node display="User Guides">
-        <xsl:for-each select="$guide-docs-ordered">
-          <node href="{ml:external-uri(.)}" display="{/guide/title}">
-            <xsl:apply-templates mode="guide-toc"/>
+          <xsl:apply-templates select="$all-libs">
+            <xsl:sort select="."/>
+          </xsl:apply-templates>
+          <!--
+          <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
+            <intro>
+              <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
+            </intro>
+            <xsl:apply-templates select="$api:built-in-libs"/>
           </node>
-        </xsl:for-each>
-      </node>
-      <node display="Functions by category">
-        <xsl:copy-of select="$by-category"/>
-      </node>
-    </toc>
+          <node href="/library" display="Library functions ({$api:library-function-count})" title="All library functions">
+            <intro>
+              <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
+            </intro>
+            <xsl:apply-templates select="$api:library-libs"/>
+          </node>
+          -->
+        </node>
+      </toc>
+      <toc>
+        <node display="User Guides">
+          <xsl:for-each select="$guide-docs-ordered">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}">
+              <xsl:apply-templates mode="guide-toc"/>
+            </node>
+          </xsl:for-each>
+        </node>
+      </toc>
+      <toc>
+        <node display="Functions by category">
+          <xsl:copy-of select="$by-category"/>
+        </node>
+      </toc>
+    </all-tocs>
   </xsl:template>
 
           <xsl:template mode="guide-toc" match="text()"/>

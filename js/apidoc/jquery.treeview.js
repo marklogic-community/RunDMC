@@ -222,7 +222,11 @@
 							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
 							.find(">.hitarea")
 								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea );
+								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea )
+              //EDL: added this apparently missing bit
+              .end()
+              .find( ">ul" )
+              .show();
 					}
 				}
 				break;

@@ -15,26 +15,23 @@
       <script type="text/javascript">
       $(function() {
         $("#apidoc_tree").treeview({
-          collapsed: true,
-  /*        animated: "medium",*/
-          control:"#treecontrol1",
-          persist: "location"
+          //animated: "fast",
+          persist: "location",
+          prerendered: true
         });
       })
       $(function() {
         $("#apidoc_tree2").treeview({
-          collapsed: true,
-  /*        animated: "medium",*/
-          control:"#treecontrol2",
-          persist: "location"
+          //animated: "fast",
+          persist: "location",
+          prerendered: true
         });
       })
       $(function() {
         $("#apidoc_tree3").treeview({
-          collapsed: true,
-  /*        animated: "medium",*/
-          control:"#treecontrol3",
-          persist: "location"
+          //animated: "fast",
+          persist: "location",
+          prerendered: true
         });
       })
 
@@ -49,24 +46,17 @@
       <div>API Reference</div>
       -->
       <input id="config-filter" name="config-filter"/>
-      <ul id="apidoc_tree">
-        <xsl:apply-templates select="/toc/node[1]"/>
+      <ul id="apidoc_tree" class="treeview">
+        <xsl:apply-templates select="/*/toc[1]/node"/>
       </ul>
       <input id="config-filter2" name="config-filter2"/>
-      <ul id="apidoc_tree2">
-        <xsl:apply-templates select="/toc/node[2]"/>
+      <ul id="apidoc_tree2" class="treeview">
+        <xsl:apply-templates select="/*/toc[2]/node"/>
       </ul>
       <input id="config-filter3" name="config-filter3"/>
-      <ul id="apidoc_tree3">
-        <xsl:apply-templates select="/toc/node[3]"/>
+      <ul id="apidoc_tree3" class="treeview">
+        <xsl:apply-templates select="/*/toc[3]/node"/>
       </ul>
-      <!--
-      <div id="toc_footnote">
-        <span class="footnote_marker">*</span>
-        <xsl:text> </xsl:text>
-        <span class="footnote">Built-in functions (not written in XQuery)</span>
-      </div>
-      -->
     </div>
   </xsl:template>
 
@@ -76,20 +66,41 @@
           </xsl:template>
 
           <xsl:template match="node">
-            <li>
-              <xsl:apply-templates mode="class-att" select="."/>
+            <xsl:variable name="class">
+              <xsl:apply-templates mode="class" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-last" select="."/>
+            </xsl:variable>
+            <li class="{$class}">
+              <xsl:apply-templates mode="hit-area" select="."/>
               <xsl:apply-templates mode="link"      select="."/>
               <xsl:apply-templates mode="control"   select="."/>
               <xsl:apply-templates mode="children"  select="."/>
             </li>
           </xsl:template>
 
-                  <xsl:template mode="class-att" match="node"/>
-                  <!--
-                  <xsl:template mode="class-att" match="node[@initially-expanded]">
-                    <xsl:attribute name="class" select="'open'"/>
+                  <xsl:template mode="class" match="node[node]">expandable</xsl:template>
+                  <xsl:template mode="class" match="node"/>
+
+                  <xsl:template mode="class-last" priority="1" match="node[last()][node]">lastExpandable</xsl:template>
+                  <xsl:template mode="class-last"              match="node[last()]      ">last</xsl:template>
+                  <xsl:template mode="class-last"              match="node"/>
+
+                  <xsl:template mode="hit-area" match="node"/>
+                  <xsl:template mode="hit-area" match="node[node]">
+                    <xsl:variable name="class">
+                      <xsl:apply-templates mode="hit-area-class"      select="."/>
+                      <xsl:text> </xsl:text>
+                      <xsl:apply-templates mode="hit-area-class-last" select="."/>
+                    </xsl:variable>
+                    <div class="{$class}"/>
                   </xsl:template>
-                  -->
+
+                          <xsl:template mode="hit-area-class" match="node">hitarea expandable-hitarea</xsl:template>
+
+                          <xsl:template mode="hit-area-class-last" match="node[last()]">lastExpandable-hitarea</xsl:template>
+                          <xsl:template mode="hit-area-class-last" match="node"/>
+
                   <!-- re-enable should we need this
                   <xsl:template mode="class-att" match="node[@type eq 'function']">
                     <xsl:attribute name="class" select="'function_name'"/>
@@ -119,7 +130,7 @@
 
                   <xsl:template mode="control" match="node"/>
                   <!-- Expand/collapse buttons are enabled for all top-level menus, plus individual user guides -->
-                  <xsl:template mode="control" match="toc/node | toc/node[2]/node">
+                  <xsl:template mode="control" match="toc/node | toc[2]/node/node">
                     <xsl:variable name="position">
                       <xsl:number count="toc/node"/>
                     </xsl:variable>
@@ -141,9 +152,9 @@
                   </xsl:template>
 
                           <!-- Shallow for first and second top-level menus ("All functions" and "User guides") -->
-                          <xsl:template mode="collapse-class" match="toc/node[1] | toc/node[2]">shallowCollapse</xsl:template>
-                          <xsl:template mode="expand-class"   match="toc/node[1] | toc/node[2]">shallowExpand</xsl:template>
-                          <xsl:template mode="all-suffix"                   match="toc/node[2]"/> <!-- User guide menu is the only one we don't say "all" with -->
+                          <xsl:template mode="collapse-class" match="toc[1]/node | toc[2]/node">shallowCollapse</xsl:template>
+                          <xsl:template mode="expand-class"   match="toc[1]/node | toc[2]/node">shallowExpand</xsl:template>
+                          <xsl:template mode="all-suffix"                   match="toc[2]/node"/> <!-- User guide menu is the only one we don't say "all" with -->
 
                           <!-- Recursive (full) for everything else (individual user guides and "functions by category" -->
                           <xsl:template mode="collapse-class" match="node">collapse</xsl:template>
@@ -154,7 +165,7 @@
 
                   <xsl:template mode="children" match="node"/>
                   <xsl:template mode="children" match="node[node]">
-                    <ul>
+                    <ul style="display: none;">
                       <xsl:apply-templates select="node"/>
                     </ul>
                   </xsl:template>
