@@ -71,7 +71,9 @@
         }
 
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
+          <!--
           $("#sub").scrollTop($.cookie("tocScroll"));
+          -->
           $("#sub a[href='<xsl:value-of select="$version-prefix"/><xsl:value-of select="ml:external-uri($content)"/>']").addClass("currentPage");
         });
       </script>
