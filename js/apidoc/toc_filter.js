@@ -120,11 +120,14 @@ $(document).ready(function(){
 });
 
 
-/*
-function expandAll(item) {
-  item
+
+// For when someone clicks an intra-document link outside of the TOC itself
+function showInTOC(a) {
+  var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
+  items.each(function(index) {
+    expandSubTree($(this));
+  });
 }
-*/
 
 
 

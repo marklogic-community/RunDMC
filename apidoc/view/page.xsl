@@ -65,21 +65,13 @@
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
       <script type="text/javascript">
+        <xsl:variable name="current-url" select="concat($version-prefix, ml:external-uri($content))"/>
         <xsl:comment>
+
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
-
-          var container = $('#sub'),
-              scrollTo = $('a.selected:first'),
-              extra = 80,
-              scrollTarget = scrollTo.offset().top - container.offset().top,
-              minimumSpaceAtBottom = 15;
-  
-          if (scrollTarget + minimumSpaceAtBottom > container.height()) {
-            container.scrollTop(scrollTarget - extra);
-          }
-
-          $("#sub a[href='<xsl:value-of select="$version-prefix"/><xsl:value-of select="ml:external-uri($content)"/>']").addClass("currentPage");
+          $("#sub a[href='<xsl:value-of select="$current-url"/>']").addClass("currentPage");
         });
+
       </xsl:comment>
       </script>
     </div>

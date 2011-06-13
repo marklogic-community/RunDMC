@@ -11,36 +11,75 @@
   <xsl:param name="prefix-for-hrefs"/>
 
   <xsl:template match="/">
-    <div>
+    <div id="all_tocs">
+      <script type="text/javascript" src="/js/apidoc/toc_filter.js"></script>
       <script type="text/javascript">
+      <xsl:comment>
       $(function() {
         $("#apidoc_tree").treeview({
-          //animated: "fast",
+          //animated: "medium",
           persist: "location",
           prerendered: true
         });
-      })
+      });
       $(function() {
         $("#apidoc_tree2").treeview({
-          //animated: "fast",
+          //animated: "medium",
           persist: "location",
           prerendered: true
         });
-      })
+      });
       $(function() {
         $("#apidoc_tree3").treeview({
-          //animated: "fast",
+          //animated: "medium",
           persist: "location",
           prerendered: true
         });
-      })
+      });
 
       // starting the script on page load
       $(document).ready(function(){
         tooltip();
       });
+
+      $(function(){
+          function scrollTOC() {
+            var container = $('#sub'),
+                scrollTo = $('#sub a.selected'),
+                extra = 80,
+                currentTop = container.scrollTop(),
+                headerHeight = container.offset().top,
+                scrollTargetDistance = scrollTo.offset().top,
+                scrollTarget = currentTop + scrollTargetDistance,
+                scrollTargetAdjusted = scrollTarget - headerHeight - extra,
+                minimumSpaceAtBottom = 10,
+                minimumSpaceAtTop = 10;
+
+  <!--
+  alert("currentTop: " + currentTop);
+  alert("scrollTargetDistance: " + scrollTargetDistance);
+  alert("scrollTarget: " + scrollTarget);
+  alert("scrollTargetAdjusted: " + scrollTargetAdjusted);
+  -->
+
+            // Only scroll if necessary
+            if (scrollTarget &lt; currentTop + headerHeight + minimumSpaceAtTop
+             || scrollTarget >    currentTop + (container.height() - minimumSpaceAtBottom)) {
+              container.animate({scrollTop: scrollTargetAdjusted}, 500);
+            }
+          }
+
+          scrollTOC();
+
+          $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").click(function() {
+            $("#sub a.selected").removeClass("selected");
+            var fullLink = this.pathname + this.hash;
+            showInTOC($("#sub a[href='" + fullLink + "']"));
+            scrollTOC($("#sub a.selected"));
+          });
+      });
+      </xsl:comment>
       </script>
-      <script type="text/javascript" src="/js/apidoc/toc_filter.js"></script>
 
       <!--
       <div>API Reference</div>
