@@ -60,9 +60,14 @@ font-weight: bold;
   width: auto;
 }
 
-.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {
+.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight, a.selected {
   color: #F86D07;
 }
+/* override treeview CSS */
+.treeview a.selected {
+  background-color: transparent;
+}
+
 .footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {
   cursor: pointer;
 }
@@ -107,4 +112,3 @@ h1 a { text-decoration: underline; }
 #config-filter2, #config-filter3 { margin-top: 1em }
 
 li.expandable .treecontrol { display: none; }
-
