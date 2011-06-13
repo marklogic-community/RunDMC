@@ -65,19 +65,22 @@
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
       <script type="text/javascript">
-        <!--
-        window.onbeforeunload = function () {
-            // Get current TOC scroll position
-            $.cookie("tocScroll", $("#sub").scrollTop(), { expires: 7 });
-        }
-        -->
-
+        <xsl:comment>
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
-          <!--
-          $("#sub").scrollTop($.cookie("tocScroll"));
-          -->
+
+          var container = $('#sub'),
+              scrollTo = $('a.selected:first'),
+              extra = 80,
+              scrollTarget = scrollTo.offset().top - container.offset().top,
+              minimumSpaceAtBottom = 15;
+  
+          if (scrollTarget + minimumSpaceAtBottom > container.height()) {
+            container.scrollTop(scrollTarget - extra);
+          }
+
           $("#sub a[href='<xsl:value-of select="$version-prefix"/><xsl:value-of select="ml:external-uri($content)"/>']").addClass("currentPage");
         });
+      </xsl:comment>
       </script>
     </div>
   </xsl:template>
