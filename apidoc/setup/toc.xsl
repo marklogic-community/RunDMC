@@ -99,7 +99,8 @@
             <node href="/{.}"
                   display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})"
                   namespace="{api:uri-for-lib(.)}"
-                  title="{api:prefix-for-lib(.)} functions">
+                  title="{api:prefix-for-lib(.)} functions"
+                  function-list-page="yes">
               <xsl:if test="@built-in">
                 <xsl:attribute name="footnote" select="'yes'"/>
               </xsl:if>

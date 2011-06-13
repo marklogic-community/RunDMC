@@ -47,7 +47,7 @@
           <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
-          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}">
+          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}" function-list-page="yes">
 
             <!-- When there are sub-categories, don't create a new page for the category (they tend to be useless);
                  only create a link if it corresponds to a full lib page -->
@@ -102,7 +102,7 @@
                                                       then ()
                                                       else toc:display-suffix($subcategory-lib)"/>
 
-                  <node href="{$href}" display="{toc:display-category(.)}{$suffix}">
+                  <node href="{$href}" display="{toc:display-category(.)}{$suffix}" function-list-page="yes">
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
                       <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
