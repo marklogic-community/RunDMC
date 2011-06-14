@@ -69,7 +69,7 @@ declare function local:transform($source-doc) as xs:string {
         "/controller/notfound.xqy"
 
     (: Remove version from the URL for versioned assets :)
-    else if (matches($path, '^/(js|css|images)/v-[0-9]*/.*'))  then 
+    else if (matches($path, '^/(css|images)/v-[0-9]*/.*'))  then 
       replace($path, '/v-[0-9]*', '')
 
     (: Static files or 404 :)

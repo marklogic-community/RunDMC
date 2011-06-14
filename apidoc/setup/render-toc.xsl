@@ -12,7 +12,6 @@
 
   <xsl:template match="/">
     <div id="all_tocs">
-      <script type="text/javascript" src="/js/apidoc/toc_filter.js"></script>
       <script type="text/javascript">
       <xsl:comment>
       $(function() {
