@@ -67,12 +67,17 @@
 		},
 		applyClasses: function(settings, toggler) {
 			// TODO use event delegation
+     // EDL: Breaking into two steps to solve problem with IE
+     var items =
 			this.filter(":has(>ul):not(:has(>a))").find(">span").unbind("click.treeview").bind("click.treeview", function(event) {
 				// don't handle click events on children, eg. checkboxes
 				if ( this == event.target )
 					toggler.apply($(this).next());
-			}).add( $("a", this) ).hoverClass();
-			
+			})/*.add( $("a", this) ).hoverClass()*/; // EDL: Disabled for IE
+
+     // EDL: only apply this last function if we're *not* in IE
+     if (!$.browser.msie) { items.add( $("a", this) ).hoverClass(); }
+
 			if (!settings.prerendered) {
 				// handle closed ones first
 				this.filter(":has(>ul:hidden)")
