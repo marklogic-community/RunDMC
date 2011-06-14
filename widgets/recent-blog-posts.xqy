@@ -6,6 +6,27 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://writings.nunojob.com/2011/06/Berlin-Buzzwords-Recap.html" target="_blank">Berlin Buzzwords Recap</a></h3>
+    <div class="author">by Nuno Job, June 9, 2011</div>
+    <div class="message">
+       <p>This week I had the pleasure to participate in the second edition of the <a href="http://berlinbuzzwords.de/" target="_blank">Buzzwords Conference in Berlin</a> where MarkLogic was invited to give a talk called <a href="http://berlinbuzzwords.de/content/acid-transactions-pb-scale-marklogic-server" target="_blank">ACID Transactions at the PB Scale with MarkLogic Server</a>...</p> 
+    </div>
+  </div>
+  <div class="body">
+    <h3><a href="/blog/xpath-punctuation-part-3">Punctuation in XPath, part 3: "@" and ".."</a></h3>
+    <div class="author">by Evan Lenz, June 1, 2011</div>
+    <div class="message">
+      <p>We've
+      seen <a href="/blog/xpath-punctuation-part-1">what
+      "." means (part 1)</a> and <a href="/blog/xpath-punctuation-part-2">what
+      "/" means (part 2)</a>. And we've seen that we can use any
+      expression (parenthesizing it as necessary) as a step in a path
+      expression. In this third installment on XPath punctuation, we'll
+      learn about the most common type of step in a path expression, the
+      "axis step" and how it can be abbreviated...</p> 
+    </div>
+  </div>
+  <div class="body">
     <h3><a href="http://blogs.marklogic.com/2011/06/01/marklogic-user-conference-2011-reloaded/" target="_blank">MarkLogic User Conference 2011 Reloaded</a></h3>
     <div class="author">by Pete Aven, June 1, 2011</div>
     <div class="message">
@@ -14,13 +35,6 @@
     </div>
   </div>
 
-  <div class="body">
-    <h3><a href="/blog/xpath-punctuation-part-2">Punctuation in XPath, part 2: slash ("/")</a></h3>
-    <div class="author">by Evan Lenz, May 31, 2011</div>
-    <div class="message">
-       <p>The slash operator ("/") in XPath is the connector you use to connect steps in a path expression. A path expression can return a sequence of nodes or atomic values (but not both). Let's look at some examples, based on the following simple document...</p>
-    </div>
-  </div>
 
   <div class="body">
     <h3><a href="/blog/how-to-write-fast-queries">How to write fast queries (by leveraging indexes)</a></h3>
@@ -30,15 +44,6 @@
     </div>
   </div>
 
-
-  <div class="body">
-    <h3><a href="/blog/mluc11-lounge-slides">Lightning talk slides now available</a></h3>
-    <div class="author">by Evan Lenz, May 9, 2011</div>
-    <div class="message">
-    <p>We've just posted the slides from the Developer Lounge Lightning Talks at the MarkLogic User Conference 2011. Thanks to everyone who participated.</p> 
-    <p>To get the slides, look for the PDF icons in the schedule on this page: <a href="/events/mluc11-labs-and-lounge-schedule#talks">User Conference 2011 Labs &amp; Lounge Schedule</a>.</p>
-    </div>
-  </div>
 
 
 

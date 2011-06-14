@@ -3,7 +3,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns                  ="http://www.w3.org/1999/xhtml"
   xpath-default-namespace="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs">
+  xmlns:my="http://localhost"
+  exclude-result-prefixes="xs my">
 
   <xsl:output indent="no"/>
 
@@ -26,9 +27,9 @@
                                      then  unparsed-text          ($last-js-path)
                                      else  ()"/>
 
-  <!-- Combine all the current .js files -->
+  <!-- Combine all the current local .js files -->
   <xsl:variable name="new-js" as="xs:string">
-    <xsl:value-of select="/html/head/script/@src/unparsed-text(concat('..', .))" separator="&#xA;"/>
+    <xsl:value-of select="/html/head/script[my:is-local-external-script(.)]/@src/unparsed-text(concat('..', .))" separator="&#xA;"/>
   </xsl:variable>
 
   <!-- Compare the two to see if we need to update -->
@@ -50,8 +51,8 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- But, if applicable, replace the first external script reference with a reference to all-*.js -->
-  <xsl:template match="/html/head/script[@src][1]" priority="1">
+  <!-- But, if applicable, replace the first optimizable script reference with a reference to all-*.js -->
+  <xsl:template match="/html/head/script[my:is-local-external-script(.)][1]" priority="1">
     <xsl:choose>
       <!-- If JS has been updated or previous template is missing,
            then create a new script file and reference to it -->
@@ -67,12 +68,18 @@
            i.e. grab it from the last template we generated -->
       <xsl:otherwise>
         <xsl:message>No JavaScript changes detected; using same all-*.js file</xsl:message>
-        <xsl:copy-of select="$previous-template/html/head/script[@src]"/>
+        <xsl:copy-of select="$previous-template/html/head/script[my:is-local-external-script(.)]"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
-  <!-- And strip out all the other external script references -->
-  <xsl:template match="/html/head/script[@src]"/>
+  <!-- And strip out all the other local, external script references -->
+  <xsl:template match="/html/head/script[my:is-local-external-script(.)]"/>
+
+  <!-- A <script> tag is local and external if it has a "src" attribute that starts with "/" -->
+  <xsl:function name="my:is-local-external-script">
+    <xsl:param name="script" as="element(script)"/>
+    <xsl:sequence select="starts-with($script/@src,'/')"/>
+  </xsl:function>
 
 </xsl:stylesheet>
