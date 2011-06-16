@@ -19,7 +19,7 @@
      table). If you want to explicitly exclude a guide, use the @exclude flag.
 -->
 <docs>
-  <entry href="/all" title="MarkLogic XQuery and XSLT Function Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
+  <entry href="/" title="MarkLogic XQuery and XSLT Function Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
 
   <guide url-name="getting-started" source-names="gs"   >A quick, step-by-step overview of how to get up and running with MarkLogic Server.</guide>
   <guide url-name="admin"           source-names="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>

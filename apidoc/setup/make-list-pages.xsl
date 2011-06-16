@@ -14,6 +14,16 @@
   <xsl:variable name="root" select="/"/>
 
   <xsl:template match="/">
+    <!-- Set up the docs page for this version -->
+    <xsl:result-document href="{ml:internal-uri('/docs')}">
+      <xsl:comment>This page was auto-generated. The resulting content is driven     </xsl:comment>
+      <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
+      <api:docs-page disable-comments="yes">
+        <xsl:for-each select="/all-tocs/toc[@id eq 'user-guides']/node/node">
+          <api:user-guide href="{@href}" display="{@display}"/>
+        </xsl:for-each>
+      </api:docs-page>
+    </xsl:result-document>
     <!-- Find each function list page URL -->
     <xsl:for-each select="distinct-values(//node[@function-list-page]/@href)">
       <xsl:result-document href="{ml:internal-uri(.)}">

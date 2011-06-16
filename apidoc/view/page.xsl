@@ -7,7 +7,7 @@
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:ml="http://developer.marklogic.com/site/internal"
   xmlns:x="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="x xs ml xdmp api">
+  exclude-result-prefixes="x xs ml xdmp api u">
 
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
@@ -25,7 +25,9 @@
 
   <xsl:variable name="versions" select="u:get-doc('/apidoc/config/server-versions.xml')/versions/version"/>
 
-  <xsl:variable name="site-title" select="'MarkLogic API Documentation'"/>
+  <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry|guide[not(@exclude)])"/>
+
+  <xsl:variable name="site-title" select="concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
 
   <xsl:variable name="site-url-for-disqus" select="'http://api.marklogic.com'"/>
 
@@ -77,6 +79,10 @@
     </div>
   </xsl:template>
 
+  <xsl:template mode="page-title" match="api:docs-page">
+    <xsl:value-of select="$site-title"/>
+  </xsl:template>
+
   <xsl:template mode="page-specific-title" match="api:list-page">
     <xsl:value-of select="@title"/>
   </xsl:template>
@@ -85,20 +91,22 @@
     <xsl:value-of select="api:function[1]/@fullname"/>
   </xsl:template>
 
-  <xsl:template mode="page-content" match="api:list-page">
-    <!--
-    <div class="downloads">
-    -->
+
+  <xsl:template mode="page-content" match="api:list-page | api:docs-page">
+    <xsl:variable name="docs" as="element()*">
+      <xsl:apply-templates mode="list-page-docs" select="."/>
+    </xsl:variable>
     <h1>
       <xsl:apply-templates mode="list-page-heading" select="."/>
     </h1>
-    <xsl:apply-templates select="api:intro"/>
+    <xsl:apply-templates mode="list-page-intro" select="."/>
     <div class="doclist">
       <h2>&#160;</h2>
       <span class="amount">
-        <xsl:variable name="count" select="count(api:list-entry)"/>
+        <xsl:variable name="count" select="count($docs)"/>
         <xsl:value-of select="$count"/>
-        <xsl:text> function</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates mode="list-page-item-type" select="."/>
         <xsl:if test="$count gt 1">s</xsl:if>
       </span>
       <table class="documentsTable">
@@ -108,16 +116,44 @@
         </colgroup>
         <thead>
           <tr>
-            <th>Function name</th>
+            <th>
+             <xsl:apply-templates mode="list-page-col1-heading" select="."/>
+            </th>
             <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          <xsl:apply-templates select="api:list-entry"/>
+          <xsl:apply-templates mode="list-page-entry" select="$docs"/>
         </tbody>
       </table>
     </div>
   </xsl:template>
+
+          <xsl:template mode="list-page-docs" match="api:list-page">
+            <xsl:sequence select="api:list-entry"/>
+          </xsl:template>
+
+          <xsl:template mode="list-page-docs" match="api:docs-page">
+            <xsl:sequence select="$api-docs"/>
+          </xsl:template>
+
+
+          <xsl:template mode="list-page-intro" match="api:list-page">
+            <xsl:apply-templates select="api:intro/node()"/>
+          </xsl:template>
+
+
+          <xsl:template mode="list-page-item-type" match="api:list-page" >function</xsl:template>
+          <xsl:template mode="list-page-item-type" match="api:docs-page">document</xsl:template>
+
+
+          <xsl:template mode="list-page-col1-heading" match="api:list-page" >Function name</xsl:template>
+          <xsl:template mode="list-page-col1-heading" match="api:docs-page">Title</xsl:template>
+
+
+          <xsl:template mode="list-page-heading" match="api:docs-page">
+            <xsl:value-of select="$site-title"/>
+          </xsl:template>
 
           <!-- By default, just display the page title -->
           <xsl:template mode="list-page-heading" match="api:list-page">
@@ -141,12 +177,7 @@
           </xsl:template>
 
 
-
-          <xsl:template match="api:intro">
-            <xsl:apply-templates/>
-          </xsl:template>
-
-          <xsl:template match="api:list-entry">
+          <xsl:template mode="list-page-entry" match="api:list-entry">
             <tr>
               <td style="white-space: nowrap;">
                 <a href="{$version-prefix}/{api:name}">
@@ -161,6 +192,52 @@
               </td>
             </tr>
           </xsl:template>
+
+          <xsl:template mode="list-page-entry" match="entry | guide">
+            <tr>
+              <td style="white-space: nowrap;">
+                <xsl:variable name="href">
+                  <xsl:apply-templates mode="list-page-entry-href" select="."/>
+                </xsl:variable>
+                <a href="{$href}">
+                  <xsl:apply-templates mode="list-page-entry-title" select="."/>
+                </a>
+              </td>
+              <td>
+                <xsl:apply-templates mode="list-page-entry-description" select="."/>
+              </td>
+            </tr>
+          </xsl:template>
+
+                  <xsl:template mode="list-page-entry-href" match="guide">
+                    <xsl:value-of select="api:guide-info(@url-name)/@href"/>
+                  </xsl:template>
+
+                          <xsl:function name="api:guide-info" as="element()">
+                            <xsl:param name="url-name" as="attribute()"/>
+                            <xsl:sequence select="$content/*/api:user-guide[@href/ends-with(.,$url-name/concat('/',.))]"/>
+                          </xsl:function>
+
+
+                  <!-- Prefix local URLs with the version prefix (when applicable) -->
+                  <xsl:template mode="list-page-entry-href" match="entry[@href/starts-with(.,'/')]">
+                    <xsl:value-of select="$version-prefix"/>
+                    <xsl:value-of select="@href"/>
+                  </xsl:template>
+
+                  <xsl:template mode="list-page-entry-href" match="entry">
+                    <xsl:value-of select="@href"/>
+                  </xsl:template>
+
+
+                  <xsl:template mode="list-page-entry-title" match="guide">
+                    <xsl:value-of select="api:guide-info(@url-name)/@display"/>
+                  </xsl:template>
+
+                  <xsl:template mode="list-page-entry-title" match="entry">
+                    <xsl:value-of select="@title"/>
+                  </xsl:template>
+
 
 
   <xsl:template mode="page-content" match="api:function-page">

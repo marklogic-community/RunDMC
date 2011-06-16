@@ -27,7 +27,7 @@ declare variable $raw:api-docs :=
     xdmp:eval($query, (), $raw:common-options);
 
 declare variable $raw:guide-docs :=
-  let $query := fn:concat($raw:common-import, 'xdmp:directory(fn:concat("/",$api:version,"/guides/"))')
+  let $query := fn:concat($raw:common-import, 'xdmp:directory(fn:concat("/",$api:version,"/docs/"))')
   return
     xdmp:eval($query, (), $raw:common-options);
 

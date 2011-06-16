@@ -29,7 +29,7 @@ for $dir in $sub-dirs return
   let $title        := $title-doc/XML/Title/normalize-space(.)
   let $guide-config := $guide-list[local:dir-name($dir) = tokenize(@source-names,' ')]
   let $url-name     := if ($guide-config) then $guide-config/@url-name else local:dir-name($dir)
-  let $target-url   := concat("/",$api:version,"/guides/",$url-name,".xml")
+  let $target-url   := concat("/",$api:version,"/docs/",$url-name,".xml")
   return
   (
     if ($guide-config/@exclude) then () else

@@ -35,10 +35,10 @@
 
   <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/guide"/>
 
-  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/guides/',$c/@url-name,'.xml'))"/>
-  <xsl:variable name="guide-docs-all"                            select="xdmp:directory(concat('/apidoc/',$api:version,'/guides/'))[guide]"/>
+  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/docs/',$c/@url-name,'.xml'))"/>
+  <xsl:variable name="guide-docs-all"                            select="xdmp:directory(concat('/apidoc/',$api:version,'/docs/'))[guide]"/>
 
-  <!-- Append unconfigured guides to the end (so new ones are easily discoverable -->
+  <!-- Append unconfigured guides to the end (so new ones are easily discoverable) -->
   <xsl:variable name="guide-docs-ordered" select="$guide-docs-configured, $guide-docs-all except $guide-docs-configured"/>
 
   <xsl:template match="/">
@@ -70,8 +70,8 @@
           -->
         </node>
       </toc>
-      <toc>
-        <node display="User Guides">
+      <toc id="user-guides">
+        <node display="User Guides" href="/docs">
           <xsl:for-each select="$guide-docs-ordered">
             <node href="{ml:external-uri(.)}" display="{/guide/title}">
               <xsl:apply-templates mode="guide-toc"/>
