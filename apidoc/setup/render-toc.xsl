@@ -73,8 +73,13 @@
 
           $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").click(function() {
             $("#sub a.selected").removeClass("selected");
-            var fullLink = this.pathname + this.hash;
+
+            // IE doesn't include the "/" at the beginning of the pathname...
+            //var fullLink = this.pathname + this.hash;
+            var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
+
             showInTOC($("#sub a[href='" + fullLink + "']"));
+
             scrollTOC($("#sub a.selected"));
           });
       });
