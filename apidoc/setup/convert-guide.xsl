@@ -125,9 +125,24 @@
   <xsl:template match="A">
     <a>
       <xsl:apply-templates select="@ID | @href"/>
-      <xsl:apply-templates/>
+      <xsl:apply-templates mode="guide-link-content" select="."/>
     </a>
   </xsl:template>
+
+          <!-- Remove apostrophe delimiters when present -->
+          <xsl:template mode="guide-link-content" match='A[starts-with(normalize-space(.), "&apos;")]' priority="1">
+            <xsl:value-of select='substring-before(substring-after(normalize-space(.),"&apos;"),"&apos;")'/>
+          </xsl:template>
+
+          <!-- Remove "on page 32" verbiage -->
+          <xsl:template mode="guide-link-content" match="A[contains(normalize-space(.), ' on page')]">
+            <xsl:value-of select="substring-before(normalize-space(.), ' on page')"/>
+          </xsl:template>
+
+          <xsl:template mode="guide-link-content" match="A">
+            <xsl:value-of select="normalize-space(.)"/>
+          </xsl:template>
+
 
           <xsl:template match="A/@ID">
             <xsl:attribute name="id" select="my:full-anchor-id(.)"/>
