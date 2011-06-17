@@ -119,7 +119,8 @@
   <xsl:template match="Code/text()[not(normalize-space(.))]"/>
 
   <!-- Remove existing top-level anchors; we'll use filename-based ones instead. -->
-  <xsl:template match="Heading-1/A"/><!-- | A[starts-with(@ID,'pgfId-')]"/>--> <!-- Retain the pfgId ones, they're not necessarily dispensable after all. -->
+  <!-- Also, since we rewrite all links to point to the last anchor, it's safe to remove all the anchors that aren't last. -->
+  <xsl:template match="Heading-1/A | A[@ID][not(position() eq last())]"/>
 
   <xsl:template match="A">
     <a>
@@ -140,21 +141,22 @@
 
           <!-- Links within the same guide -->
           <xsl:template match="A/@href[contains(.,'#id(')]" priority="1">
-            <xsl:attribute name="href" select="concat('#',my:anchor-id-from-href(.))"/>
+            <xsl:variable name="guide" select="root(.)"/>
+            <xsl:attribute name="href" select="concat('#', my:anchor-id-from-href(.,$guide))"/>
           </xsl:template>
 
           <!-- Links to other guides -->
           <xsl:template match="A/@href[starts-with(.,'../')]" priority="2">
-            <xsl:attribute name="href" select="concat(my:referenced-guide-url(.),'#',my:anchor-id-from-href(.))"/>
+            <xsl:variable name="guide" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), guide/@original-dir)]"/>
+            <xsl:if test="not($guide)">
+              <xsl:message>BAD LINK FOUND! Unable to find referenced guide for this link: <xsl:value-of select="."/></xsl:message>
+            </xsl:if>
+            <xsl:attribute name="href" select="concat(my:guide-url($guide), '#', my:anchor-id-from-href(.,$guide))"/>
           </xsl:template>
 
-                  <xsl:function name="my:referenced-guide-url">
-                    <xsl:param name="href" as="attribute(href)"/>
-                    <xsl:variable name="referenced-guide" select="$raw:guide-docs[starts-with(my:fully-resolved-href($href), guide/@original-dir)]"/>
-                    <xsl:if test="not($referenced-guide)">
-                      <xsl:message>BAD LINK FOUND! Unable to find referenced guide for this link: <xsl:value-of select="$href"/></xsl:message>
-                    </xsl:if>
-                    <xsl:sequence select="$referenced-guide/ml:external-uri-for-string(raw:target-guide-uri(.))"/>
+                  <xsl:function name="my:guide-url">
+                    <xsl:param name="guide" as="document-node()?"/> <!-- if absent, then it's a bad link, and we'll get the warning above -->
+                    <xsl:sequence select="$guide/ml:external-uri-for-string(raw:target-guide-uri(.))"/>
                   </xsl:function>
 
                           <xsl:function name="my:fully-resolved-href">
@@ -164,13 +166,25 @@
 
                   <xsl:function name="my:anchor-id-from-href" as="xs:string">
                     <xsl:param name="href" as="attribute(href)"/>
-                    <xsl:variable name="exclude-id-suffix" select="my:fully-resolved-href($href) = $fully-resolved-top-level-heading-references"/>
-                    <!-- Leave out the _12345 part if we're linking to a top-level section -->
-                    <xsl:sequence select="concat(my:basename-stem($href),
-                                                 if ($exclude-id-suffix) then () else concat('_',my:number-from-href($href)))"/>
+                    <xsl:param name="guide" as="document-node()?"/>
+                    <xsl:variable name="resolved-href" select="my:fully-resolved-href($href)"/>
+                    <xsl:variable name="is-top-level-section-link" select="$resolved-href = $fully-resolved-top-level-heading-references"/>
+
+                    <xsl:value-of>
+                      <!-- The section name of the guide -->
+                      <xsl:value-of select="my:basename-stem($href)"/>
+                      <!-- Leave out the _12345 part if we're linking to a top-level section -->
+                      <xsl:if test="not($is-top-level-section-link)">
+                        <xsl:variable name="id" select="my:extract-id-from-href($href)"/>
+                        <xsl:variable name="section" select="$guide/guide/XML[starts-with($resolved-href,@original-file)]"/>
+                        <!-- Always rewrite to the last ID that appears, so we have a canonical one we can script against in the TOC (which also uses the last one present) -->
+                        <xsl:variable name="canonical-fragment-id" select="$section//*[A/@ID=$id]/A[@ID][last()]/@ID"/>
+                        <xsl:value-of select="concat('_', $canonical-fragment-id)"/>
+                      </xsl:if>
+                    </xsl:value-of>
                   </xsl:function>
 
-                          <xsl:function name="my:number-from-href">
+                          <xsl:function name="my:extract-id-from-href">
                             <xsl:param name="href" as="xs:string"/>
                             <xsl:sequence select="substring-before(substring-after($href,'#id('),')')"/>
                           </xsl:function>
