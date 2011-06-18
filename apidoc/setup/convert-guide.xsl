@@ -6,7 +6,7 @@
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:my="http://localhost"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs raw my">
+  exclude-result-prefixes="xs raw my ml">
 
   <xsl:import href="../view/page.xsl"/>
 
@@ -17,8 +17,19 @@
   <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
 
   <xsl:template match="/">
+    <!-- Capture section hierarchy -->
+    <xsl:variable name="sections-captured">
+      <xsl:apply-templates mode="capture-sections" select="."/>
+    </xsl:variable>
+    <!-- Capture list hierarchy -->
+    <xsl:variable name="lists-captured">
+      <xsl:apply-templates mode="capture-lists" select="$sections-captured"/>
+    </xsl:variable>
     <xsl:variable name="converted-content">
-      <xsl:apply-templates select="guide/node()"/>
+      <!--
+<xsl:copy-of select="$sections-captured"/>
+      -->
+      <xsl:apply-templates select="$lists-captured/guide/node()"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <xsl:result-document href="{$output-uri}">
@@ -77,7 +88,7 @@
 
                   <xsl:function name="my:anchor-id-for-top-level-heading">
                     <xsl:param name="heading-1" as="element(Heading-1)"/>
-                    <xsl:sequence select="my:basename-stem($heading-1/parent::XML/@original-file)"/>
+                    <xsl:sequence select="my:basename-stem($heading-1/ancestor::XML/@original-file)"/>
                   </xsl:function>
 
                   <xsl:function name="my:basename-stem">
@@ -96,30 +107,46 @@
     </p>
   </xsl:template>
 
+  <!-- By default, do *not* copy elements -->
   <xsl:template match="*">
-    <xsl:copy>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <!-- Convert elements that should be converted -->
+  <xsl:template match="*[string(my:new-name(.))]">
+    <xsl:element name="{my:new-name(.)}">
       <xsl:apply-templates/>
-    </xsl:copy>
+    </xsl:element>
   </xsl:template>
 
-  <!-- TODO: update after up-conversion -->
+          <xsl:function name="my:new-name">
+            <xsl:param name="element"/>
+            <xsl:apply-templates mode="new-name" select="$element"/>
+          </xsl:function>
+
+                  <!-- Some elements should just keep their existing name -->
+                  <xsl:template mode="new-name" match="div | ul">
+                    <xsl:value-of select="local-name(.)"/>
+                  </xsl:template>
+                  <xsl:template mode="new-name" match="Emphasis"    >em</xsl:template>
+
+                  <xsl:template mode="new-name" match="*"/>
+
+
   <xsl:template match="Body-bullet">
-    <!--
-    <ul>
-    -->
-      <li>
-        <xsl:apply-templates/>
-      </li>
-    <!--
-    </ul>
-    -->
+    <li>
+      <xsl:apply-templates/>
+    </li>
   </xsl:template>
 
+  <!--
   <xsl:template match="Emphasis">
     <em>
       <xsl:apply-templates/>
     </em>
   </xsl:template>
+  -->
+
 
   <!-- TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly -->
   <!-- Strip out line breaks -->
@@ -162,7 +189,7 @@
 
                   <xsl:function name="my:full-anchor-id">
                     <xsl:param name="ID-att"/>
-                    <xsl:sequence select="concat(my:anchor-id-for-top-level-heading($ID-att/ancestor::XML/Heading-1),'_',$ID-att)"/>
+                    <xsl:sequence select="concat(my:anchor-id-for-top-level-heading($ID-att/ancestor::XML/div/Heading-1),'_',$ID-att)"/>
                   </xsl:function>
 
 
@@ -225,29 +252,81 @@
   </xsl:template>
 
 
-  <xsl:template match="XML">
-    <xsl:apply-templates mode="capture-sections" select="."/>
+  <xsl:template mode="capture-sections" match="@* | node()">
+    <xsl:copy>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="capture-sections-content" select="."/>
+    </xsl:copy>
   </xsl:template>
 
-          <xsl:template mode="capture-sections" match="*">
+          <xsl:template mode="capture-sections-content" match="*">
+            <xsl:apply-templates mode="capture-sections"/>
+          </xsl:template>
+
+          <xsl:template mode="capture-sections-content" match="XML">
+            <xsl:call-template name="capture-sections"/>
+          </xsl:template>
+
+          <xsl:template name="capture-sections">
             <xsl:param name="current-level" select="1"/>
+            <!-- Initially, group the children -->
             <xsl:param name="current-group" select="node()"/>
+            <!-- Each heading starts a new group -->
             <xsl:variable name="current-heading" select="concat('Heading-', $current-level)"/>
-            <div class="section">
-              <xsl:for-each-group select="$current-group" group-starting-with="*[local-name(.) eq $current-heading]">
-                <xsl:choose>
-                  <xsl:when test="local-name(.) eq $current-heading">
-                    <xsl:apply-templates mode="#current" select=".">
+            <xsl:for-each-group select="$current-group" group-starting-with="*[local-name(.) eq $current-heading]">
+              <xsl:choose>
+                <xsl:when test="local-name(.) eq $current-heading">
+                  <div class="section">
+                    <!-- Recursively capture sections -->
+                    <xsl:call-template name="capture-sections">
                       <xsl:with-param name="current-level" select="$current-level + 1"/>
                       <xsl:with-param name="current-group" select="current-group()"/>
-                    </xsl:apply-templates>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:apply-templates select="current-group()"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each-group>
-            </div>
+                    </xsl:call-template>
+                  </div>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:copy-of select="current-group()"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each-group>
+          </xsl:template>
+
+
+  <xsl:template mode="capture-lists" match="@* | node()">
+    <xsl:copy>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="capture-lists-content" select="."/>
+    </xsl:copy>
+  </xsl:template>
+
+          <xsl:template mode="capture-lists-content" match="*">
+            <xsl:apply-templates mode="capture-lists"/>
+          </xsl:template>
+
+          <xsl:template mode="capture-lists-content" match="div">
+            <xsl:call-template name="capture-lists"/>
+            <!-- Nested divs always come last (the section grouping code above ensures that) -->
+            <xsl:apply-templates mode="capture-lists" select="div"/>
+          </xsl:template>
+
+          <!-- TODO: Make this handle more than just <Body-bullet> -->
+          <xsl:template name="capture-lists">
+            <!-- Initially, group the children excluding sub-sections -->
+            <xsl:param name="current-group" select="node() except div"/>                     <!-- whitespace between bullets -->
+            <xsl:for-each-group select="$current-group" group-adjacent="self::Body-bullet or (self::text()[not(normalize-space(.))]           and
+                                                                                              preceding-sibling::node()[1][self::Body-bullet] and
+                                                                                              following-sibling::node()[1][self::Body-bullet])">
+              <xsl:choose>
+                <xsl:when test="current-grouping-key()">
+                  <ul>
+                    <xsl:copy-of select="current-group()"/>
+                  </ul>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:copy-of select="current-group()"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each-group>
           </xsl:template>
 
 </xsl:stylesheet>

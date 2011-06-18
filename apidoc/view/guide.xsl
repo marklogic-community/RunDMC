@@ -14,7 +14,8 @@
 
   <xsl:output indent="no"/>
 
-  <xsl:variable name="convert-at-render-time-for-development-purposes" select="true()"/>
+  <!-- Only set to true in development, not in production. -->
+  <xsl:variable name="convert-at-render-time" select="true()"/>
 
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
@@ -23,11 +24,13 @@
   <xsl:template mode="page-content" match="/guide">
     <xsl:choose>
       <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
-      <xsl:when test="not($convert-at-render-time-for-development-purposes)">
+      <xsl:when test="not($convert-at-render-time)">
         <xsl:apply-templates mode="guide"/>
       </xsl:when>
       <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
       <xsl:otherwise>
+        <p>WARNING: This was converted directly from the raw docs database for convenience in development.
+           Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
         <!-- Convert and render the guide by directly calling the setup/conversion code -->
         <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
                                                                     $raw:guide-docs[raw:target-guide-uri(.) eq base-uri(current())])
@@ -35,6 +38,9 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <!-- Don't copy the <title> element -->
+  <xsl:template mode="guide" match="guide/title"/>
 
   <!-- Resolve the relative image URI according to the current guide -->
   <xsl:template mode="guide-att-value" match="x:img/@src">
