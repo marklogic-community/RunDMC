@@ -8,6 +8,8 @@ declare namespace dir = "http://marklogic.com/xdmp/directory";
 declare variable $srcdir  := xdmp:get-request-field("srcdir");
 declare variable $version := xdmp:get-request-field("version"); (: e.g., 4.1 :)
 
+declare variable $database-name := u:get-doc("/apidoc/config/source-database.xml")/string(.);
+
 declare variable $legal-versions  := u:get-doc("/apidoc/config/server-versions.xml")/*/version/@number;
 
 (: Recursively load all files, retaining the subdir structure :)
@@ -23,7 +25,7 @@ declare function local:load-docs($dir) {
           concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))'),
           (),
           <options xmlns="xdmp:eval">
-            <database>{xdmp:database("RunDMC-api-rawdocs")}</database>
+            <database>{xdmp:database($database-name)}</database>
           </options>),
         xdmp:log(concat("Loading ",$path," to ",$uri))
       ),
