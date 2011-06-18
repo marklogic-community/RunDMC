@@ -6,11 +6,15 @@
   xmlns:map="http://marklogic.com/xdmp/map"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:x="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs api xdmp map x">
+  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+  extension-element-prefixes="xdmp"
+  exclude-result-prefixes="xs api xdmp map x raw">
+
+  <xdmp:import-module href="/apidoc/setup/raw-docs-access.xqy" namespace="http://marklogic.com/rundmc/raw-docs-access"/>
 
   <xsl:output indent="no"/>
 
-  <xsl:variable name="convert-at-render-time-for-development-purposes" select="false()"/>
+  <xsl:variable name="convert-at-render-time-for-development-purposes" select="true()"/>
 
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
@@ -18,25 +22,16 @@
 
   <xsl:template mode="page-content" match="/guide">
     <xsl:choose>
+      <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
       <xsl:when test="not($convert-at-render-time-for-development-purposes)">
         <xsl:apply-templates mode="guide"/>
       </xsl:when>
+      <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
       <xsl:otherwise>
-        <!-- Everything below is temporary, for development purposes. Later, assume that the guide is already converted (in the setup phase). -->
-        <xsl:variable name="params">
-          <!-- Ensure result of converted guide has the same URI -->
-          <map:map>
-            <map:entry>
-              <map:key>output-uri</map:key>
-              <map:value>
-                <xsl:value-of select="base-uri(.)"/>
-              </map:value>
-            </map:entry>
-          </map:map>
-        </xsl:variable>
         <!-- Convert and render the guide by directly calling the setup/conversion code -->
-        <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl', /, map:map($params/map:map))
-                                                   /guide/(node() except title)"/>
+        <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
+                                                                    $raw:guide-docs[raw:target-guide-uri(.) eq base-uri(current())])
+                                                   /guide/node()"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

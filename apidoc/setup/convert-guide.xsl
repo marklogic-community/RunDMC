@@ -15,7 +15,6 @@
 
   <xsl:output indent="no"/>
 
-  <!-- Only overridden when, for convenience, we invoke this stylesheet from the rendering code during development. -->
   <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
 
   <xsl:template match="/">
