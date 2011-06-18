@@ -4,7 +4,6 @@
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:my="http://localhost"
   extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs raw my">
@@ -18,16 +17,30 @@
   <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
 
   <xsl:template match="/">
+    <xsl:variable name="converted-content">
+      <xsl:apply-templates select="guide/node()"/>
+    </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <xsl:result-document href="{$output-uri}">
-      <guide xmlns="">
+      <guide>
         <title>
           <xsl:value-of select="/guide/title"/>
         </title>
-        <xsl:apply-templates select="guide/node()"/>
+        <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
       </guide>
     </xsl:result-document>
   </xsl:template>
+
+          <xsl:template mode="add-xhtml-namespace" match="@* | node()">
+            <xsl:copy/>
+          </xsl:template>
+
+          <xsl:template mode="add-xhtml-namespace" match="*" priority="1">
+            <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
+              <xsl:apply-templates mode="#current" select="@* | node()"/>
+            </xsl:element>
+          </xsl:template>
+
 
   <!-- Don't need this attribute at this stage; only used to resolve URIs of images being copied over -->
   <xsl:template match="/guide/@original-dir"/>
@@ -211,44 +224,23 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- Section groupings -->
-  <!-- TODO: Consider recursively use multiple passes instead, converting "Heading-1", "Heading-2",
-             etc. into a standard element each time. Or... just leave this ugly, repetitive code here. -->
+
   <xsl:template match="XML">
-    <div class="section">
-      <xsl:apply-templates select="Heading-1"/> <!-- ASSUMPTION: just one of these per <XML> container -->
-      <xsl:for-each-group select="node() except Heading-1" group-starting-with="Heading-2">
-        <xsl:choose>
-          <xsl:when test="self::Heading-2">
+    <xsl:apply-templates mode="capture-sections" select="."/>
+  </xsl:template>
+
+          <xsl:template mode="capture-sections" match="*">
+            <xsl:param name="current-level" select="1"/>
+            <xsl:param name="current-group" select="node()"/>
+            <xsl:variable name="current-heading" select="concat('Heading-', $current-level)"/>
             <div class="section">
-              <xsl:for-each-group select="current-group()" group-starting-with="Heading-3">
+              <xsl:for-each-group select="$current-group" group-starting-with="*[local-name(.) eq $current-heading]">
                 <xsl:choose>
-                  <xsl:when test="self::Heading-3">
-                    <div class="section">
-                      <xsl:for-each-group select="current-group()" group-starting-with="Heading-4">
-                        <xsl:choose>
-                          <xsl:when test="self::Heading-4">
-                            <div class="section">
-                              <xsl:for-each-group select="current-group()" group-starting-with="Heading-5">
-                                <xsl:choose>
-                                  <xsl:when test="self::Heading-5">
-                                    <div class="section">
-                                      <xsl:apply-templates select="current-group()"/>
-                                    </div>
-                                  </xsl:when>
-                                  <xsl:otherwise>
-                                    <xsl:apply-templates select="current-group()"/>
-                                  </xsl:otherwise>
-                                </xsl:choose>
-                              </xsl:for-each-group>
-                            </div>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:apply-templates select="current-group()"/>
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:for-each-group>
-                    </div>
+                  <xsl:when test="local-name(.) eq $current-heading">
+                    <xsl:apply-templates mode="#current" select=".">
+                      <xsl:with-param name="current-level" select="$current-level + 1"/>
+                      <xsl:with-param name="current-group" select="current-group()"/>
+                    </xsl:apply-templates>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:apply-templates select="current-group()"/>
@@ -256,13 +248,6 @@
                 </xsl:choose>
               </xsl:for-each-group>
             </div>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="current-group()"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each-group>
-    </div>
-  </xsl:template>
+          </xsl:template>
 
 </xsl:stylesheet>
