@@ -27,7 +27,8 @@ for $dir in $sub-dirs return
 (
   let $title-doc    := doc(concat($dir,'title.xml'))
   let $title        := $title-doc/XML/Title/normalize-space(.)
-  let $guide-config := $guide-list[local:dir-name($dir) = tokenize(@source-names,' ')]
+  let $guide-config := $guide-list[local:dir-name($dir) eq @source-name]
+  (: let $guide-config := $guide-list[local:dir-name($dir) = tokenize(@source-names,' ')] :)
   let $url-name     := if ($guide-config) then $guide-config/@url-name else local:dir-name($dir)
   let $target-url   := concat("/",$api:version,"/docs/",$url-name,".xml")
   return

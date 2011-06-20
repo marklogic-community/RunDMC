@@ -14,6 +14,14 @@ declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) th
                                   else if (matches($path, '^/[0-9]\.[0-9]/')) then substring-before(substring-after($path,'/'),'/')
                                   else "";
 
+declare variable $pdf-location  := 
+  let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")/*/guide,
+      $version       := if ($version-specified) then $version-specified else $default-version,
+      $guide-name    := substring-before(substring-after($path,"/docs/"),".pdf"),
+      $source-name   := $guide-configs/@source-name[../@url-name eq $guide-name]
+  return
+    concat("/pubs/",$version,"/books/",$source-name,".pdf");
+
 declare variable $root-doc-url    := concat('/apidoc/', $default-version,        '/index.xml');
 declare variable $doc-url-default := concat('/apidoc/', $default-version, $path, '.xml'); (: when version is unspecified in path :)
 declare variable $doc-url         := concat('/apidoc',                    $path, '.xml'); (: when version is specified in path :)
@@ -43,6 +51,10 @@ declare function local:transform($source-doc) as xs:string {
     (: Respond with DB contents for /media :)
     else if (starts-with($path, '/media/')) then 
       concat("/controller/get-db-file.xqy?uri=", $path)
+
+    (: Map PDF URIs to DMC PDF URIs :)
+    else if (ends-with($path, '.pdf')) then
+        concat("/controller/get-db-file.xqy?uri=", $pdf-location)
 
     (: Ignore URLs starting with "/private/" :)
     else if (starts-with($path,'/private/')) then
