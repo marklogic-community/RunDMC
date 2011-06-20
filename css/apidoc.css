@@ -121,3 +121,7 @@ li.expandable .treecontrol { display: none; }
 .documentsTable a {
   text-decoration: underline;
 }
+
+.guide-pdf-link {
+  float: right;
+}
