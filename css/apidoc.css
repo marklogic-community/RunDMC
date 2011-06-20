@@ -112,3 +112,8 @@ h1 a { text-decoration: underline; }
 #config-filter2, #config-filter3 { margin-top: 1em }
 
 li.expandable .treecontrol { display: none; }
+
+/* Disable (fixed-width) background image */
+#main .doclist h2 {
+	background: #6E782F;/* url(/images/bg_header_doclist.gif) no-repeat;*/
+}
