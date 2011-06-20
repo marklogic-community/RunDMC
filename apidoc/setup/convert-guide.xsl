@@ -128,8 +128,16 @@
                   <xsl:template mode="new-name" match="div | ul">
                     <xsl:value-of select="local-name(.)"/>
                   </xsl:template>
-                  <xsl:template mode="new-name" match="Emphasis"    >em</xsl:template>
+                  <!-- Some need to be set to lower-case -->
+                  <xsl:template mode="new-name" match="TABLE | TH">
+                    <xsl:value-of select="lower-case(local-name(.))"/>
+                  </xsl:template>
+                  <!-- Others need to be renamed -->
+                  <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
+                  <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
+                  <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
 
+                  <!-- By default, we just strip the start & end tags out -->
                   <xsl:template mode="new-name" match="*"/>
 
 

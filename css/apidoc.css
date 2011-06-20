@@ -125,3 +125,11 @@ li.expandable .treecontrol { display: none; }
 .guide-pdf-link {
   float: right;
 }
+
+/* This could use some sprucing up */
+.userguide th,
+.userguide td {padding: 6px 5px;}
+.userguide td {
+	border: solid #CCC;
+	border-width: 1px;
+}

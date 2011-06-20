@@ -23,21 +23,23 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="/guide">
-    <xsl:choose>
-      <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
-      <xsl:when test="not($convert-at-render-time)">
-        <xsl:apply-templates mode="guide"/>
-      </xsl:when>
-      <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
-      <xsl:otherwise>
-        <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
-           Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
-        <!-- Convert and render the guide by directly calling the setup/conversion code -->
-        <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
-                                                                    $raw:guide-docs[raw:target-guide-uri(.) eq base-uri(current())])
-                                                   /guide/node()"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <div class="userguide">
+      <xsl:choose>
+        <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
+        <xsl:when test="not($convert-at-render-time)">
+          <xsl:apply-templates mode="guide"/>
+        </xsl:when>
+        <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
+        <xsl:otherwise>
+          <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
+             Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
+          <!-- Convert and render the guide by directly calling the setup/conversion code -->
+          <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
+                                                                      $raw:guide-docs[raw:target-guide-uri(.) eq base-uri(current())])
+                                                     /guide/node()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
   </xsl:template>
 
   <!-- Don't copy the <title> element -->
@@ -49,6 +51,7 @@
   </xsl:template>
 
 
+  <!-- Add a PDF link at the top of each guide, before the <h1> -->
   <xsl:template mode="guide-before" match="x:h1">
     <a href="{ml:external-uri(.)}.pdf" class="guide-pdf-link">
       <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/> 
@@ -60,11 +63,15 @@
   <xsl:template mode="guide" match="node()">
     <xsl:apply-templates mode="guide-before" select="."/>
     <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@* | node()"/>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="guide-add-att" select="."/>
+      <xsl:apply-templates mode="#current"/>
     </xsl:copy>
   </xsl:template>
 
           <xsl:template mode="guide-before" match="node()"/>
+
+          <xsl:template mode="guide-add-att" match="*"/>
 
   <xsl:template mode="guide" match="@*">
     <xsl:attribute name="{name()}" namespace="{namespace-uri()}">
