@@ -8,9 +8,10 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:ml   ="http://developer.marklogic.com/site/internal"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp">
+  exclude-result-prefixes="xs ml xdmp srv">
 
   <xsl:import href="pre-process-navigation.xsl"/>
 
@@ -38,7 +39,11 @@
           <xsl:template mode="top-nav" match="page">
             <li>
               <xsl:apply-templates mode="top-nav-current-att" select="."/>
-              <a href="{@href}">
+              <xsl:variable name="server-prefix" select="if (starts-with(@href,'/')) then if (@api-server)
+                                                                                     then $srv:api-server
+                                                                                     else $srv:main-server
+                                                         else ()"/>
+              <a href="{$server-prefix}{@href}">
                 <xsl:variable name="short-description"
                               select="document(concat(@href, '.xml'))//ml:short-description"/>
                 <xsl:if test="$short-description">

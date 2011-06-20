@@ -1,18 +1,24 @@
 <hosts>
 
   <host type="staging" name="stage-developer.marklogic.com">
+    <main-server url="http://dmc-stage.marklogic.com"/>
     <draft-server url="http://dmc-stage-draft.marklogic.com"/>
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
+    <api-server url="http://dmc-stage.marklogic.com:8036"/>
   </host>
 
   <host type="production" name="developer.marklogic.com">
+    <main-server url="http://developer.marklogic.com"/>
     <draft-server url="http://developer-draft.marklogic.com"/>
     <webdav-server url="http://developer.marklogic.com:8005"/>
+    <api-server url="http://api.marklogic.com"/>
   </host>
 
   <host type="development" default-host="yes">
+    <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
+    <api-server port="8009"/>
   </host>
 
 </hosts>

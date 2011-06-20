@@ -2,7 +2,7 @@
      including breadcrumb hierarchy.
 -->
 <navigation xmlns="http://developer.marklogic.com/site/internal">
-  <page display="Docs" href="/docs"  narrow-sidebar="yes"/>
+  <page display="Docs" api-server="yes" href="/docs"/>
   <page display="Downloads" href="/products">
     <group display="MarkLogic Downloads">
       <group display="MarkLogic Server">
