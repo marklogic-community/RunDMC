@@ -18,9 +18,9 @@ declare variable $pdf-location  :=
   let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")/*/guide,
       $version       := if ($version-specified) then $version-specified else $default-version,
       $guide-name    := substring-before(substring-after($path,"/docs/"),".pdf"),
-      $source-name   := $guide-configs/@source-name[../@url-name eq $guide-name]
+      $pdf-name      := $guide-configs[@url-name eq $guide-name]/(@pdf-name,@source-name)[1]
   return
-    concat("/pubs/",$version,"/books/",$source-name,".pdf");
+    concat("/pubs/",$version,"/books/",$pdf-name,".pdf");
 
 declare variable $root-doc-url    := concat('/apidoc/', $default-version,        '/index.xml');
 declare variable $doc-url-default := concat('/apidoc/', $default-version, $path, '.xml'); (: when version is unspecified in path :)
@@ -40,6 +40,7 @@ declare function local:transform($source-doc) as xs:string {
   if (($path ne '/') and ends-with($path, '/')) then
       concat('/controller/redirect.xqy?path=', substring($path, 1, string-length($path) - 1),
               if ($query-string) then concat('?', $query-string) else ())
+  (: Redirect requests for older versions back to DMC :)
   else if (starts-with($path,"/4.0")) then
        concat("/controller/redirect.xqy?path=",$srv:main-server,"/docs/4.0")
   else if (starts-with($path,"/3.2")) then

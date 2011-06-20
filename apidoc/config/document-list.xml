@@ -14,6 +14,9 @@
      If a guide is not included in this list, that won't prevent it from being
      imported and rendered (but it will prevent it from being included in the
      table). If you want to explicitly exclude a guide, use the @exclude flag.
+
+     The @source-name attribute determines the source PDF name, unless @pdf-name
+     is provided.
 -->
 <!--
      DISABLED NOW (not needed yet, and we use @source-name for reverse mapping to .pdf location):
@@ -36,7 +39,7 @@
   <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
   <guide url-name="admin-api"       source-name="adminAPI">Provides information on writing code to script various administrative tasks such as creating and modifying databases, App Servers, and so on.</guide>
   <guide url-name="xquery"          source-name="xquery">A condensed overview of the XQuery language, including a description of the three XQuery dialects supported in MarkLogic Server. <added-in version="4.2">Also includes XSLT reference material, including details and extensions to the language.</added-in> This book does includes some syntax information, although it is primarily intended as an introduction and quick-reference to the languages, not as a comprehensive reference.</guide>
-  <guide url-name="installation"    source-name="install_all">Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
+  <guide url-name="installation"    source-name="install_all" pdf-name="install">Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
   <guide url-name="xcc"             source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
 
   <entry title="XCC Javadoc (online)">API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.</entry>

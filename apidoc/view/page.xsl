@@ -120,6 +120,7 @@
              <xsl:apply-templates mode="list-page-col1-heading" select="."/>
             </th>
             <th>Description</th>
+            <xsl:apply-templates mode="list-page-col3-th" select="."/>
           </tr>
         </thead>
         <tbody>
@@ -128,6 +129,11 @@
       </table>
     </div>
   </xsl:template>
+
+          <xsl:template mode="list-page-col3-th" match="*"/>
+          <xsl:template mode="list-page-col3-th" match="api:docs-page">
+            <th>PDF</th>
+          </xsl:template>
 
           <xsl:template mode="list-page-docs" match="api:list-page">
             <xsl:sequence select="api:list-entry"/>
@@ -193,6 +199,7 @@
             </tr>
           </xsl:template>
 
+
           <xsl:template mode="list-page-entry" match="entry | guide">
             <tr>
               <td style="white-space: nowrap;">
@@ -206,8 +213,27 @@
               <td>
                 <xsl:apply-templates mode="list-page-entry-description" select="."/>
               </td>
+              <td>
+                <xsl:apply-templates mode="list-page-pdf-link" select="."/>
+              </td>
             </tr>
           </xsl:template>
+
+                  <xsl:template mode="list-page-pdf-link" match="*">&#160;</xsl:template>
+                  <xsl:template mode="list-page-pdf-link" match="guide">
+                    <xsl:variable name="href">
+                      <xsl:apply-templates mode="list-page-entry-href" select="."/>
+                      <xsl:text>.pdf</xsl:text>
+                    </xsl:variable>
+                    <xsl:variable name="title">
+                      <xsl:apply-templates mode="list-page-entry-title" select="."/>
+                      <xsl:text> (PDF)</xsl:text>
+                    </xsl:variable>
+                    <a href="{$href}">
+                      <img src="/media/pdf_icon.gif" title="{$title}" alt="{$title}" height="25" width="25"/> 
+                    </a>
+                  </xsl:template>
+
 
                   <xsl:template mode="list-page-entry-href" match="guide">
                     <xsl:value-of select="api:guide-info(@url-name)/@href"/>
