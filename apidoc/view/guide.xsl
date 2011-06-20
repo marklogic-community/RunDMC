@@ -15,7 +15,7 @@
   <xsl:output indent="no"/>
 
   <!-- Only set to true in development, not in production. -->
-  <xsl:variable name="convert-at-render-time" select="false()"/>
+  <xsl:variable name="convert-at-render-time" select="doc-available('/apidoc/DEBUG.xml') and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
