@@ -117,3 +117,7 @@ li.expandable .treecontrol { display: none; }
 #main .doclist h2 {
 	background: #6E782F;/* url(/images/bg_header_doclist.gif) no-repeat;*/
 }
+
+.documentsTable a {
+  text-decoration: underline;
+}
