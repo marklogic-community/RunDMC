@@ -2,6 +2,7 @@ import module namespace draft = "http://developer.marklogic.com/site/internal/fi
        at "../model/filter-drafts.xqy";
 
 import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
+import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "server-urls.xqy";
 
 (:
 TODO:
@@ -19,12 +20,12 @@ declare function local:redir($path as xs:string) as xs:string
     (: permanent redirs :)
     if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
-    else if ($path = ("/pubs", "/pubs/")) then
-        "/docs"
-    else if ($path = ("/pubs/4.2", "/pubs/4.2/")) then
-        "/docs/4.2"
-    else if ($path = ("/pubs/4.1", "/pubs/4.1/")) then
-        "/docs/4.1"
+    else if ($path = ("/pubs", "/pubs/", "/docs")) then
+        concat($srv:api-server,"/docs")
+    else if ($path = ("/pubs/4.2", "/pubs/4.2/", "/docs/4.2")) then
+        concat($srv:api-server,"/4.2/docs")
+    else if ($path = ("/pubs/4.1", "/pubs/4.1/", "/docs/4.1")) then
+        concat($srv:api-server,"/4.1/docs")
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then
         "/docs/4.0"
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
