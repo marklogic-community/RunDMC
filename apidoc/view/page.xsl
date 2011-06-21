@@ -293,7 +293,7 @@
               <xsl:text>) as </xsl:text>
               <xsl:value-of select="normalize-space(api:return)"/>
             </code>
-            <xsl:apply-templates select="api:summary, api:params, api:usage, api:example"/>
+            <xsl:apply-templates select="(api:summary, api:params, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
