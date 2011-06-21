@@ -53,7 +53,7 @@
 
   <!-- Add a PDF link at the top of each guide, before the <h1> -->
   <xsl:template mode="guide-before" match="x:h1">
-    <a href="{ml:external-uri(.)}.pdf" class="guide-pdf-link">
+    <a href="{$version-prefix}{ml:external-uri(.)}.pdf" class="guide-pdf-link">
       <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/> 
     </a>
   </xsl:template>

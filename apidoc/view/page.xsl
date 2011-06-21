@@ -236,6 +236,7 @@
 
 
                   <xsl:template mode="list-page-entry-href" match="guide">
+                    <xsl:value-of select="$version-prefix"/>
                     <xsl:value-of select="api:guide-info(@url-name)/@href"/>
                   </xsl:template>
 
