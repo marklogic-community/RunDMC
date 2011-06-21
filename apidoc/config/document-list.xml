@@ -30,7 +30,7 @@
   <guide url-name="admin"           source-name="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>
   <guide url-name="app-dev"         source-name="dev_guide">Provides procedures, methodologies, and conceptual information about general application development tasks in MarkLogic Server.</guide>
   <guide url-name="search-dev"      source-name="search-dev-guide">Provides procedures, methodologies, and conceptual information about developing search-related applications in MarkLogic Server. Includes information about the Search API and the built-in search features of MarkLogic Server.</guide>
-  <guide url-name="app-builder"     source-name="appbuilder">Provides step-by step information on using the Application Builder to build a search application, and also provides information on customizing applications built with the Application Builder.</guide>
+  <guide url-name="app-builder"     source-name="appbuilder">Provides step-by-step information on using the Application Builder to build a search application, and also provides information on customizing applications built with the Application Builder.</guide>
   <guide url-name="infostudio"      source-name="info_studio">Provides step-by step information on using the Information Studio to load content into MarkLogic Server.</guide>
   <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
   <guide url-name="performance"     source-name="performance">Provides performance-related information that is useful to application developers and administrators.</guide>
