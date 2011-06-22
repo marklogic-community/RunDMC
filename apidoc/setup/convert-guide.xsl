@@ -14,6 +14,8 @@
 
   <xsl:output indent="no"/>
 
+  <xsl:variable name="DEBUG_GROUPING" select="$convert-at-render-time"/>
+
   <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
 
   <xsl:template match="/">
@@ -26,9 +28,6 @@
       <xsl:apply-templates mode="capture-lists" select="$sections-captured"/>
     </xsl:variable>
     <xsl:variable name="converted-content">
-      <!--
-<xsl:copy-of select="$sections-captured"/>
-      -->
       <xsl:apply-templates select="$lists-captured/guide/node()"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
@@ -40,6 +39,10 @@
         <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
       </guide>
     </xsl:result-document>
+    <xsl:if test="$DEBUG_GROUPING">
+      <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/sections-captured',$output-uri), $sections-captured)"/>
+      <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/lists-captured'   ,$output-uri),    $lists-captured)"/>
+    </xsl:if>
   </xsl:template>
 
           <xsl:template mode="add-xhtml-namespace" match="@* | node()">
