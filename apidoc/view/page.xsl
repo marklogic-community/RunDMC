@@ -149,6 +149,8 @@
             <xsl:apply-templates select="api:intro/node()"/>
           </xsl:template>
 
+          <xsl:template mode="list-page-intro" match="api:docs-page"/>
+
 
           <xsl:template mode="list-page-item-type" match="api:list-page" >function</xsl:template>
           <xsl:template mode="list-page-item-type" match="api:docs-page">document</xsl:template>
