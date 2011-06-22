@@ -112,6 +112,13 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <!-- Copy these elements -->
+  <xsl:template match="@* | div | ul">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | node()"/>
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Convert elements that should be converted -->
   <xsl:template match="*[string(my:new-name(.))]">
     <xsl:element name="{my:new-name(.)}">
@@ -124,10 +131,6 @@
             <xsl:apply-templates mode="new-name" select="$element"/>
           </xsl:function>
 
-                  <!-- Some elements should just keep their existing name -->
-                  <xsl:template mode="new-name" match="div | ul">
-                    <xsl:value-of select="local-name(.)"/>
-                  </xsl:template>
                   <!-- Some need to be set to lower-case -->
                   <xsl:template mode="new-name" match="TABLE | TH">
                     <xsl:value-of select="lower-case(local-name(.))"/>
