@@ -1,0 +1,34 @@
+<!-- These entries cause italicized text with these values
+     to be automatically converted to links to the corresponding
+     user guide.
+-->
+<aliases>
+  <guide>
+    <alias>Installation Guide for All Platforms</alias>
+    <alias>Installation Guide</alias>
+    <alias>MarkLogic Server Installation Guide</alias>
+  </guide>
+  <guide>
+    <alias>Release Notes</alias>
+    <alias>4.1 Release Notes</alias>
+    <alias>4.2 Release Notes</alias>
+    <alias>5.0 Release Notes</alias>
+  </guide>
+  <guide>
+    <alias>Understanding and Using Security</alias>
+    <alias>Understanding and Using Security Guide</alias>
+  </guide>
+  <guide>
+    <alias>Query Performance and Tuning</alias>
+    <alias>Query Performance and Tuning Guide</alias>
+  </guide>
+  <!-- This is used to help automatically convert italicized references
+       to the XQuery/XSLT reference to actual links. -->
+  <auto-link href="/">
+    <alias>MarkLogic Built-In and Module Functions Reference</alias>
+    <alias>MarkLogic XQuery and XSLT Function Reference</alias>
+    <alias>XQuery &amp; XSLT API Reference</alias>
+    <alias>XQuery API Reference</alias>
+    <alias>XQuery Built-In and Module API Documentation</alias>
+  </auto-link>
+</aliases>

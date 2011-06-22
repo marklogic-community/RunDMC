@@ -18,6 +18,12 @@
   <!-- Only set to true in development, not in production. -->
   <xsl:variable name="convert-at-render-time" select="doc-available('/apidoc/DEBUG.xml') and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
+  <xsl:variable name="docs-page" select="doc(concat('/apidoc/',$api:version,'/docs.xml'))/api:docs-page"/>
+
+  <xsl:variable name="auto-links" select="$docs-page/auto-link"/>
+
+  <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide[not(@href eq ml:external-uri($content))]"/>
+
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
   </xsl:template>
@@ -49,6 +55,27 @@
   <xsl:template mode="guide-att-value" match="x:img/@src">
     <xsl:value-of select="concat(api:guide-image-dir(base-uri(.)), .)"/>
   </xsl:template>
+
+  <!-- Automatically convert italicized guide references to links, but not the ones that are immediately preceded by "in the",
+       in which case we assume a more specific section link was already provided. -->
+  <xsl:template mode="guide" match="x:em[api:config-for-title(.)]
+                                        [not(preceding-sibling::node()[1][self::text()][normalize-space(.) eq 'in the'])]">
+    <a href="{$version-prefix}{api:config-for-title(.)/@href}">
+      <xsl:next-match/>
+    </a>
+  </xsl:template>
+
+          <xsl:function name="api:config-for-title" as="element()?">
+            <xsl:param name="link-text" as="xs:string"/>
+            <xsl:variable name="title" select="api:normalize-title($link-text)"/>
+            <xsl:sequence select="$other-guide-listings[(@display|alias)/api:normalize-title(.) = $title] |
+                                  $auto-links                    [alias /api:normalize-title(.) = $title]"/>
+          </xsl:function>
+
+                  <xsl:function name="api:normalize-title" as="xs:string">
+                    <xsl:param name="title" as="xs:string"/>
+                    <xsl:sequence select="normalize-space(lower-case($title))"/>
+                  </xsl:function>
 
 
   <!-- Add a PDF link at the top of each guide, before the <h1> -->

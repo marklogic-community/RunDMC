@@ -7,11 +7,15 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:ml="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs api ml">
+  xmlns:u="http://marklogic.com/rundmc/util"
+  exclude-result-prefixes="xs api ml u">
 
+  <!-- TODO: narrow this import down to what's actually needed... -->
   <xsl:import href="../view/page.xsl"/>
 
   <xsl:variable name="root" select="/"/>
+
+  <xsl:variable name="title-aliases" select="u:get-doc('/apidoc/config/title-aliases.xml')/aliases"/>
 
   <xsl:template match="/">
     <!-- Set up the docs page for this version -->
@@ -20,8 +24,15 @@
       <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
       <api:docs-page disable-comments="yes">
         <xsl:for-each select="/all-tocs/toc[@id eq 'user-guides']/node/node">
-          <api:user-guide href="{@href}" display="{@display}"/>
+          <api:user-guide href="{@href}" display="{@display}">
+            <!-- Put applicable title aliases here to help facilitate automatic link creation at render time -->
+            <xsl:copy-of select="$title-aliases/guide/alias
+                                                     [../alias/normalize-space(lower-case(.)) =
+                                            current()/@display/normalize-space(lower-case(.))]"/>
+          </api:user-guide>
         </xsl:for-each>
+        <xsl:comment>copied from /apidoc/config/title-aliases.xml:</xsl:comment>
+        <xsl:copy-of select="$title-aliases/auto-link"/>
       </api:docs-page>
     </xsl:result-document>
     <!-- Find each function list page URL -->

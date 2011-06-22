@@ -21,5 +21,10 @@ category-mappings.xml
   mappings of function reference categories to resulting (friendlier, more
   concise) URLs.
 
+title-aliases.xml
+  This file contains some alternative titles for certain user guides, in order
+  to facilitate the automatic rendering of italicized text in the source to
+  a link to the corresponding guide.
+
 template.xhtml
   This file contains the HTML wrapper that's used on all the pages of the site.
