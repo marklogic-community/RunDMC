@@ -25,7 +25,8 @@
 
   <xsl:variable name="versions" select="u:get-doc('/apidoc/config/server-versions.xml')/versions/version"/>
 
-  <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry|guide[not(@exclude)])"/>
+  <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry | guide[not(@exclude)]
+                                                                                                         [api:guide-info(@url-name)])"/>
 
   <xsl:variable name="site-title" select="concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
 
@@ -240,7 +241,7 @@
                     <xsl:value-of select="api:guide-info(@url-name)/@href"/>
                   </xsl:template>
 
-                          <xsl:function name="api:guide-info" as="element()">
+                          <xsl:function name="api:guide-info" as="element()?">
                             <xsl:param name="url-name" as="attribute()"/>
                             <xsl:sequence select="$content/*/api:user-guide[@href/ends-with(.,$url-name/concat('/',.))]"/>
                           </xsl:function>
