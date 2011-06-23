@@ -143,6 +143,12 @@
                   <!-- By default, we just strip the start & end tags out -->
                   <xsl:template mode="new-name" match="*"/>
 
+  <!-- Don't convert a single Body or CellBody child inside a CELL to a <p>; just process contents -->
+  <xsl:template match="CELL[count(*) eq 1]/Body
+                     | CELL[count(*) eq 1]/CellBody" priority="1">
+    <xsl:apply-templates/>
+  </xsl:template>
+
 
   <!-- TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly -->
   <!-- Strip out line breaks -->
