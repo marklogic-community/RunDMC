@@ -104,18 +104,12 @@
     <img src="{@href}"/>
   </xsl:template>
 
-  <xsl:template match="Body">
-    <p>
-      <xsl:apply-templates/>
-    </p>
-  </xsl:template>
-
   <!-- By default, do *not* copy elements -->
   <xsl:template match="*">
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- Copy these elements -->
+  <!-- Copy these elements (and their attributes) -->
   <xsl:template match="@* | div | ul">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
@@ -139,27 +133,15 @@
                     <xsl:value-of select="lower-case(local-name(.))"/>
                   </xsl:template>
                   <!-- Others need to be renamed -->
-                  <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
-                  <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
-                  <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
+                  <xsl:template mode="new-name" match="ROW"        >tr</xsl:template>
+                  <xsl:template mode="new-name" match="CELL"       >td</xsl:template>
+                  <xsl:template mode="new-name" match="Body-bullet">li</xsl:template>
+                  <xsl:template mode="new-name" match="Body
+                                                     | CellBody"   >p</xsl:template>
+                  <xsl:template mode="new-name" match="Emphasis"   >em</xsl:template>
 
                   <!-- By default, we just strip the start & end tags out -->
                   <xsl:template mode="new-name" match="*"/>
-
-
-  <xsl:template match="Body-bullet">
-    <li>
-      <xsl:apply-templates/>
-    </li>
-  </xsl:template>
-
-  <!--
-  <xsl:template match="Emphasis">
-    <em>
-      <xsl:apply-templates/>
-    </em>
-  </xsl:template>
-  -->
 
 
   <!-- TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly -->
