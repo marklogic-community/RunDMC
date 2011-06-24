@@ -75,6 +75,10 @@ SUMMARY
   and build one version of the documentation independently of the others.
 
 
+TODO: Still need to specify how to update the PDF docs. (The 4.1 and 4.2 PDFs are
+already there, but not the 5.0 PDF docs yet.)
+
+
 WARNING
   One of the files in 4.1 has an issue that breaks the setup script. Until it gets
   fixed, I have to manually fix this each time, changing id="output formats" and
