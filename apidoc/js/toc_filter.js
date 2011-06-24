@@ -158,44 +158,31 @@ function removeHighlightToText(element) {
     });
 }
 
+function scrollTOC() {
+  var container = $('#sub'),
+      scrollTo = $('#sub a.selected'),
+      extra = 80,
+      currentTop = container.scrollTop(),
+      headerHeight = container.offset().top,
+      scrollTargetDistance = scrollTo.offset().top,
+      scrollTarget = currentTop + scrollTargetDistance,
+      scrollTargetAdjusted = scrollTarget - headerHeight - extra,
+      minimumSpaceAtBottom = 10,
+      minimumSpaceAtTop = 10;
 
-$(function() {
+/*
+alert("currentTop: " + currentTop);
+alert("scrollTargetDistance: " + scrollTargetDistance);
+alert("scrollTarget: " + scrollTarget);
+alert("scrollTargetAdjusted: " + scrollTargetAdjusted);
+*/
 
-    $("#config-filter").keyup(function(e) {
-        currentFilterText = $(this).val();
-        setTimeout(function() {
-            if (previousFilterText !== currentFilterText){
-                previousFilterText = currentFilterText;
-                filterConfigDetails(currentFilterText,"#apidoc_tree");
-            }            
-        },350);        
-    });
-});
+  // Only scroll if necessary
+  if (scrollTarget < currentTop + headerHeight + minimumSpaceAtTop
+   || scrollTarget > currentTop + (container.height() - minimumSpaceAtBottom)) {
+    container.animate({scrollTop: scrollTargetAdjusted}, 500);
+  }
+}
 
-$(function() {
 
-    $("#config-filter2").keyup(function(e) {
-        currentFilterText2 = $(this).val();
-        setTimeout(function() {
-            if (previousFilterText2 !== currentFilterText2){
-                previousFilterText2 = currentFilterText2;
-                filterConfigDetails(currentFilterText2,"#apidoc_tree2");
-            }            
-        },350);        
-    });
-    
-});
 
-$(function() {
-
-    $("#config-filter3").keyup(function(e) {
-        currentFilterText3 = $(this).val();
-        setTimeout(function() {
-            if (previousFilterText3 !== currentFilterText3){
-                previousFilterText3 = currentFilterText3;
-                filterConfigDetails(currentFilterText3,"#apidoc_tree3");
-            }            
-        },350);        
-    });
-    
-});

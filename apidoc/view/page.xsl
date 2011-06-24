@@ -73,6 +73,15 @@
 
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
           $("#sub a[href='<xsl:value-of select="$current-url"/>']").addClass("currentPage");
+
+          // Fallback in case a bad fragment ID was requested
+          if ($("#sub a.selected").length === 0) {
+            showInTOC(
+              $("#sub a.currentPage").addClass("selected")
+            );
+          };
+
+          scrollTOC();
         });
 
       </xsl:comment>
