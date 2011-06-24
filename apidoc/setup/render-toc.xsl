@@ -12,7 +12,6 @@
 
   <xsl:template match="/">
     <div id="all_tocs">
-      <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
       <script type="text/javascript">
       <xsl:comment>
       $(function() {
@@ -74,11 +73,26 @@
                 }            
             },350);        
         });
-        
+
       });
 
       // starting the script on page load
       $(document).ready(function(){
+        
+        // Wire up the expand/collapse buttons
+        $(".shallowExpand").click(function(event){
+          shallowExpandAll($(this).parent().nextAll("ul"));
+        });
+        $(".shallowCollapse").click(function(event){
+          shallowCollapseAll($(this).parent().nextAll("ul"));
+        });
+        $(".expand").click(function(event){
+          expandAll($(this).parent().nextAll("ul"));
+        });
+        $(".collapse").click(function(event){
+          collapseAll($(this).parent().nextAll("ul"));
+        });
+
         tooltip();
       });
       </xsl:comment>

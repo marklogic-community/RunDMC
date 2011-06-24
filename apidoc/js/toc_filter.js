@@ -104,20 +104,6 @@ function collapseAll(ul) {
     });
 }
 
-$(document).ready(function(){
-  $(".shallowExpand").click(function(event){
-    shallowExpandAll($(this).parent().nextAll("ul"));
-  });
-  $(".shallowCollapse").click(function(event){
-    shallowCollapseAll($(this).parent().nextAll("ul"));
-  });
-  $(".expand").click(function(event){
-    expandAll($(this).parent().nextAll("ul"));
-  });
-  $(".collapse").click(function(event){
-    collapseAll($(this).parent().nextAll("ul"));
-  });
-});
 
 
 
