@@ -133,3 +133,6 @@ li.expandable .treecontrol { display: none; }
 	border: solid #CCC;
 	border-width: 1px;
 }
+
+a.sectionLink       { color: #666; }
+a.sectionLink:hover { color: #235BAB; }

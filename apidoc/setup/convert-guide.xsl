@@ -75,18 +75,23 @@
   <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
     <xsl:variable name="heading-level" select="1 + number(substring-after(local-name(.),'-'))"/>
     <xsl:element name="h{$heading-level}">
-      <xsl:apply-templates mode="heading-content" select="."/>
+      <xsl:variable name="id">
+        <xsl:apply-templates mode="heading-anchor-id" select="."/>
+      </xsl:variable>
+      <a id="{$id}" href="#{$id}" class="sectionLink">
+        <xsl:value-of select="normalize-space(.)"/>
+      </a>
     </xsl:element>
   </xsl:template>
 
-          <!-- Insert top-level anchor based on the original file name (special case so no extraneous number ID is appended) -->
-          <xsl:template mode="heading-content" match="Heading-1">
-            <a id="{my:anchor-id-for-top-level-heading(.)}"/>
-            <xsl:next-match/>
+          <!-- Use only the last A/@ID inside the heading, since all links get rewritten to the last one -->
+          <xsl:template mode="heading-anchor-id" match="*">
+            <xsl:value-of select="my:full-anchor-id(A[@ID][last()]/@ID)"/>
           </xsl:template>
 
-          <xsl:template mode="heading-content" match="*">
-            <xsl:apply-templates mode="#default"/>
+          <!-- Base top-level anchor on the original file name (special case so no extraneous number ID is appended) -->
+          <xsl:template mode="heading-anchor-id" match="Heading-1">
+            <xsl:value-of select="my:anchor-id-for-top-level-heading(.)"/>
           </xsl:template>
 
                   <xsl:function name="my:anchor-id-for-top-level-heading">
@@ -94,10 +99,10 @@
                     <xsl:sequence select="my:basename-stem($heading-1/ancestor::XML/@original-file)"/>
                   </xsl:function>
 
-                  <xsl:function name="my:basename-stem">
-                    <xsl:param name="url"/>
-                    <xsl:sequence select="substring-before(tokenize($url,'/')[last()],'.xml')"/>
-                  </xsl:function>
+                          <xsl:function name="my:basename-stem">
+                            <xsl:param name="url"/>
+                            <xsl:sequence select="substring-before(tokenize($url,'/')[last()],'.xml')"/>
+                          </xsl:function>
 
 
   <xsl:template match="IMAGE">
@@ -159,9 +164,8 @@
   <!-- Strip out isolated line breaks in Code elements -->
   <xsl:template match="Code/text()[not(normalize-space(.))]"/>
 
-  <!-- Remove existing top-level anchors; we'll use filename-based ones instead. -->
-  <!-- Also, since we rewrite all links to point to the last anchor, it's safe to remove all the anchors that aren't last. -->
-  <xsl:template match="Heading-1/A | A[@ID][not(position() eq last())]"/>
+  <!-- Since we rewrite all links to point to the last anchor, it's safe to remove all the anchors that aren't last. -->
+  <xsl:template match="A[@ID][not(position() eq last())]"/>
 
   <xsl:template match="A">
     <a>
