@@ -347,14 +347,27 @@
                     <ul>
                       <xsl:for-each-group select="current-group()" group-starting-with="Body-bullet">
                         <li>
-                          <!-- TODO: do more grouping here instead -->
-                          <xsl:copy-of select="current-group()"/>
+                          <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
+                            <xsl:apply-templates mode="inner-list" select="."/>
+                          </xsl:for-each-group>
                         </li>
                       </xsl:for-each-group>
                     </ul>
                   </xsl:template>
 
-                  <xsl:template mode="outer-list" match="*">
+                          <xsl:template mode="inner-list" match="Body-bullet-2">
+                            <ul>
+                              <xsl:for-each select="current-group()">
+                                <li>
+                                  <xsl:copy-of select="."/>
+                                </li>
+                              </xsl:for-each>
+                            </ul>
+                          </xsl:template>
+
+                  <!-- If not part of a list, just copy the group through -->
+                  <xsl:template mode="outer-list
+                                      inner-list" match="*">
                     <xsl:copy-of select="current-group()"/>
                   </xsl:template>
 
