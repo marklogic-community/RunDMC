@@ -136,3 +136,11 @@ li.expandable .treecontrol { display: none; }
 
 a.sectionLink       { color: #666; }
 a.sectionLink:hover { color: #235BAB; }
+
+/* TODO: make these look better (modifying the XHTML if necessary) */
+p.warning:before {
+  content: "WARNING: "; 
+}
+p.note:before {
+  content: "NOTE: ";
+}

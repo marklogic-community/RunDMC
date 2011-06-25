@@ -127,22 +127,31 @@
                     <xsl:value-of select="lower-case(local-name(.))"/>
                   </xsl:template>
                   <!-- Others need to be renamed -->
-                  <xsl:template mode="new-name" match="title"      >h1</xsl:template>
-                  <xsl:template mode="new-name" match="ROW"        >tr</xsl:template>
-                  <xsl:template mode="new-name" match="CELL"       >td</xsl:template>
-                  <!--
-                  <xsl:template mode="new-name" match="Body-bullet
-                                                     | Number1
-                                                     | Number"     >li</xsl:template>
-                                                     -->
+                  <xsl:template mode="new-name" match="title"   >h1</xsl:template>
+                  <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
+                  <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
+                  <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
+                  <xsl:template mode="new-name" match="Code"    >pre</xsl:template>
                   <xsl:template mode="new-name" match="Body
-                                                     | CellBody"   >p</xsl:template>
-                  <xsl:template mode="new-name" match="Emphasis"   >em</xsl:template>
-                  <xsl:template mode="new-name" match="Code"       >pre</xsl:template>
+                                                     | CellBody
+                                                     | Body-indent
+                                                     | Body-indent-blockquote">p</xsl:template>
 
                   <!-- By default, we just strip the start & end tags out -->
                   <xsl:template mode="new-name" match="*"/>
 
+
+  <xsl:template match="Note">
+    <p class="note">
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="Warning">
+    <p class="warning">
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
 
   <!-- Don't convert a single Body or CellBody child inside a CELL to a <p>; just process contents -->
   <xsl:template match="CELL[count(*) eq 1]/Body
