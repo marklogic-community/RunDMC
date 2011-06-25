@@ -61,17 +61,6 @@
 
   <xsl:template match="pagenum | TITLE"/>
 
-  <xsl:template match="Code">
-    <!-- Don't include any whitespace inside <pre> until XSLTBUG 13495 is fixed -->
-    <pre><xsl:apply-templates/></pre>
-  </xsl:template>
-
-  <xsl:template match="title">
-    <h1>
-      <xsl:apply-templates/>
-    </h1>
-  </xsl:template>
-
   <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
     <xsl:variable name="heading-level" select="1 + number(substring-after(local-name(.),'-'))"/>
     <xsl:element name="h{$heading-level}">
@@ -138,12 +127,14 @@
                     <xsl:value-of select="lower-case(local-name(.))"/>
                   </xsl:template>
                   <!-- Others need to be renamed -->
+                  <xsl:template mode="new-name" match="title"      >h1</xsl:template>
                   <xsl:template mode="new-name" match="ROW"        >tr</xsl:template>
                   <xsl:template mode="new-name" match="CELL"       >td</xsl:template>
                   <xsl:template mode="new-name" match="Body-bullet">li</xsl:template>
                   <xsl:template mode="new-name" match="Body
                                                      | CellBody"   >p</xsl:template>
                   <xsl:template mode="new-name" match="Emphasis"   >em</xsl:template>
+                  <xsl:template mode="new-name" match="Code"       >pre</xsl:template>
 
                   <!-- By default, we just strip the start & end tags out -->
                   <xsl:template mode="new-name" match="*"/>
