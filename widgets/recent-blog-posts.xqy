@@ -6,13 +6,10 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/xpath-punctuation-part-4">Punctuation in XPath, part 4: predicates ("[…]")</a></h3>
-    <div class="author">by Evan Lenz, June 21, 2011</div>
+    <h3><a href="/blog/xpath-punctuation-part-5">Punctuation in XPath, part 5: "//"</a></h3>
+    <div class="author">by Evan Lenz, June 27, 2011</div>
     <div class="message">
-      <p>We've
-      already seen some examples of predicates, using square brackets
-      ("[…]"), in action. In this article, we'll look at exactly
-      how they work, using the following sample document...</p>
+      <p>In this final article in the series on XPath punctuation, we'll learn about the "//" operator, a convenient shorthand for selecting nodes at any level in a document. Let's start with a similar sample document to the one we used in the last article...</p>
     </div>
   </div>
 
