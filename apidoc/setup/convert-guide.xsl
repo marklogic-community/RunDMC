@@ -149,7 +149,8 @@
                   <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
                   <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
                   <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
-                  <xsl:template mode="new-name" match="Code"    >pre</xsl:template>
+                  <xsl:template mode="new-name" match="Code
+                                                     | CodeNoIndent">pre</xsl:template>
                   <xsl:template mode="new-name" match="Body
                                                      | CellBody
                                                      | Body-indent
