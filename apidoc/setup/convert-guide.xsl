@@ -19,14 +19,19 @@
   <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
 
   <xsl:template match="/">
+    <!-- Strip out unhelpful list containers -->
+    <xsl:variable name="useless-containers-stripped">
+      <xsl:apply-templates mode="strip-useless-containers" select="."/>
+    </xsl:variable>
     <!-- Capture section hierarchy -->
     <xsl:variable name="sections-captured">
-      <xsl:apply-templates mode="capture-sections" select="."/>
+      <xsl:apply-templates mode="capture-sections" select="$useless-containers-stripped"/>
     </xsl:variable>
     <!-- Capture list hierarchy -->
     <xsl:variable name="lists-captured">
       <xsl:apply-templates mode="capture-lists" select="$sections-captured"/>
     </xsl:variable>
+    <!-- Main conversion of source elements to XHTML elements -->
     <xsl:variable name="converted-content">
       <xsl:apply-templates select="$lists-captured/guide/node()"/>
     </xsl:variable>
@@ -36,6 +41,7 @@
         <title>
           <xsl:value-of select="/guide/title"/>
         </title>
+        <!-- Last step: add the XHTML namespace -->
         <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
       </guide>
     </xsl:result-document>
@@ -44,6 +50,18 @@
       <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/lists-captured'   ,$output-uri),    $lists-captured)"/>
     </xsl:if>
   </xsl:template>
+
+          <xsl:template mode="strip-useless-containers" match="@* | node()">
+            <xsl:copy>
+              <xsl:apply-templates mode="#current" select="@* | node()"/>
+            </xsl:copy>
+          </xsl:template>
+
+          <!-- These container elements apparently add no value for list detection (they appear inconsistently) -->
+          <xsl:template mode="strip-useless-containers" match="NumberList | NumberAList | WarningList">
+            <xsl:apply-templates mode="#current"/>
+          </xsl:template>
+
 
           <xsl:template mode="add-xhtml-namespace" match="@* | node()">
             <xsl:copy/>
@@ -315,60 +333,68 @@
           </xsl:template>
 
           <xsl:template mode="capture-lists-content" match="div | CELL">
-            <xsl:call-template name="capture-lists"/>
-            <!-- Nested divs always come last (the section grouping code above ensures that) -->
-            <xsl:apply-templates mode="capture-lists" select="div"/>
-          </xsl:template>
-
-          <xsl:template name="capture-lists">
-            <xsl:for-each-group select="* except div" group-adjacent="my:is-in-list(.)">
-<!--
-<div style="color:red;"><xsl:value-of select="concat('First in group: ',xdmp:path(.))"/></div>
--->
+            <xsl:for-each-group select="*" group-adjacent="my:is-in-list(.)">
               <xsl:apply-templates mode="outer-list" select="."/>
             </xsl:for-each-group>
           </xsl:template>
 
                   <xsl:template mode="outer-list" match="Number1">
                     <ol>
-                      <xsl:variable name="useless-containers" select="current-group()[self::NumberList or self::WarningList]"/>
-                      <xsl:for-each-group select="current-group() except $useless-containers |
-                                                                         $useless-containers/*"
-                                          group-starting-with="Number | Number1">
+                      <xsl:for-each-group select="current-group()" group-starting-with="Number | Number1">
                         <li>
-                          <!-- TODO: do more grouping here instead -->
-                          <xsl:copy-of select="current-group()"/>
+                          <xsl:variable name="nested-bullets-captured" as="element()*">
+                            <xsl:call-template name="capture-nested-bullets"/>
+                          </xsl:variable>
+                          <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
+                          <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA1">
+                            <xsl:apply-templates mode="inner-numbered-list" select="."/>
+                          </xsl:for-each-group>
                         </li>
                       </xsl:for-each-group>
                     </ol>
                   </xsl:template>
 
+                          <xsl:template mode="inner-numbered-list" match="NumberA1">
+                            <ol>
+                              <xsl:for-each-group select="current-group()" group-starting-with="NumberA1 | NumberA">
+                                <li>
+                                  <xsl:apply-templates mode="capture-lists" select="current-group()"/>
+                                </li>
+                              </xsl:for-each-group>
+                            </ol>
+                          </xsl:template>
+
                   <xsl:template mode="outer-list" match="Body-bullet">
                     <ul>
                       <xsl:for-each-group select="current-group()" group-starting-with="Body-bullet">
                         <li>
-                          <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
-                            <xsl:apply-templates mode="inner-list" select="."/>
-                          </xsl:for-each-group>
+                          <xsl:call-template name="capture-nested-bullets"/>
                         </li>
                       </xsl:for-each-group>
                     </ul>
                   </xsl:template>
 
-                          <xsl:template mode="inner-list" match="Body-bullet-2">
-                            <ul>
-                              <xsl:for-each select="current-group()">
-                                <li>
-                                  <xsl:copy-of select="."/>
-                                </li>
-                              </xsl:for-each>
-                            </ul>
+                          <xsl:template name="capture-nested-bullets">
+                            <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
+                              <xsl:apply-templates mode="inner-list" select="."/>
+                            </xsl:for-each-group>
                           </xsl:template>
+
+                                  <xsl:template mode="inner-list" match="Body-bullet-2">
+                                    <ul>
+                                      <xsl:for-each select="current-group()">
+                                        <li>
+                                          <xsl:apply-templates mode="capture-lists" select="."/>
+                                        </li>
+                                      </xsl:for-each>
+                                    </ul>
+                                  </xsl:template>
 
                   <!-- If not part of a list, just copy the group through -->
                   <xsl:template mode="outer-list
-                                      inner-list" match="*">
-                    <xsl:copy-of select="current-group()"/>
+                                      inner-list
+                                      inner-numbered-list" match="*">
+                    <xsl:apply-templates mode="capture-lists" select="current-group()"/>
                   </xsl:template>
 
 
@@ -377,10 +403,7 @@
                                                                   'Body-indent',
                                                                   'Body-indent-blockquote',
                                                                   'Number1',
-                                                                  'NumberList',
-                                                                  'NumberA1',
-                                                                  'NumberAList',
-                                                                  'WarningList'"/>
+                                                                  'NumberA1'"/>
 
                   <xsl:function name="my:is-in-list" as="xs:boolean">
                     <xsl:param name="e" as="element()"/>
@@ -388,9 +411,6 @@
                     <xsl:variable name="is-in-numbered-list" select="not($e/self::EndList-root) and
                                                                      $e/preceding-sibling::*[self::Number1 or self::EndList-root][1]
                                                                                             [self::Number1]"/>
-<!--
-<xsl:message><xsl:value-of select="concat($is-a-list-element or $is-in-numbered-list, ': ',xdmp:path($e))"/></xsl:message>
--->
                     <xsl:sequence select="$is-a-list-element or $is-in-numbered-list"/>
                   </xsl:function>
 
