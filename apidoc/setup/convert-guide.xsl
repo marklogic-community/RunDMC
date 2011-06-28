@@ -333,7 +333,7 @@
           </xsl:template>
 
           <xsl:template mode="capture-lists-content" match="div | CELL">
-            <xsl:for-each-group select="*" group-adjacent="my:is-in-list(.)">
+            <xsl:for-each-group select="*" group-adjacent="my:is-in-list(.) and not(self::div or self::CELL)">
               <xsl:apply-templates mode="outer-list" select="."/>
             </xsl:for-each-group>
           </xsl:template>
