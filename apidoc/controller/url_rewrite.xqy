@@ -65,15 +65,13 @@ declare function local:transform($source-doc) as xs:string {
     else if ($path eq '/') then 
       local:transform($root-doc-url)
 
-    (: If the version is specified in the path and it's legal, then proceed accordingly :)
-    else if ($version-specified = $legal-versions) then
+    (: If the version-specific doc path requested, e.g., /4.2/foo, is available, then serve it :)
+    else if (doc-available($doc-url)) then
+      local:transform($doc-url)
 
-        (: If the version-specific doc path requested, e.g., /4.2/foo, is available, then serve it :)
-        if (doc-available($doc-url)) then
-          local:transform($doc-url)
-
-        (: Otherwise, we assume it must be a version-specific root request, e.g., /4.2 :)
-        else local:transform($path-plus-index)
+    (: A version-specific root request, e.g., /4.2 :)
+    else if ($path eq concat('/',$version-specified) and $version-specified = $legal-versions) then
+      local:transform($path-plus-index)
 
     (: Otherwise, look in the default version directory :)
     else if (doc-available($doc-url-default)) then
