@@ -14,6 +14,7 @@
     <div id="all_tocs">
       <script type="text/javascript">
       <xsl:comment>
+
       $(function() {
         $("#apidoc_tree").treeview({
           //animated: "medium",
@@ -32,7 +33,9 @@
         });
 
 
-        $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").click(function() {
+
+        // For updating the TOC state
+        $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
           $("#sub a.selected").removeClass("selected");
 
           // IE doesn't include the "/" at the beginning of the pathname...
@@ -43,6 +46,7 @@
 
           scrollTOC($("#sub a.selected"));
         });
+
 
         $("#config-filter").keyup(function(e) {
             currentFilterText = $(this).val();
@@ -93,7 +97,27 @@
           collapseAll($(this).parent().nextAll("ul"));
         });
 
+        // Set up the TOC tabs
+        $("#toc_tabs").tabs();
+
+        // Once the tabs are set up, go ahead and display the TOC
+        $("#toc_tabs").show();
+
+        // Initialize the TOC state
+        $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
+
+        // Fallback in case a bad fragment ID was requested
+        if ($("#sub a.selected").length === 0) {
+          showInTOC($("#sub a.currentPage"))
+        }
+        else {;
+          showInTOC($("#sub a.selected"))
+        }
+        scrollTOC();
+
+
         tooltip();
+
       });
       </xsl:comment>
       </script>
@@ -101,18 +125,31 @@
       <!--
       <div>API Reference</div>
       -->
-      <input id="config-filter" name="config-filter"/>
-      <ul id="apidoc_tree" class="treeview">
-        <xsl:apply-templates select="/*/toc[1]/node"/>
-      </ul>
-      <input id="config-filter2" name="config-filter2"/>
-      <ul id="apidoc_tree2" class="treeview">
-        <xsl:apply-templates select="/*/toc[2]/node"/>
-      </ul>
-      <input id="config-filter3" name="config-filter3"/>
-      <ul id="apidoc_tree3" class="treeview">
-        <xsl:apply-templates select="/*/toc[3]/node"/>
-      </ul>
+      <div id="toc_tabs" style="display:none">
+        <ul>
+          <li><a href="#tabs-1" class="tab_link">API</a></li>
+          <li><a href="#tabs-2" class="tab_link">Guides</a></li>
+          <li><a href="#tabs-3" class="tab_link">Function categories</a></li>
+        </ul>
+        <div id="tabs-1" class="tabbed_section">
+          <input id="config-filter" name="config-filter"/>
+          <ul id="apidoc_tree" class="treeview">
+            <xsl:apply-templates select="/*/toc[1]/node"/>
+          </ul>
+        </div>
+        <div id="tabs-2" class="tabbed_section">
+          <input id="config-filter2" name="config-filter2"/>
+          <ul id="apidoc_tree2" class="treeview">
+            <xsl:apply-templates select="/*/toc[2]/node"/>
+          </ul>
+        </div>
+        <div id="tabs-3" class="tabbed_section">
+          <input id="config-filter3" name="config-filter3"/>
+          <ul id="apidoc_tree3" class="treeview">
+            <xsl:apply-templates select="/*/toc[3]/node"/>
+          </ul>
+        </div>
+      </div>
     </div>
   </xsl:template>
 
@@ -135,11 +172,14 @@
             </li>
           </xsl:template>
 
-                  <xsl:template mode="class" match="node[node]">expandable</xsl:template>
-                  <xsl:template mode="class" match="node"/>
+                  <xsl:template mode="class" priority="1" match="toc/node"  >collapsable</xsl:template>
+                  <xsl:template mode="class"              match="node[node]">expandable</xsl:template>
+                  <xsl:template mode="class"              match="node"/>
 
-                  <xsl:template mode="class-last" priority="1" match="node[last()][node]">lastExpandable</xsl:template>
-                  <xsl:template mode="class-last"              match="node[last()]      ">last</xsl:template>
+
+                  <xsl:template mode="class-last" priority="2" match="toc/node[last()][node]">lastCollapsable</xsl:template>
+                  <xsl:template mode="class-last" priority="1" match="    node[last()][node]">lastExpandable</xsl:template>
+                  <xsl:template mode="class-last"              match="    node[last()]      ">last</xsl:template>
                   <xsl:template mode="class-last"              match="node"/>
 
                   <xsl:template mode="hit-area" match="node"/>
@@ -152,10 +192,12 @@
                     <div class="{$class}"/>
                   </xsl:template>
 
-                          <xsl:template mode="hit-area-class" match="node">hitarea expandable-hitarea</xsl:template>
+                          <xsl:template mode="hit-area-class" match="toc/node">hitarea collapsable-hitarea</xsl:template>
+                          <xsl:template mode="hit-area-class" match="    node">hitarea expandable-hitarea</xsl:template>
 
-                          <xsl:template mode="hit-area-class-last" match="node[last()]">lastExpandable-hitarea</xsl:template>
-                          <xsl:template mode="hit-area-class-last" match="node"/>
+                          <xsl:template mode="hit-area-class-last" priority="1" match="toc/node[last()]">lastCollapsable-hitarea</xsl:template>
+                          <xsl:template mode="hit-area-class-last"              match="    node[last()]">lastExpandable-hitarea</xsl:template>
+                          <xsl:template mode="hit-area-class-last"              match="    node"/>
 
                   <!-- re-enable should we need this
                   <xsl:template mode="class-att" match="node[@type eq 'function']">
@@ -234,9 +276,15 @@
 
                   <xsl:template mode="children" match="node"/>
                   <xsl:template mode="children" match="node[node]">
-                    <ul style="display: none;">
+                    <xsl:variable name="display-type">
+                      <xsl:apply-templates mode="ul-display-type" select="."/>
+                    </xsl:variable>
+                    <ul style="display: {$display-type};">
                       <xsl:apply-templates select="node"/>
                     </ul>
                   </xsl:template>
+
+                          <xsl:template mode="ul-display-type" match="toc/node">block</xsl:template>
+                          <xsl:template mode="ul-display-type" match="    node">none</xsl:template>
 
 </xsl:stylesheet>

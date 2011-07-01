@@ -42,11 +42,9 @@
 
   <xsl:template match="ml:version-list">
     <div id="version_list">
-      <span>API Reference </span>
       <span class="version">
-        <xsl:text>(version: </xsl:text>
+        <xsl:text>Server version: </xsl:text>
         <xsl:apply-templates mode="version-list-item" select="$versions"/>
-        <xsl:text>)</xsl:text>
       </span>
     </div>
   </xsl:template>
@@ -71,18 +69,7 @@
         <xsl:variable name="current-url" select="concat($version-prefix, ml:external-uri($content))"/>
         <xsl:comment>
 
-        $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>', function() {
-          $("#sub a[href='<xsl:value-of select="$current-url"/>']").addClass("currentPage");
-
-          // Fallback in case a bad fragment ID was requested
-          if ($("#sub a.selected").length === 0) {
-            showInTOC(
-              $("#sub a.currentPage").addClass("selected")
-            );
-          };
-
-          scrollTOC();
-        });
+        $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
 
       </xsl:comment>
       </script>
@@ -372,8 +359,9 @@
                                              | api:example/pre/a/@id"/>
 
 
-  <!-- Make everything a "main page" -->
-  <xsl:template mode="body-class" match="*">main_page</xsl:template>
+  <!-- Disable the body class stuff -->
+  <xsl:template mode="body-class
+                      body-class-extra" match="*"/>
 
 
   <!-- Account for "/apidoc" prefix in internal/external URI mappings -->

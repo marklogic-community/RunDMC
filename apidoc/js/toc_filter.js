@@ -113,6 +113,11 @@ function showInTOC(a) {
   items.each(function(index) {
     expandSubTree($(this));
   });
+
+  // Switch to the tab of the first instance
+  var tab_index = a.first().parents(".tabbed_section").prevAll(".tabbed_section").length;
+  $("#toc_tabs").tabs('select',tab_index);
+
 }
 
 
