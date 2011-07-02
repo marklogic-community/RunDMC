@@ -128,8 +128,9 @@
       <div id="toc_tabs" style="display:none">
         <ul>
           <li><a href="#tabs-1" class="tab_link">API</a></li>
-          <li><a href="#tabs-2" class="tab_link">Guides</a></li>
-          <li><a href="#tabs-3" class="tab_link">Function categories</a></li>
+          <li><a href="#tabs-2" class="tab_link">Categories</a></li>
+          <li><a href="#tabs-3" class="tab_link">Guides</a></li>
+          <li><a href="#tabs-4" class="tab_link">Search</a></li>
         </ul>
         <div id="tabs-1" class="tabbed_section">
           <input id="config-filter" name="config-filter"/>
@@ -148,6 +149,11 @@
           <ul id="apidoc_tree3" class="treeview">
             <xsl:apply-templates select="/*/toc[3]/node"/>
           </ul>
+        </div>
+        <div id="tabs-4" class="tabbed_section">
+          <form action="/" method="get">
+            <input id="q" name="q"/>
+          </form>
         </div>
       </div>
     </div>
@@ -240,8 +246,8 @@
                           </xsl:template>
 
                   <xsl:template mode="control" match="node"/>
-                  <!-- Expand/collapse buttons are enabled for all top-level menus, plus individual user guides -->
-                  <xsl:template mode="control" match="toc/node | toc[2]/node/node">
+                  <!-- Expand/collapse buttons are enabled for all top-level and second-level menus if they have grandchildren -->
+                  <xsl:template mode="control" match="toc/node | toc/node/node[node/node]">
                     <xsl:variable name="position">
                       <xsl:number count="toc/node"/>
                     </xsl:variable>
@@ -262,12 +268,12 @@
                     </div>
                   </xsl:template>
 
-                          <!-- Shallow for first and second top-level menus ("All functions" and "User guides") -->
-                          <xsl:template mode="collapse-class" match="toc[1]/node | toc[2]/node">shallowCollapse</xsl:template>
-                          <xsl:template mode="expand-class"   match="toc[1]/node | toc[2]/node">shallowExpand</xsl:template>
-                          <xsl:template mode="all-suffix"                   match="toc[2]/node"/> <!-- User guide menu is the only one we don't say "all" with -->
+                          <!-- Shallow for top-level menus -->
+                          <xsl:template mode="collapse-class" match="toc/node">shallowCollapse</xsl:template>
+                          <xsl:template mode="expand-class"   match="toc/node">shallowExpand</xsl:template>
+                          <xsl:template mode="all-suffix"     match="toc/node"/> <!-- User guide menu is the only one we don't say "all" with -->
 
-                          <!-- Recursive (full) for everything else (individual user guides and "functions by category" -->
+                          <!-- Recursive (full) for everything else -->
                           <xsl:template mode="collapse-class" match="node">collapse</xsl:template>
                           <xsl:template mode="expand-class"   match="node">expand</xsl:template>
                           <xsl:template mode="all-suffix"     match="node"> all</xsl:template>

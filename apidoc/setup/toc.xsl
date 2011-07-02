@@ -70,6 +70,11 @@
           -->
         </node>
       </toc>
+      <toc>
+        <node display="Functions by category">
+          <xsl:copy-of select="$by-category"/>
+        </node>
+      </toc>
       <toc id="user-guides">
         <node display="User Guides" href="/docs">
           <xsl:for-each select="$guide-docs-ordered">
@@ -77,11 +82,6 @@
               <xsl:apply-templates mode="guide-toc"/>
             </node>
           </xsl:for-each>
-        </node>
-      </toc>
-      <toc>
-        <node display="Functions by category">
-          <xsl:copy-of select="$by-category"/>
         </node>
       </toc>
     </all-tocs>
