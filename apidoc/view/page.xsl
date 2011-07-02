@@ -34,6 +34,8 @@
 
   <xsl:variable name="template-dir" select="'/apidoc/config'"/>
 
+  <xsl:variable name="show-alternative-functions" select="$params[@name eq 'show-alternatives']"/>
+
   <!-- Links in content (function descriptions and list page intros) may need to be rewritten
        to include the current explicitly specified version -->
   <xsl:template match="x:a/@href[starts-with(.,'/')]">
@@ -267,6 +269,22 @@
 
 
   <xsl:template mode="page-content" match="api:function-page">
+    <xsl:if test="$show-alternative-functions">
+      <xsl:variable name="other-matches" select="api:get-matching-functions(api:function[1]/@name)/api:function-page except ."/>
+      <xsl:if test="$other-matches">
+        <p class="didYouMean">
+          <xsl:text>Did you mean </xsl:text>
+          <xsl:for-each select="$other-matches">
+            <xsl:variable name="fullname" select="api:function[1]/@fullname"/>
+            <a href="{$version-prefix}/{$fullname}">
+              <xsl:value-of select="$fullname"/>
+            </a>
+            <xsl:if test="position() ne last()"> or </xsl:if>
+          </xsl:for-each>
+          <xsl:text>?</xsl:text>
+        </p>
+      </xsl:if>
+    </xsl:if>
     <h1>
       <xsl:variable name="name" select="api:function[1]/@fullname"/>
       <xsl:variable name="prefix" select="substring-before($name,':')"/>

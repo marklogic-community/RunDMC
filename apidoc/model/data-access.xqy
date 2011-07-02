@@ -30,7 +30,6 @@ declare variable $api:toc-url := fn:string(fn:doc($toc-url-location-alternative)
 declare variable $api:toc-url-location-alternative := if ($api:version eq $api:default-version) then $api:toc-url-default-version-location
                                                                                                 else $api:toc-url-location;
 
-
 declare variable $api:version-dir := fn:concat("/apidoc/",$api:version,"/");
 
 declare variable $api:query-for-all-functions :=
@@ -115,4 +114,30 @@ declare function prefix-for-lib($lib) {
 declare function guide-image-dir($page-uri) {
   let $path := fn:substring-before($page-uri, ".xml") return
   fn:concat("/media",$path,"/")
+};
+
+
+declare function get-matching-functions($name as xs:string) as document-node()* {
+  xdmp:query-trace(fn:true()),
+
+  let $query := cts:and-query((
+                  cts:directory-query($api:version-dir),
+                  cts:element-attribute-value-query(
+                    xs:QName("api:function"),
+                    xs:QName("name"),
+                    $name,
+                    "exact"))),
+      $results := cts:search(fn:collection(), $query),
+      $preferred := ("fn","xdmp"),
+      $ordered := for $f in $results,
+                      $lib in $f/*/api:function[1]/@lib,
+                      $name in $f/*/api:function[1]/@name
+                  order by fn:index-of($preferred, $lib),
+                           $lib,
+                           $name
+                  return $f
+  return
+    $ordered,
+
+  xdmp:query-trace(fn:false())
 };
