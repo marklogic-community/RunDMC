@@ -98,7 +98,7 @@
         });
 
         // Set up the TOC tabs
-        $("#toc_tabs").tabs();
+        $("#toc_tabs").tabs( { show: function(){ scrollTOC() } } );
 
         // Once the tabs are set up, go ahead and display the TOC
         $("#toc_tabs").show();
@@ -115,7 +115,6 @@
         }
         scrollTOC();
 
-
         tooltip();
 
       });
@@ -126,34 +125,44 @@
       <div>API Reference</div>
       -->
       <div id="toc_tabs" style="display:none">
-        <ul>
-          <li><a href="#tabs-1" class="tab_link">API</a></li>
-          <li><a href="#tabs-2" class="tab_link">Categories</a></li>
-          <li><a href="#tabs-3" class="tab_link">Guides</a></li>
-          <li><a href="#tabs-4" class="tab_link">Search</a></li>
-        </ul>
-        <div id="tabs-1" class="tabbed_section">
-          <input id="config-filter" name="config-filter"/>
-          <ul id="apidoc_tree" class="treeview">
-            <xsl:apply-templates select="/*/toc[1]/node"/>
+        <div id="tab_bar">
+          <ul>
+            <li><a href="#tabs-1" class="tab_link">API</a></li>
+            <li><a href="#tabs-2" class="tab_link">Categories</a></li>
+            <li><a href="#tabs-3" class="tab_link">Guides</a></li>
+            <li><a href="#tabs-4" class="tab_link">Search</a></li>
           </ul>
         </div>
-        <div id="tabs-2" class="tabbed_section">
-          <input id="config-filter2" name="config-filter2"/>
-          <ul id="apidoc_tree2" class="treeview">
-            <xsl:apply-templates select="/*/toc[2]/node"/>
-          </ul>
-        </div>
-        <div id="tabs-3" class="tabbed_section">
-          <input id="config-filter3" name="config-filter3"/>
-          <ul id="apidoc_tree3" class="treeview">
-            <xsl:apply-templates select="/*/toc[3]/node"/>
-          </ul>
-        </div>
-        <div id="tabs-4" class="tabbed_section">
-          <form action="/" method="get">
-            <input id="q" name="q"/>
-          </form>
+        <div id="tab_content">
+          <div id="tabs-1" class="tabbed_section">
+            <div class="scrollable_section">
+              <input id="config-filter" name="config-filter"/>
+              <ul id="apidoc_tree" class="treeview">
+                <xsl:apply-templates select="/*/toc[1]/node"/>
+              </ul>
+            </div>
+          </div>
+          <div id="tabs-2" class="tabbed_section">
+            <div class="scrollable_section">
+              <input id="config-filter2" name="config-filter2"/>
+              <ul id="apidoc_tree2" class="treeview">
+                <xsl:apply-templates select="/*/toc[2]/node"/>
+              </ul>
+            </div>
+          </div>
+          <div id="tabs-3" class="tabbed_section">
+            <div class="scrollable_section">
+              <input id="config-filter3" name="config-filter3"/>
+              <ul id="apidoc_tree3" class="treeview">
+                <xsl:apply-templates select="/*/toc[3]/node"/>
+              </ul>
+            </div>
+          </div>
+          <div id="tabs-4" class="tabbed_section">
+            <form action="/" method="get">
+              <input id="q" name="q"/>
+            </form>
+          </div>
         </div>
       </div>
     </div>

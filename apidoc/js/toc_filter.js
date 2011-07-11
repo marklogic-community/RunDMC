@@ -117,7 +117,6 @@ function showInTOC(a) {
   // Switch to the tab of the first instance
   var tab_index = a.first().parents(".tabbed_section").prevAll(".tabbed_section").length;
   $("#toc_tabs").tabs('select',tab_index);
-
 }
 
 
@@ -150,29 +149,35 @@ function removeHighlightToText(element) {
 }
 
 function scrollTOC() {
-  var container = $('#sub'),
-      scrollTo = $('#sub a.selected'),
-      extra = 80,
-      currentTop = container.scrollTop(),
-      headerHeight = container.offset().top,
-      scrollTargetDistance = scrollTo.offset().top,
-      scrollTarget = currentTop + scrollTargetDistance,
-      scrollTargetAdjusted = scrollTarget - headerHeight - extra,
-      minimumSpaceAtBottom = 10,
-      minimumSpaceAtTop = 10;
+  var scrollTo = $('#sub a.selected').filter(':visible');
 
-/*
-alert("currentTop: " + currentTop);
-alert("scrollTargetDistance: " + scrollTargetDistance);
-alert("scrollTarget: " + scrollTarget);
-alert("scrollTargetAdjusted: " + scrollTargetAdjusted);
-*/
+  scrollTo.each(function() {
+    var container = $(this).parents('.scrollable_section'),
+        extra = 80,
+        currentTop = container.scrollTop(),
+        headerHeight = 165, /* in CSS for .scrollable_section */
+        scrollTargetDistance = $(this).offset().top,
+        scrollTarget = currentTop + scrollTargetDistance,
+        scrollTargetAdjusted = scrollTarget - headerHeight - extra,
+        minimumSpaceAtBottom = 10,
+        minimumSpaceAtTop = 10;
 
-  // Only scroll if necessary
-  if (scrollTarget < currentTop + headerHeight + minimumSpaceAtTop
-   || scrollTarget > currentTop + (container.height() - minimumSpaceAtBottom)) {
-    container.animate({scrollTop: scrollTargetAdjusted}, 500);
-  }
+  /*
+  console.log(this);
+  console.log(container);
+  alert("currentTop: " + currentTop);
+  alert("headerHeight: " + headerHeight);
+  alert("scrollTargetDistance: " + scrollTargetDistance);
+  alert("scrollTarget: " + scrollTarget);
+  alert("scrollTargetAdjusted: " + scrollTargetAdjusted);
+  */
+
+    // Only scroll if necessary
+    if (scrollTarget < currentTop + headerHeight + minimumSpaceAtTop
+     || scrollTarget > currentTop + (container.height() - minimumSpaceAtBottom)) {
+      container.animate({scrollTop: scrollTargetAdjusted}, 500);
+    }
+  });
 }
 
 
