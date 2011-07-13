@@ -48,6 +48,16 @@
     <xsl:apply-templates mode="search-results" select="$search-results"/>
   </xsl:template>
 
+          <xsl:template mode="search-results" match="search:response[@total eq 0]">
+            <div class="searchSummary">
+              <xsl:text>Your search - </xsl:text>
+              <strong>
+                <xsl:value-of select="search:qtext"/>
+              </strong>
+              <xsl:text> - did not match any documents.</xsl:text>
+            </div>
+          </xsl:template>
+
           <xsl:template mode="search-results" match="search:response">
             <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
             <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
