@@ -45,7 +45,14 @@
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$search-results"/>
     </xsl:if>
+    <!-- Everything below is a workaround for XSLTBUG 13062 -->
+    <!--
     <xsl:apply-templates mode="search-results" select="$search-results"/>
+    -->
+    <xsl:variable name="search-results-doc">
+      <xsl:copy-of select="$search-results"/>
+    </xsl:variable>
+    <xsl:apply-templates mode="search-results" select="$search-results-doc/search:response"/>
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response[@total eq 0]">
