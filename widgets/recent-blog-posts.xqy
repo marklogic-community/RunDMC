@@ -5,6 +5,15 @@
     <a class="more" href="/blog">View blog</a>
   </div>
 
+
+  <div class="body">
+    <h3><a href="/blog/balisage2011">MarkLogic at Balisage 2011</a></h3>
+    <div class="author">by Evan Lenz, July 12, 2011</div>
+    <div class="message">
+    <p>MarkLogic will be well represented at <a href="http://balisage.net">Balisage 2011</a>. Not only are we sponsoring the conference once again (and hosting <a href="/news/balisage2011">a Chinese banquet</a>, including a dinner conversation game that should be a lot of fun), but a bunch of us will be there to geek out with the rest of you. Jason Hunter, Mary Holstege, and John Snelson will all be there, and three of us will be speaking, with these topics...</p>
+    </div>
+  </div>
+
   <div class="body">
     <h3><a href="/blog/xpath-punctuation-part-5">Punctuation in XPath, part 5: "//"</a></h3>
     <div class="author">by Evan Lenz, June 27, 2011</div>
@@ -29,14 +38,6 @@
     </div>
   </div>
 
-
-  <div class="body">
-    <h3><a href="/blog/how-to-write-fast-queries">How to write fast queries (by leveraging indexes)</a></h3>
-    <div class="author">by Evan Lenz, May 20, 2011</div>
-    <div class="message">
-    <p>In my last article on <a href="/blog/how-indexing-makes-xpath-fast/">how indexing makes XPath fast</a>, I described the general role that MarkLogic's Universal Index plays. I also promised to show you how to write searchable (and thus fast) expressions. That's what this post is about.</p> 
-    </div>
-  </div>
 
 
 
