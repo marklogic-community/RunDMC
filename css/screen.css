@@ -212,11 +212,14 @@ h2.main_headline {margin: 2em 0 1em !important;}
 	margin-bottom: 0;
 }
 .generic #main h3 {font-weight: normal;}
+
+/* Seems to only cause problems; not sure why these were here originally
 .main_page #main p, .layout2 #main p, .generic #main p {margin-top: 0;}
 
 .main_page #content ul {
     padding-bottom: 15px;
 }
+*/
 
 .breadcrumb {
 	font-size: .85em;
