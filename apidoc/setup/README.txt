@@ -16,6 +16,9 @@ STEP 1: Create an empty source database.
   This is a one-time step. Subsequent runs of the content-loading script (next step)
   will keep using the same database.
 
+  Run
+    http://localhost:8008/apidoc/setup/setup-indexes.xqy
+
 
 STEP 2: Create an app server for running the setup scripts.
   E.g., I have an app server called RunDMC-Maintenance on my machine.
@@ -56,6 +59,8 @@ STEP 6: Run setup.xqy.
 SUMMARY
   To load and build all the 4.1, 4.2, and 5.0 docs, here is the complete
   series of requests you'd have to run:
+
+    http://localhost:8008/apidoc/setup/setup-indexes.xqy
 
     http://localhost:8008/apidoc/setup/load-raw-docs.xqy?srcdir=/Users/elenz/Desktop/api-rawdocs/b4_1_XML&version=4.1
     http://localhost:8008/apidoc/setup/setup-guides.xqy?version=4.1
