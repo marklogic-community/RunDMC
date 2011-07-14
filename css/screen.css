@@ -1108,6 +1108,7 @@ div.newerPosts {float:right; margin-bottom:1em;}
 .doc-desc {
     padding-left: 25px;
 }
+.doc-desc p { margin-top: 0px; }
 
 
 table#license-matrix th {
