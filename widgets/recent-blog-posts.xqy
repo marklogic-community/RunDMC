@@ -7,6 +7,21 @@
 
 
   <div class="body">
+    <h3><a href="/blog/learning-with-query-trace">Learning with xdmp:query-trace()</a></h3>
+    <div class="author">by Evan Lenz, July 20, 2011</div>
+    <div class="message">
+    <p>One
+    of the things I love to do is learn and help other people learn.
+    I'm still relatively new to MarkLogic, so there's a lot I can't
+    really write about, since I haven't learned it yet. But as long as
+    I keep my learning one step ahead of my writing, then I (and you
+    readers!) should be safe and not wildly misled. One
+    tool I've been using to learn how MarkLogic evaluates queries is
+    the xdmp:query-trace() function...</p>
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/good-xml-design-and-performance">Good XML design and performance</a></h3>
     <div class="author">by Evan Lenz, July 14, 2011</div>
     <div class="message">
@@ -38,13 +53,6 @@
     </div>
   </div>
 
-  <div class="body">
-    <h3><a href="/blog/xpath-punctuation-part-5">Punctuation in XPath, part 5: "//"</a></h3>
-    <div class="author">by Evan Lenz, June 27, 2011</div>
-    <div class="message">
-      <p>In this final article in the series on XPath punctuation, we'll learn about the "//" operator, a convenient shorthand for selecting nodes at any level in a document. Let's start with a similar sample document to the one we used in the last article...</p>
-    </div>
-  </div>
 
 
 
