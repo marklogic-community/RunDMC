@@ -114,6 +114,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version)
     let $latest-doc-uri  := concat("/docs/", $latest-version)
     let $latest-requirements-uri  := concat("/products/marklogic-server/requirements-", $latest-version) 
+    let $latest-xcc-uri  := concat("/products/xcc/", $latest-version) 
 
     let $latest-sharepoint-connector-doc-uri  := concat("/docs/sharepoint-connector/", $latest-sharepoint-connector-version) 
 
@@ -123,6 +124,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         $latest-prod-uri
     else if ($path = "/products/marklogic-server/requirements") then
         $latest-requirements-uri
+    else if ($path = "/products/xcc") then
+        $latest-xcc-uri
     else 
         $path
 
