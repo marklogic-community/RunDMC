@@ -18,6 +18,7 @@
   <xsl:include href="widgets.xsl"/>
   <xsl:include href="comments.xsl"/>
   <xsl:include href="tag-library.xsl"/>
+  <xsl:include href="search.xsl"/>
   <xsl:include href="xquery-imports.xsl"/>
 
   <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
