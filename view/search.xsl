@@ -19,17 +19,17 @@
     <xsl:variable name="options" as="element()">
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
-          <!-- TODO: evaluate the performance of this approach; it could be bad -->
           <!-- TODO: move pubs URIs to config -->
-          <xsl:copy-of select="cts:document-query(($ml:live-documents/base-uri(.),
-                                                   collection()[
-                                                             starts-with(base-uri(.),'/pubs/4.2/apidocs')
-                                                             or starts-with(base-uri(.),'/pubs/4.2/dotnet')
-                                                             or starts-with(base-uri(.),'/pubs/4.2/javadoc')
-                                                             or starts-with(base-uri(.),'/licensing')
-                                                             or starts-with(base-uri(.),'/pubs/code')
-                                                   ]/base-uri(.)
-                                                 ))"/>
+          <xsl:copy-of select="cts:or-query((
+                                $ml:live-document-query,
+                                cts:directory-query(('/pubs/4.2/apidocs/',
+                                                     '/pubs/4.2/dotnet/',
+                                                     '/pubs/4.2/javadoc/',
+                                                     '/pubs/code/'
+                                                    ),
+                                                    'infinity'
+                                                   )
+                               ))"/>
         </additional-query>
       </options>
     </xsl:variable>
