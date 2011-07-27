@@ -119,7 +119,7 @@
                     <xsl:value-of select="product-info/@name"/>
                   </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[$external-uri eq '/search']">
+                  <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">
                     <xsl:text>Search results for "</xsl:text>
                     <xsl:value-of select="$params[@name eq 'q']"/>
                     <xsl:text>"</xsl:text>
