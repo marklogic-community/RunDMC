@@ -52,7 +52,8 @@ declare variable $live-document-query :=
       cts:element-query(xs:QName("Event")       ,cts:and-query(())),
       cts:element-query(xs:QName("Article")     ,cts:and-query(())),
       cts:element-query(xs:QName("Post")        ,cts:and-query(())),
-      cts:element-query(xs:QName("Project")     ,cts:and-query(()))
+      cts:element-query(xs:QName("Project")     ,cts:and-query(())),
+      cts:element-query(xs:QName("page")        ,cts:and-query(()))
     )),
     (: Exclude preview-only documents :)
     cts:not-query(
@@ -61,7 +62,8 @@ declare variable $live-document-query :=
         cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","preview-only"),"yes"),
         cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","preview-only"),"yes"),
         cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","preview-only"),"yes")
+        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","preview-only"),"yes")
       ))
     ),
     (: Require status="Published" if we're only serving public docs :)
@@ -71,7 +73,8 @@ declare variable $live-document-query :=
         cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published")
+        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published")
       ))
     else ()
   ));
