@@ -32,8 +32,29 @@
 
   <xsl:variable name="DEBUG" select="false()"/>
 
+  <xsl:variable name="original-content" select="/"/>
+
   <xsl:variable name="highlight-search" select="string($params[@name eq 'hl'])"/>
-  <xsl:variable name="content" select="if ($highlight-search) then u:highlight-doc(/, $highlight-search) else /"/>
+  <xsl:variable name="content" select="if ($highlight-search) then $highlighted-content else /"/>
+
+          <xsl:variable name="highlighted-content">
+            <xsl:apply-templates mode="preserve-base-uri" select="u:highlight-doc(/, $highlight-search)"/>
+          </xsl:variable>
+
+                  <xsl:template mode="preserve-base-uri" match="@* | node()">
+                    <xsl:copy>
+                      <xsl:apply-templates mode="#current" select="@* | node()"/>
+                    </xsl:copy>
+                  </xsl:template>
+
+                  <!-- Add an xml:base attribute to the document element so the base URI is preserved, even in the highlighted document -->
+                  <xsl:template mode="preserve-base-uri" match="/*">
+                    <xsl:copy>
+                      <xsl:attribute name="xml:base" select="base-uri($original-content)"/>
+                      <xsl:apply-templates mode="#current" select="@* | node()"/>
+                    </xsl:copy>
+                  </xsl:template>
+
 
   <xsl:variable name="template" select="if (xdmp:uri-is-file('/config/template.optimized.xhtml'))
                                               then u:get-doc('/config/template.optimized.xhtml') 
