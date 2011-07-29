@@ -104,7 +104,16 @@
           });
 
           // Set up the TOC tabs
-          $("#toc_tabs").tabs( { show: function(){ scrollTOC() } } );
+          $("#toc_tabs").tabs({
+            show: function(event, ui){
+              if (ui.tab.innerText == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
+                var tocSection = $('#' + functionPageBucketId);
+                if (tocSection.hasClass("hasChildren"))
+                  tocSection.find(".hitarea").trigger("click");
+              }
+              scrollTOC();
+            }
+          });
 
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
@@ -116,7 +125,7 @@
           if ($("#sub a.selected").length === 0) {
             showInTOC($("#sub a.currentPage"))
           }
-          else {;
+          else {
             showInTOC($("#sub a.selected"))
           }
           scrollTOC();
@@ -205,11 +214,23 @@
                     </xsl:attribute>
                   </xsl:template>
 
+                          <!-- Each main TOC section ID is qualified by the version prefix -->
                           <xsl:template mode="node-id" match="node">
-                            <xsl:value-of select="concat(substring-after($prefix-for-hrefs,'/'), (: might be empty :)
-                                                         '_',
-                                                         generate-id(.))"/>
+                            <xsl:value-of select="substring-after($prefix-for-hrefs,'/')"/> <!-- might be empty -->
+                            <xsl:text>_</xsl:text>
+                            <xsl:apply-templates mode="node-id-details" select="."/>
                           </xsl:template>
+
+                                  <!-- ID for function buckets is the display name minus spaces -->
+                                  <xsl:template mode="node-id-details" match="node[not(@href)]">
+                                    <xsl:value-of select="translate(@display,' ','')"/>
+                                  </xsl:template>
+
+                                  <!-- Everything else has an auto-generated ID -->
+                                  <xsl:template mode="node-id-details" match="node">
+                                    <xsl:value-of select="generate-id(.)"/>
+                                  </xsl:template>
+
 
                   <xsl:template mode="class" priority="1" match="toc/node"  >collapsable</xsl:template>
                   <xsl:template mode="class"              match="node[node]">expandable</xsl:template>

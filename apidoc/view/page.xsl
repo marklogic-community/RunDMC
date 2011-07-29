@@ -71,12 +71,23 @@
         <xsl:variable name="current-url" select="concat($version-prefix, ml:external-uri($content))"/>
         <xsl:comment>
 
+        <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
+
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
 
       </xsl:comment>
       </script>
     </div>
   </xsl:template>
+
+          <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
+          <xsl:template mode="function-bucket-id-decl" match="@bucket">
+            <xsl:text>var functionPageBucketId = "</xsl:text>
+            <xsl:value-of select="substring-after($version-prefix,'/')"/>
+            <xsl:text>_</xsl:text>
+            <xsl:value-of select="translate(.,' ','')"/>
+            <xsl:text>";</xsl:text>
+          </xsl:template>
 
   <xsl:template mode="page-title" match="api:docs-page">
     <xsl:value-of select="$site-title"/>
