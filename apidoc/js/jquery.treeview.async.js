@@ -51,12 +51,14 @@ function load(settings, root, child, container) {
 		},
     */
 		success: function(response) {
-			child.empty();
+			//child.empty();
       // EDL: Don't call createNode; just insert the retrieved HTML
-      child.replaceWith(response);
+      var newChild = $(response);
+      child.replaceWith(newChild);
 			//$.each(response, createNode, [child]);
+	    //$(container).treeview({add: child});
+	      $(container).treeview({add: newChild});
       //EDL: END of changes I made
-	        $(container).treeview({add: child});
 	    }
 	}, settings.ajax));
 	/*
