@@ -17,14 +17,17 @@ declare function local:save-url-location($toc-url, $toc-url-location) {
 
 declare function local:save-rendered-toc($toc-url, $is-default-toc) {
   xdmp:log(concat("Rendering the XML-based TOC to HTML at ",$toc-url,"...")),
-  xdmp:document-insert($toc-url,
-                       xdmp:xslt-invoke("render-toc.xsl", doc($setup:toc-xml-url),
-                                        map:map(<map:map>
-                                                  <map:entry>
-                                                    <map:key>prefix-for-hrefs</map:key>
-                                                    <map:value>{if ($is-default-toc) then () else concat("/",$api:version)}</map:value>
-                                                  </map:entry>
-                                                </map:map>))),
+  xdmp:xslt-invoke("render-toc.xsl", doc($setup:toc-xml-url),
+                   map:map(<map:map>
+                             <map:entry>
+                               <map:key>toc-url</map:key>
+                               <map:value>{$toc-url}</map:value>
+                             </map:entry>
+                             <map:entry>
+                               <map:key>prefix-for-hrefs</map:key>
+                               <map:value>{if ($is-default-toc) then () else concat("/",$api:version)}</map:value>
+                             </map:entry>
+                           </map:map>))/xdmp:document-insert(base-uri(.), .),
   xdmp:log("Done.")
 };
 

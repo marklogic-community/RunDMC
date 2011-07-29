@@ -7,165 +7,172 @@
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="xs">
 
+  <xsl:param name="toc-url"/>
+
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
   <xsl:template match="/">
-    <div id="all_tocs">
-      <script type="text/javascript">
-      <xsl:comment>
+    <xsl:result-document href="{$toc-url}">
+      <div id="all_tocs">
+        <script type="text/javascript">
+        <xsl:comment>
 
-      $(function() {
-        $("#apidoc_tree").treeview({
-          //animated: "medium",
-          persist: "location",
-          prerendered: true
-        });
-        $("#apidoc_tree2").treeview({
-          //animated: "medium",
-          persist: "location",
-          prerendered: true
-        });
-        $("#apidoc_tree3").treeview({
-          //animated: "medium",
-          persist: "location",
-          prerendered: true
-        });
-
-
-
-        // For updating the TOC state
-        $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
-          $("#sub a.selected").removeClass("selected");
-
-          // IE doesn't include the "/" at the beginning of the pathname...
-          //var fullLink = this.pathname + this.hash;
-          var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
-
-          showInTOC($("#sub a[href='" + fullLink + "']"));
-
-          scrollTOC($("#sub a.selected"));
-        });
+        $(function() {
+          $("#apidoc_tree").treeview({
+            //animated: "medium",
+            url: "/media/apiTOC/",
+            persist: "location",
+            prerendered: true
+          });
+          $("#apidoc_tree2").treeview({
+            //animated: "medium",
+            url: "/media/apiTOC/",
+            persist: "location",
+            prerendered: true
+          });
+          $("#apidoc_tree3").treeview({
+            //animated: "medium",
+            url: "/media/apiTOC/",
+            persist: "location",
+            prerendered: true
+          });
 
 
-        $("#config-filter").keyup(function(e) {
-            currentFilterText = $(this).val();
-            setTimeout(function() {
-                if (previousFilterText !== currentFilterText){
-                    previousFilterText = currentFilterText;
-                    filterConfigDetails(currentFilterText,"#apidoc_tree");
-                }            
-            },350);        
-        });
 
-        $("#config-filter2").keyup(function(e) {
-            currentFilterText2 = $(this).val();
-            setTimeout(function() {
-                if (previousFilterText2 !== currentFilterText2){
-                    previousFilterText2 = currentFilterText2;
-                    filterConfigDetails(currentFilterText2,"#apidoc_tree2");
-                }            
-            },350);        
-        });
-        
-        $("#config-filter3").keyup(function(e) {
-            currentFilterText3 = $(this).val();
-            setTimeout(function() {
-                if (previousFilterText3 !== currentFilterText3){
-                    previousFilterText3 = currentFilterText3;
-                    filterConfigDetails(currentFilterText3,"#apidoc_tree3");
-                }            
-            },350);        
-        });
+          // For updating the TOC state
+          $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
+            $("#sub a.selected").removeClass("selected");
 
-      });
+            // IE doesn't include the "/" at the beginning of the pathname...
+            //var fullLink = this.pathname + this.hash;
+            var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
 
-      // starting the script on page load
-      $(document).ready(function(){
-        
-        // Wire up the expand/collapse buttons
-        $(".shallowExpand").click(function(event){
-          shallowExpandAll($(this).parent().nextAll("ul"));
-        });
-        $(".shallowCollapse").click(function(event){
-          shallowCollapseAll($(this).parent().nextAll("ul"));
-        });
-        $(".expand").click(function(event){
-          expandAll($(this).parent().nextAll("ul"));
-        });
-        $(".collapse").click(function(event){
-          collapseAll($(this).parent().nextAll("ul"));
+            showInTOC($("#sub a[href='" + fullLink + "']"));
+
+            scrollTOC($("#sub a.selected"));
+          });
+
+
+          $("#config-filter").keyup(function(e) {
+              currentFilterText = $(this).val();
+              setTimeout(function() {
+                  if (previousFilterText !== currentFilterText){
+                      previousFilterText = currentFilterText;
+                      filterConfigDetails(currentFilterText,"#apidoc_tree");
+                  }            
+              },350);        
+          });
+
+          $("#config-filter2").keyup(function(e) {
+              currentFilterText2 = $(this).val();
+              setTimeout(function() {
+                  if (previousFilterText2 !== currentFilterText2){
+                      previousFilterText2 = currentFilterText2;
+                      filterConfigDetails(currentFilterText2,"#apidoc_tree2");
+                  }            
+              },350);        
+          });
+          
+          $("#config-filter3").keyup(function(e) {
+              currentFilterText3 = $(this).val();
+              setTimeout(function() {
+                  if (previousFilterText3 !== currentFilterText3){
+                      previousFilterText3 = currentFilterText3;
+                      filterConfigDetails(currentFilterText3,"#apidoc_tree3");
+                  }            
+              },350);        
+          });
+
         });
 
-        // Set up the TOC tabs
-        $("#toc_tabs").tabs( { show: function(){ scrollTOC() } } );
+        // starting the script on page load
+        $(document).ready(function(){
+          
+          // Wire up the expand/collapse buttons
+          $(".shallowExpand").click(function(event){
+            shallowExpandAll($(this).parent().nextAll("ul"));
+          });
+          $(".shallowCollapse").click(function(event){
+            shallowCollapseAll($(this).parent().nextAll("ul"));
+          });
+          $(".expand").click(function(event){
+            expandAll($(this).parent().nextAll("ul"));
+          });
+          $(".collapse").click(function(event){
+            collapseAll($(this).parent().nextAll("ul"));
+          });
 
-        // Once the tabs are set up, go ahead and display the TOC
-        $("#toc_tabs").show();
+          // Set up the TOC tabs
+          $("#toc_tabs").tabs( { show: function(){ scrollTOC() } } );
 
-        // Initialize the TOC state
-        $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
+          // Once the tabs are set up, go ahead and display the TOC
+          $("#toc_tabs").show();
 
-        // Fallback in case a bad fragment ID was requested
-        if ($("#sub a.selected").length === 0) {
-          showInTOC($("#sub a.currentPage"))
-        }
-        else {;
-          showInTOC($("#sub a.selected"))
-        }
-        scrollTOC();
+          // Initialize the TOC state
+          $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
 
-        tooltip();
+          // Fallback in case a bad fragment ID was requested
+          if ($("#sub a.selected").length === 0) {
+            showInTOC($("#sub a.currentPage"))
+          }
+          else {;
+            showInTOC($("#sub a.selected"))
+          }
+          scrollTOC();
 
-      });
-      </xsl:comment>
-      </script>
+          tooltip();
 
-      <!--
-      <div>API Reference</div>
-      -->
-      <div id="toc_tabs" style="display:none">
-        <div id="tab_bar">
-          <ul>
-            <li><a href="#tabs-1" class="tab_link">API</a></li>
-            <li><a href="#tabs-2" class="tab_link">Categories</a></li>
-            <li><a href="#tabs-3" class="tab_link">Guides</a></li>
-            <li><a href="#tabs-4" class="tab_link">Search</a></li>
-          </ul>
-        </div>
-        <div id="tab_content">
-          <div id="tabs-1" class="tabbed_section">
-            <div class="scrollable_section">
-              <input id="config-filter" name="config-filter"/>
-              <ul id="apidoc_tree" class="treeview">
-                <xsl:apply-templates select="/*/toc[1]/node"/>
-              </ul>
-            </div>
+        });
+        </xsl:comment>
+        </script>
+
+        <!--
+        <div>API Reference</div>
+        -->
+        <div id="toc_tabs" style="display:none">
+          <div id="tab_bar">
+            <ul>
+              <li><a href="#tabs-1" class="tab_link">API</a></li>
+              <li><a href="#tabs-2" class="tab_link">Categories</a></li>
+              <li><a href="#tabs-3" class="tab_link">Guides</a></li>
+              <li><a href="#tabs-4" class="tab_link">Search</a></li>
+            </ul>
           </div>
-          <div id="tabs-2" class="tabbed_section">
-            <div class="scrollable_section">
-              <input id="config-filter2" name="config-filter2"/>
-              <ul id="apidoc_tree2" class="treeview">
-                <xsl:apply-templates select="/*/toc[2]/node"/>
-              </ul>
+          <div id="tab_content">
+            <div id="tabs-1" class="tabbed_section">
+              <div class="scrollable_section">
+                <input id="config-filter" name="config-filter"/>
+                <ul id="apidoc_tree" class="treeview">
+                  <xsl:apply-templates select="/*/toc[1]/node"/>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div id="tabs-3" class="tabbed_section">
-            <div class="scrollable_section">
-              <input id="config-filter3" name="config-filter3"/>
-              <ul id="apidoc_tree3" class="treeview">
-                <xsl:apply-templates select="/*/toc[3]/node"/>
-              </ul>
+            <div id="tabs-2" class="tabbed_section">
+              <div class="scrollable_section">
+                <input id="config-filter2" name="config-filter2"/>
+                <ul id="apidoc_tree2" class="treeview">
+                  <xsl:apply-templates select="/*/toc[2]/node"/>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div id="tabs-4" class="tabbed_section">
-            <form action="/" method="get">
-              <input id="q" name="q"/>
-            </form>
+            <div id="tabs-3" class="tabbed_section">
+              <div class="scrollable_section">
+                <input id="config-filter3" name="config-filter3"/>
+                <ul id="apidoc_tree3" class="treeview">
+                  <xsl:apply-templates select="/*/toc[3]/node"/>
+                </ul>
+              </div>
+            </div>
+            <div id="tabs-4" class="tabbed_section">
+              <form action="/" method="get">
+                <input id="q" name="q"/>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </xsl:result-document>
   </xsl:template>
 
           <!-- We hide the "all" container so it doesn't appear in the TOC -->
@@ -178,14 +185,31 @@
               <xsl:apply-templates mode="class" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-last" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-hasChildren" select="."/>
             </xsl:variable>
             <li class="{$class}">
+              <xsl:apply-templates mode="id-att"   select="."/>
               <xsl:apply-templates mode="hit-area" select="."/>
-              <xsl:apply-templates mode="link"      select="."/>
-              <xsl:apply-templates mode="control"   select="."/>
-              <xsl:apply-templates mode="children"  select="."/>
+              <xsl:apply-templates mode="link"     select="."/>
+              <xsl:apply-templates mode="control"  select="."/>
+              <xsl:apply-templates mode="children" select="."/>
             </li>
           </xsl:template>
+
+                  <xsl:template mode="id-att" match="node"/>
+                  <!-- Include an ID on nodes that will be loaded asynchronously -->
+                  <xsl:template mode="id-att" match="toc/node/node">
+                    <xsl:attribute name="id">
+                      <xsl:apply-templates mode="node-id" select="."/>
+                    </xsl:attribute>
+                  </xsl:template>
+
+                          <xsl:template mode="node-id" match="node">
+                            <xsl:value-of select="concat(substring-after($prefix-for-hrefs,'/'), (: might be empty :)
+                                                         '_',
+                                                         generate-id(.))"/>
+                          </xsl:template>
 
                   <xsl:template mode="class" priority="1" match="toc/node"  >collapsable</xsl:template>
                   <xsl:template mode="class"              match="node[node]">expandable</xsl:template>
@@ -196,6 +220,10 @@
                   <xsl:template mode="class-last" priority="1" match="    node[last()][node]">lastExpandable</xsl:template>
                   <xsl:template mode="class-last"              match="    node[last()]      ">last</xsl:template>
                   <xsl:template mode="class-last"              match="node"/>
+
+                  <!-- Include on nodes that will be loaded asynchronously -->
+                  <xsl:template mode="class-hasChildren" match="toc/node/node">hasChildren</xsl:template>
+                  <xsl:template mode="class-hasChildren" match="node"/>
 
                   <xsl:template mode="hit-area" match="node"/>
                   <xsl:template mode="hit-area" match="node[node]">
@@ -299,7 +327,24 @@
                     </ul>
                   </xsl:template>
 
-                          <xsl:template mode="ul-display-type" match="toc/node">block</xsl:template>
-                          <xsl:template mode="ul-display-type" match="    node">none</xsl:template>
+                  <!-- Nodes to be loaded asynchronously -->
+                  <xsl:template mode="children" match="toc/node/node" priority="1">
+                    <!-- The empty placeholder -->
+                    <ul style="display: none">
+                      <li>
+                        <span class="placeholder">&#160;</span>
+                      </li>
+                    </ul>
+                    <xsl:variable name="node-id">
+                      <xsl:apply-templates mode="node-id" select="."/>
+                    </xsl:variable>
+                    <!-- The content of the TOC node, stored in a separate document -->
+                    <xsl:result-document href="/media/apiTOC/{$node-id}.html">
+                      <xsl:next-match/>
+                    </xsl:result-document>
+                  </xsl:template>
+
+                          <xsl:template mode="ul-display-type" match="toc/node | toc/node/node">block</xsl:template>
+                          <xsl:template mode="ul-display-type" match="                    node">none</xsl:template>
 
 </xsl:stylesheet>
