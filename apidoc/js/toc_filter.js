@@ -149,14 +149,14 @@ function initializeTOC() {
   var tocSection = $(tocSectionLinkSelector).parent();
   loadTocSection(0,tocSection);
 
-  waitToHighlight(tocSection);
+  waitToInitialize(tocSection);
 }
 
-function waitToHighlight(tocSection) {
+function waitToInitialize(tocSection) {
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
   if (tocSection.hasClass("loaded")) {
-    var current = $("a").filter(function() {
+    var current = tocSection.find("a").filter(function() {
       return this.href.toLowerCase() == location.href.toLowerCase();
     });
     showInTOC(current);
@@ -169,11 +169,33 @@ function waitToHighlight(tocSection) {
       showInTOC($("#sub a.currentPage"))
     }
 
+    if (!tocSection.hasClass("initialized")) {
+      bindTocUpdateEvents(tocSection);
+      tocSection.addClass("initialized");
+    }
+
     scrollTOC();
-    clearTimeout(waitToHighlight);
+    
+    clearTimeout(waitToInitialize);
   }
   else
-    setTimeout(function(){ waitToHighlight(tocSection) }, 5);
+    setTimeout(function(){ waitToInitialize(tocSection) }, 10);
+}
+
+
+function bindTocUpdateEvents(context) {
+  // Link bindings for updating the TOC state when navigating inside a user guide
+  $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
+    $("#sub a.selected").removeClass("selected");
+
+    // IE doesn't include the "/" at the beginning of the pathname...
+    //var fullLink = this.pathname + this.hash;
+    var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
+
+    showInTOC($("#sub a[href='" + fullLink + "']"));
+
+    scrollTOC($("#sub a.selected"));
+  });
 }
 
 

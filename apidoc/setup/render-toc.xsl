@@ -39,21 +39,6 @@
           });
 
 
-
-          // For updating the TOC state
-          $("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
-            $("#sub a.selected").removeClass("selected");
-
-            // IE doesn't include the "/" at the beginning of the pathname...
-            //var fullLink = this.pathname + this.hash;
-            var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
-
-            showInTOC($("#sub a[href='" + fullLink + "']"));
-
-            scrollTOC($("#sub a.selected"));
-          });
-
-
           $("#config-filter").keyup(function(e) {
               currentFilterText = $(this).val();
               setTimeout(function() {
@@ -108,16 +93,19 @@
           $("#toc_tabs").tabs({
             show: function(event, ui){
               if (ui.tab.innerText == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
-                loadTocSection(0, $("#" + functionPageBucketId));
+                var tocSection = $("#" + functionPageBucketId);
+                loadTocSection(0, tocSection);
+                waitToInitialize(tocSection);
               }
               scrollTOC();
             }
           });
 
+          bindTocUpdateEvents(document.body);
+          initializeTOC();
+
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
-
-          initializeTOC();
 
           tooltip();
 
