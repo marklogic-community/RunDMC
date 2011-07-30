@@ -73,6 +73,8 @@
         <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
         var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
 
+        var initialTocTabIndex = <xsl:apply-templates mode="initial-toc-tab-index" select="$content/*"/>;
+
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
 
       </xsl:comment>
@@ -112,6 +114,10 @@
             <xsl:text> :first-child</xsl:text>
           </xsl:template>
 
+
+          <xsl:template mode="initial-toc-tab-index" match="api:list-page | api:function-page"          >0</xsl:template>
+          <xsl:template mode="initial-toc-tab-index" match="api:list-page[@type eq 'function-category']">1</xsl:template>
+          <xsl:template mode="initial-toc-tab-index" match="guide"                                      >2</xsl:template>
 
   <xsl:template mode="page-title" match="api:docs-page">
     <xsl:value-of select="$site-title"/>
