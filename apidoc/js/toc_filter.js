@@ -101,6 +101,7 @@ function collapseSubTree(li) {
 /* These functions implement the expand/collapse buttons */
 function shallowExpandAll(ul) {
   ul.children("li").each(function(index) {
+    loadTocSection(index,this);
     expandSubTree($(this));
   });
 }
