@@ -144,6 +144,39 @@ function loadTocSection(index, tocSection) {
 }
 
 
+function initializeTOC() {
+  // Load the TOC section for the current page
+  var tocSection = $(tocSectionLinkSelector).parent();
+  loadTocSection(0,tocSection);
+
+  waitToHighlight(tocSection);
+}
+
+function waitToHighlight(tocSection) {
+  // Repeatedly check to see if the TOC section has finished loading
+  // Once it has, highlight the current page
+  if (tocSection.hasClass("loaded")) {
+    var current = $("a").filter(function() {
+      return this.href.toLowerCase() == location.href.toLowerCase();
+    });
+    showInTOC(current);
+
+    // Also show the currentPage link (possibly distinct from guide fragment link)
+    $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
+
+    // Fallback in case a bad fragment ID was requested
+    if ($("#sub a.selected").length === 0) {
+      showInTOC($("#sub a.currentPage"))
+    }
+
+    scrollTOC();
+    clearTimeout(waitToHighlight);
+  }
+  else
+    setTimeout(function(){ waitToHighlight(tocSection) }, 5);
+}
+
+
 // For when someone clicks an intra-document link outside of the TOC itself
 function showInTOC(a) {
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();

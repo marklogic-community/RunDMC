@@ -117,20 +117,7 @@
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
 
-          // Load the TOC section for the current page
-          loadTocSection(0, $(tocSectionLinkSelector).parent());
-
-          // Initialize the TOC state
-          $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
-
-          // Fallback in case a bad fragment ID was requested
-          if ($("#sub a.selected").length === 0) {
-            showInTOC($("#sub a.currentPage"))
-          }
-          else {
-            showInTOC($("#sub a.selected"))
-          }
-          scrollTOC();
+          initializeTOC();
 
           tooltip();
 

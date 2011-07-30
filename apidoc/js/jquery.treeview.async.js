@@ -55,6 +55,7 @@ function load(settings, root, child, container) {
 			//child.empty();
       // EDL: Don't call createNode; just insert the retrieved HTML
       var newChild = $(response);
+      child.parent().addClass("loaded");
       child.replaceWith(newChild);
 			//$.each(response, createNode, [child]);
 	    //$(container).treeview({add: child});
