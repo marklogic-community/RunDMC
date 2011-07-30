@@ -9,17 +9,40 @@ var previousFilterText3 = '';
 var currentFilterText3 = '';
 
 function filterConfigDetails(text, treeSelector) {
-    var filter = text;
 
     // Filter only the first section of the TOC
-    var allFunctionsRoot = $(treeSelector).children("li:first");
+    var tocRoot = $(treeSelector).children("li:first");
 
     // Make sure "All functions" container after each search (even if empty results)
     // TODO: Figure out how to directly call the "toggler" method from the treeview code rather than using this
     //       implementation-specific stuff
-    expandSubTree(allFunctionsRoot);
 
-    allFunctionsRoot.find("li").each(function() {
+    loadAllSubSections(tocRoot);
+
+    if (tocRoot.hasClass("fullyLoaded"))
+      searchTOC(text, tocRoot);
+    else
+      waitToSearch(text, tocRoot);
+
+    expandSubTree(tocRoot);
+}
+
+var waitToSearch = function(text, tocRoot) {
+  // Repeatedly check for the absence of the "placeholder" class
+  // Once they're all gone, run the text search and cancel the timeout
+  var placeholders = tocRoot.find(".placeholder");
+  if (placeholders.size() == 0) {
+    tocRoot.addClass("fullyLoaded");
+    searchTOC(text, tocRoot);
+    clearTimeout(waitToSearch);
+  }
+  else
+    setTimeout(function(){ waitToSearch(text, tocRoot) }, 350);
+}
+
+    
+function searchTOC(filter, tocRoot) {
+    tocRoot.find("li").each(function() {
         $(this).removeClass("hide-detail");
         /*
         if (filter == '') {
@@ -105,6 +128,19 @@ function collapseAll(ul) {
 }
 
 
+
+function loadAllSubSections(tocRoot) {
+  if (!tocRoot.hasClass("startedLoading")) {
+    tocRoot.children("ul").children("li").each(loadTocSection);
+    tocRoot.addClass("startedLoading");
+  }
+}
+
+function loadTocSection(index, tocSection) {
+  var $tocSection = $(tocSection);
+  if ($tocSection.hasClass("hasChildren"))
+    $tocSection.find(".hitarea").trigger("click");
+}
 
 
 // For when someone clicks an intra-document link outside of the TOC itself

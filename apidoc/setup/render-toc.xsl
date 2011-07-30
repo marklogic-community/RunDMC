@@ -103,13 +103,12 @@
             collapseAll($(this).parent().nextAll("ul"));
           });
 
+
           // Set up the TOC tabs
           $("#toc_tabs").tabs({
             show: function(event, ui){
               if (ui.tab.innerText == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
-                var tocSection = $('#' + functionPageBucketId);
-                if (tocSection.hasClass("hasChildren"))
-                  tocSection.find(".hitarea").trigger("click");
+                loadTocSection(0, $("#" + functionPageBucketId));
               }
               scrollTOC();
             }
