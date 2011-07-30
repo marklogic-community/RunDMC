@@ -30,8 +30,8 @@
       <xsl:sort select="index-of($forced-order, .)" order="descending"/>
       <xsl:sort select="."/>
 
-      <!-- bucket node -->
-      <node display="{.}">
+      <!-- bucket node --> <!-- ID for function buckets is the display name minus spaces -->
+      <node display="{.}" id="{translate(.,' ','')}">
         <xsl:variable name="in-this-bucket" select="$all-functions[@bucket eq current()]"/>
 
         <!-- for each category -->

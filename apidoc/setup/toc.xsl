@@ -78,7 +78,7 @@
       <toc id="user-guides">
         <node display="User Guides" href="/docs">
           <xsl:for-each select="$guide-docs-ordered">
-            <node href="{ml:external-uri(.)}" display="{/guide/title}">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
               <xsl:apply-templates mode="guide-toc"/>
             </node>
           </xsl:for-each>
@@ -100,7 +100,8 @@
                   display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})"
                   namespace="{api:uri-for-lib(.)}"
                   title="{api:prefix-for-lib(.)} functions"
-                  function-list-page="yes">
+                  function-list-page="yes"
+                  id="{.}_{generate-id(.)}"> <!-- generate a unique id for this TOC section -->
               <xsl:if test="@built-in">
                 <xsl:attribute name="footnote" select="'yes'"/>
               </xsl:if>

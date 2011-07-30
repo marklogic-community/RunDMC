@@ -45,7 +45,7 @@
   </xsl:template>
 
   <xsl:template match="node">
-    <api:list-page title="{@title}" disable-comments="yes">
+    <api:list-page title="{@title}" disable-comments="yes" container-toc-section-id="{ancestor-or-self::node[../parent::toc]/@id}">
 
       <!-- can be used to trigger different display options -->
       <xsl:copy-of select="@type"/>

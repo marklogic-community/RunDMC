@@ -220,18 +220,8 @@
                           <xsl:template mode="node-id" match="node">
                             <xsl:value-of select="substring-after($prefix-for-hrefs,'/')"/> <!-- might be empty -->
                             <xsl:text>_</xsl:text>
-                            <xsl:apply-templates mode="node-id-details" select="."/>
+                            <xsl:value-of select="@id"/>
                           </xsl:template>
-
-                                  <!-- ID for function buckets is the display name minus spaces -->
-                                  <xsl:template mode="node-id-details" match="node[not(@href)]">
-                                    <xsl:value-of select="translate(@display,' ','')"/>
-                                  </xsl:template>
-
-                                  <!-- Everything else has an auto-generated ID -->
-                                  <xsl:template mode="node-id-details" match="node">
-                                    <xsl:value-of select="generate-id(.)"/>
-                                  </xsl:template>
 
 
                   <xsl:template mode="class" priority="1" match="toc/node"  >collapsable</xsl:template>

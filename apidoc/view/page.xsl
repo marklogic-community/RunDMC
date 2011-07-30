@@ -89,8 +89,11 @@
             <xsl:text>";</xsl:text>
           </xsl:template>
 
+
           <xsl:template mode="toc-section-link-selector" match="api:function-page">
-            <xsl:text>#sub a[href=/</xsl:text>
+            <xsl:text>#sub a[href=</xsl:text>
+            <xsl:value-of select="$version-prefix"/>
+            <xsl:text>/</xsl:text>
             <xsl:value-of select="api:function[1]/@lib"/>
             <xsl:text>]</xsl:text>
           </xsl:template>
@@ -101,13 +104,13 @@
             <xsl:text>]</xsl:text>
           </xsl:template>
 
-          <!-- TODO: make this work for list pages
           <xsl:template mode="toc-section-link-selector" match="api:list-page">
             <xsl:text>#</xsl:text>
-            <xsl:value-of select="@toc-section-id"/>
-            <xsl:text> >a</xsl:text>
+            <xsl:value-of select="substring-after($version-prefix,'/')"/>
+            <xsl:text>_</xsl:text>
+            <xsl:value-of select="@container-toc-section-id"/>
+            <xsl:text> :first-child</xsl:text>
           </xsl:template>
-          -->
 
 
   <xsl:template mode="page-title" match="api:docs-page">
