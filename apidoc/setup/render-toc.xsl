@@ -22,19 +22,19 @@
           $("#apidoc_tree").treeview({
             //animated: "medium",
             url: "/media/apiTOC/",
-            persist: "location",
+//            persist: "location",
             prerendered: true
           });
           $("#apidoc_tree2").treeview({
             //animated: "medium",
             url: "/media/apiTOC/",
-            persist: "location",
+//            persist: "location",
             prerendered: true
           });
           $("#apidoc_tree3").treeview({
             //animated: "medium",
             url: "/media/apiTOC/",
-            persist: "location",
+//            persist: "location",
             prerendered: true
           });
 
@@ -116,6 +116,9 @@
 
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
+
+          // Load the TOC section for the current page
+          loadTocSection(0, $(tocSectionLinkSelector).parent());
 
           // Initialize the TOC state
           $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");

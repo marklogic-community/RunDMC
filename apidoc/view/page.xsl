@@ -68,10 +68,10 @@
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
       <script type="text/javascript">
-        <xsl:variable name="current-url" select="concat($version-prefix, ml:external-uri($content))"/>
         <xsl:comment>
 
         <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
+        var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
 
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
 
@@ -88,6 +88,27 @@
             <xsl:value-of select="translate(.,' ','')"/>
             <xsl:text>";</xsl:text>
           </xsl:template>
+
+          <xsl:template mode="toc-section-link-selector" match="api:function-page">
+            <xsl:text>#sub a[href=/</xsl:text>
+            <xsl:value-of select="api:function[1]/@lib"/>
+            <xsl:text>]</xsl:text>
+          </xsl:template>
+
+          <xsl:template mode="toc-section-link-selector" match="guide">
+            <xsl:text>#sub a[href=</xsl:text>
+            <xsl:value-of select="concat($version-prefix, ml:external-uri($content))"/>
+            <xsl:text>]</xsl:text>
+          </xsl:template>
+
+          <!-- TODO: make this work for list pages
+          <xsl:template mode="toc-section-link-selector" match="api:list-page">
+            <xsl:text>#</xsl:text>
+            <xsl:value-of select="@toc-section-id"/>
+            <xsl:text> >a</xsl:text>
+          </xsl:template>
+          -->
+
 
   <xsl:template mode="page-title" match="api:docs-page">
     <xsl:value-of select="$site-title"/>
