@@ -194,7 +194,7 @@ function bindTocUpdateEvents(context) {
 
     showInTOC($("#sub a[href='" + fullLink + "']"));
 
-    scrollTOC($("#sub a.selected"));
+    scrollTOC();
   });
 }
 
