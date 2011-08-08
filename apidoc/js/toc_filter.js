@@ -170,7 +170,7 @@ function waitToInitialize(tocSection) {
     }
 
     if (!tocSection.hasClass("initialized")) {
-      bindTocUpdateEvents(tocSection);
+      bindFragmentLinkTocActions(tocSection);
       tocSection.addClass("initialized");
     }
 
@@ -183,7 +183,7 @@ function waitToInitialize(tocSection) {
 }
 
 
-function bindTocUpdateEvents(context) {
+function bindFragmentLinkTocActions(context) {
   // Link bindings for updating the TOC state when navigating inside a user guide
   $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
     $("#sub a.selected").removeClass("selected");

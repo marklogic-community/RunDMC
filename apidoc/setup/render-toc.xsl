@@ -101,7 +101,7 @@
             }
           });
 
-          bindTocUpdateEvents(document.body);
+          bindFragmentLinkTocActions(document.body);
           initializeTOC();
 
           // Once the tabs are set up, go ahead and display the TOC
