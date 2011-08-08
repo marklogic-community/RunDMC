@@ -157,7 +157,7 @@
   </xsl:template>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
-  <xsl:template match="page-content">
+  <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$params"/>
     </xsl:if>

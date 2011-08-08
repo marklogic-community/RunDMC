@@ -34,6 +34,7 @@
     <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
     <script type="text/javascript" src="/apidoc/js/tooltip.js"></script>
     <script type="text/javascript" src="/apidoc/js/jquery-ui-1.8.14.custom.min.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
 
     <!--[if lte IE 7]>
         <link href="/css/v-1/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
@@ -50,7 +51,13 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
      </script>
+     <script type="text/javascript">
+       $(function(){
+         $("#main a, #sub a").pjax('#page_content')
+       })
+     </script>
 <script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
+
 
 <!--
 <script type="text/javascript" src="/apidoc/js/splitter.js"></script>

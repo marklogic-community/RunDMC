@@ -36,6 +36,29 @@
 
   <xsl:variable name="show-alternative-functions" select="$params[@name eq 'show-alternatives']"/>
 
+  <xsl:variable name="is-pjax-request" select="$params[@name eq '_pjax'] eq 'true'"/>
+
+  <xsl:template match="/">
+    <!--
+    <xsl:value-of select="$content/.."/>
+    <xsl:value-of select="substring-after($external-uri,$external-uri)"/>
+    -->
+    <xsl:choose>
+      <xsl:when test="$is-pjax-request">
+        <div>
+          PJAX!!
+          <title>
+            <xsl:apply-templates mode="page-title" select="*"/>
+          </title>
+          <xsl:call-template name="page-content"/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-imports/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- Links in content (function descriptions and list page intros) may need to be rewritten
        to include the current explicitly specified version -->
   <xsl:template match="x:a/@href[starts-with(.,'/')]">
