@@ -127,7 +127,7 @@
             </ul>
           </div>
           <div id="tab_content">
-            <div id="tabs-1" class="tabbed_section">
+            <div id="tabs-1" class="tabbed_section pjax_enabled"> <!-- Only the function TOCs are pjax-enabled -->
               <div class="scrollable_section">
                 <input id="config-filter" name="config-filter"/>
                 <ul id="apidoc_tree" class="treeview">
@@ -135,7 +135,7 @@
                 </ul>
               </div>
             </div>
-            <div id="tabs-2" class="tabbed_section">
+            <div id="tabs-2" class="tabbed_section pjax_enabled">
               <div class="scrollable_section">
                 <input id="config-filter2" name="config-filter2"/>
                 <ul id="apidoc_tree2" class="treeview">

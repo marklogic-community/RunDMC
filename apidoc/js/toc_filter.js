@@ -179,7 +179,7 @@ function waitToInitialize(tocSection) {
     clearTimeout(waitToInitialize);
   }
   else
-    setTimeout(function(){ waitToInitialize(tocSection) }, 10);
+    setTimeout(function(){ waitToInitialize(tocSection) }, 100);
 }
 
 
@@ -202,6 +202,9 @@ function bindTocUpdateEvents(context) {
 // For when someone clicks an intra-document link outside of the TOC itself
 function showInTOC(a) {
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
+
+  loadTocSection(0,a.parent()); // If this is a TOC section that needs loading, then load it
+
   items.each(function(index) {
     expandSubTree($(this));
   });

@@ -50,6 +50,13 @@
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
+          <script type="text/javascript">
+            <xsl:comment>
+
+              <xsl:call-template name="reset-global-toc-vars"/>
+
+            </xsl:comment>
+          </script>
           <xsl:call-template name="page-content"/>
         </div>
       </xsl:when>
@@ -93,8 +100,7 @@
       <script type="text/javascript">
         <xsl:comment>
 
-        <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
-        var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
+        <xsl:call-template name="reset-global-toc-vars"/>
 
         var initialTocTabIndex = <xsl:apply-templates mode="initial-toc-tab-index" select="$content/*"/>;
 
@@ -104,6 +110,11 @@
       </script>
     </div>
   </xsl:template>
+
+          <xsl:template name="reset-global-toc-vars">
+            <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
+            var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
+          </xsl:template>
 
           <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
           <xsl:template mode="function-bucket-id-decl" match="@bucket">

@@ -53,7 +53,12 @@
      </script>
      <script type="text/javascript">
        $(function(){
-         $("#main a, #sub a").pjax('#page_content')
+         $("#sub .pjax_enabled a").pjax({container: '#page_content',
+                                         success: function() {
+                                                    $("#sub a.currentPage, #sub a.selected").removeClass("currentPage").removeClass("selected");
+                                                    if(this.clickedElement) showInTOC(this.clickedElement);
+                                                  }
+                                        })
        })
      </script>
 <script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
