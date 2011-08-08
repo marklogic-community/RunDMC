@@ -92,7 +92,7 @@
           // Set up the TOC tabs
           $("#toc_tabs").tabs({
             show: function(event, ui){
-              if (ui.tab.innerText == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
+              if (ui.tab.innerHTML == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
                 var tocSection = $("#" + functionPageBucketId);
                 loadTocSection(0, tocSection);
                 waitToInitialize(tocSection);
