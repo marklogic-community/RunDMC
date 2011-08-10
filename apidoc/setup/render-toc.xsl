@@ -188,7 +188,7 @@
 
                           <!-- Each main TOC section ID is qualified by the version prefix -->
                           <xsl:template mode="node-id" match="node">
-                            <xsl:value-of select="substring-after($prefix-for-hrefs,'/')"/> <!-- might be empty -->
+                            <xsl:value-of select="translate($prefix-for-hrefs,'/.','v-')"/> <!-- might be empty -->
                             <xsl:text>_</xsl:text>
                             <xsl:value-of select="@id"/>
                           </xsl:template>

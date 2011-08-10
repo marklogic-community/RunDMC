@@ -156,7 +156,7 @@ function initializeTOC() {
     $("#toc_tabs").tabs('select',new_tab_index);
   }
   else { // otherwise, we have to do it ourselves
-    var tab = $("#tabs-" + current_tab_index+1);
+    var tab = $("#toc_tabs .tab_link").eq(current_tab_index);
     var panel = $("#toc_tabs .ui-tabs-panel:visible");
     updateTocForTab(tab, panel);
   }
