@@ -156,6 +156,9 @@ function waitToInitialize(tocSection) {
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
   if (tocSection.hasClass("loaded")) {
+
+    clearTimeout(waitToInitialize);
+
     var current = tocSection.find("a").filter(function() {
       return this.href.toLowerCase() == location.href.toLowerCase();
     });
@@ -163,6 +166,7 @@ function waitToInitialize(tocSection) {
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
+    $("#sub a.currentPage").removeClass("currentPage");
     $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
 
     // Fallback in case a bad fragment ID was requested
@@ -176,8 +180,6 @@ function waitToInitialize(tocSection) {
     }
 
     scrollTOC();
-    
-    clearTimeout(waitToInitialize);
   }
   else
     setTimeout(function(){ waitToInitialize(tocSection) }, 100);
@@ -186,22 +188,26 @@ function waitToInitialize(tocSection) {
 
 function bindFragmentLinkTocActions(context) {
   // Link bindings for updating the TOC state when navigating inside a user guide
-  $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link").click(function() {
-    $("#sub a.selected").removeClass("selected");
+  $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link")
+            .click(function() { updateTocForURL(this.pathname, this.hash) });
+}
 
-    // IE doesn't include the "/" at the beginning of the pathname...
-    //var fullLink = this.pathname + this.hash;
-    var fullLink = (this.pathname.indexOf("/") == 0 ? this.pathname : "/" + this.pathname) + this.hash;
+function updateTocForURL(pathname, hash) {
 
-    showInTOC($("#sub a[href='" + fullLink + "']"));
+  // IE doesn't include the "/" at the beginning of the pathname...
+  //var fullLink = this.pathname + this.hash;
+  var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + hash;
 
-    scrollTOC();
-  });
+  showInTOC($("#sub a[href='" + fullLink + "']"));
+
+  scrollTOC();
 }
 
 
 // For when someone clicks an intra-document link outside of the TOC itself
 function showInTOC(a) {
+  $("#sub a.selected").removeClass("selected");
+
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
 
   loadTocSection(0,a.parent()); // If this is a TOC section that needs loading, then load it

@@ -171,39 +171,48 @@
     <xsl:variable name="docs" as="element()*">
       <xsl:apply-templates mode="list-page-docs" select="."/>
     </xsl:variable>
-    <h1>
-      <xsl:apply-templates mode="list-page-heading" select="."/>
-    </h1>
-    <xsl:apply-templates mode="list-page-intro" select="."/>
-    <div class="doclist">
-      <h2>&#160;</h2>
-      <span class="amount">
-        <xsl:variable name="count" select="count($docs)"/>
-        <xsl:value-of select="$count"/>
-        <xsl:text> </xsl:text>
-        <xsl:apply-templates mode="list-page-item-type" select="."/>
-        <xsl:if test="$count gt 1">s</xsl:if>
-      </span>
-      <table class="documentsTable">
-        <colgroup>
-          <col class="col1"/>
-          <col class="col2"/>
-        </colgroup>
-        <thead>
-          <tr>
-            <th>
-             <xsl:apply-templates mode="list-page-col1-heading" select="."/>
-            </th>
-            <th>Description</th>
-            <xsl:apply-templates mode="list-page-col3-th" select="."/>
-          </tr>
-        </thead>
-        <tbody>
-          <xsl:apply-templates mode="list-page-entry" select="$docs"/>
-        </tbody>
-      </table>
+    <div>
+      <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <h1>
+        <xsl:apply-templates mode="list-page-heading" select="."/>
+      </h1>
+      <xsl:apply-templates mode="list-page-intro" select="."/>
+      <div class="doclist">
+        <h2>&#160;</h2>
+        <span class="amount">
+          <xsl:variable name="count" select="count($docs)"/>
+          <xsl:value-of select="$count"/>
+          <xsl:text> </xsl:text>
+          <xsl:apply-templates mode="list-page-item-type" select="."/>
+          <xsl:if test="$count gt 1">s</xsl:if>
+        </span>
+        <table class="documentsTable">
+          <colgroup>
+            <col class="col1"/>
+            <col class="col2"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>
+               <xsl:apply-templates mode="list-page-col1-heading" select="."/>
+              </th>
+              <th>Description</th>
+              <xsl:apply-templates mode="list-page-col3-th" select="."/>
+            </tr>
+          </thead>
+          <tbody>
+            <xsl:apply-templates mode="list-page-entry" select="$docs"/>
+          </tbody>
+        </table>
+      </div>
     </div>
   </xsl:template>
+
+          <!-- Disable PJAX on User Guide links, because the large pages tend to break the browser -->
+          <xsl:template mode="pjax_enabled-class-att" match="api:docs-page"/>
+          <xsl:template mode="pjax_enabled-class-att" match="*">
+            <xsl:attribute name="class">pjax_enabled</xsl:attribute>
+          </xsl:template>
 
           <xsl:template mode="list-page-col3-th" match="*"/>
           <xsl:template mode="list-page-col3-th" match="api:docs-page">
@@ -361,17 +370,20 @@
         </p>
       </xsl:if>
     </xsl:if>
-    <h1>
-      <xsl:variable name="name" select="api:function[1]/@fullname"/>
-      <xsl:variable name="prefix" select="substring-before($name,':')"/>
-      <xsl:variable name="local"  select="substring-after ($name,':')"/>
-      <a href="{$version-prefix}/{$prefix}">
-        <xsl:value-of select="$prefix"/>
-      </a>
-      <xsl:text>:</xsl:text>
-      <xsl:value-of select="$local"/>
-    </h1>
-    <xsl:apply-templates select="api:function"/>
+    <div>
+      <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <h1>
+        <xsl:variable name="name" select="api:function[1]/@fullname"/>
+        <xsl:variable name="prefix" select="substring-before($name,':')"/>
+        <xsl:variable name="local"  select="substring-after ($name,':')"/>
+        <a href="{$version-prefix}/{$prefix}">
+          <xsl:value-of select="$prefix"/>
+        </a>
+        <xsl:text>:</xsl:text>
+        <xsl:value-of select="$local"/>
+      </h1>
+      <xsl:apply-templates select="api:function"/>
+    </div>
   </xsl:template>
 
           <xsl:template match="api:function">
