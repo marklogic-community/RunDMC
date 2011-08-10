@@ -141,7 +141,7 @@
             <xsl:text>]</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="toc-section-link-selector" match="api:list-page">
+          <xsl:template mode="toc-section-link-selector" match="api:list-page | api:docs-page">
             <xsl:text>#</xsl:text>
             <xsl:value-of select="substring-after($version-prefix,'/')"/>
             <xsl:text>_</xsl:text>
@@ -152,7 +152,7 @@
 
           <xsl:template mode="initial-toc-tab-index" match="api:list-page | api:function-page"          >0</xsl:template>
           <xsl:template mode="initial-toc-tab-index" match="api:list-page[@type eq 'function-category']">1</xsl:template>
-          <xsl:template mode="initial-toc-tab-index" match="guide"                                      >2</xsl:template>
+          <xsl:template mode="initial-toc-tab-index" match="api:docs-page | guide"                      >2</xsl:template>
 
   <xsl:template mode="page-title" match="api:docs-page">
     <xsl:value-of select="$site-title"/>

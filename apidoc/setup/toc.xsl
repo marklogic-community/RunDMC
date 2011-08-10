@@ -76,8 +76,8 @@
           <xsl:copy-of select="$by-category"/>
         </node>
       </toc>
-      <toc id="user-guides">
-        <node display="User Guides" href="/docs">
+      <toc>
+        <node display="User Guides" href="/docs" id="user_guides">
           <xsl:for-each select="$guide-docs-ordered">
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
               <xsl:apply-templates mode="guide-toc"/>
