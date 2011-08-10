@@ -15,6 +15,8 @@
 # the production/staging servers so might best invoked as
 # a git hook.
 
+export PATH=$PATH:/usr/local/bin
+
 Transform -s:../config/template.xhtml             \
           -xsl:optimize-js-requests.xsl           \
           -o:../config/template.optimized.xhtml   \
