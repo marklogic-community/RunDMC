@@ -46,6 +46,7 @@
     <xsl:choose>
       <xsl:when test="$is-pjax-request">
         <div>
+          PJAX!!
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
