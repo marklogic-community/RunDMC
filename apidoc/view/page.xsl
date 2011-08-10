@@ -112,18 +112,16 @@
   </xsl:template>
 
           <xsl:template name="reset-global-toc-vars">
-            <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket
-                                                                      | $content/api:list-page/@category-bucket"/>
+            var functionPageBucketId = "<xsl:apply-templates mode="function-bucket-id" select="$content/api:function-page/api:function[1]/@bucket
+                                                                                             | $content/api:list-page/@category-bucket"/>";
             var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
           </xsl:template>
 
           <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
-          <xsl:template mode="function-bucket-id-decl" match="@*">
-            <xsl:text>var functionPageBucketId = "</xsl:text>
+          <xsl:template mode="function-bucket-id" match="@*">
             <xsl:value-of select="substring-after($version-prefix,'/')"/>
             <xsl:text>_</xsl:text>
             <xsl:value-of select="translate(.,' ','')"/>
-            <xsl:text>";</xsl:text>
           </xsl:template>
 
 

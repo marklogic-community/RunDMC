@@ -62,6 +62,7 @@
                                                      if(this.clickedElement) showInTOC(this.clickedElement);
                                                    }
                                         });
+         window.addEventListener("popstate", function(e) { initializeTOC(); });
        })
      </script>
 <script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>

@@ -163,6 +163,9 @@ function waitToInitialize(tocSection) {
       return this.href.toLowerCase() == location.href.toLowerCase();
     });
 
+    // E.g., when hitting the Back button and reaching "All functions"
+    $("#sub a.selected").removeClass("selected");
+
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
@@ -223,7 +226,7 @@ function showInTOC(a) {
 
 
 function updateTocOnTabChange(ui) {
-  if (ui.tab.innerHTML == "Categories" && typeof functionPageBucketId !== "undefined") {
+  if (ui.tab.innerHTML == "Categories" && functionPageBucketId !== "") {
     var tocSection = $("#" + functionPageBucketId, ui.panel);
     loadTocSection(0, tocSection);
     waitToInitialize(tocSection);
