@@ -198,6 +198,8 @@ $(window).bind('popstate', function(event){
         container: container,
         push: false,
         timeout: state.timeout
+//EDL: Added this
+,success: function() { colorizeExamples() }
       })
     else
       window.location = location.href
