@@ -561,6 +561,11 @@ td.sched-time { width: 70px; }
 .repo {
     font-size: 1em;
 }
+
+.action.repo a {
+  color: #235BAB;
+}
+
 /*
 table + .action {
 	border-top-color: #999;
