@@ -53,16 +53,19 @@
      </script>
      <script type="text/javascript">
        $(function(){
+         colorizeExamples();
          $("#main .pjax_enabled a").pjax({container: '#page_content',
-                                          success: function() { initializeTOC(); }
+                                          success: function() { initializeTOC(); colorizeExamples(); }
                                          });
          $("#sub .pjax_enabled a").pjax({container: '#page_content',
                                          success: function() {
                                                      $("#sub a.currentPage, #sub a.selected").removeClass("currentPage").removeClass("selected");
                                                      if(this.clickedElement) showInTOC(this.clickedElement);
+                                                     colorizeExamples();
                                                    }
                                         });
-         window.addEventListener("popstate", function(e) { initializeTOC(); });
+                                                                            /* not working yet for some reason */
+         window.addEventListener("popstate", function(e) { initializeTOC(); colorizeExamples(); });
        })
      </script>
 <script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
