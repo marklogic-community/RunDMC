@@ -91,14 +91,7 @@
 
           // Set up the TOC tabs
           $("#toc_tabs").tabs({
-            show: function(event, ui){
-              if (ui.tab.innerHTML == "Categories" &amp;&amp; typeof functionPageBucketId !== "undefined") {
-                var tocSection = $("#" + functionPageBucketId);
-                loadTocSection(0, tocSection);
-                waitToInitialize(tocSection);
-              }
-              scrollTOC();
-            }
+            show: function(event, ui){ updateTocOnTabChange(ui) }
           });
 
           bindFragmentLinkTocActions(document.body);

@@ -215,6 +215,23 @@ function showInTOC(a) {
 }
 
 
+function updateTocOnTabChange(ui) {
+  if (ui.tab.innerHTML == "Categories" && typeof functionPageBucketId !== "undefined") {
+    var tocSection = $("#" + functionPageBucketId, ui.panel);
+    loadTocSection(0, tocSection);
+    waitToInitialize(tocSection);
+  };
+  if (ui.tab.innerHTML == "API") {
+    var tocSectionLink = $(tocSectionLinkSelector, ui.panel);
+    var tocSection = tocSectionLink.parent();
+    if (tocSection.length) {
+      loadTocSection(0, tocSection);
+      waitToInitialize(tocSection);
+    }
+  };
+  scrollTOC();
+}
+
 
 function hasText(item,text) {
     var fieldTxt = item.text().toLowerCase();

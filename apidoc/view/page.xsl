@@ -112,12 +112,13 @@
   </xsl:template>
 
           <xsl:template name="reset-global-toc-vars">
-            <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket"/>
+            <xsl:apply-templates mode="function-bucket-id-decl" select="$content/api:function-page/api:function[1]/@bucket
+                                                                      | $content/api:list-page/@category-bucket"/>
             var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
           </xsl:template>
 
           <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
-          <xsl:template mode="function-bucket-id-decl" match="@bucket">
+          <xsl:template mode="function-bucket-id-decl" match="@*">
             <xsl:text>var functionPageBucketId = "</xsl:text>
             <xsl:value-of select="substring-after($version-prefix,'/')"/>
             <xsl:text>_</xsl:text>
@@ -127,7 +128,7 @@
 
 
           <xsl:template mode="toc-section-link-selector" match="api:function-page">
-            <xsl:text>#sub a[href=</xsl:text>
+            <xsl:text>.scrollable_section a[href=</xsl:text>
             <xsl:value-of select="$version-prefix"/>
             <xsl:text>/</xsl:text>
             <xsl:value-of select="api:function[1]/@lib"/>
@@ -135,7 +136,7 @@
           </xsl:template>
 
           <xsl:template mode="toc-section-link-selector" match="guide">
-            <xsl:text>#sub a[href=</xsl:text>
+            <xsl:text>.scrollable_section a[href=</xsl:text>
             <xsl:value-of select="concat($version-prefix, ml:external-uri($content))"/>
             <xsl:text>]</xsl:text>
           </xsl:template>
@@ -145,7 +146,7 @@
             <xsl:value-of select="substring-after($version-prefix,'/')"/>
             <xsl:text>_</xsl:text>
             <xsl:value-of select="@container-toc-section-id"/>
-            <xsl:text> :first-child</xsl:text>
+            <xsl:text> >:first-child</xsl:text>
           </xsl:template>
 
 

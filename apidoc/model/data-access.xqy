@@ -69,7 +69,7 @@ declare function get-libs($query, $builtin) {
                                            $query)
   return
     <wrapper> <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
-      <api:lib>{
+      <api:lib category-bucket="{get-bucket-for-lib($lib)}">{
          if ($builtin) then attribute built-in { "yes" } else (),
          $lib
       }</api:lib>
@@ -82,17 +82,24 @@ declare function function-count-for-lib($lib) {
   xdmp:estimate(xdmp:directory($dir,"1")/api:function-page/api:function[@lib eq $lib])
 };
 
+declare function query-for-lib-functions($lib) {
+  cts:and-query((
+    $api:query-for-all-functions,
+    cts:element-attribute-value-query(xs:QName("api:function"),
+                                      xs:QName("lib"),
+                                      $lib)))
+};
+
+(: Used to associate library containers under the "API" tab with their corresponding "Categories" tab TOC container :)
+declare function get-bucket-for-lib($lib) {
+  cts:search(fn:collection(), query-for-lib-functions($lib))[1]/api:function-page/api:function[1]/@bucket
+};
+
 declare function function-names-for-lib($lib) {
 
-  let $query := cts:and-query((
-                  $api:query-for-all-functions,
-                  cts:element-attribute-value-query(xs:QName("api:function"),
-                                                    xs:QName("lib"),
-                                                    $lib)))
-  return
   for $func in cts:element-attribute-values(xs:QName("api:function"),
                                             xs:QName("fullname"), (), "ascending",
-                                            $query)
+                                            query-for-lib-functions($lib))
     return
       <api:function-name>{ $func }</api:function-name>
 };

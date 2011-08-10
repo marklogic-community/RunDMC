@@ -100,6 +100,7 @@
                   display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})"
                   namespace="{api:uri-for-lib(.)}"
                   title="{api:prefix-for-lib(.)} functions"
+                  category-bucket="{@category-bucket}"
                   function-list-page="yes"
                   id="{.}_{generate-id(.)}"> <!-- generate a unique id for this TOC section -->
               <xsl:if test="@built-in">
