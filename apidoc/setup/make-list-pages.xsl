@@ -45,8 +45,11 @@
   </xsl:template>
 
   <xsl:template match="node">
-    <api:list-page title="{@title}" disable-comments="yes" container-toc-section-id="{ancestor-or-self::node[../parent::toc]/@id}"
-                   category-bucket="{@category-bucket}">
+    <xsl:variable name="container-toc-section-id">
+      <xsl:apply-templates mode="container-toc-section-id" select="."/>
+    </xsl:variable>
+    <api:list-page title="{@title}" disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
+      <xsl:copy-of select="@category-bucket"/>
 
       <!-- can be used to trigger different display options -->
       <xsl:copy-of select="@type"/>
@@ -66,6 +69,17 @@
 
     </api:list-page>
   </xsl:template>
+
+          <!-- For the top-level "All functions" node, just use the given ID -->
+          <xsl:template mode="container-toc-section-id" match="toc/node">
+            <xsl:value-of select="@id"/>
+          </xsl:template>
+
+          <!-- Everything else gets its ID from its /toc/node/node ancestor (or self) -->
+          <xsl:template mode="container-toc-section-id" match="node">
+            <xsl:value-of select="ancestor-or-self::node[../parent::toc]/@id"/>
+          </xsl:template>
+
 
           <xsl:template mode="list-entry" match="api:function">
             <api:list-entry>

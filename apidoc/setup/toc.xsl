@@ -47,6 +47,7 @@
         <node href="/"
               title="All functions"
               display="All functions ({$api:all-functions-count})"
+              id="AllFunctions"
               function-list-page="yes">
           <intro>
             <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>

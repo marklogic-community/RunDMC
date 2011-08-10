@@ -167,6 +167,8 @@
               <xsl:apply-templates mode="class-last" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-hasChildren" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-initialized" select="."/>
             </xsl:variable>
             <li class="{$class}">
               <xsl:apply-templates mode="id-att"   select="."/>
@@ -178,8 +180,8 @@
           </xsl:template>
 
                   <xsl:template mode="id-att" match="node"/>
-                  <!-- Include an ID on nodes that will be loaded asynchronously -->
-                  <xsl:template mode="id-att" match="toc/node/node">
+                  <!-- Include an ID on nodes that have one already -->
+                  <xsl:template mode="id-att" match="node[@id]">
                     <xsl:attribute name="id">
                       <xsl:apply-templates mode="node-id" select="."/>
                     </xsl:attribute>
@@ -206,6 +208,11 @@
                   <!-- Include on nodes that will be loaded asynchronously -->
                   <xsl:template mode="class-hasChildren" match="toc/node/node">hasChildren</xsl:template>
                   <xsl:template mode="class-hasChildren" match="node"/>
+
+                  <!-- Include on the top-level nodes that will *not* be loaded asynchronously; that is, they are already loaded -->
+                  <xsl:template mode="class-initialized" match="toc/node">loaded initialized</xsl:template>
+                  <xsl:template mode="class-initialized" match="node"/>
+
 
                   <xsl:template mode="hit-area" match="node"/>
                   <xsl:template mode="hit-area" match="node[node]">
