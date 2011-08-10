@@ -24,6 +24,9 @@
 
   <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide[not(@href eq ml:external-uri($content))]"/>
 
+  <!-- Disable comments on User Guide pages -->
+  <xsl:template mode="comment-section" match="/guide"/>
+
   <xsl:template mode="page-specific-title" match="/guide">
     <xsl:value-of select="title"/>
   </xsl:template>
