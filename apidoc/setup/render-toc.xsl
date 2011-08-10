@@ -98,7 +98,6 @@
           initializeTOC();
 
           // Once the tabs are set up, go ahead and display the TOC
-          $("#toc_tabs").tabs('select', initialTocTabIndex);
           $("#toc_tabs").show();
 
           tooltip();

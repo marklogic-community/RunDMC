@@ -147,9 +147,19 @@ function loadTocSection(index, tocSection) {
 function initializeTOC() {
   // Load the TOC section for the current page
   var tocSection = $(tocSectionLinkSelector).parent();
-  loadTocSection(0,tocSection);
 
-  waitToInitialize(tocSection);
+  // Switch to the relevant tab
+  var current_tab_index = $("#toc_tabs").tabs('option', 'selected');
+  var new_tab_index = tocSection.parents(".tabbed_section").prevAll(".tabbed_section").length;
+  if (current_tab_index !== new_tab_index) {
+    // this triggers updateTocOnTabChange for us
+    $("#toc_tabs").tabs('select',new_tab_index);
+  }
+  else { // otherwise, we have to do it ourselves
+    var tab = $("#tabs-" + current_tab_index+1);
+    var panel = $("#toc_tabs .ui-tabs-panel:visible");
+    updateTocForTab(tab, panel);
+  }
 }
 
 function waitToInitialize(tocSection) {
@@ -184,18 +194,19 @@ function waitToInitialize(tocSection) {
 
     scrollTOC();
   }
-  else
+  else {
     setTimeout(function(){ waitToInitialize(tocSection) }, 100);
+  }
 }
 
 
 function bindFragmentLinkTocActions(context) {
   // Link bindings for updating the TOC state when navigating inside a user guide
   $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link")
-            .click(function() { updateTocForURL(this.pathname, this.hash) });
+            .click(function() { updateTocForUrlFragment(this.pathname, this.hash) });
 }
 
-function updateTocForURL(pathname, hash) {
+function updateTocForUrlFragment(pathname, hash) {
 
   // IE doesn't include the "/" at the beginning of the pathname...
   //var fullLink = this.pathname + this.hash;
@@ -207,38 +218,39 @@ function updateTocForURL(pathname, hash) {
 }
 
 
-// For when someone clicks an intra-document link outside of the TOC itself
 function showInTOC(a) {
   $("#sub a.selected").removeClass("selected");
+//  $("#sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button // necessary?
 
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
 
   loadTocSection(0,a.parent()); // If this is a TOC section that needs loading, then load it
+                                // e.g., when PJAX is enabled and the user clicks the link
 
   items.each(function(index) {
     expandSubTree($(this));
   });
-
-  // Switch to the tab of the first instance
-  var tab_index = a.first().parents(".tabbed_section").prevAll(".tabbed_section").length;
-  $("#toc_tabs").tabs('select',tab_index);
 }
 
 
 function updateTocOnTabChange(ui) {
-  if (ui.tab.innerHTML == "Categories" && functionPageBucketId !== "") {
-    var tocSection = $("#" + functionPageBucketId, ui.panel);
+  updateTocForTab(ui.tab, ui.panel);
+}
+
+function updateTocForTab(tab, panel) {
+  if (tab.innerHTML == "Categories" && functionPageBucketId !== "") {
+    var tocSection = $("#" + functionPageBucketId, panel);
     loadTocSection(0, tocSection);
     waitToInitialize(tocSection);
-  };
-  if (ui.tab.innerHTML == "API") {
-    var tocSectionLink = $(tocSectionLinkSelector, ui.panel);
+  }
+  else {
+    var tocSectionLink = $(tocSectionLinkSelector, panel);
     var tocSection = tocSectionLink.parent();
     if (tocSection.length) {
       loadTocSection(0, tocSection);
       waitToInitialize(tocSection);
     }
-  };
+  }
   scrollTOC();
 }
 

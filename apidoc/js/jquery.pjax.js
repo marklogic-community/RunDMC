@@ -183,6 +183,9 @@ var popped = ('state' in window.history), initialURL = location.href
 // You probably shouldn't use pjax on pages with other pushState
 // stuff yet.
 $(window).bind('popstate', function(event){
+
+/* EDL: Added this line: */ updateTocForUrlFragment(location.pathname, location.hash); // For navigating within a user guide using the back/forward buttons
+ 
   // Ignore inital popstate that some browsers fire on page load
   var initialPop = !popped && location.href == initialURL
   popped = true
@@ -198,8 +201,7 @@ $(window).bind('popstate', function(event){
         container: container,
         push: false,
         timeout: state.timeout
-//EDL: Added this
-,success: function() { colorizeExamples() }
+/* EDL: Added this line: */ ,success: function() { initializeTOC(); colorizeExamples() } // For back/forward button navigation with PJAX
       })
     else
       window.location = location.href

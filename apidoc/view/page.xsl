@@ -46,7 +46,6 @@
     <xsl:choose>
       <xsl:when test="$is-pjax-request">
         <div>
-          PJAX!!
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
@@ -102,8 +101,6 @@
 
         <xsl:call-template name="reset-global-toc-vars"/>
 
-        var initialTocTabIndex = <xsl:apply-templates mode="initial-toc-tab-index" select="$content/*"/>;
-
         $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
 
       </xsl:comment>
@@ -147,10 +144,6 @@
             <xsl:text> >:first-child</xsl:text>
           </xsl:template>
 
-
-          <xsl:template mode="initial-toc-tab-index" match="api:list-page | api:function-page"          >0</xsl:template>
-          <xsl:template mode="initial-toc-tab-index" match="api:list-page[@type eq 'function-category']">1</xsl:template>
-          <xsl:template mode="initial-toc-tab-index" match="api:docs-page | guide"                      >2</xsl:template>
 
   <xsl:template mode="page-title" match="api:docs-page">
     <xsl:value-of select="$site-title"/>
