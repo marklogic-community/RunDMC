@@ -159,7 +159,8 @@ function waitToInitialize(tocSection) {
     var current = tocSection.find("a").filter(function() {
       return this.href.toLowerCase() == location.href.toLowerCase();
     });
-    showInTOC(current);
+
+    if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
     $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
