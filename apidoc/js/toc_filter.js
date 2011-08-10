@@ -220,7 +220,7 @@ function updateTocForUrlFragment(pathname, hash) {
 
 function showInTOC(a) {
   $("#sub a.selected").removeClass("selected");
-//  $("#sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button // necessary?
+  $("#sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
 
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
 
