@@ -146,7 +146,7 @@ function loadTocSection(index, tocSection) {
 
 function initializeTOC() {
   // Load the TOC section for the current page
-  var tocSection = $(tocSectionLinkSelector).parent();
+  var tocSection = $(tocSectionLinkSelector).first().parent();
 
   // Switch to the relevant tab
   var current_tab_index = $("#toc_tabs").tabs('option', 'selected');
