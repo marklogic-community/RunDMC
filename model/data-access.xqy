@@ -43,6 +43,44 @@ declare variable $live-documents := ( $Announcements
                                     | $Projects
                                     );
 
+(: cts:query for live documents, so we can pass this to search:search() :)
+(: TODO: Yes, this duplicates some logic above, so some refactoring is in order. :)
+declare variable $live-document-query :=
+  cts:and-query((
+    (: Assumption: These elements only ever appear at the top level. :)
+    cts:or-query((
+      cts:element-query(xs:QName("Announcement"),cts:and-query(())),
+      cts:element-query(xs:QName("Event")       ,cts:and-query(())),
+      cts:element-query(xs:QName("Article")     ,cts:and-query(())),
+      cts:element-query(xs:QName("Post")        ,cts:and-query(())),
+      cts:element-query(xs:QName("Project")     ,cts:and-query(())),
+      cts:element-query(xs:QName("page")        ,cts:and-query(()))
+    )),
+    (: Exclude preview-only documents :)
+    cts:not-query(
+      cts:or-query((
+        cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","preview-only"),"yes"),
+        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","preview-only"),"yes")
+      ))
+    ),
+    (: Require status="Published" if we're only serving public docs :)
+    if ($draft:public-docs-only) then
+      cts:or-query((
+        cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published"),
+        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published")
+      ))
+    else ()
+  ));
+
+
 (: Used to discover Project docs in the Admin UI :)
 declare variable $projects-by-name := for $p in $Projects
                                       order by $p/name

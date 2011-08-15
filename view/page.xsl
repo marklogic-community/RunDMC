@@ -18,6 +18,7 @@
   <xsl:include href="widgets.xsl"/>
   <xsl:include href="comments.xsl"/>
   <xsl:include href="tag-library.xsl"/>
+  <xsl:include href="search.xsl"/>
   <xsl:include href="xquery-imports.xsl"/>
 
   <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -31,8 +32,29 @@
 
   <xsl:variable name="DEBUG" select="false()"/>
 
+  <xsl:variable name="original-content" select="/"/>
+
   <xsl:variable name="highlight-search" select="string($params[@name eq 'hl'])"/>
-  <xsl:variable name="content" select="if ($highlight-search) then u:highlight-doc(/, $highlight-search) else /"/>
+  <xsl:variable name="content" select="if ($highlight-search) then $highlighted-content else /"/>
+
+          <xsl:variable name="highlighted-content">
+            <xsl:apply-templates mode="preserve-base-uri" select="u:highlight-doc(/, $highlight-search)"/>
+          </xsl:variable>
+
+                  <xsl:template mode="preserve-base-uri" match="@* | node()">
+                    <xsl:copy>
+                      <xsl:apply-templates mode="#current" select="@* | node()"/>
+                    </xsl:copy>
+                  </xsl:template>
+
+                  <!-- Add an xml:base attribute to the document element so the base URI is preserved, even in the highlighted document -->
+                  <xsl:template mode="preserve-base-uri" match="/*">
+                    <xsl:copy>
+                      <xsl:attribute name="xml:base" select="base-uri($original-content)"/>
+                      <xsl:apply-templates mode="#current" select="@* | node()"/>
+                    </xsl:copy>
+                  </xsl:template>
+
 
   <xsl:variable name="template-dir" select="'/config'"/>
 
@@ -123,7 +145,7 @@
                     <xsl:value-of select="product-info/@name"/>
                   </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[$external-uri eq '/search']">
+                  <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">
                     <xsl:text>Search results for "</xsl:text>
                     <xsl:value-of select="$params[@name eq 'q']"/>
                     <xsl:text>"</xsl:text>

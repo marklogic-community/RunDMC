@@ -120,10 +120,12 @@
         </page>
     </group>
   </page>
-  <page display="Discuss" href="/discuss">
+  <page display="Mailing lists" href="/discuss">
     <group display="Subscribe">
       <page display="General Development" href="/mailman/listinfo/general"/>
+      <!--
       <page display="Announcements" href="/mailman/listinfo/announce"/>
+      -->
       <page display="Commits" href="/mailman/listinfo/commits"/>
     </group>
   </page>

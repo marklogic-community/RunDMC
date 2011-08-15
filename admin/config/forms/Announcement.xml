@@ -4,7 +4,7 @@
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
       xmlns="http://www.w3.org/1999/xhtml"
       status="Draft" label:status="Status"         values:status="Draft Published"
-      user-group=""  label:user-group="User Group" values:user-group="_ bmug denmark markups mugfr novamug nymug"
+      user-group=""  label:user-group="User Group" values:user-group="_ bmug denmark markups mugfr novamug nymug mugl"
       form:uri-prefix-for-new-docs="/news/">
   <ml:title form:label="Title"
             form:wide="yes"/>
