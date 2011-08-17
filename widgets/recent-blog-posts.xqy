@@ -7,6 +7,23 @@
 
 
   <div class="body">
+    <h3><a href="/blog/balisage2011-dinner-recap">Balisage dinner adventure</a></h3>
+    <div class="author">by Evan Lenz, August 17, 2011</div>
+    <div class="message">
+    <p>It's been a couple of weeks, so I've had some time to recover from my whirlwind trip to Montreal. <a target="_blank" href="http://balisage.net/">What a great conference!</a> It was great getting to see people I hadn't seen for years and for meeting lots of new and interesting people. This conference was the first time I've ever been asked to host a dinner (sponsored by MarkLogic) and to "create some fun activity or game"...</p>
+    </div>
+  </div>
+
+
+  <div class="body">
+    <h3><a href="http://www.corneliadavis.com/blog/index.php/2011/08/balisage-2011/" target="_blank">Balisage 2011</a></h3>
+    <div class="author">by Cornelia Davis, August 7, 2011</div>
+    <div class="message">
+<p>I made it to the <a target="_blank" href="http://www.balisage.net/index.html">Balisage conference</a> this year.  I&#8217;d been eyeing the conference for a couple of years, so I submitted a <a target="_blank" href="http://www.balisage.net/Proceedings/vol7/html/Davis01/BalisageVol7-Davis01.html">paper proposal that was accepted</a> and spent the first week of August in Montreal.  I confess, aside from a couple of morning runs in the <a target="_blank" href="http://montreal.com/parks/mtroyal.html">Mount Royal Park</a>, (which is just fantastic) I saw very little of Montreal, but what I did see this week was quite spectacular &#8211; the conference itself.  Looking at the <a target="_blank" href="http://www.balisage.net/Proceedings/vol7/contents.html">conference proceedings</a> doesn&#8217;t give even a hint as to the uniqueness of this event, the <a target="_blank" href="http://www.flickr.com/photos/btusdin/collections/72157624739674480/">pictures</a> that <a target="_blank" href="http://twitter.com/#!/btusdin">Tommie Usdin</a>, the conference chair, posted do show a bit of the peculiar (peculiar in a good way) side, but neither of those things bring it all together.  This post is my feeble attempt at capturing some of the magic...</p> 
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/learning-with-query-trace">Learning with xdmp:query-trace()</a></h3>
     <div class="author">by Evan Lenz, July 20, 2011</div>
     <div class="message">
@@ -36,26 +53,6 @@
     performance...</p> 
     </div>
   </div>
-
-  <div class="body">
-    <h3><a href="/blog/balisage2011">MarkLogic at Balisage 2011</a></h3>
-    <div class="author">by Evan Lenz, July 12, 2011</div>
-    <div class="message">
-    <p>MarkLogic will be well represented at <a href="http://balisage.net">Balisage 2011</a>. Not only are we sponsoring the conference once again (and hosting <a href="/news/balisage2011">a Chinese banquet</a>, including a dinner conversation game that should be a lot of fun), but a bunch of us will be there to geek out with the rest of you. Jason Hunter, Mary Holstege, and John Snelson will all be there, and three of us will be speaking, with these topics...</p>
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="/blog/xquery-coding-guidelines">XQuery Coding Guidelines</a></h3>
-    <div class="author">by Micah Dubinko, June 29, 2011</div>
-    <div class="message">
-    <p>Code gets <a href="http://www.python.org/dev/peps/pep-0008/">read more often than it gets written</a>, so how it gets laid out on the screen is a critical component of maintainability. When a project involves more than one person checking in code, it gets even more important. So here's a peek inside the MarkLogic Engineering team's process -- our set of agreed-upon guidelines for formatting XQuery code...</p>
-    </div>
-  </div>
-
-
-
-
 
 
 
