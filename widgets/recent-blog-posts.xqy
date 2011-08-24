@@ -7,19 +7,18 @@
 
 
   <div class="body">
-    <h3><a href="/blog/balisage2011-dinner-recap">Balisage dinner adventure</a></h3>
-    <div class="author">by Evan Lenz, August 17, 2011</div>
+    <h3><a href="http://blakeley.com/wordpress/archives/560" target="_blank">Group By in XQuery 1.0 for MarkLogic Server</a></h3>
+    <div class="author">by Michael Blakeley, August 23, 2011</div>
     <div class="message">
-    <p>It's been a couple of weeks, so I've had some time to recover from my whirlwind trip to Montreal. <a target="_blank" href="http://balisage.net/">What a great conference!</a> It was great getting to see people I hadn't seen for years and for meeting lots of new and interesting people. This conference was the first time I've ever been asked to host a dinner (sponsored by MarkLogic) and to "create some fun activity or game"...</p>
+    <p>XQuery 3.0 introduces new syntax for “group by”. At this time, MarkLogic Server 4.2 is the latest release, and it doesn’t have support for that syntax. So how can we implement “group by” when writing XQuery for MarkLogic? Let’s start with the W3C use cases. First, let’s fetch the sample data and put it into MarkLogic...</p>
     </div>
   </div>
 
-
   <div class="body">
-    <h3><a href="http://www.corneliadavis.com/blog/index.php/2011/08/balisage-2011/" target="_blank">Balisage 2011</a></h3>
-    <div class="author">by Cornelia Davis, August 7, 2011</div>
+    <h3><a href="/blog/nosql-now-2011">Come see us at NoSQL Now! in San Jose, CA Aug 23-25</a></h3>
+    <div class="author">by Eric Bloch, August 19, 2011</div>
     <div class="message">
-<p>I made it to the <a target="_blank" href="http://www.balisage.net/index.html">Balisage conference</a> this year.  I&#8217;d been eyeing the conference for a couple of years, so I submitted a <a target="_blank" href="http://www.balisage.net/Proceedings/vol7/html/Davis01/BalisageVol7-Davis01.html">paper proposal that was accepted</a> and spent the first week of August in Montreal.  I confess, aside from a couple of morning runs in the <a target="_blank" href="http://montreal.com/parks/mtroyal.html">Mount Royal Park</a>, (which is just fantastic) I saw very little of Montreal, but what I did see this week was quite spectacular &#8211; the conference itself.  Looking at the <a target="_blank" href="http://www.balisage.net/Proceedings/vol7/contents.html">conference proceedings</a> doesn&#8217;t give even a hint as to the uniqueness of this event, the <a target="_blank" href="http://www.flickr.com/photos/btusdin/collections/72157624739674480/">pictures</a> that <a target="_blank" href="http://twitter.com/#!/btusdin">Tommie Usdin</a>, the conference chair, posted do show a bit of the peculiar (peculiar in a good way) side, but neither of those things bring it all together.  This post is my feeble attempt at capturing some of the magic...</p> 
+    <p>It's actually a little hard not to be aware these days that NoSQL technologies are being adopted by enterprise developers. This is happening for a number of reasons including scale, agility, performance, and the individual features of these new tools. In general, we at MarkLogic see this as a positive trend in software development. The NoSQL buzz has removed "blinders" that, in the past, has resulted in many developers using relational technology somewhat, well, blindly. From our vantage point, again, these changes are positive ones that serve to remind us to choose the best tools and models for our needs...</p>
     </div>
   </div>
 
