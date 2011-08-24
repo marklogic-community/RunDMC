@@ -10,8 +10,9 @@
   xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search cts">
+  exclude-result-prefixes="xs ml xdmp qp search cts srv">
 
   <xsl:template match="search-results">
     <xsl:variable name="results-per-page" select="10"/>
@@ -91,9 +92,11 @@
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
+            <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  ml:external-uri-api($doc))
+                                                                     else concat($srv:main-server, if ($is-flat-file) then @uri else ml:external-uri-main($doc))"/>
             <div class="searchResult">
-              <a href="{if ($is-flat-file) then @uri
-                                             else ml:external-uri($doc)}?hl={encode-for-uri($params[@name eq 'q'])}"> <!-- Send query term -->
+              <a href="{$result-uri}?hl={encode-for-uri($params[@name eq 'q'])}"> <!-- Send query term -->
                 <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
@@ -131,14 +134,15 @@
 
 
                   <xsl:template mode="prev-and-next" match="search:response">
+                    <xsl:variable name="search-url" select="ml:external-uri(.)"/>
                     <xsl:if test="@total gt (@start + @page-length - 1)">
                       <div class="nextPage">
-                        <a href="/search?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number + 1}">Next</a>
+                        <a href="{$search-url}?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number + 1}">Next</a>
                       </div>
                     </xsl:if>
                     <xsl:if test="$page-number gt 1">
                       <div class="prevPage">
-                        <a href="/search?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number - 1}">Prev</a>
+                        <a href="{$search-url}?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number - 1}">Prev</a>
                       </div>
                     </xsl:if>
                     <p/>

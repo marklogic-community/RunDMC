@@ -144,7 +144,7 @@
               </div>
             </div>
             <div id="tabs-4" class="tabbed_section">
-              <form action="/" method="get">
+              <form action="/srch" method="get">
                 <input id="q" name="q"/>
               </form>
             </div>

@@ -413,9 +413,33 @@
 
   <xsl:function name="ml:external-uri" as="xs:string">
     <xsl:param name="node" as="node()*"/>
+    <xsl:sequence select="ml:external-uri-main($node)"/>
+  </xsl:function>
+
+  <!-- Mapping of internal->external URIs for main server -->
+  <xsl:function name="ml:external-uri-main" as="xs:string">
+    <xsl:param name="node" as="node()*"/>
     <xsl:variable name="doc-path" select="base-uri($node)"/>
     <xsl:sequence select="if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')"/>
   </xsl:function>
+
+  <!-- Mapping of internal->external URIs for API server -->
+  <xsl:function name="ml:external-uri-api" as="xs:string">
+    <xsl:param name="node" as="node()"/>
+    <xsl:sequence select="ml:external-uri-for-string(base-uri($node))"/>
+  </xsl:function>
+
+          <!-- Account for "/apidoc" prefix in internal/external URI mappings -->
+          <xsl:function name="ml:external-uri-for-string" as="xs:string">
+            <xsl:param name="doc-uri" as="xs:string"/>
+            <xsl:variable name="version" select="substring-before(substring-after($doc-uri,'/apidoc/'),'/')"/>
+            <xsl:variable name="versionless-path" select="substring-after($doc-uri,concat('/apidoc/',$version))"/>
+
+            <xsl:value-of>
+              <!-- Map "/index.xml" to "/" and "/foo.xml" to "/foo" -->
+              <xsl:value-of select="if ($versionless-path eq '/index.xml') then '/' else substring-before($versionless-path, '.xml')"/>
+            </xsl:value-of>
+          </xsl:function>
 
   <xsl:function name="ml:internal-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>

@@ -4,7 +4,7 @@
     <main-server url="http://dmc-stage.marklogic.com"/>
     <draft-server url="http://dmc-stage-draft.marklogic.com"/>
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
-    <api-server url="http://dmc-stage.marklogic.com:8036"/>
+    <api-server url="http://api-stage.marklogic.com"/>
   </host>
 
   <host type="production" name="developer.marklogic.com">
