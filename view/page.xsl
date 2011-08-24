@@ -145,7 +145,7 @@
                     <xsl:value-of select="product-info/@name"/>
                   </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">
+                  <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) = ('/search','/srch')]">
                     <xsl:text>Search results for "</xsl:text>
                     <xsl:value-of select="$params[@name eq 'q']"/>
                     <xsl:text>"</xsl:text>
@@ -433,7 +433,8 @@
           <xsl:function name="ml:external-uri-for-string" as="xs:string">
             <xsl:param name="doc-uri" as="xs:string"/>
             <xsl:variable name="version" select="substring-before(substring-after($doc-uri,'/apidoc/'),'/')"/>
-            <xsl:variable name="versionless-path" select="substring-after($doc-uri,concat('/apidoc/',$version))"/>
+            <xsl:variable name="versionless-path" select="if ($version) then substring-after($doc-uri,concat('/apidoc/',$version))
+                                                                        else substring-after($doc-uri,'/apidoc')"/>
 
             <xsl:value-of>
               <!-- Map "/index.xml" to "/" and "/foo.xml" to "/foo" -->
