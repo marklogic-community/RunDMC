@@ -15,6 +15,14 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://xquerywebappdev.wordpress.com/2011/08/23/technical-details-on-techniques-used-in-the-development-competition/" target="_blank">Technical details on techniques used in the development competition</a></h3>
+    <div class="author">by Ryan Semerau, August 23, 2011</div>
+    <div class="message">
+    <p>The <a title="MarkLogic decidedly wins development competition" target="_blank" href="http://xquerywebappdev.wordpress.com/2011/08/20/marklogic-decidedly-wins-development-competition/">post on winning the development competition</a> has generated a lot of interest (relative to my other posts) so I&#8217;d thought I&#8217;d go into more detail about the technology we used. First, there are some guiding principles that I follow when it comes to xquery web apps on MarkLogic. They are not set in stone, and individual projects may deviate. But these are my starting points...</p> 
+    </div>
+  </div>
+
+  <div class="body">
     <h3><a href="/blog/nosql-now-2011">Come see us at NoSQL Now! in San Jose, CA Aug 23-25</a></h3>
     <div class="author">by Eric Bloch, August 19, 2011</div>
     <div class="message">
@@ -23,33 +31,10 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/learning-with-query-trace">Learning with xdmp:query-trace()</a></h3>
-    <div class="author">by Evan Lenz, July 20, 2011</div>
+    <h3><a href="http://blog.davidcassel.net/2011/08/unparsing-a-custom-facet/" target="_blank">Unparsing a custom facet</a></h3>
+    <div class="author">by David Cassel, August 13, 2011</div>
     <div class="message">
-    <p>One
-    of the things I love to do is learn and help other people learn.
-    I'm still relatively new to MarkLogic, so there's a lot I can't
-    really write about, since I haven't learned it yet. But as long as
-    I keep my learning one step ahead of my writing, then I (and you
-    readers!) should be safe and not wildly misled. One
-    tool I've been using to learn how MarkLogic evaluates queries is
-    the xdmp:query-trace() function...</p>
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="/blog/good-xml-design-and-performance">Good XML design and performance</a></h3>
-    <div class="author">by Evan Lenz, July 14, 2011</div>
-    <div class="message">
-    <p>MarkLogic has always tried to ensure that
-    well-designed XML performs well "as is" in MarkLogic Server. For example, if your
-    schema uses descriptive, unique element names, that is not only
-    going to make your application code clean and readable but it will
-    be fast too. On the other hand, if your schema contains a lot of
-    generic element names (such as "item") used in multiple ways, then
-    it's going to make for harder-to-read code (in XQuery or XSLT), and
-    it might also require you to do some extra leg work to get the best
-    performance...</p> 
+    <p>In many search applications, when we show the results of a user’s search, we also want to display the search that was done by putting the query string into a text box, especially if the search is built up from an advanced search screen. In some cases, we might want to modify the search before displaying it. For instance, part of your UI might be a control that removes a constraint from the current search. It’s pretty straightforward to convert the query string to cts:query elements, remove the particular constraint, and then convert the cts:query elements back to a query string. App Builder applications do this. But in order for that to work, your custom constraint needs to contain the information needed to unparse it...</p>
     </div>
   </div>
 

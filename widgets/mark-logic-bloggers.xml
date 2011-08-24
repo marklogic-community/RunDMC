@@ -43,6 +43,11 @@
   </div>
   
   <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blogs.marklogic.com/" target="_blank"><strong>MarkLogicians</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+  
+  <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://xquery.typepad.com/" target="_blank"><strong>Matt Turner's Discovering XQuery</strong></a> <span class="date"></span>
     <div></div>
   </div>  
