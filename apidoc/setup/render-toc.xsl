@@ -97,6 +97,9 @@
           bindFragmentLinkTocActions(document.body);
           initializeTOC();
 
+          if (window.location.pathname === "/srch")
+            $("#toc_tabs").tabs("option", "selected", 3);
+
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
 
