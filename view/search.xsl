@@ -11,8 +11,9 @@
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
+  xmlns:api  ="http://marklogic.com/rundmc/api"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search cts srv">
+  exclude-result-prefixes="xs ml xdmp qp search cts srv api">
 
   <xsl:template match="search-results">
     <xsl:variable name="results-per-page" select="10"/>
@@ -23,7 +24,7 @@
           <!-- TODO: move pubs URIs to config -->
           <xsl:copy-of select="cts:or-query((
                                 $ml:live-document-query,
-                                cts:directory-query(('/pubs/4.2/apidocs/',
+                                cts:directory-query(((:'/pubs/4.2/apidocs/',:)
                                                      '/pubs/4.2/dotnet/',
                                                      '/pubs/4.2/javadoc/',
                                                      '/pubs/code/'
@@ -119,6 +120,14 @@
                     <xsl:variable name="title" select="(//*:title)[1]" as="xs:string"/>
                     <xsl:value-of select="if (ends-with($title, $common-suffix)) then substring-before($title, $common-suffix)
                                                                                  else $title"/>
+                  </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="/guide" xpath-default-namespace="">
+                    <xsl:value-of select="title"/>
+                  </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="api:function-page">
+                    <xsl:value-of select="api:function[1]/@fullname"/>
                   </xsl:template>
 
 

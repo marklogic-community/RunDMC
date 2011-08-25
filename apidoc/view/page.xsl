@@ -154,10 +154,6 @@
     <xsl:value-of select="@title"/>
   </xsl:template>
 
-  <xsl:template mode="page-specific-title" match="api:function-page">
-    <xsl:value-of select="api:function[1]/@fullname"/>
-  </xsl:template>
-
 
   <xsl:template mode="page-content" match="api:list-page | api:docs-page">
     <xsl:variable name="docs" as="element()*">

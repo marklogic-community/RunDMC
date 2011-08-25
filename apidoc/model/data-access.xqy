@@ -7,8 +7,10 @@ declare namespace apidoc = "http://marklogic.com/xdmp/apidoc";
 
 import module namespace u = "http://marklogic.com/rundmc/util"
        at "../../lib/util-2.xqy";
+import module namespace ml = "http://developer.marklogic.com/site/internal"
+       at "../../model/data-access.xqy";
 
-declare variable $api:default-version   as xs:string  := fn:string(u:get-doc("/apidoc/config/server-versions.xml")/*/version[@default eq 'yes']/@number);
+declare variable $api:default-version   as xs:string  := $ml:default-version;
 declare variable $api:version-specified as xs:string? := xdmp:get-request-field("version"); (: uniformly accessed in both the setup and view code
                                                                                                rather than using $params which only the view code uses :)
 declare variable $api:version           as xs:string  := if ($api:version-specified) then $api:version-specified

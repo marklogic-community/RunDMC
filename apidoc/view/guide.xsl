@@ -27,10 +27,6 @@
   <!-- Disable comments on User Guide pages -->
   <xsl:template mode="comment-section" match="/guide"/>
 
-  <xsl:template mode="page-specific-title" match="/guide">
-    <xsl:value-of select="title"/>
-  </xsl:template>
-
   <xsl:template mode="page-content" match="/guide">
     <div class="userguide">
       <xsl:choose>

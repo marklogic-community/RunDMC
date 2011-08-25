@@ -2,12 +2,15 @@ module namespace ml = "http://developer.marklogic.com/site/internal";
 
 import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
        at "filter-drafts.xqy";
+import module namespace u = "http://marklogic.com/rundmc/util"
+       at "../../lib/util-2.xqy";
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
 declare namespace prop="http://marklogic.com/xdmp/property";
 declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
+declare namespace api ="http://marklogic.com/rundmc/api";
 
 
 declare variable $Announcements := docs('Announcement');
@@ -54,7 +57,8 @@ declare variable $live-document-query :=
       cts:element-query(xs:QName("Article")     ,cts:and-query(())),
       cts:element-query(xs:QName("Post")        ,cts:and-query(())),
       cts:element-query(xs:QName("Project")     ,cts:and-query(())),
-      cts:element-query(xs:QName("page")        ,cts:and-query(()))
+      cts:element-query(xs:QName("page")        ,cts:and-query(())),
+      $api-doc-query
     )),
     (: Exclude preview-only documents :)
     cts:not-query(
@@ -75,9 +79,23 @@ declare variable $live-document-query :=
         cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published")
+        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published"),
+        $api-doc-query
       ))
     else ()
+  ));
+
+declare variable $server-versions               := u:get-doc("/apidoc/config/server-versions.xml")/*/*:version/@number;
+declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
+
+(: Search only goes across the default server version :)
+declare variable $api-doc-query :=
+  cts:and-query((
+    cts:directory-query(fn:concat("/apidoc/",$default-version,"/"), "infinity"),
+    cts:or-query((
+      cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
+      cts:element-query(fn:QName("","guide"),cts:and-query(()))
+    ))
   ));
 
 
