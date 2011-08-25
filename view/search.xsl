@@ -54,6 +54,9 @@
       <xsl:copy-of select="$search-results"/>
     </xsl:variable>
     <xsl:apply-templates mode="search-results" select="$search-results-doc/search:response"/>
+    <div style="display:none;" id="search_sidebar">
+      <p>Placeholder for facet navigation</p>
+    </div>
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response[@total eq 0]">

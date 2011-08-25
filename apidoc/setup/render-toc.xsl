@@ -97,6 +97,8 @@
           bindFragmentLinkTocActions(document.body);
           initializeTOC();
 
+          $("#search_pane_content").append($("#search_sidebar").children());
+
           if (window.location.pathname === "/srch")
             $("#toc_tabs").tabs("option", "selected", 3);
 
@@ -150,6 +152,7 @@
               <form action="/srch" method="get">
                 <input id="q" name="q"/>
               </form>
+              <div id="search_pane_content"/>
             </div>
           </div>
         </div>
