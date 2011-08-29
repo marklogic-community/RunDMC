@@ -33,6 +33,17 @@
                                                    )
                                ))"/>
         </additional-query>
+        <constraint name="cat">
+          <custom facet="false">
+          <!--
+          <custom facet="true">
+          -->
+            <parse        apply="category-parse"        ns="http://marklogic.com/rundmc/facets" at="/model/facets.xqy"/>
+            <!--
+            <finish-facet apply="category-finish-facet" ns="http://marklogic.com/rundmc/facets" at="/model/facets.xqy"/>
+            -->
+          </custom>
+        </constraint>
       </options>
     </xsl:variable>
     <xsl:variable name="search-results" select="search:search($params[@name eq 'q'],
