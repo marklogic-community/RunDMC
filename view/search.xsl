@@ -93,7 +93,7 @@
             <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  ml:external-uri-api($doc))
                                                                      else concat($srv:main-server, if ($is-flat-file) then @uri else ml:external-uri-main($doc))"/>
             <div class="searchResult">
-              <a href="{$result-uri}?hl={encode-for-uri($params[@name eq 'q'])}"> <!-- Send query term -->
+              <a href="{$result-uri}"><!--?hl={encode-for-uri($params[@name eq 'q'])}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
                 <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
