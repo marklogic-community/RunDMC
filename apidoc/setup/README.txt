@@ -56,6 +56,14 @@ STEP 6: Run setup.xqy.
   http://localhost:8008/apidoc/setup/setup.xqy?version=4.2
 
 
+STEP 7: Enable the collection lexicon in the RunDMC database (if not already enabled).
+
+STEP 8: Run the collection tagger script (operates on both DMC- and AMC-related content).
+  http://localhost:8008/setup/collection-tagger.xqy
+
+  WARNING: This script bulk-updates a lot of documents, so it may take a while to run.
+
+
 SUMMARY
   To load and build all the 4.1, 4.2, and 5.0 docs, here is the complete
   series of requests you'd have to run:

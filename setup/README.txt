@@ -34,3 +34,8 @@ Files in this directory:
 
     A one-time use script that allowed us to transition to using Disqus-based comments.
     See comments at top of the file for details.
+
+  - collection-tagger.xqy
+
+    This script handles the creation of collection tags on documents to support
+    constrained-search/faceted-navigation functionality.

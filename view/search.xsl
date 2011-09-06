@@ -21,28 +21,10 @@
     <xsl:variable name="options" as="element()">
       <options xmlns="http://marklogic.com/appservices/search">
         <additional-query>
-          <!-- TODO: move pubs URIs to config -->
-          <xsl:copy-of select="cts:or-query((
-                                $ml:live-document-query,
-                                cts:directory-query(((:'/pubs/4.2/apidocs/',:)
-                                                     '/pubs/4.2/dotnet/',
-                                                     '/pubs/4.2/javadoc/',
-                                                     '/pubs/code/'
-                                                    ),
-                                                    'infinity'
-                                                   )
-                               ))"/>
+          <xsl:copy-of select="$ml:search-corpus-query"/>
         </additional-query>
         <constraint name="cat">
-          <custom facet="false">
-          <!--
-          <custom facet="true">
-          -->
-            <parse        apply="category-parse"        ns="http://marklogic.com/rundmc/facets" at="/model/facets.xqy"/>
-            <!--
-            <finish-facet apply="category-finish-facet" ns="http://marklogic.com/rundmc/facets" at="/model/facets.xqy"/>
-            -->
-          </custom>
+          <collection prefix="category/"/>
         </constraint>
       </options>
     </xsl:variable>

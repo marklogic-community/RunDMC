@@ -85,6 +85,18 @@ declare variable $live-document-query :=
     else ()
   ));
 
+declare variable $search-corpus-query :=
+  cts:or-query((
+    $ml:live-document-query,
+    cts:directory-query(((:'/pubs/4.2/apidocs/',:)
+                         '/pubs/4.2/dotnet/',
+                         '/pubs/4.2/javadoc/',
+                         '/pubs/code/'
+                        ),
+                        'infinity'
+                       )
+  ));
+
 declare variable $server-versions               := u:get-doc("/apidoc/config/server-versions.xml")/*/*:version/@number;
 declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
 
