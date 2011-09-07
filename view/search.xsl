@@ -15,21 +15,22 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv api">
 
+  <xsl:variable name="search-options" as="element()">
+    <options xmlns="http://marklogic.com/appservices/search">
+      <additional-query>
+        <xsl:copy-of select="$ml:search-corpus-query"/>
+      </additional-query>
+      <constraint name="cat">
+        <collection prefix="category/"/>
+      </constraint>
+    </options>
+  </xsl:variable>
+
   <xsl:template match="search-results">
     <xsl:variable name="results-per-page" select="10"/>
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
-    <xsl:variable name="options" as="element()">
-      <options xmlns="http://marklogic.com/appservices/search">
-        <additional-query>
-          <xsl:copy-of select="$ml:search-corpus-query"/>
-        </additional-query>
-        <constraint name="cat">
-          <collection prefix="category/"/>
-        </constraint>
-      </options>
-    </xsl:variable>
     <xsl:variable name="search-results" select="search:search($params[@name eq 'q'],
-                                                              $options,
+                                                              $search-options,
                                                               (:
                                                               search:get-default-options(),
                                                               :)
@@ -49,7 +50,10 @@
     </xsl:variable>
     <xsl:apply-templates mode="search-results" select="$search-results-doc/search:response"/>
     <div style="display:none;" id="search_sidebar">
-      <p>Placeholder for facet navigation</p>
+      <form action="/srch" method="get">
+        <input id="q" name="q" value="{$params[@name eq 'q']}"/>
+      </form>
+      <xsl:apply-templates mode="facet" select="$search-results/search:facet"/>
     </div>
   </xsl:template>
 
@@ -152,5 +156,56 @@
                     </xsl:if>
                     <p/>
                   </xsl:template>
+
+  <xsl:template mode="facet" match="search:facet">
+    <div class="facet">
+      <div class="facet_name">
+        <xsl:apply-templates mode="facet-name" select="@name"/>
+      </div>
+      <ul>
+        <xsl:apply-templates mode="facet-value" select="search:facet-value"/>
+      </ul>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="facet-name" match="@name[. eq 'cat']">Category</xsl:template>
+
+
+          <xsl:template mode="facet-value" match="search:facet-value">
+            <xsl:variable name="q" select="string(../../search:qtext)"/>
+            <xsl:variable name="this" select="concat(../@name,':',@name)"/>
+            <xsl:variable name="selected" select="contains($q,$this)"/>
+            <xsl:variable name="img-file" select="if ($selected) then 'checkmark.gif'
+                                                                 else 'checkblank.gif'"/>
+
+            <xsl:variable name="new-q" select="if ($selected)  then search:remove-constraint($q,$this,$search-options)
+                                          else if (string($q)) then concat('(', $q, ')', ' AND ', $this)
+                                          else $this"/>
+            <li class="facet_value">
+              <img src="/images/{$img-file}"/>
+              <a href="?q={encode-for-uri($new-q)}">
+                <!-- this looks like an XSLT BUG, since I had to add string() to get any output
+                <xsl:value-of select="."/>
+                -->
+                <!--
+                <xsl:value-of select="string(.)"/>
+                -->
+                <xsl:apply-templates mode="facet-value-display" select="."/>
+                <xsl:text> [</xsl:text>
+                <xsl:value-of select="@count"/>
+                <xsl:text>]</xsl:text>
+              </a>
+            </li>
+          </xsl:template>
+
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Code</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User Guide</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC/Java</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC/.Net</xsl:template>
 
 </xsl:stylesheet>

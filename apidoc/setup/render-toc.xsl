@@ -149,9 +149,6 @@
               </div>
             </div>
             <div id="tabs-4" class="tabbed_section">
-              <form action="/srch" method="get">
-                <input id="q" name="q"/>
-              </form>
               <div id="search_pane_content"/>
             </div>
           </div>
