@@ -97,7 +97,11 @@
           bindFragmentLinkTocActions(document.body);
           initializeTOC();
 
-          $("#search_pane_content").append($("#search_sidebar").children());
+          var searchSidebarContent = $("#search_sidebar").children();
+
+          // Only replace the default form if search sidebar content is present (because we're on the search page)
+          if (searchSidebarContent.length)
+            $("#search_pane_content form").replaceWith(searchSidebarContent);
 
           if (window.location.pathname === "/srch")
             $("#toc_tabs").tabs("option", "selected", 3);
@@ -149,7 +153,11 @@
               </div>
             </div>
             <div id="tabs-4" class="tabbed_section">
-              <div id="search_pane_content"/>
+              <div id="search_pane_content">
+                <form action="/srch" method="get">
+                  <input id="q" name="q"/>
+                </form>
+              </div>
             </div>
           </div>
         </div>

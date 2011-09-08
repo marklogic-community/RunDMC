@@ -18,6 +18,9 @@ xdmp:invoke("render-toc.xqy"),
 (: Create list pages in a subsequent transaction, since they depend on both the inserted documents and the XML TOC :)
 xdmp:invoke("make-list-pages.xqy"),
 
+(: Make the search page :)
+xdmp:invoke("make-search-page.xqy"),
+
 (: Delete the old HTML TOCs, whatever they're named :)
 (: UNTESTED; leave this out for now
 xdmp:log(concat("Deleting the old HTML TOCs in ",$toc-dir,"...")),
