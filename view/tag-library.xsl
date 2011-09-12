@@ -329,8 +329,6 @@
 
   <xsl:template match="stackoverflow-reflector">
     <div id="stackunderflow"/>
-    <link type="text/css" rel="Stylesheet" href="/stackunderflow/stackoverflow.min.css" />
-    <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.min.js">${" "} </script>
     <script type="text/javascript">
         $(function() {
             stackunderflow.getQuestionsWithTags("marklogic;xquery").render("#stackunderflow");
