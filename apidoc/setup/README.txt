@@ -16,9 +16,6 @@ STEP 1: Create an empty source database.
   This is a one-time step. Subsequent runs of the content-loading script (next step)
   will keep using the same database.
 
-  Run
-    http://localhost:8008/apidoc/setup/setup-indexes.xqy
-
 
 STEP 2: Create an app server for running the setup scripts.
   E.g., I have an app server called RunDMC-Maintenance on my machine.
@@ -31,12 +28,21 @@ STEP 2: Create an app server for running the setup scripts.
   (same configuration as RunDMC, except with no URL rewriter)
 
 
-STEP 3: Put the latest raw docs (from \\gfurbush\Docs) on the machine running MarkLogic Server.
+STEP 3: Setup the indexes.
+  Run http://localhost:8008/apidoc/setup/setup-indexes.xqy
+
+  ASSUMPTION: The name of the RunDMC database is "RunDMC".
+
+
+STEP 4: Put the latest raw docs (from \\gfurbush\Docs) on the machine running MarkLogic Server.
   For example, on my local machine, I put these folders into: /Users/elenz/Desktop/api-rawdocs/
 
 
-STEP 4: Load the raw docs into the source database.
-  This is done by running the load-raw-docs.xqy script in this directory. You must
+STEP 5: Load the raw docs into the source database.
+  Optionally, to ensure a fresh update (no obsolete docs left over), first delete the
+  contents of the RunDMC-api-rawdocs database.
+
+  To load the raw docs, run the load-raw-docs.xqy script in this directory. You must
   specify both the version of the docs that you're loading and the source directory
   for those documents.
 
@@ -48,20 +54,22 @@ STEP 4: Load the raw docs into the source database.
   track of the progress and also report any applicable warnings.
 
 
-STEP 5: Run setup-guides.xqy.
+STEP 6: Run setup-guides.xqy.
   http://localhost:8008/apidoc/setup/setup-guides.xqy?version=4.2
 
 
-STEP 6: Run setup.xqy.
+STEP 7: Run setup.xqy.
   http://localhost:8008/apidoc/setup/setup.xqy?version=4.2
 
+  NOTE: If you get an error message having to do with an invalid lexical ID,x
+        see the "WARNING" section below.
 
-STEP 7: Enable the collection lexicon in the RunDMC database (if not already enabled).
+STEP 8: Enable the collection lexicon in the RunDMC database (if not already enabled).
 
-STEP 8: Run the collection tagger script (operates on both DMC- and AMC-related content).
+STEP 9: Run the collection tagger script (operates on both DMC- and AMC-related content).
   http://localhost:8008/setup/collection-tagger.xqy
 
-  WARNING: This script bulk-updates a lot of documents, so it may take a while to run.
+  NOTE: This script bulk-updates a lot of documents, so it may take a while to run.
 
 
 SUMMARY
@@ -95,7 +103,7 @@ already there, but not the 5.0 PDF docs yet.)
 WARNING
   One of the files in 4.1 has an issue that breaks the setup script. Until it gets
   fixed, I have to manually fix this each time, changing id="output formats" and
-  href="#output formats" to id="outputformats" and href="#outputformats", respectively.
+  href="#output formats" to id="output_formats" and href="#output_formats", respectively.
   This isn't an issue for either 4.2 or 5.0. (See bug #13808)
 
 
