@@ -42,8 +42,18 @@
   <guide url-name="installation"    source-name="install_all" pdf-name="install">Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
   <guide url-name="xcc"             source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
 
-  <entry title="XCC Javadoc (online)">API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.</entry>
-  <entry title="XCC .NET API Documentation (online)">API documentation for the MarkLogic XCC .NET C# API.</entry>
+  <entry title="XCC Javadoc (online)">
+    API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.
+    <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/javadoc/index.html"/>
+    <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/javadoc/index.html"/>
+    <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/javadoc/index.html"/>
+  </entry>
+  <entry title="XCC .NET API Documentation (online)" url="http://developer.marklogic.com/pubs/4.2/dotnet/index.html">
+    API documentation for the MarkLogic XCC .NET C# API.
+    <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/dotnet/index.html"/>
+    <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/dotnet/index.html"/>
+    <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/dotnet/index.html"/>
+  </entry>
 
   <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
   <guide url-name="sharepoint"      source-name="SharePoint-Connector">The documentation for the MarkLogic Connector for SharePoint®, which allows you to mirror documents from a Microsoft SharePoint repository in MarkLogic Server.</guide>

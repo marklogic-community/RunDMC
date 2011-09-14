@@ -326,6 +326,10 @@
                     <xsl:value-of select="@href"/>
                   </xsl:template>
 
+                  <xsl:template mode="list-page-entry-href" match="entry[url]">
+                    <xsl:value-of select="url[@version eq $api:version]/@href"/>
+                  </xsl:template>
+
                   <xsl:template mode="list-page-entry-href" match="entry">
                     <xsl:value-of select="@href"/>
                   </xsl:template>
