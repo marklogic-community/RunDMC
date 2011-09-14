@@ -48,7 +48,7 @@
 .scrollable_section {
   overflow: auto;
   position: fixed;
-  top: 165px;
+  top: 175px;
   width: 22%;
   bottom: 10px;
 }

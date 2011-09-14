@@ -121,10 +121,10 @@
         <div id="toc_tabs" style="display:none">
           <div id="tab_bar">
             <ul>
-              <li><a href="#tabs-1" class="tab_link">API</a></li>
-              <li><a href="#tabs-2" class="tab_link">Categories</a></li>
-              <li><a href="#tabs-3" class="tab_link">Guides</a></li>
-              <li><a href="#tabs-4" class="tab_link">Search</a></li>
+              <li><a href="#tabs-1" class="tab_link">Functions<br/>by name</a></li>
+              <li><a href="#tabs-2" class="tab_link">Functions<br/>by category</a></li>
+              <li><a href="#tabs-3" class="tab_link">User<br/>Guides</a></li>
+              <li><a href="#tabs-4" class="tab_link">Search<br/>the site</a></li>
             </ul>
           </div>
           <div id="tab_content">
