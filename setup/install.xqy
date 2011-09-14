@@ -6,13 +6,13 @@ let $src-dir := "/space/rundmc/"
 
 let $config := admin:get-configuration()
 let $forest-name := "RunDMCForest"
-let $database-name := "RunDMCDatabase"
+let $database-name := "RunDMC"
 let $http-server-name := "RunDMCHTTP"
 let $http-server-port := 8003
 let $webdav-server-name := "RunDMCWebDAV"
 let $webdav-server-port := 8005
 let $groupid := admin:group-get-id($config, "Default")
-let $rewriter := "/controller/url_rewriter.xqy"
+let $rewriter := "/controller/url_rewrite.xqy"
 
 return ( 
 try {
@@ -36,7 +36,7 @@ catch ($e) {
         else $e
 },
 try {
-        let $forest-attach-config := admin:database-attach-forest($config,xdmp:database("RunDMCDatabase"),xdmp:forest("RunDMCForest"))
+        let $forest-attach-config := admin:database-attach-forest($config,xdmp:database("RunDMC"),xdmp:forest("RunDMCForest"))
         let $status := admin:save-configuration($forest-attach-config)
         return string-join(("Succesfully attached",$forest-name,"to",$database-name)," ")
 }
@@ -69,7 +69,7 @@ catch ($e) {
         else (if (data($e/error:code) eq "ADMIN-DUPLICATEITEM") 
                 then fn:string-join(("WebDAV Server",$webdav-server-name,"already exists on different port")," ") else $e)
 },
-let $config := admin:appserver-set-url-rewriter(admin:get-config(), xdmp:appserver($http-server-name), $rewriter)
+let $config := admin:appserver-set-url-rewriter(admin:get-configuration(), xdmp:server($http-server-name), $rewriter)
 let $status := admin:save-configuration($config)
 return string-join("Successfully set http-server url rewriter to ", $rewriter)
 )
