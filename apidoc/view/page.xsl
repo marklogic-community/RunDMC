@@ -293,6 +293,9 @@
             </tr>
           </xsl:template>
 
+                  <!-- Strip out phrases that don't apply to older server versions -->
+                  <xsl:template mode="list-page-entry-description" match="added-in[$api:version lt @version]"/>
+
                   <xsl:template mode="list-page-pdf-link" match="*">&#160;</xsl:template>
                   <xsl:template mode="list-page-pdf-link" match="guide">
                     <xsl:variable name="href">
