@@ -12,6 +12,9 @@
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
+  <!-- for deciding which tabs to display -->
+  <xsl:param name="version"/>
+
   <xsl:template match="/">
     <xsl:result-document href="{$toc-url}">
       <div id="all_tocs">
@@ -103,8 +106,10 @@
           if (searchSidebarContent.length)
             $("#search_pane_content form").replaceWith(searchSidebarContent);
 
+          var last_tab_pos = $("#toc_tabs").tabs("length") - 1;
+
           if (window.location.pathname === "/srch")
-            $("#toc_tabs").tabs("option", "selected", 3);
+            $("#toc_tabs").tabs("option", "selected", last_tab_pos);
 
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
@@ -121,10 +126,13 @@
         <div id="toc_tabs" style="display:none">
           <div id="tab_bar">
             <ul>
-              <li><a href="#tabs-1" class="tab_link">Functions<br/>by name</a></li>
-              <li><a href="#tabs-2" class="tab_link">Functions<br/>by category</a></li>
+              <li><a href="#tabs-1" class="tab_link">Functions<br/>by Name</a></li>
+              <li><a href="#tabs-2" class="tab_link">Functions<br/>by Category</a></li>
               <li><a href="#tabs-3" class="tab_link">User<br/>Guides</a></li>
-              <li><a href="#tabs-4" class="tab_link">Search<br/>the site</a></li>
+              <xsl:if test="number($version) ge 5">
+                <li><a href="#tabs-4" class="tab_link">Error<br/>Codes</a></li>
+              </xsl:if>
+              <li><a href="#tabs-5" class="tab_link">Search<br/>the Site</a></li>
             </ul>
           </div>
           <div id="tab_content">
@@ -152,7 +160,19 @@
                 </ul>
               </div>
             </div>
-            <div id="tabs-4" class="tabbed_section">
+
+            <xsl:if test="number($version) ge 5">
+              <div id="tabs-4" class="tabbed_section">
+                <div class="scrollable_section">
+                  <input id="config-filter4" name="config-filter4"/>
+                  <ul id="apidoc_tree4" class="treeview">
+                    <xsl:apply-templates select="/*/toc[4]/node"/>
+                  </ul>
+                </div>
+              </div>
+            </xsl:if>
+
+            <div id="tabs-5" class="tabbed_section">
               <div id="search_pane_content">
                 <form action="/srch" method="get">
                   <input id="q" name="q"/>

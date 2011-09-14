@@ -27,6 +27,10 @@ declare function local:save-rendered-toc($toc-url, $is-default-toc) {
                                <map:key>prefix-for-hrefs</map:key>
                                <map:value>{if ($is-default-toc) then () else concat("/",$api:version)}</map:value>
                              </map:entry>
+                             <map:entry>
+                               <map:key>version</map:key>
+                               <map:value>{$api:version}</map:value>
+                             </map:entry>
                            </map:map>))/xdmp:document-insert(base-uri(.), .),
   xdmp:log("Done.")
 };
