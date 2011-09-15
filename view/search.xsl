@@ -198,14 +198,14 @@
             </li>
           </xsl:template>
 
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Code</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User Guide</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC/Java</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC/.Net</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog posts</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source projects</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Events</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function docs</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guides</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News items</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorials</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadocs</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net docs</xsl:template>
 
 </xsl:stylesheet>
