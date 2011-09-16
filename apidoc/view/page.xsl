@@ -82,17 +82,29 @@
   </xsl:template>
 
           <xsl:template mode="version-list-item" match="version">
-            <a href="/{@number}">
-              <xsl:apply-templates mode="version-selected-class" select="."/>
-              <xsl:value-of select="@number"/>
-            </a>
+            <xsl:apply-templates mode="version-item-selected-or-not" select="."/>
             <xsl:if test="position() ne last()"> | </xsl:if>
           </xsl:template>
 
-                  <xsl:template mode="version-selected-class" match="version"/>
-                  <xsl:template mode="version-selected-class" match="version[@number eq $api:version]">
-                    <xsl:attribute name="class" select="'currentVersion'"/>
+                  <!-- Current version -->
+                  <xsl:template mode="version-item-selected-or-not" match="version[@number eq $api:version]">
+                    <span class="currentVersion">
+                      <xsl:apply-templates mode="version-number-display" select="."/>
+                    </span>
                   </xsl:template>
+
+                  <!-- Another version -->
+                  <xsl:template mode="version-item-selected-or-not" match="version">
+                    <a href="/{if (@number eq $api:default-version) then '' else @number}">
+                      <xsl:apply-templates mode="version-number-display" select="."/>
+                    </a>
+                  </xsl:template>
+
+                          <!-- Display 5.0 as "MarkLogic 5" -->
+                          <xsl:template mode="version-number-display" match="version[@number eq '5.0']">MarkLogic 5</xsl:template>
+                          <xsl:template mode="version-number-display" match="version">
+                            <xsl:value-of select="@number"/>
+                          </xsl:template>
 
 
   <xsl:template match="ml:api-toc">
