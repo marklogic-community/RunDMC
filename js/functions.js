@@ -26,7 +26,7 @@ if(typeof jQuery != 'undefined') {
                 "Search documents by keyword"
             );
         }
-        $("#s_inp").addClass("default");
+        if ($("#s_inp").val() == "Search the site") { $("#s_inp").addClass("default"); }
 						$("#s_inp").focus(function() {$("#s_inp").removeClass("default");} );
 						$("#s_inp").blur(function() {
 							if ($("#s_inp").val() == "Search the site" || $("#s_inp").val() == "")

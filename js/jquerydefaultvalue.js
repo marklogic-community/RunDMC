@@ -43,7 +43,11 @@
 				var el = $(this);
 				var def = args[c++];
 
-				el.val(def).focus(function() {
+        // EDL: Only set the default if a default isn't already provided
+        if (el.val() == "")
+          el.val(def);
+
+				el.focus(function() {
 					if(el.val() == def) {
 						el.val("");
 					}
