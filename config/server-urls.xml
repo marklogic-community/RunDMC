@@ -2,7 +2,7 @@
 
   <host type="staging" name="stage-developer.marklogic.com">
 
-    <main-server url="http://dmc.marklogic.com:8039"/>
+    <main-server url="http://dmc-stage.marklogic.com:8039"/>
     <!-- Change back to this once we merge in the apidoc branch on dmc-stage
     <main-server url="http://dmc-stage.marklogic.com"/>
     -->
