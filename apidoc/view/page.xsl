@@ -6,8 +6,9 @@
   xmlns:u="http://marklogic.com/rundmc/util"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:ml="http://developer.marklogic.com/site/internal"
+  xmlns:srv="http://marklogic.com/rundmc/server-urls"
   xmlns:x="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="x xs ml xdmp api u">
+  exclude-result-prefixes="x xs ml xdmp api u srv">
 
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
@@ -70,6 +71,14 @@
        to include the current explicitly specified version -->
   <xsl:template match="x:a/@href[starts-with(.,'/')]">
     <xsl:attribute name="href" select="concat($version-prefix,.)"/>
+  </xsl:template>
+
+  <!-- Prepend the appropriate server name to the search form target -->
+  <xsl:template match="@ml:action">
+    <xsl:attribute name="action">
+      <xsl:value-of select="$srv:main-server"/>
+      <xsl:value-of select="."/>
+    </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="ml:version-list">
