@@ -100,6 +100,7 @@
           bindFragmentLinkTocActions(document.body);
           initializeTOC();
 
+          <!-- Search sidebar isn't going here after all (at least currently)
           var searchSidebarContent = $("#search_sidebar").children();
 
           // Only replace the default form if search sidebar content is present (because we're on the search page)
@@ -110,6 +111,7 @@
 
           if (window.location.pathname === "/srch")
             $("#toc_tabs").tabs("option", "selected", last_tab_pos);
+          -->
 
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
@@ -129,10 +131,12 @@
               <li><a href="#tabs-1" class="tab_link">Functions<br/>by Name</a></li>
               <li><a href="#tabs-2" class="tab_link">Functions<br/>by Category</a></li>
               <li><a href="#tabs-3" class="tab_link">User<br/>Guides</a></li>
+              <!--
               <xsl:if test="number($version) ge 5">
                 <li><a href="#tabs-4" class="tab_link">Error<br/>Codes</a></li>
               </xsl:if>
               <li><a href="#tabs-5" class="tab_link">Search<br/>the Site</a></li>
+              -->
             </ul>
           </div>
           <div id="tab_content">
@@ -161,6 +165,7 @@
               </div>
             </div>
 
+            <!--
             <xsl:if test="number($version) ge 5">
               <div id="tabs-4" class="tabbed_section">
                 <div class="scrollable_section">
@@ -179,6 +184,7 @@
                 </form>
               </div>
             </div>
+            -->
           </div>
         </div>
       </div>
