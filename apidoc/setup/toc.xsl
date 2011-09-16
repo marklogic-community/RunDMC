@@ -98,7 +98,8 @@
 
           <xsl:template match="api:lib">
             <node href="/{.}"
-                  display="{api:prefix-for-lib(.)}: ({api:function-count-for-lib(.)})"
+                  display="{api:prefix-for-lib(.)}:"
+                  function-count="{api:function-count-for-lib(.)}"
                   namespace="{api:uri-for-lib(.)}"
                   title="{api:prefix-for-lib(.)} functions"
                   category-bucket="{@category-bucket}"

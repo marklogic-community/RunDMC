@@ -269,7 +269,7 @@
 
                   <xsl:template mode="link" match="node">
                     <span>
-                      <xsl:value-of select="@display"/>
+                      <xsl:apply-templates mode="node-display" select="."/>
                     </span>
                   </xsl:template>
 
@@ -280,7 +280,7 @@
                     </xsl:variable>
                     <a href="{$href}">
                       <xsl:apply-templates mode="title-att" select="."/>
-                      <xsl:value-of select="@display"/>
+                      <xsl:apply-templates mode="node-display" select="."/>
                     </a>
                     <!-- Not really helpful
                     <xsl:if test="@footnote">
@@ -288,6 +288,20 @@
                     </xsl:if>
                     -->
                   </xsl:template>
+
+                          <xsl:template mode="node-display" match="node">
+                            <xsl:value-of select="@display"/>
+                          </xsl:template>
+
+                          <xsl:template mode="node-display" match="node[@function-count]">
+                            <xsl:next-match/>
+                            <span class="function_count">
+                              <xsl:text> (</xsl:text>
+                              <xsl:value-of select="@function-count"/>
+                              <xsl:text>)</xsl:text>
+                            </span>
+                          </xsl:template>
+
 
                           <!-- For most cases, just append the @href value after the optional version prefix -->
                           <xsl:template mode="link-href" match="node">

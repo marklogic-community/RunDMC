@@ -44,6 +44,7 @@ var waitToSearch = function(text, tocRoot) {
 function searchTOC(filter, tocRoot) {
     tocRoot.find("li").each(function() {
         $(this).removeClass("hide-detail");
+        $(this).find(">a >.function_count").show();
         /*
         if (filter == '') {
             removeHighlightToText($(this));
@@ -62,6 +63,7 @@ function searchTOC(filter, tocRoot) {
                     */
                     // Expand the TOC sub-tree
                     expandSubTree($(this));
+                    $(this).find(">a >.function_count").hide();
             } else {
                 /*
                 removeHighlightToText($(this));
