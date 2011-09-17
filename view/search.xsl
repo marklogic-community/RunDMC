@@ -26,35 +26,31 @@
     </options>
   </xsl:variable>
 
-  <xsl:template match="search-results">
+  <xsl:variable name="search-response" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
-    <xsl:variable name="search-results" select="search:search($params[@name eq 'q'],
-                                                              $search-options,
-                                                              (:
-                                                              search:get-default-options(),
-                                                              :)
-                                                              $start,
-                                                              $results-per-page
-                                                             )"/>
-
-    <xsl:if test="$DEBUG">
-      <xsl:copy-of select="$search-results"/>
-    </xsl:if>
-    <!-- Everything below is a workaround for XSLTBUG 13062 -->
-    <!--
-    <xsl:apply-templates mode="search-results" select="$search-results"/>
-    -->
-    <xsl:variable name="search-results-doc">
-      <xsl:copy-of select="$search-results"/>
+    <!-- Adding the document wrapper is a workaround for XSLTBUG 13062 -->
+    <xsl:variable name="search-response-doc">
+      <xsl:copy-of select="search:search($params[@name eq 'q'],
+                                          $search-options,
+                                          $start,
+                                          $results-per-page
+                                         )"/>
     </xsl:variable>
-    <xsl:apply-templates mode="search-results" select="$search-results-doc/search:response"/>
-    <div style="display:none;" id="search_sidebar">
-      <form action="/srch" method="get">
-        <input id="q" name="q" value="{$params[@name eq 'q']}"/>
-      </form>
-      <xsl:apply-templates mode="facet" select="$search-results/search:facet"/>
+    <xsl:sequence select="$search-response-doc/search:response"/>
+  </xsl:variable>
+
+  <xsl:template match="sub-nav[$external-uri eq '/search']">
+    <div id="search_sidebar">
+      <xsl:apply-templates mode="facet" select="$search-response/search:facet"/>
     </div>
+  </xsl:template>
+
+  <xsl:template match="search-results">
+    <xsl:if test="$DEBUG">
+      <xsl:copy-of select="$search-response"/>
+    </xsl:if>
+    <xsl:apply-templates mode="search-results" select="$search-response"/>
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response[@total eq 0]">
