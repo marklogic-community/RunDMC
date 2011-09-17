@@ -72,6 +72,9 @@
               },350);        
           });
 
+          // default text, style, etc.
+          formatFilterBoxes($("#config-filter, #config-filter2, #config-filter3"));
+
         });
 
         // starting the script on page load

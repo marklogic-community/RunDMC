@@ -142,7 +142,8 @@ h1 a { text-decoration: underline; }
 
 .hide-detail { display: none; }
 
-#config-filter, #config-filter2, #config-filter3 { width: 100px; }
+#config-filter, #config-filter2, #config-filter3 { width: 120px; }
+input.default {color: #CBCBCB; font-style: italic;}
 
 
 li.expandable .treecontrol { display: none; }

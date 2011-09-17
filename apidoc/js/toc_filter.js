@@ -351,3 +351,21 @@ function colorizeExamples() {
   });
 }
 
+function formatFilterBoxes(filterBoxes) {
+  var defaultFilterMsg = "Type to filter TOC...";
+
+  filterBoxes.each(function() {
+    // set the default message
+    $(this).defaultvalue(defaultFilterMsg);
+    // set the style
+    if ($(this).val() == defaultFilterMsg) { $(this).addClass("default"); }
+  });
+
+  // set and remove the style based on user interaction
+  filterBoxes.focus(function() {$(this).removeClass("default");} );
+  filterBoxes.blur(function() {
+    if ($(this).val() == defaultFilterMsg ||
+        $(this).val() == "")
+      $(this).addClass("default");
+  });
+}
