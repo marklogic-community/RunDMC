@@ -15,6 +15,9 @@
 
   <xsl:include href="guide.xsl"/>
 
+  <!-- overrides variable declaration in imported code -->
+  <xsl:variable name="currently-on-api-server" select="true()"/>
+
   <!-- Include the version prefix (e.g., "/4.2") when explicitly specified; otherwise don't -->
   <!--
   <xsl:variable name="version-prefix" select="if (not($api:version-specified)) then '' else concat('/',$api:version-specified)"/>

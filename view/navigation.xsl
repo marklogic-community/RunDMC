@@ -59,9 +59,13 @@
 
                   <xsl:template mode="top-nav-current-att" match="page"/>
 
-                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation]">
+                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation]
+                                                                | page[@api-server and $currently-on-api-server]">
                     <xsl:attribute name="class">current</xsl:attribute>
                   </xsl:template>
+
+                          <!-- overridden in apidoc/view/page.xsl -->
+                          <xsl:variable name="currently-on-api-server" select="false()"/>
 
 
   <xsl:template match="doc-breadcrumbs"/>
