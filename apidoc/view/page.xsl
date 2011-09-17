@@ -29,7 +29,8 @@
   <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry | guide[not(@exclude)]
                                                                                                          [api:guide-info(@url-name)])"/>
 
-  <xsl:variable name="site-title" select="concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
+  <xsl:variable name="site-title" select="if ($api:version eq '5.0') then 'MarkLogic 5 Product Documentation'
+                                                                     else concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
 
   <xsl:variable name="site-url-for-disqus" select="'http://api.marklogic.com'"/>
 
