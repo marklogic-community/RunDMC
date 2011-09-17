@@ -30,6 +30,13 @@
                                                    $navigation//Event        [$content/Event]
                                                   )[1]"/>
 
+  <!-- Home page link always points to main server (even from API server) -->
+  <xsl:template match="xhtml:a/@ml:href[. eq '/']">
+    <xsl:attribute name="href">
+      <xsl:value-of select="$srv:main-server"/>
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="top-nav">
     <ul>
       <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
