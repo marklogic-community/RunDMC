@@ -2,26 +2,36 @@
  background: white;
 }
 
+/*
 #container {
   width: auto;
 }
+*/
 
 #page_content {
-  padding: 0px 30px;
+  padding: 0px 20px;
 }
 
 #main {
+/*
   width: 75%;
+  */
+width: 750px;
   float: none;
   padding: 0px;
+  /*
   right: 0px;
+  */
+  margin-left: 250px;
 }
 
+
 #sub {
-	width: 25%;
   /*
-	float: left;
+	width: 25%;
   */
+width: 280px;
+float:none;
 
   font-weight: bold;
   color: #333333;
@@ -40,16 +50,23 @@
 
 #toc_tabs {
   position: fixed;
-  width: 23%;
+  width: 235px;
   top: 118px;
   bottom: 5px;
+}
+
+.tab_link {
+  font-size: 0.9em;
 }
 
 .scrollable_section {
   overflow: auto;
   position: fixed;
   top: 175px;
+  /*
   width: 22%;
+  */
+width: 232px;
   bottom: 10px;
 }
 
