@@ -15,8 +15,8 @@ let $doc-uri := base-uri($doc),
        else if ($doc/ml:Article       ) then "tutorial"
        else if ($doc/ml:Post          ) then "blog"
        else if ($doc/ml:Project       ) then "code"
-       else if (starts-with($doc-uri, "/pubs/4.2/javadoc/")) then "xcc"
-       else if (starts-with($doc-uri, "/pubs/4.2/dotnet/" )) then "xccn"
+       else if (contains($doc-uri, "/javadoc/")) then "xcc"
+       else if (contains($doc-uri, "/dotnet/" )) then "xccn"
        else ()
 return
   if (not($facet-value))
