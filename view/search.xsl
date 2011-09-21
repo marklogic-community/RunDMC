@@ -92,8 +92,12 @@
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  ml:external-uri-api($doc))
-                                                                     else concat($srv:main-server, if ($is-flat-file) then @uri else ml:external-uri-main($doc))"/>
+            <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
+            <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  $version-prefix, ml:external-uri-api($doc))
+                                                                     else concat($srv:main-server, if ($is-flat-file)
+                                                                                                   then @uri
+                                                                                                   else ml:external-uri-main($doc))"/>
             <div class="searchResult">
               <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
                 <div class="searchTitle">
