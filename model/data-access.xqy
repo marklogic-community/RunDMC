@@ -89,8 +89,12 @@ declare variable $search-corpus-query :=
   cts:or-query((
     $ml:live-document-query,
     cts:directory-query(((:'/pubs/4.2/apidocs/',:)
+                         '/pubs/4.1/dotnet/',
+                         '/pubs/4.1/javadoc/',
                          '/pubs/4.2/dotnet/',
                          '/pubs/4.2/javadoc/',
+                         '/pubs/5.0/dotnet/',
+                         '/pubs/5.0/javadoc/',
                          '/pubs/code/'
                         ),
                         'infinity'
@@ -103,7 +107,7 @@ declare variable $default-version as xs:string  := $ml:server-versions[../@defau
 (: Search only goes across the default server version :)
 declare variable $api-doc-query :=
   cts:and-query((
-    cts:directory-query(fn:concat("/apidoc/",$default-version,"/"), "infinity"),
+    cts:directory-query(fn:concat("/apidoc/"),"infinity"),
     cts:or-query((
       cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
       cts:element-query(fn:QName("","guide"),cts:and-query(()))
