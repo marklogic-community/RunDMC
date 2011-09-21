@@ -102,10 +102,10 @@
                   </xsl:variable>
                   <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
                 </div>
-                <div class="snippets">
-                  <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
-                </div>
               </a>
+              <div class="snippets">
+                <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
+              </div>
             </div>
           </xsl:template>
 
