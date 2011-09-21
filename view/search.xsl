@@ -26,16 +26,18 @@
     </options>
   </xsl:variable>
 
+  <xsl:variable name="q" select="string($params[@name eq 'q'])"/>
+
   <xsl:variable name="search-response" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
     <!-- Adding the document wrapper is a workaround for XSLTBUG 13062 -->
     <xsl:variable name="search-response-doc">
-      <xsl:copy-of select="search:search($params[@name eq 'q'],
-                                          $search-options,
-                                          $start,
-                                          $results-per-page
-                                         )"/>
+      <xsl:copy-of select="search:search($q,
+                                         $search-options,
+                                         $start,
+                                         $results-per-page
+                                        )"/>
     </xsl:variable>
     <xsl:sequence select="$search-response-doc/search:response"/>
   </xsl:variable>
@@ -93,7 +95,7 @@
             <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  ml:external-uri-api($doc))
                                                                      else concat($srv:main-server, if ($is-flat-file) then @uri else ml:external-uri-main($doc))"/>
             <div class="searchResult">
-              <a href="{$result-uri}"><!--?hl={encode-for-uri($params[@name eq 'q'])}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
+              <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
                 <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
                     <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
@@ -142,12 +144,12 @@
                     <xsl:variable name="search-url" select="ml:external-uri(.)"/>
                     <xsl:if test="@total gt (@start + @page-length - 1)">
                       <div class="nextPage">
-                        <a href="{$search-url}?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number + 1}">Next</a>
+                        <a href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number + 1}">Next</a>
                       </div>
                     </xsl:if>
                     <xsl:if test="$page-number gt 1">
                       <div class="prevPage">
-                        <a href="{$search-url}?q={encode-for-uri($params[@name eq 'q'])}&amp;p={$page-number - 1}">Prev</a>
+                        <a href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number - 1}">Prev</a>
                       </div>
                     </xsl:if>
                     <p/>
