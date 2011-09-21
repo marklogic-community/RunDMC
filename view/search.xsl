@@ -159,7 +159,9 @@
         <xsl:apply-templates mode="facet-name" select="@name"/>
       </div>
       <ul>
-        <xsl:apply-templates mode="facet-value" select="search:facet-value"/>
+        <xsl:apply-templates mode="facet-value" select="search:facet-value">
+          <xsl:sort select="@count" order="descending" data-type="number"/>
+        </xsl:apply-templates>
       </ul>
     </div>
   </xsl:template>
