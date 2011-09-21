@@ -169,7 +169,7 @@
     </div>
   </xsl:template>
 
-          <xsl:template mode="facet-name" match="@name[. eq 'cat']">Category</xsl:template>
+          <xsl:template mode="facet-name" match="@name[. eq 'cat']">Narrow by Category:</xsl:template>
 
 
           <xsl:template mode="facet-value" match="search:facet-value">
@@ -191,10 +191,9 @@
                 <!--
                 <xsl:value-of select="string(.)"/>
                 -->
-                <xsl:apply-templates mode="facet-value-display" select="."/>
-                <xsl:text> [</xsl:text>
                 <xsl:value-of select="@count"/>
-                <xsl:text>]</xsl:text>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates mode="facet-value-display" select="."/>
               </a>
             </li>
           </xsl:template>
