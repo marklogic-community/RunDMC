@@ -15,6 +15,8 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv api">
 
+  <xsl:variable name="versions" select="u:get-doc('/config/server-versions.xml')/*:versions/*:version"/>
+
   <xsl:variable name="search-options" as="element()">
     <options xmlns="http://marklogic.com/appservices/search">
       <additional-query>

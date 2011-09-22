@@ -10,7 +10,7 @@ declare variable $version := xdmp:get-request-field("version"); (: e.g., 4.1 :)
 
 declare variable $database-name := u:get-doc("/apidoc/config/source-database.xml")/string(.);
 
-declare variable $legal-versions  := u:get-doc("/apidoc/config/server-versions.xml")/*/version/@number;
+declare variable $legal-versions  := u:get-doc("/config/server-versions.xml")/*/version/@number;
 
 (: Recursively load all files, retaining the subdir structure :)
 declare function local:load-docs($dir) {

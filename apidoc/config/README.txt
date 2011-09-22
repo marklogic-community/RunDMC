@@ -11,11 +11,6 @@ namespace-mappings.xml
   This file lists all the extension and library module namespaces with their
   customary prefixes. It's used by the setup code for the function reference.
 
-server-versions.xml
-  This file configures what versions of the documents (4.1, 4.2, etc.) are to
-  be displayed on the website, as well as which version is the default (should
-  normally be the latest).
-
 category-mappings.xml
   This file is used by the setup code. It lists exceptions to the automated
   mappings of function reference categories to resulting (friendlier, more

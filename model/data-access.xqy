@@ -101,7 +101,7 @@ declare variable $search-corpus-query :=
                        )
   ));
 
-declare variable $server-versions               := u:get-doc("/apidoc/config/server-versions.xml")/*/*:version/@number;
+declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
 declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
 
 (: Search only goes across the default server version :)

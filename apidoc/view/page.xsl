@@ -27,8 +27,6 @@
        then don't include the version prefix in links; see also $api:toc-url in data-access.xqy -->
   <xsl:variable name="version-prefix" select="if ($api:version eq $api:default-version) then '' else concat('/',$api:version-specified)"/>
 
-  <xsl:variable name="versions" select="u:get-doc('/apidoc/config/server-versions.xml')/versions/version"/>
-
   <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry | guide[not(@exclude)]
                                                                                                          [api:guide-info(@url-name)])"/>
 

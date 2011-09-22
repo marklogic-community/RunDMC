@@ -19,3 +19,8 @@ disqus-info.xml
   for each Disqus forum. It also allows you to configure a different
   forum based on the current host type (development, staging, or
   production).
+
+server-versions.xml
+  This file configures what versions of the documents (4.1, 4.2, etc.) are to
+  be displayed on the website, as well as which version is the default (should
+  normally be the latest).
