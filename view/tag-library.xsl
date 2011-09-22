@@ -327,6 +327,15 @@
             </tr>
           </xsl:template>
 
+  <xsl:template match="stackoverflow-reflector">
+    <div id="stackunderflow"/>
+    <script type="text/javascript">
+        $(function() {
+            stackunderflow.getQuestionsWithTags("marklogic;xquery").render("#stackunderflow");
+        });
+    </script>
+    
+  </xsl:template>
 
   <xsl:template match="upcoming-user-group-events">
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>

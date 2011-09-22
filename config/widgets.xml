@@ -29,6 +29,7 @@
     <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
     <page-tree root="/news"/>
     <page-tree root="/events"/>
+    <page-tree root="/qa"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
   </widget>
 

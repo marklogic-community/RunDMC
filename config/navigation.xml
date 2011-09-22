@@ -165,6 +165,8 @@
   </page>
   <page display="Corporate" href="http://www.marklogic.com/" />
 
+  <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
+
   <page display="Home" href="/" hide="yes"/>
   <generic-page display="Search Results" href="/search" hide="yes" />
   <generic-page display="Error" href="/error" hide="yes"/>
