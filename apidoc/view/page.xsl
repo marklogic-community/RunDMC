@@ -103,6 +103,7 @@
             <xsl:sequence select="if (@number eq $api:default-version) then '' else concat('/',@number,'/docs')"/>
           </xsl:template>
 
+          <xsl:template mode="current-version-selected" match="version"/>
           <xsl:template mode="current-version-selected" match="version[@number eq $api:version]">
             <xsl:call-template name="current-version-class-att"/>
           </xsl:template>
