@@ -18,7 +18,8 @@
 
   <xsl:variable name="versions" select="u:get-doc('/config/server-versions.xml')/*:versions/*:version"/>
 
-  <xsl:variable name="set-version" select="string($params[@name eq 'set-version'])"/>
+  <xsl:variable name="set-version-param-name" select="'v'"/>
+  <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
 
   <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('preferred-version')"/>
   <xsl:variable name="preferred-version" select="if ($set-version)
@@ -94,7 +95,7 @@
                   </xsl:template>
 
                           <xsl:template mode="version-list-item-href" match="*:version">
-                            <xsl:sequence select="concat('/search?q=', $q, '&amp;set-version=', @number)"/>
+                            <xsl:sequence select="concat('/search?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
                           </xsl:template>
 
                           <xsl:template mode="current-version-selected" match="*:version"/>
