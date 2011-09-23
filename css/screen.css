@@ -1213,3 +1213,7 @@ input[type='text'].focus {
 .feature {
     margin-right: 1em;
 }
+
+.currentVersion {
+  color: #F86D07;
+}

@@ -48,7 +48,7 @@ declare variable $live-documents := ( $Announcements
 
 (: cts:query for live documents, so we can pass this to search:search() :)
 (: TODO: Yes, this duplicates some logic above, so some refactoring is in order. :)
-declare variable $live-document-query :=
+declare function ml:live-document-query($preferred-version as xs:string) {
   cts:and-query((
     (: Assumption: These elements only ever appear at the top level. :)
     cts:or-query((
@@ -58,7 +58,7 @@ declare variable $live-document-query :=
       cts:element-query(xs:QName("Post")        ,cts:and-query(())),
       cts:element-query(xs:QName("Project")     ,cts:and-query(())),
       cts:element-query(xs:QName("page")        ,cts:and-query(())),
-      $api-doc-query
+      ml:api-doc-query($preferred-version)
     )),
     (: Exclude preview-only documents :)
     cts:not-query(
@@ -80,39 +80,38 @@ declare variable $live-document-query :=
         cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published"),
         cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published"),
-        $api-doc-query
+        ml:api-doc-query($preferred-version)
       ))
     else ()
-  ));
+  ))
+};
 
-declare variable $search-corpus-query :=
+declare function ml:search-corpus-query($preferred-version as xs:string) {
   cts:or-query((
-    $ml:live-document-query,
-    cts:directory-query(((:'/pubs/4.2/apidocs/',:)
-                         '/pubs/4.1/dotnet/',
-                         '/pubs/4.1/javadoc/',
-                         '/pubs/4.2/dotnet/',
-                         '/pubs/4.2/javadoc/',
-                         '/pubs/5.0/dotnet/',
-                         '/pubs/5.0/javadoc/',
+    ml:live-document-query($preferred-version),
+    cts:directory-query((fn:concat('/pubs/', $preferred-version, '/dotnet/'),
+                         fn:concat('/pubs/', $preferred-version, '/javadoc/'),
                          '/pubs/code/'
                         ),
                         'infinity'
                        )
-  ));
+  ))
+};
+
 
 declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
 declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
 
-(: Search only goes across the default server version :)
-declare variable $api-doc-query :=
+(: Search only goes across the preferred server version :)
+declare function ml:api-doc-query($preferred-version as xs:string) {
   cts:and-query((
-    cts:directory-query(fn:concat("/apidoc/"),"infinity"),
+    cts:directory-query(fn:concat("/apidoc/",$preferred-version,"/"), "infinity"),
     cts:or-query((
       cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
       cts:element-query(fn:QName("","guide"),cts:and-query(()))
     ))
-  ));
+  ))
+};
 
 
 (: Used to discover Project docs in the Admin UI :)

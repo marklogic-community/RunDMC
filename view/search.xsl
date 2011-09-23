@@ -12,15 +12,35 @@
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:api  ="http://marklogic.com/rundmc/api"
+  xmlns:ck   ="http://parthcomp.com/cookies"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search cts srv api">
+  exclude-result-prefixes="xs ml xdmp qp search cts srv api ck">
 
   <xsl:variable name="versions" select="u:get-doc('/config/server-versions.xml')/*:versions/*:version"/>
+
+  <xsl:variable name="set-version" select="string($params[@name eq 'set-version'])"/>
+
+  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('preferred-version')"/>
+  <xsl:variable name="preferred-version" select="if ($set-version)
+                                                then $set-version
+                                            else if ($preferred-version-cookie)
+                                                then $preferred-version-cookie
+                                            else     $ml:default-version"/>
+
+  <xsl:variable name="_set-cookie"
+                select="if ($set-version) then ck:add-cookie('preferred-version',
+                                                             $set-version,
+                                                             xs:dateTime('2100-01-01T12:00:00'), (: expires :)
+                                                             (),
+                                                             '/search',
+                                                             false())
+                                          else ()"/>
+
 
   <xsl:variable name="search-options" as="element()">
     <options xmlns="http://marklogic.com/appservices/search">
       <additional-query>
-        <xsl:copy-of select="$ml:search-corpus-query"/>
+        <xsl:copy-of select="ml:search-corpus-query($preferred-version)"/>
       </additional-query>
       <constraint name="cat">
         <collection prefix="category/"/>
@@ -46,9 +66,49 @@
 
   <xsl:template match="sub-nav[$external-uri eq '/search']">
     <div id="search_sidebar">
+      <xsl:value-of select="$_set-cookie"/> <!-- empty sequence; evaluate for side effect only -->
+      <xsl:apply-templates mode="version-list" select="."/>
       <xsl:apply-templates mode="facet" select="$search-response/search:facet"/>
     </div>
   </xsl:template>
+
+          <!-- This is also invoked (and customized) in apidoc/view/page.xsl -->
+          <xsl:template mode="version-list" match="*">
+            <div id="version_list">
+              <span class="version">
+                <xsl:text>Server version: </xsl:text>
+                <xsl:apply-templates mode="version-list-item" select="$versions"/>
+              </span>
+            </div>
+          </xsl:template>
+
+                  <xsl:template mode="version-list-item" match="*:version">
+                    <xsl:variable name="href">
+                      <xsl:apply-templates mode="version-list-item-href" select="."/>
+                    </xsl:variable>
+                    <a href="{$href}">
+                      <xsl:apply-templates mode="current-version-selected" select="."/>
+                      <xsl:apply-templates mode="version-number-display" select="."/>
+                    </a>
+                    <xsl:if test="position() ne last()"> | </xsl:if>
+                  </xsl:template>
+
+                          <xsl:template mode="version-list-item-href" match="*:version">
+                            <xsl:sequence select="concat('/search?q=', $q, '&amp;set-version=', @number)"/>
+                          </xsl:template>
+
+                          <xsl:template mode="current-version-selected" match="*:version"/>
+                          <xsl:template mode="current-version-selected" match="*:version[@number eq $preferred-version]"
+                                        name="current-version-class-att">
+                            <xsl:attribute name="class" select="'currentVersion'"/>
+                          </xsl:template>
+
+                          <!-- Display 5.0 as "MarkLogic 5" -->
+                          <xsl:template mode="version-number-display" match="*:version[@number eq '5.0']">MarkLogic 5</xsl:template>
+                          <xsl:template mode="version-number-display" match="*:version">
+                            <xsl:value-of select="@number"/>
+                          </xsl:template>
+
 
   <xsl:template match="search-results">
     <xsl:if test="$DEBUG">

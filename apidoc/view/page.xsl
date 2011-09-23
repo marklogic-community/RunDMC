@@ -83,36 +83,9 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="ml:version-list">
-    <div id="version_list">
-      <span class="version">
-        <xsl:text>Server version: </xsl:text>
-        <xsl:apply-templates mode="version-list-item" select="$versions"/>
-      </span>
-    </div>
-  </xsl:template>
-
-          <xsl:template mode="version-list-item" match="version">
-            <a href="{if (@number eq $api:default-version) then '' else concat('/',@number)}/docs">
-              <xsl:apply-templates mode="current-version-selected" select="."/>
-              <xsl:apply-templates mode="version-number-display" select="."/>
-            </a>
-            <xsl:if test="position() ne last()"> | </xsl:if>
-          </xsl:template>
-
-                  <xsl:template mode="current-version-selected" match="version"/>
-                  <xsl:template mode="current-version-selected" match="version[@number eq $api:version]">
-                    <xsl:attribute name="class" select="'currentVersion'"/>
-                  </xsl:template>
-
-                  <!-- Display 5.0 as "MarkLogic 5" -->
-                  <xsl:template mode="version-number-display" match="version[@number eq '5.0']">MarkLogic 5</xsl:template>
-                  <xsl:template mode="version-number-display" match="version">
-                    <xsl:value-of select="@number"/>
-                  </xsl:template>
-
 
   <xsl:template match="ml:api-toc">
+    <xsl:apply-templates mode="version-list" select="."/>
     <div id="apidoc_toc">
       <script type="text/javascript">
         <xsl:comment>
@@ -125,6 +98,15 @@
       </script>
     </div>
   </xsl:template>
+
+          <xsl:template mode="version-list-item-href" match="version">
+            <xsl:sequence select="if (@number eq $api:default-version) then '' else concat('/',@number,'/docs')"/>
+          </xsl:template>
+
+          <xsl:template mode="current-version-selected" match="version[@number eq $api:version]">
+            <xsl:call-template name="current-version-class-att"/>
+          </xsl:template>
+
 
           <xsl:template name="reset-global-toc-vars">
             var functionPageBucketId = "<xsl:apply-templates mode="function-bucket-id" select="$content/api:function-page/api:function[1]/@bucket
