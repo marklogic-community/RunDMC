@@ -100,7 +100,8 @@
   </xsl:template>
 
           <xsl:template mode="version-list-item-href" match="version">
-            <xsl:sequence select="if (@number eq $api:default-version) then '' else concat('/',@number,'/docs')"/>
+            <xsl:variable name="version-prefix" select="if (@number eq $api:default-version) then '' else concat('/',@number)"/>
+            <xsl:sequence select="concat($version-prefix, '/docs')"/>
           </xsl:template>
 
           <xsl:template mode="current-version-selected" match="version"/>
