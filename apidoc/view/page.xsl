@@ -83,6 +83,12 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Make search stick to the current API version -->
+  <xsl:template match="x:input[@name eq $set-version-param-name]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of select="$api:version"/>
+    </xsl:attribute>
+  </xsl:template>
 
   <xsl:template match="ml:api-toc">
     <xsl:apply-templates mode="version-list" select="."/>
