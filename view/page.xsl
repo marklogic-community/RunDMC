@@ -192,12 +192,12 @@
           </xsl:template>
 
 
-          <xsl:template mode="page-content" match="Post">
+          <xsl:template mode="page-content" match="Post | Announcement | Event">
             <h1>Blog</h1>
             <xsl:apply-templates mode="blog-post" select="."/>
           </xsl:template>
 
-                  <xsl:template mode="blog-post paginated-list-item" match="Post">
+                  <xsl:template mode="blog-post paginated-list-item" match="Post | Announcement | Event">
 
                     <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item");
                          Remains disabled when we're just displaying one blog post, because the comment count
@@ -212,14 +212,13 @@
                                 <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
                             </a>
                         </h2>
-                      <span class="date">
-                        <xsl:value-of select="ml:display-date(created)"/>
-                      </span>
-                      <span class="author">
-                        <xsl:text>by </xsl:text>
-                        <xsl:apply-templates mode="author-listing" select="author"/>
-                      </span>
-                      <xsl:apply-templates select="body/node()"/>
+
+                      <xsl:apply-templates mode="post-date" select="."/>
+
+                      <!-- Only display the byline if an author is present -->
+                      <xsl:apply-templates mode="post-author" select="author[1]"/>
+
+                      <xsl:apply-templates mode="post-content" select="."/>
 
                       <xsl:if test="not($disable-comment-count)">
                         <xsl:apply-templates mode="comment-count" select="."/>
@@ -228,17 +227,31 @@
                     </div>
                   </xsl:template>
 
+                          <!-- Don't display the "created" date on event pages -->
+                          <xsl:template mode="post-date" match="Event"/>
+                          <xsl:template mode="post-date" match="Post | Announcement">
+                            <span class="date">
+                              <xsl:value-of select="ml:display-date(created)"/>
+                            </span>
+                          </xsl:template>
 
-          <xsl:template mode="page-content" match="Event">
-            <h1>Events</h1>
-            <h2>
-              <xsl:apply-templates select="title/node()"/>
-            </h2>
-            <dl>
-              <xsl:apply-templates mode="event-details" select="details/*"/>
-            </dl>
-            <xsl:apply-templates select="description/node()"/>
-          </xsl:template>
+                          <xsl:template mode="post-author" match="author">
+                            <span class="author">
+                              <xsl:text>by </xsl:text>
+                              <xsl:apply-templates mode="author-listing" select="../author"/>
+                            </span>
+                          </xsl:template>
+
+                          <xsl:template mode="post-content" match="Post | Announcement">
+                            <xsl:apply-templates select="body/node()"/>
+                          </xsl:template>
+
+                          <xsl:template mode="post-content" match="Event">
+                            <dl>
+                              <xsl:apply-templates mode="event-details" select="details/*"/>
+                            </dl>
+                            <xsl:apply-templates select="description/node()"/>
+                          </xsl:template>
 
 
           <xsl:template mode="page-content" match="Article">
@@ -354,19 +367,6 @@
                             <xsl:sequence select="if (contains($path, '/')) then ml:file-from-path(substring-after($path, '/'))
                                                                             else $path"/>
                           </xsl:function>
-
-
-          <xsl:template mode="page-content" match="Announcement">
-            <h1>News</h1>
-            <div class="date">
-              <xsl:value-of select="ml:display-date(date)"/>
-            </div>
-            <h2>
-              <xsl:apply-templates select="title/node()"/>
-            </h2>
-            <xsl:apply-templates select="body/node()"/>
-          </xsl:template>
-
 
 
   <xsl:function name="ml:month-name" as="xs:string">

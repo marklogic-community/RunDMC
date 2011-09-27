@@ -5,57 +5,53 @@
     <a class="more" href="/blog">View blog</a>
   </div>
 
-
   <div class="body">
-    <h3><a href="/blog/learning-with-query-trace">Learning with xdmp:query-trace()</a></h3>
-    <div class="author">by Evan Lenz, July 20, 2011</div>
+    <h3><a href="/blog/document-formats-part3">Document formats, part 3: Changing formats</a></h3>
+    <div class="author">by Evan Lenz, September 21, 2011</div>
     <div class="message">
-    <p>One
-    of the things I love to do is learn and help other people learn.
-    I'm still relatively new to MarkLogic, so there's a lot I can't
-    really write about, since I haven't learned it yet. But as long as
-    I keep my learning one step ahead of my writing, then I (and you
-    readers!) should be safe and not wildly misled. One
-    tool I've been using to learn how MarkLogic evaluates queries is
-    the xdmp:query-trace() function...</p>
+    <p>I ended the <a href="/blog/document-formats-part2">last installment</a> with this question: What happens if you load a bunch of HTML documents as "text" and then realize you want to query them as XML? In this article, I'll show you exactly how I solved this problem (and how you can too)...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="/blog/good-xml-design-and-performance">Good XML design and performance</a></h3>
-    <div class="author">by Evan Lenz, July 14, 2011</div>
+    <h3><a href="http://robotbeerbash.wordpress.com/2011/09/21/generating-excel-charts-with-marklogic/" target="_blank">Generating Excel Charts with MarkLogic</a></h3>
+    <div class="author">by Pete Aven, September 21, 2011</div>
     <div class="message">
-    <p>MarkLogic has always tried to ensure that
-    well-designed XML performs well "as is" in MarkLogic Server. For example, if your
-    schema uses descriptive, unique element names, that is not only
-    going to make your application code clean and readable but it will
-    be fast too. On the other hand, if your schema contains a lot of
-    generic element names (such as "item") used in multiple ways, then
-    it's going to make for harder-to-read code (in XQuery or XSLT), and
-    it might also require you to do some extra leg work to get the best
-    performance...</p> 
+    <p>and some fun with Formulas too… This is another interesting one I see regularly: “How can I generate Excel Charts from MarkLogic Server?”...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="/blog/balisage2011">MarkLogic at Balisage 2011</a></h3>
-    <div class="author">by Evan Lenz, July 12, 2011</div>
+    <h3><a href="http://writings.nunojob.com/2011/09/so-you-think-you-can-build-a-document-database.html" target="_blank">So you think you can build a document database?</a></h3>
+    <div class="author">by Nuno Job, September 19, 2011</div>
     <div class="message">
-    <p>MarkLogic will be well represented at <a href="http://balisage.net">Balisage 2011</a>. Not only are we sponsoring the conference once again (and hosting <a href="/news/balisage2011">a Chinese banquet</a>, including a dinner conversation game that should be a lot of fun), but a bunch of us will be there to geek out with the rest of you. Jason Hunter, Mary Holstege, and John Snelson will all be there, and three of us will be speaking, with these topics...</p>
+    <p>We all know how relational databases work. We all know very well how to solve the problem of squeezing data into tables and getting answers out of it using the old SQL dialect. But what about when we have a document database?...How would you engineer a database for unstructured data?...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="/blog/xquery-coding-guidelines">XQuery Coding Guidelines</a></h3>
-    <div class="author">by Micah Dubinko, June 29, 2011</div>
+    <h3><a href="http://blog.msbbc.co.uk/2011/09/marklogic-xquery-get-sample-of-document.html" target="_blank">MarkLogic / XQuery - get a sample of document sizes across a given database</a></h3>
+    <div class="author">by Alex Bleasdale, September 19, 2011</div>
     <div class="message">
-    <p>Code gets <a href="http://www.python.org/dev/peps/pep-0008/">read more often than it gets written</a>, so how it gets laid out on the screen is a critical component of maintainability. When a project involves more than one person checking in code, it gets even more important. So here's a peek inside the MarkLogic Engineering team's process -- our set of agreed-upon guidelines for formatting XQuery code...</p>
+    <p>Here's a simple way to get the sizes of sample documents across a given databases...</p> 
     </div>
   </div>
 
+  <div class="body">
+    <h3><a href="http://blog.msbbc.co.uk/2011/09/xquerymarklogic-pulling-data-out-of.html" target="_blank">XQuery/MarkLogic: pulling data out of an Excel spreadsheet</a></h3>
+    <div class="author">by Alex Bleasdale, September 16, 2011</div>
+    <div class="message">
+    <p>Excel spreadsheets can be saved in an xml format - in such cases, it's simple to dump the xml into a CQ buffer (if you're using MarkLogic) and parse the information in adjacent column cells...</p> 
+    </div>
+  </div>
 
-
-
+  <div class="body">
+    <h3><a href="http://xquerywebappdev.wordpress.com/2011/09/09/hierarchical-and-variably-structured-data/" target="_blank">How about “variably-structured data”?</a></h3>
+    <div class="author">by Ryan Semerau, September 9, 2011</div>
+    <div class="message">
+    <p>“Unstructured” and “Semi-structured” never seem to be very good terms describing the data model used for XML and MarkLogic. And sometimes a term that people are unfamiliar with is better because then they don’t use pre-existing notions to deduce an incorrect understanding of the term...</p> 
+    </div>
+  </div>
 
 
 

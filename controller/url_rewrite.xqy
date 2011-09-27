@@ -18,7 +18,8 @@ declare function local:redir($path as xs:string) as xs:string
 
     return
     (: permanent redirs :)
-    if ($path = ("/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
+    if ($path = ("/events", "/news", "/news-and-events",
+                 "/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         concat($srv:api-server,"/docs")
@@ -151,7 +152,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if ($path = ("/download", "/downloads", "/products", "/product", "/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
-    else if (matches($path, '^/(js|css|images|media)/v-[0-9]*/.*'))  then 
+    else if (matches($path, '^/(js|css|images|media|stackunderflow)/v-[0-9]*/.*'))  then 
         replace($path, '/v-[0-9]*', '')
     (: Ignore these URLs :)
     else if (starts-with($path,'/private/')) then

@@ -155,15 +155,9 @@
       <blog-posts-grouped-by-category/>
     </group>
   </page>
-  <page display="News &amp; Events" href="/news-and-events">
-    <page display="News" href="/news">
-      <Announcement/>
-    </page>
-    <page display="Events" href="/events">
-      <Event/>
-    </page>
-  </page>
   <page display="Corporate" href="http://www.marklogic.com/" />
+
+  <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
 
   <page display="Home" href="/" hide="yes"/>
   <generic-page display="Search Results" href="/search" hide="yes" />

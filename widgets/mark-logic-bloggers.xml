@@ -43,6 +43,11 @@
   </div>
   
   <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blogs.marklogic.com/" target="_blank"><strong>MarkLogicians</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+  
+  <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://xquery.typepad.com/" target="_blank"><strong>Matt Turner's Discovering XQuery</strong></a> <span class="date"></span>
     <div></div>
   </div>  
@@ -54,6 +59,11 @@
 
   <div class="body" style="border-top:0px;padding-top:0;">
     <a href="http://dubinko.info/blog/" target="_blank"><strong>Micah Dubinko's Micahpedia</strong></a> <span class="date"></span>
+    <div></div>
+  </div>
+
+  <div class="body" style="border-top:0px;padding-top:0;">
+    <a href="http://blakeley.com/wordpress/" target="_blank"><strong>Michael Blakeley's blog</strong></a> <span class="date"></span>
     <div></div>
   </div>
 

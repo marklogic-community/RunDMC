@@ -54,10 +54,11 @@
   </xsl:template>
 
   <xsl:template mode="pre-process-navigation" match="blog-posts-grouped-by-category">
-    <xsl:variable name="unique-tags" select="distinct-values($ml:Posts/tags/tag/normalize-space(.))"/>
+    <xsl:variable name="unique-tags" select="distinct-values($ml:Posts/tags/tag/upper-case(normalize-space(.)))"/>
     <xsl:for-each select="$unique-tags">
+      <xsl:sort select="."/>
       <ml:group display="{.}">
-        <xsl:variable name="posts-with-tag" select="$ml:Posts[tags/tag/normalize-space(.) = current()]"/>
+        <xsl:variable name="posts-with-tag" select="$ml:Posts[tags/tag/upper-case(normalize-space(.)) = current()]"/>
         <xsl:for-each select="$posts-with-tag">
           <xsl:sort select="created" order="descending"/>
           <ml:page display="{title}" href="{ml:external-uri(.)}"/>

@@ -327,6 +327,15 @@
             </tr>
           </xsl:template>
 
+  <xsl:template match="stackoverflow-reflector">
+    <div id="stackunderflow"/>
+    <script type="text/javascript">
+        $(function() {
+            stackunderflow.getQuestionsWithTags("marklogic;xquery").render("#stackunderflow");
+        });
+    </script>
+    
+  </xsl:template>
 
   <xsl:template match="upcoming-user-group-events">
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
@@ -684,44 +693,6 @@
             <xsl:param name="results-per-page" as="xs:integer"/>
             <xsl:sequence select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
           </xsl:function>
-
-          <xsl:template mode="paginated-list-item" match="Event">
-            <div class="newsitem">
-              <h3 class="title-with-links">
-                <xsl:apply-templates select="title/node()"/>
-                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
-                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
-                </a>
-              </h3>
-              <dl>
-                <xsl:apply-templates mode="event-details" select="details/*"/>
-              </dl>
-              <p>
-                <xsl:apply-templates select="description//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
-
-          <xsl:template mode="paginated-list-item" match="Announcement">
-            <div class="newsitem">
-              <div class="date">
-                <xsl:value-of select="ml:display-date(date)"/>
-                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
-                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
-                </a>
-              </div>
-              <h3 class="title-with-links">
-                <xsl:apply-templates select="title/node()"/>
-              </h3>
-              <p>
-                <xsl:apply-templates select="body//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
 
 
   <xsl:template match="elapsed-time">
