@@ -13,8 +13,11 @@ declare namespace xdmp="http://marklogic.com/xdmp";
 declare variable $Announcements := docs('Announcement');
 declare variable $Events        := docs('Event');
 declare variable $Articles      := docs('Article');
-declare variable $Posts         := docs('Post');
 declare variable $Projects      := docs('Project');
+declare variable $Posts         := docs('Post'),
+                                   docs('Announcement'),
+                                   docs('Event');
+(: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
 (: filter out temporary, preview-only docs, and filter "Draft" docs when applicable :)
 declare function docs($element-name) {

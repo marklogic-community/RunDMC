@@ -694,44 +694,6 @@
             <xsl:sequence select="($results-per-page * $page-number) - ($results-per-page - 1)"/>
           </xsl:function>
 
-          <xsl:template mode="paginated-list-item" match="Event">
-            <div class="newsitem">
-              <h3 class="title-with-links">
-                <xsl:apply-templates select="title/node()"/>
-                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
-                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
-                </a>
-              </h3>
-              <dl>
-                <xsl:apply-templates mode="event-details" select="details/*"/>
-              </dl>
-              <p>
-                <xsl:apply-templates select="description//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
-
-          <xsl:template mode="paginated-list-item" match="Announcement">
-            <div class="newsitem">
-              <div class="date">
-                <xsl:value-of select="ml:display-date(date)"/>
-                <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
-                    <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
-                </a>
-              </div>
-              <h3 class="title-with-links">
-                <xsl:apply-templates select="title/node()"/>
-              </h3>
-              <p>
-                <xsl:apply-templates select="body//teaser/node()"/>
-                <xsl:text> </xsl:text>
-                <xsl:apply-templates mode="read-more" select="."/>
-              </p>
-            </div>
-          </xsl:template>
-
 
   <xsl:template match="elapsed-time">
     <div style="display: none"><xsl:value-of select="xdmp:elapsed-time()"/></div>
