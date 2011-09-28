@@ -128,19 +128,7 @@ declare function reset-category-tags($doc-uri, $new-doc as document-node()?) {
   (: Start by removing any existing category collection URIs :)
   xdmp:document-remove-collections($doc-uri, $all-category-tags),
 
-  (: Only look inside the doc if necessary :)
-  let $category-value :=
-          if (fn:contains($doc-uri, "/javadoc/")) then "xcc"
-     else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
-     else let $doc := if (fn:exists($new-doc)) then $new-doc else fn:doc($doc-uri) return
-          if ($doc/api:function-page) then "function"
-     else if ($doc/guide            ) then "guide"
-     else if ($doc/ml:Announcement  ) then "news"
-     else if ($doc/ml:Event         ) then "event"
-     else if ($doc/ml:Article       ) then "tutorial"
-     else if ($doc/ml:Post          ) then "blog"
-     else if ($doc/ml:Project       ) then "code"
-     else ()
+  let $category-value := category-for-doc($doc-uri, $new-doc)
   return
      (: Add the category tag :)
      if ($category-value) then
@@ -150,6 +138,25 @@ declare function reset-category-tags($doc-uri, $new-doc as document-node()?) {
           xdmp:document-add-collections($doc-uri, $category-tag))
      else
        xdmp:log(fn:concat("No category tag for ", $doc-uri))
+};
+
+declare function category-for-doc($doc-uri) as xs:string? {
+                 category-for-doc($doc-uri, ())
+};
+
+declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string? {
+  (: Only look inside the doc if necessary :)
+       if (fn:contains($doc-uri, "/javadoc/")) then "xcc"
+  else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
+  else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
+       if ($doc/api:function-page) then "function"
+  else if ($doc/guide            ) then "guide"
+  else if ($doc/ml:Announcement  ) then "news"
+  else if ($doc/ml:Event         ) then "event"
+  else if ($doc/ml:Article       ) then "tutorial"
+  else if ($doc/ml:Post          ) then "blog"
+  else if ($doc/ml:Project       ) then "code"
+  else ()
 };
 
 

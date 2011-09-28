@@ -79,7 +79,8 @@
 
   <xsl:variable name="facets-response" as="element(search:response)">
     <xsl:choose>
-      <!-- When the category constraint isn't supplied, just use the main search results -->
+      <!-- When a category constraint isn't supplied, just use the main search results;
+           (don't run search:search again) -->
       <xsl:when test="not(contains($q,'cat:'))">
         <xsl:sequence select="$search-response"/>
       </xsl:when>
@@ -213,7 +214,7 @@
                                                                      else concat($srv:main-server, if ($is-flat-file)
                                                                                                    then @uri
                                                                                                    else ml:external-uri-main($doc))"/>
-            <div class="searchResult">
+            <div class="searchResult category_{ml:category-for-doc(@uri)}">
               <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
                 <div class="searchTitle">
                   <xsl:variable name="page-specific-title">
