@@ -330,5 +330,6 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorials</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadocs</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net docs</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous pages</xsl:template>
 
 </xsl:stylesheet>
