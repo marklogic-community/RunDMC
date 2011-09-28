@@ -39,15 +39,27 @@
 
 
   <xsl:variable name="search-options" as="element()">
-    <options xmlns="http://marklogic.com/appservices/search">
-      <additional-query>
-        <xsl:copy-of select="ml:search-corpus-query($preferred-version)"/>
-      </additional-query>
-      <constraint name="cat">
-        <collection prefix="category/"/>
-      </constraint>
-    </options>
+    <search:options>
+      <xsl:copy-of select="$common-search-options"/>
+      <search:return-query>true</search:return-query>
+    </search:options>
   </xsl:variable>
+
+  <xsl:variable name="facet-options" as="element()">
+    <search:options>
+      <xsl:copy-of select="$common-search-options"/>
+      <search:return-results>false</search:return-results>
+    </search:options>
+  </xsl:variable>
+
+          <xsl:variable name="common-search-options" as="element()*">
+            <search:additional-query>
+              <xsl:copy-of select="ml:search-corpus-query($preferred-version)"/>
+            </search:additional-query>
+            <search:constraint name="cat">
+              <search:collection prefix="category/"/>
+            </search:constraint>
+          </xsl:variable>
 
   <xsl:variable name="q" select="string($params[@name eq 'q'])"/>
 
@@ -65,11 +77,47 @@
     <xsl:sequence select="$search-response-doc/search:response"/>
   </xsl:variable>
 
+  <xsl:variable name="facets-response" as="element(search:response)">
+    <xsl:choose>
+      <!-- When the category constraint isn't supplied, just use the main search results -->
+      <xsl:when test="not(contains($q,'cat:'))">
+        <xsl:sequence select="$search-response"/>
+      </xsl:when>
+      <!-- Otherwise, run the search without the category constraint, so we get the full list of facet values -->
+      <xsl:otherwise>
+        <!-- Adding the document wrapper is a workaround for XSLTBUG 13062 -->
+        <xsl:variable name="response-doc">
+          <xsl:copy-of select="search:search(ml:qtext-with-no-constraints($search-response,$search-options),
+                                             $facet-options)"/>
+        </xsl:variable>
+        <xsl:sequence select="$response-doc/search:response"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+          <xsl:function name="ml:qtext-with-no-constraints" as="xs:string">
+            <xsl:param name="response" as="element(search:response)"/>
+            <xsl:param name="options" as="element(search:options)"/>
+            <xsl:variable name="constraints" select="$response/search:query//@qtextconst"/>
+            <xsl:sequence select="ml:remove-constraints($response/search:qtext, $constraints, $options)"/>
+          </xsl:function>
+
+          <!-- Remove constraints recursively, in case someone tries to enter two constraints -->
+          <xsl:function name="ml:remove-constraints" as="xs:string">
+            <xsl:param name="q" as="xs:string"/>
+            <xsl:param name="constraints" as="xs:string*"/>
+            <xsl:param name="options" as="element(search:options)"/>
+            <xsl:variable name="new-q" select="search:remove-constraint($q, $constraints[1], $options)"/>
+            <xsl:sequence select="if (count($constraints) gt 1) then ml:remove-constraints($new-q,$constraints[position() gt 1],$options)
+                                                                else $new-q"/>
+          </xsl:function>
+
+
   <xsl:template match="sub-nav[$external-uri eq '/search']">
     <div id="search_sidebar">
       <xsl:value-of select="$_set-cookie"/> <!-- empty sequence; evaluate for side effect only -->
       <xsl:apply-templates mode="version-list" select="."/>
-      <xsl:apply-templates mode="facet" select="$search-response/search:facet"/>
+      <xsl:apply-templates mode="facet" select="$facets-response/search:facet"/>
     </div>
   </xsl:template>
 
@@ -114,6 +162,7 @@
   <xsl:template match="search-results">
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$search-response"/>
+      <xsl:copy-of select="$facets-response"/>
     </xsl:if>
     <xsl:apply-templates mode="search-results" select="$search-response"/>
   </xsl:template>
@@ -236,15 +285,14 @@
 
 
           <xsl:template mode="facet-value" match="search:facet-value">
-            <xsl:variable name="q" select="string(../../search:qtext)"/>
             <xsl:variable name="this" select="concat(../@name,':',@name)"/>
-            <xsl:variable name="selected" select="contains($q,$this)"/>
+            <xsl:variable name="selected" select="$search-response/search:query//@qtextconst[. eq $this]"/>
             <xsl:variable name="img-file" select="if ($selected) then 'checkmark.gif'
                                                                  else 'checkblank.gif'"/>
 
-            <xsl:variable name="new-q" select="if ($selected)  then search:remove-constraint($q,$this,$search-options)
-                                          else if (string($q)) then concat('(', $q, ')', ' AND ', $this)
-                                          else $this"/>
+            <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
+            <xsl:variable name="new-q" select="if (string($clean-q)) then concat('(', $clean-q, ')', ' AND ', $this)
+                                                                     else $this"/>
             <li class="facet_value">
               <img src="/images/{$img-file}"/>
               <a href="?q={encode-for-uri($new-q)}">
