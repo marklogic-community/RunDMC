@@ -282,8 +282,8 @@
         <xsl:apply-templates mode="facet-name" select="@name"/>
       </div>
       <ul>
-        <xsl:apply-templates mode="facet-value" select="search:facet-value">
-          <xsl:sort select="@count" order="descending" data-type="number"/>
+        <xsl:apply-templates mode="facet-value" select="parent::search:response | search:facet-value">
+          <xsl:sort select="@count | @total" order="descending" data-type="number"/>
         </xsl:apply-templates>
       </ul>
     </div>
@@ -291,16 +291,19 @@
 
           <xsl:template mode="facet-name" match="@name[. eq 'cat']">Narrow by Category:</xsl:template>
 
-
-          <xsl:template mode="facet-value" match="search:facet-value">
-            <xsl:variable name="this" select="concat(../@name,':',@name)"/>
-            <xsl:variable name="selected" select="$search-response/search:query//@qtextconst[. eq $this]"/>
+                                                                       <!-- Using <search:response> to represent "all categories" -->
+          <xsl:template mode="facet-value" match="search:facet-value | search:response">
+            <xsl:variable name="this-constraint" select="self::search:facet-value/concat(../@name,':',@name)"/>
+            <xsl:variable name="current-constraints" select="$search-response/search:query//@qtextconst/string(.)"/>
+            <xsl:variable name="selected" select="$this-constraint  = $current-constraints
+                                           or not($this-constraint or $current-constraints)"/>
             <xsl:variable name="img-file" select="if ($selected) then 'checkmark.gif'
                                                                  else 'checkblank.gif'"/>
 
             <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
-            <xsl:variable name="new-q" select="if (string($clean-q)) then concat('(', $clean-q, ')', ' AND ', $this)
-                                                                     else $this"/>
+            <xsl:variable name="new-q" select="if (not($this-constraint)) then $clean-q
+                                          else if ($clean-q) then concat('(', $clean-q, ')', ' AND ', $this-constraint)
+                                          else $this-constraint"/>
             <li class="facet_value">
               <img src="/images/{$img-file}"/>
               <a href="?q={encode-for-uri($new-q)}">
@@ -310,13 +313,14 @@
                 <!--
                 <xsl:value-of select="string(.)"/>
                 -->
-                <xsl:value-of select="@count"/>
+                <xsl:value-of select="@count | @total"/>
                 <xsl:text> </xsl:text>
                 <xsl:apply-templates mode="facet-value-display" select="."/>
               </a>
             </li>
           </xsl:template>
 
+                  <xsl:template mode="facet-value-display" match="search:response       ">results in all categories</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog posts</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source projects</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Events</xsl:template>
