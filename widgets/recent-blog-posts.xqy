@@ -6,41 +6,50 @@
   </div>
 
   <div class="body">
-    <h3><a href="/blog/document-formats-part2">Document formats, part 2: Loading different formats</a></h3>
-    <div class="author">by Evan Lenz, September 7, 2011</div>
+    <h3><a href="/blog/document-formats-part3">Document formats, part 3: Changing formats</a></h3>
+    <div class="author">by Evan Lenz, September 21, 2011</div>
     <div class="message">
-    <p>In
-    <a href="/blog/document-formats-part1">part
-    1</a>, we saw how MarkLogic Server supports three basic document
-    formats (XML, text, and binary), how each of them is modeled as a
-    tree, and how you can determine the format of a document that has
-    already been loaded into the database. This short blog installment
-    shows how you can determine the format when first constructing and
-    loading the document...</p>
+    <p>I ended the <a href="/blog/document-formats-part2">last installment</a> with this question: What happens if you load a bunch of HTML documents as "text" and then realize you want to query them as XML? In this article, I'll show you exactly how I solved this problem (and how you can too)...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="http://norman.walsh.name//2011/08/31/xsltPygments" target="_blank">Using Pygments from XSLT</a></h3>
-    <div class="author">by Norm Walsh, August 31, 2011</div>
+    <h3><a href="http://robotbeerbash.wordpress.com/2011/09/21/generating-excel-charts-with-marklogic/" target="_blank">Generating Excel Charts with MarkLogic</a></h3>
+    <div class="author">by Pete Aven, September 21, 2011</div>
     <div class="message">
-    <p>This is just plain fun. Syntax highlighting source code listings can make them easier to read (it certainly makes them prettier). <a href="http://pygments.org/" target="_blank">Pygments</a> is an excellent syntax highlighter. It's a python tool that can transform source code listings into nice, clean HTML using &lt;span>s and class attributes...</p>
+    <p>and some fun with Formulas too… This is another interesting one I see regularly: “How can I generate Excel Charts from MarkLogic Server?”...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="http://blakeley.com/wordpress/archives/560" target="_blank">Group By in XQuery 1.0 for MarkLogic Server</a></h3>
-    <div class="author">by Michael Blakeley, August 23, 2011</div>
+    <h3><a href="http://writings.nunojob.com/2011/09/so-you-think-you-can-build-a-document-database.html" target="_blank">So you think you can build a document database?</a></h3>
+    <div class="author">by Nuno Job, September 19, 2011</div>
     <div class="message">
-    <p>XQuery 3.0 introduces new syntax for “group by”. At this time, MarkLogic Server 4.2 is the latest release, and it doesn’t have support for that syntax. So how can we implement “group by” when writing XQuery for MarkLogic? Let’s start with the W3C use cases. First, let’s fetch the sample data and put it into MarkLogic...</p>
+    <p>We all know how relational databases work. We all know very well how to solve the problem of squeezing data into tables and getting answers out of it using the old SQL dialect. But what about when we have a document database?...How would you engineer a database for unstructured data?...</p>
     </div>
   </div>
 
   <div class="body">
-    <h3><a href="http://xquerywebappdev.wordpress.com/2011/08/23/technical-details-on-techniques-used-in-the-development-competition/" target="_blank">Technical details on techniques used in the development competition</a></h3>
-    <div class="author">by Ryan Semerau, August 23, 2011</div>
+    <h3><a href="http://blog.msbbc.co.uk/2011/09/marklogic-xquery-get-sample-of-document.html" target="_blank">MarkLogic / XQuery - get a sample of document sizes across a given database</a></h3>
+    <div class="author">by Alex Bleasdale, September 19, 2011</div>
     <div class="message">
-    <p>The <a title="MarkLogic decidedly wins development competition" target="_blank" href="http://xquerywebappdev.wordpress.com/2011/08/20/marklogic-decidedly-wins-development-competition/">post on winning the development competition</a> has generated a lot of interest (relative to my other posts) so I&#8217;d thought I&#8217;d go into more detail about the technology we used. First, there are some guiding principles that I follow when it comes to xquery web apps on MarkLogic. They are not set in stone, and individual projects may deviate. But these are my starting points...</p> 
+    <p>Here's a simple way to get the sizes of sample documents across a given databases...</p> 
+    </div>
+  </div>
+
+  <div class="body">
+    <h3><a href="http://blog.msbbc.co.uk/2011/09/xquerymarklogic-pulling-data-out-of.html" target="_blank">XQuery/MarkLogic: pulling data out of an Excel spreadsheet</a></h3>
+    <div class="author">by Alex Bleasdale, September 16, 2011</div>
+    <div class="message">
+    <p>Excel spreadsheets can be saved in an xml format - in such cases, it's simple to dump the xml into a CQ buffer (if you're using MarkLogic) and parse the information in adjacent column cells...</p> 
+    </div>
+  </div>
+
+  <div class="body">
+    <h3><a href="http://xquerywebappdev.wordpress.com/2011/09/09/hierarchical-and-variably-structured-data/" target="_blank">How about “variably-structured data”?</a></h3>
+    <div class="author">by Ryan Semerau, September 9, 2011</div>
+    <div class="message">
+    <p>“Unstructured” and “Semi-structured” never seem to be very good terms describing the data model used for XML and MarkLogic. And sometimes a term that people are unfamiliar with is better because then they don’t use pre-existing notions to deduce an incorrect understanding of the term...</p> 
     </div>
   </div>
 
