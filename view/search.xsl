@@ -141,10 +141,6 @@
               <strong>
                 <xsl:value-of select="@total"/>
               </strong>
-              <xsl:text> for </xsl:text>
-              <strong>
-                <xsl:value-of select="search:qtext"/>
-              </strong>
               <xsl:text>.</xsl:text>
             </div>
             <xsl:apply-templates mode="#current" select="search:result"/>
