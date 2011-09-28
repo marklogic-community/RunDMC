@@ -150,7 +150,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
   else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
        if ($doc/api:function-page) then "function"
-  else if ($doc/guide            ) then "guide"
+  else if ($doc/*:guide          ) then "guide"
   else if ($doc/ml:Announcement  ) then "news"
   else if ($doc/ml:Event         ) then "event"
   else if ($doc/ml:Article       ) then "tutorial"
