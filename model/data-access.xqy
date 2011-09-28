@@ -74,6 +74,10 @@ declare function ml:live-document-query($preferred-version as xs:string) {
         cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","preview-only"),"yes")
       ))
     ),
+    (: Also exclude admin-specific pages :)
+    cts:not-query(
+      cts:directory-query("/admin/","infinity")
+    ),
     (: Require status="Published" if we're only serving public docs :)
     if ($draft:public-docs-only) then
       cts:or-query((
