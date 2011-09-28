@@ -324,7 +324,7 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog posts</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source projects</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Events</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function docs</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function pages</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guides</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News items</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorials</xsl:template>
