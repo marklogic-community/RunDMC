@@ -129,22 +129,17 @@ declare function reset-category-tags($doc-uri, $new-doc as document-node()?) {
   xdmp:document-remove-collections($doc-uri, $all-category-tags),
 
   let $category-value := category-for-doc($doc-uri, $new-doc)
+  let $category-tag   := fn:concat("category/",$category-value)
   return
-     (: Add the category tag :)
-     if ($category-value) then
-       let $category-tag := fn:concat("category/",$category-value)
-       return
-         (xdmp:log(fn:concat("Adding tag '", $category-tag, "' to ", $doc-uri)),
-          xdmp:document-add-collections($doc-uri, $category-tag))
-     else
-       xdmp:log(fn:concat("No category tag for ", $doc-uri))
+    (xdmp:log(fn:concat("Adding tag '", $category-tag, "' to ", $doc-uri)),
+     xdmp:document-add-collections($doc-uri, $category-tag))
 };
 
-declare function category-for-doc($doc-uri) as xs:string? {
+declare function category-for-doc($doc-uri) as xs:string {
                  category-for-doc($doc-uri, ())
 };
 
-declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string? {
+declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string {
   (: Only look inside the doc if necessary :)
        if (fn:contains($doc-uri, "/javadoc/")) then "xcc"
   else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
@@ -156,7 +151,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if ($doc/ml:Article       ) then "tutorial"
   else if ($doc/ml:Post          ) then "blog"
   else if ($doc/ml:Project       ) then "code"
-  else ()
+                                   else "other"
 };
 
 
