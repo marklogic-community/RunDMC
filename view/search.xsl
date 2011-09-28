@@ -107,9 +107,16 @@
             <xsl:param name="q" as="xs:string"/>
             <xsl:param name="constraints" as="xs:string*"/>
             <xsl:param name="options" as="element(search:options)"/>
-            <xsl:variable name="new-q" select="search:remove-constraint($q, $constraints[1], $options)"/>
-            <xsl:sequence select="if (count($constraints) gt 1) then ml:remove-constraints($new-q,$constraints[position() gt 1],$options)
-                                                                else $new-q"/>
+            <xsl:choose>
+              <xsl:when test="not($constraints)">
+                <xsl:sequence select="$q"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:variable name="new-q" select="search:remove-constraint($q, $constraints[1], $options)"/>
+                <xsl:sequence select="if (count($constraints) gt 1) then ml:remove-constraints($new-q,$constraints[position() gt 1],$options)
+                                                                    else $new-q"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:function>
 
 
