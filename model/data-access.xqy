@@ -117,6 +117,42 @@ declare function ml:api-doc-query($preferred-version as xs:string) {
 };
 
 
+declare variable $all-category-tags as xs:string* := cts:collection-match("category/*");
+
+(: For determining category facets :)
+declare function reset-category-tags($doc-uri) {
+                 reset-category-tags($doc-uri, ())
+};
+
+declare function reset-category-tags($doc-uri, $new-doc as document-node()?) {
+  (: Start by removing any existing category collection URIs :)
+  xdmp:document-remove-collections($doc-uri, $all-category-tags),
+
+  (: Only look inside the doc if necessary :)
+  let $category-value :=
+          if (fn:contains($doc-uri, "/javadoc/")) then "xcc"
+     else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
+     else let $doc := if (fn:exists($new-doc)) then $new-doc else fn:doc($doc-uri) return
+          if ($doc/api:function-page) then "function"
+     else if ($doc/guide            ) then "guide"
+     else if ($doc/ml:Announcement  ) then "news"
+     else if ($doc/ml:Event         ) then "event"
+     else if ($doc/ml:Article       ) then "tutorial"
+     else if ($doc/ml:Post          ) then "blog"
+     else if ($doc/ml:Project       ) then "code"
+     else ()
+  return
+     (: Add the category tag :)
+     if ($category-value) then
+       let $category-tag := fn:concat("category/",$category-value)
+       return
+         (xdmp:log(fn:concat("Adding tag '", $category-tag, "' to ", $doc-uri)),
+          xdmp:document-add-collections($doc-uri, $category-tag))
+     else
+       xdmp:log(fn:concat("No category tag for ", $doc-uri))
+};
+
+
 (: Used to discover Project docs in the Admin UI :)
 declare variable $projects-by-name := for $p in $Projects
                                       order by $p/name

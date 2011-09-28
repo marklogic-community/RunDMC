@@ -22,6 +22,8 @@ return
            (: Replace the existing document :)
            xdmp:document-insert($existing-doc-path, $new-doc),
 
+           ml:reset-category-tags($existing-doc-path, $new-doc),
+
            (: Invalidate the navigation cache :)
            ml:invalidate-cached-navigation(),
 
