@@ -44,7 +44,7 @@
   <xsl:template match="/">
     <all-tocs>
       <toc>
-        <node href="/"
+        <node href="/all"
               title="All functions"
               display="All functions ({$api:all-functions-count})"
               id="AllFunctions"
@@ -77,7 +77,7 @@
         </node>
       </toc>
       <toc>
-        <node display="User Guides" href="/docs" id="user_guides">
+        <node display="User Guides" id="user_guides">
           <xsl:for-each select="$guide-docs-ordered">
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
               <xsl:apply-templates mode="guide-toc"/>

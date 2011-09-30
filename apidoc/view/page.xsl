@@ -106,8 +106,8 @@
   </xsl:template>
 
           <xsl:template mode="version-list-item-href" match="version">
-            <xsl:variable name="version-prefix" select="if (@number eq $api:default-version) then '' else concat('/',@number)"/>
-            <xsl:sequence select="concat($version-prefix, '/docs')"/>
+            <xsl:variable name="version" select="if (@number eq $api:default-version) then '' else @number"/>
+            <xsl:sequence select="concat('/', $version)"/>
           </xsl:template>
 
           <xsl:template mode="current-version-selected" match="version"/>
@@ -144,13 +144,16 @@
             <xsl:text>]</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="toc-section-link-selector" match="api:list-page | api:docs-page">
+          <xsl:template mode="toc-section-link-selector" match="api:list-page">
             <xsl:text>#</xsl:text>
             <xsl:value-of select="translate($version-prefix,'/.','v-')"/> <!-- might be empty -->
             <xsl:text>_</xsl:text>
             <xsl:value-of select="@container-toc-section-id"/>
             <xsl:text> >:first-child</xsl:text>
           </xsl:template>
+
+          <!-- On the main docs page, just let the first tab be selected by default. -->
+          <xsl:template mode="toc-section-link-selector" match="api:docs-page"/>
 
 
   <xsl:template mode="page-title" match="api:docs-page">

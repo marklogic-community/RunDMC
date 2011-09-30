@@ -24,8 +24,6 @@
          just in case they change the name of a guide directory between server versions.
 -->
 <docs>
-  <entry href="/" title="MarkLogic API Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
-
   <guide url-name="getting-started" source-name="gs"   >A quick, step-by-step overview of how to get up and running with MarkLogic Server.</guide>
   <guide url-name="admin"           source-name="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>
   <guide url-name="app-dev"         source-name="dev_guide">Provides procedures, methodologies, and conceptual information about general application development tasks in MarkLogic Server.</guide>
@@ -68,5 +66,7 @@
     <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
     <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/MarkLogic_5.0_pubs.zip"/>
   </entry>
+
+  <entry href="/all" title="MarkLogic API Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
 
 </docs>

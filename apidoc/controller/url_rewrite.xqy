@@ -52,6 +52,9 @@ declare variable $matching-function-count := count($matching-functions);
   if (($path ne '/') and ends-with($path, '/')) then
       local:redirect(concat(substring($path, 1, string-length($path) - 1),
                             if ($query-string) then concat('&amp;', $query-string) else ()))
+  (: Redirect /docs to / :)
+  else if (substring-after($path,$path-prefix) eq "docs") then
+       local:redirect($path-prefix)
   (: Redirect requests for older versions back to DMC :)
   else if (starts-with($path,"/4.0")) then
        local:redirect(concat($srv:main-server,"/docs/4.0"))
