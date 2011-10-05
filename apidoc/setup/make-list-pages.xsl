@@ -6,9 +6,10 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:api="http://marklogic.com/rundmc/api"
+  xmlns:toc="http://marklogic.com/rundmc/api/toc"
   xmlns:ml="http://developer.marklogic.com/site/internal"
   xmlns:u="http://marklogic.com/rundmc/util"
-  exclude-result-prefixes="xs api ml u">
+  exclude-result-prefixes="xs api ml u toc">
 
   <!-- TODO: narrow this import down to what's actually needed... -->
   <xsl:import href="../view/page.xsl"/>
@@ -23,7 +24,7 @@
       <xsl:comment>This page was auto-generated. The resulting content is driven     </xsl:comment>
       <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
       <api:docs-page disable-comments="yes">
-        <xsl:for-each select="/all-tocs/toc/node[@id eq 'user_guides']/node">
+        <xsl:for-each select="/all-tocs/toc:guides/node">
           <api:user-guide href="{@href}" display="{@display}">
             <!-- Put applicable title aliases here to help facilitate automatic link creation at render time -->
             <xsl:copy-of select="$title-aliases/guide/alias
@@ -70,14 +71,9 @@
     </api:list-page>
   </xsl:template>
 
-          <!-- For the top-level "All functions" node, just use the given ID -->
-          <xsl:template mode="container-toc-section-id" match="toc/node">
-            <xsl:value-of select="@id"/>
-          </xsl:template>
-
-          <!-- Everything else gets its ID from its /toc/node/node ancestor (or self) -->
+          <!-- The container ID comes from the nearest ancestor (or self) that has an ID -->
           <xsl:template mode="container-toc-section-id" match="node">
-            <xsl:value-of select="ancestor-or-self::node[../parent::toc]/@id"/>
+            <xsl:value-of select="ancestor-or-self::node[@id][1]/@id"/>
           </xsl:template>
 
 
