@@ -10,8 +10,7 @@ var currentFilterText3 = '';
 
 function filterConfigDetails(text, treeSelector) {
 
-    // Filter only the first section of the TOC
-    var tocRoot = $(treeSelector).children("li:first");
+    var tocRoot = $(treeSelector);
 
     // Make sure "All functions" container after each search (even if empty results)
     // TODO: Figure out how to directly call the "toggler" method from the treeview code rather than using this
@@ -24,7 +23,7 @@ function filterConfigDetails(text, treeSelector) {
     else
       waitToSearch(text, tocRoot);
 
-    expandSubTree(tocRoot);
+    expandSubTree(tocRoot.children("li"));
 }
 
 var waitToSearch = function(text, tocRoot) {
@@ -134,7 +133,7 @@ function collapseAll(ul) {
 
 function loadAllSubSections(tocRoot) {
   if (!tocRoot.hasClass("startedLoading")) {
-    tocRoot.children("ul").children("li").each(loadTocSection);
+    tocRoot.find(".hasChildren").each(loadTocSection);
     tocRoot.addClass("startedLoading");
   }
 }
