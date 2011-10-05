@@ -255,7 +255,8 @@ function updateTocOnTabChange(ui) {
 function updateTocForTab(tab, panel) {
   //console.log(functionPageBucketId);
 
-  if (tab.innerHTML == "Categories" && functionPageBucketId !== "") {
+  var categoriesPanelId = "tabs-2";
+  if (panel.id == categoriesPanelId && functionPageBucketId !== "") {
     var tocSection = $("#" + functionPageBucketId, panel);
 
     //console.log(tocSection);
