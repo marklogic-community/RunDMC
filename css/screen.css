@@ -85,7 +85,7 @@ ul {
 #header a {color: #CCC;}
 #header h1 {float: left;}
 #header h1 a {
-	background: url(../img/logo.png) no-repeat;
+	background: url(/images/logo.png) no-repeat;
 	display: block;
 	text-indent: -999em;
 	width: 178px;
@@ -121,7 +121,7 @@ ul {
 	margin-left: 40px;
 	padding-bottom: 13px;
 }
-#header nav .current {background: url(../img/bg_nav_current.png) bottom center no-repeat;}
+#header nav .current {background: url(/images/bg_nav_current.png) bottom center no-repeat;}
 #header nav .current a {
 	color: white;
 	text-decoration: none;
@@ -192,7 +192,7 @@ ul {
 .jsenabled #sub li > span {
 	cursor: pointer;
 	padding-left: 18px;
-	background: url(../img/s_plusminus.png) left -22px no-repeat;
+	background: url(/images/s_plusminus.png) left -22px no-repeat;
 }
 .jsenabled #sub li.active > span {background-position: 0 8px;}
 .jsenabled #sub ul ul {display: none;}
@@ -288,7 +288,7 @@ table.features {
 	padding-bottom: 10px;
 }
 .features thead th {
-	background: #ECECEC url(../img/bg_table_features_top.png) center top no-repeat;
+	background: #ECECEC url(/images/bg_table_features_top.png) center top no-repeat;
 	white-space: nowrap;
 	vertical-align: bottom;
 	padding: 24px 5px 15px;
@@ -308,17 +308,17 @@ table.features {
 .features tbody tr:first-child th:first-child {
 	padding-left: 15px;
 	width: 110px;
-	background: url(../img/bg_table_features_bottom.png) top left no-repeat;
+	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
 .features tbody tr:first-child th:first-child,
 .features tbody td:last-child,
 .features tbody:last-child tr:last-child th,
 .features tbody:last-child tr:last-child td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
 .features tbody td.last,
 .features tbody.last tr.last th,
 .features tbody.last tr.last td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
 .features tbody:last-child tr:last-child th,
 .features tbody:last-child tr:last-child td
 	{background-position: bottom center;}
@@ -381,6 +381,6 @@ table.features {
 #comments .action ul {
 	margin: -15px 0 0;
 	padding: 30px 0 0 10px;
-	background: url(../img/i_speechbubble.png) no-repeat;
+	background: url(/images/i_speechbubble.png) no-repeat;
 }
 #comments .action li span {font-size: 24px;}
