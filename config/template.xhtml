@@ -1,104 +1,229 @@
-<?xml version="1.0" encoding="UTF-8"?><html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <head>
-    <title><ml:page-title/></title>
-    <meta name="description" content=""/>
-    <link rel="SHORTCUT ICON" href="/images/v-1/favicon.ico"/>
-    <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
-    <link rel="alternate" type="application/atom+xml" href="/news/atom.xml" title="MarkLogic Developer Community News" />
-    <link rel="alternate" type="application/atom+xml" href="/events/atom.xml" title="MarkLogic Developer Community Events" />
-    <link rel="alternate" type="application/atom+xml" href="/newsandevents/atom.xml" title="MarkLogic Developer Community News and Events" />
-    <meta name="keywords" content=""/>
-    <link type="text/css" href="/css/v-10/screen.css" rel="stylesheet" media="screen"/>
-    <link type="text/css" href="/css/v-1/ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet"/>
-    <link type="text/css" href="/stackunderflow/stackoverflow.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.8.custom.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.tools.min.js"></script>
-    <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
-    <script type="text/javascript" src="/js/twitStream.js"></script>
-    <script type="text/javascript" src="/js/functions.js"></script>
-    <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/js/cornify.js"></script>
-    <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.min.js"></script>
-    <!--[if lte IE 7]>
-        <link href="/css/v-1/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
-    <![endif]-->
-    <script type="text/javascript">
-        var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
-        var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', acct], ['_trackPageview'], ['_trackPageLoadTime']);
-        
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-     </script>
-  </head>
-  <body ml:class="">
-        <div id="container">
-            <div id="header">
-                <div id="badge"><a href="/" title="Home"><img width="207" height="68" src="/media/marklogic-community-badge.png" alt="MarkLogic Developer Community"/></a></div>
-                <ul id="utilnav">
-      <!--
-      <li class="skip"><a href="">(skip to content)</a></li>
-      <li class="signup"><a href="signup.html">Log in</a></li>
-      <li class="prefs"><a href="">Preferences</a></li>
-    -->
-    </ul>
-                <form action="/search" method="get">
-      <fieldset>
-                            <legend><label for="s_inp">Search</label></legend>
-                            <input name="q" id="s_inp" type="text" ml:value=""/>
-                            <input type="submit"/>
-                    </fieldset>
-    </form>
-                <ml:top-nav/>
-            </div>
-            <hr/>
-            <div id="content" ml:class="">
-                <ml:doc-breadcrumbs/>
-                <div id="main">
-                    <ml:breadcrumbs/>
-                    <ml:page-content/>
-                </div>
-                <div id="sub">
-                     <ml:sub-nav/>
-                     <ml:widgets/>
-                </div>
-            </div>
-            <hr/>
-            <div id="footer"> 
-                <div id="copyright">Copyright © 2010-2011 <a href="http://www.marklogic.com/">MarkLogic Corporation</a>. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/> </a> and <a href="/code/rundmc">rundmc</a>. (<a href="http://www.cornify.com" onclick="cornify_add();return false;">cornify</a>)</div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            var uservoiceOptions = {
-                /* required */
-                key: 'rundmc',
-                host: 'marklogic.uservoice.com', 
-                forum: '58148',
-                showTab: true,  
-                /* optional */
-                alignment: 'right',
-                background_color:'orange', 
-                text_color: 'white',
-                hover_color: '#06C',
-                lang: 'en'
-            };
-        
-        function _loadUserVoice() {
-            var s = document.createElement('script');
-            s.setAttribute('type', 'text/javascript');
-            s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
-            document.getElementsByTagName('head')[0].appendChild(s);
-        }
-        _loadSuper = window.onload;
-        if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com') 
-            window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
-        </script>
-<ml:elapsed-time/>
-    </body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>MarkLogic Community</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href="css/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<!--[if lte IE 8]>
+		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+		<![endif]-->
+		<script type="text/javascript" src="js/modernizr.js"></script>
+		<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.tooltip.min.js"></script>
+		<script type="text/javascript" src="js/functions.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<header>
+					<h1><a href="">MarkLogic&#174; Community</a></h1>
+					<form action="#" method="get">
+						<fieldset>
+							<legend>Search</legend>
+							<label for="s_inp">Search the COMMUNITY with MarkLogic</label>
+							<input id="s_inp" type="text" />
+							<input type="image" src="img/i_mag_glass1.png" alt="Search" />
+						</fieldset>
+					</form>
+					<nav>
+						<ul>
+							<li><a href="">Documentation</a></li>
+							<li class="current"><a href="">Downloads</a></li>
+							<li><a href="">Code</a></li>
+							<li><a href="">People</a></li>
+							<li><a href="">Blog</a></li>
+							<li><a href="">Discuss</a></li>
+							<li><a href="">Meet</a></li>
+						</ul>
+					</nav>
+				</header>
+			</div>
+			<hr />
+			<div id="content">
+				<div id="breadcrumb">
+					<div><a href="">Developer Community</a> &gt; <a href="">Downloads</a> &gt; <a href="">Licensing</a></div>
+				</div>
+				<section>
+					<h2>MarkLogic Server License Options</h2>
+					<div id="main">
+						<p>You can download MarkLogic Server and be up and running immediately with one of the following Standard Edition license options.</p>
+						<table class="features">
+							<caption>License Options</caption>
+							<colgroup span="2"></colgroup>
+							<colgroup span="3"></colgroup>
+							<thead>
+								<tr>
+									<th scope="col" colspan="2"></th>
+									<th scope="col">Trial License</th>
+									<th scope="col">Community License</th>
+									<th scope="col">Academic License</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="rowgroup" rowspan="5">Standard Edition</th>
+									<th scope="row">License Duration</th>
+									<td>30 days</td>
+									<td>Unlimited</td>
+									<td>One year</td>
+								</tr>
+								<tr>
+									<th>Maximum Content Size</th>
+									<td>40 GB</td>
+									<td>10 GB</td>
+									<td>40 GB</td>
+								</tr>
+								<tr>
+									<th>Processors</th>
+									<td>2 CPUs</td>
+									<td>2 CPUs</td>
+									<td>2 CPUs</td>
+								</tr>
+								<tr>
+									<th>Optional Features <small>Geospatial support, entity enrichment, and alerting</small></th>
+									<td>All</td>
+									<td>None</td>
+									<td>All</td>
+								</tr>
+								<tr>
+									<th>Deployment Environment</th>
+									<td>Evaluation only</td>
+									<td>Personal non-commercial projects</td>
+									<td>Teaching use only</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<th colspan="2" scope="rowgroup">Enterprise Edition</th>
+									<td colspan="3"><a href="">More information</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<section>
+							<h3>Trial License</h3>
+							<p>The Trial License allows you to evaluate MarkLogic Server Standard Edition for free for 30 days. A Trial License enables full access to optional features including, geospatial support, entity enrichment, and alerting, for the duration of the trial period. The Trial License is limited to 40 gigabytes of content and can be run on a dual CPU server. The Trial License allows MarkLogic Server to be used for evaluation purposes only and not for production applications or the development of production applications. Support is provided informally through the developer network.</p>
+						</section>
+						<section>
+							<h3>Community License</h3>
+							<p>The Community License is available free of charge for personal non-commercial projects. It does not restrict you to a fixed trial period, but is limited to a single- or dual-CPU server and 10 gigabytes of content. Unlike the Trial License, the Community License does not include access to optional features, such as geospatial support, entity enrichment, and alerting. Use of MarkLogic Server under the Community License is restricted to two instances per organization.</p>
+						</section>
+						<section>
+							<h3>Academic License</h3>
+							<p>The Academic License is available to students and instructors at educational institutions. It provides a convenient way to take advantage of MarkLogic Server for class projects or instruction. Like the Trial License, it includes geo-spatial support, entity enrichment, and alerting and is limited to 40 gigabytes of content. However, the Academic License is free for instructional use for up to a year. For more information or to request an Academic License, please contact MarkLogic.</p>
+						</section>
+					</div>
+					<!-- end main -->
+					<section id="sub">
+						<h2>MarkLogic Downloads</h2>
+						<ul>
+							<li>
+								<span>MarkLogic Server</span>
+								<ul>
+									<li><a href="">MarkLogic 5</a></li>
+									<li><a href="">Release 4.2</a></li>
+									<li><a href="">Release 4.1</a></li>
+									<li><a href="">Release 4.0</a></li>
+								</ul>
+							</li>
+							<li>
+								<span>Connectors</span>
+								<ul>
+									<li><a href="">XCC Java/.NET Connectors for 4.2</a></li>
+									<li><a href="">XCC Java/.NET Connectors for 4.1</a></li>
+									<li><a href="">XCC Java/.NET Connectors for 4.0</a></li>
+									<li><a href="">Connector for SharePoint®</a></li>
+								</ul>
+							</li>
+							<li>
+								<span>Microsoft Office Integration</span>
+								<ul>
+									<li><a href="">item 1</a></li>
+									<li><a href="">item 2</a></li>
+								</ul>
+							</li>
+							<li>
+								<span>Cloud Computing</span>
+								<ul>
+									<li><a href="">item 1</a></li>
+									<li><a href="">item 2</a></li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+				</section>
+			</div>
+			<div id="comments">
+				<section>
+					<h2>Comments <img src="img/i_speechbubble.png" alt="" width="30" height="28" /></h2>
+					<div class="action">
+						<ul>
+							<li><a href="#disqus_thread" data-disqus-identifier=""><span>0</span> comments</a></li>
+							<li><a rel="nofollow" href="#post_comment">Post a comment</a></li>
+						</ul>
+					</div>
+					<script type="text/javascript">
+						var disqus_shortname = 'marklogicdev';
+						(function () {
+							var s = document.createElement('script');
+							s.async = true;
+							s.type = 'text/javascript';
+							s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+							(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+						}());
+					</script>
+					<a id="post_comment"></a>
+					<div id="disqus_thread">
+						<div id="dsq-content">
+							<ul id="dsq-comments"></ul>
+						</div>
+					</div>
+					<script type="text/javascript">
+						var disqus_shortname = 'marklogicdev';
+						var disqus_developer = 1;
+						// The following are highly recommended additional parameters. Remove the slashes in front to use.
+						var disqus_identifier = 'disqus-/blog/document-formats-part2.xml';
+						var disqus_url = 'http://developer.marklogic.com/blog/document-formats-part2';
+						function disqus_config() {
+							this.callbacks.onNewComment = [
+								function() {
+									setTimeout(function(){
+										$.ajax({
+											type: "POST",
+											url: "/updateDisqusThreads"
+										});
+									}, 10000);
+								}
+							];
+						}
+						(function() {
+							var dsq = document.createElement('script');
+							dsq.type = 'text/javascript';
+							dsq.async = true;
+							dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+						})();
+					</script>
+					<noscript><p>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></p></noscript>
+				</section>
+			</div>
+			<hr />
+			<footer>
+				Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by MarkLogic Server 4.2-4 and rundmc.
+				<div class="utility">
+					<form action="#" method="get">
+						<fieldset>
+							<legend><label for="us_input">Search the community site</label></legend>
+							<input id="us_input" type="text" />
+							<input type="image" src="img/i_mag_glass2.png" alt="Search" title="Search the site" />
+						</fieldset>
+					</form>
+					<a href=""><img src="img/i_bullhorn.png" alt="Feedback" title="Feedback – Submit an idea" width="30" height="29" /></a>
+					<a href=""><img src="img/i_screen_try.png" alt="Try" title="Go to try marklogic.com" width="30" height="29" /></a>
+					<a href=""><img src="img/i_screen_m.png" alt="MarkLogic Site" title="Go to corporate site" width="30" height="29" /></a>
+				</div>
+			</footer>
+		</div>
+	</body>
 </html>
