@@ -2,7 +2,7 @@ if(typeof jQuery != 'undefined') {
 	$(function() {
 		$('body').addClass('jsenabled');
 		if(!$.support.opacity) {
-			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child','#main').addClass('last');
+			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child, .utility a:last-child','#main').addClass('last');
 		}
 		// search field default value
 		var searchField = $('#s_inp','#header');
@@ -20,6 +20,19 @@ if(typeof jQuery != 'undefined') {
 			})
 			.prev()
 				.hide();
+		var utilSearch = $('.utility #us_input','footer');
+		var valText = utilSearch.attr('title');
+		utilSearch
+			.val(valText)
+			.addClass('default')
+			.focus(function() {
+				if($(this).val() == valText) {
+					$(this).val('').removeClass('default');
+				}
+			})
+			.blur(function() {
+				if($(this).val() == '') {$(this).val(valText).addClass('default')}
+			});
 		// end search field default value
 		// side nav accordion functionality
 		$('#sub li > span').click(function() {
@@ -27,10 +40,18 @@ if(typeof jQuery != 'undefined') {
 		});
 		// end side nav accordion functionality
 		$('.features thead th:first-child').addClass('title').append($('.features caption').text()).closest('table').children('caption').remove();
-		$('.utility input[type=image]').click(function(e) {
-			e.preventDefault();
-			$(this).closest('form').addClass('active');
-		});
+		$('.utility')
+			.contents()
+				.wrapAll($('<div>', {'class': 'u_wrapper'}))
+				.end()
+			.find('form')
+				.after($('<div>', {'class': 'border'}))
+				.end()
+			.find('input[type=image]')
+				.click(function(e) {
+					e.preventDefault();
+					$(this).closest('form').addClass('active');
+				});
 		var inside = false;
 		$('.utility form').hover(function(){ 
 		    inside=true; 
@@ -42,6 +63,12 @@ if(typeof jQuery != 'undefined') {
 	    	$('.utility form.active').removeClass('active');
 	    }
 		});
-		$('.utility a img').tooltip();
+		if(jQuery().tooltip) {
+			$('.utility a img, .utility input[type=image]').tooltip({
+				showURL: false,
+				track: true,
+				top: -8
+			});
+		}
 	});
 }
