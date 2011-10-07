@@ -31,8 +31,6 @@ STEP 2: Create an app server for running the setup scripts.
 STEP 3: Setup the indexes.
   Run http://localhost:8008/apidoc/setup/setup-indexes.xqy
 
-  ASSUMPTION: The name of the RunDMC database is "RunDMC".
-
 
 STEP 4: Put the latest raw docs (from \\gfurbush\Docs) on the machine running MarkLogic Server.
   For example, on my local machine, I put these folders into: /Users/elenz/Desktop/api-rawdocs/

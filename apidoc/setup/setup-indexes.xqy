@@ -2,7 +2,7 @@ xquery version "1.0-ml";
 import module namespace admin = "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
 
 let $config := admin:get-configuration()
-let $dbid := xdmp:database("RunDMC")
+let $dbid := xdmp:database()
 
 let $rangespec :=
          admin:database-range-element-attribute-index("string",
