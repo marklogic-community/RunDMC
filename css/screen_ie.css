@@ -4,7 +4,9 @@ table.features,
 #breadcrumb,
 #content,
 #comments,
-#comments .action
+#comments .action,
+.widget,
+.widget h1
 	{behavior: url(js/PIE.htc);}
 #breadcrumb, #content, #comments {box-shadow: -3px 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
