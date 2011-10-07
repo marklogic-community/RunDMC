@@ -178,6 +178,12 @@
     </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="page-heading">
+    <h2>
+      <xsl:value-of select="$content/*/xhtml:h1"/>
+    </h2>
+  </xsl:template>
+
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
@@ -188,7 +194,7 @@
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
-            <xsl:apply-templates/>
+            <xsl:apply-templates select="node() except xhtml:h1"/>
           </xsl:template>
 
 

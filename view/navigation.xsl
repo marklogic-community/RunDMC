@@ -38,13 +38,15 @@
   </xsl:template>
 
   <xsl:template match="top-nav">
-    <ul>
-      <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
-    </ul>
+    <nav>
+      <ul>
+        <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
+      </ul>
+    </nav>
   </xsl:template>
 
           <xsl:template mode="top-nav" match="page">
-            <li>
+            <li class="active">
               <xsl:apply-templates mode="top-nav-current-att" select="."/>
               <xsl:variable name="server-prefix" select="if (starts-with(@href,'/')) then if (@api-server)
                                                                                      then $srv:api-server

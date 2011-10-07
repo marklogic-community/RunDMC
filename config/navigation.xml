@@ -2,7 +2,7 @@
      including breadcrumb hierarchy.
 -->
 <navigation xmlns="http://developer.marklogic.com/site/internal">
-  <page display="Docs" api-server="yes" href="/docs"/>
+  <page display="Documentation" api-server="yes" href="/docs"/>
   <page display="Downloads" href="/products">
     <group display="MarkLogic Downloads">
       <group display="MarkLogic Server">
@@ -109,6 +109,8 @@
     </group>
     <generic-page display="Microsoft Office® Integration" href="/microsoft-office-integration"/>
   </page>
+  <page display="People" href="/people"/>
+  <!--
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
         <page display="Product Documentation" href="/docs" />
@@ -120,7 +122,19 @@
         </page>
     </group>
   </page>
-  <page display="Mailing lists" href="/discuss">
+  -->
+  <page display="Blog" href="/blog" closed="yes">
+    <group display="All Posts">
+      <blog-posts-grouped-by-date/>
+    </group>
+    <group display="Authors" disable-initial-expansion="yes">
+      <blog-posts-grouped-by-author/>
+    </group>
+    <group display="Categories" disable-initial-expansion="yes">
+      <blog-posts-grouped-by-category/>
+    </group>
+  </page>
+  <page display="Discuss" href="/discuss">
     <group display="Subscribe">
       <page display="General Development" href="/mailman/listinfo/general"/>
       <!--
@@ -144,18 +158,10 @@
     </group>
     <generic-page display="Organize" href="/meet/organize"/>
   </page>
-  <page display="Blog" href="/blog" closed="yes">
-    <group display="All Posts">
-      <blog-posts-grouped-by-date/>
-    </group>
-    <group display="Authors" disable-initial-expansion="yes">
-      <blog-posts-grouped-by-author/>
-    </group>
-    <group display="Categories" disable-initial-expansion="yes">
-      <blog-posts-grouped-by-category/>
-    </group>
-  </page>
+
+  <!--
   <page display="Corporate" href="http://www.marklogic.com/" />
+  -->
 
   <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
 

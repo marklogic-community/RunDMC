@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:ml="http://developer.marklogic.com/site/internal">
 	<head>
-		<title>MarkLogic Community</title>
+		<title><ml:page-title/></title>
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -18,7 +18,7 @@
 		<div id="container">
 			<div id="header">
 				<header>
-					<h1><a href="">MarkLogic&#174; Community</a></h1>
+					<h1><a href="/">MarkLogic&#174; Community</a></h1>
 					<form action="#" method="get">
 						<fieldset>
 							<legend>Search</legend>
@@ -27,6 +27,8 @@
 							<input type="image" src="/images/i_mag_glass1.png" alt="Search" />
 						</fieldset>
 					</form>
+          <ml:top-nav/>
+          <!--
 					<nav>
 						<ul>
 							<li><a href="">Documentation</a></li>
@@ -38,16 +40,22 @@
 							<li><a href="">Meet</a></li>
 						</ul>
 					</nav>
+          -->
 				</header>
 			</div>
 			<hr />
 			<div id="content">
+        <ml:breadcrumbs/>
+        <!--
 				<div id="breadcrumb">
 					<div><a href="">Developer Community</a> &gt; <a href="">Downloads</a> &gt; <a href="">Licensing</a></div>
 				</div>
+        -->
 				<section>
-					<h2>MarkLogic Server License Options</h2>
+          <ml:page-heading/> <!-- TODO: Write a rule for this tag -->
 					<div id="main">
+            <ml:page-content/>
+            <!--
 						<p>You can download MarkLogic Server and be up and running immediately with one of the following Standard Edition license options.</p>
 						<table class="features">
 							<caption>License Options</caption>
@@ -113,9 +121,12 @@
 							<h3>Academic License</h3>
 							<p>The Academic License is available to students and instructors at educational institutions. It provides a convenient way to take advantage of MarkLogic Server for class projects or instruction. Like the Trial License, it includes geo-spatial support, entity enrichment, and alerting and is limited to 40 gigabytes of content. However, the Academic License is free for instructional use for up to a year. For more information or to request an Academic License, please contact MarkLogic.</p>
 						</section>
+           -->
 					</div>
 					<!-- end main -->
 					<section id="sub">
+            <ml:sub-nav/>
+            <!--
 						<h2>MarkLogic Downloads</h2>
 						<ul>
 							<li>
@@ -151,6 +162,7 @@
 								</ul>
 							</li>
 						</ul>
+            -->
 					</section>
 				</section>
 			</div>
@@ -210,7 +222,7 @@
 			</div>
 			<hr />
 			<footer>
-				Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by MarkLogic Server 4.2-4 and rundmc.
+				Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.
 				<div class="utility">
 					<form action="#" method="get">
 						<fieldset>
