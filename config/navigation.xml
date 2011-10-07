@@ -124,14 +124,16 @@
   </page>
   -->
   <page display="Blog" href="/blog" closed="yes">
-    <group display="All Posts">
-      <blog-posts-grouped-by-date/>
-    </group>
-    <group display="Authors" disable-initial-expansion="yes">
-      <blog-posts-grouped-by-author/>
-    </group>
-    <group display="Categories" disable-initial-expansion="yes">
-      <blog-posts-grouped-by-category/>
+    <group display="Posts">
+      <group display="All Posts">
+        <blog-posts-grouped-by-date/>
+      </group>
+      <group display="Authors" disable-initial-expansion="yes">
+        <blog-posts-grouped-by-author/>
+      </group>
+      <group display="Categories" disable-initial-expansion="yes">
+        <blog-posts-grouped-by-category/>
+      </group>
     </group>
   </page>
   <page display="Discuss" href="/discuss">
