@@ -2,7 +2,7 @@ if(typeof jQuery != 'undefined') {
 	$(function() {
 		$('body').addClass('jsenabled');
 		if(!$.support.opacity) {
-			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child, .utility a:last-child','#main').addClass('last');
+			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child, .utility a:last-child, .widget div li:last-child','#content').addClass('last');
 		}
 		// search field default value
 		var searchField = $('#s_inp','#header');
