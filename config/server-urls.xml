@@ -2,14 +2,19 @@
 
   <host type="staging" name="stage-developer.marklogic.com">
 
-    <main-server url="http://dmc-stage.marklogic.com:8039"/>
+    <main-server url="http://dmc-stage.marklogic.com:8090"/>
     <!-- Change back to this once we merge in the apidoc branch on dmc-stage
     <main-server url="http://dmc-stage.marklogic.com"/>
     -->
 
     <draft-server url="http://dmc-stage-draft.marklogic.com"/>
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
+
+    <!-- Change this when we launch api.marklogic.com -->
+    <api-server url="http://dmc-stage.marklogic.com:8090"/>
+    <!--
     <api-server url="http://api-stage.marklogic.com"/>
+    -->
   </host>
 
   <host type="production" name="developer.marklogic.com">
