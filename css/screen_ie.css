@@ -5,9 +5,10 @@ table.features,
 #content,
 #comments,
 #comments .action,
+#documentation,
 .widget,
 .widget h1
 	{behavior: url(js/PIE.htc);}
-#breadcrumb, #content, #comments {box-shadow: -3px 0 3px black;}
+#breadcrumb, #content, #comments, #documentation {box-shadow: -3px 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
 #tooltip {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E4E5F0');}

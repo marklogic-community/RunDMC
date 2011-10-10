@@ -63,6 +63,7 @@ ul {
 	visibility: hidden;
 }
 #content:after, #content > section:after {clear: right;}
+#content.subnav:after {clear: both;}
 #container {position: relative;}
 
 #header {
@@ -176,6 +177,7 @@ ul {
 #main {
 	float: right;
 	width: 620px;
+	min-height: 300px;
 }
 #main > :first-child {margin-top: 0;}
 #main section > h3:first-child {margin-top: 34px;}
@@ -201,11 +203,17 @@ ul {
 	border-color: #FFF transparent #E4E4E4;
 	padding: 5px 0;
 }
-#sub li li {padding-left: 30px;}
+#sub li li {padding-left: 19px;}
 #sub li:first-child > span {border-top: none;}
 #sub li span {
  	display: block;
 	font-weight: bold;
+}
+#sub .current > a {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: default;
 }
 .jsenabled #sub li > span {
 	cursor: pointer;
@@ -404,7 +412,7 @@ table.features {
 .doclist li > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
 
-#comments {
+#comments, #documentation {
 	background: white;
 	padding: 40px 0;
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -412,16 +420,22 @@ table.features {
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	clear: right;
 }
-#comments > section {
+#documentation {
+	background: #E3E3E3;
+	position: relative;
+	padding: 30px 0 20px;
+}
+#comments > section, #documentation > section {
 	width: 620px;
 	margin: auto;
 	padding-left: 325px;
 }
-#comments > section > h2 {
+#comments > section > h2, #documentation > section > h2 {
 	font-size: 24px;
 	margin-bottom: 20px;
 }
 #comments > section > h2 img {margin: -5px 0 0 5px;}
+#documentation > section > h2 img {margin-top: -10px;}
 #comments .action {
 	position: absolute;
 	top: 110px;
@@ -446,6 +460,16 @@ table.features {
 	background: url(../img/i_speechbubble.png) no-repeat;
 }
 #comments .action li span {font-size: 24px;}
+#documentation li {
+	margin: 15px 0;
+	position: relative;
+	padding-left: 40px;
+}
+#documentation li img {
+	position: absolute;
+	left: 0;
+	top: -5px;
+}
 
 .widget {
 	border: 1px solid #CCC;
@@ -511,3 +535,44 @@ table.features {
 	margin-bottom: 10px;
 }
 .widget div div {line-height: 114%;}
+
+#main .info li {margin-bottom: 10px;}
+#main .info a {
+	font-size: 13px;
+	font-weight: bold;
+	background: url(../img/i_info.png) left center no-repeat;
+	padding: 5px 0 5px 33px;
+	line-height: 23px;
+}
+#main .download {
+	border-top: 1px solid #E4E4E4;
+	padding: 0 0 20px;
+}
+#main .download:before {
+	border-top: 1px solid white;
+	content: "";
+	display: block;
+	margin-bottom: 20px;
+}
+#main .download:first-child, #main .download:first-child:before {border-top: none;}
+#main .download h3 {
+	margin: 0 0 10px !important;
+	font-size: 16px;
+	font-weight: bold;
+}
+#main .download table {
+	line-height: 23px;
+	font-size: 13px;
+}
+#main .download th, #main .download td {
+	padding-bottom: 5px;
+	padding-right: 5px;
+}
+#main .download th {width: 245px;}
+#main .download th + td {width: 145px;}
+#main .download table a {
+	font-weight: normal;
+	color: #666;
+	padding: 5px 0 5px 30px;
+	background: url(../img/i_arrow_down.png) left center no-repeat;
+}
