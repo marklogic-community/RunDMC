@@ -38,6 +38,7 @@ if(typeof jQuery != 'undefined') {
 		$('#sub li > span').click(function() {
 			$(this).next().slideToggle().end().parent().toggleClass('active');
 		});
+		$('#sub li').find('.current').parent().show().closest('li').addClass('active');
 		// end side nav accordion functionality
 		$('.features thead th:first-child').addClass('title').append($('.features caption').text()).closest('table').children('caption').remove();
 		$('.utility')
