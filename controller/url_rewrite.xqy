@@ -111,7 +111,7 @@ declare function local:redir($path as xs:string) as xs:string
 
 declare function local:rewrite($path as xs:string) as xs:string
 {
-    let $latest-version := "4.2"
+    let $latest-version := "5.0"
     let $latest-sharepoint-connector-version := "1.1-1"
 
     (: Defaults for /docs and /producs :)
