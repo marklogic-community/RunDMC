@@ -6,6 +6,17 @@
   </div>
 
   <div class="body">
+    <h3><a href="http://blog.davidcassel.net/2011/10/word-query-specification/" target="_blank">Word query specification</a></h3>
+    <div class="author">by David Cassel, October 11, 2011</div>
+    <div class="message">
+<p>
+While looking at the database configuration in MarkLogic Server, have you ever noticed the Word Query link on the left? (Click Configure -> Databases -> the name of one of your databases -> Word Query.) Ever wonder what it does? Word Query is...
+</p>
+    </div>
+  </div>
+
+
+  <div class="body">
     <h3><a href="/blog/document-formats-part3">Document formats, part 3: Changing formats</a></h3>
     <div class="author">by Evan Lenz, September 21, 2011</div>
     <div class="message">
@@ -36,23 +47,6 @@
     <p>Here's a simple way to get the sizes of sample documents across a given databases...</p> 
     </div>
   </div>
-
-  <div class="body">
-    <h3><a href="http://blog.msbbc.co.uk/2011/09/xquerymarklogic-pulling-data-out-of.html" target="_blank">XQuery/MarkLogic: pulling data out of an Excel spreadsheet</a></h3>
-    <div class="author">by Alex Bleasdale, September 16, 2011</div>
-    <div class="message">
-    <p>Excel spreadsheets can be saved in an xml format - in such cases, it's simple to dump the xml into a CQ buffer (if you're using MarkLogic) and parse the information in adjacent column cells...</p> 
-    </div>
-  </div>
-
-  <div class="body">
-    <h3><a href="http://xquerywebappdev.wordpress.com/2011/09/09/hierarchical-and-variably-structured-data/" target="_blank">How about “variably-structured data”?</a></h3>
-    <div class="author">by Ryan Semerau, September 9, 2011</div>
-    <div class="message">
-    <p>“Unstructured” and “Semi-structured” never seem to be very good terms describing the data model used for XML and MarkLogic. And sometimes a term that people are unfamiliar with is better because then they don’t use pre-existing notions to deduce an incorrect understanding of the term...</p> 
-    </div>
-  </div>
-
 
 
 {(:
