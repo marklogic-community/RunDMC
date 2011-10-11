@@ -52,7 +52,7 @@
 				</div>
         -->
 				<section>
-          <ml:page-heading/> <!-- TODO: Write a rule for this tag -->
+          <ml:page-heading/>
 					<div id="main">
             <ml:page-content/>
             <!--
@@ -167,60 +167,8 @@
 					</section>
 				</section>
 			</div>
-			<div id="comments">
-				<section>
-					<h2>Comments <img src="/images/i_speechbubble.png" alt="" width="30" height="28" /></h2>
-					<div class="action">
-						<ul>
-							<li><a href="#disqus_thread" data-disqus-identifier=""><span>0</span> comments</a></li>
-							<li><a rel="nofollow" href="#post_comment">Post a comment</a></li>
-						</ul>
-					</div>
-					<script type="text/javascript">
-						var disqus_shortname = 'marklogicdev';
-						(function () {
-							var s = document.createElement('script');
-							s.async = true;
-							s.type = 'text/javascript';
-							s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-							(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-						}());
-					</script>
-					<a id="post_comment"></a>
-					<div id="disqus_thread">
-						<div id="dsq-content">
-							<ul id="dsq-comments"></ul>
-						</div>
-					</div>
-					<script type="text/javascript">
-						var disqus_shortname = 'marklogicdev';
-						var disqus_developer = 1;
-						// The following are highly recommended additional parameters. Remove the slashes in front to use.
-						var disqus_identifier = 'disqus-/blog/document-formats-part2.xml';
-						var disqus_url = 'http://developer.marklogic.com/blog/document-formats-part2';
-						function disqus_config() {
-							this.callbacks.onNewComment = [
-								function() {
-									setTimeout(function(){
-										$.ajax({
-											type: "POST",
-											url: "/updateDisqusThreads"
-										});
-									}, 10000);
-								}
-							];
-						}
-						(function() {
-							var dsq = document.createElement('script');
-							dsq.type = 'text/javascript';
-							dsq.async = true;
-							dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-						})();
-					</script>
-					<noscript><p>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></p></noscript>
-				</section>
-			</div>
+      <ml:documentation-section/>
+      <ml:comment-section/>
 			<hr />
 			<footer>
 				Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.

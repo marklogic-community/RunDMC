@@ -117,9 +117,10 @@
 
 
   <xsl:template match="product-info">
-    <h2>
-      <xsl:value-of select="@name"/>
-    </h2>
+            <ul class="info">
+              <li><a href="{@license-page}">License Options&#160;»</a></li>
+              <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
+            </ul>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <h1>MarkLogic Server Download Confirmation</h1>
@@ -145,66 +146,58 @@
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
     </div>
 
-    <div id="downloads-misc">
-    <ul class="downloads-misc" ><li><a class="more hide-if-href-empty license-options" href="{@license-page}">License Options &gt;</a></li>
-    <li><a class="more hide-if-href-empty requirements" href="{@requirements-page}">System Requirements &gt;</a></li></ul>
-    </div>
-    <!-- <h4><a class="requirements hide-if-href-empty" href="{@requirements-page}">System Requirements &gt;</a></h4> -->
-    <p/>
-
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>
 
           <xsl:template mode="product-platform" match="platform">
-            <table class="downloads">
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <xsl:value-of select="@name"/>
-                  </th>
-                  <th class="size" scope="col">&#160;</th>
-                <!--
-                  <th class="last" scope="col">Date Posted</th>
-                -->
-                </tr>
-              </thead>
-              <tbody>
-                <xsl:apply-templates mode="product-download" select="download"/>
-              </tbody>
-            </table>
+            <section class="download">
+              <h3><xsl:value-of select="@name"/></h3>
+              <table>
+                <tbody>
+                  <xsl:apply-templates mode="product-download" select="download"/>
+                </tbody>
+              </table>
+            </section>
           </xsl:template>
 
                   <xsl:template mode="product-download" match="download">
                     <tr>
-                      <td>
+                      <th>
                         <a href="{@href}" class="confirm-download">
-                          <xsl:apply-templates/>
+                          <xsl:apply-templates select="architecture"/>
                         </a>
                        <xsl:if test="@url-to-copy">
                             &#160;<input readonly="true" size="47" class="url-to-copy" type="text" value="{@url-to-copy}" />
                         </xsl:if>
+                      </th>
+                      <td>
+                        <xsl:apply-templates select="installer"/>
                       </td>
                       <td>
-                        <a href="{@href}" class="confirm-download">
-                            <xsl:value-of select="@size"/>
-                        </a>
+                        <xsl:value-of select="@size"/>
                       </td>
-                     <!--
-                      <td>
-                        <xsl:value-of select="@date"/>
-                      </td>
-                    -->
                     </tr>
                   </xsl:template>
 
 
-  <xsl:template match="product-documentation">
-    <table class="table2">
-      <h2>Documentation</h2>
-      <tbody>
-        <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
-      </tbody>
-    </table>
+  <xsl:template match="documentation-section">
+    <xsl:apply-templates mode="documentation-section" select="$content/page/product-documentation"/>
+  </xsl:template>
+
+  <!-- Skip in the normal page body -->
+  <xsl:template match="product-documentation"/>
+
+  <!-- Insert it here instead -->
+  <xsl:template mode="documentation-section" match="product-documentation">
+    <div id="documentation">
+      <section>
+        <h2>Documentation <img src="/images/i_doc.png" alt="" width="28" height="31" /></h2>
+        <ul>
+          <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
+        </ul>
+
+      </section>
+    </div>
   </xsl:template>
 
           <xsl:template mode="product-doc-entry" match="*">
@@ -214,30 +207,24 @@
             <xsl:variable name="url">
               <xsl:apply-templates mode="product-doc-url" select="."/>
             </xsl:variable>
-            <tr>
-              <td>
-                <a href="{$url}">
-                    <xsl:value-of select="$title"/>
-                    &#160;
-                    <xsl:value-of select="@version"/>
-                </a>
-              </td>
-              <td> 
-                <a href="{$url}">
-                  <xsl:choose>
-                    <xsl:when test="ends-with(lower-case($url), 'pdf')">
-                      <img src="/images/icon_pdf.png" alt="View PDF for {$title}"/>
-                    </xsl:when>
-                    <xsl:when test="ends-with(lower-case($url), 'zip')">
-                      <img src="/images/icon_zip.png" alt="Download zip file for {$title}"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <img src="/images/icon_browser.png" alt="View HTML for {$title}"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
-              </td>
-            </tr>
+            <li>
+              <a href="{$url}">
+                <xsl:choose>
+                  <xsl:when test="ends-with(lower-case($url), 'pdf')">
+                    <img src="/images/i_pdf.png" alt="View PDF for {$title}"/>
+                  </xsl:when>
+                  <xsl:when test="ends-with(lower-case($url), 'zip')">
+                    <img src="/images/i_zip.png" alt="Download zip file for {$title}"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <img src="/images/i_documentation.png" alt="View HTML for {$title}"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <xsl:value-of select="$title"/>
+                &#160;
+                <xsl:value-of select="@version"/>
+              </a>
+            </li>
           </xsl:template>
 
                   <xsl:template mode="product-doc-title" match="old-doc">

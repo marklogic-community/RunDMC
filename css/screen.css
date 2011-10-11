@@ -540,7 +540,7 @@ table.features {
 #main .info a {
 	font-size: 13px;
 	font-weight: bold;
-	background: url(../img/i_info.png) left center no-repeat;
+	background: url(/images/i_info.png) left center no-repeat;
 	padding: 5px 0 5px 33px;
 	line-height: 23px;
 }
@@ -574,5 +574,5 @@ table.features {
 	font-weight: normal;
 	color: #666;
 	padding: 5px 0 5px 30px;
-	background: url(../img/i_arrow_down.png) left center no-repeat;
+	background: url(/images/i_arrow_down.png) left center no-repeat;
 }

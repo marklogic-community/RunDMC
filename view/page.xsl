@@ -178,6 +178,10 @@
     </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="comment-section">
+    <xsl:apply-templates mode="comment-section" select="$content/*"/>
+  </xsl:template>
+
   <xsl:template match="page-heading">
     <h2>
       <xsl:apply-templates mode="page-specific-title" select="$content/*"/>
@@ -190,7 +194,6 @@
       <xsl:copy-of select="$params"/>
     </xsl:if>
     <xsl:apply-templates mode="page-content"    select="$content/*"/>
-    <xsl:apply-templates mode="comment-section" select="$content/*"/>
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
