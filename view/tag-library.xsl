@@ -161,21 +161,31 @@
           </xsl:template>
 
                   <xsl:template mode="product-download" match="download">
+                    <xsl:variable name="num-cols" select="if (architecture and installer) then 3
+                                                     else if (not(string(@size)))         then 1
+                                                                                          else 2"/>
                     <tr>
-                      <th>
+                      <th colspan="{(3,2,1)[$num-cols]}"
+                          class="{('extraWideDownloadColumn',
+                                        'wideDownloadColumn',
+                                                          '')[$num-cols]}">
                         <a href="{@href}" class="confirm-download">
-                          <xsl:apply-templates select="architecture"/>
+                          <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
                         </a>
                        <xsl:if test="@url-to-copy">
                             &#160;<input readonly="true" size="47" class="url-to-copy" type="text" value="{@url-to-copy}" />
                         </xsl:if>
                       </th>
-                      <td>
-                        <xsl:apply-templates select="installer"/>
-                      </td>
-                      <td>
-                        <xsl:value-of select="@size"/>
-                      </td>
+                      <xsl:if test="$num-cols eq 3">
+                        <td>
+                          <xsl:apply-templates select="installer"/>
+                        </td>
+                      </xsl:if>
+                      <xsl:if test="$num-cols gt 1">
+                        <td>
+                          <xsl:value-of select="@size"/>
+                        </td>
+                      </xsl:if>
                     </tr>
                   </xsl:template>
 

@@ -569,6 +569,8 @@ table.features {
 	padding-right: 5px;
 }
 #main .download th {width: 245px;}
+#main .download th.wideDownloadColumn      {width: 390px;}
+#main .download th.extraWideDownloadColumn {width: 535px;}
 #main .download th + td {width: 145px;}
 #main .download table a {
 	font-weight: normal;
