@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <h2>Quick Reference Cards</h2>
-  </div>
-  <div class="body">
-    <div>Dan Vint's XML references:</div>
-    <br/>
-    <ul style="list-style: disc inside">
-        <li><span style="font-weight: bold; font-size: .9em;"><a href="http://www.xml.dvint.com/docs/XPath-2.pdf">XPath 2.0</a></span></li>
-        <li><span style="font-weight: bold; font-size: .9em;"><a href="http://www.xml.dvint.com/docs/XQueryXMLSyntax.pdf">XQuery 1.0 and XPath 2.0<br/>Functions and Operators</a></span></li>
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1><img src="/images/i_lifesaver.png" alt="" width="24" height="22" /> Quick Reference Cards</h1>
+  <div>
+    Dan Vint’s XML references:<br /><br />
+    <ul>
+      <li><a href="http://www.xml.dvint.com/docs/XPath-2.pdf" target="_blank">XPath 2.0</a></li>
+      <li><a href="http://www.xml.dvint.com/docs/XQueryXMLSyntax.pdf" target="_blank">XQuery 1.0 and XPath 2.0 Functions and Operators</a></li>
     </ul>
   </div>
 </ml:widget>
