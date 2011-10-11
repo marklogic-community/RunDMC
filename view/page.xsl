@@ -180,7 +180,7 @@
 
   <xsl:template match="page-heading">
     <h2>
-      <xsl:value-of select="$content/*/xhtml:h1"/>
+      <xsl:apply-templates mode="page-specific-title" select="$content/*"/>
     </h2>
   </xsl:template>
 
