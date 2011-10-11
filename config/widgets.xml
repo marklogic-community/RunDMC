@@ -113,6 +113,7 @@
  -->
 
   <widget href="/widgets/quick-references.xml">
+    <page href="/docs/5.0"/>
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
@@ -124,6 +125,7 @@
   </widget>
 
   <widget xquery="training-calendar.xqy"> 
+    <page href="/docs/5.0"/>
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
@@ -142,6 +144,7 @@
     <page href="/"/>
 -->
     <page href="/learn"/>
+    <page href="/docs/5.0"/>
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
@@ -150,7 +153,7 @@
   </widget>
 
   <widget href="/widgets/old-docs.xml">
-    <page href="/docs/4.2"/>
+    <page href="/docs/5.0"/>
     <page href="/docs"/>
   </widget>
 
