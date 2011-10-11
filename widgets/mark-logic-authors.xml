@@ -1,41 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <h2>MarkLogic Authors</h2>
-    <!--
-    <a class="more" href="">View all</a>
-    -->
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1><img src="/images/i_book.png" alt="" width="24" height="23" /> MarkLogic Authors</h1>
+  <div>
+    <section>
+      <h2><a href="http://www.amazon.com/gp/product/0596805020/">DocBook, The Definite Guide</a></h2>
+      <b>by Norman Walsh</b>
+      <div>Official documentation for the popular semantic markup language for technical documentation.</div>
+    </section>
+    <section>
+      <h2><a href="http://www.amazon.com/Querying-XML-context-Kaufmann-Management/dp/1558607110">Querying XML</a></h2>
+      <b>by Jim Melton and Stephen Buxton</b>
+      <div>MarkLogic Executive Provides Expert Advice on Querying XML in this Best-Selling Book.</div>
+    </section>
+    <section>
+      <h2><a href="http://www.amazon.com/dp/0596003692">XForms essentials</a></h2>
+      <b>by Micah Dubinko</b>
+      <div>This unique introduction to W3C XForms provides the Web’s most accurate tutorial on XForms.</div>
+    </section>
+    <section>
+      <h2><a href="http://www.oreilly.com/catalog/jservlet2/">Java Servlet Programming</a></h2>
+      <b>by Jason Hunter</b>
+      <div>The best book on Java servlets on the planet.</div>
+    </section>
   </div>
-  <div class="body">
-<!--
-    <img class="align_left" src="/media/docbook.png" alt="Docbook"/> 
--->
-    <h3><a href="http://www.amazon.com/gp/product/0596805020/">DocBook, The Definite Guide</a></h3>
-    <div class="author">by Norman Walsh</div>
-    <div class="message">Official documentation for the popular semantic markup language for technical documentation.</div>
-  </div>
-  <div class="body">
-    <img class="align_left" src="/media/book1.jpg" alt="Querying XML"/>
-    <h3><a href="http://www.amazon.com/Querying-XML-context-Kaufmann-Management/dp/1558607110">Querying XML</a></h3>
-    <div class="author">by Jim Melton and Stephen Buxton</div>
-
-    <div class="message">MarkLogic Executive Provides Expert Advice on Querying XML in this Best-Selling Book.</div>
-  </div>
-  <div class="body">
-    <img class="align_left" src="/images/book2.jpg" alt="XForms"/>
-    <h3><a href="http://www.amazon.com/dp/0596003692">XForms essentials</a></h3>
-    <div class="author">by Micah Dubinko</div>
-    <div class="message">This unique introduction to W3C XForms provides the Web’s most accurate tutorial on XForms.</div>
-
-  </div>
-  <div class="body">
-    <img class="align_left" src="/images/book3.jpg" alt="Java servlet programming"/>
-    <h3><a href="http://www.oreilly.com/catalog/jservlet2/">Java Servlet Programming</a></h3>
-    <div class="author">by Jason Hunter</div>
-    <div class="message">The best book on Java servlets on the planet.</div>
-  </div>
-  <!--
-  <div class="body">
-    <a class="more" href="">+ Show more</a>
-  </div>
-  -->
 </ml:widget>
