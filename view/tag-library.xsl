@@ -117,10 +117,13 @@
 
 
   <xsl:template match="product-info">
-            <ul class="info">
-              <li><a href="{@license-page}">License Options&#160;»</a></li>
-              <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
-            </ul>
+
+    <xsl:if test="@license-page and @requirements-page">
+      <ul class="info">
+        <li><a href="{@license-page}">License Options&#160;»</a></li>
+        <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
+      </ul>
+    </xsl:if>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <h1>MarkLogic Server Download Confirmation</h1>
