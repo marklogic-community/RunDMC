@@ -3,11 +3,10 @@
     <b>Previous release docs</b>
     <br/>
     <br/>
+    <!-- supplanted by version switcher
     <a href="/docs/4.1">MarkLogic Server 4.1</a>
     <br/>
+    -->
     <a href="/docs/4.0">MarkLogic Server 4.0</a>
-    <br/>
   </div>
-  <br/>
 </ml:widget>
-
