@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <h2>New Open Source Projects</h2>
+  <h1><!--<img src="/images/i_book.png" alt="" width="24" height="23" /> -->New Open Source Projects</h1>
+  <div>
+    <section>
+      <h2><a href="/code/mustache.xq">mustache.xq</a></h2>
+      The Mustache template language implemented in XQuery
+    </section>
+    <section>
+      <h2><a href="/code/booster">Booster</a></h2>
+      A thin API wrapper for remote server administration via HTTP
+    </section>
+    <section>
+      <h2><a href="/code/xquery-unit">xquery-unit</a></h2>
+      MarkLogic XQuery Unit Test Framework
+    </section>
+    <section>
+      <h2><a href="/code/tunage">Tunage</a></h2>
+      Music search and player interface.
+    </section>
+    <section>
+      <h2><a href="/code/comoms">CoMoms</a></h2>
+      Web CMS Toolkit for MarkLogic.
+    </section>
+    <section>
+      <h2><a href="/code/xqdebug">XQDebug</a></h2>
+      Browser-based, source-level XQuery debugger.
+    </section>
+    <!--
+    <section>
+      <h2><a href="/code/narthex">Narthex</a></h2>
+      MarkLogic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
+    </section>
+    <section>
+      <h2><a href="/code/semantic">Semantic</a></h2>
+      XQuery and Java code for storage and retrieval of semantic content.
+    </section>
+    -->
+    <section>
+      <a class="more" href="/code">View all &gt;</a>
+    </section>
   </div>
-  <div class="body">
-    <h3><a href="/code/mustache.xq">mustache.xq</a></h3>
-    The Mustache template language implemented in XQuery
-  </div>
-  <div class="body">
-    <h3><a href="/code/booster">Booster</a></h3>
-    A thin API wrapper for remote server administration via HTTP
-  </div>
-  <div class="body">
-    <h3><a href="/code/xquery-unit">xquery-unit</a></h3>
-    MarkLogic XQuery Unit Test Framework
-  </div>
-  <div class="body">
-    <h3><a href="/code/tunage">Tunage</a></h3>
-    Music search and player interface.
-  </div>
-  <div class="body">
-    <h3><a href="/code/comoms">CoMoms</a></h3>
-    Web CMS Toolkit for MarkLogic.
-  </div>
-  <div class="body">
-    <h3><a href="/code/xqdebug">XQDebug</a></h3>
-    Browser-based, source-level XQuery debugger.
-  </div>
-  <!--
-  <div class="body">
-    <h3><a href="/code/narthex">Narthex</a></h3>
-    MarkLogic database explorer and <a target="_blank" href="http://atompub.org/">AtomPub</a> interface.
-  </div>
-  <div class="body">
-    <h3><a href="/code/semantic">Semantic</a></h3>
-    XQuery and Java code for storage and retrieval of semantic content.
-  </div>
-  -->
-  <div class="body">
-    <a class="more" href="/code">View all &gt;</a>
-  </div>
-
 </ml:widget>
