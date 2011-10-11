@@ -48,14 +48,14 @@
           </xsl:template>
 
           <xsl:template mode="widget" match="widget">
-            <div class="section">
+            <section class="widget">
               <xsl:if test="not(empty(@href)) and exists(u:get-doc(@href)/widget/@class)">
                   <xsl:attribute name="class"> 
                       <xsl:value-of select="concat('section ', u:get-doc(@href)/widget/@class)"/>
                   </xsl:attribute>
               </xsl:if>
               <xsl:apply-templates mode="widget-content" select="."/>
-            </div>
+            </section>
           </xsl:template>
 
                   <xsl:template mode="widget-content" match="widget">
