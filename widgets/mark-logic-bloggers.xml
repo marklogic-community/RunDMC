@@ -1,110 +1,84 @@
-<?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <h2>Blogroll</h2>
-    <!--  JEM: removed 04/2010 there is no page to view all, all blogs are listed
-    <a class="more" href="">View all</a>
-    -->
-  </div>
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Blogroll</h1>
   
-  <!--  JEM: added the style attribute to the div element in order to override the border-top and the padding-top -->
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blog.msbbc.co.uk/" target="_blank"><strong>Alex Bleasdale's Developer Notes</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blogs.avalonconsult.com/" target="_blank"><strong>Avalon Consulting LLC Blogs</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blog.davidcassel.net/" target="_blank"><strong>David Cassel's Blog</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blog.xmlsh.org/" target="_blank"><strong>David Lee's XMLSH Blog</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://servlets.com/blog/" target="_blank"><strong>Jason Hunter's Servlets</strong></a> <span class="date"></span>
-    <div></div>
   </div>  
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://www.jenitennison.com/blog/" target="_blank"><strong>Jeni Tennison's Jeni's Musings</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://kitwallace.posterous.com/" target="_blank"><strong>Kit Wallace's posterous</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blogs.marklogic.com/" target="_blank"><strong>MarkLogicians</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://xquery.typepad.com/" target="_blank"><strong>Matt Turner's Discovering XQuery</strong></a> <span class="date"></span>
-    <div></div>
   </div>  
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://renditionprotocol.blogspot.com/" target="_blank"><strong>Mattio Valentino's Rendition Protocol</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://dubinko.info/blog/" target="_blank"><strong>Micah Dubinko's Micahpedia</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://blakeley.com/wordpress/" target="_blank"><strong>Michael Blakeley's blog</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://xquerybyexample.blogspot.com/" target="_blank"><strong>Miguel de Melo's XQuery by Example</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://xsltbyexample.blogspot.com/" target="_blank"><strong>Miguel de Melo's XSLT by Example</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://norman.walsh.name/"><strong>Norman Walsh's Norman.Walsh.name</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://writings.nunojob.com/" target="_blank"><strong>Nuno Job's Notebook</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://robotbeerbash.wordpress.com/" target="_blank"><strong>Pete Aven's Robot Beer Bash</strong></a> <span class="date"></span>
-    <div></div>
   </div>
   
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank"><strong>Philip Fennell on the O'Reilly Community</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://www.xqueryhacker.com/" target="_blank"><strong>Rob Whitby's XQuery Hacker</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
-  <div class="body" style="border-top:0px;padding-top:0;">
+  <div>
     <a href="http://xquerywebappdev.wordpress.com/" target="_blank"><strong>XQuery Web Application Development</strong></a> <span class="date"></span>
-    <div></div>
   </div>
 
   
