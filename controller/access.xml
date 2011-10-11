@@ -11,4 +11,5 @@
   <prefix>/maven-license.html</prefix>
   <prefix>/robots.txt</prefix>
   <prefix>/controller/tracker.xqy</prefix>
+  <prefix>/try</prefix>
 </paths>
