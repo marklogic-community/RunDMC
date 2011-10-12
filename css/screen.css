@@ -50,6 +50,10 @@ ul {
 	padding: 0;
 	list-style: none;
 }
+ol {
+	margin-left: 0;
+	padding-left: 20px;
+}
 .skip, hr {
 	position: absolute;
 	left: -999em;
@@ -95,7 +99,7 @@ ul {
 	float: right;
 	margin-top: -5px;
 }
-.jsenabled #header form {
+/*.jsenabled */#header form {
 	border: 1px solid #999;
 	background: white;
 }
@@ -105,28 +109,53 @@ ul {
 	padding: 0 0 0 10px;
 	height: 17px;
 }
+#header form input[type=text]::-webkit-input-placeholder {
+	color: #CCC;
+	font: italic 10px Arial, Helvetica, Sans-serif;
+	line-height: 17px;
+}
+#header form input[type=text]:-moz-placeholder {
+	color: #CCC;
+	font: italic 10px Arial, Helvetica, Sans-serif;
+	line-height: 17px;
+}
 #header form input[type=image] {margin-bottom: -2px;}
+#header form label {display: none;}
 #header form .default, .utility form .default {
 	font: italic 10px Arial, Helvetica, Sans-serif;
 	color: #CCC;
 	line-height: 17px;
 }
-#header nav {
+nav {
+	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
-	position: absolute;
-	right: 11px;
-	bottom: -1px;
-	font-size: 10px;
-	font-weight: bold;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
-#header nav ul {margin: 0;}
+nav a {color: #CCC;}
+#header nav {
+	position: absolute;
+	right: 0;
+	bottom: -1px;
+}
+nav ul {margin: 0;}
 #header nav li {
 	float: left;
-	margin-left: 40px;
+	margin-left: 43px;
 	padding-bottom: 8px;
 }
-#header nav .current {background: url(../img/bg_nav_current.png) bottom center no-repeat;}
+#header nav li a {
+	display: block;
+	margin-bottom: 3px;
+}
+#header nav .current {padding-bottom: 0;}
+#header nav .current:after {
+	content: "";
+	border-width: 0 7px 7px;
+	border-color: white transparent;
+	border-style: solid;
+	display: block;
+	width: 0;
+	margin: auto;
+}
 #header nav .current a {
 	color: white;
 	text-decoration: none;
@@ -177,12 +206,12 @@ ul {
 #main {
 	float: right;
 	width: 620px;
-	min-height: 300px;
+	min-height: 500px;
 }
 #main > :first-child {margin-top: 0;}
 #main section > h3:first-child {margin-top: 34px;}
-#sub {
-	float: left;
+#sub {/*
+	float: left;*/
 	width: 250px;
 	padding-right: 20px;
 }
@@ -193,41 +222,97 @@ ul {
 	margin-bottom: 25px;
 }
 #sub ul {
-	margin: 0;
+	margin: 0 0 35px;
 	border-bottom: 1px solid white;
+	line-height: 100%;
 }
-#sub ul ul {border-bottom: none;}
+#sub li span {
+ 	display: block;
+	font-weight: bold;
+}
+#sub li:first-child > span {border-top: none;}
+.jsenabled #sub li > span {
+	cursor: pointer;
+	padding-left: 18px;
+	background: url(../img/s_plusminus_dark.png) left -23px no-repeat;
+}
+.jsenabled #sub li.active > span {background-position: 0 7px;}
+#sub ul ul {
+	border-bottom: none;
+	margin: 0;
+}
 #sub li li, #sub li span {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #FFF transparent #E4E4E4;
 	padding: 5px 0;
 }
-#sub li li {padding-left: 19px;}
-#sub li:first-child > span {border-top: none;}
-#sub li span {
- 	display: block;
-	font-weight: bold;
+#sub li li > a {margin-left: 19px;}
+#sub li li span {
+	border: none;
+	margin-left: 19px;
+	padding-top: 0;
+	background-position: left -28px !important;
 }
+#sub li li.active {
+	padding-bottom: 0;
+	border-bottom: none;
+}
+#sub li li.active > span {
+	padding-bottom: 5px;
+	background-position: left 2px !important;
+}
+.jsenabled #sub li li > span {padding-bottom: 0;}
+.jsenabled #sub .active .active > span {padding-bottom: 5px;}
+#sub ul ul ul {border-top: 1px solid #E4E4E4;}
+#sub li li li > span {
+	margin-left: 38px;
+	background-image: url(../img/s_plusminus_light.png) !important;
+}
+#sub li li li > a {margin-left: 0;}
+#sub li li li li {padding-left: 57px;}
+#sub li li li li > span {margin-left: 57px;}
 #sub .current > a {
 	color: black;
 	font-weight: bold;
 	text-decoration: none;
 	cursor: default;
 }
-.jsenabled #sub li > span {
-	cursor: pointer;
-	padding-left: 18px;
-	background: url(../img/s_plusminus.png) left -22px no-repeat;
-}
-.jsenabled #sub li.active > span {background-position: 0 8px;}
 .jsenabled #sub ul ul {display: none;}
 #container > footer {
 	clear: both;
 	font-size: 11px;
 	text-align: center;
-	padding: 15px 0;
+	padding: 0 0 15px;
+	background: #2C2C2C;
+	color: #999;
 }
+footer nav {
+	position: relative;
+	z-index: 2;
+}
+footer nav ul {
+	margin-bottom: 40px;
+	padding-top: 15px;
+}
+footer nav li {
+	display: inline;
+	position: relative;
+	margin: 0 20px;
+}
+footer nav .current:before {
+	content: "";
+	width: 0;
+	border-width: 7px 7px 0;
+	border-style: solid;
+	border-color: white transparent;
+	margin-left: -7px;
+	position: absolute;
+	display: block;
+	left: 50%;
+	top: -15px;
+}
+footer nav .current a {color: white;}
 .utility {
 	position: fixed;
 	top: 100px;
@@ -286,6 +371,7 @@ ul {
 	font-weight: bold;
 	position: absolute;
 	top: 4px;
+	color: #666;
 }
 .utility input[type=text] {
 	border: 1px solid #CFCFCF;
@@ -412,7 +498,7 @@ table.features {
 .doclist li > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
 
-#comments, #documentation {
+#comments {
 	background: white;
 	padding: 40px 0;
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -420,22 +506,17 @@ table.features {
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	clear: right;
 }
-#documentation {
-	background: #E3E3E3;
-	position: relative;
-	padding: 30px 0 20px;
-}
-#comments > section, #documentation > section {
+#comments > section {
 	width: 620px;
 	margin: auto;
 	padding-left: 325px;
 }
-#comments > section > h2, #documentation > section > h2 {
+#comments > section > h2, #documentation > h2 {
 	font-size: 24px;
 	margin-bottom: 20px;
 }
 #comments > section > h2 img {margin: -5px 0 0 5px;}
-#documentation > section > h2 img {margin-top: -10px;}
+#documentation > h2 img {margin-top: -10px;}
 #comments .action {
 	position: absolute;
 	top: 110px;
@@ -476,6 +557,8 @@ table.features {
 	background: white;
 	border-radius: 5px;
 	margin-bottom: 30px;
+	float: left;
+	clear: left;
 }
 .widget h1 {
 	color: #535761;
@@ -536,25 +619,39 @@ table.features {
 }
 .widget div div {line-height: 114%;}
 
-#main .info li {margin-bottom: 10px;}
-#main .info a {
+#main .info > li {margin-bottom: 10px;}
+#main .info > li a {
 	font-size: 13px;
 	font-weight: bold;
 	background: url(../img/i_info.png) left center no-repeat;
 	padding: 5px 0 5px 33px;
 	line-height: 23px;
 }
-#main .download {
+#main .download, .post,
+.post + .pagination,
+section#documentation
+{
 	border-top: 1px solid #E4E4E4;
 	padding: 0 0 20px;
 }
-#main .download:before {
+#main .download:before,
+.post:before, .post + .pagination:before,
+section#documentation:before
+{
 	border-top: 1px solid white;
 	content: "";
 	display: block;
 	margin-bottom: 20px;
 }
-#main .download:first-child, #main .download:first-child:before {border-top: none;}
+section#documentation:before {margin-bottom: 30px;}
+#main .download:first-child,
+#main .download:first-child:before,
+.post:first-child,
+.post:first-child:before
+{
+	border-top: none;
+	margin-bottom: 0;
+}
 #main .download h3 {
 	margin: 0 0 10px !important;
 	font-size: 16px;
@@ -576,3 +673,48 @@ table.features {
 	padding: 5px 0 5px 30px;
 	background: url(../img/i_arrow_down.png) left center no-repeat;
 }
+
+.post h3 {
+	font-size: 24px;
+	line-height: 120%;
+	margin-bottom: 8px;
+}
+.post h3 a {color: #666;}
+.post .author {font-style: italic;}
+.post .body {margin: 20px 0 0;}
+.post .body .more {
+	font-size: 12px;
+	font-weight: bold;
+}
+.post .body .info {
+	padding: 20px 40px;
+	margin: 1.5em 0;
+	background: white;
+}
+.post .body table {
+	width: 100%;
+	margin-bottom: 20px;
+}
+.post .body th, .post .body td {padding-left: 10px;}
+.post .body table :first-child {padding-left: 0;}
+.post + .pagination, section h2 + .pagination {
+	color: #999;
+	font-size: 12px;
+	text-align: right;
+	padding-bottom: 0;
+}
+section h2 + .pagination {
+	float: right;
+	margin-top: -60px;
+	position: relative;
+}
+.post + .pagination:before {margin-bottom: 15px;}
+.post + .pagination a,
+.post + .pagination span,
+section h2 + .pagination a,
+section h2 + .pagination span
+	{margin-left: 4px;}
+.post + .pagination a:first-child, section h2 + .pagination a:first-child {margin-right: 4px;}
+.post + .pagination span, section h2 + .pagination span {color: #CCC;}
+.post ul {padding-left: 20px;}
+.post ul li:before {content: "-\0020";}
