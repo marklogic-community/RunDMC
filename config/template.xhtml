@@ -23,7 +23,7 @@
 						<fieldset>
 							<legend>Search</legend>
 							<label for="s_inp">Search the COMMUNITY with MarkLogic</label>
-							<input id="s_inp" name="q" type="text" />
+							<input id="s_inp" name="q" type="text" placeholder="Search the COMMUNITY with MarkLogic" />
 							<input type="image" src="/images/i_mag_glass1.png" alt="Search" />
 						</fieldset>
 					</form>
@@ -44,7 +44,7 @@
 				</header>
 			</div>
 			<hr />
-			<div id="content" class="subnav">
+			<div id="content">
         <ml:breadcrumbs/>
         <!--
 				<div id="breadcrumb">
@@ -167,11 +167,27 @@
 					</section>
 				</section>
 			</div>
+      <!-- We may not need this after all (will stay in content)
       <ml:documentation-section/>
+      -->
       <ml:comment-section/>
 			<hr />
 			<footer>
-				Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.
+        <ml:top-nav/>
+        <!--
+				<nav>
+					<ul>
+						<li><a href="">Documentation</a></li>
+						<li class="current"><a href="">Downloads</a></li>
+						<li><a href="">Code</a></li>
+						<li><a href="">People</a></li>
+						<li><a href="">Blog</a></li>
+						<li><a href="">Discuss</a></li>
+						<li><a href="">Meet</a></li>
+					</ul>
+				</nav>
+        -->
+				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</div>
 				<div class="utility">
 					<form action="#" method="get">
 						<fieldset>

@@ -1,25 +1,33 @@
 if(typeof jQuery != 'undefined') {
 	$(function() {
 		$('body').addClass('jsenabled');
+		// cache selectors
+		var main = $('#main');
 		if(!$.support.opacity) {
 			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child, .utility a:last-child, .widget div li:last-child','#content').addClass('last');
 		}
 		// search field default value
-		var searchField = $('#s_inp','#header');
-		var labelText = searchField.prev().text();
-		searchField
-			.val(labelText)
-			.addClass('default')
-			.focus(function() {
-				if($(this).val() == labelText) {
-					$(this).val('').removeClass('default');
-				}
-			})
-			.blur(function() {
-				if($(this).val() == '') {$(this).val(labelText).addClass('default')}
-			})
-			.prev()
-				.hide();
+		function hasPlaceholderSupport() {
+			var input = document.createElement('input');
+			return ('placeholder' in input);
+		}
+		if(hasPlaceholderSupport() == false) {
+			var searchField = $('#s_inp','#header');
+			var labelText = searchField.prev().text();
+			searchField
+				.val(labelText)
+				.addClass('default')
+				.focus(function() {
+					if($(this).val() == labelText) {
+						$(this).val('').removeClass('default');
+					}
+				})
+				.blur(function() {
+					if($(this).val() == '') {$(this).val(labelText).addClass('default')}
+				})
+				.prev()
+					.hide();
+		}
 		var utilSearch = $('.utility #us_input','footer');
 		var valText = utilSearch.attr('title');
 		utilSearch
@@ -36,7 +44,15 @@ if(typeof jQuery != 'undefined') {
 		// end search field default value
 		// side nav accordion functionality
 		$('#sub li > span').click(function() {
-			$(this).next().slideToggle().end().parent().toggleClass('active');
+			var that = $(this);
+			if(that.parent().hasClass('active')) {
+				that.next().slideUp(function() {
+					that.parent().removeClass('active');
+				});
+			}
+			else {
+				that.next().slideDown().end().parent().addClass('active');
+			}
 		});
 		$('#sub li').find('.current').parent().show().closest('li').addClass('active');
 		// end side nav accordion functionality
@@ -71,5 +87,6 @@ if(typeof jQuery != 'undefined') {
 				top: -8
 			});
 		}
+		$('.post + .pagination',main).clone().insertBefore(main);
 	});
 }
