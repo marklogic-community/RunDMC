@@ -673,16 +673,27 @@
       <xsl:apply-templates mode="paginated-page-url" select="."/>
     </xsl:variable>
 
-    <xsl:if test="ml:total-doc-count(@type) gt ($start + $results-per-page - 1)">
-      <div class="olderPosts more">
-        <a href="{$page-url}?p={$page-number + 1}">&lt; Older Entries</a>
-      </div>
-    </xsl:if>
-    <xsl:if test="$page-number gt 1">
-      <div class="newerPosts more">
-        <a href="{$page-url}?p={$page-number - 1}">Newer Entries &gt;</a>
-      </div>
-    </xsl:if>
+    <xsl:variable name="older" select="ml:total-doc-count(@type) gt ($start + $results-per-page - 1)"/>
+    <xsl:variable name="newer" select="$page-number gt 1"/>
+    <div class="pagination">
+      <xsl:choose>
+        <xsl:when test="$older">
+          <a href="{$page-url}?p={$page-number + 1}">«&#160;Older Entries</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <span>«&#160;Older Entries</span>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text> | </xsl:text>
+      <xsl:choose>
+        <xsl:when test="$newer">
+          <a href="{$page-url}?p={$page-number - 1}">Newer Entries&#160;»</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <span>Newer Entries&#160;»</span>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
   </xsl:template>
 
           <xsl:template mode="paginated-page-url" match="Announcement">/news</xsl:template>

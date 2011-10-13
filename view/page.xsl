@@ -202,7 +202,6 @@
 
 
           <xsl:template mode="page-content" match="Post | Announcement | Event">
-            <h1>Blog</h1>
             <xsl:apply-templates mode="blog-post" select="."/>
           </xsl:template>
 
@@ -214,13 +213,12 @@
                          ensures we don't display it twice. -->
                     <xsl:param name="disable-comment-count" select="true()"/>
 
-                    <div class="post">
-                        <h2 class="title-with-links">
+                    <article class="post">
+                        <h3>
+                          <a href="{ml:external-uri(.)}">
                             <xsl:apply-templates select="title/node()"/>
-                            <a class="permalink" href="{ml:external-uri(.)}" title="Permalink"> 
-                                <img src="/media/permalink.png" title="Permalink" alt="Permalink"/>
-                            </a>
-                        </h2>
+                          </a>
+                        </h3>
 
                       <xsl:apply-templates mode="post-date" select="."/>
 
@@ -233,7 +231,7 @@
                         <xsl:apply-templates mode="comment-count" select="."/>
                       </xsl:if>
 
-                    </div>
+                    </article>
                   </xsl:template>
 
                           <!-- Don't display the "created" date on event pages -->
