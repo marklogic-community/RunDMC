@@ -46,7 +46,7 @@
   </xsl:template>
 
           <xsl:template mode="top-nav" match="page">
-            <li class="active">
+            <li>
               <xsl:apply-templates mode="top-nav-current-att" select="."/>
               <xsl:variable name="server-prefix" select="if (starts-with(@href,'/')) then if (@api-server)
                                                                                      then $srv:api-server
