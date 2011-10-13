@@ -1,91 +1,87 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h1>Blogroll</h1>
-  
+  <h1><img src="/images/i_rss.png" alt="blogroll" width="24" height="23" /> Blogroll</h1>
   <div>
-    <a href="http://blog.msbbc.co.uk/" target="_blank"><strong>Alex Bleasdale's Developer Notes</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://blogs.avalonconsult.com/" target="_blank"><strong>Avalon Consulting LLC Blogs</strong></a> <span class="date"></span>
-  </div>
+    <ul>
+      <li>
+        <a href="http://blog.msbbc.co.uk/" target="_blank">Alex Bleasdale's Developer Notes</a>
+      </li>
+      
+      <li>
+        <a href="http://blogs.avalonconsult.com/" target="_blank">Avalon Consulting LLC Blogs</a>
+      </li>
 
-  <div>
-    <a href="http://blog.davidcassel.net/" target="_blank"><strong>David Cassel's Blog</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://blog.xmlsh.org/" target="_blank"><strong>David Lee's XMLSH Blog</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://servlets.com/blog/" target="_blank"><strong>Jason Hunter's Servlets</strong></a> <span class="date"></span>
-  </div>  
+      <li>
+        <a href="http://blog.davidcassel.net/" target="_blank">David Cassel's Blog</a>
+      </li>
+      
+      <li>
+        <a href="http://blog.xmlsh.org/" target="_blank">David Lee's XMLSH Blog</a>
+      </li>
+      
+      <li>
+        <a href="http://servlets.com/blog/" target="_blank">Jason Hunter's Servlets</a>
+      </li>  
 
-  <div>
-    <a href="http://www.jenitennison.com/blog/" target="_blank"><strong>Jeni Tennison's Jeni's Musings</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://kitwallace.posterous.com/" target="_blank"><strong>Kit Wallace's posterous</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://blogs.marklogic.com/" target="_blank"><strong>MarkLogicians</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://xquery.typepad.com/" target="_blank"><strong>Matt Turner's Discovering XQuery</strong></a> <span class="date"></span>
-  </div>  
+      <li>
+        <a href="http://www.jenitennison.com/blog/" target="_blank">Jeni Tennison's Jeni's Musings</a>
+      </li>
+      
+      <li>
+        <a href="http://kitwallace.posterous.com/" target="_blank">Kit Wallace's posterous</a>
+      </li>
+      
+      <li>
+        <a href="http://blogs.marklogic.com/" target="_blank">MarkLogicians</a>
+      </li>
+      
+      <li>
+        <a href="http://xquery.typepad.com/" target="_blank">Matt Turner's Discovering XQuery</a>
+      </li>  
 
-  <div>
-    <a href="http://renditionprotocol.blogspot.com/" target="_blank"><strong>Mattio Valentino's Rendition Protocol</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://renditionprotocol.blogspot.com/" target="_blank">Mattio Valentino's Rendition Protocol</a>
+      </li>
 
-  <div>
-    <a href="http://dubinko.info/blog/" target="_blank"><strong>Micah Dubinko's Micahpedia</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://dubinko.info/blog/" target="_blank">Micah Dubinko's Micahpedia</a>
+      </li>
 
-  <div>
-    <a href="http://blakeley.com/wordpress/" target="_blank"><strong>Michael Blakeley's blog</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://blakeley.com/wordpress/" target="_blank">Michael Blakeley's blog</a>
+      </li>
 
-  <div>
-    <a href="http://xquerybyexample.blogspot.com/" target="_blank"><strong>Miguel de Melo's XQuery by Example</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://xquerybyexample.blogspot.com/" target="_blank">Miguel de Melo's XQuery by Example</a>
+      </li>
 
-  <div>
-    <a href="http://xsltbyexample.blogspot.com/" target="_blank"><strong>Miguel de Melo's XSLT by Example</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://norman.walsh.name/"><strong>Norman Walsh's Norman.Walsh.name</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://xsltbyexample.blogspot.com/" target="_blank">Miguel de Melo's XSLT by Example</a>
+      </li>
+      
+      <li>
+        <a href="http://norman.walsh.name/">Norman Walsh's Norman.Walsh.name</a>
+      </li>
 
-  <div>
-    <a href="http://writings.nunojob.com/" target="_blank"><strong>Nuno Job's Notebook</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://writings.nunojob.com/" target="_blank">Nuno Job's Notebook</a>
+      </li>
 
-  <div>
-    <a href="http://robotbeerbash.wordpress.com/" target="_blank"><strong>Pete Aven's Robot Beer Bash</strong></a> <span class="date"></span>
-  </div>
-  
-  <div>
-    <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank"><strong>Philip Fennell on the O'Reilly Community</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://robotbeerbash.wordpress.com/" target="_blank">Pete Aven's Robot Beer Bash</a>
+      </li>
+      
+      <li>
+        <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank">Philip Fennell on the O'Reilly Community</a>
+      </li>
 
-  <div>
-    <a href="http://www.xqueryhacker.com/" target="_blank"><strong>Rob Whitby's XQuery Hacker</strong></a> <span class="date"></span>
-  </div>
+      <li>
+        <a href="http://www.xqueryhacker.com/" target="_blank">Rob Whitby's XQuery Hacker</a>
+      </li>
 
-  <div>
-    <a href="http://xquerywebappdev.wordpress.com/" target="_blank"><strong>XQuery Web Application Development</strong></a> <span class="date"></span>
+      <li>
+        <a href="http://xquerywebappdev.wordpress.com/" target="_blank">XQuery Web Application Development</a>
+      </li>
+    </ul>
   </div>
-
-  
-  <!--  JEM: removed 04/2010 there are no more to show, all blogs are listed
-  <div class="body">
-    <a class="more" href="">+ Show more</a>
-  </div>
-  -->
   
 </ml:widget>
