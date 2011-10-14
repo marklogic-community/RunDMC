@@ -112,7 +112,9 @@
     </group>
     <generic-page display="Microsoft Office® Integration" href="/microsoft-office-integration"/>
   </page>
+  <!--
   <page display="People" href="/people"/>
+  -->
   <!--
   <page display="Learn" href="/learn" narrow-sidebar="yes">
     <group display="Document Types">
