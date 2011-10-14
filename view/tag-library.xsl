@@ -678,19 +678,19 @@
     <div class="pagination">
       <xsl:choose>
         <xsl:when test="$older">
-          <a href="{$page-url}?p={$page-number + 1}">«&#160;Older Entries</a>
+          <a href="{$page-url}?p={$page-number + 1}">«&#160;Older entries</a>
         </xsl:when>
         <xsl:otherwise>
-          <span>«&#160;Older Entries</span>
+          <span>«&#160;Older entries</span>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:text> | </xsl:text>
       <xsl:choose>
         <xsl:when test="$newer">
-          <a href="{$page-url}?p={$page-number - 1}">Newer Entries&#160;»</a>
+          <a href="{$page-url}?p={$page-number - 1}">Newer entries&#160;»</a>
         </xsl:when>
         <xsl:otherwise>
-          <span>Newer Entries&#160;»</span>
+          <span>Newer entries&#160;»</span>
         </xsl:otherwise>
       </xsl:choose>
     </div>
