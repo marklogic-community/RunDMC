@@ -61,7 +61,7 @@
                         <xsl:value-of select="$short-description"/>
                     </xsl:attribute>
                 </xsl:if>
-                <xsl:value-of select="@display"/>
+                <xsl:apply-templates mode="nav-text" select="@display"/>
               </a>
             </li>
           </xsl:template>
@@ -77,6 +77,19 @@
                           <!-- overridden in apidoc/view/page.xsl -->
                           <xsl:variable name="currently-on-api-server" select="false()"/>
 
+
+  <xsl:template mode="nav-text" match="@display">
+    <xsl:analyze-string select="." regex="&#174;">
+      <xsl:matching-substring>
+        <sup>
+          <xsl:value-of select="."/>
+        </sup>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:value-of select="."/>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
+  </xsl:template>
 
   <xsl:template match="doc-breadcrumbs"/>
   <!-- Only display this for Learn docs -->
@@ -110,7 +123,7 @@
 
                   <xsl:template mode="breadcrumb-display" match="page | generic-page">
                     <xsl:text> > </xsl:text>
-                    <xsl:value-of select="@display"/>
+                    <xsl:apply-templates mode="nav-text" select="@display"/>
                   </xsl:template>
 
                   <xsl:template mode="breadcrumb-display" match="*">
@@ -122,7 +135,7 @@
                   <xsl:template mode="breadcrumb-link" match="page">
                     <xsl:text> > </xsl:text>
                     <a href="{@href}">
-                      <xsl:value-of select="@display"/>
+                      <xsl:apply-templates mode="nav-text" select="@display"/>
                     </a>
                   </xsl:template>
 
@@ -174,7 +187,7 @@
 
           <xsl:template mode="sub-nav" match="group">
             <h2>
-              <xsl:value-of select="@display"/>
+              <xsl:apply-templates mode="nav-text" select="@display"/>
             </h2>
             <ul>
               <xsl:apply-templates mode="sub-nav" select="page | group"/>
@@ -185,7 +198,7 @@
                     <li>
                       <xsl:apply-templates mode="sub-nav-current-att" select="."/>
                       <span>
-                        <xsl:value-of select="@display"/>
+                        <xsl:apply-templates mode="nav-text" select="@display"/>
                       </span>
                       <ul>
                         <xsl:apply-templates mode="sub-nav" select="page | group"/>
@@ -207,7 +220,7 @@
                                         <xsl:value-of select="$short-description"/>
                                     </xsl:attribute>
                                 </xsl:if>
-                                <xsl:value-of select="@display"/>
+                                <xsl:apply-templates mode="nav-text" select="@display"/>
                             </a>
                     </li>
                   </xsl:template>
