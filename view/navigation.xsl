@@ -99,14 +99,12 @@
           <!-- But do display them on every other page -->
           <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
             <xsl:param name="site-name" select="'Developer Community'"/>
-            <div id="breadcrumb">
-              <div>
-                <a href="/">
-                  <xsl:value-of select="$site-name"/>
-                </a>
-                <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
-                <xsl:apply-templates mode="breadcrumb-display" select="."/>
-              </div>
+            <div>
+              <a href="/">
+                <xsl:value-of select="$site-name"/>
+              </a>
+              <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
+              <xsl:apply-templates mode="breadcrumb-display" select="."/>
             </div>
           </xsl:template>
 
