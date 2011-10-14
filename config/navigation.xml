@@ -12,7 +12,7 @@
         <page display="4.0" href="/products/marklogic-server/4.0" />
       </group>
       <group display="Connectors">
-        <page display="XCC Java/.NET Connectors for MarkLogic 5" href="/products/xcc/5.0"/>
+        <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0"/>
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2"/>
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
