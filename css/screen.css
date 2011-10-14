@@ -241,7 +241,15 @@ nav ul {margin: 0;}
 	border-bottom: none;
 	margin: 0;
 }
-#sub li li, #sub li span, .jsenabled #sub li li li:last-child {
+#sub li li, #sub li span {
+	border-style: solid;
+	border-width: 1px 0;
+	border-color: #FFF transparent #E4E4E4;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+/* IE ignores rules if it doesn’t know a selector, that’s why we need to redeclare it separately here */
+.jsenabled #sub li li li:last-child {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #FFF transparent #E4E4E4;
@@ -282,7 +290,7 @@ nav ul {margin: 0;}
 	text-decoration: none;
 	cursor: default;
 }
-.jsenabled #sub ul ul {display: none;}
+.jsenabled.blog #sub ul ul {display: none;}
 #container > footer {
 	clear: both;
 	font-size: 11px;
@@ -322,8 +330,9 @@ footer nav .current:before {
 footer nav .current a {color: white;}
 .utility {
 	position: fixed;
-	top: 100px;
-	left: -1px;
+	top: 110px;
+	left: 50%;
+	margin-left: -550px;
 	background: #F4F4F4;
 	-moz-border-radius: 0 5px 5px 0;
 	-webkit-border-radius: 0 5px 5px 0;
@@ -336,6 +345,16 @@ footer nav .current a {color: white;}
 	padding: 50px 1px 0 0;
 	border: 1px solid #CCC;
 }
+.utility.sticky {
+	left: -1px;
+	margin-left: 0;
+}
+@media screen and (max-width: 1110px) {
+	.utility {
+		left: -1px;
+		margin-left: 0;
+	}
+}
 .jsenabled .utility {
 	padding: 1px 1px 1px 0;
 	background: white;
@@ -346,7 +365,7 @@ footer nav .current a {color: white;}
 }
 .utility form {
 	position: absolute;
-	left: -300px;
+	left: -3000px;
 	top: -38px;
 	background: white;
 	-moz-border-radius: 5px;
@@ -360,7 +379,7 @@ footer nav .current a {color: white;}
 	padding: 1px;
 }
 .utility form:hover {left: -5px;}
-.jsenabled .utility form:hover {left: -300px;}
+.jsenabled .utility form:hover {left: -3000px;}
 .jsenabled .utility form.active:hover,
 .utility form.active {
 	left: 55px;
@@ -389,7 +408,7 @@ footer nav .current a {color: white;}
 }
 .utility input[type=image] {
 	position: absolute;
-	left: 304px;
+	left: 3004px;
 	bottom: -26px;
 }
 .utility form:hover input[type=image] {

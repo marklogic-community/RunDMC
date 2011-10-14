@@ -43,6 +43,11 @@ if(typeof jQuery != 'undefined') {
 			});
 		// end search field default value
 		// side nav accordion functionality
+		$('body:not(.blog) #sub li').each(function() {
+			if($(this).children('span').length) {
+				$(this).addClass('active');
+			}
+		});
 		$('#sub li > span').click(function() {
 			var that = $(this);
 			if(that.parent().hasClass('active')) {
@@ -69,6 +74,16 @@ if(typeof jQuery != 'undefined') {
 					e.preventDefault();
 					$(this).closest('form').addClass('active');
 				});
+		$(window).resize(function() {
+			if($(this).width() <= 1110) {
+				$('.utility').addClass('sticky');
+			}
+			else {
+				if($('.utility').hasClass('sticky')) {
+					$('.utility').removeClass('sticky');
+				}
+			}
+		});
 		var inside = false;
 		$('.utility form').hover(function(){ 
 		    inside=true; 
