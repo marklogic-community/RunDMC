@@ -158,6 +158,7 @@
   </widget>
 
   <widget href="/widgets/latest-docs.xml">
+    <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
     <page href="/docs/3.2"/>
