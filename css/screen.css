@@ -241,19 +241,24 @@ nav ul {margin: 0;}
 	border-bottom: none;
 	margin: 0;
 }
-#sub li li, #sub li span {
+#sub li li, #sub li span, .jsenabled #sub li li li:last-child {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #FFF transparent #E4E4E4;
-	padding: 5px 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
-#sub li li > a {margin-left: 19px;}
+#sub li li > a {
+	margin-left: 19px;
+	display: block;
+}
 #sub li li span {
 	border: none;
 	margin-left: 19px;
 	padding-top: 0;
 	background-position: left -28px !important;
 }
+#sub li li li:last-child,
 #sub li li.active {
 	padding-bottom: 0;
 	border-bottom: none;
@@ -265,13 +270,12 @@ nav ul {margin: 0;}
 .jsenabled #sub li li > span {padding-bottom: 0;}
 .jsenabled #sub .active .active > span {padding-bottom: 5px;}
 #sub ul ul ul {border-top: 1px solid #E4E4E4;}
-#sub li li li > span {
-	margin-left: 38px;
-	background-image: url(/images/s_plusminus_light.png) !important;
-}
-#sub li li li > a {margin-left: 0;}
+#sub li li li > span {margin-left: 38px;}
+.jsenabled #sub li li li > span {background-image: url(/images/s_plusminus_light.png) !important;}
+#sub li li li > a {margin-left: 38px;}
 #sub li li li li {padding-left: 57px;}
 #sub li li li li > span {margin-left: 57px;}
+#sub li li li li > a {margin-left: 0;}
 #sub .current > a {
 	color: black;
 	font-weight: bold;
@@ -287,6 +291,7 @@ nav ul {margin: 0;}
 	background: #2C2C2C;
 	color: #999;
 }
+#container > footer a {color: #999;}
 footer nav {
 	position: relative;
 	z-index: 2;
@@ -300,6 +305,8 @@ footer nav li {
 	position: relative;
 	margin: 0 20px;
 }
+#container > footer nav li a {color: #CCC;}
+#container > footer nav .current a {color: white;}
 footer nav .current:before {
 	content: "";
 	width: 0;
@@ -506,16 +513,19 @@ table.features {
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	clear: right;
 }
-#comments > section {
-	width: 620px;
+#comments > div {
+	width: 945px;
 	margin: auto;
-	padding-left: 325px;
 }
-#comments > section > h2, #documentation > h2 {
+#comments > div > section {
+	width: 620px;
+	float: right;
+}
+#comments > div > section > h2, #documentation > h2 {
 	font-size: 24px;
 	margin-bottom: 20px;
 }
-#comments > section > h2 img {margin: -5px 0 0 5px;}
+#comments > div > section > h2 img {margin: -5px 0 0 5px;}
 #documentation > h2 img {margin-top: -10px;}
 #comments .action {
 	position: absolute;
@@ -559,6 +569,7 @@ table.features {
 	margin-bottom: 30px;
 	float: left;
 	clear: left;
+	width: 248px;
 }
 .widget h1 {
 	color: #535761;
@@ -584,6 +595,7 @@ table.features {
 	border-top: none;
 	padding-top: 0;
 }
+.widget section:last-child {margin-bottom: 0;}
 .widget > div {
 	padding: 20px 17px;
 	border-top: 1px solid #CCC;
@@ -594,6 +606,9 @@ table.features {
 	padding-bottom: 10px;
 }
 .widget > div + div + div {margin-top: 0;}
+.widget ul {
+	margin-bottom: 0 !important;
+}
 .widget li {
 	margin: 12px 0;
 	line-height: 100%;
