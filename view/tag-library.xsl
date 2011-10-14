@@ -197,20 +197,13 @@
     <xsl:apply-templates mode="documentation-section" select="$content/page/product-documentation"/>
   </xsl:template>
 
-  <!-- Skip in the normal page body -->
-  <xsl:template match="product-documentation"/>
-
-  <!-- Insert it here instead -->
-  <xsl:template mode="documentation-section" match="product-documentation">
-    <div id="documentation">
-      <section>
-        <h2>Documentation <img src="/images/i_doc.png" alt="" width="28" height="31" /></h2>
-        <ul>
-          <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
-        </ul>
-
-      </section>
-    </div>
+  <xsl:template match="product-documentation">
+    <section id="documentation">
+      <h2>Documentation <img src="/images/i_doc.png" alt="" width="28" height="31" /></h2>
+      <ul>
+        <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
+      </ul>
+    </section>
   </xsl:template>
 
           <xsl:template mode="product-doc-entry" match="*">
