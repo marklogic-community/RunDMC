@@ -572,6 +572,35 @@
     </div>
   </xsl:template>
 
+  <!-- ASSUMPTION: <doc> children of <guide-list> only appear at the beginning;
+                   after that, they all appear inside child <guide-group> elements. -->
+  <xsl:template match="guide-list/doc"/>
+  <xsl:template match="guide-list/doc[1]
+                     | guide-group" priority="1">
+    <ul class="doclist">
+      <xsl:apply-templates mode="guide-list-item" select="for $path in ( self::doc/..
+                                                                       | self::guide-group
+                                                                       )/doc/@path
+                                                          return document($path)/Article"/>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="guide-group" priority="2">
+    <h3><xsl:value-of select="@name"/></h3>
+    <xsl:next-match/>
+  </xsl:template>
+
+          <xsl:template mode="guide-list-item" match="Article">
+            <li>
+                <a href="{ ml:external-uri(.) }">
+                  <xsl:value-of select="title"/>
+                </a>
+                <div><xsl:value-of select="description"/></div>
+            </li>
+          </xsl:template>
+
+
+
   <xsl:template match="document-table">
     <xsl:variable name="docs" select="doc"/>
     <div class="doclist">
