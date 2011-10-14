@@ -183,6 +183,7 @@
 
                   <xsl:template mode="sub-nav" match="group/group">
                     <li>
+                      <xsl:apply-templates mode="sub-nav-current-att" select="."/>
                       <span>
                         <xsl:value-of select="@display"/>
                       </span>
@@ -211,9 +212,9 @@
                     </li>
                   </xsl:template>
 
-                          <xsl:template mode="sub-nav-current-att" match="page"/>
+                          <xsl:template mode="sub-nav-current-att" match="*"/>
 
-                          <xsl:template mode="sub-nav-current-att" match="page[. intersect $page-in-navigation/ancestor-or-self::*]">
+                          <xsl:template mode="sub-nav-current-att" match="*[. intersect $page-in-navigation/ancestor-or-self::*]">
                             <xsl:attribute name="class">current</xsl:attribute>
                           </xsl:template>
 
@@ -237,10 +238,11 @@
     </xsl:attribute>
   </xsl:template>
 
-          <xsl:template mode="body-class" match="navigation/page">main_page</xsl:template>
-          <xsl:template mode="body-class" match="generic-page"   >main_page</xsl:template> <!-- was generic, but looked bad -->
-          <xsl:template mode="body-class" match="*"              >sub_page</xsl:template>
+          <xsl:template mode="body-class" match="page[@closed eq 'yes']
+                                               | page[@closed eq 'yes']//page">blog</xsl:template>
+          <xsl:template mode="body-class" match="*"/>
 
+          <!-- TODO: get rid of this eventually, but for now, keep it around because we may want to use it as a base to tweak once we add the home page -->
           <xsl:template mode="body-class-extra" match="*"/>
           <xsl:template mode="body-class-extra" match="page[@href eq '/']                                  "> home</xsl:template>
           <xsl:template mode="body-class-extra" match="Article                                             "> layout2</xsl:template>
