@@ -214,22 +214,28 @@
                     <xsl:param name="disable-comment-count" select="true()"/>
 
                     <article class="post">
+                      <header>
                         <h3>
                           <a href="{ml:external-uri(.)}">
                             <xsl:apply-templates select="title/node()"/>
                           </a>
                         </h3>
+                        <div class="date_author">
+                          <xsl:apply-templates mode="post-date" select="."/>
+                          <xsl:text> </xsl:text>
+                          <!-- Only display the byline if an author is present -->
+                          <xsl:apply-templates mode="post-author" select="author[1]"/>
+                        </div>
+                      </header>
 
-                      <xsl:apply-templates mode="post-date" select="."/>
 
-                      <!-- Only display the byline if an author is present -->
-                      <xsl:apply-templates mode="post-author" select="author[1]"/>
+                      <div class="body">
+                        <xsl:apply-templates mode="post-content" select="."/>
 
-                      <xsl:apply-templates mode="post-content" select="."/>
-
-                      <xsl:if test="not($disable-comment-count)">
-                        <xsl:apply-templates mode="comment-count" select="."/>
-                      </xsl:if>
+                        <xsl:if test="not($disable-comment-count)">
+                          <xsl:apply-templates mode="comment-count" select="."/>
+                        </xsl:if>
+                      </div>
 
                     </article>
                   </xsl:template>
@@ -237,14 +243,14 @@
                           <!-- Don't display the "created" date on event pages -->
                           <xsl:template mode="post-date" match="Event"/>
                           <xsl:template mode="post-date" match="Post | Announcement">
-                            <span class="date">
+                            <time pubdate="true" datetime="{created}">
                               <xsl:value-of select="ml:display-date(created)"/>
-                            </span>
+                            </time>
                           </xsl:template>
 
                           <xsl:template mode="post-author" match="author">
+                            <xsl:text>by </xsl:text>
                             <span class="author">
-                              <xsl:text>by </xsl:text>
                               <xsl:apply-templates mode="author-listing" select="../author"/>
                             </span>
                           </xsl:template>
@@ -254,9 +260,11 @@
                           </xsl:template>
 
                           <xsl:template mode="post-content" match="Event">
-                            <dl>
-                              <xsl:apply-templates mode="event-details" select="details/*"/>
-                            </dl>
+                            <div class="info">
+                              <table>
+                                <xsl:apply-templates mode="event-details" select="details/*"/>
+                              </table>
+                            </div>
                             <xsl:apply-templates select="description/node()"/>
                           </xsl:template>
 

@@ -447,13 +447,15 @@
 
                   <!-- TODO: For dates and times, consider use ISO 8601 format (in the source data) instead -->
                   <xsl:template mode="event-details" match="*">
-                    <dt>
-                      <strong><xsl:apply-templates mode="event-detail-name" select="."/></strong>
-                      <xsl:text>:&#160;</xsl:text>
-                    </dt>
-                    <dd>
-                      <xsl:apply-templates/>
-                    </dd>
+                    <tr>
+                      <th scope="row">
+                        <xsl:apply-templates mode="event-detail-name" select="."/>
+                        <xsl:text>:</xsl:text>
+                      </th>
+                      <td>
+                        <xsl:apply-templates/>
+                      </td>
+                    </tr>
                   </xsl:template>
 
                           <xsl:template mode="event-detail-name" match="date"     >Date</xsl:template>
