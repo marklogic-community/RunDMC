@@ -591,10 +591,15 @@
   </xsl:template>
 
           <xsl:template mode="guide-list-item" match="Article">
+            <xsl:variable name="uri" select="external-link/@href"/>
             <li>
-                <a href="{ ml:external-uri(.) }">
+                <a href="{$uri}">
                   <xsl:value-of select="title"/>
                 </a>
+                <xsl:if test="ends-with($uri,'.pdf')">
+                  <xsl:text> | </xsl:text>
+                  <img src="/images/i_pdf.png" alt="(PDF)" width="25" height="26"/>
+                </xsl:if>
                 <div><xsl:value-of select="description"/></div>
             </li>
           </xsl:template>
