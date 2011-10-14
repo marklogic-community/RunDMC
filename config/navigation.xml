@@ -30,6 +30,7 @@
       </group>
     </group>
     <generic-page display="Licensing" href="/licensing"/>
+    <generic-page display="Licensing for MarkLogic 4.x" href="/licensing/4.x"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.1"/>
