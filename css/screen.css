@@ -30,7 +30,9 @@ h2 {
 	color: #899B3B;
 	font-size: 28px;
 }
-h3 {font-size: 20px;}
+h3 {font-size: 20px;
+	  color: #535761;
+}
 img, input, select, textarea {
 	vertical-align: middle;
 	margin: 0;
@@ -523,6 +525,8 @@ table.features {
 .doclist li > a {font-size: 16px;}
 .doclist li > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
+
+h3 + .doclist li {margin-left:10px}
 
 #comments {
 	background: white;
