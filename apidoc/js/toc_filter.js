@@ -195,7 +195,7 @@ function waitToInitialize(tocSection) {
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
     $("#sub a.currentPage").removeClass("currentPage");
-    $("#sub a[href=" + window.location.pathname + "]").addClass("currentPage");
+    $("#sub a[href='" + window.location.pathname + "']").addClass("currentPage");
 
     // Fallback in case a bad fragment ID was requested
     if ($("#sub a.selected").length === 0) {

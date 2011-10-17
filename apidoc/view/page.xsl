@@ -131,17 +131,17 @@
 
 
           <xsl:template mode="toc-section-link-selector" match="api:function-page">
-            <xsl:text>.scrollable_section a[href=</xsl:text>
+            <xsl:text>.scrollable_section a[href='</xsl:text>
             <xsl:value-of select="$version-prefix"/>
             <xsl:text>/</xsl:text>
             <xsl:value-of select="api:function[1]/@lib"/>
-            <xsl:text>]</xsl:text>
+            <xsl:text>']</xsl:text>
           </xsl:template>
 
           <xsl:template mode="toc-section-link-selector" match="guide">
-            <xsl:text>.scrollable_section a[href=</xsl:text>
+            <xsl:text>.scrollable_section a[href='</xsl:text>
             <xsl:value-of select="concat($version-prefix, ml:external-uri($content))"/>
-            <xsl:text>]</xsl:text>
+            <xsl:text>']</xsl:text>
           </xsl:template>
 
           <xsl:template mode="toc-section-link-selector" match="api:list-page">
