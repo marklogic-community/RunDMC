@@ -26,7 +26,7 @@ width: 750px;
 }
 
 
-#sub {
+#api_sub {
   /*
 	width: 25%;
   */
@@ -38,7 +38,7 @@ float:none;
   font-size: 0.9em;
 }
 
-#main, #sub {
+#main, #api_sub {
   position:fixed;
   bottom:0px;
   top:90px;
@@ -181,9 +181,9 @@ p.note:before {
 }
 
 /* Override default CSS for tabs */
-#sub .ui-widget-content .treeview a                 { color: #235BAB; }
-#sub .ui-widget-content .treeview a.selected,
-#sub .ui-widget-content .treeview a.currentPage,
-#sub .ui-widget-content .treeview a.footnote_marker { color: #F86D07; }
-#sub .ui-widget { font-size: 1em; }
-#sub .ui-tabs .ui-tabs-panel { padding: 1em 0.5em; }
+#api_sub .ui-widget-content .treeview a                 { color: #235BAB; }
+#api_sub .ui-widget-content .treeview a.selected,
+#api_sub .ui-widget-content .treeview a.currentPage,
+#api_sub .ui-widget-content .treeview a.footnote_marker { color: #F86D07; }
+#api_sub .ui-widget { font-size: 1em; }
+#api_sub .ui-tabs .ui-tabs-panel { padding: 1em 0.5em; }

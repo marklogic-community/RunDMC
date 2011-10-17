@@ -62,9 +62,9 @@
          $("#main .pjax_enabled a").pjax({container: '#page_content',
                                           success: function() { initializeTOC(); colorizeExamples(); }
                                          });
-         $("#sub .pjax_enabled a").pjax({container: '#page_content',
+         $("#api_sub .pjax_enabled a").pjax({container: '#page_content',
                                          success: function() {
-                                                     $("#sub a.currentPage, #sub a.selected").removeClass("currentPage").removeClass("selected");
+                                                     $("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
                                                      if(this.clickedElement) showInTOC(this.clickedElement);
                                                      colorizeExamples();
                                                    }
@@ -97,7 +97,7 @@
           <ml:breadcrumbs/>
         </div>
         -->
-        <div id="sub">
+        <div id="api_sub">
           <ml:api-toc/>
         </div>
 

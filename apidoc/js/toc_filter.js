@@ -189,17 +189,17 @@ function waitToInitialize(tocSection) {
     });
 
     // E.g., when hitting the Back button and reaching "All functions"
-    $("#sub a.selected").removeClass("selected");
+    $("#api_sub a.selected").removeClass("selected");
 
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
-    $("#sub a.currentPage").removeClass("currentPage");
-    $("#sub a[href='" + window.location.pathname + "']").addClass("currentPage");
+    $("#api_sub a.currentPage").removeClass("currentPage");
+    $("#api_sub a[href='" + window.location.pathname + "']").addClass("currentPage");
 
     // Fallback in case a bad fragment ID was requested
-    if ($("#sub a.selected").length === 0) {
-      showInTOC($("#sub a.currentPage"))
+    if ($("#api_sub a.selected").length === 0) {
+      showInTOC($("#api_sub a.currentPage"))
     }
 
     if (!tocSection.hasClass("initialized")) {
@@ -227,15 +227,15 @@ function updateTocForUrlFragment(pathname, hash) {
   //var fullLink = this.pathname + this.hash;
   var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + hash;
 
-  showInTOC($("#sub a[href='" + fullLink + "']"));
+  showInTOC($("#api_sub a[href='" + fullLink + "']"));
 
   scrollTOC();
 }
 
 
 function showInTOC(a) {
-  $("#sub a.selected").removeClass("selected");
-  $("#sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
+  $("#api_sub a.selected").removeClass("selected");
+  $("#api_sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
 
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
 
@@ -304,7 +304,7 @@ function removeHighlightToText(element) {
 }
 
 function scrollTOC() {
-  var scrollTo = $('#sub a.selected').filter(':visible');
+  var scrollTo = $('#api_sub a.selected').filter(':visible');
 
   scrollTo.each(function() {
     var container = $(this).parents('.scrollable_section'),
