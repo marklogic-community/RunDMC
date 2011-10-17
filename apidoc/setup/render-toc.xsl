@@ -120,8 +120,6 @@
           // Once the tabs are set up, go ahead and display the TOC
           $("#toc_tabs").show();
 
-          tooltip();
-
         });
         </xsl:comment>
         </script>
