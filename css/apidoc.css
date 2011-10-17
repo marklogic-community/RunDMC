@@ -181,6 +181,7 @@ p.note:before {
 }
 
 /* Override default CSS for tabs */
+#api_sub .ui-widget { font-family: Arial, Helvetica, sans-serif; }
 #api_sub .ui-widget-content .treeview a                 { color: #235BAB; }
 #api_sub .ui-widget-content .treeview a.selected,
 #api_sub .ui-widget-content .treeview a.currentPage,
