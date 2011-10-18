@@ -156,12 +156,20 @@
             </li>
           </xsl:template>
 
-          <xsl:template match="xhtml:h3">
-            <h3>
-              <xsl:apply-templates select="@*"/>
-              <a name="{generate-id(.)}"/>
-              <xsl:apply-templates/>
-            </h3>
+          <xsl:template match="xhtml:h3" priority="1">
+            <xsl:param name="annotate-headings" tunnel="yes" select="false()"/>
+            <xsl:choose>
+              <xsl:when test="$annotate-headings">
+                <h3>
+                  <xsl:apply-templates select="@*"/>
+                  <a name="{generate-id(.)}"/>
+                  <xsl:apply-templates/>
+                </h3>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:next-match/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:template>
 
 

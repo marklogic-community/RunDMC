@@ -695,7 +695,7 @@
     <xsl:variable name="start" select="ml:start-index($results-per-page)"/>
 
     <xsl:apply-templates mode="paginated-list-item" select="ml:list-segment-of-docs($start, $results-per-page, @type)">
-      <xsl:with-param name="in-paginated-list" select="true()"/>
+      <xsl:with-param name="in-paginated-list" select="true()" tunnel="yes"/>
     </xsl:apply-templates>
 
     <xsl:variable name="page-url">

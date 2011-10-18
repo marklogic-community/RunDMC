@@ -117,6 +117,27 @@
           </xsl:template>
 
 
+  <!-- Bump up the heading number (i.e. increase the depth) of headings in paginated lists (of blog posts) -->
+  <xsl:template match="xhtml:h3
+                     | xhtml:h4
+                     | xhtml:h5
+                     | xhtml:h6
+                     | xhtml:h7
+                     | xhtml:h8">
+    <xsl:param name="in-paginated-list" select="false()" tunnel="yes"/>
+    <xsl:choose>
+      <xsl:when test="$in-paginated-list">
+        <xsl:element name="h{1 + number(substring-after(local-name(.),'h'))}" namespace="{namespace-uri()}">
+          <xsl:apply-templates select="@* | node()"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
   <!-- What to put in the <title> tag -->
   <xsl:template match="page-title">
     <xsl:apply-templates mode="page-title" select="$content/*"/>
@@ -217,7 +238,7 @@
                   <xsl:template mode="blog-post paginated-list-item" match="Post | Announcement | Event">
 
                     <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item") -->
-                    <xsl:param name="in-paginated-list" select="false()"/>
+                    <xsl:param name="in-paginated-list" select="false()" tunnel="yes"/>
 
                     <article class="post">
                       <header>
@@ -307,7 +328,9 @@
               <xsl:value-of select="last-updated"/>
             </div>
             <br/>
-            <xsl:apply-templates select="body/node()"/>
+            <xsl:apply-templates select="body/node()">
+              <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
+            </xsl:apply-templates>
           </xsl:template>
 
                   <xsl:template mode="author-listing" match="author[1]" priority="1">
