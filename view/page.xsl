@@ -442,8 +442,18 @@
     <xsl:param name="date-or-dateTime" as="xs:string?"/>
     <xsl:variable name="date-part" select="substring($date-or-dateTime, 1, 10)"/>
     <xsl:variable name="castable" select="$date-part castable as xs:date"/>
-    <xsl:sequence select="if ($castable) then format-date(xs:date($date-part), '[M01]/[D01]/[Y01]')
-                                         else $date-or-dateTime"/>
+    <xsl:choose>
+      <xsl:when test="$castable">
+        <xsl:variable name="dateTime" select="xs:dateTime(concat($date-part,'T00:00:00'))"/>
+        <xsl:variable name="month"    select="month-from-dateTime($dateTime)"/>
+        <xsl:variable name="day"      select="  day-from-dateTime($dateTime)"/>
+        <xsl:variable name="year"     select=" year-from-dateTime($dateTime)"/>
+        <xsl:sequence select="concat(ml:month-name($month),' ',$day,', ',$year)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$date-or-dateTime"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
 
   <xsl:function name="ml:display-time" as="xs:string">
