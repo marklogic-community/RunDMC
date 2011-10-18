@@ -180,7 +180,7 @@ nav ul {margin: 0;}
 #content #main_container {
 	width: 945px;
 	margin: auto;
-	background: url(../img/separator_vert.gif) 271px 0 repeat-y;
+	background: url(/images/separator_vert.gif) 271px 0 repeat-y;
 }
 #breadcrumb {
 	background: white;
@@ -775,7 +775,7 @@ section#documentation:before {margin-bottom: 30px;}
 .post ul {padding-left: 20px;}
 .post ul li:before {content: "-\0020";}
 .post .action {
-	background: white url(../img/i_speechbubble.png) 4px bottom no-repeat;
+	background: white url(/images/i_speechbubble.png) 4px bottom no-repeat;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;

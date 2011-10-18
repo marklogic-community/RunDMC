@@ -37,7 +37,7 @@
 
           <xsl:apply-templates mode="comment-count" select="."/>
 
-          <a name="post_comment"/>
+          <a id="post_comment"/>
           <!-- This will get replaced in the browser by Disqus's widget -->
           <div id="disqus_thread">
             <div id="dsq-content">

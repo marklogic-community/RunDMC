@@ -185,8 +185,17 @@
   <xsl:template match="page-heading">
     <h2>
       <xsl:apply-templates mode="page-specific-title" select="$content/*"/>
+      <xsl:apply-templates mode="page-heading-suffix" select="$content/*"/>
     </h2>
   </xsl:template>
+
+          <xsl:template mode="page-heading-suffix" match="*"/>
+          <!-- Append Atom feed link to Blog page heading -->
+          <xsl:template mode="page-heading-suffix" match="page[$external-uri eq '/blog']">
+            <a href="/blog/atom.xml?feed=blog">
+              <img src="/images/i_rss.png" alt="(RSS)" width="24" height="23"/>
+            </a>
+          </xsl:template>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
@@ -226,15 +235,14 @@
                           <!-- Only display the byline if an author is present -->
                           <xsl:apply-templates mode="post-author" select="author[1]"/>
                         </div>
-                      </header>
-
-
-                      <div class="body">
-                        <xsl:apply-templates mode="post-content" select="."/>
 
                         <xsl:if test="not($disable-comment-count)">
                           <xsl:apply-templates mode="comment-count" select="."/>
                         </xsl:if>
+                      </header>
+
+                      <div class="body">
+                        <xsl:apply-templates mode="post-content" select="."/>
                       </div>
 
                     </article>
