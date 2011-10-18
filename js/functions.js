@@ -103,5 +103,18 @@ if(typeof jQuery != 'undefined') {
 			});
 		}
 		$('.post + .pagination',main).clone().insertBefore(main);
+		// comments tab position at right 
+		var pos = parseInt($('#comments .action').css('top'), 10);
+		$('#comments .action').css('top', pos+$('#breadcrumb + section > h2').height()+'px');
+		// end comments tab position
+		// blog heading change
+		if($('.blog #main article.post').length == 1) {
+			var h3 = $('.blog #main article.post:only-child header h3').hide();
+			$('.blog #breadcrumb + section > h2').text(h3.text());
+			$('#comments .action').css('top', pos+$('#breadcrumb + section > h2').height()+'px');
+		}
+		//end blog heading change
+		
+		// add new functions before this comment
 	});
 }

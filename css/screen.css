@@ -2,7 +2,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 body {
 	margin: 0;
 	padding: 0;
-	background: #F5F5F5;
+	background: #666;
 	color: #666;
 	font: 14px/129% Arial, Helvetica, Sans-serif;
 	min-width: 1050px;
@@ -28,7 +28,7 @@ h1, h2, h3 {
 }
 h2 {
 	color: #899B3B;
-	font-size: 28px;
+	font-size: 27px;
 }
 h3 {font-size: 20px;
 	  color: #535761;
@@ -61,7 +61,7 @@ ol {
 	left: -999em;
 }
 #content hr {position: static;}
-#header header:after, #content:after, #content > section:after, #comments:after {
+#header header:after, #content:after, #comments:after {
 	content: " ";
 	display: block;
 	height: 0;
@@ -70,7 +70,12 @@ ol {
 }
 #content:after, #content > section:after {clear: right;}
 #content.subnav:after {clear: both;}
-#container {position: relative;}
+#container {
+	position: relative;
+	width: 1100px;
+	margin: auto;
+	overflow: hidden;
+}
 
 #header {
 	background: black url(/images/bg_shadow_header.gif) bottom left repeat-x;
@@ -99,7 +104,7 @@ ol {
 }
 #header form {	
 	float: right;
-	margin-top: -5px;
+	margin-top: -8px;
 }
 /*.jsenabled */#header form {
 	border: 1px solid #999;
@@ -172,35 +177,36 @@ nav ul {margin: 0;}
 	z-index: 1;
 	padding-bottom: 20px;
 }
-#content > section {
+#content #main_container {
 	width: 945px;
 	margin: auto;
+	background: url(../img/separator_vert.gif) 271px 0 repeat-y;
 }
 #breadcrumb {
 	background: white;
-	box-shadow: 0 0 2px rgba(0,0,0,.9);
-	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
-	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
-	box-shadow: 0 0 2px rgba(0,0,0,.9);
-	padding: 10px 0;
-	height: 60px;
+	padding: 10px 0 20px;
 	font-size: 10px;
 	line-height: 100%;
-	margin-bottom: 33px;
 	position: relative;
 }
 #breadcrumb a {color: #666;}
-#breadcrumb + section {background: url(/images/separator_vert.gif) 271px 0 repeat-y;}
 #breadcrumb + section > h2 {
-	width: 620px;
-	float: right;
-	margin: -70px 0 30px;
+	background: white;
+	padding: 0 120px 10px 402px;
 	line-height: 100%;
-	position: relative;
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
+	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
+	box-shadow: 0 0 2px rgba(0,0,0,.9);
+	margin-bottom: 30px;
 }
+#breadcrumb + section > h2 img {margin-left: 10px;}
 #breadcrumb .version {
 	font-size: 12px;
-	margin-top: 35px;
+	position: absolute;
+	margin-left: 77px;
+	position: absolute;
+	width: auto;
+	bottom: -25px;
 }
 #breadcrumb .version span {font-weight: bold;}
 #breadcrumb .version a {color: #01639D;}
@@ -346,6 +352,7 @@ footer nav .current a {color: white;}
 	width: 40px;
 	padding: 50px 1px 0 0;
 	border: 1px solid #CCC;
+	border-left: 0;
 }
 .utility.sticky {
 	left: -1px;
@@ -555,9 +562,9 @@ h3 + .doclist li {margin-left:10px}
 	top: 110px;
 	right: 0;
 	background: white;
-	-webkit-border-radius: 5px 0 0 5px;
-	-moz-border-radius: 5px 0 0 5px;
-	border-radius: 5px 0 0 5px;
+	-webkit-border-radius: 3px 0 0 3px;
+	-moz-border-radius: 3px 0 0 3px;
+	border-radius: 3px 0 0 3px;
 	padding: 0 10px 5px 5px;
 	z-index: 10;
 	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.3);
@@ -568,9 +575,10 @@ h3 + .doclist li {margin-left:10px}
 	border-right: none;
 	text-align: right;
 }
+.jsenabled #comments .action {margin-top: -30px;}
 #comments .action ul {
 	margin: -15px 0 0;
-	padding: 30px 0 0 10px;
+	padding: 30px 0 0 20px;
 	background: url(/images/i_speechbubble.png) no-repeat;
 }
 #comments .action li span {font-size: 24px;}
@@ -720,8 +728,16 @@ section#documentation:before {margin-bottom: 30px;}
 	margin-bottom: 8px;
 }
 .post h3 a {color: #666;}
+.post .date_author {
+	float: left;
+	font-size: 12px;
+	margin-bottom: 15px;
+}
 .post .author {font-style: italic;}
-.post .body {margin: 20px 0 0;}
+.post .body {
+	margin: 20px 0 0;
+	clear: both;
+}
 .post .body .more {
 	font-size: 12px;
 	font-weight: bold;
@@ -737,13 +753,13 @@ section#documentation:before {margin-bottom: 30px;}
 }
 .post .body th, .post .body td {padding-left: 10px;}
 .post .body table :first-child {padding-left: 0;}
-.post + .pagination, section h2 + .pagination {
+.post + .pagination, #main_container > .pagination {
 	color: #999;
 	font-size: 12px;
 	text-align: right;
 	padding-bottom: 0;
 }
-section h2 + .pagination {
+#main_container > .pagination {
 	float: right;
 	margin-top: -60px;
 	position: relative;
@@ -751,10 +767,33 @@ section h2 + .pagination {
 .post + .pagination:before {margin-bottom: 15px;}
 .post + .pagination a,
 .post + .pagination span,
-section h2 + .pagination a,
-section h2 + .pagination span
+#main_container > .pagination a,
+#main_container > .pagination span
 	{margin-left: 4px;}
-.post + .pagination a:first-child, section h2 + .pagination a:first-child {margin-right: 4px;}
-.post + .pagination span, section h2 + .pagination span {color: #CCC;}
+.post + .pagination a:first-child, #main_container > .pagination a:first-child {margin-right: 4px;}
+.post + .pagination span, #main_container > .pagination span {color: #CCC;}
 .post ul {padding-left: 20px;}
 .post ul li:before {content: "-\0020";}
+.post .action {
+	background: white url(../img/i_speechbubble.png) 4px bottom no-repeat;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 6px 10px 6px 30px;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,.3);
+	box-shadow: 0 1px 1px rgba(0,0,0,.3);
+	border: 1px solid #DDD;
+	float: right;
+	margin: -5px 0 15px;
+}
+.post .action {font-size: 11px;}
+.post .action ul {
+	padding: 0;
+	margin: 0;
+}
+.post .action li {
+	display: inline;
+	margin-left: 10px;
+}
+.post .action li:before {content: none;}
