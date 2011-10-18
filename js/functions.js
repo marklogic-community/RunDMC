@@ -109,8 +109,10 @@ if(typeof jQuery != 'undefined') {
 		// end comments tab position
 		// blog heading change
 		if($('.blog #main article.post').length == 1) {
+      /* EDL: we don't need this; the XSLT takes care of this
 			var h3 = $('.blog #main article.post:only-child header h3').hide();
 			$('.blog #breadcrumb + section > h2').text(h3.text());
+      */
 			$('#comments .action').css('top', pos+$('#breadcrumb + section > h2').height()+'px');
 		}
 		//end blog heading change
