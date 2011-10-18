@@ -216,15 +216,16 @@
 
                   <xsl:template mode="blog-post paginated-list-item" match="Post | Announcement | Event">
 
-                    <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item");
-                         Remains disabled when we're just displaying one blog post, because the comment count
-                         automatically appears above the comment submit form section. Suppressing it by default
-                         ensures we don't display it twice. -->
-                    <xsl:param name="disable-comment-count" select="true()"/>
+                    <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item") -->
+                    <xsl:param name="in-paginated-list" select="false()"/>
 
                     <article class="post">
                       <header>
                         <h3>
+                          <!-- If we're just displaying one post on this page, then hide this (repeated) post title -->
+                          <xsl:if test="not($in-paginated-list)">
+                            <xsl:attribute name="style">display: none</xsl:attribute>
+                          </xsl:if>
                           <a href="{ml:external-uri(.)}">
                             <xsl:apply-templates select="title/node()"/>
                           </a>
@@ -236,7 +237,11 @@
                           <xsl:apply-templates mode="post-author" select="author[1]"/>
                         </div>
 
-                        <xsl:if test="not($disable-comment-count)">
+                        <!-- Display the comment count widget only if we're on a list of more than one post;
+                             disabled when we're just displaying one blog post, because the comment count
+                             automatically appears above the comment submit form section. Suppressing it here
+                             ensures we don't display it twice. -->
+                        <xsl:if test="$in-paginated-list">
                           <xsl:apply-templates mode="comment-count" select="."/>
                         </xsl:if>
                       </header>
