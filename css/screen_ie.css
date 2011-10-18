@@ -1,13 +1,15 @@
 table.features,
 .utility,
 .utility form,
-#breadcrumb,
+#breadcrumb + section > h2,
 #content,
 #comments,
 #comments .action,
 .widget,
-.widget h1
+.widget h1,
+.post .action
 	{behavior: url(js/PIE.htc);}
-#breadcrumb, #content, #comments {box-shadow: -3px 0 3px black;}
+#breadcrumb + section > h2, #content, #comments {box-shadow: 0 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
+.post .action {box-shadow: 1px 1px 1px #BBB;}
 #tooltip {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E4E5F0');}
