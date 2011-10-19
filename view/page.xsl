@@ -218,6 +218,11 @@
             </a>
           </xsl:template>
 
+  <!-- Conditional template support: process the first child that matches -->
+  <xsl:template match="choose">
+    <xsl:apply-templates select="*[@href eq $external-uri or not(@href)][1]/node()"/>
+  </xsl:template>
+
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
