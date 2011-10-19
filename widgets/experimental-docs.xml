@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" class="experimental-docs">
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
 
-   <a target="_blank" title="New experimental documenation search application!" href="http://docs.marklogic.com/"><img id="doc-badge" src="/media/documentation-badge.png" alt="documentation search" title="New experimental documentation search application!" /></a>
-
-  <div class="head">
+  <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> Searchable Docs</h1>
+  <div>
+    Try out the <a target="_blank" title="New experimental documentation search application!" href="http://docs.marklogic.com/">searchable docs!</a>
     <br/>
-    <span style="font-size: .9em">Try out the </span><strong style="font-size: .9em"><a target="_blank" title="New experimental documentation search application!" href="http://docs.marklogic.com/">searchable docs!</a></strong>
-    <br/><span style="font-size: .9em">(This application is <a href="http://docs.marklogic.com/4.2doc/about.xqy">experimental</a>.</span>)
+    <i>This application is <a href="http://docs.marklogic.com/4.2doc/about.xqy">experimental</a>.</i>
   </div>
   <br/>
 </ml:widget>

@@ -24,7 +24,7 @@
 							<legend>Search</legend>
 							<label for="s_inp">Search the COMMUNITY with MarkLogic</label>
 							<input id="s_inp" name="q" type="text" placeholder="Search the COMMUNITY with MarkLogic" ml:value=""/>
-							<input type="image" src="/images/i_mag_glass1.png" alt="Search" />
+							<input type="submit" value="Search" />
 						</fieldset>
 					</form>
           <ml:top-nav/>
@@ -45,27 +45,29 @@
 			</div>
 			<hr />
 			<div id="content">
-        <div id="breadcrumb">
-          <ml:breadcrumbs/>
-        </div>
-        <!--
-				<div id="breadcrumb">
-					<div><a href="">Developer Community</a> &gt; <a href="">Downloads</a> &gt; <a href="">Licensing</a></div>
-				</div>
-        -->
-				<section>
-          <ml:page-heading/>
-					<div id="main_container">
-            <div id="main">
-              <ml:page-content/>
+        <ml:choose>
+          <ml:condition href="/">
+            <ml:page-content/>
+          </ml:condition>
+          <ml:otherwise>
+            <div id="breadcrumb">
+              <ml:breadcrumbs/>
             </div>
-            <!-- end main -->
-            <section id="sub">
-              <ml:sub-nav/>
-              <ml:widgets/>
+            <section>
+              <ml:page-heading/>
+              <div id="main_container">
+                <div id="main">
+                  <ml:page-content/>
+                </div>
+                <!-- end main -->
+                <section id="sub">
+                  <ml:sub-nav/>
+                  <ml:widgets/>
+                </section>
+              </div>
             </section>
-					</div>
-				</section>
+          </ml:otherwise>
+        </ml:choose>
 			</div>
       <ml:comment-section/>
 			<hr />

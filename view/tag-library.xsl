@@ -545,7 +545,7 @@
         </div>
       </form>
       -->
-      <table class="sortable documentsList">
+      <table class="sortable documentsList features">
         <colgroup>
           <col class="col1"/>
           <col class="col2"/>

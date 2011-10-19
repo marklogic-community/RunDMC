@@ -62,37 +62,54 @@ if(typeof jQuery != 'undefined') {
 		$('#sub li').find('.current').parent().show().closest('li').addClass('active');
 		// end side nav accordion functionality
 		$('.features thead th:first-child').addClass('title').append($('.features caption').text()).closest('table').children('caption').remove();
-		$('.utility')
+		
+		// utility form stuff
+		var root = $('.utility');
+		var btn = root.find('form input[type=image]');
+		root
 			.contents()
 				.wrapAll($('<div>', {'class': 'u_wrapper'}))
 				.end()
 			.find('form')
-				.after($('<div>', {'class': 'border'}))
+				.after(
+					$('<a>', {'class': 'search'}).append(
+						$('<img>', {
+							src: btn.attr('src'),
+							title: btn.attr('title')
+						})
+					)
+				)
+				.submit(function() {
+					$(this).find('input[type=image]').prop('disabled',true);
+				})
 				.end()
-			.find('input[type=image]')
+			.find('.search')
 				.click(function(e) {
 					e.preventDefault();
-					$(this).closest('form').addClass('active');
+					$(this).prev().addClass('active').find('input[type=text]').focus();
 				});
+		if($(window).width() <= 1100) {
+			root.addClass('sticky');
+		}
 		$(window).resize(function() {
 			if($(this).width() <= 1110) {
-				$('.utility').addClass('sticky');
+				root.addClass('sticky');
 			}
 			else {
-				if($('.utility').hasClass('sticky')) {
-					$('.utility').removeClass('sticky');
+				if(root.hasClass('sticky')) {
+					root.removeClass('sticky');
 				}
 			}
 		});
 		var inside = false;
-		$('.utility form').hover(function(){ 
+		root.find('form').hover(function(){ 
 		    inside=true; 
 			}, function(){ 
 		    inside=false; 
 		});
 		$('body').mouseup(function(){ 
 	    if(!inside) {
-	    	$('.utility form.active').removeClass('active');
+	    	root.find('form.active').removeClass('active');
 	    }
 		});
 		if(jQuery().tooltip) {
@@ -116,6 +133,12 @@ if(typeof jQuery != 'undefined') {
 			$('#comments .action').css('top', pos+$('#breadcrumb + section > h2').height()+'px');
 		}
 		//end blog heading change
+		// home page close button(s)
+		$('.removable').append($('<a>', {'class': 'close'})).children('.close').click(function() {
+			$(this).parent().slideUp(function() {
+				$(this).remove();
+			});
+		});
 		
 		// add new functions before this comment
 	});

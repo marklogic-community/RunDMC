@@ -140,7 +140,10 @@
 
   <!-- What to put in the <title> tag -->
   <xsl:template match="page-title">
-    <xsl:apply-templates mode="page-title" select="$content/*"/>
+    <!-- strip out any inline markup, e.g., <sup> tags -->
+    <xsl:value-of>
+      <xsl:apply-templates mode="page-title" select="$content/*"/>
+    </xsl:value-of>
   </xsl:template>
 
           <xsl:template mode="page-title" match="page[$external-uri eq '/']">
@@ -154,11 +157,12 @@
           </xsl:template>      
 
                   <xsl:template mode="page-specific-title" match="page">
-                    <xsl:value-of select="( xhtml:h1
-                                          | xhtml:div/xhtml:h1
-                                          | xhtml:h2
-                                          | xhtml:div/xhtml:h2
-                                          )[1]"/>
+                    <xsl:apply-templates select="( xhtml:h1
+                                                 | xhtml:div/xhtml:h1
+                                                 | xhtml:h2
+                                                 | xhtml:div/xhtml:h2
+                                                 )[1]
+                                                 /node()"/>
                   </xsl:template>
 
                   <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
@@ -218,6 +222,11 @@
             </a>
           </xsl:template>
 
+  <!-- Conditional template support: process the first child that matches -->
+  <xsl:template match="choose">
+    <xsl:apply-templates select="*[@href eq $external-uri or not(@href)][1]/node()"/>
+  </xsl:template>
+
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
@@ -227,7 +236,7 @@
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
-            <xsl:apply-templates select="node() except xhtml:h1"/>
+            <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2)"/>
           </xsl:template>
 
 
