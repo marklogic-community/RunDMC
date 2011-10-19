@@ -23,9 +23,11 @@
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
       </group>
+     <!-- Disabled for now
       <group display="Cloud Computing">
         <page display="Server for EC2" href="/products/server-for-ec2"/>
       </group>
+     -->
     </group>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
