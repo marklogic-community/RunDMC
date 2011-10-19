@@ -797,3 +797,14 @@ section#documentation:before {margin-bottom: 30px;}
 	margin-left: 10px;
 }
 .post .action li:before {content: none;}
+
+/*
+EDB - from previous styling
+.doc-desc {
+    padding-left: 25px;
+}
+
+.doclist tr.alt th, .doclist tr.alt td {background: #F2F2F2;}
+*/
+
+
