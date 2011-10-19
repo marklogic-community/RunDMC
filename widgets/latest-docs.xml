@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <b>Latest docs</b>
-    <br/>
-    <br/>
+  <h1><img src="/images/i_book.png" alt="" width="24" height="22" />Latest docs</h1>
+  <div>
     <a href="/docs">MarkLogic 5</a>
-    <br/>
   </div>
-  <br/>
 </ml:widget>
 

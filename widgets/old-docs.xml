@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <b>Previous release docs</b>
-    <br/>
-    <br/>
-    <a href="/docs/4.2">MarkLogic Server 4.2</a>
-    <br/>
-    <a href="/docs/4.1">MarkLogic Server 4.1</a>
-    <br/>
-    <a href="/docs/4.0">MarkLogic Server 4.0</a>
+  <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> Previous release docs</h1>
+  <div>
+	<ul>
+    <li><a href="/docs/4.2">MarkLogic Server 4.2</a></li>
+    <li><a href="/docs/4.1">MarkLogic Server 4.1</a></li>
+    <li><a href="/docs/4.0">MarkLogic Server 4.0</a></li>
+	</ul>
   </div>
 </ml:widget>
