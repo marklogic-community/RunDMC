@@ -91,7 +91,13 @@
   </xsl:template>
 
   <xsl:template match="ml:api-toc">
-    <xsl:apply-templates mode="version-list" select="."/>
+    <!-- We may need this wrapper around the "Server version" switcher to get the same CSS styling as in the Search results page
+    <div id="breadcrumb">
+    -->
+      <xsl:apply-templates mode="version-list" select="."/>
+    <!--
+    </div>
+    -->
     <div id="apidoc_toc">
       <script type="text/javascript">
         <xsl:comment>
@@ -105,14 +111,18 @@
     </div>
   </xsl:template>
 
+          <!-- Customizations of the "Server version" switcher code (slightly different than the search results page) -->
+
+          <xsl:template mode="version-list-item-selected-or-not" match="version[@number eq $api:version]">
+            <xsl:call-template name="show-selected-version"/>
+          </xsl:template>
+          <xsl:template mode="version-list-item-selected-or-not" match="version">
+            <xsl:call-template name="show-unselected-version"/>
+          </xsl:template>
+
           <xsl:template mode="version-list-item-href" match="version">
             <xsl:variable name="version" select="if (@number eq $api:default-version) then '' else @number"/>
             <xsl:sequence select="concat('/', $version)"/>
-          </xsl:template>
-
-          <xsl:template mode="current-version-selected" match="version"/>
-          <xsl:template mode="current-version-selected" match="version[@number eq $api:version]">
-            <xsl:call-template name="current-version-class-att"/>
           </xsl:template>
 
 

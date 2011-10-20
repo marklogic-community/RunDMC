@@ -37,6 +37,52 @@
                                                              false())
                                           else ()"/>
 
+  <!-- The "Server version" switcher code;
+       this is also customized in apidoc/view/page.xsl -->
+  <xsl:template mode="version-list" match="*">
+    <div class="version">
+      <span>Server version:</span>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates mode="version-list-item" select="$versions"/>
+    </div>
+  </xsl:template>
+
+          <!-- separator between each version -->
+          <xsl:template mode="version-list-item" match="*:version">
+            <xsl:apply-templates mode="version-list-item-selected-or-not" select="."/>
+            <xsl:if test="position() ne last()"> | </xsl:if>
+          </xsl:template>
+
+                  <!-- selected -->
+                  <xsl:template mode="version-list-item-selected-or-not" match="*:version[@number eq $preferred-version]"
+                                name="show-selected-version"> 
+                    <b>
+                      <xsl:apply-templates mode="version-number-display" select="."/>
+                    </b>
+                  </xsl:template>
+
+                          <!-- Display 5.0 as "MarkLogic 5" -->
+                          <xsl:template mode="version-number-display" match="*:version[@number eq '5.0']">MarkLogic 5</xsl:template>
+                          <xsl:template mode="version-number-display" match="*:version">
+                            <xsl:value-of select="@number"/>
+                          </xsl:template>
+
+                  <!-- not selected -->
+                  <xsl:template mode="version-list-item-selected-or-not" match="*:version"
+                                name="show-unselected-version">
+                    <xsl:variable name="href">
+                      <xsl:apply-templates mode="version-list-item-href" select="."/>
+                    </xsl:variable>
+                    <a href="{$href}">
+                      <xsl:apply-templates mode="version-number-display" select="."/>
+                    </a>
+                  </xsl:template>
+
+                          <!-- version-specific results URL -->
+                          <xsl:template mode="version-list-item-href" match="*:version">
+                            <xsl:sequence select="concat('/search?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
+                          </xsl:template>
+
 
   <xsl:variable name="search-options" as="element()">
     <search:options>
@@ -122,49 +168,11 @@
 
 
   <xsl:template match="sub-nav[$external-uri eq '/search']">
-    <div id="search_sidebar">
+    <section>
       <xsl:value-of select="$_set-cookie"/> <!-- empty sequence; evaluate for side effect only -->
-      <xsl:apply-templates mode="version-list" select="."/>
       <xsl:apply-templates mode="facet" select="$facets-response/search:facet"/>
-    </div>
+    </section>
   </xsl:template>
-
-          <!-- This is also invoked (and customized) in apidoc/view/page.xsl -->
-          <xsl:template mode="version-list" match="*">
-            <div id="version_list">
-              <span class="version">
-                <xsl:text>Server version: </xsl:text>
-                <xsl:apply-templates mode="version-list-item" select="$versions"/>
-              </span>
-            </div>
-          </xsl:template>
-
-                  <xsl:template mode="version-list-item" match="*:version">
-                    <xsl:variable name="href">
-                      <xsl:apply-templates mode="version-list-item-href" select="."/>
-                    </xsl:variable>
-                    <a href="{$href}">
-                      <xsl:apply-templates mode="current-version-selected" select="."/>
-                      <xsl:apply-templates mode="version-number-display" select="."/>
-                    </a>
-                    <xsl:if test="position() ne last()"> | </xsl:if>
-                  </xsl:template>
-
-                          <xsl:template mode="version-list-item-href" match="*:version">
-                            <xsl:sequence select="concat('/search?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
-                          </xsl:template>
-
-                          <xsl:template mode="current-version-selected" match="*:version"/>
-                          <xsl:template mode="current-version-selected" match="*:version[@number eq $preferred-version]"
-                                        name="current-version-class-att">
-                            <xsl:attribute name="class" select="'currentVersion'"/>
-                          </xsl:template>
-
-                          <!-- Display 5.0 as "MarkLogic 5" -->
-                          <xsl:template mode="version-number-display" match="*:version[@number eq '5.0']">MarkLogic 5</xsl:template>
-                          <xsl:template mode="version-number-display" match="*:version">
-                            <xsl:value-of select="@number"/>
-                          </xsl:template>
 
 
   <xsl:template match="search-results">
