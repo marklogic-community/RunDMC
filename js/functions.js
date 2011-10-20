@@ -4,7 +4,7 @@ if(typeof jQuery != 'undefined') {
 		// cache selectors
 		var main = $('#main');
 		if(!$.support.opacity) {
-			$('.features th:last-child, .features td:last-child, .features tr:last-child, .features tbody:last-child, .utility a:last-child, .widget div li:last-child','#content').addClass('last');
+			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child','#content').addClass('last');
 		}
 		// search field default value
 		function hasPlaceholderSupport() {

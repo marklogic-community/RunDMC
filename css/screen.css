@@ -16,6 +16,8 @@ caption {
 	font-weight: bold;
 	text-align: left;
 	color: #899B3B;
+	font-size: 16px;
+	padding-bottom: 10px;
 }
 fieldset, img {
 	border: none;
@@ -40,7 +42,67 @@ legend {
 	display: none;
 }
 p {margin: 1em 0;}
-table {border-collapse: collapse;}
+table {
+	border-collapse: collapse;
+	background: white;
+	font-size: 12px;
+	line-height: 120%;
+	margin: 20px 0 1em 0;
+}
+thead th {
+	background: #ECECEC url(../img/bg_table_features_top.png) center top no-repeat;
+	white-space: nowrap;
+	vertical-align: bottom;
+	padding: 24px 5px 15px;
+	line-height: 100%;
+}
+thead th.title {
+	font-size: 16px;
+	padding-top: 20px;
+	padding-left: 15px;
+	color: #899B3B;
+}
+thead th:first-child {background-position: left top;}
+thead th:last-child {background-position: right top;}
+thead th.last {background-position: right top;}
+tbody {border-top: 1px solid #CCC;}
+tbody th,  tbody td {padding: 10px 5px;}
+tbody tr:first-child th:first-child {
+	padding-left: 15px;
+	width: 110px;
+	background: url(../img/bg_table_features_bottom.png) top left no-repeat;
+}
+tbody tr:first-child th:first-child,
+tbody td:last-child,
+tbody:last-child tr:last-child th,
+tbody:last-child tr:last-child td
+	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+tbody td.last,
+tbody.last tr.last th,
+tbody.last tr.last td
+	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+tbody:last-child tr:last-child th,
+tbody:last-child tr:last-child td
+	{background-position: bottom center;}
+tbody.last tr.last th,
+tbody.last tr.last td
+	{background-position: bottom center;}
+tbody tr:first-child th:first-child {background-position: top left;}
+tbody td:last-child {background-position: top right;}
+tbody td.last {background-position: top right;}
+tbody:last-child tr:last-child th:first-child {background-position: bottom left;}
+tbody:last-child tr:last-child td:last-child {background-position: bottom right;}
+tbody.last tr.last th:first-child {background-position: bottom left;}
+tbody.last tr.last td.last {background-position: bottom right;}
+tbody th + th {width: 150px;}
+th:last-child,  td:last-child {padding-right: 15px;}
+th.last,  td.last {padding-right: 15px;}
+tbody.last tr.last td {text-align: center;}
+table small {
+	font-weight: normal;
+	font-size: 10px;
+	display: block;
+}
 th, td {
 	vertical-align: top;
 	text-align: left;
@@ -59,14 +121,14 @@ ol {
 	left: -999em;
 }
 #content hr {position: static;}
-#header header:after, #content:after, #comments:after {
+#header header:after, #content:after, #content #main_container:after, #comments:after {
 	content: " ";
 	display: block;
 	height: 0;
 	clear: both;
 	visibility: hidden;
 }
-#content:after, #content > section:after {clear: right;}
+#content:after, #content > section:after, #content #main_container:after {clear: right;}
 #content.subnav:after {clear: both;}
 #container {
 	position: relative;
@@ -212,7 +274,7 @@ nav ul {margin: 0;}
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	margin-bottom: 30px;
 }
-#breadcrumb + section > h2 img {margin-left: 10px;}
+#breadcrumb + section > h2 img {margin-left: 5px;}
 #breadcrumb .version {
 	font-size: 12px;
 	position: absolute;
@@ -264,13 +326,14 @@ nav ul {margin: 0;}
 	border-bottom: none;
 	margin: 0;
 }
-#sub li li, #sub li span {
+#sub li li, #sub li span, #sub .categories li {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #FFF transparent #E4E4E4;
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
+#sub .categories li:first-child {border-top: none;}
 /* IE ignores rules if it doesn’t know a selector, that’s why we need to redeclare it separately here */
 .jsenabled #sub li li li:last-child {
 	border-style: solid;
@@ -314,6 +377,14 @@ nav ul {margin: 0;}
 	cursor: default;
 }
 .jsenabled.blog #sub ul ul {display: none;}
+#sub .categories li {
+	overflow: hidden;
+	line-height: 23px;
+}
+#sub .categories a img {
+	float: left;
+	margin-right: 5px;
+}
 #container > footer {
 	clear: both;
 	font-size: 11px;
@@ -475,73 +546,9 @@ footer nav .current a {color: white;}
 	font-size: 12px;
 }
 
-
-table.features {
-	background: white;
-	font-size: 12px;
-	line-height: 120%;
-	margin: 20px 0 1em 0;
-}
-.features caption {
-	font-size: 16px;
-	padding-bottom: 10px;
-}
-.features thead th {
-	background: #ECECEC url(../img/bg_table_features_top.png) center top no-repeat;
-	white-space: nowrap;
-	vertical-align: bottom;
-	padding: 24px 5px 15px;
-	line-height: 100%;
-}
-.features thead th.title {
-	font-size: 16px;
-	padding-top: 20px;
-	padding-left: 15px;
-	color: #899B3B;
-}
-.features thead th:first-child {background-position: left top;}
-.features thead th:last-child {background-position: right top;}
-.features thead th.last {background-position: right top;}
-.features tbody {border-top: 1px solid #CCC;}
-.features tbody th, .features tbody td {padding: 10px 5px;}
-.features tbody tr:first-child th:first-child {
-	padding-left: 15px;
-	width: 110px;
-	background: url(../img/bg_table_features_bottom.png) top left no-repeat;
-}
-.features tbody tr:first-child th:first-child,
-.features tbody td:last-child,
-.features tbody:last-child tr:last-child th,
-.features tbody:last-child tr:last-child td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
-.features tbody td.last,
-.features tbody.last tr.last th,
-.features tbody.last tr.last td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
-.features tbody:last-child tr:last-child th,
-.features tbody:last-child tr:last-child td
-	{background-position: bottom center;}
-.features tbody.last tr.last th,
-.features tbody.last tr.last td
-	{background-position: bottom center;}
-.features tbody tr:first-child th:first-child {background-position: top left;}
-.features tbody td:last-child {background-position: top right;}
-.features tbody td.last {background-position: top right;}
-.features tbody:last-child tr:last-child th:first-child {background-position: bottom left;}
-.features tbody:last-child tr:last-child td:last-child {background-position: bottom right;}
-.features tbody.last tr.last th:first-child {background-position: bottom left;}
-.features tbody.last tr.last td.last {background-position: bottom right;}
-.features tbody th + th {width: 150px;}
-.features th:last-child, .features td:last-child {padding-right: 15px;}
-.features th.last, .features td.last {padding-right: 15px;}
 .features tbody:last-child tr:last-child td {text-align: center;}
-.features tbody.last tr.last td {text-align: center;}
-.features small {
-	font-weight: normal;
-	font-size: 10px;
-	display: block;
-}
-
+.doclist {padding-left: 0 !important;}
+.doclist li:before {content: none !important;}
 .doclist li > a {font-size: 16px;}
 .doclist li > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
@@ -598,6 +605,7 @@ table.features {
 	position: relative;
 	padding-left: 40px;
 }
+#documentation li:before {content: none !important;}
 #documentation li img {
 	position: absolute;
 	left: 0;
@@ -849,6 +857,8 @@ section#documentation:before {margin-bottom: 30px;}
 	font-size: 14px;
 	float: right;
 	margin: 0;
+	text-align: center;
+	line-height: 21px;
 }
 #intro ul li a {
 	display: block;
@@ -871,6 +881,11 @@ section#documentation:before {margin-bottom: 30px;}
 	background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
 	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
 	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
+	overflow: hidden;
+}
+#intro ul a img {
+	float: left;
+	margin-right: 5px;
 }
 #learn {
 	background: #EEF0DD;
@@ -1105,3 +1120,59 @@ section#documentation:before {margin-bottom: 30px;}
 }
 #bottom2 > h2 + section .more {left: 0;}
 /* end home page styles */
+
+#results #main h3 {font-size: 18px;}
+#results #main h3 em {
+	font-weight: bold;
+	font-style: normal;
+}
+#results table {
+	font-size: 13px;
+	line-height: 138%;
+	margin: 2em 0;
+	background: none;
+}
+#results tbody {border: none;}
+#results th {
+	width: 40px;
+	padding: 0 5px 0 0;
+	background: none;
+}
+#results td {
+	padding: 0 0 20px;
+	background: none;
+	text-align: left;
+}
+#results h4 {
+	font-size: 100%;
+	margin: 0;
+}
+#results .text .highlight {color: #01639D;}
+#results .pagination {
+	font-size: 13px;
+	color: #999;
+	text-align: right;
+}
+#results .pagination input[type=text] {
+	border: 1px solid #CCC;
+	text-align: right;
+	color: #999;
+	font: 13px Arial, Helvetica, Sans-serif;
+	padding: 1px 5px;
+	width: 30px;
+}
+#results h3 + .pagination {
+	position: absolute;
+	top: 50px;
+	right: 80px;
+}
+#results table + .pagination {
+	border-top: 1px solid #E3E3E3;
+	margin-bottom: -10px;
+}
+#results table + .pagination:before {
+	content: "";
+	border-top: 1px solid white;
+	display: block;
+	margin-bottom: 8px;
+}
