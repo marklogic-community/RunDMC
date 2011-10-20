@@ -254,7 +254,7 @@
 
 
   <!-- We use an id on certain pages (search results) -->
-  <xsl:template match="xhtml:body/@ml:id[$external-uri eq '/search']">
+  <xsl:template match="xhtml:body/@ml:id[$external-uri eq '/search']" priority="1">
     <xsl:attribute name="id" select="'results'"/>
   </xsl:template>
   <!-- but not others -->

@@ -184,31 +184,34 @@
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response[@total eq 0]">
-            <div class="searchSummary">
-              <xsl:text>Your search - </xsl:text>
-              <strong>
+            <h3>
+              <xsl:text>Your search – </xsl:text>
+              <em>
                 <xsl:value-of select="search:qtext"/>
-              </strong>
-              <xsl:text> - did not match any documents.</xsl:text>
-            </div>
+              </em>
+              <xsl:text> – did not match any documents.</xsl:text>
+            </h3>
           </xsl:template>
 
           <xsl:template mode="search-results" match="search:response">
             <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
             <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
                                                       else $last-in-full-page"/>
-            <div class="searchSummary">
+            <h3>
               <xsl:text>Results </xsl:text>
-              <strong>
-                <xsl:value-of select="@start"/>&#8211;<xsl:value-of select="$end-result-index"/>
-              </strong>
+              <em>
+                <xsl:value-of select="@start"/>–<xsl:value-of select="$end-result-index"/>
+              </em>
               <xsl:text> of </xsl:text>
-              <strong>
-                <xsl:value-of select="@total"/>
-              </strong>
-              <xsl:text>.</xsl:text>
-            </div>
-            <xsl:apply-templates mode="#current" select="search:result"/>
+              <xsl:value-of select="@total"/>
+              <xsl:text> for "</xsl:text>
+              <xsl:value-of select="search:qtext"/>
+              <xsl:text>"</xsl:text>
+            </h3>
+            <xsl:apply-templates mode="prev-and-next" select="."/>
+            <table>
+              <xsl:apply-templates mode="#current" select="search:result"/>
+            </table>
             <xsl:apply-templates mode="prev-and-next" select="."/>
           </xsl:template>
 
@@ -222,20 +225,49 @@
                                                                      else concat($srv:main-server, if ($is-flat-file)
                                                                                                    then @uri
                                                                                                    else ml:external-uri-main($doc))"/>
-            <div class="searchResult category_{ml:category-for-doc(@uri)}">
-              <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
-                <div class="searchTitle">
-                  <xsl:variable name="page-specific-title">
-                    <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
-                  </xsl:variable>
-                  <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
+            <tr>
+              <th>
+                <xsl:variable name="category">
+                  <ml:category name="{ml:category-for-doc(@uri)}"/>
+                </xsl:variable>
+                <xsl:apply-templates mode="category-image" select="$category/*"/>
+              </th>
+              <td>
+                <h4>
+                  <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
+                    <xsl:variable name="page-specific-title">
+                      <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+                    </xsl:variable>
+                    <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
+                  </a>
+                </h4>
+                <div class="text">
+                  <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
                 </div>
-              </a>
-              <div class="snippets">
-                <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
-              </div>
-            </div>
+              </td>
+            </tr>
           </xsl:template>
+
+                  <xsl:template mode="category-image" match="*">
+                    <xsl:variable name="img-src">
+                      <xsl:text>/images/</xsl:text>
+                      <xsl:apply-templates mode="result-img-src" select="."/>
+                      <xsl:text>.png</xsl:text>
+                    </xsl:variable>
+                    <xsl:variable name="img-alt">
+                      <xsl:apply-templates mode="facet-value-display" select="."/>
+                    </xsl:variable>
+                    <xsl:variable name="img-width">
+                      <xsl:apply-templates mode="result-img-width" select="."/>
+                    </xsl:variable>
+                    <xsl:variable name="img-height">
+                      <xsl:apply-templates mode="result-img-height" select="."/>
+                    </xsl:variable>
+                    <img src   ="{$img-src}"
+                         alt   ="{$img-alt}"
+                         width ="{$img-width}"
+                         height="{$img-height}"/>
+                  </xsl:template>
 
                   <!-- Titles for flat HTML files (API docs usually) -->
                   <xsl:template mode="page-specific-title" match="*:html | *:HTML">
@@ -256,10 +288,8 @@
 
 
                   <xsl:template mode="search-snippet" match="search:match">
-                    <span class="snippet">
-                      <xsl:apply-templates mode="#current"/>
-                    </span>
-                    <xsl:if test="position() ne last()">...</xsl:if>
+                    <xsl:apply-templates mode="#current"/>
+                    <xsl:if test="position() ne last()">…</xsl:if>
                   </xsl:template>
 
                   <xsl:template mode="search-snippet" match="search:highlight">
@@ -271,33 +301,37 @@
 
                   <xsl:template mode="prev-and-next" match="search:response">
                     <xsl:variable name="search-url" select="ml:external-uri(.)"/>
-                    <xsl:if test="@total gt (@start + @page-length - 1)">
-                      <div class="nextPage">
-                        <a href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number + 1}">Next</a>
+                    <form class="pagination" action="/search" method="get">
+                      <div>
+                        <xsl:if test="$page-number gt 1">
+                          <a class="prev" href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number - 1}">«</a>
+                        </xsl:if>
+                        <label>
+                          <xsl:text>Page </xsl:text>
+                          <input name="p" type="text" value="{$page-number}" size="4"/>
+                          <input name="q" type="hidden" value="{$q}"/>
+                          <xsl:text> of </xsl:text>
+                          <xsl:value-of select="ceiling(@total div @page-length)"/>
+                        </label>
+                        <xsl:if test="@total gt (@start + @page-length - 1)">
+                          <a class="next" href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number + 1}">»</a>
+                        </xsl:if>
                       </div>
-                    </xsl:if>
-                    <xsl:if test="$page-number gt 1">
-                      <div class="prevPage">
-                        <a href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number - 1}">Prev</a>
-                      </div>
-                    </xsl:if>
-                    <p/>
+                    </form>
                   </xsl:template>
 
   <xsl:template mode="facet" match="search:facet">
-    <div class="facet">
-      <div class="facet_name">
-        <xsl:apply-templates mode="facet-name" select="@name"/>
-      </div>
-      <ul>
-        <xsl:apply-templates mode="facet-value" select="parent::search:response | search:facet-value">
-          <xsl:sort select="@count | @total" order="descending" data-type="number"/>
-        </xsl:apply-templates>
-      </ul>
-    </div>
+    <h2>
+      <xsl:apply-templates mode="facet-name" select="@name"/>
+    </h2>
+    <ul class="categories">
+      <xsl:apply-templates mode="facet-value" select="parent::search:response | search:facet-value">
+        <xsl:sort select="@count | @total" order="descending" data-type="number"/>
+      </xsl:apply-templates>
+    </ul>
   </xsl:template>
 
-          <xsl:template mode="facet-name" match="@name[. eq 'cat']">Narrow by Category:</xsl:template>
+          <xsl:template mode="facet-name" match="@name[. eq 'cat']">Categories</xsl:template>
 
                                                                        <!-- Using <search:response> to represent "all categories" -->
           <xsl:template mode="facet-value" match="search:facet-value | search:response">
@@ -305,15 +339,12 @@
             <xsl:variable name="current-constraints" select="$search-response/search:query//@qtextconst/string(.)"/>
             <xsl:variable name="selected" select="$this-constraint  = $current-constraints
                                            or not($this-constraint or $current-constraints)"/>
-            <xsl:variable name="img-file" select="if ($selected) then 'checkmark.gif'
-                                                                 else 'checkblank.gif'"/>
 
             <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
             <xsl:variable name="new-q" select="if (not($this-constraint)) then $clean-q
                                           else if ($clean-q) then concat('(', $clean-q, ')', ' AND ', $this-constraint)
                                           else $this-constraint"/>
-            <li class="facet_value">
-              <img src="/images/{$img-file}"/>
+            <li>
               <a href="?q={encode-for-uri($new-q)}">
                 <!-- this looks like an XSLT BUG, since I had to add string() to get any output
                 <xsl:value-of select="."/>
@@ -321,23 +352,65 @@
                 <!--
                 <xsl:value-of select="string(.)"/>
                 -->
-                <xsl:value-of select="@count | @total"/>
+                <xsl:variable name="category">
+                  <ml:category name="{(@name,'all')[1]}"/>
+                </xsl:variable>
+                <xsl:apply-templates mode="category-image" select="$category/*"/>
                 <xsl:text> </xsl:text>
                 <xsl:apply-templates mode="facet-value-display" select="."/>
+                <xsl:apply-templates mode="category-plural" select="."/>
+                <xsl:text> [</xsl:text>
+                <xsl:value-of select="@count | @total"/>
+                <xsl:text>]</xsl:text>
               </a>
             </li>
           </xsl:template>
 
-                  <xsl:template mode="facet-value-display" match="search:response       ">results in all categories</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog posts</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source projects</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Events</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function pages</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guides</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News items</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorials</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadocs</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net docs</xsl:template>
+                  <!-- "All categories" is already plural -->
+                  <xsl:template mode="category-plural" match="search:response"/>
+                  <xsl:template mode="category-plural" match="*">s</xsl:template>
+
+                  <xsl:template mode="facet-value-display" match="search:response       ">All categories</xsl:template>
+
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog post</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source project</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function page</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guide</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News item</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadoc</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous pages</xsl:template>
+
+                  <!-- Search result icon file names -->
+                  <xsl:template mode="result-img-src" match="*[@name eq 'all']     ">i_mag_logo_small</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'blog']    ">i_rss_small</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'code']    ">i_opensource</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'event']   ">i_calendar</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'function']">i_function</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'guide']   ">i_documentation</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'tutorial']">i_monitor</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'xcc']     ">i_java</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'xccn']    ">i_dotnet</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'other']   ">i_folder</xsl:template>
+
+                  <!-- All icons except the user guide icon are 30 pixels wide -->
+                  <xsl:template mode="result-img-width" match="*[@name eq 'guide']">29</xsl:template>
+                  <xsl:template mode="result-img-width" match="*"                  >30</xsl:template>
+
+                  <!-- various image heights -->
+                  <xsl:template mode="result-img-height" match="*[@name eq 'all']     ">23</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'blog']    ">23</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'code']    ">24</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'event']   ">24</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'function']">27</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'guide']   ">25</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'tutorial']">21</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'xcc']     "><!--31-->26</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'xccn']    ">24</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'other']   ">19</xsl:template>
 
 </xsl:stylesheet>
