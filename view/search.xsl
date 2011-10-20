@@ -204,9 +204,11 @@
               </em>
               <xsl:text> of </xsl:text>
               <xsl:value-of select="@total"/>
+              <!-- disabled per design
               <xsl:text> for "</xsl:text>
               <xsl:value-of select="search:qtext"/>
               <xsl:text>"</xsl:text>
+              -->
             </h3>
             <xsl:apply-templates mode="prev-and-next" select="."/>
             <table>
