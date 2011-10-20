@@ -305,6 +305,7 @@
                       <div>
                         <xsl:if test="$page-number gt 1">
                           <a class="prev" href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number - 1}">«</a>
+                          <xsl:text> </xsl:text>
                         </xsl:if>
                         <label>
                           <xsl:text>Page </xsl:text>
@@ -314,6 +315,7 @@
                           <xsl:value-of select="ceiling(@total div @page-length)"/>
                         </label>
                         <xsl:if test="@total gt (@start + @page-length - 1)">
+                          <xsl:text> </xsl:text>
                           <a class="next" href="{$search-url}?q={encode-for-uri($q)}&amp;p={$page-number + 1}">»</a>
                         </xsl:if>
                       </div>
