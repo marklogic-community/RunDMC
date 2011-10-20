@@ -383,7 +383,7 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadoc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net doc</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous pages</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous page</xsl:template>
 
                   <!-- Search result icon file names -->
                   <xsl:template mode="result-img-src" match="*[@name eq 'all']     ">i_mag_logo_small</xsl:template>
