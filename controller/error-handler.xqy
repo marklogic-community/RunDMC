@@ -54,14 +54,14 @@ let $_ := if ($sendError and $address)
     then
         util:sendEmail(
 
-            concat("RunDMC ", $staging, "Error on ", $hostname),
+            "RunDMC Alert",
             $address,
             false(),
             "RunDMC Admin",
             $address,
             "RunDMC Admin",
             $address,
-            concat("RunDMC Error: ", $error, " ", $errorMessage),
+            concat("RunDMC Error: ", $error, " ", $errorMessage, " on ", $hostname),
             <em:content>{local:renderErrors()}</em:content>
         )
     else
