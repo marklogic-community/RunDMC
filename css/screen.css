@@ -1116,3 +1116,33 @@ EDB - from previous styling
 }
 #bottom2 > h2 + section .more {left: 0;}
 /* end home page styles */
+
+.pagination_nav {
+  overflow: hidden;
+  margin-bottom: 3em;
+  /* border-top: 1px solid #BCBCBC; */
+  /* border-bottom: 1px solid #BCBCBC; */
+}
+
+.pagination_nav span {
+  display: block;
+  padding: .5em 0 0 0;
+  color: #999;
+}
+
+.pagination_prev,
+.pagination_next {
+  width: 40%;
+  float: left;
+  margin-bottom: 0;
+}
+
+.pagination_next {
+  text-align: right;
+  float: right;
+}
+
+.pagination_prev a,
+.pagination_next a {
+  display: block;
+}

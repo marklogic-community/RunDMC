@@ -105,6 +105,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/learn/xqdt-setup"
     else if ($path = '/events/markups-2010-09-11') then
         "/events/markups-2010-08-11"
+    else if ($path = ("/try", "/try/ninja")) then
+        "/try/ninja/index"
     else
         $path
 };

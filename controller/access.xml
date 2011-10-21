@@ -13,4 +13,5 @@
   <prefix>/robots.txt</prefix>
   <prefix>/controller/tracker.xqy</prefix>
   <prefix>/try</prefix>
+  <prefix>/test</prefix>
 </paths>
