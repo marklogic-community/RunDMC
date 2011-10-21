@@ -50,7 +50,7 @@ table {
 	margin: 20px 0 1em 0;
 }
 thead th {
-	background: #ECECEC url(../img/bg_table_features_top.png) center top no-repeat;
+	background: #ECECEC url(/images/bg_table_features_top.png) center top no-repeat;
 	white-space: nowrap;
 	vertical-align: bottom;
 	padding: 24px 5px 15px;
@@ -70,17 +70,17 @@ tbody th,  tbody td {padding: 10px 5px;}
 tbody tr:first-child th:first-child {
 	padding-left: 15px;
 	width: 110px;
-	background: url(../img/bg_table_features_bottom.png) top left no-repeat;
+	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
 tbody tr:first-child th:first-child,
 tbody td:last-child,
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
 tbody td.last,
 tbody.last tr.last th,
 tbody.last tr.last td
-	{background: url(../img/bg_table_features_bottom.png) no-repeat;}
+	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
 	{background-position: bottom center;}
