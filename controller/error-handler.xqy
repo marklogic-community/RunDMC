@@ -44,7 +44,7 @@ let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging "
 
 let $address := 
     if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
-        "rundmc-admin@marklogic.com"
+        "dmc-admin@marklogic.com"
     else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
         "eric.bloch@marklogic.com"
     else
@@ -60,14 +60,14 @@ let $_ := if ($sendError and $address)
     then
         util:sendEmail(
 
-            concat("RunDMC ", $staging, "Error"),
+            "RunDMC Alert",
             $address,
             false(),
             "RunDMC Admin",
             $address,
             "RunDMC Admin",
             $address,
-            concat("RunDMC Error: ", $error, " ", $errorMessage),
+            concat("RunDMC Error: ", $error, " ", $errorMessage, " on ", $hostname),
             <em:content>
         Status = { $error }
         URI = { $uri }
