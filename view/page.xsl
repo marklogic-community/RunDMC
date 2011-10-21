@@ -21,8 +21,8 @@
   <xsl:include href="search.xsl"/>
   <xsl:include href="xquery-imports.xsl"/>
 
-  <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+  <!-- See http://www.w3.org/TR/html5/syntax.html#the-doctype and http://www.w3.org/html/wg/tracker/issues/54 -->
+  <xsl:output doctype-system="about:legacy-compat"
               omit-xml-declaration="yes"/>
 
   <xsl:param name="params" as="element()*"/>
