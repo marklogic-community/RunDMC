@@ -4,7 +4,7 @@ if(typeof jQuery != 'undefined') {
 		// cache selectors
 		var main = $('#main');
 		if(!$.support.opacity) {
-			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child','#content').addClass('last');
+			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child, .mailinglist li:last-child','#content').addClass('last');
 		}
 		// search field default value
 		function hasPlaceholderSupport() {
@@ -132,9 +132,20 @@ if(typeof jQuery != 'undefined') {
 		}
 		//end blog heading change
 		// home page close button(s)
-		$('.removable').append($('<a>', {'class': 'close'})).children('.close').click(function() {
-			$(this).parent().slideUp(function() {
-				$(this).remove();
+		$('.removable').each(function() {
+			var sectionHeight = $(this).height();
+			var padding = $(this).css('padding-bottom');
+			$(this).append($('<a>', {'class': 'close'})).children('.close').click(function() {
+				if($(this).parent().hasClass('closed')) {
+					$(this).parent().animate({height: sectionHeight,'padding-bottom':padding},500, function() {
+						$(this).removeClass('closed');
+					});
+				}
+				else {
+					$(this).parent().animate({height: 30,'padding-bottom': 5},500, function() {
+						$(this).addClass('closed');
+					});
+				}
 			});
 		});
 		

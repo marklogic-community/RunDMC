@@ -19,6 +19,10 @@ caption {
 	font-size: 16px;
 	padding-bottom: 10px;
 }
+code {
+	font: 12px "Courier New", Courier, monospace;
+	color: #333;
+}
 fieldset, img {
 	border: none;
 	margin: 0;
@@ -42,6 +46,7 @@ legend {
 	display: none;
 }
 p {margin: 1em 0;}
+pre {overflow: auto;}
 table {
 	border-collapse: collapse;
 	background: white;
@@ -293,8 +298,14 @@ nav ul {margin: 0;}
 }
 #main > :first-child {margin-top: 0;}
 #main section > h3:first-child {margin-top: 34px;}
-#main ul {padding-left: 20px;}
-#main ul li:before {content: "-\0020";}
+#main ul {
+	padding-left: 20px;
+	list-style: disc;
+}
+#main ul ul {
+	list-style-type: circle;
+	margin: .5em 0;
+}
 #sub {/*
 	float: left;*/
 	width: 250px;
@@ -547,7 +558,10 @@ footer nav .current a {color: white;}
 }
 
 .features tbody:last-child tr:last-child td {text-align: center;}
-.doclist {padding-left: 0 !important;}
+.doclist {
+	padding-left: 0 !important;
+	list-style: none !important;
+}
 .doclist li:before {content: none !important;}
 .doclist li > a {font-size: 16px;}
 .doclist li > img {vertical-align: bottom;}
@@ -600,6 +614,10 @@ footer nav .current a {color: white;}
 	background: url(../img/i_speechbubble.png) no-repeat;
 }
 #comments .action li span {font-size: 24px;}
+#documentation ul {
+	padding: 0;
+	list-style: none;
+}
 #documentation li {
 	margin: 15px 0;
 	position: relative;
@@ -684,7 +702,14 @@ footer nav .current a {color: white;}
 }
 .widget div div {line-height: 114%;}
 
-#main .info > li {margin-bottom: 10px;}
+#main ul.info {
+	list-style: none;
+	padding: 0;
+}
+#main .info > li {
+	margin-bottom: 10px;
+	padding-left: 0;
+}
 #main .info > li a {
 	font-size: 13px;
 	font-weight: bold;
@@ -725,16 +750,18 @@ section#documentation:before {margin-bottom: 30px;}
 #main .download table {
 	line-height: 23px;
 	font-size: 13px;
+	margin: 0;
+	background: none;
 }
+#main .download table tbody {border: none;}
 #main .download th, #main .download td {
-	padding-bottom: 5px;
-	padding-right: 5px;
+	padding: 0 5px 5px 0;
+	background: none;
 }
 #main .download th {width: 245px;}
 #main .download th + td {width: 145px;}
 #main .download table a {
 	font-weight: normal;
-	color: #666;
 	padding: 5px 0 5px 30px;
 	background: url(../img/i_arrow_down.png) left center no-repeat;
 }
@@ -766,9 +793,18 @@ section#documentation:before {margin-bottom: 30px;}
 }
 .post .body table {
 	width: 100%;
-	margin-bottom: 20px;
+	margin: 0;
+	font-size: 14px;
 }
-.post .body th, .post .body td {padding-left: 10px;}
+.post .body table + * {
+	margin-top: 20px;
+	display: block;
+}
+.post .body table tbody {border: none;}
+.post .body th, .post .body td {
+	padding: 0 0 0 10px;
+	background: none !important;
+}
 .post .body table :first-child {padding-left: 0;}
 .post + .pagination, #main_container > .pagination {
 	color: #999;
@@ -816,14 +852,16 @@ section#documentation:before {margin-bottom: 30px;}
 /* home page styles */
 .removable .close {
 	width: 19px;
-	height: 18px;
+	height: 19px;
 	position: absolute;
 	right: 60px;
 	top: 30px;
-	background: url(../img/b_close.png) no-repeat;
+	background: url(../img/s_open_close.png) no-repeat;
 	cursor: pointer;
 }
 .removable:last-child {margin-bottom: -20px;}
+.removable.closed {overflow: hidden;}
+.removable.closed .close {background-position: 0 -20px;}
 #intro, #learn, #bottom1, #bottom2 {
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -860,7 +898,7 @@ section#documentation:before {margin-bottom: 30px;}
 	text-align: center;
 	line-height: 21px;
 }
-#intro ul li a {
+#intro ul li a, div.intro p + a {
 	display: block;
 	color: white;
 	background: #18869A;
@@ -1176,3 +1214,158 @@ section#documentation:before {margin-bottom: 30px;}
 	display: block;
 	margin-bottom: 8px;
 }
+div.intro {
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+div.intro p {
+	width: 480px;
+	float: left;
+	margin: 0;
+}
+div.intro p + a {float: right;}
+.discussion {
+	clear: both;
+	position: relative;
+	font-size: 13px;
+	overflow: auto;
+	border-top: 1px solid #E3E3E3;
+	margin: 20px 0;
+	padding: 20px 0 5px 95px;
+	min-height: 150px;
+}
+.discussion:before {
+	content: "";
+	display: block;
+	border-top: 1px solid white;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+.discussion h1 {
+	font-weight: bold;
+	font-size: 14px;
+}
+.discussion .post_info {
+	position: absolute;
+	left: 0;
+	top: 20px;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+.discussion .post_info + p {margin-top: 0;}
+.post_info .votes {
+	width: 57px;
+	padding: 7px;
+	background: #EEE;
+	position: relative;
+	font-size: 13px;
+	color: #808185;
+	line-height: 100%;
+	margin-bottom: 10px;
+}
+.post_info .votes:first-line {
+	font-size: 29px;
+	font-weight: bold;
+	line-height: 100%;
+}
+.post_info .votes:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+	border-color: transparent #EEE;
+	border-width: 6px 0 6px 6px;
+	right: -6px;
+	top: 10px;
+}
+.post_info .votes div {
+	background: #75845C;
+	color: white;
+	margin-top: 5px;
+	padding: 3px 0;
+}
+.post_info .votes div:first-line {
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 100%;
+}
+.discussion .post_meta {
+	text-align: right;
+	display: block;
+	font-size: 10px;
+	margin-top: 20px;
+}
+.discussion .tags {float: left;}
+.discussion .tags span {display: none;}
+.discussion .tags a {
+	background-color: #E0EAF1;
+	border-bottom: 1px solid #3E6D8E;
+	border-right: 1px solid #7F9FB6;
+	color: #3E6D8E;
+	font-size: 90%;
+	margin: 2px 2px 2px 0;
+	padding: 2px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.discussion .tags a:hover {
+  background-color: #3E6D8E;
+  border-color: #37607D;
+  color: #E0EAF1;
+  text-decoration: none;
+}
+.post_meta .ranking {color: #333;}
+.mailinglist {
+	font-size: 11px;
+	line-height: 120%;
+	background: white;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	overflow: hidden;
+	margin: 20px 0;
+}
+.mailinglist header {
+	background: #ECECEC;
+	border: 1px solid white;
+	border-radius: 3px 3px 0 0;
+	padding: 10px;
+	text-align: right;
+	position: relative;
+}
+.mailinglist header:after {
+	position: absolute;
+	bottom: 0;
+	left: -1px;
+	content: "";
+	width: 100.4%;
+	border-bottom: 1px solid #CCC;
+}
+.mailinglist header h1 {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 25px;
+	float: left;
+}
+.mailinglist header h1 img {
+	vertical-align: bottom;
+	margin-right: 13px;
+}
+.mailinglist header .messages {
+	font-weight: bold;
+	font-size: 30px;
+	line-height: 100%;
+}
+.mailinglist ul {
+	padding: 0 !important;
+	list-style: none !important;
+	margin: 15px;
+	float: left;
+	width: 45%;
+}
+.mailinglist header + ul {border-right: 1px solid #ECECEC;}
+.mailinglist li {margin: 0 0 15px;}
+.mailinglist li:last-child {margin-bottom: 0;}
+.mailinglist li.last {margin-bottom: 0;}
+.mailinglist a {font-weight: bold;}

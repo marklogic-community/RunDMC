@@ -10,9 +10,12 @@ table.features,
 .post .action,
 #intro,
 #intro ul li a,
+div.intro p + a,
 #learn,
 #bottom1,
-#bottom2
+#bottom2,
+.mailinglist,
+.mailinglist header
 	{behavior: url(js/PIE.htc);}
 #breadcrumb + section > h2, #content, #comments {box-shadow: 0 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
