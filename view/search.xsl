@@ -348,6 +348,9 @@
                                           else if ($clean-q) then concat('(', $clean-q, ')', ' AND ', $this-constraint)
                                           else $this-constraint"/>
             <li>
+              <xsl:if test="$selected">
+                <xsl:attribute name="class" select="'current'"/>
+              </xsl:if>
               <a href="?q={encode-for-uri($new-q)}">
                 <!-- this looks like an XSLT BUG, since I had to add string() to get any output
                 <xsl:value-of select="."/>
