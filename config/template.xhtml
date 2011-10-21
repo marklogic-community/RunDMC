@@ -15,7 +15,7 @@
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
 		<script type="text/javascript" src="/js/functions.js"></script>
 	</head>
-	<body ml:class="">
+	<body ml:class="" ml:id="">
 		<div id="container">
 			<div id="header">
 				<header>
@@ -61,10 +61,13 @@
                   <ml:page-content/>
                 </div>
                 <!-- end main -->
-                <section id="sub">
-                  <ml:sub-nav/>
-                  <ml:widgets/>
-                </section>
+                <div id="sub">
+                  <section>
+                    <ml:sub-nav/>
+                    <ml:widgets/>
+                  </section>
+                </div>
+                <!-- end sub -->
               </div>
             </section>
           </ml:otherwise>
