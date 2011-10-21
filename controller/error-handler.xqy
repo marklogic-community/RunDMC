@@ -50,6 +50,12 @@ let $address :=
     else
         ()
 
+let $hostport   := concat($hostname, "")  (: fixme someday :)
+let $uri        := concat(xdmp:get-request-protocol(), "://", $hostport, xdmp:get-request-url())
+let $referer    := xdmp:get-request-header("Referer", "")[1]
+let $location   := xdmp:get-request-header("Location", "")[1]
+let $userAgent  := xdmp:get-request-header("User-agent", "")[1]
+
 let $_ := if ($sendError and $address)
     then
         util:sendEmail(
@@ -62,7 +68,15 @@ let $_ := if ($sendError and $address)
             "RunDMC Admin",
             $address,
             concat("RunDMC Error: ", $error, " ", $errorMessage),
-            <em:content>{local:renderErrors()}</em:content>
+            <em:content>
+        Status = { $error }
+        URI = { $uri }
+        User Agent = { $userAgent }
+        Referrer = { $referer }
+        Location = { $location }
+        Details = 
+                   { local:renderErrors() }
+        </em:content>
         )
     else
         ()
