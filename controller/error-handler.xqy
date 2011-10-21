@@ -54,7 +54,7 @@ let $_ := if ($sendError and $address)
     then
         util:sendEmail(
 
-            concat("RunDMC ", $staging, "Error"),
+            concat("RunDMC ", $staging, "Error on ", $hostname),
             $address,
             false(),
             "RunDMC Admin",
