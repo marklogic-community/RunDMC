@@ -143,7 +143,7 @@
 
   <xsl:template match="sub-nav[$content/Article]">
     <xsl:if test="$content/Article//xhtml:h3">
-        <h2>Table of Contents</h2>
+        <h2>Contents</h2>
         <ul>
             <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
         </ul>
@@ -152,9 +152,11 @@
 
           <xsl:template mode="article-toc" match="xhtml:h3">
             <li>
+              <span>
               <a href="#{generate-id(.)}">
                 <xsl:value-of select="."/>
               </a>
+              </span>
             </li>
           </xsl:template>
 
@@ -282,6 +284,45 @@
           <xsl:template mode="body-class-extra" match="@css-class">
             <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
+          </xsl:template>
+
+  <xsl:template match="page-nav">
+        <div class="pagination_nav">
+            <xsl:if test="$content/page/@page/number() gt 1">
+            <p class="pagination_prev"><a 
+                href="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}" 
+                class="btn btn_blue">&#171; Previous</a><span>
+                <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
+            </xsl:if>
+            <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
+            <p class="pagination_next"><a 
+                href="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}" 
+                class="btn btn_blue">Next &#187;</a><span> 
+                <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
+            </xsl:if>
+        </div>
+  </xsl:template>
+
+  <xsl:template match="sub-nav[$content/page/@multi]">
+      <section class="subnav">
+      <h2>Contents</h2>
+      <ul>
+          <xsl:apply-templates mode="multi-page-toc" select="doc($content/page/@nav)/nav/page"/>
+      </ul>
+      </section>
+  </xsl:template>
+
+          <xsl:template mode="multi-page-toc" match="page">
+            <li>
+              <a href="{@href}" class="stip">
+                <span>
+                    <xsl:if test="position() = $content/ml:page/@page">
+                        <xsl:attribute name="class">current-page</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="string()"/>
+                </span>
+              </a>
+            </li>
           </xsl:template>
 
 </xsl:stylesheet>

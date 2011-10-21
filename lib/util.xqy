@@ -829,7 +829,7 @@ define function util:sendEmail(
 					if ($onBehalfOf) then
 						<rf:sender>
 							<em:Address>
-								<em:adrs>do-not-reply@void.markmail.org</em:adrs>
+								<em:adrs>do-not-reply@void.developer.marklogic.com</em:adrs>
 							</em:Address>
 						</rf:sender>
 					else ()
@@ -843,8 +843,8 @@ define function util:sendEmail(
 						</em:Address>
 					else
 						<em:Address>
-							<em:name>MarkMail.org Registration Confirmation</em:name>
-							<em:adrs>do-not-reply@void.markmail.org</em:adrs>
+							<em:name>RunDMC</em:name>
+							<em:adrs>do-not-reply@void.developer.marklogic.com</em:adrs>
 						</em:Address>
 				}</rf:from>
 				{
@@ -880,7 +880,7 @@ define function util:sendEmail(
 		,
 		true()
 	} catch ($e) {
-		xdmp:log(concat("MM-FAILEDEMAIL:  Unable to send confirming e-mail for ",
+		xdmp:log(concat("FAILEDEMAIL:  Unable to send confirming e-mail for ",
 			if ($toName) then
 				concat("user ", $toName)
 			else

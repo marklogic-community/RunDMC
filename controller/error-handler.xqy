@@ -4,6 +4,8 @@ import module namespace util = "http://markmail.org/util" at "/lib/util.xqy";
 import module namespace prop = "http://xqdev.com/prop" at "/lib/properties.xqy";
 import module namespace qp   = "http://www.marklogic.com/ps/lib/queryparams" at "modules/queryparams.xqy";
 
+declare namespace em="URN:ietf:params:email-xml:";
+
 declare variable $error:errors as node()* external;
 
 declare function local:renderErrors()
@@ -33,6 +35,51 @@ let $_ := if (not($ok))
         ()
 
 let $params  := qp:load-params()
+
+let $sendError := ($error ge 500)
+
+let $hostname := xdmp:hostname()
+
+let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
+
+let $address := 
+    if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+        "dmc-admin@marklogic.com"
+    else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
+        "eric.bloch@marklogic.com"
+    else
+        ()
+
+let $hostport   := concat($hostname, "")  (: fixme someday :)
+let $uri        := concat(xdmp:get-request-protocol(), "://", $hostport, xdmp:get-request-url())
+let $referer    := xdmp:get-request-header("Referer", "")[1]
+let $location   := xdmp:get-request-header("Location", "")[1]
+let $userAgent  := xdmp:get-request-header("User-agent", "")[1]
+
+let $_ := if ($sendError and $address)
+    then
+        util:sendEmail(
+
+            "RunDMC Alert",
+            $address,
+            false(),
+            "RunDMC Admin",
+            $address,
+            "RunDMC Admin",
+            $address,
+            concat("RunDMC Error: ", $error, " ", $errorMessage, " on ", $hostname),
+            <em:content>
+        Status = { $error }
+        URI = { $uri }
+        User Agent = { $userAgent }
+        Referrer = { $referer }
+        Location = { $location }
+        Details = 
+                   { local:renderErrors() }
+        </em:content>
+        )
+    else
+        ()
 
 return
   try {
