@@ -17,7 +17,11 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts">
 
-  <xsl:variable name="page-number" select="if ($params[@name eq 'p']) then $params[@name eq 'p'] else 1" as="xs:integer"/>
+  <xsl:variable name="page-number" select="if ($params[@name eq 'p'] castable as xs:integer)
+                                          then $params[@name eq 'p']
+                                          else 1"
+                as="xs:integer"/>
+
   <xsl:variable name="current-version" select="4.2"/>
 
   <xsl:template match="tabbed-features">
