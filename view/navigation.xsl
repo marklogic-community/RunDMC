@@ -306,7 +306,7 @@
   <xsl:template match="sub-nav[$content/page/@multi]">
       <section class="subnav">
       <h2>Contents</h2>
-      <ul>
+      <ul class="categories">
           <xsl:apply-templates mode="multi-page-toc" select="doc($content/page/@nav)/nav/page"/>
       </ul>
       </section>
@@ -314,13 +314,11 @@
 
           <xsl:template mode="multi-page-toc" match="page">
             <li>
+              <xsl:if test="position() = $content/ml:page/@page/number()">
+                 <xsl:attribute name="class">current</xsl:attribute>
+              </xsl:if>
               <a href="{@href}" class="stip">
-                <span>
-                    <xsl:if test="position() = $content/ml:page/@page">
-                        <xsl:attribute name="class">current-page</xsl:attribute>
-                    </xsl:if>
-                    <xsl:value-of select="string()"/>
-                </span>
+                 <xsl:value-of select="string()"/>
               </a>
             </li>
           </xsl:template>
