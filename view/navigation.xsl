@@ -306,7 +306,7 @@
   <xsl:template match="sub-nav[$content/page/@multi]">
       <section class="subnav">
       <h2>Contents</h2>
-      <ul class="categories">
+      <ul class="categories multi-page-toc">
           <xsl:apply-templates mode="multi-page-toc" select="doc($content/page/@nav)/nav/page"/>
       </ul>
       </section>

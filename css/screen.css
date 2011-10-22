@@ -1413,3 +1413,17 @@ div.intro p + a {float: right;}
 .mailinglist li:last-child {margin-bottom: 0;}
 .mailinglist li.last {margin-bottom: 0;}
 .mailinglist a {font-weight: bold;}
+
+ul.multi-page-toc {
+    list-style: square inside;
+}
+
+#sub .multi-page-toc li {
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+}
+
+/* Workaround for our css stomping on CodeMirror */
+.CodeMirror-scroll pre {
+    overflow: hidden;
+}
