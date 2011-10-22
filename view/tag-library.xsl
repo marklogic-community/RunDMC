@@ -749,15 +749,4 @@
     <span class="server-version"><xsl:value-of select="xdmp:version()"/></span>
   </xsl:template>
 
-  <xsl:template match="try-page-nav">
-      <div class="pagination">
-          <p class="pagination_prev"><a href="" class="btn btn_blue">&#171; Previous</a><span></span></p>
-          <p class="pagination_next"><a href="" class="btn btn_blue">Next &#187;</a><span></span></p>
-      </div>
-  </xsl:template>
-
-  <xsl:template match="try-page-header">
-      <xsl:value-of select="."/>
-  </xsl:template>
-
 </xsl:stylesheet>
