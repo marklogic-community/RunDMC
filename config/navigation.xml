@@ -140,13 +140,16 @@
     </group>
   </page>
   <page display="Discuss" href="/discuss">
-    <group display="">
-      <group display="Subscribe">
-        <page display="General Development" href="/mailman/listinfo/general"/>
+    <group display="Discuss">
+      <group display="Q&amp;A from Stack Overflow">
+        <page display="Newest" href="/qa"/>
         <!--
-        <page display="Announcements" href="/mailman/listinfo/announce"/>
+        <page display="Featured" href="/qa/featured"/>
         -->
+      </group>
+      <group display="Mailing Lists">
         <page display="Commits" href="/mailman/listinfo/commits"/>
+        <page display="General Development" href="/mailman/listinfo/general"/>
       </group>
     </group>
   </page>
