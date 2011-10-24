@@ -1030,7 +1030,7 @@ EDB - from previous styling
 	text-indent: -999em;
 	height: 0;
 }
-#bottom1 .twitter .user {font-weight: bold;}
+#bottom1 .tweet-user {font-weight: bold;}
 #bottom1 .votes {
 	position: absolute;
 	left: 0;
@@ -1427,3 +1427,6 @@ ul.multi-page-toc {
 .CodeMirror-scroll pre {
     overflow: hidden;
 }
+
+/* Twitstream */
+.tweet-source {display:none;}
