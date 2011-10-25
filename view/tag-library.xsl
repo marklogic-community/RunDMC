@@ -261,67 +261,54 @@
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <xsl:if test="count($threads/thread) gt 0">
-    <div class="single">
-      <h2>Recent Messages</h2>
-      <a class="more" href="{$threads/@all-threads-href}">All messages&#160;></a>
-      <table class="table3">
-        <thead>
-          <tr>
-            <th scope="col">
-              <span>Subject</span>
-              <br/>
-              List
-            </th>
-            <th scope="col"><span>Date</span>
-              <br/>
-              Author
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <xsl:apply-templates mode="display-thread" select="$threads/thread"/>
-        </tbody>
-      </table>
-      <!--
-      <div class="action">
-        <a href="{$threads/@start-thread-href}">Start a new thread</a>
-      </div>
-        -->
-    </div>
+      <section class="mailinglist">
+        <header>
+          <h1>
+            <img src="/images/logo_markmail.png" alt="MarkMail" width="135" height="31"/>
+            <xsl:text> </xsl:text>
+            <!-- Only display a title for the first mailing list in the list -->
+            <xsl:apply-templates mode="mailing-list-title" select="list[1]"/>
+          </h1>
+          <strong class="messages">
+            <xsl:value-of select="$threads/@estimated-count"/>
+          </strong>
+        </header>
+        <ul>
+          <xsl:apply-templates mode="display-thread" select="for $pos in 1 to 5 return $threads/thread[$pos]"/>
+        </ul>
+        <ul>
+          <xsl:apply-templates mode="display-thread" select="for $pos in 6 to 9 return $threads/thread[$pos]"/>
+          <li class="more">
+            <a href="{$threads/@all-threads-href}">All messages&#160;»</a>
+          </li>
+        </ul>
+      </section>
     </xsl:if>
   </xsl:template>
 
+          <xsl:template mode="mailing-list-title" match="list[. eq 'com.marklogic.developer.general']">MarkLogic Dev General</xsl:template>
+          <xsl:template mode="mailing-list-title" match="list[. eq 'com.marklogic.developer.commits']">Commits</xsl:template>
+          <xsl:template mode="mailing-list-title" match="list[. eq 'com.marklogic.developer.usergroups']">User Group mailing lists</xsl:template>
+          <xsl:template mode="mailing-list-title" match="list">
+            <xsl:value-of select="."/>
+          </xsl:template>
+
+
           <xsl:template mode="display-thread" match="thread">            
-            <tr>
-              <xsl:if test="position() mod 2 eq 0">
-                <xsl:attribute name="class">alt</xsl:attribute>
-              </xsl:if>
-              <td>
-                <a class="thread stip" href="{@href}" title="{blurb}">
-                  <xsl:value-of select="@title"/>
+            <li>
+              <a href="{@href}" title="{blurb}">
+                <xsl:value-of select="@title"/>
+              </a>
+              <div class="author_date">
+                <a href="{author/@href}">
+                  <xsl:value-of select="author"/>
                 </a>
-                <br/>
-                <a href="{list/@href}">
-                  <xsl:value-of select="list"/>
-                </a>
-              </td>
-              <td>
+                <xsl:text>, </xsl:text>
                 <span class="date">
                   <xsl:value-of select="@date"/>
                 </span>
-                <a class="author" href="{author/@href}">
-                  <xsl:value-of select="author"/>
-                </a>
-              </td>
-              <!--
-              <td>
-                <xsl:value-of select="@replies"/>
-              </td>
-              <td>
-                <xsl:value-of select="@views"/>
-              </td>
-              -->
-            </tr>
+              </div>
+            </li>
           </xsl:template>
 
   <xsl:template match="stackoverflow-reflector">
