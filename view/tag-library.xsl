@@ -177,7 +177,7 @@
                   <xsl:template mode="product-download" match="download">
                     <tr>
                       <td>
-                        <a href="{@href}" class="confirm-download">
+                        <a href="{@href}" class="{@anchor-class}">
                           <xsl:apply-templates/>
                         </a>
                        <xsl:if test="@url-to-copy">
@@ -185,7 +185,7 @@
                         </xsl:if>
                       </td>
                       <td>
-                        <a href="{@href}" class="confirm-download">
+                        <a href="{@href}" class="{@anchor-class}">
                             <xsl:value-of select="@size"/>
                         </a>
                       </td>
