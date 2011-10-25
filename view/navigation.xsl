@@ -239,7 +239,9 @@
 
                           <xsl:template mode="sub-nav-current-att" match="*"/>
 
-                          <xsl:template mode="sub-nav-current-att" match="*[. intersect $page-in-navigation/ancestor-or-self::*]">
+                          <xsl:template mode="sub-nav-current-att" match="*[. intersect $page-in-navigation/ancestor-or-self::*]
+                                                                        | *[@href eq ancestor::page/@href
+                                                                                 and ancestor::page intersect $page-in-navigation]">
                             <xsl:attribute name="class">current</xsl:attribute>
                           </xsl:template>
 

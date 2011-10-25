@@ -139,7 +139,7 @@
       </group>
     </group>
   </page>
-  <page display="Discuss" href="/discuss">
+  <page display="Discuss" href="/qa">
     <group display="Discuss">
       <group display="Q&amp;A from Stack Overflow">
         <page display="Newest" href="/qa"/>
@@ -148,6 +148,7 @@
         -->
       </group>
       <group display="Mailing Lists">
+        <page display="Recent Messages" href="/discuss"/>
         <page display="Commits" href="http://developer.marklogic.com/mailman/listinfo/commits"/>
         <page display="General Development" href="http://developer.marklogic.com/mailman/listinfo/general"/>
       </group>
