@@ -2,21 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:ml="http://developer.marklogic.com/site/internal">
 	<head>
 		<title><ml:page-title/></title>
+
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
+
+        <link rel="SHORTCUT ICON" href="/images/v-1/favicon.ico"/>
+        <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
+
 		<link href="/css/screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
-    <link rel="stylesheet" href="http://try.marklogic.com:8005/css/tryml.css" type="text/css" media="screen, projection" /> 
-    <link type="text/css" href="/stackunderflow/stackoverflow.min.css" rel="stylesheet" />
+        <link type="text/css" href="/stackunderflow/stackoverflow.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="http://try.marklogic.com:8005/css/tryml.css" type="text/css" media="screen, projection" /> 
+
 		<script type="text/javascript" src="/js/modernizr.js"></script>
 		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
 		<script type="text/javascript" src="/js/twitStream.js"></script>
 		<script type="text/javascript" src="/js/functions.js"></script>
-    <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script>
+        <script type="text/javascript" src="/js/cornify.js"></script> <!-- Needed? XXX -->
+        <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script> <!-- Needed? XXX  -->
+        <script type="text/javascript">
+            var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
+            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', acct], ['_trackPageview'], ['_trackPageLoadTime']);
+            
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+         </script>
 	</head>
 	<body ml:class="" ml:id="">
 		<div id="container">

@@ -176,7 +176,7 @@
                           class="{('extraWideDownloadColumn',
                                         'wideDownloadColumn',
                                                           '')[$num-cols]}">
-                        <a href="{@href}" class="confirm-download">
+                        <a href="{@href}" class="{@anchor-class}">
                           <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
                         </a>
                        <xsl:if test="@url-to-copy">

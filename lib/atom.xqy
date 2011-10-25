@@ -26,13 +26,12 @@ let $feed := xdmp:get-request-field("feed", "")
 
 
 
-(: JEM: for now just creating two separate feed paths. "feed" or empty is the blog. "newsandevents" is news and events :) 
 return
 ('<?xml version="1.0" encoding="UTF-8"?>',
-if ($feed = "blog" or $feed = "")
-then
     let $posts :=
-        for $r in fn:doc()/ml:Post[@status="Published"]
+        for $r in (fn:doc()/ml:Post[@status="Published"], 
+                   fn:doc()/ml:Announcement[@status="Published"], 
+                   fn:doc()/ml:Event[@status="Published"])
         where not(starts-with(base-uri($r), "/preview"))
         order by xs:dateTime($r/ml:created/text()) descending
         return $r
@@ -58,6 +57,10 @@ then
                     return
                     if ( (fn:starts-with($uri, "/blog/")) and (fn:ends-with($uri, ".xml")) )
                     then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
+                    else if ( (fn:starts-with($uri, "/news/")) and (fn:ends-with($uri, ".xml")) )
+                    then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
+                    else if ( (fn:starts-with($uri, "/events/")) and (fn:ends-with($uri, ".xml")) )
+                    then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
                     else ()
                 }"/>
                 <title>{$p/ml:title/text()}</title>
@@ -70,60 +73,16 @@ then
                 </updated>
                 <published>{ string($p/ml:created/text()) }</published>
                 <content type="html">
-                    { xdmp:quote($p/ml:body, <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)}
+                    { 
+                    if ($p/ml:body) 
+                    then xdmp:quote($p/ml:body, <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)
+                    else if ($p/ml:description)
+                    then xdmp:quote($p/ml:description//text(), <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)
+                    else ()
+                    }
                 </content>
             </entry>
     	}
-    </feed>
-else if ($feed="newsandevents")
-then
-    let $newsevents :=
-        for $r in (fn:doc()/ml:Announcement, fn:doc()/ml:Event)
-        where not(starts-with(base-uri($r), "/preview"))
-           and $r/@status = "Published"
-        order by xs:dateTime($r/ml:created/text()) descending
-        return $r
-    return
-    <feed xmlns="http://www.w3.org/2005/Atom">
-        <title>MarkLogic Developer News and Events</title>
-        <subtitle></subtitle>
-        <link href="http://developer.marklogic.com/newsandevents/atom.xml" rel="self"/>
-        <updated>{ current-dateTime() }</updated>
-        <id></id>
-    
-        <generator uri="http://developer.marklogic.com/newsandevents/atom.xml" version="1.0">MarkLogic Developer Community</generator>
-        <icon>http://developer.marklogic.com/favicon.ico</icon>
-        <logo>http://developer.marklogic.com/media/marklogic-community-badge.png</logo>
-        {
-            for $ne in $newsevents [1 to $MAX_ENTRIES]
-            order by xs:date($ne/ml:date/text()) descending 
-            return
-            <entry>
-                <id></id>
-                <link href="{
-                    let $uri := fn:base-uri($ne)
-                    return
-                    if ( (fn:starts-with($uri, "/news/")) and (fn:ends-with($uri, ".xml")) )
-                    then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
-                    else if ( (fn:starts-with($uri, "/events/")) and (fn:ends-with($uri, ".xml")) )
-                    then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
-                    else ()
-                }"/>
-                <title>{$ne/ml:title/text()}</title>
-                <author><name>{(: no authors:)}</name></author>
-                <updated>{ string($ne/ml:date/text()) }</updated>
-                <published>{ string($ne/ml:date/text()) }</published>
-                <content type="html"> { 
-                    if ($ne/ml:body) 
-                    then xdmp:quote($ne/ml:body)
-                    else if ($ne/ml:description)
-                    then xdmp:quote($ne/ml:description//text())
-                    else ()
-                }
-                </content>
-            </entry>
-        }
-    </feed>
- else 
+    </feed>,
     ()
 )

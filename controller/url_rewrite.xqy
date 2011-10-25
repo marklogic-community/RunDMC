@@ -74,7 +74,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/default.xqy")) then
         "/"
     else if (starts-with($path, "/rss")) then
-        "/blog/atom.xml?feed=blog"
+        "/blog/atom.xml"
     else if (starts-with($path, "/legal")) then
         "/"
     else if (starts-with($path, "/people")) then
@@ -175,11 +175,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (u:is-directory($dir-url) and doc-available($index-url)) then 
         concat("/controller/transform.xqy?src=", substring-before($index-url,'.xml'), "&amp;", $query-string)
 :)
-    (: Support / as /index.xml; TBD other directory indexes :)
-    else if ($path = ("/blog/atom.xml")) then
-        "/lib/atom.xqy?feed=blog"
-    else if ($path = ("/newsandevents/atom.xml", "/news/atom.xml", "/events/atom.xml")) then
-        "/lib/atom.xqy?feed=newsandevents"
+    (: Support /blog/atom.xml and some obsolete URLs we used to use for feeds :)
+    else if ($path = ("/blog/atom.xml", "/newsandevents/atom.xml", "/news/atom.xml", "/events/atom.xml")) then
+        "/lib/atom.xqy"
     else if ($path eq "/updateDisqusThreads") then
         "/controller/get-updated-disqus-threads.xqy"
     else if ($path eq "/invalidateNavigationCache") then
