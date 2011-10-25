@@ -148,8 +148,8 @@
         -->
       </group>
       <group display="Mailing Lists">
-        <page display="Commits" href="/mailman/listinfo/commits"/>
-        <page display="General Development" href="/mailman/listinfo/general"/>
+        <page display="Commits" href="http://developer.marklogic.com/mailman/listinfo/commits"/>
+        <page display="General Development" href="http://developer.marklogic.com/mailman/listinfo/general"/>
       </group>
     </group>
   </page>
