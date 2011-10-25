@@ -5,6 +5,8 @@ if(typeof jQuery != 'undefined') {
 		var main = $('#main');
 		if(!$.support.opacity) {
 			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child, .mailinglist li:last-child','#content').addClass('last');
+			$('.features section:nth-child(even)', main).addClass('even');
+			$('.features section:nth-child(odd)', main).addClass('odd');
 		}
 		// search field default value
 		function hasPlaceholderSupport() {
@@ -27,7 +29,7 @@ if(typeof jQuery != 'undefined') {
 				})
 				.prev()
 					.hide();
-		}
+		}/*
 		var utilSearch = $('.utility #us_input','footer');
 		var valText = utilSearch.attr('title');
 		utilSearch
@@ -40,7 +42,7 @@ if(typeof jQuery != 'undefined') {
 			})
 			.blur(function() {
 				if($(this).val() == '') {$(this).val(valText).addClass('default')}
-			});
+			});*/
 		// end search field default value
 		// side nav accordion functionality
 		$('body:not(.blog) #sub li').each(function() {
