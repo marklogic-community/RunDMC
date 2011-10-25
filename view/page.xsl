@@ -173,7 +173,7 @@
                   <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">Search Results</xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Project">
-                    <xsl:value-of select="name"/>
+                    <xsl:apply-templates select="name/node()"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post">
