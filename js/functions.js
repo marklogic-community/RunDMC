@@ -4,7 +4,7 @@ if(typeof jQuery != 'undefined') {
 		// cache selectors
 		var main = $('#main');
 		if(!$.support.opacity) {
-			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child, .mailinglist li:last-child','#content').addClass('last');
+			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child, .lists li:last-child','#content').addClass('last');
 			$('.features section:nth-child(even)', main).addClass('even');
 			$('.features section:nth-child(odd)', main).addClass('odd');
 		}

@@ -1367,7 +1367,7 @@ div.intro p + a, div.intro p + img {float: right;}
 }
 .discussion pre, .blog pre {overflow: auto;}
 .post_meta .ranking {color: #333;}
-.mailinglist {
+.lists {
 	font-size: 11px;
 	line-height: 120%;
 	background: white;
@@ -1377,50 +1377,123 @@ div.intro p + a, div.intro p + img {float: right;}
 	margin: 20px 0;
 	padding: 0 !important;
 }
-.mailinglist header {
+.lists header {
 	background: #ECECEC;
 	border: 1px solid white;
 	border-radius: 3px 3px 0 0;
 	padding: 10px;
 	text-align: right;
 	position: relative;
+	margin-bottom: 1px;
 }
-.mailinglist header:after {
+.lists header:after {
 	position: absolute;
-	bottom: 0;
+	bottom: -2px;
 	left: -1px;
 	content: "";
 	width: 100.4%;
 	border-bottom: 1px solid #CCC;
 }
-.mailinglist header h1 {
+.lists header h1 {
 	font-size: 16px;
 	font-weight: bold;
 	line-height: 25px;
 	float: left;
 }
-.mailinglist header h1 img {
+.lists header h1 img {
 	vertical-align: bottom;
 	margin-right: 13px;
 }
-.mailinglist header .messages {
+.lists header h1 + * {line-height: 30px;}
+.lists header h1 + a {
+	position: relative;
+	top: 4px;
+}
+.lists header .messages {
 	font-weight: bold;
 	font-size: 30px;
-	line-height: 100%;
 }
-.mailinglist ul {
-	padding: 0 !important;
+.lists > ul {
+	padding: 0 5px 0 0 !important;
 	list-style: none !important;
-	margin: 15px;
+	margin: 15px 10px 15px 15px;
 	float: left;
 	width: 45%;
 }
-.mailinglist header + ul {border-right: 1px solid #ECECEC;}
-.mailinglist li {margin: 0 0 15px;}
-.mailinglist li:last-child {margin-bottom: 0;}
-.mailinglist li.last {margin-bottom: 0;}
-.mailinglist a {font-weight: bold;}
-
+.lists header + ul {border-right: 1px solid #ECECEC;}
+.lists li {margin: 0 0 15px;}
+.lists li:last-child {margin-bottom: 0;}
+.lists li.last {margin-bottom: 0;}
+.lists a {font-weight: bold;}
+.lists .date {font-style: italic;}
+.lists section {
+	margin: 15px;
+	line-height: 129%;
+	border-top: 1px solid #E4E4E4;
+	padding-top: 10px;
+}
+.lists header + section {
+	border-top: none;
+	padding-top: 0;
+}
+.lists section h2 {
+	font-size: 16px;
+	color: #666;
+	line-height: 120%;
+}
+.meetup {margin-bottom: 50px !important;}
+.meetup header {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.meetup header h1 {
+	font-weight: normal;
+	font-size: 20px;
+	line-height: normal;
+}
+.meetup header h1 img {
+	vertical-align: middle;
+	margin-top: -5px;
+}
+.meetup section ul {
+	padding: 1px 0 !important;
+	list-style: none !important;
+	margin: 13px 0 !important;
+}
+.meetup section li {margin-bottom: 25px;}
+.meetup section li:after {
+	content: "";
+	clear: both;
+	display: block;
+	visibility: hidden;
+	height: 0;
+}
+.meetup section .info {
+	width: 290px;
+	float: left;
+}
+.meetup section .title {
+	font-size: 14px;
+	font-weight: normal;	
+}
+.meetup section .attendees {
+	float: right;
+	width: 260px;
+	text-align: right;
+	line-height: 100%;
+}
+.meetup section .attendees img {
+	padding: 1px;
+	background: white;
+	border: 1px solid #DDD;
+}
+.meetup .attendees .amount {
+	font-size: 24px;
+	font-weight: bold;
+	vertical-align: middle;
+	display: inline-block;
+	width: 55px;
+}
 .features section {
 	display: inline-block;
 	width: 299px;
