@@ -1430,3 +1430,16 @@ ul.multi-page-toc {
 
 /* Twitstream */
 .tweet-source {display:none;}
+
+div.body.tweet1 {
+	float: left;
+	width: 100%;
+	padding: 0 0 15px 0;
+}
+
+div.body.tweet2ormore {
+	border-top: 1px solid #E1E1E1;
+	float: left;
+	width: 100%;
+	padding: 15px 0;
+}

@@ -75,7 +75,11 @@ function fetch_tweets(elem, num, offset){
 				tweetBy=tweetBy+' &middot; <a class="tweet-view" target="_blank" href="http://twitter.com/'+this.from_user+'/statuses/'+this.id+'">View Tweet</a>';
 			if(showTweetLinks.indexOf('rt')!=-1)
 				tweetBy=tweetBy+' &middot; <a class="tweet-rt" target="_blank" href="http://twitter.com/?status=RT @'+this.from_user+' '+escape(this.text.replace(/&quot;/g,'"'))+'&in_reply_to_status_id='+this.id+'&in_reply_to='+this.from_user+'">RT</a>';
-			var tweet='<div class="tweet body"><!--div class="tweet-avatar"><a target="_blank" href="http://twitter.com/'+this.from_user+'"><img width="48" height="48" alt="'+this.from_user+' on Twitter" src="'+this.profile_image_url+'" /></a></div--><div class="tweet-content">'+tweetBy+this.text.linkify().linkuser().linktag().replace(/<a/g,'<a target="_blank"')+tweetInfo+'</div></div>';
+
+            var c = (num == 1) ? "tweet1" : "tweet2ormore";
+
+			var tweet='<div class="' + c + ' tweet body"><!--div class="tweet-avatar"><a target="_blank" href="http://twitter.com/'+this.from_user+'"><img width="48" height="48" alt="'+this.from_user+' on Twitter" src="'+this.profile_image_url+'" /></a></div--><div class="tweet-content">'+tweetBy+this.text.linkify().linkuser().linktag().replace(/<a/g,'<a target="_blank"')+tweetInfo+'</div></div>';
+
 			elem.append(tweet);
 		});
 	});
