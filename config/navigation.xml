@@ -16,6 +16,7 @@
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2"/>
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
+        <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
       </group>
       <group display="Microsoft Office Integration">
@@ -24,6 +25,10 @@
         <page display="Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
+      </group>
+      <group display="Monitoring Tools">
+        <page display="Plug-in for Nagios" href="/products/nagios"/>
+        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
      <!-- Disabled for now
       <group display="Cloud Computing">
