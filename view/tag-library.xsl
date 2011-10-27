@@ -13,6 +13,7 @@
   xmlns:cts   ="http://marklogic.com/cts"
   xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
+  xmlns:so   ="http://marklogic.com/stackoverflow"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts">
@@ -131,7 +132,7 @@
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <p>
-        PLEASE NOTE: The MarkLogic software you are about to download is protected by copyright and other laws of the United States and elsewhere. All rights in and to the MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. By downloading the MarkLogic software, you agree that any use of the software is expressly conditioned upon and subject to the applicable terms of use which will be presented to you during installation of a license key. If you do not accept such terms of use, then use of the MarkLogic software is strictly prohibited.
+        PLEASE NOTE: The MarkLogic software you are about to download is protected by copyright and other laws of the United States and elsewhere. All rights in and to the MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. By downloading the MarkLogic software, you agree that any use of the software is expressly conditioned upon and subject to the applicable terms of use which will be presented to you during installation of a license key. If you do not accept such terms of use, then download, installation, and use of the MarkLogic software are strictly prohibited.
         </p>
         
         
@@ -321,11 +322,9 @@
     </script>
   </xsl:template>
 
-  <!--
   <xsl:template match="stackoverflow">
-      <xsl:sequence select="ml:stackoverflow()" />
+      <xsl:sequence select="so:widget('marklogic;xquery', 3)" />
   </xsl:template>
-  -->
 
   <xsl:template match="upcoming-user-group-events">
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
