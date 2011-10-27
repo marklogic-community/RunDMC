@@ -84,6 +84,7 @@
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
       </group>
       <group display="Libraries and Toolkits">
+        <page display="REST Library" href="/code/ml-rest-lib"/>
         <page display="Marker" href="/code/marker"/>
         <page display="MLJSON - JSON conversion" href="/code/mljson"/>
         <page display="Facebook XQuery Library" href="/code/facebook"/>
@@ -191,6 +192,9 @@
   <page display="Home" href="/" hide="yes"/>
   <generic-page display="Search Results" href="/search" hide="yes" />
   <generic-page display="Error" href="/error" hide="yes"/>
+
+  <generic-page display="SuperNodes" href="/people/supernodes" hide="yes"/>
+
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.2 Product Documentation"         href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
