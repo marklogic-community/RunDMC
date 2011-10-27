@@ -150,18 +150,20 @@
     </group>
   </page>
   <page display="Discuss" href="/qa">
-    <group display="Discuss">
-      <group display="Q&amp;A from Stack Overflow">
-        <page display="Newest" href="/qa"/>
+    <group display="">
+      <group display="Q&amp;A">
+        <page display="Stack Overflow" href="/qa"/>
+        <page display="Mailing Lists" href="/discuss"/>
         <!--
         <page display="Featured" href="/qa/featured"/>
         -->
       </group>
+      <!--
       <group display="Mailing Lists">
-        <page display="Recent Messages" href="/discuss"/>
         <page display="Commits" href="http://developer.marklogic.com/mailman/listinfo/commits"/>
         <page display="General Development" href="http://developer.marklogic.com/mailman/listinfo/general"/>
       </group>
+      -->
     </group>
   </page>
   <page display="Meet" href="/meet">
