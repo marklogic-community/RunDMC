@@ -77,8 +77,6 @@ declare function local:redir($path as xs:string) as xs:string
         "/blog/atom.xml"
     else if (starts-with($path, "/legal")) then
         "/"
-    else if (starts-with($path, "/people")) then
-        "/"
     else if (starts-with($path, "/svn")) then
         concat("/code/", replace(substring($path, 6), "^([^/]*)/.*", "$1" ))
     else if ($path = ("/code/comoms")) then
