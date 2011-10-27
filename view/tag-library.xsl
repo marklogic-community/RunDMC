@@ -130,27 +130,15 @@
     </xsl:if>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
-        <h1>MarkLogic Server Download Confirmation</h1>
-
         <p>
-        Before downloading this MarkLogic Server 
-        Community Edition binary you must agree to the following terms.
-        During installation you will be presented the full
-        license and must agree to those terms of use to activate the software.
+        PLEASE NOTE: The MarkLogic software you are about to download is protected by copyright and other laws of the United States and elsewhere. All rights in and to the MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. By downloading the MarkLogic software, you agree that any use of the software is expressly conditioned upon and subject to the applicable terms of use which will be presented to you during installation of a license key. If you do not accept such terms of use, then use of the MarkLogic software is strictly prohibited.
         </p>
         
-        <blockquote class="download-quote">
-        I agree that I will not use this download or other intellectual property or 
-        confidential information of MarkLogic for competitive analysis or reverse engineering in 
-        connection with development of products that are the same or similar to 
-        MarkLogic's products licensed herein. I also agree that I will not use this 
-        download in combination with a Community License, Trial License, or Academic License for 
-        commercial use.
-        </blockquote>
         
         <br/>
         <span class="download-warn">You must confirm your acceptance of the above terms.</span> <br/>
-        <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">I agree to the above terms of use.</label>
+        <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
+
     </div>
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
@@ -331,8 +319,13 @@
             stackunderflow.getQuestionsWithTags("marklogic;xquery").render("#stackunderflow");
         });
     </script>
-    
   </xsl:template>
+
+  <!--
+  <xsl:template match="stackoverflow">
+      <xsl:sequence select="ml:stackoverflow()" />
+  </xsl:template>
+  -->
 
   <xsl:template match="upcoming-user-group-events">
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>

@@ -11,6 +11,7 @@ if(typeof jQuery != 'undefined') {
 			var input = document.createElement('input');
 			return ('placeholder' in input);
 		}
+
 		if(hasPlaceholderSupport() == false) {
 			var searchField = $('#s_inp','#header');
 			var labelText = searchField.prev().text();
@@ -151,6 +152,56 @@ if(typeof jQuery != 'undefined') {
 			});
 		});
 		
+
+        $('.hide-if-href-empty').each(function() {
+            if ( $(this).attr('href') == "" ) {
+                $(this).hide();
+            }
+        });
+
+        $("#iaccept").click(function() {
+            var b = $(":button:contains('Download')");
+            if (b.button('option', 'disabled')) {
+                b.button("enable");
+            } else {
+                b.button("disable");
+            }
+        });
+
+        $('a.confirm-download').each(function() {
+            var href = $(this).attr("href");
+            $(this).click(function() {
+                $(":button:contains('Download')").button('disable');
+                $("#iaccept").removeAttr('checked');
+                $("#confirm-dialog").dialog.href = href;
+                $("#confirm-dialog").dialog('open');
+                return false;
+            });
+        });
+
+        $("#confirm-dialog").dialog({
+            resizable: false,
+            autoOpen: false,
+            title: 'MarkLogic Server Download Confirmation',
+            width: 550,
+            modal: true,
+            buttons: {
+                Download: function() {
+                    var u = $(this).dialog.href;
+                    _gaq.push(['_trackPageview', u],
+                              ['_trackEvent', 'start-download', u]);
+                    $(this).dialog('close');
+                    document.location = u + '?r=dmc';
+                },
+                Cancel: function() {
+                    var u = $(this).dialog.href;
+                    _gaq.push(['_trackEvent', 'cancel-download', u]);
+                    $(this).dialog('close');
+                }
+           }
+        });
+
 		// add new functions before this comment
+
 	});
-}
+};
