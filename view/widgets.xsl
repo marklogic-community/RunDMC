@@ -48,7 +48,7 @@
           </xsl:template>
 
           <xsl:template mode="widget" match="widget">
-            <section class="widget">
+            <section class="widget" id="{@id}">
               <xsl:if test="not(empty(@href)) and exists(u:get-doc(@href)/widget/@class)">
                   <xsl:attribute name="class"> 
                       <xsl:value-of select="concat('section ', u:get-doc(@href)/widget/@class)"/>
