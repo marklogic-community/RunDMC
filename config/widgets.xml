@@ -11,6 +11,11 @@
     <page href="/docs/4.1"/>
   </widget>
 
+                                     <!-- id for CSS purposes -->
+  <widget href="/widgets/hadoop.xml" id="hadoop">
+    <page href="/products/marklogic5"/>
+  </widget>
+
   <!--
   <widget href="/widgets/getting-started.xml">
     <page href="/"/> 
