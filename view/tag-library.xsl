@@ -250,7 +250,7 @@
   <xsl:template match="top-threads">
     <xsl:variable name="threads" select="ml:get-threads-xml(@search,list/string(.))"/>
     <xsl:if test="count($threads/thread) gt 0">
-      <section class="mailinglist">
+      <section class="lists">
         <header>
           <h1>
             <img src="/images/logo_markmail.png" alt="MarkMail" width="135" height="31"/>
