@@ -257,6 +257,7 @@
             <xsl:text> </xsl:text>
             <!-- Only display a title for the first mailing list in the list -->
             <xsl:apply-templates mode="mailing-list-title" select="list[1]"/>
+            <xsl:apply-templates mode="mailing-list-subscribe-link" select="list[1]"/>
           </h1>
           <strong class="messages">
             <xsl:value-of select="$threads/@estimated-count"/>
@@ -281,6 +282,21 @@
           <xsl:template mode="mailing-list-title" match="list">
             <xsl:value-of select="."/>
           </xsl:template>
+
+          <xsl:template mode="mailing-list-subscribe-link" match="*"/>
+          <xsl:template mode="mailing-list-subscribe-link" match="list[. = ('com.marklogic.developer.general',
+                                                                            'com.marklogic.developer.commits')]">
+            <xsl:variable name="href">
+              <xsl:apply-templates mode="mailing-list-subscribe-url" select="."/>
+            </xsl:variable>
+            <xsl:text> (</xsl:text>
+            <a href="{$href}">subscribe</a>
+            <xsl:text>)</xsl:text>
+          </xsl:template>
+
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.general']">http://developer.marklogic.com/mailman/listinfo/general</xsl:template>
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.commits']">http://developer.marklogic.com/mailman/listinfo/commits</xsl:template>
+
 
 
           <xsl:template mode="display-thread" match="thread">            
