@@ -1,4 +1,3 @@
-(: TODO: Implement this query, based on the two parameters supplied :)
 (: The first parameter "search" is an arbitrary search string.
    The second parameter "lists" is a space-separated list of mailing list names to constrain the search to.
 
@@ -18,15 +17,16 @@ let $listSearch := if ($lists) then
 else 
     ""
 let $search := concat($search, $listSearch, " order:date-backward")
-let $url := concat("http://markmail.org/results.xqy?q=", $search)
-let $all := concat("http://markmail.org/search/", $search)
+let $url := concat("http://markmail.org/results.xqy?q=", encode-for-uri($search))
+let $all := concat("http://markmail.org/search/", encode-for-uri($search))
 let $doc := xdmp:http-get($url)[2]
-let $first := concat("http://markmail.org/message", string($doc/results/result/url))
+let $first := concat("http://markmail.org/message", string(($doc/search/results/result/url)[1]))
 
 let $threads := map:map()
 
 return
-<ml:threads all-threads-href="{$all}" start-thread-href="{$first}" xmlns:ml="http://developer.marklogic.com/site/internal">
+<ml:threads all-threads-href="{$all}" start-thread-href="{$first}" xmlns:ml="http://developer.marklogic.com/site/internal"
+            estimated-count="{$doc/search/estimation}">
 {
 for $result in $doc//result
 let $url := concat("http://markmail.org/message/", encode-for-uri($result/id/text()))
@@ -34,10 +34,12 @@ let $title := replace(string($result/subject), "RE:", "", "i")
 let $title := replace($title, "\[.*\]", "", "i")
 
 return
+    (: Now showing recent messages, not just recent threads
     if (map:get($threads, $title)) then
         ()
     else
         let $_ := map:put($threads, $title, <ok/>)
+    :)
         let $author := $result/from/text()
         let $list := $result/list/text()
         let $ahref := 
