@@ -15,5 +15,6 @@
   <xdmp:import-module href="/controller/disqus-info.xqy" namespace="http://marklogic.com/disqus"/>
   <xdmp:import-module href="/controller/server-urls.xqy" namespace="http://marklogic.com/rundmc/server-urls"/>
   <xdmp:import-module href="/lib/cookies.xqy" namespace="http://parthcomp.com/cookies"/>
+  <xdmp:import-module href="/lib/stackoverflow.xqy" namespace="http://marklogic.com/stackoverflow"/>
 
 </xsl:stylesheet>
