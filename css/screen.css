@@ -11,6 +11,9 @@ a {
 	color: #01639D;
 	text-decoration: none;
 }
+
+sup { font-size: .6em; }
+
 a:hover {text-decoration: underline;}
 caption {
 	font-weight: bold;
