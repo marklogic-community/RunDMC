@@ -125,6 +125,9 @@
 
     <xsl:if test="@license-page and @requirements-page">
       <ul class="info">
+        <xsl:if test="@whats-new-page">
+            <li><a href="{@whats-new-page}">What's New?&#160;»</a></li>
+        </xsl:if>
         <li><a href="{@license-page}">License Options&#160;»</a></li>
         <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
       </ul>
