@@ -166,8 +166,12 @@
                   </xsl:template>
 
                   <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
-                  <xsl:template mode="page-specific-title" match="page[product-info]">
-                    <xsl:apply-templates select="product-info/(@name,name)[1]"/>
+                  <xsl:template mode="page-specific-title" match="page[product-info/@name]">
+                    <xsl:value-of select="product-info/@name"/>
+                  </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="page[product-info/name]">
+                    <xsl:apply-templates select="product-info/name"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">Search Results</xsl:template>
