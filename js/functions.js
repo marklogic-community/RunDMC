@@ -150,7 +150,17 @@ if(typeof jQuery != 'undefined') {
 				}
 			});
 		});
-		
+		if(jQuery().fancybox) {
+			$('a[rel=detail]',main).each(function() {
+				var ref = $(this).attr('href');
+				$(this).append(
+					$('<span>',{'class':'caption',text: 'Enlarge image'})
+				).fancybox({
+					transitionIn: 'elastic',
+					transitionOut: 'elastic'
+				});
+			});
+		}
 		// add new functions before this comment
 	});
 }
