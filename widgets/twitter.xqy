@@ -1,6 +1,6 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
 
-  <h1><a href="http://twitter.com/#search?q=marklogic"><img class="icon" src="/images/i_twitter.png" alt="twitter" width="34" height="23"/></a> Newest Tweets</h1>
+  <h1><a href="http://twitter.com/#search?q=marklogic"><img src="/images/i_twitter.png" alt="twitter" width="34" height="23"/></a><span style="padding-left: 10px">Newest Tweets</span></h1>
   <div>
       <article class="twitter">
           <div class="twitStream 5" title="MarkLogic"></div>
@@ -10,4 +10,3 @@
       </div>
   </div>
 </ml:widget>
-                                                                            
