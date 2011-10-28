@@ -15,6 +15,16 @@ a {
 sup { font-size: .6em; }
 
 a:hover {text-decoration: underline;}
+a[rel=detail] {
+	display: inline-block;
+	background: white;
+	padding-bottom: 8px;
+	text-align: right;
+}
+a[rel=detail] img {
+	max-width: 604px;
+	border: 8px solid white;
+}
 caption {
 	font-weight: bold;
 	text-align: left;
@@ -130,6 +140,22 @@ ol {
 .skip, hr {
 	position: absolute;
 	left: -999em;
+}
+.caption {
+	text-align: right;
+	cursor: pointer;
+	font-size: 12px;
+	color: #01639D;
+	padding: 0 8px 0 40px;
+	background: white url(/images/i_mag_glass2_sm.png) left center no-repeat;
+	display: inline-block;
+	height: 23px;
+	line-height: 23px;
+}
+#overlay {
+	display: none;
+	background: white;
+	padding: 20px;
 }
 #content hr {position: static;}
 #header header:after, #content:after, #content #main_container:after, #comments:after {
@@ -644,15 +670,26 @@ footer nav .current a {color: white;}
 	float: left;
 	clear: left;
 	width: 248px;
+	padding-top: 0 !important;
+}
+.widget:before {content: none !important;}
+#main .widget {
+	float: right;
+	margin-left: 60px;
+	border-top-color: #CCC;
 }
 .widget h1 {
 	color: #535761;
 	font-size: 18px;
+	line-height: 24px;
 	border: 1px solid white;
-	background: #ECECEC;
+	background-color: #ECECEC !important;
 	padding: 13px 10px;
 	border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-webkit-border-radius: 4px 4px 0 0;
 }
+.widget h1 + * {border-top: 1px solid #D1D1D1;}
 .widget h2 {
 	text-transform: none !important;
 	font-size: 1em !important;
@@ -706,6 +743,31 @@ footer nav .current a {color: white;}
 	margin-bottom: 10px;
 }
 .widget div div {line-height: 114%;}
+.widget .code, .widget .download {
+	font-size: 12px;
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.widget .code li {
+	padding: 10px;
+	border-bottom: 1px solid #D1D1D1;
+	margin: 0;
+}
+.widget .code a {font-weight: bold;}
+.widget .code a img {
+	background: white;
+	padding-right: 5px;
+}
+.widget .download {padding-bottom: 10px !important;}
+.widget .download li {
+	padding: 10px 10px 10px 50px;
+	background: url(/images/i_arrow_down.png) 18px 10px no-repeat;
+}
+.widget .download li div {
+	font-size: 11px;
+	font-style: italic;
+}
 #hadoop h1 {
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -763,7 +825,7 @@ section#documentation:before {margin-bottom: 30px;}
 }
 #main .download h3 {
 	margin: 0 0 10px !important;
-	font-size: 16px;
+	font-size: 16px !important;
 	font-weight: bold;
 }
 #main .download table {
@@ -940,7 +1002,6 @@ EDB - from previous styling
 	-webkit-border-radius: 6px;
 	font-weight: bold;
 	text-shadow: 0 1px 1px rgba(0,0,0,.6);
-	text-decoration: none !important;
 	text-align: center;
 	background: #2a7bab; /* Old browsers */
 	background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
@@ -950,8 +1011,8 @@ EDB - from previous styling
 	background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
 	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
 	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
-	overflow: hidden;
-	line-height: 12px !important;
+	overflow: hidden;/*
+	line-height: 12px !important;*/
 }
 .button {display: table;}
 .button img, .button span {
@@ -1626,4 +1687,78 @@ div.body.tweet2ormore {
 article.twitter {
 	font-size: 12px;
 	line-height: 133%;
+}
+
+#featured:before {content: none !important;}
+#featured {
+	border-top: none !important;
+	border-bottom: 1px solid white;
+}
+#featured:after {
+	content: "";
+	display: block;
+	border-bottom: 1px solid #E4E4E4;
+	margin-top: 8px;
+}
+#featured h3 {
+	font-size: 20px !important;
+	border-bottom: 1px solid white;
+	margin-bottom: 8px !important;
+}
+#featured h3:after {
+	content: "";
+	display: block;
+	border-bottom: 1px solid #E4E4E4;
+	margin-top: 10px;
+}
+#featured > div {
+	display: table-cell;
+	width: 50%;
+}
+#featured > h3 + div {border-right: 1px solid white;}
+#featured > h3 + div + div {border-left: 1px solid #E4E4E4;}
+#featured section {
+	border-top: 1px solid #E4E4E4;
+	padding-left: 60px;
+	position: relative;
+	font-size: 12px;
+	padding-top: 25px;
+	line-height: 133%;
+}
+#featured section:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	border-top: 1px solid white;
+}
+#featured section:first-child {
+	padding-top: 0;
+	border: none;
+}
+#featured section:first-child:before {content: none;}
+#featured > h3 + div section {margin-right: 5px;}
+#featured > h3 + div + div section {margin-left: 5px;}
+#featured section h4 {
+	margin: 0;
+	font-size: 12px;
+}
+#featured section h4 img {
+	position: absolute;
+	left: 0;
+	top: 25px;
+}
+#featured section:first-child h4 img {top: 0;}
+#featured section > ul {padding-left: 15px;}
+#featured section > div {margin-bottom: 1em;}
+#featured .links {
+	padding: 0;
+	list-style: none;
+	margin: 1em 0;
+}
+#featured ul ul.links {margin-left: -15px;}
+#featured .links li {
+	display: inline;
+	margin-right: 10px;
 }
