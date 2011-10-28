@@ -1,15 +1,15 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <h1><img src="/images/logo_hadoop.png" alt="hadoop" width="153" height="36" /></h1>
   <div>
-    <p><strong>The MarkLogic Connector for Hadoop</strong> combines the power of Hadoop for batch processing with the real-time analytics that MarkLogic Server provides for Big Data.</p>
-    <p>The MarkLogic Connector for Hadoop is a drop-in extension to Hadoop that allows users to run 
-    Hadoop MapReduce jobs on data in a MarkLogic Server cluster.</p>
-    <h2>Features</h2>
+    <p>The <strong>MarkLogic Connector for Hadoop</strong> is a drop-in extension to Hadoop that allows users to run 
+    MapReduce jobs on data in a MarkLogic Server cluster.</p>
+    <h3>Features</h3>
     <ul>
-      <li>Built-in input and output formats to read data from a MarkLogic database</li>
-      <li>More Stuff</li>
-      <li>Even more stuff</li>
+      <li>Read from MarkLogic, write to MarkLogic, or both</li>
+      <li>Process Documents, Nodes, and/or Values (including binaries)</li>
+      <li>Optimized data access (for both locality and streaming IO) across MarkLogic forests</li>
     </ul>
+	<span><a href="/products/hadoop">Read more »</a></span>
     <a class="button" href="/products/hadoop"><img src="/images/i_arrow_down.png" alt="&#8595;" width="20" height="23" /> <span>Download Hadoop&#160;Connector</span></a>
   </div>
 </ml:widget>
