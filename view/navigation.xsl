@@ -269,7 +269,7 @@
   <xsl:template match="xhtml:body/@ml:class">
     <xsl:attribute name="class">
       <xsl:apply-templates mode="body-class"        select="$page-in-navigation[1]"/>
-      <xsl:apply-templates mode="body-class-extra"  select="$page-in-navigation[1]"/>
+      <xsl:apply-templates mode="body-class-extra"  select="$content"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -277,16 +277,8 @@
                                                | page[@closed eq 'yes']//page">blog</xsl:template>
           <xsl:template mode="body-class" match="*"/>
 
-          <!-- TODO: get rid of this eventually, but for now, keep it around because we may want to use it as a base to tweak once we add the home page -->
+          <xsl:template mode="body-class-extra" match="*[@disable-comments eq 'yes']"> nocomments</xsl:template>
           <xsl:template mode="body-class-extra" match="*"/>
-          <xsl:template mode="body-class-extra" match="page[@href eq '/']                                  "> home</xsl:template>
-          <xsl:template mode="body-class-extra" match="Article                                             "> layout2</xsl:template>
-          <xsl:template mode="body-class-extra" match="page[ancestor-or-self::page/@narrow-sidebar = 'yes']"> layout3</xsl:template>
-
-          <xsl:template mode="body-class-extra" match="@css-class">
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="."/>
-          </xsl:template>
 
   <xsl:template match="page-nav">
         <div class="pagination_nav">
