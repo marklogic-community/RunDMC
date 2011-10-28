@@ -26,7 +26,7 @@ function fetch_tweets(elem, num, offset){
 	keyword=escape(elem.attr('title'));
 	var url="http://search.twitter.com/search.json?q="+keyword+"&rpp="+num+"&callback=?";
 	$.getJSON(url,function(json){
-		$(json.results).each(function(){
+		$(json.results).each(function(index){
             if (offset-- > 0)
                 return;
 			var tTime=new Date(Date.parse(this.created_at));
@@ -76,7 +76,7 @@ function fetch_tweets(elem, num, offset){
 			if(showTweetLinks.indexOf('rt')!=-1)
 				tweetBy=tweetBy+' &middot; <a class="tweet-rt" target="_blank" href="http://twitter.com/?status=RT @'+this.from_user+' '+escape(this.text.replace(/&quot;/g,'"'))+'&in_reply_to_status_id='+this.id+'&in_reply_to='+this.from_user+'">RT</a>';
 
-            var c = (num == 1) ? "tweet1" : "tweet2ormore";
+            var c = (index == 0) ? "tweet1" : "tweet2ormore";
 
 			var tweet='<div class="' + c + ' tweet body"><!--div class="tweet-avatar"><a target="_blank" href="http://twitter.com/'+this.from_user+'"><img width="48" height="48" alt="'+this.from_user+' on Twitter" src="'+this.profile_image_url+'" /></a></div--><div class="tweet-content">'+tweetBy+this.text.linkify().linkuser().linktag().replace(/<a/g,'<a target="_blank"')+tweetInfo+'</div></div>';
 
