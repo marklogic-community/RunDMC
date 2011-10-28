@@ -21,6 +21,6 @@ disqus-info.xml
   production).
 
 server-versions.xml
-  This file configures what versions of the documents (4.1, 4.2, etc.) are to
+  This file configures what versions of the documents (4.1, 4.2, 5.0, etc.) are to
   be displayed on the website, as well as which version is the default (should
   normally be the latest).

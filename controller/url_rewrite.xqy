@@ -24,6 +24,8 @@ declare function local:redir($path as xs:string) as xs:string
     (: Re-enable when we launch api.marklogic.com
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         concat($srv:api-server,"/docs")
+    else if ($path = ("/pubs/5.0", "/pubs/5.0/", "/docs/5.0")) then
+        concat($srv:api-server,"/5.0/docs")
     else if ($path = ("/pubs/4.2", "/pubs/4.2/", "/docs/4.2")) then
         concat($srv:api-server,"/4.2/docs")
     else if ($path = ("/pubs/4.1", "/pubs/4.1/", "/docs/4.1")) then
@@ -33,6 +35,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/docs/4.0"
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
         "/docs/3.2"
+    else if ($path = ("/download/5.0", "/download/5.0/")) then
+        "/products/marklogic-server/5.0"
     else if ($path = ("/download/4.2", "/download/4.2/")) then
         "/products/marklogic-server/4.2"
     else if ($path = ("/download/4.1", "/download/4.1/")) then
@@ -48,6 +52,8 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/learn/sharepoint-install-guide")) then
         "/docs/sharepoint-connector/admin-guide"
 
+    else if ($path = ("/download/binaries/5.0/requirements.xqy")) then
+        "/products/marklogic-server/requirements-5.0"
     else if ($path = ("/download/binaries/4.2/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.2"
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
@@ -67,6 +73,8 @@ declare function local:redir($path as xs:string) as xs:string
         replace($path, "/4.0", "/pubs/4.0")
     else if (starts-with($path, "/4.1")) then
         replace($path, "/4.1", "/pubs/4.1")
+    else if (starts-with($path, '/4.2')) then
+        replace($path, "/5.0", "/pubs/5.0")
     else if (starts-with($path, '/4.2')) then
         replace($path, "/4.2", "/pubs/4.2")
     else if (starts-with($path, "/xfaqtor")) then

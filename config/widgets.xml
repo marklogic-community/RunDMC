@@ -9,6 +9,7 @@
     <page href="/docs/5.0"/>
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
+    <page href="/docs/4.0"/>
   </widget>
 
                                      <!-- id for CSS purposes -->
@@ -123,7 +124,6 @@
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
-    <page href="/docs/3.2"/>
     <page href="/learn"/>
     <page href="/learn/tutorials"/>
     <page href="/learn/guides"/>
@@ -135,7 +135,6 @@
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
-    <page href="/docs/3.2"/>
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
@@ -154,7 +153,6 @@
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
-    <page href="/docs/3.2"/>
     <page href="/learn/tutorials"/>
   </widget>
 
@@ -167,7 +165,6 @@
     <page href="/docs/4.2"/>
     <page href="/docs/4.1"/>
     <page href="/docs/4.0"/>
-    <page href="/docs/3.2"/>
   </widget>
 
   <widget href="/widgets/mugfr-flickr.xml">

@@ -1619,3 +1619,8 @@ div.body.tweet2ormore {
 	left: 0;
 	position: absolute;
 }
+
+article.twitter {
+	font-size: 12px;
+	line-height: 133%;
+}
