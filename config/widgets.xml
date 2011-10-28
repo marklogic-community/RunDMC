@@ -29,6 +29,7 @@
     <page-tree root="/news"/>
     <page-tree root="/events"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
+    <page href="/people/supernodes"/>
   </widget>
 
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
