@@ -358,37 +358,28 @@
 
 
           <xsl:template mode="page-content" match="Project">
-            <h1>Code</h1>
-            <h2>
-              <xsl:value-of select="name"/>
-            </h2>
+            <!-- Note from Adam: "if images are supposed to be above the sidebar place them here, otherwise after the “widget” section" -->
+            <section class="widget">
+              <h1><img src="/images/i_database_arrow_down.png" alt="down arrow" /> Code &amp; Downloads</h1>
+              <ul class="code">
+                <xsl:if test="versions/@get-involved-href">
+                  <xsl:choose>
+                    <xsl:when test="versions/@repo eq 'github'">
+                      <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
+                    </xsl:when>
+                    <xsl:when test="versions/@repo eq 'google code'">
+                      <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
+                    </xsl:when>
+                  </xsl:choose>
+                </xsl:if>
+              </ul>
+              <xsl:if test="versions/version/@href">
+                <ul class="download">
+                  <xsl:apply-templates mode="project-version" select="versions/version"/>
+                </ul>
+              </xsl:if>
+            </section>
             <xsl:apply-templates select="description/node()"/>
-            <xsl:if test="versions/@get-involved-href">
-            <div class="action repo">
-              <a href="{versions/@get-involved-href}">
-                Browse <xsl:value-of select="versions/@repo"/> repository
-              </a>
-            </div>
-            </xsl:if>
-
-            <xsl:if test="versions/version/@href">
-            <table class="table4">
-              <thead>
-                <tr>
-                  <th scope="col">
-                    Download
-                  </th>
-                  <th class="size" scope="col">MarkLogic Version Needed</th>
-                  <!--
-                  <th class="last" scope="col">Date Posted</th>
-                  -->
-                </tr>
-              </thead>
-              <tbody>
-                <xsl:apply-templates mode="project-version" select="versions/version"/>
-              </tbody>
-            </table>
-            </xsl:if>
             <!--
             <div class="action">
               <a href="{contributors/@href}">Contributors</a>
@@ -398,28 +389,14 @@
           </xsl:template>
 
                   <xsl:template mode="project-version" match="version">
-                    <tr>
-                      <xsl:if test="position() mod 2 eq 1">
-                        <xsl:attribute name="class">alt</xsl:attribute>
+                    <li>
+                      <a href="{@href}">
+                        <xsl:value-of select="ml:file-from-path(@href)"/>
+                      </a>
+                      <xsl:if test="normalize-space(@server-version)">
+                        <div>You will need:<br /> MarkLogic Server <xsl:value-of select="@server-version"/> or later</div>
                       </xsl:if>
-                      <td>
-                        <a href="{@href}">
-                          <xsl:value-of select="ml:file-from-path(@href)"/>
-                        </a>
-                      </td>
-                      <td>
-                        <xsl:if test="normalize-space(@server-version)">
-                            <xsl:text>MarkLogic Server </xsl:text>
-                            <xsl:value-of select="@server-version"/>
-                            <xsl:text> or later</xsl:text>
-                        </xsl:if>
-                      </td>
-                      <!--
-                      <td>
-                        <xsl:value-of select="@date"/>
-                      </td>
-                      -->
-                    </tr>
+                    </li>
                   </xsl:template>
 
                           <xsl:function name="ml:file-from-path" as="xs:string">
