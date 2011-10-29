@@ -195,6 +195,28 @@
 
   <generic-page display="SuperNodes" href="/people/supernodes" hide="yes"/>
 
+  <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page5" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page6" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page7" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page8" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page9" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page10" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page11" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page12" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page13" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page14" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
+
+  <generic-page display="Try MarkLogic!" href="/try/corona/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/corona/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/corona/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/corona/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
+
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.2 Product Documentation"         href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
