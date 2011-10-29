@@ -333,6 +333,83 @@
   </xsl:template>
 
   <xsl:template match="upcoming-user-group-events">
+    <section class="lists meetup">
+      <header>
+        <h1><img src="/images/i_meetup_lg.png" alt="Meetup" width="56" height="37" /> Upcoming &amp; Recent Meetups (FAKED)</h1>
+        <a href="">More information&#160;»</a>
+      </header>
+      <section>
+        <h2>Upcoming Meetups</h2>
+        <ul>
+          <li>
+            <div class="info">
+              <div class="date">November 25 at 6:00 PM, 15 Members attending</div>
+              <a class="title" href="">Denver MarkLogic Users’ Group (DenMARK) November</a>
+            </div>
+            <div class="attendees">
+              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
+              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
+              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
+              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
+              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
+              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
+              <span class="amount">15</span>
+            </div>
+          </li>
+          <li>
+            <div class="info">
+              <div class="date">November 2 at 6:00 PM, 9 Members attending</div>
+              <a class="title" href="">MarkLogic Server and Kaplan Mobile</a>
+            </div>
+            <div class="attendees">
+              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
+              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
+              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
+              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
+              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
+              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
+              <span class="amount">9</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Recent Meetups</h2>
+        <ul>
+          <li>
+            <div class="info">
+              <div class="date">September 21 at 7:00 PM, 6 Members attended</div>
+              <a class="title" href="">Denver MarkLogic Users’ Group (DenMARK) September</a>
+            </div>
+            <div class="attendees">
+              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
+              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
+              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
+              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
+              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
+              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
+              <span class="amount">6</span>
+            </div>
+          </li>
+          <li>
+            <div class="info">
+              <div class="date">August 17 at 7:00 PM, 23 Members attended</div>
+              <a class="title" href="">CMS Toolkit: OAuth2, Library Services API, HTML5 contentEditable, and more</a>
+            </div>
+            <div class="attendees">
+              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
+              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
+              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
+              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
+              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
+              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
+              <span class="amount">23</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </section>
+    <!--
     <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
     <div class="double">
       <h2>Events</h2>
@@ -346,6 +423,7 @@
         </div>
       </xsl:for-each>
     </div>
+    -->
   </xsl:template>
 
 
