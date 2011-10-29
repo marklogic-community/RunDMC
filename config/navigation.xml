@@ -44,7 +44,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
   </page>
   <page display="Code" href="/code">
-    <group display="Open Source Projects">
+    <group display="Open Source Projects" closed="yes">
       <group display="Debugging, profiling, and exploring tools">
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>

@@ -273,8 +273,9 @@
     </xsl:attribute>
   </xsl:template>
 
+          <!-- "blog" is a misnomer, but it means: collapse the sub-nav by default -->
           <xsl:template mode="body-class" match="page[@closed eq 'yes']
-                                               | page[@closed eq 'yes']//page">blog</xsl:template>
+                                               | *   [@closed eq 'yes']//page">blog</xsl:template>
           <xsl:template mode="body-class" match="*"/>
 
           <xsl:template mode="body-class-extra" match="*[@disable-comments eq 'yes']"> nocomments</xsl:template>
