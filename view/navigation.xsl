@@ -113,7 +113,7 @@
 
           <!-- But do display them on every other page -->
           <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
-            <xsl:param name="site-name" select="'Developer Community'"/>
+            <xsl:param name="site-name" select="'Home'"/>
             <div>
               <a href="/">
                 <xsl:value-of select="$site-name"/>
