@@ -583,6 +583,7 @@ footer nav .current a {color: white;}
 	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 	box-shadow: 3px 3px 3px rgba(0,0,0,.5);
+  max-width: 400px;
 }
 #tooltip h3, #tooltip div {
 	margin: 0;
