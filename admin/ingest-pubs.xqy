@@ -68,13 +68,13 @@ as xs:string+
 };
 
 
-declare function local:load-dir($root as xs:string, $version as xs:string) {
+declare function local:load-dir($root as xs:string, $version as xs:string, $db as xs:string) {
     
     let $ctxt := <c><r>{$root}</r><v>{$version}</v></c>
     let $dir := fn:concat($root, $version)
 
     let $annotation := <info:annotation>"Loading DMC docs"</info:annotation>
-    let $ticket-id := infodev:ticket-create($annotation, "RunDMC", (), ())
+    let $ticket-id := infodev:ticket-create($annotation, $db, (), ())
 
     let $function := xdmp:function(xs:QName("local:process-file"))
 
@@ -82,10 +82,11 @@ declare function local:load-dir($root as xs:string, $version as xs:string) {
 };
 
 let $version := xdmp:get-request-field("version", "no-version")
+let $db := xdmp:get-request-field("db", "RunDMC")
 let $_ := xdmp:set-response-content-type("text/html") 
 return 
     if ($version = 'no-version') then
         "Must specify version query string"
     else
-        let $ticket := local:load-dir("/space/pubs/", $version)
+        let $ticket := local:load-dir("/space/pubs/", $version, $db)
         return xdmp:redirect-response(concat("ingest-pubs-status.xqy?t=", $ticket))
