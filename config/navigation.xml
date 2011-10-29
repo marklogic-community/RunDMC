@@ -56,10 +56,10 @@
         <page display="PerformanceMeters" href="/code/performance-meters"/>
       </group>
       <group display="Loading and processing tools">
-        <page display="AutoLoader" href="/code/AutoLoader"/>
-        <page display="Corb" href="/code/corb"/>
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="XQSync" href="/code/xqsync"/>
+        <page display="Corb" href="/code/corb"/>
+        <page display="AutoLoader" href="/code/AutoLoader"/>
       </group>
       <group display="Deployment and configuration">
         <page display="Booster" href="/code/booster"/>
