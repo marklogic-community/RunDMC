@@ -367,9 +367,12 @@
                     <xsl:when test="versions/@repo eq 'github'">
                       <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
                     </xsl:when>
-                    <xsl:when test="versions/@repo eq 'google code'">
+                    <xsl:when test="versions/@repo eq 'Google Code'">
                       <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
                     </xsl:when>
+                    <xsl:otherwise>
+                      <li><a href="{versions/@get-involved-href}">Browse <xsl:value-of select="versions/@repo"/> Repository&#160;»</a></li>
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:if>
               </ul>
