@@ -173,10 +173,12 @@
         <page display="MUGL - London" href="/meet/mugl"/>
         <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
         <page display="NYMUG - New York" href="/meet/nymug"/>
+<!--
         <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
           <page display="Français" href="/meet/mugfr/fr"/>
           <page display="English" href="/meet/mugfr/en"/>
         </group>
+-->
         <page display="BMLUG - Boston" href="/meet/bmug"/>
       </group>
     </group>
