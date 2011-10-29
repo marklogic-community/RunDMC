@@ -181,7 +181,7 @@
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post">
-                    <xsl:value-of select="title"/>
+                    <xsl:apply-templates select="title/node()"/>
                   </xsl:template>
 
   <!-- Handle errors -->
@@ -326,9 +326,6 @@
             <!-- placeholder for form to get CSS to display background -->
             <div id="doc_search"/>
 
-            <h2>
-              <xsl:apply-templates select="title/node()"/>
-            </h2>
             <div class="author">
               <xsl:apply-templates mode="author-listing" select="author"/>
             </div>
