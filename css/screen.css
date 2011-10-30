@@ -982,7 +982,7 @@ EDB - from previous styling
 	line-height: 143%;
 	margin: 0;
 }
-#intro p a {font-size: 12px;}
+#intro p a {font-size: 14px; font-weight: bold}
 #intro + section {clear: both;}
 #intro ul {
 	font-size: 14px;
