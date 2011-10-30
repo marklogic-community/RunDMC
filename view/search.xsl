@@ -231,7 +231,7 @@
             <!-- Temporary, until we enable api.marklogic.com -->
             <xsl:variable name="result-uri" select="if ($is-api-doc) then (for $uri in ml:external-uri-api($doc) return
                                                                            concat('/pubs/', $api-version,
-                                                                                  if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/@source-name, '.pdf')
+                                                                                  if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/(@pdf-name,@source-name)[1], '.pdf')
                                                                                                                   else concat('/apidocs/',
                                                                                                                                for $func-configs in (if ($api-version eq '4.1') then $functions-4.1
                                                                                                                                                 else if ($api-version eq '4.2') then $functions-4.2
