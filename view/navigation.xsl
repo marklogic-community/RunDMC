@@ -52,15 +52,7 @@
                                                                                      then $srv:api-server
                                                                                      else $srv:main-server
                                                          else ()"/>
-              <a href="{$server-prefix}{@href}">
-                <xsl:variable name="short-description"
-                              select="document(concat(@href, '.xml'))//ml:short-description"/>
-                <xsl:if test="$short-description">
-                    <xsl:attribute name="class">stip</xsl:attribute>
-                    <xsl:attribute name="title">
-                        <xsl:value-of select="$short-description"/>
-                    </xsl:attribute>
-                </xsl:if>
+              <a href="{$server-prefix}{@href}" class="stip" title="{@tooltip}">
                 <xsl:apply-templates mode="nav-text" select="@display"/>
               </a>
             </li>
