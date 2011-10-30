@@ -216,16 +216,42 @@
             <xsl:apply-templates mode="prev-and-next" select="."/>
           </xsl:template>
 
+          <!-- Temporary, only used until we enable api.marklogic.com -->
+          <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/*/*:guide"/>
+          <xsl:variable name="functions-4.1" select="u:get-doc('/config/4.1-function-url-mappings.xml')/*/*:function"/>
+          <xsl:variable name="functions-4.2" select="u:get-doc('/config/4.2-function-url-mappings.xml')/*/*:function"/>
+          <xsl:variable name="functions-5.0" select="u:get-doc('/config/5.0-function-url-mappings.xml')/*/*:function"/>
+
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
             <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
+            <!-- Temporary, until we enable api.marklogic.com -->
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then (for $uri in ml:external-uri-api($doc) return
+                                                                           concat('/pubs/', $api-version,
+                                                                                  if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/@source-name, '.pdf')
+                                                                                                                  else concat('/apidocs/',
+                                                                                                                               for $func-configs in (if ($api-version eq '4.1') then $functions-4.1
+                                                                                                                                                else if ($api-version eq '4.2') then $functions-4.2
+                                                                                                                                                else if ($api-version eq '5.0') then $functions-5.0
+                                                                                                                                                else ())
+                                                                                                                               return
+                                                                                                                                 $func-configs[@name eq substring-after($uri,'/')]/@url
+                                                                                                                             )
+                                                                                )
+                                                                          )
+
+                                                                     else concat($srv:main-server, if ($is-flat-file)
+                                                                                                   then @uri
+                                                                                                   else ml:external-uri-main($doc))"/>
+            <!-- Re-enable this once we enable api.marklogic.com
             <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  $version-prefix, ml:external-uri-api($doc))
                                                                      else concat($srv:main-server, if ($is-flat-file)
                                                                                                    then @uri
                                                                                                    else ml:external-uri-main($doc))"/>
+                                                                                                   -->
             <tr>
               <th>
                 <xsl:variable name="category">
