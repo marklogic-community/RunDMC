@@ -6,8 +6,12 @@
       RESTful API for MarkLogic
     </section>
     <section>
-      <h2><a href="/code/ml-rest-lib">REST Library</a></h2>
+      <h2><a href="/code/ml-rest-lib">REST Endpoint Library</a></h2>
       XQuery Library that facilitates building RESTful services
+    </section>
+    <section>
+      <h2><a href="/code/ant-tasks"> Ant Tasks</a></h2>
+      MarkLogic-specific Ant Tasks
     </section>
     <section>
       <h2><a href="/code/mljson">MLJSON</a></h2>

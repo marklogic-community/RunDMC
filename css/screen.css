@@ -948,7 +948,7 @@ EDB - from previous styling
 	height: 19px;
 	position: absolute;
 	right: 60px;
-	top: 30px;
+	top: 22px;
 	background: url(/images/s_open_close.png) no-repeat;
 	cursor: pointer;
 }
@@ -1222,7 +1222,7 @@ EDB - from previous styling
 	width: 225px;
 	padding: 0 5px 40px 8px;
 	float: left;
-	min-height: 260px;
+	min-height: 330px;
 	position: relative;
 }
 #bottom2 > h2 + section {
@@ -1762,4 +1762,19 @@ article.twitter {
 #featured .links li {
 	display: inline;
 	margin-right: 10px;
+}
+
+.recent-rss article .author_date {
+	font-size: 11px;
+	font-style: italic;
+    padding-bottom: 6px;
+}
+
+.recent-rss article {
+    font: 12px/120% Arial, Helvetica, Sans-serif;
+    padding-bottom: 18px;
+}
+
+.recent-rss h4 {
+	margin: .2em 0 .4em 0;
 }

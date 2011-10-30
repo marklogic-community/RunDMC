@@ -139,19 +139,31 @@ if(typeof jQuery != 'undefined') {
 		// home page close button(s)
 		$('.removable').each(function() {
 			var sectionHeight = $(this).height();
-			var padding = $(this).css('padding-bottom');
+			var paddingb = $(this).css('padding-bottom');
+			var paddingt = $(this).css('padding-top');
+            var id = $(this).attr('id');
+            var c = 'rundmc-r-' + id;
+
+            if ($.cookie(c) === 'closed') {
+				$(this).addClass('closed');
+				$(this).height(35).css('padding-bottom', 5).css('padding-top', 15);
+            }
+
 			$(this).append($('<a>', {'class': 'close'})).children('.close').click(function() {
 				if($(this).parent().hasClass('closed')) {
-					$(this).parent().animate({height: sectionHeight,'padding-bottom':padding},500, function() {
+					$(this).parent().animate({height: sectionHeight,'padding-bottom':paddingb,'padding-top':paddingt},500, function() {
 						$(this).removeClass('closed');
+                        $.cookie(c, 'open');
 					});
 				}
 				else {
-					$(this).parent().animate({height: 30,'padding-bottom': 5},500, function() {
+					$(this).parent().animate({height: 35,'padding-bottom': 5, 'padding-top': 15},500, function() {
 						$(this).addClass('closed');
+                        $.cookie(c, 'closed');
 					});
 				}
 			});
+
 		});
 
         $('.hide-if-href-empty').each(function() {

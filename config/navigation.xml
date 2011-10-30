@@ -43,7 +43,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.2"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
   </page>
-  <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample applications, and open-source code">
+  <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
     <group display="Open Source Projects" closed="yes">
       <group display="Debugging, profiling, and exploring tools">
         <page display="CQ" href="/code/cq"/>
@@ -80,6 +80,9 @@
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
         <page display="ActiveDocument (ruby)" href="/code/active-document"/>
+      </group>
+      <group display="Command-line interfaces">
+        <page display="Ant tasks" href="/code/ant-tasks"/>
         <page display="xmlsh extension" href="/code/xmlsh-ext"/>
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
       </group>
@@ -109,9 +112,13 @@
         <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
+<!--
         <page display="XFaqtor" href="/code/xfaqtor"/>
+-->
         <page display="Shakespeare Demo Application" href="/code/bill"/>
+<!--
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
+-->
         <page display="RunDMC" href="/code/rundmc"/>
         <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
         <!--
