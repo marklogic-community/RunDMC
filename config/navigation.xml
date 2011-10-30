@@ -112,9 +112,13 @@
         <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
+<!--
         <page display="XFaqtor" href="/code/xfaqtor"/>
+-->
         <page display="Shakespeare Demo Application" href="/code/bill"/>
+<!--
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
+-->
         <page display="RunDMC" href="/code/rundmc"/>
         <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
         <!--
