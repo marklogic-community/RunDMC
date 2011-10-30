@@ -1763,3 +1763,16 @@ article.twitter {
 	display: inline;
 	margin-right: 10px;
 }
+
+.recent-rss article .author_date {
+	font-size: 11px;
+	font-style: italic;
+}
+
+.recent-rss article {
+	font-size: 12px;
+}
+
+.recent-rss h4 {
+	margin: .2em 0 .4em 0;
+}
