@@ -1767,10 +1767,13 @@ article.twitter {
 .recent-rss article .author_date {
 	font-size: 11px;
 	font-style: italic;
+    padding-bottom: 6px;
 }
 
 .recent-rss article {
 	font-size: 12px;
+    font: 12px/120% Arial, Helvetica, Sans-serif;
+    padding-bottom: 18px;
 }
 
 .recent-rss h4 {

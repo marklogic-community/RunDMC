@@ -156,10 +156,12 @@
     <script src="http://try.marklogic.com:8005/js/tryml.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            if (true || typeof tryml == "undefined" || !tryml) { // XXX we should only alert when on tryml page
-                (function() {
-                    $('#breadcrumb').append('<span>Hi</span>');
-                })();
+            if(typeof tryml == "undefined" || !tryml) { // XXX we should only alert when on tryml page
+                alert("Could not contact the code execution server, some features will not be available.");
+            //if (typeof tryml == "undefined" || !tryml) { // XXX we should only alert when on tryml page
+                //(function() {
+                    //$('#breadcrumb').append('<span>Hi</span>');
+                //})();
             }
         });
     </script>
