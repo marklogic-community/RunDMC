@@ -116,6 +116,9 @@
         <page display="XFaqtor" href="/code/xfaqtor"/>
 -->
         <page display="Shakespeare Demo Application" href="/code/bill"/>
+        <page display="Pairs" href="/code/pairs"/>
+        <page display="Heatmap" href="/code/pairs"/>
+        <page display="Alerting" href="/code/alerting"/>
 <!--
         <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
 -->
