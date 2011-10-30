@@ -323,7 +323,7 @@
     <div id="stackunderflow"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithTags("marklogic;xquery").render("#stackunderflow");
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery").render("#stackunderflow");
         });
     </script>
   </xsl:template>
