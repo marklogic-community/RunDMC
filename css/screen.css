@@ -86,6 +86,7 @@ thead th:first-child {background-position: left top;}
 thead th:last-child {background-position: right top;}
 thead th.last {background-position: right top;}
 tbody {border-top: 1px solid #CCC;}
+tbody {border-left: 1px solid #CCC;}
 tbody th,  tbody td {padding: 10px 5px;}
 tbody tr:first-child th:first-child {
 	padding-left: 15px;
@@ -117,7 +118,10 @@ tbody.last tr.last td.last {background-position: bottom right;}
 tbody th + th {width: 150px;}
 th:last-child,  td:last-child {padding-right: 15px;}
 th.last,  td.last {padding-right: 15px;}
+/*
 tbody.last tr.last td {text-align: center;}
+*/
+
 table small {
 	font-weight: normal;
 	font-size: 10px;
@@ -590,7 +594,7 @@ footer nav .current a {color: white;}
 	font-size: 12px;
 }
 
-.features tbody:last-child tr:last-child td {text-align: center;}
+/* .features tbody:last-child tr:last-child td {text-align: center;} */
 .doclist {
 	padding-left: 0 !important;
 	list-style: none !important;
@@ -933,14 +937,16 @@ section#documentation:before {margin-bottom: 30px;}
 }
 #main .post .action ul li:before {content: none;}
 
-/*
-EDB - from previous styling
 .doc-desc {
-    padding-left: 25px;
+    padding-left: 20px;
 }
 
-.doclist tr.alt th, .doclist tr.alt td {background: #F2F2F2;}
-*/
+.doclist tr.alt th, .doclist tr.alt td {
+    background: #F9F9F9;
+}
+.doclist tr.alt {
+    border-right: 1px solid #CCC;
+}
 
 /* home page styles */
 .removable .close {
