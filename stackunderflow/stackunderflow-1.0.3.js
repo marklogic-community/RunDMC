@@ -4,7 +4,7 @@
 // some API urls
 var google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&callback={callback}&rsz=large&q={query}",
     questions = "http://api.stackoverflow.com/1.0/questions/{id}?key={key}&jsonp={callback}",
-    questionsTagged = "http://api.stackoverflow.com/1.0/questions/?key={key}&tagged={tagged}&jsonp={callback}",
+    questionsTagged = "http://api.stackoverflow.com/1.0/questions/?key={key}&tagged={tagged}&body={body}&jsonp={callback}",
     search = "http://api.stackoverflow.com/1.0/search/?key={key}&intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}",
     unansweredQuestionsTagged = "http://api.stackoverflow.com/1.0/questions/unanswered/?key={key}&tagged={tagged}&jsonp={callback}",
     questionsByUser = "http://api.stackoverflow.com/1.0/users/{id}/questions?key={key}&jsonp={callback}",
@@ -223,6 +223,10 @@ var su = window.stackunderflow = {
         return execQuestions(onlyUnanswered ? unansweredQuestionsTagged : questionsTagged,
             { tagged: tags }, complete);
     },
+    getQuestionsWithBodyWithTags: function(tags, onlyUnanswered, complete) {
+        return execQuestions(onlyUnanswered ? unansweredQuestionsTagged : questionsTagged,
+            { tagged: tags, body: true }, complete);
+    },
     getQuestionsByUser: function(userIds, complete) {
         return execQuestions(questionsByUser, { id: userIds instanceof Array ? userIds.join(';') : userIds }, complete);
     },    
@@ -262,6 +266,9 @@ var su = window.stackunderflow = {
     </div> \
     <div class="se-summary"> \
         <h3><a href="{site}{question_answers_url}" class="se-question-hyperlink" title="{title}">{title}</a></h3> \
+        <div class="se-body"> \
+            {body}\
+        </div>\
         <div class="se-tags"> \
             {template-tag:tags}\
         </div> \
