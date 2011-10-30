@@ -33,7 +33,13 @@
         <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script> 
         <script type="text/javascript">
             $(function () {
-                $("a.youtube").YouTubePopup({ autoplay: 0 });
+                $("a.youtube").YouTubePopup({ 
+					autoplay: 1,
+					hd: 1,
+					hideTitleBar: true,
+					width: 1280,
+					height: 720
+				});
             });
         </script>
 
