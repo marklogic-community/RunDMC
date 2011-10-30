@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-    <div class="head">
-        <h2>Join the “NOVAMUG” User Group</h2>
+    <h1>Join the Group</h1>
+    <div>
+        The Northern Virginia MarkLogic User Group uses <a href="http://meetup.com/Mark-Logic-User-Group">meetup.com</a> to organize its meetings.
+        <br/>
+        <br/>
+        See <a href="http://meetup.com/Mark-Logic-User-Group" title="meetup" alt="novamug"><img src="/media/meetup-63x42.png" title="meetup" alt="meetup" width="63" height="42" /></a>
+        for more details.
     </div>
-            <div class="body">
-            <iframe width="270" height="570" src="http://meetu.ps/1QX8L" frameborder="0"></iframe>
-            </div>
 </ml:widget>
