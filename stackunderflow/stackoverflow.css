@@ -136,7 +136,7 @@ within an element with the '.se-question-summary' class.
     font-size: 130%;
 }
 .se-question-summary .se-summary {
-    width: 550px;
+    width: 500px;
 }
 .se-question-summary .se-tags {
     line-height: 18px;
