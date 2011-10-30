@@ -41,7 +41,7 @@
   <guide url-name="xcc"             source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
   <guide url-name="mapreduce"       source-name="mapreduce">Provides a review of Hadoop terminology, a description of the MarkLogic-provided classes that enable data to be taken from or sent from MarkLogic, and an explanation of the sample code provided.</guide>
   <guide url-name="monitoring"      source-name="monitoring">Description TBD...</guide>
-  <guide url-name="db-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
+  <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
   <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
 
   <entry title="XCC Javadoc (online)">
