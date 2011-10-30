@@ -1,9 +1,6 @@
 (: TODO: make this dynamic, using real data from the database :)
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="head">
-    <h2>Recent Blog Posts</h2>
-    <a class="more" href="/blog">View blog</a>
-  </div>
+  <h1>Recent <a href="/blog">Blog</a> Posts</h1>
 
   <div class="body">
     <h3><a href="http://blog.davidcassel.net/2011/10/word-query-specification/" target="_blank">Word query specification</a></h3>

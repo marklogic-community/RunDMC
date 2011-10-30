@@ -116,7 +116,7 @@ if(typeof jQuery != 'undefined') {
 	    }
 		});
 		if(jQuery().tooltip) {
-			$('.utility a img, .utility input[type=image]').tooltip({
+			$('.utility a img, .utility input[type=image], .stip').tooltip({
 				showURL: false,
 				track: true,
 				top: -8

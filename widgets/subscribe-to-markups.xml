@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-    <div class="head">
-        <h2>Join the “Mark-UPS” Group</h2>
-    </div>
-    <div class="body">
-    <iframe width="270" height="570" src="http://meetu.ps/1QWK3" frameborder="0"></iframe>
+    <h1>Join the Group</h1>
+    <div>
+        The Mark-UPS (Maryland) User Group uses <a href="http://meetup.com/b-mlug">meetup.com</a> to organize its meetings.
+        <br/>
+        <br/>
+        See <a href="http://meetup.com/Mark-UPS" title="meetup" alt="markups"><img src="/media/meetup-63x42.png" title="meetup" alt="meetup" width="63" height="42" /></a>
+        for more details.
     </div>
 
 </ml:widget>
