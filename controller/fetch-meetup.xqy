@@ -37,9 +37,9 @@ try {
     let $url := concat("https://api.meetup.com/2/groups.xml?group_urlname=", $group_urlname, "&amp;key=", $key)
     let $group := xdmp:http-get($url)[2]
     let $name := $group/results/items/item/name
-    let $url := concat("https://api.meetup.com/2/events.xml?page=2&amp;status=past&amp;group_urlname=", $group_urlname, "&amp;key=", $key)
+    let $url := concat("https://api.meetup.com/2/events.xml?desc=true&amp;page=2&amp;status=past&amp;group_urlname=", $group_urlname, "&amp;key=", $key)
     let $recent-events := xdmp:http-get($url)[2]/results/items/item
-    let $url := concat("https://api.meetup.com/2/events.xml?page=2&amp;status=upcoming&amp;group_urlname=", $group_urlname, "&amp;key=", $key)
+    let $url := concat("https://api.meetup.com/2/events.xml?desc=true&amp;page=2&amp;status=upcoming&amp;group_urlname=", $group_urlname, "&amp;key=", $key)
     let $upcoming-events := xdmp:http-get($url)[2]/results/items/item
 
     let $doc := <meetup>
@@ -57,7 +57,7 @@ try {
                         { attribute utc_offset {$event/utc_offset} } 
                         { attribute yes_rsvp_count {$event/yes_rsvp_count} } 
                         { 
-                          let $url := concat("https://api.meetup.com/2/rsvps.xml?rsvp=yes&amp;page=7&amp;event_id=", $event/id, "&amp;key=", $key) 
+                          let $url := concat("https://api.meetup.com/2/rsvps.xml?order=name&amp;rsvp=yes&amp;page=30&amp;event_id=", $event/id, "&amp;key=", $key) 
                           let $rsvps := xdmp:http-get($url)[2]/results/items/item
                           for $rsvp in $rsvps 
                           return
@@ -82,7 +82,7 @@ try {
                         { attribute utc_offset {$event/utc_offset} } 
                         { attribute yes_rsvp_count {$event/yes_rsvp_count} } 
                         { 
-                          let $url := concat("https://api.meetup.com/2/rsvps.xml?rsvp=yes&amp;page=7&amp;event_id=", $event/id, "&amp;key=", $key)
+                          let $url := concat("https://api.meetup.com/2/rsvps.xml?order=name&amp;rsvp=yes&amp;page=30&amp;event_id=", $event/id, "&amp;key=", $key)
                           let $rsvps := xdmp:http-get($url)[2]/results/items/item
                           for $rsvp in $rsvps 
                           return
