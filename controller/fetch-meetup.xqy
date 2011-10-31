@@ -31,7 +31,7 @@ declare function local:fail ($e) {
 };
 
 
-    let $key := '409c5852343950342e36544596750' (: Eric's Key :)
+    let $key := xdmp:get-request-field("key", "")
     let $group_urlname := xdmp:get-request-field("group_urlname", "den-mark-logic")
     let $url := concat("https://api.meetup.com/2/groups.xml?group_urlname=", $group_urlname, "&amp;key=", $key)
     let $group := xdmp:http-get($url)[2]
