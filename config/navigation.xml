@@ -87,7 +87,7 @@
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
       </group>
       <group display="Libraries and Toolkits">
-        <page display="REST Library" href="/code/ml-rest-lib"/>
+        <page display="REST Endpoint Library" href="/code/ml-rest-lib"/>
         <page display="Marker" href="/code/marker"/>
         <page display="MLJSON - JSON conversion" href="/code/mljson"/>
         <page display="Facebook XQuery Library" href="/code/facebook"/>
