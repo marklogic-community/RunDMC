@@ -1784,3 +1784,12 @@ article.twitter {
 .recent-rss h4 {
 	margin: .2em 0 .4em 0;
 }
+
+.so-widget-body {
+    height: 3.6em;
+    overflow:hidden;
+}
+
+.so-widget-body p {
+    margin: 0;
+}

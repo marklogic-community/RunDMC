@@ -323,13 +323,22 @@
     <div id="stackunderflow"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery").render("#stackunderflow");
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery", 7).render("#stackunderflow");
         });
     </script>
   </xsl:template>
 
-  <xsl:template match="stackoverflow">
-      <xsl:sequence select="so:widget('marklogic;xquery', 3)" />
+  <xsl:template match="stackoverflow-widget">
+    <div id="stackunderflow-widget"/>
+    <script type="text/javascript">
+        $(function() {
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery", 3).render("#stackunderflow-widget", 'widget', 
+                function() {
+                    $('article.so-widget').unwrap();
+                }
+            );
+        });
+    </script>
   </xsl:template>
 
   <xsl:template match="upcoming-user-group-events">

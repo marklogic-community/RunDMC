@@ -4,7 +4,7 @@
 // some API urls
 var google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&callback={callback}&rsz=large&q={query}",
     questions = "http://api.stackoverflow.com/1.0/questions/{id}?key={key}&jsonp={callback}",
-    questionsTagged = "http://api.stackoverflow.com/1.0/questions/?key={key}&tagged={tagged}&body={body}&jsonp={callback}",
+    questionsTagged = "http://api.stackoverflow.com/1.0/questions/?key={key}&tagged={tagged}&body={body}&jsonp={callback}&pagesize={pagesize}",
     search = "http://api.stackoverflow.com/1.0/search/?key={key}&intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}",
     unansweredQuestionsTagged = "http://api.stackoverflow.com/1.0/questions/unanswered/?key={key}&tagged={tagged}&jsonp={callback}",
     questionsByUser = "http://api.stackoverflow.com/1.0/users/{id}/questions?key={key}&jsonp={callback}",
@@ -221,17 +221,17 @@ var su = window.stackunderflow = {
     },    
     getQuestionsWithTags: function(tags, onlyUnanswered, complete) {
         return execQuestions(onlyUnanswered ? unansweredQuestionsTagged : questionsTagged,
-            { tagged: tags }, complete);
+            { tagged: tags, body: false }, complete);
     },
-    getQuestionsWithBodyWithTags: function(tags, onlyUnanswered, complete) {
+    getQuestionsWithBodyWithTags: function(tags, pagesize, onlyUnanswered, complete) {
         return execQuestions(onlyUnanswered ? unansweredQuestionsTagged : questionsTagged,
-            { tagged: tags, body: true }, complete);
+            { tagged: tags, body: true, pagesize: pagesize }, complete);
     },
     getQuestionsByUser: function(userIds, complete) {
         return execQuestions(questionsByUser, { id: userIds instanceof Array ? userIds.join(';') : userIds }, complete);
     },    
     render: {
-        questions: function(questions, target, template) {
+        questions: function(questions, target, template, complete) {
             template = template || "question";
             if (typeof target === "string") {
                 if (target.charAt(0) === "#") target = target.substr(1);
@@ -245,6 +245,7 @@ var su = window.stackunderflow = {
                 }
             }
             append(target, html);
+            if (complete) complete();
         }
     },
     templates: {
@@ -277,7 +278,16 @@ var su = window.stackunderflow = {
             <a style="display:{ifdef:owner}" href="{site}/users/{owner.user_id}/{owner.display_name}">{owner.display_name}</a> <span style="display:{ifdef:owner}"  class="se-reputation-score" title="reputation score">{owner.reputation}</span> \
         </div> \
     </div> \
-</div> '
+</div> ',
+        widget: '<article class="so-widget"> \
+                    <h4><a href="{site}{question_answers_url}">{title}</a></h4> \
+                    <div class="so-widget-body">{body}</div> \
+                    <span class="author_date">{date:last_activity_date} <a style="display:{ifdef:owner}" href="{site}/users/{owner.user_id}/{owner.display_name}">{owner.display_name}</a> <strong style="display:{ifdef:owner}">{owner.reputation}</strong></span> \
+                    <div class="votes"> \
+                    {up_vote_count} vote \
+                    <div>{answer_count} answer</div> \
+                    </div> \
+                </article>'
     },
     filters: {
         date: function(value) {
