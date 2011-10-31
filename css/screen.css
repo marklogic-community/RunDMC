@@ -1793,3 +1793,7 @@ article.twitter {
 .so-widget-body p {
     margin: 0;
 }
+
+/* for search hit highlighting */
+ .hit_highlight { background-color: yellow; }
+a.hit_highlight { text-decoration: none; color: #666; }

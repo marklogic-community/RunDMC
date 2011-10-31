@@ -36,8 +36,16 @@ declare function u:is-directory($uri as xs:string) as xs:boolean {
 
 declare function u:highlight-doc($doc, $highlight-search as xs:string) {
   cts:highlight($doc, cts:query(search:parse($highlight-search, search:get-default-options())),
-                      <span style="background-color:yellow">{$cts:text}</span>)
+                      <a class="stip hit_highlight"
+                         title="Remove highlights"
+                         href="{u:external-uri($doc)}"
+                         xmlns="http://www.w3.org/1999/xhtml">{$cts:text}</a>)
 };
+
+        declare function u:external-uri($node) {
+          let $doc-path := base-uri($node) return
+          if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')
+        };
 
 declare function u:strip-version-from-path($path as xs:string) {
   fn:replace($path,'/[0-9]+\.[0-9]+/','/')
