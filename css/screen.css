@@ -1480,7 +1480,7 @@ div.intro p + a, div.intro p + img {float: right;}
   color: #E0EAF1;
   text-decoration: none;
 }
-.discussion pre, .blog pre {overflow: auto;}
+#stackunderflow pre, .discussion pre, .blog pre {overflow: auto;}
 .post_meta .ranking {color: #333;}
 .lists {
 	font-size: 11px;
