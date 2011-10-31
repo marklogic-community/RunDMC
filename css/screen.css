@@ -558,7 +558,10 @@ footer nav .current a {color: white;}
 	position: static;
 	margin-left: 0;
 }
-.utility form.active input[type=image] {display: none;}
+.utility form.active input[type=image] {
+	position: absolute;
+	left: -999em;
+}
 .utility .border {border-top: 1px solid white;}
 .utility a {
 	display: block;
@@ -997,10 +1000,9 @@ section#documentation:before {margin-bottom: 30px;}
 	text-align: center;
 	line-height: 21px;
 }
-#intro ul li a, div.intro p + a, .button {
-	display: block;
+.button {
+	display: table;
 	color: white;
-	background: #18869A;
 	padding: 5px 8px;
 	margin-bottom: 8px;
 	border: 1px solid #003959;
@@ -1008,7 +1010,8 @@ section#documentation:before {margin-bottom: 30px;}
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	font-weight: bold;
-	text-shadow: 0 1px 1px rgba(0,0,0,.6);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.8);
+	text-decoration: none !important;
 	text-align: center;
 	background: #2a7bab; /* Old browsers */
 	background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
@@ -1018,10 +1021,9 @@ section#documentation:before {margin-bottom: 30px;}
 	background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
 	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
 	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
-	overflow: hidden;/*
-	line-height: 12px !important;*/
+	overflow: hidden;
+	line-height: 12px !important;
 }
-.button {display: table;}
 .button img, .button span {
 	display: table-cell;
 	vertical-align: middle;
@@ -1030,6 +1032,18 @@ section#documentation:before {margin-bottom: 30px;}
 	padding-left: 10px;
 	min-width: 90px;
 }
+.button:hover {
+	background: #2f8cc2; /* Old browsers */
+	background: -moz-linear-gradient(top, #2f8cc2 0%, #0263a0 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2f8cc2), color-stop(100%,#0263a0)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #2f8cc2 0%,#0263a0 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #2f8cc2 0%,#0263a0 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #2f8cc2 0%,#0263a0 100%); /* IE10+ */
+	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
+	background: linear-gradient(top, #2f8cc2 0%,#0263a0 100%); /* W3C */
+	border-color: #005383;
+}
+#intro ul .button {width: 100%;}
 #intro ul a img {
 	float: left;
 	margin-right: 5px;
@@ -1059,17 +1073,20 @@ section#documentation:before {margin-bottom: 30px;}
 	height: 0;
 	visibility: hidden;
 }
+#bottom1 section, #bottom2 section {
+	display: table-cell;
+	border-width: 0 1px;
+	border-style: solid;
+}
 #bottom1 section {
 	width: 300px;
-	float: left;
-	border: 1px solid red;
 	padding: 0 10px 40px;
 	border-color: transparent white transparent #E3E3E3;
-	border-style: solid;
-	border-width: 0 1px;
 	min-height: 380px;
-	position: relative;
 }
+*:first-child + html #bottom1 section,
+*:first-child + html #bottom2 section
+	{float: left;}
 #bottom1 section:first-child {
 	padding-left: 0;
 	border-left: none;
@@ -1195,10 +1212,8 @@ section#documentation:before {margin-bottom: 30px;}
 	padding: 10px 0;
 	position: absolute;
 	width: 300px;
-	left: 10px;
-	bottom: 0;
+	bottom: 5px;
 }
-#bottom1 section:first-child .more {left: 0;}
 #bottom1 .more li {
 	display: inline;
 	margin-right: 20px;
@@ -1222,14 +1237,11 @@ section#documentation:before {margin-bottom: 30px;}
 	margin-left: 30px;
 }
 #bottom2 > section {
-	border-width: 0 1px;
-	border-style: solid;
 	border-color: transparent #F5F5F5 transparent #CBCBCB;
-	width: 225px;
 	padding: 0 5px 40px 8px;
-	float: left;
-	min-height: 330px;
-	position: relative;
+/*	min-height: 330px;*/
+	width: 225px;
+	min-height: 260px;
 }
 #bottom2 > h2 + section {
 	padding-left: 0;
@@ -1261,11 +1273,11 @@ section#documentation:before {margin-bottom: 30px;}
 #bottom2 .more {
 	font-size: 12px;
 	font-weight: bold;
-	width: 225px;
-	left: 8px;
+	width: 225px;/*
+	left: 8px;*/
+	left: auto;
 	border-color: #CBCBCB;
 }
-#bottom2 > h2 + section .more {left: 0;}
 /* end home page styles */
 
 #results #main h3 {font-size: 18px;}
