@@ -37,6 +37,16 @@
                                                              false())
                                           else ()"/>
 
+
+  <!-- Don't keep an <a> tag if it was inserted into an existing <a> tag
+       as a result of search hit highlighting -->
+  <xsl:template match="xhtml:a//xhtml:a[contains(string(@class), 'hit_highlight')]">
+    <span class="hit_highlight">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+
   <!-- The "Server version" switcher code;
        this is also customized in apidoc/view/page.xsl -->
   <xsl:template mode="version-list" match="*">
@@ -261,7 +271,8 @@
               </th>
               <td>
                 <h4>
-                  <a href="{$result-uri}"><!--?hl={encode-for-uri($q)}">--> <!-- Highlighting disabled until we find a better way (fully featured, not in URL) -->
+                  <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
+                  <a href="{$result-uri}?hl={encode-for-uri($clean-q)}"> <!-- Highlighting until we find a better way (fully featured, not in URL) -->
                     <xsl:variable name="page-specific-title">
                       <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
                     </xsl:variable>
