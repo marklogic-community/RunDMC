@@ -50,3 +50,15 @@ declare function u:highlight-doc($doc, $highlight-search as xs:string) {
 declare function u:strip-version-from-path($path as xs:string) {
   fn:replace($path,'/[0-9]+\.[0-9]+/','/')
 };
+
+(: 
+ : @param $v millis since epoch
+ : 
+ : convert epoch seconds to dateTime 
+ :)
+declare function u:epoch-seconds-to-dateTime($v)
+  as xs:dateTime
+{
+  xs:dateTime("1970-01-01T00:00:00-00:00") + xs:dayTimeDuration(concat("PT", $v, "S"))
+};
+
