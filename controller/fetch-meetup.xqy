@@ -31,7 +31,8 @@ declare function local:fail ($e) {
 };
 
 
-    let $key := '409c5852343950342e36544596750' (: Eric's Key :)
+try {
+    let $key := xdmp:get-request-field("key", "")
     let $group_urlname := xdmp:get-request-field("group_urlname", "den-mark-logic")
     let $url := concat("https://api.meetup.com/2/groups.xml?group_urlname=", $group_urlname, "&amp;key=", $key)
     let $group := xdmp:http-get($url)[2]
@@ -41,16 +42,63 @@ declare function local:fail ($e) {
     let $url := concat("https://api.meetup.com/2/events.xml?page=2&amp;status=upcoming&amp;group_urlname=", $group_urlname, "&amp;key=", $key)
     let $upcoming-events := xdmp:http-get($url)[2]/results/items/item
 
-    return <meetup>
+    let $doc := <meetup>
             { attribute  group_urlname {$group_urlname} } 
             { attribute  name {$name} } 
-            { $recent-events }
+            <recent-events>
+            { 
+                for $event in $recent-events
+                return 
+                    <event>
+                        { attribute id {$event/id} } 
+                        { attribute url {$event/event_url} } 
+                        { attribute name {$event/name} } 
+                        { attribute time {$event/time} } 
+                        { attribute utc_offset {$event/utc_offset} } 
+                        { attribute yes_rsvp_count {$event/yes_rsvp_count} } 
+                        { 
+                          let $url := concat("https://api.meetup.com/2/rsvps.xml?rsvp=yes&amp;page=7&amp;event_id=", $event/id, "&amp;key=", $key) 
+                          let $rsvps := xdmp:http-get($url)[2]/results/items/item
+                          for $rsvp in $rsvps 
+                          return
+                              <rsvp>
+                                {$rsvp/member}
+                                {$rsvp/member_photo}
+                              </rsvp>
+                        }
+                    </event>
+            }
+            </recent-events>
 
             <upcoming-events> 
-                { $upcoming-events } 
-                <rsvps>
-
-                </rsvps>
+            { 
+                for $event in $upcoming-events
+                return 
+                    <event>
+                        { attribute id {$event/id} } 
+                        { attribute url {$event/event_url} } 
+                        { attribute name {$event/name} } 
+                        { attribute time {$event/time} } 
+                        { attribute utc_offset {$event/utc_offset} } 
+                        { attribute yes_rsvp_count {$event/yes_rsvp_count} } 
+                        { 
+                          let $url := concat("https://api.meetup.com/2/rsvps.xml?rsvp=yes&amp;page=7&amp;event_id=", $event/id, "&amp;key=", $key)
+                          let $rsvps := xdmp:http-get($url)[2]/results/items/item
+                          for $rsvp in $rsvps 
+                          return
+                              <rsvp>
+                                {$rsvp/member}
+                                {$rsvp/member_photo}
+                              </rsvp>
+                        }
+                    </event>
+            }
             </upcoming-events> 
 
            </meetup>
+
+    let $uri := concat("/private/meetup/", $group_urlname, ".xml")
+    return xdmp:document-insert($uri, $doc)
+} catch ($e) {
+  local:fail(("Stack trace: ", $e))
+}
