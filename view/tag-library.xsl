@@ -662,6 +662,7 @@
     <div class="doclist">
       <h2>&#160;</h2>
       <span class="amount">
+<!--
         <xsl:value-of select="count($docs)"/>
         <xsl:choose>
             <xsl:when test="count($docs) eq 1">
@@ -671,6 +672,7 @@
                 <xsl:text> documents</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
+-->
       </span>
       <table class="documentsTable">
         <colgroup>
@@ -707,6 +709,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
+  		<img src="/images/i_monitor.png" alt="" width="24" height="22" />
                 <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
