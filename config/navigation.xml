@@ -142,6 +142,9 @@
         <page display="API References" href="/learn/references">
             <Article type="Reference"/>
         </page>
+        <page display="Videos" href="/learn/videos">
+            <Article type="Video"/>
+        </page>
     </group>
   </page>
   -->
@@ -206,6 +209,8 @@
   <generic-page display="Error" href="/error" hide="yes"/>
 
   <generic-page display="SuperNodes" href="/people/supernodes" hide="yes"/>
+
+  <generic-page display="Videos" href="/learn/videos" hide="yes"/>
 
   <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>

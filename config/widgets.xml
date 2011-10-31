@@ -39,6 +39,7 @@
     <page-tree root="/events"/>
     <page-tree root="/qa"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
+    <page href="/learn/videos"/>
   </widget>
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
@@ -176,6 +177,5 @@
   <widget href="/widgets/inside-marklogic-server-toc.xml">
     <page href="/inside-marklogic"/>
   </widget>
-
 
 </widgets>
