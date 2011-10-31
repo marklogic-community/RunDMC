@@ -191,7 +191,7 @@
          <xsl:text> &#8212; </xsl:text>
          <xsl:value-of select="$errorMessage"/>
      </h2>
-     <pre>
+     <pre style="overflow: auto">
         <xsl:value-of select="$errorDetail"/>
      </pre>
   </xsl:template>
