@@ -342,98 +342,58 @@
   </xsl:template>
 
   <xsl:template match="upcoming-user-group-events">
+    <xsl:variable name="upcoming-events" select="ml:get-meetup-upcoming(@group)"/>
+    <xsl:variable name="recent-events" select="ml:get-meetup-recent(@group)"/>
+    <xsl:if test="(count($upcoming-events) gt 0) or (count($recent-events) gt 0)">
     <section class="lists meetup">
       <header>
-        <h1><img src="/images/i_meetup_lg.png" alt="Meetup" width="56" height="37" /> Upcoming &amp; Recent Meetups (FAKED)</h1>
-        <a href="">More information&#160;»</a>
+        <h1><img src="/images/i_meetup_lg.png" alt="Meetup" width="56" height="37" /><xsl:value-of select="ml:get-meetup-name(@group)"/></h1>
+        <a><xsl:attribute name="href"><xsl:value-of select="concat('http://meetup.com/', @group)"/></xsl:attribute> More information&#160;»</a>
       </header>
+      <xsl:if test="count($upcoming-events) gt 0">
       <section>
         <h2>Upcoming Meetups</h2>
         <ul>
-          <li>
-            <div class="info">
-              <div class="date">November 25 at 6:00 PM, 15 Members attending</div>
-              <a class="title" href="">Denver MarkLogic Users’ Group (DenMARK) November</a>
-            </div>
-            <div class="attendees">
-              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
-              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
-              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
-              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
-              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
-              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
-              <span class="amount">15</span>
-            </div>
-          </li>
-          <li>
-            <div class="info">
-              <div class="date">November 2 at 6:00 PM, 9 Members attending</div>
-              <a class="title" href="">MarkLogic Server and Kaplan Mobile</a>
-            </div>
-            <div class="attendees">
-              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
-              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
-              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
-              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
-              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
-              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
-              <span class="amount">9</span>
-            </div>
-          </li>
+        <xsl:apply-templates mode="meetup-events" select="$upcoming-events"/>
         </ul>
       </section>
+      </xsl:if>
+      <xsl:if test="count($recent-events) gt 0">
       <section>
         <h2>Recent Meetups</h2>
         <ul>
-          <li>
-            <div class="info">
-              <div class="date">September 21 at 7:00 PM, 6 Members attended</div>
-              <a class="title" href="">Denver MarkLogic Users’ Group (DenMARK) September</a>
-            </div>
-            <div class="attendees">
-              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
-              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
-              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
-              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
-              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
-              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
-              <span class="amount">6</span>
-            </div>
-          </li>
-          <li>
-            <div class="info">
-              <div class="date">August 17 at 7:00 PM, 23 Members attended</div>
-              <a class="title" href="">CMS Toolkit: OAuth2, Library Services API, HTML5 contentEditable, and more</a>
-            </div>
-            <div class="attendees">
-              <a href=""><img src="img/user2.jpg" title="Mel Lewis" alt="Mel Lewis" width="24" height="24" /></a>
-              <a href=""><img src="img/user6.jpg" title="Art Taylor" alt="Art Taylor" width="24" height="24" /></a>
-              <a href=""><img src="img/user3.jpg" title="Elvin Jones" alt="Elvin Jones" width="24" height="24" /></a>
-              <a href=""><img src="img/user1.jpg" title="Art Blakey" alt="Art Blakey" width="24" height="24" /></a>
-              <a href=""><img src="img/user5.jpg" title="Roy Hanes" alt="Roy Hanes" width="24" height="24" /></a>
-              <a href=""><img src="img/user4.jpg" title="Gene Krupa" alt="Gene Krupa" width="24" height="24" /></a>
-              <span class="amount">23</span>
-            </div>
-          </li>
+        <xsl:apply-templates mode="meetup-events" select="$recent-events"/>
         </ul>
       </section>
+      </xsl:if>
     </section>
-    <!--
-    <xsl:variable name="events" select="ml:most-recent-two-user-group-events(string(@group))"/>
-    <div class="double">
-      <h2>Events</h2>
-      <a class="more" href="/events">All events&#160;></a>
-      <xsl:for-each select="$events">
-        <div>
-          <xsl:apply-templates mode="event-excerpt" select=".">
-            <xsl:with-param name="suppress-more-link" select="true()" tunnel="yes"/>
-            <xsl:with-param name="suppress-description" select="true()" tunnel="yes"/>
-          </xsl:apply-templates>
-        </div>
-      </xsl:for-each>
-    </div>
-    -->
+    </xsl:if>
   </xsl:template>
+
+      <xsl:template mode="meetup-events" match="meetup" >
+          <li>
+            <div class="info">
+              <div class="date"><xsl:value-of select="date"/></div>
+              <a class="title">
+                <xsl:attribute name="href"><xsl:value-of select="url/string()"/></xsl:attribute>
+                <xsl:value-of select="title/string()"/>
+              </a>
+            </div>
+            <div class="attendees">
+              <xsl:apply-templates mode="meetup-members" select="rsvps/member" />
+              <span class="amount">
+                <xsl:value-of select="yes-rsvps"/>
+              </span>
+            </div>
+          </li>
+      </xsl:template>
+
+      <xsl:template mode="meetup-members" match="member" >
+          <xsl:variable name="url" select="concat('http://meetup.com/members/', id)" />
+          <xsl:variable name="avatar" select="avatar"/>
+          <xsl:variable name="name" select="name"/>
+          <a title="{$name}" href="{$url}"><img src="{$avatar}" title="{$name}" alt="{$name}" width="24" height="24" /></a>
+      </xsl:template>
 
 
   <xsl:template match="recent-news-and-events">
