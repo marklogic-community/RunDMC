@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
     <h1>Organize a User Group</h1>
   <div>
-    <p>If you are interested in starting a new user group you are encouraged to use the mailing list to find other users in your region and to contact MarkLogic for sponsorship. MarkLogic provides support for User Groups, such as modest financial support to cover refreshments and AV Content and technical speakers when appropriate.</p>
+    <p>If you are interested in starting a new user group you are encouraged to use the <a href="/discuss">mailing list</a> to find other users in your region and 
+to contact MarkLogic for sponsorship. MarkLogic provides support for User Groups, such as modest financial support to cover refreshments and AV Content and technical 
+speakers when appropriate.</p>
     <p><a class="more" href="/meet/organize">More information &gt;</a></p>
   </div>
 </ml:widget>
