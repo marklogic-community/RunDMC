@@ -709,6 +709,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
+  		<img src="/images/i_monitor.png" alt="" width="24" height="22" />
                 <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
