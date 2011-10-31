@@ -389,3 +389,72 @@ declare function invalidate-cached-navigation()
        if (fn:doc-available($draft-nav-location))
   then xdmp:document-delete($draft-nav-location) else ()
 };
+
+(: Used to implement the <ml:meetup-events/> tag :)
+declare function get-meetup-upcoming($group as xs:string?)
+{
+    let $doc := fn:doc(fn:concat('/private/meetup/', $group, '.xml'))
+
+    return
+        for $m in $doc/*:meetup/*:upcoming-events/*:event
+        return 
+        <ml:meetup>
+            <ml:id>{$m/@*:id/fn:string()}</ml:id>
+            <ml:title>{$m/@*:name/fn:string()}</ml:title>
+            <ml:url>{$m/@*:url/fn:string()}</ml:url>
+            <ml:yes-rsvps>{$m/@*:yes_rsvp_count/fn:string()}</ml:yes-rsvps>
+            <ml:date>
+            {
+                xdmp:strftime("%B %d", u:epoch-seconds-to-dateTime(($m/@*:time/fn:number()) idiv 1000))
+            }
+            </ml:date>
+            <ml:rsvps>
+            {
+                for $r in $m/*:rsvp
+                return
+                    <ml:member>
+                      <ml:id>{$r/*:member/*:member_id/fn:string()}</ml:id>
+                      <ml:name>{$r/*:member/*:name/fn:string()}</ml:name>
+                      <ml:avatar>{$r/*:member_photo/*:thumb_link/fn:string()}</ml:avatar>
+                    </ml:member>
+            }
+            </ml:rsvps>
+        </ml:meetup>
+};
+
+declare function get-meetup-recent($group as xs:string?)
+{
+    let $doc := fn:doc(fn:concat('/private/meetup/', $group, '.xml'))
+
+    return
+        for $m in $doc/*:meetup/*:recent-events/*:event
+        return 
+        <ml:meetup>
+            <ml:id>{$m/@*:id/fn:string()}</ml:id>
+            <ml:title>{$m/@*:name/fn:string()}</ml:title>
+            <ml:url>{$m/@*:url/fn:string()}</ml:url>
+            <ml:yes-rsvps>{$m/@*:yes_rsvp_count/fn:string()}</ml:yes-rsvps>
+            <ml:date>
+            {
+                xdmp:strftime("%B %d, %Y", u:epoch-seconds-to-dateTime(($m/@*:time/fn:number()) idiv 1000))
+            }
+            </ml:date>
+            <ml:rsvps>
+            {
+                for $r in $m/*:rsvp[fn:exists(*:member_photo/*:thumb_link)][1 to 6]
+                return
+                    <ml:member>
+                      <ml:id>{$r/*:member/*:member_id/fn:string()}</ml:id>
+                      <ml:name>{$r/*:member/*:name/fn:string()}</ml:name>
+                      <ml:avatar>{$r/*:member_photo/*:thumb_link/fn:string()}</ml:avatar>
+                    </ml:member>
+            }
+            </ml:rsvps>
+        </ml:meetup>
+};
+
+declare function get-meetup-name($group as xs:string?)
+{
+    let $url := fn:concat('/private/meetup/', $group, '.xml')
+    return fn:doc($url)/*:meetup/@*:name/fn:string()
+};
