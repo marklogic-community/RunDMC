@@ -332,7 +332,7 @@
     <div id="stackunderflow-widget"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithBodyWithTags("xquery", 3).render("#stackunderflow-widget", 'widget', 
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic", 3).render("#stackunderflow-widget", 'widget', 
                 function() {
                     $('article.so-widget').unwrap();
                 }
