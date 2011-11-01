@@ -1834,6 +1834,7 @@ a.hit_highlight { text-decoration: none; color: #666; }
 .ytplayer #ytvideo {
     float: left;
 	margin-right:10px;
+    height: 640px;
 }
 .ytplayer #ytvideo-desc {
 	clear:left;
