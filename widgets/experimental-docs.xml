@@ -4,6 +4,6 @@
   <div>
     Try out the <a target="_blank" title="New experimental documentation search application!" href="http://docs.marklogic.com/">searchable docs!</a>
     <br/>
-    This application is <a href="http://docs.marklogic.com/4.2doc/about.xqy">experimental</a>.
+    This application is <a href="http://docs.marklogic.com/5.0doc/about.xqy">experimental</a>.
   </div>
 </ml:widget>
