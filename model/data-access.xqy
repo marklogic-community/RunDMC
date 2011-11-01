@@ -458,3 +458,13 @@ declare function get-meetup-name($group as xs:string?)
     let $url := fn:concat('/private/meetup/', $group, '.xml')
     return fn:doc($url)/*:meetup/@*:name/fn:string()
 };
+
+declare function videos() 
+{
+    <ml:videos>
+    {
+        for $video in $Articles[@type eq 'Video']
+            return $video
+    }
+    </ml:videos>
+}; 

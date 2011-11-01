@@ -801,4 +801,44 @@
     <span class="server-version"><xsl:value-of select="xdmp:version()"/></span>
   </xsl:template>
 
+  <!-- in progress
+  <xsl:template match="ytplayer">
+    <xsl:variable name="videos" select="ml:videos()"/>
+	<div class="ytplayer">
+		<div class="ytplayer-box">
+			<a class="close"></a>
+			<div id="ytvideo"></div>
+			<ul class="mlvideos">
+                <xsl:apply-templates mode="ytplayer-video" select="$videos/Article"/>
+            </ul>
+			<div id="ytvideo-desc">Description </div>
+		</div>
+	</div>
+  </xsl:template>
+
+      <xsl:template match="ytplayer-video">
+	        <li><a><xsl:attribute name="href"><xsl:value-of select="external-link/string()"/> </xsl:attribute>
+                   <xsl:attribute name="alt"><xsl:value-of select="description"/> </xsl:attribute>
+                   <xsl:value-of select="title/string()"/></a></li>
+      </xsl:template>
+   -->
+
+  <xsl:template match="ytplayer">
+	<div class="ytplayer">
+		<div class="ytplayer-box">
+			<a class="close"></a>
+			<div id="ytvideo"></div>
+
+			<ul class="mlvideos">
+	            <li><a href="http://www.youtube.com/watch?v=On6pGs5NPIc" alt="Information Studio Demo Video, part 1.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 1</a></li>
+	            <li><a href="http://www.youtube.com/watch?v=eo5ct0Heyfc" alt="Information Studio Demo Video, part 2.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 2</a></li>
+	            <li><a href="http://www.youtube.com/watch?v=dJCIAJdvpZk" alt="Review the basic concepts, layout, and user interface for Query Console, a query debugging tool.">Query Console Screencast</a></li>
+	            <li><a href="http://www.youtube.com/watch?v=BH2lsCmHb4w" alt="How to monitor MarkLogic with the Plug-in for Nagios">Nagios Plugin Setup and Configuration</a></li>
+	            <li><a href="http://www.youtube.com/watch?v=WbWAyyfZHVc" alt="How to monitor MarkLogic with the SPI for HP Operations Manager‬">Set up MarkLogic's SPI for HP Operations Manager‬</a></li>
+            </ul>
+			<div id="ytvideo-desc">Description </div>
+		</div>
+	</div>
+  </xsl:template>
+
 </xsl:stylesheet>

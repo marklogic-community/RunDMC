@@ -31,6 +31,47 @@
         <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script> <!-- Needed? XXX  -->
         <script type="text/javascript" src="/js/jquery.youtubepopup.min.js"></script> 
         <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script> 
+        <script type="text/javascript" src="/js/jquery.youtubeplaylist.js"></script>
+
+        <script type="text/javascript">
+	
+		$(function() {
+			$("ul.mlvideos").ytplaylist({addThumbs:true, autoPlay: false, holderId: 'ytvideo', playerWidth:'640', playerHeight:'360'});
+			$("#ytvideo-desc").text($($('.mlvideos li a')[0]).attr('alt'));		
+			var videoShowing = false;
+			$("#show-video").click(function() {
+				if (!videoShowing) {
+					$(".ytplayer").show();					
+					$("#ytvideo-desc").css('opacity','1');
+					videoShowing = true;
+				} else {
+					$(".ytplayer").hide();
+					$('#ytvideo iframe').remove();
+					videoShowing = false;
+				}
+			});
+			$(".ytplayer .close").click(function() {
+				$(".ytplayer").hide();
+				$('#ytvideo iframe').remove();
+				videoShowing = false;
+			});
+			$(".ytplayer .yt-vid").click(function() {
+				var vid = $(this);
+				$("#ytvideo-desc").fadeOut("slow", function() {
+					$("#ytvideo-desc").text(vid.attr('alt'));		
+					$("#ytvideo-desc").fadeIn("slow");					
+				});
+			});
+			$(".ytplayer").click(function(ev) {
+				if (ev.target == this) {
+					$(".ytplayer").hide();
+					$('#ytvideo iframe').remove();
+					videoShowing = false;
+				}
+			});			
+		});
+        </script>
+
         <script type="text/javascript">
             $(function () {
                 $("a.youtube").YouTubePopup({ 

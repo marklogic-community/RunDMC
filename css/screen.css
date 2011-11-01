@@ -1810,3 +1810,86 @@ article.twitter {
 /* for search hit highlighting */
  .hit_highlight { background-color: yellow; }
 a.hit_highlight { text-decoration: none; color: #666; }
+
+.ytplayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+	display:none;
+    background: rgba(5, 5, 5, 0.85);
+}
+.ytplayer-box {
+	margin: 155px auto;
+    background: #f3f3f3;
+    border: 2px solid #e3e3e3;
+    padding: 12px 12px 8px 12px;
+	border-radius:16px;
+	width:900px;
+	height:415px;
+}
+
+.ytplayer #ytvideo {
+    float: left;
+	margin-right:10px;
+}
+.ytplayer #ytvideo-desc {
+	clear:left;
+    float:left;
+	width:640px;
+}
+
+.ytplayer ul {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 250px;
+	font-size:12px;
+	height:360px;
+	overflow-y:scroll;
+}
+
+.ytplayer ul li {
+    list-style-type: none;
+    display:block;
+    background: #f1f1f1;
+    float: left;
+    width: 225px;
+    margin-bottom: 5px;
+	padding:2px;
+}
+
+.ytplayer ul li img {
+    width: 120px;
+    float: left;
+    margin-right: 5px;
+    border: 1px solid #999;
+}
+
+.ytplayer ul li a {
+    color: #666;
+    text-decoration: none;
+    display: block;
+}
+.ytplayer ul li a:hover {
+    text-decoration: underline;
+}
+
+.ytplayer .currentvideo {
+	background: #e6e6e6;
+}
+
+.ytplayer .close {
+	display:block;
+	float:right;
+	margin-top: -30px;
+	margin-right: -30px;
+    background: url("/images/s_open_close.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    width: 19px;
+    height: 19px;
+	top:0;
+	right:0;
+}
