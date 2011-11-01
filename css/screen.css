@@ -1833,9 +1833,12 @@ a.hit_highlight { text-decoration: none; color: #666; }
 
 .ytplayer #ytvideo {
     float: left;
-	margin-right:10px;
-    height: 640px;
+    margin-right:10px;
+    width: 640px;  
+    height: 360px;
+    min-height:360px;
 }
+
 .ytplayer #ytvideo-desc {
 	clear:left;
     float:left;

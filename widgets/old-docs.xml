@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> Previous release docs</h1>
+  <h1><img src="/images/previousdocs.png" alt="doc with left arrow" width="30" height="30" /> Previous release docs</h1>
   <div>
 	<ul>
     <li><a href="/docs/4.2">MarkLogic Server 4.2</a></li>

@@ -1,6 +1,6 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
 
-  <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> Searchable Docs</h1>
+  <h1><img src="/images/icon_searchabledocs.png" alt="magnifying glass" width="30" height="30" /> Searchable Docs</h1>
   <div>
     Try out the <a target="_blank" title="New experimental documentation search application!" href="http://docs.marklogic.com/">searchable docs!</a>
     <br/>
