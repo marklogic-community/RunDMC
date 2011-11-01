@@ -12,6 +12,10 @@
     <page href="/docs/4.0"/>
   </widget>
 
+  <widget href="/widgets/tutorials.xml" id="tutorials-widget">
+    <page href="/docs"/>
+    <page href="/docs/5.0"/>
+  </widget>
                                      <!-- id for CSS purposes -->
   <widget href="/widgets/hadoop.xml" id="hadoop">
     <page href="/products/marklogic5"/>

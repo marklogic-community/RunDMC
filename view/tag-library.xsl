@@ -575,6 +575,7 @@
         <xsl:value-of select="count($docs)"/>
         <xsl:text> of </xsl:text>
         -->
+<!--
         <xsl:value-of select="count($docs)"/>
         <xsl:choose>
             <xsl:when test="count($docs) eq 1">
@@ -584,6 +585,7 @@
                 <xsl:text> documents</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
+-->
       </span>
       <!--
       <form action="" method="get">
@@ -606,7 +608,7 @@
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Document&#160;Type&#160;&#160;&#160;&#160;</th> <!-- nbsp's to prevent overlap with sort arrow -->
+            <!--<th scope="col">Document&#160;Type&#160;&#160;&#160;&#160;</th>--> <!-- nbsp's to prevent overlap with sort arrow -->
             <!--
             <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <th scope="col">Topic(s)</th>
@@ -660,6 +662,7 @@
     <div class="doclist">
       <h2>&#160;</h2>
       <span class="amount">
+<!--
         <xsl:value-of select="count($docs)"/>
         <xsl:choose>
             <xsl:when test="count($docs) eq 1">
@@ -669,6 +672,7 @@
                 <xsl:text> documents</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
+-->
       </span>
       <table class="documentsTable">
         <colgroup>
@@ -705,6 +709,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
+  		<img src="/images/i_monitor.png" alt="" width="24" height="22" />
                 <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
@@ -728,9 +733,11 @@
                 </a>
                 <br/><div class="doc-desc"><p><xsl:value-of select="description"/></p></div>
               </td>
+              <!--
               <td>
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
+              -->
               <td>
                 <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
               </td>

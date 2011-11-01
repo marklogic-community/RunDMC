@@ -212,7 +212,9 @@
   <generic-page display="SuperNodes" href="/people/supernodes" hide="yes"/>
 
   <generic-page display="Videos" href="/learn/videos" hide="yes"/>
+  <generic-page display="Tutorials" href="/learn/tutorials" hide="yes"/>
 
+  <!-- TBD: automate this stuff below -->
   <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
