@@ -271,8 +271,14 @@
               </th>
               <td>
                 <h4>
+                  <!-- Highlighting until we find a better way (fully featured, not in URL) -->
                   <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
-                  <a href="{$result-uri}?hl={encode-for-uri($clean-q)}"> <!-- Highlighting until we find a better way (fully featured, not in URL) -->
+                  <xsl:variable name="do-highlight" select="$clean-q and not(contains($result-uri,'#') or ends-with($result-uri,'.pdf')
+                                                                                                       or ends-with($result-uri,'.html')
+                                                                            )"/>
+                  <xsl:variable name="hl-query-string" select="if ($do-highlight) then concat('?hl=',encode-for-uri($clean-q))
+                                                                                  else ''"/>
+                  <a href="{$result-uri}{$hl-query-string}">
                     <xsl:variable name="page-specific-title">
                       <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
                     </xsl:variable>
