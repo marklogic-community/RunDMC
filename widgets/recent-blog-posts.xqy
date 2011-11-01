@@ -38,6 +38,6 @@ While looking at the database configuration in MarkLogic Server, have you ever n
     </div>
   </article>
   </div>
-  <a style="float: right; padding: 5px" class="more" href="">View blog</a>
+  <a style="float: right; padding: 5px" class="more" href="/blog">View blog</a>
 </ml:widget>
 
