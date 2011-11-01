@@ -323,7 +323,7 @@
     <div id="stackunderflow"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery", 7).render("#stackunderflow");
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic", 7).render("#stackunderflow");
         });
     </script>
   </xsl:template>
@@ -332,7 +332,7 @@
     <div id="stackunderflow-widget"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithBodyWithTags("marklogic;xquery", 3).render("#stackunderflow-widget", 'widget', 
+            stackunderflow.getQuestionsWithBodyWithTags("xquery", 3).render("#stackunderflow-widget", 'widget', 
                 function() {
                     $('article.so-widget').unwrap();
                 }
