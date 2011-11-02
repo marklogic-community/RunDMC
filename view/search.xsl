@@ -98,6 +98,14 @@
     <search:options>
       <xsl:copy-of select="$common-search-options"/>
       <search:return-query>true</search:return-query>
+
+      <!-- If this is an empty search and the category is xccn, then don't snippet
+           (workaround for stack overflow in snippeting functions, particularly against
+            /pubs/5.0/dotnet/Marklogic.Xcc.Types.Duration.Minutes.html) -->
+      <xsl:if test="$q eq 'cat:xccn'">
+        <search:transform-results apply="empty-snippet"/>
+      </xsl:if>
+
     </search:options>
   </xsl:variable>
 
