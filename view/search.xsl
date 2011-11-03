@@ -251,12 +251,11 @@
                                                                            concat('/pubs/', $api-version,
                                                                                   if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/(@pdf-name,@source-name)[1], '.pdf')
                                                                                                                   else concat('/apidocs/',
-                                                                                                                               for $func-configs in (if ($api-version eq '4.1') then $functions-4.1
-                                                                                                                                                else if ($api-version eq '4.2') then $functions-4.2
-                                                                                                                                                else if ($api-version eq '5.0') then $functions-5.0
-                                                                                                                                                else ())
-                                                                                                                               return
-                                                                                                                                 $func-configs[@name eq substring-after($uri,'/')][1]/@url
+                                                                                                                              (if ($api-version eq '4.1') then $functions-4.1
+                                                                                                                          else if ($api-version eq '4.2') then $functions-4.2
+                                                                                                                          else if ($api-version eq '5.0') then $functions-5.0
+                                                                                                                          else ())
+                                                                                                                               [@name eq substring-after($uri,'/')][1]/@url
                                                                                                                              )
                                                                                 )
                                                                           )
