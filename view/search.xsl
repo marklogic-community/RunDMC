@@ -256,7 +256,7 @@
                                                                                                                                                 else if ($api-version eq '5.0') then $functions-5.0
                                                                                                                                                 else ())
                                                                                                                                return
-                                                                                                                                 $func-configs[@name eq substring-after($uri,'/')]/@url
+                                                                                                                                 $func-configs[@name eq substring-after($uri,'/')][1]/@url
                                                                                                                              )
                                                                                 )
                                                                           )
