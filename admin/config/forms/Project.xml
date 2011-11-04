@@ -1,3 +1,6 @@
+<!DOCTYPE ml:Project [
+<!ENTITY topic-tags SYSTEM "../topic-tags.xml">
+]>
 <ml:Project xmlns:ml="http://developer.marklogic.com/site/internal"
             xmlns:form  ="http://developer.marklogic.com/site/internal/form"
             xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
@@ -11,6 +14,9 @@
     <ml:contributor form:repeating="yes"
                     form:label="Contributor"/>
   </ml:contributors>
+
+  &topic-tags;
+
   <ml:description form:label="Description"
                   form:type="textarea"
                   form:class="richtext"/>

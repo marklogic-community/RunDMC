@@ -1,3 +1,6 @@
+<!DOCTYPE ml:Article [
+<!ENTITY topic-tags SYSTEM "../topic-tags.xml">
+]>
 <ml:Article xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
@@ -18,6 +21,9 @@
     <ml:server-version form:label="Server Version"
                        form:repeating="yes"
                        form:optional="yes"/>
+
+    &topic-tags;
+
     <ml:topics form:optional="yes">
       <ml:topic form:label="Topic" form:repeating="yes"/>
     </ml:topics>

@@ -1,3 +1,6 @@
+<!DOCTYPE ml:page [
+<!ENTITY topic-tags SYSTEM "../topic-tags.xml">
+]>
 <ml:page xmlns:ml="http://developer.marklogic.com/site/internal"
       xmlns:form  ="http://developer.marklogic.com/site/internal/form"
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
@@ -9,4 +12,5 @@
       form:lines="20"
       form:class="optional-richtext"
       form:uri-prefix-for-new-docs="/">
+  &topic-tags;
 </ml:page>
