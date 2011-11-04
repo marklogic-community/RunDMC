@@ -7,6 +7,9 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 import module namespace u = "http://marklogic.com/rundmc/util"
        at "../lib/util-2.xqy";
 
+import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
+       at "../model/filter-drafts.xqy";
+
 declare variable $s:hosts := u:get-doc('/config/server-urls.xml')/hosts/host;
 
 declare variable $s:host-name := xdmp:host-name(xdmp:host());
@@ -28,6 +31,9 @@ declare variable $s:main-server   := s:server-url("main");
 declare variable $s:draft-server  := s:server-url("draft");
 declare variable $s:webdav-server := s:server-url("webdav");
 declare variable $s:api-server    := s:server-url("api");
+
+declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
+                                                                   else $s:draft-server;
 
 (: Use the @url if provided in the config; otherwise, use the same server but with the specified @port :)
 declare function s:server-url($type as xs:string) {

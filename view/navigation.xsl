@@ -30,10 +30,10 @@
                                                    $navigation//Event        [$content/Event]
                                                   )[1]"/>
 
-  <!-- Home page link always points to main server (even from API server) -->
+  <!-- Home page link always points to primary server (even from API server) -->
   <xsl:template match="xhtml:a/@ml:href[. eq '/']">
     <xsl:attribute name="href">
-      <xsl:value-of select="$srv:main-server"/>
+      <xsl:value-of select="$srv:primary-server"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -61,7 +61,7 @@
                   <xsl:template mode="top-nav-server-prefix" match="page" as="xs:string">
                     <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
                                                                            then $srv:api-server
-                                                                           else $srv:main-server
+                                                                           else $srv:primary-server
                                                                       else ()"/>
                   </xsl:template>
 
