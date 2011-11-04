@@ -658,20 +658,25 @@
 
   <xsl:template match="topic-docs">
     <ul class="doclist">
-      <xsl:apply-templates mode="topic-doc" select="ml:topic-docs(@tag)/*"/>
+      <xsl:variable name="explicitly-listed" select="doc/doc(@path)/*"/>
+      <!-- List the manual ones first, in the given order -->
+      <xsl:apply-templates mode="topic-doc" select="$explicitly-listed"/>
+      <!-- Then list other docs with this topic tag -->
+      <xsl:apply-templates mode="topic-doc" select="ml:topic-docs(@tag)/* except $explicitly-listed"/>
     </ul>
   </xsl:template>
 
           <xsl:template mode="topic-doc" match="*">
             <li>
-              <a href="{if (external-link) then external-link/@href else ml:external-uri(.)}">
+              <a href="{ml:external-uri(.)}">
                 <xsl:apply-templates mode="page-specific-title" select="."/>
               </a>
               <div>
-                <xsl:apply-templates select="(description,short-description)[1]/node()"/>
+                <xsl:apply-templates select="(short-description,description)[1]/node()"/>
               </div>
             </li>
           </xsl:template>
+
 
 
   <xsl:template match="document-table">
