@@ -658,7 +658,7 @@
 
   <xsl:template match="topic-docs">
     <ul class="doclist">
-      <xsl:variable name="explicitly-listed" select="doc/doc(@path)/*"/>
+      <xsl:variable name="explicitly-listed" select="for $path in doc/@path return doc($path)/*"/> <!-- for enforces order -->
       <!-- List the manual ones first, in the given order -->
       <xsl:apply-templates mode="topic-doc" select="$explicitly-listed"/>
       <!-- Then list other docs with this topic tag -->
