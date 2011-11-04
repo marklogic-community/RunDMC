@@ -656,6 +656,23 @@
           </xsl:template>
 
 
+  <xsl:template match="topic-docs">
+    <ul class="doclist">
+      <xsl:apply-templates mode="topic-doc" select="ml:topic-docs(@tag)/*"/>
+    </ul>
+  </xsl:template>
+
+          <xsl:template mode="topic-doc" match="*">
+            <li>
+              <a href="{ml:external-uri(.)}">
+                <xsl:apply-templates mode="page-specific-title" select="."/>
+              </a>
+            </li>
+            <div>
+              <xsl:apply-templates select="(description,short-description)[1]/node()"/>
+            </div>
+          </xsl:template>
+
 
   <xsl:template match="document-table">
     <xsl:variable name="docs" select="doc"/>

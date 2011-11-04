@@ -121,6 +121,14 @@ declare function ml:api-doc-query($preferred-version as xs:string) {
 };
 
 
+declare function topic-docs($tag as xs:string) as document-node()* {
+  fn:collection()[.//topic-tag = $tag]
+
+                 (: filter out non-live docs :)
+                 [cts:contains(., ml:search-corpus-query($default-version))]
+};
+
+
 declare variable $all-category-tags as xs:string* := cts:collection-match("category/*");
 
 (: For determining category facets :)
