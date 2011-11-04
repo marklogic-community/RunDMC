@@ -238,7 +238,7 @@
   </xsl:template>
 
           <xsl:template mode="page-content" match="page">
-            <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2)"/>
+            <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2, topic-tag)"/>
           </xsl:template>
 
 
