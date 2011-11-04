@@ -48,15 +48,22 @@
           <xsl:template mode="top-nav" match="page">
             <li>
               <xsl:apply-templates mode="top-nav-current-att" select="."/>
-              <xsl:variable name="server-prefix" select="if (starts-with(@href,'/')) then if (@api-server)
-                                                                                     then $srv:api-server
-                                                                                     else $srv:main-server
-                                                         else ()"/>
+              <xsl:variable name="server-prefix">
+                <xsl:apply-templates mode="top-nav-server-prefix" select="."/>
+              </xsl:variable>
               <a href="{$server-prefix}{@href}" class="stip" title="{@tooltip}">
                 <xsl:apply-templates mode="nav-text" select="@display"/>
               </a>
             </li>
           </xsl:template>
+
+                  <!-- overridden by admin code -->
+                  <xsl:template mode="top-nav-server-prefix" match="page" as="xs:string">
+                    <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
+                                                                           then $srv:api-server
+                                                                           else $srv:main-server
+                                                                      else ()"/>
+                  </xsl:template>
 
                   <xsl:template mode="top-nav-current-att" match="page"/>
 

@@ -20,6 +20,9 @@
   <!-- Make everything a "main page" -->
   <xsl:template mode="body-class" match="*">main_page</xsl:template>
 
+  <!-- Don't add a server prefix to the top nav links -->
+  <xsl:template mode="top-nav-server-prefix" match="page"/>
+
   <!-- *Do* include breadcrumbs on the home page -->
   <xsl:template mode="breadcrumbs" match="*">
     <xsl:call-template name="breadcrumbs-impl">
