@@ -664,13 +664,13 @@
 
           <xsl:template mode="topic-doc" match="*">
             <li>
-              <a href="{ml:external-uri(.)}">
+              <a href="{if (external-link) then external-link/@href else ml:external-uri(.)}">
                 <xsl:apply-templates mode="page-specific-title" select="."/>
               </a>
+              <div>
+                <xsl:apply-templates select="(description,short-description)[1]/node()"/>
+              </div>
             </li>
-            <div>
-              <xsl:apply-templates select="(description,short-description)[1]/node()"/>
-            </div>
           </xsl:template>
 
 
