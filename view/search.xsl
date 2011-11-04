@@ -260,14 +260,12 @@
                                                                                 )
                                                                           )
 
-                                                                     else concat($srv:primary-server, if ($is-flat-file)
-                                                                                                      then @uri
-                                                                                                      else ml:external-uri-main($doc))"/>
+                                                                     else if ($is-flat-file) then @uri
+                                                                                             else ml:external-uri-main($doc)"/>
             <!-- Re-enable this once we enable api.marklogic.com
             <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  $version-prefix, ml:external-uri-api($doc))
-                                                                     else concat($srv:primary-server, if ($is-flat-file)
-                                                                                                      then @uri
-                                                                                                      else ml:external-uri-main($doc))"/>
+                                                                     else if ($is-flat-file) then @uri
+                                                                                             else ml:external-uri-main($doc)"/>
                                                                                                       -->
             <tr>
               <th>
