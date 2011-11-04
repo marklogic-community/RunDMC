@@ -7,13 +7,13 @@ LICENSE
 SETUP NOTES
 
   Main server:
-    HTTP app server must be named "RunDMC-Public" (or CommunitySitePublic, 
-    which is deprecated) in order for "Draft" documents to be filtered out. 
     App server root should be set to the root of this distribution, on 
     the filesystem.  The URL rewriter should be set to "/controller/url_rewrite.xqy".
     The error handler should be set to "/controller/error-handler.xqy".
 
   Draft server:
+    This app server must have the word "Draft" in its name.
+
     On another port, same exact configuration as main server but
     with a different server name. "Draft" documents will be visible
     on this server. For "preview" to work in the Admin UI, update
@@ -21,6 +21,8 @@ SETUP NOTES
     draft server URL.  Default is same hostname, port 8004.
 
   Admin interface (CMS) server:
+    This app server must have the word "Admin" in its name.
+
     For the Admin interface, set up a different HTTP app server,
     using the same content database and same server root. But set
     the URL rewriter to "/admin/controller/url_rewrite.xqy".
