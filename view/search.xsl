@@ -246,8 +246,6 @@
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
             <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
-            <xsl:variable name="external-uri" select="if ($doc//external-link) then $doc//external-link/@href
-                                                                               else ml:external-uri($doc)"/>
             <!-- Temporary, until we enable api.marklogic.com -->
             <xsl:variable name="result-uri" select="if ($is-api-doc) then (for $uri in ml:external-uri-api($doc) return
                                                                            concat('/pubs/', $api-version,
@@ -264,12 +262,12 @@
 
                                                                      else concat($srv:primary-server, if ($is-flat-file)
                                                                                                       then @uri
-                                                                                                      else $external-uri)"/>
+                                                                                                      else ml:external-uri-main($doc))"/>
             <!-- Re-enable this once we enable api.marklogic.com
             <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  $version-prefix, ml:external-uri-api($doc))
                                                                      else concat($srv:primary-server, if ($is-flat-file)
                                                                                                       then @uri
-                                                                                                      else $external-uri)"/>
+                                                                                                      else ml:external-uri-main($doc))"/>
                                                                                                       -->
             <tr>
               <th>
