@@ -9,7 +9,8 @@
   exclude-result-prefixes="xs ml xdmp"
   extension-element-prefixes="xdmp">
 
-  <xdmp:import-module href="/model/data-access.xqy"                 namespace="http://developer.marklogic.com/site/internal"/>
+  <xdmp:import-module href="/model/data-access.xqy"   namespace="http://developer.marklogic.com/site/internal"/>
+  <xdmp:import-module href="/model/filter-drafts.xqy" namespace="http://developer.marklogic.com/site/internal/filter-drafts"/>
   <xdmp:import-module href="/MarkLogic/appservices/search/search.xqy" namespace="http://marklogic.com/appservices/search"/>
   <xdmp:import-module href="/lib/util-2.xqy" namespace="http://marklogic.com/rundmc/util"/>
   <xdmp:import-module href="/controller/disqus-info.xqy" namespace="http://marklogic.com/disqus"/>

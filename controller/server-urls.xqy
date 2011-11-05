@@ -30,6 +30,7 @@ declare variable $s:request-host-without-port := if (contains($s:current-request
 declare variable $s:main-server   := s:server-url("main");
 declare variable $s:draft-server  := s:server-url("draft");
 declare variable $s:webdav-server := s:server-url("webdav");
+declare variable $s:admin-server  := s:server-url("admin");
 declare variable $s:api-server    := s:server-url("api");
 
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server

@@ -6,6 +6,8 @@
 
     <draft-server url="http://dmc-stage-draft.marklogic.com"/>
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
+    <admin-server url="http://dmc-stage-admin.marklogic.com"/>
+
     <api-server url="http://api-stage.marklogic.com"/>
   </host>
 
@@ -20,6 +22,7 @@
     <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
+    <admin-server port="8006"/>
     <api-server port="8009"/>
   </host>
 

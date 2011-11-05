@@ -15,8 +15,10 @@
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:so   ="http://marklogic.com/stackoverflow"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
+  xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search cts">
+  exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
   <xsl:variable name="page-number" select="if ($params[@name eq 'p'] castable as xs:positiveInteger)
                                           then $params[@name eq 'p']
@@ -671,12 +673,34 @@
               <a href="{ml:external-uri(.)}">
                 <xsl:apply-templates mode="page-specific-title" select="."/>
               </a>
+              <xsl:call-template name="edit-link">
+                <xsl:with-param name="src-doc" select="root(.)"/>
+              </xsl:call-template>
               <div>
                 <xsl:apply-templates select="(short-description,description)[1]/node()"/>
               </div>
             </li>
           </xsl:template>
 
+
+  <xsl:template match="edit-link" name="edit-link">
+    <xsl:param name="src-doc" select="$content"/>
+    <xsl:if test="not($draft:public-docs-only)">
+      <xsl:variable name="edit-link-path">
+        <xsl:apply-templates mode="edit-link-path" select="$src-doc/*"/>
+      </xsl:variable>
+      <xsl:text> (</xsl:text>
+      <a href="{$srv:admin-server}{$edit-link-path}/edit?~doc_path={base-uri($src-doc)}">edit</a>
+      <xsl:text>)</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+          <xsl:template mode="edit-link-path" match="Project     ">/code</xsl:template>
+          <xsl:template mode="edit-link-path" match="Article     ">/learn</xsl:template>
+          <xsl:template mode="edit-link-path" match="Post        ">/blog</xsl:template>
+          <xsl:template mode="edit-link-path" match="Announcement">/news</xsl:template>
+          <xsl:template mode="edit-link-path" match="Event       ">/events</xsl:template>
+          <xsl:template mode="edit-link-path" match="page        ">/pages</xsl:template>
 
 
   <xsl:template match="document-table">
