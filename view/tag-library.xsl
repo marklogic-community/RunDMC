@@ -649,6 +649,9 @@
                 <a href="{$uri}">
                   <xsl:value-of select="title"/>
                 </a>
+                <xsl:call-template name="edit-link">
+                  <xsl:with-param name="src-doc" select="root(.)"/>
+                </xsl:call-template>
                 <xsl:if test="ends-with($uri,'.pdf')">
                   <xsl:text> | </xsl:text>
                   <img src="/images/i_pdf.png" alt="(PDF)" width="25" height="26"/>
