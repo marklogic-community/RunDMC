@@ -12,5 +12,7 @@
       form:lines="20"
       form:class="optional-richtext"
       form:uri-prefix-for-new-docs="/">
+  <!-- doesn't work so well on this page; let people add it manually
   &topic-tags;
+  -->
 </ml:page>
