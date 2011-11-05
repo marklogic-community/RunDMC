@@ -684,7 +684,7 @@
 
 
   <xsl:template match="edit-link" name="edit-link">
-    <xsl:param name="src-doc" select="$content"/>
+    <xsl:param name="src-doc" select="$original-content"/>
     <xsl:if test="not($draft:public-docs-only)">
       <xsl:variable name="edit-link-path">
         <xsl:apply-templates mode="edit-link-path" select="$src-doc/*"/>
