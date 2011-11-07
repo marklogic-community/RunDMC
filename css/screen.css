@@ -1916,3 +1916,8 @@ a.hit_highlight { text-decoration: none; color: #666; }
 	top:0;
 	right:0;
 }
+
+.tryml-warn {
+    font-style: italic;
+    color: #f77;
+}
