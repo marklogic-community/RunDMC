@@ -881,7 +881,7 @@
 			<ul class="mlvideos">
 	            <li><a href="http://www.youtube.com/watch?v=On6pGs5NPIc" alt="Information Studio Demo Video, part 1.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 1</a></li>
 	            <li><a href="http://www.youtube.com/watch?v=eo5ct0Heyfc" alt="Information Studio Demo Video, part 2.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 2</a></li>
-	            <li><a href="http://www.youtube.com/watch?v=dJCIAJdvpZk" alt="Review the basic concepts, layout, and user interface for Query Console, a query debugging tool.">Query Console Screencast</a></li>
+	            <li><a href="http://www.youtube.com/watch?v=Nb56VGOqcpo" alt="Review the basic concepts, layout, and user interface for Query Console, a query debugging tool.">Query Console Screencast</a></li>
 	            <li><a href="http://www.youtube.com/watch?v=BH2lsCmHb4w" alt="For MarkLogic database administrators: How to monitor MarkLogic with the Plug-in for Nagios">Nagios Plugin Setup and Configuration</a></li>
 	            <li><a href="http://www.youtube.com/watch?v=WbWAyyfZHVc" alt="For MarkLogic database administrators: How to monitor MarkLogic with the SPI for HP Operations Manager‬">Set up MarkLogic's SPI for HP Operations Manager‬</a></li>
             </ul>
