@@ -751,6 +751,7 @@ footer nav .current a {color: white;}
 	margin-bottom: 10px;
 }
 .widget div div {line-height: 114%;}
+article.twitter div div {line-height: 133%;}
 .widget .code, .widget .download {
 	font-size: 12px;
 	list-style: none !important;
@@ -1564,6 +1565,24 @@ ul.multi-page-toc {
 
 /* Twitstream */
 .tweet-source {display:none;}
+
+
+.tweet-rt {
+    font-size: .9em;
+    background: url(/media/twitter/retweet.png) left center no-repeat;
+    padding-left: 19px;
+}
+
+.tweet-reply {
+    font-size: .9em;
+    background: url(/media/twitter/reply.png) left center no-repeat;
+    padding-left: 19px;
+}
+
+.tweet-time {
+    font-style: italic;
+    font-size: .9em;
+}
 
 div.body.tweet1 {
 	float: left;

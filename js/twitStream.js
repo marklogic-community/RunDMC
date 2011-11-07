@@ -68,11 +68,15 @@ function fetch_tweets(elem, num, offset){
 				var since=sinceDay+' days ago';
 			}
 			var tweetBy='<a class="tweet-user" target="_blank" href="http://twitter.com/'+this.from_user+'">'+this.from_user+':</a> ';
-			var tweetInfo = ' <div class="post_info"><span class="tweet-time">'+since+'</span> <span class="tweet-source">from '+this.source+'</span></div>';
+			var tweetInfo = ' <div class="post_info"><span class="tweet-time">'+since+'</span> <span class="tweet-source">from '+this.source+'</span>&#160;' 
+				+ '<a class="tweet-reply" target="_blank" title="Reply" href="https://twitter.com/intent/tweet?in_reply_to=' + this.id_str + '">Reply</a>&#160;' 
+				+ '<a class="tweet-rt" target="_blank" title="Retweet" href="https://twitter.com/intent/retweet?tweet_id=' + this.id_str + '">Retweet</a>' 
+                + '</div>';
+
 			if(showTweetLinks.indexOf('reply')!=-1)
 				tweetBy=tweetBy+' &middot; <a class="tweet-reply" target="_blank" href="http://twitter.com/?status=@'+this.from_user+' &in_reply_to_status_id='+this.id+'&in_reply_to='+this.from_user+'">Reply</a>';
 			if(showTweetLinks.indexOf('view')!=-1)
-				tweetBy=tweetBy+' &middot; <a class="tweet-view" target="_blank" href="http://twitter.com/'+this.from_user+'/statuses/'+this.id+'">View Tweet</a>';
+				tweetBy=tweetBy+' &middot; <a class="tweet-view" target="_blank" href="http://twitter.com/'+this.from_user+'/statuses/'+this.id_str+'">View Tweet</a>';
 			if(showTweetLinks.indexOf('rt')!=-1)
 				tweetBy=tweetBy+' &middot; <a class="tweet-rt" target="_blank" href="http://twitter.com/?status=RT @'+this.from_user+' '+escape(this.text.replace(/&quot;/g,'"'))+'&in_reply_to_status_id='+this.id+'&in_reply_to='+this.from_user+'">RT</a>';
 
