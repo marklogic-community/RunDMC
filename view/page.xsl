@@ -393,7 +393,14 @@
                   <xsl:template mode="project-version" match="version">
                     <li>
                       <a href="{@href}">
-                        <xsl:value-of select="ml:file-from-path(@href)"/>
+                        <xsl:choose>
+                          <xsl:when test="@name">
+                              <xsl:value-of select="@name"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                              <xsl:value-of select="ml:file-from-path(@href)"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
                       </a>
                       <xsl:if test="normalize-space(@server-version)">
                         <div>You will need:<br /> MarkLogic Server <xsl:value-of select="@server-version"/> or later</div>
