@@ -34,18 +34,13 @@ declare function u:is-directory($uri as xs:string) as xs:boolean {
     xdmp:exists(xdmp:directory($uri, 'infinity'))
 };
 
-declare function u:highlight-doc($doc, $highlight-search as xs:string) {
+declare function u:highlight-doc($doc, $highlight-search as xs:string, $external-uri) {
   cts:highlight($doc, cts:query(search:parse($highlight-search, search:get-default-options())),
                       <a class="stip hit_highlight"
                          title="Remove highlights"
-                         href="{u:external-uri($doc)}"
+                         href="{$external-uri}"
                          xmlns="http://www.w3.org/1999/xhtml">{$cts:text}</a>)
 };
-
-        declare function u:external-uri($node) {
-          let $doc-path := base-uri($node) return
-          if ($doc-path eq '/index.xml') then '/' else substring-before($doc-path, '.xml')
-        };
 
 declare function u:strip-version-from-path($path as xs:string) {
   fn:replace($path,'/[0-9]+\.[0-9]+/','/')

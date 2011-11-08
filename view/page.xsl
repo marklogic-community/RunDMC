@@ -38,7 +38,7 @@
   <xsl:variable name="content" select="if ($highlight-search) then $highlighted-content else /"/>
 
           <xsl:variable name="highlighted-content">
-            <xsl:apply-templates mode="preserve-base-uri" select="u:highlight-doc(/, $highlight-search)"/>
+            <xsl:apply-templates mode="preserve-base-uri" select="u:highlight-doc(/, $highlight-search, ml:external-uri(/))"/>
           </xsl:variable>
 
                   <xsl:template mode="preserve-base-uri" match="@* | node()">
