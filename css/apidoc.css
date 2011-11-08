@@ -188,3 +188,7 @@ p.note:before {
 #api_sub .ui-widget-content .treeview a.footnote_marker { color: #F86D07; }
 #api_sub .ui-widget { font-size: 1em; }
 #api_sub .ui-tabs .ui-tabs-panel { padding: 1em 0.5em; }
+
+
+/* Override comment display settings in screen.css; to be revised by Adam... */
+#comments > div > section { float: none; width: auto; }
