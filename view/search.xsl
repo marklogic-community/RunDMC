@@ -234,12 +234,6 @@
             <xsl:apply-templates mode="prev-and-next" select="."/>
           </xsl:template>
 
-          <!-- Temporary, only used until we enable api.marklogic.com -->
-          <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/*/*:guide"/>
-          <xsl:variable name="functions-4.1" select="u:get-doc('/config/4.1-function-url-mappings.xml')/*/*:function"/>
-          <xsl:variable name="functions-4.2" select="u:get-doc('/config/4.2-function-url-mappings.xml')/*/*:function"/>
-          <xsl:variable name="functions-5.0" select="u:get-doc('/config/5.0-function-url-mappings.xml')/*/*:function"/>
-
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
