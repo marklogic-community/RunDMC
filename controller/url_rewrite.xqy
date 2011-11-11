@@ -31,6 +31,12 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/pubs/4.1", "/pubs/4.1/", "/docs/4.1")) then
         concat($srv:api-server,"/4.1/docs")
     :)
+    else if ($path = ("/pubs/5.0", "/pubs/5.0/")) then
+        "/docs/5.0"
+    else if ($path = ("/pubs/4.2", "/pubs/4.2/")) then
+        "/docs/4.2"
+    else if ($path = ("/pubs/4.1", "/pubs/4.1/")) then
+        "/docs/4.1"
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then
         "/docs/4.0"
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
