@@ -160,7 +160,14 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if ($doc/*:guide          ) then "guide"
   else if ($doc/ml:Announcement  ) then "news"
   else if ($doc/ml:Event         ) then "event"
-  else if ($doc/ml:Article       ) then "tutorial"
+  else if ($doc/ml:Article
+                                                      (: these aren't really tutorials :)
+                [fn:not(fn:matches(fn:base-uri($doc),'( /learn/[0-9].[0-9]/
+                                                      | /learn/tutorials/gh/
+                                                      | /learn/readme/
+                                                      | /learn/w3c-
+                                                      )','x'))]
+                                 ) then "tutorial"
   else if ($doc/ml:Post          ) then "blog"
   else if ($doc/ml:Project       ) then "code"
                                    else "other"

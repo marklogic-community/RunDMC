@@ -1921,3 +1921,20 @@ a.hit_highlight { text-decoration: none; color: #666; }
     font-style: italic;
     color: #f77;
 }
+
+/* notes, warnings */
+.note, .warning {
+    margin-bottom: 1.5em;
+    padding: 1em 20px 1em 80px;
+
+    background: #FFF url(/images/ml_icons_note.png) no-repeat 17px 1.5em;
+    color: #545861;
+
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.warning {
+    background-image: url(/images/ml_icons_warning.png);
+}
