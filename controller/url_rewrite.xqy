@@ -121,6 +121,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/try/ninja/index"
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
+    else if (starts-with($path, "/people/")) then (: All people urls are gone for now :)
+        "/people"
     else
         $path
 };
