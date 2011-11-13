@@ -122,7 +122,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people/")) then (: All people urls are gone for now :)
-        "/people"
+        "/people/supernodes"
     else
         $path
 };
