@@ -65,14 +65,7 @@ declare function ml:live-document-query($preferred-version as xs:string) {
     )),
     (: Exclude preview-only documents :)
     cts:not-query(
-      cts:or-query((
-        cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","preview-only"),"yes"),
-        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","preview-only"),"yes")
-      ))
+      ml:doc-element-att-query("preview-only","yes")
     ),
     (: Also exclude admin-specific pages :)
     cts:not-query(
@@ -81,12 +74,7 @@ declare function ml:live-document-query($preferred-version as xs:string) {
     (: Require status="Published" if we're only serving public docs :)
     if ($draft:public-docs-only) then
       cts:or-query((
-        cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("","status"),"Published"),
-        cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("","status"),"Published"),
+        ml:doc-element-att-query("status","Published"),
         ml:api-doc-query($preferred-version)
       ))
     else ()
@@ -94,14 +82,30 @@ declare function ml:live-document-query($preferred-version as xs:string) {
 };
 
 declare function ml:search-corpus-query($preferred-version as xs:string) {
+  cts:and-query((
+    cts:or-query((
+      ml:live-document-query($preferred-version),
+      cts:directory-query((fn:concat('/pubs/', $preferred-version, '/dotnet/'),
+                           fn:concat('/pubs/', $preferred-version, '/javadoc/'),
+                           '/pubs/code/'
+                          ),
+                          'infinity'
+                         )
+    )),
+    cts:not-query(
+      ml:doc-element-att-query("hide-from-search","yes")
+    )
+  ))
+};
+
+declare function ml:doc-element-att-query($att-name, $value) {
   cts:or-query((
-    ml:live-document-query($preferred-version),
-    cts:directory-query((fn:concat('/pubs/', $preferred-version, '/dotnet/'),
-                         fn:concat('/pubs/', $preferred-version, '/javadoc/'),
-                         '/pubs/code/'
-                        ),
-                        'infinity'
-                       )
+    cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("",$att-name),$value),
+    cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("",$att-name),$value),
+    cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("",$att-name),$value),
+    cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("",$att-name),$value),
+    cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("",$att-name),$value),
+    cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("",$att-name),$value)
   ))
 };
 
