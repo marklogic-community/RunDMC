@@ -7,7 +7,7 @@ import module namespace infodev = "http://marklogic.com/appservices/infostudio/d
      at "/MarkLogic/appservices/infostudio/infodev.xqy";
 
 declare function local:process-file(
-   $document as node(),
+   $document as node()?,
    $source-location as xs:string,
    $ticket-id as xs:string,
    $policy-deltas as element(info:options)?,
