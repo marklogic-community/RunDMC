@@ -82,7 +82,7 @@ declare function local:load-dir($root as xs:string, $version as xs:string, $db a
 };
 
 let $version := xdmp:get-request-field("version", "no-version")
-let $db := xdmp:get-request-field("db", "RunDMC")
+let $db := xdmp:get-request-field("db", "RunDMC2")
 let $_ := xdmp:set-response-content-type("text/html") 
 return 
     if ($version = 'no-version') then
