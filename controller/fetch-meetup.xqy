@@ -15,7 +15,7 @@ declare function local:fail ($e) {
       <rf:subject>Failed to fetch training meetup details on {$host}</rf:subject>
       <rf:from>
         <em:Address>
-          <em:name>MarkLogic Developer Community</em:name>
+          <em:name>RunDMC Alerts</em:name>
           <em:adrs>NOBODY@marklogic.com</em:adrs>
         </em:Address>
       </rf:from>
