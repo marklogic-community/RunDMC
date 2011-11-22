@@ -398,6 +398,42 @@
       </xsl:template>
 
 
+  <xsl:template match="latest-posts">
+    <xsl:apply-templates mode="latest-post" select="ml:latest-posts(@how-many)"/>
+  </xsl:template>
+
+          <!-- ASSUMPTION: We're not adding new <Announcement> docs anymore, so they won't appear as the latest -->
+          <xsl:template mode="latest-post" match="Post | Event">
+            <article>
+              <h4>
+                <img src="/images/i_rss.png" alt="RSS" width="36" height="33"/>
+                <a href="{ml:external-uri(.)}">
+                  <xsl:apply-templates mode="page-specific-title" select="."/>
+                </a>
+              </h4>
+              <xsl:apply-templates mode="post-date-info" select="."/>
+              <div>
+                <xsl:value-of select="short-description"/>
+              </div>
+            </article>
+          </xsl:template>
+
+                  <xsl:template mode="post-date-info" match="Post">
+                    <div class="author_date">
+                      <xsl:text>by </xsl:text>
+                      <xsl:apply-templates mode="author-listing" select="author"/>
+                      <xsl:text>, </xsl:text>
+                      <xsl:value-of select="ml:display-date(created)"/>
+                    </div>
+                  </xsl:template>
+
+                  <xsl:template mode="post-date-info" match="Event">
+                    <div class="author_date">
+                      Event date: <xsl:value-of select="ml:display-date(details/date)"/>
+                    </div>
+                  </xsl:template>
+
+
   <xsl:template match="recent-news-and-events">
     <xsl:variable name="announcement" select="ml:latest-announcement()"/>
     <xsl:variable name="event"        select="ml:most-recent-event()"/>

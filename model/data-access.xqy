@@ -188,6 +188,7 @@ declare variable $posts-by-date := for $p in $Posts
                                    order by $p/created descending
                                    return $p;
 
+declare function latest-posts($how-many) { $posts-by-date[fn:position() le $how-many] };
 
 (: Backed-up Disqus conversations :)
 declare function comments-for-doc-uri($uri as xs:string)
