@@ -406,7 +406,7 @@
           <xsl:template mode="latest-post" match="Post | Event">
             <article>
               <h4>
-                <img src="/images/i_rss.png" alt="RSS" width="36" height="33"/>
+                <xsl:apply-templates mode="latest-post-icon" select="."/>
                 <a href="{ml:external-uri(.)}">
                   <xsl:apply-templates mode="page-specific-title" select="."/>
                 </a>
@@ -417,6 +417,15 @@
               </div>
             </article>
           </xsl:template>
+
+                  <xsl:template mode="latest-post-icon" match="Post">
+                    <img width="36" height="33" src="/images/i_rss.png" alt="Blog post"/>
+                  </xsl:template>
+
+                  <xsl:template mode="latest-post-icon" match="Event">
+                    <img width="40" height="32" src="/images/i_calendar.png" alt="Event"/>
+                  </xsl:template>
+
 
                   <xsl:template mode="post-date-info" match="Post">
                     <div class="author_date">
