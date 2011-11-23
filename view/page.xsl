@@ -229,6 +229,10 @@
     <xsl:apply-templates select="*[@href eq $external-uri or not(@href)][1]/node()"/>
   </xsl:template>
 
+  <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
+  <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
+  <xsl:template match="if[not(starts-with($external-uri, @href-starts-with))]"/>
+
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
