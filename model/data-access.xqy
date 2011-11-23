@@ -170,6 +170,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
                                                       | /learn/tutorials/gh/
                                                       | /learn/readme/
                                                       | /learn/w3c-
+                                                      | /docs/
                                                       )','x'))]
                                  ) then "tutorial"
   else if ($doc/ml:Post          ) then "blog"
