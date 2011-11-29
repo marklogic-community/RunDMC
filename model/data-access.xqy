@@ -15,7 +15,6 @@ declare namespace api ="http://marklogic.com/rundmc/api";
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $ml:Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
 
-(: Assumption: These elements only ever appear at the top level. :)
 declare private variable $ml:doc-element-names := (xs:QName("Announcement"),
                                                    xs:QName("Event"),
                                                    xs:QName("Article"),
