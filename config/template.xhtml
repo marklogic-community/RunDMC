@@ -16,7 +16,6 @@
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
-        <link type="text/css" href="/stackunderflow/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
         <link type="text/css" href="/stackunderflow/v-1/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
         <link rel="stylesheet" href="http://try.marklogic.com/css/tryml.css" type="text/css" media="screen, projection" /> 
 
@@ -30,12 +29,10 @@
 		<script type="text/javascript" src="/js/functions.js"></script>
         <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script> <!-- Needed? XXX  -->
         <script type="text/javascript" src="/js/jquery.youtubepopup.min.js"></script> 
-        <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script> 
         <script type="text/javascript" src="/stackunderflow/v-1/stackunderflow-1.0.3.js"></script> 
         <script type="text/javascript" src="/js/jquery.youtubeplaylist.js"></script>
 
         <script type="text/javascript">
-	
 		$(function() {
 			$("ul.mlvideos").ytplaylist({addThumbs:true, autoPlay: false, holderId: 'ytvideo', playerWidth:'640', playerHeight:'360'});
 			$("#ytvideo-desc").text($($('.mlvideos li a')[0]).attr('alt'));		
@@ -207,23 +204,25 @@
 				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
         </script>
 	</body>
-    <script src="http://try.marklogic.com/js/tryml.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var s = '' + window.location.pathname;
-        // Only for pages in /try
-        if (s.lastIndexOf('/try/') === 0) {
-            $(document).ready(function() {
-                // See if tryml was not set (which means we didn't load the js)
-                if(typeof tryml == "undefined" || !tryml) { 
-                    // For each code block, show it
-                    $('.trymlcode').each(function(index) {
-                        if (index == 0) {
-                            $('#main_container #main').prepend('<span class="tryml-warn">Warning: Could not contact the code execution server, some features will not be available.</span>');
-                        }
-                        $(this).show();
-                    });
-                }
-            });
-        }
-    </script>
+    <ml:if href-starts-with="/try/">
+        <script src="http://try.marklogic.com/js/tryml.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var s = '' + window.location.pathname;
+            // Only for pages in /try
+            if (s.lastIndexOf('/try/') === 0) {
+                $(document).ready(function() {
+                    // See if tryml was not set (which means we didn't load the js)
+                    if(typeof tryml == "undefined" || !tryml) { 
+                        // For each code block, show it
+                        $('.trymlcode').each(function(index) {
+                            if (index == 0) {
+                                $('#main_container #main').prepend('<span class="tryml-warn">Warning: Could not contact the code execution server, some features will not be available.</span>');
+                            }
+                            $(this).show();
+                        });
+                    }
+                });
+            }
+        </script>
+    </ml:if>
 </html>
