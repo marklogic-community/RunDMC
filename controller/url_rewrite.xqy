@@ -1,5 +1,5 @@
-import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
-       at "../model/filter-drafts.xqy";
+import module namespace ml = "http://developer.marklogic.com/site/internal"
+       at "../model/data-access.xqy";
 
 import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "server-urls.xqy";
@@ -185,7 +185,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (starts-with($path, '/pubs/')) then
         concat("/controller/get-db-file.xqy?uri=", $path)
     (: Respond with DB contents for XML files that exist :)
-    else if (doc-available($doc-url) and draft:allow(doc($doc-url)/*)) then 
+    else if (doc-available($doc-url) and ml:doc-matches-dmc-page-or-preview(doc($doc-url))) then
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
     (: Respond with DB contents for directories that have index.xml files :)
 (: EDL: I don't see where this is used; right now, it just creates false positives (as with /admin/index.xml)

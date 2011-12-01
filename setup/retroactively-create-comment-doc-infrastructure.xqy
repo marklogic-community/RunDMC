@@ -13,7 +13,7 @@
 import module namespace ml = "http://developer.marklogic.com/site/internal"
        at "../model/data-access.xqy";
 
-declare variable $docs := ($ml:live-documents | $ml:pages);
+declare variable $docs := $ml:live-dmc-documents;
 
 (: Get a preview of what we're getting :)
 (: for $doc in $docs order by base-uri($doc) return base-uri($doc) :)
