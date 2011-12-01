@@ -252,17 +252,16 @@ var su = window.stackunderflow = {
         tag: '<a href="{site}/questions/tagged/{=}" class="se-post-tag" title="show questions tagged \'{=}\'" rel="tag">{=}</a> ',
         question: '<div class="se-question-summary" id="question-summary-{question_id}"> \
     <div onclick="window.location.href=\'{site}{question_answers_url}\'" class="se-cp"> \
-        <div class="se-votes"> \
-            <div class="se-mini-counts">{up_vote_count}</div> \
-            <div>votes</div> \
-        </div> \
-        <div class="se-status {acceptedclass:=}"> \
-            <div class="se-mini-counts">{answer_count}</div>\
-            <div>answer</div> \
-        </div> \
-        <div class="se-views"> \
-            <div class="se-mini-counts">{view_count}</div> \
-            <div>views</div> \
+        <div style="float: left; width: 38px; padding: 0px 20px 0px 0px"> \
+            <div class="se-votes"> \
+                <div class="se-mini-counts">{up_vote_count}</div> \
+                <div>votes</div> \
+            </div> \
+            <div class="se-status {acceptedclass:=}"> \
+                <div class="se-mini-counts">{answer_count}</div>\
+                <div>answer</div> \
+            </div> \
+            <div class="se-views">{view_count}&#160;views</div> \
         </div> \
     </div> \
     <div class="se-summary"> \
