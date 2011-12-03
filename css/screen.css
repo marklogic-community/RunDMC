@@ -93,6 +93,13 @@ tbody tr:first-child th:first-child {
 	width: 110px;
 	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
+.post tbody td:first-child {
+	padding-left: 15px;
+	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
+}
+.post thead th {
+  padding: 0 5px 0 10px;
+}
 tbody tr:first-child th:first-child,
 tbody td:last-child,
 tbody:last-child tr:last-child th,
@@ -105,10 +112,14 @@ tbody.last tr.last td
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
 	{background-position: bottom center;}
+tbody:last-child tr:last-child td:first-child
+	{background-position: bottom left;}
 tbody.last tr.last th,
 tbody.last tr.last td
 	{background-position: bottom center;}
+/*
 tbody tr:first-child th:first-child {background-position: top left;}
+*/
 tbody td:last-child {background-position: top right;}
 tbody td.last {background-position: top right;}
 tbody:last-child tr:last-child th:first-child {background-position: bottom left;}
@@ -121,6 +132,12 @@ th.last,  td.last {padding-right: 15px;}
 /*
 tbody.last tr.last td {text-align: center;}
 */
+
+td p.center,
+th p.center { text-align: center; }
+td p.right,
+th p.right { text-align: right; }
+
 
 table small {
 	font-weight: normal;
@@ -883,7 +900,7 @@ section#documentation:before {margin-bottom: 30px;}
 	margin: 1.5em 0;
 	background: white;
 }
-.post .body table {
+.post .body .info table {
 	width: 100%;
 	margin: 0;
 	font-size: 14px;
@@ -893,11 +910,11 @@ section#documentation:before {margin-bottom: 30px;}
 	display: block;
 }
 .post .body table tbody {border: none;}
-.post .body th, .post .body td {
+.post .body .info th, .post .body .info td {
 	padding: 0 0 0 10px;
 	background: none !important;
 }
-.post .body table :first-child {padding-left: 0;}
+.post .body .info table :first-child {padding-left: 0;}
 .post + .pagination, #main_container > .pagination {
 	color: #999;
 	font-size: 12px;
