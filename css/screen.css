@@ -34,8 +34,14 @@ caption {
 }
 code {
 	font: 14px "Courier New", Courier, monospace;
-	color: #333;
+    background-color: #F8F8F8;
+    border: 1px solid #DEDEDE;
+    padding: 0;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
+
 dd {margin: 0 0 1em 0;}
 dl {margin: 1em 0;}
 dt {font-weight: bold;}
