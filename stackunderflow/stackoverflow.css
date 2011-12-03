@@ -7,12 +7,10 @@ All class names prefixed with 'se' and only apply
 within an element with the '.se-question-summary' class.
 */
 .se-question-summary {
-    color: #000;
-    font-family: Arial, Liberation Sans, DejaVu Sans, sans-serif;
-    font-size: 80%;
+    font-family: Arial, Helvetica, Sans-serif;
     border-bottom: 1px dotted #999;
     overflow: hidden;
-    padding: 6px 0px;
+    padding: 10px 0px;
     width: 730px;
     /* from .container */    
     margin: 0 auto;
@@ -23,30 +21,28 @@ within an element with the '.se-question-summary' class.
 }
 
 .se-question-summary a {
-    color: #07c;
     text-decoration: none;
     cursor: pointer;
 }
+
 .se-question-summary a:hover {
     text-decoration: underline;
 }
-.se-question-summary a:visited {
-    color: #4A6B82;
-}
+
 .se-question-summary h1 {
-    font-family: Trebuchet MS, Liberation Sans, DejaVu Sans, sans-serif;
+    font-family: Arial, Helvetica, Sans-serif;
     font-weight: bold;
     font-size: 170%;
     margin-bottom: 7px;
 }
 .se-question-summary h2 {
-    font-family: Trebuchet MS, Liberation Sans, DejaVu Sans, sans-serif;
+    font-family: Arial, Helvetica, Sans-serif;
     font-size: 140%;
     font-weight: bold;
     margin-bottom: 7px;
 }
 .se-question-summary h3 {
-    font-family: Trebuchet MS, Liberation Sans, DejaVu Sans, sans-serif;
+    font-family: Arial, Helvetica, Sans-serif;
     font-size: 110%;
     font-weight: bold;
     margin-bottom: 5px;
@@ -60,7 +56,7 @@ within an element with the '.se-question-summary' class.
 .se-question-summary .se-reputation-score {
     font-weight: bold;
     color: #444;
-    font-size: 120%;
+    font-size: 100%;
     margin-right: 2px;
 }
 .se-question-summary .se-relativetime {
@@ -86,27 +82,26 @@ within an element with the '.se-question-summary' class.
     padding: 5px;
     width: 38px;
     height: 38px;
+    font-size: 80%;
 }
 .se-question-summary .se-views {
     color: #999;
     text-align: center;
-    width: 50px;
-    height: 38px;
     float: left;
-    margin: 0 7px 0 0;
-    padding: 5px 0 5px 4px;
+    padding: 8px 0 8px 0px;
+    height: 38px;
+    font-size: 80%;
 }
 .se-question-summary .se-views strong {
     display: block;
 }
 .se-question-summary .se-status {
-    padding: 4px 0 4px;
+    padding: 5px;
     text-align: center;
     float: left;
-    margin: 0 3px 0 0;
-    padding: 5px;
-    width: 48px;
+    width: 38px;
     height: 38px;
+    font-size: 80%;
 }
 .se-question-summary .se-status strong {
     color: #fff;
@@ -136,7 +131,7 @@ within an element with the '.se-question-summary' class.
     font-size: 130%;
 }
 .se-question-summary .se-summary {
-    width: 500px;
+    width: 550px;
 }
 .se-question-summary .se-tags {
     line-height: 18px;

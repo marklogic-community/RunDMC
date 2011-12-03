@@ -21,7 +21,7 @@ declare function local:redir($path as xs:string) as xs:string
     if ($path = ("/events", "/news", "/news-and-events",
                  "/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
-    (: Re-enable when we launch api.marklogic.com
+    (: Re-enable when we launch api.marklogic.com and cleanup below
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         concat($srv:api-server,"/docs")
     else if ($path = ("/pubs/5.0", "/pubs/5.0/", "/docs/5.0")) then
