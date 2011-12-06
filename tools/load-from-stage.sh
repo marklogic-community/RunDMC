@@ -22,9 +22,10 @@ fi
     PHYS_DIR=`pwd -P`
     RESULT=$PHYS_DIR/$TARGET_FILE
 
-if [ "{$OS}" == "windowsnt" ]; then
+if [ "${OS}" == "Windows_NT" ]; then
     SEP=';'
     BASE="." # assume we're in the directory of the script for now
+    echo "Running on Windows"
 else
     BASE=$PHYS_DIR
     SEP=':'
@@ -39,6 +40,13 @@ if [ -d "$JAVA_HOME" ]; then
 else
   JAVA=java
 fi
+
+if [ "{$OS}" == "windowsnt" ]; then
+    CP=`cygpath -wa $BASE/lib/xcc.jar`
+    CP=`cygpath -wa ${CP}${SEP}${BASE}/lib/xstream-1.3.1.jar`
+    CP=`cygpath -wa ${CP}${SEP}${BASE}/lib/xqsync.jar`
+fi
+
 
 F=dmc-stage.marklogic.com:8007
 T=${1}:${2}
@@ -62,9 +70,9 @@ case "$yesno" in
 esac
 
 echo "Copying $FROM to $TO"
-$JAVA -cp $CP -Dfile.encoding=UTF-8 -DLOG_LEVEL=ALL \
+"$JAVA" -cp "$CP" -Dfile.encoding=UTF-8 -DLOG_LEVEL=ALL \
     -DLOG_HANDLER=FILE \
-    -DINPUT_CONNECTION_STRING=xcc://$FROMCREDS@$FROM/RunDMC \
+    -DINPUT_CONNECTION_STRING=xcc://$FROMCREDS@$FROM/RunDMC2 \
     -DOUTPUT_CONNECTION_STRING=xcc://$TOCREDS@$TO/RunDMC \
     -DINPUT_DIRECTORY_URI="$DIRS" \
     com.marklogic.ps.xqsync.XQSync 
