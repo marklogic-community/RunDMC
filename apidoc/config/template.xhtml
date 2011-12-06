@@ -1,184 +1,1030 @@
-<?xml version="1.0" encoding="UTF-8"?><html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <head>
-    <title><ml:page-title/></title>
-    <meta name="description" content=""/>
-    <link rel="SHORTCUT ICON" href="/images/v-1/favicon.ico"/>
-    <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
-    <link rel="alternate" type="application/atom+xml" href="/news/atom.xml" title="MarkLogic Developer Community News" />
-    <link rel="alternate" type="application/atom+xml" href="/events/atom.xml" title="MarkLogic Developer Community Events" />
-    <link rel="alternate" type="application/atom+xml" href="/newsandevents/atom.xml" title="MarkLogic Developer Community News and Events" />
-    <meta name="keywords" content=""/>
-    <link type="text/css" href="/css/v-5/screen.css" rel="stylesheet" media="screen"/>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>MarkLogic Community</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+	  <link type="text/css" href="css/jquery.treeview.css" rel="stylesheet" media="screen" />
+		<link href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
+		<!--[if lte IE 8]>
+		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+		<![endif]-->
+		<script type="text/javascript" src="js/modernizr.js"></script>
+		<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.tooltip.min.js"></script>
+		<script type="text/javascript" src="js/jquery.treeview.js"></script>
+		<script type="text/javascript" src="js/jquery.treeview.edit.js"></script>
+		<script type="text/javascript" src="js/jquery.treeview.async.js"></script>
+		<script type="text/javascript" src="js/toc_filter.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery.pjax.js"></script>
+		<script type="text/javascript" src="js/functions.js"></script>
+	  <script type="text/javascript">
+		//<![CDATA[
+			$(function(){
+				colorizeExamples();
+				$("#main .pjax_enabled a").pjax({
+					container: '#page_content',
+					success: function() {
+						initializeTOC();
+						colorizeExamples();
+					}
+				});
+				$("#api_sub .pjax_enabled a").pjax({
+					container: '#page_content',
+					success: function() {
+						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
+						if(this.clickedElement) showInTOC(this.clickedElement);
+							colorizeExamples();
+					}
+				});
+			})
+	  //]]>
+  	</script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<header>
+					<h1><a href="">MarkLogic&trade; Community</a></h1>
+					<form action="#" method="get">
+						<fieldset>
+							<legend>Search</legend>
+							<label for="s_inp">Search the COMMUNITY with MarkLogic</label>
+							<input id="s_inp" type="text" placeholder="Search the COMMUNITY with MarkLogic" />
+							<input type="submit" value="Search" />
+						</fieldset>
+					</form>
+					<nav>
+						<ul>
+							<li class="current"><a href="">Documentation</a></li>
+							<li><a href="">Downloads</a></li>
+							<li><a href="">Code</a></li>
+							<li><a href="">People</a></li>
+							<li><a href="">Blog</a></li>
+							<li><a href="">Discuss</a></li>
+							<li><a href="">Meet</a></li>
+						</ul>
+					</nav>
+				</header>
+			</div>
+			<hr />
+			<div id="content">
+				<div id="breadcrumb">
+					<div><a href="">Developer Community</a> &gt; <a href="">Documentation</a></div>
+					<div class="version"><span>Server version:</span> <a href="">4.1</a> | <a href="">4.2</a> | <b>MarkLogic 5</b></div>
+				</div>
+				<section>
+					<h2>admin:appserver-add-request-blackout</h2>
+					<div id="main_container">
+						<div id="main">
+							<pre><code>admin:appserver-add-request-blackout(
+   <a href="">$config</a> as element(configuration),
+   <a href="">$appserver-id</a> as xs:unsignedLong,
+   <a href="">$request-blackouts</a> as element(gr:request-blackout)*
+) as element(configuration)</code></pre>
+							<h3>Summary</h3>
+							<p>This function adds a request blackout specification for a appserver to a configuration.</p>
+							<table class="parameters">
+								<thead>
+									<tr>
+										<th scope="colgroup" colspan="2">Parameters</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>$config</td>
+										<td>A configuration specification, typically as returned from one of the Admin module functions.</td>
+									</tr>
+									<tr>
+										<td>$appserver-id</td>
+										<td>The id of the appserver (for example, <code>xdmp:server("myAppserver"))</code>.</td>
+									</tr>
+									<tr>
+										<td>$request-blackout</td>
+										<td>The request blackout specification(s), typically the result of an admin:appserver-one-time-request-blackout or an admin:appserver-recurring-request-blackout call</td>
+									</tr>
+								</tbody>
+							</table>
+							<h3>Example</h3>
+						  <pre><code>xquery version "1.0-ml";
+import module namespace admin = "http://marklogic.com/xdmp/admin" 
+    at "/MarkLogic/admin.xqy";
+  
+let $config := admin:get-configuration()
+let $app-id := xdmp:server("myAppserver")
+let $requestspec := admin:appserver-one-time-request-blackout((),(),500,  
+      xs:dateTime("2008-02-14T09:45:00"), 
+      (), xs:dayTimeDuration("PT3H") )
+return
+admin:appserver-add-request-blackout($config, $app-id, $requestspec)
+(: returns the new configuration element -- use admin:save-configuration
+   to save the changes to the configuration or pass the configuration
+   to other Admin API functions to make other changes.  :)</code></pre>
+							<div id="comments">
+								<div>
+									<section>
+										<h2>Comments <img src="img/i_speechbubble.png" alt="" width="30" height="28" /></h2>
+										<div class="action">
+											<ul>
+												<li><a href="#disqus_thread" data-disqus-identifier="">0 Comments</a></li>
+												<li><a rel="nofollow" href="#post_comment">Post a comment</a></li>
+											</ul>
+										</div>
+										<a id="post_comment"></a>
+										<div id="disqus_thread">
+											<div id="dsq-content">
+												<ul id="dsq-comments"></ul>
+											</div>
+										</div>
+										<script type="text/javascript">
+											var disqus_shortname = 'marklogicdev';
+											var disqus_developer = 1;
+											// The following are highly recommended additional parameters. Remove the slashes in front to use.
+											var disqus_identifier = 'disqus-/blog/document-formats-part2.xml';
+											var disqus_url = 'http://developer.marklogic.com/blog/document-formats-part2';
+											function disqus_config() {
+												this.callbacks.onNewComment = [
+													function() {
+														setTimeout(function(){
+															$.ajax({
+																type: "POST",
+																url: "/updateDisqusThreads"
+															});
+														}, 10000);
+													}
+												];
+											}
+											(function() {
+												var dsq = document.createElement('script');
+												dsq.type = 'text/javascript';
+												dsq.async = true;
+												dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+												(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+											})();
+											(function () {
+												var s = document.createElement('script');
+												s.async = true;
+												s.type = 'text/javascript';
+												s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+												(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+											}());
+										</script>
+										<noscript><div>Unfortunately, JavaScript is required to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></div></noscript>
+									</section>
+								</div>
+							</div>
+							<!-- end comments -->
+						</div>
+						<!-- end main -->
+      <div id="api_sub">
+        <div id="apidoc_toc">
+          <!--?xml version="1.0" encoding="UTF-8"?-->
 
+          <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
+            <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="toc_tabs" style="">
+              <div id="tab_bar">
+                <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                  <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-1" class="tab_link">Functions<br /> by Name</a></li>
+                  <li class="ui-state-default ui-corner-top"><a href="#tabs-2" class="tab_link">Functions<br /> by Category</a></li>
+                  <li class="ui-state-default ui-corner-top"><a href="#tabs-3" class="tab_link">User<br /> Guides</a></li>
+                </ul>
+              </div>
 
-    <link type="text/css" href="/css/v-1/apidoc/jquery.treeview.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/v-1/apidoc.css" rel="stylesheet" media="screen"/>
+              <div id="tab_content">
+                <div id="tabs-1" class="tabbed_section pjax_enabled ui-tabs-panel ui-widget-content ui-corner-bottom">
+                  <div class="scrollable_section">
+                    <input class="default" id="config-filter" name="config-filter" />
 
-    <link type="text/css" href="/apidoc/js/jquery-ui/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet"/>
+                    <ul id="apidoc_tree" class="treeview">
+                      <li class="collapsable lastCollapsable loaded initialized" id="_AllFunctions">
+                        <div class="hitarea collapsable-hitarea lastCollapsable-hitarea"></div><a href="/all">All functions (1970)</a>
 
-    <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js" ></script>
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="shallowCollapse"><img src="img/minus.gif" /> collapse</span>&nbsp;<span title="Expand the entire tree below" class="shallowExpand"><img src="img/plus.gif" /> expand</span>
+                        </div>
 
-    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.8.custom.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.tools.min.js"></script>
-    <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
-    <script type="text/javascript" src="/js/twitStream.js"></script>
-    <script type="text/javascript" src="/js/functions.js"></script>
-    <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+                        <ul style="display: block;">
+                          <li class="expandable hasChildren" id="_admin_nbc38e70ecd96d465">
+                            <div class="hitarea expandable-hitarea"></div><a href="/admin" title="http://marklogic.com/xdmp/admin">admin: <span class="function_count">(667)</span></a>
 
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
-    <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
-    <script type="text/javascript" src="/apidoc/js/tooltip.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery-ui-1.8.14.custom.min.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
+                          <li class="collapsable loaded" id="_alert_n650e46d37e25b542">
+                            <div class="hitarea collapsable-hitarea"></div>
+                            <a href="/alert" title="http://marklogic.com/xdmp/alert">alert: <span class="function_count">(60)</span></a>
+<ul xmlns="http://www.w3.org/1999/xhtml" style="display: block;">
+  <li class=""><a href="/alert:action-get-description">alert:action-get-description</a></li>
+  <li class=""><a href="/alert:action-get-module">alert:action-get-module</a></li>
+  <li class=""><a href="/alert:action-get-module-db">alert:action-get-module-db</a></li>
+  <li class=""><a href="/alert:action-get-module-root">alert:action-get-module-root</a></li>
+  <li class=""><a href="/alert:action-get-name">alert:action-get-name</a></li>
+  <li class=""><a href="/alert:action-get-options">alert:action-get-options</a></li>
+  <li class=""><a href="/alert:action-insert">alert:action-insert</a></li>
+  <li class=""><a href="/alert:action-remove">alert:action-remove</a></li>
+  <li class=""><a href="/alert:action-set-description">alert:action-set-description</a></li>
+  <li class=""><a href="/alert:action-set-module">alert:action-set-module</a></li>
+  <li class=""><a href="/alert:action-set-module-db">alert:action-set-module-db</a></li>
+  <li class=""><a href="/alert:action-set-module-root">alert:action-set-module-root</a></li>
+  <li class=""><a href="/alert:action-set-name">alert:action-set-name</a></li>
+  <li class=""><a href="/alert:action-set-options">alert:action-set-options</a></li>
+  <li class=""><a href="/alert:config-delete">alert:config-delete</a></li>
+  <li class=""><a href="/alert:config-get">alert:config-get</a></li>
+  <li class=""><a href="/alert:config-get-cpf-domain-names">alert:config-get-cpf-domain-names</a></li>
+  <li class=""><a href="/alert:config-get-description">alert:config-get-description</a></li>
+  <li class=""><a href="/alert:config-get-id">alert:config-get-id</a></li>
+  <li class=""><a href="/alert:config-get-name">alert:config-get-name</a></li>
+  <li class=""><a href="/alert:config-get-options">alert:config-get-options</a></li>
+  <li class=""><a href="/alert:config-get-trigger-ids">alert:config-get-trigger-ids</a></li>
+  <li class=""><a href="/alert:config-get-uri">alert:config-get-uri</a></li>
+  <li class=""><a href="/alert:config-insert">alert:config-insert</a></li>
+  <li class=""><a href="/alert:config-set-cpf-domain-names">alert:config-set-cpf-domain-names</a></li>
+  <li class=""><a href="/alert:config-set-description">alert:config-set-description</a></li>
+  <li class=""><a href="/alert:config-set-name">alert:config-set-name</a></li>
+  <li class=""><a href="/alert:config-set-options">alert:config-set-options</a></li>
+  <li class=""><a href="/alert:config-set-trigger-ids">alert:config-set-trigger-ids</a></li>
+  <li class=""><a href="/alert:create-triggers">alert:create-triggers</a></li>
+  <li class=""><a href="/alert:find-matching-rules">alert:find-matching-rules</a></li>
+  <li class=""><a href="/alert:get-actions">alert:get-actions</a></li>
+  <li class=""><a href="/alert:get-all-rules">alert:get-all-rules</a></li>
+  <li class=""><a href="/alert:get-my-rules">alert:get-my-rules</a></li>
+  <li class=""><a href="/alert:invoke-matching-actions">alert:invoke-matching-actions</a></li>
+  <li class=""><a href="/alert:make-action">alert:make-action</a></li>
+  <li class=""><a href="/alert:make-config">alert:make-config</a></li>
+  <li class=""><a href="/alert:make-log-action">alert:make-log-action</a></li>
+  <li class=""><a href="/alert:make-rule">alert:make-rule</a></li>
+  <li class=""><a href="/alert:remove-triggers">alert:remove-triggers</a></li>
+  <li class=""><a href="/alert:rule-action-query">alert:rule-action-query</a></li>
+  <li class=""><a href="/alert:rule-get-action">alert:rule-get-action</a></li>
+  <li class=""><a href="/alert:rule-get-description">alert:rule-get-description</a></li>
+  <li class=""><a href="/alert:rule-get-id">alert:rule-get-id</a></li>
+  <li class=""><a href="/alert:rule-get-name">alert:rule-get-name</a></li>
+  <li class=""><a href="/alert:rule-get-options">alert:rule-get-options</a></li>
+  <li class=""><a href="/alert:rule-get-query">alert:rule-get-query</a></li>
+  <li class=""><a href="/alert:rule-get-user-id">alert:rule-get-user-id</a></li>
+  <li class=""><a href="/alert:rule-id-query">alert:rule-id-query</a></li>
+  <li class=""><a href="/alert:rule-insert">alert:rule-insert</a></li>
+  <li class=""><a href="/alert:rule-name-query">alert:rule-name-query</a></li>
+  <li class=""><a href="/alert:rule-remove">alert:rule-remove</a></li>
+  <li class=""><a href="/alert:rule-set-action">alert:rule-set-action</a></li>
+  <li class=""><a href="/alert:rule-set-description">alert:rule-set-description</a></li>
+  <li class=""><a href="/alert:rule-set-name">alert:rule-set-name</a></li>
+  <li class=""><a href="/alert:rule-set-options">alert:rule-set-options</a></li>
+  <li class=""><a href="/alert:rule-set-query">alert:rule-set-query</a></li>
+  <li class=""><a href="/alert:rule-set-user-id">alert:rule-set-user-id</a></li>
+  <li class=""><a href="/alert:rule-user-id-query">alert:rule-user-id-query</a></li>
+  <li class="last"><a href="/alert:spawn-matching-actions">alert:spawn-matching-actions</a></li>
+</ul>
+                          </li>
 
-    <!--[if lte IE 7]>
-        <link href="/css/v-1/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
-    <![endif]-->
-    <script type="text/javascript">
-        var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
-        var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', acct], ['_trackPageview']);
-        
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-     </script>
-     <script type="text/javascript">
-       $(function(){
-         colorizeExamples();
-         $("#main .pjax_enabled a").pjax({container: '#page_content',
-                                          success: function() { initializeTOC(); colorizeExamples(); }
-                                         });
-         $("#sub .pjax_enabled a").pjax({container: '#page_content',
-                                         success: function() {
-                                                     $("#sub a.currentPage, #sub a.selected").removeClass("currentPage").removeClass("selected");
-                                                     if(this.clickedElement) showInTOC(this.clickedElement);
-                                                     colorizeExamples();
-                                                   }
-                                       });
-       })
-     </script>
-<script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
+                          <li class="expandable hasChildren" id="_cdict_neead40ab3f4ce883">
+                            <div class="hitarea expandable-hitarea"></div><a href="/cdict" title="http://marklogic.com/xdmp/custom-dictionary">cdict: <span class="function_count">(4)</span></a>
 
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-<!--
-<script type="text/javascript" src="/apidoc/js/splitter.js"></script>
--->
+                          <li class="expandable hasChildren" id="_cpf_nbe2a2c8bda48e63b">
+                            <div class="hitarea expandable-hitarea"></div><a href="/cpf" title="http://marklogic.com/cpf">cpf: <span class="function_count">(11)</span></a>
 
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-<style type="text/css" media="all">
+                          <li class="expandable hasChildren" id="_css_n7ca01cd98dd0e611">
+                            <div class="hitarea expandable-hitarea"></div><a href="/css" title="http://marklogic.com/cpf/css">css: <span class="function_count">(2)</span></a>
 
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-/* 
- * Splitter bar style; the .active class is added when the
- * mouse is over the splitter or the splitter is focused
- * via the keyboard taborder or an accessKey. 
- */
-/*
-#MySplitter .vsplitbar {
-*/
-/*#MySplitter .vsplitbar {*/
-#content .vsplitbar {
-  width: 6px;
-  background: #aca url(/img/vgrabber.gif) no-repeat center;
-}
-/*#MySplitter .vsplitbar.active {*/
-#content .vsplitbar.active {
-  background: #da8 url(/img/vgrabber.gif) no-repeat center;
-  opacity: 0.7;
-}
-</style>
-<!--
-<script type="text/javascript">
+                          <li class="expandable hasChildren" id="_cts_nefe5285e82fa0d32">
+                            <div class="hitarea expandable-hitarea"></div><a href="/cts" title="http://marklogic.com/cts">cts: <span class="function_count">(217)</span></a>
 
-$().ready(function() {
-  $("#content").splitter({
-    type: "v",
-    outline: true,
-    minLeft: 100, sizeLeft: 150, minRight: 100,
-    resizeToWidth: true,
-    cookie: "vsplitter",
-    accessKey: 'I'
-  });
-});
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-</script>
--->
+                          <li class="expandable hasChildren" id="_cvt_nb79843b32ebd9647">
+                            <div class="hitarea expandable-hitarea"></div><a href="/cvt" title="http://marklogic.com/cpf/convert">cvt: <span class="function_count">(5)</span></a>
 
-  </head>
-  <body ml:class="">
-        <div id="container">
-            <div id="header">
-                <div id="badge"><a ml:href="/" title="Home"><img width="207" height="68" src="/media/marklogic-community-badge.png" alt="MarkLogic Developer Community"/></a></div>
-                <ul id="utilnav">
-      <!--
-      <li class="skip"><a href="">(skip to content)</a></li>
-      <li class="signup"><a href="signup.html">Log in</a></li>
-      <li class="prefs"><a href="">Preferences</a></li>
-    -->
-    </ul>
-                <form ml:action="/search" method="get">
-      <fieldset>
-                            <legend><label for="s_inp">Search</label></legend>
-                            <input name="q" id="s_inp" type="text" ml:value=""/>
-                            <input name="v" type="hidden" ml:value=""/>
-                            <input type="submit"/>
-                    </fieldset>
-    </form>
-                <ml:top-nav/>
-            </div>
-            <hr/>
-            <div id="content" ml:class="">
-                <!--
-                <ml:doc-breadcrumbs/>
-                -->
-                <div id="sub">
-                  <ml:api-toc/>
-                </div>
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
 
-                <div id="main">
-                  <div id="page_content">
-                    <ml:page-content/>
+                          <li class="expandable hasChildren" id="_dbg_n5a1e062d8b031ffc">
+                            <div class="hitarea expandable-hitarea"></div><a href="/dbg" title="http://marklogic.com/xdmp/debug">dbg: <span class="function_count">(25)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_dbk_n33abb083a9b32b8a">
+                            <div class="hitarea expandable-hitarea"></div><a href="/dbk" title="http://marklogic.com/cpf/docbook">dbk: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_dls_n3d6218c0f1b98c29">
+                            <div class="hitarea expandable-hitarea"></div><a href="/dls" title="http://marklogic.com/xdmp/dls">dls: <span class="function_count">(46)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_dom_n18963764fe24d02f">
+                            <div class="hitarea expandable-hitarea"></div><a href="/dom" title="http://marklogic.com/cpf/domains">dom: <span class="function_count">(23)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_ec2_nb2a5896b67775fb7">
+                            <div class="hitarea expandable-hitarea"></div><a href="/ec2" title="http://marklogic.com/ec2">ec2: <span class="function_count">(64)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_entity_nba4e8c9fdc224b88">
+                            <div class="hitarea expandable-hitarea"></div><a href="/entity" title="http://marklogic.com/entity">entity: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_excel_n8ed026da1e35ff55">
+                            <div class="hitarea expandable-hitarea"></div><a href="/excel" title="http://marklogic.com/cpf/excel">excel: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_exsl_n768cedb1cf3ce8ff">
+                            <div class="hitarea expandable-hitarea"></div><a href="/exsl" title="http://exslt.org/common">exsl: <span class="function_count">(2)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_flexrep_ncf9d43fb67c049d8">
+                            <div class="hitarea expandable-hitarea"></div><a href="/flexrep" title="http://marklogic.com/xdmp/flexible-replication">flexrep: <span class="function_count">(64)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_fn_nae00afd3bee6ef88">
+                            <div class="hitarea expandable-hitarea"></div><a href="/fn" title="http://www.w3.org/2005/xpath-functions">fn: <span class="function_count">(137)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_geo_n362bd4a047aa1d43">
+                            <div class="hitarea expandable-hitarea"></div><a href="/geo" title="http://marklogic.com/geospatial">geo: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_georss_n7d7427102b0a355e">
+                            <div class="hitarea expandable-hitarea"></div><a href="/georss" title="http://www.georss.org/georss">georss: <span class="function_count">(3)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_gml_n219d5f01dceeda2c">
+                            <div class="hitarea expandable-hitarea"></div><a href="/gml" title="http://www.opengis.net/gml">gml: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_info_n8435c4648177fed2">
+                            <div class="hitarea expandable-hitarea"></div><a href="/info" title="http://marklogic.com/appservices/infostudio">info: <span class="function_count">(20)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_infodev_n826c092d18710e6f">
+                            <div class="hitarea expandable-hitarea"></div><a href="/infodev" title="http://marklogic.com/appservices/infostudio/dev">infodev: <span class="function_count">(18)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_kml_n9d8e6d787b2096ab">
+                            <div class="hitarea expandable-hitarea"></div><a href="/kml" title="http://earth.google.com/kml/2.0">kml: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_lnk_n2ec0932a04bca9e5">
+                            <div class="hitarea expandable-hitarea"></div><a href="/lnk" title="http://marklogic.com/cpf/links">lnk: <span class="function_count">(6)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_map_n67e1c0cbcfe9696f">
+                            <div class="hitarea expandable-hitarea"></div><a href="/map" title="http://marklogic.com/xdmp/map">map: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_math_n586a3cd40eb115f7">
+                            <div class="hitarea expandable-hitarea"></div><a href="/math" title="http://marklogic.com/xdmp/math">math: <span class="function_count">(22)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_mcgm_nc7d36beeb7156953">
+                            <div class="hitarea expandable-hitarea"></div><a href="/mcgm" title="http://marklogic.com/geospatial/mcgm">mcgm: <span class="function_count">(5)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_msword_n513fce47b63aa55c">
+                            <div class="hitarea expandable-hitarea"></div><a href="/msword" title="http://marklogic.com/cpf/msword">msword: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_ooxml_n770fac77ab09f16">
+                            <div class="hitarea expandable-hitarea"></div><a href="/ooxml" title="http://marklogic.com/openxml">ooxml: <span class="function_count">(4)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_p_n20073aa97b86ddfd">
+                            <div class="hitarea expandable-hitarea"></div><a href="/p" title="http://marklogic.com/cpf/pipelines">p: <span class="function_count">(12)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_package_n6b272ba9f743a33b">
+                            <div class="hitarea expandable-hitarea"></div><a href="/package" title="">: <span class="function_count">(8)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_pdf_nfb1fabe7bae1b050">
+                            <div class="hitarea expandable-hitarea"></div><a href="/pdf" title="http://marklogic.com/cpf/pdf">pdf: <span class="function_count">(4)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_pki_nf75fcac996d45df2">
+                            <div class="hitarea expandable-hitarea"></div><a href="/pki" title="http://marklogic.com/xdmp/pki">pki: <span class="function_count">(40)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_plugin_n176f3bb7be51f590">
+                            <div class="hitarea expandable-hitarea"></div><a href="/plugin" title="http://marklogic.com/extension/plugin">plugin: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_ppt_nfb633cb76329d33d">
+                            <div class="hitarea expandable-hitarea"></div><a href="/ppt" title="http://marklogic.com/cpf/powerpoint">ppt: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_prof_n9ca840f3c85ed5a2">
+                            <div class="hitarea expandable-hitarea"></div><a href="/prof" title="http://marklogic.com/xdmp/profile">prof: <span class="function_count">(10)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_rest_n1928329ddd0cc395">
+                            <div class="hitarea expandable-hitarea"></div><a href="/rest" title="http://marklogic.com/appservices/rest">rest: <span class="function_count">(7)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_search_nfba325daac5e0072">
+                            <div class="hitarea expandable-hitarea"></div><a href="/search" title="http://marklogic.com/appservices/search">search: <span class="function_count">(11)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_sec_n391cc4423772fa12">
+                            <div class="hitarea expandable-hitarea"></div><a href="/sec" title="http://marklogic.com/xdmp/security">sec: <span class="function_count">(90)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_spell_nbbaa50d043dd698d">
+                            <div class="hitarea expandable-hitarea"></div><a href="/spell" title="http://marklogic.com/xdmp/spell">spell: <span class="function_count">(5)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_spell-lib_nf5ebf80805515cb1">
+                            <div class="hitarea expandable-hitarea"></div><a href="/spell-lib" title="http://marklogic.com/xdmp/spell">spell: <span class="function_count">(5)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_thsr_n5d85daeee796890f">
+                            <div class="hitarea expandable-hitarea"></div><a href="/thsr" title="http://marklogic.com/xdmp/thesaurus">thsr: <span class="function_count">(10)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_trgr_n2a774e5fd58fdfe0">
+                            <div class="hitarea expandable-hitarea"></div><a href="/trgr" title="http://marklogic.com/xdmp/triggers">trgr: <span class="function_count">(27)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_xdmp_n3cb23f0e67c39528">
+                            <div class="hitarea expandable-hitarea"></div><a href="/xdmp" title="http://marklogic.com/xdmp">xdmp: <span class="function_count">(289)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_xhtml_na33106d6e94eabaf">
+                            <div class="hitarea expandable-hitarea"></div><a href="/xhtml" title="http://marklogic.com/cpf/xhtml">xhtml: <span class="function_count">(3)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable hasChildren" id="_xinc_n6789d6ecf10d3976">
+                            <div class="hitarea expandable-hitarea"></div><a href="/xinc" title="http://marklogic.com/xinclude">xinc: <span class="function_count">(3)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+
+                          <li class="expandable lastExpandable hasChildren" id="_xp_n91265265bd56bb3e">
+                            <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><a href="/xp" title="http://marklogic.com/xinclude/xpointer">xp: <span class="function_count">(1)</span></a>
+
+                            <ul style="display: none;">
+                              <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
                   </div>
                 </div>
+
+                <div id="tabs-2" class="tabbed_section pjax_enabled ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+                  <div class="scrollable_section">
+                    <input class="default" id="config-filter2" name="config-filter2" />
+
+                    <ul id="apidoc_tree2" class="treeview">
+                      <li class="expandable hasChildren" id="_MarkLogicBuilt-InFunctions">
+                        <div class="hitarea expandable-hitarea"></div><span>MarkLogic Built-In Functions</span>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_XQueryLibraryModules">
+                        <div class="hitarea expandable-hitarea"></div><span>XQuery Library Modules</span>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_CPFFunctions">
+                        <div class="hitarea expandable-hitarea"></div><span>CPF Functions</span>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable lastExpandable hasChildren" id="_W3C-StandardFunctions">
+                        <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><span>W3C-Standard Functions</span>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div id="tabs-3" class="tabbed_section ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+                  <div class="scrollable_section">
+                    <input class="default" id="config-filter3" name="config-filter3" />
+
+                    <ul id="apidoc_tree3" class="treeview">
+                      <li class="expandable hasChildren" id="_n6e9c0978bab15b00">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/getting-started">Getting Started With MarkLogic&nbsp;Server</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n8bdf4f25ca9ac8f3">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/admin">Administrator's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n710d2e72f3cf853d">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/app-dev">Application Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n996e7a72dcea339a">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/search-dev">Search Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_na0c6858c36871763">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/app-builder">Application Builder Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nd67655c316fa5496">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/infostudio">Information Studio Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n169149316cbb9d4c">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/flexrep">Flexible Replication Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nc0e643808289a488">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/performance">Query Performance and Tuning Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n666a0014d4cab552">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/cluster">Scalability, Availability, and Failover Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n3442aa35203237ad">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/cpf">Content Processing Framework Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nee578ff12fdd48a2">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/security">Understanding and Using Security Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nfc1531a5f1c96bcc">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/admin-api">Scripting Administrative Tasks Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nfa8f2b65ab3ed12a">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/xquery">XQuery and XSLT Reference Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n4edfc6bb9c23f6c4">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/installation">Installation Guide for All Platforms</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n298ea9cd7b1cf080">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/xcc">XCC Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nf3715cde9d99cedc">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/ec2">MarkLogic Server on Amazon EC2 Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n19858266ae465c27">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/sharepoint">Connector For SharePointÂ® Administrator's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n546cc08f0505812a">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/relnotes">Release Notes</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n1609ea6439ff4aa2">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/monitoring">Monitoring MarkLogic Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_n37c262de626d18ba">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/mapreduce">MarkLogic Connector for Hadoop Developer's Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable hasChildren" id="_nb3f192efcd4a7aec">
+                        <div class="hitarea expandable-hitarea"></div><a href="/docs/database-replication">Database Replication Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+
+                      <li class="expandable lastExpandable hasChildren" id="_n67eef0969d6cdaa8">
+                        <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><a href="/docs/qconsole">Query Console User Guide</a>
+
+                        <div style="font-size: 0.8em;" class="treecontrol">
+                          &nbsp;<span title="Collapse the entire tree below" class="collapse"><img src="img/minus.gif" /> collapse all</span>&nbsp;<span title="Expand the entire tree below" class="expand"><img src="img/plus.gif" /> expand all</span>
+                        </div>
+
+                        <ul style="display: none;">
+                          <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-            <hr/>
-            <div id="footer"> 
-                <div id="copyright">Copyright © 2011 <a href="http://www.marklogic.com/">MarkLogic Corporation</a>. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/> </a> and <a href="/code/rundmc">rundmc</a></div>
-            </div>
+          </div>
         </div>
-        <script type="text/javascript">
-            var uservoiceOptions = {
-                /* required */
-                key: 'rundmc',
-                host: 'rundmc.uservoice.com', 
-                forum: '58148',
-                showTab: true,  
-                /* optional */
-                alignment: 'right',
-                background_color:'orange', 
-                text_color: 'white',
-                hover_color: '#06C',
-                lang: 'en'
-            };
-        
-        function _loadUserVoice() {
-            var s = document.createElement('script');
-            s.setAttribute('type', 'text/javascript');
-            s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
-            document.getElementsByTagName('head')[0].appendChild(s);
-        }
-        _loadSuper = window.onload;
-        // window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
-        </script>
-<ml:elapsed-time/>
-    </body>
+      </div>
+      <!-- end API sidebar -->
+					</div>
+				</section>
+			</div>
+			<hr />
+			<footer>
+				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="">MarkLogic Server 4.2-4</a> and <a href="">rundmc</a>.</div>
+				<div class="utility">
+					<form action="#" method="get">
+						<fieldset>
+							<legend><label for="us_input">Search the community site</label></legend>
+							<input id="us_input" type="text" title="Type then press Enter" />
+							<input type="image" src="img/i_mag_glass2.png" alt="Search" title="Search the site" />
+						</fieldset>
+					</form>
+					<a href="http://marklogic.uservoice.com/forums/58148?lang=en&amp;referer=http%3A%2F%2Fdeveloper.marklogic.com%2F" onmouseover="UserVoice.Popin.preload();" onclick="UserVoice.Popin.show(); return false;" id="uservoice-feedback-tab"><img title="Feedback – Submit an idea" src="img/i_bullhorn.png" alt="Feedback"  width="30" height="29" /></a>
+					<a href=""><img title="Go to try marklogic.com" src="img/i_screen_try.png" alt="Try" width="30" height="29" /></a>
+					<a href=""><img title="Go to corporate site" src="img/i_screen_m.png" alt="MarkLogic Site" width="30" height="29" /></a>
+				</div>
+			</footer>
+		</div>
+		<!--<script type="text/javascript">
+			var uservoiceOptions = {
+				/* required */
+				key: 'rundmc',
+				host: 'marklogic.uservoice.com',
+				forum: '58148',
+				showTab: true,
+				/* optional */
+				alignment: 'right',
+				background_color:'orange',
+				text_color: 'white',
+				hover_color: '#06C',
+				lang: 'en'
+			};
+
+			function _loadUserVoice() {
+				var s = document.createElement(’script');
+				s.setAttribute('type', 'text/javascript');
+				s.setAttribute(’src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
+				document.getElementsByTagName('head')[0].appendChild(s);
+			}
+			_loadSuper = window.onload;
+			if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com')
+				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+        </script>-->
+	</body>
 </html>
