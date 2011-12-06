@@ -90,11 +90,22 @@
     </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="ml:breadcrumbs">
+    <xsl:apply-templates mode="breadcrumbs" select="."/>
+    <!-- Always append the "Server version" switcher -->
+    <xsl:apply-templates mode="version-list" select="."/>
+  </xsl:template>
+
+          <!-- TODO: Make the breadcrumbs more useful (and make sure PJAX is supported) -->
+          <xsl:template mode="breadcrumb-display" match="ml:breadcrumbs"> > Documentation</xsl:template>
+
   <xsl:template match="ml:api-toc">
     <!-- We may need this wrapper around the "Server version" switcher to get the same CSS styling as in the Search results page
     <div id="breadcrumb">
     -->
+      <!--
       <xsl:apply-templates mode="version-list" select="."/>
+      -->
     <!--
     </div>
     -->
