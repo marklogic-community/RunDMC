@@ -5,75 +5,58 @@
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<link href="/css/v-6/screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<style type="text/css">
-		#container {padding-top: 69px;}
-		#header {
-			position: fixed;
-			left: 0;
-			top: 0;
-			width: 100%;
-			z-index: 20;
-		}
-		footer {
-			background: transparent !important;
-			padding-top: 15px !important;
-		}
-		</style>
-
-    <link type="text/css" href="/css/v-1/apidoc/jquery.treeview.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/v-1/apidoc.css" rel="stylesheet" media="screen"/>
-
-    <link type="text/css" href="/apidoc/js/jquery-ui/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet"/>
-
+	  <link href="/css/v-2/apidoc/jquery.treeview.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-1/apidoc/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-7/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-2/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
 		<script type="text/javascript" src="/js/modernizr.js"></script>
 		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
-
+		<script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
+    <!-- not included in Adam's code; do we need this?
     <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
-
+    -->
+    <!-- not included in Adam's code; don't we need this?
     <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js" ></script>
+    -->
+		<script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
+		<script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
+		<script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
+		<script type="text/javascript" src="/apidoc/js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
 
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
-    <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
 		<script type="text/javascript" src="/js/functions.js"></script>
 
-    <script type="text/javascript">
-        var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
-        var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', acct], ['_trackPageview']);
-        
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-     </script>
-     <script type="text/javascript">
-       $(function(){
-         colorizeExamples();
-         $("#main .pjax_enabled a").pjax({container: '#page_content',
-                                          success: function() { initializeTOC(); colorizeExamples(); }
-                                         });
-         $("#api_sub .pjax_enabled a").pjax({container: '#page_content',
-                                         success: function() {
-                                                     $("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
-                                                     if(this.clickedElement) showInTOC(this.clickedElement);
-                                                     colorizeExamples();
-                                                   }
-                                       });
-       })
-     </script>
-<script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
+    <!-- TODO: Add Google Analytics code -->
 
+	  <script type="text/javascript">
+		//<![CDATA[
+			$(function(){
+				colorizeExamples();
+				$("#main .pjax_enabled a").pjax({
+					container: '#page_content',
+					success: function() {
+						initializeTOC();
+						colorizeExamples();
+					}
+				});
+				$("#api_sub .pjax_enabled a").pjax({
+					container: '#page_content',
+					success: function() {
+						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
+						if(this.clickedElement) showInTOC(this.clickedElement);
+							colorizeExamples();
+					}
+				});
+			})
+	  //]]>
+  	</script>
+    <!-- not included in Adam's code; do we not need it?
+    <script type="text/javascript" src="/apidoc/js/jquery.cookie.js"></script>
+    -->
 	</head>
 	<body>
 		<div id="container">
@@ -94,28 +77,28 @@
 			</div>
 			<hr />
 			<div id="content">
-        <!--
         <div id="breadcrumb">
           <ml:breadcrumbs/>
         </div>
-        -->
-        <div id="api_sub">
-          <ml:api-toc/>
-        </div>
+				<section>
 
-        <div id="main">
-          <div id="page_content">
-            <section>
+          <!-- TODO: Update PJAX code so it changes this too. -->
+          <ml:page-heading/>
+
+					<div id="main_container">
+						<div id="main">
               <ml:page-content/>
               <ml:comment-section/>
-            </section>
-          </div>
-        </div>
+						</div>
+            <div id="api_sub">
+              <ml:api-toc/>
+            </div>
+					</div>
+
+				</section>
 			</div>
 			<hr />
-      <!--
 			<footer>
-        <ml:top-nav/>
 				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</div>
 				<div class="utility">
 					<form action="/search" method="get">
@@ -130,7 +113,6 @@
 					<a href="http://www.marklogic.com" target="_blank"><img title="Go to corporate site" src="/images/i_screen_m.png" alt="MarkLogic Site" width="30" height="29" /></a>
 				</div>
 			</footer>
-      -->
 		</div>
 		<!--<script type="text/javascript">
 			var uservoiceOptions = {
@@ -157,6 +139,8 @@
 			if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com')
 				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
         </script>-->
+    <!--
     <ml:elapsed-time/>
+    -->
 	</body>
 </html>

@@ -44,6 +44,18 @@ if(typeof jQuery != 'undefined') {
 			.blur(function() {
 				if($(this).val() == '') {$(this).val(valText).addClass('default')}
 			});*/
+		var valText = 'Type to filter TOC';
+		$('#tab_content .default','#api_sub')
+			.val(valText)
+			.addClass('default')
+			.focus(function() {
+				if($(this).val() == valText) {
+					$(this).val('').removeClass('default');
+				}
+			})
+			.blur(function() {
+				if($(this).val() == '') {$(this).val(valText).addClass('default');}
+			});
 		// end search field default value
 		// side nav accordion functionality
 		$('body:not(.blog) #sub li').each(function() {
@@ -151,8 +163,8 @@ if(typeof jQuery != 'undefined') {
 
 			$(this).append($('<a>', {'class': 'close'})).children('.close').click(function() {
 				if($(this).parent().hasClass('closed')) {
-					$(this).parent().animate({height: sectionHeight,'padding-bottom':paddingb,'padding-top':paddingt},500, function() {
-						$(this).removeClass('closed');
+					$(this).parent().animate({height: sectionHeight,'padding-bottom':padding},500, function() {
+						$(this).removeClass('closed').find('.more').css('position','absolute');
                         $.cookie(c, 'open');
 					});
 				}
@@ -160,7 +172,7 @@ if(typeof jQuery != 'undefined') {
 					$(this).parent().animate({height: 35,'padding-bottom': 5, 'padding-top': 15},500, function() {
 						$(this).addClass('closed');
                         $.cookie(c, 'closed');
-					});
+					}).find('.more').css('position','static');
 				}
 			});
 
@@ -225,6 +237,31 @@ if(typeof jQuery != 'undefined') {
 				});
 			});
 		}
+		function autoheight() {
+			if($(window).height() > $('#container').height()) {
+				$('#api_sub').css({
+					bottom: 'auto',
+					height: $('#main').height()
+				});
+			}
+			else {
+				$('#api_sub').css({
+					bottom: '10px',
+					height: 'auto'
+				});
+			}
+		}
+		autoheight();
+		$(window).resize(function() {
+			autoheight();
+		});
+		var apiCaption = $('.api_table caption',main).text();
+		$('.api_table',main).find('caption').remove().end().before(
+			$('<div>', {
+				'class': 'api_caption',
+				text: apiCaption
+			})
+		);
 		// add new functions before this comment
 
 	});

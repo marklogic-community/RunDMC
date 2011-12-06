@@ -73,9 +73,12 @@ thead th {
 	background: #ECECEC url(/images/bg_table_features_top.png) center top no-repeat;
 	white-space: nowrap;
 	vertical-align: bottom;
-	padding: 24px 5px 15px;
+	padding: 20px 5px 10px;
 	line-height: 100%;
+	font-size: 20px;
+	font-weight: normal;
 }
+thead th:first-child {padding-left: 15px;}
 thead th.title {
 	font-size: 16px;
 	padding-top: 20px;
@@ -86,14 +89,12 @@ thead th:first-child {background-position: left top;}
 thead th:last-child {background-position: right top;}
 thead th.last {background-position: right top;}
 tbody {border-top: 1px solid #CCC;}
-tbody {border-left: 1px solid #CCC;}
-tbody th,  tbody td {padding: 10px 5px;}
-tbody tr:first-child th:first-child {
+tbody th, tbody td {padding: 10px 5px;}
+tbody td:first-child, tbody th:first-child {
 	padding-left: 15px;
 	width: 110px;
 	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
-tbody tr:first-child th:first-child,
 tbody td:last-child,
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
@@ -108,20 +109,22 @@ tbody:last-child tr:last-child td
 tbody.last tr.last th,
 tbody.last tr.last td
 	{background-position: bottom center;}
-tbody tr:first-child th:first-child {background-position: top left;}
+tbody th:first-child,
+tbody td:first-child
+	{background-position: top left;}
 tbody td:last-child {background-position: top right;}
 tbody td.last {background-position: top right;}
-tbody:last-child tr:last-child th:first-child {background-position: bottom left;}
+tbody:last-child tr:last-child th:first-child,
+tbody:last-child tr:last-child td:first-child
+	{background-position: bottom left;}
 tbody:last-child tr:last-child td:last-child {background-position: bottom right;}
-tbody.last tr.last th:first-child {background-position: bottom left;}
+tbody.last tr.last th:first-child,
+tbody.last tr.last td:first-child
+	{background-position: bottom left;}
 tbody.last tr.last td.last {background-position: bottom right;}
 tbody th + th {width: 150px;}
 th:last-child,  td:last-child {padding-right: 15px;}
-th.last,  td.last {padding-right: 15px;}
-/*
-tbody.last tr.last td {text-align: center;}
-*/
-
+th.last, td.last {padding-right: 15px;}
 table small {
 	font-weight: normal;
 	font-size: 10px;
@@ -329,8 +332,8 @@ nav ul {margin: 0;}
 #breadcrumb .version b {color: #333;}
 #main {
 	float: right;
-	width: 620px;
-	min-height: 500px;
+	width: 620px;/*
+	min-height: 500px;*/
 }
 #main > :first-child {margin-top: 0;}
 #main > h3 {margin-top: 34px;}
@@ -381,7 +384,6 @@ nav ul {margin: 0;}
 	padding-bottom: 5px;
 }
 #sub .categories li:first-child {border-top: none;}
-/* IE ignores rules if it doesn’t know a selector, that’s why we need to redeclare it separately here */
 .jsenabled #sub li li li:last-child {
 	border-style: solid;
 	border-width: 1px 0;
@@ -596,8 +598,23 @@ footer nav .current a {color: white;}
 	margin: 0;
 	font-size: 12px;
 }
-
-/* .features tbody:last-child tr:last-child td {text-align: center;} */
+.features thead th {
+	padding: 24px 5px 15px;
+	font-size: 12px;
+	font-weight: bold;
+}
+.features tbody td:first-child, .features tbody th:first-child {
+	padding-left: 5px;
+	width: auto;
+	background-image: none;
+}
+.features tbody tr:first-child th:first-child {
+	padding-left: 15px;
+	width: 110px;
+	background-image: url(../img/bg_table_features_bottom.png);
+}
+.features tbody:last-child tr:last-child td {text-align: center;}
+.features tbody.last tr.last td {text-align: center;}
 .doclist {
 	padding-left: 0 !important;
 	list-style: none !important;
@@ -607,7 +624,7 @@ footer nav .current a {color: white;}
 .doclist li > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
 
-#comments {
+#container > #comments {
 	background: white;
 	padding: 40px 0;
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -615,21 +632,21 @@ footer nav .current a {color: white;}
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	clear: right;
 }
-#comments > div {
+#container > #comments > div {
 	width: 945px;
 	margin: auto;
 }
-#comments > div > section {
+#container > #comments > div > section {
 	width: 620px;
 	float: right;
 }
-#comments > div > section > h2, #documentation > h2 {
+#container > #comments > div > section > h2, #documentation > h2 {
 	font-size: 24px;
 	margin-bottom: 20px;
 }
-#comments > div > section > h2 img {margin: -5px 0 0 5px;}
+#container > #comments > div > section > h2 img {margin: -5px 0 0 5px;}
 #documentation > h2 img {margin-top: -10px;}
-#comments .action {
+#container > #comments .action {
 	position: absolute;
 	top: 110px;
 	right: 0;
@@ -647,13 +664,28 @@ footer nav .current a {color: white;}
 	border-right: none;
 	text-align: right;
 }
-.jsenabled #comments .action {margin-top: -30px;}
-#comments .action ul {
+.jsenabled #container > #comments .action {margin-top: -30px;}
+#container > #comments .action ul {
 	margin: -15px 0 0;
 	padding: 30px 0 0 20px;
 	background: url(/images/i_speechbubble.png) no-repeat;
 }
-#comments .action li span {font-size: 24px;}
+#container > #comments .action li span {font-size: 24px;}
+#main > #comments {border-top: 1px solid #E4E4E4;}
+#main > #comments:before {
+	content: "";
+	display: block;
+	margin-bottom: 20px;
+	border-top: 1px solid white;
+}
+#main > #comments #disqus_thread {
+	background: white;
+	padding: 1px 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-top: 10px;
+}
 #documentation ul {
 	padding: 0;
 	list-style: none;
@@ -917,7 +949,7 @@ section#documentation:before {margin-bottom: 30px;}
 	{margin-left: 4px;}
 .post + .pagination a:first-child, #main_container > .pagination a:first-child {margin-right: 4px;}
 .post + .pagination span, #main_container > .pagination span {color: #CCC;}
-.post .action {
+.post .action, #main #comments .action {
 	background: white url(/images/i_speechbubble.png) 4px bottom no-repeat;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -929,17 +961,23 @@ section#documentation:before {margin-bottom: 30px;}
 	border: 1px solid #DDD;
 	float: right;
 	margin: -5px 0 15px;
+	font-size: 11px;
 }
-.post .action {font-size: 11px;}
-#main .post .action ul {
+#main #comments .action {
+	position: absolute;
+	float: none;
+	right: 77px;
+	top: 80px !important;
+}
+#main .post .action ul, #main #comments .action ul {
 	padding: 0;
 	margin: 0;
 }
-.post .action li {
+.post .action li, #main #comments .action li {
 	display: inline;
 	margin-left: 10px;
 }
-#main .post .action ul li:before {content: none;}
+#main .post .action ul li:before, #main #comments .action li:before {content: none;}
 
 .doc-desc {
     padding-left: 20px;
@@ -1011,7 +1049,6 @@ section#documentation:before {margin-bottom: 30px;}
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	font-weight: bold;
-	text-shadow: 0 -1px 0 rgba(0,0,0,.8);
 	text-decoration: none !important;
 	text-align: center;
 	background: #2a7bab; /* Old browsers */
@@ -1124,6 +1161,7 @@ section#documentation:before {margin-bottom: 30px;}
 	width: 100%;
 	margin-bottom: 15px;
 }
+#bottom1 article pre {display: none;}
 #bottom1 section:first-child + section + section article {min-height: 65px;}
 #bottom1 h3 + article {
 	padding-top: 20px;

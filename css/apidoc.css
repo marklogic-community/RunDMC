@@ -1,88 +1,75 @@
-#content {
- background: white;
+#container {padding-top: 69px;}
+#header {
+	position: fixed;
+	left: 50%;
+	top: 0;
+	width: 1100px;
+	z-index: 20;
+	margin-left: -550px;
 }
-
-/*
-#container {
-  width: auto;
+#header nav .current:after {border-color: #F5F5F5 transparent;}
+#container > footer {padding-bottom: 0;}
+#copyright {display: none;}
+#breadcrumb, #container #breadcrumb + section > h2 {
+	background: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
-*/
-
-#page_content {
-  padding: 0px 20px;
+#breadcrumb {padding-bottom: 35px;}
+#breadcrumb div {
+	position: fixed !important;
+	margin-left: 77px;
+	bottom: auto !important;
 }
-
-#main {
-/*
-  width: 75%;
-  */
-width: 750px;
-  float: none;
-  padding: 0px;
-  /*
-  right: 0px;
-  */
-  margin-left: 250px;
-}
-
-
+#breadcrumb .version {margin-top: 40px;}
 #api_sub {
-  /*
-	width: 25%;
-  */
-width: 280px;
-float:none;
-
-  font-weight: bold;
+	width: 250px;
+	padding-right: 20px;
   color: #333333;
   font-size: 0.9em;
 }
-
-#main, #api_sub {
-  position:fixed;
-  bottom:0px;
-  top:90px;
-  background: none repeat scroll 0 0 white;
-}
-
-#main { overflow: auto; }
-
-
-#toc_tabs {
+.jsenabled #api_sub {
   position: fixed;
-  width: 235px;
-  top: 118px;
-  bottom: 5px;
-}
-
-.tab_link {
-  font-size: 0.9em;
-}
-
-.scrollable_section {
-  overflow: auto;
-  position: fixed;
-  top: 175px;
-  /*
-  width: 22%;
-  */
-width: 232px;
+  top: 150px;
   bottom: 10px;
+ }
+#apidoc_toc,
+#all_tocs,
+#toc_tabs {
+  top: auto;
+  bottom: auto;
+  height: 100%;
+  padding: 0;
 }
-
-
-.version {
-  font-size: 0.8em;
+#tab_bar {
+	position: relative;
+	z-index: 1;
 }
-
-#version_list {
-  padding-top: 8px;
-  padding-left: 8px;
+#tab_content {
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	width: 248px;
+	background: white;
+	border: 1px solid #CCC;
+	padding-top: 10px;
 }
-#apidoc_toc {
-  padding-bottom: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
+.tab_link {
+	font-size: 0.9em;
+	min-height: 27px;
+}
+.scrollable_section {
+	height: 100%;
+	position: relative;
+}
+.scrollable_section > input {
+	position: absolute;
+	border: 1px solid #CCC;
+	left: 10px;
+	font-size: 11px;
+	padding: 1px 5px;
+	width: 205px;
 }
 
 .function_name {
@@ -91,23 +78,57 @@ width: 232px;
 font-weight: bold;
 }
 
-.doclist {
-  width: auto;
+.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight, a.selected {color: #F86D07;}
+.treecontrol {
+	position: fixed;
+	margin-top: -42px;
+	margin-left: -10px;
+	font-size: .9em !important;
 }
-
-.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight, a.selected {
-  color: #F86D07;
+.treecontrol > span {
+	display: inline-block;
+	color: white;
+	padding: 3px 8px;
+	margin-bottom: 8px;
+	border: 1px solid #003959;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	font-weight: bold;
+	text-decoration: none !important;
+	text-align: center;
+	background: #2a7bab; /* Old browsers */
+	background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a7bab), color-stop(100%,#014b7a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
+	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
+	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
+	overflow: hidden;
+	line-height: 12px !important;
+	text-transform: capitalize;
+}
+.treecontrol > span img, .treecontrol > span span {
+	vertical-align: baseline;
+	background: white;
 }
 /* override treeview CSS */
-.treeview a.selected {
-  background-color: transparent;
+.treeview {
+	overflow: auto;
+	border-top: 1px solid #CCC;
+	position: absolute;
+	top: 52px;
+	bottom: 0;
+	width: 100%;
 }
-
-.footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {
-  cursor: pointer;
-}
-
-a.footnote_marker:hover { text-decoration: none; }
+.treeview > li > a {font-weight: bold;}
+.treeview ul {line-height: 110%;}
+.treeview li {padding-left: 18px;}
+.treeview a.selected {background-color: transparent;}
+.treeview .hitarea {margin-left: -18px;}
+.footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {cursor: pointer;}
+a.footnote_marker:hover {text-decoration: none;}
 
 #tooltip {
   position: fixed;
@@ -134,32 +155,19 @@ code.syntax {
   line-height: 140%;
 }
 
-.indented_function {
-  margin-left: 2em;
-}
+.indented_function {margin-left: 2em;}
 
 h1 a { text-decoration: underline; }
 
 .hide-detail { display: none; }
 
-#config-filter, #config-filter2, #config-filter3 { width: 120px; }
 input.default {color: #CBCBCB; font-style: italic;}
-
-
 li.expandable .treecontrol { display: none; }
 
 /* Disable (fixed-width) background image */
-#main .doclist h2 {
-	background: #6E782F;/* url(/images/bg_header_doclist.gif) no-repeat;*/
-}
-
-.documentsTable a {
-  text-decoration: underline;
-}
-
-.guide-pdf-link {
-  float: right;
-}
+#main .doclist h2 {background: #6E782F;/* url(/images/bg_header_doclist.gif) no-repeat;*/}
+.documentsTable a {text-decoration: underline;}
+.guide-pdf-link {float: right;}
 
 /* This could use some sprucing up */
 .userguide th,
@@ -173,22 +181,65 @@ a.sectionLink       { color: #666; }
 a.sectionLink:hover { color: #235BAB; }
 
 /* TODO: make these look better (modifying the XHTML if necessary) */
-p.warning:before {
-  content: "WARNING: "; 
-}
-p.note:before {
-  content: "NOTE: ";
-}
+p.warning:before {content: "WARNING: ";}
+p.note:before {content: "NOTE: ";}
 
 /* Override default CSS for tabs */
 #api_sub .ui-widget { font-family: Arial, Helvetica, sans-serif; }
-#api_sub .ui-widget-content .treeview a                 { color: #235BAB; }
+#api_sub .ui-state-active,
+#api_sub .ui-widget-content .ui-state-active,
+#api_sub .ui-widget-header .ui-state-active
+	{border-color: #CCC;}
+#api_sub .ui-widget-content .treeview a { color: #235BAB; }
 #api_sub .ui-widget-content .treeview a.selected,
 #api_sub .ui-widget-content .treeview a.currentPage,
-#api_sub .ui-widget-content .treeview a.footnote_marker { color: #F86D07; }
-#api_sub .ui-widget { font-size: 1em; }
-#api_sub .ui-tabs .ui-tabs-panel { padding: 1em 0.5em; }
+#api_sub .ui-widget-content .treeview a.footnote_marker
+	{color: #F86D07;}
+#api_sub .ui-widget {font-size: 1em;}
+#api_sub .ui-tabs .ui-tabs-panel {
+	padding: 0;
+	height: 100%;
+}
+#toc_tabs, #api_sub .ui-tabs .ui-tabs-nav {
+	border-radius: 0;
+	border: none;
+	background: none;
+	padding: 0;
+	line-height: 100%;
+}
+/* end override */
 
 
 /* Override comment display settings in screen.css; to be revised by Adam... */
 #comments > div > section { float: none; width: auto; }
+/* end override */
+.api_caption {
+	position: absolute;
+	font-size: 11px;
+	width: 610px;
+	margin-top: 45px !important;
+	text-align: right;
+}
+.api_table thead th {
+	font-size: 20px;
+	font-weight: normal;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+.api_table thead th:first-child {
+	padding-left: 15px;
+	width: 310px;
+}
+.api_table tbody td {
+	font-size: 11px;
+	color: #333;
+	line-height: 120%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.api_table tbody td:first-child {font-size: 12px;}
+table.parameters, table.parameters code {
+	font-size: 14px;
+	line-height: 143%;
+}
+table.parameters tbody td:first-child {width: 240px;}
