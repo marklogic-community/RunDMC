@@ -8,6 +8,8 @@
 	margin-left: -550px;
 }
 #header nav .current:after {border-color: #F5F5F5 transparent;}
+#container > footer {padding-bottom: 0;}
+#copyright {display: none;}
 #breadcrumb, #container #breadcrumb + section > h2 {
 	background: none;
 	-moz-box-shadow: none;
@@ -30,7 +32,7 @@
 .jsenabled #api_sub {
   position: fixed;
   top: 150px;
-  bottom: 30px;
+  bottom: 10px;
  }
 #apidoc_toc,
 #all_tocs,

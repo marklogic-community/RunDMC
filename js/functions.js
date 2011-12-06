@@ -182,7 +182,7 @@ if(typeof jQuery != 'undefined') {
 			}
 			else {
 				$('#api_sub').css({
-					bottom: '40px',
+					bottom: '10px',
 					height: 'auto'
 				});
 			}
