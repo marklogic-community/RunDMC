@@ -243,3 +243,5 @@ table.parameters, table.parameters code {
 	line-height: 143%;
 }
 table.parameters tbody td:first-child {width: 240px;}
+
+a.function_prefix { text-decoration: underline; color: #899B3B; }

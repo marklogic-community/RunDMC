@@ -100,15 +100,6 @@
           <xsl:template mode="breadcrumb-display" match="ml:breadcrumbs"> > Documentation</xsl:template>
 
   <xsl:template match="ml:api-toc">
-    <!-- We may need this wrapper around the "Server version" switcher to get the same CSS styling as in the Search results page
-    <div id="breadcrumb">
-    -->
-      <!--
-      <xsl:apply-templates mode="version-list" select="."/>
-      -->
-    <!--
-    </div>
-    -->
     <div id="apidoc_toc">
       <script type="text/javascript">
         <xsl:comment>
@@ -184,6 +175,28 @@
   <xsl:template mode="page-specific-title" match="api:list-page">
     <xsl:value-of select="@title"/>
   </xsl:template>
+
+
+  <xsl:template match="ml:page-heading">
+    <h2>
+      <xsl:apply-templates mode="api-page-heading" select="$content/*"/>
+    </h2>
+  </xsl:template>
+
+          <xsl:template mode="api-page-heading" match="*">
+            <xsl:apply-templates mode="page-specific-title" select="."/>
+          </xsl:template>
+
+          <xsl:template mode="api-page-heading" match="api:function-page">
+            <xsl:variable name="name" select="api:function[1]/@fullname"/>
+            <xsl:variable name="prefix" select="substring-before($name,':')"/>
+            <xsl:variable name="local"  select="substring-after ($name,':')"/>
+            <a href="{$version-prefix}/{$prefix}" class="function_prefix">
+              <xsl:value-of select="$prefix"/>
+            </a>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="$local"/>
+          </xsl:template>
 
 
   <xsl:template mode="page-content" match="api:list-page | api:docs-page">
@@ -398,33 +411,24 @@
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
-      <h1>
-        <xsl:variable name="name" select="api:function[1]/@fullname"/>
-        <xsl:variable name="prefix" select="substring-before($name,':')"/>
-        <xsl:variable name="local"  select="substring-after ($name,':')"/>
-        <a href="{$version-prefix}/{$prefix}">
-          <xsl:value-of select="$prefix"/>
-        </a>
-        <xsl:text>:</xsl:text>
-        <xsl:value-of select="$local"/>
-      </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
   </xsl:template>
 
           <xsl:template match="api:function">
-            <code class="syntax">
-              <strong>
+            <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
+            <xsl:element name="pre">
+              <code>
                 <xsl:value-of select="@fullname"/>
-              </strong>
-              <xsl:text>(</xsl:text>
-              <xsl:if test="api:params/api:param">
-                <xsl:text>&#xA;</xsl:text>
-              </xsl:if>
-              <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
-              <xsl:text>) as </xsl:text>
-              <xsl:value-of select="normalize-space(api:return)"/>
-            </code>
+                <xsl:text>(</xsl:text>
+                <xsl:if test="api:params/api:param">
+                  <xsl:text>&#xA;</xsl:text>
+                </xsl:if>
+                <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
+                <xsl:text>) as </xsl:text>
+                <xsl:value-of select="normalize-space(api:return)"/>
+              </code>
+            </xsl:element>
             <xsl:apply-templates select="(api:summary, api:params, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
@@ -448,42 +452,57 @@
                   </xsl:template>
 
                   <xsl:template match="api:summary">
-                    <h2>Summary</h2>
-                    <xsl:apply-templates/>
+                    <h3>Summary</h3>
+                    <p>
+                      <xsl:apply-templates/>
+                    </p>
                   </xsl:template>
 
                   <xsl:template match="api:params">
-                    <h2>Parameters</h2>
-                    <ol>
-                      <xsl:apply-templates select="api:param"/>
-                    </ol>
+                    <table class="parameters">
+                      <thead>
+                        <tr>
+                          <th scope="colgroup" colspan="2">Parameters</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <xsl:apply-templates select="api:param"/>
+                      </tbody>
+                    </table>
                   </xsl:template>
 
                           <xsl:template match="api:param">
-                            <li class="parameter">
-                              <a name="{@name}"/>
-                              <code>
-                                  <xsl:text>$</xsl:text>
-                                  <xsl:value-of select="@name"/>
-                              </code>
-                              <xsl:text>: </xsl:text>
-                              <xsl:apply-templates/>
-                            </li>
+                            <tr>
+                              <td>
+                                <!--
+                                <a name="{@name}"/>
+                                -->
+                                <xsl:text>$</xsl:text>
+                                <xsl:value-of select="@name"/>
+                              </td>
+                              <td>
+                                <xsl:apply-templates/>
+                              </td>
+                            </tr>
                           </xsl:template>
 
                   <xsl:template match="api:usage">
-                    <h2>Usage notes</h2>
+                    <h3>Usage notes</h3>
                     <xsl:apply-templates/>
                   </xsl:template>
 
                   <xsl:template match="api:example">
-                    <h2>Example</h2>
-                    <div class="example">
-                      <!-- Move the <pre> ID to its parent, so it doesn't get stripped
-                           off by the syntax-highlighting code (thereby breaking any links to it). -->
-                      <xsl:copy-of select="((pre|pre/a)/@id)[1]"/>
-                      <xsl:apply-templates/>
-                    </div>
+                    <h3>Example</h3>
+                    <xsl:element name="pre">
+                      <code>
+                        <div class="example">
+                          <!-- Move the <pre> ID to its parent, so it doesn't get stripped
+                               off by the syntax-highlighting code (thereby breaking any links to it). -->
+                          <xsl:copy-of select="((pre|pre/a)/@id)[1]"/>
+                          <xsl:apply-templates/>
+                        </div>
+                      </code>
+                    </xsl:element>
                   </xsl:template>
 
                           <!-- Strip the @id off the example pre (because we've reassigned it) -->
