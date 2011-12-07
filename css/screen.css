@@ -968,11 +968,24 @@ section#documentation:before {margin-bottom: 30px;}
     padding-left: 20px;
 }
 
-.doclist tr.alt th, .doclist tr.alt td {
-    background: #F9F9F9;
+.doclist tr.alt td {
+    background-color: #ECECEC;
 }
-.doclist tr.alt {
+.doclist tr.alt td:last-child {
+    background-color: #ECECEC;
+}
+
+.doclist tbody tr td:last-child {
+    background-image: none;
     border-right: 1px solid #CCC;
+}
+.doclist tbody tr.alt td:last-child {
+    background-image: none;
+    background-color: #ECECEC;
+}
+
+.doclist tbody:last-child tr:last-child td {
+    background: url(/images/bg_table_features_bottom.png) bottom center no-repeat;
 }
 
 /* home page styles */
