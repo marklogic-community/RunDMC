@@ -307,7 +307,10 @@ function scrollTOC() {
   var scrollTo = $('#api_sub a.selected').filter(':visible');
 
   scrollTo.each(function() {
+/*
     var container = $(this).parents('.scrollable_section'),
+*/
+    var container = $(this).parents('.treeview'),
         extra = 80,
         currentTop = container.scrollTop(),
         headerHeight = 165, /* in CSS for .scrollable_section */
