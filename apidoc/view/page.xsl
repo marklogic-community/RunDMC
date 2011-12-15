@@ -491,6 +491,32 @@
                     <xsl:apply-templates/>
                   </xsl:template>
 
+                          <xsl:template match="api:schema-info">
+                            <p>The structure of the XML node returned is as follows:</p>
+                            <dl>
+                              <xsl:apply-templates select="api:element"/>
+                            </dl>
+                          </xsl:template>
+
+                                  <xsl:template match="api:element">
+                                    <dt>
+                                      <code>
+                                        <xsl:value-of select="api:element-name"/>
+                                      </code>
+                                    </dt>
+                                    <dd>
+                                      <p>
+                                        <xsl:apply-templates select="api:element-description/node()"/>
+                                      </p>
+                                      <xsl:if test="api:element">
+                                        <p>This is a complex element with the following element children:</p>
+                                        <dl>
+                                          <xsl:apply-templates select="api:element"/>
+                                        </dl>
+                                      </xsl:if>
+                                    </dd>
+                                  </xsl:template>
+
                   <xsl:template match="api:example">
                     <h3>Example</h3>
                     <xsl:element name="pre">

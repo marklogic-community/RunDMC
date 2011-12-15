@@ -93,11 +93,16 @@
             <!-- additional attributes -->
             <xsl:apply-templates mode="fixup-add-atts" select="."/>
             <!-- content -->
-            <xsl:apply-templates mode="fixup"/>
+            <xsl:apply-templates mode="fixup-content" select="."/>
           </xsl:template>
 
                   <!-- By default, don't add any attributes -->
                   <xsl:template mode="fixup-add-atts" match="*"/>
+
+                  <!-- By default, process children -->
+                  <xsl:template mode="fixup-content" match="*">
+                    <xsl:apply-templates mode="fixup"/>
+                  </xsl:template>
 
   <!-- Replicate attributes, with a possibly different value -->
   <xsl:template mode="fixup" match="@*">

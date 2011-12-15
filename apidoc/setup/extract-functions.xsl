@@ -8,10 +8,12 @@
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
+  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs apidoc fixup">
+  exclude-result-prefixes="xs apidoc fixup raw">
 
   <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/raw-docs-access" href="/apidoc/setup/raw-docs-access.xqy"/>
 
   <!-- Implements some common content fixup rules -->
   <xsl:include href="fixup.xsl"/>
@@ -39,12 +41,52 @@
   <!-- Ignore hidden functions -->
   <xsl:template match="apidoc:function[@hidden eq true()]"/>
 
+
   <!-- Rename "apidoc" elements to "api" so it's clear which docs we're dealing with later -->
   <xsl:template mode="fixup" match="apidoc:*">
     <xsl:element name="{name()}" namespace="http://marklogic.com/rundmc/api">
       <xsl:apply-templates mode="fixup-content-etc" select="."/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template mode="fixup-content" match="apidoc:usage[@schema]">
+    <xsl:next-match/>
+    <xsl:variable name="current-dir" select="string-join(
+                                               tokenize(base-uri(.),'/')[position() ne last()],
+                                               '/'
+                                             )"/>
+    <xsl:variable name="schema-uri" select="concat($current-dir, '/', substring-before(@schema,'.xsd'), '.xml')"/>
+    <api:schema-info>
+
+      <!-- This logic and its attendant assumptions are ported from the docapp code -->
+      <xsl:variable name="complexType-name" select="string((@element-name, ../@name)[1])"/>
+      <xsl:variable name="schema" select="raw:get-doc($schema-uri)/xs:schema"/>
+      <xsl:variable name="complexType" select="$schema/xs:complexType[string(@name) eq $complexType-name]"/>
+
+      <!-- ASSUMPTION: all the element declarations are global; complex type contains only element references -->
+      <xsl:apply-templates mode="schema-info" select="$complexType//xs:element"/>
+
+    </api:schema-info>
+  </xsl:template>
+
+          <xsl:template mode="schema-info" match="xs:element">
+            <!-- ASSUMPTION: all the element declarations are global -->
+            <!-- ASSUMPTION: the schema's default namespace is the same as the target namespace (@ref uses no prefix) -->
+            <xsl:variable name="element-decl" select="/xs:schema/xs:element[string(@name) eq string(current()/@ref)]"/>
+
+            <xsl:variable name="complexType" select="/xs:schema/xs:complexType[string(@name) eq string($element-decl/@type)]"/>
+
+            <api:element>
+              <api:element-name>
+                <xsl:value-of select="@ref"/>
+              </api:element-name>
+              <api:element-description>
+                <xsl:value-of select="$element-decl/xs:annotation/xs:documentation"/>
+              </api:element-description>
+              <xsl:apply-templates mode="#current" select="$complexType//xs:element"/>
+            </api:element>
+          </xsl:template>
+
 
   <!-- Add the namespace URI of the function to the <api:function> result -->
   <xsl:template mode="fixup-add-atts" match="apidoc:function">
