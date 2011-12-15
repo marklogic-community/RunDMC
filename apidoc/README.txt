@@ -1,5 +1,5 @@
 HOW TO RUN THE APP
-  Set up an app server with the same settings as RunDMC, except using a different
+  Set up an app server with the same settings as the "Main server", except using a different
   URL rewriter: /apidoc/controller/url_rewrite.xqy
 
   Point your browser to the app server you just set up. If it doesn't work yet,
