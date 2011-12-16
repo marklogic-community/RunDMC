@@ -177,10 +177,11 @@
   </xsl:template>
 
 
+  <!-- currently not used -->
   <xsl:template match="ml:page-heading">
-    <h2>
+    <h1>
       <xsl:apply-templates mode="api-page-heading" select="$content/*"/>
-    </h2>
+    </h1>
   </xsl:template>
 
           <xsl:template mode="api-page-heading" match="*">
@@ -411,6 +412,9 @@
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <h1>
+        <xsl:apply-templates mode="api-page-heading" select="."/>
+      </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
   </xsl:template>
@@ -452,7 +456,7 @@
                   </xsl:template>
 
                   <xsl:template match="api:summary">
-                    <h3>Summary</h3>
+                    <h2>Summary</h2>
                     <p>
                       <xsl:apply-templates/>
                     </p>
@@ -487,7 +491,7 @@
                           </xsl:template>
 
                   <xsl:template match="api:usage">
-                    <h3>Usage notes</h3>
+                    <h2>Usage notes</h2>
                     <xsl:apply-templates/>
                   </xsl:template>
 
@@ -518,7 +522,7 @@
                                   </xsl:template>
 
                   <xsl:template match="api:example">
-                    <h3>Example</h3>
+                    <h2>Example</h2>
                     <xsl:element name="pre">
                       <code>
                         <div class="example">
