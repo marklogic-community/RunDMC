@@ -285,24 +285,21 @@
 
 
   <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
-    <xsl:variable name="docs" as="element()*">
-      <xsl:apply-templates mode="list-page-docs" select="."/>
-    </xsl:variable>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <h2>
         <xsl:apply-templates mode="list-page-heading" select="."/>
       </h2>
-      <xsl:apply-templates mode="list-page-intro" select="."/>
+      <xsl:apply-templates select="api:intro/node()"/>
       <div class="doclist">
-        <h2>&#160;</h2>
+        <!--
         <span class="amount">
-          <xsl:variable name="count" select="count($docs)"/>
+          <xsl:variable name="count" select="count(api:list-entry)"/>
           <xsl:value-of select="$count"/>
-          <xsl:text> </xsl:text>
-          <xsl:apply-templates mode="list-page-item-type" select="."/>
+          <xsl:text> function</xsl:text>
           <xsl:if test="$count gt 1">s</xsl:if>
         </span>
+        -->
         <table class="documentsTable">
           <colgroup>
             <col class="col1"/>
@@ -310,55 +307,22 @@
           </colgroup>
           <thead>
             <tr>
-              <th>
-               <xsl:apply-templates mode="list-page-col1-heading" select="."/>
-              </th>
+              <th>Function name</th>
               <th>Description</th>
-              <xsl:apply-templates mode="list-page-col3-th" select="."/>
             </tr>
           </thead>
           <tbody>
-            <xsl:apply-templates mode="list-page-entry" select="$docs"/>
+            <xsl:apply-templates mode="list-page-entry" select="api:list-entry"/>
           </tbody>
         </table>
       </div>
     </div>
   </xsl:template>
 
-          <!-- Disable PJAX on User Guide links, because the large pages tend to break the browser -->
-          <xsl:template mode="pjax_enabled-class-att" match="api:docs-page"/>
           <xsl:template mode="pjax_enabled-class-att" match="*">
             <xsl:attribute name="class">pjax_enabled</xsl:attribute>
           </xsl:template>
 
-          <xsl:template mode="list-page-col3-th" match="*"/>
-          <xsl:template mode="list-page-col3-th" match="api:docs-page">
-            <th>PDF</th>
-          </xsl:template>
-
-          <xsl:template mode="list-page-docs" match="api:list-page">
-            <xsl:sequence select="api:list-entry"/>
-          </xsl:template>
-
-
-          <xsl:template mode="list-page-intro" match="api:list-page">
-            <xsl:apply-templates select="api:intro/node()"/>
-          </xsl:template>
-
-          <xsl:template mode="list-page-intro" match="api:docs-page"/>
-
-
-          <xsl:template mode="list-page-item-type" match="api:list-page" >function</xsl:template>
-          <xsl:template mode="list-page-item-type" match="api:docs-page">document</xsl:template>
-
-
-          <xsl:template mode="list-page-col1-heading" match="api:list-page" >Function name</xsl:template>
-          <xsl:template mode="list-page-col1-heading" match="api:docs-page">Title</xsl:template>
-
-
-          <xsl:template mode="list-page-heading" match="api:docs-page">
-            <xsl:value-of select="$site-title"/>
-          </xsl:template>
 
           <!-- By default, just display the page title -->
           <xsl:template mode="list-page-heading" match="api:list-page">
@@ -374,7 +338,8 @@
               <xsl:next-match/>
             </xsl:variable>
             <!-- in case spell-lib is the library, get the path from the current URL, not the heading -->
-            <a href="{$version-prefix}/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}">
+            <a href="{$version-prefix}/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}"
+               class="function_prefix">
               <xsl:value-of select="substring-before($heading,' ')"/>
             </a>
             <xsl:text> </xsl:text>
