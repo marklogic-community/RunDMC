@@ -249,6 +249,16 @@
                           <!-- Strip out phrases that don't apply to older server versions -->
                           <xsl:template mode="docs-page-entry-description" match="added-in[$api:version lt @version]"/>
 
+                          <xsl:template mode="docs-page-entry-description" match="version-suffix">
+                            <xsl:choose>
+                              <xsl:when test="$api:version eq '5.0'">5</xsl:when>
+                              <xsl:otherwise>
+                                <xsl:text>Server </xsl:text>
+                                <xsl:value-of select="$api:version"/>
+                              </xsl:otherwise>
+                            </xsl:choose>
+                          </xsl:template>
+
 
                           <xsl:template mode="docs-page-entry-href" match="guide">
                             <xsl:value-of select="$version-prefix"/>

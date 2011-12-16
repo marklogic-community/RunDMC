@@ -27,7 +27,7 @@
 
   <unnamed-group>
     <entry title="ZIP File of All MarkLogic Product Documentation">
-      A zip file containing the latest MarkLogic Server <version-number/> documentation.
+      A zip file containing the latest MarkLogic <version-suffix/> documentation.
       <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/MarkLogic_4.1_pubs.zip"/>
       <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
       <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/MarkLogic_5_pubs.zip"/>
