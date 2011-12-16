@@ -208,6 +208,8 @@
     </div>
   </xsl:template>
 
+          <xsl:template mode="docs-page" match="group[@min-version gt $api:version]" priority="3"/>
+
           <xsl:template mode="docs-page" match="group" priority="2">
             <h3><xsl:value-of select="@name"/></h3>
             <xsl:next-match/>

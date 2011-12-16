@@ -83,7 +83,7 @@
     </entry>
   </group>
 
-  <group name="Hadoop Connector API Reference">
+  <group name="Hadoop Connector API Reference" min-version="5.0">
     <entry title="MarkLogic Connector for Hadoop Javadoc (online)">
       <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/hadoop/javadoc/index.html"/>
     </entry>
