@@ -1001,36 +1001,36 @@ section#documentation:before {margin-bottom: 30px;}
 .removable:last-child {margin-bottom: -20px;}
 .removable.closed {overflow: hidden;}
 .removable.closed .close {background-position: 0 -20px;}
-#intro, #learn, #bottom1, #bottom2 {
+#homepage_intro, #learn, #bottom1, #bottom2 {
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	position: relative;
 	padding: 30px 76px;
 }
-#intro {
+#homepage_intro {
 	padding-top: 40px;
 	background: white;
 	position: relative;
 	z-index: 3;
 }
-#intro:after {
+#homepage_intro:after {
 	content: "";
 	display: block;
 	clear: both;
 	visibility: hidden;
 	height: 0;
 }
-#intro p {
+#homepage_intro p {
 	float: left;
 	width: 700px;
 	font-size: 21px;
 	line-height: 143%;
 	margin: 0;
 }
-#intro p a {font-size: 14px; font-weight: bold}
-#intro + section {clear: both;}
-#intro ul {
+#homepage_intro p a {font-size: 14px; font-weight: bold}
+#homepage_intro + section {clear: both;}
+#homepage_intro ul {
 	font-size: 14px;
 	float: right;
 	margin: 0;
@@ -1080,8 +1080,8 @@ section#documentation:before {margin-bottom: 30px;}
 	background: linear-gradient(top, #2f8cc2 0%,#0263a0 100%); /* W3C */
 	border-color: #005383;
 }
-#intro ul .button {width: 100%;}
-#intro ul a img {
+#homepage_intro ul .button {width: 100%;}
+#homepage_intro ul a img {
 	float: left;
 	margin-right: 5px;
 }
