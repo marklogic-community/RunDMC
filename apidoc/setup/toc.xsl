@@ -33,14 +33,14 @@
 
   <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs"/>
 
-  <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/guide"/>
+  <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(.|group)/guide"/>
 
   <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/docs/',$c/@url-name,'.xml'))"/>
-  <xsl:variable name="guide-docs-all"                            select="xdmp:directory(concat('/apidoc/',$api:version,'/docs/'))[guide]"/>
+  <xsl:variable name="guide-docs-all"                             select="xdmp:directory(concat('/apidoc/',$api:version,'/docs/'))[guide]"/>
 
-  <!-- Append unconfigured guides to the end (so new ones are easily discoverable) -->
-  <xsl:variable name="guide-docs-ordered" select="$guide-docs-configured, $guide-docs-all except $guide-docs-configured"/>
-
+  <!-- Prefix unconfigured guides to the beginning (so new ones are easily discoverable) -->
+  <xsl:variable name="guide-docs-ordered" select="$guide-docs-all except $guide-docs-configured,
+                                                                         $guide-docs-configured"/>
   <xsl:template match="/">
     <all-tocs>
       <toc:functions>

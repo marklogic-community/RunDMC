@@ -24,53 +24,76 @@
          just in case they change the name of a guide directory between server versions.
 -->
 <docs>
-  <guide url-name="getting-started" source-name="gs"   >A quick, step-by-step overview of how to get up and running with MarkLogic Server.</guide>
-  <guide url-name="admin"           source-name="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>
-  <guide url-name="app-dev"         source-name="dev_guide">Provides procedures, methodologies, and conceptual information about general application development tasks in MarkLogic Server.</guide>
-  <guide url-name="search-dev"      source-name="search-dev-guide">Provides procedures, methodologies, and conceptual information about developing search-related applications in MarkLogic Server. Includes information about the Search API and the built-in search features of MarkLogic Server.</guide>
-  <guide url-name="app-builder"     source-name="appbuilder">Provides step-by-step information on using the Application Builder to build a search application, and also provides information on customizing applications built with the Application Builder.</guide>
-  <guide url-name="infostudio"      source-name="info_studio">Provides step-by step information on using the Information Studio to load content into MarkLogic Server.</guide>
-  <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
-  <guide url-name="performance"     source-name="performance">Provides performance-related information that is useful to application developers and administrators.</guide>
-  <guide url-name="cluster"         source-name="cluster">Provides information on large-scale system architecture, clustering, and details on setting up both local-disk failover and shared-disk failover.</guide>
-  <guide url-name="cpf"             source-name="cpf">Provides an introduction to the Content Processing Framework and procedures for installing the default content processing framework.</guide>
-  <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
-  <guide url-name="admin-api"       source-name="adminAPI">Provides information on writing code to script various administrative tasks such as creating and modifying databases, App Servers, and so on.</guide>
-  <guide url-name="xquery"          source-name="xquery">A condensed overview of the XQuery language, including a description of the three XQuery dialects supported in MarkLogic Server. <added-in version="4.2">Also includes XSLT reference material, including details and extensions to the language.</added-in> This book does includes some syntax information, although it is primarily intended as an introduction and quick-reference to the languages, not as a comprehensive reference.</guide>
-  <guide url-name="installation"    source-name="install_all" pdf-name="install">Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
-  <guide url-name="xcc"             source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
-  <guide url-name="mapreduce"       source-name="mapreduce">Provides a review of Hadoop terminology, a description of the MarkLogic-provided classes that enable data to be taken from or sent from MarkLogic, and an explanation of the sample code provided.</guide>
-  <guide url-name="monitoring"      source-name="monitoring">Description TBD...</guide>
-  <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
-  <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
 
-  <entry title="XCC Javadoc (online)">
-    API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.
-    <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/javadoc/index.html"/>
-    <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/javadoc/index.html"/>
-    <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/javadoc/index.html"/>
-  </entry>
-  <entry title="XCC .NET API Documentation (online)" url="http://developer.marklogic.com/pubs/4.2/dotnet/index.html">
-    API documentation for the MarkLogic XCC .NET C# API.
-    <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/dotnet/index.html"/>
-    <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/dotnet/index.html"/>
-    <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/dotnet/index.html"/>
-  </entry>
+  <unnamed-group>
+    <entry title="ZIP File of All MarkLogic Product Documentation">
+      A zip file containing the latest MarkLogic Server <version-number/> documentation.
+      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/MarkLogic_4.1_pubs.zip"/>
+      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
+      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/MarkLogic_5_pubs.zip"/>
+    </entry>
+  </unnamed-group>
 
-  <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
-  <guide url-name="sharepoint"      source-name="SharePoint-Connector">The documentation for the MarkLogic Connector for SharePoint®, which allows you to mirror documents from a Microsoft SharePoint repository in MarkLogic Server.</guide>
-  <guide url-name="relnotes"        source-name="relnotes">Contains a summary of new features, upgrade compatibility information, and other information about this release.</guide>
+  <group name="Getting Started Guides">
+    <guide url-name="getting-started" source-name="gs"   >A quick, step-by-step overview of how to get up and running with MarkLogic Server.</guide>
+    <guide url-name="installation"    source-name="install_all" pdf-name="install">Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
+    <guide url-name="relnotes"        source-name="relnotes">Contains a summary of new features, upgrade compatibility information, and other information about this release.</guide>
+  </group>
+
+  <group name="Developer's Guides">
+    <guide url-name="app-dev"         source-name="dev_guide">Provides procedures, methodologies, and conceptual information about general application development tasks in MarkLogic Server.</guide>
+    <guide url-name="search-dev"      source-name="search-dev-guide">Provides procedures, methodologies, and conceptual information about developing search-related applications in MarkLogic Server. Includes information about the Search API and the built-in search features of MarkLogic Server.</guide>
+    <guide url-name="app-builder"     source-name="appbuilder">Provides step-by-step information on using the Application Builder to build a search application, and also provides information on customizing applications built with the Application Builder.</guide>
+    <guide url-name="infostudio"      source-name="info_studio">Provides step-by step information on using the Information Studio to load content into MarkLogic Server.</guide>
+    <guide url-name="xcc"             source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
+    <guide url-name="mapreduce"       source-name="mapreduce">Provides a review of Hadoop terminology, a description of the MarkLogic-provided classes that enable data to be taken from or sent from MarkLogic, and an explanation of the sample code provided.</guide>
+  </group>
+
+  <group name="Administrator's Guides">
+    <guide url-name="admin"           source-name="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>
+    <guide url-name="admin-api"       source-name="adminAPI">Provides information on writing code to script various administrative tasks such as creating and modifying databases, App Servers, and so on.</guide>
+    <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
+    <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
+    <guide url-name="sharepoint"      source-name="SharePoint-Connector">The documentation for the MarkLogic Connector for SharePoint®, which allows you to mirror documents from a Microsoft SharePoint repository in MarkLogic Server.</guide>
+  </group>
+
+  <group name="Other Reference Guides">
+    <guide url-name="xquery"          source-name="xquery">A condensed overview of the XQuery language, including a description of the three XQuery dialects supported in MarkLogic Server. <added-in version="4.2">Also includes XSLT reference material, including details and extensions to the language.</added-in> This book does includes some syntax information, although it is primarily intended as an introduction and quick-reference to the languages, not as a comprehensive reference.</guide>
+    <guide url-name="cpf"             source-name="cpf">Provides an introduction to the Content Processing Framework and procedures for installing the default content processing framework.</guide>
+    <guide url-name="monitoring"      source-name="monitoring">Description TBD...</guide>
+    <guide url-name="performance"     source-name="performance">Provides performance-related information that is useful to application developers and administrators.</guide>
+    <guide url-name="cluster"         source-name="cluster">Provides information on large-scale system architecture, clustering, and details on setting up both local-disk failover and shared-disk failover.</guide>
+    <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
+    <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
+    <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
+  </group>
+
+  <group name="XCC API Reference">
+    <entry title="XCC Javadoc (online)">
+      API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.
+      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/javadoc/index.html"/>
+      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/javadoc/index.html"/>
+      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/javadoc/index.html"/>
+    </entry>
+    <entry title="XCC .NET API Documentation (online)" url="http://developer.marklogic.com/pubs/4.2/dotnet/index.html">
+      API documentation for the MarkLogic XCC .NET C# API.
+      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/dotnet/index.html"/>
+      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/dotnet/index.html"/>
+      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/dotnet/index.html"/>
+    </entry>
+  </group>
+
+  <group name="Hadoop Connector API Reference">
+    <entry title="MarkLogic Connector for Hadoop Javadoc (online)">
+      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/hadoop/javadoc/index.html"/>
+    </entry>
+  </group>
 
   <!-- This doesn't seem to add any value; explicitly excluding it -->
   <guide exclude="yes"              source-name="shared"/>
 
-  <entry title="ZIP File of All MarkLogic Product Documentation">
-    A zip file containing the latest MarkLogic Server <version-number/> documentation.
-    <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/MarkLogic_4.1_pubs.zip"/>
-    <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
-    <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/MarkLogic_5.0_pubs.zip"/>
-  </entry>
-
+  <!--
   <entry href="/all" title="MarkLogic API Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
+  -->
 
 </docs>

@@ -336,7 +336,9 @@ nav ul {margin: 0;}
 	min-height: 500px;*/
 }
 #main > :first-child {margin-top: 0;}
-#main > h3 {margin-top: 34px;}
+/*
+#main > h3 {margin-top: 34px;} */
+#main   h3 {margin-top: 34px;}
 #main ul {
 	padding-left: 20px;
 	list-style: disc;
@@ -621,7 +623,7 @@ footer nav .current a {color: white;}
 }
 .doclist li:before {content: none !important;}
 .doclist li > a {font-size: 16px;}
-.doclist li > img {vertical-align: bottom;}
+.doclist li > a > img {vertical-align: bottom;}
 .doclist li div {margin: 10px 0 25px;}
 
 #container > #comments {

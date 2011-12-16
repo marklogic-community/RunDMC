@@ -27,8 +27,7 @@
        then don't include the version prefix in links; see also $api:toc-url in data-access.xqy -->
   <xsl:variable name="version-prefix" select="if ($api:version eq $api:default-version) then '' else concat('/',$api:version-specified)"/>
 
-  <xsl:variable name="api-docs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/(entry | guide[not(@exclude)]
-                                                                                                         [api:guide-info(@url-name)])"/>
+  <xsl:variable name="doc-list-config" select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
 
   <xsl:variable name="site-title" select="if ($api:version eq '5.0') then 'MarkLogic 5 Product Documentation'
                                                                      else concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
@@ -200,7 +199,80 @@
           </xsl:template>
 
 
-  <xsl:template mode="page-content" match="api:list-page | api:docs-page">
+  <xsl:template mode="page-content" match="api:docs-page">
+    <div>
+      <h2>
+        <xsl:apply-templates mode="page-title" select="."/>
+      </h2>
+      <xsl:apply-templates mode="docs-page" select="$doc-list-config/*"/>
+    </div>
+  </xsl:template>
+
+          <xsl:template mode="docs-page" match="group" priority="2">
+            <h3><xsl:value-of select="@name"/></h3>
+            <xsl:next-match/>
+          </xsl:template>
+
+          <xsl:template mode="docs-page" match="group | unnamed-group" priority="1">
+            <ul class="doclist">
+              <xsl:apply-templates mode="docs-list-item" select="*"/>
+            </ul>
+          </xsl:template>
+
+                  <xsl:template mode="docs-list-item" match="*"/>
+                  <xsl:template mode="docs-list-item" match="entry[url/@version = $api:version]
+                                                           | guide[api:guide-info(@url-name)]">
+                    <xsl:variable name="href">
+                      <xsl:apply-templates mode="docs-page-entry-href" select="."/>
+                    </xsl:variable>
+                    <xsl:variable name="title">
+                      <xsl:apply-templates mode="docs-page-entry-title" select="."/>
+                    </xsl:variable>
+                    <li>
+                      <a href="{$href}">
+                        <xsl:value-of select="$title"/>
+                      </a>
+                      <xsl:if test="self::guide">
+                        <xsl:text> | </xsl:text>
+                        <a href="{$href}.pdf">
+                          <img src="/images/i_pdf.png" alt="{$title} (PDF)" width="25" height="26"/>
+                        </a>
+                      </xsl:if>
+                      <div>
+                        <xsl:apply-templates mode="docs-page-entry-description" select="."/>
+                      </div>
+                    </li>
+                  </xsl:template>
+
+                          <!-- Strip out phrases that don't apply to older server versions -->
+                          <xsl:template mode="docs-page-entry-description" match="added-in[$api:version lt @version]"/>
+
+
+                          <xsl:template mode="docs-page-entry-href" match="guide">
+                            <xsl:value-of select="$version-prefix"/>
+                            <xsl:value-of select="api:guide-info(@url-name)/@href"/>
+                          </xsl:template>
+
+                                  <xsl:function name="api:guide-info" as="element()?">
+                                    <xsl:param name="url-name" as="attribute()"/>
+                                    <xsl:sequence select="$content/*/api:user-guide[@href/ends-with(.,$url-name/concat('/',.))]"/>
+                                  </xsl:function>
+
+                          <xsl:template mode="docs-page-entry-href" match="entry[url]">
+                            <xsl:value-of select="url[@version eq $api:version]/@href"/>
+                          </xsl:template>
+
+
+                          <xsl:template mode="docs-page-entry-title" match="guide">
+                            <xsl:value-of select="api:guide-info(@url-name)/@display"/>
+                          </xsl:template>
+
+                          <xsl:template mode="docs-page-entry-title" match="entry">
+                            <xsl:value-of select="@title"/>
+                          </xsl:template>
+
+
+  <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
     <xsl:variable name="docs" as="element()*">
       <xsl:apply-templates mode="list-page-docs" select="."/>
     </xsl:variable>
@@ -254,10 +326,6 @@
 
           <xsl:template mode="list-page-docs" match="api:list-page">
             <xsl:sequence select="api:list-entry"/>
-          </xsl:template>
-
-          <xsl:template mode="list-page-docs" match="api:docs-page">
-            <xsl:sequence select="$api-docs"/>
           </xsl:template>
 
 
@@ -361,11 +429,6 @@
                     <xsl:value-of select="$version-prefix"/>
                     <xsl:value-of select="api:guide-info(@url-name)/@href"/>
                   </xsl:template>
-
-                          <xsl:function name="api:guide-info" as="element()?">
-                            <xsl:param name="url-name" as="attribute()"/>
-                            <xsl:sequence select="$content/*/api:user-guide[@href/ends-with(.,$url-name/concat('/',.))]"/>
-                          </xsl:function>
 
 
                   <!-- Prefix local URLs with the version prefix (when applicable) -->
