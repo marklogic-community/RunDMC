@@ -30,6 +30,7 @@
   <namespace lib="msword" uri="http://marklogic.com/cpf/msword"/>
   <namespace lib="ooxml" uri="http://marklogic.com/openxml"/>
   <namespace lib="p" uri="http://marklogic.com/cpf/pipelines"/>
+  <namespace lib="package" uri="http://marklogic.com/package/package"/>
   <namespace lib="pdf" uri="http://marklogic.com/cpf/pdf"/>
   <namespace lib="pki" uri="http://marklogic.com/xdmp/pki"/>
   <namespace lib="plugin" uri="http://marklogic.com/extension/plugin"/>
