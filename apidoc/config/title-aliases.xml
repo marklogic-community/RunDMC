@@ -12,7 +12,7 @@
     <alias>Release Notes</alias>
     <alias>4.1 Release Notes</alias>
     <alias>4.2 Release Notes</alias>
-    <alias>5.0 Release Notes</alias>
+    <alias>MarkLogic 5 Release Notes</alias>
   </guide>
   <guide>
     <alias>Understanding and Using Security</alias>
@@ -26,6 +26,7 @@
        to the XQuery/XSLT reference to actual links. -->
   <auto-link href="/">
     <alias>MarkLogic Built-In and Module Functions Reference</alias>
+    <alias>MarkLogic Built-In and Module Function Reference</alias>
     <alias>MarkLogic XQuery and XSLT Function Reference</alias>
     <alias>XQuery &amp; XSLT API Reference</alias>
     <alias>XQuery API Reference</alias>
