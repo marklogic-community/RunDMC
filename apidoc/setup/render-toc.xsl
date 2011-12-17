@@ -325,6 +325,7 @@
                           <xsl:template mode="title-att" match="node"/>
                           <xsl:template mode="title-att" match="node[@namespace]">
                             <xsl:attribute name="title" select="@namespace"/>
+                            <xsl:attribute name="class" select="'stip'"/>
                           </xsl:template>
 
                   <xsl:template mode="control" match="node"/>
