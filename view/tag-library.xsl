@@ -404,9 +404,12 @@
 
           <!-- ASSUMPTION: We're not adding new <Announcement> docs anymore, so they won't appear as the latest -->
           <xsl:template mode="latest-post" match="Post | Event">
+            <xsl:param name="show-icon" select="true()"/>
             <article>
               <h4>
-                <xsl:apply-templates mode="latest-post-icon" select="."/>
+                <xsl:if test="$show-icon">
+                  <xsl:apply-templates mode="latest-post-icon" select="."/>
+                </xsl:if>
                 <a href="{ml:external-uri(.)}">
                   <xsl:apply-templates mode="page-specific-title" select="."/>
                 </a>

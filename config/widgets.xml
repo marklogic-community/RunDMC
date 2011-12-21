@@ -27,11 +27,7 @@
   </widget>
   -->
 
-  <widget xquery="recent-blog-posts.xqy">
-    <page href="/"/>
-    <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
-    <page-tree root="/news"/>
-    <page-tree root="/events"/>
+  <widget xslt="recent-blog-posts.xsl">
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/people/supernodes"/>
   </widget>

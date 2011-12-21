@@ -1,3 +1,6 @@
+(: NO LONGER USED. See recent-blog-posts.xsl :)
+
+
 (: TODO: make this dynamic, using real data from the database :)
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <h1><img src="/images/i_rss.png" alt="" width="36" height="33"/> Recent Blog Posts</h1>
