@@ -59,7 +59,7 @@ STEP 6: Run setup-guides.xqy.
 STEP 7: Run setup.xqy.
   http://localhost:8008/apidoc/setup/setup.xqy?version=4.2
 
-  NOTE: If you get an error message having to do with an invalid lexical ID,x
+  NOTE: If you get an error message having to do with an invalid lexical ID,
         see the "WARNING" section below.
 
 STEP 8: Enable the collection lexicon in the RunDMC database (if not already enabled).
