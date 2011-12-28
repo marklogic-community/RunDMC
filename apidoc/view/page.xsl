@@ -291,31 +291,27 @@
         <xsl:apply-templates mode="list-page-heading" select="."/>
       </h2>
       <xsl:apply-templates select="api:intro/node()"/>
-      <div class="doclist">
-        <!--
-        <span class="amount">
-          <xsl:variable name="count" select="count(api:list-entry)"/>
-          <xsl:value-of select="$count"/>
-          <xsl:text> function</xsl:text>
-          <xsl:if test="$count gt 1">s</xsl:if>
-        </span>
-        -->
-        <table class="documentsTable">
-          <colgroup>
-            <col class="col1"/>
-            <col class="col2"/>
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Function name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <xsl:apply-templates mode="list-page-entry" select="api:list-entry"/>
-          </tbody>
-        </table>
+      <div class="api_caption">
+        <xsl:variable name="count" select="count(api:list-entry)"/>
+        <xsl:value-of select="$count"/>
+        <xsl:text> function</xsl:text>
+        <xsl:if test="$count gt 1">s</xsl:if>
       </div>
+      <table class="api_table">
+        <colgroup>
+          <col class="col1"/>
+          <col class="col2"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Function name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:apply-templates mode="list-page-entry" select="api:list-entry"/>
+        </tbody>
+      </table>
     </div>
   </xsl:template>
 
