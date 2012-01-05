@@ -25,13 +25,16 @@
   <!-- Implements some common content fixup rules -->
   <xsl:include href="fixup.xsl"/>
 
+  <xsl:include href="REST-common.xsl"/>
+
   <!-- Compute this first so we can glean the category info from the result
        and list the sub-categories on the main page intro for each lib -->
   <xsl:variable name="by-category">
     <xsl:call-template name="functions-by-category"/>
   </xsl:variable>
 
-  <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs"/>
+                                                                              <!-- exclude REST API "functions" -->
+  <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs[not(. eq 'REST')]"/>
 
   <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/*/guide"/>
 
@@ -75,7 +78,8 @@
         <!--
         <node display="Functions by category">
         -->
-          <xsl:copy-of select="$by-category"/>
+          <!-- Every bucket except the REST API bucket -->
+          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
         <!--
         </node>
         -->
@@ -93,6 +97,17 @@
         </node>
         -->
       </toc:guides>
+      <toc:rest-resources>
+        <!-- Add this wrapper so the /REST page will get created -->
+        <node href="/REST"
+              title="All REST resources"
+              display="All REST resources"
+              id="RESTResourcesAPI"
+              function-list-page="yes">
+          <!-- Just the REST API bucket contents -->
+          <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
+        </node>
+      </toc:rest-resources>
     </all-tocs>
   </xsl:template>
 
@@ -165,6 +180,16 @@
 
                   <xsl:template match="api:function-name">
                     <node href="/{.}" display="{.}" type="function"/>
+                  </xsl:template>
+
+                  <!-- A "function" name starting with a "/" is actually a REST resource -->
+                  <xsl:template match="api:function-name[starts-with(., concat('/',$REST-lib))]">
+                    <xsl:variable name="href">
+                      <xsl:call-template name="REST-doc-uri">
+                        <xsl:with-param name="name" select="string(.)"/>
+                      </xsl:call-template>
+                    </xsl:variable>
+                    <node href="{$href}" display="{.}" type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>

@@ -4,8 +4,11 @@ import module namespace u = "http://marklogic.com/rundmc/util" at "../../lib/uti
 import module namespace api = "http://marklogic.com/rundmc/api" at "../model/data-access.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../../controller/server-urls.xqy";
 
-declare variable $path            := xdmp:get-request-path();
+declare variable $orig-path       := xdmp:get-request-path();
 declare variable $orig-url        := xdmp:get-request-url();
+                                     (: $path is just the original path, unless this is a REST doc, in which case we
+                                        include the entire query string, translating "?" to "@" :)
+declare variable $path            := if (contains($orig-path,'/REST/')) then translate($orig-url,'?',$api:REST-uri-questionmark-substitute) else $orig-path;
 declare variable $query-string    := substring-after($orig-url, '?');
 
 

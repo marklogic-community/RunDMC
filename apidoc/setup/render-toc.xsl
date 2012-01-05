@@ -5,8 +5,11 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
+  xmlns:api="http://marklogic.com/rundmc/api"
   xmlns="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs toc">
+  exclude-result-prefixes="xs toc api">
+
+  <xsl:import href="REST-common.xsl"/>
 
   <xsl:param name="toc-url"/>
 
@@ -36,6 +39,12 @@
             prerendered: true
           });
           $("#apidoc_tree3").treeview({
+            //animated: "medium",
+            url: "/media/apiTOC/",
+//            persist: "location",
+            prerendered: true
+          });
+          $("#apidoc_tree4").treeview({
             //animated: "medium",
             url: "/media/apiTOC/",
 //            persist: "location",
@@ -73,8 +82,18 @@
               },350);        
           });
 
+          $("#config-filter4").keyup(function(e) {
+              currentFilterText4 = $(this).val();
+              setTimeout(function() {
+                  if (previousFilterText4 !== currentFilterText4){
+                      previousFilterText4 = currentFilterText4;
+                      filterConfigDetails(currentFilterText4,"#apidoc_tree4");
+                  }
+              },350);
+          });
+
           // default text, style, etc.
-          formatFilterBoxes($("#config-filter, #config-filter2, #config-filter3"));
+          formatFilterBoxes($("#config-filter, #config-filter2, #config-filter3, #config-filter4"));
 
         });
 
@@ -130,9 +149,12 @@
         <div id="toc_tabs" style="display:none">
           <div id="tab_bar">
             <ul>
-              <li><a href="#tabs-1" class="tab_link">Functions<br/>by Name</a></li>
-              <li><a href="#tabs-2" class="tab_link">Functions<br/>by Category</a></li>
+              <li><a href="#tabs-1" class="tab_link">API by<br/>Name</a></li>
+              <li><a href="#tabs-2" class="tab_link">API by<br/>Category</a></li>
               <li><a href="#tabs-3" class="tab_link">User<br/>Guides</a></li>
+              <xsl:if test="number($version) ge 5">
+                <li><a href="#tabs-4" class="tab_link">REST<br/>API</a></li>
+              </xsl:if>
               <!--
               <xsl:if test="number($version) ge 5">
                 <li><a href="#tabs-4" class="tab_link">Error<br/>Codes</a></li>
@@ -166,6 +188,16 @@
                 </ul>
               </div>
             </div>
+            <xsl:if test="number($version) ge 5">
+              <div id="tabs-4" class="tabbed_section pjax_enabled">
+                <div class="scrollable_section">
+                  <input id="config-filter4" name="config-filter4"/>
+                  <ul id="apidoc_tree4" class="treeview">
+                    <xsl:apply-templates select="/*/toc:rest-resources/node"/>
+                  </ul>
+                </div>
+              </div>
+            </xsl:if>
 
             <!--
             <xsl:if test="number($version) ge 5">
@@ -320,6 +352,11 @@
 
                           <!-- But when the @href value is just "/", leave it out when the version is specified explicitly (e.g., /4.2 instead of /4.2/) -->
                           <xsl:template mode="link-href" match="node[string($prefix-for-hrefs)][@href eq '/']"/>
+
+                          <!-- Or when the URI is a REST doc URI with a hidden query string, then convert "@" to "?" -->
+                          <xsl:template mode="link-href" match="node[contains(@href,$api:REST-uri-questionmark-substitute)]">
+                            <xsl:value-of select="translate(@href, $api:REST-uri-questionmark-substitute, '?')"/>
+                          </xsl:template>
 
 
                           <xsl:template mode="title-att" match="node"/>

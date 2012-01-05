@@ -23,4 +23,9 @@
   <!-- fn -->
   <category from="DurationDateTimeBuiltins" to="dates"/>
 
+
+  <!-- REST Resources API -->
+  <category from="Management API" to="management"/>
+  <category from="Packaging API"  to="packaging"/>
+
 </category-page-urls>

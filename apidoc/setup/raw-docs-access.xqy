@@ -24,8 +24,11 @@ declare variable $raw:common-options := <options xmlns="xdmp:eval">
                                         </options>;
 
 (: REST API docs, i.e. the "manage" lib, are represented the same as the XQuery API docs, but we're going to treat them differently. :)
-declare variable $raw:api-docs   := raw:get-docs('xdmp:directory(concat("/",$api:version,"/apidoc/")) [apidoc:module[not(@lib eq "manage")]]');
+declare variable $raw:func-docs  := raw:get-docs('xdmp:directory(concat("/",$api:version,"/apidoc/")) [apidoc:module[not(@lib eq "manage")]]');
 declare variable $raw:rest-docs  := raw:get-docs('xdmp:directory(concat("/",$api:version,"/apidoc/")) [apidoc:module[    @lib eq "manage" ]]');
+
+declare variable $raw:api-docs := ($raw:func-docs, $raw:rest-docs);
+
 declare variable $raw:guide-docs := raw:get-docs('xdmp:directory(concat("/",$api:version,"/docs/"))');
 
 declare function raw:get-docs($expr as xs:string) {

@@ -36,7 +36,8 @@ declare variable $api:version-dir := fn:concat("/apidoc/",$api:version,"/");
 
 declare variable $api:query-for-all-functions :=
   cts:and-query((
-    cts:directory-query($api:version-dir,"1"),
+    cts:directory-query($api:version-dir,"infinity"), (: REST "function" docs are in sub-directories :)
+  (:cts:directory-query($api:version-dir,"1"),:)
     cts:element-query(xs:QName("api:function"),cts:and-query(()))
   ));
 
@@ -103,7 +104,9 @@ declare function function-names-for-lib($lib) {
                                             xs:QName("fullname"), (), "ascending",
                                             query-for-lib-functions($lib))
     return
-      <api:function-name>{ $func }</api:function-name>
+      <_> {()(: wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements :)}
+        <api:function-name>{ $func }</api:function-name>
+      </_>/*
 };
 
 
@@ -150,3 +153,6 @@ declare function get-matching-functions($name as xs:string) as document-node()* 
 
   xdmp:query-trace(fn:false())
 };
+
+(: Replace "?" in the names of REST resources with a character that will work in doc URIs :)
+declare variable $api:REST-uri-questionmark-substitute := "@";

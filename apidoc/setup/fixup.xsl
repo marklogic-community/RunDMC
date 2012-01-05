@@ -13,8 +13,10 @@
 
   <!-- The fullname is a derived value -->
   <xsl:function name="fixup:fullname">
-    <xsl:param name="element"/>
-    <xsl:sequence select="concat($element/@lib,':',$element/@name)"/>
+    <xsl:param name="el"/>
+    <!-- REST docs (lib="manage" in the raw source) shouldn't have a namespace prefix in the full name -->
+    <xsl:sequence select="if ($el/@lib eq 'manage') then string(             $el/@name)
+                                                    else concat($el/@lib,':',$el/@name)"/>
   </xsl:function>
 
   <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->

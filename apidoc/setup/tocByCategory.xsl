@@ -23,7 +23,9 @@
   <!-- This is bound to be slow, but that's okay, because we pre-generate this TOC -->
   <xsl:template name="functions-by-category">
 
-    <xsl:variable name="forced-order" select="('XQuery Library Modules', 'MarkLogic Built-In Functions')"/>
+    <xsl:variable name="forced-order" select="('XQuery Library Modules', 'MarkLogic Built-In Functions',
+                                               'CPF Functions', 'W3C-Standard Functions',
+                                               'REST Resources API')"/>
 
     <!-- for each bucket -->
     <xsl:for-each select="distinct-values($all-functions/@bucket)">
@@ -67,7 +69,10 @@
                 <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
 
                 <!-- Used to trigger adding a link to the title of the resulting page -->
-                <xsl:attribute name="type" select="'function-category'"/>
+                <!-- But don't do this for REST API list pages -->
+                <xsl:if test="not($single-lib-for-category eq 'REST')">
+                  <xsl:attribute name="type" select="'function-category'"/>
+                </xsl:if>
 
                 <intro>
                   <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
@@ -143,22 +148,31 @@
             <xsl:param name="cat"/>
             <xsl:param name="lib"/>
             <xsl:value-of select="$lib"/>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="$lib eq 'REST'">resources</xsl:when>
+              <xsl:otherwise                 >functions</xsl:otherwise>
+            </xsl:choose>
             <!-- toc.xsl depends on this format (category name in parentheses)
                  to determine what sub-pages to list on the main lib page;
                  so don't change this without changing it there also -->
-            <xsl:text> functions (</xsl:text>
+            <xsl:text> (</xsl:text>
             <xsl:value-of select="toc:display-category($cat)"/>
             <xsl:text>)</xsl:text>
           </xsl:function>
 
           <xsl:function name="toc:function-name-nodes">
             <xsl:param name="functions"/>
-            <xsl:for-each select="$functions">
-              <xsl:sort select="@fullname"/>
-              <api:function-name>
-                <xsl:value-of select="@fullname"/>
-              </api:function-name>
-            </xsl:for-each>
+            <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
+            <xsl:variable name="wrapper">
+              <xsl:for-each select="$functions">
+                <xsl:sort select="@fullname"/>
+                <api:function-name>
+                  <xsl:value-of select="@fullname"/>
+                </api:function-name>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="$wrapper/api:function-name"/>
           </xsl:function>
 
 
@@ -200,8 +214,10 @@
 
           <xsl:function name="toc:display-suffix" as="xs:string?">
             <xsl:param name="lib-for-all" as="xs:string?"/>
-            <xsl:sequence select="if ($lib-for-all) then concat(' (', api:prefix-for-lib($lib-for-all), ':)')
-                                                    else ()"/>
+            <!-- Don't display a suffix for REST categories -->
+            <xsl:sequence select="if ($lib-for-all eq 'REST') then ()
+                             else if ($lib-for-all)           then concat(' (', api:prefix-for-lib($lib-for-all), ':)')
+                                                              else ()"/>
           </xsl:function>
 
           <xsl:function name="toc:get-summary-for-category" as="element()*">

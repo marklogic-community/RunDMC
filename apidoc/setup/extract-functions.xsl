@@ -18,6 +18,8 @@
   <!-- Implements some common content fixup rules -->
   <xsl:include href="fixup.xsl"/>
 
+  <xsl:include href="REST-common.xsl"/>
+
   <xsl:template match="/">
 <xsl:value-of select="xdmp:log(concat('$api:version: ',$api:version))"/>
                                                               <!-- Function names aren't unique thanks to the way *:polygon()
@@ -27,7 +29,10 @@
 
   <!-- Extract each function as its own document -->
   <xsl:template match="apidoc:function">
-    <xsl:result-document href="/apidoc/{$api:version}/{@lib}:{@name}.xml">
+    <xsl:variable name="result-doc-path">
+      <xsl:apply-templates mode="result-doc-path" select="."/>
+    </xsl:variable>
+    <xsl:result-document href="/apidoc/{$api:version}{$result-doc-path}.xml">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
            that raises the possibility of needing to include two different
@@ -37,6 +42,15 @@
       </api:function-page>
     </xsl:result-document>
   </xsl:template>
+
+          <!-- This is overridden in REST-common.xsl, for REST docs -->
+          <xsl:template mode="result-doc-path" match="apidoc:function">
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="@lib"/>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="@name"/>
+          </xsl:template>
+
 
   <!-- Ignore hidden functions -->
   <xsl:template match="apidoc:function[@hidden eq true()]"/>
@@ -99,6 +113,17 @@
   <!-- Change the "spell" library to "spell-lib" to disambiguate from the built-in "spell" module -->
   <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq 'spell' and not(@type eq 'builtin')]/@lib">
     <xsl:text>spell-lib</xsl:text>
+  </xsl:template>
+
+  <!-- Change the "rest" library to "rest-lib" because we're reserving the "/REST/" prefix for the REST API docs,
+       and I don't want case to be the only thing distinguishing between the two URLs. -->
+  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq 'rest']/@lib">
+    <xsl:text>rest-lib</xsl:text>
+  </xsl:template>
+
+  <!-- Change the "manage" library to "REST" so the TOC code treats it like a library with that name. -->
+  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq $REST-lib]/@lib">
+    <xsl:text>REST</xsl:text>
   </xsl:template>
 
 </xsl:stylesheet>

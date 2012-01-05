@@ -8,6 +8,9 @@ var currentFilterText2 = '';
 var previousFilterText3 = '';
 var currentFilterText3 = '';
 
+var previousFilterText4 = '';
+var currentFilterText4 = '';
+
 function filterConfigDetails(text, treeSelector) {
 
     var tocRoot = $(treeSelector);

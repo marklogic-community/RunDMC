@@ -13,6 +13,8 @@
   <xsl:import href="../../view/page.xsl"/>
   <xsl:import href="xquery-imports.xsl"/>
 
+  <xsl:import href="../setup/REST-common.xsl"/>
+
   <xsl:include href="guide.xsl"/>
 
   <!-- overrides variable declaration in imported code -->
@@ -183,7 +185,7 @@
     </h2>
   </xsl:template>
 
-          <xsl:template mode="api-page-heading" match="*">
+          <xsl:template mode="api-page-heading" match="* | api:function-page[api:function[1]/@lib eq 'REST']">
             <xsl:apply-templates mode="page-specific-title" select="."/>
           </xsl:template>
 
@@ -217,6 +219,14 @@
 
           <xsl:template mode="docs-page" match="group | unnamed-group" priority="1">
             <ul class="doclist">
+              <li>
+                <a href="javascript:$('#toc_tabs').tabs('select',0);">MarkLogic XQuery and XSLT Function Reference</a>
+                <div>You're there already! Navigate to individual built-in and XQuery library function docs using the menu to the left.</div>
+              </li>
+              <li>
+                <a href="javascript:$('#toc_tabs').tabs('select',3);">REST API Reference</a>
+                <div>This API reference documents the REST resources available on port 8002. Navigate to individual REST resource docs using the <a href="javascript:$('#toc_tabs').tabs('select',3);">menu to the left</a>.</div>
+              </li>
               <xsl:apply-templates mode="docs-list-item" select="*"/>
             </ul>
           </xsl:template>
@@ -294,7 +304,8 @@
       <div class="api_caption">
         <xsl:variable name="count" select="count(api:list-entry)"/>
         <xsl:value-of select="$count"/>
-        <xsl:text> function</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates mode="list-page-item-type" select="."/>
         <xsl:if test="$count gt 1">s</xsl:if>
       </div>
       <table class="api_table">
@@ -304,7 +315,9 @@
         </colgroup>
         <thead>
           <tr>
-            <th>Function name</th>
+            <th>
+              <xsl:apply-templates mode="list-page-col-heading" select="."/>
+            </th>
             <th>Description</th>
           </tr>
         </thead>
@@ -343,10 +356,22 @@
           </xsl:template>
 
 
+          <!-- If a name starts with a "/", that means this is a list of REST resources -->
+          <xsl:template mode="list-page-col-heading" match="api:list-page[api:list-entry[1]/api:name[starts-with(.,'/')]]">Resource URI</xsl:template>
+          <xsl:template mode="list-page-col-heading" match="api:list-page"                                                >Function name</xsl:template>
+
+          <!-- If a name starts with a "/", that means this is a list of REST resources -->
+          <xsl:template mode="list-page-item-type" match="api:list-page[api:list-entry[1]/api:name[starts-with(.,'/')]]">resource</xsl:template>
+          <xsl:template mode="list-page-item-type" match="api:list-page"                                                >function</xsl:template>
+
+
           <xsl:template mode="list-page-entry" match="api:list-entry">
+            <xsl:variable name="href">
+              <xsl:apply-templates mode="list-page-entry-href" select="api:name"/>
+            </xsl:variable>
             <tr>
               <td style="white-space: nowrap;">
-                <a href="{$version-prefix}/{api:name}">
+                <a href="{$version-prefix}{$href}">
                   <xsl:if test="api:name/@indent">
                     <xsl:attribute name="class" select="'indented_function'"/>
                   </xsl:if>
@@ -358,6 +383,18 @@
               </td>
             </tr>
           </xsl:template>
+
+                  <xsl:template mode="list-page-entry-href" match="api:name">
+                    <xsl:text>/</xsl:text>
+                    <xsl:value-of select="."/>
+                  </xsl:template>
+
+                  <!-- If the name starts with a "/", that means this is a REST resource -->
+                  <xsl:template mode="list-page-entry-href" match="api:name[starts-with(.,'/')]">
+                    <xsl:call-template name="external-REST-doc-uri">
+                      <xsl:with-param name="name" select="string(.)"/>
+                    </xsl:call-template>
+                  </xsl:template>
 
 
           <xsl:template mode="list-page-entry" match="entry | guide">
@@ -456,19 +493,7 @@
   </xsl:template>
 
           <xsl:template match="api:function">
-            <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
-            <xsl:element name="pre">
-              <code>
-                <xsl:value-of select="@fullname"/>
-                <xsl:text>(</xsl:text>
-                <xsl:if test="api:params/api:param">
-                  <xsl:text>&#xA;</xsl:text>
-                </xsl:if>
-                <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
-                <xsl:text>) as </xsl:text>
-                <xsl:value-of select="normalize-space(api:return)"/>
-              </code>
-            </xsl:element>
+            <xsl:apply-templates mode="function-signature" select="."/>
             <xsl:apply-templates select="(api:summary, api:params, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
@@ -477,19 +502,36 @@
             </xsl:if>
           </xsl:template>
 
-                  <xsl:template mode="syntax" match="api:param">
-                    <xsl:text>   </xsl:text>
-                    <xsl:if test="@optional eq 'true'">[</xsl:if>
-                    <a href="#{@name}">
-                      <xsl:text>$</xsl:text>
-                      <xsl:value-of select="@name"/>
-                    </a>
-                    <xsl:text> as </xsl:text>
-                    <xsl:value-of select="@type"/>
-                    <xsl:if test="@optional eq 'true'">]</xsl:if>
-                    <xsl:if test="position() ne last()">,</xsl:if>
-                    <xsl:text>&#xA;</xsl:text>
+                  <xsl:template mode="function-signature" match="api:function[@lib eq 'REST']"/>
+                  <xsl:template mode="function-signature" match="api:function">
+                    <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
+                    <xsl:element name="pre">
+                      <code>
+                        <xsl:value-of select="@fullname"/>
+                        <xsl:text>(</xsl:text>
+                        <xsl:if test="api:params/api:param">
+                          <xsl:text>&#xA;</xsl:text>
+                        </xsl:if>
+                        <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
+                        <xsl:text>) as </xsl:text>
+                        <xsl:value-of select="normalize-space(api:return)"/>
+                      </code>
+                    </xsl:element>
                   </xsl:template>
+
+                          <xsl:template mode="syntax" match="api:param">
+                            <xsl:text>   </xsl:text>
+                            <xsl:if test="@optional eq 'true'">[</xsl:if>
+                            <a href="#{@name}">
+                              <xsl:text>$</xsl:text>
+                              <xsl:value-of select="@name"/>
+                            </a>
+                            <xsl:text> as </xsl:text>
+                            <xsl:value-of select="@type"/>
+                            <xsl:if test="@optional eq 'true'">]</xsl:if>
+                            <xsl:if test="position() ne last()">,</xsl:if>
+                            <xsl:text>&#xA;</xsl:text>
+                          </xsl:template>
 
                   <xsl:template match="api:summary">
                     <h3>Summary</h3>
@@ -502,7 +544,9 @@
                     <table class="parameters">
                       <thead>
                         <tr>
-                          <th scope="colgroup" colspan="2">Parameters</th>
+                          <th scope="colgroup" colspan="2">
+                            <xsl:apply-templates mode="parameters-table-heading" select="."/>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -511,13 +555,18 @@
                     </table>
                   </xsl:template>
 
+                          <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:params">URL parameters</xsl:template>
+                          <xsl:template mode="parameters-table-heading" match="                             api:params">Parameters</xsl:template>
+
                           <xsl:template match="api:param">
                             <tr>
                               <td>
                                 <!--
                                 <a name="{@name}"/>
                                 -->
-                                <xsl:text>$</xsl:text>
+                                <xsl:if test="not(../../@lib eq 'REST')">
+                                  <xsl:text>$</xsl:text>
+                                </xsl:if>
                                 <xsl:value-of select="@name"/>
                               </td>
                               <td>

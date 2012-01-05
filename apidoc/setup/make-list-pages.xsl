@@ -63,9 +63,18 @@
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
       <xsl:for-each select=".//node[not(node)]">
         <xsl:sort select="@display"/>
+<!--
+<xsl:if test="@href eq '/REST/manage/v1/forests&gt;view=schema'">
+<xsl:value-of select="xdmp:log(ml:internal-uri(translate(@href,'>','@')))" xmlns:xdmp="http://marklogic.com/xdmp"/>
+        <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(translate(@href,'>','@')))
+                                                       /api:function-page/api:function[1]"/>
+                                                       -->
         <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(@href))
                                                        /api:function-page/api:function[1]"/> <!-- don't list multiple *:polygon() functions;
                                                                                                  just the first -->
+<!--
+</xsl:if>
+-->
       </xsl:for-each>
 
     </api:list-page>
