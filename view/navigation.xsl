@@ -143,7 +143,7 @@
   <xsl:template match="sub-nav[$content/Article]">
     <xsl:if test="$content/Article//xhtml:h3">
         <h2>Contents</h2>
-        <ul>
+        <ul class="tutorial_toc">
             <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
         </ul>
     </xsl:if>
