@@ -16,9 +16,23 @@ div.intro p + a,
 #bottom2,
 .lists,
 .lists header,
-.button
+.button,
+.supernode
 	{behavior: url(js/PIE.htc);}
 #breadcrumb + section > h2, #content, #comments {box-shadow: 0 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
 .post .action {box-shadow: 1px 1px 1px #BBB;}
 #tooltip {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E4E5F0');}
+thead th, tbody th, tbody td {
+	background-image: none !important;
+	border: 0px solid #CCC;
+}
+thead th {border-width: 1px 0;}
+thead th:first-child, tbody th:first-child, tbody td:first-child {border-left-width: 1px;}
+thead th.last, tbody td.last {border-right-width: 1px;}
+tbody.last tr.last th,
+tbody.last tr.last td
+	{border-bottom-width: 1px;}
+th.last, td.last {padding-right: 15px !important;}
+.features tbody td:first-child, .features tbody th:first-child {border-left-width: 0;}
+.features tbody tr:first-child th:first-child {border-left-width: 1px;}

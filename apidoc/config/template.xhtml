@@ -13,7 +13,12 @@
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
 		<script type="text/javascript" src="/js/modernizr.js"></script>
+
+    <!-- Un-minimize for debugging
+		<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+    -->
 		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
 		<script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
     <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
@@ -79,26 +84,13 @@
         <div id="breadcrumb">
           <ml:breadcrumbs/>
         </div>
-				<section>
-
-          <!-- TODO: Update PJAX code so it changes this too. -->
-          <!--
-          <ml:page-heading/>
-          -->
-
-					<div id="main_container">
-						<div id="main">
-              <div id="page_content">
-                <ml:page-content/>
-                <ml:comment-section/>
-              </div>
-						</div>
-            <div id="api_sub">
-              <ml:api-toc/>
-            </div>
-					</div>
-
+				<section id="page_content">
+          <ml:page-content/>
+          <ml:comment-section/>
 				</section>
+        <div id="api_sub">
+          <ml:api-toc/>
+        </div>
 			</div>
 			<hr />
 			<footer>

@@ -1,8 +1,9 @@
 if(typeof jQuery != 'undefined') {
 	$(function() {
-		$('body').addClass('jsenabled');
 		// cache selectors
+		var body = $('body');
 		var main = $('#main');
+		body.addClass('jsenabled');
 		if(!$.support.opacity) {
 			$('th:last-child, td:last-child, tr:last-child, tbody:last-child, .utility a:last-child, .widget div li:last-child, .lists li:last-child','#content').addClass('last');
 			$('.features section:nth-child(even)', main).addClass('even');
@@ -13,7 +14,6 @@ if(typeof jQuery != 'undefined') {
 			var input = document.createElement('input');
 			return ('placeholder' in input);
 		}
-
 		if(hasPlaceholderSupport() == false) {
 			var searchField = $('#s_inp','#header');
 			var labelText = searchField.prev().text();
@@ -30,20 +30,7 @@ if(typeof jQuery != 'undefined') {
 				})
 				.prev()
 					.hide();
-		}/*
-		var utilSearch = $('.utility #us_input','footer');
-		var valText = utilSearch.attr('title');
-		utilSearch
-			.val(valText)
-			.addClass('default')
-			.focus(function() {
-				if($(this).val() == valText) {
-					$(this).val('').removeClass('default');
-				}
-			})
-			.blur(function() {
-				if($(this).val() == '') {$(this).val(valText).addClass('default')}
-			});*/
+		}
 		var valText = 'Type to filter TOC';
 		$('#tab_content .default','#api_sub')
 			.val(valText)
@@ -77,7 +64,21 @@ if(typeof jQuery != 'undefined') {
 		$('#sub li').find('.current').parent().show().closest('li').addClass('active');
 		// end side nav accordion functionality
 		$('.features thead th:first-child').addClass('title').append($('.features caption').text()).closest('table').children('caption').remove();
-		
+		// general class if window width smaller than container width
+		if($(window).width() <= 1100) {
+			body.addClass('sticky');
+		}
+		$(window).resize(function() {
+			if($(this).width() <= 1100) {
+				body.addClass('sticky');
+			}
+			else {
+				if(body.hasClass('sticky')) {
+					body.removeClass('sticky');
+				}
+			}
+		});
+		// end general class
 		// utility form stuff
 		var root = $('.utility');
 		var btn = root.find('form input[type=image]');
@@ -103,26 +104,13 @@ if(typeof jQuery != 'undefined') {
 					e.preventDefault();
 					$(this).prev().addClass('active').find('input[type=text]').focus();
 				});
-		if($(window).width() <= 1100) {
-			root.addClass('sticky');
-		}
-		$(window).resize(function() {
-			if($(this).width() <= 1110) {
-				root.addClass('sticky');
-			}
-			else {
-				if(root.hasClass('sticky')) {
-					root.removeClass('sticky');
-				}
-			}
-		});
 		var inside = false;
 		root.find('form').hover(function(){ 
 		    inside=true; 
 			}, function(){ 
 		    inside=false; 
 		});
-		$('body').mouseup(function(){ 
+		body.mouseup(function(){ 
 	    if(!inside) {
 	    	root.find('form.active').removeClass('active');
 	    }
@@ -134,6 +122,7 @@ if(typeof jQuery != 'undefined') {
 				top: -8
 			});
 		}
+		// end utility form stuff
 		$('.post + .pagination',main).clone().insertBefore(main);
 		// comments tab position at right 
 		var pos = parseInt($('#comments .action').css('top'), 10);
@@ -175,7 +164,6 @@ if(typeof jQuery != 'undefined') {
 					}).find('.more').css('position','static');
 				}
 			});
-
 		});
 
         $('.hide-if-href-empty').each(function() {
@@ -203,8 +191,8 @@ if(typeof jQuery != 'undefined') {
                 return false;
             });
         });
-
-        $("#confirm-dialog").dialog({
+        if(jQuery().dialog) {
+        	$("#confirm-dialog").dialog({
             resizable: false,
             autoOpen: false,
             title: 'MarkLogic Server Download Confirmation',
@@ -223,9 +211,9 @@ if(typeof jQuery != 'undefined') {
                     _gaq.push(['_trackEvent', 'cancel-download', u]);
                     $(this).dialog('close');
                 }
-           }
-        });
-
+           	}
+        	});
+       	}
 		if(jQuery().fancybox) {
 			$('a[rel=detail]',main).each(function() {
 				var ref = $(this).attr('href');
@@ -237,24 +225,6 @@ if(typeof jQuery != 'undefined') {
 				});
 			});
 		}
-		function autoheight() {
-			if($(window).height() > $('#container').height()) {
-				$('#api_sub').css({
-					bottom: 'auto',
-					height: $('#main').height()
-				});
-			}
-			else {
-				$('#api_sub').css({
-					bottom: '10px',
-					height: 'auto'
-				});
-			}
-		}
-		autoheight();
-		$(window).resize(function() {
-			autoheight();
-		});
 		var apiCaption = $('.api_table caption',main).text();
 		$('.api_table',main).find('caption').remove().end().before(
 			$('<div>', {
@@ -262,7 +232,18 @@ if(typeof jQuery != 'undefined') {
 				text: apiCaption
 			})
 		);
+		if($('#page_content').length) {
+		$('body:not(.sticky) #page_content')
+			.append($('<div>', {'class': 'shadow'}))
+			.scroll(function() {
+				if($(this).scrollLeft() > 0) {
+					$(this).children('.shadow').fadeIn('fast');
+				}
+				else {
+					$(this).children('.shadow').fadeOut('fast');
+				}
+			});
+		}
 		// add new functions before this comment
-
 	});
-};
+}
