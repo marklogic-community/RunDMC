@@ -62,7 +62,7 @@
                     <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
                                                                            then $srv:api-server
                                                                            else $srv:primary-server
-                                                                      else ()"/>
+                                                                      else ''"/>
                   </xsl:template>
 
                   <xsl:template mode="top-nav-current-att" match="page"/>
