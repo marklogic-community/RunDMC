@@ -141,23 +141,36 @@
                   </xsl:template>
 
   <xsl:template match="sub-nav[$content/Article]">
-    <xsl:if test="$content/Article//xhtml:h3">
-        <h2>Contents</h2>
-        <ul class="tutorial_toc">
-            <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
-        </ul>
+    <xsl:if test="$content//(xhtml:h3 | xhtml:figure)">
+      <h2>Contents</h2>
+      <ul class="tutorial_toc">
+        <!-- If the article doesn't have any <h3> headings, then display the list of figures instead. -->
+        <xsl:apply-templates mode="article-toc" select="if ($content//xhtml:h3)
+                                                       then $content//xhtml:h3
+                                                       else $content//xhtml:figure"/>
+      </ul>
     </xsl:if>
   </xsl:template>
 
-          <xsl:template mode="article-toc" match="xhtml:h3">
+          <xsl:template mode="article-toc" match="xhtml:h3 | xhtml:figure">
             <li>
               <span>
-              <a href="#{generate-id(.)}">
-                <xsl:value-of select="."/>
-              </a>
+                <xsl:apply-templates mode="article-toc-link" select="."/>
               </span>
             </li>
           </xsl:template>
+
+                  <xsl:template mode="article-toc-link" match="xhtml:h3">
+                    <a href="#{generate-id(.)}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </xsl:template>
+
+                  <xsl:template mode="article-toc-link" match="xhtml:figure">
+                    <a href="#{@id}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </xsl:template>
 
           <xsl:template match="xhtml:h3" priority="1">
             <xsl:param name="annotate-headings" tunnel="yes" select="false()"/>
