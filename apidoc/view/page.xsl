@@ -581,11 +581,16 @@
                   </xsl:template>
 
                           <xsl:template match="api:schema-info">
-                            <p>The structure of the XML node returned is as follows:</p>
+                            <p>
+                              <xsl:apply-templates mode="schema-info-intro" select="."/>
+                            </p>
                             <dl>
                               <xsl:apply-templates select="api:element"/>
                             </dl>
                           </xsl:template>
+
+                                  <xsl:template mode="schema-info-intro" match="api:schema-info"           >The structure of the XML node returned is as follows:</xsl:template>
+                                  <xsl:template mode="schema-info-intro" match="api:schema-info[@REST-doc]">The structure of the output returned from this REST API is as follows:</xsl:template>
 
                                   <xsl:template match="api:element">
                                     <dt>
