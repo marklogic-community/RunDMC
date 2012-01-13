@@ -32,9 +32,12 @@
       <xsl:sort select="index-of($forced-order, .)" order="descending"/>
       <xsl:sort select="."/>
 
+      <xsl:variable name="bucket" select="."/>
+      <xsl:variable name="bucket-id" select="translate($bucket,' ','')"/>
+
       <!-- bucket node --> <!-- ID for function buckets is the display name minus spaces -->
-      <node display="{.}" id="{translate(.,' ','')}">
-        <xsl:variable name="in-this-bucket" select="$all-functions[@bucket eq current()]"/>
+      <node display="{.}" id="{$bucket-id}">
+        <xsl:variable name="in-this-bucket" select="$all-functions[@bucket eq $bucket]"/>
 
         <!-- for each category -->
         <xsl:for-each select="distinct-values($in-this-bucket/@category)">
@@ -49,7 +52,7 @@
           <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
-          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}" function-list-page="yes">
+          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}" function-list-page="yes" id="{$bucket-id}_{translate(.,' ','')}">
 
             <!-- When there are sub-categories, don't create a new page for the category (they tend to be useless);
                  only create a link if it corresponds to a full lib page -->

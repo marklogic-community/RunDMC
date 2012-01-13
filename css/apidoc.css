@@ -132,13 +132,20 @@ font-weight: bold;
 }
 
 .currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {color: #F86D07;}
-.treecontrol {
+.treecontrol.top_control {
+  cursor: pointer;
 	position: fixed;
-	margin-top: -42px;
-	margin-left: -10px;
 	font-size: .9em !important;
 }
-.treecontrol > span {
+.treecontrol.top_control.local_control {
+	margin-top: -42px;
+	margin-left: -10px;
+}
+.treecontrol.top_control.global_control {
+	margin-top: -25.5px;
+	margin-left: 8.5px;
+}
+.treecontrol.top_control > span {
 	display: inline-block;
 	color: white;
 	padding: 3px 8px;
@@ -162,7 +169,7 @@ font-weight: bold;
 	line-height: 12px !important;
 	text-transform: capitalize;
 }
-.treecontrol > span img, .treecontrol > span span {
+.treecontrol.top_control > span img, .treecontrol.top_control > span span {
 	vertical-align: baseline;
 	background: white;
 }
