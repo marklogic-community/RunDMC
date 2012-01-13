@@ -103,25 +103,20 @@
 							<input type="image" src="/images/i_mag_glass2.png" alt="Search" title="Search the site" />
 						</fieldset>
 					</form>
-					<a href="http://marklogic.uservoice.com/forums/58148?lang=en&amp;referer=http%3A%2F%2Fdeveloper.marklogic.com%2F" onmouseover="UserVoice.Popin.preload();" onclick="UserVoice.Popin.show(); return false;" id="uservoice-feedback-tab"><img title="Feedback – Submit an idea" src="/images/i_bullhorn.png" alt="Feedback"  width="30" height="29" /></a>
+					<a onclick="UserVoice.Popin.show(uservoiceOptions); return false;" href="#" xhref="http://marklogic.uservoice.com/forums/58148?lang=en&amp;referer=http%3A%2F%2Fdeveloper.marklogic.com%2F" id="uservoice-feedback-tab"><img title="Feedback – Submit an idea" src="/images/i_bullhorn.png" alt="Feedback"  width="30" height="29" /></a>
 					<a href="/try"><img title="Go to try marklogic.com" src="/images/i_screen_try.png" alt="Try" width="30" height="29" /></a>
 					<a href="http://www.marklogic.com" target="_blank"><img title="Go to corporate site" src="/images/i_screen_m.png" alt="MarkLogic Site" width="30" height="29" /></a>
 				</div>
 			</footer>
 		</div>
-		<!--<script type="text/javascript">
+		<script type="text/javascript">
 			var uservoiceOptions = {
 				/* required */
 				key: 'rundmc',
 				host: 'marklogic.uservoice.com',
 				forum: '58148',
-				showTab: true,
-				/* optional */
-				alignment: 'right',
-				background_color:'orange',
-				text_color: 'white',
-				hover_color: '#06C',
-				lang: 'en'
+				lang: 'en',
+				showTab: false
 			};
 
 			function _loadUserVoice() {
@@ -131,9 +126,11 @@
 				document.getElementsByTagName('head')[0].appendChild(s);
 			}
 			_loadSuper = window.onload;
+      /*
 			if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com')
+      */
 				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
-        </script>-->
+        </script>
     <!--
     <ml:elapsed-time/>
     -->
