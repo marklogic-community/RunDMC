@@ -240,7 +240,6 @@
 
                   <!-- Include on nodes that will be loaded asynchronously -->
                   <xsl:template mode="class-hasChildren" match="toc:functions/node/node
-                                                              | toc:rest-resources/node/node
                                                               | toc:guides/node
                                                               | toc:categories/node">hasChildren</xsl:template>
                   <xsl:template mode="class-hasChildren" match="node"/>
@@ -390,8 +389,7 @@
                   <!-- Nodes to be loaded asynchronously -->
                   <xsl:template mode="children" match="toc:functions/node/node
                                                      | toc:guides/node
-                                                     | toc:categories/node
-                                                     | toc:rest-resources/node/node" priority="1">
+                                                     | toc:categories/node" priority="1">
                     <!-- The empty placeholder -->
                     <ul style="display: none">
                       <li>
@@ -410,7 +408,7 @@
                     </xsl:result-document>
                   </xsl:template>
 
-                          <xsl:template mode="ul-display-type" match="toc:*/node | toc:functions/node/node | toc:rest-resources/node/node">block</xsl:template>
-                          <xsl:template mode="ul-display-type" match="                                                               node">none</xsl:template>
+                          <xsl:template mode="ul-display-type" match="toc:*/node | toc:functions/node/node">block</xsl:template>
+                          <xsl:template mode="ul-display-type" match="                                node">none</xsl:template>
 
 </xsl:stylesheet>
