@@ -191,8 +191,8 @@ if(typeof jQuery != 'undefined') {
                 return false;
             });
         });
-        if(jQuery().dialog) {
-        	$("#confirm-dialog").dialog({
+
+        $("#confirm-dialog").dialog({
             resizable: false,
             autoOpen: false,
             title: 'MarkLogic Server Download Confirmation',
@@ -211,9 +211,9 @@ if(typeof jQuery != 'undefined') {
                     _gaq.push(['_trackEvent', 'cancel-download', u]);
                     $(this).dialog('close');
                 }
-           	}
-        	});
-       	}
+           }
+        });
+
 		if(jQuery().fancybox) {
 			$('a[rel=detail]',main).each(function() {
 				var ref = $(this).attr('href');
@@ -237,10 +237,10 @@ if(typeof jQuery != 'undefined') {
 			.append($('<div>', {'class': 'shadow'}))
 			.scroll(function() {
 				if($(this).scrollLeft() > 0) {
-					$(this).children('.shadow').fadeIn('fast');
+					$(this).children(':last').fadeIn('fast');
 				}
 				else {
-					$(this).children('.shadow').fadeOut('fast');
+					$(this).children(':last').fadeOut('fast');
 				}
 			});
 		}

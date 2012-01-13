@@ -54,6 +54,7 @@ h2 {
 	font-size: 27px;
 }
 h3 {font-size: 20px;}
+h1 code, h2 code, h3 code {font-size: 100%;}
 img, input, select, textarea {
 	vertical-align: middle;
 	margin: 0;
@@ -102,11 +103,11 @@ thead th:only-child {
 		url("/images/bg_table_features_topright.png") right top no-repeat,
 		url("/images/bg_table_features_topmiddle.png") center top repeat-x #ECECEC;
 }
+thead th p {margin: 0;}
 tbody {border-top: 1px solid #CCC;}
 tbody th, tbody td {padding: 10px 5px;}
 tbody td:first-child, tbody th:first-child {
 	padding-left: 15px;
-	width: 110px;
 	background: url(/images/bg_cacaca.gif) top left repeat-y;
 }
 tbody td:last-child {background: url(/images/bg_cacaca.gif) top right repeat-y;}
@@ -171,6 +172,8 @@ ol {
 	height: 23px;
 	line-height: 23px;
 }
+.hl {background: #FFFF96;}
+.hl.current {background: #FF9632;}
 #overlay {
 	display: none;
 	background: white;
@@ -583,7 +586,7 @@ footer nav .current a {color: white;}
 	left: -999em;
 }
 .utility .border {border-top: 1px solid white;}
-.utility a {
+.utility > a, .u_wrapper > a {
 	display: block;
 	border-style: solid;
 	border-width: 1px 0;
@@ -596,6 +599,22 @@ footer nav .current a {color: white;}
 }
 .utility a:last-child {border-bottom: none;}
 .utility img {margin: 5px 0;}
+.utility .highlight {padding-bottom: 5px;}
+.utility .highlight a:first-child {
+	display: block;
+	border: solid #E4E4E4;
+	border-width: 1px 0 0;
+}
+.utility .highlight .prev, .utility .highlight .next {
+	display: inline-block;
+	background: url(/images/s_arrows_prevnext_gray.png) left center no-repeat;
+	text-indent: -999em;
+	width: 7px;
+}
+.utility .highlight .next {
+	background-position: right center;
+	margin-left: 5px;
+}
 #tooltip {
 	position: absolute;
 	z-index: 3000;
@@ -924,6 +943,18 @@ section#documentation:before {margin-bottom: 30px;}
 	margin: 20px 0 0;
 	clear: both;
 }
+.post thead th {
+	font-size: 12px;
+	font-weight: bold;
+	padding-top: 15px;
+}
+.post table code {
+    background-color: #F8F8F8;
+    border: 1px solid #DEDEDE;
+    border-radius: 3px;
+    padding: 0 1px;
+    font: 14px "Courier New",Courier,monospace;
+}
 .post .body .more {
 	font-size: 12px;
 	font-weight: bold;
@@ -933,21 +964,20 @@ section#documentation:before {margin-bottom: 30px;}
 	margin: 1.5em 0;
 	background: white;
 }
-.post .body table {
-	width: 100%;
+.post .body .info table {
 	margin: 0;
 	font-size: 14px;
 }
-.post .body table + * {
+.post .body .info table + * {
 	margin-top: 20px;
 	display: block;
 }
-.post .body table tbody {border: none;}
-.post .body th, .post .body td {
+.post .body .info table tbody {border: none;}
+.post .body .info th, .post .body .info td {
 	padding: 0 0 0 10px;
 	background: none !important;
 }
-.post .body table :first-child {padding-left: 0;}
+.post .body .info table :first-child {padding-left: 0;}
 .post + .pagination, #main_container > .pagination {
 	color: #999;
 	font-size: 12px;

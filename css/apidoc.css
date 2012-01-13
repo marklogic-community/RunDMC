@@ -38,23 +38,41 @@ pre {
 	width: 640px;
 	float: right;
 	padding-right: 65px;
+	padding-left: 68px;
 	position: relative;
 }
 #page_content h2 {
 	padding: 0 !important;
-	margin: 45px 0 40px;
+	margin: 40px 0 40px;
+	line-height: 100%;
+}
+#page_content ul {
+	padding-left: 20px;
+	list-style: disc;
 }
 #page_content .shadow {
 	position: fixed;
 	left: 50%;
 	top: 70px;
 	bottom: 16px;
-	margin-left: -155px;
+	margin-left: -224px;
 	width: 5px;
 	background: url(/images/bg_shadow_vert.png) top left repeat-y;
 	display: none;
 }
 #page_content.scroll {border-left: 1px solid #CCC;}
+#page_content table pre {/*
+	max-width: 440px;*/
+}
+#page_content dd pre {
+	background-color: #F9F9F9;
+	padding-top: 5px;
+	border-radius: 4px;
+}
+#page_content dd pre:first-child {
+	background-color: transparent;
+	padding: 0;
+}
 #api_sub {
 	width: 250px;
   color: #333333;
@@ -78,7 +96,7 @@ pre {
 }
 #tab_content {
 	position: absolute;
-	top: 40px;
+	top: 39px;
 	bottom: 0;
 	overflow: hidden;
 	width: 248px;
@@ -87,8 +105,11 @@ pre {
 	padding-top: 60px;
 }
 .tab_link {
-	font-size: 0.9em;
+	font-size: 11px !important;
 	min-height: 27px;
+	line-height: 11px !important;
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
 }
 .scrollable_section {
 	height: 100%;
@@ -267,12 +288,18 @@ p.note:before {content: "NOTE: ";}
 	line-height: 120%;
 	padding-top: 5px;
 	padding-bottom: 5px;
+	vertical-align: middle;
 }
 .api_table tbody td:first-child {font-size: 12px;}
+table.parameters {
+	table-layout: fixed;
+	width: 100%;
+}
 table.parameters, table.parameters code {
 	font-size: 14px;
 	line-height: 143%;
 }
-table.parameters tbody td:first-child {width: 240px;}
+table.parameters .col1 {width: 25%;}
+table.parameters .col2 {width: 75%;}
 
 a.function_prefix { text-decoration: underline; color: #899B3B; }
