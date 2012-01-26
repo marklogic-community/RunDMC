@@ -93,6 +93,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/blog/atom.xml"
     else if (starts-with($path, "/legal")) then
         "/"
+    else if (starts-with($path, "/training")) then
+        "/learn"
     else if (starts-with($path, "/svn")) then
         concat("/code/", replace(substring($path, 6), "^([^/]*)/.*", "$1" ))
     else if ($path = ("/code/comoms")) then
@@ -145,7 +147,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     let $path := if ($path = "/docs") then
         $latest-doc-uri
     else if ($path = "/products/marklogic-server") then
-        $latest-prod-uri
+        $latest-prod-uri 
     else if ($path = "/products/marklogic-server/requirements") then
         $latest-requirements-uri
     else if ($path = "/products/xcc") then
@@ -171,7 +173,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
-    else if ($path = ("/download", "/downloads", "/products", "/product", "/products/marklogic-server", "/products/marklogic-server/")) then
+    else if ($path = ("/download", "/downloads", "/products", "/product")) then
+        concat("/controller/transform.xqy?src=", "/products/express", "&amp;", $query-string)
+    else if ($path = ("/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
     else if (matches($path, '^/(js|css|images|media|stackunderflow)/v-[0-9]*/.*'))  then 

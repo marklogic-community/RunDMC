@@ -44,9 +44,11 @@
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
 
+  <!--
   <widget href="/widgets/open-source-projects.xml">
     <page-tree root="/products"/>
   </widget>
+  -->
 
   <!--
   <widget href="/widgets/write-a-tutorial.xml">
@@ -92,6 +94,10 @@
 
   <widget href="/widgets/subscribe-to-nymug.xml">
     <page href="/meet/nymug"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-sohmug.xml">
+    <page href="/meet/sohmug"/>
   </widget>
 
   <widget href="/widgets/start-a-user-group.xml">

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+    <h1>Join the Group</h1>
+    <div>
+        The SOHMUG User Group uses <a href="http://meetup.com/sohmug">meetup.com</a> to organize its meetings.
+        <br/>
+        <br/>
+        See <a href="http://meetup.com/sohmug" title="meetup" alt="ny-mug"><img src="/media/meetup-63x42.png" title="meetup" alt="meetup" width="63" height="42" /></a>
+        for more details.
+    </div>
+</ml:widget>

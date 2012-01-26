@@ -6,6 +6,7 @@
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
     <group display="MarkLogic Downloads">
       <group display="MarkLogic Server">
+        <page display="MarkLogic Express (Free license)" href="/products/express" />
         <page display="MarkLogic 5" href="/products/marklogic-server/5.0" />
         <page display="4.2" href="/products/marklogic-server/4.2" />
         <page display="4.1" href="/products/marklogic-server/4.1"/>
@@ -187,6 +188,7 @@
         <page display="MUGL - London" href="/meet/mugl"/>
         <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
         <page display="NYMUG - New York" href="/meet/nymug"/>
+        <page display="SOHMUG - Southern Ohio" href="/meet/sohmug"/>
 <!--
         <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
           <page display="Français" href="/meet/mugfr/fr"/>
