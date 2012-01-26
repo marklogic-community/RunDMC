@@ -137,12 +137,12 @@
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <p>
-        PLEASE NOTE: The MarkLogic software you are about to download is protected by copyright and other laws of the United States and elsewhere. All rights in and to the MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. By downloading the MarkLogic software, you agree that any use of the software is expressly conditioned upon and subject to the applicable terms of use which will be presented to you during installation of a license key. If you do not accept such terms of use, then download, installation, and use of the MarkLogic software are strictly prohibited.
+        PLEASE NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
         </p>
         
         
         <br/>
-        <span class="download-warn">You must confirm your acceptance of the above terms.</span> <br/>
+        <span class="download-warn">Please confirm your acceptance of the above terms.</span> <br/>
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
 
     </div>
