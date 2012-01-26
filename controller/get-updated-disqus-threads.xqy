@@ -29,11 +29,12 @@ declare function ml:get-json-xml($uri) {
   document{ xdmp:from-json(ml:get-json($uri)) }
 };
 
-(: Change this to true to output more info in the result :)
-declare variable $DEBUG := false();
+(: Set ?DEBUG=yes to output more info in the result :)
+declare variable $DEBUG := xdmp:get-request-field("DEBUG") eq 'yes';
 
-(: Change this to true to force-update all threads. :)
-declare variable $forceUpdateAllThreads := false();
+(: Set ?force-all=yes to force-update all threads. :)
+declare variable $forceUpdateAllThreads := xdmp:get-request-field("force-all") eq 'yes';
+
                                                                   (: fixup Disqus's non-standard date format :)
 declare variable $lastCommentDate := max(xs:dateTime($ml:Comments/@latest-update/concat(.,':00')));
 
@@ -64,16 +65,19 @@ declare variable $threadPosts := for $threadId in $threadIds return
                                         
 <results since="{$sinceDate}">
 {
-  for $doc in $threadPosts return
+  for $doc in $threadPosts
+  let $disqus-identifiers := $doc/map:map/map:entry[@key eq 'message'   ]/map:value[1]
+                                 /map:map/map:entry[@key eq 'thread'    ]/map:value
+                                 /map:map/map:entry[@key eq 'identifier']/map:value
+  where not(empty($disqus-identifiers))
+  return
   (
-    let $disqus-identifiers := $doc/map:map/map:entry[@key eq 'message'   ]/map:value[1]
-                                   /map:map/map:entry[@key eq 'thread'    ]/map:value
-                                   /map:map/map:entry[@key eq 'identifier']/map:value
     let $thread-id := string($disqus-identifiers/../../map:entry[@key eq 'id'])
-    let $existing-comments-doc := $ml:Comments[@disqus_identifier = $disqus-identifiers]
+    let $comments-docs := $ml:Comments[@disqus_identifier = $disqus-identifiers]
     return
-      if ($existing-comments-doc) then
-        let $path    := base-uri($existing-comments-doc)
+      if ($comments-docs) then
+      for $comments-doc in $comments-docs return
+        let $path    := base-uri($comments-doc)
         let $new-doc := xdmp:xslt-invoke('disqus-to-comments.xsl', $doc)
         return (
            (: Here's where we actually do what we need to do (create or replace the comments docs). :)
@@ -82,6 +86,7 @@ declare variable $threadPosts := for $threadId in $threadIds return
         )
       else <result>No comments document found for thread ID: {$thread-id} (disqus_identifier: {$disqus-identifiers/string(.)})</result>
   ),
-  if ($DEBUG) then ($updatedThreadList, $threadPosts) else ()
+  if ($DEBUG) then (<THREAD_LIST> {$updatedThreadList}</THREAD_LIST>,
+                    <THREAD_POSTS>{$threadPosts      }</THREAD_POSTS>) else ()
 }
 </results>
