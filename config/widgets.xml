@@ -44,9 +44,11 @@
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
 
+  <!--
   <widget href="/widgets/open-source-projects.xml">
     <page-tree root="/products"/>
   </widget>
+  -->
 
   <!--
   <widget href="/widgets/write-a-tutorial.xml">
