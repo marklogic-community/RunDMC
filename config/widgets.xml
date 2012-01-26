@@ -94,6 +94,10 @@
     <page href="/meet/nymug"/>
   </widget>
 
+  <widget href="/widgets/subscribe-to-sohmug.xml">
+    <page href="/meet/sohmug"/>
+  </widget>
+
   <widget href="/widgets/start-a-user-group.xml">
     <page href="/meet"/>
   </widget>
