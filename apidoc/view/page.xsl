@@ -548,6 +548,10 @@
 
                   <xsl:template match="api:params">
                     <table class="parameters">
+                      <colgroup>
+                        <col class="col1"/>
+                        <col class="col2"/>
+                      </colgroup>
                       <thead>
                         <tr>
                           <th scope="colgroup" colspan="2">
