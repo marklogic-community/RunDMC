@@ -76,14 +76,14 @@ declare variable $threadPosts := for $threadId in $threadIds return
     let $comments-docs := $ml:Comments[@disqus_identifier = $disqus-identifiers]
     return
       if ($comments-docs) then
-      for $comments-doc in $comments-docs return
-        let $path    := base-uri($comments-doc)
-        let $new-doc := xdmp:xslt-invoke('disqus-to-comments.xsl', $doc)
-        return (
-           (: Here's where we actually do what we need to do (create or replace the comments docs). :)
-           xdmp:document-insert($path, $new-doc),
-           <result>Comments document ({$path}) replaced for disqus_identifier: {$disqus-identifiers/string(.)}</result>
-        )
+        for $comments-doc in $comments-docs return
+          let $path    := base-uri($comments-doc)
+          let $new-doc := xdmp:xslt-invoke('disqus-to-comments.xsl', $doc)
+          return (
+             (: Here's where we actually do what we need to do (create or replace the comments docs). :)
+             xdmp:document-insert($path, $new-doc),
+             <result>Comments document ({$path}) replaced for disqus_identifier: {$disqus-identifiers/string(.)}</result>
+          )
       else <result>No comments document found for thread ID: {$thread-id} (disqus_identifier: {$disqus-identifiers/string(.)})</result>
   ),
   if ($DEBUG) then (<THREAD_LIST> {$updatedThreadList}</THREAD_LIST>,
