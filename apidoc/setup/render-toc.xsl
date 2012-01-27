@@ -24,7 +24,7 @@
     <xsl:result-document href="{$toc-url}">
       <div id="all_tocs">
         <script type="text/javascript">
-        <xsl:comment>
+        //<xsl:comment>
 
         $(function() {
           $("#apidoc_tree1").treeview({
@@ -141,7 +141,7 @@
           $("#toc_tabs").show();
 
         });
-        </xsl:comment>
+        //</xsl:comment>
         </script>
 
         <!--
