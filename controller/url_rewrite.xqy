@@ -174,7 +174,7 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
     else if ($path = ("/download", "/downloads", "/products", "/product")) then
-        concat("/controller/transform.xqy?src=", "/products/express", "&amp;", $query-string)
+        concat("/controller/transform.xqy?src=", $latest-prod-uri,  "&amp;", $query-string)
     else if ($path = ("/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
