@@ -309,3 +309,10 @@ table.parameters .col1 {width: 25%;}
 table.parameters .col2 {width: 75%;}
 
 a.function_prefix { text-decoration: underline; color: #899B3B; }
+
+/* Disqus tooltips don't interact well with our layout */
+.dsq-tooltip-outer { display: none !important; }
+
+/* An alternative attempt that doesn't disable them altogether
+.dsq-tooltip-outer { top: auto !important; bottom: 0px;}
+*/
