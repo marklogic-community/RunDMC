@@ -29,7 +29,7 @@ declare variable $raw:rest-docs  := raw:get-docs('xdmp:directory(concat("/",$api
 
 declare variable $raw:api-docs := ($raw:func-docs, $raw:rest-docs);
 
-declare variable $raw:guide-docs := raw:get-docs('xdmp:directory(concat("/",$api:version,"/docs/"))');
+declare variable $raw:guide-docs := raw:get-docs('xdmp:directory(concat("/",$api:version,"/guide/"))');
 
 declare function raw:get-docs($expr as xs:string) {
   let $query := concat($raw:common-import, $expr)

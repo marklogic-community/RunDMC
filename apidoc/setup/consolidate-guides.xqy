@@ -30,7 +30,7 @@ for $dir in $sub-dirs return
   let $guide-config := $guide-list[local:dir-name($dir) eq @source-name]
   (: let $guide-config := $guide-list[local:dir-name($dir) = tokenize(@source-names,' ')] :)
   let $url-name     := if ($guide-config) then $guide-config/@url-name else local:dir-name($dir)
-  let $target-url   := concat("/",$api:version,"/docs/",$url-name,".xml")
+  let $target-url   := concat("/",$api:version,"/guide/",$url-name,".xml")
   return
   (
     if ($guide-config/@exclude) then () else
