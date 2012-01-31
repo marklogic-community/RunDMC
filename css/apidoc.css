@@ -1,7 +1,7 @@
 html, body, #container {height: 100%;}
 blockquote {margin-left: 0;}
 dd {margin-left: 40px;}
-pre {
+pre, .userguide img {
 	max-width: 100%;
 	overflow: auto;
 }

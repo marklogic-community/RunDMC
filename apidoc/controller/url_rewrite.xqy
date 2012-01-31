@@ -21,7 +21,7 @@ declare variable $path-prefix := if ($version-specified) then concat("/",$versio
 declare variable $pdf-location  := 
   let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")/*/guide,
       $version       := if ($version-specified) then $version-specified else $api:default-version,
-      $guide-name    := substring-before(substring-after($path,"/docs/"),".pdf"),
+      $guide-name    := substring-before(substring-after($path,"/guide/"),".pdf"),
       $pdf-name      := $guide-configs[@url-name eq $guide-name]/(@pdf-name,@source-name)[1]
   return
     concat("/pubs/",$version,"/books/",$pdf-name,".pdf");
@@ -55,8 +55,8 @@ declare variable $matching-function-count := count($matching-functions);
   if (($path ne '/') and ends-with($path, '/')) then
       local:redirect(concat(substring($path, 1, string-length($path) - 1),
                             if ($query-string) then concat('&amp;', $query-string) else ()))
-  (: Redirect /docs to / :)
-  else if (substring-after($path,$path-prefix) eq "docs") then
+  (: Redirect /guide to / :)
+  else if (substring-after($path,$path-prefix) eq "guide") then
        local:redirect($path-prefix)
   (: Redirect requests for older versions back to DMC :)
   else if (starts-with($path,"/4.0")) then

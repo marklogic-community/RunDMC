@@ -38,8 +38,8 @@
 
   <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/*/guide"/>
 
-  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/docs/',$c/@url-name,'.xml'))"/>
-  <xsl:variable name="guide-docs-all"                             select="xdmp:directory(concat('/apidoc/',$api:version,'/docs/'))[guide]"/>
+  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/guide/',$c/@url-name,'.xml'))"/>
+  <xsl:variable name="guide-docs-all"                             select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
 
   <!-- Prefix unconfigured guides to the beginning (so new ones are easily discoverable) -->
   <xsl:variable name="guide-docs-ordered" select="$guide-docs-all except $guide-docs-configured,
