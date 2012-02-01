@@ -41,11 +41,19 @@ pre, .userguide img {
 	padding-left: 68px;
 	position: relative;
 }
-#page_content h2 {
+#page_content h2,
+#page_content h1 {
 	padding: 0 !important;
 	margin: 40px 0 40px;
 	line-height: 100%;
 }
+
+/* same as h2 in screen.css */
+.userguide h1 {
+	color: #899B3B;
+	font-size: 27px;
+}
+
 #page_content ul {
 	padding-left: 20px;
 	list-style: disc;
