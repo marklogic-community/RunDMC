@@ -16,9 +16,6 @@
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
-  <!-- for deciding which tabs to display -->
-  <xsl:param name="version"/>
-
   <xsl:template match="/">
     <xsl:message>Creating <xsl:value-of select="$toc-url"/></xsl:message>
     <xsl:result-document href="{$toc-url}">
@@ -150,16 +147,11 @@
         <div id="toc_tabs" style="display:none">
           <div id="tab_bar">
             <ul>
-              <li><a href="#tabs-1" class="tab_link">API by<br/>Name</a></li>
-              <li><a href="#tabs-2" class="tab_link">API by<br/>Category</a></li>
-              <li><a href="#tabs-3" class="tab_link">User<br/>Guides</a></li>
-              <xsl:if test="number($version) ge 5">
-                <li><a href="#tabs-4" class="tab_link">REST<br/>API</a></li>
-              </xsl:if>
+              <xsl:apply-templates mode="tab" select="/all-tocs/*"/>
             </ul>
           </div>
           <div id="tab_content">
-            <xsl:apply-templates mode="tab" select="/all-tocs/*"/>
+            <xsl:apply-templates mode="tab-content" select="/all-tocs/*"/>
           </div>
         </div>
       </div>
@@ -167,6 +159,20 @@
   </xsl:template>
 
           <xsl:template mode="tab" match="/all-tocs/*">
+            <li>
+              <a href="#tabs-{position()}" class="tab_link">
+                <xsl:apply-templates mode="tab-label" select="."/>
+              </a>
+            </li>
+          </xsl:template>
+
+                  <xsl:template mode="tab-label" match="toc:functions"     >API by<br/>Name</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:categories"    >API by<br/>Category</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:guides"        >User<br/>Guides</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:rest-resources">REST<br/>API</xsl:template>
+
+
+          <xsl:template mode="tab-content" match="/all-tocs/*">
             <xsl:variable name="pjax_enabled">
               <xsl:apply-templates mode="pjax_enabled" select="."/>
             </xsl:variable>

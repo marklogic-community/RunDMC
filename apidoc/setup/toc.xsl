@@ -97,17 +97,19 @@
         </node>
         -->
       </toc:guides>
-      <toc:rest-resources>
-        <!-- Add this wrapper so the /REST page will get created -->
-        <node href="/REST"
-              title="All REST resources"
-              display="All REST resources"
-              id="RESTResourcesAPI"
-              function-list-page="yes">
-          <!-- Just the REST API bucket contents -->
-          <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
-        </node>
-      </toc:rest-resources>
+      <xsl:if test="number($api:version) ge 5">
+        <toc:rest-resources>
+          <!-- Add this wrapper so the /REST page will get created -->
+          <node href="/REST"
+                title="All REST resources"
+                display="All REST resources"
+                id="RESTResourcesAPI"
+                function-list-page="yes">
+            <!-- Just the REST API bucket contents -->
+            <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
+          </node>
+        </toc:rest-resources>
+      </xsl:if>
     </all-tocs>
   </xsl:template>
 
