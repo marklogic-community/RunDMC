@@ -180,9 +180,9 @@
 
   <!-- currently not used -->
   <xsl:template match="ml:page-heading">
-    <h2>
+    <h1>
       <xsl:apply-templates mode="api-page-heading" select="$content/*"/>
-    </h2>
+    </h1>
   </xsl:template>
 
           <xsl:template mode="api-page-heading" match="* | api:function-page[api:function[1]/@lib eq 'REST']">
@@ -203,9 +203,9 @@
 
   <xsl:template mode="page-content" match="api:docs-page">
     <div>
-      <h2>
+      <h1>
         <xsl:apply-templates mode="page-title" select="."/>
-      </h2>
+      </h1>
       <xsl:apply-templates mode="docs-page" select="$doc-list-config/*"/>
     </div>
   </xsl:template>
@@ -303,9 +303,9 @@
   <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
-      <h2>
+      <h1>
         <xsl:apply-templates mode="list-page-heading" select="."/>
-      </h2>
+      </h1>
       <xsl:apply-templates select="api:intro/node()"/>
       <div class="api_caption">
         <xsl:variable name="count" select="count(api:list-entry)"/>
@@ -491,9 +491,9 @@
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
-      <h2>
+      <h1>
         <xsl:apply-templates mode="api-page-heading" select="."/>
-      </h2>
+      </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
   </xsl:template>
@@ -623,16 +623,22 @@
 
                   <xsl:template match="api:example">
                     <h3>Example</h3>
+                    <div class="example">
+                      <xsl:copy-of select="((pre|pre/a)/@id)[1]"/>
+                      <xsl:apply-templates/>
+                    </div>
+                    <!-- Use this if we re-enable syntax highlighting
                     <xsl:element name="pre">
                       <code>
                         <div class="example">
-                          <!-- Move the <pre> ID to its parent, so it doesn't get stripped
-                               off by the syntax-highlighting code (thereby breaking any links to it). -->
+                          <!- - Move the <pre> ID to its parent, so it doesn't get stripped
+                               off by the syntax-highlighting code (thereby breaking any links to it). - ->
                           <xsl:copy-of select="((pre|pre/a)/@id)[1]"/>
                           <xsl:apply-templates/>
                         </div>
                       </code>
                     </xsl:element>
+                    -->
                   </xsl:template>
 
                           <!-- Strip the @id off the example pre (because we've reassigned it) -->
