@@ -82,11 +82,12 @@
 
   <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
     <xsl:variable name="heading-level" select="1 + number(substring-after(local-name(.),'-'))"/>
+    <xsl:variable name="id">
+      <xsl:apply-templates mode="heading-anchor-id" select="."/>
+    </xsl:variable>
+    <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
-      <xsl:variable name="id">
-        <xsl:apply-templates mode="heading-anchor-id" select="."/>
-      </xsl:variable>
-      <a id="{$id}" href="#{$id}" class="sectionLink">
+      <a href="#{$id}" class="sectionLink">
         <xsl:value-of select="normalize-space(.)"/>
       </a>
     </xsl:element>
