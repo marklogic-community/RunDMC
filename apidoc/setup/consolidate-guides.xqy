@@ -21,7 +21,7 @@ declare function local:dir-name($dir) {
 };
 
 (: The list of guide configs :)
-declare variable $guide-list := u:get-doc("/apidoc/config/document-list.xml")/docs/guide;
+declare variable $guide-list := u:get-doc("/apidoc/config/document-list.xml")/docs//guide;
 
 for $dir in $sub-dirs return
 (

@@ -36,6 +36,7 @@
       <xsl:apply-templates select="$lists-captured/guide/node()"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
+    <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
     <xsl:result-document href="{$output-uri}">
       <guide>
         <title>
