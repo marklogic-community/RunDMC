@@ -32,6 +32,7 @@ declare variable $s:draft-server  := s:server-url("draft");
 declare variable $s:webdav-server := s:server-url("webdav");
 declare variable $s:admin-server  := s:server-url("admin");
 declare variable $s:api-server    := s:server-url("api");
+declare variable $s:facebook-config := s:server-config("facebook");
 
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
                                                                    else $s:draft-server;
@@ -43,4 +44,11 @@ declare function s:server-url($type as xs:string) {
   if ($server-config/@url)
   then string($server-config/@url)
   else concat('http://',$s:request-host-without-port,':',$server-config/@port)
+};
+
+(: return entire config as well :)
+declare function s:server-config($type as xs:string) {
+  let $element-name  := concat($type,'-config'),
+      $server-config := $s:this-host/*[local-name(.) eq $element-name] return
+  $server-config
 };
