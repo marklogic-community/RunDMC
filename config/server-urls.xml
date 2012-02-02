@@ -13,7 +13,7 @@
     <facebook-config>
         <id>178528612252710</id>
         <secret>39d8de131516e263d825014d60cd241f</secret>
-        <redirect_url>http://dmc-stage.marklogic.com/oauth2/index.xqy</redirect_url>
+        <redirect_url>http://dmc-stage.marklogic.com/signup</redirect_url>
     </facebook-config>
 
   </host>
@@ -27,7 +27,7 @@
     <facebook-config>
         <id>178528612252710</id>
         <secret>39d8de131516e263d825014d60cd241f</secret>
-        <redirect_url>http://developer.marklogic.com/oauth2/index.xqy</redirect_url>
+        <redirect_url>http://developer.marklogic.com/signup</redirect_url>
     </facebook-config>
   </host>
 
