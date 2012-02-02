@@ -126,7 +126,10 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        "/people/supernodes"
+        if ($path = ("/people/signup", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
+            $path
+        else
+            "/people/supernodes"
     else
         $path
 };
@@ -174,7 +177,7 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
     else if ($path = ("/download", "/downloads", "/products", "/product")) then
-        concat("/controller/transform.xqy?src=", $latest-prod-uri,  "&amp;", $query-string)
+        concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     else if ($path = ("/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
@@ -204,6 +207,18 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/get-updated-disqus-threads.xqy"
     else if ($path eq "/invalidateNavigationCache") then
         "/controller/invalidate-navigation-cache.xqy"
+    else if ($path eq "/validate") then
+        concat("/controller/validate.xqy?", $query-string)
+    else if ($path eq "/people/profile") then
+        "/controller/profile.xqy"
+    else if ($path eq "/signup") then
+        "/controller/signup.xqy"
+    else if ($path eq "/fb-login") then
+        "/controller/fb-login.xqy"
+    else if ($path eq "/login") then
+        "/controller/login.xqy"
+    else if ($path eq "/logout") then
+        "/controller/logout.xqy"
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"

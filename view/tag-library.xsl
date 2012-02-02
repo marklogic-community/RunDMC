@@ -17,6 +17,7 @@
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
+  xmlns:fb   ="http://ogp.me/ns/fb#"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
@@ -130,8 +131,8 @@
         <xsl:if test="@whats-new-page">
             <li><a href="{@whats-new-page}">What's New?&#160;»</a></li>
         </xsl:if>
-        <li><a href="{@license-page}">License Options&#160;»</a></li>
-        <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
+        <li><a href="{@license-page}">Read about MarkLogic Express &#160;»</a></li>
+        <li><a href="{@requirements-page}">Review System Requirements&#160;»</a></li>
       </ul>
     </xsl:if>
 
@@ -936,6 +937,23 @@
 			<div id="ytvideo-desc">Description </div>
 		</div>
 	</div>
+  </xsl:template>
+
+  <xsl:template match="fb-app-id">
+      <xsl:text>'</xsl:text>
+      <xsl:value-of select="$srv:facebook-config/*:id"/>
+      <xsl:text>'</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="fb-registration">
+      <fb:registration id="fbrb" width="530" xmlns:fb="fb">
+        <xsl:attribute name="fields">
+            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'}]</xsl:text>
+        </xsl:attribute>
+        <xsl:attribute name="redirect-uri">
+            <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
+        </xsl:attribute>
+      </fb:registration>
   </xsl:template>
 
 </xsl:stylesheet>

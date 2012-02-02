@@ -1,0 +1,13 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+
+  <h1><img src="/images/signUpAssets/icon_signup_ml.png" alt="MarkLogic" width="30" height="30" /> Membership Benefits</h1>
+  <div>
+    <ul style="padding-left: 20px; list-style: disc;">
+    <li><a href="/express">Free Software</a></li>
+    <li><a href="/learn/tutorials">Tutorials</a> and <a href="/learn/videos">screencasts</a></li>
+    <li>Access to professionals and peers</li>
+    <li>Discussion <a href="/discuss">lists</a></li>
+    <li>Contests</li>
+    </ul>
+  </div>
+</ml:widget>
