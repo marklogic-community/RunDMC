@@ -26,6 +26,19 @@
 <docs>
 
   <unnamed-group>
+    <entry title="MarkLogic XQuery Function Reference">
+      API documentation for the MarkLogic built-in and module extensions to the XQuery standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.
+      <url version="4.1" href="/4.1/all"/>
+    </entry>
+    <entry title="MarkLogic XQuery and XSLT Function Reference">
+      API documentation for the MarkLogic built-in and module extensions to the XQuery and XSLT standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.
+      <url version="4.2" href="/4.2/all"/>
+      <url version="5.0" href="/all"/>
+    </entry>
+    <entry title="REST API Reference">
+      <title>This API reference documents the REST resources available on port 8002.</title>
+      <url version="5.0" href="/REST"/>
+    </entry>
     <entry title="ZIP File of All MarkLogic Product Documentation">
       A zip file containing the latest MarkLogic <version-suffix/> documentation.
       <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/MarkLogic_4.1_pubs.zip"/>

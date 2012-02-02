@@ -219,11 +219,14 @@
 
           <xsl:template mode="docs-page" match="group | unnamed-group" priority="1">
             <ul class="doclist">
+              <!-- not using this anymore
               <xsl:apply-templates mode="hard-coded-doc-list-items" select="."/>
+              -->
               <xsl:apply-templates mode="docs-list-item" select="*"/>
             </ul>
           </xsl:template>
 
+                  <!-- disabled
                   <xsl:template mode="hard-coded-doc-list-items" match="group"/>
                   <xsl:template mode="hard-coded-doc-list-items" match="unnamed-group">
                     <li>
@@ -235,6 +238,7 @@
                       <div>This API reference documents the REST resources available on port 8002. Navigate to individual REST resource docs using the <a href="javascript:$('#toc_tabs').tabs('select',3);">menu to the left</a>.</div>
                     </li>
                   </xsl:template>
+                  -->
 
 
                   <xsl:template mode="docs-list-item" match="*"/>
