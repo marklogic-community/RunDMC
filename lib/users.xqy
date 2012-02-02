@@ -233,3 +233,10 @@ declare function users:checkCreds($email as xs:string, $password as xs:string) a
     else
         ()
 };
+
+declare function users:signupsEnabled()
+    as xs:boolean
+{
+    not(empty(cookies:get-cookie("RUNDMC-SIGNUPS")))
+};
+
