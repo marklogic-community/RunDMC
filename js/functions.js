@@ -380,7 +380,7 @@ if(typeof jQuery != 'undefined') {
                     type: 'POST',
                     url: '/logout',
                     success: function( data ) {
-                        window.location = "/people/profile"
+                        window.location = "/people/signup"
                     },
                     dataType: 'json'
                 });
