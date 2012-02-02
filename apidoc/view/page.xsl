@@ -504,7 +504,7 @@
 
           <xsl:template match="api:function">
             <xsl:apply-templates mode="function-signature" select="."/>
-            <xsl:apply-templates select="(api:summary, api:params, api:usage, api:example)[normalize-space(.)]"/>
+            <xsl:apply-templates select="(api:summary, api:params, api:privilege, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
@@ -588,6 +588,11 @@
                               </td>
                             </tr>
                           </xsl:template>
+
+                  <xsl:template match="api:privilege">
+                    <h3>Required privilege</h3>
+                    <xsl:apply-templates/>
+                  </xsl:template>
 
                   <xsl:template match="api:usage">
                     <h3>Usage notes</h3>
