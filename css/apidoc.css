@@ -223,16 +223,6 @@ font-weight: bold;
 .footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {cursor: pointer;}
 a.footnote_marker:hover {text-decoration: none;}
 
-#tooltip {
-  position: fixed;
-  z-index: 3000;
-  border: 1px solid #666;
-  color: #FFF;
-  background-color: #A4B243;
-  padding: 5px;
-  font-weight: normal;
-}
-
 .footnote {
 /*  font-size: .5em;*/
   font-size: 9px;
