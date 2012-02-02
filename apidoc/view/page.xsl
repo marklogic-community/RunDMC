@@ -133,7 +133,13 @@
             var functionPageBucketId = "<xsl:apply-templates mode="function-bucket-id" select="$content/api:function-page/api:function[1]/@bucket
                                                                                              | $content/api:list-page/@category-bucket"/>";
             var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
+
+            var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>
           </xsl:template>
+
+                  <xsl:template mode="is-user-guide" match="guide">true</xsl:template>
+                  <xsl:template mode="is-user-guide" match="*"    >false</xsl:template>
+
 
           <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
           <xsl:template mode="function-bucket-id" match="@*">
@@ -532,7 +538,10 @@
                           <xsl:template mode="syntax" match="api:param">
                             <xsl:text>   </xsl:text>
                             <xsl:if test="@optional eq 'true'">[</xsl:if>
-                            <a href="#{@name}">
+                            <xsl:variable name="anchor">
+                              <xsl:apply-templates mode="param-anchor-id" select="."/>
+                            </xsl:variable>
+                            <a href="#{$anchor}" class="paramLink">
                               <xsl:text>$</xsl:text>
                               <xsl:value-of select="@name"/>
                             </a>
@@ -542,6 +551,16 @@
                             <xsl:if test="position() ne last()">,</xsl:if>
                             <xsl:text>&#xA;</xsl:text>
                           </xsl:template>
+
+                                  <xsl:template mode="param-anchor-id" match="api:param">
+                                    <xsl:value-of select="@name"/>
+                                  </xsl:template>
+                                  <!-- For the *:polygon functions (having more than one function element on the same page) -->
+                                  <xsl:template mode="param-anchor-id" match="/api:function-page/api:function[2]/api:params/api:param">
+                                    <xsl:next-match/>
+                                    <xsl:text>2</xsl:text>
+                                  </xsl:template>
+
 
                   <xsl:template match="api:summary">
                     <h3>Summary</h3>
@@ -575,9 +594,10 @@
                           <xsl:template match="api:param">
                             <tr>
                               <td>
-                                <!--
-                                <a name="{@name}"/>
-                                -->
+                                <xsl:variable name="anchor">
+                                  <xsl:apply-templates mode="param-anchor-id" select="."/>
+                                </xsl:variable>
+                                <a name="{$anchor}"/>
                                 <xsl:if test="not(../../@lib eq 'REST')">
                                   <xsl:text>$</xsl:text>
                                 </xsl:if>

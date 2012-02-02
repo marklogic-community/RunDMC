@@ -226,13 +226,16 @@ function bindFragmentLinkTocActions(context) {
 
 function updateTocForUrlFragment(pathname, hash) {
 
-  // IE doesn't include the "/" at the beginning of the pathname...
-  //var fullLink = this.pathname + this.hash;
-  var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + hash;
+  // Only let fragment links update the TOC when this is a user guide
+  if (isUserGuide) {
+    // IE doesn't include the "/" at the beginning of the pathname...
+    //var fullLink = this.pathname + this.hash;
+    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + hash;
 
-  showInTOC($("#api_sub a[href='" + fullLink + "']"));
+    showInTOC($("#api_sub a[href='" + fullLink + "']"));
 
-  scrollTOC();
+    scrollTOC();
+  }
 }
 
 
