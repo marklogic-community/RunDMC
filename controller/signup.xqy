@@ -2,7 +2,6 @@ xquery version "1.0-ml";
 
 import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
-import module namespace security-util="security-util" at  "/lib/security-util.xqy";
 import module namespace users="users" at "/lib/users.xqy";
 
 

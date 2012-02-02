@@ -18,6 +18,5 @@
   <xdmp:import-module href="/lib/cookies.xqy" namespace="http://parthcomp.com/cookies"/>
   <xdmp:import-module href="/lib/stackoverflow.xqy" namespace="http://marklogic.com/stackoverflow"/>
   <xdmp:import-module href="/lib/users.xqy" namespace="users"/>
-  <xdmp:import-module href="/lib/security-util.xqy" namespace="security-util"/>
 
 </xsl:stylesheet>

@@ -8,7 +8,6 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:su   ="security-util"
   xmlns:fb   ="http://www.facebook.com/2008/fbml"
   xmlns:users="users"
   xmlns:ml   ="http://developer.marklogic.com/site/internal"
