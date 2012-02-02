@@ -234,6 +234,8 @@ if(typeof jQuery != 'undefined') {
                     $('#login-menu-nav').hide();
             }
 
+            $('input#email').focus();
+
             $("#signup-trigger").click(function(e) {
                 e.preventDefault();
                 $("#signup-menu").toggle();
