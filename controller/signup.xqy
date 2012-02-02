@@ -21,8 +21,12 @@ return if (not(exists($signed_request))) then
     let $user := users:createOrUpdateUser($name, $email, $password, $signup)
 
     return if ($user instance of element()) then
-        let $_ := users:startSession($email)
-        return xdmp:redirect-response("/people/profile")
+        let $_ := users:startSession($user)
+        let $_ := xdmp:set-response-content-type("text/html")
+        return <html><script type="text/javascript"><![CDATA[
+               window.location = "/people/profile";
+        ]]></script></html>
+    
     else
         xdmp:redirect-response(concat("/people/signup?e=", $user))
 
@@ -51,7 +55,11 @@ else
             let $user := users:createOrUpdateFacebookUser($name, $email, $password, $fb-id, $signup)
 
             return if ($user instance of element()) then
-                let $_ := users:startSession($email)
-                return xdmp:redirect-response("/people/profile")
+                let $_ := users:startSession($user)
+                let $_ := xdmp:set-response-content-type("text/html")
+                return 
+                        <html><script type="text/javascript"><![CDATA[
+                            window.location = "/people/profile";
+                        ]]></script></html>
             else
                 xdmp:redirect-response(concat("/people/signup?e=", $user))

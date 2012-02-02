@@ -11,7 +11,7 @@ return
 
     if ($user) then
 
-        let $_ := users:startSession($email)
+        let $_ := users:startSession($user)
         return 
         (: todo encode json :)
             concat( '{"status": "ok", "name": "', $user/name, '" }' )

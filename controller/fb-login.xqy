@@ -28,7 +28,7 @@ return
             if ($user) then
                 if ($user/facebook-id = ($facebook-id, "")) then
                     let $_ := users:updateUserWithFacebookID($user, $name, $email, $user/password/string(), $facebook-id, $user/list/string())
-                    let $_ := users:startSession($email)
+                    let $_ := users:startSession($user)
                     return concat( '{"status": "ok", "name": "', $user/name, '" }' )
                  
                 else

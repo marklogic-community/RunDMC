@@ -36,16 +36,13 @@ declare function users:getUserByFacebookID($id as xs:string) as element(*)?
     /person[facebook-id eq $id]
 };
 
-declare function users:startSession($email as xs:string) 
-as empty-sequence()
+declare function users:startSession($user) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
-    let $name := /person[email eq $email]/name
-    let $username := /person[email eq $email]/id
+    let $name := $user/name
 
     return (
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
-        cookies:add-cookie("RUNDMC-USERNAME", $username, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
         cookies:add-cookie("RUNDMC-NAME", $name, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false())
     )
 };
@@ -54,7 +51,6 @@ declare function users:endSession() as empty-sequence()
 {
     ( 
     cookies:delete-cookie("RUNDMC-SESSION", (), "/"),
-    cookies:delete-cookie("RUNDMC-USERNAME", (), "/"),
     cookies:delete-cookie("RUNDMC-NAME", (), "/")
     )
 };
