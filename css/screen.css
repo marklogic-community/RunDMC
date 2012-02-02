@@ -2299,10 +2299,21 @@ a#recovery {
     height: 20px;
 }
 
-#signup-form, #signup-form input {
+#signup-form, #signup-form input,
+#profile-form, #profile-form input {
     font-size: 16px;
 }
 
+#profile-form fieldset {
+    padding-left: 20px;
+}
+
+#profile-form h3 {
+    font-size: 24px;
+    padding: 10px 10px 30px 0px;
+}
+
+#profile-form input[type=text], #profile-form input[type=password],
 #signup-form input[type=text], #signup-form input[type=password] {
 	border: 1px solid #CFCFCF;
 	padding: 0 5px;
@@ -2322,7 +2333,7 @@ a#recovery {
 	margin-bottom: 5px;
 }
 
-#signup-submit {
+#signup-submit, #profile-save {
     margin-top: 20px;
     padding: 8px 12px;
 }

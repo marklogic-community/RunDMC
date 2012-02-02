@@ -41,7 +41,7 @@
 
   <xsl:template match="login-menu">
     <nav id="login-menu-nav">
-        <xsl:if test="true()">
+        <xsl:if test="false()">
             <xsl:attribute name="style">display:none</xsl:attribute>
         </xsl:if>
         <ul>

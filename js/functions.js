@@ -375,6 +375,16 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
+            $("#profile-save").click(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/logout',
+                    success: function( data ) {
+                        window.location = "/people/profile"
+                    },
+                    dataType: 'json'
+                });
+            });
         });
 
         $("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {

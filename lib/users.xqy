@@ -135,6 +135,7 @@ as element(*)?
             <name>{$name}</name>
             <password>{$hash}</password>
             <facebook-id>{$facebook-id}</facebook-id>
+            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
             <list>{$list}</list>
         </person>
 
@@ -156,6 +157,7 @@ as element(*)?
             <name>{$name}</name>
             <password>{$hash}</password>
             <facebook-id>{$facebook-id}</facebook-id>
+            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
             <list>{$list}</list>
         </person>
 
