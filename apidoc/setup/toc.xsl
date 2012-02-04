@@ -115,7 +115,7 @@
 
           <xsl:template mode="guide-toc" match="text()"/>
           <xsl:template mode="guide-toc" match="xhtml:div[@class eq 'section']">
-            <node href="{ml:external-uri(.)}#{*[1]/xhtml:a[last()]/@id}" display="{*[1]}">
+            <node href="{ml:external-uri(.)}#{(*[1] treat as element(xhtml:a))/@id}" display="{*[2]}"> <!-- second element assumed to be the heading (<h2>, <h3>, etc.) -->
               <xsl:apply-templates mode="#current"/>
             </node>
           </xsl:template>

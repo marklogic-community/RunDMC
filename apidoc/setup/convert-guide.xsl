@@ -85,6 +85,7 @@
     <xsl:variable name="id">
       <xsl:apply-templates mode="heading-anchor-id" select="."/>
     </xsl:variable>
+    <!-- Beware of changing this structure without updating mode="guide-toc" (in toc.xsl), which depends on it -->
     <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
       <a href="#{$id}" class="sectionLink">
