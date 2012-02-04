@@ -134,7 +134,7 @@
                                                                                              | $content/api:list-page/@category-bucket"/>";
             var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
 
-            var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>
+            var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>;
           </xsl:template>
 
                   <xsl:template mode="is-user-guide" match="guide">true</xsl:template>
