@@ -27,4 +27,4 @@ else (),
 
 xdmp:log("Done."),
 
-,"Finished deleting old TOC parts for this version."
+"Finished deleting old TOC parts for this version."

@@ -21,14 +21,4 @@ xdmp:invoke("delete-old-toc.xqy"),
 (: Create list pages in a subsequent transaction, since they depend on both the inserted documents and the XML TOC :)
 xdmp:invoke("make-list-pages.xqy"),
 
-(: Delete the old HTML TOCs, whatever they're named :)
-(: UNTESTED; leave this out for now
-xdmp:log(concat("Deleting the old HTML TOCs in ",$toc-dir,"...")),
-let $old-tocs := (let $toc in xdmp:directory($toc-dir) order by $toc return $toc)
-                 [position() ne last()]
-  return
-    $old-tocs/xdmp:document-delete(base-uri(.)),
-:)
-
-
 xdmp:log("All done!")
