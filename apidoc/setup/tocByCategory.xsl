@@ -15,7 +15,7 @@
   <!-- We look back into the raw docs database to get the introductory content for each function list page -->
   <xdmp:import-module namespace="http://marklogic.com/rundmc/raw-docs-access" href="/apidoc/setup/raw-docs-access.xqy"/>
 
-  <xsl:variable name="all-functions" select="$api:all-function-docs/api:function-page/api:function"/>
+  <xsl:variable name="all-functions" select="$api:all-function-docs/api:function-page/api:function[1]"/>
 
   <!-- This is for specifying exceptions to the automated mappings of categories to URLs -->
   <xsl:variable name="category-mappings" select="u:get-doc('/apidoc/config/category-mappings.xml')/*/category"/>
