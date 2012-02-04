@@ -26,7 +26,7 @@ declare variable $api:toc-url-location                 := fn:concat("/apidoc/pri
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location)/*);
 :)
 (: Using the alternative TOC location for now - i.e. if current version is the default,
-   regardless of whether it was explicit, don't include the version number in links; see also $version-prefix in page.xsl :)
+   regardless of whether it was explicit, don't include the version number in links; see also $version-prefix in page.xsl; see also delete-old-toc.xqy :)
 declare variable $api:toc-url := fn:string(fn:doc($toc-url-location-alternative)/*);
 
 declare variable $api:toc-url-location-alternative := if ($api:version eq $api:default-version) then $api:toc-url-default-version-location

@@ -15,6 +15,9 @@ xdmp:invoke("create-toc.xqy"),
 (: Create the HTML TOC based on the XML TOC we just created :)
 xdmp:invoke("render-toc.xqy"),
 
+(: Clean up the old HTML TOC(s) :)
+xdmp:invoke("delete-old-toc.xqy"),
+
 (: Create list pages in a subsequent transaction, since they depend on both the inserted documents and the XML TOC :)
 xdmp:invoke("make-list-pages.xqy"),
 
