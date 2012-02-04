@@ -16,6 +16,8 @@
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
+  <xsl:variable name="toc-parts-dir" select="concat($toc-url,'/')"/>
+
   <xsl:template match="/">
     <xsl:message>Creating <xsl:value-of select="$toc-url"/></xsl:message>
     <xsl:result-document href="{$toc-url}">
@@ -26,25 +28,25 @@
         $(function() {
           $("#apidoc_tree1").treeview({
             //animated: "medium",
-            url: "/media/apiTOC/",
+            url: "<xsl:value-of select="$toc-parts-dir"/>",
 //            persist: "location",
             prerendered: true
           });
           $("#apidoc_tree2").treeview({
             //animated: "medium",
-            url: "/media/apiTOC/",
+            url: "<xsl:value-of select="$toc-parts-dir"/>",
 //            persist: "location",
             prerendered: true
           });
           $("#apidoc_tree3").treeview({
             //animated: "medium",
-            url: "/media/apiTOC/",
+            url: "<xsl:value-of select="$toc-parts-dir"/>",
 //            persist: "location",
             prerendered: true
           });
           $("#apidoc_tree4").treeview({
             //animated: "medium",
-            url: "/media/apiTOC/",
+            url: "<xsl:value-of select="$toc-parts-dir"/>",
 //            persist: "location",
             prerendered: true
           });
@@ -224,10 +226,7 @@
                     </xsl:attribute>
                   </xsl:template>
 
-                          <!-- Each main TOC section ID is qualified by the version prefix -->
                           <xsl:template mode="node-id" match="node">
-                            <xsl:value-of select="translate($prefix-for-hrefs,'/.','v-')"/> <!-- might be empty -->
-                            <xsl:text>_</xsl:text>
                             <xsl:value-of select="@id"/>
                           </xsl:template>
 
@@ -403,7 +402,7 @@
                       </li>
                     </ul>
                     <xsl:variable name="url">
-                      <xsl:text>/media/apiTOC/</xsl:text>
+                      <xsl:value-of select="$toc-parts-dir"/>
                       <xsl:apply-templates mode="node-id" select="."/>
                       <xsl:text>.html</xsl:text>
                     </xsl:variable>

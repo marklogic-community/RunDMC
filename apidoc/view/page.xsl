@@ -141,10 +141,8 @@
                   <xsl:template mode="is-user-guide" match="*"    >false</xsl:template>
 
 
-          <!-- ID for function buckets is the bucket display name minus spaces; see render-toc.xsl -->
+          <!-- ID for function buckets is the bucket display name minus spaces; see tocByCategory.xsl -->
           <xsl:template mode="function-bucket-id" match="@*">
-            <xsl:value-of select="translate($version-prefix,'/.','v-')"/>
-            <xsl:text>_</xsl:text>
             <xsl:value-of select="translate(.,' ','')"/>
           </xsl:template>
 
@@ -165,8 +163,6 @@
 
           <xsl:template mode="toc-section-link-selector" match="api:list-page">
             <xsl:text>#</xsl:text>
-            <xsl:value-of select="translate($version-prefix,'/.','v-')"/> <!-- might be empty -->
-            <xsl:text>_</xsl:text>
             <xsl:value-of select="@container-toc-section-id"/>
             <xsl:text> >:first-child</xsl:text>
           </xsl:template>
