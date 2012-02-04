@@ -49,7 +49,7 @@
       <toc:functions>
         <node href="/all"
               title="All functions"
-              display="All functions ({$api:all-functions-count})"
+              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes">
           <intro>
