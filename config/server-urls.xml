@@ -18,10 +18,10 @@
 
   </host>
 
-  <host type="production" name="community.marklogic.com">
-    <main-server url="http://community.marklogic.com"/>
+  <host type="production" name="developer.marklogic.com">
+    <main-server url="http://developer.marklogic.com"/>
     <draft-server url="http://developer-draft.marklogic.com"/>
-    <webdav-server url="http://community.marklogic.com:8005"/>
+    <webdav-server url="http://developer.marklogic.com:8005"/>
     <api-server url="http://api.marklogic.com"/>
 
     <facebook-config>
