@@ -84,10 +84,10 @@
         </script>
 
         <script type="text/javascript">
-            var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
+            var is_stage = document.location.hostname == 'api-stage.marklogic.com';
             var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
             var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', acct], ['_trackPageview'], ['_trackPageLoadTime']);
+            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview'], ['_trackPageLoadTime']);
             
             (function() {
                 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
