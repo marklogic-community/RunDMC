@@ -300,6 +300,9 @@ p.warning { min-height: 50px }
 	margin-top: 45px !important;
 	text-align: right;
 }
+table.api_table {
+  width: 100%;
+}
 .api_table thead th {
 	font-size: 20px;
 	font-weight: normal;
@@ -319,6 +322,7 @@ p.warning { min-height: 50px }
 	vertical-align: middle;
 }
 .api_table tbody td:first-child {font-size: 12px;}
+
 table.parameters {
 	table-layout: fixed;
 	width: 100%;
