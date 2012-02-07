@@ -298,7 +298,7 @@ p.warning { min-height: 50px }
 	position: absolute;
 	font-size: 11px;
 	width: 610px;
-	margin-top: 45px !important;
+	margin-top: 41px;
 	text-align: right;
 }
 table.api_table {
