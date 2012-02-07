@@ -382,11 +382,11 @@
               <xsl:apply-templates mode="list-page-entry-href" select="api:name"/>
             </xsl:variable>
             <tr>
-              <td style="white-space: nowrap;">
+              <td>
+                <xsl:if test="api:name/@indent">
+                  <xsl:attribute name="class" select="'indented_function'"/>
+                </xsl:if>
                 <a href="{$version-prefix}{$href}">
-                  <xsl:if test="api:name/@indent">
-                    <xsl:attribute name="class" select="'indented_function'"/>
-                  </xsl:if>
                   <xsl:value-of select="api:name"/>
                 </a>
               </td>

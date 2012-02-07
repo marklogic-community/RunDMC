@@ -237,7 +237,8 @@ code.syntax {
   line-height: 140%;
 }
 
-.indented_function {margin-left: 2em;}
+/* overrides padding-left in screen.css */
+tbody td:first-child.indented_function  {padding-left: 40px;}
 
 h1 a { text-decoration: underline; }
 
@@ -311,7 +312,7 @@ table.api_table {
 }
 .api_table thead th:first-child {
 	padding-left: 15px;
-	width: 310px;
+  width: 250px;
 }
 .api_table tbody td {
 	font-size: 11px;
