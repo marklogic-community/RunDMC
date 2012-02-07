@@ -10,10 +10,10 @@ let $signed_request := xdmp:get-request-field("signed_request")
 return if (not(exists($signed_request))) then
 
     (: sign up directly :)
-    let $email := xdmp:get-request-field("email")
-    let $password := xdmp:get-request-field("password")
-    let $confirm-password := xdmp:get-request-field("confirm-password")
-    let $name := xdmp:get-request-field("name")
+    let $email := xdmp:get-request-field("s_email")
+    let $password := xdmp:get-request-field("s_password")
+    let $confirm-password := xdmp:get-request-field("s_confirm-password")
+    let $name := xdmp:get-request-field("s_name")
     let $signup := xdmp:get-request-field("list", "off")
 
     (: TBD validate email addy, passwords, etc :)
@@ -21,8 +21,8 @@ return if (not(exists($signed_request))) then
     let $user := users:createOrUpdateUser($name, $email, $password, $signup)
 
     return if ($user instance of element()) then
-        let $_ := users:startSession($user)
         let $_ := xdmp:set-response-content-type("text/html")
+        let $_ := users:startSession($user)
         return <html><script type="text/javascript"><![CDATA[
                window.location = "/people/profile";
         ]]></script></html>

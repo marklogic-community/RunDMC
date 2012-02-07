@@ -40,6 +40,14 @@ declare function users:startSession($user) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
     let $name := $user/name
+    (:
+    let $id := $user/id
+    let $uri := concat("/private/people/", $id, ".xml")
+    let $doc := <person>
+        { for $field in $user/* where $field/local-name() != 'session' return $field }
+        <session>{$sessionID}</session>
+    </person>
+    let $_ := xdmp:document-insert($uri, $doc) :) 
 
     return (
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
@@ -49,6 +57,8 @@ declare function users:startSession($user) as empty-sequence()
 
 declare function users:endSession() as empty-sequence()
 {
+
+    (: todo remove session id from /person ? :) 
     ( 
     cookies:delete-cookie("RUNDMC-SESSION", (), "/"),
     cookies:delete-cookie("RUNDMC-NAME", (), "/")
@@ -150,14 +160,12 @@ declare function users:updateUserWithFacebookID($user, $name, $email, $hash, $fa
 as element(*)? 
 {
     let $uri := base-uri($user)
-    let $doc := 
-        <person>
-            <id>{$user/id/string()}</id>
-            <email>{$email}</email>
-            <name>{$name}</name>
-            <password>{$hash}</password>
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture', 'name', 'password', 'list')) return $field }
             <facebook-id>{$facebook-id}</facebook-id>
             <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+            <name>{$name}</name>
+            <password>{$hash}</password>
             <list>{$list}</list>
         </person>
 
@@ -177,11 +185,10 @@ as element(*)?
     let $hash := xdmp:crypt($password, $email)
     let $doc := 
         <person>
-            <id>{$user/id/string()}</id>
+        { for $field in $user/* where not($field/local-name() = ('email', 'name', 'password', 'list')) return $field }
             <email>{$email}</email>
             <name>{$name}</name>
             <password>{$hash}</password>
-            <facebook-id>{$user/facebook-id/string()}</facebook-id>
             <list>{$list}</list>
         </person>
 
@@ -240,3 +247,9 @@ declare function users:signupsEnabled()
     not(empty(cookies:get-cookie("RUNDMC-SIGNUPS")))
 };
 
+declare function users:getCurrentUser() as element(*)?
+{
+    let $session := cookies:get-cookie("RUNDMC-SESSION")
+
+    return /person[session eq $session]
+};

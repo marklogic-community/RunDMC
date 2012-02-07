@@ -236,12 +236,6 @@ if(typeof jQuery != 'undefined') {
 
             $('input#email').focus();
 
-            $("#signup-trigger").click(function(e) {
-                e.preventDefault();
-                $("#signup-menu").toggle();
-                $(this).toggleClass("menu-open");
-            });
-
             $("#session-trigger").click(function(e) {
                 e.preventDefault();
                 $("#session-menu").toggle();
@@ -287,8 +281,8 @@ if(typeof jQuery != 'undefined') {
                     type: 'POST',
                     url: '/login', /* could get from form */
                     data: {
-                        'email': $('#local-login-form').find('#login_email').val(),
-                        'password': $('#local-login-form').find('#login_password').val()
+                        'email': $('#local-login-form').find('#email').val(),
+                        'password': $('#local-login-form').find('#password').val()
                     }, 
                     success: function( data ) {
                         if (data.status === 'ok') {
@@ -322,6 +316,7 @@ if(typeof jQuery != 'undefined') {
                     success: function( data ) {
                         // Stop busy indicator
                         // Adjust page if need be
+                        window.location = "/";
                     },
                     dataType: 'json'
                 });

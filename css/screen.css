@@ -2000,18 +2000,14 @@ a.hit_highlight { text-decoration: none; color: #666; }
 	min-width: 40px;
 	text-transform: none;
     padding:8px 0px 0px 0;
-    background-image:url(/images/signUpAssets/icon_login_downarrow.png);
-    background-repeat:no-repeat;
-    background-position:100% 100%;
 }
 
 #login-trigger span, #session-trigger span {
     padding:8px 16px 0px 0px;
     color: #666;
-}
-
-#signup-trigger span {
-    padding:8px 19px 0px 0px;
+    background-image:url(/images/signUpAssets/icon_login_downarrow.png);
+    background-repeat:no-repeat;
+    background-position:100% 100%;
 }
 
 #login-header nav li {
@@ -2055,10 +2051,6 @@ a.hit_highlight { text-decoration: none; color: #666; }
 
 #login-menu {
     right: 4px;
-}
-
-#signup-menu {
-    right: 84px;
 }
 
 #session-menu {
@@ -2171,44 +2163,68 @@ a.drop-down-trigger.menu-open span {
 .drop-down-menu a:last-child {border-bottom: none;}
 .drop-down-menu img {margin: 5px 0;}
 
-#login-menu a, #signup-menu a {
+#login-menu a {
     color: #01639D;
-	display: block;
-	padding: 5px 0;
-    height: 50px;
 }
-#login-menu label {color: #333;}
 
-#login-menu #separator, #signup-menu #separator {
+#login-menu-separator {
 	border-style: solid;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 	border-width: 1px 0;
 	border-color: #E4E4E4 transparent #FFF;
     margin-top: 0
 }
-#login-menu #or {
+#login-menu-or {
     color: #333;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.login-menu-label {
+    color: #333;
 }
 
 #login_submit {
-    margin-top: 0px;
-    margin-right: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    color: #ccc;
+}
+
+#login_submit span {
+    padding-left: 0px;
+    min-width: 50px;
+    color: #ccc;
 }
 
 #login-error {
     color: red;
 }
 
-#fblb {
-    padding-left: 72px;
-}
-
-#fb-signup, #fb-login {
+#fb-login {
     background-image:url(/images/signUpAssets/icon_signup_fb.png);
     background-repeat:no-repeat;
     background-position: left center;
     height: 50px;
     text-decoration: none;
+}
+
+#signup-form-separator {
+    border-top: 1px solid #DEDEDE;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#fb-signup-link {
+    background-image:url(/images/signUpAssets/icon_signup_fb.png);
+    background-repeat:no-repeat;
+    background-position: left center;
+    height: 50px;
+    display: block;
 }
 
 #local-signup, #local-login {
@@ -2233,8 +2249,8 @@ a.drop-down-trigger.menu-open span {
     background-position: left center;
 }
 
-#fb-signup div {
-    padding-top: 12px;
+#fb-signup div, #fb-signup-link div {
+    padding-top: 16px;
     padding-left: 50px;
 }
 
@@ -2246,6 +2262,10 @@ a.drop-down-trigger.menu-open span {
 #local-login div {
     padding-top: 16px;
     padding-left: 50px;
+}
+
+#fb-login {
+    display: block;
 }
 
 #fb-login div {
@@ -2295,10 +2315,6 @@ a.drop-down-trigger.menu-open span {
     
 }
 
-a#recovery {
-    height: 20px;
-}
-
 #signup-form, #signup-form input,
 #profile-form, #profile-form input {
     font-size: 16px;
@@ -2333,10 +2349,19 @@ a#recovery {
 	margin-bottom: 5px;
 }
 
-#signup-submit, #profile-save {
+#profile-save {
     margin-top: 20px;
     padding: 8px 12px;
 }
+
+#signup-submit {
+    margin-top: 20px;
+    padding: 8px 0px 8px 0px;
+}
+#signup-submit span {
+	padding-left: 0px;
+}
+
 
 .signup-form-error {
     font-size: 12px;

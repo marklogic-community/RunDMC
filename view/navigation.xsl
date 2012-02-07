@@ -8,7 +8,6 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:fb   ="http://www.facebook.com/2008/fbml"
   xmlns:users="users"
   xmlns:ml   ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
@@ -63,37 +62,22 @@
         </ul>
     </nav>
     <fieldset id="login-menu" class="drop-down-menu">
-        <!-- <a id="fb-login" href="/people/login"><div>Login with Facebook</div></a> -->
-        <!-- <a id="local-login" href="#"><div>Login with MarkLogic Community account</div></a> -->
         <form id="local-login-form" style="display: block" method="post" action="/login">
             <span style="clear: both" id="login-error"/>
             <p>
-                <label for="email">Email </label><br/>
-                <input id="login_email" name="email" value="" title="email" tabindex="4" type="text"/>
+                <div class="login-menu-label">Email </div>
+                <input id="email" name="email" value="" title="email" type="text" autocomplete="on"/>
             </p>
             <p>
-                <label for="password">Password</label><br/>
-                <input id="login_password" name="password" value="" title="password" tabindex="5" type="password"/>
+                <div class="login-menu-label">Password</div> 
+                <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/>
             </p>
-            <!--
-            <p class="remember">
-                <input id="remember" name="remember_me" value="1" tabindex="7" type="checkbox"/>
-                <label for="remember">Remember me</label>
-            </p>
-            -->
-            <input class="button" style="float: right;" id="login_submit" value="Log in" type="button" tabindex="6" />
+            <a class="button" id="login_submit" href="#" type="button"><span>Log in</span></a>
         </form>
-        <a style="clear: right" href="/people/recovery" id="recovery">Forgot your password?</a>
-        <p id="separator"/>
-        <p id="or">OR</p>
-        <a id="fb-login" href="#"><div>Log in using your <br/>Facebook account</div></a> 
-        <!-- <p id="fblb"> <fb:login-button  registration-url="http://localhost:8003/people/signup" perms="email" show-faces="true" max-rows="1"/></p>  -->
-        <!-- <p id="fblb"> <fb:login-button perms="email" show-faces="true" max-rows="1"/></p> -->
-    </fieldset>
-    <fieldset id="signup-menu" class="drop-down-menu">
-        <div id="signup-blurb"><span>Join the MarkLogic Community.<br/>Membership is FREE!</span></div>
-        <a id="local-signup" href="/people/signup"><div>Sign up directly on this site</div></a>
-        <a id="fb-signup" href="/people/fb-signup"><div>Sign up using your <br/>Facebook account</div></a>
+        <p id="login-menu-separator"/>
+        <p id="login-menu-or">OR</p>
+        <a id="fb-login" href="#"><div>Log in via Facebook</div></a> 
+        <div style="float: right"><a href="/people/recovery" id="recovery">Forgot password?</a></div>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">
         <p> <a id="profile" href="/people/profile"><span>Edit Profile</span></a> </p>

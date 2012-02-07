@@ -18,6 +18,7 @@
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
   xmlns:fb   ="http://ogp.me/ns/fb#"
+  xmlns:users="users"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
@@ -954,6 +955,50 @@
             <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
         </xsl:attribute>
       </fb:registration>
+  </xsl:template>
+
+  <xsl:template match="user-name">
+    <xsl:variable name="user-name" select="users:getCurrentUser()/*:name"/>
+  </xsl:template>
+
+  <xsl:template match="profile">
+    <xsl:variable name="user" select="users:getCurrentUser()"/>
+    <div>
+    <h4>The basics</h4>
+    <fieldset>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="email">Email </label>
+            <input class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
+        </div>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="name">Name </label>
+            <input class="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
+        </div>
+<img src="{$user/*:picture/string()}" alt="picture"/>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="name">&#160; </label>
+            <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
+        </div>
+        <!--
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="password">Password</label>
+            <input class="password required" id="password" name="password" value="" type="password"/>
+        </div>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="password_confirm">Confirm password</label>
+            <input id="password_confirm" name="password_confirm" value="" type="password"/>
+        </div>
+        -->
+    </fieldset>
+
+    <h4>About you</h4>
+    <fieldset>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="organization">Organization </label>
+            <input class="" id="organization" name="organization" value="" type="text"/>
+        </div>
+    </fieldset>
+    </div>
   </xsl:template>
 
 </xsl:stylesheet>
