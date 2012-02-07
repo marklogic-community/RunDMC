@@ -45,10 +45,10 @@
     <page-tree root="/qa"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/learn/videos"/>
+    <page href="/people/profile"/>
   </widget>
 
   <widget xquery="twitter-topic.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
-    <page href="/people/profile"/>
   </widget>
 
 
