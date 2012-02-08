@@ -13,7 +13,7 @@ return if (not(exists($signed_request))) then
     (: sign up directly :)
     let $email := xdmp:get-request-field("s_email")
     let $password := xdmp:get-request-field("s_password")
-    let $confirm-password := xdmp:get-request-field("s_confirm-password")
+    let $confirm-password := xdmp:get-request-field("s_password_confirm")
     let $name := xdmp:get-request-field("s_name")
     let $signup := xdmp:get-request-field("list", "off")
 
