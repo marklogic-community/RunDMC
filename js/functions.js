@@ -323,50 +323,30 @@ if(typeof jQuery != 'undefined') {
             });
 
             $("#fb-login").click(function(e) {
+
+                console.log("fb-login");
+                $('#login-error').text("");
+                $("#login-menu").hide();
+                $("#signup-trigger").hide();
+                $("#login-trigger").hide();
+
                 FB.getLoginStatus(function(response) {
+
                     if (response.status === 'connected') {
 
-                        // Connected, just log in via the server
-                        $('#login-error').text("");
-                        $("#login-menu").hide();
-                        $("#signup-trigger").hide();
-                        $("#login-trigger").hide();
+                        doFBLogin(response);
 
-                        var signedRequest = response.authResponse.signedRequest;
 
-                        FB.api('/me', 'get', { access_token:response.authResponse.accessToken }, function(response) {
-
-                            if (!response || response.error) {
-                                alert('Communication with Facebook graph failed');
-                                console.log(response.error)
+                    } else {
+                        FB.login(function(response){
+                            if (response.authResponse) {
+                                doFBLogin(response);
                             } else {
-                                console.log(response);
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/fb-login',
-                                    data: {
-                                        signedRequest: signedRequest,
-                                        facebookID: response.id,
-                                        email: response.email,
-                                        name: response.name
-                                    },
-                                    success: function(data) {
-                                        if (data.status === 'ok') {
-                                            $('#session-trigger span').text(data.name);
-                                            $('#session-trigger').show();
-                                        } else {
-                                            $("#login-trigger").show();
-                                            $('#login-error').text(data.status);
-                                            $("#login-menu").show();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                   } else {
-                       window.location = "/people/fb-signup";
-                   }
+                                $('#signup-trigger').show();
+                                $('#login-trigger').show();
+                            };
+                        }, {"scope": "email"} );
+                    }
                 });
             });
 
@@ -406,4 +386,43 @@ function getParameterByName(name)
     return "";
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function doFBLogin(response) {
+
+    var signedRequest = response.authResponse ? response.authResponse.signedRequest : null;
+
+    FB.api('/me', 'get', { access_token:response.authResponse.accessToken }, function(response) {
+
+        if (!response || response.error) {
+            alert('Communication with Facebook graph failed');
+            console.log(response.error)
+            $('#signup-trigger').show();
+            $('#login-trigger').show();
+        } else {
+            console.log(response);
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/fb-login',
+                data: {
+                    signedRequest: signedRequest,
+                    facebookID: response.id,
+                    email: response.email,
+                    name: response.name
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#session-trigger span').text(data.name);
+                        $('#session-trigger').show();
+                    } else {
+                        $("#login-trigger").show();
+                        $('#login-error').text(data.status);
+                        $("#login-menu").show();
+                    }
+                }
+            });
+        }
+    });
 }
