@@ -276,7 +276,7 @@ if(typeof jQuery != 'undefined') {
                 $("#local-login-form").toggle().appendTo('#login-menu');
             });
 
-             $("#login_submit").click(function(e) {
+            $("#login_submit").click(function(e) {
                 $.ajax({
                     type: 'POST',
                     url: '/login', /* could get from form */
