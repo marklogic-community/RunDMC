@@ -40,14 +40,13 @@ declare function users:startSession($user) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
     let $name := $user/name
-    (:
     let $id := $user/id
     let $uri := concat("/private/people/", $id, ".xml")
     let $doc := <person>
         { for $field in $user/* where $field/local-name() != 'session' return $field }
         <session>{$sessionID}</session>
     </person>
-    let $_ := xdmp:document-insert($uri, $doc) :) 
+    (: let $_ := xdmp:document-insert($uri, $doc) :) 
 
     return (
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
@@ -68,7 +67,8 @@ declare function users:endSession() as empty-sequence()
 declare function users:getCurrentUserName()
     as xs:string?
 {
-    cookies:get-cookie("RUNDMC-NAME")
+    let $n := cookies:get-cookie("RUNDMC-NAME")
+    return if ($n eq "") then () else $n
 };
 
 declare function users:validateFacebookSignedRequest($signed_request as xs:string)
