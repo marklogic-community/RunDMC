@@ -244,7 +244,7 @@ declare function users:checkCreds($email as xs:string, $password as xs:string) a
 declare function users:signupsEnabled()
     as xs:boolean
 {
-    not(empty(cookies:get-cookie("RUNDMC-SIGNUPS")))
+    true() (: not(empty(cookies:get-cookie("RUNDMC-SIGNUPS"))) :)
 };
 
 declare function users:getCurrentUser() as element(*)?
