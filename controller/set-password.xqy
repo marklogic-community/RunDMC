@@ -8,7 +8,7 @@ let $token := xdmp:get-request-field('token')
 let $password := xdmp:get-request-field('s_password')
 let $password-confirm := xdmp:get-request-field('s_password_confirm')
 
-let $_ := if (($password eq $password-confirm) and $user/reset-token/string() eq $token)) then
+let $_ := if (($password eq $password-confirm) and ($user/reset-token/string() eq $token)) then
     let $_ := xdmp:log(concat("Attempting to set password for ", $id))
     return users:setPassword($user, $password)
 else 

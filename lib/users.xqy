@@ -313,7 +313,7 @@ declare function users:getResetToken($email as xs:string) as xs:string
     return $token
 };
 
-declare function users:setPassword($user as xs:string, $password as xs:string)
+declare function users:setPassword($user as element(*)?, $password as xs:string)
 {
     let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
