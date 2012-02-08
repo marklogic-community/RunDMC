@@ -1,6 +1,7 @@
 xquery version "1.0-ml";
 
 import module namespace users="users" at "/lib/users.xqy";
+import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 
 let $email := xdmp:get-request-field('email')
 let $password := xdmp:get-request-field('password')
@@ -14,8 +15,7 @@ return
 
         let $_ := users:startSession($user)
         return 
-        (: todo encode json :)
-            concat( '{"status": "ok", "name": "', $user/name, '" }' )
+            json:serialize(json:object(("status", "ok", "name", $user/name/string())))
     else
         '{"status": "Bad email/password combination"}'
     

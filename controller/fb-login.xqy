@@ -29,14 +29,14 @@ return
                 if ($user/facebook-id = ($facebook-id, "")) then
                     let $_ := users:updateUserWithFacebookID($user, $name, $email, $user/password/string(), $facebook-id, $user/list/string())
                     let $_ := users:startSession($user)
-                    return concat( '{"status": "ok", "name": "', $user/name, '" }' )
+                    return json:serialize(json:object(("status", "ok", "name", $user/name/string())))
                  
                 else
                     '{"status": "Sorry, there is another Facebook user registered here that has your email address."}'
             else
                 let $user := users:createUser($name, $email, (), $facebook-id, "off")
                 let $_ := users:startSession($email)
-                return concat( '{"status": "ok", "name": "', $user/name, '" }' )
+                return json:serialize(json:object(("status", "ok", "name", $user/name/string())))
         
     else
         '{"status": "Sorry, bad or corrupt communication from Facebook."}'
