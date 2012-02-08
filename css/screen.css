@@ -1073,6 +1073,7 @@ section#documentation:before {margin-bottom: 30px;}
 	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
 	overflow: hidden;
 	line-height: 12px !important;
+    cursor: pointer;
 }
 .button img, .button span {
 	display: table-cell;
@@ -2357,12 +2358,8 @@ a.drop-down-trigger.menu-open span {
 
 #signup-submit, #reset-submit {
     margin-top: 20px;
-    padding: 8px 0px 8px 0px;
+    padding: 8px;
 }
-#signup-submit span, #reset-submit span {
-	padding-left: 0px;
-}
-
 
 .signup-form-error {
     font-size: 12px;
