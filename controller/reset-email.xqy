@@ -23,15 +23,15 @@ return if ($name) then
         "MarkLogic Community",
         "community-requests@marklogic.com",
         "MarkLogic Community Password Reset",
-        <em:content>
-        concat("You can use the URL below to reset the MarkLogic Community password associated with your email address.  If you
-    did not request this email, please ignore it.
+<em:content>
+You can use the URL below to reset the MarkLogic Community password associated with your email address.  If you
+did not request this email, please ignore it.
 
-            ", $url, "
+          { $url }
 
-        Best,
-        The MarkLogic Community"
-        </em:content>)
+Best,
+The MarkLogic Community"
+</em:content>)
 
     return <html><script type="text/javascript"><![CDATA[
                    window.location = "/";
