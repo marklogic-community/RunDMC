@@ -80,7 +80,9 @@
         <div style="float: right"><a href="/people/recovery" id="recovery">Forgot password?</a></div>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">
-        <p> <a id="profile" href="/people/profile"><span>Edit Profile</span></a> </p>
+<!--
+        <p> <a id="profile" href="/people/xprofile"><span>Edit Profile</span></a> </p>
+-->
         <p id="separator"/>
         <p class="last">
             <a id="logout" href="#"><span>Log out</span></a>
