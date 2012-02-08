@@ -365,7 +365,7 @@ if(typeof jQuery != 'undefined') {
                             }
                         });
                    } else {
-                       window.location = "/people/signup";
+                       window.location = "/people/fb-signup";
                    }
                 });
             });
