@@ -17,7 +17,6 @@
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
-  xmlns:fb   ="http://ogp.me/ns/fb#"
   xmlns:users="users"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
