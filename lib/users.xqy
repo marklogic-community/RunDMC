@@ -253,3 +253,18 @@ declare function users:getCurrentUser() as element(*)?
 
     return /person[session eq $session]
 };
+
+declare function users:getResetToken($email)
+{
+    let $user := /person[email eq $email]
+    let $now := fn:string(fn:current-time())
+    let $token := xdmp:crypt($email, $now)
+    let $doc := 
+        <person>
+            { for $field in $user/* where not($field/local-name() = ('reset-token')) return $field }
+            <reset-token>{$token}</reset-token>
+        </person>
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+
+    return $token
+};

@@ -2330,6 +2330,7 @@ a.drop-down-trigger.menu-open span {
 }
 
 #profile-form input[type=text], #profile-form input[type=password],
+#reset-form input[type=text],
 #signup-form input[type=text], #signup-form input[type=password] {
 	border: 1px solid #CFCFCF;
 	padding: 0 5px;
@@ -2339,11 +2340,11 @@ a.drop-down-trigger.menu-open span {
 	margin-right: 8px;
 }
 
-.signup-form-row {
+.signup-form-row, .reset-form-row {
     padding-bottom: 10px;
 }
 
-.signup-form-label {
+.signup-form-label, .reset-form-label {
     width: 160px;
     float: left;
 	margin-bottom: 5px;
@@ -2354,11 +2355,11 @@ a.drop-down-trigger.menu-open span {
     padding: 8px 12px;
 }
 
-#signup-submit {
+#signup-submit, #reset-submit {
     margin-top: 20px;
     padding: 8px 0px 8px 0px;
 }
-#signup-submit span {
+#signup-submit span, #reset-submit span {
 	padding-left: 0px;
 }
 
