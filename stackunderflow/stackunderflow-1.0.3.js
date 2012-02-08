@@ -71,6 +71,10 @@ function jsonp(url, params, callback) {
     url = url
         .replace("{callback}", "stackunderflow." + jsonp)
         .replace("{key}", su.appId);
+
+    if (document.location.protocol == 'https:')
+        url = url.replace('http:', 'https:')
+
     if (params) {
         for (var name in params) {
             url = url.replace("{" + name + "}", params[name]);
