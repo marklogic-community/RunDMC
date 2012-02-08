@@ -10,6 +10,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:fb   ="http://www.facebook.com/2008/fbml"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="qp xs ml xdmp">
