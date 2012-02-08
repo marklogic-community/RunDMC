@@ -224,7 +224,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if ($path eq "/reset-email") then
         "/controller/reset-email.xqy"
     else if ($path eq "/reset") then
-        "/controller/reset.xqy"
+        concat("/controller/reset.xqy?", $query-string)
     else if ($path eq "/enable-signups") then
         "/controller/enable-signups.xqy?q=on"
     else if ($path eq "/disable-signups") then

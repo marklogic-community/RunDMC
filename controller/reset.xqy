@@ -4,10 +4,12 @@ import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 declare namespace em="URN:ietf:params:email-xml:";
 
-let $id := xdmp:get-request-field('id')
-let $token := xdmp:get-request-field('token', 'missing')
+let $email := xdmp:get-request-field('email')
+let $token := xdmp:get-request-field('t', 'missing')
 
-let $user := users:getUserByID($id)
+let $user := users:getUserByEmail($email)
+let $id := $user/id/string()
+
 return if ($token eq $user/reset-token/string()) then
     let $_ := xdmp:log(concat("Reset password for email (", $email, ") with token ", $token))
 
@@ -39,5 +41,3 @@ else
                    window.location = "/";
             ]]></script></html>
 
-    
-else ()
