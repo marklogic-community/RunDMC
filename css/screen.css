@@ -2197,6 +2197,7 @@ a.drop-down-trigger.menu-open span {
 }
 
 #login_submit span {
+    display: block;
     padding-left: 0px;
     min-width: 50px;
     color: #ccc;
@@ -2357,6 +2358,7 @@ a.drop-down-trigger.menu-open span {
 }
 
 #signup-submit, #reset-submit {
+    display: block;
     margin-top: 20px;
     padding: 8px;
 }
