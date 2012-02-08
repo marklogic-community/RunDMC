@@ -25,12 +25,13 @@ return if ($name) then
         "MarkLogic Community Password Reset",
 <em:content>
 You can use the URL below to reset the MarkLogic Community password associated with your email address.  If you
-did not request this email, please ignore it.
+did not request this email, please ignore it.  And if you believe this is a malicious attempt, please feel free
+to respond to this email.
 
           { $url }
 
 Best,
-The MarkLogic Community"
+The MarkLogic Community
 </em:content>)
 
     return <html><script type="text/javascript"><![CDATA[
