@@ -147,6 +147,7 @@ as element(*)?
             <facebook-id>{$facebook-id}</facebook-id>
             <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
             <list>{$list}</list>
+            <created>{fn:current-dateTime()}</created>
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
