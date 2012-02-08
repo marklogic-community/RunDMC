@@ -44,7 +44,7 @@ declare function users:getUserByFacebookID($id as xs:string) as element(*)?
     /person[facebook-id eq $id]
 };
 
-declare function users:startSession($user) as empty-sequence()
+declare function users:startSession($user as element(*)) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
     let $name := $user/name
