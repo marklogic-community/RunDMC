@@ -17,9 +17,11 @@ xquery version "1.0-ml";
 module namespace users = "users";
 import module namespace cookies = "http://parthcomp.com/cookies" at "cookies.xqy";
 import module namespace srv="http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
+import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+declare namespace em="URN:ietf:params:email-xml:";
 
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
@@ -171,8 +173,8 @@ as element(*)?
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := if ($list eq "on") then (: todo check list bool val  from form :)
-        users:registerForMailingList($email, 'not-so-secret')  (: not sure what pass to use; xxx :)
+    let $_ := if ($list eq "on") then 
+        users:registerForMailingList($email, 'not-so-secret')  (: not sure what pass to use; todo xxx :)
     else    
         ()
 
@@ -228,8 +230,43 @@ declare function users:registerForMailingList($email, $pass)
 
 declare function users:logNewUser($user) 
 {
-    (: todo send us email :)
-    xdmp:log(concat("Created user ", $user/id))
+    let $_ := xdmp:log(concat("Created user ", $user/id))
+
+    let $hostname := xdmp:hostname()
+
+    let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
+
+    let $address := 
+        if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+            "dmc-admin@marklogic.com"
+        else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
+            "eric.bloch@marklogic.com"
+        else
+            ()
+
+    let $_ := if ($address) then
+        util:sendEmail(
+
+            "RunDMC Alert",
+            $address,
+            false(),
+            "RunDMC Admin",
+            $address,
+            "RunDMC Admin",
+            $address,
+            concat($staging, "Signed up user ", $user/email/string()), 
+            <em:content>
+            {concat("
+Username: ", $user/name/string(), "
+Email:    ", $user/email/string(), "
+ID:       ", $user/id/string())
+            }
+            </em:content>
+        )
+    else
+        ()
+
+    return ()
 };
 
 declare function users:checkCreds($email as xs:string, $password as xs:string) as element(*)?
