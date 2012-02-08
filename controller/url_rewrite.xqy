@@ -221,6 +221,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/login.xqy"
     else if ($path eq "/logout") then
         "/controller/logout.xqy"
+    else if ($path eq "/set-password") then
+        "/controller/set-password.xqy"
     else if ($path eq "/reset-email") then
         "/controller/reset-email.xqy"
     else if ($path eq "/reset") then

@@ -1001,8 +1001,16 @@
   </xsl:template>
 
    <xsl:template match="reset-hidden-fields">
-       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden"/>
-       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden"/>
+       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
+            <xsl:attribute name="value">
+               <xsl:copy-of select="$params[@name eq  'token']"/>
+            </xsl:attribute>
+       </input>
+       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
+            <xsl:attribute name="value">
+               <xsl:copy-of select="$params[@name eq  'id']"/>
+            </xsl:attribute>
+       </input>
    </xsl:template>
 
 </xsl:stylesheet>
