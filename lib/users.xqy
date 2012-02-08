@@ -247,7 +247,7 @@ declare function users:logNewUser($user)
     let $_ := if ($address) then
         util:sendEmail(
 
-            "RunDMC Alert",
+            "RunDMC Signup",
             $address,
             false(),
             "RunDMC Admin",
@@ -258,8 +258,8 @@ declare function users:logNewUser($user)
             <em:content>
             {concat("
 Username: ", $user/name/string(), "
-Email:    ", $user/email/string(), "
-ID:       ", $user/id/string())
+Email: ", $user/email/string(), "
+ID: ", $user/id/string())
             }
             </em:content>
         )
