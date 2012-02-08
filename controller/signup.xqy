@@ -3,7 +3,7 @@ xquery version "1.0-ml";
 import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
 import module namespace users="users" at "/lib/users.xqy";
-import module namespace util="http://markmail.org/util" at "/lib/users.xqy";
+import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 
 
 let $signed_request := xdmp:get-request-field("signed_request")
@@ -63,7 +63,7 @@ else
                 let $_ := xdmp:set-response-content-type("text/html")
                 return 
                         <html><script type="text/javascript"><![CDATA[
-                            window.location = "/people/profile";
+                            window.location = "/products";
                         ]]></script></html>
             else
                 xdmp:redirect-response(concat("/people/signup?e=", $user))
