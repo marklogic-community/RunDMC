@@ -24,7 +24,7 @@ return if (not(exists($signed_request))) then
         let $_ := xdmp:set-response-content-type("text/html")
         let $_ := users:startSession($user)
         return <html><script type="text/javascript"><![CDATA[
-               window.location = "/people/profile";
+               window.location = "/products";
         ]]></script></html>
     
     else
