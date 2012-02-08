@@ -35,7 +35,7 @@ return
                     '{"status": "Sorry, there is another Facebook user registered here that has your email address."}'
             else
                 let $user := users:createUser($name, $email, (), $facebook-id, "off")
-                let $_ := users:startSession($email)
+                let $_ := users:startSession($user)
                 return json:serialize(json:object(("status", "ok", "name", $user/name/string())))
         
     else
