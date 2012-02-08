@@ -7,10 +7,22 @@ declare namespace em="URN:ietf:params:email-xml:";
 let $email := xdmp:get-request-field('email')
 let $name := users:getUserByEmail($email)/name/string()
 
+let $hostname := xdmp:hostname()
+
+let $hostname := 
+    if ($hostname = ("developer.marklogic.com")) then
+        "developer.marklogic.com"
+    else if ($hostname = ("stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+        "dmc-stage.marklogic.com"
+    else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
+        "localhost:8003"
+    else
+        "localhost:8008"
+
 return if ($name) then
 
     let $token := users:getResetToken($email)
-    let $url := concat("http://developer.marklogic.com/reset?id=", xdmp:url-encode($email), "&amp;t=", xdmp:url-encode($token))
+    let $url := concat("http://", $hostname, "/reset?id=", xdmp:url-encode($email), "&amp;t=", xdmp:url-encode($token))
     let $_ := xdmp:log(concat("Sending a reset email to ", $email, " with token ", $token))
     let $_ := xdmp:set-response-content-type("text/html")
 

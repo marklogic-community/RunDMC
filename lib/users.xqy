@@ -33,6 +33,12 @@ declare function users:getUserByEmail($email as xs:string) as element(*)?
     /person[email eq $email]
 };
 
+declare function users:getUserByID($id as xs:string) as element(*)?
+{
+    /person[id eq $id]
+};
+
+
 declare function users:getUserByFacebookID($id as xs:string) as element(*)?
 {
     /person[facebook-id eq $id]

@@ -128,7 +128,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        if ($path = ("/people/signup", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
+        if ($path = ("/people/signup", "/people/reset", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
             $path
         else
             "/people/supernodes"
@@ -223,6 +223,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/logout.xqy"
     else if ($path eq "/reset-email") then
         "/controller/reset-email.xqy"
+    else if ($path eq "/reset") then
+        "/controller/reset.xqy"
     else if ($path eq "/enable-signups") then
         "/controller/enable-signups.xqy?q=on"
     else if ($path eq "/disable-signups") then

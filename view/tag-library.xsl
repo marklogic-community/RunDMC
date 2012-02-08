@@ -1000,4 +1000,9 @@
     </div>
   </xsl:template>
 
+   <xsl:template match="reset-hidden-fields">
+       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden"/>
+       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden"/>
+   </xsl:template>
+
 </xsl:stylesheet>
