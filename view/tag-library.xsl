@@ -948,7 +948,7 @@
   <xsl:template match="fb-registration">
       <fb:registration id="fbrb" width="530" xmlns:fb="fb">
         <xsl:attribute name="fields">
-            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'},{'name':'captcha'}]</xsl:text>
+            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'}]</xsl:text>
         </xsl:attribute>
         <xsl:attribute name="redirect-uri">
             <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
