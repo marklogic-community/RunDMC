@@ -24,7 +24,7 @@ var showTweetLinks='none';
 function fetch_tweets(elem, num, offset){
 	elem=$(elem);
 	keyword=escape(elem.attr('title'));
-	var url="http://search.twitter.com/search.json?q="+keyword+"&rpp="+num+"&callback=?";
+	var url=document.location.protocol+"//search.twitter.com/search.json?q="+keyword+"&rpp="+num+"&callback=?";
 	$.getJSON(url,function(json){
 		$(json.results).each(function(index){
             if (offset-- > 0)
