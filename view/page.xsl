@@ -192,7 +192,7 @@
          <xsl:text> &#8212; </xsl:text>
          <xsl:value-of select="$errorMessage"/>
      </h2>
-     <xsl:if test="xdmp:host-name(xdmp:host()) ne 'developer.marklogic.com'">
+     <xsl:if test="not(xdmp:host-name(xdmp:host()) = ('community.marklogic.com', 'developer.marklogic.com'))">
          <pre style="overflow: auto">
             <xsl:value-of select="$errorDetail"/>
          </pre>

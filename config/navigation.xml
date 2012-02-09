@@ -30,11 +30,6 @@
         <page display="Plug-in for Nagios" href="/products/nagios"/>
         <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
-     <!-- Disabled for now
-      <group display="Cloud Computing">
-        <page display="Server for EC2" href="/products/server-for-ec2"/>
-      </group>
-     -->
     </group>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="MarkLogic Express" href="/express"/>
@@ -114,16 +109,10 @@
         <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
-<!--
-        <page display="XFaqtor" href="/code/xfaqtor"/>
--->
         <page display="Shakespeare Demo Application" href="/code/bill"/>
         <page display="Pairs" href="/code/pairs"/>
         <page display="Heatmap" href="/code/heatmap"/>
         <page display="Alerting" href="/code/alerting"/>
-<!--
-        <page display="xqlog: XQuery Blogger" href="/code/xqlog"/>
--->
         <page display="RunDMC" href="/code/rundmc"/>
         <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
         <!--
@@ -172,12 +161,6 @@
         <page display="Featured" href="/qa/featured"/>
         -->
       </group>
-      <!--
-      <group display="Mailing Lists">
-        <page display="Commits" href="http://developer.marklogic.com/mailman/listinfo/commits"/>
-        <page display="General Development" href="http://developer.marklogic.com/mailman/listinfo/general"/>
-      </group>
-      -->
     </group>
   </page>
   <page display="Meet" href="/meet" tooltip="MarkLogic User Groups">
@@ -189,12 +172,6 @@
         <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
         <page display="NYMUG - New York" href="/meet/nymug"/>
         <page display="SOHMUG - Southern Ohio" href="/meet/sohmug"/>
-<!--
-        <group display="MUGFR D'Utilisateurs de France" no-toggle="yes">
-          <page display="Français" href="/meet/mugfr/fr"/>
-          <page display="English" href="/meet/mugfr/en"/>
-        </group>
--->
         <page display="BMLUG - Boston" href="/meet/bmug"/>
       </group>
     </group>
