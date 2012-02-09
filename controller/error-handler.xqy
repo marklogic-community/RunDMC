@@ -43,7 +43,7 @@ let $hostname := xdmp:hostname()
 let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
 
 let $address := 
-    if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+    if ($hostname = ("community.marklogic.com", "developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
         "dmc-admin@marklogic.com"
     else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
         "eric.bloch@marklogic.com"
