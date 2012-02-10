@@ -49,6 +49,8 @@
       </group>
       <group display="Testing tools">
         <page display="xquery-unit" href="/code/xquery-unit"/>
+        <page display="xray" href="/code/xray"/>
+        <page display="xqut" href="/code/xqut"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
       </group>
       <group display="Loading and processing tools">
