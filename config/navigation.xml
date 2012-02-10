@@ -57,6 +57,7 @@
         <page display="XQSync" href="/code/xqsync"/>
         <page display="Corb" href="/code/corb"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
+        <page display="Rebalancer" href="/code/task-rebalancer"/>
       </group>
       <group display="Deployment and configuration">
         <page display="Booster" href="/code/booster"/>
