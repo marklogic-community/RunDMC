@@ -998,7 +998,7 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Twitter</div>
-            <input class="twitter" id="twitter" name="url" value="{$user/*:twitter/string()}" type="text"/>
+            <input class="twitter" id="twitter" name="twitter" value="{$user/*:twitter/string()}" type="text"/>
         </div>
         <!--
         <div class="profile-form-row">

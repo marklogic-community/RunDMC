@@ -368,3 +368,10 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
 
     return $doc
 };
+
+(: save params into the user, leaving along fields not specified in the params :)
+declare function users:validateParams($user as element(*), $params as element(*)*) as xs:string
+{
+    (: TODO :)
+    "ok"
+};

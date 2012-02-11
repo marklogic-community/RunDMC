@@ -4,12 +4,23 @@ import module namespace param="http://marklogic.com/rundmc/params" at "modules/p
 import module namespace users="users" at "/lib/users.xqy";
 import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 
-let $user := users:saveProfile(users:getCurrentUser(), param:params())
+let $valid := users:validateParams(users:getCurrentUser(), param:distinct-trimmed-params())
 
-return json:serialize(
-    json:object((
-        "status", "ok",
-        "name", $user/name/string()
-    )) 
-)
+return
+    if ($valid eq "ok") then
+
+        let $user := users:saveProfile(users:getCurrentUser(), param:distinct-trimmed-params())
+
+        return json:serialize(
+            json:object((
+                "status", "ok",
+                "name", $user/name/string()
+            )) 
+        )
+    else 
+        json:serialize(
+            json:object((
+                "status", $valid
+            ))
+        )
     
