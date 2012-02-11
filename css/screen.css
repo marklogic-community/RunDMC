@@ -2356,7 +2356,7 @@ a.drop-down-trigger.menu-open span {
 }
 
 .signup-form-label, .reset-form-label {
-    width: 160px;
+    width: 140px;
     float: left;
 	margin-bottom: 5px;
     text-align: right;
@@ -2394,6 +2394,8 @@ a.drop-down-trigger.menu-open span {
 .signup-form-error {
     font-size: 12px;
     color: red;
+    overflow: visible;
+    
 }
 
 #changes-saved {
