@@ -132,8 +132,7 @@ declare function users:createOrUpdateFacebookUser($name, $email, $password, $fac
     return
     if ($user) then
         if ($user/facebook-id = ("", $facebook-id)) then
-            let $hash := xdmp:crypt($password, $email)
-            return users:updateUserWithFacebookID($user, $name, $email, $hash, $facebook-id, $list)
+            users:updateUserWithFacebookID($user, $facebook-id)
         else
             "Email address associated with this facebook account is registered here via another facebook account"
     else
@@ -165,25 +164,17 @@ as element(*)?
     return $doc
 };
 
-declare function users:updateUserWithFacebookID($user, $name, $email, $hash, $facebook-id, $list)
+declare function users:updateUserWithFacebookID($user, $facebook-id)
 as element(*)? 
 {
     let $uri := base-uri($user)
     let $doc := <person>
-        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture', 'name', 'password', 'list')) return $field }
+        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture')) return $field }
             <facebook-id>{$facebook-id}</facebook-id>
             <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
-            <name>{$name}</name>
-            <password>{$hash}</password>
-            <list>{$list}</list>
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := if ($list eq "on") then 
-        users:registerForMailingList($email, 'not-so-secret')  (: not sure what pass to use; todo xxx :)
-    else    
-        ()
-
     return  $doc
 };
 

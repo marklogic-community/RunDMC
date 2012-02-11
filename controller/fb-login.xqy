@@ -27,7 +27,7 @@ return
         return 
             if ($user) then
                 if ($user/facebook-id = ($facebook-id, "")) then
-                    let $_ := users:updateUserWithFacebookID($user, $name, $email, $user/password/string(), $facebook-id, $user/list/string())
+                    let $_ := users:updateUserWithFacebookID($user, $facebook-id)
                     let $_ := users:startSession($user)
                     return json:serialize(json:object(("status", "ok", "name", $user/name/string())))
                  
@@ -36,7 +36,7 @@ return
             else
                 let $user := users:createUser($name, $email, (), $facebook-id, "off")
                 let $_ := users:startSession($user)
-                return json:serialize(json:object(("status", "ok", "name", $user/name/string())))
+                return json:serialize(json:object(("status", "ok", "name", $name)))
         
     else
         '{"status": "Sorry, bad or corrupt communication from Facebook."}'
