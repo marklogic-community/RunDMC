@@ -118,7 +118,7 @@ declare function users:createOrUpdateUser($name, $email, $password, $list)
     return
     if ($user) then
         if ($user/password = ("", $hash)) then
-            users:updateUserWithPassword($user, $name, $email, $password, $list)
+            users:updateUserWithPassword($user, $name, $password, $list)
         else
             "Email address in already registered"
     else
@@ -132,7 +132,7 @@ declare function users:createOrUpdateFacebookUser($name, $email, $password, $fac
     return
     if ($user) then
         if ($user/facebook-id = ("", $facebook-id)) then
-            users:updateUserWithFacebookID($user, $facebook-id)
+            users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
         else
             "Email address associated with this facebook account is registered here via another facebook account"
     else
@@ -178,15 +178,34 @@ as element(*)?
     return  $doc
 };
 
-declare function users:updateUserWithPassword($user, $name, $email, $password, $list)
+declare function users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
 as element(*)? 
 {
     let $uri := base-uri($user)
+    let $email := $user/email/string()
+    let $hash := xdmp:crypt($password, $email)
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture', 'name', 'password', 'list')) return $field }
+            <facebook-id>{$facebook-id}</facebook-id>
+            <name>{$name}</name>
+            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+            <password>{$hash}</password>
+            <list>{$list}</list>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+declare function users:updateUserWithPassword($user, $name, $password, $list)
+as element(*)? 
+{
+    let $uri := base-uri($user)
+    let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
     let $doc := 
         <person>
-        { for $field in $user/* where not($field/local-name() = ('email', 'name', 'password', 'list')) return $field }
-            <email>{$email}</email>
+        { for $field in $user/* where not($field/local-name() = ('name', 'password', 'list')) return $field }
             <name>{$name}</name>
             <password>{$hash}</password>
             <list>{$list}</list>
@@ -325,7 +344,7 @@ declare function users:setPassword($user as element(*)?, $password as xs:string)
 };
 
 (: save params into the user, leaving along fields not specified in the params :)
-declare function users:saveProfile($user as element(*), $params as element(*)*) as xs:string
+declare function users:saveProfile($user as element(*), $params as element(*)*) as element(*)
 {
     (: todo: cheap secure by only storing first 10? :) 
 
@@ -341,5 +360,8 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
     let $_ := xdmp:document-insert(base-uri($user), $doc)
     let $_ := xdmp:log(concat("Updated profile for ", $user/email, " : ", xdmp:quote($doc)))
 
-    return "ok"
+    (: update name cookie just in case :)
+    let $_ := cookies:add-cookie("RUNDMC-NAME", $doc/name/string(), current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false())
+
+    return $doc
 };

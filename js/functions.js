@@ -351,16 +351,23 @@ if(typeof jQuery != 'undefined') {
             });
 
             $("#profile-save").click(function(e) {
+                $('#profile-form').cleanDirty(); // could do in success I spose
                 e.preventDefault();
+                $('#changes-saved span').hide("");
                 $('this').attr('disabled', 'disabled');
                 $.ajax({
                     type: 'POST',
                     url: '/save-profile',
                     success: function( data ) {
-                        $('#changes-saved').show();
+                        $('#session-trigger span').text(data.name);
+                        $('#changes-saved').text('Changes saved').removeClass("failed-save").addClass("successful-save").fadeIn('slow', function() {
+                            $(this).fadeOut('slow');
+                        });
                     },
                     error: function( data ) {
-                        $('#changes-saved').text("Save failed").show();
+                        $('#changes-saved').removeClass("successful-save").addClass("failed-save").text("Save failed").fadeIn('slow', function() {
+                            $(this).fadeOut('slow');
+                        });
                     },
                     finished: function( data ) {
                         $('this').removeAttr('disabled');

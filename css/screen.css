@@ -2400,9 +2400,17 @@ a.drop-down-trigger.menu-open span {
 
 #changes-saved {
     font-size: 12px;
-    color: orange;
     display: none;
 }
+
+.failed-save {
+    color: red
+}
+
+.successful-save {
+    color: green
+}
+
 
 #change-passwd {
     font-size: 12px;
