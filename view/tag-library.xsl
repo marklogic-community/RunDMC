@@ -996,6 +996,10 @@
             <div class="profile-form-label">Website/Blog</div>
             <input class="url" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
         </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Twitter</div>
+            <input class="twitter" id="twitter" name="url" value="{$user/*:twitter/string()}" type="text"/>
+        </div>
         <!--
         <div class="profile-form-row">
             <div class="profile-form-label">Password</div>
@@ -1013,10 +1017,6 @@
         <div class="profile-form-row">
             <div class="profile-form-label">Location </div>
             <input class="" id="location" name="location" value="{$user/*:location/string()}" type="text"/>
-        </div>
-        <div class="profile-form-row">
-            <div class="profile-form-label">Country </div>
-            <input class="" id="country" name="country" value="{$user/*:country/string()}" type="text"/>
         </div>
     </fieldset>
     </div>

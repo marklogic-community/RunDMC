@@ -351,8 +351,11 @@ if(typeof jQuery != 'undefined') {
             });
 
             $("#profile-save").click(function(e) {
-                $('#profile-form').cleanDirty(); // could do in success I spose
                 e.preventDefault();
+                if (! $('#profile-form').validate().form()) {
+                    return;
+                }
+                $('#profile-form').cleanDirty(); // could do in success I spose
                 $('#changes-saved span').hide("");
                 $('this').attr('disabled', 'disabled');
                 $.ajax({

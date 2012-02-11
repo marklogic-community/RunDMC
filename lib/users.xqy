@@ -145,6 +145,7 @@ as element(*)?
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
+    let $picture := if ($facebook-id) then concat("https://graph.facebook.com/", $facebook-id, "/picture") else ""
     let $doc := 
         <person>
             <id>{$id}</id>
@@ -152,9 +153,11 @@ as element(*)?
             <name>{$name}</name>
             <password>{$hash}</password>
             <facebook-id>{$facebook-id}</facebook-id>
-            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+            <picture>{$picture}</picture>
             <list>{$list}</list>
             <created>{fn:current-dateTime()}</created>
+            <title>Developer</title>
+            <twitter></twitter>
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
@@ -349,7 +352,7 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
     (: todo: cheap secure by only storing first 10? :) 
 
     (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
-    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country')
+    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country', 'twitter')
     let $params := for $p in $params where $p/@name = $fields return $p
 
     let $doc := <person>
