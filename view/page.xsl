@@ -11,6 +11,7 @@
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:fb   ="http://www.facebook.com/2008/fbml"
+  xmlns:users="users"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="qp xs ml xdmp">
@@ -233,6 +234,8 @@
   <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
   <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
   <xsl:template match="if[not(starts-with($external-uri, @href-starts-with))]"/>
+
+  <xsl:template match="if-session[users:getCurrentUser()]"/>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">

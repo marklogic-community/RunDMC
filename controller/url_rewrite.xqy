@@ -211,8 +211,6 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/invalidate-navigation-cache.xqy"
     else if ($path eq "/validate") then
         concat("/controller/validate.xqy?", $query-string)
-    else if ($path eq "/people/profile") then
-        "/controller/profile.xqy"
     else if ($path eq "/signup") then
         "/controller/signup.xqy"
     else if ($path eq "/fb-login") then
@@ -227,10 +225,12 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/reset-email.xqy"
     else if ($path eq "/reset") then
         concat("/controller/reset.xqy?", $query-string)
-    else if ($path eq "/enable-signups") then
-        "/controller/enable-signups.xqy?q=on"
-    else if ($path eq "/disable-signups") then
-        "/controller/enable-signups.xqy"
+    else if ($path eq "/save-profile") then
+        "/controller/save-profile.xqy"
+    else if ($path eq "/enable-corn") then
+        "/controller/enable-corn.xqy?q=on"
+    else if ($path eq "/disable-corn") then
+        "/controller/enable-corn.xqy"
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"

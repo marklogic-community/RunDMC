@@ -350,25 +350,34 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
-            $("#profile-save").click(function() {
+            $("#profile-save").click(function(e) {
+                e.preventDefault();
+                $('this').attr('disabled', 'disabled');
                 $.ajax({
                     type: 'POST',
-                    url: '/logout',
+                    url: '/save-profile',
                     success: function( data ) {
-                        window.location = "/people/signup"
+                        $('#changes-saved').show();
                     },
+                    error: function( data ) {
+                        $('#changes-saved').text("Save failed").show();
+                    },
+                    finished: function( data ) {
+                        $('this').removeAttr('disabled');
+                    },
+                    data: $('#profile-form').serialize(),
                     dataType: 'json'
                 });
             });
         });
 
-        $("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
+        //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
             // Ajax validation tbd
-        });
+        //});
 
-        $('#signup-form').submit(function(e) {
+        //$('#signup-form').submit(function(e) {
 		    // e.preventDefault();
-        });
+        //});
 
 
 		// add new functions before this comment

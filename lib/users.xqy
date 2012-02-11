@@ -48,13 +48,13 @@ declare function users:startSession($user as element(*)) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
     let $name := $user/name
-    let $id := $user/id
-    let $uri := concat("/private/people/", $id, ".xml")
-    let $doc := <person>
-        { for $field in $user/* where $field/local-name() != 'session' return $field }
-        <session>{$sessionID}</session>
-    </person>
-    (: let $_ := xdmp:document-insert($uri, $doc) :) 
+    let $id := $user/id/string()
+    let $uri := concat("/private/people/", $id, "/session.xml")
+    let $doc := <session>
+        <id>{$id}</id>
+        <session-id>{$sessionID}</session-id>
+    </session>
+    let $_ := xdmp:document-insert($uri, $doc) 
 
     return (
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
@@ -291,11 +291,17 @@ declare function users:signupsEnabled()
     true() (: not(empty(cookies:get-cookie("RUNDMC-SIGNUPS"))) :)
 };
 
+declare function users:cornifyEnabled()
+    as xs:boolean
+{
+    not(empty(cookies:get-cookie("RUNDMC-CORN")))
+};
+
 declare function users:getCurrentUser() as element(*)?
 {
     let $session := cookies:get-cookie("RUNDMC-SESSION")
-
-    return /person[session eq $session]
+    let $id := /session[session-id eq $session]/id/string() 
+    return /person[id eq $id]
 };
 
 declare function users:getResetToken($email as xs:string) as xs:string
@@ -325,4 +331,24 @@ declare function users:setPassword($user as element(*)?, $password as xs:string)
         </person>
 
     return xdmp:document-insert(base-uri($user), $doc)
+};
+
+(: save params into the user, leaving along fields not specified in the params :)
+declare function users:saveProfile($user as element(*), $params as element(*)*) as xs:string
+{
+    (: todo: cheap secure by only storing first 10? :) 
+
+    (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
+    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country')
+    let $params := for $p in $params where $p/@name = $fields return $p
+
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ($params/@name)) return $field }
+        { for $field in $params return element {$field/@name} {$field/string()} }
+    </person>
+
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+    let $_ := xdmp:log(concat("Updated profile for ", $user/email, " : ", xdmp:quote($doc)))
+
+    return "ok"
 };

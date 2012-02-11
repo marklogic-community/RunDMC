@@ -1,5 +1,6 @@
 import module namespace param="http://marklogic.com/rundmc/params"
        at "modules/params.xqy";
+import module namespace users="users" at "/lib/users.xqy";
 
 declare namespace html = "http://www.w3.org/1999/xhtml";
 declare namespace ml = "http://developer.marklogic.com/site/internal";

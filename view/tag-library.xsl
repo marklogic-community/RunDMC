@@ -18,6 +18,7 @@
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
   xmlns:users="users"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
@@ -957,44 +958,65 @@
   </xsl:template>
 
   <xsl:template match="user-name">
-    <xsl:variable name="user-name" select="users:getCurrentUser()/*:name"/>
+    <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
+  </xsl:template>
+
+  <xsl:template match="first-name">
+    <xsl:value-of select="fn:tokenize(users:getCurrentUser()/*:name/string(), ' ')[1]"/>
+  </xsl:template>
+
+  <xsl:template match="last-name">
+    <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
   </xsl:template>
 
   <xsl:template match="profile">
     <xsl:variable name="user" select="users:getCurrentUser()"/>
     <div>
-    <h4>The basics</h4>
     <fieldset>
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="email">Email </label>
-            <input class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Email </div>
+            <input disabled="disabled" readonly="readonly" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
         </div>
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="name">Name </label>
-            <input class="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
-        </div>
-<img src="{$user/*:picture/string()}" alt="picture"/>
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="name">&#160; </label>
-            <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Name </div>
+            <input autofocus="autofocus" class="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
         </div>
         <!--
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="password">Password</label>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Avatar</div>
+            <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
+            <img src="{$user/*:picture/string()}" alt="picture"/>
+        </div>
+        -->
+        <div class="profile-form-row">
+            <div class="profile-form-label">Title </div>
+            <input class="" id="title" name="title" value="{$user/*:title/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Website/Blog</div>
+            <input class="url" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
+        </div>
+        <!--
+        <div class="profile-form-row">
+            <div class="profile-form-label">Password</div>
             <input class="password required" id="password" name="password" value="" type="password"/>
         </div>
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="password_confirm">Confirm password</label>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Confirm password</div>
             <input id="password_confirm" name="password_confirm" value="" type="password"/>
         </div>
         -->
-    </fieldset>
-
-    <h4>About you</h4>
-    <fieldset>
-        <div class="signup-form-row">
-            <label class="signup-form-label" for="organization">Organization </label>
-            <input class="" id="organization" name="organization" value="" type="text"/>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Organization </div>
+            <input class="" id="organization" name="organization" value="{$user/*:organization/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Location </div>
+            <input class="" id="location" name="location" value="{$user/*:location/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Country </div>
+            <input class="" id="country" name="country" value="{$user/*:country/string()}" type="text"/>
         </div>
     </fieldset>
     </div>
@@ -1012,5 +1034,11 @@
             </xsl:attribute>
        </input>
    </xsl:template>
+   <xsl:template match="cornify">
+    <xsl:if test="users:cornifyEnabled()">
+        &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
+    </xsl:if>
+   </xsl:template>
+    
 
 </xsl:stylesheet>

@@ -4,20 +4,28 @@ import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 declare namespace em="URN:ietf:params:email-xml:";
 
+(: either this is ok, because we have a session, or because t matches email :)
 let $email := xdmp:get-request-field('email')
 let $token := xdmp:get-request-field('t', 'missing')
+let $user := users:getCurrentUser()
 
-let $user := users:getUserByEmail($email)
-let $id := $user/id/string()
+let $has-session := if ($user) then true() else false()
 
-return if ($token eq $user/reset-token/string()) then
-    let $_ := xdmp:log(concat("Reset password for email (", $email, ") with token ", $token))
+let $user := if ($has-session) then $user else users:getUserByEmail($email)
 
-    (: make a new reset token, expiring the one that got send here :)
+return if ($has-session or ($token eq $user/reset-token/string())) then
+    let $_ := if ($has-session) then
+        xdmp:log(concat("Reset password for email (", $email, ") with token ", $token))
+    else
+        xdmp:log(concat("Reset password for email (", $email, ")"))
+
+    (: make a new reset token, expiring the current one :)
+    let $id := $user/id/string()
     let $token := users:getResetToken($user/email/string())
     let $params  := (
                        <param name="token">{ $token }</param>,
-                       <param name="id">{ $id }</param>
+                       <param name="id">{ $id }</param>,
+                       <param name="has-session">{ $has-session }</param>
                     )
 
     (: embed the id and token in the new form :)
@@ -37,7 +45,8 @@ return if ($token eq $user/reset-token/string()) then
 else
     let $_ := xdmp:set-response-content-type("text/html")
     let $_ := xdmp:log(concat("Reset password for email (", $email, ") failed with token: ", $token))
-    return <html><script type="text/javascript"><![CDATA[
-                   window.location = "/";
-            ]]></script></html>
+    return if ($has-session) then
+        <html><script type="text/javascript"><![CDATA[ window.location = "/people/profile"; ]]></script></html>
+    else
+        <html><script type="text/javascript"><![CDATA[ window.location = "/"; ]]></script></html>
 
