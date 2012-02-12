@@ -1,20 +1,65 @@
 xquery version "1.0-ml";
 declare namespace html = "http://www.w3.org/1999/xhtml";
+declare option xdmp:output "method=html";
     
-let $_ := xdmp:set-response-content-type('text/html')
-let $total := xdmp:estimate(/person)
+if (xdmp:get-request-field("csv")) then
 
+let $_ := xdmp:set-response-content-type('text/csv')
+
+let $csv := 
+string-join(
+
+for $i in /person
+order  by $i/created/string() descending
 return
-<html>
+string-join(
+(
+ concat('"', $i/name/string(), '"'), 
+ concat('"', $i/email/string(), '"'), 
+ concat('"', fn:format-dateTime($i/created, "[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]"), '"')
+),
+","
+)
 
+,
+"
+"
+)
+return $csv
+
+    
+else
+
+let $total := xdmp:estimate(/person)
+let $_ := xdmp:set-response-content-type('text/html')
+return
+
+(xdmp:set-response-content-type("text/html"),
+'<!DOCTYPE html>',
+<html lang="en">
+<head>
+  <style type="text/css">
+      body {{ font: 14px/129% Arial, Helvetica, Sans-serif;}}
+      table {{ border-collapse: collapse; }}
+      td, th {{ border: 1px solid #666; padding: 3px;}}
+  </style>
+  <script type="text/javascript" src="/js/modernizr.js"></script>
+  <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+</head>
+<body>
+<section>
 Total signups to date: {$total} 
+&#160;&#160;<button id="button" value="Export to CSV">Export to CSV</button>
+</section>
 
-<table>
+<div>&#160;</div>
+
+<table class="datatable">
 <thead>
 <tr>
-<td><b>Name</b></td>
-<td><b>Email</b></td>
-<td><b>Signup date</b></td>
+<th><b>Name</b></th>
+<th><b>Email</b></th>
+<th><b>Signup date</b></th>
 </tr>
 </thead>
 {
@@ -28,4 +73,13 @@ return
 </tr>
 }
 </table>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {{
+        $('#button').click(function() {{
+            window.location = '/signup-report?csv=1';
+        }});
+    }});
+</script>
 </html>
+)
