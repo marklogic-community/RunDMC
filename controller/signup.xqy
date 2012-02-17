@@ -43,7 +43,7 @@ else
     return
 
         if (not(exists($data))) then
-            let $url := xdmp:url-encode("/profile/fb-signup?e=Your request appears to have been tampered with.", false())
+            let $url := xdmp:url-encode("/people/signup?e=Your request appears to have been tampered with.", false())
 
             return xdmp:redirect-response($url)
             
