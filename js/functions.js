@@ -324,7 +324,7 @@ if(typeof jQuery != 'undefined') {
 
             $("#fb-login").click(function(e) {
 
-                console.log("fb-login");
+                // console.log("fb-login");
                 $('#login-error').text("");
                 $("#login-menu").hide();
                 $("#signup-trigger").hide();
@@ -415,11 +415,11 @@ function doFBLogin(response) {
 
         if (!response || response.error) {
             alert('Communication with Facebook graph failed');
-            console.log(response.error)
+            // console.log(response.error)
             $('#signup-trigger').show();
             $('#login-trigger').show();
         } else {
-            console.log(response);
+            // console.log(response);
 
 
             $.ajax({
