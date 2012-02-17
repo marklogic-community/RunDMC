@@ -62,6 +62,7 @@
             </xsl:comment>
           </script>
           <xsl:call-template name="page-content"/>
+          <xsl:call-template name="comment-section"/>
         </div>
       </xsl:when>
       <xsl:otherwise>

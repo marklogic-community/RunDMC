@@ -205,7 +205,7 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="comment-section">
+  <xsl:template match="comment-section" name="comment-section">
     <xsl:apply-templates mode="comment-section" select="$content/*"/>
   </xsl:template>
 
