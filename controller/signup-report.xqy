@@ -16,7 +16,11 @@ string-join(
 (
  concat('"', $i/name/string(), '"'), 
  concat('"', $i/email/string(), '"'), 
- concat('"', fn:format-dateTime($i/created, "[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]"), '"')
+ concat('"', fn:format-dateTime($i/created, "[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]"), '"'),
+ concat('"', $i/organization/string(), '"'), 
+ concat('"', $i/twitter/string(), '"'), 
+ concat('"', $i/location/string(), '"'), 
+ ""
 ),
 ","
 )
@@ -60,6 +64,9 @@ Total signups to date: {$total}
 <th><b>Name</b></th>
 <th><b>Email</b></th>
 <th><b>Signup date</b></th>
+<th><b>Organization</b></th>
+<th><b>Twitter</b></th>
+<th><b>Location</b></th>
 </tr>
 </thead>
 {
@@ -70,6 +77,9 @@ return
 <td>{$i/name/string()}</td>
 <td>{$i/email/string()}</td>
 <td>{fn:format-dateTime($i/created,"[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]")}</td>
+<td>{$i/organization/string()}</td>
+<td>{$i/twitter/string()}</td>
+<td>{$i/location/string()}</td>
 </tr>
 }
 </table>
