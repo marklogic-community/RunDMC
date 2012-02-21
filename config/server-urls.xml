@@ -1,6 +1,6 @@
 <hosts>
 
-  <host type="staging" name="stage-developer.marklogic.com">
+  <host type="staging" name="stage-developer.marklogic.com" cookie-domain="marklogic.com">
 
     <main-server url="http://dmc-stage.marklogic.com:8090"/>
     <!-- Switch back after we publish api.marklogic.com
@@ -14,14 +14,14 @@
     <api-server url="http://api-stage.marklogic.com"/>
   </host>
 
-  <host type="production" name="developer.marklogic.com">
+  <host type="production" name="developer.marklogic.com" cookie-domain="marklogic.com">
     <main-server url="http://developer.marklogic.com"/>
     <draft-server url="http://developer-draft.marklogic.com"/>
     <webdav-server url="http://developer.marklogic.com:8005"/>
     <api-server url="http://api.marklogic.com"/>
   </host>
 
-  <host type="development" default-host="yes">
+  <host type="development" default-host="yes" cookie-domain="">
     <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>

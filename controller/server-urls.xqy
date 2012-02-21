@@ -18,6 +18,8 @@ declare variable $s:this-host :=  if ($s:hosts[@name eq $s:host-name])
                                  then $s:hosts[@name eq $s:host-name]
                                  else $s:hosts[@default-host]; (: default means we're on a development machine :)
 
+declare variable $s:cookie-domain := string($this-host/@cookie-domain);
+
 (: "staging", "production", or "development" :)
 declare variable $s:host-type := string($s:this-host/@type);
 

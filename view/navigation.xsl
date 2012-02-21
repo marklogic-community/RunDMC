@@ -51,7 +51,10 @@
               <xsl:variable name="server-prefix">
                 <xsl:apply-templates mode="top-nav-server-prefix" select="."/>
               </xsl:variable>
-              <a href="{$server-prefix}{@href}" class="stip" title="{@tooltip}">
+              <xsl:variable name="href">
+                <xsl:apply-templates mode="top-nav-href" select="."/>
+              </xsl:variable>
+              <a href="{$server-prefix}{$href}" class="stip" title="{@tooltip}">
                 <xsl:apply-templates mode="nav-text" select="@display"/>
               </a>
             </li>
@@ -64,6 +67,18 @@
                                                                            else $srv:primary-server
                                                                       else ()"/>
                   </xsl:template>
+
+
+                  <xsl:template mode="top-nav-href" match="page">
+                    <xsl:value-of select="@href"/>
+                    <xsl:apply-templates mode="top-nav-href-suffix" select="."/>
+                  </xsl:template>
+
+                          <xsl:template mode="top-nav-href-suffix" match="page"/>
+                          <xsl:template mode="top-nav-href-suffix" match="page[@use-preferred-version-href][not($preferred-version eq $ml:default-version)]">
+                            <xsl:value-of select="$preferred-version"/>
+                          </xsl:template>
+
 
                   <xsl:template mode="top-nav-current-att" match="page"/>
 

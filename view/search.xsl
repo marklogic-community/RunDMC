@@ -21,7 +21,7 @@
   <xsl:variable name="set-version-param-name" select="'v'"/>
   <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
 
-  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('preferred-version')"/>
+  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('my-preferred-version')"/>
   <xsl:variable name="preferred-version" select="if ($set-version)
                                                 then $set-version
                                             else if ($preferred-version-cookie)
@@ -29,10 +29,10 @@
                                             else     $ml:default-version"/>
 
   <xsl:variable name="_set-cookie"
-                select="if ($set-version) then ck:add-cookie('preferred-version',
+                select="if ($set-version) then ck:add-cookie('my-preferred-version',
                                                              $set-version,
                                                              xs:dateTime('2100-01-01T12:00:00'), (: expires :)
-                                                             (),
+                                                             $srv:cookie-domain,
                                                              '/search',
                                                              false())
                                           else ()"/>

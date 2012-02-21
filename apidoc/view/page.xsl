@@ -43,6 +43,9 @@
   <xsl:variable name="is-pjax-request" select="$params[@name eq '_pjax'] eq 'true'"/>
 
   <xsl:template match="/">
+    <xsl:if test="$set-version">
+      <xsl:value-of select="$_set-cookie"/> <!-- empty sequence; evaluated only for side effect -->
+    </xsl:if>
     <!--
     <xsl:value-of select="$content/.."/>
     <xsl:value-of select="substring-after($external-uri,$external-uri)"/>
@@ -126,7 +129,7 @@
 
           <xsl:template mode="version-list-item-href" match="version">
             <xsl:variable name="version" select="if (@number eq $api:default-version) then '' else @number"/>
-            <xsl:sequence select="concat('/', $version)"/>
+            <xsl:sequence select="concat('/', $version, '?', $set-version-param-name, '=', @number)"/>
           </xsl:template>
 
 
