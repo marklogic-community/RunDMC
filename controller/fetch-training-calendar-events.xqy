@@ -72,7 +72,7 @@ try {
     let $table :=
       ( xdmp:tidy(
           xdmp:http-get(
-            'http://www.marklogic.com/services/training.html'
+            'http://www.marklogic.com/products-and-services/upcoming-classes/'
           ) [2]
         ) [2]
       ) //xhtml:body//xhtml:table[1]
@@ -88,7 +88,7 @@ try {
                 </xhtml:div>
             )
         else
-            local:fail("no training events found at http://www.marklogic.com/services/training.html")
+            local:fail("no training events found at http://www.marklogic.com/products-and-services/upcoming-classes/")
 }
 catch($e) {
   local:fail(("Stack trace: ", $e))
