@@ -203,6 +203,7 @@ as element(*)?
                 <type>{$type}</type>
                 <company>{$co}</company>
                 <date>{$now}</date>
+                <licensee>{$name}</licensee>
                 {$meta}
             </license>
         </person>
@@ -218,6 +219,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
 {
     let $user := users:getUserByEmail($email)
     let $uri := base-uri($user)
+    let $name := $user/name/string()
     let $doc := <person>
         { for $field in $user/* where not($field/local-name() = ('organization')) return $field }
             <organization>{$company}</organization>
@@ -225,6 +227,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
                 <type>express</type>
                 <company>{$company}</company>
                 <date>{fn:current-dateTime()}</date>
+                <licensee>{$name}</licensee>
                 {$license-metadata}
             </license>
         </person>
@@ -237,6 +240,7 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
 {
     let $user := users:getUserByEmail($email)
     let $uri := base-uri($user)
+    let $name := $user/name/string()
     let $doc := <person>
         { for $field in $user/* where not($field/local-name() = ('school')) return $field }
             <school>
@@ -248,6 +252,7 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
                 <school>{$school}</school>
                 <year-of-graduation>{$yog}</year-of-graduation>
                 <date>{fn:current-dateTime()}</date>
+                <licensee>{$name}</licensee>
                 {$license-metadata}
             </license>
         </person>

@@ -18,6 +18,7 @@ let $params         := for $p in param:params()
 
 let $string-params := string-join($params, "&amp;")
 
+let $version := xdmp:get-request-field("version")
 let $name := xdmp:get-request-field("name")
 let $email := xdmp:get-request-field("email")
 let $passwd := xdmp:get-request-field("password")
@@ -35,7 +36,8 @@ let $yog := xdmp:get-request-field("yog")
 
 
 let $valid-url := fn:concat($valid-url, "?", 
-           "hostname=", xdmp:url-encode($hostname),
+           "version=", xdmp:url-encode($version),            
+           "&amp;hostname=", xdmp:url-encode($hostname),
            "&amp;cpus=", xdmp:url-encode($cpus),            
            "&amp;platform=", xdmp:url-encode($platform),
            "&amp;target=", xdmp:url-encode($target),
@@ -80,7 +82,6 @@ let $invalid-url := concat($invalid-url, $error)
 
 let $meta := (
     <cpus>{$cpus}</cpus>,
-    <licensee>{$name}</licensee>,
     <platform>{$platform}</platform>,
     <hostname>{$hostname}</hostname>
 )
@@ -100,8 +101,12 @@ let $name := if ($valid) then
 else
     $name
 
-(: If we're not signing up, we have to go look up the name and append it :)
-let $valid-url := concat($valid-url, "&amp;licensee=", xdmp:url-encode($name))
+let $hash := doc("/private/license-hash.xml")/hash/string()
+
+let $valid-url := concat($valid-url, 
+    "&amp;licensee=", xdmp:url-encode($name),
+    "&amp;hash=", xdmp:url-encode($hash),
+"")
 
 let $_ := xdmp:log($valid-url)
 
