@@ -102,10 +102,12 @@ else
     $name
 
 let $hash := doc("/private/license-hash.xml")/hash/string()
+let $rnumber := doc("/private/license-hash.xml")/id/string()
 
 let $valid-url := concat($valid-url, 
     "&amp;licensee=", xdmp:url-encode($name),
     "&amp;hash=", xdmp:url-encode($hash),
+    "&amp;rnumber=", xdmp:url-encode($rnumber),
 "")
 
 let $_ := xdmp:log($valid-url)
