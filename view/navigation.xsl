@@ -82,7 +82,7 @@
 
                   <xsl:template mode="top-nav-current-att" match="page"/>
 
-                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation]
+                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation][not(@api-server)]
                                                                 | page[@api-server and $currently-on-api-server]">
                     <xsl:attribute name="class">current</xsl:attribute>
                   </xsl:template>
