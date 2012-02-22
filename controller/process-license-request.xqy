@@ -1,0 +1,109 @@
+xquery version "1.0-ml";
+
+import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
+import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
+import module namespace users="users" at "/lib/users.xqy";
+import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
+import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
+
+
+let $orig-url       := xdmp:get-request-url()
+let $query-string   := substring-after($orig-url, '?')
+let $valid-url      := xdmp:get-request-field("r")
+let $invalid-url    := "/license/default.xqy"
+
+let $params         := for $p in param:params()
+                       where not($p/@name/string() = ("r", "password", "password_conf"))
+                       return concat($p/@name/string(), "=", xdmp:url-encode($p/string()))
+
+let $string-params := string-join($params, "&amp;")
+
+let $name := xdmp:get-request-field("name")
+let $email := xdmp:get-request-field("email")
+let $passwd := xdmp:get-request-field("password")
+let $signup := xdmp:get-request-field("signup") eq "1"
+let $type := xdmp:get-request-field("type")
+
+let $cpus := xdmp:get-request-field("cpus")
+let $platform := xdmp:get-request-field("platform")
+let $hostname := xdmp:get-request-field("hostname")
+let $target := xdmp:get-request-field("target") 
+
+let $company := xdmp:get-request-field("company")
+let $school := xdmp:get-request-field("school")
+let $yog := xdmp:get-request-field("yog")
+
+
+let $valid-url := fn:concat($valid-url, "?", 
+           "hostname=", xdmp:url-encode($hostname),
+           "&amp;cpus=", xdmp:url-encode($cpus),            
+           "&amp;platform=", xdmp:url-encode($platform),
+           "&amp;target=", xdmp:url-encode($target),
+           "&amp;type=", xdmp:url-encode($type),
+           "&amp;company=", xdmp:url-encode(if ($type eq "express") then $company else $school),
+           "&amp;email=", xdmp:url-encode($email))
+
+let $invalid-url := fn:concat($invalid-url, "?", $string-params, "&amp;retrying=1")
+
+let $valid-type := if ($type eq 'express') then
+        xdmp:get-request-field("company")
+    else
+        xdmp:get-request-field("yog") and xdmp:get-request-field("school")
+
+let $valid := 
+    if ($signup) then
+        $name and $email and $passwd and ($passwd eq xdmp:get-request-field("password_conf"))
+        and util:validateEmail($email)
+        and not(users:emailInUse($email))
+        and $valid-type
+    else
+        $email and
+        $passwd and
+        users:checkCreds($email, $passwd) and
+        $valid-type 
+
+let $error := if ($signup) then
+        if (users:emailInUse($email)) then
+            "&amp;inuse=1"
+        else
+            if ($passwd ne xdmp:get-request-field("password_conf")) then
+                "&amp;nonmatching=1"
+            else
+                ""
+    else
+        if (not(users:checkCreds($email, $passwd))) then
+            "&amp;badpassword=1"
+        else
+            ""
+
+let $invalid-url := concat($invalid-url, $error)
+
+let $meta := (
+    <cpus>{$cpus}</cpus>,
+    <licensee>{$name}</licensee>,
+    <platform>{$platform}</platform>,
+    <hostname>{$hostname}</hostname>
+)
+
+let $name := if ($valid) then
+    if ($signup) then
+        let $list := xdmp:get-request-field("dev-list") 
+        let $mktg-list := xdmp:get-request-field("mktg-list") 
+
+        return 
+        users:createUserAndRecordLicense($name, $email, $passwd, $list, $mktg-list, $company, $school, $yog, $meta)/name/string()
+    else
+        if ($type eq 'express') then
+            users:recordExpressLicense($email, $company, $meta)/name/string()
+        else
+            users:recordAcademicLicense($email, $school, $yog, $meta)/name/string()
+else
+    $name
+
+(: If we're not signing up, we have to go look up the name and append it :)
+let $valid-url := concat($valid-url, "&amp;licensee=", xdmp:url-encode($name))
+
+let $_ := xdmp:log($valid-url)
+
+return
+    xdmp:redirect-response(if ($valid) then $valid-url else $invalid-url)

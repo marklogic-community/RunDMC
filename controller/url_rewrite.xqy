@@ -211,6 +211,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/invalidate-navigation-cache.xqy"
     else if ($path eq "/validate") then
         concat("/controller/validate.xqy?", $query-string)
+    else if ($path eq "/process-license-request") then
+        concat("/controller/process-license-request.xqy?", $query-string)
     else if ($path eq "/signup") then
         "/controller/signup.xqy"
     else if ($path eq "/fb-login") then

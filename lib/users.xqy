@@ -167,6 +167,96 @@ as element(*)?
     return $doc
 };
 
+declare function users:createUserAndRecordLicense($name, $email, $pass, $list, $mktg-list, $company, $school, $yog, $meta)
+as element(*)? 
+{
+    let $id := xdmp:random()
+    let $uri := concat("/private/people/", $id, ".xml")
+    let $hash := xdmp:crypt($pass, $email)
+    let $now := fn:current-dateTime()
+    let $picture := ""
+    let $type := if ($school) then "academic" else "express"
+
+    let $sch := if ($type eq 'academic') then () else
+        <school>
+            <name>{$school}</name>
+            <year-of-graduation>{$yog}</year-of-graduation>
+        </school>
+    let $co := if ($type eq 'academic') then $school else $company
+
+    let $doc := 
+        <person>
+            <id>{$id}</id>
+            <email>{$email}</email>
+            <name>{$name}</name>
+            <password>{$hash}</password>
+            <facebook-id></facebook-id>
+            <picture>{$picture}</picture>
+            <list>{$list}</list>
+            <mktg-list>{$mktg-list}</mktg-list>
+            <created>{$now}</created>
+            <title>Developer</title>
+            <twitter></twitter>
+            <organization>{$company}</organization>
+            {$sch}
+            <license>
+                <type>{$type}</type>
+                <company>{$co}</company>
+                <date>{$now}</date>
+                {$meta}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
+    let $_ := users:logNewUser($doc)
+
+    return $doc
+};
+
+declare function users:recordExpressLicense($email, $company, $license-metadata)
+{
+    let $user := users:getUserByEmail($email)
+    let $uri := base-uri($user)
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('organization')) return $field }
+            <organization>{$company}</organization>
+            <license>
+                <type>express</type>
+                <company>{$company}</company>
+                <date>{fn:current-dateTime()}</date>
+                {$license-metadata}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+declare function users:recordAcademicLicense($email, $school, $yog, $license-metadata)
+{
+    let $user := users:getUserByEmail($email)
+    let $uri := base-uri($user)
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('school')) return $field }
+            <school>
+                <name>{$school}</name>
+                <year-of-graduation>{$yog}</year-of-graduation>
+            </school>
+            <license>
+                <type>academic</type>
+                <school>{$school}</school>
+                <year-of-graduation>{$yog}</year-of-graduation>
+                <date>{fn:current-dateTime()}</date>
+                {$license-metadata}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+
 declare function users:updateUserWithFacebookID($user, $facebook-id)
 as element(*)? 
 {
@@ -278,7 +368,9 @@ declare function users:logNewUser($user)
             {concat("
 Username: ", $user/name/string(), "
 Email: ", $user/email/string(), "
-ID: ", $user/id/string())
+ID: ", $user/id/string(), "
+Organization: ", $user/organization/string(), "
+School: ", $user/school/name/string())
             }
             </em:content>
         )
