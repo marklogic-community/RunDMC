@@ -117,10 +117,10 @@ let $valid-url := concat($valid-url,
 let $_ := xdmp:log($valid-url)
 :)
 
-let $url := if ($valid) then $valid-url else $invalid-url
-
 (: We use the synchronous version of the ga snippet on purpose since we want it to load before redirecting :)
+(: and we redirect to a redirector so that the referrer header is predictable :)
 return
+    if ($valid) then
     (
     xdmp:set-response-content-type("text/html"), 
     <html>
@@ -137,11 +137,10 @@ return
             pageTracker._setDomainName('marklogic.com');
             pageTracker._trackPageview();
         }} catch(err) {{}}
-        window.location.href = "/license-record?url={xdmp:url-encode($url)}";
+        window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
         </script>
         </head>
     </html>
     ) 
-(:
-    xdmp:redirect-response($url)
-:)
+    else
+        xdmp:redirect-response($invalid-url)
