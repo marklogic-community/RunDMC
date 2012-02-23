@@ -140,6 +140,7 @@ return
         window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
         </script>
         </head>
+        <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
     </html>
     ) 
     else
