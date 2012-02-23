@@ -6,6 +6,8 @@ import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
 
+declare option xdmp:output "method=html";
+
 
 let $orig-url       := xdmp:get-request-url()
 let $query-string   := substring-after($orig-url, '?')
@@ -74,7 +76,8 @@ let $error := if ($signup) then
                 ""
     else
         if (not(users:checkCreds($email, $passwd))) then
-            "&amp;badpassword=1"
+            let $_ := xdmp:log(concat("Failed credential check for ", $email))
+            return "&amp;badpassword=1"
         else
             ""
 
@@ -110,7 +113,35 @@ let $valid-url := concat($valid-url,
     "&amp;rnumber=", xdmp:url-encode($rnumber),
 "")
 
+(:
 let $_ := xdmp:log($valid-url)
+:)
 
+let $url := if ($valid) then $valid-url else $invalid-url
+
+(: We use the synchronous version of the ga snippet on purpose since we want it to load before redirecting :)
 return
-    xdmp:redirect-response(if ($valid) then $valid-url else $invalid-url)
+    (
+    xdmp:set-response-content-type("text/html"), 
+    <html>
+        <head>
+        <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {{
+            var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
+            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            var pageTracker = _gat._getTracker(acct);
+            pageTracker._setDomainName('marklogic.com');
+            pageTracker._trackPageview();
+        }} catch(err) {{}}
+        window.location.href = "/license-record?url={xdmp:url-encode($url)}";
+        </script>
+        </head>
+    </html>
+    ) 
+(:
+    xdmp:redirect-response($url)
+:)
