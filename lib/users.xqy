@@ -177,7 +177,7 @@ as element(*)?
     let $picture := ""
     let $type := if ($school) then "academic" else "express"
 
-    let $sch := if ($type eq 'academic') then () else
+    let $sch := if ($type eq 'express') then () else
         <school>
             <name>{$school}</name>
             <year-of-graduation>{$yog}</year-of-graduation>
@@ -197,7 +197,7 @@ as element(*)?
             <created>{$now}</created>
             <title>Developer</title>
             <twitter></twitter>
-            <organization>{$company}</organization>
+            <organization>{$co}</organization>
             {$sch}
             <license>
                 <type>{$type}</type>
