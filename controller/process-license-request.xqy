@@ -5,16 +5,16 @@ import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/
 import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
+import module namespace functx = "http://www.functx.com" at "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
 
 declare option xdmp:output "method=html";
-
 
 let $orig-url       := xdmp:get-request-url()
 let $query-string   := substring-after($orig-url, '?')
 let $valid-url      := xdmp:get-request-field("r")
 let $invalid-url    := "/license/default.xqy"
 
-let $params         := for $p in param:params()
+let $params         := for $p in param:trimmed-params()
                        where not($p/@name/string() = ("r", "password", "password_conf"))
                        return concat($p/@name/string(), "=", xdmp:url-encode($p/string()))
 
@@ -35,6 +35,12 @@ let $target := xdmp:get-request-field("target")
 let $company := xdmp:get-request-field("company")
 let $school := xdmp:get-request-field("school")
 let $yog := xdmp:get-request-field("yog")
+
+let $passwd := functx:trim($passwd)
+let $company := functx:trim($company)
+let $school := functx:trim($school)
+let $name := functx:trim($name)
+let $email := functx:trim($email)
 
 
 let $valid-url := fn:concat($valid-url, "?", 

@@ -15,6 +15,18 @@ declare function param:params() {
        return $doc/params/param
 };
 
+declare function param:trimmed-params() {
+  for $name  in xdmp:get-request-field-names(),
+      $value in xdmp:get-request-field($name)
+    return
+       let $doc := document {
+                     <params>
+                       <param name="{$name}">{ functx:trim($value) }</param>
+                     </params>
+                   }
+       return $doc/params/param
+};
+
 declare function param:distinct-trimmed-params() {
   for $name  in fn:distinct-values(xdmp:get-request-field-names()),
       $value in xdmp:get-request-field($name)
