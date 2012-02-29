@@ -1,7 +1,5 @@
 xquery version "1.0-ml";
 
-import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
-import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
 import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
