@@ -22,6 +22,7 @@ let $version := xdmp:get-request-field("version")
 let $name := xdmp:get-request-field("name")
 let $email := xdmp:get-request-field("email")
 let $passwd := xdmp:get-request-field("password")
+let $conf_passwd := xdmp:get-request-field("conf_password")
 let $signup := xdmp:get-request-field("signup") eq "1"
 let $type := xdmp:get-request-field("type")
 
@@ -35,6 +36,7 @@ let $school := xdmp:get-request-field("school")
 let $yog := xdmp:get-request-field("yog")
 
 let $passwd := functx:trim($passwd)
+let $conf_passwd := functx:trim($conf_passwd)
 let $company := functx:trim($company)
 let $school := functx:trim($school)
 let $name := functx:trim($name)
@@ -60,7 +62,9 @@ let $valid-type := if ($type eq 'express') then
 
 let $valid := 
     if ($signup) then
-        $name and $email and $passwd and ($passwd eq xdmp:get-request-field("password_conf"))
+        $name and $email and $passwd and ($passwd eq $conf_passwd)
+        and fn:string-length($email) le 255
+        and fn:string-length($passwd) le 255
         and util:validateEmail($email)
         and not(users:emailInUse($email))
         and $valid-type
@@ -73,8 +77,14 @@ let $valid :=
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
             "&amp;inuse=1"
+        else if (not(util:validateEmail($email))) then
+            "&amp;bademail=1"
+        else if (fn:string-length($email) gt 255) then
+            "&amp;toolong=email"
+        else if (fn:string-length($passwd) gt 255) then
+            "&amp;toolong=passwd"
         else
-            if ($passwd ne xdmp:get-request-field("password_conf")) then
+            if ($passwd ne $conf_passwd) then
                 "&amp;nonmatching=1"
             else
                 ""
