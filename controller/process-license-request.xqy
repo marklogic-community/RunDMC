@@ -22,7 +22,7 @@ let $version := xdmp:get-request-field("version")
 let $name := xdmp:get-request-field("name")
 let $email := xdmp:get-request-field("email")
 let $passwd := xdmp:get-request-field("password")
-let $conf_passwd := xdmp:get-request-field("conf_password")
+let $conf_passwd := xdmp:get-request-field("password_conf")
 let $signup := xdmp:get-request-field("signup") eq "1"
 let $type := xdmp:get-request-field("type")
 
