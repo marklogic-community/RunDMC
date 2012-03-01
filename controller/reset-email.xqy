@@ -10,7 +10,7 @@ let $name := users:getUserByEmail($email)/name/string()
 let $hostname := xdmp:hostname()
 
 let $hostname := 
-    if ($hostname eq ('community.marklogic.com', 'developer.marklogic.com')) then
+    if ($hostname = ("community.marklogic.com", "developer.marklogic.com")) then
         "community.marklogic.com"
     else if ($hostname = ("stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
         "dmc-stage.marklogic.com"
