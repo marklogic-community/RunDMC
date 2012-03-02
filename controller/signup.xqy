@@ -18,7 +18,13 @@ return if (not(exists($signed_request))) then
     let $signup := xdmp:get-request-field("list", "off")
 
     (: validate email addy, passwords, etc :)
-    let $valid := util:validateEmail($email) and ($password eq $confirm-password) and ($name and not($name eq ""))
+    let $valid := util:validateEmail($email) and 
+        (fn:string-length($email) le 255) and
+        (fn:string-length($password) le 255) and
+        ($password and not($password eq "")) and 
+        ($password eq $confirm-password) and 
+        ($name and not($name eq "")) and
+        true()
     
     (: rely on nice client side error messages; this validation is for protection, so no need to be nice with error text :)
     let $user := if ($valid) then users:createOrUpdateUser($name, $email, $password, $signup)
