@@ -2332,6 +2332,7 @@ a.drop-down-trigger.menu-open span {
 }
 
 #profile-form input[type=text], #profile-form input[type=password],
+#profile-form select,
 #reset-form input[type=text],
 #signup-form input[type=text], #signup-form input[type=password] {
 	border: 1px solid #CFCFCF;

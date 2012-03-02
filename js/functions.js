@@ -389,6 +389,15 @@ if(typeof jQuery != 'undefined') {
 		    // e.preventDefault();
         //});
 
+        var d = $('.yearpicker').attr('data-value');
+        var now = new Date().getFullYear();
+        for (i = now; i < now + 10 ; i++)
+        {
+            $('.yearpicker').append($('<option />').val(i).html(i));
+        }
+        $('.yearpicker').append($('<option />').html('N/A'));
+        $('.yearpicker').val(d);
+        
 
 		// add new functions before this comment
 

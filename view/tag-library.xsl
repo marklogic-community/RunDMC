@@ -1019,6 +1019,17 @@
             <input class="" id="location" name="location" value="{$user/*:location/string()}" type="text"/>
         </div>
     </fieldset>
+    <h3>Educational background</h3>
+    <fieldset>
+        <div class="profile-form-row">
+            <div class="profile-form-label">School </div>
+            <input class="" id="school" name="school" value="{$user/*:school/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Year of graduation </div>
+            <select class="yearpicker" id="yog" name="yog" data-value="{$user/*:yog/string()}"></select>
+        </div>
+    </fieldset>
     </div>
   </xsl:template>
 

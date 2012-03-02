@@ -178,10 +178,10 @@ as element(*)?
     let $type := if ($school) then "academic" else "express"
 
     let $sch := if ($type eq 'express') then () else
-        <school>
-            <name>{$school}</name>
-            <year-of-graduation>{$yog}</year-of-graduation>
-        </school>
+        (
+            <school>{$school}</school>,
+            <yog>{$yog}</yog>
+        )
     let $co := if ($type eq 'academic') then $school else $company
 
     let $doc := 
@@ -242,15 +242,13 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
     let $uri := base-uri($user)
     let $name := $user/name/string()
     let $doc := <person>
-        { for $field in $user/* where not($field/local-name() = ('school')) return $field }
-            <school>
-                <name>{$school}</name>
-                <year-of-graduation>{$yog}</year-of-graduation>
-            </school>
+        { for $field in $user/* where not($field/local-name() = ('school', 'yog')) return $field }
+            <school>{$school}</school>
+            <yog>{$yog}</yog>
             <license>
                 <type>academic</type>
                 <school>{$school}</school>
-                <year-of-graduation>{$yog}</year-of-graduation>
+                <yog>{$yog}</yog>
                 <date>{fn:current-dateTime()}</date>
                 <licensee>{$name}</licensee>
                 {$license-metadata}
@@ -375,7 +373,7 @@ Username: ", $user/name/string(), "
 Email: ", $user/email/string(), "
 ID: ", $user/id/string(), "
 Organization: ", $user/organization/string(), "
-School: ", $user/school/name/string())
+School: ", $user/school/string())
             }
             </em:content>
         )
@@ -449,7 +447,7 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
     (: todo: cheap secure by only storing first 10? :) 
 
     (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
-    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country', 'twitter')
+    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country', 'twitter', 'school', 'yog')
     let $params := for $p in $params where $p/@name = $fields return $p
 
     let $doc := <person>
