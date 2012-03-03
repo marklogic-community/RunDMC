@@ -27,6 +27,7 @@
     <webdav-server port="8005"/>
     <admin-server port="8006"/>
     <api-server port="8009"/>
+    <standalone-api-server port="8011"/>
   </host>
 
 </hosts>

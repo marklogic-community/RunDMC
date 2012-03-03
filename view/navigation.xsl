@@ -37,7 +37,9 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="top-nav">
+
+  <!-- Don't display the top-level navigation when we're on the standalone API -->
+  <xsl:template match="top-nav[not($srv:viewing-standalone-api)]">
     <nav>
       <ul>
         <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>

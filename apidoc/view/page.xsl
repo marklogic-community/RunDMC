@@ -83,8 +83,16 @@
   <!-- Prepend the appropriate server name to the search form target -->
   <xsl:template match="@ml:action">
     <xsl:attribute name="action">
-      <xsl:value-of select="$srv:main-server"/>
-      <xsl:value-of select="."/>
+      <xsl:choose>
+        <xsl:when test="$srv:viewing-standalone-api">
+          <xsl:value-of select="$srv:standalone-api-server"/>
+          <xsl:text>/do-search</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$srv:main-server"/>
+          <xsl:text>/search</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:attribute>
   </xsl:template>
 
