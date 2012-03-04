@@ -21,7 +21,7 @@ application up and running on your machine.
 
    Later on, whenever you need to get the latest code, run this command:
 
-   $ git pull origin apidoc
+   $ git pull
 
    Note: The above clone URL is read-only. For push/write access, you'll
          need the appropriate ssh credentials, etc.
