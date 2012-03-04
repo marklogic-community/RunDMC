@@ -45,6 +45,13 @@ catch ($e) {
         concat("Forest ",$forest-name," is already attached to ",$database-name,", skipping attach")
         else $e
 },
+
+let $config := admin:database-set-uri-lexicon($config, xdmp:database($database-name), true())
+let $status := admin:save-configuration($config)
+return concat("Successfully enabled the URI lexicon on the ",$database-name," database.")
+
+,
+
 try {
         let $appserver-create-config := admin:http-server-create($config, $groupid, $http-server-name, 
                     xdmp:modules-root(), $http-server-port, 0, xdmp:database($database-name))
