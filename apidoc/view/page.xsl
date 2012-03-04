@@ -80,22 +80,6 @@
     <xsl:attribute name="href" select="concat($version-prefix,.)"/>
   </xsl:template>
 
-  <!-- Prepend the appropriate server name to the search form target -->
-  <xsl:template match="@ml:action">
-    <xsl:attribute name="action">
-      <xsl:choose>
-        <xsl:when test="$srv:viewing-standalone-api">
-          <xsl:value-of select="$srv:standalone-api-server"/>
-          <xsl:text>/do-search</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$srv:main-server"/>
-          <xsl:text>/search</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
-  </xsl:template>
-
   <!-- Make search stick to the current API version -->
   <xsl:template match="x:input[@name eq $set-version-param-name]/@ml:value">
     <xsl:attribute name="value">

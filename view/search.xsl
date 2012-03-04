@@ -90,7 +90,7 @@
 
                           <!-- version-specific results URL -->
                           <xsl:template mode="version-list-item-href" match="*:version">
-                            <xsl:sequence select="concat('/search?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
+                            <xsl:sequence select="concat('?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
                           </xsl:template>
 
 
@@ -185,11 +185,28 @@
           </xsl:function>
 
 
-  <xsl:template match="sub-nav[$external-uri eq '/search']">
+  <xsl:template match="sub-nav[$external-uri = ('/search','/apidoc/do-search')]">
     <section>
       <xsl:value-of select="$_set-cookie"/> <!-- empty sequence; evaluate for side effect only -->
       <xsl:apply-templates mode="facet" select="$facets-response/search:facet"/>
     </section>
+  </xsl:template>
+
+
+  <!-- Prepend the appropriate server name to the search form target -->
+  <xsl:template match="@ml:action">
+    <xsl:attribute name="action">
+      <xsl:choose>
+        <xsl:when test="$srv:viewing-standalone-api">
+          <xsl:value-of select="$srv:standalone-api-server"/>
+          <xsl:text>/do-search</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$srv:main-server"/>
+          <xsl:text>/search</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
   </xsl:template>
 
 
@@ -240,7 +257,9 @@
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
             <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:api-server,  $version-prefix, ml:external-uri-api($doc))
+            <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
+                                                                                     else $srv:api-server"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server,  $version-prefix, ml:external-uri-api($doc))
                                                                      else if ($is-flat-file) then @uri
                                                                                              else ml:external-uri-main($doc)"/>
             <tr>

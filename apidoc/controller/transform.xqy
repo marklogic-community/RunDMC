@@ -9,6 +9,8 @@ declare namespace map = "http://marklogic.com/xdmp/map";
 let $map     := map:map()
 let $params  := param:params()
 let $doc-url := $params[@name eq 'src']
+let $xslt    := if ($doc-url eq '/apidoc/do-search.xml') then "../../view/page.xsl" (: Use the main site template for the search results page :)
+                                                         else    "../view/page.xsl"
 
 return
-  xdmp:xslt-invoke("../view/page.xsl", doc($doc-url), (map:put($map,"params",$params),$map))
+  xdmp:xslt-invoke($xslt, doc($doc-url), (map:put($map,"params",$params),$map))

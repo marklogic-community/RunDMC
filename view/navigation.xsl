@@ -120,7 +120,7 @@
   <xsl:template match="breadcrumbs" name="breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation[1]"/>
     <!-- Append the "Server version" switcher if we're on the search results page -->
-    <xsl:apply-templates mode="version-list" select=".[$external-uri eq '/search']"/>
+    <xsl:apply-templates mode="version-list" select=".[$external-uri = ('/search','/apidoc/do-search')]"/>
   </xsl:template>
 
           <!-- No breadcrumbs on home page -->
@@ -273,7 +273,7 @@
 
 
   <!-- We use an id on certain pages (search results) -->
-  <xsl:template match="xhtml:body/@ml:id[$external-uri eq '/search']" priority="1">
+  <xsl:template match="xhtml:body/@ml:id[$external-uri = ('/search','/apidoc/do-search')]" priority="1">
     <xsl:attribute name="id" select="'results'"/>
   </xsl:template>
   <!-- but not others -->

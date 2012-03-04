@@ -174,8 +174,6 @@
                     <xsl:apply-templates select="product-info/name"/>
                   </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[ml:external-uri(.) eq '/search']">Search Results</xsl:template>
-
                   <xsl:template mode="page-specific-title" match="Project">
                     <xsl:apply-templates select="name/node()"/>
                   </xsl:template>
