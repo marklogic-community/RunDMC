@@ -7,6 +7,7 @@ import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "/con
 let $config := admin:get-configuration()
 let $forest-name := "RunDMCForest"
 let $database-name := "RunDMC"
+let $raw-db-name := "RunDMC-api-rawdocs"
 let $http-server-name := "RunDMC-standalone-api"
 let $http-server-port := xs:int(tokenize($srv:standalone-api-server,':')[last()])
 let $groupid := admin:group-get-id($config, "Default")
@@ -65,5 +66,24 @@ let $this-server-id := xdmp:server()
 let $set-db-config := admin:appserver-set-database($config, $this-server-id, xdmp:database($database-name))
 let $status := admin:save-configuration($set-db-config)
 return concat("Successfully associated the current server with the ",$database-name," database.")
+
+,
+
+try{
+        let $raw-db-config := admin:database-create($config, $raw-db-name, xdmp:database("Security"), xdmp:database("Schemas"))
+        let $status := admin:save-configuration($raw-db-config)
+        return concat("Successfully created the ",$raw-db-name," database.")
+}
+catch ($e) {
+        if (data($e/error:code) eq "ADMIN-DUPLICATENAME") then
+        concat("Database ",$raw-db-name," exists, skipping create")
+        else $e
+}
+,
+
+"Setting up indexes...",
+xdmp:invoke("/apidoc/setup/setup-indexes.xqy", (), <options xmlns="xdmp:eval">
+                                                     <database>{xdmp:database($database-name)}</database>
+                                                   </options>)
 
 )

@@ -13,16 +13,25 @@ application up and running on your machine.
 
    $ git clone git://github.com/marklogic/RunDMC.git
    $ cd RunDMC
-   $ git checkout -b apidoc
+   $ git branch apidoc origin/apidoc
+   $ git checkout apidoc
 
    Note: The first command will take a while due to downloading a large
          zip file that had been put in the repository.
 
+   Later on, whenever you need to get the latest code, run this command:
+
+   $ git pull origin apidoc
+
+   Note: The above clone URL is read-only. For push/write access, you'll
+         need the appropriate ssh credentials, etc.
+
 4. Create an app server for running scripts in this directory.
 
-   Name: RunDMC-Maintenance (anything will do)
+   Name: RunDMC-Maintenance (any name will do)
    Port: 8008 (or a different one if that's being used already)
-   Root: <rundmc-src-dir> (e.g., /Users/elenz/RunDMC)
+   Root: <rundmc-src-dir> (the directory you used above, e.g., /Users/elenz/RunDMC)
+   Database: Documents (this will get automatically changed later)
 
 5. In your browser, go to the following URL (assuming you used port 8008):
 
@@ -34,4 +43,5 @@ application up and running on your machine.
    to be something different, you'd need to first update /config/server-urls.xml
    before running the above script.
 
-6. Follow the steps in /apidoc/setup/README.txt to setup your database content.
+6. Follow the steps in /apidoc/setup/README.txt, starting at step #4
+   (steps 1-3 have already been completed for you).
