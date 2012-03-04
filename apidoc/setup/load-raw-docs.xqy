@@ -19,7 +19,7 @@ declare function local:load-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file'] return
       let $path := $file/dir:pathname
-      let $uri  := concat("/", $version, substring-after($path, $srcdir)) return
+      let $uri  := concat("/", $version, translate(substring-after($path, $srcdir),"\","/")) return
       (
         xdmp:eval(
           concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))'),
