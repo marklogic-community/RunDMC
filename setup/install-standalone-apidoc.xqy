@@ -59,4 +59,11 @@ catch ($e) {
 let $config := admin:appserver-set-url-rewriter(admin:get-configuration(), xdmp:server($http-server-name), $rewriter)
 let $status := admin:save-configuration($config)
 return concat("Successfully set http-server url rewriter to ",$rewriter)
+,
+
+let $this-server-id := xdmp:server()
+let $set-db-config := admin:appserver-set-database($config, $this-server-id, xdmp:database($database-name))
+let $status := admin:save-configuration($set-db-config)
+return concat("Successfully associated the current server with the ",$database-name," database.")
+
 )
