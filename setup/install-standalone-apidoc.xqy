@@ -8,6 +8,7 @@ let $config := admin:get-configuration()
 let $forest-name := "RunDMCForest"
 let $database-name := "RunDMC"
 let $raw-db-name := "RunDMC-api-rawdocs"
+let $raw-db-forest := "RunDMC-api-rawdocs"
 let $http-server-name := "RunDMC-standalone-api"
 let $http-server-port := xs:int(tokenize($srv:standalone-api-server,':')[last()])
 let $groupid := admin:group-get-id($config, "Default")
@@ -69,6 +70,17 @@ return concat("Successfully associated the current server with the ",$database-n
 
 ,
 
+try {
+        let $forest-create-config := admin:forest-create($config,$raw-db-forest,xdmp:host(),())
+        let $status := admin:save-configuration($forest-create-config)
+        return concat("Succesfully created ",$forest-name)
+}
+catch ($e) {
+        if (data($e/error:code) eq "ADMIN-DUPLICATENAME") then 
+        concat("Forest ",$raw-db-forest," exists, skipping create")
+        else $e
+},
+
 try{
         let $raw-db-config := admin:database-create($config, $raw-db-name, xdmp:database("Security"), xdmp:database("Schemas"))
         let $status := admin:save-configuration($raw-db-config)
@@ -80,6 +92,17 @@ catch ($e) {
         else $e
 }
 ,
+
+try {
+        let $forest-attach-config := admin:database-attach-forest($config,xdmp:database($raw-db-name),xdmp:forest($raw-db-forest))
+        let $status := admin:save-configuration($forest-attach-config)
+        return concat("Succesfully attached ",$raw-db-forest," to ",$raw-db-name)
+}
+catch ($e) {
+        if (data($e/error:code) eq "ADMIN-DATABASEFORESTATTACHED") then 
+        concat("Forest ",$raw-db-forest," is already attached to ",$raw-db-name,", skipping attach")
+        else $e
+},
 
 "Setting up indexes...",
 xdmp:invoke("/apidoc/setup/setup-indexes.xqy", (), <options xmlns="xdmp:eval">
