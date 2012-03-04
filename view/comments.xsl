@@ -10,15 +10,16 @@
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:dq   ="http://marklogic.com/disqus"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="qp xs ml xdmp dq">
+  exclude-result-prefixes="qp xs ml xdmp dq srv">
 
 
   <xsl:variable name="site-url-for-disqus" select="'http://developer.marklogic.com'"/>
 
-  <!-- Disable comments on pages that explicitly disable them -->
-  <xsl:template mode="comment-section" match="*[@disable-comments]"/>
+  <!-- Disable comments on pages that explicitly disable them. Also disable comments in the standalone apidoc app -->
+  <xsl:template mode="comment-section" match="*[@disable-comments or $srv:viewing-standalone-api]"/>
 
   <!-- Overridden by apidoc's XSLT -->
   <xsl:function name="ml:uri-for-commenting-purposes" as="xs:string">
