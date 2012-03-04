@@ -1,6 +1,8 @@
 This document lists the steps for getting a copy of the standalone apidoc
 application up and running on your machine.
 
+NOTE: Disqus comments are currently disabled in the standalone version of the app.
+
 1. Install MarkLogic 5 if you haven't already.
 
 2. Get and install git from http://git-scm.com.
