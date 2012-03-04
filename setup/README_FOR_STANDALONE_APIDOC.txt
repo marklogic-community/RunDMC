@@ -35,7 +35,7 @@ application up and running on your machine.
 
 5. In your browser, go to the following URL (assuming you used port 8008):
 
-   http://localhost:8008/setup/install-standalone-api.xqy
+   http://localhost:8008/setup/install-standalone-apidoc.xqy
 
    This script will set up your database, forest, and apidoc server.
 
