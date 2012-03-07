@@ -1,5 +1,9 @@
 Files in this directory:
 
+  - README_FOR_STANDALONE_APIDOC.txt
+
+    Step-by-step instructions for setting up the standalone apidoc application.
+
   - install.xqy
 
     Intended to auto-configure a server for use with RunDMC.
