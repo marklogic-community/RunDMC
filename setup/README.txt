@@ -1,6 +1,6 @@
 Files in this directory:
 
-  - README_FOR_STANDALONE_APIDOC.txt
+  - README_FOR_STANDALONE_APIDOC.md
 
     Step-by-step instructions for setting up the standalone apidoc application.
 
