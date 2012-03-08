@@ -124,7 +124,7 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- Copy these elements (and their attributes) -->
+  <!-- Copy these elements (and attributes too) -->
   <xsl:template match="@* | div | ul | ol | li">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
@@ -134,9 +134,20 @@
   <!-- Convert elements that should be converted -->
   <xsl:template match="*[string(my:new-name(.))]">
     <xsl:element name="{my:new-name(.)}">
+      <xsl:apply-templates mode="desired-atts" select="@*"/>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+          <!-- We're not interested in the attributes of translated elements... -->
+          <xsl:template mode="desired-atts" match="@*"/>
+
+          <!-- ...except for these -->
+          <xsl:template mode="desired-atts" match="@ROWSPAN[. ne '1']
+                                                 | @COLSPAN[. ne '1']">
+            <xsl:attribute name="{lower-case(name(.))}" select="."/>
+          </xsl:template>
+
 
           <xsl:function name="my:new-name">
             <xsl:param name="element"/>
