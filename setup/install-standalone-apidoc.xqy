@@ -4,6 +4,9 @@ import module namespace admin = "http://marklogic.com/xdmp/admin" at "/MarkLogic
 
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
 
+xdmp:set-response-content-type("text/plain"),
+xdmp:add-response-header("x-content-type-options","nosniff"), (: to prevent download prompt in IE :)
+
 let $config := admin:get-configuration()
 let $forest-name := "RunDMCForest"
 let $database-name := "RunDMC"
