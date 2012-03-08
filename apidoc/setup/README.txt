@@ -62,7 +62,7 @@ STEP 7: Run setup.xqy.
   NOTE: If you get an error message having to do with an invalid lexical ID,
         see the "WARNING" section below.
 
-STEP 8: Enable the collection lexicon in the RunDMC database (if not already enabled).
+STEP 8: If not already enabled, enable the collection lexicon in the RunDMC database.
 
 STEP 9: Run the collection tagger script (operates on both DMC- and AMC-related content).
   http://localhost:8008/setup/collection-tagger.xqy
