@@ -11,3 +11,5 @@ declare variable $search-corpus-query := cts:or-query($ml:server-versions/ml:sea
 (: Add the category collection URI :)
 for $doc-uri in cts:uris("",(),$search-corpus-query)
 return ml:reset-category-tags($doc-uri)
+
+,"Finished adding category tags."
