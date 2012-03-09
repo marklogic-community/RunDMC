@@ -203,12 +203,20 @@ if(typeof jQuery != 'undefined') {
                     var u = $(this).dialog.href;
                     _gaq.push(['_trackPageview', u],
                               ['_trackEvent', 'start-download', u]);
+                    try {
+                        var s = '/start-download' + u.replace(/\?.*/, "");
+                        mktoMunchkinFunction('clickLink', { href: s } );
                     $(this).dialog('close');
+                    } catch (err) {}
                     document.location = u + '?r=dmc';
                 },
                 Cancel: function() {
                     var u = $(this).dialog.href;
                     _gaq.push(['_trackEvent', 'cancel-download', u]);
+                    try {
+                        var s = '/cancel-download' + u.replace(/\?.*/, "");
+                        mktoMunchkinFunction('clickLink', { href: s } );
+                    } catch (err) {}
                     $(this).dialog('close');
                 }
            }
