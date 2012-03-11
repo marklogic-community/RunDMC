@@ -131,6 +131,12 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="underline">
+    <span class="underline">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
   <!-- Convert elements that should be converted -->
   <xsl:template match="*[string(my:new-name(.))]">
     <xsl:element name="{my:new-name(.)}">

@@ -79,6 +79,8 @@ pre, .userguide img {
 	font-size: 27px;
 }
 
+.underline { text-decoration: underline }
+
 #page_content ul {
 	padding-left: 20px;
 	list-style: disc;
