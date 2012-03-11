@@ -125,7 +125,7 @@
   </xsl:template>
 
   <!-- Copy these elements (and attributes too) -->
-  <xsl:template match="@* | div | ul | ol | li">
+  <xsl:template match="@* | div | ul | ol | li | code">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
     </xsl:copy>
@@ -163,6 +163,7 @@
                   <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
                   <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
                   <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
+                  <xsl:template mode="new-name" match="Bold"    >strong</xsl:template>
                   <xsl:template mode="new-name" match="Code
                                                      | CodeNoIndent">pre</xsl:template>
                   <xsl:template mode="new-name" match="Body
