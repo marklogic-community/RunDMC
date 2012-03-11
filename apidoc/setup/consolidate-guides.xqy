@@ -39,8 +39,8 @@ for $dir in $sub-dirs return
       xdmp:document-insert($target-url,
         <guide original-dir="{$dir}">{
           <title>{$title}</title>,
-          (: Get each XML doc in order, except for the title doc :)
-          for $doc in xdmp:directory($dir)[XML] except $title-doc
+          (: Get each XML doc in order :)
+          for $doc in xdmp:directory($dir)[XML]
           order by number(normalize-space($doc/XML/pagenum))
           return <XML original-file="{base-uri($doc)}">{
                    $doc/XML/node()

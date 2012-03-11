@@ -47,8 +47,54 @@
     </div>
   </xsl:template>
 
-  <!-- Don't copy the <title> element -->
-  <xsl:template mode="guide" match="guide/title"/>
+  <!-- Guide title -->
+  <xsl:template mode="guide" match="guide/title">
+    <!-- Add a PDF link at the top of each guide, before the <h1> -->
+    <a href="{$version-prefix}{ml:external-uri(.)}.pdf" class="guide-pdf-link">
+      <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
+    </a>
+    <h1>
+      <xsl:value-of select="."/>
+    </h1>
+  </xsl:template>
+
+  <xsl:template mode="guide" match="guide/info">
+    <table class="guide_info">
+      <tr>
+        <th>Server version</th>
+        <th>Date</th>
+        <th>Revision</th>
+      </tr>
+      <tr>
+        <td>
+          <xsl:value-of select="version"/>
+        </td>
+        <td>
+          <xsl:value-of select="date"/>
+        </td>
+        <td>
+          <xsl:value-of select="revision"/>
+        </td>
+      </tr>
+    </table>
+    <xsl:apply-templates mode="guide-chapter-list" select="."/>
+  </xsl:template>
+
+  <xsl:template mode="guide-chapter-list" match="guide/info">
+    <p>This guide includes the following sections:</p>
+    <ul>
+      <xsl:apply-templates mode="guide-chapter-list-item" select="../x:div[@class eq 'section']/x:h2/x:a"/>
+    </ul>
+  </xsl:template>
+
+          <xsl:template mode="guide-chapter-list-item" match="x:a">
+            <li>
+              <a href="{@href}">
+                <xsl:apply-templates/>
+              </a>
+            </li>
+          </xsl:template>
+
 
   <!-- Resolve the relative image URI according to the current guide -->
   <xsl:template mode="guide-att-value" match="x:img/@src">
@@ -75,14 +121,6 @@
                     <xsl:param name="text" as="xs:string"/>
                     <xsl:sequence select="normalize-space(lower-case(translate($text,'&#160;',' ')))"/>
                   </xsl:function>
-
-
-  <!-- Add a PDF link at the top of each guide, before the <h1> -->
-  <xsl:template mode="guide-before" match="x:h1">
-    <a href="{$version-prefix}{ml:external-uri(.)}.pdf" class="guide-pdf-link">
-      <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/> 
-    </a>
-  </xsl:template>
 
 
   <!-- Boilerplate copying code -->

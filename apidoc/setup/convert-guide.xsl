@@ -33,7 +33,7 @@
     </xsl:variable>
     <!-- Main conversion of source elements to XHTML elements -->
     <xsl:variable name="converted-content">
-      <xsl:apply-templates select="$lists-captured/guide/node()"/>
+      <xsl:apply-templates select="$lists-captured/guide/XML[position() gt 1]"/> <!-- Exclude the first <XML> (title.xml) -->
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
@@ -42,6 +42,18 @@
         <title>
           <xsl:value-of select="/guide/title"/>
         </title>
+        <!-- metadata from title.xml -->
+        <info>
+          <version>
+            <xsl:value-of select="/guide/XML[1]/Version"/>
+          </version>
+          <date>
+            <xsl:value-of select="/guide/XML[1]/Date"/>
+          </date>
+          <revision>
+            <xsl:value-of select="/guide/XML[1]/DateRev"/>
+          </revision>
+        </info>
         <!-- Last step: add the XHTML namespace -->
         <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
       </guide>
@@ -165,7 +177,6 @@
                     <xsl:value-of select="lower-case(local-name(.))"/>
                   </xsl:template>
                   <!-- Others need to be renamed -->
-                  <xsl:template mode="new-name" match="title"   >h1</xsl:template>
                   <xsl:template mode="new-name" match="ROW"     >tr</xsl:template>
                   <xsl:template mode="new-name" match="CELL"    >td</xsl:template>
                   <xsl:template mode="new-name" match="Emphasis">em</xsl:template>

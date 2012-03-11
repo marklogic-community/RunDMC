@@ -79,6 +79,10 @@ pre, .userguide img {
 	font-size: 27px;
 }
 
+table.guide_info { width: 100%; }
+table.guide_info td { white-space: nowrap; }
+table.guide_info { font-size: .8em; }
+
 .underline { text-decoration: underline }
 
 #page_content ul {
