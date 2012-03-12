@@ -130,7 +130,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        if ($path = ("/people/signup", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
+        if ($path = ("/people/signup", "/people/reset", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
             $path
         else
             "/people/supernodes"
@@ -213,8 +213,10 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/invalidate-navigation-cache.xqy"
     else if ($path eq "/validate") then
         concat("/controller/validate.xqy?", $query-string)
-    else if ($path eq "/people/profile") then
-        "/controller/profile.xqy"
+    else if ($path eq "/process-license-request") then
+        concat("/controller/process-license-request.xqy?", $query-string)
+    else if ($path eq "/license-record") then
+        concat("/controller/license-record.xqy?", $query-string)
     else if ($path eq "/signup") then
         "/controller/signup.xqy"
     else if ($path eq "/fb-login") then
@@ -223,10 +225,20 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/login.xqy"
     else if ($path eq "/logout") then
         "/controller/logout.xqy"
-    else if ($path eq "/enable-signups") then
-        "/controller/enable-signups.xqy?q=on"
-    else if ($path eq "/disable-signups") then
-        "/controller/enable-signups.xqy"
+    else if ($path eq "/set-password") then
+        "/controller/set-password.xqy"
+    else if ($path eq "/reset-email") then
+        "/controller/reset-email.xqy"
+    else if ($path eq "/reset") then
+        concat("/controller/reset.xqy?", $query-string)
+    else if ($path eq "/save-profile") then
+        "/controller/save-profile.xqy"
+    else if ($path eq "/enable-corn") then
+        "/controller/enable-corn.xqy?q=on"
+    else if ($path eq "/disable-corn") then
+        "/controller/enable-corn.xqy"
+    else if ($path eq "/signup-report") then
+        concat("/controller/signup-report.xqy?", $query-string)
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"

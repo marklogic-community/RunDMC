@@ -17,9 +17,11 @@ xquery version "1.0-ml";
 module namespace users = "users";
 import module namespace cookies = "http://parthcomp.com/cookies" at "cookies.xqy";
 import module namespace srv="http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
+import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+declare namespace em="URN:ietf:params:email-xml:";
 
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
@@ -31,15 +33,28 @@ declare function users:getUserByEmail($email as xs:string) as element(*)?
     /person[email eq $email]
 };
 
+declare function users:getUserByID($id as xs:string) as element(*)?
+{
+    /person[id eq $id]
+};
+
+
 declare function users:getUserByFacebookID($id as xs:string) as element(*)?
 {
     /person[facebook-id eq $id]
 };
 
-declare function users:startSession($user) as empty-sequence()
+declare function users:startSession($user as element(*)) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
     let $name := $user/name
+    let $id := $user/id/string()
+    let $uri := concat("/private/people/", $id, "/session.xml")
+    let $doc := <session>
+        <id>{$id}</id>
+        <session-id>{$sessionID}</session-id>
+    </session>
+    let $_ := xdmp:document-insert($uri, $doc) 
 
     return (
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false()),
@@ -49,6 +64,8 @@ declare function users:startSession($user) as empty-sequence()
 
 declare function users:endSession() as empty-sequence()
 {
+
+    (: todo remove session id from /person ? :) 
     ( 
     cookies:delete-cookie("RUNDMC-SESSION", (), "/"),
     cookies:delete-cookie("RUNDMC-NAME", (), "/")
@@ -58,7 +75,8 @@ declare function users:endSession() as empty-sequence()
 declare function users:getCurrentUserName()
     as xs:string?
 {
-    cookies:get-cookie("RUNDMC-NAME")
+    let $n := cookies:get-cookie("RUNDMC-NAME")
+    return if ($n eq "") then () else $n
 };
 
 declare function users:validateFacebookSignedRequest($signed_request as xs:string)
@@ -100,7 +118,7 @@ declare function users:createOrUpdateUser($name, $email, $password, $list)
     return
     if ($user) then
         if ($user/password = ("", $hash)) then
-            users:updateUserWithPassword($user, $name, $email, $password, $list)
+            users:updateUserWithPassword($user, $name, $password, $list)
         else
             "Email address in already registered"
     else
@@ -114,8 +132,7 @@ declare function users:createOrUpdateFacebookUser($name, $email, $password, $fac
     return
     if ($user) then
         if ($user/facebook-id = ("", $facebook-id)) then
-            let $hash := xdmp:crypt($password, $email)
-            return users:updateUserWithFacebookID($user, $name, $email, $hash, $facebook-id, $list)
+            users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
         else
             "Email address associated with this facebook account is registered here via another facebook account"
     else
@@ -128,6 +145,7 @@ as element(*)?
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
+    let $picture := if ($facebook-id) then concat("https://graph.facebook.com/", $facebook-id, "/picture") else ""
     let $doc := 
         <person>
             <id>{$id}</id>
@@ -135,8 +153,11 @@ as element(*)?
             <name>{$name}</name>
             <password>{$hash}</password>
             <facebook-id>{$facebook-id}</facebook-id>
-            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+            <picture>{$picture}</picture>
             <list>{$list}</list>
+            <created>{fn:current-dateTime()}</created>
+            <title>Developer</title>
+            <twitter></twitter>
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
@@ -146,42 +167,143 @@ as element(*)?
     return $doc
 };
 
-declare function users:updateUserWithFacebookID($user, $name, $email, $hash, $facebook-id, $list)
+declare function users:createUserAndRecordLicense($name, $email, $pass, $list, $mktg-list, $company, $school, $yog, $meta)
 as element(*)? 
 {
-    let $uri := base-uri($user)
+    let $id := xdmp:random()
+    let $uri := concat("/private/people/", $id, ".xml")
+    let $hash := xdmp:crypt($pass, $email)
+    let $now := fn:current-dateTime()
+    let $picture := ""
+    let $type := if ($school) then "academic" else "express"
+
+    let $sch := if ($type eq 'express') then () else
+        (
+            <school>{$school}</school>,
+            <yog>{$yog}</yog>
+        )
+    let $co := if ($type eq 'academic') then $school else $company
+
     let $doc := 
         <person>
-            <id>{$user/id/string()}</id>
+            <id>{$id}</id>
             <email>{$email}</email>
             <name>{$name}</name>
             <password>{$hash}</password>
+            <facebook-id></facebook-id>
+            <picture>{$picture}</picture>
+            <list>{$list}</list>
+            <mktg-list>{$mktg-list}</mktg-list>
+            <created>{$now}</created>
+            <title>Developer</title>
+            <twitter></twitter>
+            <organization>{$co}</organization>
+            {$sch}
+            <license>
+                <type>{$type}</type>
+                <company>{$co}</company>
+                <date>{$now}</date>
+                <licensee>{$name}</licensee>
+                {$meta}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
+    let $_ := users:logNewUser($doc)
+
+    return $doc
+};
+
+declare function users:recordExpressLicense($email, $company, $license-metadata)
+{
+    let $user := users:getUserByEmail($email)
+    let $uri := base-uri($user)
+    let $name := $user/name/string()
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('organization')) return $field }
+            <organization>{$company}</organization>
+            <license>
+                <type>express</type>
+                <company>{$company}</company>
+                <date>{fn:current-dateTime()}</date>
+                <licensee>{$name}</licensee>
+                {$license-metadata}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+declare function users:recordAcademicLicense($email, $school, $yog, $license-metadata)
+{
+    let $user := users:getUserByEmail($email)
+    let $uri := base-uri($user)
+    let $name := $user/name/string()
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('school', 'yog')) return $field }
+            <school>{$school}</school>
+            <yog>{$yog}</yog>
+            <license>
+                <type>academic</type>
+                <school>{$school}</school>
+                <yog>{$yog}</yog>
+                <date>{fn:current-dateTime()}</date>
+                <licensee>{$name}</licensee>
+                {$license-metadata}
+            </license>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+
+declare function users:updateUserWithFacebookID($user, $facebook-id)
+as element(*)? 
+{
+    let $uri := base-uri($user)
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture')) return $field }
             <facebook-id>{$facebook-id}</facebook-id>
             <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+        </person>
+
+    let $_ := xdmp:document-insert($uri, $doc)
+    return  $doc
+};
+
+declare function users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
+as element(*)? 
+{
+    let $uri := base-uri($user)
+    let $email := $user/email/string()
+    let $hash := xdmp:crypt($password, $email)
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture', 'name', 'password', 'list')) return $field }
+            <facebook-id>{$facebook-id}</facebook-id>
+            <name>{$name}</name>
+            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
+            <password>{$hash}</password>
             <list>{$list}</list>
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := if ($list eq "on") then (: todo check list bool val  from form :)
-        users:registerForMailingList($email, 'not-so-secret')  (: not sure what pass to use; xxx :)
-    else    
-        ()
-
     return  $doc
 };
 
-declare function users:updateUserWithPassword($user, $name, $email, $password, $list)
+declare function users:updateUserWithPassword($user, $name, $password, $list)
 as element(*)? 
 {
     let $uri := base-uri($user)
+    let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
     let $doc := 
         <person>
-            <id>{$user/id/string()}</id>
-            <email>{$email}</email>
+        { for $field in $user/* where not($field/local-name() = ('name', 'password', 'list')) return $field }
             <name>{$name}</name>
             <password>{$hash}</password>
-            <facebook-id>{$user/facebook-id/string()}</facebook-id>
             <list>{$list}</list>
         </person>
 
@@ -220,8 +342,45 @@ declare function users:registerForMailingList($email, $pass)
 
 declare function users:logNewUser($user) 
 {
-    (: todo send us email :)
-    xdmp:log(concat("Created user ", $user/id))
+    let $_ := xdmp:log(concat("Created user ", $user/id))
+
+    let $hostname := xdmp:hostname()
+
+    let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
+
+    let $address := 
+        if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+            "dmc-admin@marklogic.com"
+        else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
+            "eric.bloch@marklogic.com"
+        else
+            ()
+
+    let $_ := if ($address) then
+        util:sendEmail(
+
+            "RunDMC Signup",
+            $address,
+            false(),
+            "RunDMC Admin",
+            $address,
+            "RunDMC Admin",
+            $address,
+            concat($staging, "Signed up user ", $user/email/string()), 
+            <em:content>
+            {concat("
+Username: ", $user/name/string(), "
+Email: ", $user/email/string(), "
+ID: ", $user/id/string(), "
+Organization: ", $user/organization/string(), "
+School: ", $user/school/string())
+            }
+            </em:content>
+        )
+    else
+        ()
+
+    return ()
 };
 
 declare function users:checkCreds($email as xs:string, $password as xs:string) as element(*)?
@@ -237,6 +396,77 @@ declare function users:checkCreds($email as xs:string, $password as xs:string) a
 declare function users:signupsEnabled()
     as xs:boolean
 {
-    not(empty(cookies:get-cookie("RUNDMC-SIGNUPS")))
+    true() (: not(empty(cookies:get-cookie("RUNDMC-SIGNUPS"))) :)
 };
 
+declare function users:cornifyEnabled()
+    as xs:boolean
+{
+    not(empty(cookies:get-cookie("RUNDMC-CORN")))
+};
+
+declare function users:getCurrentUser() as element(*)?
+{
+    let $session := cookies:get-cookie("RUNDMC-SESSION")
+    let $id := /session[session-id eq $session]/id/string() 
+    return /person[id eq $id]
+};
+
+declare function users:getResetToken($email as xs:string) as xs:string
+{
+    let $user := /person[email eq $email]
+    let $now := fn:string(fn:current-time())
+    let $token := xdmp:crypt($email, $now)
+    let $doc := 
+        <person>
+            { for $field in $user/* where not($field/local-name() = ('reset-token')) return $field }
+            <reset-token>{$token}</reset-token>
+        </person>
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+
+    return $token
+};
+
+declare function users:setPassword($user as element(*)?, $password as xs:string)
+{
+    let $email := $user/email/string()
+    let $hash := xdmp:crypt($password, $email)
+
+    let $doc := 
+        <person>
+            { for $field in $user/* where not($field/local-name() = ('reset-token', 'password')) return $field }
+            <password>{$hash}</password>
+        </person>
+
+    return xdmp:document-insert(base-uri($user), $doc)
+};
+
+(: save params into the user, leaving along fields not specified in the params :)
+declare function users:saveProfile($user as element(*), $params as element(*)*) as element(*)
+{
+    (: todo: cheap secure by only storing first 10? :) 
+
+    (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
+    let $fields := ('organization', 'title', 'name', 'url', 'picture', 'location', 'country', 'twitter', 'school', 'yog')
+    let $params := for $p in $params where $p/@name = $fields return $p
+
+    let $doc := <person>
+        { for $field in $user/* where not($field/local-name() = ($params/@name)) return $field }
+        { for $field in $params return element {$field/@name} {$field/string()} }
+    </person>
+
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+    let $_ := xdmp:log(concat("Updated profile for ", $user/email, " : ", xdmp:quote($doc)))
+
+    (: update name cookie just in case :)
+    let $_ := cookies:add-cookie("RUNDMC-NAME", $doc/name/string(), current-dateTime() + xs:dayTimeDuration("P60D"), (), "/", false())
+
+    return $doc
+};
+
+(: save params into the user, leaving along fields not specified in the params :)
+declare function users:validateParams($user as element(*), $params as element(*)*) as xs:string
+{
+    (: TODO :)
+    "ok"
+};

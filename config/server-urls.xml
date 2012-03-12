@@ -18,16 +18,17 @@
 
   </host>
 
-  <host type="production" name="developer.marklogic.com">
-    <main-server url="http://developer.marklogic.com"/>
+  <host type="production" name="community.marklogic.com">
+    <main-server url="http://community.marklogic.com"/>
     <draft-server url="http://developer-draft.marklogic.com"/>
-    <webdav-server url="http://developer.marklogic.com:8005"/>
+    <webdav-server url="http://community.marklogic.com:8005"/>
+    <admin-server url="http://developer-admin.marklogic.com"/>
     <api-server url="http://api.marklogic.com"/>
 
     <facebook-config>
         <id>178528612252710</id>
         <secret>39d8de131516e263d825014d60cd241f</secret>
-        <redirect_url>http://developer.marklogic.com/signup</redirect_url>
+        <redirect_url>http://community.marklogic.com/signup</redirect_url>
     </facebook-config>
   </host>
 
