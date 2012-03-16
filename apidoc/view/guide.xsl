@@ -28,7 +28,7 @@
   <xsl:template mode="comment-section" match="/guide"/>
 
   <xsl:template mode="page-content" match="/guide">
-    <div class="userguide">
+    <div class="userguide pjax_enabled">
       <xsl:choose>
         <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
         <xsl:when test="not($convert-at-render-time)">

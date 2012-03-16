@@ -191,7 +191,9 @@
           </xsl:template>
 
                   <xsl:template mode="pjax_enabled" match="*">pjax_enabled</xsl:template>
-                  <xsl:template mode="pjax_enabled" match="toc:guides"/> <!-- PJAX disabled to/from user guides; doesn't work well -->
+                  <!-- Let's *make* it work well...
+                  <xsl:template mode="pjax_enabled" match="toc:guides"/> <!- - PJAX disabled to/from user guides; doesn't work well - ->
+                  -->
 
 
           <!-- We hide the "all" container so it doesn't appear in the TOC -->
