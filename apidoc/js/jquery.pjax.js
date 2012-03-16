@@ -42,6 +42,10 @@ $.fn.pjax = function( container, options ) {
     if ( event.which > 1 || event.metaKey )
       return true
 
+    /* EDL: If we're on the same page already, then don't use PJAX */
+    if ( document.location.pathname === this.pathname) return true;
+    /* EDL: END ADDITION */
+
     var defaults = {
       url: this.href,
       container: $(this).attr('data-pjax'),
