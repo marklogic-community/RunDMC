@@ -9,12 +9,12 @@ import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
 (: Make sure the version param was specified :)
 $setup:errorCheck,
 
-(: Combine the guide fragments into one document per guide :)
+(: Normalizes the guide fragments and URLs and adds a chapter list to the title doc :)
 xdmp:invoke("consolidate-guides.xqy", (), <options xmlns="xdmp:eval">
                                             <database>{xdmp:database($raw:db-name)}</database>
                                           </options>),
 
-(: Convert each combined guide into the XML that's convenient to render :)
+(: Convert each title and chapter doc into the XML that's convenient to render :)
 xdmp:invoke("convert-guides.xqy"),
 
 (: Copy all the image files referenced by the guides :)

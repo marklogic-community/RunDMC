@@ -29,7 +29,7 @@ declare variable $raw:rest-docs  := raw:get-docs('xdmp:directory(concat("/",$api
 
 declare variable $raw:api-docs := ($raw:func-docs, $raw:rest-docs);
 
-declare variable $raw:guide-docs := raw:get-docs('xdmp:directory(concat("/",$api:version,"/guide/"))');
+declare variable $raw:guide-docs := raw:get-docs('xdmp:directory(concat("/",$api:version,"/guide/"),"infinity")[*]');
 
 declare function raw:get-docs($expr as xs:string) {
   let $query := concat($raw:common-import, $expr)
@@ -45,6 +45,10 @@ declare function raw:get-doc($uri) {
 
 (: Translate the URI of the raw, combined guide to the URI of the final target guide;
    store all the final guides in /apidoc :)
-declare function raw:target-guide-uri($guide as document-node()) {
-  concat("/apidoc",base-uri($guide))
+declare function raw:target-guide-doc-uri($guide as document-node()) {
+  raw:target-guide-doc-uri-for-string(base-uri($guide))
+};
+
+declare function raw:target-guide-doc-uri-for-string($guide-uri as xs:string) {
+  concat("/apidoc",$guide-uri)
 };

@@ -16,7 +16,7 @@
 
   <xsl:variable name="DEBUG_GROUPING" select="$convert-at-render-time"/>
 
-  <xsl:param name="output-uri" select="raw:target-guide-uri(.)"/>
+  <xsl:param name="output-uri" select="raw:target-guide-doc-uri(.)"/>
 
   <xsl:template match="/">
     <!-- Strip out unhelpful list containers -->
@@ -33,36 +33,45 @@
     </xsl:variable>
     <!-- Main conversion of source elements to XHTML elements -->
     <xsl:variable name="converted-content">
-      <xsl:apply-templates select="$lists-captured/guide/XML[position() gt 1]"/> <!-- Exclude the first <XML> (title.xml) -->
+      <!-- Only copy the XML content for chapters; guides just have some metadata (copied later below) -->
+      <xsl:apply-templates select="$lists-captured/chapter/XML"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
     <xsl:result-document href="{$output-uri}">
-      <guide>
-        <title>
-          <xsl:value-of select="/guide/title"/>
-        </title>
-        <!-- metadata from title.xml -->
-        <info>
-          <version>
-            <xsl:value-of select="/guide/XML[1]/Version"/>
-          </version>
-          <date>
-            <xsl:value-of select="/guide/XML[1]/Date"/>
-          </date>
-          <revision>
-            <xsl:value-of select="/guide/XML[1]/DateRev"/>
-          </revision>
-        </info>
-        <!-- Last step: add the XHTML namespace -->
-        <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
-      </guide>
+      <xsl:for-each select="/guide | /chapter">
+        <xsl:copy>
+          <xsl:apply-templates select="@*"/>
+          <xsl:copy-of select="guide-title | title"/>
+          <xsl:apply-templates mode="guide-metadata" select="."/>
+          <xsl:copy-of select="chapter-list"/>
+          <!-- Last step: add the XHTML namespace -->
+          <xsl:apply-templates mode="add-xhtml-namespace" select="$converted-content"/>
+        </xsl:copy>
+      </xsl:for-each>
     </xsl:result-document>
     <xsl:if test="$DEBUG_GROUPING">
       <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/sections-captured',$output-uri), $sections-captured)"/>
       <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/lists-captured'   ,$output-uri),    $lists-captured)"/>
     </xsl:if>
   </xsl:template>
+
+          <xsl:template mode="guide-metadata" match="chapter"/>
+          <xsl:template mode="guide-metadata" match="guide">
+            <!-- metadata from title.xml -->
+            <info>
+              <version>
+                <xsl:value-of select="XML/Version"/>
+              </version>
+              <date>
+                <xsl:value-of select="XML/Date"/>
+              </date>
+              <revision>
+                <xsl:value-of select="XML/DateRev"/>
+              </revision>
+            </info>
+          </xsl:template>
+
 
           <xsl:template mode="strip-useless-containers" match="@* | node()">
             <xsl:copy>
@@ -88,7 +97,7 @@
 
 
   <!-- Don't need this attribute at this stage; only used to resolve URIs of images being copied over -->
-  <xsl:template match="/guide/@original-dir"/>
+  <xsl:template match="/*/@original-dir"/>
 
   <xsl:template match="pagenum | TITLE"/>
 
@@ -113,7 +122,10 @@
 
           <!-- Base top-level anchor on the original file name (special case so no extraneous number ID is appended) -->
           <xsl:template mode="heading-anchor-id" match="Heading-1">
+            <xsl:text>top</xsl:text>
+            <!--
             <xsl:value-of select="my:anchor-id-for-top-level-heading(.)"/>
+            -->
           </xsl:template>
 
                   <xsl:function name="my:anchor-id-for-top-level-heading">
@@ -123,8 +135,13 @@
 
                           <xsl:function name="my:basename-stem">
                             <xsl:param name="url"/>
-                            <xsl:sequence select="substring-before(tokenize($url,'/')[last()],'.xml')"/>
+                            <xsl:sequence select="substring-before(my:basename($url),'.xml')"/>
                           </xsl:function>
+
+                                  <xsl:function name="my:basename">
+                                    <xsl:param name="url"/>
+                                    <xsl:sequence select="tokenize($url,'/')[last()]"/>
+                                  </xsl:function>
 
 
   <xsl:template match="IMAGE">
@@ -251,28 +268,38 @@
 
                   <xsl:function name="my:full-anchor-id">
                     <xsl:param name="ID-att"/>
+                    <xsl:sequence select="concat('id_',$ID-att)"/>
+                    <!--
                     <xsl:sequence select="concat(my:anchor-id-for-top-level-heading($ID-att/ancestor::XML/div/Heading-1),'_',$ID-att)"/>
+                    -->
                   </xsl:function>
 
 
-          <!-- Links within the same guide -->
+
+          <!-- Links within the same chapter -->
+          <xsl:template match="A/@href[contains(.,'#id(')][starts-with(.,my:basename(base-uri(.)))]" priority="2">
+          <!--
+          <xsl:template match="A/@href[contains(.,'#id(')][starts-with(.,)]" priority="2">
+          -->
+            <xsl:variable name="target-doc" select="root(.)"/>
+            <xsl:attribute name="href" select="concat('#', my:anchor-id-from-href(.,$target-doc))"/>
+          </xsl:template>
+
+          <!-- Links to other chapters (whether the same or a different guide) -->
           <xsl:template match="A/@href[contains(.,'#id(')]" priority="1">
-            <xsl:variable name="guide" select="root(.)"/>
-            <xsl:attribute name="href" select="concat('#', my:anchor-id-from-href(.,$guide))"/>
-          </xsl:template>
-
-          <!-- Links to other guides -->
+          <!--
           <xsl:template match="A/@href[starts-with(.,'../')]" priority="2">
-            <xsl:variable name="guide" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), guide/@original-dir)]"/>
-            <xsl:if test="not($guide)">
-              <xsl:message>BAD LINK FOUND! Unable to find referenced guide for this link: <xsl:value-of select="."/></xsl:message>
+          -->
+            <xsl:variable name="target-doc" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
+            <xsl:if test="not($target-doc)">
+              <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
             </xsl:if>
-            <xsl:attribute name="href" select="concat(my:guide-url($guide), '#', my:anchor-id-from-href(.,$guide))"/>
+            <xsl:attribute name="href" select="concat(my:guide-doc-url($target-doc), '#', my:anchor-id-from-href(.,$target-doc))"/>
           </xsl:template>
 
-                  <xsl:function name="my:guide-url">
+                  <xsl:function name="my:guide-doc-url">
                     <xsl:param name="guide" as="document-node()?"/> <!-- if absent, then it's a bad link, and we'll get the warning above -->
-                    <xsl:sequence select="$guide/ml:external-uri-for-string(raw:target-guide-uri(.))"/>
+                    <xsl:sequence select="$guide/ml:external-uri-for-string(raw:target-guide-doc-uri(.))"/>
                   </xsl:function>
 
                           <xsl:function name="my:fully-resolved-href">
@@ -280,22 +307,26 @@
                             <xsl:sequence select="resolve-uri($href, $href/ancestor::XML/@original-file)"/>
                           </xsl:function>
 
-                  <xsl:function name="my:anchor-id-from-href" as="xs:string">
+                  <xsl:function name="my:anchor-id-from-href" as="xs:string?">
                     <xsl:param name="href" as="attribute(href)"/>
-                    <xsl:param name="guide" as="document-node()?"/>
+                    <xsl:param name="target-doc" as="document-node()?"/>
                     <xsl:variable name="resolved-href" select="my:fully-resolved-href($href)"/>
                     <xsl:variable name="is-top-level-section-link" select="$resolved-href = $fully-resolved-top-level-heading-references"/>
 
                     <xsl:value-of>
                       <!-- The section name of the guide -->
+                      <!--
                       <xsl:value-of select="my:basename-stem($href)"/>
+                      -->
                       <!-- Leave out the _12345 part if we're linking to a top-level section -->
                       <xsl:if test="not($is-top-level-section-link)">
                         <xsl:variable name="id" select="my:extract-id-from-href($href)"/>
-                        <xsl:variable name="section" select="$guide/guide/XML[starts-with($resolved-href,@original-file)]"/>
+                        <!--
+                        <xsl:variable name="section" select="$target-doc/guide/XML[starts-with($resolved-href,@original-file)]"/>
+                        -->
                         <!-- Always rewrite to the last ID that appears, so we have a canonical one we can script against in the TOC (which also uses the last one present) -->
-                        <xsl:variable name="canonical-fragment-id" select="$section//*[A/@ID=$id]/A[@ID][last()]/@ID"/>
-                        <xsl:value-of select="concat('_', $canonical-fragment-id)"/>
+                        <xsl:variable name="canonical-fragment-id" select="$target-doc//*[A/@ID=$id]/A[@ID][last()]/@ID"/>
+                        <xsl:value-of select="concat('id_', $canonical-fragment-id)"/>
                       </xsl:if>
                     </xsl:value-of>
                   </xsl:function>
@@ -306,7 +337,7 @@
                           </xsl:function>
 
                           <xsl:variable name="fully-resolved-top-level-heading-references" as="xs:string*"
-                                        select="$raw:guide-docs/guide/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
+                                        select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
 
 
   <xsl:template match="Hyperlink">

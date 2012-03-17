@@ -133,8 +133,8 @@
             var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>;
           </xsl:template>
 
-                  <xsl:template mode="is-user-guide" match="guide">true</xsl:template>
-                  <xsl:template mode="is-user-guide" match="*"    >false</xsl:template>
+                  <xsl:template mode="is-user-guide" match="guide | chapter">true</xsl:template>
+                  <xsl:template mode="is-user-guide" match="*"              >false</xsl:template>
 
 
           <!-- ID for function buckets is the bucket display name minus spaces; see tocByCategory.xsl -->
@@ -151,7 +151,7 @@
             <xsl:text>']</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="toc-section-link-selector" match="guide">
+          <xsl:template mode="toc-section-link-selector" match="guide | chapter">
             <xsl:text>.scrollable_section a[href='</xsl:text>
             <xsl:value-of select="concat($version-prefix, ml:external-uri($content))"/>
             <xsl:text>']</xsl:text>

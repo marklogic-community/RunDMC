@@ -25,9 +25,9 @@
   <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide[not(@href eq ml:external-uri($content))]"/>
 
   <!-- Disable comments on User Guide pages -->
-  <xsl:template mode="comment-section" match="/guide"/>
+  <xsl:template mode="comment-section" match="/guide | /chapter"/>
 
-  <xsl:template mode="page-content" match="/guide">
+  <xsl:template mode="page-content" match="/guide | /chapter">
     <div class="userguide pjax_enabled">
       <xsl:choose>
         <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
@@ -40,23 +40,43 @@
              Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
           <!-- Convert and render the guide by directly calling the setup/conversion code -->
           <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
-                                                                      $raw:guide-docs[raw:target-guide-uri(.) eq base-uri(current())])
-                                                     /guide/node()"/>
+                                                                      $raw:guide-docs[raw:target-guide-doc-uri(.) eq base-uri(current())])
+                                                     /*/node()"/>
         </xsl:otherwise>
       </xsl:choose>
     </div>
+    <xsl:apply-templates mode="chapter-next-prev" select="@previous,@next"/>
   </xsl:template>
 
   <!-- Guide title -->
-  <xsl:template mode="guide" match="guide/title">
+  <xsl:template mode="guide" match="guide-title">
     <!-- Add a PDF link at the top of each guide, before the <h1> -->
-    <a href="{$version-prefix}{ml:external-uri(.)}.pdf" class="guide-pdf-link">
+    <a href="{$version-prefix}{ml:external-uri-for-string(../@guide-uri)}.pdf" class="guide-pdf-link">
       <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
     </a>
     <h1>
       <xsl:value-of select="."/>
     </h1>
+    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@guide-uri, ../@next"/>
   </xsl:template>
+
+          <!-- No need for "Top" link when we're already at the top -->
+          <xsl:template mode="chapter-next-prev" match="guide/@guide-uri"/>
+          <xsl:template mode="chapter-next-prev" match="@*">
+            <xsl:variable name="next-or-prev">
+              <xsl:apply-templates mode="next-or-prev" select="."/>
+            </xsl:variable>
+            <div class="{$next-or-prev}Chapter">
+              <a href="{ml:external-uri-for-string(.)}">
+                <xsl:apply-templates mode="next-or-prev" select="."/>
+              </a>
+            </div>
+          </xsl:template>
+
+                  <xsl:template mode="next-or-prev" match="@next"     >Next</xsl:template>
+                  <xsl:template mode="next-or-prev" match="@previous" >Previous</xsl:template>
+                  <xsl:template mode="next-or-prev" match="@guide-uri">Top</xsl:template>
+
 
   <xsl:template mode="guide" match="guide/info">
     <table class="guide_info">
@@ -77,20 +97,19 @@
         </td>
       </tr>
     </table>
-    <xsl:apply-templates mode="guide-chapter-list" select="."/>
   </xsl:template>
 
-  <xsl:template mode="guide-chapter-list" match="guide/info">
-    <p>This guide includes the following sections:</p>
+  <xsl:template mode="guide" match="guide/chapter-list">
+    <p>This guide includes the following chapters:</p>
     <ul>
-      <xsl:apply-templates mode="guide-chapter-list-item" select="../x:div[@class eq 'section']/x:h2/x:a"/>
+      <xsl:apply-templates mode="guide" select="chapter"/>
     </ul>
   </xsl:template>
 
-          <xsl:template mode="guide-chapter-list-item" match="x:a">
+          <xsl:template mode="guide" match="chapter">
             <li>
-              <a href="{@href}">
-                <xsl:apply-templates/>
+              <a href="{ml:external-uri-for-string(@href)}">
+                <xsl:apply-templates mode="guide"/>
               </a>
             </li>
           </xsl:template>
