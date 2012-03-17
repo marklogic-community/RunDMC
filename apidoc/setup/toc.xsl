@@ -90,7 +90,11 @@
         -->
           <xsl:for-each select="$guide-docs-ordered">
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
-              <xsl:apply-templates mode="guide-toc"/>
+              <xsl:for-each select="/guide/chapter-list/chapter">
+                <node href="{ml:external-uri-for-string(@href)}" display="{.}" id="{generate-id(.)}">
+                  <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
+                </node>
+              </xsl:for-each>
             </node>
           </xsl:for-each>
         <!--
