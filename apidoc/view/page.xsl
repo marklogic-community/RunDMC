@@ -153,7 +153,7 @@
 
           <xsl:template mode="toc-section-link-selector" match="guide | chapter">
             <xsl:text>.scrollable_section a[href='</xsl:text>
-            <xsl:value-of select="concat($version-prefix, ml:external-uri($content))"/>
+            <xsl:value-of select="concat($version-prefix, ml:external-uri-for-string(@guide-uri))"/>
             <xsl:text>']</xsl:text>
           </xsl:template>
 
