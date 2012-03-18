@@ -120,9 +120,9 @@
             <xsl:value-of select="my:full-anchor-id(A[@ID][last()]/@ID)"/>
           </xsl:template>
 
-          <!-- Base top-level anchor on the original file name (special case so no extraneous number ID is appended) -->
+          <!-- Top-level anchor ID is simply "chapter" -->
           <xsl:template mode="heading-anchor-id" match="Heading-1">
-            <xsl:text>top</xsl:text>
+            <xsl:text>chapter</xsl:text>
             <!--
             <xsl:value-of select="my:anchor-id-for-top-level-heading(.)"/>
             -->

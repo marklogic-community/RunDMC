@@ -91,9 +91,7 @@
           <xsl:for-each select="$guide-docs-ordered">
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
               <xsl:for-each select="/guide/chapter-list/chapter">
-                <node href="{ml:external-uri-for-string(@href)}" display="{.}" id="{generate-id(.)}">
-                  <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
-                </node>
+                <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
               </xsl:for-each>
             </node>
           </xsl:for-each>
@@ -118,11 +116,6 @@
   </xsl:template>
 
           <xsl:template mode="guide-toc" match="text()"/>
-
-          <!-- Don't create redundant TOC links for the top-level (chapter) heading -->
-          <xsl:template mode="guide-toc" match="chapter/xhtml:div" priority="1">
-            <xsl:apply-templates mode="#current"/>
-          </xsl:template>
 
           <xsl:template mode="guide-toc" match="xhtml:div[@class eq 'section']">
             <node href="{ml:external-uri(.)}#{(*[1] treat as element(xhtml:a))/@id}" display="{*[2]}"> <!-- second element assumed to be the heading (<h2>, <h3>, etc.) -->
