@@ -258,6 +258,10 @@ li.expandable .treecontrol { display: none; }
 .documentsTable a {text-decoration: underline;}
 .guide-pdf-link {float: right;}
 
+.NextChapter {float: right;}
+.TopChapter {text-align: center;}
+.PreviousChapter {float: left;}
+
 /* This could use some sprucing up */
 .userguide th,
 .userguide td {padding: 6px 5px;}
