@@ -118,6 +118,12 @@
   </xsl:template>
 
           <xsl:template mode="guide-toc" match="text()"/>
+
+          <!-- Don't create redundant TOC links for the top-level (chapter) heading -->
+          <xsl:template mode="guide-toc" match="chapter/xhtml:div" priority="1">
+            <xsl:apply-templates mode="#current"/>
+          </xsl:template>
+
           <xsl:template mode="guide-toc" match="xhtml:div[@class eq 'section']">
             <node href="{ml:external-uri(.)}#{(*[1] treat as element(xhtml:a))/@id}" display="{*[2]}"> <!-- second element assumed to be the heading (<h2>, <h3>, etc.) -->
               <xsl:apply-templates mode="#current"/>
