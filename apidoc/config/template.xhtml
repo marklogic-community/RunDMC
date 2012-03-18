@@ -53,6 +53,7 @@
 				colorizeExamples();
 				$("#main .pjax_enabled a").pjax({
 					container: '#page_content',
+          timeout: 2000,
 					success: function() {
 						initializeTOC();
 						colorizeExamples();
@@ -60,6 +61,7 @@
 				});
 				$("#api_sub .pjax_enabled a").pjax({
 					container: '#page_content',
+          timeout: 2000,
 					success: function() {
 						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
 						if(this.clickedElement) showInTOC(this.clickedElement);
