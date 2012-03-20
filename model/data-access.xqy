@@ -350,10 +350,15 @@ declare function lookup-articles($type as xs:string, $server-version as xs:strin
 (: Used to implement the <ml:top-threads/> tag :)
 declare function get-threads-xml($search as xs:string?, $lists as xs:string*)
 {
-  (: This is a workaround for not yet being able to import the XQuery directly. :)
-  (: This is a bit nicer anyway, since the other can double as a main module... :)
-  xdmp:invoke('top-threads.xqy', (fn:QName('', 'search'), fn:string-join($search,' '),
-                                  fn:QName('', 'lists') , fn:string-join($lists ,' ')))
+  try {
+    (: This is a workaround for not yet being able to import the XQuery directly. :)
+    (: This is a bit nicer anyway, since the other can double as a main module... :)
+    xdmp:invoke('top-threads.xqy', (fn:QName('', 'search'), fn:string-join($search,' '),
+                                    fn:QName('', 'lists') , fn:string-join($lists ,' ')))
+  } catch ($e) {
+    (: Don't break the page if top threads doesn't work (e.g., because markmail.org is down) :)
+    xdmp:log(fn:concat("ERROR in calling top-threads.xqy: ", xdmp:quote($e)))
+  }
 };
 
 declare function xquery-widget($module as xs:string)
