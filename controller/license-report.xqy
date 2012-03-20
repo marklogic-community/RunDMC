@@ -26,6 +26,9 @@ string-join(
  concat('"', $person/yog/string(), '"'), 
  concat('"', $person/dev-list/string(), '"'), 
  concat('"', $person/mktg-list/string(), '"'), 
+ concat('"', $person/cpus/string(), '"'), 
+ concat('"', $person/platform/string(), '"'), 
+ concat('"', $person/hostame/string(), '"'), 
  ""
 ),
 ","
@@ -80,6 +83,9 @@ Total licenses to date: {$total}
 <th><b>Year of graduation</b></th>
 <th><b>Dev list</b></th>
 <th><b>Mktg list</b></th>
+<th><b>CPUs</b></th>
+<th><b>Platform</b></th>
+<th><b>Hostame</b></th>
 </tr>
 </thead>
 {
@@ -98,6 +104,9 @@ return
 <td>{$i/../yog/string()}</td>
 <td>{$i/../list/string()}</td>
 <td>{$i/../mktg-list/string()}</td>
+<td>{$i/cpus/string()}</td>
+<td>{$i/platform/string()}</td>
+<td>{$i/hostname/string()}</td>
 </tr>
 }
 </table>
