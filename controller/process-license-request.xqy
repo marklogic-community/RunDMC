@@ -151,10 +151,23 @@ return
             pageTracker._setDomainName('marklogic.com');
             pageTracker._trackPageview();
         }} catch(err) {{}}
-        window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
+       
         </script>
         </head>
-        <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
+	<body>
+	  <script>
+	    var anchor = document.createElement("a");
+            if(!anchor.click) {{ //Providing a logic for Non IE
+                window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
+                //return;
+            }}
+            anchor.setAttribute("href", "/license-record?url={xdmp:url-encode($valid-url)}");
+            anchor.style.display = "none";
+            document.body.appendChild(anchor);
+            anchor.click();
+	  </script>
+          <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
+    	</body>
     </html>
     ) 
     else
