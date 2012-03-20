@@ -239,6 +239,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/enable-corn.xqy"
     else if ($path eq "/signup-report") then
         concat("/controller/signup-report.xqy?", $query-string)
+    else if ($path eq "/license-report") then
+        concat("/controller/license-report.xqy?", $query-string)
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"
