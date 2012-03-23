@@ -39,5 +39,9 @@ else if ($path eq "/admin/controller/create.xqy")
      (: If it's an admin page, then render it :)
 else if (doc-available($doc-url))        then concat("/admin/controller/transform.xqy?src=/admin", $path, "&amp;", $query-string, "&amp;~orig_path=", $path)
 
+else if ($path eq "/signup-report") then
+        concat("/controller/signup-report.xqy?", $query-string)
+else if ($path eq "/license-report") then
+        concat("/controller/license-report.xqy?", $query-string)
      (: Otherwise, it must be some other file, e.g., CSS or JS :)
-                                         else $orig-url
+else $orig-url
