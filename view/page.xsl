@@ -119,6 +119,20 @@
           </xsl:template>
 
 
+  <!-- Rewrite api.marklogic.com links (delete this template rule when we enable api.marklogic.com) -->
+  <!-- ASSUMPTION: there is no version prefix, or it's 5.0 -->
+  <!-- ASSUMPTION: the links don't go to library/module pages (except cts - configured in /config/5.0-function-url-mappings.xml) -->
+  <xsl:template match="xhtml:a/@href[starts-with(.,'http://api.marklogic.com')]">
+    <xsl:attribute name="href">
+      <xsl:variable name="uri" select="substring-after(.,'http://api.marklogic.com')"/>
+      <xsl:sequence select="concat('/pubs/5.0',
+                                   if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/(@pdf-name,@source-name)[1], '.pdf')
+                                                                   else concat('/apidocs/',$functions-5.0[@name eq substring-after($uri,'/')][1]/@url
+                                                                              ))"/>
+    </xsl:attribute>
+  </xsl:template>
+
+
   <!-- Bump up the heading number (i.e. increase the depth) of headings in paginated lists (of blog posts) -->
   <xsl:template match="xhtml:h3
                      | xhtml:h4
