@@ -38,13 +38,12 @@
                                           else ()"/>
 
 
-  <!-- Don't keep an <a> tag if it was inserted into an existing <a> tag
-       as a result of search hit highlighting -->
-  <xsl:template match="xhtml:a//xhtml:a[contains(string(@class), 'hit_highlight')]">
-    <span class="hit_highlight">
-      <xsl:apply-templates/>
-    </span>
-  </xsl:template>
+  <!-- This is used for hit highlighting. Only available when the client sets it (on the search results page) -->
+  <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')"/>
+
+  <!-- This must be evaluated for every page, to prevent continued (unwanted) highlighting (see page.xsl) -->
+  <xsl:variable name="_reset-search-cookie"
+                select="ck:delete-cookie('search-qtext', $srv:cookie-domain, '/')"/>
 
 
   <!-- The "Server version" switcher code;
@@ -249,7 +248,22 @@
               <xsl:apply-templates mode="#current" select="search:result"/>
             </table>
             <xsl:apply-templates mode="prev-and-next" select="."/>
+
+            <!-- We set the search qtext on click to a cookie to enable highlighting on the next page only. -->
+            <script type="text/javascript">
+              //<xsl:comment>
+                $("a.search_result").click(function(){
+                  $.cookie("search-qtext",
+                           "<xsl:value-of select="replace($clean-q,'&quot;','\\&quot;')"/>", <!-- js-escape quotes -->
+                           "<xsl:value-of select="$srv:cookie-domain"/>");
+                });
+              //</xsl:comment>
+            </script>
           </xsl:template>
+
+                  <!-- qtext without the constraints -->
+                  <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
+
 
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
@@ -271,14 +285,7 @@
               </th>
               <td>
                 <h4>
-                  <!-- Highlighting until we find a better way (fully featured, not in URL) -->
-                  <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
-                  <xsl:variable name="do-highlight" select="$clean-q and not(contains($result-uri,'#') or ends-with($result-uri,'.pdf')
-                                                                                                       or ends-with($result-uri,'.html')
-                                                                            )"/>
-                  <xsl:variable name="hl-query-string" select="if ($do-highlight) then concat('?hl=',encode-for-uri($clean-q))
-                                                                                  else ''"/>
-                  <a href="{$result-uri}{$hl-query-string}">
+                  <a href="{$result-uri}" class="search_result">
                     <xsl:variable name="page-specific-title">
                       <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
                     </xsl:variable>
@@ -390,7 +397,6 @@
             <xsl:variable name="selected" select="$this-constraint  = $current-constraints
                                            or not($this-constraint or $current-constraints)"/>
 
-            <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
             <xsl:variable name="new-q" select="if (not($this-constraint)) then $clean-q
                                           else if ($clean-q) then concat('(', $clean-q, ')', ' AND ', $this-constraint)
                                           else $this-constraint"/>

@@ -34,7 +34,7 @@
 
   <xsl:variable name="original-content" select="/"/>
 
-  <xsl:variable name="highlight-search" select="string($params[@name eq 'hl'])"/>
+  <xsl:variable name="highlight-search" select="string($latest-search-qtext)"/>
   <xsl:variable name="content" select="if ($highlight-search) then $highlighted-content else /"/>
 
           <xsl:variable name="highlighted-content">
@@ -95,6 +95,9 @@
     <!-- XSLT BUG WORKAROUND (outputs nothing); works because it apparently forces evaluation earlier -->
     <xsl:value-of select="$content/.."/> <!-- empty sequence -->
     <xsl:value-of select="substring-after($external-uri,$external-uri)"/> <!-- empty string -->
+
+    <!-- Don't ever keep the temporary search highlight cookie around. -->
+    <xsl:value-of select="$_reset-search-cookie"/>
 
     <xsl:apply-templates select="$template/*"/>
   </xsl:template>
