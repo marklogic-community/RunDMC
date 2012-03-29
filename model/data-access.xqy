@@ -119,7 +119,8 @@ declare function ml:api-doc-query($preferred-version as xs:string) {
     cts:directory-query(fn:concat("/apidoc/",$preferred-version,"/"), "infinity"),
     cts:or-query((
       cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
-      cts:element-query(fn:QName("","guide"),cts:and-query(()))
+      cts:element-query(fn:QName("","guide")  ,cts:and-query(())),
+      cts:element-query(fn:QName("","chapter"),cts:and-query(()))
     ))
   ))
 };
@@ -160,10 +161,10 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
        if (fn:contains($doc-uri, "/javadoc/")) then "xcc"
   else if (fn:contains($doc-uri, "/dotnet/" )) then "xccn"
   else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
-       if ($doc/api:function-page) then "function"
-  else if ($doc/*:guide          ) then "guide"
-  else if ($doc/ml:Announcement  ) then "news"
-  else if ($doc/ml:Event         ) then "event"
+       if ($doc/api:function-page  ) then "function"
+  else if ($doc/(*:guide|*:chapter)) then "guide"
+  else if ($doc/ml:Announcement    ) then "news"
+  else if ($doc/ml:Event           ) then "event"
   else if ($doc/ml:Article
                                                       (: these aren't really tutorials :)
                 [fn:not(fn:matches(fn:base-uri($doc),'( /learn/[0-9].[0-9]/
@@ -171,10 +172,10 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
                                                       | /learn/readme/
                                                       | /learn/w3c-
                                                       )','x'))]
-                                 ) then "tutorial"
-  else if ($doc/ml:Post          ) then "blog"
-  else if ($doc/ml:Project       ) then "code"
-                                   else "other"
+                                   ) then "tutorial"
+  else if ($doc/ml:Post            ) then "blog"
+  else if ($doc/ml:Project         ) then "code"
+                                     else "other"
 };
 
 

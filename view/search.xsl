@@ -326,6 +326,10 @@
                     <xsl:value-of select="title"/>
                   </xsl:template>
 
+                  <xsl:template mode="page-specific-title" match="/chapter" xpath-default-namespace="">
+                    <xsl:value-of select="title"/> (<xsl:value-of select="guide-title"/>)
+                  </xsl:template>
+
                   <xsl:template mode="page-specific-title" match="api:function-page">
                     <xsl:value-of select="api:function[1]/@fullname"/>
                   </xsl:template>
