@@ -15,9 +15,9 @@
 		<script type="text/javascript" src="/js/modernizr.js"></script>
 
     <!-- Un-minimize for debugging
-		<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+		<script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
     -->
-		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
 		<script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
@@ -64,10 +64,9 @@
           timeout: 2000,
 					success: function() {
 						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
-						if(this.clickedElement) showInTOC(this.clickedElement);
-							colorizeExamples();
 					}
 				});
+        $(document).on('pjax:end', function(event, options) { if (event.relatedTarget) showInTOC($(event.relatedTarget)); });
 			})
 	  //]]>
   	</script>
