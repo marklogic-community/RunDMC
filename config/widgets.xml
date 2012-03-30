@@ -44,6 +44,7 @@
     <page-tree root="/events"/>
     <page-tree root="/qa"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
+    <page href="/events/mlw12-activities"/>
     <page href="/learn/videos"/>
     <page href="/people/profile"/>
   </widget>
