@@ -23,6 +23,7 @@
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
         <page display="Toolkit for PowerPoint®"  href="/code/marklogic-toolkit-for-powerpoint"/>
         <page display="Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
+        <page display="Authoring App for Excel®" href="/code/marklogic-sample-authoring-app-excel"/>
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
       </group>
@@ -70,6 +71,7 @@
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
         <page display="MarkLogic Toolkit for PowerPoint®" pref="1" href="/code/marklogic-toolkit-for-powerpoint"/>
         <page display="MarkLogic Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
+        <page display="Authoring App for Excel®" href="/code/marklogic-sample-authoring-app-excel"/>
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
