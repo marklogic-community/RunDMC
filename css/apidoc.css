@@ -246,7 +246,7 @@ code.syntax {
 /* overrides padding-left in screen.css */
 tbody td:first-child.indented_function  {padding-left: 40px;}
 
-h1 a { text-decoration: underline; }
+h1 a { text-decoration: underline; color: #899B3B; }
 
 .hide-detail { display: none; }
 
