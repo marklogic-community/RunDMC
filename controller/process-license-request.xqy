@@ -68,9 +68,13 @@ let $valid :=
         and util:validateEmail($email)
         and not(users:emailInUse($email))
         and $valid-type
+        and $platform 
+        and $hostname 
     else
         $email and
         $passwd and
+        $platform and
+        $hostname and
         users:checkCreds($email, $passwd) and
         $valid-type 
 
