@@ -99,7 +99,14 @@ let $error := if ($signup) then
         else
             ""
 
-let $invalid-url := concat($invalid-url, $error)
+let $invalid-url := 
+    if ($platform and $hostname) then
+        concat($invalid-url, $error)
+    else
+        if ($target) then
+            $target
+        else
+            "http://localhost:8001"
 
 let $meta := (
     <cpus>{$cpus}</cpus>,
