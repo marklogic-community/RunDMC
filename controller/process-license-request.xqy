@@ -4,6 +4,8 @@ import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
 import module namespace functx = "http://www.functx.com" at "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
+import module namespace mkto = "mkto" at "/lib/marketo.xqy";
+import module namespace json = "http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 
 declare option xdmp:output "method=html";
 
@@ -148,9 +150,25 @@ return
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
         <script type="text/javascript">
+        document.write(unescape("%3Cscript src='" + document.location.protocol + "//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
         try {{
+            // mktoMunchkin should be defined by marketo.net js above
+            mktoMunchkin("371-XVQ-609");
+            mktoMunchkinFunction('visitWebPage', {{url: '/process-license-request'}});
+            mktoMunchkinFunction('associateLead', { json:serialize(
+                json:object((
+                    "Email", $email,
+                    "Company", $company,
+                    "School", $school,
+                    "License", $type
+                ))
+            ) }, '{mkto:hash($email)}');
+
             var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
             var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            // _gat should be created bu google js include
             var pageTracker = _gat._getTracker(acct);
             pageTracker._setDomainName('marklogic.com');
             pageTracker._trackPageview();
@@ -162,13 +180,13 @@ return
 	  <script>
 	    var anchor = document.createElement("a");
             if(!anchor.click) {{ //Providing a logic for Non IE
-                window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
+                //window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
                 //return;
             }}
             anchor.setAttribute("href", "/license-record?url={xdmp:url-encode($valid-url)}");
             anchor.style.display = "none";
             document.body.appendChild(anchor);
-            anchor.click();
+            //anchor.click();
 	  </script>
           <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
     	</body>
