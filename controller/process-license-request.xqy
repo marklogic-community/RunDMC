@@ -156,7 +156,6 @@ return
         try {{
             // mktoMunchkin should be defined by marketo.net js above
             mktoMunchkin("371-XVQ-609");
-            mktoMunchkinFunction('visitWebPage', {{url: '/process-license-request'}});
             mktoMunchkinFunction('associateLead', { json:serialize(
                 json:object((
                     "Email", $email,
