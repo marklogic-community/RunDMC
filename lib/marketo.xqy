@@ -27,12 +27,11 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare variable $mkto:endpoint := (doc("/private/marketo-config.xml")/marketo-config/endpoint/string(), "https://na-n.marketo.com/soap/mktows/1_7")[1];
 declare variable $mkto:client-id := (doc("/private/marketo-config.xml")/marketo-config/client-id/string(), "marklogic1_283493864F0B3177859B77")[1];
 declare variable $mkto:secret := (doc("/private/marketo-config.xml")/marketo-config/secret/string(), "SECRET")[1];
+declare variable $mkto:munchkin-private-key := (doc("/private/marketo-config.xml")/marketo-config/munchkin-private-key/string(), "Secret")[1];
 
 declare function mkto:hash($string as xs:string) 
 {
-    let $payload := fn:concat($mkto:client-id, $string)
-
-    return xdmp:hmac-sha1($mkto:secret, $payload, 'hex')
+    xdmp:sha1(fn:concat($mkto:munchkin-private-key, $string), 'hex')
 };
 
 declare function mkto:auth() 
