@@ -152,16 +152,20 @@ return
         <script type="text/javascript">
         document.write(unescape("%3Cscript src='" + document.location.protocol + "//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
+        </head>
+	<body>
         <script type="text/javascript">
         try {{
-            // mktoMunchkin should be defined by marketo.net js above
+
             mktoMunchkin("371-XVQ-609");
             mktoMunchkinFunction('associateLead', { json:serialize(
                 json:object((
+                    "FirstName", fn:tokenize($name, '\s')[1],
+                    "LastName", fn:tokenize($name, '\s')[2],
+                    "FullName__c", $name,
                     "Email", $email,
                     "Company", $company,
-                    "School", $school,
-                    "License", $type
+                    "LeadSource", "Community Website"
                 ))
             ) }, '{mkto:hash($email)}');
 
@@ -171,23 +175,25 @@ return
             var pageTracker = _gat._getTracker(acct);
             pageTracker._setDomainName('marklogic.com');
             pageTracker._trackPageview();
-        }} catch(err) {{}}
-       
-        </script>
-        </head>
-	<body>
-	  <script>
-	    var anchor = document.createElement("a");
-            if(!anchor.click) {{ //Providing a logic for Non IE
-                window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
-                //return;
+
+            function moveOn() {{
+	            var anchor = document.createElement("a");
+                if(!anchor.click) {{ //Providing a logic for Non IE
+                    window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
+                    return;
+                }}
+                anchor.setAttribute("href", "/license-record?url={xdmp:url-encode($valid-url)}");
+                anchor.style.display = "none";
+                document.body.appendChild(anchor);
+                anchor.click();
             }}
-            anchor.setAttribute("href", "/license-record?url={xdmp:url-encode($valid-url)}");
-            anchor.style.display = "none";
-            document.body.appendChild(anchor);
-            anchor.click();
-	  </script>
-          <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
+
+            // Heuristic delay to wait for marketo
+            window.setTimeout(moveOn, 200);
+
+        }} catch(err) {{}}
+        </script>
+        <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
     	</body>
     </html>
     ) 
