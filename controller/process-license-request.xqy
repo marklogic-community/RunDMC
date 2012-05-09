@@ -158,16 +158,16 @@ return
         try {{
 
             mktoMunchkin("371-XVQ-609");
-            mktoMunchkinFunction('associateLead', { json:serialize(
-                json:object((
-                    "FirstName", fn:tokenize($name, '\s')[1],
-                    "LastName", fn:tokenize($name, '\s')[2],
-                    "FullName__c", $name,
-                    "Email", $email,
-                    "Company", $company,
-                    "LeadSource", "Community Website"
-                ))
-            ) }, '{mkto:hash($email)}');
+            // mktoMunchkinFunction('associateLead', { json:serialize(
+               json:object((
+                  "FirstName", fn:tokenize($name, '\s')[1],
+                  "LastName", fn:tokenize($name, '\s')[2],
+                  "FullName__c", $name,
+                  "Email", $email,
+                  "Company", $company,
+                  "LeadSource", "Community Website"
+              ))
+            ) }, '{mkto:hash($email)}'); :)
 
             var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
             var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
@@ -188,8 +188,10 @@ return
                 anchor.click();
             }}
 
+            moveOn();
+
             // Heuristic delay to wait for marketo
-            window.setTimeout(moveOn, 200);
+            //window.setTimeout(moveOn, 200);
 
         }} catch(err) {{}}
         </script>
