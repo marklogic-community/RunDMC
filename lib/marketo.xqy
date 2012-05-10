@@ -69,10 +69,10 @@ declare function mkto:last-name($names)
 
 declare function mkto:associate-lead($email, $meta) 
 {
-    let $name := $meta/person/name/string()
+    let $name := $meta/name/string()
     let $names := fn:tokenize($name, " ")
     let $first-name := mkto:first-name($names)
-    let $last-name := mkto:first-name($names)
+    let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
 
     let $body :=
