@@ -49,128 +49,90 @@ declare function mkto:auth()
     </ns1:AuthenticationHeader>
 };
 
-declare function mkto:record-activity($lead, $meta)
+declare function mkto:first-name($names)
 {
-    let $body :=
-      <SOAP-ENV:Envelope>
-       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
-       <SOAP-ENV:Body>
-<!-- TBD -->
-      </SOAP-ENV:Body>
-     </SOAP-ENV:Envelope>
+    let $c := count($names)
 
-    return 
-        try {
-            mkto:soap($body)
-        } catch ($error) {
-            (: todo: report failure :)
-            ()
-        }
+    return
+        if ($c le 1) then
+            ""
+        else if ($c eq 2) then
+            $names[1]
+        else
+            string-join($names[1 to $c - 1], " ")
 };
 
-declare function mkto:lookup-lead-by-cookie($cookie as xs:string)
+declare function mkto:last-name($names)
 {
-    let $body :=
-      <SOAP-ENV:Envelope>
-       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
-       <SOAP-ENV:Body>
-        <ns1:paramsGetLead>
-          <leadKey><keyType>COOKIE</keyType><keyValue>{$cookie}</keyValue></leadKey>
-       </ns1:paramsGetLead>
-      </SOAP-ENV:Body>
-     </SOAP-ENV:Envelope>
-
-    let $resp := mkto:soap($body)/ns1:GetLeadResponse
-    return 
-        if ($resp/ns1:success) then
-            $resp/ns1:result/ns1:leadRecordList[1]
-        else 
-            () (: todo: report failure :)
+    $names[last()]
 };
 
-declare function mkto:lookup-lead-by-email($email as xs:string)
+declare function mkto:associate-lead($email, $meta) 
 {
-    let $body :=
-      <SOAP-ENV:Envelope>
-       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
-       <SOAP-ENV:Body>
-        <ns1:paramsGetLead>
-          <leadKey><keyType>EMAIL</keyType><keyValue>{$email}</keyValue></leadKey>
-       </ns1:paramsGetLead>
-      </SOAP-ENV:Body>
-     </SOAP-ENV:Envelope>
+    let $name := $meta/person/name/string()
+    let $names := fn:tokenize($name, " ")
+    let $first-name := mkto:first-name($names)
+    let $last-name := mkto:first-name($names)
+    let $company := $meta/organization/string()
 
-    let $resp := mkto:soap($body)/ns1:GetLeadResponse
-    return 
-        if ($resp/ns1:success) then
-            $resp/ns1:result/ns1:leadRecordList 
-        else 
-            () (: todo: report failure :)
-};
-
-declare function mkto:bind-email-to-lead($lead, $email)
-{
-    let $cookie := cookies:get-cookie('_mkto_trk')
-
-    (: mem copy $lead and replace Email :) 
     let $body :=
       <SOAP-ENV:Envelope>
        <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
        <SOAP-ENV:Body>
         <ns1:paramsSyncLead>>
-          <leadRecord>{$lead}</leadRecord>
-          <marketoCookie>{$cookie}</marketoCookie>
+          <leadRecord>
+              <Email>{$email}</Email> 
+              <leadAttributeList>
+                  <attribute>
+                      <attrName>FirstName</attrName>
+                      <attrValue>{$first-name}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>LastName</attrName>
+                      <attrValue>{$last-name}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Email</attrName>
+                      <attrValue>{$email}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Company</attrName>
+                      <attrValue>{$company}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>LeadSource</attrName>
+                      <attrValue>Community Website</attrValue>
+                  </attribute>
+              </leadAttributeList>
+          </leadRecord>
+          <marketoCookie>{cookies:get-cookie('_mkto_trk')}</marketoCookie>
        </ns1:paramsSyncLead>>
       </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
 
-    let $resp := mkto:soap($body)/ns1:GetSyncLeadResponse
+    let $soap := mkto:soap($body)
+    let $resp := $soap[1]
     return 
-        if ($resp/ns1:success) then
-            $lead
-        else 
-            $lead
-};
-
-declare function mkto:bound($lead, $email) as xs:boolean
-{
-    $lead/ns1:email/string() eq $email (: TBD tolower for case-insensitive for domain name? :)
-};
-
-
-declare function mkto:generate-lead($email, $meta)
-{
-    (: TODO:look up cookie from header using cookie lib :)
-    let $cookie := cookies:get-cookie("_mkto")/XXXX
-
-    let $lead :=
-        if ($cookie) then
-            let $lead := mkto:lookup-lead-by-cookie($cookie)
+        if ($resp/code/string() eq 200) then
+            let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
             return 
-                if (mkto:bound($lead, $email)) then
-                    $lead
+                if ($ok) then
+                    ()
                 else
-                    mkto:bind-email-to-lead($lead, $email)
+                    xdmp:log("mkto: syncLead failed")
+    
         else
-            let $lead := mkto:lookup-lead-by-email($email)
-            return 
-                if ($lead) then
-                    () (: TBD mkto:create-lead($email) :)
-                else
-                    $lead (: TBD: could be multiple leads!! :)
-
-    return mkto:record-activity($lead, $meta)
-
+            xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
 };
 
 declare function mkto:soap($body) 
 {
-    (xdmp:http-post($mkto:endpoint,
+    xdmp:http-post($mkto:endpoint,
         <options xmlns="xdmp:http">
          <headers>
            <content-type>text/xml</content-type>
          </headers>
             <data>{ xdmp:quote($body) }</data>
-        </options>))[2]
+        </options>)
 };
 

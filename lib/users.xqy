@@ -212,10 +212,7 @@ as element(*)?
     let $_ := xdmp:document-insert($uri, $doc)
     let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
     let $_ := users:logNewUser($doc)
-    (:
-    let $lead := mkto:generate-lead($email, $doc)
-    let $_ := mkto:record-license($lead, $doc/person/license)
-    :)
+    let $lead := mkto:associate-lead($email, $doc)
 
     return $doc
 };
@@ -238,6 +235,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
+    let $_ := mkto:associate-lead($email, $doc)
     return  $doc
 };
 
@@ -261,6 +259,7 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
+    let $_ := mkto:associate-lead($email, $doc)
     return  $doc
 };
 
