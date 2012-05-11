@@ -110,19 +110,34 @@ declare function mkto:associate-lead($email, $meta)
       </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
 
-    let $soap := mkto:soap($body)
-    let $resp := $soap[1]
     return 
-        if ($resp/code/string() eq 200) then
-            let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
+        xdmp:eval(
+            '
+            xquery version "1.0-ml";
+            declare namespace ns1 = "http://www.marketo.com/mktows/";
+            declare namespace SOAP-ENV = "http://schemas.xmlsoap.org/soap/envelope/";
+            import module namespace mkto = "mkto" at "/lib/marketo.xqy";
+            
+            let $soap := mkto:soap($body)
+            let $resp := $soap[1]
             return 
-                if ($ok) then
-                    ()
+                if ($resp/code/string() eq 200) then
+                    let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
+                    return 
+                        if ($ok) then
+                            ()
+                        else
+                            xdmp:log("mkto: syncLead failed")
+            
                 else
-                    xdmp:log("mkto: syncLead failed")
-    
-        else
-            xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
+                    xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
+            ',
+            (),
+            <options xmlns="xdmp:eval">
+                <isolation>different-transaction</isolation>
+                <prevent-deadlocks>true</prevent-deadlocks>
+            </options> 
+        )
 };
 
 declare function mkto:soap($body) 

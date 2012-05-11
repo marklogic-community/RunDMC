@@ -18,7 +18,6 @@ module namespace users = "users";
 import module namespace cookies = "http://parthcomp.com/cookies" at "cookies.xqy";
 import module namespace srv="http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
-import module namespace mkto="mkto" at "marketo.xqy";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
@@ -212,7 +211,7 @@ as element(*)?
     let $_ := xdmp:document-insert($uri, $doc)
     let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
     let $_ := users:logNewUser($doc)
-    let $lead := mkto:associate-lead($email, $doc)
+    let $lead := users:associate-lead($email, $doc)
 
     return $doc
 };
@@ -235,7 +234,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := mkto:associate-lead($email, $doc)
+    let $_ := users:associate-lead($email, $doc)
     return  $doc
 };
 
@@ -259,7 +258,7 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := mkto:associate-lead($email, $doc)
+    let $_ := users:associate-lead($email, $doc)
     return  $doc
 };
 
@@ -473,4 +472,11 @@ declare function users:validateParams($user as element(*), $params as element(*)
 {
     (: TODO :)
     "ok"
+};
+
+declare function users:associate-lead($email as xs:string, $doc)
+{
+    let $path := fn:concat( xdmp:modules-root() , "/lib/marketo-associate-lead.xqy" )
+
+    return xdmp:spawn( $path, (xs:QName("email"), $email, xs:QName("doc"), $doc ))
 };
