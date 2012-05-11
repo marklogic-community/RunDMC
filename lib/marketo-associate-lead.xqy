@@ -16,12 +16,11 @@ xquery version "1.0-ml";
 
 import module namespace mkto="mkto" at "marketo.xqy";
 
-declare namespace my="my";
-declare variable $my:email as xs:string external;
-declare variable $my:meta as node() external;
+declare variable $email as xs:string external;
+declare variable $doc as node() external;
 
 try {
-    (mkto:associate-lead($my:email, $my:meta),xdmp:log('mkto good')
+    mkto:associate-lead($email, $doc)
 } catch ($e)  {
-    (xdmp:log('mkto bad'))
+    (xdmp:log(concat('mkto bad ', $e/string())))
 }

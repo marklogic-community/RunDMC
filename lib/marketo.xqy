@@ -133,15 +133,15 @@ declare function mkto:associate-lead($email, $meta)
     let $soap := mkto:soap($body)
     let $resp := $soap[1]
     return 
-        if ($resp/code/string() eq 200) then
+        if ($resp/code/string() eq '200') then
             let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
             return 
                 if ($ok) then
                     ()
                 else
-                    xdmp:log("mkto: syncLead failed")
+                    xdmp:log(concat("mkto: syncLead failed ", $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/string()))
         else
-            xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
+            xdmp:log(concat("mkto: syncLead bad status ", $resp/code/string()))
 };
 
 declare function mkto:soap($body) 

@@ -476,7 +476,7 @@ declare function users:validateParams($user as element(*), $params as element(*)
 
 declare function users:associate-lead($email as xs:string, $doc)
 {
-    let $path := fn:concat( xdmp:modules-root() , "/lib/marketo-associate-lead.xqy" )
+    let $path := "marketo-associate-lead.xqy"
 
     return xdmp:spawn( $path, (xs:QName("email"), $email, xs:QName("doc"), $doc ))
 };
