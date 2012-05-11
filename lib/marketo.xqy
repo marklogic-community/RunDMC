@@ -75,11 +75,34 @@ declare function mkto:associate-lead($email, $meta)
     let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
 
+    (: First check to see if lead exists :)
     let $body :=
       <SOAP-ENV:Envelope>
        <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
        <SOAP-ENV:Body>
-        <ns1:paramsSyncLead>>
+        <ns1:paramsGetLead>
+            <leadKey><keyType>EMAIL</keyType><keyValue>{$email}</keyValue></leadKey>
+        </ns1:paramsGetLead>
+      </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
+    let $soap := mkto:soap($body)
+    let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
+
+    (: if lead exists, leave it's source alone, otherwise it's from the Community Site :)
+    let $leadSourceAttr :=
+        if ($leadExists) then
+            ()
+        else
+            <attribute>
+                <attrName>LeadSource</attrName>
+                <attrValue>Community Website</attrValue>
+            </attribute>
+    
+    let $body :=
+      <SOAP-ENV:Envelope>
+       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
+       <SOAP-ENV:Body>
+        <ns1:paramsSyncLead>
           <leadRecord>
               <Email>{$email}</Email> 
               <leadAttributeList>
@@ -99,10 +122,7 @@ declare function mkto:associate-lead($email, $meta)
                       <attrName>Company</attrName>
                       <attrValue>{$company}</attrValue>
                   </attribute>
-                  <attribute>
-                      <attrName>LeadSource</attrName>
-                      <attrValue>Community Website</attrValue>
-                  </attribute>
+                  {$leadSourceAttr}
               </leadAttributeList>
           </leadRecord>
           <marketoCookie>{cookies:get-cookie('_mkto_trk')}</marketoCookie>
@@ -110,34 +130,18 @@ declare function mkto:associate-lead($email, $meta)
       </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
 
+    let $soap := mkto:soap($body)
+    let $resp := $soap[1]
     return 
-        xdmp:eval(
-            '
-            xquery version "1.0-ml";
-            declare namespace ns1 = "http://www.marketo.com/mktows/";
-            declare namespace SOAP-ENV = "http://schemas.xmlsoap.org/soap/envelope/";
-            import module namespace mkto = "mkto" at "/lib/marketo.xqy";
-            
-            let $soap := mkto:soap($body)
-            let $resp := $soap[1]
+        if ($resp/code/string() eq 200) then
+            let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
             return 
-                if ($resp/code/string() eq 200) then
-                    let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
-                    return 
-                        if ($ok) then
-                            ()
-                        else
-                            xdmp:log("mkto: syncLead failed")
-            
+                if ($ok) then
+                    ()
                 else
-                    xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
-            ',
-            (),
-            <options xmlns="xdmp:eval">
-                <isolation>different-transaction</isolation>
-                <prevent-deadlocks>true</prevent-deadlocks>
-            </options> 
-        )
+                    xdmp:log("mkto: syncLead failed")
+        else
+            xdmp:log(concat("mkto: syncLead bad status", $resp/code/string()))
 };
 
 declare function mkto:soap($body) 
