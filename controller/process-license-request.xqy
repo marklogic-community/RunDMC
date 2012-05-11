@@ -177,7 +177,7 @@ return
                 anchor.click();
             }}
 
-            window.setTimeout(moveOn, 100);
+            window.setTimeout(moveOn, 220);
 
         }} catch(err) {{}}
         </script>
