@@ -211,7 +211,7 @@ as element(*)?
     let $_ := xdmp:document-insert($uri, $doc)
     let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
     let $_ := users:logNewUser($doc)
-    let $lead := users:associate-lead($email, $doc)
+    let $lead := users:mkto-associate-lead($email, $doc)
 
     return $doc
 };
@@ -234,7 +234,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := users:associate-lead($email, $doc)
+    let $_ := users:mkto-associate-lead($email, $doc)
     return  $doc
 };
 
@@ -258,7 +258,7 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
-    let $_ := users:associate-lead($email, $doc)
+    let $_ := users:mkto-associate-lead($email, $doc)
     return  $doc
 };
 
@@ -474,9 +474,12 @@ declare function users:validateParams($user as element(*), $params as element(*)
     "ok"
 };
 
-declare function users:associate-lead($email as xs:string, $doc)
+(: associate the given email (and current mkto_trk cookie) with a lead in marketo :) 
+declare function users:mkto-associate-lead($email as xs:string, $doc)
 {
-    let $path := "marketo-associate-lead.xqy"
-
-    return xdmp:spawn( $path, (xs:QName("email"), $email, xs:QName("doc"), $doc ))
+    return xdmp:spawn( "marketo-associate-lead.xqy", (
+        xs:QName("email"), $email, 
+        xs:QName("cookie"), cookies:get-cookie('_mkto_trk'), 
+        xs:QName("doc"), $doc 
+    ) )
 };

@@ -17,10 +17,11 @@ xquery version "1.0-ml";
 import module namespace mkto="mkto" at "marketo.xqy";
 
 declare variable $email as xs:string external;
+declare variable $cookie as xs:string external;
 declare variable $doc as node() external;
 
 try {
-    mkto:associate-lead($email, $doc)
+    mkto:associate-lead($email, $cookie, $doc)
 } catch ($e)  {
     (xdmp:log(concat('mkto bad ', $e/string())))
 }

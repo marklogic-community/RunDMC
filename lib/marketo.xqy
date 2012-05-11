@@ -16,7 +16,6 @@ xquery version "1.0-ml";
 
 module namespace mkto = "mkto";
 
-import module namespace cookies = "http://parthcomp.com/cookies" at "/lib/cookies.xqy";
 declare namespace html = "http://www.w3.org/1999/xhtml";
 declare namespace ns1 = "http://www.marketo.com/mktows/";
 declare namespace SOAP-ENV = "http://schemas.xmlsoap.org/soap/envelope/";
@@ -67,7 +66,7 @@ declare function mkto:last-name($names)
     $names[last()]
 };
 
-declare function mkto:associate-lead($email, $meta) 
+declare function mkto:associate-lead($email, $cookie, $meta) 
 {
     let $name := $meta/name/string()
     let $names := fn:tokenize($name, " ")
@@ -125,7 +124,7 @@ declare function mkto:associate-lead($email, $meta)
                   {$leadSourceAttr}
               </leadAttributeList>
           </leadRecord>
-          <marketoCookie>{cookies:get-cookie('_mkto_trk')}</marketoCookie>
+          <marketoCookie>{$cookie}</marketoCookie>
        </ns1:paramsSyncLead>>
       </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
