@@ -73,6 +73,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $first-name := mkto:first-name($names)
     let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
+    let $opt-out := if ($meta/mktg-list/string () ne "on") then 1 else 0
 
     (: First check to see if lead exists :)
     let $body :=
@@ -120,6 +121,10 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                   <attribute>
                       <attrName>Company</attrName>
                       <attrValue>{$company}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>SFDC_Opt_Out__c</attrName>
+                      <attrValue>{$opt-out}</attrValue>
                   </attribute>
                   {$leadSourceAttr}
               </leadAttributeList>
