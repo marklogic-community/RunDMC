@@ -54,6 +54,7 @@
         <page display="xray" href="/code/xray"/>
         <page display="xqut" href="/code/xqut"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
+        <page display="Roxy" href="/code/roxy"/>
       </group>
       <group display="Loading and processing tools">
         <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
@@ -66,6 +67,7 @@
       <group display="Deployment and configuration">
         <page display="Booster" href="/code/booster"/>
         <page display="Pomegranate" href="/code/pomegranate"/>
+        <page display="Roxy" href="/code/roxy"/>
       </group>
       <group display="Microsoft Office® Integration">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
@@ -103,6 +105,7 @@
         <page display="XQMVC" href="/code/xqmvc"/>
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rewrite" href="/code/rewrite"/>
+        <page display="Roxy" href="/code/roxy"/>
       </group>
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
