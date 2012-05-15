@@ -43,7 +43,7 @@ return $csv
     
 else
 
-let $total := xdmp:estimate(/person/license)
+let $total := fn:count(/person/license)
 let $_ := xdmp:set-response-content-type('text/html')
 return
 

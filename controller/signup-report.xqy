@@ -38,7 +38,7 @@ return $csv
     
 else
 
-let $total := xdmp:estimate(/person)
+let $total := fn:count(/person)
 let $_ := xdmp:set-response-content-type('text/html')
 return
 
