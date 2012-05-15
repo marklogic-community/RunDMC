@@ -114,7 +114,7 @@ return
 <script type="text/javascript">
     $(document).ready(function() {{
         $('#button').click(function() {{
-            window.location = '/signup-report?csv=1';
+            window.location = '/license-report?csv=1';
         }});
     }});
 </script>
