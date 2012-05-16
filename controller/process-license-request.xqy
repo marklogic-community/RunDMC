@@ -154,6 +154,7 @@ return
           "//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
          <script>Munchkin.init('371-XVQ-609');</script>
+         <meta http-equiv="refresh" content="1; url=/license-record?url={xdmp:url-encode($valid-url)}"/>
         </head>
 	<body>
         <script type="text/javascript">
