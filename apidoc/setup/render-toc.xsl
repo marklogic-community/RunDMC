@@ -146,7 +146,7 @@
         <!--
         <div>API Reference</div>
         -->
-        <div id="toc_tabs" style="display:none">
+        <div id="toc_tabs" class="toc_tabs" style="display:none">
           <div id="tab_bar">
             <ul>
               <xsl:apply-templates mode="tab" select="/all-tocs/*"/>

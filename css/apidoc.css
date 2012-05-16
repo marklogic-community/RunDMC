@@ -123,7 +123,7 @@ table.guide_info { font-size: .8em; }
 }
 #apidoc_toc,
 #all_tocs,
-#toc_tabs {
+.toc_tabs {
   top: auto;
   bottom: auto;
   height: 100%;
@@ -294,7 +294,7 @@ p.warning { min-height: 50px }
 	padding: 0;
 	height: 100%;
 }
-#toc_tabs, #api_sub .ui-tabs .ui-tabs-nav {
+.toc_tabs, #api_sub .ui-tabs .ui-tabs-nav {
 	border-radius: 0;
 	border: none;
 	background: none;
