@@ -141,15 +141,39 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $soap := mkto:soap($body)
     let $resp := $soap[1]
     return 
-        if ($resp/code/string() eq '200') then
+        if ($resp/*:code/string() eq '200') then
             let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
             return 
                 if ($ok) then
                     ()
                 else
-                    xdmp:log(concat("mkto: syncLead failed ", $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/string()))
+                    mkto:alert(concat("mkto: syncLead failed ", xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body)))
         else
-            xdmp:log(concat("mkto: syncLead bad status ", $resp/code/string()))
+                mkto:alert(xdmp:quote($soap))
+};
+
+declare function mkto:alert ($e as xs:string) {
+    let $_ := xdmp:log($e)
+    let $host := xdmp:host-name(xdmp:host())
+
+    return xdmp:email(
+    <em:Message xmlns:em="URN:ietf:params:email-xml:" xmlns:rf="URN:ietf:params:rfc822:">
+      <rf:subject>Marketo integration failure on {$host}</rf:subject>
+      <rf:from>
+        <em:Address>
+          <em:name>MarkLogic Developer Community</em:name>
+          <em:adrs>NOBODY@marklogic.com</em:adrs>
+        </em:Address>
+      </rf:from>
+      <rf:to>
+        <em:Address>
+          <em:name>DMC Admin</em:name>
+          <em:adrs>dmc-admin@marklogic.com</em:adrs>
+        </em:Address>
+      </rf:to>
+      <em:content>{$e}</em:content>
+    </em:Message>
+   )
 };
 
 declare function mkto:soap($body) 
