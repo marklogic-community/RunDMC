@@ -74,6 +74,10 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
     let $opt-out := if ($meta/mktg-list/string () ne "on") then 1 else 0
+    let $cook := if ($cookie ne "") then 
+        <marketoCookie>{$cookie}</marketoCookie>
+    else 
+        ()
 
     (: First check to see if lead exists :)
     let $body :=
@@ -129,7 +133,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                   {$leadSourceAttr}
               </leadAttributeList>
           </leadRecord>
-          <marketoCookie>{$cookie}</marketoCookie>
+          {$cook}
        </ns1:paramsSyncLead>>
       </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>

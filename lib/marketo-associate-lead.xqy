@@ -23,5 +23,5 @@ declare variable $doc as node() external;
 try {
     mkto:associate-lead($email, $cookie, $doc)
 } catch ($e)  {
-    (xdmp:log(concat('mkto bad ', $e/string())))
+    (xdmp:log(concat('mkto:associate-lead failed ', $e/string())))
 }

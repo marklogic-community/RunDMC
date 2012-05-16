@@ -477,9 +477,11 @@ declare function users:validateParams($user as element(*), $params as element(*)
 (: associate the given email (and current mkto_trk cookie) with a lead in marketo :) 
 declare function users:mkto-associate-lead($email as xs:string, $doc)
 {
-    xdmp:spawn( "marketo-associate-lead.xqy", (
+    let $cookie := cookies:get-cookie('_mkto_trk')[1]
+
+    return xdmp:spawn("marketo-associate-lead.xqy", (
         xs:QName("email"), $email, 
-        xs:QName("cookie"), cookies:get-cookie('_mkto_trk'), 
+        xs:QName("cookie"), if ($cookie) then $cookie else "",
         xs:QName("doc"), $doc 
     ) )
 };
