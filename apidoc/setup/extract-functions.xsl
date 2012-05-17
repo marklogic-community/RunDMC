@@ -153,8 +153,8 @@
     <xsl:text>rest-lib</xsl:text>
   </xsl:template>
 
-  <!-- Change the "manage" library to "REST" so the TOC code treats it like a library with that name. -->
-  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq $REST-lib]/@lib">
+  <!-- Change the "manage" (and "XXX" for now...) library to "REST" so the TOC code treats it like a library with that name. -->
+  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib = $REST-libs]/@lib">
     <xsl:text>REST</xsl:text>
   </xsl:template>
 

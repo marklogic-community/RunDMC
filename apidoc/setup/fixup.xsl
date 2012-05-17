@@ -15,8 +15,8 @@
   <xsl:function name="fixup:fullname">
     <xsl:param name="el"/>
     <!-- REST docs (lib="manage" in the raw source) shouldn't have a namespace prefix in the full name -->
-    <xsl:sequence select="if ($el/@lib eq 'manage') then string(             $el/@name)
-                                                    else concat($el/@lib,':',$el/@name)"/>
+    <xsl:sequence select="if ($el/@lib = $REST-libs) then concat('/', ($el/@http-verb,'GET')[1], $el/@name)
+                                                     else concat($el/@lib,':',$el/@name)"/>
   </xsl:function>
 
   <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
