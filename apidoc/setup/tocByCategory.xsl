@@ -166,7 +166,8 @@
 
           <xsl:function name="toc:function-name-nodes">
             <xsl:param name="functions"/>
-            <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
+            <!-- NOTE: These elements are intentionally siblings (not parentless), so the TOC construction
+                       code has the option of inspecting their siblings.  -->
             <xsl:variable name="wrapper">
               <xsl:for-each select="$functions">
                 <!-- By default, just use alphabetical order.

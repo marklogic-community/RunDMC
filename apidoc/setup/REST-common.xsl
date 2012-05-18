@@ -38,14 +38,27 @@
           </xsl:function>
 
           <!-- E.g.,          "/v1/rest-apis/[name] (GET)"
-                 ==> "/REST/GET/v1/rest-apis/[name]"
+                 ==> "/REST/GET/v1/rest-apis/*"
           -->
           <xsl:function name="api:REST-fullname-to-external-uri">
             <xsl:param name="fullname"/>
             <xsl:sequence select="concat('/REST/',
                                          api:verb-from-REST-fullname($fullname),
-                                         api:name-from-REST-fullname($fullname))"/>
+                                         api:REST-name-with-wildcards(
+                                           api:name-from-REST-fullname($fullname)))"/>
           </xsl:function>
+
+                  <!-- Wildcards (*) provide an easier, consistent way to guess the API doc page's URL.
+                       E.g., /v1/rest-apis/[name]
+                        ==>  /v1/rest-apis/*
+                  -->
+                  <xsl:function name="api:REST-name-with-wildcards">
+                    <xsl:param name="resource-name"/>
+                    <xsl:sequence select="replace($resource-name,
+                                                  '\[ [^\]]+ \]',
+                                                  '*',
+                                                  'x')"/>
+                  </xsl:function>
 
                   <!-- E.g., "/v1/rest-apis/[name] (GET)"
                                                ==> "GET"

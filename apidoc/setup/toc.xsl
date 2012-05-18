@@ -190,10 +190,23 @@
 
                   <!-- A "function" name starting with a "/" is actually a REST resource -->
                   <xsl:template match="api:function-name[starts-with(.,'/')]">
-                    <!-- Hopefully we can eventually switch back to this
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{.}" type="function"/>
+                    <xsl:variable name="resource-name" select="api:name-from-REST-fullname(.)"/>
+                    <xsl:variable name="http-method"   select="api:verb-from-REST-fullname(.)"/>
+                    <!-- ASSUMPTION: the input elements are pre-sorted by resource name, then by preferred HTTP verb (GET's always first) -->
+                    <xsl:variable name="is-same-resource-as-next" select="following-sibling::*[1][api:name-from-REST-fullname(.) eq $resource-name]"/>
+                    <!-- If the method is GET and the next resource in the list is different, don't include the "(GET)" at the end of the name;
+                         it only adds unnecessary clutter in that case. -->
+                    <xsl:variable name="base-display-name" select="if ($http-method eq 'GET' and not($is-same-resource-as-next)) then $resource-name
+                                                                                                                                 else ."/>
+                    <!-- Displaying the square-bracket version
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name(.)}" type="function"/>
+                    <!-- Displaying the original, curly-brace version -->
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name($base-display-name)}" type="function"/>
+                    <!-- Displaying the wildcard (*) version -->
+                    <!--
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}" type="function"/>
+                    -->
                   </xsl:template>
 
 </xsl:stylesheet>
