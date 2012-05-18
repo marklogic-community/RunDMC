@@ -66,7 +66,9 @@
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
       <xsl:for-each select=".//node[not(node)]">
+        <!-- They're already sorted, and not necessarily just alphabetically (as with GET/POST/DELETE for REST resources).
         <xsl:sort select="@display"/>
+        -->
 <!--
 <xsl:if test="@href eq '/REST/manage/v1/forests&gt;view=schema'">
 <xsl:value-of select="xdmp:log(ml:internal-uri(translate(@href,'>','@')))" xmlns:xdmp="http://marklogic.com/xdmp"/>
@@ -75,7 +77,7 @@
                                                        -->
         <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(@href))
                                                        /api:function-page/api:function[1]"> <!-- don't list multiple *:polygon() functions; just the first -->
-          <xsl:with-param name="href" select="string(@href)"/>
+          <xsl:with-param name="toc-node" select="."/>
         </xsl:apply-templates>
 <!--
 </xsl:if>
@@ -92,15 +94,15 @@
 
 
           <xsl:template mode="list-entry" match="api:function">
-            <xsl:param name="href"/>
-            <api:list-entry href="{$href}">
+            <xsl:param name="toc-node"/>
+            <api:list-entry href="{$toc-node/@href}">
               <api:name>
                 <!-- Special-case the cts accessor functions; they should be indented -->
-                <xsl:if test="@lib eq 'cts' and contains(@fullname, '-query-')">
+                <xsl:if test="@lib eq 'cts' and contains($toc-node/@display, '-query-')">
                   <xsl:attribute name="indent" select="'yes'"/>
                 </xsl:if>
                 <!-- Function name -->
-                <xsl:value-of select="@fullname"/>
+                <xsl:value-of select="$toc-node/@display"/>
               </api:name>
               <api:description>
                 <!-- Use the same code that docapp uses for extracting the summary (first line) -->
