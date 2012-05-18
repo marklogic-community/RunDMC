@@ -98,17 +98,6 @@ declare function get-bucket-for-lib($lib) {
   cts:search(fn:collection(), query-for-lib-functions($lib))[1]/api:function-page/api:function[1]/@bucket
 };
 
-declare function function-names-for-lib($lib) {
-
-  for $func in cts:element-attribute-values(xs:QName("api:function"),
-                                            xs:QName("fullname"), (), "ascending",
-                                            query-for-lib-functions($lib))
-    return
-      <_> {()(: wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements :)}
-        <api:function-name>{ $func }</api:function-name>
-      </_>/*
-};
-
 
 declare variable $namespace-mappings := u:get-doc("/apidoc/config/namespace-mappings.xml")/namespaces/namespace;
 

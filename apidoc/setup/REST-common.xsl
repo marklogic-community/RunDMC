@@ -33,7 +33,8 @@
             <xsl:param name="fullname"/>
             <xsl:sequence select="concat(api:verb-from-REST-fullname($fullname),
                                          ' ',
-                                         api:name-from-REST-fullname($fullname))"/>
+                                         api:reverse-translate-REST-resource-name(api:name-from-REST-fullname($fullname)))"/>
+                                                                          <!--    api:name-from-REST-fullname($fullname)) "/>-->
           </xsl:function>
 
           <!-- E.g.,          "/v1/rest-apis/[name] (GET)"
@@ -60,6 +61,13 @@
                   <xsl:function name="api:name-from-REST-fullname">
                     <xsl:param name="fullname"/>
                     <xsl:sequence select="substring-before( $fullname,' (' )"/>
+                  </xsl:function>
+
+                  <xsl:function name="api:verb-sort-key-from-REST-fullname">
+                    <xsl:param name="fullname"/>
+                    <xsl:variable name="verb-list" select="'GET','POST','PUT','HEAD','DELETE'"/>
+                    <xsl:variable name="verb" select="api:verb-from-REST-fullname($fullname)"/>
+                    <xsl:sequence select="index-of($verb-list,$verb)"/>
                   </xsl:function>
 
 
@@ -94,6 +102,32 @@
     <xsl:value-of select="translate($step3, '{}()',
                                             '[][]')"/>                      <!--           {name} => [name]              -->
                                                                             <!--           (name) => [name]              -->
+  </xsl:function>
+
+  <!-- This is intended to be temporary, with the idea that the docs themselves could migrate
+       to using the square-brackets notation instead... -->
+  <xsl:function name="api:reverse-translate-REST-resource-name">
+    <xsl:param name="name"/>
+
+    <!-- ASSUMPTION: Same assumption as above. Only these fixed patterns are supported. -->
+
+    <!-- Step 1: convert back to this form: (default|{name}) -->
+    <xsl:variable name="step1"
+                  select="replace($name,
+                                  &quot;\['  ([^']+)  '-or-  ([^\]]+)  \]&quot;,
+                                                    '($1|{$2})',
+                                  'x')"/>                                   <!-- ['default'-or-name] => (default|{name}) -->
+
+    <!-- Step 2: convert back to the braced alternatives -->
+    <xsl:variable name="step2"
+                  select="replace($step1,
+                                  '\[ ([^\]\-]+)  -or-  ([^\]]+) \]',
+                                               '{$1|$2}',
+                                  'x')"/>                                   <!--        [id-or-name] => {id|name}        -->
+
+    <!-- Step 4: replace remaining brackets with braces -->
+    <xsl:value-of select="translate($step2, '[]',
+                                            '{}')"/>                        <!--              [name] => {name}           -->
   </xsl:function>
 
 </xsl:stylesheet>

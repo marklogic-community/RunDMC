@@ -153,7 +153,8 @@
                 <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-lib(.)"/>
 
               </intro>
-              <xsl:apply-templates select="api:function-names-for-lib(.)"/>
+              <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
+              <xsl:apply-templates select="toc:function-name-nodes($all-functions[@lib eq current()])"/>
             </node>
           </xsl:template>
 
@@ -189,7 +190,10 @@
 
                   <!-- A "function" name starting with a "/" is actually a REST resource -->
                   <xsl:template match="api:function-name[starts-with(.,'/')]">
+                    <!-- Hopefully we can eventually switch back to this
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{.}" type="function"/>
+                    -->
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name(.)}" type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>

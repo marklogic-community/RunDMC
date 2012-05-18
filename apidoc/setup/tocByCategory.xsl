@@ -169,7 +169,12 @@
             <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
             <xsl:variable name="wrapper">
               <xsl:for-each select="$functions">
-                <xsl:sort select="@fullname"/>
+                <!-- By default, just use alphabetical order.
+                     But for REST docs, first sort by the resource name... -->
+                <xsl:sort select="if (@lib eq 'REST') then api:name-from-REST-fullname(@fullname)
+                                                      else @fullname"/>
+                <!-- ...and then the HTTP method (only applicable to REST docs) -->
+                <xsl:sort select="api:verb-sort-key-from-REST-fullname(@fullname)"/>
                 <api:function-name>
                   <xsl:value-of select="@fullname"/>
                 </api:function-name>
