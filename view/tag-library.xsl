@@ -304,8 +304,8 @@
             <xsl:text>)</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.general']">https://community.marklogic.com/mailman/listinfo/general</xsl:template>
-          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.commits']">https://community.marklogic.com/mailman/listinfo/commits</xsl:template>
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.general']">/mailman/listinfo/general</xsl:template>
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.commits']">/mailman/listinfo/commits</xsl:template>
 
 
 
