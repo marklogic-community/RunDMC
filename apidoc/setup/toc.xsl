@@ -189,12 +189,7 @@
 
                   <!-- A "function" name starting with a "/" is actually a REST resource -->
                   <xsl:template match="api:function-name[starts-with(.,'/')]">
-                    <xsl:variable name="href">
-                      <xsl:call-template name="REST-doc-uri">
-                        <xsl:with-param name="name" select="string(.)"/>
-                      </xsl:call-template>
-                    </xsl:variable>
-                    <node href="{$href}" display="{api:display-REST-resource(.)}" type="function"/>
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{.}" type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>

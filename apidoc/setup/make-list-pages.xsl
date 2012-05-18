@@ -9,10 +9,14 @@
   xmlns:toc="http://marklogic.com/rundmc/api/toc"
   xmlns:ml="http://developer.marklogic.com/site/internal"
   xmlns:u="http://marklogic.com/rundmc/util"
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs api ml u toc">
 
-  <!-- TODO: narrow this import down to what's actually needed... -->
-  <xsl:import href="../view/page.xsl"/>
+  <xsl:import href="../view/uri-translation.xsl"/>
+
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module namespace="http://marklogic.com/rundmc/util" href="/lib/util-2.xqy"/>
 
   <xsl:variable name="root" select="/"/>
 
@@ -70,8 +74,9 @@
                                                        /api:function-page/api:function[1]"/>
                                                        -->
         <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(@href))
-                                                       /api:function-page/api:function[1]"/> <!-- don't list multiple *:polygon() functions;
-                                                                                                 just the first -->
+                                                       /api:function-page/api:function[1]"> <!-- don't list multiple *:polygon() functions; just the first -->
+          <xsl:with-param name="href" select="string(@href)"/>
+        </xsl:apply-templates>
 <!--
 </xsl:if>
 -->
@@ -87,7 +92,8 @@
 
 
           <xsl:template mode="list-entry" match="api:function">
-            <api:list-entry>
+            <xsl:param name="href"/>
+            <api:list-entry href="{$href}">
               <api:name>
                 <!-- Special-case the cts accessor functions; they should be indented -->
                 <xsl:if test="@lib eq 'cts' and contains(@fullname, '-query-')">

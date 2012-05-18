@@ -5,19 +5,21 @@
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
   xpath-default-namespace="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xs apidoc fixup">
+  exclude-result-prefixes="xs apidoc fixup api">
 
   <!-- The fullname is a derived value -->
   <xsl:function name="fixup:fullname">
     <xsl:param name="el"/>
     <!-- REST docs (lib="manage" in the raw source) shouldn't have a namespace prefix in the full name -->
-    <xsl:sequence select="if ($el/@lib = $REST-libs) then concat('/', ($el/@http-verb,'GET')[1], $el/@name)
+    <xsl:sequence select="if ($el/@lib = $REST-libs) then api:REST-fullname($el)
                                                      else concat($el/@lib,':',$el/@name)"/>
   </xsl:function>
+
 
   <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
   <!-- ASSUMPTION: If the fragment id contains a colon, then this is a link to a function page -->

@@ -11,8 +11,9 @@
   xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
   xmlns:my="http://localhost"
   xmlns:u="http://marklogic.com/rundmc/util"
+  xmlns:ml="http://developer.marklogic.com/site/internal"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs apidoc fixup raw my u">
+  exclude-result-prefixes="xs apidoc fixup raw my u ml">
 
   <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
   <xdmp:import-module namespace="http://marklogic.com/rundmc/raw-docs-access" href="/apidoc/setup/raw-docs-access.xqy"/>
@@ -22,6 +23,8 @@
   <xsl:include href="fixup.xsl"/>
 
   <xsl:include href="REST-common.xsl"/>
+
+  <xsl:include href="../view/uri-translation.xsl"/>
 
   <xsl:variable name="REST-complexType-mappings" select="u:get-doc('/apidoc/config/REST-complexType-mappings.xml')/resources/resource"/>
 
@@ -34,22 +37,24 @@
 
   <!-- Extract each function as its own document -->
   <xsl:template match="apidoc:function">
-    <xsl:variable name="result-doc-path">
-      <xsl:apply-templates mode="result-doc-path" select="."/>
+    <xsl:variable name="external-uri">
+      <xsl:apply-templates mode="result-path-href" select="."/>
     </xsl:variable>
-    <xsl:result-document href="/apidoc/{$api:version}{$result-doc-path}.xml">
+    <xsl:variable name="internal-uri" select="ml:internal-uri($external-uri)"/>
+    <xsl:message>Extracting document: <xsl:value-of select="$internal-uri"/></xsl:message>
+    <xsl:result-document href="{$internal-uri}">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
            that raises the possibility of needing to include two different
            <api:function> elements in the same page. -->
-      <api:function-page>
+      <api:function-page href="{$external-uri}">
         <xsl:apply-templates mode="fixup" select="../apidoc:function[fixup:fullname(.) eq current()/fixup:fullname(.)]"/>
       </api:function-page>
     </xsl:result-document>
   </xsl:template>
 
           <!-- This is overridden in REST-common.xsl, for REST docs -->
-          <xsl:template mode="result-doc-path" match="apidoc:function">
+          <xsl:template mode="result-path-href" match="apidoc:function">
             <xsl:text>/</xsl:text>
             <xsl:value-of select="@lib"/>
             <xsl:text>:</xsl:text>

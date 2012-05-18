@@ -1,4 +1,4 @@
-<!-- Search-specific tag library and auxiliary rules -->
+
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -340,6 +340,12 @@
                   <xsl:template mode="page-specific-title" match="api:function-page">
                     <xsl:value-of select="api:function[1]/@fullname"/>
                   </xsl:template>
+
+                  <xsl:template mode="page-specific-title" match="api:function-page[api:function[1]/@lib eq 'REST']">
+                    <xsl:value-of select="api:REST-resource-heading(api:function[1]/@fullname)"/>
+                  </xsl:template>
+
+                          <xsl:include href="../apidoc/setup/REST-common.xsl"/>
 
 
                   <xsl:template mode="search-snippet" match="search:match">

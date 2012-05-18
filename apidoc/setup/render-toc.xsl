@@ -9,8 +9,6 @@
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="xs toc api">
 
-  <xsl:import href="REST-common.xsl"/>
-
   <xsl:param name="toc-url"/>
 
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
@@ -325,11 +323,6 @@
 
                           <!-- But when the @href value is just "/", leave it out when the version is specified explicitly (e.g., /4.2 instead of /4.2/) -->
                           <xsl:template mode="link-href" match="node[string($prefix-for-hrefs)][@href eq '/']"/>
-
-                          <!-- Or when the URI is a REST doc URI with a hidden query string, then convert "@" to "?" -->
-                          <xsl:template mode="link-href" match="node[contains(@href,$api:REST-uri-questionmark-substitute)]">
-                            <xsl:value-of select="translate(@href, $api:REST-uri-questionmark-substitute, '?')"/>
-                          </xsl:template>
 
 
                           <xsl:template mode="title-att" match="node"/>

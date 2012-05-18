@@ -4,42 +4,64 @@
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs apidoc api xdmp fixup">
-
-  <xsl:import href="fixup.xsl"/>
-
-  <xdmp:import-module href="/apidoc/model/data-access.xqy" namespace="http://marklogic.com/rundmc/api"/>
+  exclude-result-prefixes="xs apidoc api xdmp">
 
   <xsl:variable name="REST-libs" select="'manage','XXX'"/>
 
-  <xsl:template mode="result-doc-path" match="apidoc:function[@lib = $REST-libs]" name="REST-doc-uri">
-    <xsl:param name="name" select="fixup:fullname(.)"/>
-    <xsl:message>Translating REST doc URI from <xsl:value-of select="@name"/>:</xsl:message>
-    <xsl:variable name="external-uri-translation-result">
-      <xsl:call-template name="external-REST-doc-uri">
-        <xsl:with-param name="name" select="$name"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:message>To <xsl:value-of select="$external-uri-translation-result"/></xsl:message>
-    <xsl:sequence select="translate($external-uri-translation-result,
-                                    '?',
-                                    $api:REST-uri-questionmark-substitute)"/>           <!-- ?foo=bar    => @foo=bar    -->
+  <!-- This determines where each REST doc gets stored (at what document URI) -->
+  <xsl:template mode="result-path-href" match="apidoc:function[@lib = $REST-libs]">
+    <xsl:param name="fullname" select="api:REST-fullname(.)"/>
+
+    <xsl:value-of select="api:REST-fullname-to-external-uri(
+                            api:REST-fullname(.))"/>
   </xsl:template>
 
 
-  <!-- E.g. /manage/v1/servers/{id|name}/{custom}?group-id={id|name}
-         => /manage/v1/servers/$id-or-name/$custom?group-id=$id-or-name
-
-       Also: /manage/v1/
-          => /manage/v1
+  <!-- Example input:  <function name="/v1/rest-apis/{name}" http-verb="GET"/>
+       Example output: "/v1/rest-apis/[name] (GET)"
   -->
-  <xsl:template name="external-REST-doc-uri">
-    <xsl:param name="name"/>
-    <xsl:text>/REST</xsl:text>
-    <xsl:value-of select="api:translate-REST-resource-name($name)"/>
-  </xsl:template>
+  <xsl:function name="api:REST-fullname">
+    <xsl:param name="el"/>
+    <xsl:sequence select="concat(api:translate-REST-resource-name($el/@name), ' (', ($el/@http-verb,'GET')[1], ')')"/>
+  </xsl:function>
+
+          <!-- E.g.,     "/v1/rest-apis/[name] (GET)"
+                 ==> "GET /v1/rest-apis/[name]"
+          -->
+          <xsl:function name="api:REST-resource-heading">
+            <xsl:param name="fullname"/>
+            <xsl:sequence select="concat(api:verb-from-REST-fullname($fullname),
+                                         ' ',
+                                         api:name-from-REST-fullname($fullname))"/>
+          </xsl:function>
+
+          <!-- E.g.,          "/v1/rest-apis/[name] (GET)"
+                 ==> "/REST/GET/v1/rest-apis/[name]"
+          -->
+          <xsl:function name="api:REST-fullname-to-external-uri">
+            <xsl:param name="fullname"/>
+            <xsl:sequence select="concat('/REST/',
+                                         api:verb-from-REST-fullname($fullname),
+                                         api:name-from-REST-fullname($fullname))"/>
+          </xsl:function>
+
+                  <!-- E.g., "/v1/rest-apis/[name] (GET)"
+                                               ==> "GET"
+                  -->
+                  <xsl:function name="api:verb-from-REST-fullname">
+                    <xsl:param name="fullname"/>
+                     <xsl:sequence select="substring-before( substring-after( $fullname,' (' ), ')')"/>
+                  </xsl:function>
+
+                  <!-- E.g., "/v1/rest-apis/[name] (GET)"
+                         ==> "/v1/rest-apis/[name]"
+                  -->
+                  <xsl:function name="api:name-from-REST-fullname">
+                    <xsl:param name="fullname"/>
+                    <xsl:sequence select="substring-before( $fullname,' (' )"/>
+                  </xsl:function>
+
 
   <xsl:function name="api:translate-REST-resource-name">
     <xsl:param name="name"/>
@@ -57,7 +79,7 @@
                  pattern of this form: (default|{name}) -->
     <xsl:variable name="step2"
                   select="replace($step1,
-                                       '\( ([^|)]+)  \|  \{ ([^}]+) \}  \)     ',
+                                       '\( ([^|)]+)  \|  \{ ([^}]+) \}  \)',
                                           &quot;['$1'-or-$2]&quot;,
                                   'x')"/>                                   <!-- (default|{name}) => ['default'-or-name] -->
 
@@ -72,21 +94,6 @@
     <xsl:value-of select="translate($step3, '{}()',
                                             '[][]')"/>                      <!--           {name} => [name]              -->
                                                                             <!--           (name) => [name]              -->
-  </xsl:function>
-
-
-  <xsl:function name="api:display-REST-resource">
-    <xsl:param name="fullname"/>
-
-    <xsl:variable name="verb" select="tokenize($fullname,'/')[2]"/>
-
-    <!-- e.g., /GET/foo/{bar} => /foo/{bar} -->
-    <xsl:variable name="raw-uri" select="substring-after($fullname,$verb)"/>
-
-    <!-- e.g., /foo/{bar} => /foo/[bar] -->
-    <xsl:variable name="display-uri" select="api:translate-REST-resource-name($raw-uri)"/>
-
-    <xsl:sequence select="concat($display-uri,' (',$verb,')')"/>
   </xsl:function>
 
 </xsl:stylesheet>

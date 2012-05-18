@@ -16,6 +16,7 @@
   <xsl:import href="../setup/REST-common.xsl"/>
 
   <xsl:include href="guide.xsl"/>
+  <xsl:include href="uri-translation.xsl"/>
 
   <!-- overrides variable declaration in imported code -->
   <xsl:variable name="currently-on-api-server" select="true()"/>
@@ -374,15 +375,12 @@
 
 
           <xsl:template mode="list-page-entry" match="api:list-entry">
-            <xsl:variable name="href">
-              <xsl:apply-templates mode="list-page-entry-href" select="api:name"/>
-            </xsl:variable>
             <tr>
               <td>
                 <xsl:if test="api:name/@indent">
                   <xsl:attribute name="class" select="'indented_function'"/>
                 </xsl:if>
-                <a href="{$version-prefix}{$href}">
+                <a href="{$version-prefix}{@href}">
                   <xsl:value-of select="api:name"/>
                 </a>
               </td>
@@ -391,19 +389,6 @@
               </td>
             </tr>
           </xsl:template>
-
-                  <xsl:template mode="list-page-entry-href" match="api:name">
-                    <xsl:text>/</xsl:text>
-                    <xsl:value-of select="."/>
-                  </xsl:template>
-
-                  <!-- If the name starts with a "/", that means this is a REST resource -->
-                  <xsl:template mode="list-page-entry-href" match="api:name[starts-with(.,'/')]">
-                    <xsl:call-template name="external-REST-doc-uri">
-                      <xsl:with-param name="name" select="string(.)"/>
-                    </xsl:call-template>
-                  </xsl:template>
-
 
           <xsl:template mode="list-page-entry" match="entry | guide">
             <tr>
@@ -672,21 +657,6 @@
                       body-class-extra" match="*"/>
 
 
-
-  <xsl:function name="ml:external-uri" as="xs:string">
-    <xsl:param name="node" as="node()"/>
-    <xsl:sequence select="ml:external-uri-api($node)"/>
-  </xsl:function>
-
-  <!-- ASSUMPTION: This is only called on version-less paths (as they appear in the XML TOCs). -->
-  <xsl:function name="ml:internal-uri" as="xs:string">
-    <xsl:param name="doc-path" as="xs:string"/>
-    <xsl:variable name="version-path" select="concat('/apidoc/', $api:version)"/>
-    <xsl:value-of>
-      <xsl:value-of select="$version-path"/>
-      <xsl:value-of select="if ($doc-path eq '/') then '/index.xml' else concat($doc-path,'.xml')"/>
-    </xsl:value-of>
-  </xsl:function>
 
   <!-- Don't include the version in the comments doc URI; use just one conversation thread per function, regardless of server version -->
   <!-- Redefines the function in ../../view/comments.xsl -->
