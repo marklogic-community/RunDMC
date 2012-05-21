@@ -152,6 +152,11 @@
     <xsl:text>spell-lib</xsl:text>
   </xsl:template>
 
+  <!-- Similarly, change the "json" library to "json-lib" to disambiguate from the built-in "json" module -->
+  <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq 'json' and not(@type eq 'builtin')]/@lib">
+    <xsl:text>json-lib</xsl:text>
+  </xsl:template>
+
   <!-- Change the "rest" library to "rest-lib" because we're reserving the "/REST/" prefix for the REST API docs,
        and I don't want case to be the only thing distinguishing between the two URLs. -->
   <xsl:template mode="fixup-att-value" match="apidoc:function[@lib eq 'rest']/@lib">

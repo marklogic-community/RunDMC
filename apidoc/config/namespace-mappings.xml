@@ -19,8 +19,14 @@
   <namespace lib="geo" uri="http://marklogic.com/geospatial"/>
   <namespace lib="georss" uri="http://www.georss.org/georss"/>
   <namespace lib="gml" uri="http://www.opengis.net/gml"/>
+  <namespace lib="hadoop" uri="http://marklogic.com/hadoop"/>
   <namespace lib="info" uri="http://marklogic.com/appservices/infostudio"/>
   <namespace lib="infodev" uri="http://marklogic.com/appservices/infostudio/dev"/>
+
+  <!-- This is exceptional like "spell" vs. "spell-lib"; see below -->
+  <namespace lib="json" uri="http://marklogic.com/xdmp/json" category="JSONBuiltins"/>
+  <namespace lib="json-lib" uri="http://marklogic.com/xdmp/json" prefix="json"/>
+
   <namespace lib="kml" uri="http://earth.google.com/kml/2.0"/>
   <namespace lib="lnk" uri="http://marklogic.com/cpf/links"/>
   <namespace lib="map" uri="http://marklogic.com/xdmp/map"/>
@@ -50,6 +56,7 @@
 
   <namespace lib="thsr" uri="http://marklogic.com/xdmp/thesaurus"/>
   <namespace lib="trgr" uri="http://marklogic.com/xdmp/triggers"/>
+  <namespace lib="view" uri="http://marklogic.com/xdmp/view"/>
   <namespace lib="xdmp" uri="http://marklogic.com/xdmp"/>
   <namespace lib="xhtml" uri="http://marklogic.com/cpf/xhtml"/>
   <namespace lib="xinc" uri="http://marklogic.com/xinclude"/>
