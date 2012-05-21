@@ -202,11 +202,11 @@
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
                     <!-- Displaying the original, curly-brace version -->
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name($base-display-name)}" type="function"/>
-                    <!-- Displaying the wildcard (*) version -->
                     <!--
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}" type="function"/>
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name($base-display-name)}" type="function"/>
                     -->
+                    <!-- Displaying the wildcard (*) version -->
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}" type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>
