@@ -177,7 +177,8 @@
               <xsl:apply-templates mode="pjax_enabled" select="."/>
             </xsl:variable>
             <xsl:variable name="pos" select="position()"/>
-            <div id="tabs-{$pos}" class="tabbed_section {$pjax_enabled}">
+            <div id="tabs-{$pos}" class="tabbed_section {$pjax_enabled} {local-name(.)}">
+                                                                        <!-- e.g., "guides" -->
               <div class="scrollable_section">
                 <input id="config-filter{$pos}" name="config-filter{$pos}"/>
                 <xsl:apply-templates mode="control" select="."/>
