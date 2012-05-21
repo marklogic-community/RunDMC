@@ -190,9 +190,13 @@
 
           <xsl:template mode="api-page-heading" match="api:function-page">
             <xsl:variable name="name" select="api:function[1]/@fullname"/>
+            <xsl:variable name="lib"  select="api:function[1]/@lib"/>
+
+            <!-- usually the same as $lib, excepting "spell" vs. "spell-lib" and "json" vs. "json-lib" -->
             <xsl:variable name="prefix" select="substring-before($name,':')"/>
             <xsl:variable name="local"  select="substring-after ($name,':')"/>
-            <a href="{$version-prefix}/{$prefix}" class="function_prefix">
+
+            <a href="{$version-prefix}/{$lib}" class="function_prefix">
               <xsl:value-of select="$prefix"/>
             </a>
             <xsl:text>:</xsl:text>
@@ -355,7 +359,7 @@
             <xsl:variable name="heading">
               <xsl:next-match/>
             </xsl:variable>
-            <!-- in case spell-lib is the library, get the path from the current URL, not the heading -->
+            <!-- get the path from the current URL, not the heading -->
             <a href="{$version-prefix}/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}"
                class="function_prefix">
               <xsl:value-of select="substring-before($heading,' ')"/>
