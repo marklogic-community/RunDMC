@@ -65,17 +65,21 @@
               <xsl:when test="not($sub-categories)">
 
                 <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch;
-                                 in other words, every function list page only pertains to one library, at least ostensibly ("exsl" exception below). -->
+                                 in other words, every top-level category page only pertains to one library (sub-categories can have more than one; see below). -->
                 <xsl:attribute name="href" select="concat('/',$single-lib-for-category,
                                                           '/',toc:path-for-category(.))"/>
 
-                <xsl:attribute name="title" select="toc:category-page-title(., $single-lib-for-category)"/>
+                <xsl:attribute name="category-name" select="toc:display-category(.)"/>
+
+                <xsl:copy-of select="toc:category-page-title(., $single-lib-for-category, ())"/>
 
                 <!-- Used to trigger adding a link to the title of the resulting page -->
                 <!-- But don't do this for REST API list pages -->
+                <!--
                 <xsl:if test="not($single-lib-for-category eq 'REST')">
                   <xsl:attribute name="type" select="'function-category'"/>
                 </xsl:if>
+                -->
 
                 <intro>
                   <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
@@ -97,29 +101,31 @@
 
                   <xsl:variable name="in-this-subcategory" select="$in-this-category[@subcategory eq $subcategory]"/>
 
-                  <xsl:variable name="subcategory-lib" select="toc:lib-for-all($in-this-subcategory)"/>
+                  <xsl:variable  name="one-subcategory-lib" select="toc:lib-for-all($in-this-subcategory)"/>
+                  <xsl:variable name="main-subcategory-lib" select="toc:primary-lib($in-this-subcategory)"/>
 
-                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $subcategory-lib)"/>
+                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $one-subcategory-lib)"/>
 
-                  <xsl:variable name="href" select="concat('/', $subcategory-lib,
-                   if ($is-exhaustive) then () else concat('/', toc:path-for-category(.)))"/>
+                  <xsl:variable name="href" select="if ($is-exhaustive) then concat('/', $one-subcategory-lib)
+                                                                        else concat('/', $main-subcategory-lib, '/', toc:path-for-category(.))"/>
 
-                  <!-- Don't display, e.g, "(xdmp:)" if the parent node already has it -->
-                  <!-- ASSUMPTION: $subcategory-lib will always be supplied: subcategories always pertain to only one lib, except for the "exsl" exception (see below) -->
-                  <xsl:variable name="suffix" select="if ($single-lib-for-category)
-                                                      then ()
-                                                      else toc:display-suffix($subcategory-lib)"/>
+                  <!-- Only display, e.g, "(xdmp:)" if just one library is represented in this sub-category and if the parent category doesn't already display it -->
+                  <xsl:variable name="suffix" select="if ($one-subcategory-lib and not($single-lib-for-category))
+                                                      then toc:display-suffix($one-subcategory-lib)
+                                                      else ()"/>
 
                   <node href="{$href}" display="{toc:display-category(.)}{$suffix}" function-list-page="yes">
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
-                      <xsl:attribute name="title" select="toc:category-page-title(., $subcategory-lib)"/>
+                      <xsl:attribute name="category-name" select="toc:display-category(.)"/>
 
-                      <!-- Used to trigger adding a link to the title of the resulting page -->
-                      <xsl:attribute name="type" select="'function-category'"/>
+                      <xsl:variable name="secondary-lib"
+                                    select="if (not($one-subcategory-lib)) then ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1]
+                                                                           else ()"/>
+                      <xsl:copy-of select="toc:category-page-title(., $main-subcategory-lib, $secondary-lib)"/>
 
                       <intro>
-                        <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $subcategory-lib)"/>
+                        <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $main-subcategory-lib)"/>
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->
@@ -150,18 +156,22 @@
           <xsl:function name="toc:category-page-title">
             <xsl:param name="cat"/>
             <xsl:param name="lib"/>
-            <xsl:value-of select="$lib"/>
-            <xsl:text> </xsl:text>
-            <xsl:choose>
-              <xsl:when test="$lib eq 'REST'">resources</xsl:when>
-              <xsl:otherwise                 >functions</xsl:otherwise>
-            </xsl:choose>
-            <!-- toc.xsl depends on this format (category name in parentheses)
-                 to determine what sub-pages to list on the main lib page;
-                 so don't change this without changing it there also -->
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="toc:display-category($cat)"/>
-            <xsl:text>)</xsl:text>
+            <xsl:param name="secondary-lib"/>
+            <title>
+              <a href="/{$lib}">
+                <xsl:value-of select="api:prefix-for-lib($lib)"/>
+              </a>
+              <xsl:text> functions (</xsl:text>
+              <xsl:value-of select="toc:display-category($cat)"/>
+              <xsl:text>)</xsl:text>
+              <xsl:if test="$secondary-lib">
+                <xsl:text> and </xsl:text>
+                <a href="/{$secondary-lib}">
+                  <xsl:value-of select="api:prefix-for-lib($secondary-lib)"/>
+                </a>
+                <xsl:text> functions</xsl:text>
+              </xsl:if>
+            </title>
           </xsl:function>
 
           <xsl:function name="toc:function-name-nodes">
@@ -185,17 +195,32 @@
           </xsl:function>
 
 
-          <!-- Returns true if all the functions are in the same library (special case: not counting "exsl") -->
+          <!-- Returns the one library string if all the functions are in the same library; otherwise returns empty -->
           <xsl:function name="toc:lib-for-all" as="xs:string?">
             <xsl:param name="functions"/>
             <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
-            <xsl:sequence select="if (count($libs) eq 1 
-                                   or count($libs) eq 2 and $libs = 'exsl') (: special-case: don't let the presence of exsl count :)
-                                  then string(($functions/@lib
-                                                        [. ne 'exsl' or (every $lib in $functions/@lib satisfies ($lib eq 'exsl'))]
-                                              )[1]
-                                             )
-                                  else ()"/>
+            <xsl:sequence select="if (count($libs) eq 1) then string(($functions/@lib)[1])
+                                                         else ()"/>
+          </xsl:function>
+
+          <!-- Uses toc:lib-for-most() (because I already implemented it) but favors "xdmp" as primary regardless -->
+          <xsl:function name="toc:primary-lib" as="xs:string">
+            <xsl:param name="functions"/>
+            <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
+            <xsl:sequence select="if ($libs = 'xdmp') then 'xdmp' else toc:lib-for-most($functions)"/>
+          </xsl:function>
+
+          <!-- Returns the most common library string among the given functions
+               (handles the unique "XSLT" and "JSON" subcategories which each represent more than one library) -->
+          <xsl:function name="toc:lib-for-most" as="xs:string">
+            <xsl:param name="functions"/>
+            <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
+            <xsl:variable name="counts">
+              <xsl:for-each select="$libs">
+                <lib name="{.}" count="{count($functions[@lib eq current()])}"/>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="$counts/lib[number(@count) eq max(../lib/@count)][1]/@name"/>
           </xsl:function>
 
 
@@ -242,13 +267,13 @@
                 <!-- the admin library sub-pages don't have their own descriptions currently; use this boilerplate instead -->
                 <xsl:when test="$lib = $all-libs[not(@built-in)]">
                   <apidoc:summary>
-                    <p>For information on how to import the functions in this module, refer to the main <a href="/{$lib}"><xsl:value-of select="$lib"/> library page</a>.</p>
+                    <p>For information on how to import the functions in this module, refer to the main <a href="/{$lib}"><xsl:value-of select="api:prefix-for-lib($lib)"/> library page</a>.</p>
                   </apidoc:summary>
                 </xsl:when>
                 <!-- some of the xdmp sub-pages don't have descriptions either, so use this -->
                 <xsl:otherwise>
                   <apidoc:summary>
-                    <p>For the complete list of functions and categories in this namespace, refer to the main <a href="/{$lib}"><xsl:value-of select="$lib"/> functions page</a>.</p>
+                    <p>For the complete list of functions and categories in this namespace, refer to the main <a href="/{$lib}"><xsl:value-of select="api:prefix-for-lib($lib)"/> functions page</a>.</p>
                   </apidoc:summary>
                 </xsl:otherwise>
               </xsl:choose>

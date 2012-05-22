@@ -176,7 +176,9 @@
   </xsl:template>
 
   <xsl:template mode="page-specific-title" match="api:list-page">
-    <xsl:value-of select="@title"/>
+    <xsl:value-of>
+      <xsl:apply-templates mode="list-page-heading" select="."/>
+    </xsl:value-of>
   </xsl:template>
 
 
@@ -199,6 +201,7 @@
             <xsl:variable name="prefix" select="substring-before($name,':')"/>
             <xsl:variable name="local"  select="substring-after ($name,':')"/>
 
+                                               <!-- Is this class necessary anymore? -->
             <a href="{$version-prefix}/{$lib}" class="function_prefix">
               <xsl:value-of select="$prefix"/>
             </a>
@@ -348,27 +351,8 @@
             <xsl:attribute name="class">pjax_enabled</xsl:attribute>
           </xsl:template>
 
-
-          <!-- By default, just display the page title -->
           <xsl:template mode="list-page-heading" match="api:list-page">
-            <xsl:apply-templates mode="page-specific-title" select="."/>
-          </xsl:template>
-
-          <!-- But for function category pages, include a link back to the main lib page -->
-          <!-- ASSUMPTION: URL for function category pages follows this two-step format: "/cts/geospatial"
-               ASSUMPTION: Heading for function category pages follows this format:      "cts functions (Geospatial)"
-                                                                                  (i.e. first word is the lib prefix) -->
-          <xsl:template mode="list-page-heading" match="api:list-page[@type eq 'function-category']">
-            <xsl:variable name="heading">
-              <xsl:next-match/>
-            </xsl:variable>
-            <!-- get the path from the current URL, not the heading -->
-            <a href="{$version-prefix}/{substring-before(substring-after(ml:external-uri(.),'/'),'/')}"
-               class="function_prefix">
-              <xsl:value-of select="substring-before($heading,' ')"/>
-            </a>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="substring-after($heading,' ')"/>
+            <xsl:apply-templates select="api:title/node()"/>
           </xsl:template>
 
 

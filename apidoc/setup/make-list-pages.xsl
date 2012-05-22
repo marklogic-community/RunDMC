@@ -53,7 +53,7 @@
     <xsl:variable name="container-toc-section-id">
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
-    <api:list-page title="{@title}" disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
+    <api:list-page disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
       <xsl:copy-of select="@category-bucket"/>
 
       <!-- can be used to trigger different display options -->
@@ -62,7 +62,7 @@
       <!-- TODO: add these to the input when applicable (toc-generation code) -->
       <xsl:copy-of select="@prefix | @namespace"/>
 
-      <xsl:apply-templates select="intro"/>
+      <xsl:apply-templates select="title | intro"/>
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
       <xsl:for-each select=".//node[not(node)]">
@@ -110,6 +110,12 @@
               </api:description>
             </api:list-entry>
           </xsl:template>
+
+  <xsl:template match="title">
+    <api:title>
+      <xsl:apply-templates mode="to-xhtml"/>
+    </api:title>
+  </xsl:template>
 
   <xsl:template match="intro">
     <api:intro>

@@ -48,10 +48,10 @@
     <all-tocs>
       <toc:functions>
         <node href="/all"
-              title="All functions"
               display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes">
+          <title>All functions</title>
           <intro>
             <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
           </intro>
@@ -103,10 +103,10 @@
         <toc:rest-resources>
           <!-- Add this wrapper so the /REST page will get created -->
           <node href="/REST"
-                title="All REST resources"
                 display="All REST resources"
                 id="RESTResourcesAPI"
                 function-list-page="yes">
+            <title>All REST resources</title>
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
           </node>
@@ -129,13 +129,16 @@
                   display="{api:prefix-for-lib(.)}:"
                   function-count="{api:function-count-for-lib(.)}"
                   namespace="{api:uri-for-lib(.)}"
-                  title="{api:prefix-for-lib(.)} functions"
                   category-bucket="{@category-bucket}"
                   function-list-page="yes"
                   id="{.}_{generate-id(.)}"> <!-- generate a unique id for this TOC section -->
               <xsl:if test="@built-in">
                 <xsl:attribute name="footnote" select="'yes'"/>
               </xsl:if>
+              <title>
+                <xsl:value-of select="api:prefix-for-lib(.)"/>
+                <xsl:text> functions</xsl:text>
+              </title>
               <intro>
                 <xsl:variable name="modifier" select="if (@built-in) then 'built-in' else 'XQuery library'"/>
                 <p>The table below lists all the "<xsl:value-of select="api:prefix-for-lib(.)"/>" <xsl:value-of select="$modifier"/> functions (in this namespace: <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).</p>
@@ -145,7 +148,7 @@
                   <p>You can also view these functions broken down by category:</p>
                   <ul>
                     <xsl:apply-templates mode="sub-page" select="$sub-pages">
-                      <xsl:sort select="@title"/>
+                      <xsl:sort select="@category-name"/>
                     </xsl:apply-templates>
                   </ul>
                 </xsl:if>
@@ -161,9 +164,7 @@
                   <xsl:template mode="sub-page" match="node"> 
                     <li>
                       <a href="{@href}">
-                        <xsl:value-of select="substring-after(
-                                                substring-before(@title, ')'),
-                                                '(')"/>
+                        <xsl:value-of select="@category-name"/>
                       </a>
                     </li>
                     <!--
