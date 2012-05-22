@@ -27,5 +27,6 @@
   <!-- REST Resources API -->
   <category from="Management API" to="management"/>
   <category from="Packaging API"  to="packaging"/>
+  <category from="Client API"     to="client"/>
 
 </category-page-urls>

@@ -35,6 +35,8 @@
       <xsl:variable name="bucket" select="."/>
       <xsl:variable name="bucket-id" select="translate($bucket,' ','')"/>
 
+      <xsl:variable name="is-REST" select="$bucket eq 'REST Resources API'"/>
+
       <!-- bucket node --> <!-- ID for function buckets is the display name minus spaces -->
       <node display="{.}" id="{$bucket-id}">
         <xsl:variable name="in-this-bucket" select="$all-functions[@bucket eq $bucket]"/>
@@ -61,8 +63,9 @@
                 <xsl:attribute name="href" select="concat('/',$single-lib-for-category)"/>
               </xsl:when>
               <!-- Create a new page for this category if it doesn't contain sub-categories
-                   and does not already correspond to a full lib page -->
-              <xsl:when test="not($sub-categories)">
+                   and does not already correspond to a full lib page,
+                   unless it's a REST doc category, in which case we do want to create the category page (e.g., for Client API)  -->
+              <xsl:when test="not($sub-categories) or $is-REST">
 
                 <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch;
                                  in other words, every top-level category page only pertains to one library (sub-categories can have more than one; see below). -->
@@ -71,15 +74,8 @@
 
                 <xsl:attribute name="category-name" select="toc:display-category(.)"/>
 
-                <xsl:copy-of select="toc:category-page-title(., $single-lib-for-category, ())"/>
-
-                <!-- Used to trigger adding a link to the title of the resulting page -->
-                <!-- But don't do this for REST API list pages -->
-                <!--
-                <xsl:if test="not($single-lib-for-category eq 'REST')">
-                  <xsl:attribute name="type" select="'function-category'"/>
-                </xsl:if>
-                -->
+                <xsl:copy-of select="if ($is-REST) then toc:REST-page-title($category, ())
+                                                   else toc:category-page-title(., $single-lib-for-category, ())"/>
 
                 <intro>
                   <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
@@ -107,7 +103,9 @@
                   <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $one-subcategory-lib)"/>
 
                   <xsl:variable name="href" select="if ($is-exhaustive) then concat('/', $one-subcategory-lib)
-                                                                        else concat('/', $main-subcategory-lib, '/', toc:path-for-category(.))"/>
+                                                                                                                   (: REST docs include category in path :)
+                                               else if ($is-REST)       then concat('/', $one-subcategory-lib, '/', toc:path-for-category($category), '/', toc:path-for-category(.))
+                                                                        else concat('/', $main-subcategory-lib,                                       '/', toc:path-for-category(.))"/>
 
                   <!-- Only display, e.g, "(xdmp:)" if just one library is represented in this sub-category and if the parent category doesn't already display it -->
                   <xsl:variable name="suffix" select="if ($one-subcategory-lib and not($single-lib-for-category))
@@ -122,7 +120,9 @@
                       <xsl:variable name="secondary-lib"
                                     select="if (not($one-subcategory-lib)) then ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1]
                                                                            else ()"/>
-                      <xsl:copy-of select="toc:category-page-title(., $main-subcategory-lib, $secondary-lib)"/>
+
+                      <xsl:copy-of select="if ($is-REST) then toc:REST-page-title($category, $subcategory)
+                                                         else toc:category-page-title(., $main-subcategory-lib, $secondary-lib)"/>
 
                       <intro>
                         <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $main-subcategory-lib)"/>
@@ -170,6 +170,19 @@
                   <xsl:value-of select="api:prefix-for-lib($secondary-lib)"/>
                 </a>
                 <xsl:text> functions</xsl:text>
+              </xsl:if>
+            </title>
+          </xsl:function>
+
+          <xsl:function name="toc:REST-page-title">
+            <xsl:param name="category"/>
+            <xsl:param name="subcategory"/>
+            <title>
+              <xsl:value-of select="$category"/>
+              <xsl:if test="$subcategory">
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="$subcategory"/>
+                <xsl:text>)</xsl:text>
               </xsl:if>
             </title>
           </xsl:function>
