@@ -95,7 +95,7 @@
           <xsl:template mode="populate-content" match="last-updated
                                                      | created[not($doc-path)]
                                                      | created[$params[@name eq 'status'] eq 'Published'
-                                                             and not($base-doc/*/@status eq 'Published')]"> <!-- See also publish-unpublish.xsl -->
+                                                             and not($base-doc/*/*:status eq 'Published')]"> <!-- See also publish-unpublish.xsl -->
             <xsl:value-of select="current-dateTime()"/>
           </xsl:template>
 
