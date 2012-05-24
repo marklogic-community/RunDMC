@@ -38,7 +38,8 @@
       <xsl:variable name="is-REST" select="$bucket eq 'REST Resources API'"/>
 
       <!-- bucket node --> <!-- ID for function buckets is the display name minus spaces -->
-      <node display="{.}" id="{$bucket-id}">
+      <node display="{.}" id="{$bucket-id}" async="yes"> <!-- async is ignored for REST, because we ignore this <node> container -->
+
         <xsl:variable name="in-this-bucket" select="$all-functions[@bucket eq $bucket]"/>
 
         <!-- for each category -->

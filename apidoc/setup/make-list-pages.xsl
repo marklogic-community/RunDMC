@@ -87,9 +87,11 @@
     </api:list-page>
   </xsl:template>
 
-          <!-- The container ID comes from the nearest ancestor (or self) that has an ID -->
+          <!-- The container ID comes from the nearest ancestor (or self) that is marked as asynchronously loaded,
+               unless nothing above this level is marked as such, in which case we use the nearest ID. -->
           <xsl:template mode="container-toc-section-id" match="node">
-            <xsl:value-of select="ancestor-or-self::node[@id][1]/@id"/>
+            <xsl:value-of select="(ancestor-or-self::node[@async][1],
+                                   ancestor-or-self::node[@id]   [1])[1]/@id"/>
           </xsl:template>
 
 

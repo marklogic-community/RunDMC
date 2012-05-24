@@ -164,7 +164,7 @@ function initializeTOC() {
   */
 
   if (current_tab_index !== new_tab_index) {
-    // this triggers updateTocOnTabChange for us
+    // this triggers updateTocForTab for us
     $("#toc_tabs").tabs('select',new_tab_index);
   }
   else { // otherwise, we have to do it ourselves
@@ -176,6 +176,7 @@ function initializeTOC() {
     console.log(panel);
     */
 
+    //console.log("Calling updateTocForTab from initializeTOC");
     updateTocForTab(tab, panel);
   }
 }
@@ -254,14 +255,11 @@ function showInTOC(a) {
 }
 
 
-function updateTocOnTabChange(ui) {
-  updateTocForTab(ui.tab, ui.panel);
-}
-
 function updateTocForTab(tab, panel) {
   //console.log(functionPageBucketId);
-
+  //console.log("updateTocForTab called");
   var categoriesPanelId = "tabs-2";
+  // When the user clicks on the "Categories" tab when on a function or list page
   if (panel.id == categoriesPanelId && functionPageBucketId !== "") {
     var tocSection = $("#" + functionPageBucketId, panel);
 
@@ -273,7 +271,10 @@ function updateTocForTab(tab, panel) {
   else {
     var tocSectionLink = $(tocSectionLinkSelector, panel);
     var tocSection = tocSectionLink.parent();
+
     if (tocSection.length) {
+      //console.log("Loading tocSection");
+      //console.log(tocSection);
       loadTocSection(0, tocSection);
       waitToInitialize(tocSection);
     }

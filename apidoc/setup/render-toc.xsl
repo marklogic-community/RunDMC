@@ -115,7 +115,7 @@
 
           // Set up the TOC tabs
           $("#toc_tabs").tabs({
-            show: function(event, ui){ updateTocOnTabChange(ui) }
+            show: function(event, ui){ updateTocForTab(ui.tab, ui.panel) }
           });
 
           bindFragmentLinkTocActions(document.body);
@@ -135,7 +135,7 @@
           -->
 
           // Once the tabs are set up, go ahead and display the TOC
-          $("#toc_tabs").show();
+//          $("#toc_tabs").show();
 
         });
         //</xsl:comment>
@@ -144,7 +144,7 @@
         <!--
         <div>API Reference</div>
         -->
-        <div id="toc_tabs" class="toc_tabs" style="display:none">
+        <div id="toc_tabs" class="toc_tabs">
           <div id="tab_bar">
             <ul>
               <xsl:apply-templates mode="tab" select="/all-tocs/*"/>
@@ -209,6 +209,8 @@
               <xsl:apply-templates mode="class-hasChildren" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-initialized" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-async" select="."/>
             </xsl:variable>
             <li class="{$class}">
               <xsl:apply-templates mode="id-att"   select="."/>
@@ -245,16 +247,16 @@
                   <xsl:template mode="class-last"              match="              node              "/>
 
                   <!-- Include on nodes that will be loaded asynchronously -->
-                  <xsl:template mode="class-hasChildren" match="     toc:functions/node/node
-                                                              |         toc:guides/node
-                                                              |     toc:categories/node
-                                                              | toc:rest-resources/node/node">hasChildren</xsl:template>
+                  <xsl:template mode="class-hasChildren" match="node[@async]">hasChildren</xsl:template>
                   <xsl:template mode="class-hasChildren" match="node"/>
 
-                  <!-- Include on the top-level nodes that will *not* be loaded asynchronously; that is, they are already loaded -->
-                  <xsl:template mode="class-initialized" match="toc:functions/node
-                                                              | toc:rest-resources/node">loaded initialized</xsl:template>
+                  <!-- Include on nodes that have an @id (used by list pages to identify the relevant TOC section) but that aren't loaded asynchronously (because they're already loaded) -->
+                  <xsl:template mode="class-initialized" match="node[@id][not(@async)]">loaded initialized</xsl:template>
                   <xsl:template mode="class-initialized" match="node"/>
+
+                  <!-- Mark the asynchronous (unpopulated) nodes as such so the JavaScript can act accordingly -->
+                  <xsl:template mode="class-async" match="node[@async]">async</xsl:template>
+                  <xsl:template mode="class-async" match="node"/>
 
 
                   <xsl:template mode="hit-area" match="node"/>
@@ -272,7 +274,7 @@
                           <xsl:template mode="hit-area-class" match="              node">hitarea expandable-hitarea</xsl:template>
 
                           <xsl:template mode="hit-area-class-last" priority="1" match="toc:functions/node[last()]
-                                                                                | toc:rest-resources/ndoe[last()]">lastCollapsable-hitarea</xsl:template>
+                                                                                | toc:rest-resources/node[last()]">lastCollapsable-hitarea</xsl:template>
                           <xsl:template mode="hit-area-class-last"              match="              node[last()]">lastExpandable-hitarea</xsl:template>
                           <xsl:template mode="hit-area-class-last"              match="              node"/>
 
@@ -334,7 +336,7 @@
 
                   <xsl:template mode="control" match="*"/>
                   <!-- Expand/collapse buttons are enabled for all top-level menus, as well as globally for guides and categories -->
-                  <xsl:template mode="control" match="toc:*/node | toc:guides | toc:categories">
+                  <xsl:template mode="control" match="toc:*/node | toc:guides | toc:categories | toc:rest-resources">
                     <xsl:variable name="collapse-class">
                       <xsl:apply-templates mode="collapse-class" select="."/>
                     </xsl:variable>
@@ -359,8 +361,8 @@
                   </xsl:template>
 
                           <!-- Shallow for top-level menus -->
-                          <xsl:template mode="collapse-class" match="toc:functions/node | toc:rest-resources/node">shallowCollapse</xsl:template>
-                          <xsl:template mode="expand-class"   match="toc:functions/node | toc:rest-resources/node">shallowExpand</xsl:template>
+                          <xsl:template mode="collapse-class" match="toc:functions/node">shallowCollapse</xsl:template>
+                          <xsl:template mode="expand-class"   match="toc:functions/node">shallowExpand</xsl:template>
                           <xsl:template mode="all-suffix"     match="toc:functions/node | toc:rest-resources/node
                                                                    | toc:*"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
 
@@ -389,10 +391,7 @@
                   </xsl:template>
 
                   <!-- Nodes to be loaded asynchronously -->
-                  <xsl:template mode="children" match="     toc:functions/node/node
-                                                     |         toc:guides/node
-                                                     |     toc:categories/node
-                                                     | toc:rest-resources/node/node" priority="1">
+                  <xsl:template mode="children" match="node[@async]" priority="1">
                     <!-- The empty placeholder -->
                     <ul style="display: none">
                       <li>
@@ -411,8 +410,7 @@
                     </xsl:result-document>
                   </xsl:template>
 
-                          <xsl:template mode="ul-display-type" match="toc:functions/node/node
-                                                               | toc:rest-resources/node/node | toc:*/node">block</xsl:template>
+                          <xsl:template mode="ul-display-type" match="toc:functions/node/node | toc:*/node">block</xsl:template>
                           <xsl:template mode="ul-display-type" match="                                node">none</xsl:template>
 
 </xsl:stylesheet>

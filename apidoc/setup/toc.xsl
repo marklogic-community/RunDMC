@@ -89,7 +89,7 @@
         <node display="User Guides" id="user_guides">
         -->
           <xsl:for-each select="$guide-docs-ordered">
-            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes">
               <xsl:for-each select="/guide/chapter-list/chapter">
                 <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
               </xsl:for-each>
@@ -131,6 +131,7 @@
                   namespace="{api:uri-for-lib(.)}"
                   category-bucket="{@category-bucket}"
                   function-list-page="yes"
+                  async="yes"
                   id="{.}_{generate-id(.)}"> <!-- generate a unique id for this TOC section -->
               <xsl:if test="@built-in">
                 <xsl:attribute name="footnote" select="'yes'"/>

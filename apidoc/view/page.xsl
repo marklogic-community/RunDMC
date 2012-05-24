@@ -130,6 +130,7 @@
 
 
           <xsl:template name="reset-global-toc-vars">
+            <!-- Used to determine which TOC section to load when switching to the Categories tab -->
             var functionPageBucketId = "<xsl:apply-templates mode="function-bucket-id" select="$content/api:function-page/api:function[1]/@bucket
                                                                                              | $content/api:list-page/@category-bucket"/>";
             var tocSectionLinkSelector = "<xsl:apply-templates mode="toc-section-link-selector" select="$content/*"/>";
