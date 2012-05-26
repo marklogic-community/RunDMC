@@ -6,10 +6,11 @@ import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../.
 
 declare variable $orig-path       := xdmp:get-request-path();
 declare variable $orig-url        := xdmp:get-request-url();
-                                     (: $path is just the original path, unless this is a REST doc, in which case we
-                                        include the entire query string, translating "?" to "@" :)
-declare variable $path            := if (contains($orig-path,'/REST/')) then translate($orig-url,'?',$api:REST-uri-questionmark-substitute) else $orig-path;
 declare variable $query-string    := substring-after($orig-url, '?');
+                                     (: $path is just the original path, unless this is a REST doc, in which case we
+                                        also might have to look at the query string (translating "?" to "@") :)
+declare variable $path            := if (contains($orig-path,'/REST/') and $query-string) then $REST-doc-path
+                                                                                          else $orig-path;
 
 
 declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) then substring-after($path,'/')
@@ -30,6 +31,38 @@ declare variable $root-doc-url    := concat('/apidoc/', $api:default-version,   
 declare variable $doc-url-default := concat('/apidoc/', $api:default-version, $path, '.xml'); (: when version is unspecified in path :)
 declare variable $doc-url         := concat('/apidoc',                        $path, '.xml'); (: when version is specified in path :)
 declare variable $path-plus-index := concat('/apidoc',                        $path, '/index.xml');
+
+
+(: For REST doc URIs, translate "?" to "@", ignore trailing ampersands, and ignore unknown parameters :)
+declare variable $REST-doc-path :=
+
+  let $candidate-uris := (cts:uri-match(concat('/apidoc/', $api:default-version, $orig-path, $api:REST-uri-questionmark-substitute, "*")),
+                          cts:uri-match(concat('/apidoc/',                       $orig-path, $api:REST-uri-questionmark-substitute, "*")))
+
+  let $known-query-params :=
+    distinct-values(for $uri in $candidate-uris return local:REST-doc-query-param($uri))[string(.)]
+
+  let $canonicalized-query-string :=
+    string-join(
+      for $name in xdmp:get-request-field-names()
+      where $name = $known-query-params
+      order by $name
+      return
+        for $value in xdmp:get-request-field($name)
+        return concat($name,'=',$value)
+      ,'&amp;')
+  return
+    if ($canonicalized-query-string)
+    then concat($orig-path, $api:REST-uri-questionmark-substitute, $canonicalized-query-string)
+    else $orig-path
+;
+
+(: ASSUMPTION: each REST doc will have at most one query parameter in its URI :)
+declare function local:REST-doc-query-param($doc-uri) {
+  substring-before(
+    substring-after($doc-uri,$api:REST-uri-questionmark-substitute),
+    '=')
+};
 
 (: Render a document using XSLT :)
 declare function local:transform($source-doc) as xs:string {

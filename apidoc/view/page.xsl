@@ -44,7 +44,7 @@
 
   <xsl:variable name="show-alternative-functions" select="$params[@name eq 'show-alternatives']"/>
 
-  <xsl:variable name="is-pjax-request" select="$params[@name eq '_pjax'] eq 'true'"/>
+  <xsl:variable name="is-pjax-request" select="xdmp:get-request-header('X-PJAX') eq 'true'"/>
 
   <xsl:template match="/">
     <xsl:if test="$set-version">
