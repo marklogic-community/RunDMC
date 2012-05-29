@@ -103,8 +103,9 @@
                 <xsl:if test="@lib eq 'cts' and contains($toc-node/@display, '-query-')">
                   <xsl:attribute name="indent" select="'yes'"/>
                 </xsl:if>
-                <!-- Function name -->
-                <xsl:value-of select="$toc-node/@display"/>
+                <!-- Function name; prefer @list-page-display, if present -->
+                <xsl:value-of select="($toc-node/@list-page-display,
+                                       $toc-node/@display)[1]"/>
               </api:name>
               <api:description>
                 <!-- Use the same code that docapp uses for extracting the summary (first line) -->

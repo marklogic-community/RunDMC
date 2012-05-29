@@ -200,15 +200,14 @@
                          it only adds unnecessary clutter in that case. -->
                     <xsl:variable name="base-display-name" select="if ($http-method eq 'GET' and not($is-same-resource-as-next)) then $resource-name
                                                                                                                                  else ."/>
-                    <!-- Displaying the square-bracket version
+                    <!-- Display the square-bracket version
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
-                    <!-- Displaying the original, curly-brace version -->
-                    <!--
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:reverse-translate-REST-resource-name($base-display-name)}" type="function"/>
-                    -->
-                    <!-- Displaying the wildcard (*) version -->
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}" type="function"/>
+
+                    <!-- Display the wildcard (*) version in the TOC, but the original, curly-brace version on the list pages. -->
+                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}"
+                                                              list-page-display="{api:reverse-translate-REST-resource-name($base-display-name)}"
+                                                                        type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>
