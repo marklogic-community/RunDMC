@@ -34,7 +34,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
               <input type="button" class="runVersion" value="Set up all {$v} docs ->"/>
             </div>
             <div>
-              <input type="button" class="deleteButton" value="Delete all {$v} docs" alt="/apidoc/setup/delete-docs.xqy?version={$v}"/>
+              <input type="button" class="deleteButton" value="Delete all {$v} docs" title="/apidoc/setup/delete-docs.xqy?version={$v}"/>
             </div>
           </th>
           <th>{$v}</th>
@@ -42,13 +42,13 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             <input type="button" class="runSection" value="Set up {$v} guides"/>
             <ol type="a">
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/consolidate-guides.xqy?version={$v}" value="Consolidate {$v} guides"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/consolidate-guides.xqy?version={$v}" value="Consolidate {$v} guides"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/convert-guides.xqy?version={$v}"     value="Convert {$v} guides"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/convert-guides.xqy?version={$v}"     value="Convert {$v} guides"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/copy-guide-images.xqy?version={$v}"  value="Copy {$v} guide images"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/copy-guide-images.xqy?version={$v}"  value="Copy {$v} guide images"/>
               </li>
             </ol>
           </td>
@@ -56,19 +56,19 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             <input type="button" class="runSection" value="Set up {$v} functions, TOC, etc."/>
             <ol type="a">
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/pull-function-docs.xqy?version={$v}" value="Pull {$v} function docs"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/pull-function-docs.xqy?version={$v}" value="Pull {$v} function docs"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/create-toc.xqy?version={$v}"         value="Create {$v} XML TOC"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/create-toc.xqy?version={$v}"         value="Create {$v} XML TOC"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/render-toc.xqy?version={$v}"         value="Render {$v} HTML TOC"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/render-toc.xqy?version={$v}"         value="Render {$v} HTML TOC"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/delete-old-toc.xqy?version={$v}"     value="Delete old {$v} TOC"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/delete-old-toc.xqy?version={$v}"     value="Delete old {$v} TOC"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" alt="/apidoc/setup/make-list-pages.xqy?version={$v}"    value="Make {$v} list pages"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/make-list-pages.xqy?version={$v}"    value="Make {$v} list pages"/>
               </li>
             </ol>
           </td>
@@ -76,7 +76,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
       }
       <tr>
         <td>
-          <input id="tagger" type="button" alt="/setup/collection-tagger.xqy" value="Run global category tagger"/>
+          <input id="tagger" type="button" title="/setup/collection-tagger.xqy" value="Run global category tagger"/>
         </td>
       </tr>
     </table>
@@ -103,7 +103,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 
           run(button);
 
-          button.load(button.attr("alt"),
+          button.load(button.attr("title"),
             function(response, status, xhr) {{
               if (status == "error") {{
                 button.parent().html(response);
