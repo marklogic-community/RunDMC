@@ -3,6 +3,9 @@ HOW TO BUILD CONTENT
 Content is loaded and built using a series of script invocations. You only
 ever load and build content for one version at a time, e.g., 4.1, 4.2, etc.
 
+NOTE: steps 6–9 below can be more conveniently run from the browser if you visit this page:
+http://localhost:8008/apidoc/setup/setup-all.xqy
+
 
 STEP 1: Create an empty source database.
   The source database is used by the setup code but not by the run-time rendering

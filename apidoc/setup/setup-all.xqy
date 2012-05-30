@@ -11,7 +11,9 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
   <body>
     <h1>Set up all content</h1>
     <p>This page has many buttons. The simplest usage is to click the "Set up everything" button, which will run the setup process
-       for all the server versions in parallel. At the end, it will run the category tagger (which is what enables faceted search).</p>
+       for all the server versions in parallel. At the end, it will run the category tagger (which is what enables faceted search).
+       This page does not currently load documents into the source ("raw docs") database; it assumes that the source documents are
+       already in the raw docs database. (Also, deleting content here has no effect on the raw docs database.)</p>
     <p>Alternatively, you can run the setup for just one server version, e.g. "Set up all 5.0 docs". The "Delete" buttons are never run
        automatically. They give you the option of clearing out the existing documents before running a clean setup.</p>
     <p>Finally, the individual parts (steps 1 and 2 and their lettered sub-steps) can be invoked individually. These are provided
