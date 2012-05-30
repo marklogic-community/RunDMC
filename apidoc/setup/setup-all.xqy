@@ -107,13 +107,13 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             function(response, status, xhr) {{
               if (status == "error") {{
                 button.parent().html(response);
-                abort(masterButton);
+                finish(masterButton, "Aborted");
               }} else {{
-                finish(button);
+                finish(button, "Finished");
                 if (nextStep.length)
                   invokeStep(nextStep, masterButton)
                 else {{
-                  finish(masterButton);
+                  finish(masterButton, "Finished");
                   // If we've just finished running "everything", then run the collection tagger now
                   if (runCollectionTagger && $('input[disabled="disabled"]').length==0) {{
                     $("#tagger").click();
@@ -124,27 +124,16 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             }});
         }};
 
-        var run = function(buttons) {{
-          buttons.each(function(){{
-            $(this).val("RUNNING: " + $(this).val());
-            $(this).css("color", "red");
-            $(this).attr("disabled","disabled");
-          }})
+        var run = function(button) {{
+          button.val("RUNNING: " + button.val());
+          button.css("color", "red");
+          button.attr("disabled","disabled");
         }};
 
-        var finish = function(buttons) {{
-          buttons.each(function(){{
-            $(this).val("Finished: " + $(this).val());
-            $(this).css("color", "inherit");
-            $(this).removeAttr("disabled");
-          }})
-        }};
-
-        var abort = function(buttons) {{
-          buttons.each(function(){{
-            $(this).val("Aborted: " + $(this).val());
-            $(this).css("color", "inherit");
-          }})
+        var finish = function(button, msg) {{
+          button.val(msg + ": " + button.val());
+          button.css("color", "inherit");
+          button.removeAttr("disabled");
         }};
 
         // Run an individual step
