@@ -15,3 +15,5 @@ return
   (xdmp:log(concat("Getting image doc ",$source-uri," and writing to ", $dest-uri)),
    xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
   )
+
+, "Done copying guide images."

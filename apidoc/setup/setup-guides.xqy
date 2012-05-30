@@ -10,9 +10,7 @@ import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
 $setup:errorCheck,
 
 (: Normalizes the guide fragments and URLs and adds a chapter list to the title doc :)
-xdmp:invoke("consolidate-guides.xqy", (), <options xmlns="xdmp:eval">
-                                            <database>{xdmp:database($raw:db-name)}</database>
-                                          </options>),
+xdmp:invoke("consolidate-guides.xqy"),
 
 (: Convert each title and chapter doc into the XML that's convenient to render :)
 xdmp:invoke("convert-guides.xqy"),
