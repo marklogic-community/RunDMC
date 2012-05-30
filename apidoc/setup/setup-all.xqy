@@ -5,14 +5,21 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Set up content</title>
+    <title>Set up all content</title>
 		<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
   </head>
   <body>
-    <h1>Setup all content</h1>
+    <h1>Set up all content</h1>
+    <p>This page has many buttons. The simplest usage is to click the "Set up everything" button, which will run the setup process
+       for all the server versions in parallel. At the end, it will run the category tagger (which is what enables faceted search).</p>
+    <p>Alternatively, you can run the setup for just one server version, e.g. "Set up all 5.0 docs". The "Delete" buttons are never run
+       automatically. They give you the option of clearing out the existing documents before running a clean setup.</p>
+    <p>Finally, the individual parts (steps 1 and 2 and their lettered sub-steps) can be invoked individually. These are provided
+       for debugging purposes and also to give a visual hint as to the current progress of the setup tasks. For even more granular
+       tracking, watch the ErrorLog file while a setup task is running.</p>
     <table cellspacing="0" cellpadding="10">
       <tr>
-        <th><input type="button" id="runAll" value="Setup everything!"/></th>
+        <th><input type="button" id="runAll" value="Set up everything!"/></th>
         <th>&#160;</th>
         <th>Step 1: Guides</th>
         <th>Step 2: Functions, TOC, etc.</th>
@@ -22,7 +29,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         <tr>
           <th>
             <div>
-              <input type="button" class="runVersion" value="Setup all {$v} docs ->"/>
+              <input type="button" class="runVersion" value="Set up all {$v} docs ->"/>
             </div>
             <div>
               <input type="button" class="deleteButton" value="Delete all {$v} docs" alt="/apidoc/setup/delete-docs.xqy?version={$v}"/>
@@ -30,7 +37,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
           </th>
           <th>{$v}</th>
           <td valign="top">
-            <input type="button" class="runSection" value="Setup {$v} guides"/>
+            <input type="button" class="runSection" value="Set up {$v} guides"/>
             <ol type="a">
               <li>
                 <input class="atomicStep" type="button" alt="/apidoc/setup/consolidate-guides.xqy?version={$v}" value="Consolidate {$v} guides"/>
@@ -44,7 +51,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             </ol>
           </td>
           <td>
-            <input type="button" class="runSection" value="Setup {$v} functions, TOC, etc."/>
+            <input type="button" class="runSection" value="Set up {$v} functions, TOC, etc."/>
             <ol type="a">
               <li>
                 <input class="atomicStep" type="button" alt="/apidoc/setup/pull-function-docs.xqy?version={$v}" value="Pull {$v} function docs"/>
@@ -71,7 +78,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         </td>
       </tr>
     </table>
-    <p>See ErrorLog for more granular progress.</p>
     <script>
       <!--
       $(function(){{
