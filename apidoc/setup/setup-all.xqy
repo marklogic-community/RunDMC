@@ -82,14 +82,14 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     </table>
     <script>
       <!--
-      $(function(){{
+      $(function(){
 
         // This is updated when you run "setup everything"
         var runCollectionTagger = false;
 
-        var invokeStep = function(button, masterButton) {{
+        var invokeStep = function(button, masterButton) {
 
-          var getNextStep = function() {{
+          var getNextStep = function() {
             var nextSiblingSteps = button.parent()     .nextAll().find(".atomicStep");
             var nextCousinSteps  = button.parents("td").nextAll().find(".atomicStep");
 
@@ -97,64 +97,64 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                          : (masterButton.is(".runSection") ? nextSiblingSteps
                                                             : $([]));
             return nextSteps.first();
-          }};
+          };
 
           var nextStep = masterButton==undefined ? $([]) : getNextStep();
 
           run(button);
 
           button.load(button.attr("title"),
-            function(response, status, xhr) {{
-              if (status == "error") {{
+            function(response, status, xhr) {
+              if (status == "error") {
                 button.parent().html(response);
                 finish(masterButton, "Aborted");
-              }} else {{
+              } else {
                 finish(button, "Finished");
                 if (nextStep.length)
                   invokeStep(nextStep, masterButton)
-                else {{
+                else {
                   finish(masterButton, "Finished");
                   // If we've just finished running "everything", then run the collection tagger now
-                  if (runCollectionTagger && $('input[disabled="disabled"]').length==0) {{
+                  if (runCollectionTagger && $('input[disabled="disabled"]').length==0) {
                     $("#tagger").click();
                     runCollectionTagger = false;
-                  }}
-                }}
-              }}
-            }});
-        }};
+                  }
+                }
+              }
+            });
+        };
 
-        var run = function(button) {{
+        var run = function(button) {
           button.val("RUNNING: " + button.val());
           button.css("color", "red");
           button.attr("disabled","disabled");
-        }};
+        };
 
-        var finish = function(button, msg) {{
+        var finish = function(button, msg) {
           button.val(msg + ": " + button.val());
           button.css("color", "inherit");
           button.removeAttr("disabled");
-        }};
+        };
 
         // Run an individual step
-        $(".atomicStep, .deleteButton, #tagger").click(function(){{
+        $(".atomicStep, .deleteButton, #tagger").click(function(){
           invokeStep($(this), $([]));
-        }});
+        });
 
         // Run everything for the given version or section
-        $(".runVersion, .runSection").click(function(){{
+        $(".runVersion, .runSection").click(function(){
           var firstStep = $(this).closest("tr,td").find("li input").first();
           run($(this));
           invokeStep(firstStep, $(this));
-        }});
+        });
 
         // Run every version
-        $("#runAll").click(function(){{
+        $("#runAll").click(function(){
           $(".runVersion").click();
           runCollectionTagger = true;
-        }});
+        });
 
-      }});
+      });
     -->
     </script>
   </body>
