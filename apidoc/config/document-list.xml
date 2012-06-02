@@ -30,20 +30,18 @@
       API documentation for the MarkLogic built-in and module extensions to the XQuery standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.
       <url version="4.1" href="/4.1/all"/>
     </entry>
-    <entry title="MarkLogic XQuery and XSLT Function Reference">
+    <entry title="MarkLogic XQuery and XSLT Function Reference" min-version="4.2" href="/all">
       API documentation for the MarkLogic built-in and module extensions to the XQuery and XSLT standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.
-      <url version="4.2" href="/4.2/all"/>
-      <url version="5.0" href="/all"/>
     </entry>
-    <entry title="REST API Reference">
+    <entry title="REST API Reference" min-version="5.0" href="/REST">
       <title>This API reference documents the REST resources available on port 8002.</title>
-      <url version="5.0" href="/REST"/>
     </entry>
     <entry title="ZIP File of All MarkLogic Product Documentation">
       A zip file containing the latest MarkLogic <version-suffix/> documentation.
-      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/MarkLogic_4.1_pubs.zip"/>
-      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
-      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/MarkLogic_5_pubs.zip"/>
+      <url version="4.1" href="/pubs/4.1/MarkLogic_4.1_pubs.zip"/>
+      <url version="4.2" href="/pubs/4.2/MarkLogic_4.2_pubs.zip"/>
+      <url version="5.0" href="/pubs/5.0/MarkLogic_5_pubs.zip"/>
+      <url version="5.1" href="/pubs/5.1/MarkLogic_5.1_pubs.zip"/>
     </entry>
   </unnamed-group>
 
@@ -86,6 +84,8 @@
     <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
     <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
     <guide url-name="qconsole"        source-name="qconsole">A procedural guide that describes how to use the Query Console.</guide>
+    <guide url-name="rest-dev"        source-name="rest-dev">Provides information on administration of and application development using the MarkLogic REST API.</guide>
+    <guide url-name="sql"             source-name="sql">Provides information on how to use MarkLogic's SQL interface, including the creation of relational schemas and views.</guide>
     <!-- This seemed better, but the above matches what was on DMC
     <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
     -->
@@ -94,22 +94,32 @@
   <group name="XCC API Reference">
     <entry title="XCC Javadoc (online)">
       API documentation for the MarkLogic XML Content Connector for Java (XCC/J) API.
-      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/javadoc/index.html"/>
-      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/javadoc/index.html"/>
-      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/javadoc/index.html"/>
+      <url version="4.1" href="/pubs/4.1/javadoc/index.html"/>
+      <url version="4.2" href="/pubs/4.2/javadoc/index.html"/>
+      <url version="5.0" href="/pubs/5.0/javadoc/index.html"/>
+      <url version="5.1" href="/pubs/5.1/javadoc/index.html"/>
     </entry>
-    <entry title="XCC .NET API Documentation (online)" url="http://developer.marklogic.com/pubs/4.2/dotnet/index.html">
+    <entry title="XCC .NET API Documentation (online)">
       API documentation for the MarkLogic XCC .NET C# API.
-      <url version="4.1" href="http://developer.marklogic.com/pubs/4.1/dotnet/index.html"/>
-      <url version="4.2" href="http://developer.marklogic.com/pubs/4.2/dotnet/index.html"/>
-      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/dotnet/index.html"/>
+      <url version="4.1" href="/pubs/4.1/dotnet/index.html"/>
+      <url version="4.2" href="/pubs/4.2/dotnet/index.html"/>
+      <url version="5.0" href="/pubs/5.0/dotnet/index.html"/>
+      <url version="5.1" href="/pubs/5.1/dotnet/index.html"/>
     </entry>
   </group>
 
   <group name="Hadoop Connector API Reference" min-version="5.0">
-    <entry title="MarkLogic Connector for Hadoop Javadoc (online)">
+    <entry title="javadoc for MarkLogic Connector for Hadoop">
       API documentation for the MarkLogic Connector for Hadoop.
-      <url version="5.0" href="http://developer.marklogic.com/pubs/5.0/hadoop/javadoc/index.html"/>
+      <url version="5.0" href="/pubs/5.0/hadoop/javadoc/index.html"/>
+      <url version="5.1" href="/pubs/5.1/hadoop/javadoc/index.html"/>
+    </entry>
+  </group>
+
+  <group name="Client API for Java Reference" min-version="5.1">
+    <entry title="javadoc for MarkLogic Client API for Java">
+      API documentation for the MarkLogic Client API for Java.
+      <url version="5.1" href="/pubs/5.1/hadoop/javadoc/index.html"/>
     </entry>
   </group>
 
