@@ -26,9 +26,9 @@ string-join(
  concat('"', $person/yog/string(), '"'), 
  concat('"', $person/dev-list/string(), '"'), 
  concat('"', $person/mktg-list/string(), '"'), 
- concat('"', $person/cpus/string(), '"'), 
- concat('"', $person/platform/string(), '"'), 
- concat('"', $person/hostame/string(), '"'), 
+ concat('"', $license/cpus/string(), '"'), 
+ concat('"', $license/platform/string(), '"'), 
+ concat('"', $license/hostame/string(), '"'), 
  ""
 ),
 ","
