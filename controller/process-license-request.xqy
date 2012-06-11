@@ -4,7 +4,6 @@ import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
 import module namespace functx = "http://www.functx.com" at "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
-import module namespace mkto = "mkto" at "/lib/marketo.xqy";
 import module namespace json = "http://marklogic.com/json" at "/lib/mljson/lib/json.xqy";
 
 declare option xdmp:output "method=html";

@@ -92,15 +92,46 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $soap := mkto:soap($body)
     let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
 
-    (: if lead exists, leave it's source alone, otherwise it's from the Community Site :)
-    let $leadSourceAttr :=
+    let $licenseAttrs :=
+    (
+        <attribute>
+            <attrName>License_Host__c</attrName>
+            <attrValue>{$meta/license/hostname/string()}</attrValue>
+        </attribute>
+        ,
+        <attribute>
+            <attrName>License_Num_of_CPUs__c</attrName>
+            <attrValue>Community</attrValue>
+            <attrValue>{$meta/license/cpus/string()}</attrValue>
+        </attribute>
+        ,
+        <attribute>
+            <attrName>License_Platform__c</attrName>
+            <attrValue>{$meta/license/platform/string()}</attrValue>
+        </attribute>
+        ,
+        <attribute>
+            <attrName>License_Type_New__c</attrName>
+            <attrValue>{$meta/license/type/string()}</attrValue>
+        </attribute>
+    )
+
+    (: if lead exists, leave it's source details alone, otherwise it's from the Community Site :)
+    let $leadSourceAttrs :=
         if ($leadExists) then
             ()
         else
+            (
             <attribute>
                 <attrName>LeadSource</attrName>
-                <attrValue>Community Website</attrValue>
+                <attrValue>Community</attrValue>
             </attribute>
+            ,
+            <attribute>
+                <attrName>Specific_Lead_Source__c</attrName>
+                <attrValue>Website</attrValue>
+            </attribute>
+            )
     
     let $body :=
       <SOAP-ENV:Envelope>
@@ -130,7 +161,8 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                       <attrName>SFDC_Opt_Out__c</attrName>
                       <attrValue>{$opt-out}</attrValue>
                   </attribute>
-                  {$leadSourceAttr}
+                  {$leadSourceAttrs}
+                  {$specificLeadSourceAttr}
               </leadAttributeList>
           </leadRecord>
           {$cook}
