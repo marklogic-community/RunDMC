@@ -1,0 +1,11 @@
+<static-docs>
+  <include>books</include>
+  <include>dotnet</include>
+  <include>javadoc</include>
+  <include>hadoop</include>
+  <include>javaclient</include>
+  <version number="4.1" src-dir="MarkLogic_4.1_pubs"/>
+  <version number="4.2" src-dir="MarkLogic_4.2_pubs"/>
+  <version number="5.0" src-dir="MarkLogic_5_pubs"/>
+  <version number="5.1" src-dir="MarkLogic_5.1ea_pubs"/>
+</static-docs>

@@ -14,15 +14,15 @@ $setup:errorCheck,
 
 xdmp:log(concat("Deleting all ",$api:version," raw docs")),
 
-let $delete-query := concat("xdmp:directory-delete(concat('/','", $api:version, "','/'))") return
+let $dir := concat("/",$api:version,"/")
+let $delete-query := concat("xdmp:directory-delete('", $dir, "')") return
 (
   xdmp:log(concat("Running query in ", $raw:db-name, ": ", $delete-query)),
   (: Wipe out the entire version directory :)
   xdmp:eval($delete-query, (), <options xmlns="xdmp:eval">
                                  <database>{xdmp:database($raw:db-name)}</database>
-                               </options>)
+                               </options>),
+  xdmp:log(concat("Done deleting: ", $dir))
 ),
-
-xdmp:log("Done deleting."),
 
 concat("Finished deleting all ",$api:version," raw docs")

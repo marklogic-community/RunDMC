@@ -11,9 +11,11 @@ $setup:errorCheck,
 
 xdmp:log(concat("Deleting all set-up ",$api:version," docs")),
 
-(: Wipe out the entire version directory :)
-xdmp:directory-delete(concat('/apidoc/',$api:version,'/')),
-
-xdmp:log("Done deleting."),
+let $dir := concat('/apidoc/',$api:version,'/') return
+(
+  (: Wipe out the entire version directory :)
+  xdmp:directory-delete($dir),
+  xdmp:log(concat("Done deleting: ", $dir))
+),
 
 concat("Finished deleting all set-up ",$api:version," docs")

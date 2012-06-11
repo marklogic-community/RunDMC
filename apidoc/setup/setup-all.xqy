@@ -12,7 +12,10 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 		<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
     <style type="text/css">
       td,th {{border-bottom: thin solid}}
+      .versionCol {{border-left: thin solid;
+                    border-right: thin solid;}}
       .deletecol {{border-right: thin solid}}
+      .lastRow td {{border: none; }}
     </style>
   </head>
   <body>
@@ -26,18 +29,20 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     <p>Finally, the individual parts (steps 1–3 and their lettered sub-steps) can be invoked individually. These are provided
        for debugging purposes and also to give a visual hint as to the current progress of the setup tasks. For even more granular
        tracking, watch the ErrorLog file while a setup task is running.</p>
-    <p>Source directory for loading raw docs: <input id="src-dir-prefix" size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/></p>
+    <p>Source directory for loading raw docs:    <input id="src-dir-prefix"  size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/> (must end with slash)</p>
+    <p>Base directory for static docs:           <input id="static-base-dir" size="50" type="text" value="/Users/elenz/Desktop/"/>             (must end with slash)</p>
     <table cellspacing="0" cellpadding="10">
-      <colgroup span="1" style="background-color:#FFDDDD; border-right: thin solid"></colgroup>
-      <colgroup span="1" style="background-color:#DDFFDD;"></colgroup>
+      <colgroup span="1" style="border-right: thin solid"></colgroup>
+      <colgroup span="1" style="border-right: thin solid; background-color:#FFDDDD;"></colgroup>
+      <colgroup span="1"                           style="background-color:#DDFFDD;"></colgroup>
       <tr style="border-width:1px; border-color:black">
+        <th>&#160;</th>
         <th class="deleteCol">
           <input type="button" id="deleteAll" value="Delete all docs!"/>
         </th>
         <th>
           <input type="button" id="runAll" value="Load and set up all docs!"/>
         </th>
-        <th>&#160;</th>
         <th>Step 1: Load raw docs<br/><span style="font-size:.8em">(into the "{$raw:db-name}" database)</span></th>
         <th>Step 2: Set up guides<br/><span style="font-size:.8em">(in the "{xdmp:database-name(xdmp:database())}" database (mostly))</span></th>
         <th>Step 3: Set up functions, TOC, etc.<br/><span style="font-size:.8em">(in the "{xdmp:database-name(xdmp:database())}" database)</span></th>
@@ -50,13 +55,15 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                                                 else concat("b",replace($v,"\.","_")),
                         "_XML")
       return
+      (
         <tr>
+          <th rowspan="2" class="versionCol">{$v}</th>
           <th class="deleteCol">
             <div>
-              <input type="button" class="deleteButton" value="Delete all {$v} raw docs" title="/apidoc/setup/delete-raw-docs.xqy?version={$v}"/>
+              <input type="button" class="deleteButton" value="Delete /{$v} docs (raw DB)" title="/apidoc/setup/delete-raw-docs.xqy?version={$v}"/>
             </div>
             <div>
-              <input type="button" class="deleteButton" value="Delete all set-up {$v} docs" title="/apidoc/setup/delete-docs.xqy?version={$v}"/>
+              <input type="button" class="deleteButton" value="Delete /apidoc/{$v} (live DB)" title="/apidoc/setup/delete-docs.xqy?version={$v}"/>
             </div>
           </th>
           <th>{()(:Don't change this to <td> without changing the JS first:)}
@@ -64,7 +71,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
               <input type="button" class="runVersion" value="Load and set up all {$v} docs ->"/>
             </div>
           </th>
-          <th>{$v}</th>
           <td>
             <ol type="a">
               <li>
@@ -107,9 +113,24 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
               </li>
             </ol>
           </td>
+        </tr>,
+        <tr>
+          <td class="deleteCol" style="text-align:center">
+            <input type="button" class="deleteButton" value="Delete /pubs/{$v} (live DB)" title="/apidoc/setup/delete-static-docs.xqy?version={$v}"/>
+            <div style="font-size:.8em">(PDF &amp; HTML in pubs dir)</div>
+          </td>
+          <td style="text-align:center">
+            <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;basedir="
+                                                               value="Load /pubs/{$v} from {$src-dir}"/>
+            <div style="font-size:.8em">(PDF &amp; HTML in pubs dir)</div>
+          </td>
+          <td>&#160;</td>
+          <td>&#160;</td>
+          <td>&#160;</td>
         </tr>
-      }
-      <tr>
+      )}
+      <tr class="lastRow">
+        <td>&#160;</td>
         <td class="deleteCol">&#160;</td>
         <td>
           <input id="tagger" type="button" title="/setup/collection-tagger.xqy" value="Run global category tagger"/>
@@ -119,7 +140,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     </table>
     <script>
       <!--
-          console.log($("#src-dir-prefix").attr("value"));
       $(function(){
 
         // This is updated when you run "setup everything"
@@ -142,7 +162,9 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
           run(button);
 
           var url = button.attr("title").replace("srcdir=",
-                                                 "srcdir=" + $("#src-dir-prefix").attr("value"));
+                                                 "srcdir=" + $("#src-dir-prefix").attr("value"))
+                                        .replace("basedir=",
+                                                 "basedir=" + $("#static-base-dir").attr("value"));
           button.load(url,
             function(response, status, xhr) {
               if (status == "error") {
@@ -188,9 +210,10 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
           invokeStep(firstStep, $(this));
         });
 
-        // Run every version
+        // Run every version and every static-doc load (can all be done in parallel)
         $("#runAll").click(function(){
           $(".runVersion").click();
+          $(".loadStatic").click();
           runCollectionTagger = true;
         });
 
