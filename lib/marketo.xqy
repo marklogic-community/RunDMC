@@ -162,7 +162,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                       <attrValue>{$opt-out}</attrValue>
                   </attribute>
                   {$leadSourceAttrs}
-                  {$specificLeadSourceAttr}
+                  {$licenseAttrs}
               </leadAttributeList>
           </leadRecord>
           {$cook}
