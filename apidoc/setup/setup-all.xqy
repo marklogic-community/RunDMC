@@ -116,13 +116,13 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         </tr>,
         <tr>
           <td class="deleteCol" style="text-align:center">
-            <input type="button" class="deleteButton" value="Delete /pubs/{$v} (live DB)" title="/apidoc/setup/delete-static-docs.xqy?version={$v}"/>
-            <div style="font-size:.8em">(PDF &amp; HTML in pubs dir)</div>
+            <input type="button" class="deleteButton" value="Delete /pubs/{$v} sub-dirs" title="/apidoc/setup/delete-static-docs.xqy?version={$v}"/>
+            <div style="font-size:.8em">(PDF &amp; HTML)</div>
           </td>
           <td style="text-align:center">
             <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;basedir="
                                                                value="Load /pubs/{$v} from {$src-dir}"/>
-            <div style="font-size:.8em">(PDF &amp; HTML in pubs dir)</div>
+            <div style="font-size:.8em">(PDF &amp; HTML)</div>
           </td>
           <td>&#160;</td>
           <td>&#160;</td>
