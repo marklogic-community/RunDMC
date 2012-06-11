@@ -20,7 +20,7 @@ declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) th
 declare variable $path-prefix := if ($version-specified) then concat("/",$version-specified,"/") else "/";
 
 declare variable $pdf-location  := 
-  let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")/*/guide,
+  let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
       $version       := if ($version-specified) then $version-specified else $api:default-version,
       $guide-name    := substring-before(substring-after($path,"/guide/"),".pdf"),
       $pdf-name      := $guide-configs[@url-name eq $guide-name]/(@pdf-name,@source-name)[1]
