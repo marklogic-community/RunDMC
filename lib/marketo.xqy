@@ -124,12 +124,12 @@ declare function mkto:associate-lead($email, $cookie, $meta)
             (
             <attribute>
                 <attrName>LeadSource</attrName>
-                <attrValue>Community</attrValue>
+                <attrValue>Community Website</attrValue>
             </attribute>
             ,
             <attribute>
                 <attrName>Specific_Lead_Source__c</attrName>
-                <attrValue>Website</attrValue>
+                <attrValue>License Request</attrValue>
             </attribute>
             )
     
