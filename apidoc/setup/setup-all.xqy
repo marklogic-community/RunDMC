@@ -29,8 +29,8 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     <p>Finally, the individual parts (steps 1–3 and their lettered sub-steps) can be invoked individually. These are provided
        for debugging purposes and also to give a visual hint as to the current progress of the setup tasks. For even more granular
        tracking, watch the ErrorLog file while a setup task is running.</p>
-    <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/> (must end with slash)</p>
-    <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/Users/elenz/Desktop/"/>             (must end with slash)</p>
+    <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/space/elenz/api-rawdocs/"/> (must end with slash)</p>
+    <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/space/elenz/"/>             (must end with slash)</p>
     <table cellspacing="0" cellpadding="10">
       <colgroup span="1" style="border-right: thin solid"></colgroup>
       <colgroup span="1" style="border-right: thin solid; background-color:#FFDDDD;"></colgroup>
