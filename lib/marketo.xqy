@@ -92,27 +92,28 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $soap := mkto:soap($body)
     let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
 
+    let $license := $meta/license[last()]
+
     let $licenseAttrs :=
     (
         <attribute>
             <attrName>License_Host__c</attrName>
-            <attrValue>{$meta/license/hostname/string()}</attrValue>
+            <attrValue>{$license/hostname/string()}</attrValue>
         </attribute>
         ,
         <attribute>
             <attrName>License_Num_of_CPUs__c</attrName>
-            <attrValue>Community</attrValue>
-            <attrValue>{$meta/license/cpus/string()}</attrValue>
+            <attrValue>{$license/cpus/string()}</attrValue>
         </attribute>
         ,
         <attribute>
             <attrName>License_Platform__c</attrName>
-            <attrValue>{$meta/license/platform/string()}</attrValue>
+            <attrValue>{$license/platform/string()}</attrValue>
         </attribute>
         ,
         <attribute>
             <attrName>License_Type_New__c</attrName>
-            <attrValue>{$meta/license/type/string()}</attrValue>
+            <attrValue>{$license/type/string()}</attrValue>
         </attribute>
     )
 
@@ -179,9 +180,25 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                 if ($ok) then
                     ()
                 else
-                    mkto:alert(concat("mkto: syncLead failed ", xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body)))
+                    mkto:alert(concat("mkto: syncLead failed.
+Error: 
+
+",
+xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
+
+Body: 
+
+",
+xdmp:quote($body)))
         else
-                mkto:alert(xdmp:quote($soap))
+                    mkto:alert(concat("mkto: soap error: 
+",
+xdmp:quote($soap), "
+
+Body: 
+
+",
+xdmp:quote($body)))
 };
 
 declare function mkto:alert ($e as xs:string) {
