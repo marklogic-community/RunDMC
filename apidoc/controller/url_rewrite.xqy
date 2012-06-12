@@ -111,8 +111,9 @@ declare variable $matching-function-count := count($matching-functions);
 
 
   (: SCENARIO 2B: Serve content from database :)
-    (: Respond with DB contents for /media :)
-    else if (starts-with($path, '/media/')) then 
+    (: Respond with DB contents for /media and /pubs :)
+    else if (starts-with($path, '/media/') or
+             starts-with($path, '/pubs/')) then
       concat("/controller/get-db-file.xqy?uri=", $path)
 
     (: Map PDF URIs to DMC PDF URIs :)
