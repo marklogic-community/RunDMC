@@ -28,13 +28,20 @@ declare function local:load-pubs-docs($dir) {
     let $path    := $file/dir:pathname,
         $uri     := concat("/pubs/", $api:version, translate(substring-after($path, $pubs-dir),"\","/")),
         $is-html := ends-with($uri,'.html'),
+        $is-jdoc := contains($uri,'/javadoc/') and $is-html,
 
-        (: If the document is HTML, then read it as text :)
-        $doc := if ($is-html) then xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format><encoding>auto</encoding></options>)
-                              else xdmp:document-get($path, <options xmlns="xdmp:document-get">                     <encoding>auto</encoding></options>),
+        (: If the document is JavaDoc HTML, then read it as text; if it's other HTML, repair it as XML (.NET docs) :)
+        $doc := if ($is-jdoc) then xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format><encoding>auto</encoding></options>)
+           else if ($is-html) then
+                              try{ xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>xml</format><repair>full</repair><encoding>UTF-8</encoding></options>) }
+                        catch($e){ if ($e/*:code eq 'XDMP-DOCUTF8SEQ') then
+                                   xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>xml</format><repair>full</repair><encoding>ISO-8859-1</encoding></options>)
+                                   else error((),"Load error", xdmp:quote($e))
+                                 }
+           else                    xdmp:document-get($path, <options xmlns="xdmp:document-get"><encoding>auto</encoding></options>), (: Otherwise, just load the document normally :)
 
         (: Exclude these HTML documents from the search corpus (search the Tidy'd XHTML instead; see below) :)
-        $collection := if ($is-html) then "hide-from-search"
+        $collection := if ($is-jdoc) then "hide-from-search"
                                      else ()
     return
     (
@@ -44,7 +51,7 @@ declare function local:load-pubs-docs($dir) {
       (: If the document is HTML, then store an additional copy, converted to XHTML using Tidy;
          this is using the same mechanism as the CPF "convert-html" action, except
          that this is done synchronously. This XHTML copy is what's used for search, snippeting, etc. :)
-      if ($is-html)
+      if ($is-jdoc)
       then
         let $tidy-options := <options xmlns="xdmp:tidy">
                                <input-encoding>utf8</input-encoding>
