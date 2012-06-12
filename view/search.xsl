@@ -275,9 +275,11 @@
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
             <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
                                                                                      else $srv:api-server"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server,  $version-prefix, ml:external-uri-api($doc))
-                                                                     else if ($is-flat-file) then @uri
-                                                                                             else ml:external-uri-main($doc)"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc)   then concat($api-server,  $version-prefix, ml:external-uri-api($doc))
+                                               else if ($is-flat-file) then if (ends-with(@uri,'_html.xhtml'))
+                                                                            then replace(@uri,'_html\.xhtml$','.html') (: translate URIs for XHTML-Tidy'd docs back to the original HTML URI :)
+                                                                            else @uri
+                                                                       else ml:external-uri-main($doc)"/>
             <tr>
               <th>
                 <xsl:variable name="category">

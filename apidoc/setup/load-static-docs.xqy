@@ -24,36 +24,42 @@ declare function local:load-pubs-docs($dir) {
   let $entries := xdmp:filesystem-directory($dir)/dir:entry return
   (
     (: Load files in this directory :)
-    for $file in $entries[dir:type eq 'file'] return
-      let $path        := $file/dir:pathname,
-          $uri         := concat("/pubs/", $api:version, translate(substring-after($path, $pubs-dir),"\","/"))
-      return
-      (
-        (: If the document is HTML, then convert it to XHTML using Tidy;
-           this is using the same mechanism as the CPF "convert-html" action, except
-           that this is done synchronously and without changing the URI of the document. :)
-        let $doc :=
-          if (ends-with($uri,'.html') or
-              ends-with($uri,'.htm'))
-          then 
-            let $tidy-options :=
-              <options xmlns="xdmp:tidy">
-                 <input-encoding>utf8</input-encoding>
-                 <output-encoding>utf8</output-encoding>
-                 <clean>true</clean>
-              </options>
-            let $input := xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format><encoding>auto</encoding></options>)
-            return
-              xhtml:clean(xdmp:tidy($input, $tidy-options)[2])
+    for $file in $entries[dir:type eq 'file']
+    let $path    := $file/dir:pathname,
+        $uri     := concat("/pubs/", $api:version, translate(substring-after($path, $pubs-dir),"\","/")),
+        $is-html := ends-with($uri,'.html'),
 
-          else xdmp:document-get($path, <options xmlns="xdmp:document-get"><encoding>auto</encoding></options>)
+        (: If the document is HTML, then read it as text :)
+        $doc := if ($is-html) then xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format><encoding>auto</encoding></options>)
+                              else xdmp:document-get($path, <options xmlns="xdmp:document-get">                     <encoding>auto</encoding></options>),
 
+        (: Exclude these HTML documents from the search corpus (search the Tidy'd XHTML instead; see below) :)
+        $collection := if ($is-html) then "hide-from-search"
+                                     else ()
+    return
+    (
+      xdmp:document-insert($uri, $doc, (), $collection),
+      xdmp:log(concat("Loading ",$path," to ",$uri)),
+
+      (: If the document is HTML, then store an additional copy, converted to XHTML using Tidy;
+         this is using the same mechanism as the CPF "convert-html" action, except
+         that this is done synchronously. This XHTML copy is what's used for search, snippeting, etc. :)
+      if ($is-html)
+      then
+        let $tidy-options := <options xmlns="xdmp:tidy">
+                               <input-encoding>utf8</input-encoding>
+                               <output-encoding>utf8</output-encoding>
+                               <clean>true</clean>
+                             </options>,
+            $xhtml := xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]),
+            $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
         return
         (
-          xdmp:document-insert($uri, $doc),
-          xdmp:log(concat("Loading ",$path," to ",$uri))
+          xdmp:document-insert($xhtml-uri, $xhtml),
+          xdmp:log(concat("Tidying ",$path," to ",$xhtml-uri))
         )
-      ),
+      else ()
+    ),
 
     (: Process sub-directories :)
     for $subdir in $entries[dir:type eq 'directory'] return

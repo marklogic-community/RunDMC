@@ -93,6 +93,9 @@ declare function ml:search-corpus-query($preferred-version as xs:string) {
     )),
     cts:not-query(
       ml:doc-element-att-query("hide-from-search","yes")
+    ),
+    cts:not-query(
+      cts:collection-query("hide-from-search")
     )
   ))
 };
