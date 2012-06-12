@@ -442,12 +442,14 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog post</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source project</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'rest-api']">REST API</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'rest-api']">REST API doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function page</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guide</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News item</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
-                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector Javadoc</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector API doc</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'java-api']">Java Client API doc</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'hadoop']  ">Hadoop Connector API doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous page</xsl:template>
 
@@ -462,6 +464,8 @@
                   <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'tutorial']">i_monitor</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'xcc']     ">i_java</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'java-api']">i_java</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'hadoop']  ">i_java</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'xccn']    ">i_dotnet</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'other']   ">i_folder</xsl:template>
 
@@ -480,6 +484,8 @@
                   <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'tutorial']">21</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'xcc']     "><!--31-->26</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'java-api']"><!--31-->26</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'hadoop']  "><!--31-->26</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'xccn']    ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'other']   ">19</xsl:template>
 
