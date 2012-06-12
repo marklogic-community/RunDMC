@@ -442,6 +442,7 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog post</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source project</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'rest-api']">REST API</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function page</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guide</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News item</xsl:template>
@@ -456,6 +457,7 @@
                   <xsl:template mode="result-img-src" match="*[@name eq 'code']    ">i_opensource</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'event']   ">i_calendar</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'function']">i_function</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'rest-api']">i_function</xsl:template> <!-- TODO: give this a different icon -->
                   <xsl:template mode="result-img-src" match="*[@name eq 'guide']   ">i_documentation</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'tutorial']">i_monitor</xsl:template>
@@ -473,6 +475,7 @@
                   <xsl:template mode="result-img-height" match="*[@name eq 'code']    ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'event']   ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'function']">27</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'rest-api']">27</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'guide']   ">25</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'tutorial']">21</xsl:template>
