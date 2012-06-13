@@ -119,7 +119,7 @@
   <group name="Client API for Java Reference" min-version="5.1">
     <entry title="javadoc for MarkLogic Client API for Java">
       API documentation for the MarkLogic Client API for Java.
-      <url version="5.1" href="/pubs/5.1/hadoop/javadoc/index.html"/>
+      <url version="5.1" href="/pubs/5.1/javaclient/javadoc/index.html"/>
     </entry>
   </group>
 
