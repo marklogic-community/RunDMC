@@ -235,12 +235,14 @@
 
 
                   <xsl:template mode="class" priority="1" match="toc:functions/node |
+                                                                    toc:guides/node |
                                                             toc:rest-resources/node">collapsable</xsl:template>
                   <xsl:template mode="class"              match="node[node]        ">expandable</xsl:template>
                   <xsl:template mode="class"              match="node"/>
 
 
                   <xsl:template mode="class-last" priority="2" match="toc:functions/node[last()][node]
+                                                                       | toc:guides/node[last()][node]
                                                                | toc:rest-resources/node[last()][node]">lastCollapsable</xsl:template>
                   <xsl:template mode="class-last" priority="1" match="              node[last()][node]">lastExpandable</xsl:template>
                   <xsl:template mode="class-last"              match="              node[last()]      ">last</xsl:template>
@@ -270,10 +272,12 @@
                   </xsl:template>
 
                           <xsl:template mode="hit-area-class" match="toc:functions/node
+                                                                      | toc:guides/node
                                                               | toc:rest-resources/node">hitarea collapsable-hitarea</xsl:template>
                           <xsl:template mode="hit-area-class" match="              node">hitarea expandable-hitarea</xsl:template>
 
                           <xsl:template mode="hit-area-class-last" priority="1" match="toc:functions/node[last()]
+                                                                                |         toc:guides/node[last()]
                                                                                 | toc:rest-resources/node[last()]">lastCollapsable-hitarea</xsl:template>
                           <xsl:template mode="hit-area-class-last"              match="              node[last()]">lastExpandable-hitarea</xsl:template>
                           <xsl:template mode="hit-area-class-last"              match="              node"/>
@@ -336,7 +340,8 @@
 
                   <xsl:template mode="control" match="*"/>
                   <!-- Expand/collapse buttons are enabled for all top-level menus, as well as globally for guides and categories -->
-                  <xsl:template mode="control" match="toc:*/node | toc:guides | toc:categories | toc:rest-resources">
+                  <xsl:template mode="control" match="toc:functions/node | toc:guides | toc:categories | toc:rest-resources
+                                                    | toc:categories/node  | toc:guides/node/node">
                     <xsl:variable name="collapse-class">
                       <xsl:apply-templates mode="collapse-class" select="."/>
                     </xsl:variable>
@@ -363,7 +368,7 @@
                           <!-- Shallow for top-level menus -->
                           <xsl:template mode="collapse-class" match="toc:functions/node">shallowCollapse</xsl:template>
                           <xsl:template mode="expand-class"   match="toc:functions/node">shallowExpand</xsl:template>
-                          <xsl:template mode="all-suffix"     match="toc:functions/node | toc:rest-resources/node
+                          <xsl:template mode="all-suffix"     match="toc:functions/node | toc:rest-resources/node | toc:guides/node
                                                                    | toc:*"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
 
                           <!-- Recursive (full) for everything else -->
@@ -410,7 +415,7 @@
                     </xsl:result-document>
                   </xsl:template>
 
-                          <xsl:template mode="ul-display-type" match="toc:functions/node/node | toc:*/node">block</xsl:template>
-                          <xsl:template mode="ul-display-type" match="                                node">none</xsl:template>
+                          <xsl:template mode="ul-display-type" match="toc:functions/node/node | toc:guides/node/node | toc:*/node">block</xsl:template>
+                          <xsl:template mode="ul-display-type" match="                                                       node">none</xsl:template>
 
 </xsl:stylesheet>

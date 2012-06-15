@@ -36,14 +36,17 @@
                                                                               <!-- exclude REST API "functions" -->
   <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs[not(. eq 'REST')]"/>
 
-  <xsl:variable name="guide-configs" select="u:get-doc('/apidoc/config/document-list.xml')/docs/*/guide"/>
+  <xsl:variable name="guide-docs"                select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
+  <xsl:variable name="guide-groups"              select="u:get-doc('/apidoc/config/document-list.xml')/docs/group[guide]"/>
+  <xsl:variable name="guide-docs-not-configured" select="$guide-docs except toc:guides-in-group($guide-groups)"/>
 
-  <xsl:variable name="guide-docs-configured" select="for $c in $guide-configs return doc(concat('/apidoc/',$api:version,'/guide/',$c/@url-name,'.xml'))"/>
-  <xsl:variable name="guide-docs-all"                             select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
+  <xsl:function name="toc:guides-in-group" as="document-node()*">
+    <xsl:param name="groups" as="element(group)*"/>
+    <xsl:sequence select="for $guide-config in $groups/guide
+                          return doc(concat('/apidoc/',$api:version,'/guide/',$guide-config/@url-name,'.xml'))"/>
+  </xsl:function>
 
-  <!-- Prefix unconfigured guides to the beginning (so new ones are easily discoverable) -->
-  <xsl:variable name="guide-docs-ordered" select="$guide-docs-all except $guide-docs-configured,
-                                                                         $guide-docs-configured"/>
+
   <xsl:template match="/">
     <all-tocs>
       <toc:functions>
@@ -88,11 +91,14 @@
         <!--
         <node display="User Guides" id="user_guides">
         -->
-          <xsl:for-each select="$guide-docs-ordered">
-            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes">
-              <xsl:for-each select="/guide/chapter-list/chapter">
-                <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
-              </xsl:for-each>
+          <xsl:if test="$guide-docs-not-configured">
+            <node display="New (unclassified) guides">
+              <xsl:apply-templates mode="toc-guide-node" select="$guide-docs-not-configured"/>
+            </node>
+          </xsl:if>
+          <xsl:for-each select="$guide-groups">
+            <node display="{@name}" id="{generate-id(.)}">
+              <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
             </node>
           </xsl:for-each>
         <!--
@@ -114,6 +120,15 @@
       </xsl:if>
     </all-tocs>
   </xsl:template>
+
+          <xsl:template mode="toc-guide-node" match="/guide">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes">
+              <xsl:for-each select="/guide/chapter-list/chapter">
+                <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
+              </xsl:for-each>
+            </node>
+          </xsl:template>
+
 
           <xsl:template mode="guide-toc" match="text()"/>
 
