@@ -45,7 +45,8 @@ NOTE: Disqus comments are currently disabled in the standalone version of the ap
     to be something different, you'd need to first update /config/server-urls.xml
     before running the above script.
 
- 6. Follow the steps in [/apidoc/setup/README.txt][], starting at step #4
-    (steps 1-3 have already been completed for you).
+ 6. Visit <http://localhost:8008/apidoc/setup/setup-all.xqy> to interactively
+    build the docs, or read [/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt][] for automation
+    instructions.
 
-[/apidoc/setup/README.txt]: http://github.com/marklogic/RunDMC/blob/apidoc/apidoc/setup/README.txt
+[/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt]: http://github.com/marklogic/RunDMC/blob/apidoc/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt
