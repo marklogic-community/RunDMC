@@ -1,3 +1,6 @@
+NOTE: See the more up-to-date README_FOR_NIGHTLY_BUILD.txt first.
+
+
 HOW TO BUILD CONTENT
 
 Content is loaded and built using a series of script invocations. You only
