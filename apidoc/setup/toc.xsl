@@ -122,7 +122,7 @@
   </xsl:template>
 
           <xsl:template mode="toc-guide-node" match="/guide">
-            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes">
               <xsl:for-each select="/guide/chapter-list/chapter">
                 <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
               </xsl:for-each>
