@@ -122,7 +122,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
           <td style="text-align:center">
             <p>Source dir: <input class="static-sub-dir" size="30" type="text" value="MarkLogic_{if ($v eq '5.0') then '5'
                                                                                             else if ($v eq '5.1') then '5.1ea' else $v}_pubs"/> (no slashes)</p>
-            <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;srcdirSTATIC="
+            <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;staticdir="
                                                                value="Load /pubs/{$v} docs"/>
             <div style="font-size:.8em">(PDF &amp; HTML)</div>
           </td>
@@ -165,9 +165,9 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 
           var url = button.attr("title").replace("srcdir=",
                                                  "srcdir=" + $("#src-dir-prefix").attr("value"))
-                                        .replace("srcdirSTATIC=",
-                                                 "srcdir=" +                        $("#static-base-dir").attr("value")
-                                                           + button.parents("td").find(".static-sub-dir").attr("value"));
+                                        .replace("staticdir=",
+                                                 "staticdir=" +                        $("#static-base-dir").attr("value")
+                                                              + button.parents("td").find(".static-sub-dir").attr("value"));
           button.load(url,
             function(response, status, xhr) {
               if (status == "error") {

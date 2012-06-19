@@ -92,9 +92,9 @@ BUILDING THE STATIC DOCS
 To publish the static PDF and HTML docs (javadoc and .NET docs), you must
 also run the following script:
 
-  GET http://localhost:8008/apidoc/setup/load-static-docs.xqy?version=4.2&srcdir=/Users/elenz/Desktop/MarkLogic_4.2_pubs
+  GET http://localhost:8008/apidoc/setup/load-static-docs.xqy?version=4.2&staticdir=/Users/elenz/Desktop/MarkLogic_4.2_pubs
 
-  Note the "srcdir" parameter: it must point to the location on the filesystem that contains the static source files
+  Note the "staticdir" parameter: it must point to the location on the filesystem that contains the static source files
   (Which sub-directories are loaded is configured in /apidoc/config/static-docs.xml)
 
 

@@ -15,7 +15,7 @@ import module namespace xhtml="http://marklogic.com/cpf/xhtml"
 declare variable $config := u:get-doc("/apidoc/config/static-docs.xml")/static-docs;
 declare variable $subdirs-to-load            := $config/include/string(.);
 
-declare variable $src-dir  := xdmp:get-request-field("srcdir");
+declare variable $src-dir  := xdmp:get-request-field("staticdir");
 declare variable $pubs-dir := concat($src-dir,'/pubs');
 (:
 declare variable $version-dir                := $config/version[@number eq $api:version]/@src-dir/string(.);
