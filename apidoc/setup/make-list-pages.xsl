@@ -28,7 +28,7 @@
       <xsl:comment>This page was auto-generated. The resulting content is driven     </xsl:comment>
       <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
       <api:docs-page disable-comments="yes">
-        <xsl:for-each select="/all-tocs/toc:guides/node">
+        <xsl:for-each select="/all-tocs/toc:guides//node[@guide]">
           <api:user-guide href="{@href}" display="{@display}">
             <!-- Put applicable title aliases here to help facilitate automatic link creation at render time -->
             <xsl:copy-of select="$title-aliases/guide/alias
