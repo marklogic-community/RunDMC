@@ -14,8 +14,8 @@ declare variable $options :=
        <authentication method="digest">
          <username>{$user}</username>
          <password>{$pw}</password>
-         <timeout>600</timeout>
        </authentication>
+       <timeout>600</timeout>
      </options> ;
  
 xdmp:set-request-time-limit(1200),
