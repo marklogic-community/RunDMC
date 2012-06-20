@@ -23,7 +23,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     <p>WARNING: This page should generally only be used on the staging server. Running this on the production machine (especially when running a clean build) would cause
     a service interruption for users.</p>
     <p>This page has many buttons. The simplest usage is to click the "Load and set up all docs!" button, which will run the load and setup processes
-       for all the server versions in parallel. At the end, it will run the category tagger (which is what enables faceted search).</p>
+       for all the server versions in parallel. At the end, it will run the category tagger (which is what enables faceted search) and the search-page generator (for the standalone API docs).</p>
     <p>To run a clean build of everything, first click "Delete all docs!", wait until it's finished, and then click the "Load and set up all docs!" button.</p>
     <p>Alternatively, you can run a delete or setup process for just one server version, e.g. "Load and set up all 5.0 docs".</p>
     <p>Finally, the individual parts (steps 1–3 and their lettered sub-steps) can be invoked individually. These are provided
@@ -135,7 +135,8 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         <td>&#160;</td>
         <td class="deleteCol">&#160;</td>
         <td>
-          <input id="tagger" type="button" title="/setup/collection-tagger.xqy" value="Run global category tagger"/>
+          <input class="finalSteps" type="button" title="/setup/collection-tagger.xqy" value="Run global category tagger"/><br/>
+          <input class="finalSteps" type="button" title="/apidoc/setup/make-standalone-search-page.xqy" value="Make standalone search page"/>
         </td>
         <td colspan="4">&#160;</td>
       </tr>
@@ -145,7 +146,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
       $(function(){
 
         // This is updated when you run "setup everything"
-        var runCollectionTagger = false;
+        var runFinalSteps = false;
 
         var invokeStep = function(button, masterButton) {
 
@@ -180,9 +181,9 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                 else {
                   finish(masterButton, "Finished");
                   // If we've just finished running "everything", then run the collection tagger now
-                  if (runCollectionTagger && $('input[disabled="disabled"]').length==0) {
-                    $("#tagger").click();
-                    runCollectionTagger = false;
+                  if (runFinalSteps && $('input[disabled="disabled"]').length==0) {
+                    $(".finalSteps").click();
+                    runFinalSteps = false;
                   }
                 }
               }
@@ -202,7 +203,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         };
 
         // Run an individual step
-        $(".atomicStep, .deleteButton, #tagger").click(function(){
+        $(".atomicStep, .deleteButton, .finalSteps").click(function(){
           invokeStep($(this), $([]));
         });
 
@@ -217,7 +218,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         $("#runAll").click(function(){
           $(".runVersion").click();
           $(".loadStatic").click();
-          runCollectionTagger = true;
+          runFinalSteps = true;
         });
 
         // Delete everything that can be deleted
