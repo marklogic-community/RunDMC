@@ -9,6 +9,9 @@ import module namespace setup = "http://marklogic.com/rundmc/api/setup"
 import module namespace u="http://marklogic.com/rundmc/util"
        at "../../lib/util-2.xqy";
 
+import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
+       at "raw-docs-access.xqy";
+
 import module namespace xhtml="http://marklogic.com/cpf/xhtml"
    at "/MarkLogic/conversion/xhtml.xqy";
 
@@ -21,6 +24,30 @@ declare variable $pubs-dir := concat($src-dir,'/pubs');
 declare variable $version-dir                := $config/version[@number eq $api:version]/@src-dir/string(.);
 :)
 
+
+declare function local:rewrite-uri($uri) {
+       if (starts-with($uri,"/javaclient")) then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
+  else if (starts-with($uri,"/javadoc/"))   then replace($uri,"/javadoc/","/javadoc/xcc/")
+  else if (starts-with($uri,"/dotnet/"))    then replace($uri,"/dotnet/",  "/dotnet/xcc/")
+
+  (: ASSUMPTION: the java docs don't include any PDFs :)
+  else if (ends-with($uri,".pdf"))          then local:pdf-uri($uri)
+
+  (: ASSUMPTION: if it's not PDF and it doesn't start with "/dotnet/", then it's java :)
+                                            else concat("/javadoc", replace($uri,"/javadoc","")) (: Move "/javadoc" to the beginning of the URL :)
+};
+
+declare function local:pdf-uri($uri) {
+  let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1"),
+      $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
+      $url-name      := $guide-configs[(@pdf-name,@source-name)[1] eq $pdf-name]/@url-name
+  return
+  (
+    if (not($url-name)) then error(xs:QName("ERROR"), concat("The configuration for ",$uri," is missing in /apidoc/config/document-list.xml")) else (),
+    concat("/guide/",$url-name,".pdf")
+  )
+};
+
 (: Recursively load all files :)
 declare function local:load-pubs-docs($dir) {
   let $entries := xdmp:filesystem-directory($dir)/dir:entry return
@@ -28,7 +55,8 @@ declare function local:load-pubs-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file']
     let $path    := $file/dir:pathname,
-        $uri     := concat("/pubs/", $api:version, translate(substring-after($path, $pubs-dir),"\","/")),
+        $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$pubs-dir),"\","/"))),
+
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
 

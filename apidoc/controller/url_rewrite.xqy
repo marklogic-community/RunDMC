@@ -17,15 +17,8 @@ declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) th
                                   else if (matches($path, '^/[0-9]\.[0-9]/')) then substring-before(substring-after($path,'/'),'/')
                                   else "";
 
+declare variable $version     := if ($version-specified) then $version-specified else $api:default-version;
 declare variable $path-prefix := if ($version-specified) then concat("/",$version-specified,"/") else "/";
-
-declare variable $pdf-location  := 
-  let $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
-      $version       := if ($version-specified) then $version-specified else $api:default-version,
-      $guide-name    := substring-before(substring-after($path,"/guide/"),".pdf"),
-      $pdf-name      := $guide-configs[@url-name eq $guide-name]/(@pdf-name,@source-name)[1]
-  return
-    concat("/pubs/",$version,"/books/",$pdf-name,".pdf");
 
 declare variable $root-doc-url    := concat('/apidoc/', $api:default-version,        '/index.xml');
 declare variable $doc-url-default := concat('/apidoc/', $api:default-version, $path, '.xml'); (: when version is unspecified in path :)
@@ -65,10 +58,16 @@ declare function local:REST-doc-query-param($doc-uri) {
 };
 
 (: Render a document using XSLT :)
-declare function local:transform($source-doc) as xs:string {
-  concat("/apidoc/controller/transform.xqy?src=",          $source-doc,
+declare function local:transform($source-uri) as xs:string {
+  concat("/apidoc/controller/transform.xqy?src=",          $source-uri,
                                           "&amp;version=", $version-specified,
                                           "&amp;", $query-string)
+};
+
+(: Grab doc from database :)
+declare function local:get-db-file($source-uri) as xs:string {
+xdmp:log(concat("Serving up: ",$source-uri)),
+  concat("/controller/get-db-file.xqy?uri=", $source-uri)
 };
 
 declare function local:redirect($new-path) as xs:string {
@@ -88,9 +87,18 @@ declare variable $matching-function-count := count($matching-functions);
   if (($path ne '/') and ends-with($path, '/')) then
       local:redirect(concat(substring($path, 1, string-length($path) - 1),
                             if ($query-string) then concat('&amp;', $query-string) else ()))
-  (: Redirect /guide to / :)
-  else if (substring-after($path,$path-prefix) eq "guide") then
+  (: Redirect naked /guide and /javadoc to / :)
+  else if (substring-after($path,$path-prefix) = ("guide","javadoc")) then
        local:redirect($path-prefix)
+  (: Redirect /dotnet to /dotnet/xcc :)
+  else if (substring-after($path,$path-prefix) eq "dotnet") then
+       local:redirect(concat($path,'/xcc'))
+  (: Redirect path without index.html to index.html :)
+  else if (substring-after($path,$path-prefix) = ("javadoc/hadoop",
+                                                  "javadoc/client",
+                                                  "javadoc/xcc",
+                                                  "dotnet/xcc")) then
+       local:redirect(concat($path,'/index.html'))
   (: Redirect requests for older versions back to DMC :)
   else if (starts-with($path,"/4.0")) then
        local:redirect(concat($srv:main-server,"/docs/4.0"))
@@ -111,14 +119,19 @@ declare variable $matching-function-count := count($matching-functions);
 
 
   (: SCENARIO 2B: Serve content from database :)
-    (: Respond with DB contents for /media and /pubs :)
-    else if (starts-with($path, '/media/') or
-             starts-with($path, '/pubs/')) then
-      concat("/controller/get-db-file.xqy?uri=", $path)
+    (: Respond with DB contents for /media  :)
+    else if (starts-with($path, '/media/')) then
+      local:get-db-file($path)
 
-    (: Map PDF URIs to DMC PDF URIs :)
-    else if (ends-with($path, '.pdf')) then
-        concat("/controller/get-db-file.xqy?uri=", $pdf-location)
+    (: Respond with DB contents for PDF and HTML docs :)
+    else if (ends-with($path, '.pdf')
+          or contains($path,'/javadoc/')
+          or contains($path,'/dotnet/')) then
+      let $path-without-version := concat('/',substring-after($path,$path-prefix)),
+          $path-with-version    := concat('/', $version, $path-without-version),
+          $file-uri := concat('/apidoc', $path-with-version)
+      return
+        local:get-db-file($file-uri)
 
     (: Ignore URLs starting with "/private/" :)
     else if (starts-with($path,'/private/')) then

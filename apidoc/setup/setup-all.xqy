@@ -29,8 +29,8 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     <p>Finally, the individual parts (steps 1–3 and their lettered sub-steps) can be invoked individually. These are provided
        for debugging purposes and also to give a visual hint as to the current progress of the setup tasks. For even more granular
        tracking, watch the ErrorLog file while a setup task is running.</p>
-    <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/space/elenz/api-rawdocs/"/> (must end with slash)</p>
-    <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/space/elenz/"/>             (must end with slash)</p>
+    <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/> (must end with slash)</p>
+    <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/Users/elenz/Desktop/"/>             (must end with slash)</p>
     <table cellspacing="0" cellpadding="10">
       <colgroup span="1" style="border-right: thin solid"></colgroup>
       <colgroup span="1" style="border-right: thin solid; background-color:#FFDDDD;"></colgroup>
@@ -123,7 +123,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             <p>Source dir: <input class="static-sub-dir" size="30" type="text" value="MarkLogic_{if ($v eq '5.0') then '5'
                                                                                             else if ($v eq '5.1') then '5.1ea' else $v}_pubs"/> (no slashes)</p>
             <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;staticdir="
-                                                               value="Load /pubs/{$v} docs"/>
+                                                               value="Load {$v} PDF &amp; HTML"/>
             <div style="font-size:.8em">(PDF &amp; HTML)</div>
           </td>
           <td>&#160;</td>

@@ -85,7 +85,9 @@
     <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
     <guide url-name="qconsole"        source-name="qconsole">A procedural guide that describes how to use the Query Console.</guide>
     <guide url-name="rest-dev"        source-name="rest-dev">Provides information on administration of and application development using the MarkLogic REST API.</guide>
+    <guide url-name="ingestion"       source-name="ingestion">Description TBD</guide>
     <guide url-name="sql"             source-name="sql">Provides information on how to use MarkLogic's SQL interface, including the creation of relational schemas and views.</guide>
+    <guide url-name="copyright"       source-name="shared">Copyright and support information.</guide>
     <!-- This seemed better, but the above matches what was on DMC
     <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
     -->
@@ -124,7 +126,9 @@
   </group>
 
   <!-- This doesn't seem to add any value; explicitly excluding it -->
+  <!-- We're including it now (see above)
   <guide exclude="yes"              source-name="shared"/>
+  -->
 
   <!--
   <entry href="/all" title="MarkLogic API Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
