@@ -472,8 +472,11 @@
                   <xsl:function name="my:is-in-list" as="xs:boolean">
                     <xsl:param name="e" as="element()"/>
                     <xsl:variable name="is-a-list-element" select="local-name($e) = $list-element-names"/>
-                    <xsl:variable name="is-in-numbered-list" select="not($e/self::EndList-root) and
-                                                                     $e/preceding-sibling::*[self::Number1 or self::EndList-root][1]
+
+                    <!-- <Number1> represents the beginning of the list; we assume that a miscellaneous element (having a name not enumerated in our code) is included in the list
+                         unless either it itself is a known end-of-list indicator or one has appeared since the beginning of the list: either <EndList-root> or Body[not(IMAGE)] -->
+                    <xsl:variable name="is-in-numbered-list" select="not($e/(self::EndList-root or self::Body[not(IMAGE)])) and
+                                                                     $e/preceding-sibling::*[self::Number1 or self::EndList-root or self::Body[not(IMAGE)]][1]
                                                                                             [self::Number1]"/>
                     <xsl:sequence select="$is-a-list-element or $is-in-numbered-list"/>
                   </xsl:function>
