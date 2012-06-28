@@ -72,7 +72,11 @@
     <!-- Had the above description on DMC, but the description is identical to flexrep, so I left it as follows: -->
     <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
     <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
-    <guide url-name="sharepoint"      source-name="SharePoint-Connector">The documentation for the MarkLogic Connector for SharePoint®, which allows you to mirror documents from a Microsoft SharePoint repository in MarkLogic Server.</guide>
+    <guide url-name="sharepoint" source-name="SharePoint-Connector">
+	    The documentation for the MarkLogic Connector for 
+	    SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>, 
+	    which allows you to mirror documents from a Microsoft SharePoint 
+	    repository in MarkLogic Server.</guide>
   </group>
 
   <group name="Other Reference Guides">
@@ -84,8 +88,19 @@
     <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
     <guide url-name="ec2"             source-name="ec2">Provides information on using an Amazon Machine Image (AMI) of MarkLogic Server on Amazon EC2.</guide>
     <guide url-name="qconsole"        source-name="qconsole">A procedural guide that describes how to use the Query Console.</guide>
-    <guide url-name="rest-dev"        source-name="rest-dev">Provides information on administration of and application development using the MarkLogic REST API.</guide>
-    <guide url-name="ingestion"       source-name="ingestion">Description TBD</guide>
+    <guide url-name="java-client"        source-name="java-client">
+	    Provides procedures, methodologies, and conceptual information 
+	    about developing MarkLogic Server applications using the Java 
+	    Client API. </guide>
+    <guide url-name="rest-dev"        source-name="rest-dev">
+	    Provides information on administration of and application 
+	    development using the MarkLogic REST API.</guide>
+    <guide url-name="ingestion" source-name="ingestion">
+	    Provides procedures, methodologies, and conceptual information 
+	    about loading content into MarkLogic Server. Includes an overview 
+	    of ingestion techniques available using XQuery, Java, REST, .NET, 
+	    and the MarkLogic Content Pump (mlcp).
+    </guide>
     <guide url-name="sql"             source-name="sql">Provides information on how to use MarkLogic's SQL interface, including the creation of relational schemas and views.</guide>
     <guide url-name="copyright"       source-name="shared">Copyright and support information.</guide>
     <!-- This seemed better, but the above matches what was on DMC
