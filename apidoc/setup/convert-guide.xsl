@@ -228,14 +228,21 @@
   </xsl:template>
 
 
-  <!-- TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly -->
-  <!-- Strip out line breaks -->
-  <xsl:template match="text()[not(ancestor::Code)]">
-    <xsl:value-of select="replace(.,'&#xA;','')"/>
+  <!-- The docapp code strips leading line breaks (and any preceding space) from each text node. Let's try that... -->
+  <xsl:template match="text()">
+    <xsl:value-of select="replace(., '^\s*\n', '')"/>
   </xsl:template>
 
-  <!-- Strip out isolated line breaks in Code elements -->
-  <xsl:template match="Code/text()[not(normalize-space(.))]"/>
+          <!--
+          <!- - TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly - ->
+          <!- - Strip out line breaks - ->
+          <xsl:template match="text()[not(ancestor::Code)]">
+            <xsl:value-of select="replace(.,'&#xA;','')"/>
+          </xsl:template>
+          <!- - Strip out isolated line breaks in Code elements - ->
+          <xsl:template match="Code/text()[not(normalize-space(.))]"/>
+          -->
+
 
   <!-- Since we rewrite all links to point to the last anchor, it's safe to remove all the anchors that aren't last. -->
   <xsl:template match="A[@ID][not(position() eq last())]"/>
