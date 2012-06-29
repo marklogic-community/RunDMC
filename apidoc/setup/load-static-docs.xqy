@@ -75,7 +75,7 @@ declare function local:load-pubs-docs($dir) {
                                      else ()
     return
     (
-      xdmp:document-insert($uri, $doc, (), $collection),
+      xdmp:document-insert($uri, $doc, xdmp:default-permissions(), $collection),
       xdmp:log(concat("Loading ",$path," to ",$uri)),
 
       (: If the document is HTML, then store an additional copy, converted to XHTML using Tidy;
