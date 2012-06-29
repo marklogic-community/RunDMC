@@ -217,10 +217,20 @@
                     <xsl:variable name="http-method"   select="api:verb-from-REST-fullname(.)"/>
                     <!-- ASSUMPTION: the input elements are pre-sorted by resource name, then by preferred HTTP verb (GET's always first) -->
                     <xsl:variable name="is-same-resource-as-next" select="following-sibling::*[1][api:name-from-REST-fullname(.) eq $resource-name]"/>
+
+
+                    <!-- If we decide to prefer signal over noise... then re-enable this. -->
                     <!-- If the method is GET and the next resource in the list is different, don't include the "(GET)" at the end of the name;
                          it only adds unnecessary clutter in that case. -->
+                    <!-- This isn't wanted for now:
                     <xsl:variable name="base-display-name" select="if ($http-method eq 'GET' and not($is-same-resource-as-next)) then $resource-name
-                                                                                                                                 else ."/>
+                                                                                                                                 else string(.)"/>
+                    -->
+                    <!-- Always display the verb for now (except in 5.0 where the distinction is *never* made). -->
+                    <xsl:variable name="base-display-name" select="if ($api:version eq '5.0') then $resource-name
+                                                                                              else string(.)"/>
+
+
                     <!-- Display the square-bracket version
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
