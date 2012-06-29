@@ -31,6 +31,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
        tracking, watch the ErrorLog file while a setup task is running.</p>
     <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/> (must end with slash)</p>
     <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/Users/elenz/Desktop/"/>             (must end with slash)</p>
+    <p>Base directory for admin help XSD docs:                                   <input id="base-xsd-dir"    size="50" type="text" value="/Users/elenz/Desktop/Config/"/>      (must end with slash)</p>
     <table cellspacing="0" cellpadding="10">
       <colgroup span="1" style="border-right: thin solid"></colgroup>
       <colgroup span="1" style="border-right: thin solid; background-color:#FFDDDD;"></colgroup>
@@ -63,7 +64,10 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
               <input type="button" class="deleteButton" value="Delete /{$v} docs (raw DB)" title="/apidoc/setup/delete-raw-docs.xqy?version={$v}"/>
             </div>
             <div>
-              <input type="button" class="deleteButton" value="Delete /apidoc/{$v} (live DB)" title="/apidoc/setup/delete-docs.xqy?version={$v}"/>
+              <input type="button" class="deleteButton" value="Delete /apidoc/{$v}" title="/apidoc/setup/delete-docs.xqy?version={$v}"/>
+            </div>
+            <div>
+              <input type="button" class="deleteButton" value="Delete /media/apidoc/{$v}" title="/apidoc/setup/delete-doc-images.xqy?version={$v}"/>
             </div>
           </th>
           <th>{()(:Don't change this to <td> without changing the JS first:)}
@@ -100,7 +104,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                 <input class="atomicStep" type="button" title="/apidoc/setup/pull-function-docs.xqy?version={$v}" value="Pull {$v} function docs"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" title="/apidoc/setup/create-toc.xqy?version={$v}"         value="Create {$v} XML TOC"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/create-toc.xqy?version={$v}&amp;help-xsd-dir=" value="Create {$v} XML TOC"/>
               </li>
               <li>
                 <input class="atomicStep" type="button" title="/apidoc/setup/render-toc.xqy?version={$v}"         value="Render {$v} HTML TOC"/>
@@ -109,7 +113,10 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                 <input class="atomicStep" type="button" title="/apidoc/setup/delete-old-toc.xqy?version={$v}"     value="Delete old {$v} TOC"/>
               </li>
               <li>
-                <input class="atomicStep" type="button" title="/apidoc/setup/make-list-pages.xqy?version={$v}"    value="Make {$v} list pages"/>
+                <input class="atomicStep" type="button" title="/apidoc/setup/make-list-pages.xqy?version={$v}"    value="Make {$v} list &amp; help pages"/>
+              </li>
+              <li>
+                <input class="atomicStep" type="button" title="/apidoc/setup/insert-admin-images.xqy?version={$v}" value="Insert {$v} admin help images"/>
               </li>
             </ol>
           </td>
@@ -168,7 +175,10 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
                                                  "srcdir=" + $("#src-dir-prefix").attr("value"))
                                         .replace("staticdir=",
                                                  "staticdir=" +                        $("#static-base-dir").attr("value")
-                                                              + button.parents("td").find(".static-sub-dir").attr("value"));
+                                                              + button.parents("td").find(".static-sub-dir").attr("value"))
+                                        .replace("help-xsd-dir=",
+                                                 "help-xsd-dir=" + $("#base-xsd-dir").attr("value")
+                                                                 + button.parents("tr").find(".versionCol").text());
           button.load(url,
             function(response, status, xhr) {
               if (status == "error") {

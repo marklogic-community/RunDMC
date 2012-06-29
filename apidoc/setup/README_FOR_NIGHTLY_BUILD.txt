@@ -14,12 +14,12 @@ process.
 The simplest way to get a clean build for all documents for a particular
 server version is to invoke a single GET request. For example:
 
-  GET http://localhost:8008/apidoc/setup/build.xqy?version=5.0&srcdir=/Users/elenz/Desktop/api-rawdocs/b5_0_XML&staticdir=/Users/elenz/Desktop/MarkLogic_5_pubs&clean=yes
+  GET http://localhost:8008/apidoc/setup/build.xqy?version=5.0&srcdir=/Users/elenz/Desktop/api-rawdocs/b5_0_XML&staticdir=/Users/elenz/Desktop/MarkLogic_5_pubs&help-xsd-dir=/Users/elenz/Desktop/Config/5.0&clean=yes
 
 The build.xqy script kicks off a complete build for the docs for
 the specified server version.
 
-Three request parameters are required, and one is optional:
+Four request parameters are required, and one is optional:
 
    version
      the server version (e.g., 5.0)
@@ -31,6 +31,10 @@ Three request parameters are required, and one is optional:
    staticdir
      the filesystem directory containing the "pubs" for this version,
      (e.g., /space/elenz/MarkLogic_5_pubs)
+
+   help-xsd-dir
+     the filesystem "Config" directory containing the XSD files for this version
+     (for extracting the admin help content)
 
    clean=yes (optional)
      If specified, then all the database contents for the given
@@ -104,7 +108,9 @@ in parallel (no dependencies between them).
 
   Step 3b (Create XML TOC)
 
-    GET http://localhost:8008/apidoc/setup/create-toc.xqy?version=4.2
+    GET http://localhost:8008/apidoc/setup/create-toc.xqy?version=4.2&help-xsd-dir=/Users/elenz/Desktop/Config/4.2
+
+    Note the "help-xsd-dir" parameter: it must point to the location on the filesystem containing the XSD files
 
 
   Step 3c (Render HTML TOC)
@@ -117,9 +123,13 @@ in parallel (no dependencies between them).
     GET http://localhost:8008/apidoc/setup/delete-old-toc.xqy?version=4.2
 
 
-  Step 3e (Make list pages)
+  Step 3e (Make list & help pages)
 
     GET http://localhost:8008/apidoc/setup/make-list-pages.xqy?version=4.2
+
+  Step 3e (Insert admin help images)
+
+    GET http://localhost:8008/apidoc/setup/insert-admin-images.xqy?version=4.2
 
 
   That completes the list of steps for a full build of a server version, except for the
@@ -158,9 +168,10 @@ in parallel (no dependencies between them).
 
   To run a "clean" build (not the usual scenario for the production machine,
   since it would result in minutes of service interruption), you would first
-  delete the documents before running the above builds. There are three sets
+  delete the documents before running the above builds. There are four sets
   of documents to delete, the "raw docs" (result of Step 1 above), the "live docs"
-  (results of the remaining steps), and the "static docs" (result of load-static-docs.xqy).
+  (results of the remaining steps), the "static docs" (result of load-static-docs.xqy),
+  and the "doc images" (e.g. everything in /media/4.2/apidoc/).
 
   To delete the "raw docs":
 
@@ -173,3 +184,7 @@ in parallel (no dependencies between them).
   To delete the "static docs":
 
     GET http://localhost:8008/apidoc/setup/delete-static-docs.xqy?version=4.2
+
+  To delete the "doc images":
+
+    GET http://localhost:8008/apidoc/setup/delete-doc-images.xqy?version=4.2

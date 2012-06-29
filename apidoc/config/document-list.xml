@@ -125,6 +125,10 @@
     </entry>
   </group>
 
+  <group name="Admin Interface Help">
+    <entry title="Admin Interface Help Pages" href="/admin-help"/>
+  </group>
+
   <!-- This doesn't seem to add any value; explicitly excluding it -->
   <!-- We're including it now (see above)
   <guide exclude="yes"              source-name="shared"/>

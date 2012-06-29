@@ -1,0 +1,104 @@
+<!-- The structure of this document dictates the resulting structure
+     of the resulting Help docs, based on definitions in the XSD files -->
+<help display="Admin Interface Help"
+      xmlns:g="http://marklogic.com/xdmp/group"
+      xmlns:h="http://marklogic.com/xdmp/hosts"
+      xmlns:d="http://marklogic.com/xdmp/database"
+      xmlns:flexrep="http://marklogic.com/xdmp/flexible-replication"
+      xmlns:t="http://marklogic.com/xdmp/triggers"
+      xmlns:dm="http://marklogic.com/cpf/domains"
+      xmlns:p="http://marklogic.com/cpf/pipelines"
+      xmlns:a="http://marklogic.com/xdmp/assignments"
+      xmlns:m="http://marklogic.com/xdmp/mimetypes"
+      xmlns:c="http://marklogic.com/xdmp/clusters"
+      xmlns:sec ="http://marklogic.com/xdmp/security"
+      xmlns:x509="http://marklogic.com/xdmp/x509"
+      xmlns:pki ="http://marklogic.com/xdmp/pki"
+      >
+  <g:groups url-name="server" display="Configure">
+    <g:group display="Groups" exclude="events" auto-exclude="yes">
+      <h:hosts url-name="group-host" display="Hosts"/>
+      <g:app-servers display="App Servers">
+        <g:http-server display="[HTTP]" exclude="compute-content-length" auto-exclude="yes">
+          <g:namespace display="Namespaces"/>
+          <g:schema display="Schemas"/>
+          <g:request-blackouts display="Request Blackouts"/>
+          <g:http-server display="Output Options" starting-with="output-" id="oo" url-name="output-options" content-title="Output Options Configuration Help" show-only-the-list="yes" added-in="5.0"/>
+        </g:http-server>
+        <g:http-server help-position="2" url-name="webdav" display="[WebDAV]" exclude="modules" auto-exclude="yes">
+          <repeat name="g:request-blackouts"/>
+          <repeat idref="oo"/>
+        </g:http-server>
+        <g:xdbc-server display="[XDBC]" exclude="authentication" auto-exclude="yes">
+          <repeat name="g:namespace"/>
+          <repeat name="g:schema"/>
+          <repeat name="g:request-blackouts"/>
+          <repeat idref="oo"/>
+        </g:xdbc-server>
+      </g:app-servers>
+      <g:task-server display="Task Server"/>
+      <g:scheduled-task display="Scheduled Tasks" exclude="task-month-day
+                                                           task-start-date
+                                                           task-timestamp"/>
+      <repeat name="g:schema"/>
+      <repeat name="g:namespace"/>
+      <g:events-activated url-name="diagnostics" display="Diagnostics"/>
+      <g:audit display="Auditing"/>
+    </g:group>
+    <d:database display="Databases" exclude="foreign-databases" auto-exclude="yes">
+      <d:forests display="Forests"/>
+      <flexrep:configuration url-name="flexrep" display="Flexible Replication" added-in="4.2">
+        <flexrep:Domainconfiguration url-name="flexrep-domain" display="Domain">
+          <flexrep:Targetconfiguration url-name="flexrep-target" display="Replication target"/>
+        </flexrep:Domainconfiguration>
+        <flexrep:Pullconfiguration url-name="flexrep-pull" display="Pull"/>
+      </flexrep:configuration>
+      <d:database-replication display="Database Replication" added-in="5.0"/>
+      <d:fragment-root display="Fragment Roots"/>
+      <d:fragment-parent display="Fragment Parents"/>
+      <t:trigger display="Triggers"/>
+      <d:database help-position="2" starting-with="merge-" url-name="merge" display="Merge Policy" line-after="merge-timestamp"/>
+      <d:database-backups display="Scheduled Backups"/>
+      <dm:configuration url-name="cpf" display="Content Processing">
+        <dm:domain display="Domains"/>
+        <p:pipeline display="Pipelines"/>
+      </dm:configuration>
+      <d:range-element-index display="Element Range Indexes"/>
+      <d:range-element-attribute-index display="Attribute Range Indexes"/>
+      <d:range-field-index display="Field Range Indexes" added-in="5.0"/>
+      <d:path-namespace   added-in="5.1" display="Path Namespaces"/>
+      <d:range-path-index added-in="5.1" display="Path Range Indexes"/>
+      <d:element-word-lexicon display="Element Word Lexicons"/>
+      <d:element-attribute-word-lexicon display="Attribute Word Lexicons"/>
+      <d:field help-position="2" append="d:included-element" url-name="word-query" display="Word Query" exclude="field-name word-lexicons" line-after="one-character-searches"/>
+      <d:field                   append="d:included-element" append-help-position="2" display="Fields" line-after="field-name one-character-searches"/>
+      <d:phrase-through display="Phrase-Throughs"/>
+      <d:phrase-around display="Phrase-Arounds"/>
+      <d:element-word-query-through display="Element-Word-Query-Throughs"/>
+      <container display="Geospatial Indexes">
+        <d:geospatial-element-index                display="Geospatial Element Indexes"/>
+        <d:geospatial-element-child-index          display="Geospatial Element Child Indexes"/>
+        <d:geospatial-element-pair-index           display="Geospatial Element Pair Indexes"/>
+        <d:geospatial-element-attribute-pair-index display="Geospatial Attribute Pair Indexes"/>
+        <d:geospatial-path-index                   display="Geospatial Path Indexes" added-in="5.1"/>
+      </container>
+      <!-- Permissions help would go here if it wasn't hard-coded in the admin XQuery -->
+    </d:database>
+    <h:host display="Hosts">
+      <!-- Host forest help would go here if it wasn't hard-coded in the admin XQuery -->
+    </h:host>
+    <a:assignment url-name="forest" display="Forests" exclude="forest-backups"/>
+    <m:mimetype display="Mimetypes"/>
+    <c:clusters display="Clusters" added-in="5.0"/>
+    <sec:realm url-name="security" display="Security">
+      <sec:user display="Users"/>
+      <sec:role display="Roles"/>
+      <sec:privilege help-position="2" display="Execute Privileges"/>
+      <sec:privilege url-name="uri-privilege" display="URI Privileges"/>
+      <sec:amp display="Amps"/>
+      <sec:collection display="Collections"/>
+      <x509:version url-name="certificate-authority" display="Certificate Authorities"/>
+      <pki:template append="x509:subject" url-name="certificate-template" display="Certificate Templates"/>
+    </sec:realm>
+  </g:groups>
+</help>

@@ -5,6 +5,8 @@ xquery version "1.0-ml";
 import module namespace setup = "http://marklogic.com/rundmc/api/setup"
        at "common.xqy";
 
+$setup:helpXsdCheck,
+
 xdmp:log(concat("Creating the new XML-based TOC at ",$setup:toc-xml-url,"...")),
 
 xdmp:document-insert($setup:toc-xml-url,

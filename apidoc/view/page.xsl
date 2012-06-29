@@ -162,7 +162,7 @@
             <xsl:text>']</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="toc-section-link-selector" match="api:list-page">
+          <xsl:template mode="toc-section-link-selector" match="api:list-page | api:help-page">
             <xsl:text>#</xsl:text>
             <xsl:value-of select="@container-toc-section-id"/>
             <xsl:text> >:first-child</xsl:text>
@@ -176,7 +176,7 @@
     <xsl:value-of select="$site-title"/>
   </xsl:template>
 
-  <xsl:template mode="page-specific-title" match="api:list-page">
+  <xsl:template mode="page-specific-title" match="api:list-page | api:help-page">
     <xsl:value-of>
       <xsl:apply-templates mode="list-page-heading" select="."/>
     </xsl:value-of>
@@ -331,6 +331,16 @@
                           </xsl:template>
 
 
+  <xsl:template mode="page-content" match="api:help-page">
+    <div>
+      <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <h1>
+        <xsl:apply-templates mode="list-page-heading" select="."/>
+      </h1>
+      <xsl:apply-templates select="api:content/node()"/>
+    </div>
+  </xsl:template>
+
   <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
@@ -369,7 +379,7 @@
             <xsl:attribute name="class">pjax_enabled</xsl:attribute>
           </xsl:template>
 
-          <xsl:template mode="list-page-heading" match="api:list-page">
+          <xsl:template mode="list-page-heading" match="api:list-page | api:help-page">
             <xsl:apply-templates select="api:title/node()"/>
           </xsl:template>
 

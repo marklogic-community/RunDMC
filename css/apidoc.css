@@ -357,3 +357,14 @@ a.function_prefix { text-decoration: underline; color: #899B3B; }
 /* An alternative attempt that doesn't disable them altogether
 .dsq-tooltip-outer { top: auto !important; bottom: 0px;}
 */
+
+
+/* for admin help docs */
+span.configOption {
+  color: #2C2C2C;
+  font-weight: bold;
+}
+
+img.adminHelp {
+  vertical-align: baseline;
+}

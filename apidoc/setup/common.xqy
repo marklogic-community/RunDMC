@@ -17,3 +17,5 @@ declare variable $setup:toc-url-default-version := concat($toc-default-dir,"apiT
 declare variable $setup:processing-default-version := $api:version eq $api:default-version;
 
 declare variable $setup:errorCheck := if (not($api:version-specified)) then error(xs:QName("ERROR"), "You must specify a 'version' param.") else ();
+
+declare variable $setup:helpXsdCheck := if (not(xdmp:get-request-field("help-xsd-dir"))) then error(xs:QName("ERROR"), "You must specify a 'help-xsd-dir' param.") else (); (: used in create-toc.xqy / toc-help.xsl :)

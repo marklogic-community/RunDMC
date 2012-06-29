@@ -21,6 +21,7 @@
   <xsl:import href="../view/page.xsl"/>
 
   <xsl:include href="tocByCategory.xsl"/>
+  <xsl:include href="toc-help.xsl"/>
 
   <!-- Implements some common content fixup rules -->
   <xsl:include href="fixup.xsl"/>
@@ -53,7 +54,8 @@
         <node href="/all"
               display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
-              function-list-page="yes">
+              function-list-page="yes"
+              open="yes">
           <title>All functions</title>
           <intro>
             <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
@@ -92,12 +94,12 @@
         <node display="User Guides" id="user_guides">
         -->
           <xsl:if test="$guide-docs-not-configured">
-            <node display="New (unclassified) guides">
+            <node display="New (unclassified) guides" open="yes">
               <xsl:apply-templates mode="toc-guide-node" select="$guide-docs-not-configured"/>
             </node>
           </xsl:if>
           <xsl:for-each select="$guide-groups">
-            <node display="{@name}" id="{generate-id(.)}">
+            <node display="{@name}" id="{generate-id(.)}" open="yes">
               <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
             </node>
           </xsl:for-each>
@@ -111,13 +113,17 @@
           <node href="/REST"
                 display="All REST resources"
                 id="RESTResourcesAPI"
-                function-list-page="yes">
+                function-list-page="yes"
+                open="yes">
             <title>All REST resources</title>
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
           </node>
         </toc:rest-resources>
       </xsl:if>
+      <toc:help>
+        <xsl:apply-templates mode="help-toc" select="."/>
+      </toc:help>
     </all-tocs>
   </xsl:template>
 
