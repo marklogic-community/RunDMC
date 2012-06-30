@@ -150,6 +150,12 @@ table.guide_info { font-size: .8em; }
 	padding-top: 5px !important;
 	padding-bottom: 5px !important;
 }
+
+/* overrides JQuery UI CSS */
+.ui-tabs .ui-tabs-nav li a {
+  padding: .5em .7em !important;
+}
+
 .scrollable_section {
 	height: 100%;
 	position: relative;
