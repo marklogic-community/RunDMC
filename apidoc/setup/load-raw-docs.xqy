@@ -22,11 +22,11 @@ declare function local:load-docs($dir) {
       let $uri  := concat("/", $version, translate(substring-after($path, $srcdir),"\","/")) return
       (
         xdmp:eval(
-          concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))') (: ,
+          concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))'),
           (),
           <options xmlns="xdmp:eval">
             <database>{xdmp:database($database-name)}</database>
-          </options> :) ), 
+          </options>), 
         xdmp:log(concat("Loading ",$path," to ",$uri))
       ),
 
