@@ -258,7 +258,7 @@ function showInTOC(a) {
 function updateTocForTab(tab, panel) {
   //console.log(functionPageBucketId);
   //console.log("updateTocForTab called");
-  var categoriesPanelId = "tabs-2";
+  var categoriesPanelId = "tabs-1";
   // When the user clicks on the "Categories" tab when on a function or list page
   if (panel.id == categoriesPanelId && functionPageBucketId !== "") {
     var tocSection = $("#" + functionPageBucketId, panel);

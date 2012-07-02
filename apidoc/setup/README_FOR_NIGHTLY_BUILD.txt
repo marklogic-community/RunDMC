@@ -127,10 +127,6 @@ in parallel (no dependencies between them).
 
     GET http://localhost:8008/apidoc/setup/make-list-pages.xqy?version=4.2
 
-  Step 3e (Insert admin help images)
-
-    GET http://localhost:8008/apidoc/setup/insert-admin-images.xqy?version=4.2
-
 
   That completes the list of steps for a full build of a server version, except for the
   "static docs".

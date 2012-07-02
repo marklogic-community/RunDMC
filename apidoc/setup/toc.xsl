@@ -51,6 +51,9 @@
   <xsl:template match="/">
     <all-tocs>
       <toc:functions>
+        <node display="Functions by category">
+          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
+        </node>
         <node href="/all"
               display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
@@ -79,16 +82,51 @@
           -->
         </node>
       </toc:functions>
+      <xsl:if test="number($api:version) ge 5">
+        <toc:rest-resources>
+          <!-- Add this wrapper so the /REST page will get created -->
+          <node href="/REST"
+                display="All REST resources"
+                id="RESTResourcesAPI"
+                function-list-page="yes"
+                open="yes">
+            <title>All REST resources</title>
+            <!-- Just the REST API bucket contents -->
+            <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
+          </node>
+        </toc:rest-resources>
+      </xsl:if>
+      <xsl:if test="number($api:version) ge 5.1">
+        <toc:java>
+          <node display="Java APIs" open="yes" id="javaTOC">
+            <node display="Java Client API"
+                  href="/javadoc/client/index.html"
+                  external="yes"/>
+            <node display="Connector for Hadoop API"
+                  href="/javadoc/client/index.html"
+                  external="yes"/>
+            <node display="XCC Javadoc"
+                  href="/javadoc/xcc/index.html"
+                  external="yes"/>
+          </node>
+        </toc:java>
+      </xsl:if>
+      <!--
       <toc:categories>
+      -->
         <!--
         <node display="Functions by category">
         -->
           <!-- Every bucket except the REST API bucket -->
+          <!--
           <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
+          -->
         <!--
         </node>
         -->
+      <!--
       </toc:categories>
+      -->
       <toc:guides>
         <!--
         <node display="User Guides" id="user_guides">
@@ -107,23 +145,9 @@
         </node>
         -->
       </toc:guides>
-      <xsl:if test="number($api:version) ge 5">
-        <toc:rest-resources>
-          <!-- Add this wrapper so the /REST page will get created -->
-          <node href="/REST"
-                display="All REST resources"
-                id="RESTResourcesAPI"
-                function-list-page="yes"
-                open="yes">
-            <title>All REST resources</title>
-            <!-- Just the REST API bucket contents -->
-            <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
-          </node>
-        </toc:rest-resources>
-      </xsl:if>
-      <toc:help>
+      <toc:other>
         <xsl:apply-templates mode="help-toc" select="."/>
-      </toc:help>
+      </toc:other>
     </all-tocs>
   </xsl:template>
 

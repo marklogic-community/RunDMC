@@ -115,9 +115,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
               <li>
                 <input class="atomicStep" type="button" title="/apidoc/setup/make-list-pages.xqy?version={$v}"    value="Make {$v} list &amp; help pages"/>
               </li>
-              <li>
-                <input class="atomicStep" type="button" title="/apidoc/setup/insert-admin-images.xqy?version={$v}" value="Insert {$v} admin help images"/>
-              </li>
             </ol>
           </td>
         </tr>,

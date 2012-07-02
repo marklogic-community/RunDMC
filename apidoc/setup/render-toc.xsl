@@ -182,11 +182,17 @@
             </li>
           </xsl:template>
 
-                  <xsl:template mode="tab-label" match="toc:functions"     >API by<br/>Name</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:functions"     >XQuery/<br/>XSLT</xsl:template>
+                  <!--
                   <xsl:template mode="tab-label" match="toc:categories"    >API by<br/>Category</xsl:template>
+                  -->
                   <xsl:template mode="tab-label" match="toc:guides"        >User<br/>Guides</xsl:template>
                   <xsl:template mode="tab-label" match="toc:rest-resources">REST<br/>API</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>APIs</xsl:template>
+                  <!--
                   <xsl:template mode="tab-label" match="toc:help"          >Admin<br/>Help</xsl:template>
+                  -->
+                  <xsl:template mode="tab-label" match="toc:other"         >Other<br/>docs</xsl:template>
 
 
           <xsl:template mode="tab-content" match="/all-tocs/*">
@@ -228,6 +234,8 @@
               <xsl:apply-templates mode="class-initialized" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-async" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-external" select="."/>
             </xsl:variable>
             <li class="{$class}">
               <xsl:apply-templates mode="id-att"   select="."/>
@@ -237,6 +245,11 @@
               <xsl:apply-templates mode="children" select="."/>
             </li>
           </xsl:template>
+
+                  <!-- For external links (outside the docs template) -->
+                  <xsl:template mode="class-external" match="node"/>
+                  <xsl:template mode="class-external" match="node[@external]">external</xsl:template>
+
 
                   <xsl:template mode="id-att" match="node"/>
                   <!-- Include an ID on nodes that have one already -->
@@ -349,8 +362,11 @@
 
                   <xsl:template mode="control" match="*"/>
                   <!-- Expand/collapse buttons are enabled for all top-level menus, as well as globally for guides and categories -->
-                  <xsl:template mode="control" match="toc:functions/node | toc:guides | toc:categories | toc:rest-resources | toc:help
-                                                    | toc:categories/node  | toc:guides/node/node">
+                  <xsl:template mode="control" match="(:toc:functions/node |:) toc:guides (:| toc:categories:) | toc:rest-resources | toc:other | toc:java
+                                                    | toc:functions
+                                                    (:|toc:categories/node:)
+                                                    | toc:functions/node[1]/node (: category buckets :)
+                                                    | toc:guides/node/node">
                     <xsl:variable name="collapse-class">
                       <xsl:apply-templates mode="collapse-class" select="."/>
                     </xsl:variable>
@@ -375,10 +391,12 @@
                   </xsl:template>
 
                           <!-- Shallow for top-level menus -->
+                          <!--
                           <xsl:template mode="collapse-class" match="toc:functions/node">shallowCollapse</xsl:template>
                           <xsl:template mode="expand-class"   match="toc:functions/node">shallowExpand</xsl:template>
-                          <xsl:template mode="all-suffix"     match="toc:functions/node | toc:rest-resources/node | toc:guides/node
-                                                                   | toc:*"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
+                          -->
+                          <xsl:template mode="all-suffix"     match="(:toc:functions/node | toc:rest-resources/node | toc:guides/node
+                                                                   |:) toc:*"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
 
                           <!-- Recursive (full) for everything else -->
                           <xsl:template mode="collapse-class" match="node | toc:*">collapse</xsl:template>

@@ -30,6 +30,8 @@
 
     <node href="{$help-root-href}" display="{$help-config/@display}" id="HelpTOC" admin-help-page="yes">
       <xsl:apply-templates mode="help-node-open-att" select="."/>
+      <title>Admin Interface Help Pages</title>
+      <content auto-help-list="yes"/>
       <xsl:apply-templates mode="#current" select="$help-config/*"/>
     </node>
   </xsl:template>
@@ -206,7 +208,7 @@
 
   <!-- Rewrite image URLs -->
   <xsl:template mode="convert-help-content" match="*:img/@src">
-    <xsl:attribute name="src" select="concat('/media/apidoc/',$api:version,'/admin-help/',.)"/> <!-- see insert-admin-images.xqy -->
+    <xsl:attribute name="src" select="concat('/apidoc/images/admin-help/',.)"/>
     <xsl:attribute name="class" select="'adminHelp'"/>
   </xsl:template>
 

@@ -43,8 +43,8 @@
     <!-- Find each function list and help page URL -->
     <xsl:for-each select="distinct-values(//node[@function-list-page or @admin-help-page]/@href)">
       <xsl:result-document href="{ml:internal-uri(.)}">
-        <!-- Process the first one of each; it contains the intro text we need, etc. -->
-        <xsl:apply-templates select="($root//node[@href eq current()])[1]"/>
+        <!-- Process the first one of each that has a title (and consequently intro or help content) -->
+        <xsl:apply-templates select="($root//node[@href eq current()])[title][1]"/>
       </xsl:result-document>
     </xsl:for-each>
   </xsl:template>
@@ -54,18 +54,23 @@
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
     <api:help-page disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
-      <xsl:apply-templates mode="help-page-content" select="."/>
+      <xsl:apply-templates select="title | content"/>
     </api:help-page>
   </xsl:template>
 
+          <xsl:template match="content">
+            <api:content>
+              <xsl:apply-templates mode="to-xhtml"/>
+            </api:content>
+          </xsl:template>
+
           <!-- Help index page is at the top -->
-          <xsl:template mode="help-page-content" match="toc:help/node">
-            <api:title>Admin Interface Help Pages</api:title>
+          <xsl:template match="content[@auto-help-list]">
             <api:content>
               <xsl:variable name="content-without-namespace">
                 <p>The following is an alphabetical list of the Admin Interface's help pages:</p>
                 <ul>
-                  <xsl:variable name="help-nodes" select=".//node"/>
+                  <xsl:variable name="help-nodes" select="..//node"/>
                                                                      <!-- only select the first node for each unique @href -->
                   <xsl:apply-templates mode="help-page-item" select="for $this in $help-nodes return $this[. is $help-nodes[@href eq $this/@href][1]]">
                     <!-- Sort alphabetically by title -->
@@ -86,50 +91,6 @@
                         <xsl:value-of select="title"/>
                       </a>
                     </li>
-                  </xsl:template>
-
-                  <!--
-                  <xsl:template mode="help-page-list" match="node"/>
-                                                             <!- - only match the first node for each unique @href - ->
-                  <xsl:template mode="help-page-list" match="node[. is $help-nodes[@href eq current()/@href][1]]
-                                                           | node[not(@href)]"> <!- - container nodes (e.g., geospatial) - ->
-                    <li>
-                      <xsl:apply-templates mode="help-page-item-content" select="."/>
-                      <xsl:variable name="content">
-                        <xsl:apply-templates mode="#current" select="node"/>
-                      </xsl:variable>
-                      <xsl:if test="$content/node()">
-                        <ul>
-                          <xsl:copy-of select="$content"/>
-                        </ul>
-                      </xsl:if>
-                    </li>
-                  </xsl:template>
-
-                          <!- - help page link - ->
-                          <xsl:template mode="help-page-item-content" match="node[@href]">
-                            <a href="{@href}">
-                              <xsl:value-of select="title"/>
-                            </a>
-                          </xsl:template>
-
-                          <!- - help group container (e.g., geospatial) - ->
-                          <xsl:template mode="help-page-item-content" match="node">
-                            <span>
-                              <xsl:value-of select="@display"/>
-                            </span>
-                          </xsl:template>
-                          -->
-
-          <!-- Everything else is a regular help page -->
-          <xsl:template mode="help-page-content" match="node">
-            <xsl:apply-templates select="title | content"/>
-          </xsl:template>
-
-                  <xsl:template match="content">
-                    <api:content>
-                      <xsl:apply-templates mode="to-xhtml"/>
-                    </api:content>
                   </xsl:template>
 
 

@@ -22,7 +22,4 @@ xdmp:invoke("delete-old-toc.xqy"),
 (: Create list pages in a subsequent transaction, since they depend on both the inserted documents and the XML TOC :)
 xdmp:invoke("make-list-pages.xqy"),
 
-(: Insert the couple of images used by the admin help docs :)
-xdmp:invoke("insert-admin-images.xqy"),
-
 xdmp:log("All done!")
