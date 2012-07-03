@@ -79,9 +79,12 @@
 
         <!-- For performance reasons, we no longer pre-process the navigation config on every request;
              it is now an, er, PRE-process. -->
-        <xsl:variable name="navigation" select="if ($navigation-cached) then $navigation-cached
-                                                                        else ($populated-navigation,
-                                                                              ml:save-cached-navigation($populated-navigation))"/>
+        <!-- Pre-processing (to get the blog content) is unnecessary on the API server; so just grab the raw config file
+             in that case. -->
+        <xsl:variable name="navigation" select="if ($currently-on-api-server) then $ml:raw-navigation
+                                           else if ($navigation-cached)       then $navigation-cached
+                                                                              else ($populated-navigation,
+                                                                                     ml:save-cached-navigation($populated-navigation))"/>
 
                 <xsl:variable name="navigation-cached" select="ml:get-cached-navigation()"/>
 
