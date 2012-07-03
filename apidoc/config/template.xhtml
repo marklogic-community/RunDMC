@@ -8,7 +8,7 @@
 	  <link href="/css/v-2/apidoc/jquery.treeview.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="/css/v-1/apidoc/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="/css/v-9/screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="/css/v-18/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-19/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
@@ -59,7 +59,7 @@
 						colorizeExamples();
 					}
 				});
-				$("#api_sub .pjax_enabled a").pjax({
+				$("#api_sub .pjax_enabled a:not(.external)").pjax({
 					container: '#page_content',
           timeout: 2000,
 					success: function() {

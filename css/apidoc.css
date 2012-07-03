@@ -375,7 +375,7 @@ img.adminHelp {
   vertical-align: baseline;
 }
 
-li.external a {
+a.external {
   background: url(/apidoc/images/externalLink.png) center right no-repeat;
   padding-right: 12px;
 }

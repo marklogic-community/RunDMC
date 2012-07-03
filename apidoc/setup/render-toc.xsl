@@ -234,8 +234,6 @@
               <xsl:apply-templates mode="class-initialized" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-async" select="."/>
-              <xsl:text> </xsl:text>
-              <xsl:apply-templates mode="class-external" select="."/>
             </xsl:variable>
             <li class="{$class}">
               <xsl:apply-templates mode="id-att"   select="."/>
@@ -245,11 +243,6 @@
               <xsl:apply-templates mode="children" select="."/>
             </li>
           </xsl:template>
-
-                  <!-- For external links (outside the docs template) -->
-                  <xsl:template mode="class-external" match="node"/>
-                  <xsl:template mode="class-external" match="node[@external]">external</xsl:template>
-
 
                   <xsl:template mode="id-att" match="node"/>
                   <!-- Include an ID on nodes that have one already -->
@@ -322,6 +315,7 @@
                       <xsl:apply-templates mode="link-href" select="."/>
                     </xsl:variable>
                     <a href="{$href}">
+                      <xsl:apply-templates mode="external-atts" select="."/>
                       <xsl:apply-templates mode="title-att" select="."/>
                       <xsl:apply-templates mode="node-display" select="."/>
                     </a>
@@ -331,6 +325,14 @@
                     </xsl:if>
                     -->
                   </xsl:template>
+
+                          <!-- For external links (outside the docs template) -->
+                          <xsl:template mode="external-atts" match="node"/>
+                          <xsl:template mode="external-atts" match="node[@external]">
+                            <xsl:attribute name="class" select="'external'"/>
+                            <xsl:attribute name="target" select="'_blank'"/>
+                          </xsl:template>
+
 
                           <xsl:template mode="node-display" match="node">
                             <xsl:value-of select="@display"/>
