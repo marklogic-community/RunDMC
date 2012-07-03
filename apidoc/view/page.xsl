@@ -38,7 +38,7 @@
                                                                      else concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
                                                                      -->
 
-  <xsl:variable name="site-url-for-disqus" select="'http://api.marklogic.com'"/>
+  <xsl:variable name="site-url-for-disqus" select="'http://docs.marklogic.com'"/>
 
   <xsl:variable name="template-dir" select="'/apidoc/config'"/>
 
