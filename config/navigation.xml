@@ -124,6 +124,7 @@
         <page display="Alerting" href="/code/alerting"/>
         <page display="RunDMC" href="/code/rundmc"/>
         <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
+        <page display="Photo manager" href="/code/photoman"/>
         <!--
         <page display="MarkMail" href="/code/markmail"/>
         -->
