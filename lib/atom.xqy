@@ -39,13 +39,13 @@ return
     <feed xmlns="http://www.w3.org/2005/Atom">
     	<title>MarkLogic Community Blog</title>
     	<subtitle></subtitle>
-    	<link href="http://community.marklogic.com/blog/atom.xml" rel="self"/>
+    	<link href="http://developer.marklogic.com/blog/atom.xml" rel="self"/>
     	<updated>{ current-dateTime() }</updated>
     	<id></id>
     
-    	<generator uri="http://community.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Community</generator>
-    	<icon>http://community.marklogic.com/favicon.ico</icon>
-    	<logo>http://community.marklogic.com/media/marklogic-community-badge.png</logo>
+    	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Community</generator>
+    	<icon>http://developer.marklogic.com/favicon.ico</icon>
+    	<logo>http://developer.marklogic.com/media/marklogic-community-badge.png</logo>
     	{
             for $p in $posts [1 to $MAX_ENTRIES]
             order by xs:dateTime($p/ml:created/text()) descending 

@@ -15,7 +15,7 @@
   exclude-result-prefixes="qp xs ml xdmp dq">
 
 
-  <xsl:variable name="site-url-for-disqus" select="'http://community.marklogic.com'"/>
+  <xsl:variable name="site-url-for-disqus" select="'http://developer.marklogic.com'"/>
 
   <!-- Disable comments on pages that explicitly disable them -->
   <xsl:template mode="comment-section" match="*[@disable-comments]"/>

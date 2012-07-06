@@ -829,7 +829,7 @@ define function util:sendEmail(
 					if ($onBehalfOf) then
 						<rf:sender>
 							<em:Address>
-								<em:adrs>do-not-reply@void.community.marklogic.com</em:adrs>
+								<em:adrs>do-not-reply@void.developer.marklogic.com</em:adrs>
 							</em:Address>
 						</rf:sender>
 					else ()
@@ -844,7 +844,7 @@ define function util:sendEmail(
 					else
 						<em:Address>
 							<em:name>RunDMC</em:name>
-							<em:adrs>do-not-reply@void.community.marklogic.com</em:adrs>
+							<em:adrs>do-not-reply@void.developer.marklogic.com</em:adrs>
 						</em:Address>
 				}</rf:from>
 				{

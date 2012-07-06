@@ -11,7 +11,7 @@ let $hostname := xdmp:hostname()
 
 let $hostname := 
     if ($hostname = ("community.marklogic.com", "developer.marklogic.com")) then
-        "community.marklogic.com"
+        "developer.marklogic.com"
     else if ($hostname = ("stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
         "dmc-stage.marklogic.com"
     else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
