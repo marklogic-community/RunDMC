@@ -51,11 +51,14 @@
   <xsl:template match="/">
     <all-tocs>
       <toc:functions>
-        <node display="Functions by category">
+      <node href="/all"
+	      display="Functions by Category ({sum($all-libs/api:function-count-for-lib(.))})" 
+	      open="yes"
+	      id="AllFunctionsByCat">
           <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
         </node>
         <node href="/all"
-              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
+              display="Functions by Namespace ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes"
               open="yes">
@@ -102,12 +105,6 @@
             <node display="Java Client API"
                   href="/javadoc/client/index.html"
                   external="yes"/>
-            <node display="Connector for Hadoop API"
-                  href="/javadoc/client/index.html"
-                  external="yes"/>
-            <node display="XCC Javadoc"
-                  href="/javadoc/xcc/index.html"
-                  external="yes"/>
           </node>
         </toc:java>
       </xsl:if>
@@ -146,7 +143,39 @@
         -->
       </toc:guides>
       <toc:other>
-        <xsl:apply-templates mode="help-toc" select="."/>
+	 <node display="Other Documentation"
+		      open="yes" 
+		      id="other">
+	      <title>Other Documentation</title>
+
+	    <node display="Hadoop Connector"
+		    open="yes"> 
+            <node display="Connector for Hadoop API"
+                  href="/javadoc/client/index.html"
+		  external="yes"/>
+	  <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
+	       for this to work
+	  <xsl:apply-templates mode="toc-guide-node" 
+		  select="guide[@url-name/string() eq 'mapreduce']"/>
+		  -->
+	   </node>
+	    <node display="XCC"
+		    open="yes"> 
+              <node display="XCC Javadoc"
+                  href="/javadoc/xcc/index.html"
+                  external="yes"/>
+              <node display="XCC .NET API"
+                  href="/dotnet/xcc/index.html"
+		  external="yes"/>
+	  <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
+	       for this to work
+	  <xsl:apply-templates mode="toc-guide-node" 
+		  select="$guide-docs[@url/string() eq 'xcc'"/>
+		  -->
+            </node>
+
+	 <xsl:apply-templates mode="help-toc" select="."/>
+        </node>
       </toc:other>
     </all-tocs>
   </xsl:template>

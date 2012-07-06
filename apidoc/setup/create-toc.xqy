@@ -13,4 +13,5 @@ xdmp:document-insert($setup:toc-xml-url,
                      xdmp:xslt-invoke("toc.xsl", document{ <empty/> })),
 
 xdmp:log("Done."),
-concat("Created the XML-based TOC at ",$setup:toc-xml-url)
+concat("Created the XML-based TOC at ",$setup:toc-xml-url, " in ", 
+       xs:string(xdmp:elapsed-time()), ".")

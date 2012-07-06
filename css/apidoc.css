@@ -113,7 +113,7 @@ table.guide_info { font-size: .8em; }
 	padding: 0;
 }
 #api_sub {
-	width: 250px;
+	width: 265px;
   color: #333333;
   font-size: 0.9em;
   position: absolute;
@@ -138,7 +138,7 @@ table.guide_info { font-size: .8em; }
 	top: 39px;
 	bottom: 0;
 	overflow: hidden;
-	width: 248px;
+	width: 258px;
 	background: white;
 	border: 1px solid #CCC;
 	padding-top: 60px;

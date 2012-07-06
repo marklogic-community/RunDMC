@@ -23,13 +23,13 @@
   <!-- This is bound to be slow, but that's okay, because we pre-generate this TOC -->
   <xsl:template name="functions-by-category">
 
-    <xsl:variable name="forced-order" select="('XQuery Library Modules', 'MarkLogic Built-In Functions',
-                                               'CPF Functions', 'W3C-Standard Functions',
-                                               'REST Resources API')"/>
+    <xsl:variable name="forced-order" select="('MarkLogic Built-In Functions',
+	  'XQuery Library Modules', 'CPF Functions', 'W3C-Standard Functions',
+          'REST Resources API')"/>
 
     <!-- for each bucket -->
     <xsl:for-each select="distinct-values($all-functions/@bucket)">
-      <xsl:sort select="index-of($forced-order, .)" order="descending"/>
+      <xsl:sort select="index-of($forced-order, .)" order="ascending"/>
       <xsl:sort select="."/>
 
       <xsl:variable name="bucket" select="."/>

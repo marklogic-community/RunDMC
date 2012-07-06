@@ -52,4 +52,5 @@ if ($setup:processing-default-version) then (
   local:save-rendered-toc($setup:toc-url-default-version, true())
 ) else (),
   
-"Rendered the HTML TOC(s) and recorded their URL(s)."
+fn:concat("Rendered the HTML TOC(s) and recorded their URL(s) in ", 
+          xs:string(xdmp:elapsed-time()), ".")

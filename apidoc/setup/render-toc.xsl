@@ -186,13 +186,13 @@
                   <!--
                   <xsl:template mode="tab-label" match="toc:categories"    >API by<br/>Category</xsl:template>
                   -->
-                  <xsl:template mode="tab-label" match="toc:guides"        >User<br/>Guides</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:guides">Guides</xsl:template>
                   <xsl:template mode="tab-label" match="toc:rest-resources">REST<br/>API</xsl:template>
-                  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>APIs</xsl:template>
+		  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>Client</xsl:template>
                   <!--
                   <xsl:template mode="tab-label" match="toc:help"          >Admin<br/>Help</xsl:template>
                   -->
-                  <xsl:template mode="tab-label" match="toc:other"         >Other<br/>docs</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:other"         >Other<br/>Docs</xsl:template>
 
 
           <xsl:template mode="tab-content" match="/all-tocs/*">
