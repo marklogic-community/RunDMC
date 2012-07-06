@@ -19,7 +19,7 @@ NOTE: Disqus comments are currently disabled in the standalone version of the ap
         git checkout apidoc
 
     Note: The first command will take a while due to downloading a large
-          zip file that had been put in the repository.
+          zip file that had been put in the repository (edb: we should remove this file from github)
 
     Later on, whenever you need to get the latest code, run this command:
 
