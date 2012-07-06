@@ -210,6 +210,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
                                                       (: these aren't really tutorials :)
                 [fn:not(fn:matches(fn:base-uri($doc),'( /learn/[0-9].[0-9]/
                                                       | /learn/tutorials/gh/
+                                                      | /learn/dzone/
                                                       | /learn/readme/
                                                       | /learn/w3c-
                                                       | /docs/
