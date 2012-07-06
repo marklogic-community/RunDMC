@@ -344,7 +344,22 @@
                           </xsl:function>
 
                           <xsl:variable name="fully-resolved-top-level-heading-references" as="xs:string*"
-                                        select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
+				  select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
+
+
+			  <!-- Fixup Linkerator links
+			       Change "#display.xqy&function=" to "/"
+			       -->
+          <xsl:template match="A/@href[starts-with(.,'#display.xqy?function=')]" priority="3">
+            <xsl:variable name="target-doc" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
+            <xsl:if test="not($target-doc)">
+              <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
+            </xsl:if>
+	    <xsl:attribute name="href" 
+		    select="concat('/', 
+		    substring-after(., '#display.xqy?function='))"/>
+    </xsl:template>
+    <!-- End Linkerator fixup -->
 
 
   <xsl:template match="Hyperlink">
