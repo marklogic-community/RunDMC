@@ -272,18 +272,14 @@
 
 
           <xsl:template mode="search-results" match="search:result">
-            <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
             <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
             <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
                                                                                      else $srv:api-server"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc)   then concat($api-server,  $version-prefix, ml:external-uri-api($doc))
-                                               else if ($is-flat-file) then if (ends-with(@uri,'_html.xhtml'))
-                                                                            then replace(@uri,'_html\.xhtml$','.html') (: translate URIs for XHTML-Tidy'd docs back to the original HTML URI :)
-                                                                            else @uri
-                                                                       else ml:external-uri-main($doc)"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server, $version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)))
+                                                                     else ml:external-uri-main($doc)"/>
             <tr>
               <th>
                 <xsl:variable name="category">
@@ -306,6 +302,14 @@
               </td>
             </tr>
           </xsl:template>
+
+                  <!-- If applicable, translate URIs for XHTML-Tidy'd docs back to the original HTML URI -->
+                  <xsl:function name="ml:rewrite-html-links">
+                    <xsl:param name="uri"/>
+                    <xsl:sequence select="if (ends-with($uri,'_html.xhtml'))
+                                           then replace($uri,'_html\.xhtml$','.html') else $uri"/>
+                  </xsl:function>
+
 
                   <xsl:template mode="category-image" match="*">
                     <xsl:variable name="img-src">
