@@ -21,7 +21,11 @@
   <xsl:variable name="set-version-param-name" select="'v'"/>
   <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
 
-  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('preferred-server-version')"/>
+  <xsl:variable name="preferred-version-cookie-name" select="if ($srv:cookie-domain ne 'marklogic.com') then 'preferred-server-version-not-on-live-site'
+                                                        else if ($srv:host-type eq 'staging')           then 'preferred-server-version-staging'
+                                                                                                        else 'preferred-server-version'"/>
+
+  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)"/>
   <xsl:variable name="preferred-version" select="if ($set-version)
                                                 then $set-version
                                             else if ($preferred-version-cookie)
@@ -29,7 +33,7 @@
                                             else     $ml:default-version"/>
 
   <xsl:variable name="_set-cookie"
-                select="if ($set-version) then ck:add-cookie('preferred-server-version',
+                select="if ($set-version) then ck:add-cookie($preferred-version-cookie-name,
                                                              $set-version,
                                                              xs:dateTime('2100-01-01T12:00:00'), (: expires :)
                                                              $srv:cookie-domain,
