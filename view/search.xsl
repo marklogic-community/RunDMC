@@ -270,7 +270,8 @@
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
             <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
                                                                                      else $srv:api-server"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server, $version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)))
+            <xsl:variable name="anchor" select="if ($doc/*:chapter) then '#chapter' else ''"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server, $version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)), $anchor)
                                                                      else ml:external-uri-main($doc)"/>
             <tr>
               <th>
