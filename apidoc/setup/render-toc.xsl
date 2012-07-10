@@ -432,16 +432,18 @@
                         <span class="placeholder">&#160;</span>
                       </li>
                     </ul>
-                    <xsl:variable name="url">
-                      <xsl:value-of select="$toc-parts-dir"/>
-                      <xsl:apply-templates mode="node-id" select="."/>
-                      <xsl:text>.html</xsl:text>
-                    </xsl:variable>
-                    <!-- The content of the TOC node, stored in a separate document -->
-                    <xsl:message>Creating <xsl:value-of select="$url"/></xsl:message>
-                    <xsl:result-document href="{$url}">
-                      <xsl:next-match/>
-                    </xsl:result-document>
+                    <xsl:if test="not(@duplicate)">
+                      <xsl:variable name="url">
+                        <xsl:value-of select="$toc-parts-dir"/>
+                        <xsl:apply-templates mode="node-id" select="."/>
+                        <xsl:text>.html</xsl:text>
+                      </xsl:variable>
+                      <!-- The content of the TOC node, stored in a separate document -->
+                      <xsl:message>Creating <xsl:value-of select="$url"/></xsl:message>
+                      <xsl:result-document href="{$url}">
+                        <xsl:next-match/>
+                      </xsl:result-document>
+                    </xsl:if>
                   </xsl:template>
 
                           <xsl:template mode="ul-display-type" match="node[@open or @async]">block</xsl:template>

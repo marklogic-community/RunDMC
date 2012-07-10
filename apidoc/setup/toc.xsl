@@ -144,18 +144,18 @@
         <node display="Other Documentation" open="yes" id="other">
           <node display="Hadoop Connector" open="yes">
             <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
-            <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
-                 for this to work
-            <xsl:apply-templates mode="toc-guide-node" select="guide[@url-name/string() eq 'mapreduce']"/>
-            -->
+            <!-- Hadoop guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
           </node>
           <node display="XCC" open="yes">
             <node display="XCC Javadoc" href="/javadoc/xcc/index.html" external="yes"/>
             <node display="XCC .NET API" href="/dotnet/xcc/index.html" external="yes"/>
-            <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
-                 for this to work
-            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[@url/string() eq 'xcc'"/>
-            -->
+            <!-- XCC guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'xcc.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
           </node>
 
           <xsl:apply-templates mode="help-toc" select="."/>
@@ -165,7 +165,11 @@
   </xsl:template>
 
           <xsl:template mode="toc-guide-node" match="/guide">
+            <xsl:param name="is-duplicate" select="false()"/>
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes">
+              <xsl:if test="$is-duplicate">
+                <xsl:attribute name="duplicate" select="'yes'"/>
+              </xsl:if>
               <xsl:for-each select="/guide/chapter-list/chapter">
                 <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
               </xsl:for-each>
