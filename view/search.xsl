@@ -21,7 +21,11 @@
   <xsl:variable name="set-version-param-name" select="'v'"/>
   <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
 
-  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie('preferred-server-version')"/>
+  <xsl:variable name="preferred-version-cookie-name" select="if ($srv:cookie-domain ne 'marklogic.com') then 'preferred-server-version-not-on-live-site'
+                                                        else if ($srv:host-type eq 'staging')           then 'preferred-server-version-staging'
+                                                                                                        else 'preferred-server-version'"/>
+
+  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)"/>
   <xsl:variable name="preferred-version" select="if ($set-version)
                                                 then $set-version
                                             else if ($preferred-version-cookie)
@@ -29,7 +33,7 @@
                                             else     $ml:default-version"/>
 
   <xsl:variable name="_set-cookie"
-                select="if ($set-version) then ck:add-cookie('preferred-server-version',
+                select="if ($set-version) then ck:add-cookie($preferred-version-cookie-name,
                                                              $set-version,
                                                              xs:dateTime('2100-01-01T12:00:00'), (: expires :)
                                                              $srv:cookie-domain,
@@ -99,14 +103,6 @@
     <search:options>
       <xsl:copy-of select="$common-search-options"/>
       <search:return-query>true</search:return-query>
-
-      <!-- If this is an empty search and the category is xccn, then don't snippet
-           (workaround for stack overflow in snippeting functions, particularly against
-            /pubs/5.0/dotnet/Marklogic.Xcc.Types.Duration.Minutes.html) -->
-      <xsl:if test="$q eq 'cat:xccn'">
-        <search:transform-results apply="empty-snippet"/>
-      </xsl:if>
-
     </search:options>
   </xsl:variable>
 
@@ -268,18 +264,15 @@
 
 
           <xsl:template mode="search-results" match="search:result">
-            <xsl:variable name="is-flat-file" select="starts-with(@uri, '/pubs/')"/>
             <xsl:variable name="doc" select="doc(@uri)"/>
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
             <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
             <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
             <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
                                                                                      else $srv:api-server"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc)   then concat($api-server,  $version-prefix, ml:external-uri-api($doc))
-                                               else if ($is-flat-file) then if (ends-with(@uri,'_html.xhtml'))
-                                                                            then replace(@uri,'_html\.xhtml$','.html') (: translate URIs for XHTML-Tidy'd docs back to the original HTML URI :)
-                                                                            else @uri
-                                                                       else ml:external-uri-main($doc)"/>
+            <xsl:variable name="anchor" select="if ($doc/*:chapter) then '#chapter' else ''"/>
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server, $version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)), $anchor)
+                                                                     else ml:external-uri-main($doc)"/>
             <tr>
               <th>
                 <xsl:variable name="category">
@@ -302,6 +295,14 @@
               </td>
             </tr>
           </xsl:template>
+
+                  <!-- If applicable, translate URIs for XHTML-Tidy'd docs back to the original HTML URI -->
+                  <xsl:function name="ml:rewrite-html-links">
+                    <xsl:param name="uri"/>
+                    <xsl:sequence select="if (ends-with($uri,'_html.xhtml'))
+                                           then replace($uri,'_html\.xhtml$','.html') else $uri"/>
+                  </xsl:function>
+
 
                   <xsl:template mode="category-image" match="*">
                     <xsl:variable name="img-src">

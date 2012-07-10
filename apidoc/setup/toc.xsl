@@ -52,9 +52,9 @@
     <all-tocs>
       <toc:functions>
       <node href="/all"
-	      display="Functions by Category ({sum($all-libs/api:function-count-for-lib(.))})" 
-	      open="yes"
-	      id="AllFunctionsByCat">
+            display="Functions by Category ({sum($all-libs/api:function-count-for-lib(.))})"
+            open="yes"
+            id="AllFunctionsByCat">
           <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
         </node>
         <node href="/all"
@@ -102,9 +102,7 @@
       <xsl:if test="number($api:version) ge 5.1">
         <toc:java>
           <node display="Java APIs" open="yes" id="javaTOC">
-            <node display="Java Client API"
-                  href="/javadoc/client/index.html"
-                  external="yes"/>
+            <node display="Java Client API" href="/javadoc/client/index.html" external="yes"/>
           </node>
         </toc:java>
       </xsl:if>
@@ -143,45 +141,35 @@
         -->
       </toc:guides>
       <toc:other>
-	 <node display="Other Documentation"
-		      open="yes" 
-		      id="other">
-	      <title>Other Documentation</title>
+        <node display="Other Documentation" open="yes" id="other">
+          <node display="Hadoop Connector" open="yes">
+            <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
+            <!-- Hadoop guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+          </node>
+          <node display="XCC" open="yes">
+            <node display="XCC Javadoc" href="/javadoc/xcc/index.html" external="yes"/>
+            <node display="XCC .NET API" href="/dotnet/xcc/index.html" external="yes"/>
+            <!-- XCC guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'xcc.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+          </node>
 
-	    <node display="Hadoop Connector"
-		    open="yes"> 
-            <node display="Connector for Hadoop API"
-                  href="/javadoc/client/index.html"
-		  external="yes"/>
-	  <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
-	       for this to work
-	  <xsl:apply-templates mode="toc-guide-node" 
-		  select="guide[@url-name/string() eq 'mapreduce']"/>
-		  -->
-	   </node>
-	    <node display="XCC"
-		    open="yes"> 
-              <node display="XCC Javadoc"
-                  href="/javadoc/xcc/index.html"
-                  external="yes"/>
-              <node display="XCC .NET API"
-                  href="/dotnet/xcc/index.html"
-		  external="yes"/>
-	  <!-- need to fix the XSLT-DUPRESULTURIS issue in render-doc.xsl
-	       for this to work
-	  <xsl:apply-templates mode="toc-guide-node" 
-		  select="$guide-docs[@url/string() eq 'xcc'"/>
-		  -->
-            </node>
-
-	 <xsl:apply-templates mode="help-toc" select="."/>
+          <xsl:apply-templates mode="help-toc" select="."/>
         </node>
       </toc:other>
     </all-tocs>
   </xsl:template>
 
           <xsl:template mode="toc-guide-node" match="/guide">
+            <xsl:param name="is-duplicate" select="false()"/>
             <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes">
+              <xsl:if test="$is-duplicate">
+                <xsl:attribute name="duplicate" select="'yes'"/>
+              </xsl:if>
               <xsl:for-each select="/guide/chapter-list/chapter">
                 <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
               </xsl:for-each>

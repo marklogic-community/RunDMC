@@ -85,7 +85,8 @@ declare function ml:search-corpus-query($preferred-version as xs:string) {
   cts:and-query((
     cts:or-query((
       ml:live-document-query($preferred-version),
-      cts:directory-query((fn:concat('/pubs/', $preferred-version, '/'),
+      cts:directory-query((fn:concat('/apidoc/', $preferred-version, '/javadoc/'), (: see apidoc/setup/load-static-docs.xqy :)
+                           fn:concat('/apidoc/', $preferred-version, '/dotnet/'),
                            '/pubs/code/'
                           ),
                           'infinity'

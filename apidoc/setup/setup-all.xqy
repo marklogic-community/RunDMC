@@ -59,7 +59,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
       (
         <tr>
           <th rowspan="2" class="versionCol">{$v}</th>
-          <th class="deleteCol">
+          <th rowspan="2" class="deleteCol">
             <div>
               <input type="button" class="deleteButton" value="Delete /{$v} docs (raw DB)" title="/apidoc/setup/delete-raw-docs.xqy?version={$v}"/>
             </div>
@@ -119,10 +119,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
           </td>
         </tr>,
         <tr>
-          <td class="deleteCol" style="text-align:center">
-            <input type="button" class="deleteButton" value="Delete /pubs/{$v} sub-dirs" title="/apidoc/setup/delete-static-docs.xqy?version={$v}"/>
-            <div style="font-size:.8em">(PDF &amp; HTML)</div>
-          </td>
           <td style="text-align:center">
             <p>Source dir: <input class="static-sub-dir" size="30" type="text" value="MarkLogic_{if ($v eq '5.0') then '5'
                                                                                             else if ($v eq '5.1') then '5.1ea' else $v}_pubs"/> (no slashes)</p>

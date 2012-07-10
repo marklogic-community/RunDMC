@@ -31,7 +31,10 @@
             <xsl:variable name="path" select="ml:unescape-uri($versionless-path)"/>
             <xsl:value-of>
               <!-- Map "/index.xml" to "/" and "/foo.xml" to "/foo" -->
-              <xsl:value-of select="if ($path eq '/index.xml') then '/' else substring-before($path, '.xml')"/>
+              <!-- Strip ".xml" suffix (only applies to .xml files, not .html files, etc.) -->
+              <xsl:value-of select="if ($path eq '/index.xml') then '/'
+                               else if (ends-with($path,'.xml')) then substring-before($path, '.xml')
+                               else $path"/>
             </xsl:value-of>
           </xsl:function>
 
@@ -53,7 +56,7 @@
                           <xsl:variable name="questionmark-substitute" select="'@'"/>
 
 
-  <!-- overridden in apidoc code -->
+  <!-- overridden in apidoc code; NOTE: only intended for docs whose URIs end in ".xml" -->
   <xsl:function name="ml:internal-uri" as="xs:string">
     <xsl:param name="doc-path" as="xs:string"/>
     <xsl:sequence select="if ($doc-path eq '/') then '/index.xml' else concat($doc-path, '.xml')"/>

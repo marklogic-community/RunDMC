@@ -1,5 +1,9 @@
 xquery version "1.0-ml";
 
+(: This module is obsolete now that we no longer use the "/pubs"
+directory prefix. Deletion of these docs is now handled by the
+delete-docs.xqy script. :)
+
 import module namespace api = "http://marklogic.com/rundmc/api"
        at "../model/data-access.xqy";
 

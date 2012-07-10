@@ -164,10 +164,10 @@ in parallel (no dependencies between them).
 
   To run a "clean" build (not the usual scenario for the production machine,
   since it would result in minutes of service interruption), you would first
-  delete the documents before running the above builds. There are four sets
+  delete the documents before running the above builds. There are three sets
   of documents to delete, the "raw docs" (result of Step 1 above), the "live docs"
-  (results of the remaining steps), the "static docs" (result of load-static-docs.xqy),
-  and the "doc images" (e.g. everything in /media/4.2/apidoc/).
+  (results of the remaining steps and the static docs step), and the "doc images"
+  (e.g. everything in /media/4.2/apidoc/).
 
   To delete the "raw docs":
 
@@ -176,10 +176,6 @@ in parallel (no dependencies between them).
   To delete the "live docs":
 
     GET http://localhost:8008/apidoc/setup/delete-docs.xqy?version=4.2
-
-  To delete the "static docs":
-
-    GET http://localhost:8008/apidoc/setup/delete-static-docs.xqy?version=4.2
 
   To delete the "doc images":
 
