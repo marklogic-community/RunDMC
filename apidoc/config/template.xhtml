@@ -53,7 +53,7 @@
 				colorizeExamples();
 				$("#main .pjax_enabled a").pjax({
 					container: '#page_content',
-          timeout: 2000,
+          timeout: 4000,
 					success: function() {
 						initializeTOC();
 						colorizeExamples();
@@ -61,7 +61,7 @@
 				});
 				$("#api_sub .pjax_enabled a:not(.external)").pjax({
 					container: '#page_content',
-          timeout: 2000,
+          timeout: 4000,
 					success: function() {
 						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
 					}
