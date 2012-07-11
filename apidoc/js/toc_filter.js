@@ -381,7 +381,7 @@ function formatFilterBoxes(filterBoxes) {
 }
 
 function splitterMouseUp(evt) {
-    console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
+    // console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("moving", false);
     $(document).off('mouseup', null, splitterMouseUp);
     $(document).off('mousemove', null, splitterMouseMove);
@@ -392,7 +392,7 @@ function splitterMouseUp(evt) {
 }
 
 function splitterMouseMove(evt) {
-    console.log("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
+    //console.log("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
     if ($('#splitter').data("moving")) {
         var m = 0 - $('#splitter').data('start-page_content');
         var d = Math.max(m, $('#splitter').data("start-x") - evt.pageX); 
@@ -404,7 +404,7 @@ function splitterMouseMove(evt) {
             w = init_w;
         }
 
-        console.log("Splitter Mouse move: " + d);
+        //console.log("Splitter Mouse move: " + d);
         $('#tab_content').css({'width': w + "px"});
         $('#page_content').css({'padding-right': ($('#splitter').data("start-page_content") + d) + "px"});
         $('#splitter').css({'left': ($('#splitter').data("start-splitter") - d) + "px"});
@@ -412,7 +412,7 @@ function splitterMouseMove(evt) {
 }
 
 function splitterMouseDown(evt) {
-    console.log("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
+    //console.log("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("start-x", evt.pageX);
     $('#splitter').data("start-tab_content", parseInt($('#tab_content').css('width'), 10));
     $('#splitter').data("start-page_content", parseInt($('#page_content').css('padding-right'), 10));
