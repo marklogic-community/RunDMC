@@ -78,7 +78,7 @@ function searchTOC(filter, tocRoot) {
                 */
                 $(this).addClass("hide-detail");
             }
-        }            
+        }
     });
 }
 
@@ -432,9 +432,9 @@ function splitterMouseUp(evt) {
     $(document).off('mouseup', null, splitterMouseUp);
     $(document).off('mousemove', null, splitterMouseMove);
 
-    $('#page_content').css("-webkit-user-select", "text");	
-    $('#tab_content').css("-webkit-user-select", "text");	
-    $('#content').css("-webkit-user-select", "text");	
+    $('#page_content').css("-webkit-user-select", "text");
+    $('#tab_content').css("-webkit-user-select", "text");
+    $('#content').css("-webkit-user-select", "text");
 }
 
 function splitterMouseMove(evt) {
@@ -468,7 +468,7 @@ function splitterMouseDown(evt) {
     $(document).on('mouseup', null, splitterMouseUp);
     $(document).on('mousemove', null, splitterMouseMove);
 
-    $('#tab_content').css("-webkit-user-select", "none");	
-    $('#page_content').css("-webkit-user-select", "none");	
-    $('#content').css("-webkit-user-select", "none");	
+    $('#tab_content').css("-webkit-user-select", "none");
+    $('#page_content').css("-webkit-user-select", "none");
+    $('#content').css("-webkit-user-select", "none");
 }

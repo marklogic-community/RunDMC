@@ -37,12 +37,23 @@
             <xsl:variable name="pos" select="position()"/>
             $("#config-filter<xsl:value-of select="$pos"/>").keyup(function(e) {
                 currentFilterText<xsl:value-of select="$pos"/> = $(this).val();
+
+                var closeButton = $("#config-filter<xsl:value-of select="$pos"/>-close-button");
+                if ($(this).val() === "")
+                  closeButton.hide();
+                else
+                  closeButton.show();
+
                 setTimeout(function() {
                     if (previousFilterText<xsl:value-of select="$pos"/> !== currentFilterText<xsl:value-of select="$pos"/>){
                         previousFilterText<xsl:value-of select="$pos"/> = currentFilterText<xsl:value-of select="$pos"/>;
                         filterConfigDetails(currentFilterText<xsl:value-of select="$pos"/>,"#apidoc_tree<xsl:value-of select="$pos"/>");
                     }
                 },350);
+            });
+            $("#config-filter<xsl:value-of select="$pos"/>-close-button").click(function() {
+              $(this).hide();
+              $("#config-filter<xsl:value-of select="$pos"/>").val("").keyup().blur();
             });
          </xsl:for-each>
 
@@ -182,6 +193,8 @@
                                                                         <!-- e.g., "guides" -->
               <div class="scrollable_section">
                 <input id="config-filter{$pos}" name="config-filter{$pos}"/>
+                <img src="/apidoc/images/removeFilter.png" id="config-filter{$pos}-close-button"
+                                                        class="config-filter-close-button"/>
                 <xsl:apply-templates mode="control" select="."/>
                 <ul id="apidoc_tree{$pos}" class="treeview">
                   <xsl:apply-templates select="node"/>

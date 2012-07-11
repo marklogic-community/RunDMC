@@ -171,14 +171,22 @@ table.guide_info { font-size: .8em; }
 	height: 100%;
 	position: relative;
 }
-.scrollable_section > input {
+.scrollable_section > input,
+.config-filter-close-button {
 	position: absolute;
+	top: -52px;
+}
+.scrollable_section > input {
 	border: 1px solid #CCC;
 	left: 10px;
-	top: -52px;
 	font-size: 11px;
 	padding: 1px 5px;
 	width: 205px;
+}
+.config-filter-close-button {
+  display: none;
+  cursor: pointer;
+  left: 210px;
 }
 
 .function_name {
