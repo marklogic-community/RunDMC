@@ -1,6 +1,6 @@
 /* Copyright 2002-2011 MarkLogic Corporation.  All Rights Reserved. */
-var previousFilterText = '';
-var currentFilterText = '';
+var previousFilterText1 = '';
+var currentFilterText1 = '';
 
 var previousFilterText2 = '';
 var currentFilterText2 = '';
@@ -10,6 +10,12 @@ var currentFilterText3 = '';
 
 var previousFilterText4 = '';
 var currentFilterText4 = '';
+
+var previousFilterText5 = '';
+var currentFilterText5 = '';
+
+var previousFilterText6 = '';
+var currentFilterText6 = '';
 
 function filterConfigDetails(text, treeSelector) {
 

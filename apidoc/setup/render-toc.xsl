@@ -24,91 +24,33 @@
         //<xsl:comment>
 
         $(function() {
-          $("#apidoc_tree1").treeview({
-            //animated: "medium",
-            url: "<xsl:value-of select="$toc-parts-dir"/>",
-//            persist: "location",
-            prerendered: true
-          });
-          $("#apidoc_tree2").treeview({
-            //animated: "medium",
-            url: "<xsl:value-of select="$toc-parts-dir"/>",
-//            persist: "location",
-            prerendered: true
-          });
-          $("#apidoc_tree3").treeview({
-            //animated: "medium",
-            url: "<xsl:value-of select="$toc-parts-dir"/>",
-//            persist: "location",
-            prerendered: true
-          });
-          $("#apidoc_tree4").treeview({
-            //animated: "medium",
-            url: "<xsl:value-of select="$toc-parts-dir"/>",
-//            persist: "location",
-            prerendered: true
-          });
-          $("#apidoc_tree5").treeview({
-            //animated: "medium",
-            url: "<xsl:value-of select="$toc-parts-dir"/>",
-//            persist: "location",
-            prerendered: true
-          });
+          <xsl:for-each select="/all-tocs/*">
+            $("#apidoc_tree<xsl:value-of select="position()"/>").treeview({
+              //animated: "medium",
+              url: "<xsl:value-of select="$toc-parts-dir"/>",
+  //            persist: "location",
+              prerendered: true
+            });
+          </xsl:for-each>
 
-
-          $("#config-filter1").keyup(function(e) {
-              currentFilterText = $(this).val();
-              setTimeout(function() {
-                  if (previousFilterText !== currentFilterText){
-                      previousFilterText = currentFilterText;
-                      filterConfigDetails(currentFilterText,"#apidoc_tree1");
-                  }            
-              },350);        
-          });
-
-          $("#config-filter2").keyup(function(e) {
-              currentFilterText2 = $(this).val();
-              setTimeout(function() {
-                  if (previousFilterText2 !== currentFilterText2){
-                      previousFilterText2 = currentFilterText2;
-                      filterConfigDetails(currentFilterText2,"#apidoc_tree2");
-                  }            
-              },350);        
-          });
-          
-          $("#config-filter3").keyup(function(e) {
-              currentFilterText3 = $(this).val();
-              setTimeout(function() {
-                  if (previousFilterText3 !== currentFilterText3){
-                      previousFilterText3 = currentFilterText3;
-                      filterConfigDetails(currentFilterText3,"#apidoc_tree3");
-                  }            
-              },350);        
-          });
-
-          $("#config-filter4").keyup(function(e) {
-              currentFilterText4 = $(this).val();
-              setTimeout(function() {
-                  if (previousFilterText4 !== currentFilterText4){
-                      previousFilterText4 = currentFilterText4;
-                      filterConfigDetails(currentFilterText4,"#apidoc_tree4");
-                  }
-              },350);
-          });
-
-          $("#config-filter5").keyup(function(e) {
-              currentFilterText4 = $(this).val();
-              setTimeout(function() {
-                  if (previousFilterText4 !== currentFilterText4){
-                      previousFilterText4 = currentFilterText4;
-                      filterConfigDetails(currentFilterText4,"#apidoc_tree4");
-                  }
-              },350);
-          });
+          <xsl:for-each select="/all-tocs/*">
+            <xsl:variable name="pos" select="position()"/>
+            $("#config-filter<xsl:value-of select="$pos"/>").keyup(function(e) {
+                currentFilterText<xsl:value-of select="$pos"/> = $(this).val();
+                setTimeout(function() {
+                    if (previousFilterText<xsl:value-of select="$pos"/> !== currentFilterText<xsl:value-of select="$pos"/>){
+                        previousFilterText<xsl:value-of select="$pos"/> = currentFilterText<xsl:value-of select="$pos"/>;
+                        filterConfigDetails(currentFilterText<xsl:value-of select="$pos"/>,"#apidoc_tree<xsl:value-of select="$pos"/>");
+                    }
+                },350);
+            });
+         </xsl:for-each>
 
           // default text, style, etc.
-          formatFilterBoxes($("#config-filter1, #config-filter2, #config-filter3, #config-filter4, #config-filter5"));
-
+          formatFilterBoxes($("<xsl:for-each select="/all-tocs/*"
+                                 >#config-filter<xsl:value-of select="position()"/>
+                                 <xsl:if test="position() != last()">, </xsl:if>
+                               </xsl:for-each>"));
         });
 
         // starting the script on page load
