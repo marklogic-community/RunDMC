@@ -192,13 +192,13 @@
             $(document).ready(function() {
               $('#splitter')
               .attr({'unselectable': 'on'})
-			  .css({
+              .css({
                  "z-index": 100,
                  cursor: "e-resize",
-                 position: "absolute",	
-                 "user-select": "none", 
+                 position: "absolute",
+                 "user-select": "none",
                  "-webkit-user-select": "none",
-				 "-khtml-user-select": "none", 
+                 "-khtml-user-select": "none",
                  "-moz-user-select": "none"
                })
               .mousedown(splitterMouseDown);
