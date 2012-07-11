@@ -137,7 +137,8 @@
 			<hr />
 			<div id="content">
         <ml:choose>
-          <ml:condition href="/">
+          <!-- Don't include the regular page divs on the home page -->
+          <ml:condition href="/"> <!-- @href takes a list of external page URIs -->
             <ml:page-content/>
           </ml:condition>
           <ml:otherwise>

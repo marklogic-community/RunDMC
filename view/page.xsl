@@ -242,7 +242,7 @@
 
   <!-- Conditional template support: process the first child that matches -->
   <xsl:template match="choose">
-    <xsl:apply-templates select="*[@href eq $external-uri or not(@href)][1]/node()"/>
+    <xsl:apply-templates select="*[tokenize(normalize-space(@href),' ') = $external-uri or not(@href)][1]/node()"/>
   </xsl:template>
 
   <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
