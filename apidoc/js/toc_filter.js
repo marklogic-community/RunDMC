@@ -271,7 +271,7 @@ function toggleFunctionsView(input) {
   var current_tab_index = $("#toc_tabs").tabs('option', 'selected');
   var new_tab_index = (input.val() === 'by_name') ? functionPanelIndex : categoriesPanelIndex;
   $("#toc_tabs").tabs('select',new_tab_index);
-  console.log("Toggling function view...");
+  //console.log("Toggling function view...");
 }
 
 function updateTocForTab(tab, panel) {
