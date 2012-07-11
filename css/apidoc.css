@@ -405,3 +405,9 @@ a.external {
   margin-left: 170px;
   position: fixed
 }
+
+/* decrease radio button size in FF/IE */
+input.function_view {
+  width: 10px;
+  height: 10px;
+}

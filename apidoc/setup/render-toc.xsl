@@ -128,12 +128,12 @@
             <!-- Radio buttons only apply to the XQuery/XSLT functions tab (see toc_filter.js) -->
             <div id="function_view_buttons">
               <label>
-                <input name="function_view" value="by_name" type="radio" checked="checked"/>
+                <input name="function_view" class="function_view" type="radio" value="by_name" checked="checked"/>
                 <xsl:text> By Name</xsl:text>
               </label>
               <br/>
               <label>
-                <input name="function_view" value="by_category" type="radio"/>
+                <input name="function_view" class="function_view" type="radio" value="by_category"/>
                 <xsl:text> By Category</xsl:text>
               </label>
             </div>
