@@ -51,22 +51,29 @@
 		//<![CDATA[
 			$(function(){
 				colorizeExamples();
-				$("#main .pjax_enabled a").pjax({
+				$("#page_content .pjax_enabled a").pjax({
 					container: '#page_content',
           timeout: 4000,
 					success: function() {
-						initializeTOC();
-						colorizeExamples();
+            // Update the tab selection when the pjax call originated from a link in the body
+						changeToAppropriateTab();
 					}
 				});
 				$("#api_sub .pjax_enabled a:not(.external)").pjax({
 					container: '#page_content',
           timeout: 4000,
 					success: function() {
-						$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
+            // Don't change the tab when a TOC link was clicked
+            //changeToAppropriateTab();
+						//$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
 					}
 				});
-        $(document).on('pjax:end', function(event, options) { if (event.relatedTarget) showInTOC($(event.relatedTarget)); });
+        // This is necessary to ensure that non-fragment TOC links result in the appropriate TOC link being highlighted
+        $(document).on('pjax:end', function(event, options) {
+          // If the clicked link is in the TOC
+          if ($(event.relatedTarget).parents("#api_sub").length)
+          // then show it
+          {/*console.log("Calling showInTOC via pjax:end handler.");*/ showInTOC($(event.relatedTarget)); }});
 			})
 	  //]]>
   	</script>

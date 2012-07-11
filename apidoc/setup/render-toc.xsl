@@ -86,8 +86,8 @@
             show: function(event, ui){ updateTocForTab(ui.tab, ui.panel) }
           });
 
-          bindFragmentLinkTocActions(document.body);
-          initializeTOC();
+          //bindFragmentLinkTocActions(document.body);
+          changeToAppropriateTab();
 
           <!-- Search sidebar isn't going here after all (at least currently)
           var searchSidebarContent = $("#search_sidebar").children();

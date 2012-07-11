@@ -406,7 +406,7 @@ $(window).bind('popstate', function(event){
         container: container,
         push: false,
         timeout: state.timeout
-/* EDL: Added this line: */ ,success: function() { initializeTOC(); colorizeExamples() } // For back/forward button navigation with PJAX
+/* EDL: Added this line: */ ,success: function() { changeToAppropriateTab(); colorizeExamples() } // For back/forward button navigation with PJAX
       })
     else
       window.location = location.href
