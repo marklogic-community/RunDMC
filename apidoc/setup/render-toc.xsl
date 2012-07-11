@@ -153,6 +153,12 @@
           // Once the tabs are set up, go ahead and display the TOC
 //          $("#toc_tabs").show();
 
+            $("input[name=function_view]").change(function() {
+              toggleFunctionsView($(this));
+            })
+            //.change();
+
+
         });
         //</xsl:comment>
         </script>
@@ -167,6 +173,18 @@
             </ul>
           </div>
           <div id="tab_content">
+            <!-- Radio buttons only apply to the XQuery/XSLT functions tab (see toc_filter.js) -->
+            <div id="function_view_buttons">
+              <label>
+                <input name="function_view" value="by_name" type="radio" checked="checked"/>
+                <xsl:text> By Name</xsl:text>
+              </label>
+              <br/>
+              <label>
+                <input name="function_view" value="by_category" type="radio"/>
+                <xsl:text> By Category</xsl:text>
+              </label>
+            </div>
             <xsl:apply-templates mode="tab-content" select="/all-tocs/*"/>
           </div>
           <div id="splitter"/>
@@ -199,13 +217,14 @@
             </li>
           </xsl:template>
 
-                  <xsl:template mode="tab-label" match="toc:functions"     >XQuery/<br/>XSLT</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:functions
+                                                      | toc:categories"     >XQuery/<br/>XSLT</xsl:template>
                   <!--
                   <xsl:template mode="tab-label" match="toc:categories"    >API by<br/>Category</xsl:template>
                   -->
                   <xsl:template mode="tab-label" match="toc:guides">Guides</xsl:template>
                   <xsl:template mode="tab-label" match="toc:rest-resources">REST<br/>API</xsl:template>
-		  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>Client</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>Client</xsl:template>
                   <!--
                   <xsl:template mode="tab-label" match="toc:help"          >Admin<br/>Help</xsl:template>
                   -->
@@ -381,17 +400,7 @@
 
                   <xsl:template mode="control" match="*"/>
                   <!-- Expand/collapse buttons are enabled for all top-level menus, as well as globally for guides and categories -->
-                  <xsl:template mode="control" match="(:toc:functions/node |:) toc:guides (:| toc:categories:) | toc:rest-resources | toc:other | toc:java
-                                                    | toc:functions
-                                                    (:|toc:categories/node:)
-                                                    | toc:functions/node[1]/node (: category buckets :)
-                                                    | toc:guides/node/node">
-                    <xsl:variable name="collapse-class">
-                      <xsl:apply-templates mode="collapse-class" select="."/>
-                    </xsl:variable>
-                    <xsl:variable name="expand-class">
-                      <xsl:apply-templates mode="expand-class" select="."/>
-                    </xsl:variable>
+                  <xsl:template mode="control" match="*[@top-control or @sub-control]">
                     <xsl:variable name="all-suffix">
                       <xsl:apply-templates mode="all-suffix" select="."/>
                     </xsl:variable>
@@ -403,28 +412,18 @@
                     </xsl:variable>
                     <div style="font-size:.8em" class="treecontrol {$top_control} {$local_control}">
                       <xsl:text>&#160;</xsl:text>
-                      <span title="Collapse the entire tree below" class="{$collapse-class}"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></span>
+                      <span title="Collapse the entire tree below" class="collapse"><img src="/css/apidoc/images/minus.gif" /> collapse<xsl:value-of select="$all-suffix"/></span>
                       <xsl:text>&#160;</xsl:text>
-                      <span title="Expand the entire tree below" class="{$expand-class}"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></span>
+                      <span title="Expand the entire tree below" class="expand"><img src="/css/apidoc/images/plus.gif" /> expand<xsl:value-of select="$all-suffix"/></span>
                     </div>
                   </xsl:template>
 
-                          <!-- Shallow for top-level menus -->
-                          <!--
-                          <xsl:template mode="collapse-class" match="toc:functions/node">shallowCollapse</xsl:template>
-                          <xsl:template mode="expand-class"   match="toc:functions/node">shallowExpand</xsl:template>
-                          -->
-                          <xsl:template mode="all-suffix"     match="(:toc:functions/node | toc:rest-resources/node | toc:guides/node
-                                                                   |:) toc:*"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
-
-                          <!-- Recursive (full) for everything else -->
-                          <xsl:template mode="collapse-class" match="node | toc:*">collapse</xsl:template>
-                          <xsl:template mode="expand-class"   match="node | toc:*">expand</xsl:template>
-                          <xsl:template mode="all-suffix"     match="node"> all</xsl:template>
+                          <xsl:template mode="all-suffix" match="*[@top-control]"/> <!-- Don't ever display "all" at the top (in the blue buttons) -->
+                          <xsl:template mode="all-suffix" match="*"> all</xsl:template>
 
                           <!-- top_control is styled to appear at the top as a blue button -->
-                          <xsl:template mode="top_control-class" match="node"/>
-                          <xsl:template mode="top_control-class" match="toc:functions/node | toc:rest-resources/node | toc:*">top_control</xsl:template>
+                          <xsl:template mode="top_control-class" match="*"/>
+                          <xsl:template mode="top_control-class" match="*[@top-control]">top_control</xsl:template>
 
                           <!-- this distinction is necessary for top_control (blue) buttons in order to get the correct positioning offsets -->
                           <xsl:template mode="local_control-class" match="node">local_control</xsl:template>

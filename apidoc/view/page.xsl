@@ -148,12 +148,6 @@
           </xsl:template>
 
 
-          <!-- Trying this out while "Categories" is in the same tab as the alphabetical listing -->
-          <xsl:template mode="toc-section-link-selector" match="api:function-page">
-            <xsl:text>#</xsl:text>
-            <xsl:apply-templates mode="function-page-bucket-id" select="api:function[1]/@bucket"/>
-          </xsl:template>
-          <!--
           <xsl:template mode="toc-section-link-selector" match="api:function-page">
             <xsl:text>.scrollable_section a[href='</xsl:text>
             <xsl:value-of select="$version-prefix"/>
@@ -161,7 +155,6 @@
             <xsl:value-of select="api:function[1]/@lib"/>
             <xsl:text>']</xsl:text>
           </xsl:template>
-          -->
 
           <xsl:template mode="toc-section-link-selector" match="guide | chapter">
             <xsl:text>.scrollable_section a[href='</xsl:text>

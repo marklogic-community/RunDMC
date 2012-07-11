@@ -51,17 +51,12 @@
   <xsl:template match="/">
     <all-tocs>
       <toc:functions>
-      <node href="/all"
-            display="Functions by Category ({sum($all-libs/api:function-count-for-lib(.))})"
-            open="yes"
-            id="AllFunctionsByCat">
-          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
-        </node>
         <node href="/all"
-              display="Functions by Namespace ({sum($all-libs/api:function-count-for-lib(.))})"
+              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes"
-              open="yes">
+              open="yes"
+              top-control="yes">
           <title>All functions</title>
           <intro>
             <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
@@ -85,6 +80,15 @@
           -->
         </node>
       </toc:functions>
+      <toc:categories>
+        <node href="/all"
+              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
+              open="yes"
+              id="AllFunctionsByCat"
+              top-control="yes">
+          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
+        </node>
+      </toc:categories>
       <xsl:if test="number($api:version) ge 5">
         <toc:rest-resources>
           <!-- Add this wrapper so the /REST page will get created -->
@@ -92,7 +96,8 @@
                 display="All REST resources"
                 id="RESTResourcesAPI"
                 function-list-page="yes"
-                open="yes">
+                open="yes"
+                top-control="yes">
             <title>All REST resources</title>
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
@@ -113,7 +118,7 @@
         </toc:rest-resources>
       </xsl:if>
       <xsl:if test="number($api:version) ge 5.1">
-        <toc:java>
+        <toc:java top-control="yes">
           <node display="Java Client" open="yes" id="javaTOC">
             <node display="Java Client API" 
                   href="/javadoc/client/index.html" external="yes"/>
@@ -141,7 +146,7 @@
       <!--
       </toc:categories>
       -->
-      <toc:guides>
+      <toc:guides top-control="yes">
         <!--
         <node display="User Guides" id="user_guides">
         -->
@@ -160,7 +165,7 @@
         -->
       </toc:guides>
       <toc:other>
-        <node display="Other Documentation" open="yes" id="other">
+        <node display="Other Documentation" open="yes" id="other" top-control="yes">
           <node display="Hadoop Connector" open="yes">
             <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
             <!-- Hadoop guide repeated -->
@@ -185,7 +190,7 @@
 
           <xsl:template mode="toc-guide-node" match="/guide">
             <xsl:param name="is-duplicate" select="false()"/>
-            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes" sub-control="yes">
               <xsl:if test="$is-duplicate">
                 <xsl:attribute name="duplicate" select="'yes'"/>
               </xsl:if>
