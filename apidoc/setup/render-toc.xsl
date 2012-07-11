@@ -169,6 +169,23 @@
           <div id="tab_content">
             <xsl:apply-templates mode="tab-content" select="/all-tocs/*"/>
           </div>
+          <div id="splitter"/>
+          <script type="text/javascript">
+            $(document).ready(function() {
+              $('#splitter')
+              .attr({'unselectable': 'on'})
+			  .css({
+                 "z-index": 100,
+                 cursor: "e-resize",
+                 position: "absolute",	
+                 "user-select": "none", 
+                 "-webkit-user-select": "none",
+				 "-khtml-user-select": "none", 
+                 "-moz-user-select": "none"
+               })
+              .mousedown(splitterMouseDown);
+            });
+          </script>
         </div>
       </div>
     </xsl:result-document>

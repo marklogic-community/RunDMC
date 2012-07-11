@@ -143,6 +143,17 @@ table.guide_info { font-size: .8em; }
 	border: 1px solid #CCC;
 	padding-top: 60px;
 }
+
+#splitter {
+    background: #eee;
+    width: 10px;
+    position: absolute;
+    bottom: 0px;
+    top: 39px;
+    left: 260px;
+    z-index: 100;
+}
+
 .tab_link {
 	font-size: 11px !important;
 	min-height: 27px;

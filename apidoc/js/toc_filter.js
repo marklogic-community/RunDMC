@@ -379,3 +379,50 @@ function formatFilterBoxes(filterBoxes) {
       $(this).addClass("default");
   });
 }
+
+function splitterMouseUp(evt) {
+    console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
+    $('#splitter').data("moving", false);
+    $(document).off('mouseup', null, splitterMouseUp);
+    $(document).off('mousemove', null, splitterMouseMove);
+
+    $('#page_content').css("-webkit-user-select", "text");	
+    $('#tab_content').css("-webkit-user-select", "text");	
+    $('#content').css("-webkit-user-select", "text");	
+}
+
+function splitterMouseMove(evt) {
+    console.log("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
+    if ($('#splitter').data("moving")) {
+        var m = 0 - $('#splitter').data('start-page_content');
+        var d = Math.max(m, $('#splitter').data("start-x") - evt.pageX); 
+        var w = $('#splitter').data("start-tab_content") - d;
+        var init_w = 258; // TBD unhardcode
+
+        if (w < init_w) {
+            d -= init_w - w;
+            w = init_w;
+        }
+
+        console.log("Splitter Mouse move: " + d);
+        $('#tab_content').css({'width': w + "px"});
+        $('#page_content').css({'padding-right': ($('#splitter').data("start-page_content") + d) + "px"});
+        $('#splitter').css({'left': ($('#splitter').data("start-splitter") - d) + "px"});
+    }
+}
+
+function splitterMouseDown(evt) {
+    console.log("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
+    $('#splitter').data("start-x", evt.pageX);
+    $('#splitter').data("start-tab_content", parseInt($('#tab_content').css('width'), 10));
+    $('#splitter').data("start-page_content", parseInt($('#page_content').css('padding-right'), 10));
+    $('#splitter').data("start-splitter", parseInt($('#splitter').css('left'), 10));
+    $('#splitter').data("moving", true);
+
+    $(document).on('mouseup', null, splitterMouseUp);
+    $(document).on('mousemove', null, splitterMouseMove);
+
+    $('#tab_content').css("-webkit-user-select", "none");	
+    $('#page_content').css("-webkit-user-select", "none");	
+    $('#content').css("-webkit-user-select", "none");	
+}
