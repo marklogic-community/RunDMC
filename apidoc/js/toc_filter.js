@@ -358,7 +358,7 @@ function scrollTOC() {
     var container = $(this).parents('.scrollable_section'),
 */
     var container = $(this).parents('.treeview'),
-        extra = 80,
+        extra = 120,
         currentTop = container.scrollTop(),
         headerHeight = 165, /* in CSS for .scrollable_section */
         scrollTargetDistance = $(this).offset().top,
