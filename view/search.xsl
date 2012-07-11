@@ -342,6 +342,10 @@
                     <xsl:value-of select="title"/> (<xsl:value-of select="guide-title"/>)
                   </xsl:template>
 
+                  <xsl:template mode="page-specific-title" match="api:help-page">
+                    <xsl:value-of select="api:title"/>
+                  </xsl:template>
+
                   <xsl:template mode="page-specific-title" match="api:function-page">
                     <xsl:value-of select="api:function[1]/@fullname"/>
                   </xsl:template>
@@ -447,6 +451,7 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'rest-api']">REST API doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function page</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'help']    ">Admin help page</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guide</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News item</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
@@ -462,6 +467,7 @@
                   <xsl:template mode="result-img-src" match="*[@name eq 'code']    ">i_opensource</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'event']   ">i_calendar</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'function']">i_function</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'help']    ">i_folder</xsl:template>   <!-- TODO: give this a different icon -->
                   <xsl:template mode="result-img-src" match="*[@name eq 'rest-api']">i_function</xsl:template> <!-- TODO: give this a different icon -->
                   <xsl:template mode="result-img-src" match="*[@name eq 'guide']   ">i_documentation</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
@@ -482,6 +488,7 @@
                   <xsl:template mode="result-img-height" match="*[@name eq 'code']    ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'event']   ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'function']">27</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'help']    ">19</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'rest-api']">27</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'guide']   ">25</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>

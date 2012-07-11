@@ -120,8 +120,10 @@ declare variable $default-version as xs:string  := $ml:server-versions[../@defau
 declare function ml:api-doc-query($preferred-version as xs:string) {
   cts:and-query((
     cts:directory-query(fn:concat("/apidoc/",$preferred-version,"/"), "infinity"),
+    (: Consider re-visiting this; can we avoid having to enumerate the element names here? :)
     cts:or-query((
       cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
+      cts:element-query(xs:QName("api:help-page"),cts:and-query(())),
       cts:element-query(fn:QName("","guide")  ,cts:and-query(())),
       cts:element-query(fn:QName("","chapter"),cts:and-query(()))
     ))
@@ -169,6 +171,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
        if ($doc/api:function-page/*[1]/@lib eq 'REST')
                                      then "rest-api"
   else if ($doc/api:function-page  ) then "function"
+  else if ($doc/api:help-page      ) then "help"
   else if ($doc/(*:guide|*:chapter)) then "guide"
   else if ($doc/ml:Announcement    ) then "news"
   else if ($doc/ml:Event           ) then "event"
