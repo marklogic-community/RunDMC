@@ -97,12 +97,31 @@
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
           </node>
+          <node display="Related Guides"
+                id="RelatedRestGuides"
+                open="yes">
+            <!-- REST Client guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'rest-dev.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+            <!-- monitoring guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'monitoring.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+            </node>
+
         </toc:rest-resources>
       </xsl:if>
       <xsl:if test="number($api:version) ge 5.1">
         <toc:java>
-          <node display="Java APIs" open="yes" id="javaTOC">
-            <node display="Java Client API" href="/javadoc/client/index.html" external="yes"/>
+          <node display="Java Client" open="yes" id="javaTOC">
+            <node display="Java Client API" 
+                  href="/javadoc/client/index.html" external="yes"/>
+            <!-- Java Client guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node" 
+               select="$guide-docs[ends-with(base-uri(.),'java.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
           </node>
         </toc:java>
       </xsl:if>
