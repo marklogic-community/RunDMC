@@ -59,9 +59,8 @@
 
           // default text, style, etc.
           formatFilterBoxes($("<xsl:for-each select="/all-tocs/*"
-                                 >#config-filter<xsl:value-of select="position()"/>
-                                 <xsl:if test="position() != last()">, </xsl:if>
-                               </xsl:for-each>"));
+                                 >#config-filter<xsl:value-of select="position()"/><xsl:if test="position() != last()">, </xsl:if></xsl:for-each>"));
+                                                                                   <!-- undesired preserved whitespace issue workaround; don't break this into multiple lines -->
         });
 
         // starting the script on page load
