@@ -52,7 +52,7 @@
   <xsl:template mode="guide" match="/*/guide-title">
     <!-- Add a PDF link at the top of each guide, before the <h1> -->
     <a href="{api:external-guide-uri(/)}.pdf" class="guide-pdf-link">
-      <img src="/media/pdf_icon.gif" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
+      <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
     </a>
     <h1>
       <xsl:apply-templates mode="guide-heading-content" select="."/>
