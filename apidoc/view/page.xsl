@@ -213,6 +213,7 @@
 
   <xsl:template mode="page-content" match="api:docs-page">
     <div>
+      <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <h1>
         <xsl:apply-templates mode="page-title" select="."/>
       </h1>
@@ -408,71 +409,6 @@
               </td>
             </tr>
           </xsl:template>
-
-          <xsl:template mode="list-page-entry" match="entry | guide">
-            <tr>
-              <td style="white-space: nowrap;">
-                <xsl:variable name="href">
-                  <xsl:apply-templates mode="entry-href" select="."/>
-                </xsl:variable>
-                <a href="{$href}">
-                  <xsl:apply-templates mode="entry-title" select="."/>
-                </a>
-              </td>
-              <td>
-                <xsl:apply-templates mode="entry-description" select="."/>
-              </td>
-              <td>
-                <xsl:apply-templates mode="list-page-pdf-link" select="."/>
-              </td>
-            </tr>
-          </xsl:template>
-
-                  <xsl:template mode="list-page-pdf-link" match="*">&#160;</xsl:template>
-                  <xsl:template mode="list-page-pdf-link" match="guide">
-                    <xsl:variable name="href">
-                      <xsl:apply-templates mode="entry-href" select="."/>
-                      <xsl:text>.pdf</xsl:text>
-                    </xsl:variable>
-                    <xsl:variable name="title">
-                      <xsl:apply-templates mode="entry-title" select="."/>
-                      <xsl:text> (PDF)</xsl:text>
-                    </xsl:variable>
-                    <a href="{$href}">
-                      <img src="/media/pdf_icon.gif" title="{$title}" alt="{$title}" height="25" width="25"/> 
-                    </a>
-                  </xsl:template>
-
-
-                  <xsl:template mode="list-page-entry-href" match="guide">
-                    <xsl:value-of select="$version-prefix"/>
-                    <xsl:value-of select="api:guide-info(@url-name)/@href"/>
-                  </xsl:template>
-
-
-                  <!-- Prefix local URLs with the version prefix (when applicable) -->
-                  <xsl:template mode="list-page-entry-href" match="entry[@href/starts-with(.,'/')]">
-                    <xsl:value-of select="$version-prefix"/>
-                    <xsl:value-of select="@href"/>
-                  </xsl:template>
-
-                  <xsl:template mode="list-page-entry-href" match="entry[url]">
-                    <xsl:value-of select="url[@version eq $api:version]/@href"/>
-                  </xsl:template>
-
-                  <xsl:template mode="list-page-entry-href" match="entry">
-                    <xsl:value-of select="@href"/>
-                  </xsl:template>
-
-
-                  <xsl:template mode="list-page-entry-title" match="guide">
-                    <xsl:value-of select="api:guide-info(@url-name)/@display"/>
-                  </xsl:template>
-
-                  <xsl:template mode="list-page-entry-title" match="entry">
-                    <xsl:value-of select="@title"/>
-                  </xsl:template>
-
 
 
   <xsl:template mode="page-content" match="api:function-page">

@@ -51,7 +51,8 @@
 		//<![CDATA[
 			$(function(){
 				colorizeExamples();
-				$("#page_content .pjax_enabled a").pjax({
+                                       // Don't use pjax on pdf and zip files
+				$("#page_content .pjax_enabled a:not(a[href$='.pdf'],a[href$='.zip'])").pjax({
 					container: '#page_content',
           timeout: 4000,
 					success: function() {
