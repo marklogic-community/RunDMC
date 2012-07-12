@@ -32,6 +32,10 @@ Four request parameters are required, and one is optional:
      the filesystem directory containing the "pubs" for this version,
      (e.g., /space/elenz/MarkLogic_5_pubs)
 
+     Also, the assumption is that the zip file of all docs has the same name
+     as the directory, plus ".zip".
+     (e.g., /space/elenz/MarkLogic_5_pubs/MarkLogic_5_pubs.zip).
+
    help-xsd-dir
      the filesystem "Config" directory containing the XSD files for this version
      (for extracting the admin help content)

@@ -117,4 +117,14 @@ return
   local:load-pubs-docs($included-dir)
 ),
 
+let $zip-file-name := concat(tokenize($src-dir,"/")[last()],".zip"),
+    $zip-file-path := concat($src-dir,"/",$zip-file-name),
+    $zip-file      := xdmp:document-get($zip-file-path),
+    $zip-file-uri  := concat("/apidoc/",$zip-file-name)
+return
+(
+  xdmp:log(concat("Loading ",$zip-file-name," to ",$zip-file-uri)),
+  xdmp:document-insert($zip-file-uri, $zip-file)
+),
+
 xdmp:log("Done.")

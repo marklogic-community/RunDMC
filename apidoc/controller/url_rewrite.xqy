@@ -124,6 +124,10 @@ declare variable $matching-function-count := count($matching-functions);
     else if (starts-with($path, '/media/')) then
       local:get-db-file($path)
 
+    (: For zip file requests, we assume its for the zip file of all docs :)
+    else if (ends-with($path, '.zip')) then
+      local:get-db-file(concat("/apidoc",$path))
+
     (: Respond with DB contents for PDF and HTML docs :)
     else if (ends-with($path, '.pdf')
           or contains($path,'/javadoc/')

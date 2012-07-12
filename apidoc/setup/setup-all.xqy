@@ -123,8 +123,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
             <p>Source dir: <input class="static-sub-dir" size="30" type="text" value="MarkLogic_{if ($v eq '5.0') then '5'
                                                                                             else if ($v eq '5.1') then '5.1ea' else $v}_pubs"/> (no slashes)</p>
             <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;staticdir="
-                                                               value="Load {$v} PDF &amp; HTML"/>
-            <div style="font-size:.8em">(PDF &amp; HTML)</div>
+                                                               value="Load {$v} PDF, HTML, &amp; ZIP"/>
           </td>
           <td>&#160;</td>
           <td>&#160;</td>

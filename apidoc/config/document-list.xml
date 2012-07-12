@@ -38,10 +38,10 @@
     </entry>
     <entry title="ZIP File of All MarkLogic Product Documentation">
       A zip file containing the latest MarkLogic <version-suffix/> documentation.
-      <url version="4.1" href="/4.1/MarkLogic_4.1_pubs.zip"/>
-      <url version="4.2" href="/4.2/MarkLogic_4.2_pubs.zip"/>
-      <url version="5.0" href="/5.0/MarkLogic_5_pubs.zip"/>
-      <url version="5.1" href="/5.1/MarkLogic_5.1_pubs.zip"/>
+      <url version="4.1" href="/MarkLogic_4.1_pubs.zip"/>
+      <url version="4.2" href="/MarkLogic_4.2_pubs.zip"/>
+      <url version="5.0" href="/MarkLogic_5_pubs.zip"/>
+      <url version="5.1" href="/MarkLogic_5.1ea_pubs.zip"/>
     </entry>
   </unnamed-group>
 
