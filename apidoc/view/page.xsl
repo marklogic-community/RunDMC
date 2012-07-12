@@ -476,10 +476,10 @@
 
 
   <xsl:template mode="page-content" match="api:function-page">
-    <xsl:if test="$show-alternative-functions">
-      <xsl:variable name="other-matches" select="api:get-matching-functions(api:function[1]/@name)/api:function-page except ."/>
-      <xsl:if test="$other-matches">
-        <p class="didYouMean">
+    <xsl:if test="$show-alternative-functions or $q">
+      <xsl:variable name="other-matches" select="ml:get-matching-functions(api:function[1]/@name, $api:version)/api:function-page except ."/>
+      <p class="didYouMean">
+        <xsl:if test="$other-matches">
           <xsl:text>Did you mean </xsl:text>
           <xsl:for-each select="$other-matches">
             <xsl:variable name="fullname" select="api:function[1]/@fullname"/>
@@ -488,9 +488,16 @@
             </a>
             <xsl:if test="position() ne last()"> or </xsl:if>
           </xsl:for-each>
+          <xsl:text>? </xsl:text>
+        </xsl:if>
+        <xsl:if test="$q">
+          <xsl:text>Did you mean to search for the term </xsl:text>
+          <a href="{$srv:search-page-url}?q={$q}&amp;p=1"> <!-- p=1 effectively forces the search -->
+            <xsl:value-of select="$q"/>
+          </a>
           <xsl:text>?</xsl:text>
-        </p>
-      </xsl:if>
+        </xsl:if>
+      </p>
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>

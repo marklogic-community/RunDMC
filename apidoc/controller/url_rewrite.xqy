@@ -2,6 +2,7 @@ xquery version "1.0-ml";
 
 import module namespace u = "http://marklogic.com/rundmc/util" at "../../lib/util-2.xqy";
 import module namespace api = "http://marklogic.com/rundmc/api" at "../model/data-access.xqy";
+import module namespace ml = "http://developer.marklogic.com/site/internal" at "../../model/data-access.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../../controller/server-urls.xqy";
 
 declare variable $orig-path       := xdmp:get-request-path();
@@ -78,7 +79,7 @@ declare function local:function-url($function as document-node()) as xs:string {
   concat($path-prefix, $function/*/api:function[1]/@fullname)
 };
 
-declare variable $matching-functions := api:get-matching-functions(substring-after($path, $path-prefix));
+declare variable $matching-functions := ml:get-matching-functions(substring-after($path, $path-prefix), $api:version);
 
 declare variable $matching-function-count := count($matching-functions);
 

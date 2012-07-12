@@ -114,6 +114,12 @@
   </xsl:variable>
 
           <xsl:variable name="common-search-options" as="element()*">
+            <!--
+            <search:term apply="myterm" ns="http://marklogic.com/rundmc/search-options"
+                                        at="/view/search-options.xqy">
+              <search:empty apply="all-results"/>
+            </search:term>
+            -->
             <search:additional-query>
               <xsl:copy-of select="ml:search-corpus-query($preferred-version)"/>
             </search:additional-query>
@@ -122,7 +128,7 @@
             </search:constraint>
           </xsl:variable>
 
-  <xsl:variable name="q" select="string($params[@name eq 'q'])"/>
+  <xsl:variable name="q"            select="string($params[@name eq 'q'])"/>
 
   <xsl:variable name="search-response" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
@@ -192,27 +198,41 @@
 
   <!-- Prepend the appropriate server name to the search form target -->
   <xsl:template match="@ml:action">
-    <xsl:attribute name="action">
-      <xsl:choose>
-        <xsl:when test="$srv:viewing-standalone-api">
-          <xsl:value-of select="$srv:standalone-api-server"/>
-          <xsl:text>/do-search</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$srv:main-server"/>
-          <xsl:text>/search</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
+    <xsl:attribute name="action" select="$srv:search-page-url"/>
   </xsl:template>
 
 
+  <xsl:variable name="api-version-prefix" select="if ($preferred-version eq $ml:default-version) then ''
+                                                                                                 else concat('/',$preferred-version)"/>
+
+  <!-- Prefer exact function matches over searching -->
   <xsl:template match="search-results">
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$search-response"/>
       <xsl:copy-of select="$facets-response"/>
     </xsl:if>
-    <xsl:apply-templates mode="search-results" select="$search-response"/>
+    <xsl:variable name="matching-functions" select="ml:get-matching-functions($q,$preferred-version)"/>
+    <!-- Outer choose was necessary as opposed to buggy template rule behavior... -->
+    <xsl:choose>
+      <!-- Don't do the function shortcut if a category constraint or page number was supplied -->
+      <xsl:when test="$page-number-supplied or contains($q,'cat:')">
+        <xsl:apply-templates mode="search-results" select="$search-response"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$matching-functions">
+            <xsl:variable name="function-url" select="concat($srv:effective-api-server,
+                                                             $api-version-prefix,
+                                                             '/',
+                                                             $matching-functions[1]/*/api:function[1]/@fullname)"/>
+            <xsl:value-of select="xdmp:redirect-response(concat($function-url, '?q=', $q))"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates mode="search-results" select="$search-response"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
           <xsl:template mode="search-results" match="search:response[@total eq 0]">
@@ -266,12 +286,8 @@
           <xsl:template mode="search-results" match="search:result">
             <xsl:variable name="doc" select="doc(@uri)"/>
             <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
-            <xsl:variable name="api-version" select="substring-before(substring-after(@uri,'/apidoc/'),'/')"/>
-            <xsl:variable name="version-prefix" select="if ($api-version eq $ml:default-version) then '' else concat('/',$api-version)"/>
-            <xsl:variable name="api-server" select="if ($srv:viewing-standalone-api) then $srv:standalone-api-server
-                                                                                     else $srv:api-server"/>
             <xsl:variable name="anchor" select="if ($doc/*:chapter) then '#chapter' else ''"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($api-server, $version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)), $anchor)
+            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:effective-api-server, $api-version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)), $anchor)
                                                                      else ml:external-uri-main($doc)"/>
             <tr>
               <th>
@@ -419,7 +435,8 @@
               <xsl:if test="$selected">
                 <xsl:attribute name="class" select="'current'"/>
               </xsl:if>
-              <a href="?q={encode-for-uri($new-q)}">
+                                                  <!-- "All categories" link effectively forces the search by including p=1 (preventing function page redirects) -->
+              <a href="?q={encode-for-uri($new-q)}{if (not($this-constraint)) then '&amp;p=1' else ''}">
                 <!-- this looks like an XSLT BUG, since I had to add string() to get any output
                 <xsl:value-of select="."/>
                 -->

@@ -48,6 +48,10 @@
            that raises the possibility of needing to include two different
            <api:function> elements in the same page. -->
       <api:function-page href="{$external-uri}">
+        <!-- For word search purposes -->
+        <api:function-name>
+          <xsl:value-of select="fixup:fullname(.)"/>
+        </api:function-name>
         <xsl:apply-templates mode="fixup" select="../apidoc:function[fixup:fullname(.) eq current()/fixup:fullname(.)]"/>
       </api:function-page>
     </xsl:result-document>

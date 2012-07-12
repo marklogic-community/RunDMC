@@ -130,6 +130,40 @@ declare function ml:api-doc-query($preferred-version as xs:string) {
   ))
 };
 
+declare function ml:get-matching-functions($name as xs:string, $version) as document-node()* {
+  xdmp:query-trace(fn:true()),
+
+  let $query := cts:and-query((
+                  cts:directory-query(fn:concat("/apidoc/",$version,"/")),
+                  cts:or-query((
+                    cts:element-attribute-value-query(
+                      xs:QName("api:function"),
+                      fn:QName("","name"),  (: matches just the local name :)
+                      $name,
+                      "exact"),
+                    cts:element-attribute-value-query(
+                      xs:QName("api:function"),
+                      fn:QName("","fullname"), (: matches the full name (with prefix) :)
+                      $name,
+                      "exact")
+                  ))
+                )),
+      $results := cts:search(fn:collection(), $query),
+      $preferred := ("fn","xdmp"),
+      $ordered := for $f in $results,
+                      $lib in $f/*/api:function[1]/@lib,
+                      $name in $f/*/api:function[1]/@name
+                  order by fn:index-of($preferred, $lib),
+                           $lib,
+                           $name
+                  return $f
+  return
+    $ordered,
+
+  xdmp:query-trace(fn:false())
+};
+
+
 
 declare function topic-docs($tag as xs:string) as document-node()* {
   fn:collection()[.//topic-tag = $tag]

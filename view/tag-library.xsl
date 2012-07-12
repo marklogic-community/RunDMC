@@ -20,6 +20,8 @@
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
+  <xsl:variable name="page-number-supplied" select="boolean(string($params[@name eq 'p']))"/>
+
   <xsl:variable name="page-number" select="if ($params[@name eq 'p'] castable as xs:positiveInteger)
                                           then $params[@name eq 'p']
                                           else 1"

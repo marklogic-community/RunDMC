@@ -39,8 +39,14 @@ declare variable $s:admin-server  := s:server-url("admin");
 declare variable $s:api-server    := s:server-url("api");
 declare variable $s:standalone-api-server    := s:server-url("standalone-api");
 
+declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then $s:standalone-api-server
+                                                                           else $s:api-server;
+
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
                                                                    else $s:draft-server;
+
+declare variable $s:search-page-url := if ($s:viewing-standalone-api) then concat($s:standalone-api-server, "/do-search")
+                                                                      else concat($s:main-server, "/search");
 
 (: Use the @url if provided in the config; otherwise, use the same server but with the specified @port :)
 declare function s:server-url($type as xs:string) {

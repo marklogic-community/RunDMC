@@ -118,30 +118,5 @@ declare function guide-image-dir($page-uri) {
 };
 
 
-declare function get-matching-functions($name as xs:string) as document-node()* {
-  xdmp:query-trace(fn:true()),
-
-  let $query := cts:and-query((
-                  cts:directory-query($api:version-dir),
-                  cts:element-attribute-value-query(
-                    xs:QName("api:function"),
-                    xs:QName("name"),
-                    $name,
-                    "exact"))),
-      $results := cts:search(fn:collection(), $query),
-      $preferred := ("fn","xdmp"),
-      $ordered := for $f in $results,
-                      $lib in $f/*/api:function[1]/@lib,
-                      $name in $f/*/api:function[1]/@name
-                  order by fn:index-of($preferred, $lib),
-                           $lib,
-                           $name
-                  return $f
-  return
-    $ordered,
-
-  xdmp:query-trace(fn:false())
-};
-
 (: Replace "?" in the names of REST resources with a character that will work in doc URIs :)
 declare variable $api:REST-uri-questionmark-substitute := "@";
