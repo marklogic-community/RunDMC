@@ -419,7 +419,7 @@
           </xsl:template>
 
           <xsl:template mode="capture-lists-content" match="div | CELL">
-            <xsl:for-each-group select="*" group-adjacent="my:is-in-list(.) and not(self::div or self::CELL)">
+            <xsl:for-each-group select="*" group-adjacent="my:is-part-of-list(.) and not(self::div or self::CELL)">
               <xsl:apply-templates mode="outer-list" select="."/>
             </xsl:for-each-group>
           </xsl:template>
@@ -432,6 +432,7 @@
                             <xsl:call-template name="capture-nested-bullets"/>
                           </xsl:variable>
                           <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
+                          <!-- FIXME: This example violates this assumption (see the Code in the nested list): http://localhost:8009/5.0/guide/cpf/default#id_76620 -->
                           <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA1">
                             <xsl:apply-templates mode="inner-numbered-list" select="."/>
                           </xsl:for-each-group>
@@ -442,6 +443,8 @@
 
                           <xsl:template mode="inner-numbered-list" match="NumberA1">
                             <ol>
+                              <!-- ASSUMPTION: each second-level numbered list item consists of just one element (NumberA1 or NumberA);
+                                   they don't have subsequent paragraphs. -->
                               <xsl:for-each-group select="current-group()" group-starting-with="NumberA1 | NumberA">
                                 <li>
                                   <xsl:apply-templates mode="capture-lists" select="current-group()"/>
@@ -461,6 +464,8 @@
                   </xsl:template>
 
                           <xsl:template name="capture-nested-bullets">
+                            <!-- ASSUMPTION: each second-level bulleted list item consists of just one element (Body-bullet-2);
+                                 they don't have subsequent paragraphs. -->
                             <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
                               <xsl:apply-templates mode="inner-list" select="."/>
                             </xsl:for-each-group>
@@ -484,23 +489,28 @@
                   </xsl:template>
 
 
-                  <xsl:variable name="list-element-names" select="'Body-bullet',
-                                                                  'Body-bullet-2',
-                                                                  'Body-indent',
-                                                                  'Body-indent-blockquote',
-                                                                  'Number1',
-                                                                  'NumberA1'"/>
-
-                  <xsl:function name="my:is-in-list" as="xs:boolean">
-                    <xsl:param name="e" as="element()"/>
-                    <xsl:variable name="is-a-list-element" select="local-name($e) = $list-element-names"/>
-
-                    <!-- <Number1> represents the beginning of the list; we assume that a miscellaneous element (having a name not enumerated in our code) is included in the list
-                         unless either it itself is a known end-of-list indicator or one has appeared since the beginning of the list: either <EndList-root> or Body[not(IMAGE)] -->
-                    <xsl:variable name="is-in-numbered-list" select="not($e/(self::EndList-root or self::Body[not(IMAGE)])) and
-                                                                     $e/preceding-sibling::*[self::Number1 or self::EndList-root or self::Body[not(IMAGE)]][1]
-                                                                                            [self::Number1]"/>
-                    <xsl:sequence select="$is-a-list-element or $is-in-numbered-list"/>
+                  <xsl:function name="my:is-part-of-list">
+                    <xsl:param name="e"/>
+                    <xsl:sequence select="my:starts-list($e) or my:is-before-end-of-list($e)"/>
                   </xsl:function>
+
+                          <xsl:function name="my:starts-list">
+                            <xsl:param name="e"/>
+                            <xsl:sequence select="$e/(self::Number1 or self::Body-bullet)"/>
+                          </xsl:function>
+
+                          <xsl:function name="my:ends-list">
+                            <xsl:param name="e"/>
+                            <xsl:sequence select="$e/(self::EndList-root or self::Body[not(IMAGE)])"/>
+                          </xsl:function>
+
+                          <xsl:function name="my:is-before-end-of-list">
+                            <xsl:param name="e"/>
+                            <xsl:variable name="most-recent-start-or-end-element"
+                                          select="$e/preceding-sibling::*[my:starts-list(.) or my:ends-list(.)][1]"/>
+                            <!-- We assume that an element is included in the list unless it is a known end-of-list indicator
+                                 or one has appeared more recently than the most recent list start. -->
+                            <xsl:sequence select="not(my:ends-list($e)) and $most-recent-start-or-end-element[my:starts-list(.)]"/>
+                          </xsl:function>
 
 </xsl:stylesheet>
