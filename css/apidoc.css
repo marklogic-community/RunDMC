@@ -5,7 +5,8 @@ pre, .userguide img {
 	max-width: 100%;
 	overflow: auto;
 }
-pre {
+/* Exclude function signatures */
+.userguide pre, .example pre  {
   border-style: solid;
   border-width: 1px;
   border-color: #CCC;
