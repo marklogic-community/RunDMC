@@ -230,6 +230,8 @@ var pjax = $.pjax = function( options ) {
     if ( (options.replace || options.push) && window._gaq )
       _gaq.push(['_trackPageview'])
 
+/* EDL: added this line; start by scrolling container to the top */  $(context.selector).scrollTop(0);
+
     // If the URL has a hash in it, make sure the browser
     // knows to navigate to the hash.
     if ( hash !== '' ) {
@@ -245,9 +247,9 @@ var pjax = $.pjax = function( options ) {
       window.history.replaceState(pjax.state, container.title, url.href)
 
       var target = $(url.hash)
-      if (target.length) $(window).scrollTop(target.offset().top)
+//    if (target.length) $(window).scrollTop(target.offset().top)
+/* EDL: replaced with this line: */ if (target.length) scrollContent($(context.selector), target);
     }
-/* EDL: added this line; scroll to top when there's no fragment */  else $(context.selector).scrollTop(0);
 
     // DEPRECATED: Invoke original `success` handler
     if (oldSuccess) oldSuccess.apply(this, arguments)

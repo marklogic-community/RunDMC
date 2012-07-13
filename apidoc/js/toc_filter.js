@@ -366,6 +366,13 @@ function removeHighlightToText(element) {
     });
 }
 
+// called from hacked pjax script
+function scrollContent(container, target) {
+  var pageHeaderHeight = 71; // in CSS for #content
+  var scrollTo = target.offset().top - pageHeaderHeight;
+  container.scrollTop(scrollTo);
+}
+
 function scrollTOC() {
   var scrollTo = $('#api_sub a.selected').filter(':visible');
 
