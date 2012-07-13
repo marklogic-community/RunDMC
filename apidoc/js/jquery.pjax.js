@@ -562,6 +562,7 @@ pjax.click = handleClick
 // You probably shouldn't use pjax on pages with other pushState
 // stuff yet.
 $(window).bind('popstate', function(event){
+/* EDL: Added this line: */ /* updateTocForUrlFragment(location.pathname, location.hash); // For navigating within a user guide using the back/forward buttons  */
   var state = event.state
 
   if (state && state.container) {
@@ -593,6 +594,7 @@ $(window).bind('popstate', function(event){
         fragment: state.fragment,
         timeout: state.timeout,
         scrollTo: false
+/* EDL: Added this line: */ /* ,success: function() { changeToAppropriateTab(); colorizeExamples() } // For back/forward button navigation with PJAX  */
       }
 
       if (contents) {
