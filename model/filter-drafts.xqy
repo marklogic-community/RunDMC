@@ -1,3 +1,4 @@
+xquery version "1.0-ml";
 (: These functions filter out draft and/or preview-only documents, when applicable. :)
 module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts";
 

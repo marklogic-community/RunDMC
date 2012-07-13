@@ -1,3 +1,4 @@
+xquery version "1.0-ml";
 module namespace ml = "http://developer.marklogic.com/site/internal";
 
 import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"

@@ -71,6 +71,23 @@
     <xsl:text>/cts/constructors</xsl:text> <!-- as we configured in ../config/category-mappings.xml -->
   </xsl:template>
 
+  <!-- Fixup Linkerator links
+	     Change "#display.xqy&fname=http://pubs/5.1doc/xml/admin/foo.xml" 
+       to "/guide/admin/foo"
+	-->
+  <xsl:template mode="fixup-att-value" 
+    match="a/@href[starts-with(.,'#display.xqy?fname=')]" priority="4">
+    <xsl:variable name="anchor" select="replace(substring-after(., '.xml'), '%23', '#id_')"/> 
+    <xsl:variable name="result" 
+      select="concat('/guide', substring-before(substring-after(., 
+                  '#display.xqy?fname=http://pubs/5.1doc/xml'), '.xml'), 
+                   $anchor)"/>
+    <xsl:value-of select="fixup:output-and-report(.,$result)"/>
+  </xsl:template>
+   <!-- End Linkerator fixup -->
+
+
+
 
   <!-- Log the fixups so we can diagnose any problems -->
   <xsl:function name="fixup:output-and-report" as="xs:string">
