@@ -247,6 +247,7 @@ var pjax = $.pjax = function( options ) {
       var target = $(url.hash)
       if (target.length) $(window).scrollTop(target.offset().top)
     }
+/* EDL: added this line; scroll to top when there's no fragment */  else $(context.selector).scrollTop(0);
 
     // DEPRECATED: Invoke original `success` handler
     if (oldSuccess) oldSuccess.apply(this, arguments)
