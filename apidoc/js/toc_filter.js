@@ -111,7 +111,7 @@ function collapseSubTree(li) {
 /* These functions implement the expand/collapse buttons */
 function shallowExpandAll(ul) {
   ul.children("li").each(function(index) {
-    loadTocSection(this);
+    loadTocSection(index, this);
     expandSubTree($(this));
   });
 }
@@ -147,7 +147,8 @@ function loadAllSubSections(tocRoot) {
   }
 }
 
-function loadTocSection(tocSection) {
+// We may ignore index, but it's necessary as part of the signature expected by .each()
+function loadTocSection(index, tocSection) {
   var $tocSection = $(tocSection);
   if ($tocSection.hasClass("hasChildren"))
     $tocSection.find(".hitarea").trigger("click");
@@ -258,7 +259,7 @@ function showInTOC(a) {
 
   var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
 
-  loadTocSection(a.parent()); // If this is a TOC section that needs loading, then load it
+  loadTocSection(0,a.parent()); // If this is a TOC section that needs loading, then load it
                                 // e.g., when PJAX is enabled and the user clicks the link
 
   items.each(function(index) {
@@ -321,7 +322,7 @@ function updateTocForTab(tab, panel) {
 
     //console.log(tocSection);
 
-    loadTocSection(tocSection);
+    loadTocSection(0, tocSection);
     waitToShowInTOC(tocSection);
   }
   else {
@@ -331,7 +332,7 @@ function updateTocForTab(tab, panel) {
     if (tocSection.length) {
       //console.log("Loading tocSection");
       //console.log(tocSection);
-      loadTocSection(tocSection);
+      loadTocSection(0, tocSection);
       waitToShowInTOC(tocSection);
     }
   }
