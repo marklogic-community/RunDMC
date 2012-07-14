@@ -13,6 +13,13 @@ pre, .userguide img {
   background-color: white;
   padding: 15px;
 }
+
+/* Don't do border/padding on code inside a table */
+.userguide table pre {
+  border-style: none;
+  padding: 0px;
+}
+
 #header nav .current:after {border-color: #F5F5F5 transparent;}
 #container > footer {padding-bottom: 0;}
 #content {
