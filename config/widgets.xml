@@ -47,6 +47,7 @@
     <page href="/events/mlw12-activities"/>
     <page href="/learn/videos"/>
     <page href="/people/profile"/>
+    <page href="/products/marklogic-server/which-nosql"/>
   </widget>
 
   <widget xquery="twitter-topic.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
