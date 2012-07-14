@@ -20,6 +20,10 @@ pre, .userguide img {
   padding: 0px;
 }
 
+ol ol {
+  list-style-type: lower-alpha;
+}
+
 #header nav .current:after {border-color: #F5F5F5 transparent;}
 #container > footer {padding-bottom: 0;}
 #content {
