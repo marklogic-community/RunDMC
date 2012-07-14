@@ -20,12 +20,12 @@
 
   <xsl:template match="/">
     <!-- Strip out unhelpful list containers -->
-    <xsl:variable name="useless-containers-stripped">
-      <xsl:apply-templates mode="strip-useless-containers" select="."/>
+    <xsl:variable name="useless-distinctions-stripped">
+      <xsl:apply-templates mode="remove-useless-distinctions" select="."/>
     </xsl:variable>
     <!-- Capture section hierarchy -->
     <xsl:variable name="sections-captured">
-      <xsl:apply-templates mode="capture-sections" select="$useless-containers-stripped"/>
+      <xsl:apply-templates mode="capture-sections" select="$useless-distinctions-stripped"/>
     </xsl:variable>
     <!-- Capture list hierarchy -->
     <xsl:variable name="lists-captured">
@@ -73,15 +73,22 @@
           </xsl:template>
 
 
-          <xsl:template mode="strip-useless-containers" match="@* | node()">
+          <xsl:template mode="remove-useless-distinctions" match="@* | node()">
             <xsl:copy>
               <xsl:apply-templates mode="#current" select="@* | node()"/>
             </xsl:copy>
           </xsl:template>
 
           <!-- These container elements apparently add no value for list detection (they appear inconsistently) -->
-          <xsl:template mode="strip-useless-containers" match="NumberList | NumberAList | WarningList">
+          <xsl:template mode="remove-useless-distinctions" match="NumberList | NumberAList | WarningList">
             <xsl:apply-templates mode="#current"/>
+          </xsl:template>
+
+          <!-- Rewrite <Number1> tags to <Number> -->
+          <xsl:template mode="remove-useless-distinctions" match="Number1">
+            <Number>
+              <xsl:apply-templates mode="#current"/>
+            </Number>
           </xsl:template>
 
 
@@ -424,9 +431,9 @@
             </xsl:for-each-group>
           </xsl:template>
 
-                  <xsl:template mode="outer-list" match="Number1">
+                  <xsl:template mode="outer-list" match="Number">
                     <ol>
-                      <xsl:for-each-group select="current-group()" group-starting-with="Number | Number1">
+                      <xsl:for-each-group select="current-group()" group-starting-with="Number">
                         <li>
                           <xsl:variable name="nested-bullets-captured" as="element()*">
                             <xsl:call-template name="capture-nested-bullets"/>
@@ -493,7 +500,7 @@
 
                           <xsl:function name="my:starts-list">
                             <xsl:param name="e"/>
-                            <xsl:sequence select="$e/(self::Number1 or self::Body-bullet)"/>
+                            <xsl:sequence select="$e/(self::Number or self::Body-bullet)"/>
                           </xsl:function>
 
                           <xsl:function name="my:ends-list">
