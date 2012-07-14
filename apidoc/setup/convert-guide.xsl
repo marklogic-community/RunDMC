@@ -31,10 +31,14 @@
     <xsl:variable name="lists-captured">
       <xsl:apply-templates mode="capture-lists" select="$sections-captured"/>
     </xsl:variable>
+    <!-- Merge adjacent Code samples -->
+    <xsl:variable name="code-merged">
+      <xsl:apply-templates mode="merge-code-examples" select="$lists-captured"/>
+    </xsl:variable>
     <!-- Main conversion of source elements to XHTML elements -->
     <xsl:variable name="converted-content">
       <!-- Only copy the XML content for chapters; guides just have some metadata (copied later below) -->
-      <xsl:apply-templates select="$lists-captured/chapter/XML"/>
+      <xsl:apply-templates select="$code-merged/chapter/XML"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
@@ -53,6 +57,7 @@
     <xsl:if test="$DEBUG_GROUPING">
       <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/sections-captured',$output-uri), $sections-captured)"/>
       <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/lists-captured'   ,$output-uri),    $lists-captured)"/>
+      <xsl:value-of select="xdmp:document-insert(concat('/DEBUG/code-merged'      ,$output-uri),    $code-merged)"/>
     </xsl:if>
   </xsl:template>
 
@@ -245,6 +250,13 @@
   <!-- The docapp code strips leading line breaks (and any preceding space) from each text node. Let's try that... -->
   <xsl:template match="text()">
     <xsl:value-of select="replace(., '^\s*\n', '')"/>
+  </xsl:template>
+
+  <!-- Now that we're merging adjacent <Code> elements, let's be more discriminating about
+       which whitespace characters we strip. In particular, preserve the whitespace that
+       comes at the beginning of a merged Code element (see below) -->
+  <xsl:template match="text()[preceding-sibling::*[1][self::PRESERVE_FOLLOWING_WHITESPACE]]">
+    <xsl:value-of select="."/>
   </xsl:template>
 
           <!--
@@ -524,5 +536,50 @@
                                  or one has appeared more recently than the most recent list start. -->
                             <xsl:sequence select="not(my:ends-list($e)) and $most-recent-start-or-end-element[my:starts-list(.)]"/>
                           </xsl:function>
+
+  <xsl:template mode="merge-code-examples" match="node()">
+    <xsl:copy>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="merge-code-examples-content" select="."/>
+    </xsl:copy>
+    <xsl:apply-templates mode="merge-code-examples-after" select="."/>
+  </xsl:template>
+
+  <xsl:template mode="merge-code-examples" match="@*">
+    <xsl:copy/>
+  </xsl:template>
+
+          <xsl:template mode="merge-code-examples-content" match="*">
+            <xsl:apply-templates mode="merge-code-examples"/>
+          </xsl:template>
+
+          <xsl:template mode="merge-code-examples-content" match="li | div | CELL">
+            <!-- Merge adjacent Code elements -->
+            <xsl:for-each-group select="*" group-adjacent="exists(self::Code)">
+              <xsl:apply-templates mode="code-or-not" select="."/>
+            </xsl:for-each-group>
+          </xsl:template>
+
+                  <xsl:template mode="code-or-not" match="Code">
+                    <Code>
+                      <!-- Process the content of the adjacent Code elements -->
+                      <xsl:apply-templates mode="merge-code-examples" select="current-group()/node()"/>
+                    </Code>
+                  </xsl:template>
+
+                  <xsl:template mode="code-or-not" match="*">
+                    <xsl:apply-templates mode="merge-code-examples" select="current-group()"/>
+                  </xsl:template>
+
+
+          <!-- By default, don't add anything after -->
+          <xsl:template mode="merge-code-examples-after" match="node()"/>
+
+          <!-- Add a marker signifying we want to preserve the whitespace at the beginning of this
+               Code element (as it's a subsequent adjacent one, which will be merged into the previous) -->
+          <xsl:template mode="merge-code-examples-after" match="Code[preceding-sibling::*[1][self::Code]]
+                                                               /A[1]">
+            <PRESERVE_FOLLOWING_WHITESPACE/>
+          </xsl:template>
 
 </xsl:stylesheet>
