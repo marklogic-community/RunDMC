@@ -432,7 +432,6 @@
                             <xsl:call-template name="capture-nested-bullets"/>
                           </xsl:variable>
                           <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
-                          <!-- FIXME: This example violates this assumption (see the Code in the nested list): http://localhost:8009/5.0/guide/cpf/default#id_76620 -->
                           <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA1">
                             <xsl:apply-templates mode="inner-numbered-list" select="."/>
                           </xsl:for-each-group>
@@ -443,8 +442,6 @@
 
                           <xsl:template mode="inner-numbered-list" match="NumberA1">
                             <ol>
-                              <!-- ASSUMPTION: each second-level numbered list item consists of just one element (NumberA1 or NumberA);
-                                   they don't have subsequent paragraphs. -->
                               <xsl:for-each-group select="current-group()" group-starting-with="NumberA1 | NumberA">
                                 <li>
                                   <xsl:apply-templates mode="capture-lists" select="current-group()"/>
