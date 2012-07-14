@@ -91,6 +91,13 @@
             </Number>
           </xsl:template>
 
+          <!-- Rewrite <NumberA1> tags to <NumberA> -->
+          <xsl:template mode="remove-useless-distinctions" match="NumberA1">
+            <NumberA>
+              <xsl:apply-templates mode="#current"/>
+            </NumberA>
+          </xsl:template>
+
 
           <xsl:template mode="add-xhtml-namespace" match="@* | node()">
             <xsl:copy/>
@@ -439,7 +446,8 @@
                             <xsl:call-template name="capture-nested-bullets"/>
                           </xsl:variable>
                           <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
-                          <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA1">
+                          <xsl:variable name="first-sub-item" select="$nested-bullets-captured[self::NumberA][1]"/>
+                          <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA[. is $first-sub-item]">
                             <xsl:apply-templates mode="inner-numbered-list" select="."/>
                           </xsl:for-each-group>
                         </li>
@@ -447,9 +455,9 @@
                     </ol>
                   </xsl:template>
 
-                          <xsl:template mode="inner-numbered-list" match="NumberA1">
+                          <xsl:template mode="inner-numbered-list" match="NumberA">
                             <ol>
-                              <xsl:for-each-group select="current-group()" group-starting-with="NumberA1 | NumberA">
+                              <xsl:for-each-group select="current-group()" group-starting-with="NumberA">
                                 <li>
                                   <xsl:apply-templates mode="capture-lists" select="current-group()"/>
                                 </li>
