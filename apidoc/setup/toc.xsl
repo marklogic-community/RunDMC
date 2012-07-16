@@ -166,13 +166,15 @@
       </toc:guides>
       <toc:other>
         <node display="Other Documentation" open="yes" id="other" top-control="yes">
-          <node display="Hadoop Connector" open="yes">
-            <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
-            <!-- Hadoop guide repeated -->
-            <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
-              <xsl:with-param name="is-duplicate" select="true()"/>
-            </xsl:apply-templates>
-          </node>
+          <xsl:if test="number($api:version) ge 5">
+            <node display="Hadoop Connector" open="yes">
+              <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
+              <!-- Hadoop guide repeated -->
+              <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
+                <xsl:with-param name="is-duplicate" select="true()"/>
+              </xsl:apply-templates>
+            </node>
+          </xsl:if>
           <node display="XCC" open="yes">
             <node display="XCC Javadoc" href="/javadoc/xcc/index.html" external="yes"/>
             <node display="XCC .NET API" href="/dotnet/xcc/index.html" external="yes"/>
