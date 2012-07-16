@@ -70,6 +70,7 @@
           </script>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="comment-section"/>
+          <xsl:call-template name="apidoc-copyright"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
@@ -77,6 +78,12 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+          <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
+            <div id="copyright">Copyright © 2010–2012 MarkLogic Corporation. All rights reserved. | Powered by
+              <a href="{$srv:main-server}/products">MarkLogic Server <ml:server-version/></a> and <a href="{$srv:main-server}/code/rundmc">rundmc</a>.
+            </div>
+          </xsl:template>
 
   <!-- Links in content (function descriptions and list page intros) may need to be rewritten
        to include the current explicitly specified version -->

@@ -33,7 +33,14 @@ ol ol {
 	bottom: 0;
 	width: 1100px;
 }
-#copyright {display: none;}
+
+#copyright {
+	clear: both;
+	font-size: 11px;
+	text-align: center;
+  padding: 20px;
+}
+
 #breadcrumb, #container #breadcrumb + section > h2 {
 	background: none;
 	-moz-box-shadow: none;
