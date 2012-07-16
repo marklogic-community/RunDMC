@@ -185,6 +185,19 @@
     </span>
   </xsl:template>
 
+  <!-- These lists are already well-structured and don't need to be captured -->
+  <xsl:template match="BulletedList">
+    <ul>
+      <xsl:apply-templates select="Bulleted"/>
+    </ul>
+  </xsl:template>
+
+          <xsl:template match="Bulleted">
+            <li>
+              <xsl:apply-templates/>
+            </li>
+          </xsl:template>
+
   <!-- Convert elements that should be converted -->
   <xsl:template match="*[string(my:new-name(.))]">
     <xsl:element name="{my:new-name(.)}">
