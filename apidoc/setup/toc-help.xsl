@@ -18,7 +18,8 @@
 
   <xsl:variable name="help-config" select="u:get-doc('/apidoc/config/help-config.xml')/help"/>
 
-  <xsl:variable name="xsd-dir" select="xdmp:get-request-field('help-xsd-dir', '/Users/elenz/Desktop/Config/5.1')"/>
+                               <!-- default value provided just for testing purposes -->
+  <xsl:variable name="xsd-dir" select="xdmp:get-request-field('help-xsd-dir', '/Users/elenz/Desktop/Config/6.0')"/>
 
   <xsl:variable name="xsd-docs" select="for $dir in xdmp:filesystem-directory($xsd-dir)/*:entry[*:type eq 'file']
                                                                                                [*:pathname/ends-with(.,'.xsd')]

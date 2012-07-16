@@ -117,7 +117,7 @@
 
         </toc:rest-resources>
       </xsl:if>
-      <xsl:if test="number($api:version) ge 5.1">
+      <xsl:if test="number($api:version) ge 6">
         <toc:java top-control="yes">
           <node display="Java Client" open="yes" id="javaTOC">
             <node display="Java Client API" 

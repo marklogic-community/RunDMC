@@ -74,10 +74,8 @@
                     </b>
                   </xsl:template>
 
-                          <!-- Display 5.0 as "MarkLogic 5" -->
-                          <!--
-                          <xsl:template mode="version-number-display" match="*:version[@number eq '5.0']">MarkLogic 5</xsl:template>
-                          -->
+                          <!-- Display 6.0 as "MarkLogic 6" -->
+                          <xsl:template mode="version-number-display" match="*:version[@number eq '6.0']">MarkLogic 6</xsl:template>
                           <xsl:template mode="version-number-display" match="*:version">
                             <xsl:value-of select="@number"/>
                           </xsl:template>
