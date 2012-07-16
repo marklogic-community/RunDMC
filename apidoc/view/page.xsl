@@ -98,6 +98,12 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- In the standalone version, display the "Documentation" badge -->
+  <xsl:template match="x:header/x:h1/x:a/@ml:class"/>
+  <xsl:template match="x:header/x:h1/x:a/@ml:class[$srv:viewing-standalone-api]" priority="1">
+    <xsl:attribute name="class" select="'documentation'"/>
+  </xsl:template>
+
   <xsl:template match="ml:breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="."/>
     <!-- Always append the "Server version" switcher -->

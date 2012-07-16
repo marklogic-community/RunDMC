@@ -38,8 +38,7 @@
   </xsl:template>
 
 
-  <!-- Don't display the top-level navigation when we're on the standalone API -->
-  <xsl:template match="top-nav[not($srv:viewing-standalone-api)]">
+  <xsl:template match="top-nav">
     <nav>
       <ul>
         <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
@@ -69,6 +68,12 @@
                                                                            else $srv:primary-server
                                                                       else ()"/>
                   </xsl:template>
+
+                  <!-- In the standalone version, top nav links point to the Community site... -->
+                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api]">http://developer.marklogic.com</xsl:template>
+
+                  <!-- ...except for "Documentation," which points to the root of the current server -->
+                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api][@href eq '/']" priority="1"/>
 
 
                   <xsl:template mode="top-nav-href" match="page">

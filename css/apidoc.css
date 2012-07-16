@@ -24,6 +24,12 @@ ol ol {
   list-style-type: lower-alpha;
 }
 
+/* Enable this to add the documentation badge for the standalone version
+#header h1 a.documentation {
+  background: url(/apidoc/images/documentation-badge.png);
+}
+*/
+
 #header nav .current:after {border-color: #F5F5F5 transparent;}
 #container > footer {padding-bottom: 0;}
 #content {
