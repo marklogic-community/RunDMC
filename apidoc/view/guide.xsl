@@ -51,13 +51,21 @@
   <!-- Guide title -->
   <xsl:template mode="guide" match="/*/guide-title">
     <!-- Add a PDF link at the top of each guide, before the <h1> -->
-    <a href="{api:external-guide-uri(/)}.pdf" class="guide-pdf-link">
-      <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
-    </a>
+    <xsl:choose>
+      <xsl:when test="parent::guide">
+        <a href="{api:external-guide-uri(/)}.pdf" class="guide-pdf-link">
+          <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
+        </a>
+      </xsl:when>
+      <!-- printer-friendly link on chapter pages -->
+      <xsl:otherwise>
+        <xsl:apply-templates mode="print-friendly-link" select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
     <h1>
       <xsl:apply-templates mode="guide-heading-content" select="."/>
     </h1>
-    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, (:../@guide-uri,:) ../@next"/>
+    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@next"/>
   </xsl:template>
 
           <xsl:function name="api:external-guide-uri" as="xs:string">
@@ -75,28 +83,22 @@
             <a href="{api:external-guide-uri(/)}">
               <xsl:value-of select="."/>
             </a>
+            <span class="chapterNumber"> — chapter&#160;<xsl:value-of select="../@number"/></span>
           </xsl:template>
 
-          <!--
-          <!- - No need for "Top" link when we're already at the top - ->
-          <xsl:template mode="chapter-next-prev" match="guide/@guide-uri"/>
-          -->
-          <xsl:template mode="chapter-next-prev" match="@*">
-            <xsl:variable name="next-or-prev">
-              <xsl:apply-templates mode="next-or-prev" select="."/>
-            </xsl:variable>
-            <div class="{$next-or-prev}Chapter">
+          <!-- Only show the next/prev links on chapter pages (not the main guide page) -->
+          <xsl:template mode="chapter-next-prev" match="@*"/>
+          <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous">
+            <div class="{local-name(.)}Chapter">
               <a href="{ml:external-uri-for-string(.)}#chapter">
                 <xsl:apply-templates mode="next-or-prev" select="."/>
               </a>
             </div>
           </xsl:template>
 
-                  <xsl:template mode="next-or-prev" match="@next"     >Next</xsl:template>
-                  <xsl:template mode="next-or-prev" match="@previous" >Previous</xsl:template>
-                  <!--
-                  <xsl:template mode="next-or-prev" match="@guide-uri">Top</xsl:template>
-                  -->
+                  <xsl:template mode="next-or-prev" match="@next"                       >Next&#160;chapter&#160;»</xsl:template>
+                  <xsl:template mode="next-or-prev" match="@previous"                   >«&#160;Previous&#160;chapter</xsl:template>
+                  <xsl:template mode="next-or-prev" match="@previous[../@number eq '1']">«&#160;Table&#160;of&#160;contents</xsl:template>
 
 
   <xsl:template mode="guide" match="guide/info">
@@ -122,9 +124,9 @@
 
   <xsl:template mode="guide" match="guide/chapter-list">
     <p>This guide includes the following chapters:</p>
-    <ul>
+    <ol>
       <xsl:apply-templates mode="guide" select="chapter"/>
-    </ul>
+    </ol>
   </xsl:template>
 
           <xsl:template mode="guide" match="chapter">

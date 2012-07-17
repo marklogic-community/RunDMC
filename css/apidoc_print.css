@@ -1,0 +1,34 @@
+#api_sub,
+#breadcrumb,
+#header,
+footer,
+#tooltip,
+#comments,
+.nextChapter,
+.previousChapter,
+.printerFriendly {
+  display: none;
+}
+
+#copyright { font-size: 8pt; }
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  pointer-events: none;
+  cursor: default;
+  color: black;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td {
+  padding: 8px;
+}

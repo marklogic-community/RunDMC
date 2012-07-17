@@ -319,9 +319,10 @@ li.expandable .treecontrol { display: none; }
 .documentsTable a {text-decoration: underline;}
 .guide-pdf-link {float: right;}
 
-.NextChapter {float: right;}
-.TopChapter {text-align: center;}
-.PreviousChapter {float: left;}
+.nextChapter {float: right;}
+.previousChapter {float: left;}
+
+.printerFriendly { float: right; padding-top: 8px; }
 
 /* This could use some sprucing up */
 .userguide th,
@@ -417,9 +418,8 @@ a.function_prefix { text-decoration: underline; color: #899B3B; }
 
 
 /* for admin help docs */
-span.configOption {
+strong.configOption {
   color: #2C2C2C;
-  font-weight: bold;
 }
 
 img.adminHelp {

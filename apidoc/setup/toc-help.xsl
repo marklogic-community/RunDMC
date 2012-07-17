@@ -202,9 +202,9 @@
 
   <!-- Convert hard-coded color spans into <strong> tags -->
   <xsl:template mode="convert-help-content" match="*:span[contains(@style,'color:')]">
-    <span class="configOption">
+    <strong class="configOption">
       <xsl:apply-templates mode="#current"/>
-    </span>
+    </strong>
   </xsl:template>
 
   <!-- Rewrite image URLs -->

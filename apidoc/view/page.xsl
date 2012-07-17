@@ -18,6 +18,8 @@
   <xsl:include href="guide.xsl"/>
   <xsl:include href="uri-translation.xsl"/>
 
+  <xsl:variable name="is-print-request" select="$params[@name eq 'print'] eq 'yes'"/>
+
   <!-- overrides variable declaration in imported code -->
   <xsl:variable name="currently-on-api-server" select="true()"/>
 
@@ -56,6 +58,9 @@
     <xsl:value-of select="substring-after($external-uri,$external-uri)"/>
     -->
     <xsl:choose>
+      <xsl:when test="$is-print-request">
+        <xsl:apply-templates mode="print-view" select="."/>
+      </xsl:when>
       <xsl:when test="$is-pjax-request">
         <div>
           <!--PJAX!!-->
@@ -85,6 +90,21 @@
               <a href="{$srv:main-server}/products">MarkLogic Server <ml:server-version/></a> and <a href="{$srv:main-server}/code/rundmc">rundmc</a>.
             </div>
           </xsl:template>
+
+  <xsl:template mode="print-view" match="*">
+    <html>
+      <head>
+        <title>
+          <xsl:apply-templates mode="page-specific-title" select="."/>
+        </title>
+        <link href="/css/v-1/apidoc_print.css" rel="stylesheet" type="text/css" media="screen, print"/>
+      </head>
+      <body>
+        <xsl:apply-templates mode="page-content" select="."/>
+      </body>
+    </html>
+  </xsl:template>
+
 
   <!-- Links in content (function descriptions and list page intros) may need to be rewritten
        to include the current explicitly specified version -->
@@ -349,6 +369,7 @@
   <xsl:template mode="page-content" match="api:help-page">
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
       <h1>
         <xsl:apply-templates mode="list-page-heading" select="."/>
       </h1>
@@ -359,6 +380,7 @@
   <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
       <h1>
         <xsl:apply-templates mode="list-page-heading" select="."/>
       </h1>
@@ -451,12 +473,20 @@
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
       <h1>
         <xsl:apply-templates mode="api-page-heading" select="."/>
       </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
   </xsl:template>
+
+          <xsl:template mode="print-friendly-link" match="*">
+            <a href="?print=yes" target="_blank" class="printerFriendly">
+              <img src="/apidoc/images/printerFriendly.png"/>
+            </a>
+          </xsl:template>
+
 
           <xsl:template match="api:function">
             <xsl:apply-templates mode="function-signature" select="."/>

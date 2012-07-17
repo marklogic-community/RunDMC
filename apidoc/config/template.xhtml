@@ -8,7 +8,8 @@
 	  <link href="/css/v-2/apidoc/jquery.treeview.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="/css/v-1/apidoc/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="/css/v-9/screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="/css/v-27/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-28/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-1/apidoc_print.css" rel="stylesheet" type="text/css" media="print" />
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
@@ -51,8 +52,8 @@
 		//<![CDATA[
 			$(function(){
 				colorizeExamples();
-                                       // Don't use pjax on pdf and zip files
-				$("#page_content .pjax_enabled a:not(a[href$='.pdf'],a[href$='.zip'])").pjax({
+                                       // Don't use pjax on pdf, zip files, and printer-friendly links
+				$("#page_content .pjax_enabled a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])").pjax({
 					container: '#page_content',
           timeout: 4000,
 					success: function() {

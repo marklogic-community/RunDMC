@@ -34,6 +34,7 @@ declare function local:insert($doc,
                               $guide-uri,
                               $previous as xs:string?,
                               $next as xs:string?,
+                              $number as xs:integer?,
                               $chapter-list as element()?) {
   xdmp:log(concat("Setting up guide doc: ",$target-url)),
   xdmp:document-insert($target-url,
@@ -43,6 +44,7 @@ declare function local:insert($doc,
 
       if ($previous) then attribute previous {$previous} else (),
       if ($next)     then attribute next     {$next}     else (),
+      if ($number)   then attribute number   {$number}   else (),
 
       <guide-title>{$guide-title}</guide-title>,
       <title>      {$title}      </title>,
@@ -90,13 +92,14 @@ for $dir in $sub-dirs return
                   $chapter-title := normalize-space($chapter-doc/XML/Heading-1),
                   $previous      := if ($chapter/preceding-sibling::chapter) then $chapter/preceding-sibling::chapter[1]/@final-uri
                                                                              else $final-guide-uri,
+                  $chapter-num   := 1 + count($chapter/preceding-sibling::chapter),
                   $next          := $chapter/following-sibling::chapter[1]/@final-uri
               return
                 (
                   <chapter href="{$chapter/@final-uri}">
                     <chapter-title>{$chapter-title}</chapter-title>
                   </chapter>,
-                  local:insert($chapter-doc, $chapter-title, $guide-title, $chapter/@target-uri, $dir, $final-guide-uri, $previous, $next, ())
+                  local:insert($chapter-doc, $chapter-title, $guide-title, $chapter/@target-uri, $dir, $final-guide-uri, $previous, $next, $chapter-num, ())
                 )
             }</chapter-list>,
 
@@ -104,7 +107,7 @@ for $dir in $sub-dirs return
 
       return
         (xdmp:log($chapter-manifest),
-        local:insert($title-doc, $guide-title, $guide-title, $target-url, $dir, $final-guide-uri, (), $first-chapter-uri, $chapter-list)
+        local:insert($title-doc, $guide-title, $guide-title, $target-url, $dir, $final-guide-uri, (), $first-chapter-uri, (), $chapter-list)
         )
 
 ,xdmp:log("Done.")
