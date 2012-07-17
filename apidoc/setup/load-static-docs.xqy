@@ -19,7 +19,6 @@ declare variable $config := u:get-doc("/apidoc/config/static-docs.xml")/static-d
 declare variable $subdirs-to-load            := $config/include/string(.);
 
 declare variable $src-dir  := xdmp:get-request-field("staticdir");
-declare variable $pubs-dir := concat($src-dir,'/pubs');
 (:
 declare variable $version-dir                := $config/version[@number eq $api:version]/@src-dir/string(.);
 :)
@@ -55,7 +54,7 @@ declare function local:load-pubs-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file']
     let $path    := $file/dir:pathname,
-        $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$pubs-dir),"\","/"))),
+        $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$src-dir),"\","/"))),
 
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
@@ -107,7 +106,7 @@ declare function local:load-pubs-docs($dir) {
 $setup:errorCheck,
 
 (: TODO: Load only the included directories :)
-for $included-dir in xdmp:filesystem-directory($pubs-dir)/dir:entry[dir:type eq 'directory']
+for $included-dir in xdmp:filesystem-directory($src-dir)/dir:entry[dir:type eq 'directory']
                                                                    [dir:filename = $subdirs-to-load]
                                                          /dir:pathname
                                                          /string(.)
@@ -118,7 +117,7 @@ return
 ),
 
 let $zip-file-name := concat(tokenize($src-dir,"/")[last()],".zip"),
-    $zip-file-path := concat($src-dir,"/",$zip-file-name),
+    $zip-file-path := concat($src-dir, ".zip"),
     $zip-file      := xdmp:document-get($zip-file-path),
     $zip-file-uri  := concat("/apidoc/",$zip-file-name)
 return
