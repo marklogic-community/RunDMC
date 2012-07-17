@@ -10,6 +10,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:fb   ="http://www.facebook.com/2008/fbml"
+  xmlns:users="users"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="qp xs ml xdmp">
@@ -124,6 +126,24 @@
           </xsl:template>
 
 
+  <!-- Rewrite api.marklogic.com links (to docs.marklogic.com) until we have a chance to update the content. -->
+  <!-- ASSUMPTION: there is no version prefix, or it's 5.0 -->
+  <!-- ASSUMPTION: the links don't go to library/module pages (except cts - configured in /config/5.0-function-url-mappings.xml) -->
+  <xsl:template match="xhtml:a/@href[starts-with(.,'http://api.marklogic.com')]">
+    <xsl:attribute name="href">
+      <xsl:variable name="uri" select="substring-after(.,'http://api.marklogic.com')"/>
+      <!-- We're going to be using docs.marklogic.com, not "api" -->
+      <xsl:sequence select="concat('http://docs.marklogic.com',$uri)"/>
+      <!-- OBSOLETE (from master branch)
+      <xsl:sequence select="concat('/pubs/5.0',
+                                   if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/(@pdf-name,@source-name)[1], '.pdf')
+                                                                   else concat('/apidocs/',$functions-5.0[@name eq substring-after($uri,'/')][1]/@url
+                                                                              ))"/>
+                                                                              -->
+    </xsl:attribute>
+  </xsl:template>
+
+
   <!-- Bump up the heading number (i.e. increase the depth) of headings in paginated lists (of blog posts) -->
   <xsl:template match="xhtml:h3
                      | xhtml:h4
@@ -196,7 +216,7 @@
          <xsl:text> &#8212; </xsl:text>
          <xsl:value-of select="$errorMessage"/>
      </h2>
-     <xsl:if test="xdmp:host-name(xdmp:host()) ne 'developer.marklogic.com'">
+     <xsl:if test="not(xdmp:host-name(xdmp:host()) = ('community.marklogic.com', 'developer.marklogic.com'))">
          <pre style="overflow: auto">
             <xsl:value-of select="$errorDetail"/>
          </pre>
@@ -231,8 +251,14 @@
 
   <!-- Conditional template support: process the first child that matches -->
   <xsl:template match="choose">
-    <xsl:apply-templates select="*[@href eq $external-uri or not(@href)][1]/node()"/>
+    <xsl:apply-templates select="*[tokenize(normalize-space(@href),' ') = $external-uri or not(@href)][1]/node()"/>
   </xsl:template>
+
+  <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
+  <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
+  <xsl:template match="if[not(starts-with($external-uri, @href-starts-with))]"/>
+
+  <xsl:template match="if-session[users:getCurrentUser()]"/>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">

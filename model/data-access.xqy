@@ -13,75 +13,110 @@ declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
 declare namespace api ="http://marklogic.com/rundmc/api";
 
+(: used by get-updated-disqus-threads.xqy :)
+declare variable $ml:Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
 
-declare variable $Announcements := docs('Announcement');
-declare variable $Events        := docs('Event');
-declare variable $Articles      := docs('Article');
-declare variable $Projects      := docs('Project');
-declare variable $Posts         := docs('Post'),
-                                   docs('Announcement'),
-                                   docs('Event');
+declare private variable $ml:doc-element-names := (xs:QName("Announcement"),
+                                                   xs:QName("Event"),
+                                                   xs:QName("Article"),
+                                                   xs:QName("Project"),
+                                                   xs:QName("Post"),
+                                                   xs:QName("page")
+                                                  );
+
+declare variable $ml:Announcements := docs( xs:QName("Announcement"));
+declare variable $ml:Events        := docs( xs:QName("Event"));
+declare variable $ml:Articles      := docs( xs:QName("Article"));
+declare variable $ml:Projects      := docs( xs:QName("Project"));
+declare variable $ml:pages         := docs( xs:QName("page"));
+declare variable $ml:Posts         := docs((xs:QName("Post"), xs:QName("Announcement"), xs:QName("Event")));
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
-(: filter out temporary, preview-only docs, and filter "Draft" docs when applicable :)
-declare function docs($element-name) {
-  let $non-previews := fn:concat('fn:collection()/',$element-name,'[fn:not(@preview-only)]'),
-      $expr := fn:concat('if ($draft:public-docs-only)',
-                         'then ',$non-previews,'[@status eq "Published"]',
-                         'else ',$non-previews
-                        )
-  return
-    xdmp:value($expr)
+(: Get a listing of all live, listed DMC documents for the given page type(s) :)
+declare private function docs($qnames) as element()* {
+  cts:search(fn:collection(),
+    cts:or-query((
+      for $qname in $qnames return ml:matches-dmc-page($qname)
+    ))
+  )/*
 };
 
-(: used by get-updated-disqus-threads.xqy :)
-declare variable $Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
+(: Get a complete listing of all live documents on DMC (used by retroactive comment script) :)
+declare variable $ml:live-dmc-documents := cts:search(fn:collection(), ml:matches-dmc-page());
 
-                                                    (: Exclude admin pages themselves, so you can't change,
-                                                       or break, the Admin UI through the Admin UI :)
-declare variable $pages    := fn:collection()/page/self::*[fn:not(fn:starts-with(fn:base-uri(.),'/admin/'))]
-                                                          [draft:listed(.)]; (: regular pages :)
+(: Used by URL rewriter to control access to DMC pages :)
+declare function ml:doc-matches-dmc-page-or-preview($doc as document-node()) {
+  cts:contains($doc, ml:matches-any-dmc-page(fn:true()))
+};
 
-(: Used to limit what documents are exposed via Search :)
-declare variable $live-documents := ( $Announcements
-                                    | $Events
-                                    | $Articles
-                                    | $Posts
-                                    | $Projects
-                                    );
+(: Used to find all live DMC documents, for search results :)
+declare private function ml:matches-dmc-page() {
+  ml:matches-any-dmc-page(fn:false())
+};
 
-(: cts:query for live documents, so we can pass this to search:search() :)
-(: TODO: Yes, this duplicates some logic above, so some refactoring is in order. :)
-declare function ml:live-document-query($preferred-version as xs:string) {
+(: Used to list all the DMC pages for a specific page type :)
+declare private function ml:matches-dmc-page($qname) {
+  ml:matches-dmc-page($qname, fn:false())
+};
+
+
+declare private function ml:matches-any-dmc-page($allow-previews-on-draft as xs:boolean) {
+  cts:or-query((
+    (: Require the document to match one of the known DMC page types :)
+    for $qname in $ml:doc-element-names return ml:matches-dmc-page($qname, $allow-previews-on-draft)
+  ))
+};
+
+
+(: Preview-only docs are allowed by the URL controller but never allowed in the search results page :)
+declare private function ml:matches-dmc-page($qname, $allow-previews-on-draft as xs:boolean) {
+
+  let $hide-previews := $draft:public-docs-only or fn:not($allow-previews-on-draft) return
+
   cts:and-query((
-    (: Assumption: These elements only ever appear at the top level. :)
-    cts:or-query((
-      cts:element-query(xs:QName("Announcement"),cts:and-query(())),
-      cts:element-query(xs:QName("Event")       ,cts:and-query(())),
-      cts:element-query(xs:QName("Article")     ,cts:and-query(())),
-      cts:element-query(xs:QName("Post")        ,cts:and-query(())),
-      cts:element-query(xs:QName("Project")     ,cts:and-query(())),
-      cts:element-query(xs:QName("page")        ,cts:and-query(())),
-      ml:api-doc-query($preferred-version)
-    )),
-    (: Exclude preview-only documents :)
-    cts:not-query(
-      ml:doc-element-att-query("preview-only","yes")
-    ),
-    (: Also exclude admin-specific pages :)
+
+    (: Require the given element to be present :)
+    cts:element-query($qname,cts:and-query(())),
+
+    (: Additionally attempt to constrain the element to exist at the top level :)
+    ml:query-for-doc-element($qname),
+
+    (: Exclude admin-specific <ml:page> docs :)
     cts:not-query(
       cts:directory-query("/admin/","infinity")
     ),
-    (: Require status="Published" if we're only serving public docs :)
+
+    (: Exclude documents in the /private directory :)
+    cts:not-query(
+      cts:directory-query("/private/","infinity")
+    ),
+
+    (: If we're only serving public docs... :)
     if ($draft:public-docs-only) then
-      cts:or-query((
-        ml:doc-element-att-query("status","Published"),
-        ml:api-doc-query($preferred-version)
-      ))
+      (: ...then hide "Draft" docs by requiring status="Published" :)
+      cts:element-attribute-value-query($qname,fn:QName("","status"),"Published")
+    else (),
+
+    (: If we're hiding previews... :)
+    if ($hide-previews) then
+      (: ...then disallow preview-only="yes" :)
+      cts:not-query(
+        cts:element-attribute-value-query($qname,fn:QName("","preview-only"),"yes")
+      )
     else ()
   ))
 };
 
+declare private function ml:query-for-doc-element($qname) as cts:query? {
+  let $plan := xdmp:value(fn:concat("xdmp:plan(fn:collection()/",$qname,")")),
+      $term-query := $plan//*:term-query
+  (: only do it if there's one term query returned; otherwise we can't be confident :)
+  where fn:count($term-query) eq 1
+  return cts:term-query(xs:integer(fn:string($term-query/*:key)))
+};
+
+
+(: Used as the additional query passed to search:search() :)
 declare function ml:search-corpus-query($preferred-version as xs:string) {
   cts:and-query((
     cts:or-query((
@@ -94,7 +129,7 @@ declare function ml:search-corpus-query($preferred-version as xs:string) {
                          )
     )),
     cts:not-query(
-      ml:doc-element-att-query("hide-from-search","yes")
+      ml:has-attribute("hide-from-search","yes")
     ),
     cts:not-query(
       cts:collection-query("hide-from-search")
@@ -102,23 +137,25 @@ declare function ml:search-corpus-query($preferred-version as xs:string) {
   ))
 };
 
-declare function ml:doc-element-att-query($att-name, $value) {
+declare private function ml:has-attribute($att-name, $value) {
   cts:or-query((
-    cts:element-attribute-value-query(xs:QName("Announcement"),fn:QName("",$att-name),$value),
-    cts:element-attribute-value-query(xs:QName("Event")       ,fn:QName("",$att-name),$value),
-    cts:element-attribute-value-query(xs:QName("Article")     ,fn:QName("",$att-name),$value),
-    cts:element-attribute-value-query(xs:QName("Post")        ,fn:QName("",$att-name),$value),
-    cts:element-attribute-value-query(xs:QName("Project")     ,fn:QName("",$att-name),$value),
-    cts:element-attribute-value-query(xs:QName("page")        ,fn:QName("",$att-name),$value)
+    for $qname in $ml:doc-element-names return
+      cts:element-attribute-value-query($qname,fn:QName("",$att-name),$value)
   ))
 };
 
-
-declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
-declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
+(: Query for all live DMC and AMC documents :)
+declare private function ml:live-document-query($preferred-version as xs:string) {
+  cts:or-query((
+    (: Pages on developer.marklogic.com :)
+    ml:matches-dmc-page(),
+    (: Pages on api.marklogic.com, specific to the given docs version :)
+    ml:matches-api-page($preferred-version)
+  ))
+};
 
 (: Search only goes across the preferred server version :)
-declare function ml:api-doc-query($preferred-version as xs:string) {
+declare private function ml:matches-api-page($preferred-version as xs:string) {
   cts:and-query((
     cts:directory-query(fn:concat("/apidoc/",$preferred-version,"/"), "infinity"),
     (: Consider re-visiting this; can we avoid having to enumerate the element names here? :)
@@ -164,6 +201,11 @@ declare function ml:get-matching-functions($name as xs:string, $version) as docu
   xdmp:query-trace(fn:false())
 };
 
+
+
+
+declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
+declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
 
 
 declare function topic-docs($tag as xs:string) as document-node()* {
@@ -214,8 +256,10 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
                                                       (: these aren't really tutorials :)
                 [fn:not(fn:matches(fn:base-uri($doc),'( /learn/[0-9].[0-9]/
                                                       | /learn/tutorials/gh/
+                                                      | /learn/dzone/
                                                       | /learn/readme/
                                                       | /learn/w3c-
+                                                      | /docs/
                                                       )','x'))]
                                    ) then "tutorial"
   else if ($doc/ml:Post            ) then "blog"
@@ -234,6 +278,7 @@ declare variable $posts-by-date := for $p in $Posts
                                    order by $p/created descending
                                    return $p;
 
+declare function latest-posts($how-many) { $posts-by-date[fn:position() le $how-many] };
 
 (: Backed-up Disqus conversations :)
 declare function comments-for-doc-uri($uri as xs:string)
@@ -352,10 +397,15 @@ declare function lookup-articles($type as xs:string, $server-version as xs:strin
 (: Used to implement the <ml:top-threads/> tag :)
 declare function get-threads-xml($search as xs:string?, $lists as xs:string*)
 {
-  (: This is a workaround for not yet being able to import the XQuery directly. :)
-  (: This is a bit nicer anyway, since the other can double as a main module... :)
-  xdmp:invoke('top-threads.xqy', (fn:QName('', 'search'), fn:string-join($search,' '),
-                                  fn:QName('', 'lists') , fn:string-join($lists ,' ')))
+  try {
+    (: This is a workaround for not yet being able to import the XQuery directly. :)
+    (: This is a bit nicer anyway, since the other can double as a main module... :)
+    xdmp:invoke('top-threads.xqy', (fn:QName('', 'search'), fn:string-join($search,' '),
+                                    fn:QName('', 'lists') , fn:string-join($lists ,' ')))
+  } catch ($e) {
+    (: Don't break the page if top threads doesn't work (e.g., because markmail.org is down) :)
+    xdmp:log(fn:concat("ERROR in calling top-threads.xqy: ", xdmp:quote($e)))
+  }
 };
 
 declare function xquery-widget($module as xs:string)

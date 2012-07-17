@@ -75,7 +75,7 @@
               <th scope="col">Author</th>
             </xsl:if>
             <xsl:if test="not(self::admin-project-list)">
-              <th scope="col">Created</th>
+              <th scope="col">Created or Published</th>
               <th scope="col">Last&#160;Updated</th>
             </xsl:if>
           </xsl:if>

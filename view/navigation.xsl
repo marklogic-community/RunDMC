@@ -8,6 +8,7 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:users="users"
   xmlns:ml   ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
@@ -37,6 +38,55 @@
     </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="login-menu">
+    <nav id="login-menu-nav">
+        <xsl:if test="not(users:signupsEnabled())">
+            <xsl:attribute name="style">display:none</xsl:attribute>
+        </xsl:if>
+        <ul>
+            <li>
+                <a class="drop-down-trigger button" id="signup-trigger" href="/people/signup"><xsl:if 
+                    test="users:getCurrentUserName()"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
+                <span>Sign up</span></a>
+            </li>
+            <li>
+                <a class="drop-down-trigger button" id="login-trigger" href="#"><xsl:if 
+                    test="users:getCurrentUserName()"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
+                <span>Log in</span></a>
+            </li>
+            <li>
+                <a class="drop-down-trigger button" id="session-trigger" href="#"><xsl:if 
+                    test="empty(users:getCurrentUserName())"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
+                <span><xsl:value-of select="users:getCurrentUserName()"></xsl:value-of></span></a>
+            </li>
+        </ul>
+    </nav>
+    <fieldset id="login-menu" class="drop-down-menu">
+        <form id="local-login-form" style="display: block" method="post" action="/login">
+            <span style="clear: both" id="login-error"/>
+            <p>
+                <div class="login-menu-label">Email </div>
+                <input id="email" name="email" value="" title="email" type="text" autocomplete="on"/>
+            </p>
+            <p>
+                <div class="login-menu-label">Password</div> 
+                <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/>
+            </p>
+            <a class="button" id="login_submit" href="#" type="button"><span>Log in</span></a>
+        </form>
+        <p id="login-menu-separator"/>
+        <p id="login-menu-or">OR</p>
+        <a id="fb-login" href="#"><div>Log in via Facebook</div></a> 
+        <div style="float: right"><a href="/people/recovery" id="recovery">Forgot password?</a></div>
+    </fieldset>
+    <fieldset id="session-menu" class="drop-down-menu">
+        <p> <a id="profile" href="/people/profile"><span>Edit Profile</span></a> </p>
+        <p id="separator"/>
+        <p class="last">
+            <a id="logout" href="#"><span>Log out</span></a>
+        </p>
+    </fieldset>
+  </xsl:template>
 
   <xsl:template match="top-nav">
     <nav>
@@ -66,7 +116,7 @@
                     <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
                                                                            then $srv:api-server
                                                                            else $srv:primary-server
-                                                                      else ()"/>
+                                                                      else ''"/>
                   </xsl:template>
 
                   <!-- In the standalone version, top nav links point to the Community site... -->
@@ -162,23 +212,36 @@
                   </xsl:template>
 
   <xsl:template match="sub-nav[$content/Article]">
-    <xsl:if test="$content/Article//xhtml:h3">
-        <h2>Contents</h2>
-        <ul>
-            <xsl:apply-templates mode="article-toc" select="$content/Article//xhtml:h3"/>
-        </ul>
+    <xsl:if test="$content//(xhtml:h3 | xhtml:figure)">
+      <h2>Contents</h2>
+      <ul class="tutorial_toc">
+        <!-- If the article doesn't have any <h3> headings, then display the list of figures instead. -->
+        <xsl:apply-templates mode="article-toc" select="if ($content//xhtml:h3)
+                                                       then $content//xhtml:h3
+                                                       else $content//xhtml:figure"/>
+      </ul>
     </xsl:if>
   </xsl:template>
 
-          <xsl:template mode="article-toc" match="xhtml:h3">
+          <xsl:template mode="article-toc" match="xhtml:h3 | xhtml:figure">
             <li>
               <span>
-              <a href="#{generate-id(.)}">
-                <xsl:value-of select="."/>
-              </a>
+                <xsl:apply-templates mode="article-toc-link" select="."/>
               </span>
             </li>
           </xsl:template>
+
+                  <xsl:template mode="article-toc-link" match="xhtml:h3">
+                    <a href="#{generate-id(.)}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </xsl:template>
+
+                  <xsl:template mode="article-toc-link" match="xhtml:figure">
+                    <a href="#{@id}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </xsl:template>
 
           <xsl:template match="xhtml:h3" priority="1">
             <xsl:param name="annotate-headings" tunnel="yes" select="false()"/>

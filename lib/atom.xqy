@@ -37,13 +37,13 @@ return
         return $r
     return
     <feed xmlns="http://www.w3.org/2005/Atom">
-    	<title>MarkLogic Developer Community Blog</title>
+    	<title>MarkLogic Community Blog</title>
     	<subtitle></subtitle>
     	<link href="http://developer.marklogic.com/blog/atom.xml" rel="self"/>
     	<updated>{ current-dateTime() }</updated>
     	<id></id>
     
-    	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Developer Community</generator>
+    	<generator uri="http://developer.marklogic.com/blog/atom.xml" version="1.0">MarkLogic Community</generator>
     	<icon>http://developer.marklogic.com/favicon.ico</icon>
     	<logo>http://developer.marklogic.com/media/marklogic-community-badge.png</logo>
     	{

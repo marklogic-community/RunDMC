@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:ml="http://developer.marklogic.com/site/internal">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns:fb="http://ogp.me/ns/fb#">
 	<head>
 		<title><ml:page-title/></title>
 
@@ -10,19 +10,22 @@
         <link rel="SHORTCUT ICON" href="/images/v-1/favicon.ico"/>
         <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
 
-		<link href="/css/v-19/screen.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/css/v-27/screen.css" rel="stylesheet" type="text/css" media="screen" />
         <link href="/css/fancybox.css" rel="stylesheet" type="text/css" media="screen,projection" />
 		<link href="/css/overcast/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" media="screen" />
 		<!--[if lte IE 8]>
 		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
 		<![endif]-->
-        <link type="text/css" href="/stackunderflow/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
-        <link rel="stylesheet" href="http://try.marklogic.com/css/tryml.css" type="text/css" media="screen, projection" /> 
+        <link type="text/css" href="/stackunderflow/v-1/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
+        <ml:if href-starts-with="/try/">
+            <link rel="stylesheet" href="http://try.marklogic.com/css/tryml.css" type="text/css" media="screen, projection" /> 
+        </ml:if>
 
 		<script type="text/javascript" src="/js/modernizr.js"></script>
 		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>  
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="/js/twitStream.js"></script>
         <script type="text/javascript" src="/js/jquery.fancybox.pack.js"></script>
@@ -31,9 +34,10 @@
         <script type="text/javascript" src="/js/jquery.youtubepopup.min.js"></script> 
         <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script> 
         <script type="text/javascript" src="/js/jquery.youtubeplaylist.js"></script>
+        <script type="text/javascript" src="/js/cornify.js"></script>
+        <script type="text/javascript" src="/js/jquery.dirtyforms.js"></script>
 
         <script type="text/javascript">
-	
 		$(function() {
 			$("ul.mlvideos").ytplaylist({addThumbs:true, autoPlay: false, holderId: 'ytvideo', playerWidth:'640', playerHeight:'360'});
 			$("#ytvideo-desc").text($($('.mlvideos li a')[0]).attr('alt'));		
@@ -101,6 +105,10 @@
 			<div id="header">
 				<header>
 					<h1><a href="/">MarkLogic&#174; Community</a></h1>
+                    <div id="login-header">
+                        <ml:login-menu/>
+                    </div>
+                    <div id="search-header">
 					<form ml:action="/search" method="get">
 						<fieldset>
 							<legend>Search</legend>
@@ -109,6 +117,7 @@
 							<input type="submit" value="Search" />
 						</fieldset>
 					</form>
+                    </div>
           <ml:top-nav/>
           <!--
 					<nav>
@@ -128,7 +137,8 @@
 			<hr />
 			<div id="content">
         <ml:choose>
-          <ml:condition href="/">
+          <!-- Don't include the regular page divs on the home page -->
+          <ml:condition href="/"> <!-- @href takes a list of external page URIs -->
             <ml:page-content/>
           </ml:condition>
           <ml:otherwise>
@@ -169,11 +179,11 @@
 					</ul>
 				</nav>
         -->
-				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>. <ml:edit-link/></div>
+				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>. | See <a href="http://www.marklogic.com/legal/privacy-policy.html">privacy policy</a> and <a href="http://www.marklogic.com/legal/terms-of-use.html">terms of use</a><ml:cornify/>. <ml:edit-link/></div>
 				<div class="utility">
 					<form ml:action="/search" method="get">
 						<fieldset>
-							<legend><label for="us_input">Search the community site</label></legend>
+							<legend><label for="us_input">Search the developer site</label></legend>
 							<input id="us_input" type="text" name="q" ml:value=""/>
 							<input type="image" src="/images/i_mag_glass2.png" alt="Search" title="Search the site" />
 						</fieldset>
@@ -201,27 +211,93 @@
 				document.getElementsByTagName('head')[0].appendChild(s);
 			}
 			_loadSuper = window.onload;
-			if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com')
+			if (window.location.hostname == 'dmc-stage.marklogic.com' || window.location.hostname == 'developer.marklogic.com' ||
+                window.location.hostname == 'cmc-stage.marklogic.com' || window.location.hostname == 'community.marklogic.com') 
 				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
         </script>
-	</body>
-    <script src="http://try.marklogic.com/js/tryml.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var s = '' + window.location.pathname;
-        // Only for pages in /try
-        if (s.lastIndexOf('/try/') === 0) {
-            $(document).ready(function() {
-                // See if tryml was not set (which means we didn't load the js)
-                if(typeof tryml == "undefined" || !tryml) { 
-                    // For each code block, show it
-                    $('.trymlcode').each(function(index) {
-                        if (index == 0) {
-                            $('#main_container #main').prepend('<span class="tryml-warn">Warning: Could not contact the code execution server, some features will not be available.</span>');
+      <div id="fb-root"></div>
+      <script>
+        window.fbAsyncInit = function() {
+
+        FB.init({
+            appId      : <ml:fb-app-id/>,
+            status     : true, 
+            cookie     : true,
+            xfbml      : true,
+            oauth      : true
+        });
+
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                $(document).ready(function() {
+
+                    // $("#signup-trigger").hide();
+                    // $("#login-trigger").hide();
+
+                    // Check to see if the server cookie is still there
+                    // which means we're still good
+                    if ( $("#session-trigger span").text() === "") {
+                        if ($.cookie('RUNDMC-NAME') !== null) {
+                            var n = $.cookie('RUNDMC-NAME');
+                            // $("#session-trigger span").text(n);
+                            // $("#session-trigger").show();
+                        } else {
+                            // Ok, no server session.  We could login now automagically but better 
+                            // to Ask the user - for now we act as if we're not logged in.
+                            $("#login-trigger").show();
                         }
-                        $(this).show();
-                    });
-                }
-            });
+                    }
+                });
+            }
+        });
+        };
+
+        (function(d){
+           var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+           js = d.createElement('script'); js.id = id; js.async = true;
+           js.src = "//connect.facebook.net/en_US/all.js";
+           d.getElementsByTagName('head')[0].appendChild(js);
+         }(document));
+      </script>
+      <script type="text/javascript">
+      (function() {
+        function initMunchkin() {
+          Munchkin.init('371-XVQ-609');
         }
-    </script>
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+        s.onreadystatechange = function() {
+          if (this.readyState == 'complete' || this.readyState == 'loaded') {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName('body')[0].appendChild(s);
+      })();
+      </script>
+	</body>
+
+    <ml:if href-starts-with="/try/">
+        <script src="http://try.marklogic.com/js/tryml.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var s = '' + window.location.pathname;
+            // Only for pages in /try
+            if (s.lastIndexOf('/try/') === 0) {
+                $(document).ready(function() {
+                    // See if tryml was not set (which means we didn't load the js)
+                    if(typeof tryml == "undefined" || !tryml) { 
+                        // For each code block, show it
+                        $('.trymlcode').each(function(index) {
+                            if (index == 0) {
+                                $('#main_container #main').prepend('<span class="tryml-warn">Warning: Could not contact the code execution server, some features will not be available.</span>');
+                            }
+                            $(this).show();
+                        });
+                    }
+                });
+            }
+        </script>
+    </ml:if>
 </html>

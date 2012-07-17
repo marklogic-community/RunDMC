@@ -203,12 +203,20 @@ if(typeof jQuery != 'undefined') {
                     var u = $(this).dialog.href;
                     _gaq.push(['_trackPageview', u],
                               ['_trackEvent', 'start-download', u]);
+                    try {
+                        var s = '/start-download' + u.replace(/\?.*/, "");
+                        mktoMunchkinFunction('clickLink', { href: s } );
                     $(this).dialog('close');
+                    } catch (err) {}
                     document.location = u + '?r=dmc';
                 },
                 Cancel: function() {
                     var u = $(this).dialog.href;
                     _gaq.push(['_trackEvent', 'cancel-download', u]);
+                    try {
+                        var s = '/cancel-download' + u.replace(/\?.*/, "");
+                        mktoMunchkinFunction('clickLink', { href: s } );
+                    } catch (err) {}
                     $(this).dialog('close');
                 }
            	}
@@ -244,6 +252,231 @@ if(typeof jQuery != 'undefined') {
 				}
 			});
 		}
+
+        $(document).ready(function() {
+
+            //Hide login and signup when we're on a signup page
+            if (window.location.pathname == '/people/signup' || 
+                window.location.pathname == '/people/fb-signup') {
+                    $('#login-menu-nav').hide();
+            }
+
+            $('input#email').focus();
+
+            $("#session-trigger").click(function(e) {
+                e.preventDefault();
+                $("#session-menu").toggle();
+                $(this).toggleClass("menu-open");
+            });
+
+            $("#login-trigger").click(function(e) {
+                e.preventDefault();
+                $("#login-menu").toggle();
+                $(this).toggleClass("menu-open");
+            });
+
+			$(document).bind('keydown.drop-down-menu', function(event) {
+                if (event.keyCode && event.keyCode === $.ui.keyCode.ESCAPE) {
+                    $('.drop-down-menu').each(function() {
+                        $(this).hide();
+                        $(this).removeClass("menu-open");
+                    });
+					event.preventDefault();
+                }
+            });
+
+
+            $("fieldset.drop-down-menu").mouseup(function() {
+                return false;
+            });
+
+            $(document).mouseup(function(e) {
+                if ($(e.target).parents("fieldset.drop-down-menu").length == 0) { // hide if the click is outside of a menu
+                    $('.drop-down-menu').each(function() {
+                        $(this).hide();
+                        $(this).removeClass("menu-open");
+                    });
+                }
+            });            
+
+            $("#local-login").click(function(e) {
+                $("#local-login-form").toggle().appendTo('#login-menu');
+            });
+
+            $("#login_submit").click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/login', /* could get from form */
+                    data: {
+                        'email': $('#local-login-form').find('#email').val(),
+                        'password': $('#local-login-form').find('#password').val()
+                    }, 
+                    success: function( data ) {
+                        if (data.status === 'ok') {
+                            $('#login-error').text("");
+                            $('#login-menu').hide();
+                            $('#login-trigger').removeClass("menu-open");
+
+                            $('#signup-trigger').hide();
+                            $('#login-trigger').hide();
+                            $('#session-trigger span').text(data.name);
+                            $('#session-trigger').show();
+                        } else {
+                            $('#login-error').text(data.status);
+                        }
+                    },
+                    dataType: 'json'
+                });
+            });
+
+            $("#logout").click(function(e) {
+
+                $("session-trigger span").text("");
+                $('#session-trigger').hide();
+                $('#session-menu').hide();
+                $('#signup-trigger').show();
+                $('#login-trigger').show();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/logout',
+                    success: function( data ) {
+                        // Stop busy indicator
+                        // Adjust page if need be
+                        window.location = "/";
+                    },
+                    dataType: 'json'
+                });
+            });
+
+            $("#fb-login").click(function(e) {
+
+                // console.log("fb-login");
+                $('#login-error').text("");
+                $("#login-menu").hide();
+                $("#signup-trigger").hide();
+                $("#login-trigger").hide();
+
+                FB.getLoginStatus(function(response) {
+
+                    if (response.status === 'connected') {
+
+                        doFBLogin(response);
+
+
+                    } else {
+                        FB.login(function(response){
+                            if (response.authResponse) {
+                                doFBLogin(response);
+                            } else {
+                                $('#signup-trigger').show();
+                                $('#login-trigger').show();
+                            };
+                        }, {"scope": "email"} );
+                    }
+                });
+            });
+
+            $("#profile-save").click(function(e) {
+                e.preventDefault();
+                if (! $('#profile-form').validate().form()) {
+                    return;
+                }
+                $('#profile-form').cleanDirty(); // could do in success I spose
+                $('#changes-saved span').hide("");
+                $('this').attr('disabled', 'disabled');
+                $.ajax({
+                    type: 'POST',
+                    url: '/save-profile',
+                    success: function( data ) {
+                        $('#session-trigger span').text(data.name);
+                        $('#changes-saved').text('Changes saved').removeClass("failed-save").addClass("successful-save").fadeIn('slow', function() {
+                            $(this).fadeOut('slow');
+                        });
+                    },
+                    error: function( data ) {
+                        $('#changes-saved').removeClass("successful-save").addClass("failed-save").text("Save failed").fadeIn('slow', function() {
+                            $(this).fadeOut('slow');
+                        });
+                    },
+                    finished: function( data ) {
+                        $('this').removeAttr('disabled');
+                    },
+                    data: $('#profile-form').serialize(),
+                    dataType: 'json'
+                });
+            });
+        });
+
+        //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
+            // Ajax validation tbd
+        //});
+
+        //$('#signup-form').submit(function(e) {
+		    // e.preventDefault();
+        //});
+
+        var d = $('.yearpicker').attr('data-value');
+        var now = new Date().getFullYear();
+        for (i = now; i < now + 10 ; i++)
+        {
+            $('.yearpicker').append($('<option />').val(i).html(i));
+        }
+        $('.yearpicker').append($('<option />').html('N/A'));
+        $('.yearpicker').val(d);
+        
+
 		// add new functions before this comment
 	});
+};
+
+function getParameterByName(name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.search);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function doFBLogin(response) {
+
+    var signedRequest = response.authResponse ? response.authResponse.signedRequest : null;
+
+    FB.api('/me', 'get', { access_token:response.authResponse.accessToken }, function(response) {
+
+        if (!response || response.error) {
+            alert('Communication with Facebook graph failed');
+            // console.log(response.error)
+            $('#signup-trigger').show();
+            $('#login-trigger').show();
+        } else {
+            // console.log(response);
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/fb-login',
+                data: {
+                    signedRequest: signedRequest,
+                    facebookID: response.id,
+                    email: response.email,
+                    name: response.name
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#session-trigger span').text(data.name);
+                        $('#session-trigger').show();
+                    } else {
+                        $("#login-trigger").show();
+                        $('#login-error').text(data.status);
+                        $("#login-menu").show();
+                    }
+                }
+            });
+        }
+    });
 }

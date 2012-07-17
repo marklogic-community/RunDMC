@@ -20,7 +20,7 @@ return
   xdmp:node-replace(
     $doc,
     (: ...with this incrementally transformed version :)
-    xdmp:xslt-invoke("../model/set-doc-attribute.xsl", $doc, (map:put($map, "att-name",  "status"),
+    xdmp:xslt-invoke("../model/publish-unpublish.xsl", $doc, (map:put($map, "att-name",  "status"),
                                                               map:put($map, "att-value", $status),
                                                               $map))
   ),

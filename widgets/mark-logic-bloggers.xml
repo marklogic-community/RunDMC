@@ -15,8 +15,13 @@
       </li>
       
       <li>
+        <a href="http://www.front2backdev.com/" target="_blank">David Erickson's Front 2 Back Dev</a>
+      </li>
+
+      <li>
         <a href="http://blog.xmlsh.org/" target="_blank">David Lee's XMLSH Blog</a>
       </li>
+      
       
       <li>
         <a href="http://servlets.com/blog/" target="_blank">Jason Hunter's Servlets</a>
@@ -35,10 +40,6 @@
       </li>
       
       <li>
-        <a href="http://blogs.marklogic.com/" target="_blank">MarkLogicians</a>
-      </li>
-      
-      <li>
         <a href="http://xquery.typepad.com/" target="_blank">Matt Turner's Discovering XQuery</a>
       </li>  
 
@@ -47,11 +48,15 @@
       </li>
 
       <li>
-        <a href="http://dubinko.info/blog/" target="_blank">Micah Dubinko's Micahpedia</a>
+        <a href="http://maxdewpoint.blogspot.com/" target="_blank">The Max Dew Point</a>
       </li>
 
       <li>
-        <a href="http://blakeley.com/wordpress/" target="_blank">Michael Blakeley's blog</a>
+        <a href="http://dubinko.info/blog/" target="_blank">MicahLogic</a>
+      </li>
+
+      <li>
+        <a href="http://blakeley.com/blogofile/" target="_blank">Michael Blakeley's blog</a>
       </li>
 
       <li>

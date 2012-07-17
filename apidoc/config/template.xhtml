@@ -88,14 +88,21 @@
 			<div id="header">
 				<header>
 					<h1><a ml:href="/" ml:class="">MarkLogic&#174; Community</a></h1>
-					<form ml:action="/search" method="get">
-						<fieldset>
-							<legend>Search</legend>
-							<label for="s_inp">Search the COMMUNITY with MarkLogic</label>
-							<input id="s_inp" type="text" placeholder="Search the COMMUNITY with MarkLogic" name="q" ml:value=""/>
-							<input type="submit" value="Search" />
-						</fieldset>
-					</form>
+          <!-- TODO: Make this work seamlessly on the docs server
+          <div id="login-header">
+            <ml:login-menu/>
+          </div>
+          -->
+          <div id="search-header">
+            <form ml:action="/search" method="get">
+              <fieldset>
+                <legend>Search</legend>
+                <label for="s_inp">Search the COMMUNITY with MarkLogic</label>
+                <input id="s_inp" type="text" placeholder="Search the COMMUNITY with MarkLogic" name="q" ml:value=""/>
+                <input type="submit" value="Search" />
+              </fieldset>
+            </form>
+          </div>
           <ml:top-nav/>
 				</header>
 			</div>

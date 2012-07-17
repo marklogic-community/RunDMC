@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <function-urls>
+   <function name="cts" url="Search.html"/>
+
    <function name="admin:appserver-add-namespace"
              url="AdminLibraryAppserver.html#admin:appserver-add-namespace"/>
    <function name="admin:appserver-add-request-blackout"

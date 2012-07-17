@@ -15,6 +15,7 @@
   <widget href="/widgets/tutorials.xml" id="tutorials-widget">
     <page href="/docs"/>
     <page href="/docs/5.0"/>
+    <page href="/products/marklogic-server/which-nosql"/>
   </widget>
                                      <!-- id for CSS purposes -->
   <widget href="/widgets/hadoop.xml" id="hadoop">
@@ -27,13 +28,14 @@
   </widget>
   -->
 
-  <widget xquery="recent-blog-posts.xqy">
-    <page href="/"/>
-    <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
-    <page-tree root="/news"/>
-    <page-tree root="/events"/>
+  <widget xslt="recent-blog-posts.xsl">
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/people/supernodes"/>
+  </widget>
+
+  <widget href="/widgets/signup.xml">
+    <page href="/people/signup"/>
+    <page href="/people/fb-signup"/>
   </widget>
 
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
@@ -43,14 +45,22 @@
     <page-tree root="/events"/>
     <page-tree root="/qa"/>
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
+    <page href="/events/mlw12-activities"/>
     <page href="/learn/videos"/>
+    <page href="/people/profile"/>
   </widget>
+
+  <widget xquery="twitter-topic.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
+  </widget>
+
 
   <!-- (You can also specify <widget xslt="myWidget.xsl"> if you so desire.) -->
 
+  <!--
   <widget href="/widgets/open-source-projects.xml">
     <page-tree root="/products"/>
   </widget>
+  -->
 
   <!--
   <widget href="/widgets/write-a-tutorial.xml">
@@ -96,6 +106,10 @@
 
   <widget href="/widgets/subscribe-to-nymug.xml">
     <page href="/meet/nymug"/>
+  </widget>
+
+  <widget href="/widgets/subscribe-to-sohmug.xml">
+    <page href="/meet/sohmug"/>
   </widget>
 
   <widget href="/widgets/start-a-user-group.xml">

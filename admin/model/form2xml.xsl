@@ -91,9 +91,11 @@
                   </xsl:function>
 
 
-          <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document -->
+          <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document or changing it from Draft to Published -->
           <xsl:template mode="populate-content" match="last-updated
-                                                     | created[not($doc-path)]">
+                                                     | created[not($doc-path)]
+                                                     | created[$params[@name eq 'status'] eq 'Published'
+                                                             and not($base-doc/*/*:status eq 'Published')]"> <!-- See also publish-unpublish.xsl -->
             <xsl:value-of select="current-dateTime()"/>
           </xsl:template>
 

@@ -17,6 +17,8 @@
 
   &topic-tags;
 
+  <ml:short-description form:label="Short Description" form:wide="yes" />
+
   <ml:tags form:optional="yes">
     <ml:tag form:label="Tag"
             form:repeating="yes"/>

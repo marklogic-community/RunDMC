@@ -17,6 +17,8 @@
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
+  xmlns:users="users"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
@@ -132,19 +134,22 @@
         <xsl:if test="@whats-new-page">
             <li><a href="{@whats-new-page}">What's New?&#160;»</a></li>
         </xsl:if>
-        <li><a href="{@license-page}">License Options&#160;»</a></li>
-        <li><a href="{@requirements-page}">System Requirements&#160;»</a></li>
+        <li><a href="{@license-page}">Read about MarkLogic Express &#160;»</a></li>
+        <xsl:if test="@academic-license-page">
+            <li><a href="{@academic-license-page}">Read about the MarkLogic Academic License &#160;»</a></li>
+        </xsl:if>
+        <li><a href="{@requirements-page}">Review System Requirements&#160;»</a></li>
       </ul>
     </xsl:if>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <p>
-        PLEASE NOTE: The MarkLogic software you are about to download is protected by copyright and other laws of the United States and elsewhere. All rights in and to the MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. By downloading the MarkLogic software, you agree that any use of the software is expressly conditioned upon and subject to the applicable terms of use which will be presented to you during installation of a license key. If you do not accept such terms of use, then download, installation, and use of the MarkLogic software are strictly prohibited.
+        PLEASE NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
         </p>
         
         
         <br/>
-        <span class="download-warn">You must confirm your acceptance of the above terms.</span> <br/>
+        <span class="download-warn">Please confirm your acceptance of the above terms.</span> <br/>
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
 
     </div>
@@ -301,8 +306,8 @@
             <xsl:text>)</xsl:text>
           </xsl:template>
 
-          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.general']">http://developer.marklogic.com/mailman/listinfo/general</xsl:template>
-          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.commits']">http://developer.marklogic.com/mailman/listinfo/commits</xsl:template>
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.general']">/mailman/listinfo/general</xsl:template>
+          <xsl:template mode="mailing-list-subscribe-url"  match="list[. eq 'com.marklogic.developer.commits']">/mailman/listinfo/commits</xsl:template>
 
 
 
@@ -398,6 +403,54 @@
           <xsl:variable name="name" select="name"/>
           <a title="{$name}" href="{$url}"><img src="{$avatar}" title="{$name}" alt="{$name}" width="24" height="24" /></a>
       </xsl:template>
+
+
+  <xsl:template match="latest-posts">
+    <xsl:apply-templates mode="latest-post" select="ml:latest-posts(@how-many)"/>
+  </xsl:template>
+
+          <!-- ASSUMPTION: We're not adding new <Announcement> docs anymore, so they won't appear as the latest -->
+          <xsl:template mode="latest-post" match="Post | Event">
+            <xsl:param name="show-icon" select="true()"/>
+            <article>
+              <h4>
+                <xsl:if test="$show-icon">
+                  <xsl:apply-templates mode="latest-post-icon" select="."/>
+                </xsl:if>
+                <a href="{ml:external-uri(.)}">
+                  <xsl:apply-templates mode="page-specific-title" select="."/>
+                </a>
+              </h4>
+              <xsl:apply-templates mode="post-date-info" select="."/>
+              <div>
+                <xsl:value-of select="short-description"/>
+              </div>
+            </article>
+          </xsl:template>
+
+                  <xsl:template mode="latest-post-icon" match="Post">
+                    <img width="36" height="33" src="/images/i_rss.png" alt="Blog post"/>
+                  </xsl:template>
+
+                  <xsl:template mode="latest-post-icon" match="Event">
+                    <img width="40" height="32" src="/images/i_calendar.png" alt="Event"/>
+                  </xsl:template>
+
+
+                  <xsl:template mode="post-date-info" match="Post">
+                    <div class="author_date">
+                      <xsl:text>by </xsl:text>
+                      <xsl:apply-templates mode="author-listing" select="author"/>
+                      <xsl:text>, </xsl:text>
+                      <xsl:value-of select="ml:display-date(created)"/>
+                    </div>
+                  </xsl:template>
+
+                  <xsl:template mode="post-date-info" match="Event">
+                    <div class="author_date">
+                      Event date: <xsl:value-of select="ml:display-date(details/date)"/>
+                    </div>
+                  </xsl:template>
 
 
   <xsl:template match="recent-news-and-events">
@@ -891,5 +944,117 @@
 		</div>
 	</div>
   </xsl:template>
+
+  <xsl:template match="fb-app-id">
+      <xsl:text>'</xsl:text>
+      <xsl:value-of select="$srv:facebook-config/*:id"/>
+      <xsl:text>'</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="fb-registration">
+      <fb:registration id="fbrb" width="530" xmlns:fb="fb">
+        <xsl:attribute name="fields">
+            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'}]</xsl:text>
+        </xsl:attribute>
+        <xsl:attribute name="redirect-uri">
+            <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
+        </xsl:attribute>
+      </fb:registration>
+  </xsl:template>
+
+  <xsl:template match="user-name">
+    <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
+  </xsl:template>
+
+  <xsl:template match="first-name">
+    <xsl:value-of select="fn:tokenize(users:getCurrentUser()/*:name/string(), ' ')[1]"/>
+  </xsl:template>
+
+  <xsl:template match="last-name">
+    <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
+  </xsl:template>
+
+  <xsl:template match="profile">
+    <xsl:variable name="user" select="users:getCurrentUser()"/>
+    <div>
+    <fieldset>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Email </div>
+            <input disabled="disabled" readonly="readonly" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Name </div>
+            <input autofocus="autofocus" class="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
+        </div>
+        <!--
+        <div class="profile-form-row">
+            <div class="profile-form-label">Avatar</div>
+            <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
+            <img src="{$user/*:picture/string()}" alt="picture"/>
+        </div>
+        -->
+        <div class="profile-form-row">
+            <div class="profile-form-label">Title </div>
+            <input class="" id="title" name="title" value="{$user/*:title/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Website/Blog</div>
+            <input class="url" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Twitter</div>
+            <input class="twitter" id="twitter" name="twitter" value="{$user/*:twitter/string()}" type="text"/>
+        </div>
+        <!--
+        <div class="profile-form-row">
+            <div class="profile-form-label">Password</div>
+            <input class="password required" id="password" name="password" value="" type="password"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Confirm password</div>
+            <input id="password_confirm" name="password_confirm" value="" type="password"/>
+        </div>
+        -->
+        <div class="profile-form-row">
+            <div class="profile-form-label">Organization </div>
+            <input class="" id="organization" name="organization" value="{$user/*:organization/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Location </div>
+            <input class="" id="location" name="location" value="{$user/*:location/string()}" type="text"/>
+        </div>
+    </fieldset>
+    <h3>Educational background</h3>
+    <fieldset>
+        <div class="profile-form-row">
+            <div class="profile-form-label">School </div>
+            <input class="" id="school" name="school" value="{$user/*:school/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
+            <div class="profile-form-label">Year of graduation </div>
+            <select class="yearpicker" id="yog" name="yog" data-value="{$user/*:yog/string()}"></select>
+        </div>
+    </fieldset>
+    </div>
+  </xsl:template>
+
+   <xsl:template match="reset-hidden-fields">
+       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
+            <xsl:attribute name="value">
+               <xsl:copy-of select="$params[@name eq  'token']"/>
+            </xsl:attribute>
+       </input>
+       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
+            <xsl:attribute name="value">
+               <xsl:copy-of select="$params[@name eq  'id']"/>
+            </xsl:attribute>
+       </input>
+   </xsl:template>
+   <xsl:template match="cornify">
+    <xsl:if test="users:cornifyEnabled()">
+        &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
+    </xsl:if>
+   </xsl:template>
+    
 
 </xsl:stylesheet>

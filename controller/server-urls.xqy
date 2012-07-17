@@ -41,6 +41,7 @@ declare variable $s:standalone-api-server    := s:server-url("standalone-api");
 
 declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then $s:standalone-api-server
                                                                            else $s:api-server;
+declare variable $s:facebook-config := s:server-config("facebook");
 
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
                                                                    else $s:draft-server;
@@ -55,4 +56,11 @@ declare function s:server-url($type as xs:string) {
   if ($server-config/@url)
   then string($server-config/@url)
   else concat('http://',$s:request-host-without-port,':',$server-config/@port)
+};
+
+(: return entire config as well :)
+declare function s:server-config($type as xs:string) {
+  let $element-name  := concat($type,'-config'),
+      $server-config := $s:this-host/*[local-name(.) eq $element-name] return
+  $server-config
 };

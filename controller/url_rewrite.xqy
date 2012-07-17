@@ -1,5 +1,5 @@
-import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
-       at "../model/filter-drafts.xqy";
+import module namespace ml = "http://developer.marklogic.com/site/internal"
+       at "../model/data-access.xqy";
 
 import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "server-urls.xqy";
@@ -83,6 +83,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/blog/atom.xml"
     else if (starts-with($path, "/legal")) then
         "/"
+    else if (starts-with($path, "/training")) then
+        "/learn"
     else if (starts-with($path, "/svn")) then
         concat("/code/", replace(substring($path, 6), "^([^/]*)/.*", "$1" ))
     else if ($path = ("/code/comoms")) then
@@ -107,6 +109,10 @@ declare function local:redir($path as xs:string) as xs:string
         substring($path, 1, string-length($path) - 4)
     else if ($path = '/pubs/training/eclipse-xqdt-setup.pdf') then
         "/learn/xqdt-setup"
+    else if ($path = '/learn/2009-01-get-started-apps') then
+        "/learn/get-started-apps"
+    else if ($path = '/learn/2009-01-get-started-apps-2') then
+        "/learn/get-started-apps-2"
     else if ($path = '/events/markups-2010-09-11') then
         "/events/markups-2010-08-11"
     else if ($path = ("/try", "/try/ninja")) then
@@ -114,7 +120,10 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        "/people/supernodes"
+        if ($path = ("/people/signup", "/people/reset", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
+            $path
+        else
+            "/people/supernodes"
     else
         $path
 };
@@ -135,7 +144,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     let $path := if ($path = "/docs") then
         $latest-doc-uri
     else if ($path = "/products/marklogic-server") then
-        $latest-prod-uri
+        $latest-prod-uri 
     else if ($path = "/products/marklogic-server/requirements") then
         $latest-requirements-uri
     else if ($path = "/products/xcc") then
@@ -161,7 +170,9 @@ declare function local:rewrite($path as xs:string) as xs:string
     if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
-    else if ($path = ("/download", "/downloads", "/products", "/product", "/products/marklogic-server", "/products/marklogic-server/")) then
+    else if ($path = ("/download", "/downloads", "/products", "/product")) then
+        concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
+    else if ($path = ("/products/marklogic-server", "/products/marklogic-server/")) then
         concat("/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
     (: remove version from the URL for versioned assets :)
     else if (matches($path, '^/(js|css|images|media|stackunderflow)/v-[0-9]*/.*'))  then 
@@ -175,7 +186,7 @@ declare function local:rewrite($path as xs:string) as xs:string
     else if (starts-with($path, '/pubs/')) then
         concat("/controller/get-db-file.xqy?uri=", $path)
     (: Respond with DB contents for XML files that exist :)
-    else if (doc-available($doc-url) and draft:allow(doc($doc-url)/*)) then 
+    else if (doc-available($doc-url) and ml:doc-matches-dmc-page-or-preview(doc($doc-url))) then
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
     (: Respond with DB contents for directories that have index.xml files :)
 (: EDL: I don't see where this is used; right now, it just creates false positives (as with /admin/index.xml)
@@ -190,6 +201,32 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/get-updated-disqus-threads.xqy"
     else if ($path eq "/invalidateNavigationCache") then
         "/controller/invalidate-navigation-cache.xqy"
+    else if ($path eq "/validate") then
+        concat("/controller/validate.xqy?", $query-string)
+    else if ($path eq "/process-license-request") then
+        concat("/controller/process-license-request.xqy?", $query-string)
+    else if ($path eq "/license-record") then
+        concat("/controller/license-record.xqy?", $query-string)
+    else if ($path eq "/signup") then
+        "/controller/signup.xqy"
+    else if ($path eq "/fb-login") then
+        "/controller/fb-login.xqy"
+    else if ($path eq "/login") then
+        "/controller/login.xqy"
+    else if ($path eq "/logout") then
+        "/controller/logout.xqy"
+    else if ($path eq "/set-password") then
+        "/controller/set-password.xqy"
+    else if ($path eq "/reset-email") then
+        "/controller/reset-email.xqy"
+    else if ($path eq "/reset") then
+        concat("/controller/reset.xqy?", $query-string)
+    else if ($path eq "/save-profile") then
+        "/controller/save-profile.xqy"
+    else if ($path eq "/enable-corn") then
+        "/controller/enable-corn.xqy?q=on"
+    else if ($path eq "/disable-corn") then
+        "/controller/enable-corn.xqy"
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"

@@ -68,7 +68,7 @@ define function add-cookie($name as xs:string, $value as xs:string, $expires as 
     fn:error("Invalid path parameter")
   ) else (),
 
-  let $cookie := fn:concat(xdmp:url-encode($name), "=", xdmp:url-encode($value))
+  let $cookie := fn:concat(xdmp:url-encode($name, fn:true()), "=", xdmp:url-encode($value, fn:true()))
   let $cookie := if(fn:exists($expires)) then fn:concat($cookie, "; expires=", get-cookie-date-string($expires)) else $cookie
   let $cookie := if(fn:exists($domain)) then fn:concat($cookie, "; domain=", $domain) else $cookie
   let $cookie := if(fn:exists($path)) then fn:concat($cookie, "; path=", $path) else $cookie
@@ -114,7 +114,7 @@ define function delete-cookie($name as xs:string, $domain as xs:string?, $path a
  :)
 define function get-cookie($name as xs:string) as xs:string*
 {
-  let $urlname := xdmp:url-encode($name)
+  let $urlname := xdmp:url-encode($name, fn:true())
   let $header := xdmp:get-request-header("Cookie")
   let $cookies := fn:tokenize($header, "; ?")[fn:starts-with(., $urlname)]
   for $c in $cookies
