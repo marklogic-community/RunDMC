@@ -38,6 +38,8 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Don't show the login menu when we're viewing the standalone docs app -->
+  <xsl:template match="login-menu[$srv:viewing-standalone-api]"/>
   <xsl:template match="login-menu">
     <nav id="login-menu-nav">
         <xsl:if test="not(users:signupsEnabled())">
@@ -45,7 +47,7 @@
         </xsl:if>
         <ul>
             <li>
-                <a class="drop-down-trigger button" id="signup-trigger" href="/people/signup"><xsl:if 
+                <a class="drop-down-trigger button" id="signup-trigger" href="{$srv:primary-server}/people/signup"><xsl:if
                     test="users:getCurrentUserName()"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
                 <span>Sign up</span></a>
             </li>
@@ -62,7 +64,7 @@
         </ul>
     </nav>
     <fieldset id="login-menu" class="drop-down-menu">
-        <form id="local-login-form" style="display: block" method="post" action="/login">
+        <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
             <span style="clear: both" id="login-error"/>
             <p>
                 <div class="login-menu-label">Email </div>
@@ -77,10 +79,10 @@
         <p id="login-menu-separator"/>
         <p id="login-menu-or">OR</p>
         <a id="fb-login" href="#"><div>Log in via Facebook</div></a> 
-        <div style="float: right"><a href="/people/recovery" id="recovery">Forgot password?</a></div>
+        <div style="float: right"><a href="{$srv:primary-server}/people/recovery" id="recovery">Forgot password?</a></div>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">
-        <p> <a id="profile" href="/people/profile"><span>Edit Profile</span></a> </p>
+        <p> <a id="profile" href="{$srv:primary-server}/people/profile"><span>Edit Profile</span></a> </p>
         <p id="separator"/>
         <p class="last">
             <a id="logout" href="#"><span>Log out</span></a>
