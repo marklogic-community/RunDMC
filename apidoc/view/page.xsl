@@ -87,7 +87,8 @@
 
           <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
             <div id="copyright">Copyright © 2010–2012 MarkLogic Corporation. All rights reserved. | Powered by
-              <a href="{$srv:main-server}/products">MarkLogic Server <ml:server-version/></a> and <a href="{$srv:main-server}/code/rundmc">rundmc</a>.
+              <!-- Absolute links so they work uniformly on standalone docs app -->
+              <a href="http://developer.marklogic.com/products">MarkLogic Server <ml:server-version/></a> and <a href="http://developer.marklogic.com/code/rundmc">rundmc</a>.
             </div>
           </xsl:template>
 
