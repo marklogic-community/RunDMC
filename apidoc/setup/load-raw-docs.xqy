@@ -7,6 +7,7 @@ declare namespace dir = "http://marklogic.com/xdmp/directory";
 
 declare variable $srcdir  := xdmp:get-request-field("srcdir");
 declare variable $version := xdmp:get-request-field("version"); (: e.g., 4.1 :)
+declare variable $rawdir  := fn:concat($srcdir, "/pubs/raw");
 
 declare variable $database-name := u:get-doc("/apidoc/config/source-database.xml")/string(.);
 
@@ -19,7 +20,7 @@ declare function local:load-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file'] return
       let $path := $file/dir:pathname
-      let $uri  := concat("/", $version, translate(substring-after($path, $srcdir),"\","/")) return
+      let $uri  := concat("/", $version, translate(substring-after($path, $rawdir),"\","/")) return
       (
         xdmp:eval(
           concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))'),
@@ -41,6 +42,6 @@ if (not($version = $legal-versions)) then
                                   string-join($legal-versions,", ")))
 else 
   (
-    local:load-docs($srcdir),
+    local:load-docs($rawdir),
     "Documents loaded. See log for details."
   )
