@@ -169,7 +169,9 @@ tbody:last-child tr:last-child th:first-child,
 tbody:last-child tr:last-child td:first-child
 	{background-position: bottom left;}
 tbody:last-child tr:last-child td:last-child {background-position: bottom right;}
+/* disabling this perverse rule
 tbody th + th {width: 150px;}
+*/
 th:last-child,  td:last-child {padding-right: 15px; !important;}
 th.last,  td.last {padding-right: 15px;}
 /*
