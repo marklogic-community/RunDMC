@@ -231,6 +231,7 @@
                   <xsl:template mode="new-name" match="Emphasis">em</xsl:template>
                   <xsl:template mode="new-name" match="Bold"    >strong</xsl:template>
                   <xsl:template mode="new-name" match="Code
+                                                     | CodeLeft
                                                      | CodeNoIndent">pre</xsl:template>
                   <xsl:template mode="new-name" match="Body
                                                      | CellBody
