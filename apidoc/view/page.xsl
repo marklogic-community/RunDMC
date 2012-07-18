@@ -503,16 +503,14 @@
                   <xsl:template mode="function-signature" match="api:function">
                     <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
                     <xsl:element name="pre">
-                      <code>
-                        <xsl:value-of select="@fullname"/>
-                        <xsl:text>(</xsl:text>
-                        <xsl:if test="api:params/api:param">
-                          <xsl:text>&#xA;</xsl:text>
-                        </xsl:if>
-                        <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
-                        <xsl:text>) as </xsl:text>
-                        <xsl:value-of select="normalize-space(api:return)"/>
-                      </code>
+                      <xsl:value-of select="@fullname"/>
+                      <xsl:text>(</xsl:text>
+                      <xsl:if test="api:params/api:param">
+                        <xsl:text>&#xA;</xsl:text>
+                      </xsl:if>
+                      <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
+                      <xsl:text>) as </xsl:text>
+                      <xsl:value-of select="normalize-space(api:return)"/>
                     </xsl:element>
                   </xsl:template>
 
