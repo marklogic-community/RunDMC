@@ -19,6 +19,7 @@ declare variable $config := u:get-doc("/apidoc/config/static-docs.xml")/static-d
 declare variable $subdirs-to-load            := $config/include/string(.);
 
 declare variable $src-dir  := xdmp:get-request-field("staticdir");
+declare variable $pubs-dir := concat($src-dir,'/pubs');
 (:
 declare variable $version-dir                := $config/version[@number eq $api:version]/@src-dir/string(.);
 :)
@@ -54,7 +55,7 @@ declare function local:load-pubs-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file']
     let $path    := $file/dir:pathname,
-        $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$src-dir),"\","/"))),
+        $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$pubs-dir),"\","/"))),
 
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
