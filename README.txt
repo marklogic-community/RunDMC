@@ -33,6 +33,12 @@ SETUP NOTES
     a WebDAV server with root set to "/". Then add the server URL to
     /admin/config/navigation.xml.  Default is same hostname, port 8005.
 
+    Note: OS X users, you will want to keep OS X from creating .DS_Store files
+    by doing the following
+
+        % defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+
+
   XDBC server:
     If you want to use the loading tools to copy a database from 
     the live developer site, you'll need an XDBC server.
