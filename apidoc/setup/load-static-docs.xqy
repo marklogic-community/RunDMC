@@ -107,10 +107,9 @@ declare function local:load-pubs-docs($dir) {
 $setup:errorCheck,
 
 (: TODO: Load only the included directories :)
-for $included-dir in xdmp:filesystem-directory($src-dir)/dir:entry[dir:type eq 'directory']
-                                                                   [dir:filename = $subdirs-to-load]
-                                                         /dir:pathname
-                                                         /string(.)
+for $included-dir in xdmp:filesystem-directory($pubs-dir)
+    /dir:entry[dir:type eq 'directory'][dir:filename = $subdirs-to-load]
+    /dir:pathname/string(.)
 return
 (
   xdmp:log(concat("Loading static docs from: ", $included-dir)),
