@@ -1608,11 +1608,6 @@ ul.multi-page-toc {
     padding-bottom: 0px; 
 }
 
-/* Workaround for our css stomping on CodeMirror */
-.CodeMirror-scroll pre {
-    overflow: hidden;
-}
-
 /* Twitstream */
 .tweet-source {display:none;}
 
