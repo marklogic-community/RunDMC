@@ -168,7 +168,8 @@
         <node display="Other Documentation" open="yes" id="other" top-control="yes">
           <xsl:if test="number($api:version) ge 5">
             <node display="Hadoop Connector" open="yes">
-              <node display="Connector for Hadoop API" href="/javadoc/client/index.html" external="yes"/>
+              <node display="Connector for Hadoop API" 
+                    href="/javadoc/hadoop/index.html" external="yes"/>
               <!-- Hadoop guide repeated -->
               <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
                 <xsl:with-param name="is-duplicate" select="true()"/>
