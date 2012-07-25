@@ -102,6 +102,7 @@
       </head>
       <body>
         <xsl:apply-templates mode="page-content" select="."/>
+        <xsl:call-template name="apidoc-copyright"/>
       </body>
     </html>
   </xsl:template>
