@@ -109,7 +109,11 @@ declare variable $matching-function-count := count($matching-functions);
 
 (: SCENARIO 2: Internal rewrite :)
 
-  (: SCENARIO 2A: Serve content from file system :)
+  (: SCENARIO 2A: Serve up the JavaScript-based docapp redirector :)
+    else if (ends-with($path, "docapp.xqy")) then
+      "/apidoc/controller/docapp-redirector.xqy"
+
+  (: SCENARIO 2B: Serve content from file system :)
     (: Remove version from the URL for versioned assets :)
     else if (matches($path, '^/(css|images)/v-[0-9]*/.*')) then
       replace($path, '/v-[0-9]*', '')
@@ -119,7 +123,7 @@ declare variable $matching-function-count := count($matching-functions);
       $orig-url
 
 
-  (: SCENARIO 2B: Serve content from database :)
+  (: SCENARIO 2C: Serve content from database :)
     (: Respond with DB contents for /media  :)
     else if (starts-with($path, '/media/')) then
       local:get-db-file($path)
