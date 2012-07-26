@@ -104,7 +104,8 @@
           </node>
           <node display="Related Guides"
                 id="RelatedRestGuides"
-                open="yes">
+                open="yes"
+                wrap-titles="yes">
             <!-- REST Client guide repeated -->
             <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'rest-dev.xml')]">
               <xsl:with-param name="is-duplicate" select="true()"/>
@@ -156,7 +157,7 @@
             </node>
           </xsl:if>
           <xsl:for-each select="$guide-groups">
-            <node display="{@name}" id="{generate-id(.)}" open="yes">
+            <node display="{@name}" id="{generate-id(.)}" open="yes" wrap-titles="yes">
               <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
             </node>
           </xsl:for-each>
@@ -165,7 +166,7 @@
         -->
       </toc:guides>
       <toc:other>
-        <node display="Other Documentation" open="yes" id="other" top-control="yes">
+        <node display="Other Documentation" open="yes" id="other" top-control="yes" wrap-titles="yes">
           <xsl:if test="number($api:version) ge 5">
             <node display="Hadoop Connector" open="yes">
               <node display="Connector for Hadoop API" 

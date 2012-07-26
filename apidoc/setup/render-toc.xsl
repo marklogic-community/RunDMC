@@ -224,6 +224,8 @@
               <xsl:apply-templates mode="class-initialized" select="."/>
               <xsl:text> </xsl:text>
               <xsl:apply-templates mode="class-async" select="."/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates mode="class-wrap-titles" select="."/>
             </xsl:variable>
             <li class="{$class}">
               <xsl:apply-templates mode="id-att"   select="."/>
@@ -268,6 +270,10 @@
                   <!-- Mark the asynchronous (unpopulated) nodes as such so the JavaScript can act accordingly -->
                   <xsl:template mode="class-async" match="node[@async]">async</xsl:template>
                   <xsl:template mode="class-async" match="node"/>
+
+                  <!-- Mark the nodes whose descendant titles should be wrapped -->
+                  <xsl:template mode="class-wrap-titles" match="node[@wrap-titles]">wrapTitles</xsl:template>
+                  <xsl:template mode="class-wrap-titles" match="node"/>
 
 
                   <xsl:template mode="hit-area" match="node"/>

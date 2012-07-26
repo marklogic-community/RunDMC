@@ -282,8 +282,8 @@ font-weight: bold;
 .treeview ul {line-height: 110%;}
 .treeview li {padding-left: 18px;}
 
-        .treeview li {white-space:nowrap;} /* no wrapping on function/resource names */
-.guides .treeview li {white-space:normal;} /* allow wrapping on guide/section titles */
+.treeview             li {white-space:nowrap;} /* allow no wrapping in the TOC... */
+.treeview .wrapTitles li {white-space:normal;} /* ...except where specifically elected */
 
 .treeview a.selected {background-color: transparent;}
 .treeview .hitarea {margin-left: -18px;}
