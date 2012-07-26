@@ -46,6 +46,8 @@
       </xsl:choose>
     </div>
     <xsl:apply-templates mode="chapter-next-prev" select="@previous,@next"/>
+    <!-- "Next" link on Table of Contents (guide) page -->
+    <xsl:apply-templates mode="guide-next" select="@next"/>
   </xsl:template>
 
   <!-- Guide title -->
@@ -86,9 +88,13 @@
             <span class="chapterNumber"> — chapter&#160;<xsl:value-of select="../@number"/></span>
           </xsl:template>
 
-          <!-- Only show the next/prev links on chapter pages (not the main guide page) -->
-          <xsl:template mode="chapter-next-prev" match="@*"/>
-          <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous">
+          <!-- Only show the next/prev links on chapter pages (and just "Next" on the guide page) -->
+          <xsl:template mode="chapter-next-prev
+                              guide-next" match="@*"/>
+          <xsl:template mode="guide-next" match="guide/@next">
+            <xsl:call-template name="guide-next"/>
+          </xsl:template>
+          <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous" name="guide-next">
             <div class="{local-name(.)}Chapter">
               <a href="{ml:external-uri-for-string(.)}#chapter">
                 <xsl:apply-templates mode="next-or-prev" select="."/>
@@ -96,6 +102,7 @@
             </div>
           </xsl:template>
 
+                  <xsl:template mode="next-or-prev" match="guide/@next"                 >Next&#160;»</xsl:template>
                   <xsl:template mode="next-or-prev" match="@next"                       >Next&#160;chapter&#160;»</xsl:template>
                   <xsl:template mode="next-or-prev" match="@previous"                   >«&#160;Previous&#160;chapter</xsl:template>
                   <xsl:template mode="next-or-prev" match="@previous[../@number eq '1']">«&#160;Table&#160;of&#160;contents</xsl:template>
