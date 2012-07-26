@@ -109,7 +109,7 @@
 
 
   <xsl:template mode="guide" match="guide/info">
-    <table class="guide_info">
+    <table class="guide_info api_generic_table">
       <tr>
         <th>Server version</th>
         <th>Date</th>

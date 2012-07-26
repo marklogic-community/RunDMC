@@ -111,10 +111,6 @@ ol ol {
 	font-size: 27px;
 }
 
-table.guide_info { width: 100%; }
-table.guide_info td { white-space: nowrap; }
-table.guide_info { font-size: .8em; }
-
 .underline { text-decoration: underline }
 
 #page_content ul {
@@ -324,14 +320,6 @@ li.expandable .treecontrol { display: none; }
 
 .printerFriendly { float: right; padding-top: 8px; }
 
-/* This could use some sprucing up */
-.userguide th,
-.userguide td {padding: 6px 5px;}
-.userguide td {
-	border: solid #CCC;
-	border-width: 1px;
-}
-
 a.sectionLink       { color: #666; }
 a.sectionLink:hover { color: #235BAB; }
 
@@ -395,6 +383,51 @@ table.api_table {
 	vertical-align: middle;
 }
 .api_table tbody td:first-child {font-size: 12px;}
+
+
+
+/* Use brute force to undo the background property on th (set in screen.css) */
+.api_generic_table tbody th:first-child,
+.api_generic_table tbody th:last-child,
+.api_generic_table tbody tr:first-child th:first-child,
+.api_generic_table tr:first-child th:first-child,
+.api_generic_table tbody:last-child tr:last-child th:first-child,
+.api_generic_table tbody tr:first-child th:first-child,
+.api_generic_table tbody:last-child tr:last-child th,
+.api_generic_table tbody:last-child tr:last-child th:first-child,
+
+/* th properties */
+.api_generic_table th
+{ background-image: none;
+  background-color: #ECECEC;
+  border: 1px solid #CCC; }
+
+
+/* Use brute force to undo the background property on td (set in screen.css) */
+.api_generic_table tbody:last-child tr:last-child td:first-child,
+.api_generic_table tbody td:last-child,
+.api_generic_table tbody:last-child tr:last-child td,
+.api_generic_table tbody:last-child tr:last-child td:last-child,
+.api_generic_table tbody td:first-child,
+
+/* td properties */
+.api_generic_table td
+{ background-image: none;
+  border: 1px solid #CCC; }
+
+/* more brute force to reset padding */
+.api_generic_table tbody td:first-child,
+.api_generic_table tbody th:first-child,
+.api_generic_table td,
+.api_generic_table th
+{ padding: 15px 10px; }
+
+
+table.api_generic_table.guide_info { width: 100%; }
+table.api_generic_table.guide_info td,
+table.api_generic_table.guide_info th { padding: 8px; font-size: .9em; }
+
+
 
 table.parameters {
 	table-layout: fixed;
