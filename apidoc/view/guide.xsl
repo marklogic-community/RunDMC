@@ -77,16 +77,31 @@
 
           <!-- Don't link to the guide root when we're already on it -->
           <xsl:template mode="guide-heading-content" match="/guide/guide-title">
-            <xsl:value-of select="."/>
+            <xsl:apply-templates mode="guide-title" select="."/>
           </xsl:template>
 
           <!-- Make the guide heading a link when we're on a chapter page -->
           <xsl:template mode="guide-heading-content" match="/chapter/guide-title">
             <a href="{api:external-guide-uri(/)}">
-              <xsl:value-of select="."/>
+              <xsl:apply-templates mode="guide-title" select="."/>
             </a>
             <span class="chapterNumber"> — chapter&#160;<xsl:value-of select="../@number"/></span>
           </xsl:template>
+
+                  <!-- Wrap <sup> around ® character -->
+                  <xsl:template mode="guide-title" match="guide-title">
+                    <xsl:analyze-string select="." regex="®">
+                      <xsl:matching-substring>
+                        <sup>
+                          <xsl:value-of select="."/>
+                        </sup>
+                      </xsl:matching-substring>
+                      <xsl:non-matching-substring>
+                        <xsl:value-of select="."/>
+                      </xsl:non-matching-substring>
+                    </xsl:analyze-string>
+                  </xsl:template>
+
 
           <!-- Only show the next/prev links on chapter pages (and just "Next" on the guide page) -->
           <xsl:template mode="chapter-next-prev
