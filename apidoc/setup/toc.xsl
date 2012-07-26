@@ -90,14 +90,13 @@
         </node>
       </toc:categories>
       <xsl:if test="number($api:version) ge 5">
-        <toc:rest-resources>
+        <toc:rest-resources top-control="yes">
           <!-- Add this wrapper so the /REST page will get created -->
           <node href="/REST"
                 display="All REST resources"
                 id="RESTResourcesAPI"
                 function-list-page="yes"
-                open="yes"
-                top-control="yes">
+                open="yes">
             <title>All REST resources</title>
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
