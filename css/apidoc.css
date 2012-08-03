@@ -279,7 +279,8 @@ font-weight: bold;
 .treeview li {padding-left: 18px;}
 
 .treeview             li {white-space:nowrap;} /* allow no wrapping in the TOC... */
-.treeview .wrapTitles li {white-space:normal;} /* ...except where specifically elected */
+.treeview .wrapTitles li,                      /* ...except where specifically elected */
+.treeview li.wrapTitles {white-space:normal;}
 
 .treeview a.selected {background-color: transparent;}
 .treeview .hitarea {margin-left: -18px;}

@@ -103,8 +103,7 @@
           </node>
           <node display="Related Guides"
                 id="RelatedRestGuides"
-                open="yes"
-                wrap-titles="yes">
+                open="yes">
             <!-- REST Client guide repeated -->
             <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'rest-dev.xml')]">
               <xsl:with-param name="is-duplicate" select="true()"/>
@@ -156,7 +155,7 @@
             </node>
           </xsl:if>
           <xsl:for-each select="$guide-groups">
-            <node display="{@name}" id="{generate-id(.)}" open="yes" wrap-titles="yes">
+            <node display="{@name}" id="{generate-id(.)}" open="yes">
               <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
             </node>
           </xsl:for-each>
@@ -165,7 +164,7 @@
         -->
       </toc:guides>
       <toc:other>
-        <node display="Other Documentation" open="yes" id="other" top-control="yes" wrap-titles="yes">
+        <node display="Other Documentation" open="yes" id="other" top-control="yes">
           <xsl:if test="number($api:version) ge 5">
             <node display="Hadoop Connector" open="yes">
               <node display="Connector for Hadoop API" 
@@ -193,7 +192,7 @@
 
           <xsl:template mode="toc-guide-node" match="/guide">
             <xsl:param name="is-duplicate" select="false()"/>
-            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes" sub-control="yes">
+            <node href="{ml:external-uri(.)}" display="{/guide/title}" id="{generate-id(.)}" async="yes" guide="yes" sub-control="yes" wrap-titles="yes">
               <xsl:if test="$is-duplicate">
                 <xsl:attribute name="duplicate" select="'yes'"/>
               </xsl:if>
