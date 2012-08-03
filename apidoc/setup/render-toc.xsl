@@ -176,7 +176,7 @@
                   -->
                   <xsl:template mode="tab-label" match="toc:guides">Guides</xsl:template>
                   <xsl:template mode="tab-label" match="toc:rest-resources">REST<br/>API</xsl:template>
-                  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>Client</xsl:template>
+                  <xsl:template mode="tab-label" match="toc:java"          >Java<br/>API</xsl:template>
                   <!--
                   <xsl:template mode="tab-label" match="toc:help"          >Admin<br/>Help</xsl:template>
                   -->

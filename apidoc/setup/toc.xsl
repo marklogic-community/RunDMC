@@ -118,8 +118,8 @@
       </xsl:if>
       <xsl:if test="number($api:version) ge 6">
         <toc:java top-control="yes">
-          <node display="Java Client" open="yes" id="javaTOC">
-            <node display="Java Client API" 
+          <node display="Java API" open="yes" id="javaTOC">
+            <node display="Java API" 
                   href="/javadoc/client/index.html" external="yes"/>
             <!-- Java Client guide repeated -->
             <xsl:apply-templates mode="toc-guide-node" 
