@@ -62,6 +62,12 @@ function load(settings, root, child, container) {
 	      $(container).treeview({add: newChild});
       //EDL: END of changes I made
 	    }
+     // EDL: START CHANGES
+     // If there's an error, assume it's an old TOC part (or connectivity problem) and force a refresh
+     ,error: function() {
+       window.location.reload();
+     }
+     // EDL: END CHANGES
 	}, settings.ajax));
 	/*
 	$.getJSON(settings.url, {root: root}, function(response) {
