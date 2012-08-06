@@ -600,12 +600,12 @@
                           </xsl:template>
 
                   <xsl:template match="api:privilege">
-                    <h3>Required privilege</h3>
+                    <h3>Required Privileges</h3>
                     <xsl:apply-templates/>
                   </xsl:template>
 
                   <xsl:template match="api:usage">
-                    <h3>Usage notes</h3>
+                    <h3>Usage Notes</h3>
                     <xsl:apply-templates/>
                   </xsl:template>
 
