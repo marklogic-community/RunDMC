@@ -25,7 +25,7 @@ a[rel=detail] img {
 	max-width: 604px;
 	border: 8px solid white;
 }
-blockquote {margin: 0;}
+#page_content blockquote {margin: 0;}
 caption {
 	font-weight: bold;
 	text-align: left;
