@@ -55,7 +55,8 @@ declare function s:server-url($type as xs:string) {
       $server-config := $s:this-host/*[local-name(.) eq $element-name] return
   if ($server-config/@url)
   then string($server-config/@url)
-  else concat('http://',$s:request-host-without-port,':',$server-config/@port)
+  (: re-use current scheme (http or https) :)
+  else concat('//',$s:request-host-without-port,':',$server-config/@port)
 };
 
 (: return entire config as well :)

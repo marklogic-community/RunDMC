@@ -11,10 +11,11 @@
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:u    ="http://marklogic.com/rundmc/util"
   xmlns:fb   ="http://www.facebook.com/2008/fbml"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:users="users"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="qp xs ml xdmp">
+  exclude-result-prefixes="qp xs ml xdmp srv">
 
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>
@@ -127,20 +128,18 @@
 
 
   <!-- Rewrite api.marklogic.com links (to docs.marklogic.com) until we have a chance to update the content. -->
-  <!-- ASSUMPTION: there is no version prefix, or it's 5.0 -->
-  <!-- ASSUMPTION: the links don't go to library/module pages (except cts - configured in /config/5.0-function-url-mappings.xml) -->
   <xsl:template match="xhtml:a/@href[starts-with(.,'http://api.marklogic.com')]">
     <xsl:attribute name="href">
       <xsl:variable name="uri" select="substring-after(.,'http://api.marklogic.com')"/>
       <!-- We're going to be using docs.marklogic.com, not "api" -->
-      <xsl:sequence select="concat('http://docs.marklogic.com',$uri)"/>
-      <!-- OBSOLETE (from master branch)
-      <xsl:sequence select="concat('/pubs/5.0',
-                                   if (starts-with($uri,'/docs/')) then concat('/books/',$guide-configs[@url-name eq substring-after($uri,'/docs/')]/(@pdf-name,@source-name)[1], '.pdf')
-                                                                   else concat('/apidocs/',$functions-5.0[@name eq substring-after($uri,'/')][1]/@url
-                                                                              ))"/>
-                                                                              -->
+      <xsl:sequence select="concat('//docs.marklogic.com',$uri)"/>
     </xsl:attribute>
+  </xsl:template>
+
+  <!-- We hard-code inline docs links with "//docs.marklogic.com";
+       replace this with the applicable docs server (no replacement needed on production server) -->
+  <xsl:template match="xhtml:a/@href[starts-with(.,'//docs.marklogic.com')][$srv:host-type ne 'production']">
+    <xsl:attribute name="href" select="replace(.,'//docs.marklogic.com', $srv:api-server)"/>
   </xsl:template>
 
 
