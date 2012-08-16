@@ -5,12 +5,17 @@
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
+  xmlns:setup="http://marklogic.com/rundmc/api/setup"
   xpath-default-namespace="http://www.w3.org/1999/xhtml"
+  extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs apidoc fixup api">
+
+  <xdmp:import-module href="common.xqy" namespace="http://marklogic.com/rundmc/api/setup"/>
 
   <!-- The fullname is a derived value -->
   <xsl:function name="fixup:fullname">
@@ -77,11 +82,13 @@
 	-->
   <xsl:template mode="fixup-att-value" 
     match="a/@href[starts-with(.,'#display.xqy?fname=')]" priority="4">
-    <xsl:variable name="anchor" select="replace(substring-after(., '.xml'), '%23', '#id_')"/> 
+    <xsl:variable name="anchor" select="replace(substring-after(., '.xml'), 
+                                           '%23', '#id_')"/> 
     <xsl:variable name="result" 
-      select="concat('/guide', substring-before(substring-after(., 
-                  '#display.xqy?fname=http://pubs/5.1doc/xml'), '.xml'), 
-                   $anchor)"/>
+      select="setup:fix-guide-names(concat('/guide', 
+                   substring-before(substring-after(., 
+                   '#display.xqy?fname=http://pubs/5.1doc/xml'), '.xml'), 
+                   $anchor), 1)"/>
     <xsl:value-of select="fixup:output-and-report(.,$result)"/>
   </xsl:template>
    <!-- End Linkerator fixup -->
