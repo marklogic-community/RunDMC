@@ -6,16 +6,16 @@
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
     <group display="MarkLogic Downloads">
       <group display="MarkLogic Server">
-        <page display="MarkLogic 5" href="/products/marklogic-server/5.0" />
+        <page display="MarkLogic 6" href="/products/marklogic-server/6.0" />
+        <page display="5.0" href="/products/marklogic-server/5.0" />
         <page display="4.2" href="/products/marklogic-server/4.2" />
         <page display="4.1" href="/products/marklogic-server/4.1"/>
-        <page display="4.0" href="/products/marklogic-server/4.0" />
       </group>
       <group display="Connectors">
+        <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0"/>
         <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0"/>
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2"/>
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
-        <page display="XCC Java/.NET Connectors for 4.0" href="/products/xcc/4.0"/>
         <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
       </group>
@@ -44,6 +44,7 @@
   <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
     <group display="Open Source Projects" closed="yes">
       <group display="Debugging, profiling, and exploring tools">
+        <page display="Oxygen" href="/code/oxygen"/>
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
         <page display="XQDebug" href="/code/xqdebug"/>
@@ -81,7 +82,6 @@
         <page display="Corona" href="/code/corona"/>
         <page display="MLSQL" href="/code/mlsql"/>
         <page display="MLJAM" href="/code/mljam"/>
-        <page display="libmlxcc and connectors for PHP, Perl, Ruby, and Python" href="/code/libmlxcc"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
         <page display="ActiveDocument (ruby)" href="/code/active-document"/>
