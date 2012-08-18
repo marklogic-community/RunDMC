@@ -240,10 +240,10 @@ declare function category-for-doc($doc-uri) as xs:string {
 
 declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string {
   (: Only look inside the doc if necessary :)
-       if (fn:contains($doc-uri, "/dotnet/"))             then "xccn"
-  else if (fn:contains($doc-uri, "/javaclient/javadoc/")) then "java-api"
-  else if (fn:contains($doc-uri,     "/hadoop/javadoc/")) then "hadoop"
-  else if (fn:contains($doc-uri,            "/javadoc/")) then "xcc"
+       if (fn:contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
+  else if (fn:contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
+  else if (fn:contains($doc-uri, "/javadoc/client/")) then "java-api"
+  else if (fn:contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
        if ($doc/api:function-page/*[1]/@lib eq 'REST')
                                      then "rest-api"
