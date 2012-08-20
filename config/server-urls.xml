@@ -2,10 +2,7 @@
 
   <host type="staging" name="stage-developer.marklogic.com" cookie-domain="marklogic.com">
 
-    <main-server url="http://dmc-stage.marklogic.com:8090"/>
-    <!-- Switch back after we publish api.marklogic.com
     <main-server url="http://dmc-stage.marklogic.com"/>
-    -->
 
     <draft-server url="http://dmc-stage-draft.marklogic.com"/>
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
@@ -26,7 +23,7 @@
     <draft-server url="http://developer-draft.marklogic.com"/>
     <webdav-server url="http://developer.marklogic.com:8005"/>
     <admin-server url="http://developer-admin.marklogic.com"/>
-    <api-server url="http://api.marklogic.com"/>
+    <api-server url="http://docs.marklogic.com"/>
 
     <facebook-config>
         <id>178528612252710</id>

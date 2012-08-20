@@ -149,7 +149,7 @@ declare private function ml:live-document-query($preferred-version as xs:string)
   cts:or-query((
     (: Pages on developer.marklogic.com :)
     ml:matches-dmc-page(),
-    (: Pages on api.marklogic.com, specific to the given docs version :)
+    (: Pages on docs.marklogic.com, specific to the given docs version :)
     ml:matches-api-page($preferred-version)
   ))
 };
