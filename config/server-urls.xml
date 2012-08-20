@@ -11,7 +11,7 @@
     <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
     <admin-server url="http://dmc-stage-admin.marklogic.com"/>
 
-    <api-server url="http://api-stage.marklogic.com"/>
+    <api-server url="http://docs-stage.marklogic.com"/>
 
     <facebook-config>
         <id>178528612252710</id>
