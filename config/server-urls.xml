@@ -2,16 +2,13 @@
 
   <host type="staging" name="stage-developer.marklogic.com" cookie-domain="marklogic.com">
 
-    <main-server url="http://dmc-stage.marklogic.com:8090"/>
-    <!-- Switch back after we publish api.marklogic.com
-    <main-server url="http://dmc-stage.marklogic.com"/>
-    -->
+    <main-server url="//dmc-stage.marklogic.com"/>
 
-    <draft-server url="http://dmc-stage-draft.marklogic.com"/>
-    <webdav-server url="http://dmc-stage.marklogic.com:8005"/>
-    <admin-server url="http://dmc-stage-admin.marklogic.com"/>
+    <draft-server url="//dmc-stage-draft.marklogic.com"/>
+    <webdav-server url="//dmc-stage.marklogic.com:8005"/>
+    <admin-server url="//dmc-stage-admin.marklogic.com"/>
 
-    <api-server url="http://api-stage.marklogic.com"/>
+    <api-server url="//docs-stage.marklogic.com"/>
 
     <facebook-config>
         <id>178528612252710</id>
@@ -22,11 +19,11 @@
   </host>
 
   <host type="production" name="developer.marklogic.com" cookie-domain="marklogic.com">
-    <main-server url="http://developer.marklogic.com"/>
-    <draft-server url="http://developer-draft.marklogic.com"/>
-    <webdav-server url="http://developer.marklogic.com:8005"/>
-    <admin-server url="http://developer-admin.marklogic.com"/>
-    <api-server url="http://api.marklogic.com"/>
+    <main-server url="//developer.marklogic.com"/>
+    <draft-server url="//developer-draft.marklogic.com"/>
+    <webdav-server url="//developer.marklogic.com:8005"/>
+    <admin-server url="//developer-admin.marklogic.com"/>
+    <api-server url="//docs.marklogic.com"/>
 
     <facebook-config>
         <id>178528612252710</id>

@@ -1,7 +1,7 @@
 <!-- This stylesheet is a one-off script for generating the
      temporary config files for mapping function names
      (in search results) to the old URL in the API reference
-     before api.marklogic.com is completed. -->
+     before docs.marklogic.com is completed. -->
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
