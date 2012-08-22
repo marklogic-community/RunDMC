@@ -44,18 +44,6 @@ let $name := functx:trim($name)
 let $email := functx:trim($email)
 
 
-let $valid-url := fn:concat($valid-url, "?", 
-           "version=", xdmp:url-encode($version),            
-           "&amp;hostname=", xdmp:url-encode($hostname),
-           "&amp;cpus=", xdmp:url-encode($cpus),            
-           "&amp;platform=", xdmp:url-encode($platform),
-           "&amp;target=", xdmp:url-encode($target),
-           "&amp;type=", xdmp:url-encode($type),
-           "&amp;company=", xdmp:url-encode(if ($type eq "express") then $company else $school),
-           "&amp;email=", xdmp:url-encode($email))
-
-let $invalid-url := fn:concat($invalid-url, "?", $string-params, "&amp;retrying=1")
-
 let $valid-type := if ($type eq 'express') then
         xdmp:get-request-field("company")
     else
@@ -81,26 +69,25 @@ let $valid :=
 
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
-            "&amp;inuse=1"
+            ("INVALID_USER","signup failed: email address is already in use")
         else if (not(util:validateEmail($email))) then
-            "&amp;bademail=1"
+            ("INVALID_EMAIL","signup failed: invalid email address")
         else if (fn:string-length($email) gt 255) then
-            "&amp;toolong=email"
+            ("INVALID_EMAIL","signup failed: email address is too long")
         else if (fn:string-length($passwd) gt 255) then
-            "&amp;toolong=passwd"
+            ("INVALID_CREDENTIAL","signup failed: password is too long")
         else
             if ($passwd ne $conf_passwd) then
-                "&amp;nonmatching=1"
+               ("INVALID_CREDENTIAL","signup failed: password mismatch")
             else
-                ""
+                ("OPERATION_FAILED","signup failed: most likely there are missing fields")
     else
         if (not(users:checkCreds($email, $passwd))) then
             let $_ := xdmp:log(concat("Failed credential check for ", $email))
-            return "&amp;badpassword=1"
+            return ("INVALID_USER_AUTHENTICATION","signin failed: bad password or nonexistent user")
         else
-            ""
+            ("OPERATION_FAILED","signin failed: most likely there are missing fields")
 
-let $invalid-url := concat($invalid-url, $error)
 
 let $meta := (
     <cpus>{$cpus}</cpus>,
@@ -123,67 +110,16 @@ let $name := if ($valid) then
 else
     $name
 
-let $hash := doc("/private/license-hash.xml")/hash/string()
-let $rnumber := doc("/private/license-hash.xml")/id/string()
-
-let $valid-url := concat($valid-url, 
-    "&amp;licensee=", xdmp:url-encode($name),
-    "&amp;hash=", xdmp:url-encode($hash),
-    "&amp;rnumber=", xdmp:url-encode($rnumber),
-"")
-
-(:
-let $_ := xdmp:log($valid-url)
-:)
 
 (: We use the synchronous version of the ga snippet on purpose since we want it to load before redirecting :)
 (: and we redirect to a redirector so that the referrer header is predictable :)
 return
     if ($valid) then
-    (
-    xdmp:set-response-content-type("text/html"), 
-    <html>
-        <head>
-        <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-        document.write(unescape("%3Cscript src='" + document.location.protocol +
-          "//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-         <script>Munchkin.init('371-XVQ-609');</script>
-         <meta http-equiv="refresh" content="1; url=/license-record?url={xdmp:url-encode($valid-url)}"/>
-        </head>
-	<body>
-        <script type="text/javascript">
-        try {{
-            var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
-            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
-            // _gat should be created bu google js include
-            var pageTracker = _gat._getTracker(acct);
-            pageTracker._setDomainName('marklogic.com');
-            pageTracker._trackPageview();
-
-            function moveOn() {{
-	            var anchor = document.createElement("a");
-                if(!anchor.click) {{ //Providing a logic for Non IE
-                    window.location.href = "/license-record?url={xdmp:url-encode($valid-url)}";
-                    return;
-                }}
-                anchor.setAttribute("href", "/license-record?url={xdmp:url-encode($valid-url)}");
-                anchor.style.display = "none";
-                document.body.appendChild(anchor);
-                anchor.click();
-            }}
-
-            window.setTimeout(moveOn, 220);
-
-        }} catch(err) {{}}
-        </script>
-        <noscript>Please <a>{ attribute href { concat("/license-record?url=", xdmp:url-encode($valid-url))}}click here</a> to continue fetching your license.</noscript>
-    	</body>
-    </html>
-    ) 
+        <user>
+	    <name>{$name}</name>
+	</user>
     else
-        xdmp:redirect-response($invalid-url)
+	<error>
+	    <reason>{$error[1]}</reason>
+	    <message>{$error[2]}</message>
+	</error>

@@ -205,6 +205,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         concat("/controller/validate.xqy?", $query-string)
     else if ($path eq "/process-license-request") then
         concat("/controller/process-license-request.xqy?", $query-string)
+    else if ($path eq "/process-license-request-2") then
+        concat("/controller/process-license-request-2.xqy?", $query-string)
     else if ($path eq "/license-record") then
         concat("/controller/license-record.xqy?", $query-string)
     else if ($path eq "/signup") then
