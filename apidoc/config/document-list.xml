@@ -33,9 +33,18 @@
     <entry title="MarkLogic XQuery and XSLT Function Reference" min-version="4.2" href="/all">
       API documentation for the MarkLogic built-in and module extensions to the XQuery and XSLT standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.
     </entry>
-    <entry title="REST API Reference" min-version="5.0" href="/REST">
-      <title>This API reference documents the REST resources available on port 8002.</title>
+    <entry title="REST API Reference">
+      This API reference documents the REST resources available on port 8002.
+      <url version="5.0" href="/5.0/REST"/>
     </entry>
+    <entry title="REST API Reference" min-version="6.0" href="/REST">
+      This API reference documents the REST API for creating client
+      applications without a need to write or understand XQuery as well as
+      the REST resources available on port 8002 for monitoring, managing,
+      and packaging.
+    </entry>
+
+
     <entry title="ZIP File of All MarkLogic Product Documentation">
       A zip file containing the latest MarkLogic <version-suffix/> documentation.
       <url version="4.1" href="/MarkLogic_4.1_pubs.zip"/>
