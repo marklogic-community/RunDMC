@@ -352,21 +352,16 @@
                                     <xsl:sequence select="$content/*/api:user-guide[@href/ends-with(.,$url-name/concat('/',.))]"/>
                                   </xsl:function>
 
-                          <xsl:template mode="entry-href" match="entry">            <!-- normally, mutually exclusive, but favor version-specific URL if provided -->
-                            <xsl:apply-templates mode="resolve-entry-href" select="(url[@version eq $api:version], @href)[1]"/>
+                          <!-- entry/url/@href must include the whole path (version prefix not added) -->
+                          <xsl:template mode="entry-href" match="entry[url]" priority="1">
+                            <xsl:value-of select="url[@version eq $api:version]/@href"/>
+                          </xsl:template>
+
+                          <!-- entry/@href gets the version prefix added -->
+                          <xsl:template mode="entry-href" match="entry[@href]">
                             <xsl:value-of select="$version-prefix"/>
                             <xsl:value-of select="@href"/>
                           </xsl:template>
-
-                          <xsl:template mode="entry-href" match="entry[url]">
-                            <xsl:apply-templates mode="resolve-entry-href" select="url[@version eq $api:version]/@href"/>
-                          </xsl:template>
-
-                                  <!-- Prefix local URLs with the version prefix (when applicable) -->
-                                  <xsl:template mode="entry-href" match="entry[@href/starts-with(.,'/')]">
-                                    <xsl:value-of select="$version-prefix"/>
-                                    <xsl:value-of select="@href"/>
-                                  </xsl:template>
 
 
                           <xsl:template mode="entry-title" match="guide">
