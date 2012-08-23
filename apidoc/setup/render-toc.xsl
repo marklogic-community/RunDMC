@@ -38,6 +38,9 @@
             $("#config-filter<xsl:value-of select="$pos"/>").keyup(function(e) {
                 currentFilterText<xsl:value-of select="$pos"/> = $(this).val();
 
+                if (e.which == 13) // Enter key pressed
+                  window.location = "/do-do-search?q=" + $(this).val();
+
                 var closeButton = $("#config-filter<xsl:value-of select="$pos"/>-close-button");
                 if ($(this).val() === "")
                   closeButton.hide();

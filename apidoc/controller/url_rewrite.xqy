@@ -84,8 +84,11 @@ declare variable $matching-functions := ml:get-matching-functions(substring-afte
 declare variable $matching-function-count := count($matching-functions);
 
 (: SCENARIO 1: External redirect :)
+  (: When the user hits Enter in the TOC filter box :)
+  if ($path eq '/do-do-search') then
+      local:redirect(concat($srv:search-page-url,"?",$query-string))
   (: Externally redirect paths with trailing slashes :)
-  if (($path ne '/') and ends-with($path, '/')) then
+  else if (($path ne '/') and ends-with($path, '/')) then
       local:redirect(concat(substring($path, 1, string-length($path) - 1),
                             if ($query-string) then concat('&amp;', $query-string) else ()))
   (: Redirect naked /guide and /javadoc to / :)
