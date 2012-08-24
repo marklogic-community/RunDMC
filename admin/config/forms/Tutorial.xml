@@ -1,0 +1,34 @@
+<!DOCTYPE ml:Article [
+<!ENTITY topic-tags SYSTEM "../topic-tags.xml">
+]>
+<ml:Tutorial xmlns:ml="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
+      status="Draft" label:status="Status"      values:status="Draft Published"
+      form:uri-prefix-for-new-docs="/learn/">
+<!--      type=""        label:type="Document Type" values:type="_ Reference Tutorial Book README"-->
+    <ml:title form:label="Title"
+              form:wide="yes"/>
+    <ml:author form:repeating="yes"
+               form:label="Author"/>
+    <ml:created/>
+    <ml:last-updated form:label="Last Updated"/>  <!-- By putting a label on this field, we're taking manual control
+                                                    (no auto-timestamps for <ml:last-updated/> on Tutorial docs, due
+                                                    to the way this field is currently being used "in the wild":
+                                                    sometimes a date, sometimes a server version number, etc.). -->
+    <ml:server-version form:label="Server Version"
+                       form:repeating="yes"
+                       form:optional="yes"/>
+
+    &topic-tags;
+
+    <ml:topics form:optional="yes">
+      <ml:topic form:label="Topic" form:repeating="yes"/>
+    </ml:topics>
+    <ml:description form:label="Short description"
+                    form:wide="yes"/>
+    <ml:pages form:label="Tutorial Pages"
+              form:type="textarea"/><!-- form:class="richtext"/>-->
+</ml:Tutorial>
