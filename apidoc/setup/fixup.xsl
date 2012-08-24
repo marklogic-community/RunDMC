@@ -42,9 +42,19 @@
       <xsl:value-of>
         <!-- If we're on a different page, then insert the link to the targeted page -->
         <xsl:if test="not(ancestor::apidoc:function is $relevant-function)">
-          <xsl:text>/</xsl:text>
-          <!-- path to function page -->
-          <xsl:value-of select="$relevant-function/fixup:fullname(.)"/>
+          <xsl:choose>
+            <!-- REST URLs are written differently than function URLs -->
+            <xsl:when test="$relevant-function/@lib = $REST-libs">
+              <!-- path to resource page -->
+              <xsl:value-of select="$relevant-function/api:REST-fullname-to-external-uri(fixup:fullname(.))"/>
+            </xsl:when>
+            <!-- regular function page -->
+            <xsl:otherwise>
+              <xsl:text>/</xsl:text>
+              <!-- path to function page -->
+              <xsl:value-of select="$relevant-function/fixup:fullname(.)"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:if>
         <!-- fragment id -->
         <xsl:value-of select="."/>
