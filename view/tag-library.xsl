@@ -29,7 +29,7 @@
                                           else 1"
                 as="xs:integer"/>
 
-  <xsl:variable name="current-version" select="5.0"/>
+  <xsl:variable name="current-version" select="6.0"/>
 
   <xsl:template match="tabbed-features">
     <div id="special_intro">
