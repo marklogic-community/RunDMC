@@ -24,6 +24,7 @@
   <xsl:include href="search.xsl"/>
   <xsl:include href="xquery-imports.xsl"/>
   <xsl:include href="uri-translation.xsl"/>
+  <xsl:include href="tutorial.xsl"/>
 
   <!-- See http://www.w3.org/TR/html5/syntax.html#the-doctype and http://www.w3.org/html/wg/tracker/issues/54 -->
   <xsl:output doctype-system="about:legacy-compat"
@@ -345,16 +346,6 @@
 
 
           <xsl:template mode="page-content" match="Article">
-            <!-- TODO: What's the intention of this form? The whole document is on the client, but it has no client-side behavior
-            <form id="doc_search" action="" method="get">
-
-              <fieldset>
-                <legend><label for="ds_inp">Search current document</label></legend>
-                <input id="ds_inp" type="text" />
-                <input type="submit" />
-              </fieldset>
-            </form>
-            -->
             <!-- placeholder for form to get CSS to display background -->
             <div id="doc_search"/>
 

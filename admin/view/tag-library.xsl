@@ -95,9 +95,6 @@
         <xsl:apply-templates mode="admin-listing" select="$docs">
           <!-- Only sort if we're listing "page" docs; otherwise, don't change the order. -->
           <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
-          <xsl:with-param name="edit-path">
-            <xsl:apply-templates mode="edit-path" select="."/>
-          </xsl:with-param>
           <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
         </xsl:apply-templates>
       </tbody>
@@ -129,17 +126,11 @@
 
 
 
-          <xsl:template mode="edit-path" match="admin-project-list"     >/code/edit</xsl:template>
-          <xsl:template mode="edit-path" match="admin-learn-list"       >/learn/edit</xsl:template>
-          <xsl:template mode="edit-path" match="admin-post-list"        >/blog/edit</xsl:template>
-          <xsl:template mode="edit-path" match="admin-announcement-list">/news/edit</xsl:template>
-          <xsl:template mode="edit-path" match="admin-event-list"       >/events/edit</xsl:template>
-          <xsl:template mode="edit-path" match="admin-page-list"        >/pages/edit</xsl:template>
-
-
           <xsl:template mode="admin-listing" match="*">
-            <xsl:param name="edit-path"/>
             <xsl:param name="current-page-url"/>
+            <xsl:variable name="edit-path">
+              <xsl:apply-templates mode="edit-path" select="."/>
+            </xsl:variable>
             <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
             <tr>
               <xsl:if test="position() mod 2 eq 0">
@@ -191,5 +182,13 @@
               </td>
             </tr>
           </xsl:template>
+
+                  <xsl:template mode="edit-path" match="Project"     >/code/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="Article"     >/learn/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="Tutorial"    >/tutorial/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="Post"        >/blog/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="Announcement">/news/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="Event"       >/events/edit</xsl:template>
+                  <xsl:template mode="edit-path" match="page"        >/pages/edit</xsl:template>
 
 </xsl:stylesheet>

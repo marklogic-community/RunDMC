@@ -54,6 +54,10 @@ h2 {
 	font-size: 27px;
 }
 h3 {font-size: 20px;}
+
+/* don't color heading/links blue */
+h3 > a { color: #666; }
+
 h1 code, h2 code, h3 code {font-size: 100%;}
 img, input, select, textarea {
 	vertical-align: middle;
@@ -487,7 +491,8 @@ nav ul {margin: 0;}
 #sub li li li li {padding-left: 57px;}
 #sub li li li li > span {margin-left: 57px;}
 #sub li li li li > a {margin-left: 0;}
-#sub .current > a {
+#sub .current > a,
+#sub .current > span > a {
 	color: black;
 	font-weight: bold;
 	text-decoration: none;

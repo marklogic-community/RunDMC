@@ -403,4 +403,43 @@
             </li>
           </xsl:template>
 
+
+  <xsl:template match="sub-nav[$content/Tutorial]">
+    <section class="subnav">
+      <h2>Contents</h2>
+      <ul class="tutorial_toc">
+        <xsl:apply-templates mode="tutorial-toc" select="$content/Tutorial/pages/page"/>
+      </ul>
+    </section>
+  </xsl:template>
+
+          <xsl:template mode="tutorial-toc" match="page">
+            <li>
+              <xsl:if test=". is $this-tutorial-page">
+                 <xsl:attribute name="class" select="'current'"/>
+              </xsl:if>
+              <xsl:variable name="href">
+                <xsl:apply-templates mode="tutorial-page-href" select="."/>
+              </xsl:variable>
+              <span>
+                <a href="{$href}" class="stip">
+                  <xsl:apply-templates mode="tutorial-page-title" select="."/>
+                </a>
+              </span>
+              <xsl:if test=". is $this-tutorial-page">
+                <ul>
+                  <xsl:apply-templates mode="tutorial-toc-section" select="xhtml:h3"/>
+                </ul>
+              </xsl:if>
+            </li>
+          </xsl:template>
+
+                  <xsl:template mode="tutorial-toc-section" match="xhtml:h3">
+                    <li>
+                      <a href="#{@id}">
+                        <xsl:value-of select="."/>
+                      </a>
+                    </li>
+                  </xsl:template>
+
 </xsl:stylesheet>

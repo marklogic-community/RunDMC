@@ -19,6 +19,7 @@ declare variable $ml:Comments := fn:collection()/Comments; (: backed-up Disqus c
 declare private variable $ml:doc-element-names := (xs:QName("Announcement"),
                                                    xs:QName("Event"),
                                                    xs:QName("Article"),
+                                                   xs:QName("Tutorial"),
                                                    xs:QName("Project"),
                                                    xs:QName("Post"),
                                                    xs:QName("page")
@@ -26,7 +27,7 @@ declare private variable $ml:doc-element-names := (xs:QName("Announcement"),
 
 declare variable $ml:Announcements := docs( xs:QName("Announcement"));
 declare variable $ml:Events        := docs( xs:QName("Event"));
-declare variable $ml:Articles      := docs( xs:QName("Article"));
+declare variable $ml:Articles      := docs((xs:QName("Article"), xs:QName("Tutorial")));
 declare variable $ml:Projects      := docs( xs:QName("Project"));
 declare variable $ml:pages         := docs( xs:QName("page"));
 declare variable $ml:Posts         := docs((xs:QName("Post"), xs:QName("Announcement"), xs:QName("Event")));
@@ -252,7 +253,8 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if ($doc/(*:guide|*:chapter)) then "guide"
   else if ($doc/ml:Announcement    ) then "news"
   else if ($doc/ml:Event           ) then "event"
-  else if ($doc/ml:Article
+  else if ($doc/ml:Tutorial or
+           $doc/ml:Article
                                                       (: these aren't really tutorials :)
                 [fn:not(fn:matches(fn:base-uri($doc),'( /learn/[0-9].[0-9]/
                                                       | /learn/tutorials/gh/

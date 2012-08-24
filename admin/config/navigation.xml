@@ -8,6 +8,7 @@
   </page>
   <page display="Learn" href="/learn">
     <page display="Learn Edit" href="/learn/edit"/>
+    <page display="Tutorial Edit" href="/tutorial/edit"/>
   </page>
   <page display="Blog" href="/blog">
     <page display="Blog Edit" href="/blog/edit"/>
