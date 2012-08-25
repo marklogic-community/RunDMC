@@ -15,6 +15,9 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="Tutorial">
+    <xsl:if test="pages/page[1] is $this-tutorial-page">
+      <xsl:apply-templates mode="author-date-etc" select="."/>
+    </xsl:if>
     <xsl:apply-templates mode="tutorial-page" select="$this-tutorial-page"/>
   </xsl:template>
 

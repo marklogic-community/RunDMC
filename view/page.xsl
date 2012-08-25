@@ -350,18 +350,24 @@
             <!-- placeholder for form to get CSS to display background -->
             <div id="doc_search"/>
 
-            <div class="author">
-              <xsl:apply-templates mode="author-listing" select="author"/>
-            </div>
-            <div class="date"> 
-              <xsl:text>Last updated </xsl:text>
-              <xsl:value-of select="last-updated"/>
-            </div>
-            <br/>
+            <xsl:apply-templates mode="author-date-etc" select="."/>
+
             <xsl:apply-templates select="body/node()">
               <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
             </xsl:apply-templates>
           </xsl:template>
+
+                  <xsl:template mode="author-date-etc" match="Article | Tutorial">
+                    <div class="author">
+                      <xsl:apply-templates mode="author-listing" select="author"/>
+                    </div>
+                    <div class="date">
+                      <xsl:text>Last updated </xsl:text>
+                      <xsl:value-of select="last-updated"/>
+                    </div>
+                    <br/>
+                  </xsl:template>
+
 
                   <xsl:template mode="author-listing" match="author[1]" priority="1">
                     <xsl:apply-templates/>
