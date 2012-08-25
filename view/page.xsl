@@ -256,7 +256,8 @@
 
   <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
   <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
-  <xsl:template match="if[not(starts-with($external-uri, @href-starts-with))]"/>
+  <xsl:template match="if[not(some $prefix in tokenize(normalize-space(@href-starts-with),' ')
+                              satisfies starts-with($external-uri, $prefix))]"/>
 
   <xsl:template match="if-session[users:getCurrentUser()]"/>
 
