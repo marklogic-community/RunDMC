@@ -18,6 +18,13 @@
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
+        <!--
+        <page display="ODBC Connector" href="/products/odbc"/>
+        -->
+      </group>
+      <group display="Tools">
+        <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
+        <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
       </group>
       <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
@@ -228,10 +235,9 @@
   <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
 
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
+  <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.2 Product Documentation"         href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.1 Product Documentation"         href="/docs/4.1"  hide="yes" narrow-sidebar="yes"/>
-  <page display="4.0 Product Documentation"         href="/docs/4.0"  hide="yes" narrow-sidebar="yes"/>
-  <page display="3.2 Product Documentation"         href="/docs/3.2"  hide="yes" narrow-sidebar="yes"/>
   <page display="Introducing MarkLogic 5" href="/products/marklogic5" hide="yes"/>
 </navigation>
