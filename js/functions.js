@@ -406,6 +406,10 @@ if(typeof jQuery != 'undefined') {
                     dataType: 'json'
                 });
             });
+
+            $(window).load(function() {
+                $('#nslider').nivoSlider();
+            });
         });
 
         //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
