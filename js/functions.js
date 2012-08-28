@@ -406,7 +406,21 @@ if(typeof jQuery != 'undefined') {
                     dataType: 'json'
                 });
             });
+
+		    $(function(){
+			    $('#slider').anythingSlider({
+                    buildArrows: false,
+                    buildStartStop: false,
+                    theme: 'default',
+                    startSlide: 1,
+                    resizeContents: true,
+                    navigationFormatter : function(i, panel){ 
+                        return ['Line chart', 'Bar chart', 'Pie chart', 'Heat map', 'Point map'][i - 1]; 
+                    } 
+                });
+		    });
         });
+
 
         //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
             // Ajax validation tbd
