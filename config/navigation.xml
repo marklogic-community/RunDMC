@@ -18,6 +18,7 @@
         <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
         <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
+        <page display="ODBC" href="/products/odbc"/>
       </group>
       <group display="Tools">
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
