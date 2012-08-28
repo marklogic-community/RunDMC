@@ -80,6 +80,7 @@ function searchTOC(filter, tocRoot) {
             }
         }
     });
+    if (filter == '') scrollTOC(); // re-orient the TOC after done searching
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
