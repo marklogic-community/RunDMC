@@ -147,6 +147,7 @@
 .anythingSlider-default .anythingControls ul li { display: inline; }
 .anythingSlider-default .anythingControls ul a {
 	xfont: 11px/18px Georgia, Serif;
+    font-size: 12px;
 	display: inline-block;
 	text-decoration: none;
 	padding: 2px 8px;
