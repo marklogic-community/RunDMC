@@ -85,7 +85,7 @@
             <a href="{api:external-guide-uri(/)}">
               <xsl:apply-templates mode="guide-title" select="."/>
             </a>
-            <span class="chapterNumber"> — chapter&#160;<xsl:value-of select="../@number"/></span>
+            <span class="chapterNumber"> &#8212; Chapter&#160;<xsl:value-of select="../@number"/></span>
           </xsl:template>
 
                   <!-- Wrap <sup> around ® character -->
