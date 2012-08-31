@@ -23,7 +23,8 @@
     <xsl:variable name="unique-years" select="distinct-values($ml:Posts/created/year-from-dateTime(.))"/>
     <xsl:for-each select="$unique-years">
       <xsl:sort select="." order="descending"/>
-      <xsl:variable name="posts-this-year" select="$ml:Posts[year-from-dateTime(created) eq current()]"/>
+      <xsl:variable name="current-year" select="."/>
+      <xsl:variable name="posts-this-year" select="$ml:Posts[year-from-dateTime(created) eq $current-year]"/>
       <ml:group display="{.}">
         <xsl:variable name="unique-months" select="distinct-values($posts-this-year/created/month-from-dateTime(.))"/>
         <xsl:for-each select="$unique-months">
