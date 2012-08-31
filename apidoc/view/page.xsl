@@ -334,6 +334,7 @@
                           <xsl:template mode="entry-description" match="version-suffix">
                             <xsl:choose>
                               <xsl:when test="$api:version eq '5.0'">5</xsl:when>
+                              <xsl:when test="$api:version eq '6.0'">6</xsl:when>
                               <xsl:otherwise>
                                 <xsl:text>Server </xsl:text>
                                 <xsl:value-of select="$api:version"/>
