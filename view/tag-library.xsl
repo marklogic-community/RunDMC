@@ -29,8 +29,6 @@
                                           else 1"
                 as="xs:integer"/>
 
-  <xsl:variable name="current-version" select="6.0"/>
-
   <xsl:template match="tabbed-features">
     <div id="special_intro">
       <ul class="nav">
@@ -206,7 +204,7 @@
     <section id="documentation">
       <h2>Documentation <img src="/images/i_doc.png" alt="" width="28" height="31" /></h2>
       <ul>
-        <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc"/>
+        <xsl:apply-templates mode="product-doc-entry" select="doc | old-doc | new-doc"/>
       </ul>
     </section>
   </xsl:template>
@@ -220,20 +218,37 @@
             </xsl:variable>
             <li>
               <a href="{$url}">
-                <xsl:choose>
-                  <xsl:when test="ends-with(lower-case($url), 'pdf')">
-                    <img src="/images/i_pdf.png" alt="View PDF for {$title}"/>
+
+                <xsl:if test="local-name(.) ne 'new-doc'">
+                    <xsl:choose>
+                    <xsl:when test="ends-with(lower-case($url), 'pdf')">
+                        <img src="/images/i_pdf.png" alt="View PDF for {$title}"/>
+                    </xsl:when>
+                    <xsl:when test="ends-with(lower-case($url), 'zip')">
+                        <img src="/images/i_zip.png" alt="Download zip file for {$title}"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="/images/i_documentation.png" alt="View HTML for {$title}"/>
+                    </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:if>
+                <xsl:if test="local-name(.) eq 'new-doc'">
+                  <xsl:choose>
+                  <xsl:when test="@type eq 'function'">
+                      <img src="/images/i_function.png" alt="{$title}"/>
                   </xsl:when>
-                  <xsl:when test="ends-with(lower-case($url), 'zip')">
-                    <img src="/images/i_zip.png" alt="Download zip file for {$title}"/>
+                  <xsl:when test="@type eq 'zip'">
+                      <img src="/images/i_zip.png" alt="Download zip file for {$title}"/>
+                  </xsl:when>
+                  <xsl:when test="@type eq 'javadoc'">
+                      <img src="/images/i_java.png" alt="View {$title}"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <img src="/images/i_documentation.png" alt="View HTML for {$title}"/>
+                      <img src="/images/i_documentation.png" alt="View {$title}"/>
                   </xsl:otherwise>
-                </xsl:choose>
+                  </xsl:choose>
+                </xsl:if>
                 <xsl:value-of select="$title"/>
-                &#160;
-                <xsl:value-of select="@version"/>
               </a>
             </li>
           </xsl:template>
@@ -246,6 +261,10 @@
                     <xsl:value-of select="document(@source)/Article/title"/>
                   </xsl:template>
 
+                  <xsl:template mode="product-doc-title" match="new-doc">
+                    <xsl:variable name="version" select="if (@version) then @version else $ml:default-version"/>
+                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, @source, '.xml'))/*/*:title)[1]/string()"/> 
+                  </xsl:template>
 
                   <xsl:template mode="product-doc-url" match="old-doc">
                     <xsl:value-of select="@path"/>
@@ -257,6 +276,12 @@
                                           then $source/Article/external-link/@href
                                           else ml:external-uri($source)"/>
                   </xsl:template>
+
+                  <xsl:template mode="product-doc-url" match="new-doc">
+                    <xsl:variable name="h" select="replace('//docs.marklogic.com','//docs.marklogic.com', $srv:api-server)"/>
+                    <xsl:value-of select="concat($h, @source)"/>
+                  </xsl:template>
+
 
 
   <xsl:template match="top-threads">
@@ -813,7 +838,7 @@
                 <xsl:attribute name="class">alt</xsl:attribute>
               </xsl:if>
               <td>
-  		<img src="/images/i_monitor.png" alt="" width="24" height="22" />
+                <img src="/images/i_monitor.png" alt="" width="24" height="22" />
                 <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
