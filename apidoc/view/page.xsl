@@ -132,7 +132,7 @@
   <xsl:template mode="#default guide" match="x:table">
     <xsl:copy>
       <xsl:attribute name="class" select="concat('api_generic_table ',@class)"/>
-      <xsl:apply-templates select="@* | node()"/>
+      <xsl:apply-templates mode="#current" select="@* | node()"/>
     </xsl:copy>
   </xsl:template>
 
