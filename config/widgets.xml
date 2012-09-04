@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><widgets xmlns="http://developer.marklogic.com/site/internal">
 
   <widget href="/widgets/tutorials.xml" id="tutorials-widget">
-    <page href="/docs"/>
-    <page href="/docs/5.0"/>
     <page href="/products/marklogic-server/which-nosql"/>
   </widget>
                                      <!-- id for CSS purposes -->
@@ -128,10 +126,6 @@
  -->
 
   <widget href="/widgets/quick-references.xml">
-    <page href="/docs/5.0"/>
-    <page href="/docs/4.2"/>
-    <page href="/docs/4.1"/>
-    <page href="/docs/4.0"/>
     <page href="/learn"/>
     <page href="/learn/tutorials"/>
     <page href="/learn/guides"/>
@@ -139,10 +133,6 @@
   </widget>
 
   <widget xquery="training-calendar.xqy"> 
-    <page href="/docs/5.0"/>
-    <page href="/docs/4.2"/>
-    <page href="/docs/4.1"/>
-    <page href="/docs/4.0"/>
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page href="/learn/tutorials"/>
@@ -157,22 +147,7 @@
     <page href="/"/>
 -->
     <page href="/learn"/>
-    <page href="/docs/5.0"/>
-    <page href="/docs/4.2"/>
-    <page href="/docs/4.1"/>
-    <page href="/docs/4.0"/>
     <page href="/learn/tutorials"/>
-  </widget>
-
-  <widget href="/widgets/old-docs.xml">
-    <page href="/docs/5.0"/>
-    <page href="/docs"/>
-  </widget>
-
-  <widget href="/widgets/latest-docs.xml">
-    <page href="/docs/4.2"/>
-    <page href="/docs/4.1"/>
-    <page href="/docs/4.0"/>
   </widget>
 
   <widget href="/widgets/mugfr-flickr.xml">
