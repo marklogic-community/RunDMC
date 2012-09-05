@@ -49,7 +49,7 @@ declare function local:insert($doc,
       <guide-title>{$guide-title}</guide-title>,
       <title>      {$title}      </title>,
 
-      <XML original-file="{concat('file://',base-uri($doc))}">
+      <XML original-file="{concat('file:',base-uri($doc))}">
         {$doc/XML/node()}
       </XML>,
 
