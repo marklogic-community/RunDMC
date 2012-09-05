@@ -32,6 +32,11 @@
        then don't include the version prefix in links; see also $api:toc-url in data-access.xqy -->
   <xsl:variable name="version-prefix" select="if ($api:version eq $api:default-version) then '' else concat('/',$api:version-specified)"/>
 
+  <xsl:function name="ml:external-uri-with-prefix" as="xs:string">
+    <xsl:param name="internal-uri" as="xs:string"/>
+    <xsl:sequence select="concat($version-prefix, ml:external-uri-for-string($internal-uri))"/>
+  </xsl:function>
+
   <xsl:variable name="doc-list-config" select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
 
   <!--
@@ -108,9 +113,9 @@
   </xsl:template>
 
 
-  <!-- Links in content (function descriptions and list page intros) may need to be rewritten
+  <!-- Links in content (including guide content) may need to be rewritten
        to include the current explicitly specified version -->
-  <xsl:template match="x:a/@href[starts-with(.,'/')]">
+  <xsl:template mode="#default guide" match="x:a/@href[starts-with(.,'/')]">
     <xsl:attribute name="href" select="concat($version-prefix,.)"/>
   </xsl:template>
 
@@ -204,7 +209,7 @@
 
           <xsl:template mode="toc-section-link-selector" match="guide | chapter">
             <xsl:text>.scrollable_section a[href='</xsl:text>
-            <xsl:value-of select="concat($version-prefix, ml:external-uri-for-string(@guide-uri))"/>
+            <xsl:value-of select="ml:external-uri-with-prefix(@guide-uri)"/>
             <xsl:text>']</xsl:text>
           </xsl:template>
 

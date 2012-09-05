@@ -72,7 +72,7 @@
 
           <xsl:function name="api:external-guide-uri" as="xs:string">
             <xsl:param name="guide-doc" as="document-node()"/>
-            <xsl:sequence select="concat($version-prefix, ml:external-uri-for-string($guide-doc/*/@guide-uri))"/>
+            <xsl:sequence select="ml:external-uri-with-prefix($guide-doc/*/@guide-uri)"/>
           </xsl:function>
 
           <!-- Don't link to the guide root when we're already on it -->
@@ -111,7 +111,7 @@
           </xsl:template>
           <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous" name="guide-next">
             <div class="{local-name(.)}Chapter">
-              <a href="{ml:external-uri-for-string(.)}#chapter">
+              <a href="{ml:external-uri-with-prefix(.)}#chapter">
                 <xsl:apply-templates mode="next-or-prev" select="."/>
               </a>
             </div>
@@ -153,7 +153,7 @@
 
           <xsl:template mode="guide" match="chapter">
             <li>
-              <a href="{ml:external-uri-for-string(@href)}#chapter">
+              <a href="{ml:external-uri-with-prefix(@href)}#chapter">
                 <xsl:apply-templates mode="guide"/>
               </a>
             </li>
