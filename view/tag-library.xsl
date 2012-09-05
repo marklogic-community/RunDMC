@@ -243,6 +243,9 @@
                   <xsl:when test="@type eq 'javadoc'">
                       <img src="/images/i_java.png" alt="View {$title}"/>
                   </xsl:when>
+                  <xsl:when test="@type eq 'dotnet'">
+                      <img src="/images/i_dotnet.png" alt="View {$title}"/>
+                  </xsl:when>
                   <xsl:otherwise>
                       <img src="/images/i_documentation.png" alt="View {$title}"/>
                   </xsl:otherwise>
