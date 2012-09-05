@@ -503,7 +503,12 @@
 
           <xsl:template match="api:function">
             <xsl:apply-templates mode="function-signature" select="."/>
-            <xsl:apply-templates select="(api:summary, api:params, api:privilege, api:usage, api:example)[normalize-space(.)]"/>
+            <xsl:apply-templates select="(api:summary, api:params)[normalize-space(.)]"/>
+            <xsl:apply-templates select="api:headers[api:header/@type = 'request']"/>
+            <xsl:apply-templates select="api:headers[api:header/@type = 'response']">
+              <xsl:with-param name="response-headers" select="true()" tunnel="yes"/>
+            </xsl:apply-templates>
+            <xsl:apply-templates select="(api:privilege, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
@@ -543,7 +548,7 @@
                             <xsl:text>&#xA;</xsl:text>
                           </xsl:template>
 
-                                  <xsl:template mode="param-anchor-id" match="api:param">
+                                  <xsl:template mode="param-anchor-id" match="api:param | api:header">
                                     <xsl:value-of select="@name"/>
                                   </xsl:template>
                                   <!-- For the *:polygon functions (having more than one function element on the same page) -->
@@ -560,7 +565,8 @@
                     </p>
                   </xsl:template>
 
-                  <xsl:template match="api:params">
+                  <xsl:template match="api:params | api:headers">
+                    <xsl:param name="response-headers" tunnel="yes"/>
                     <table class="parameters">
                       <colgroup>
                         <col class="col1"/>
@@ -574,15 +580,24 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <xsl:apply-templates select="api:param"/>
+                        <xsl:apply-templates select="api:param | api:header[if ($response-headers) then (@type eq 'response')
+                                                                                                   else (@type eq 'request')]"/>
                       </tbody>
                     </table>
                   </xsl:template>
 
-                          <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:params">URL parameters</xsl:template>
+                          <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:headers">
+                            <xsl:param name="response-headers" tunnel="yes"/>
+                            <xsl:choose>
+                              <xsl:when test="$response-headers">Response</xsl:when>
+                              <xsl:otherwise>Request</xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:text> Headers</xsl:text>
+                          </xsl:template>
+                          <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:params">URL Parameters</xsl:template>
                           <xsl:template mode="parameters-table-heading" match="                             api:params">Parameters</xsl:template>
 
-                          <xsl:template match="api:param">
+                          <xsl:template match="api:param | api:header">
                             <tr>
                               <td>
                                 <xsl:variable name="anchor">
