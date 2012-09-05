@@ -13,8 +13,7 @@ $setup:errorCheck,
 $setup:helpXsdCheck,
 
 (: as well as these params :)
-if (not(xdmp:get-request-field("srcdir")))    then error(xs:QName("ERROR"), "You must specify a 'srcdir' param.")    else (), (: used in load-raw-docs.xqy :)
-if (not(xdmp:get-request-field("staticdir"))) then error(xs:QName("ERROR"), "You must specify a 'staticdir' param.") else (), (: used in load-static-docs.xqy :)
+if (not(xdmp:get-request-field("srcdir")))    then error(xs:QName("ERROR"), "You must specify a 'srcdir' param.")    else (), (: used in load-raw-docs.xqy and load-static-docs.xqy :)
 
 (: Optionally delete everything first (if clean=yes is specified) :)
 if (xdmp:get-request-field("clean") eq 'yes') then 

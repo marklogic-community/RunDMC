@@ -29,9 +29,8 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
     <p>Finally, the individual parts (steps 1–3 and their lettered sub-steps) can be invoked individually. These are provided
        for debugging purposes and also to give a visual hint as to the current progress of the setup tasks. For even more granular
        tracking, watch the ErrorLog file while a setup task is running.</p>
-    <p>Source directory for loading raw docs:                                    <input id="src-dir-prefix"  size="50" type="text" value="/Users/elenz/Desktop/api-rawdocs/"/> (must end with slash)</p>
-    <p>Base directory for static docs (see also /apidoc/config/static-docs.xml): <input id="static-base-dir" size="50" type="text" value="/Users/elenz/Desktop/"/>             (must end with slash)</p>
-    <p>Base directory for admin help XSD docs:                                   <input id="base-xsd-dir"    size="50" type="text" value="/Users/elenz/Desktop/Config/"/>      (must end with slash)</p>
+    <p>Source directory for loading raw and static docs: <input id="src-dir-prefix"  size="50" type="text" value="/space/docs/"/> (must end with slash)</p>
+    <p>Base directory for admin help XSD docs:           <input id="base-xsd-dir"    size="50" type="text" value="/space/docs/Config/"/> (must end with slash)</p>
     <table cellspacing="0" cellpadding="10">
       <colgroup span="1" style="border-right: thin solid"></colgroup>
       <colgroup span="1" style="border-right: thin solid; background-color:#FFDDDD;"></colgroup>
@@ -51,10 +50,8 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
       {
       let $last := count($versions)
       for $v at $position in $versions
-      let $src-dir := concat(
-                        if ($position eq $last) then "latest"
-                                                else concat("b",replace($v,"\.","_")),
-                        "_XML")
+      let $src-dir := concat("MarkLogic_", if ($v eq '5.0') then '5'
+                                      else if ($v eq '6.0') then '6' else $v, "_pubs")
       return
       (
         <tr>
@@ -120,9 +117,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         </tr>,
         <tr>
           <td style="text-align:center">
-            <p>Source dir: <input class="static-sub-dir" size="30" type="text" value="MarkLogic_{if ($v eq '5.0') then '5'
-                                                                                            else if ($v eq '6.0') then '6' else $v}_pubs"/> (no slashes)</p>
-            <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;staticdir="
+            <input class="loadStatic atomicStep" type="button" title="/apidoc/setup/load-static-docs.xqy?version={$v}&amp;srcdir={$src-dir}"
                                                                value="Load {$v} PDF, HTML, &amp; ZIP"/>
           </td>
           <td>&#160;</td>
@@ -165,9 +160,6 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 
           var url = button.attr("title").replace("srcdir=",
                                                  "srcdir=" + $("#src-dir-prefix").attr("value"))
-                                        .replace("staticdir=",
-                                                 "staticdir=" +                        $("#static-base-dir").attr("value")
-                                                              + button.parents("td").find(".static-sub-dir").attr("value"))
                                         .replace("help-xsd-dir=",
                                                  "help-xsd-dir=" + $("#base-xsd-dir").attr("value")
                                                                  + button.parents("tr").find(".versionCol").text());
