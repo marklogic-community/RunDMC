@@ -22,19 +22,21 @@ declare function local:redir($path as xs:string) as xs:string
                  "/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
-        concat($srv:api-server,"/docs")
+        $srv:api-server
     else if ($path = ("/pubs/6.0", "/pubs/6.0/", "/docs/6.0")) then
-        concat($srv:api-server,"/6.0/docs")
+        concat($srv:api-server,"/6.0")
     else if ($path = ("/pubs/5.0", "/pubs/5.0/", "/docs/5.0")) then
-        concat($srv:api-server,"/5.0/docs")
+        concat($srv:api-server,"/5.0")
     else if ($path = ("/pubs/4.2", "/pubs/4.2/", "/docs/4.2")) then
-        concat($srv:api-server,"/4.2/docs")
+        concat($srv:api-server,"/4.2")
     else if ($path = ("/pubs/4.1", "/pubs/4.1/", "/docs/4.1")) then
-        concat($srv:api-server,"/4.1/docs")
+        concat($srv:api-server,"/4.1")
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then
-        "/docs/4.0"
+        $srv:api-server
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
-        "/docs/3.2"
+        $srv:api-server
+    else if ($path = ("/download/6.0", "/download/6.0/")) then
+        "/products/marklogic-server/6.0"
     else if ($path = ("/download/5.0", "/download/5.0/")) then
         "/products/marklogic-server/5.0"
     else if ($path = ("/download/4.2", "/download/4.2/")) then
@@ -52,6 +54,8 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/learn/sharepoint-install-guide")) then
         "/docs/sharepoint-connector/admin-guide"
 
+    else if ($path = ("/download/binaries/6.0/requirements.xqy")) then
+        "/products/marklogic-server/requirements-6.0"
     else if ($path = ("/download/binaries/5.0/requirements.xqy")) then
         "/products/marklogic-server/requirements-5.0"
     else if ($path = ("/download/binaries/4.2/requirements.xqy")) then
@@ -59,7 +63,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.1"
     else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
-        "/products/marklogic-server/requirements-4.0"
+        "/products/marklogic-server/requirements-6.0"
 
     else if ($path = ("/download/confirm.xqy")) then
         "/products"
