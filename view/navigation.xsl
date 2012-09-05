@@ -122,7 +122,9 @@
                   </xsl:template>
 
                   <!-- In the standalone version, top nav links point to the Community site... -->
-                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api]">http://developer.marklogic.com</xsl:template>
+                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api]">
+                    <xsl:sequence select="if (starts-with(@href,'/')) then 'http://developer.marklogic.com' else ''"/>
+                 </xsl:template>
 
                   <!-- ...except for "Documentation," which points to the root of the current server -->
                   <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api][@href eq '/']" priority="1"/>
