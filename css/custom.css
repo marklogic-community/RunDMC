@@ -219,12 +219,16 @@
 /* BANNER */
 
 #banner {
-  background: #eef0dd url(images/bannerbg.jpg) no-repeat center top;
+  background: #eef0dd url(/images/bannerbg.jpg) no-repeat center top;
   color: #222222;
-  text-shadow: 0 1px 0 white;
+  XXXtext-shadow: 0 1px 0 white;
   *zoom: 1;
   padding: 20px 0;
 }
+#banner .button {
+  text-shadow: 0;
+}
+
 #banner:before,
 #banner:after {
   display: table;
@@ -243,18 +247,18 @@
   margin-left: 20px;
   float: left;
 }
-#banner h1 {
-  font-size: 6em;
+#banner h1, #banner h2 {
+  font-size: 3.5em;
   line-height: 0.9em;
   font-weight: 700;
   font-family: 'Open Sans Condensed', sans-serif;
   margin: 20px 0;
 }
 #banner p.summary {
-  font-size: 1.4em;
+  font-size: 1.2em;
   line-height: 1.3em;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  xmargin-top: 30px;
+  xmargin-bottom: 10px;
 }
 #interact {
   clear: both;
@@ -355,7 +359,7 @@
   text-shadow: 0 1px 0 black;
 }
 #playlist li .thumb:before {
-  content: url('images/play.png');
+  content: url('/images/play.png');
   position: absolute;
   top: 20px;
   left: 30px;
