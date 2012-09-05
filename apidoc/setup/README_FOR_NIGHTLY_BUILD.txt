@@ -3,7 +3,7 @@ and app servers set up for either full RunDMC (see /setup/README.txt)
 or the standalone API docs (see /setup/README_FOR_STANDALONE_APIDOC.md).
 
 This document describes the steps needed to run a full build of the
-API docs for a given server version (e.g., 4.1, 4.2, 5.0, 5.1, etc.). It
+API docs for a given server version (e.g., 4.1, 4.2, 5.0, 6.0, etc.). It
 is meant to facilitate the creation of, for example, a shell script or Perl
 script that makes HTTP requests to invoke the various stages of the build
 process.
@@ -14,7 +14,7 @@ process.
 The simplest way to get a clean build for all documents for a particular
 server version is to invoke a single GET request. For example:
 
-  GET http://localhost:8008/apidoc/setup/build.xqy?version=5.0&srcdir=/Users/elenz/Desktop/api-rawdocs/b5_0_XML&staticdir=/Users/elenz/Desktop/MarkLogic_5_pubs&help-xsd-dir=/Users/elenz/Desktop/Config/5.0&clean=yes
+  GET http://localhost:8008/apidoc/setup/build.xqy?version=5.0&srcdir=/space/docs/MarkLogic_5_pubs&help-xsd-dir=/space/docs/Config/5.0&clean=yes
 
 The build.xqy script kicks off a complete build for the docs for
 the specified server version.
@@ -25,16 +25,12 @@ Four request parameters are required, and one is optional:
      the server version (e.g., 5.0)
 
    srcdir
-     the filesystem directory containing the raw source XML
-     (e.g., /space/elenz/api-rawdocs/b5_0_XML)
-
-   staticdir
-     the filesystem directory containing the "pubs" for this version,
-     (e.g., /space/elenz/MarkLogic_5_pubs)
+     the filesystem directory containing all the source docs
+     (e.g., /space/docs/MarkLogic_5_pubs)
 
      Also, the assumption is that the zip file of all docs has the same name
      as the directory, plus ".zip".
-     (e.g., /space/elenz/MarkLogic_5_pubs/MarkLogic_5_pubs.zip).
+     (e.g., /space/docs/MarkLogic_5_pubs.zip).
 
    help-xsd-dir
      the filesystem "Config" directory containing the XSD files for this version
@@ -85,7 +81,7 @@ in parallel (no dependencies between them).
 
   Step 1 (Load raw docs)
 
-    GET http://localhost:8008/apidoc/setup/load-raw-docs.xqy?version=4.2&srcdir=/Users/elenz/Desktop/api-rawdocs/b4_2_XML
+    GET http://localhost:8008/apidoc/setup/load-raw-docs.xqy?version=4.2&srcdir=/space/docs/MarkLogic_4.2_pubs
 
     Note the "srcdir" parameter: it must point to the location on the filesystem that contains the raw source files
 
@@ -112,7 +108,7 @@ in parallel (no dependencies between them).
 
   Step 3b (Create XML TOC)
 
-    GET http://localhost:8008/apidoc/setup/create-toc.xqy?version=4.2&help-xsd-dir=/Users/elenz/Desktop/Config/4.2
+    GET http://localhost:8008/apidoc/setup/create-toc.xqy?version=4.2&help-xsd-dir=/space/docs/Config/4.2
 
     Note the "help-xsd-dir" parameter: it must point to the location on the filesystem containing the XSD files
 
@@ -141,9 +137,9 @@ in parallel (no dependencies between them).
   To publish the static PDF and HTML docs (javadoc and .NET docs), you must
   also run the following script:
 
-    GET http://localhost:8008/apidoc/setup/load-static-docs.xqy?version=4.2&staticdir=/Users/elenz/Desktop/MarkLogic_4.2_pubs
+    GET http://localhost:8008/apidoc/setup/load-static-docs.xqy?version=4.2&srcdir=/space/docs/MarkLogic_4.2_pubs
 
-    Note the "staticdir" parameter: it must point to the location on the filesystem that contains the static source files
+    Note the "srcdir" parameter: it must point to the location on the filesystem that contains the static source files
     (Which sub-directories are loaded is configured in /apidoc/config/static-docs.xml)
 
 
