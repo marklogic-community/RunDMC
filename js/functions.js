@@ -407,6 +407,19 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
+            $('#playlist > li').click(function(e){
+                e.preventDefault();
+            
+                //dont do anything if click on show me link
+                if($(e.target).is('a')){
+                    return false;
+                }
+
+                //the magic
+                $(this).addClass('active').siblings('li').removeClass('active');
+                $('#vidwrap iframe').attr('src','http://www.youtube.com/embed/'+$(this).attr('rel')+'?autoplay=1');
+            });
+
 		    $(function(){
 			    $('#slider').anythingSlider({
                     buildArrows: false,
