@@ -231,6 +231,18 @@
   <generic-page display="Try MarkLogic!" href="/try/corona/page4" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
 
+  <generic-page display="Try MarkLogic!" href="/try/rest/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page5" hide="yes"/>
+
+  <generic-page display="Try MarkLogic!" href="/try/java/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page5" hide="yes"/>
+
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
