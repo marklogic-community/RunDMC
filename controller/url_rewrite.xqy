@@ -244,6 +244,8 @@ declare function local:rewrite($path as xs:string) as xs:string
         "/controller/enable-corn.xqy?q=on"
     else if ($path eq "/disable-corn") then
         "/controller/enable-corn.xqy"
+    else if (starts-with($path, "/rex/")) then
+        concat("/controller/rex.xqy?path-and-query=", xdmp:url-encode(concat(replace($path, "/rex", ""), "?", $query-string)))
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"

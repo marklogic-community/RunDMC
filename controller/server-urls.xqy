@@ -38,6 +38,7 @@ declare variable $s:webdav-server := s:server-url("webdav");
 declare variable $s:admin-server  := s:server-url("admin");
 declare variable $s:api-server    := s:server-url("api");
 declare variable $s:standalone-api-server    := s:server-url("standalone-api");
+declare variable $s:rapi-server   := s:server-url("rapi");
 
 declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then $s:standalone-api-server
                                                                            else $s:api-server;
