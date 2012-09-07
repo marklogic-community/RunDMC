@@ -408,7 +408,6 @@ if(typeof jQuery != 'undefined') {
             });
 
             $('#playlist > li').click(function(e){
-                e.preventDefault();
                 //dont do anything if click on show me link
                 if($(e.target).is('a')){
                     // let event fire
