@@ -290,7 +290,8 @@
 
                   <xsl:template mode="product-doc-url" match="new-doc">
                     <xsl:variable name="h" select="replace('//docs.marklogic.com','//docs.marklogic.com', $srv:api-server)"/>
-                    <xsl:value-of select="concat($h, @source)"/>
+                    <xsl:variable name="v" select="if (@version) then concat('/', @version) else ''" />
+                    <xsl:value-of select="concat($h, $v, @source)"/>
                   </xsl:template>
 
 
