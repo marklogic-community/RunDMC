@@ -21,9 +21,11 @@
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
         <page display="ODBC Driver" href="/products/odbc"/>
       </group>
-      <group display="Tools">
+      <group display="Libraries and Tools">
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
+        <page display="Plug-in for Nagios" href="/products/nagios"/>
+        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
       <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
@@ -32,10 +34,6 @@
         <page display="Authoring App for Excel®" href="/code/marklogic-sample-authoring-app-excel"/>
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
-      </group>
-      <group display="Monitoring Tools">
-        <page display="Plug-in for Nagios" href="/products/nagios"/>
-        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
     </group>
     <generic-page display="Licensing" href="/licensing"/>
