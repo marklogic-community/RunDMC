@@ -407,6 +407,11 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
+            $("#vidwrap").click(function(e) {
+                var rel = $(this).attr('rel');
+                $(this).children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0" frameborder="0" allowfullscreen=""></iframe>');
+            });
+
             $('#playlist > li').click(function(e){
                 //dont do anything if click on show me link
                 if($(e.target).is('a')){
@@ -415,7 +420,13 @@ if(typeof jQuery != 'undefined') {
                     e.preventDefault();
                     //the magic
                     $(this).addClass('active').siblings('li').removeClass('active');
-                    $('#vidwrap iframe').attr('src','http://www.youtube.com/embed/'+$(this).attr('rel')+'?autoplay=1');
+                    var player = $('vidwrap iframe');
+                    var rel = $(this).attr('rel');
+                    if (player) {
+                        $('#vidwrap').children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0" frameborder="0" allowfullscreen=""></iframe>');
+                    } else {
+                        $('#vidwrap iframe').attr('src','http://www.youtube.com/embed/'+rel+'?autoplay=1');
+                    }
                 }
             });
 
