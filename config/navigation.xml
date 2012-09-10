@@ -13,10 +13,7 @@
       </group>
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
-        <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0"/>
-        <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0"/>
-        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2"/>
-        <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
+        <page display="XCC Java/.NET "   href="/products/xcc"/>
         <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
         <page display="ODBC Driver" href="/products/odbc"/>
