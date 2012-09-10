@@ -274,7 +274,8 @@
 
                   <xsl:template mode="product-doc-title" match="new-doc">
                     <xsl:variable name="version" select="if (@version) then @version else $ml:default-version"/>
-                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, @source, '.xml'))/*/*:title)[1]/string()"/> 
+                    <xsl:variable name="source" select="replace(@source, '#.*', '')"/>
+                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, $source, '.xml'))/*/*:title)[1]/string()"/> 
                   </xsl:template>
 
                   <xsl:template mode="product-doc-url" match="old-doc">
