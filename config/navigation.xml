@@ -122,6 +122,7 @@
       </group>
       <group display="Applications">
         <page display="Boing Boing" href="/code/boing-boing"/>
+        <page display="Document Discovery" href="/code/document-discovery"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
