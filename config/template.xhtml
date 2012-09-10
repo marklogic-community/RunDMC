@@ -43,44 +43,6 @@
         <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
 
         <script type="text/javascript">
-		$(function() {
-			$("ul.mlvideos").ytplaylist({addThumbs:true, autoPlay: false, holderId: 'ytvideo', playerWidth:'640', playerHeight:'360'});
-			$("#ytvideo-desc").text($($('.mlvideos li a')[0]).attr('alt'));		
-			var videoShowing = false;
-			$("#show-video").click(function() {
-				if (!videoShowing) {
-					$(".ytplayer").show();					
-					$("#ytvideo-desc").css('opacity','1');
-					videoShowing = true;
-				} else {
-					$(".ytplayer").hide();
-					$('#ytvideo iframe').remove();
-					videoShowing = false;
-				}
-			});
-			$(".ytplayer .close").click(function() {
-				$(".ytplayer").hide();
-				$('#ytvideo iframe').remove();
-				videoShowing = false;
-			});
-			$(".ytplayer .yt-vid").click(function() {
-				var vid = $(this);
-				$("#ytvideo-desc").fadeOut("slow", function() {
-					$("#ytvideo-desc").text(vid.attr('alt'));		
-					$("#ytvideo-desc").fadeIn("slow");					
-				});
-			});
-			$(".ytplayer").click(function(ev) {
-				if (ev.target == this) {
-					$(".ytplayer").hide();
-					$('#ytvideo iframe').remove();
-					videoShowing = false;
-				}
-			});			
-		});
-        </script>
-
-        <script type="text/javascript">
             var is_stage = document.location.hostname == 'docs-stage.marklogic.com';
             var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
             var _gaq = _gaq || [];
