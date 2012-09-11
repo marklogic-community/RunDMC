@@ -407,6 +407,29 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
+            $("#vidwrap").click(function(e) {
+                var rel = $(this).attr('rel');
+                $(this).children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0" frameborder="0" allowfullscreen=""></iframe>');
+            });
+
+            $('#playlist > li').click(function(e){
+                //dont do anything if click on show me link
+                if($(e.target).is('a')){
+                    // let event fire
+                } else {
+                    e.preventDefault();
+                    //the magic
+                    $(this).addClass('active').siblings('li').removeClass('active');
+                    var player = $('vidwrap iframe');
+                    var rel = $(this).attr('rel');
+                    if (player) {
+                        $('#vidwrap').children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0" frameborder="0" allowfullscreen=""></iframe>');
+                    } else {
+                        $('#vidwrap iframe').attr('src','http://www.youtube.com/embed/'+rel+'?autoplay=1');
+                    }
+                }
+            });
+
 		    $(function(){
 			    $('#slider').anythingSlider({
                     buildArrows: false,

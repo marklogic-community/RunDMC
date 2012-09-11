@@ -167,6 +167,9 @@
           </xsl:template>
 
                   <xsl:template mode="product-download" match="download">
+                    <!--
+                    <xsl:variable name="onclick" select="@md5"/>
+                    -->
                     <xsl:variable name="num-cols" select="if (architecture and installer) then 3
                                                      else if (not(string(@size)))         then 1
                                                                                           else 2"/>
@@ -189,7 +192,12 @@
                       </xsl:if>
                       <xsl:if test="$num-cols gt 1">
                         <td>
-                          <xsl:value-of select="@size"/>
+                          <xsl:value-of select="@size"/>&#160;&#160; 
+<!--
+                          <xsl:if test="@md5">
+                              <a href="#" onclick="alert('$md5'); return true;"> (MD5) </a>
+                          </xsl:if>
+-->
                         </td>
                       </xsl:if>
                     </tr>
@@ -266,7 +274,8 @@
 
                   <xsl:template mode="product-doc-title" match="new-doc">
                     <xsl:variable name="version" select="if (@version) then @version else $ml:default-version"/>
-                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, @source, '.xml'))/*/*:title)[1]/string()"/> 
+                    <xsl:variable name="source" select="replace(@source, '#.*', '')"/>
+                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, $source, '.xml'))/*/*:title)[1]/string()"/> 
                   </xsl:template>
 
                   <xsl:template mode="product-doc-url" match="old-doc">
@@ -282,7 +291,8 @@
 
                   <xsl:template mode="product-doc-url" match="new-doc">
                     <xsl:variable name="h" select="replace('//docs.marklogic.com','//docs.marklogic.com', $srv:api-server)"/>
-                    <xsl:value-of select="concat($h, @source)"/>
+                    <xsl:variable name="v" select="if (@version) then concat('/', @version) else ''" />
+                    <xsl:value-of select="concat($h, $v, @source)"/>
                   </xsl:template>
 
 
@@ -931,46 +941,6 @@
 
   <xsl:template match="server-version">
     <span class="server-version"><xsl:value-of select="xdmp:version()"/></span>
-  </xsl:template>
-
-  <!-- in progress
-  <xsl:template match="ytplayer">
-    <xsl:variable name="videos" select="ml:videos()"/>
-	<div class="ytplayer">
-		<div class="ytplayer-box">
-			<a class="close"></a>
-			<div id="ytvideo"></div>
-			<ul class="mlvideos">
-                <xsl:apply-templates mode="ytplayer-video" select="$videos/Article"/>
-            </ul>
-			<div id="ytvideo-desc">Description </div>
-		</div>
-	</div>
-  </xsl:template>
-
-      <xsl:template match="ytplayer-video">
-	        <li><a><xsl:attribute name="href"><xsl:value-of select="external-link/string()"/> </xsl:attribute>
-                   <xsl:attribute name="alt"><xsl:value-of select="description"/> </xsl:attribute>
-                   <xsl:value-of select="title/string()"/></a></li>
-      </xsl:template>
-   -->
-
-  <xsl:template match="ytplayer">
-	<div class="ytplayer">
-		<div class="ytplayer-box">
-			<a class="close"></a>
-			<div id="ytvideo"></div>
-
-			<ul class="mlvideos">
-	            <li><a href="http://www.youtube.com/watch?v=On6pGs5NPIc" alt="Information Studio Demo Video, part 1.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 1</a></li>
-	            <li><a href="http://www.youtube.com/watch?v=eo5ct0Heyfc" alt="Information Studio Demo Video, part 2.  Watch how to use Application Builder and Information Studio to build a search application.">Build an app with Application Services, part 2</a></li>
-	            <li><a href="http://www.youtube.com/watch?v=Nb56VGOqcpo" alt="Review the basic concepts, layout, and user interface for Query Console, a query debugging tool.">Query Console Screencast</a></li>
-	            <li><a href="http://www.youtube.com/watch?v=BH2lsCmHb4w" alt="For MarkLogic database administrators: How to monitor MarkLogic with the Plug-in for Nagios">Nagios Plugin Setup and Configuration</a></li>
-	            <li><a href="http://www.youtube.com/watch?v=WbWAyyfZHVc" alt="For MarkLogic database administrators: How to monitor MarkLogic with the SPI for HP Operations Manager‬">Set up MarkLogic's SPI for HP Operations Manager‬</a></li>
-            </ul>
-			<div id="ytvideo-desc">Description </div>
-		</div>
-	</div>
   </xsl:template>
 
   <xsl:template match="fb-app-id">

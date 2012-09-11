@@ -13,17 +13,21 @@
       </group>
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
-        <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0"/>
-        <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0"/>
-        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2"/>
-        <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1"/>
+        <page display="XCC Java/.NET "   href="/products/xcc"/>
+        <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
+        <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
+        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" hide="yes"/>
+        <page display="XCC Java/.NET Connectors for 4.1" href="/products/xcc/4.1" hide="yes"/>
+
         <page display="Connector for Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
         <page display="ODBC Driver" href="/products/odbc"/>
       </group>
-      <group display="Tools">
+      <group display="Libraries and Tools">
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
+        <page display="Plug-in for Nagios" href="/products/nagios"/>
+        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
       <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
@@ -33,19 +37,15 @@
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
       </group>
-      <group display="Monitoring Tools">
-        <page display="Plug-in for Nagios" href="/products/nagios"/>
-        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
-      </group>
     </group>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="MarkLogic Express" href="/express"/>
     <generic-page display="MarkLogic Academic License" href="/academic"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
-    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.1"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.2"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
   </page>
   <page display="Tutorials" href="/learn/tutorials" tooltip="Learn by doing"/>
   <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
@@ -91,7 +91,7 @@
         <page display="MLJAM" href="/code/mljam"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
-        <page display="ActiveDocument (ruby)" href="/code/active-document"/>
+        <!-- <page display="ActiveDocument (ruby)" href="/code/active-document"/> -->
       </group>
       <group display="Command-line interfaces">
         <page display="Ant tasks" href="/code/ant-tasks"/>
@@ -123,6 +123,7 @@
       </group>
       <group display="Applications">
         <page display="Boing Boing" href="/code/boing-boing"/>
+        <page display="Document Discovery" href="/code/document-discovery"/>
         <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
         <page display="Shakespeare Demo Application" href="/code/bill"/>
@@ -232,6 +233,18 @@
   <generic-page display="Try MarkLogic!" href="/try/corona/page3" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/corona/page4" hide="yes"/>
   <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
+
+  <generic-page display="Try MarkLogic!" href="/try/rest/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/rest/page5" hide="yes"/>
+
+  <generic-page display="Try MarkLogic!" href="/try/java/index" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page2" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page3" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page4" hide="yes"/>
+  <generic-page display="Try MarkLogic!" href="/try/java/page5" hide="yes"/>
 
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
