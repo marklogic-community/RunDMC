@@ -90,7 +90,7 @@
         <page display="MLJAM" href="/code/mljam"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
-        <page display="ActiveDocument (ruby)" href="/code/active-document"/>
+        <!-- <page display="ActiveDocument (ruby)" href="/code/active-document"/> -->
       </group>
       <group display="Command-line interfaces">
         <page display="Ant tasks" href="/code/ant-tasks"/>
