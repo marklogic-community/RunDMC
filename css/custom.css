@@ -421,13 +421,19 @@
   left: 0;
 }
 .dc #vidwrap {
-  background: #899b3b;
+  background: black;
   float: left;
   width: 460px;
   height: 259px;
   border: 1px solid #222222;
   margin-left: 20px;
 }
+
+.dc #vidstill {
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
 .dc #products {
   background-color: whitesmoke;
   background-image: -moz-linear-gradient(top, #eeeeee, white);
@@ -514,3 +520,4 @@
   margin: 0;
   padding: 10px;
 }
+
