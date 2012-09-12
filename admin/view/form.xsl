@@ -171,7 +171,7 @@
                     <strong>
                       <xsl:choose>
                         <xsl:when test="string($doc-path)">
-                          <xsl:variable name="external-uri" select="substring-before($doc-path, '.xml')"/>
+                          <xsl:variable name="external-uri" select="replace($doc-path,'.xml$','')"/>
                           <xsl:value-of select="$external-uri"/>
                           <xsl:text> </xsl:text>
                           <a href="{$srv:draft-server}{$external-uri}" target="_blank">
