@@ -196,19 +196,6 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Respond with DB contents for XML files that exist :)
     else if (doc-available($doc-url) and ml:doc-matches-dmc-page-or-preview(doc($doc-url))) then
         concat("/controller/transform.xqy?src=", $path, "&amp;", $query-string)
-
-    (: Respond with the requested parent tutorial page :)
-    (: ASSUMPTION: subsequent tutorial pages are always one step down the path
-                   e.g. if p1 is /learn/java then p2 would be /learn/java/crud
-    :)
-    else
-      let $basename    := tokenize($path,'/')[last()],
-          $parent-path := substring-before($path,concat('/',$basename)),
-          $parent      := concat($parent-path,'.xml')
-      return
-        if (doc-available($parent) and ml:doc-matches-dmc-page-or-preview(doc($parent)) and doc($parent)/ml:Tutorial) then
-        concat("/controller/transform.xqy?src=", $parent-path, "&amp;path=", $path, "&amp;", $query-string)
-
     (: Support /blog/atom.xml and some obsolete URLs we used to use for feeds :)
     else if ($path = ("/blog/atom.xml", "/newsandevents/atom.xml", "/news/atom.xml", "/events/atom.xml")) then
         "/lib/atom.xqy"
