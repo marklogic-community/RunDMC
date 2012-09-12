@@ -205,7 +205,7 @@
                     <xsl:apply-templates select="name/node()"/>
                   </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post">
+                  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial">
                     <xsl:apply-templates select="title/node()"/>
                   </xsl:template>
 
@@ -236,18 +236,22 @@
 
   <xsl:template match="page-heading">
     <h2>
-      <xsl:apply-templates mode="page-specific-title" select="$content/*"/>
-      <xsl:apply-templates mode="page-heading-suffix" select="$content/*"/>
+      <xsl:apply-templates mode="page-heading" select="$content/*"/>
     </h2>
   </xsl:template>
 
-          <xsl:template mode="page-heading-suffix" match="*"/>
-          <!-- Append Atom feed link to Blog page heading -->
-          <xsl:template mode="page-heading-suffix" match="page[$external-uri eq '/blog']">
-            <a href="/blog/atom.xml?feed=blog">
-              <img src="/images/i_rss.png" alt="(RSS)" width="24" height="23"/>
-            </a>
+          <xsl:template mode="page-heading" match="*">
+            <xsl:apply-templates mode="page-specific-title" select="."/>
+            <xsl:apply-templates mode="page-heading-suffix" select="."/>
           </xsl:template>
+
+                  <xsl:template mode="page-heading-suffix" match="*"/>
+                  <!-- Append Atom feed link to Blog page heading -->
+                  <xsl:template mode="page-heading-suffix" match="page[$external-uri eq '/blog']">
+                    <a href="/blog/atom.xml?feed=blog">
+                      <img src="/images/i_rss.png" alt="(RSS)" width="24" height="23"/>
+                    </a>
+                  </xsl:template>
 
   <!-- Conditional template support: process the first child that matches -->
   <xsl:template match="choose">

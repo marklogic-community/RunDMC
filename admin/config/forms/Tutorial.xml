@@ -29,6 +29,6 @@
     </ml:topics>
     <ml:description form:label="Short description"
                     form:wide="yes"/>
-    <ml:pages form:label="Tutorial Pages"
-              form:type="textarea"/><!-- form:class="richtext"/>-->
+    <ml:Body form:label="Page-listings &amp; Body"
+             form:type="textarea"/><!-- form:class="richtext"/>-->
 </ml:Tutorial>

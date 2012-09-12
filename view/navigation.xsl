@@ -406,18 +406,20 @@
           </xsl:template>
 
 
-  <xsl:template match="sub-nav[$content/Tutorial]">
+  <xsl:template match="sub-nav[$content/Tutorial or $content/page/tutorial]">
     <section class="subnav">
       <h2>Contents</h2>
       <ul class="tutorial_toc">
-        <xsl:apply-templates mode="tutorial-toc" select="$content/Tutorial/pages/page"/>
+        <xsl:apply-templates mode="tutorial-toc" select="ml:parent-tutorial($original-content/*)/Body/(pages|pages/page)"/>
       </ul>
     </section>
   </xsl:template>
 
-          <xsl:template mode="tutorial-toc" match="page">
+          <xsl:template mode="tutorial-toc" match="pages | page">
+            <xsl:variable name="is-current-page" select="self::pages[$original-content/Tutorial]
+                                                      or @url-name eq ml:tutorial-page-url-name($original-content)"/>
             <li>
-              <xsl:if test=". is $this-tutorial-page">
+              <xsl:if test="$is-current-page">
                  <xsl:attribute name="class" select="'current'"/>
               </xsl:if>
               <xsl:variable name="href">
@@ -428,9 +430,9 @@
                   <xsl:apply-templates mode="tutorial-page-title" select="."/>
                 </a>
               </span>
-              <xsl:if test=". is $this-tutorial-page">
+              <xsl:if test="$is-current-page">
                 <ul>
-                  <xsl:apply-templates mode="tutorial-toc-section" select="xhtml:h3"/>
+                  <xsl:apply-templates mode="tutorial-toc-section" select="$content//xhtml:h3"/>
                 </ul>
               </xsl:if>
             </li>
