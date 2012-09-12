@@ -5,6 +5,7 @@
     <ul>
     <li><a title="tutorials" href="/learn/tutorials">Tutorials</a></li>
     <li><a title="videos" href="/learn/videos">Videos</a></li>
+    <li><a title="arch" href="/inside-marklogic">MarkLogic Architecture</a></li>
     </ul>
   </div>
 </ml:widget>
