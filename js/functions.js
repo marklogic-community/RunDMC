@@ -406,6 +406,17 @@ if(typeof jQuery != 'undefined') {
                     dataType: 'json'
                 });
             });
+        });
+
+        var d = $('.yearpicker').attr('data-value');
+        var now = new Date().getFullYear();
+        for (i = now; i < now + 10 ; i++)
+        {
+            $('.yearpicker').append($('<option />').val(i).html(i));
+        }
+        $('.yearpicker').append($('<option />').html('N/A'));
+        $('.yearpicker').val(d);
+        
 
             $("#vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
