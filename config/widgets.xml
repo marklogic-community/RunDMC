@@ -149,6 +149,7 @@
 -->
     <page href="/learn"/>
     <page href="/learn/tutorials"/>
+    <page href="/products/marklogic6"/>
   </widget>
 
   <widget href="/widgets/mugfr-flickr.xml">
