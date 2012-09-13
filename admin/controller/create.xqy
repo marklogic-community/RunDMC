@@ -26,9 +26,6 @@ return
 
   ml:reset-category-tags($new-doc-url, $new-doc),
 
-  (: Insert a container for corresponding conversations (comments) :)
-  ml:insert-comment-doc($new-doc-url),
-
   (: Invalidate the navigation cache :)
   ml:invalidate-cached-navigation(),
 
