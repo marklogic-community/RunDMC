@@ -694,8 +694,10 @@
       <table class="sortable documentsList features">
         <colgroup>
           <col class="col1"/>
+          <!--
           <col class="col2"/>
           <col class="col3"/>
+          -->
           <!--
           <col class="col4"/>
           -->
@@ -708,7 +710,9 @@
             <th scope="col">Server&#160;Version&#160;&#160;&#160;&#160;</th>
             <th scope="col">Topic(s)</th>
             -->
+            <!--
             <th scope="col" class="sort">Last&#160;updated</th>
+            -->
           </tr>
         </thead>
         <tbody>
@@ -880,9 +884,11 @@
                 <xsl:value-of select="replace(@type,' ','&#160;')"/>
               </td>
               -->
+              <!--
               <td>
                 <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
               </td>
+              -->
             </tr>
           </xsl:template>
 
