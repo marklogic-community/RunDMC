@@ -208,7 +208,6 @@ declare function ml:get-matching-functions($name as xs:string, $version) as docu
 declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
 declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
 
-
 declare function topic-docs($tag as xs:string) as document-node()* {
   fn:collection()[.//topic-tag = $tag]
 

@@ -28,7 +28,7 @@
 
 
 		<script type="text/javascript" src="/js/modernizr.js"></script>
-		<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>  
 		<script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
@@ -46,7 +46,7 @@
             var is_stage = document.location.hostname == 'docs-stage.marklogic.com';
             var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
             var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview'], ['_trackPageLoadTime']);
+            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview']);
             
             (function() {
                 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -134,21 +134,7 @@
 					</ul>
 				</nav>
         -->
-				<div id="copyright">Copyright © 2010–2011 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>. | See <a href="http://www.marklogic.com/legal/privacy-policy.html">privacy policy</a> and <a href="http://www.marklogic.com/legal/terms-of-use.html">terms of use</a><ml:cornify/>. <ml:edit-link/></div>
-
-<!--
-				<div class="utility">
-					<form ml:action="/search" method="get">
-						<fieldset>
-							<legend><label for="us_input">Search the developer site</label></legend>
-							<input id="us_input" type="text" name="q" ml:value=""/>
-							<input type="image" src="/images/i_mag_glass2.png" alt="Search" title="Search the site" />
-						</fieldset>
-					</form>
-					<a onclick="UserVoice.Popin.show(uservoiceOptions); return false;" href="#" xhref="http://marklogic.uservoice.com/forums/58148?lang=en&amp;referer=http%3A%2F%2Fdeveloper.marklogic.com%2F" id="uservoice-feedback-tab"><img title="Feedback – Submit an idea" src="/images/i_bullhorn.png" alt="Feedback"  width="30" height="29" /></a>
-					<a href="http://www.marklogic.com" target="_blank"><img title="Go to corporate site" src="/images/i_screen_m.png" alt="MarkLogic Site" width="30" height="29" /></a>
-				</div>
--->
+				<div id="copyright">Copyright © 2010–2012 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>. | See <a href="http://www.marklogic.com/legal/privacy-policy.html">privacy policy</a> and <a href="http://www.marklogic.com/legal/terms-of-use.html">terms of use</a><ml:cornify/>. <ml:edit-link/></div>
 
 			</footer>
 		</div>

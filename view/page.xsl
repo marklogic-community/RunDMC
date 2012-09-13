@@ -143,7 +143,6 @@
     <xsl:attribute name="href" select="replace(.,'//docs.marklogic.com', $srv:api-server)"/>
   </xsl:template>
 
-
   <!-- Bump up the heading number (i.e. increase the depth) of headings in paginated lists (of blog posts) -->
   <xsl:template match="xhtml:h3
                      | xhtml:h4
@@ -262,7 +261,6 @@
   <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
   <xsl:template match="if[not((some $prefix in tokenize(normalize-space(@href-starts-with),' ')
                               satisfies starts-with($external-uri, $prefix)) or (@href eq $external-uri) )]"/>
-
 
   <xsl:template match="if-session[users:getCurrentUser()]"/>
 

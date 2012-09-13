@@ -139,6 +139,12 @@ tbody:last-child tr:last-child td:last-child {
 	padding-left: 15px;
 	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
+/*
+.post tbody td:first-child {
+	padding-left: 15px;
+	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
+}
+*/
 .post thead th {
   padding: 0 5px 0 10px;
 }
@@ -1785,18 +1791,30 @@ div.intro p + a, div.intro p + img {float: right;}
 	padding: 0 5px 0 0 !important;
 	min-height: 206px;
 }
+
 .lists.twitter header + div {min-height: 225px;}
 .lists table {
 	margin: 0;
 	width: 100%;
 }
 .lists header + div table {width: 95%;}
+/* added */
 .lists tbody {border: none;}
 .lists td, .lists th {
 	background: none !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 	border: none !important;
+}
+
+/* Twitstream */
+.tweet-source {display:none;}
+
+
+.tweet-rt {
+    font-size: .9em;
+    background: url(/media/twitter/retweet.png) left center no-repeat;
+    padding-left: 19px;
 }
 .lists header + div table td, .lists header + div table th {border-top: 1px solid #E4E4E4 !important;}
 .lists header + div table tr:first-child td, .lists header + div table tr:first-child th {border-top: none !important;}

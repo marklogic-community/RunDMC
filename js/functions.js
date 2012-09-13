@@ -256,6 +256,7 @@ if(typeof jQuery != 'undefined') {
         $(document).ready(function() {
 
             //Hide login and signup when we're on a signup page
+            // console.log(window.location.pathname);
             if (window.location.pathname == '/people/signup' || 
                 window.location.pathname == '/people/fb-signup') {
                     $('#login-menu-nav').hide();
@@ -406,6 +407,17 @@ if(typeof jQuery != 'undefined') {
                     dataType: 'json'
                 });
             });
+        });
+
+        var d = $('.yearpicker').attr('data-value');
+        var now = new Date().getFullYear();
+        for (i = now; i < now + 10 ; i++)
+        {
+            $('.yearpicker').append($('<option />').val(i).html(i));
+        }
+        $('.yearpicker').append($('<option />').html('N/A'));
+        $('.yearpicker').val(d);
+        
 
             $("#vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
@@ -442,7 +454,6 @@ if(typeof jQuery != 'undefined') {
                     } 
                 });
 		    });
-        });
 
 
         //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
