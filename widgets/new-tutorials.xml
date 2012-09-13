@@ -1,0 +1,11 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> New Tutorials!</h1>
+  <div>
+    <ul>
+      <li><a href="/try/java/index">Introduction to MarkLogic via Java</a></li>
+      <li><a href="/try/rest/index">Introduction to MarkLogic via REST</a></li>
+      <li><a href="/learn/java">MarkLogic for Java developers</a></li>
+      <li><a href="/learn/rest">MarkLogic REST API walk-through</a></li>
+    </ul>
+  </div>
+</ml:widget>
