@@ -74,7 +74,6 @@
       </group>
       <group display="Deployment and configuration">
         <page display="Booster" href="/code/booster"/>
-        <page display="Pomegranate" href="/code/pomegranate"/>
         <page display="Roxy" href="/code/roxy"/>
       </group>
       <group display="Microsoft Office® Integration">
