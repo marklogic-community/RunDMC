@@ -256,6 +256,7 @@ if(typeof jQuery != 'undefined') {
         $(document).ready(function() {
 
             //Hide login and signup when we're on a signup page
+            // console.log(window.location.pathname);
             if (window.location.pathname == '/people/signup' || 
                 window.location.pathname == '/people/fb-signup') {
                     $('#login-menu-nav').hide();
@@ -453,7 +454,6 @@ if(typeof jQuery != 'undefined') {
                     } 
                 });
 		    });
-        });
 
 
         //$("#signup-form input[type=text], #signup-form input[type=password]").blur(function(event) {
