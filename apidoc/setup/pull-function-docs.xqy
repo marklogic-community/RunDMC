@@ -16,9 +16,7 @@ xdmp:log(concat("Pulling function docs from the raw docs database...")),
 for $doc in $raw:api-docs return 
   for $func in xdmp:xslt-invoke("extract-functions.xsl", $doc) return
   (
-    xdmp:document-insert(fn:base-uri($func), $func),
-    (: Comment docs should not be version-specific, so remove the version number :)
-    ml:insert-comment-doc(u:strip-version-from-path(fn:base-uri($func)))
+    xdmp:document-insert(fn:base-uri($func), $func)
   ),
 
 xdmp:log("Done."),

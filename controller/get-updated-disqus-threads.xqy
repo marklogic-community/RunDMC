@@ -3,9 +3,7 @@
    so that we have a backup and a means by which to publish the
    hidden comments in our pages for SEO purposes.
 
-   It's probably best to set up a separate, temporary app
-   server that doesn't use URL rewriting in order to easily
-   run this script and other maintenance scripts like it.
+   It's probably best to run this as a scheduled task.
 :)
 
 import module namespace ml = "http://developer.marklogic.com/site/internal"
@@ -17,6 +15,7 @@ import module namespace u = "http://marklogic.com/rundmc/util"
 import module namespace dq = "http://marklogic.com/disqus"
        at "disqus-info.xqy";
 
+declare namespace j="http://marklogic.com/xdmp/json";
 
 declare function ml:get-json($uri) {
   xdmp:http-get($uri, <options xmlns="xdmp:document-get">
@@ -55,8 +54,13 @@ declare variable $updatedThreadsURI := concat('http://disqus.com/api/get_updated
 
 declare variable $updatedThreadList := ml:get-json-xml($updatedThreadsURI);
 
-declare variable $threadIds := $updatedThreadList/map:map/map:entry[@key eq 'message']/map:value
-                                                 /map:map/map:entry[@key eq 'id'     ]/map:value;
+declare variable $threadIds := ((: ML 6.0 :)
+                               $updatedThreadList/j:object/j:entry[@key eq 'message']/j:value/j:array/j:value
+                                                 /j:object/j:entry[@key eq 'id'     ]/j:value
+
+                               (: ML 5.0 :)
+                             | $updatedThreadList/map:map/map:entry[@key eq 'message']/map:value
+                                                 /map:map/map:entry[@key eq 'id'     ]/map:value);
 
 declare variable $threadPosts := for $threadId in $threadIds return 
                                    let $url := concat('http://disqus.com/api/get_thread_posts?exclude=spam,killed&amp;limit=10000&amp;thread_id=',
@@ -66,25 +70,39 @@ declare variable $threadPosts := for $threadId in $threadIds return
 <results since="{$sinceDate}">
 {
   for $doc in $threadPosts
-  let $disqus-identifiers := $doc/map:map/map:entry[@key eq 'message'   ]/map:value[1]
-                                 /map:map/map:entry[@key eq 'thread'    ]/map:value
-                                 /map:map/map:entry[@key eq 'identifier']/map:value
-  where not(empty($disqus-identifiers))
+  let $disqus-identifier := ((:ML 6.0:)
+                            $doc/j:object/j:entry[@key eq 'message'   ]/j:value/j:array/j:value[1]
+                                /j:object/j:entry[@key eq 'thread'    ]/j:value
+                                /j:object/j:entry[@key eq 'identifier']/j:value/j:array[1]/j:value
+                                                                                       (: ASSUMPTION: a thread will have just one disqus identifier :)
+                            (:ML 5.0:)
+                          | $doc/map:map/map:entry[@key eq 'message'   ]/map:value[1]
+                                /map:map/map:entry[@key eq 'thread'    ]/map:value
+                                /map:map/map:entry[@key eq 'identifier']/map:value)
+
+  where not(empty($disqus-identifier))
   return
   (
-    let $thread-id := string($disqus-identifiers/../../map:entry[@key eq 'id'])
-    let $comments-docs := $ml:Comments[@disqus_identifier = $disqus-identifiers]
+    let $thread-id := string(
+                        (:ML 6.0:)
+                        $disqus-identifier/../../../../j:entry[@key eq 'id']
+                        (:ML 5.0:)
+                      | $disqus-identifier/../../map:entry[@key eq 'id'])
+    let $comments-doc := $ml:Comments[@disqus_identifier eq $disqus-identifier]
+    let $path :=
+      if ($comments-doc) then base-uri($comments-doc)
+                         else ml:default-comments-uri-from-disqus-identifier($disqus-identifier)
     return
-      if ($comments-docs) then
-        for $comments-doc in $comments-docs return
-          let $path    := base-uri($comments-doc)
-          let $new-doc := xdmp:xslt-invoke('disqus-to-comments.xsl', $doc)
-          return (
-             (: Here's where we actually do what we need to do (create or replace the comments docs). :)
-             xdmp:document-insert($path, $new-doc),
-             <result>Comments document ({$path}) replaced for disqus_identifier: {$disqus-identifiers/string(.)}</result>
-          )
-      else <result>No comments document found for thread ID: {$thread-id} (disqus_identifier: {$disqus-identifiers/string(.)})</result>
+      if (string($path))
+      then
+        let $new-doc := if ($doc/map:map) then xdmp:xslt-invoke('disqus-to-comments-pre-ML6.xsl', $doc)
+                                          else xdmp:xslt-invoke('disqus-to-comments.xsl', $doc)
+        return (
+           (: Here's where we actually do what we need to do (create or replace the comments docs). :)
+           xdmp:document-insert($path, $new-doc),
+           <result>Comments document ({$path}) inserted for disqus_identifier: {$disqus-identifier/string(.)}</result>
+            )
+      else <result>No comments doc could be determined for  thread ID: {$thread-id} (disqus_identifier: {$disqus-identifier/string(.)})</result>
   ),
   if ($DEBUG) then (<THREAD_LIST> {$updatedThreadList}</THREAD_LIST>,
                     <THREAD_POSTS>{$threadPosts      }</THREAD_POSTS>) else ()

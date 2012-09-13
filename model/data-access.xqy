@@ -286,21 +286,39 @@ declare function latest-posts($how-many) { $posts-by-date[fn:position() le $how-
 declare function comments-for-doc-uri($uri as xs:string)
 {
   (: Associated with a page by using the same relative URI path but inside /private/comments :)
-  fn:doc(fn:concat('/private/comments',$uri))/Comments
+  fn:doc(comment-doc-uri($uri))/Comments
 };
 
+        declare private function comment-doc-uri($doc-uri as xs:string) {
+          fn:concat("/private/comments", $doc-uri)
+        };
+
 declare function disqus-identifier($uri as xs:string) {
-  comments-for-doc-uri($uri)/@disqus_identifier/fn:string(.)
+  let $existing-comments-doc := comments-for-doc-uri($uri)
+  return
+    (: Use the existing @disqus_indentifier if present (in case the doc URI has since changed).:)
+    if ($existing-comments-doc) then $existing-comments-doc/@disqus_identifier/fn:string(.)
+
+    (: Otherwise, just use the given URI, prefixed with "disqus-" :)
+    else fn:concat("disqus-",$uri)
+};
+
+declare function default-comments-uri-from-disqus-identifier($id as xs:string?) {
+  if (fn:starts-with($id,'disqus-')) then
+    let $doc-uri := fn:substring-after($id,'disqus-')
+    return
+      comment-doc-uri($doc-uri)
+  else ()
 };
 
 (: Insert a container for conversations pertaining to the given document (i.e. comments) :)
 declare function insert-comment-doc($doc-uri) {
-  let $comment-doc-uri := fn:concat('/private/comments', $doc-uri) return
+  let $comment-doc-uri := comment-doc-uri($doc-uri) return
 
   (: Only insert a comments doc if there isn't one already present :)
   if (fn:not(fn:doc-available($comment-doc-uri)))
   then xdmp:document-insert($comment-doc-uri,
-                            document{ <ml:Comments disqus_identifier="disqus-{$doc-uri}"/> })
+                            document{ <ml:Comments disqus_identifier="{disqus-identifier($doc-uri)}"/> })
   else ()
 };
 
