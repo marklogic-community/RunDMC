@@ -21,6 +21,8 @@ declare function local:redir($path as xs:string) as xs:string
     if ($path = ("/events", "/news", "/news-and-events",
                  "/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
+    else if ($path eq "/learn/tutorials") then
+        "/learn"
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         $srv:api-server
     else if ($path = ("/pubs/6.0", "/pubs/6.0/", "/docs/6.0")) then

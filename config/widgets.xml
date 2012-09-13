@@ -127,12 +127,11 @@
  -->
 
   <widget href="/widgets/new-tutorials.xml">
-    <page href="/learn/tutorials"/>
+    <page href="/learn"/>
   </widget>
 
   <widget href="/widgets/quick-references.xml">
     <page href="/learn"/>
-    <page href="/learn/tutorials"/>
     <page href="/learn/guides"/>
     <page href="/learn/references"/>
   </widget>
@@ -140,7 +139,6 @@
   <widget xquery="training-calendar.xqy"> 
     <page href="/learn"/>
     <page href="/learn/guides"/>
-    <page href="/learn/tutorials"/>
     <page-tree root="/news-and-events"/>
     <page-tree root="/news"/>
     <page-tree root="/events"/>
@@ -152,7 +150,6 @@
     <page href="/"/>
 -->
     <page href="/learn"/>
-    <page href="/learn/tutorials"/>
   </widget>
 
   <widget href="/widgets/mugfr-flickr.xml">
