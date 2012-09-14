@@ -2,10 +2,10 @@
   <h1><img src="/images/i_book.png" alt="" width="24" height="22" /> New Tutorials!</h1>
   <div>
     <ul>
-      <li><a href="/try/java/index">Introduction to the Java API</a></li>
-      <li><a href="/try/rest/index">Introduction to the REST API</a></li>
-      <li><a href="/learn/java">MarkLogic for Java developers</a></li>
-      <li><a href="/learn/rest">MarkLogic REST API walk-through</a></li>
+      <li><a href="/try/java/index">The Java API in 5 minutes</a></li>
+      <li><a href="/try/rest/index">The REST API in 5 minutes</a></li>
+      <li><a href="/learn/java">Learning the MarkLogic Java API</a></li>
+      <li><a href="/learn/rest">Learning the MarkLogic REST API</a></li>
     </ul>
   </div>
 </ml:widget>
