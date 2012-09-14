@@ -138,6 +138,14 @@ declare function local:redir($path as xs:string) as xs:string
         $path
 };
 
+declare function local:gone($path as xs:string) as xs:boolean {
+    $path = (
+        "/products/marklogic-server/4.0",
+        "/docs/4.0",
+        "/pubs/4.0"
+    )
+};
+
 declare function local:rewrite($path as xs:string) as xs:string
 {
     let $latest-version := "6.0"
@@ -177,7 +185,9 @@ declare function local:rewrite($path as xs:string) as xs:string
 
     return
 
-    if ($path eq '/')  then 
+    if (local:gone($path)) then
+        "/controller/gone.xqy"
+    else if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
     else if ($path = ("/download", "/downloads", "/products", "/product")) then
