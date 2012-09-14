@@ -141,6 +141,7 @@ declare function local:redir($path as xs:string) as xs:string
 declare function local:gone($path as xs:string) as xs:boolean {
     $path = (
         "/products/marklogic-server/4.0",
+        "/products/marklogic-server/requirements-4.0",
         "/docs/4.0",
         "/pubs/4.0"
     )
