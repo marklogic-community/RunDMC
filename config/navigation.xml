@@ -47,7 +47,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
   </page>
-  <page display="Tutorials" href="/learn/tutorials" tooltip="Learn by doing"/>
+  <page display="Tutorials" href="/learn" tooltip="Learn by doing"/>
   <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
     <group display="Tools &amp; Open Source Projects" closed="yes">
       <group display="Debugging, profiling, and exploring tools">
