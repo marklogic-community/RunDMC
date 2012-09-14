@@ -970,27 +970,6 @@
     <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
   </xsl:template>
 
-  <xsl:template match="fb-app-id">
-      <xsl:text>'</xsl:text>
-      <xsl:value-of select="$srv:facebook-config/*:id"/>
-      <xsl:text>'</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="fb-registration">
-      <fb:registration id="fbrb" width="530" xmlns:fb="fb">
-        <xsl:attribute name="fields">
-            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'}]</xsl:text>
-        </xsl:attribute>
-        <xsl:attribute name="redirect-uri">
-            <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
-        </xsl:attribute>
-      </fb:registration>
-  </xsl:template>
-
-  <xsl:template match="user-name">
-    <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
-  </xsl:template>
-
   <xsl:template match="first-name">
     <xsl:value-of select="fn:tokenize(users:getCurrentUser()/*:name/string(), ' ')[1]"/>
   </xsl:template>
