@@ -4,5 +4,5 @@ cd /space/git/rundmc.git/setup
 ./optimize-js.sh
 
 # Enable the following once we merge the apidoc branch to master
-#cd /space/git/rundmc.git/apidoc/setup
-#./optimize-js.sh
+cd /space/git/rundmc.git/apidoc/setup
+./optimize-js.sh
