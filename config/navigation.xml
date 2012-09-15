@@ -47,7 +47,45 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
   </page>
-  <page display="Tutorials" href="/learn" tooltip="Learn by doing"/>
+  <page display="Tutorials" href="/learn" tooltip="Learn by doing">
+    <Article type="Tutorial"/>
+    <!-- TBD: automate this stuff below -->
+    <generic-page display="Learning the MarkLogic Java API" href="/learn/java" tutorial="yes" hide="yes"/>
+    <generic-page display="Learning the MarkLogic REST API" href="/learn/rest" tutorial="yes" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page4" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page5" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page6" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page7" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page8" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page9" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page10" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page11" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page12" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page13" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page14" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
+
+    <generic-page display="Try MarkLogic!" href="/try/corona/index" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/corona/page2" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/corona/page3" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/corona/page4" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
+
+    <generic-page display="Try MarkLogic!" href="/try/rest/index" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/rest/page2" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/rest/page3" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/rest/page4" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/rest/page5" hide="yes"/>
+
+    <generic-page display="Try MarkLogic!" href="/try/java/index" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/java/page2" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/java/page3" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/java/page4" hide="yes"/>
+    <generic-page display="Try MarkLogic!" href="/try/java/page5" hide="yes"/>
+  </page>
   <page display="Code" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
     <group display="Tools &amp; Open Source Projects" closed="yes">
       <group display="Debugging, profiling, and exploring tools">
@@ -210,40 +248,6 @@
 
   <generic-page display="Videos" href="/learn/videos" hide="yes"/>
 
-  <!-- TBD: automate this stuff below -->
-  <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page4" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page5" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page6" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page7" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page8" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page9" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page10" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page11" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page12" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page13" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page14" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
-
-  <generic-page display="Try MarkLogic!" href="/try/corona/index" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/corona/page2" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/corona/page3" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/corona/page4" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/corona/page5" hide="yes"/>
-
-  <generic-page display="Try MarkLogic!" href="/try/rest/index" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/rest/page2" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/rest/page3" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/rest/page4" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/rest/page5" hide="yes"/>
-
-  <generic-page display="Try MarkLogic!" href="/try/java/index" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/java/page2" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/java/page3" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/java/page4" hide="yes"/>
-  <generic-page display="Try MarkLogic!" href="/try/java/page5" hide="yes"/>
 
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
