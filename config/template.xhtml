@@ -43,8 +43,8 @@
         <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
 
         <script type="text/javascript">
-            var is_stage = document.location.hostname == 'docs-stage.marklogic.com';
-            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            var is_prod = document.location.hostname == 'developer.marklogic.com';
+            var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3';
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview']);
             

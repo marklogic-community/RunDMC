@@ -30,7 +30,7 @@
 		<script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
 		<script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>  
-        <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
     <!--
 		<script type="text/javascript" src="/apidoc/js/jquery-ui-1.8.16.custom.min.js"></script>
     -->
@@ -39,10 +39,10 @@
 		<script type="text/javascript" src="/js/functions.js"></script>
 
         <script type="text/javascript">
-            var is_stage = document.location.hostname == 'docs-stage.marklogic.com';
-            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            var is_prod = document.location.hostname == 'docs.marklogic.com';
+            var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3';
             var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview'], ['_trackPageLoadTime']);
+            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview']);
             
             (function() {
                 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
