@@ -271,7 +271,7 @@
                 $("a.search_result").click(function(){
                   $.cookie("search-qtext",
                            "<xsl:value-of select="replace($clean-q,'&quot;','\\&quot;')"/>", <!-- js-escape quotes -->
-                           "<xsl:value-of select="$srv:cookie-domain"/>");
+                           {"domain":"<xsl:value-of select="$srv:cookie-domain"/>", "path":"/"});
                 });
               //</xsl:comment>
             </script>
