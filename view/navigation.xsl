@@ -28,7 +28,8 @@
                                                    $navigation//*            [@href eq $external-uri],
                                                    $navigation//Article      [$content/Article/@type eq @type],
                                                    $navigation//Announcement [$content/Announcement],
-                                                   $navigation//Event        [$content/Event]
+                                                   $navigation//Event        [$content/Event],
+                                                   $navigation//generic-page[@tutorial][starts-with($external-uri,@href)]
                                                   )[1]"/>
 
   <!-- Home page link always points to primary server (even from API server) -->
@@ -174,7 +175,9 @@
   </xsl:template>
 
   <!-- For Learn content, breadcrumbs are handled elsewhere -->
+  <!-- since when?
   <xsl:template match="breadcrumbs[$content/Article]"/>
+  -->
 
   <xsl:template match="breadcrumbs" name="breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation[1]"/>
