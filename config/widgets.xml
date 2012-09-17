@@ -139,7 +139,7 @@
   </widget>
 
   <widget xquery="training-calendar.xqy"> 
-    <page href="/code/top-songs"/>
+    <!-- <page href="/code/top-songs"/> -->
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page-tree root="/news-and-events"/>
