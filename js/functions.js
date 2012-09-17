@@ -255,6 +255,16 @@ if(typeof jQuery != 'undefined') {
 
         $(document).ready(function() {
 
+            console.log('ready fun');
+
+            $('.trymlcode').each(function() {
+                console.log('hello ' + $(this).name);
+            });
+                    
+            if (navigator.appVersion.indexOf("10_7") != -1) {
+                $('.showScroll').addClass('lion');
+            }
+
             //Hide login and signup when we're on a signup page
             // console.log(window.location.pathname);
             if (window.location.pathname == '/people/signup' || 
@@ -463,16 +473,6 @@ if(typeof jQuery != 'undefined') {
         //$('#signup-form').submit(function(e) {
 		    // e.preventDefault();
         //});
-
-        var d = $('.yearpicker').attr('data-value');
-        var now = new Date().getFullYear();
-        for (i = now; i < now + 10 ; i++)
-        {
-            $('.yearpicker').append($('<option />').val(i).html(i));
-        }
-        $('.yearpicker').append($('<option />').html('N/A'));
-        $('.yearpicker').val(d);
-        
 
 		// add new functions before this comment
 	});
