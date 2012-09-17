@@ -154,7 +154,6 @@
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
-        <page display="Versi Design Template" href="/code/versi"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
