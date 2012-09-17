@@ -483,7 +483,7 @@
                   <xsl:template mode="result-img-src" match="*[@name eq 'event']   ">i_calendar</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'function']">i_function</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'help']    ">i_folder</xsl:template>   <!-- TODO: give this a different icon -->
-                  <xsl:template mode="result-img-src" match="*[@name eq 'rest-api']">i_function</xsl:template> <!-- TODO: give this a different icon -->
+                  <xsl:template mode="result-img-src" match="*[@name eq 'rest-api']">i_rest</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'guide']   ">i_documentation</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'tutorial']">i_monitor</xsl:template>
@@ -495,6 +495,7 @@
 
                   <!-- All icons except the user guide icon are 30 pixels wide -->
                   <xsl:template mode="result-img-width" match="*[@name eq 'guide']">29</xsl:template>
+                  <xsl:template mode="result-img-width" match="*[@name eq 'rest-api']">28</xsl:template>
                   <xsl:template mode="result-img-width" match="*"                  >30</xsl:template>
 
                   <!-- various image heights -->
@@ -504,7 +505,7 @@
                   <xsl:template mode="result-img-height" match="*[@name eq 'event']   ">24</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'function']">27</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'help']    ">19</xsl:template>
-                  <xsl:template mode="result-img-height" match="*[@name eq 'rest-api']">27</xsl:template>
+                  <xsl:template mode="result-img-height" match="*[@name eq 'rest-api']">28</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'guide']   ">25</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>
                   <xsl:template mode="result-img-height" match="*[@name eq 'tutorial']">21</xsl:template>
