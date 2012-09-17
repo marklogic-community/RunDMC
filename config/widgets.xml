@@ -127,7 +127,9 @@
  -->
 
   <widget href="/widgets/new-tutorials.xml">
+    <!--
     <page href="/learn"/>
+    -->
   </widget>
 
   <widget href="/widgets/quick-references.xml">
