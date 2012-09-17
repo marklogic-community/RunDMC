@@ -159,6 +159,7 @@
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Applications">
+        <page display="Top Songs" href="/code/top-songs"/>
         <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Document Discovery" href="/code/document-discovery"/>
         <page display="Tunage" href="/code/tunage"/>
