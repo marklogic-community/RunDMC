@@ -24,7 +24,11 @@
   <namespace lib="infodev" uri="http://marklogic.com/appservices/infostudio/dev"/>
 
   <!-- This is exceptional like "spell" vs. "spell-lib"; see below -->
-  <namespace lib="json" uri="http://marklogic.com/xdmp/json" category="JSONBuiltins"/>
+  <namespace lib="json" uri="http://marklogic.com/xdmp/json" subcategory="JSON">
+    <summary-addendum>
+      <p xmlns="http://www.w3.org/1999/xhtml">See also the <a href="/xdmp:from-json">xdmp:from-json</a> and <a href="/xdmp:to-json">xdmp:to-json</a> functions.</p>
+    </summary-addendum>
+  </namespace>
   <namespace lib="json-lib" uri="http://marklogic.com/xdmp/json" prefix="json"/>
 
   <namespace lib="kml" uri="http://earth.google.com/kml/2.0"/>

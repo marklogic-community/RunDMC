@@ -244,11 +244,17 @@
 
                 <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-lib(.)"/>
 
+                <xsl:apply-templates mode="summary-addendum" select="."/>
+
               </intro>
               <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
               <xsl:apply-templates select="toc:function-name-nodes($all-functions[@lib eq current()])"/>
             </node>
           </xsl:template>
+
+                  <xsl:template mode="summary-addendum" match="api:lib">
+                    <xsl:copy-of select="$api:namespace-mappings[@lib eq current()]/summary-addendum/node()"/>
+                  </xsl:template>
 
                   <xsl:template mode="sub-page" match="node"> 
                     <li>

@@ -305,6 +305,8 @@
           <xsl:function name="toc:get-summary-for-lib" as="element()?">
             <xsl:param name="lib"/>
 
+            <!-- exceptional ("json" built-in) -->
+            <xsl:variable name="summaries-by-summary-subcat" select="$raw:api-docs/apidoc:module/apidoc:summary[@subcategory eq toc:hard-coded-subcategory($lib)]"/>
             <!-- exceptional ("spell" built-in) -->
             <xsl:variable name="summaries-by-module-cat"  select="$raw:api-docs/apidoc:module[@category eq toc:hard-coded-category($lib)]/apidoc:summary"/>
             <!-- the most common case -->
@@ -314,8 +316,10 @@
             <!-- exceptional ("dls") -->
             <xsl:variable name="summaries-by-module-lib-no-subcat" select="$summaries-by-module-lib[not(@subcategory)]"/>
 
-            <xsl:sequence select="if (count($summaries-by-module-cat) eq 1)
-                                       then $summaries-by-module-cat
+            <xsl:sequence select="if (count($summaries-by-summary-subcat) eq 1)
+                                       then $summaries-by-summary-subcat
+                             else if (count($summaries-by-module-lib) eq 1)
+                                       then $summaries-by-module-lib
                              else if (count($summaries-by-module-lib) eq 1)
                                        then $summaries-by-module-lib
                              else if (count($summaries-by-summary-lib) eq 1)
@@ -329,6 +333,12 @@
                   <xsl:function name="toc:hard-coded-category" as="xs:string?">
                     <xsl:param name="lib"/>
                     <xsl:sequence select="$api:namespace-mappings[@lib eq $lib]/@category/string(.)"/>
+                  </xsl:function>
+
+                  <!-- Look in the  namespaces/libs config file to see if we've forced a hard-coded subcategory (for summary-lookup purposes) -->
+                  <xsl:function name="toc:hard-coded-subcategory" as="xs:string?">
+                    <xsl:param name="lib"/>
+                    <xsl:sequence select="$api:namespace-mappings[@lib eq $lib]/@subcategory/string(.)"/>
                   </xsl:function>
 
 </xsl:stylesheet>
