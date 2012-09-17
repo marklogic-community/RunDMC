@@ -1,16 +1,25 @@
+NOTES
+  This application makes heavy use of MarkLogic XSLT to transform content stored in the database into templatized
+  web pages.  There is plenty of sample code, but it is not designed, currently, for easy learning purposes.
+
 LICENSE
 
-  All original code in this repository is Copyright MarkLogic 2010-2011.  All Rights Reserved.  It is made available 
+  All original code in this repository is Copyright MarkLogic 2010-2012.  All Rights Reserved.  It is made available 
   for your use via an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 
 SETUP NOTES
 
-  Main server:
+  Main server (like developer.marklogic.com):
     App server root should be set to the root of this distribution, on 
     the filesystem.  The URL rewriter should be set to "/controller/url_rewrite.xqy".
     The error handler should be set to "/controller/error-handler.xqy".
 
+  API server (e.g. documentation host - like docs.marklogic.com)
+    App server roor same as Main server.
+    URL rewriter /apidoc/controller/url_rewrite.xqy
+    Error handler /controller/error-handler.xqy
+   
   Draft server:
     This app server must have the word "Draft" in its name.
 
