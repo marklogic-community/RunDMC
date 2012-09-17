@@ -820,18 +820,22 @@
         </xsl:choose>
 -->
       </span>
-      <table class="documentsTable">
+      <table class="sortable documentsList"><!--documentsTable">-->
         <colgroup>
           <col class="col1"/>
           <!-- Display last updated only on latest version -->
+          <!--
           <xsl:if test="not(exists(@version))">
             <col class="col2"/>
           </xsl:if>
+          -->
         </colgroup>
         <thead>
           <tr>
             <th scope="col">Title</th>
+            <!--
             <th scope="col">Last&#160;updated</th>
+            -->
           </tr>
         </thead>
         <tbody>
@@ -862,9 +866,11 @@
                 <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
               </td>
         
+              <!--
               <td>
                   <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
               </td>
+              -->
             </tr>
           </xsl:template>
 
