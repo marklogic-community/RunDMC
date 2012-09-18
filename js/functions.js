@@ -255,11 +255,7 @@ if(typeof jQuery != 'undefined') {
 
         $(document).ready(function() {
 
-            console.log('ready fun');
 
-            $('.trymlcode').each(function() {
-                console.log('hello ' + $(this).name);
-            });
                     
             if (navigator.appVersion.indexOf("10_7") != -1) {
                 $('.showScroll').addClass('lion');
@@ -528,3 +524,4 @@ function doFBLogin(response) {
         }
     });
 }
+

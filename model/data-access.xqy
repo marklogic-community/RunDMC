@@ -245,7 +245,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if (fn:contains($doc-uri, "/javadoc/client/")) then "java-api"
   else if (fn:contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
-       if ($doc/api:function-page/*[1]/@lib eq 'REST')
+       if ($doc/api:function-page/api:function[1]/@lib eq 'REST')
                                      then "rest-api"
   else if ($doc/api:function-page  ) then "function"
   else if ($doc/api:help-page      ) then "help"
