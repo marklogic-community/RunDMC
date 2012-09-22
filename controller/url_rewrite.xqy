@@ -131,6 +131,12 @@ declare function local:redir($path as xs:string) as xs:string
         "/try/ninja/index"
     else if ($path = ("/business-intelligence")) then
         "/products/odbc"
+    else if ($path = ("/products/java-api")) then
+        "/products/java"
+    else if ($path = ("/learn/pojo-tutorial-01.zip")) then
+        "/media/pojo-tutorial-01.zip"
+    else if ($path = ("/guide/installation/procedures")) then
+        "//docs.marklogic.com/guide/installation/procedures"
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)

@@ -210,6 +210,9 @@
 
   <!-- Handle errors -->
   <xsl:template match="errors">
+     <script type="text/javascript">
+         <xsl:text>_gaq.push(["_trackEvent", "</xsl:text><xsl:value-of select="$error"/><xsl:text>", location.pathname + location.search, document.referrer, 0, true]);</xsl:text>
+     </script>
      <h2>
          <xsl:value-of select="$error"/>
          <xsl:text> &#8212; </xsl:text>
