@@ -19,6 +19,7 @@ div.intro p + a,
 .button,
 .supernode
 	{behavior: url(/js/PIE.htc);}
+.button.nopie { behavior: none; }
 #breadcrumb + section > h2, #content, #comments {box-shadow: 0 0 3px black;}
 #comments .action {box-shadow: -1px 1px 1px #BBB;}
 .post .action {box-shadow: 1px 1px 1px #BBB;}
