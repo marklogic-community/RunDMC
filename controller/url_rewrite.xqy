@@ -37,6 +37,8 @@ declare function local:redir($path as xs:string) as xs:string
         $srv:api-server
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
         $srv:api-server
+    else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
+        local:redirect-function-url($path)
     else if ($path = ("/download/6.0", "/download/6.0/")) then
         "/products/marklogic-server/6.0"
     else if ($path = ("/download/5.0", "/download/5.0/")) then
@@ -144,6 +146,14 @@ declare function local:redir($path as xs:string) as xs:string
             "/people/supernodes"
     else
         $path
+};
+
+declare function local:redirect-function-url($path as xs:string) as xs:string {
+  let $file-name := tokenize($path,'/')[last()],
+      $mappings  := u:get-doc("/controller/api-redirects.xml")/mappings/mapping,
+      $new-path  := $mappings[@from eq $file-name]/to/string(.)
+  return
+    concat($srv:api-server, $new-path)
 };
 
 declare function local:gone($path as xs:string) as xs:boolean {
