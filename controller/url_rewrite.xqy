@@ -282,7 +282,7 @@ return
         concat('/controller/redirect.xqy?path=', substring($path, 1, string-length($path) - 1), 
                 if ($query-string and $query-string != "") then concat('?', $query-string) else "")
     else if (local:redir($path) != $path) then
-        concat('/controller/redirect.xqy?path=', local:redir($path))
+        concat('/controller/301redirect.xqy?path=', local:redir($path))
     else 
         local:rewrite($path)
 
