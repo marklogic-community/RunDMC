@@ -151,13 +151,15 @@ if(typeof jQuery != 'undefined') {
             }
 
 			$(this).append($('<a>', {'class': 'close'})).children('.close').click(function() {
-				if($(this).parent().hasClass('closed')) {
-					$(this).parent().animate({height: sectionHeight,'padding-bottom':padding},500, function() {
+                if($(this).parent().hasClass('closed')) {
+                    $(this).parent().children(".row").animate({opacity: 1.0});
+					$(this).parent().animate({height: sectionHeight,'padding-bottom':paddingb},500, function() {
 						$(this).removeClass('closed').find('.more').css('position','absolute');
                         $.cookie(c, 'open');
 					});
 				}
 				else {
+                    $(this).parent().children(".row").animate({opacity: 0.0});
 					$(this).parent().animate({height: 35,'padding-bottom': 5, 'padding-top': 15},500, function() {
 						$(this).addClass('closed');
                         $.cookie(c, 'closed');
