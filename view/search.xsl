@@ -56,7 +56,8 @@
     <div class="version">
       <span>Server version:</span>
       <xsl:text> </xsl:text>
-      <xsl:apply-templates mode="version-list-item" select="$versions"/>
+      <!-- Only display a version link if the corresponding directory URI is present in the database -->
+      <xsl:apply-templates mode="version-list-item" select="$versions[cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
     </div>
   </xsl:template>
 
