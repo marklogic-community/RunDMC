@@ -49,6 +49,7 @@
 
                 setTimeout(function() {
                     if (previousFilterText<xsl:value-of select="$pos"/> !== currentFilterText<xsl:value-of select="$pos"/>){
+                        _gaq.push(['_trackEvent', 'Docs Tab - <xsl:value-of select="local-name(.)"/>', 'Filter', currentFilterText<xsl:value-of select="$pos"/>]);
                         previousFilterText<xsl:value-of select="$pos"/> = currentFilterText<xsl:value-of select="$pos"/>;
                         filterConfigDetails(currentFilterText<xsl:value-of select="$pos"/>,"#apidoc_tree<xsl:value-of select="$pos"/>");
                     }
