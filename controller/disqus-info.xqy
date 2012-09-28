@@ -16,4 +16,5 @@ declare variable $forumId    := fn:string($forum/forum_id);
 
 declare variable $shortname  := fn:string($forum/@shortname);
 
-declare variable $developer_0_or_1  := 1; (: Make this conditional if we find a need to. :)
+(: Have Disqus validate the URL on the production servers :)
+declare variable $developer_0_or_1  := if ($srv:host-type eq 'production') then 0 else 1;
