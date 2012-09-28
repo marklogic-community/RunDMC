@@ -12,7 +12,7 @@
              form:label="Author"/>
   <ml:date form:label="Date"/>
   <ml:body form:label="Body"
-           form:type="textarea" form:class="richtext"/>
+           form:type="textarea" form:class="optional-richtext"/>
   <ml:created/>
   <ml:last-updated/>
 </ml:Announcement>

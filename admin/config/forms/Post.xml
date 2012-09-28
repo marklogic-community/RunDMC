@@ -25,5 +25,5 @@
   </ml:tags>
   <ml:body form:label="Body"
            form:type="textarea"
-           form:class="richtext"/>
+           form:class="optional-richtext"/>
 </ml:Post>
