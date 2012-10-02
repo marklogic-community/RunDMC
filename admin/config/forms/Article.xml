@@ -30,7 +30,7 @@
     <ml:description form:label="Short description"
                     form:wide="yes"/>
     <ml:body form:label="Body"
-             form:type="textarea" form:class="richtext"/>
+             form:type="textarea" form:class="optional-richtext"/>
     <ml:external-link href="" label:href="External link instead (body will be ignored)"
                       form:wide="yes" form:optional="yes"/>
     <ml:internal-uri href="" label:href="Database URI for internal copy"

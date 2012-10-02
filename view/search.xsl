@@ -56,7 +56,8 @@
     <div class="version">
       <span>Server version:</span>
       <xsl:text> </xsl:text>
-      <xsl:apply-templates mode="version-list-item" select="$versions"/>
+      <!-- Only display a version link if the corresponding directory URI is present in the database -->
+      <xsl:apply-templates mode="version-list-item" select="$versions[cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
     </div>
   </xsl:template>
 
@@ -74,8 +75,10 @@
                     </b>
                   </xsl:template>
 
-                          <!-- Display 6.0 as "MarkLogic 6" -->
-                          <xsl:template mode="version-number-display" match="*:version[@number eq '6.0']">MarkLogic 6</xsl:template>
+                          <!-- When @display is present, show that instead. -->
+                          <xsl:template mode="version-number-display" match="*:version[@display]">
+                            <xsl:value-of select="@display"/>
+                          </xsl:template>
                           <xsl:template mode="version-number-display" match="*:version">
                             <xsl:value-of select="@number"/>
                           </xsl:template>
