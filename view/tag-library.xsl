@@ -444,7 +444,9 @@
 
 
   <xsl:template match="latest-posts">
-    <xsl:apply-templates mode="latest-post" select="ml:latest-posts(@how-many)"/>
+    <xsl:apply-templates mode="latest-post" select="ml:latest-posts(@how-many)">
+       <xsl:with-param name="show-icon" select="false()"/>
+    </xsl:apply-templates>
   </xsl:template>
 
           <!-- ASSUMPTION: We're not adding new <Announcement> docs anymore, so they won't appear as the latest -->
