@@ -77,7 +77,7 @@ declare function users:endSession() as empty-sequence()
 declare function users:getCurrentUserName()
     as xs:string?
 {
-    let $n := cookies:get-cookie("RUNDMC-NAME")
+    let $n := cookies:get-cookie("RUNDMC-NAME")[1]
     return if ($n eq "") then () else $n
 };
 
