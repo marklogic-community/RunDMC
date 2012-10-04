@@ -412,7 +412,7 @@ declare function users:cornifyEnabled()
 
 declare function users:getCurrentUser() as element(*)?
 {
-    let $session := cookies:get-cookie("RUNDMC-SESSION")
+    let $session := cookies:get-cookie("RUNDMC-SESSION")[1]
     let $id := /session[session-id eq $session]/id/string() 
     return /person[id eq $id]
 };
