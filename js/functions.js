@@ -263,6 +263,30 @@ if(typeof jQuery != 'undefined') {
                 $('.showScroll').addClass('lion');
             }
 
+            $('div.qtips[title]').qtip({ 
+                style: {
+                    width: 300,
+                    padding: 5,
+                    xbackground: '#999',
+                    color: 'gray',
+                    xborder: {
+                       width: 1,
+                    }
+                },
+                content: {
+                    title: {
+                        text: 'TBD',
+                        button: 'Close'
+                    }
+                },
+                show: 'mouseover',
+                hide: 'mouseout',
+                position: {
+                    target: 'mouse',
+                    adjust: { mouse: false }
+                }
+            });
+
             //Hide login and signup when we're on a signup page
             // console.log(window.location.pathname);
             if (window.location.pathname == '/people/signup' || 

@@ -3,6 +3,7 @@
   <widget href="/widgets/tutorials.xml" id="tutorials-widget">
     <page href="/products/marklogic-server/which-nosql"/>
     <page href="/products/marklogic-server/enterprise-nosql"/>
+    <page href="/learn/arch/diagram-101"/>
   </widget>
                                      <!-- id for CSS purposes -->
   <widget href="/widgets/hadoop.xml" id="hadoop">
