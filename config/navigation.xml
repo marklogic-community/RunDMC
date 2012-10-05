@@ -235,7 +235,7 @@
     </group>
   </page>
 
-  <page display="Corporate" href="http://www.marklogic.com/" />
+  <page display="Company" href="http://www.marklogic.com/" />
 
   <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
 

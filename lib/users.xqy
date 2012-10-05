@@ -77,7 +77,7 @@ declare function users:endSession() as empty-sequence()
 declare function users:getCurrentUserName()
     as xs:string?
 {
-    let $n := cookies:get-cookie("RUNDMC-NAME")
+    let $n := cookies:get-cookie("RUNDMC-NAME")[1]
     return if ($n eq "") then () else $n
 };
 
@@ -412,7 +412,7 @@ declare function users:cornifyEnabled()
 
 declare function users:getCurrentUser() as element(*)?
 {
-    let $session := cookies:get-cookie("RUNDMC-SESSION")
+    let $session := cookies:get-cookie("RUNDMC-SESSION")[1]
     let $id := /session[session-id eq $session]/id/string() 
     return /person[id eq $id]
 };

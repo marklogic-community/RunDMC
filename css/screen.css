@@ -354,6 +354,7 @@ nav ul {margin: 0;}
 	text-decoration: none;
 }
 #content {
+    left: 0;
 	background: #F5F5F5;
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -1310,7 +1311,7 @@ section#documentation:before {margin-bottom: 30px;}
 	top: 17px;
 }
 #bottom1 h3 + article h4 img {top: 22px;}
-#bottom1 article .author_date {
+#bottom1 article .author_date, #bottom2 .author_date {
 	font-size: 11px;
 	font-style: italic;
 }
@@ -2693,3 +2694,93 @@ a.drop-down-trigger.menu-open span {
     padding-bottom: 18px;
 }
 
+/* diagram */
+
+#interfaces {
+    background-color: #018EE0;
+}
+
+#evaluation {
+    background-color: #017DC7;
+}
+
+.segment {
+	xbackground-color:#0066CC;
+	background-color:#01639D;
+	border-radius: 5px;
+	border-color:black;
+	xwidth: 700px;
+	width: 650px;
+/*	min-height:50px;  */
+	margin:10px;
+	padding:12px;
+}
+.segment-container {
+	width:100%;
+	height:100%;
+}
+.title-container {
+	color:white;
+	font-weight:normal;
+	font-size:larger;
+	width:100px;
+	text-align:left;
+	padding:5px 0 5px 30px;
+	float:left;
+	line-height:0.9em;
+}
+.component-container {
+	xwidth:540px;
+	width:440px;
+	float:right;
+	height:100%;
+}
+.component {
+    color: black;
+	float:left;
+	margin:2px;
+	xwidth:526px;
+	width:426px;
+	padding:5px;
+	background-color:white;
+	border-radius:2px;
+	border-color:black;
+	text-align:center;
+	font-size:80%;
+	vertical-align:middle;
+	min-height:25px;
+}
+.half {width: 206px; }
+.third {width: 116px; }
+.left {float:left}
+.nofloat {float:none }
+/*.component:hover {
+	background-color:olive;
+	color:white;
+}
+*/#protocols, #info  { 
+	background-color:white;
+/*	margin: 0;
+*/	padding:0;
+	}
+#app_services {
+	margin-top:0;
+}
+.clear {
+	clear:both;
+	height:1px;
+}
+.smalltext {
+	font-size:x-small;
+	color:gray;
+}
+/* tooltip styling. by default the element to be styled is .tooltip  */
+.tooltip {
+    display:none;
+    background-color:#f00;
+    border:1px solid #cc9;
+    padding:3px;
+    font-size:13px;
+    -moz-box-shadow: 2px 2px 11px #666;
+    -webkit-box-shadow: 2px 2px 11px #666;
+}
