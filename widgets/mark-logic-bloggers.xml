@@ -3,84 +3,89 @@
   <div>
     <ul>
       <li>
-        <a href="http://blog.msbbc.co.uk/" target="_blank">Alex Bleasdale's Developer Notes</a>
-      </li>
-      
-      <li>
-        <a href="http://blogs.avalonconsult.com/" target="_blank">Avalon Consulting LLC Blogs</a>
+        <a href="http://blog.msbbc.co.uk/" target="_blank">Alex Bleasdale</a>
       </li>
 
       <li>
-        <a href="http://blog.davidcassel.net/" target="_blank">David Cassel's Blog</a>
+        <a href="http://adamfowlerml.wordpress.com/" target="_blank">Adam Fowler</a>
       </li>
       
+      
       <li>
-        <a href="http://www.front2backdev.com/" target="_blank">David Erickson's Front 2 Back Dev</a>
+        <a href="http://blogs.avalonconsult.com/" target="_blank">Avalon Consulting LLC</a>
       </li>
 
       <li>
-        <a href="http://blog.xmlsh.org/" target="_blank">David Lee's XMLSH Blog</a>
+        <a href="http://blog.davidcassel.net/" target="_blank">David Cassel</a>
+      </li>
+      
+      <li>
+        <a href="http://www.front2backdev.com/" target="_blank">David Erickson</a>
+      </li>
+
+      <li>
+        <a href="http://blog.xmlsh.org/" target="_blank">David Lee</a>
       </li>
       
       
       <li>
-        <a href="http://servlets.com/blog/" target="_blank">Jason Hunter's Servlets</a>
+        <a href="http://servlets.com/blog/" target="_blank">Jason Hunter</a>
       </li>  
 
       <li>
-        <a href="http://www.jenitennison.com/blog/" target="_blank">Jeni Tennison's Jeni's Musings</a>
+        <a href="http://www.jenitennison.com/blog/" target="_blank">Jeni Tennison</a>
       </li>
 
       <li>
-        <a href="http://john.snelson.org.uk/" target="_blank">John Snelson's Posterous</a>
+        <a href="http://john.snelson.org.uk/" target="_blank">John Snelson</a>
       </li>
       
       <li>
-        <a href="http://kitwallace.posterous.com/" target="_blank">Kit Wallace's posterous</a>
+        <a href="http://kitwallace.posterous.com/" target="_blank">Kit Wallace</a>
       </li>
       
       <li>
-        <a href="http://xquery.typepad.com/" target="_blank">Matt Turner's Discovering XQuery</a>
+        <a href="http://xquery.typepad.com/" target="_blank">Matt Turner</a>
       </li>  
 
       <li>
-        <a href="http://renditionprotocol.blogspot.com/" target="_blank">Mattio Valentino's Rendition Protocol</a>
+        <a href="http://renditionprotocol.blogspot.com/" target="_blank">Mattio Valentino's</a>
       </li>
 
       <li>
-        <a href="http://maxdewpoint.blogspot.com/" target="_blank">The Max Dew Point</a>
+        <a href="http://maxdewpoint.blogspot.com/" target="_blank">Ryan Dew</a>
       </li>
 
       <li>
-        <a href="http://dubinko.info/blog/" target="_blank">MicahLogic</a>
+        <a href="http://dubinko.info/blog/" target="_blank">Micah Dubinko</a>
       </li>
 
       <li>
-        <a href="http://blakeley.com/blogofile/" target="_blank">Michael Blakeley's blog</a>
+        <a href="http://blakeley.com/blogofile/" target="_blank">Michael Blakeley</a>
       </li>
 
       <li>
-        <a href="http://xquerybyexample.blogspot.com/" target="_blank">Miguel de Melo's XQuery by Example</a>
+        <a href="http://xquerybyexample.blogspot.com/" target="_blank">Miguel de Melo</a>
       </li>
 
       <li>
-        <a href="http://xsltbyexample.blogspot.com/" target="_blank">Miguel de Melo's XSLT by Example</a>
+        <a href="http://xsltbyexample.blogspot.com/" target="_blank">Miguel de Melo (XSLT)</a>
       </li>
       
       <li>
-        <a href="http://norman.walsh.name/">Norman Walsh's Norman.Walsh.name</a>
+        <a href="http://norman.walsh.name/">Norman Walsh</a>
       </li>
 
       <li>
-        <a href="http://robotbeerbash.wordpress.com/" target="_blank">Pete Aven's Robot Beer Bash</a>
+        <a href="http://robotbeerbash.wordpress.com/" target="_blank">Pete Aven</a>
       </li>
       
       <li>
-        <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank">Philip Fennell on the O'Reilly Community</a>
+        <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank">Philip Fennell</a>
       </li>
 
       <li>
-        <a href="http://www.xqueryhacker.com/" target="_blank">Rob Whitby's XQuery Hacker</a>
+        <a href="http://www.xqueryhacker.com/" target="_blank">Rob Whitby</a>
       </li>
 
       <li>
@@ -88,7 +93,7 @@
       </li>
 
       <li>
-        <a href="http://xquerywebappdev.wordpress.com/" target="_blank">XQuery Web Application Development</a>
+        <a href="http://xquerywebappdev.wordpress.com/" target="_blank">Ryan Semerau</a>
       </li>
     </ul>
   </div>
