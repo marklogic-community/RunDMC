@@ -354,6 +354,7 @@ nav ul {margin: 0;}
 	text-decoration: none;
 }
 #content {
+    left: 0;
 	background: #F5F5F5;
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
