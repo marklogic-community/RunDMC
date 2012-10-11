@@ -41,6 +41,9 @@ declare function local:redir($path as xs:string) as xs:string
     else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
         local:redirect-function-url($path)
 
+    else if (matches($path, "/pubs/[\d]\.[\d]/books/")) then
+        local:redirect-guide-url($path)
+
     else if (matches($path, "/pubs/[\d]\.[\d]/dotnet/")) then
         local:redirect-dotnet-url($path)
     (: use $orig-url in the javadoc redirects so it includes the query string :)
@@ -178,6 +181,14 @@ declare function local:redirect-function-url($path as xs:string) as xs:string {
       $new-path  := $mappings[@from eq $file-name]/to/string(.)
   return
     concat($srv:api-server, $new-path)
+};
+
+declare function local:redirect-guide-url($path as xs:string) as xs:string {
+  let $file-stem := substring-before(tokenize($path,'/')[last()], '.pdf'),
+      $mappings  := u:get-doc("/apidoc/config/document-list.xml")/docs/*/guide,
+      $new-stem  := $mappings[(@pdf-name,@source-name)[1] eq $file-stem]/@url-name/string(.)
+  return
+    concat($srv:api-server, '/guide/', $new-stem)
 };
 
 declare function local:gone($path as xs:string) as xs:boolean {
