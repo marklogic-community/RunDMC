@@ -188,7 +188,7 @@ declare function local:redirect-guide-url($path as xs:string) as xs:string {
       $mappings  := u:get-doc("/apidoc/config/document-list.xml")/docs/*/guide,
       $new-stem  := $mappings[(@pdf-name,@source-name)[1] eq $file-stem]/@url-name/string(.)
   return
-    concat($srv:api-server, '/guide/', $new-stem)
+    concat($srv:api-server, '/guide/', $new-stem, '.pdf')
 };
 
 declare function local:gone($path as xs:string) as xs:boolean {
