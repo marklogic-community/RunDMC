@@ -263,6 +263,7 @@ if(typeof jQuery != 'undefined') {
                 $('.showScroll').addClass('lion');
             }
 
+            /*
             $('div.qtips[title]').qtip({ 
                 style: {
                     width: 300,
@@ -286,6 +287,7 @@ if(typeof jQuery != 'undefined') {
                     adjust: { mouse: false }
                 }
             });
+            */
 
             //Hide login and signup when we're on a signup page
             // console.log(window.location.pathname);
