@@ -19,6 +19,7 @@
   <widget xslt="recent-blog-posts.xsl">
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/people/supernodes"/>
+    <page href="/labs"/>
   </widget>
 
   <widget href="/widgets/signup.xml">
