@@ -147,7 +147,14 @@
         
         
         <br/>
-        <span class="download-warn">Please confirm your acceptance of the above terms.</span> <br/>
+        <div style="display: none" id="download-confirm-email">
+        <label for="iemail">Email:&#160;&#160;&#160;</label>
+        <input class="" size="40" type="text" id="iemail" name="iemail"/>
+            <br/>
+            <br/>
+        </div>
+        <span class="download-warn">Please confirm your acceptance of the above terms.</span> 
+        <br/>
         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
 
     </div>
