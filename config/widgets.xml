@@ -4,6 +4,7 @@
     <page href="/products/marklogic-server/which-nosql"/>
     <page href="/products/marklogic-server/enterprise-nosql"/>
     <page href="/labs"/>
+    <page href="/learn/arch/diagram-101"/>
   </widget>
                                      <!-- id for CSS purposes -->
   <widget href="/widgets/hadoop.xml" id="hadoop">
@@ -19,6 +20,7 @@
   <widget xslt="recent-blog-posts.xsl">
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/people/supernodes"/>
+    <page href="/labs"/>
   </widget>
 
   <widget href="/widgets/signup.xml">

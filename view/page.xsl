@@ -364,14 +364,20 @@
           </xsl:template>
 
                   <xsl:template mode="author-date-etc" match="Article | Tutorial">
-                    <div class="author">
-                      <xsl:apply-templates mode="author-listing" select="author"/>
-                    </div>
-                    <div class="date">
-                      <xsl:text>Last updated </xsl:text>
-                      <xsl:value-of select="last-updated"/>
-                    </div>
+                    <xsl:if test="last-udpated|author">
+                        <xsl:if test="last-udpated">
+                        <div class="author">
+                          <xsl:apply-templates mode="author-listing" select="author"/>
+                        </div>
+                       </xsl:if>
+                        <xsl:if test="last-udpated">
+                        <div class="date">
+                            <xsl:text>Last updated </xsl:text>
+                            <xsl:value-of select="last-updated"/>
+                        </div>
+                       </xsl:if>
                     <br/>
+                   </xsl:if>
                   </xsl:template>
 
 

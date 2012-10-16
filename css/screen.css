@@ -354,6 +354,7 @@ nav ul {margin: 0;}
 	text-decoration: none;
 }
 #content {
+    left: 0;
 	background: #F5F5F5;
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -2693,23 +2694,25 @@ a.drop-down-trigger.menu-open span {
     padding-bottom: 18px;
 }
 
-/* diagram */
-
 #interfaces {
-    background-color: #018EE0;
+    background-color: #ececec;
+    border: 1px solid #ccc;
 }
 
 #evaluation {
-    background-color: #017DC7;
+    background-color: #dcdcdc;
+    border: 1px solid #b8b8b8;
 }
 
+#data {
+    background-color: #cccccc;
+    border: 1px solid #bbb;
+}
+/* diagram */
+
 .segment {
-	xbackground-color:#0066CC;
-	background-color:#01639D;
 	border-radius: 5px;
-	border-color:black;
-	xwidth: 700px;
-	width: 650px;
+	width: 560px;
 /*	min-height:50px;  */
 	margin:10px;
 	padding:12px;
@@ -2719,52 +2722,45 @@ a.drop-down-trigger.menu-open span {
 	height:100%;
 }
 .title-container {
-	color:white;
 	font-weight:normal;
 	font-size:larger;
 	width:100px;
 	text-align:left;
-	padding:5px 0 5px 30px;
+	padding:5px 0 5px 10px;
 	float:left;
-	line-height:0.9em;
+	line-height:1.3em;
 }
 .component-container {
-	xwidth:540px;
-	width:440px;
+	width:375;
 	float:right;
 	height:100%;
 }
 .component {
-    color: black;
 	float:left;
 	margin:2px;
-	xwidth:526px;
-	width:426px;
+	width:378px;
 	padding:5px;
+    border: 1px solid #DDD;
 	background-color:white;
-	border-radius:2px;
-	border-color:black;
+	border-radius:3px;
 	text-align:center;
-	font-size:80%;
+	font-size:100%;
 	vertical-align:middle;
-	min-height:25px;
+	min-height:23px;
 }
-.half {width: 206px; }
+
+#evaluation .component {
+    border: 1px solid #bfbfbf;
+}
+
+#data .component {
+    border: 1px solid #bbb;
+}
+
+.half {width: 180px; }
 .third {width: 116px; }
 .left {float:left}
 .nofloat {float:none }
-/*.component:hover {
-	background-color:olive;
-	color:white;
-}
-*/#protocols, #info  { 
-	background-color:white;
-/*	margin: 0;
-*/	padding:0;
-	}
-#app_services {
-	margin-top:0;
-}
 .clear {
 	clear:both;
 	height:1px;
@@ -2772,14 +2768,4 @@ a.drop-down-trigger.menu-open span {
 .smalltext {
 	font-size:x-small;
 	color:gray;
-}
-/* tooltip styling. by default the element to be styled is .tooltip  */
-.tooltip {
-    display:none;
-    background-color:#f00;
-    border:1px solid #cc9;
-    padding:3px;
-    font-size:13px;
-    -moz-box-shadow: 2px 2px 11px #666;
-    -webkit-box-shadow: 2px 2px 11px #666;
 }
