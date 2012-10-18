@@ -263,31 +263,40 @@ if(typeof jQuery != 'undefined') {
                 $('.showScroll').addClass('lion');
             }
 
-            /*
+            $('div#diagram101 .component').mouseover(function(){
+                $(this).data('old-border-color', $(this).css('border-color'));
+                // $(this).css('border-color', 'black');
+            });
+            $('div#diagram101 .component').mouseout(function(){
+                // $(this).css('border-color', $(this).data('old-border-color'));
+            });
+
             $('div.qtips[title]').qtip({ 
                 style: {
                     width: 300,
                     padding: 5,
-                    xbackground: '#999',
-                    color: 'gray',
-                    xborder: {
-                       width: 1,
-                    }
-                },
-                content: {
-                    title: {
-                        text: 'TBD',
-                        button: 'Close'
+                    color: 'black',
+                    tip: {
+                        corner: 'bottomLeft'
+                    },
+                    border: {
+                        color: 'black',
+                        radius: 2,
+                        width: 1
                     }
                 },
                 show: 'mouseover',
-                hide: 'mouseout',
+                hide: { when: 'mouseout', fixed: true },
                 position: {
-                    target: 'mouse',
-                    adjust: { mouse: false }
+                    corner: {
+                        target: 'center',
+                        tooltip: 'leftBottom'
+                    },
+                    adjust: {
+                        y: -20
+                    }
                 }
             });
-            */
 
             //Hide login and signup when we're on a signup page
             // console.log(window.location.pathname);
