@@ -234,6 +234,7 @@
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
   </page>
+  <!-- <page display="Labs" href="/labs" tooltip="Experimental work"/> -->
 
   <page display="Company" href="http://www.marklogic.com/" />
 
