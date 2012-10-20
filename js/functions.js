@@ -199,6 +199,9 @@ if(typeof jQuery != 'undefined') {
                 $(":button:contains('Download')").button('disable');
                 $("#iaccept").removeAttr('checked');
                 $("#confirm-dialog").dialog.href = href;
+                if ($(this).hasClass('collect-email')) {
+                    $("#download-confirm-email").show();
+                }
                 $("#confirm-dialog").dialog('open');
                 return false;
             });
