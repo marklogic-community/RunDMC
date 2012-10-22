@@ -195,6 +195,8 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
+        var download_iframe;
+
         $('a.confirm-download').each(function() {
             var href = $(this).attr("href");
             $(this).click(function() {
@@ -235,14 +237,18 @@ if(typeof jQuery != 'undefined') {
                                 email: $(this).dialog.email,
                                 asset: u
                             }
-                        }).done(function() {
-                            $(this).dialog('close');
-                            document.location = u + '?r=dmc';
-                        });
-                    } else {
-                        $(this).dialog('close');
-                        document.location = u + '?r=dmc';
+                        })
+                    } 
+                    $(this).dialog('close');
+
+                    download_iframe = document.getElementById("hiddenDownloader");
+                    if (download_iframe === null) {
+                        download_iframe = document.createElement('iframe');  
+                        download_iframe.id = "hiddenDownloader";
+                        download_iframe.style.visibility = 'hidden';
+                        document.body.appendChild(iframe);
                     }
+                    download_iframe.src = u + '?r=dmc';
                 },
                 Cancel: function() {
                     var u = $(this).dialog.href;
