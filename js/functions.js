@@ -176,11 +176,13 @@ if(typeof jQuery != 'undefined') {
 
         $("#iemail").keyup(function() {
             var b = $(":button:contains('Download')");
-            if ($("#iaccept").is(":checked") && isValidEmailAddress($("#iemail").val())) {
+            var email = $("#iemail").val();
+            if ($("#iaccept").is(":checked") && isValidEmailAddress(email)) {
                 b.button("enable");
             } else {
                 b.button("disable");
             }
+            $("#confirm-dialog").dialog.email = email;
         });
 
         $("#iaccept").click(function() {
@@ -206,6 +208,7 @@ if(typeof jQuery != 'undefined') {
                 return false;
             });
         });
+
         if(jQuery().dialog) {
         	$("#confirm-dialog").dialog({
             resizable: false,
@@ -221,7 +224,17 @@ if(typeof jQuery != 'undefined') {
                     try {
                         var s = '/start-download' + u.replace(/\?.*/, "");
                         mktoMunchkinFunction('clickLink', { href: s } );
-                    $(this).dialog('close');
+                        if ($(this).dialog.email) {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/sync-lead",
+                                data: {
+                                    email: $(this).dialog.email,
+                                    asset: u
+                                }
+                            });
+                        }
+                        $(this).dialog('close');
                     } catch (err) {}
                     document.location = u + '?r=dmc';
                 },
