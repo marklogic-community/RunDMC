@@ -226,22 +226,23 @@ if(typeof jQuery != 'undefined') {
                         mktoMunchkinFunction('clickLink', { href: s } );
                     } catch (err) {}
 
-                    try {
-                        if ($(this).dialog.email) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "/sync-lead",
-                                data: {
-                                    email: $(this).dialog.email,
-                                    asset: u
-                                }
-                            });
-                        }
-                    } catch (err) {}
-
-                    $(this).dialog('close');
-
-                    document.location = u + '?r=dmc';
+                    if ($(this).dialog.email) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "/sync-lead",
+                            context: $(this),
+                            data: {
+                                email: $(this).dialog.email,
+                                asset: u
+                            }
+                        }).done(function() {
+                            $(this).dialog('close');
+                            document.location = u + '?r=dmc';
+                        });
+                    } else {
+                        $(this).dialog('close');
+                        document.location = u + '?r=dmc';
+                    }
                 },
                 Cancel: function() {
                     var u = $(this).dialog.href;
