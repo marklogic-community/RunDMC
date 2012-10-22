@@ -219,7 +219,6 @@
 .dc #banner {
   background: #eef0dd url(/images/bannerbg.jpg) no-repeat center top;
   color: #222222;
-  XXXtext-shadow: 0 1px 0 white;
   *zoom: 1;
   padding: 20px 0;
 }
@@ -251,8 +250,6 @@
 .dc #banner p.summary {
   font-size: 1.4em;
   line-height: 1.3em;
-  xmargin-top: 30px;
-  xmargin-bottom: 10px;
 }
 .dc #hmfeature {
   -webkit-border-radius: 10px;
