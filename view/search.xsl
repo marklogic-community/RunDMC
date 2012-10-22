@@ -25,7 +25,7 @@
                                                         else if ($srv:host-type eq 'staging')           then 'preferred-server-version-staging'
                                                                                                         else 'preferred-server-version'"/>
 
-  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)"/>
+  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
   <xsl:variable name="preferred-version" select="if ($set-version)
                                                 then $set-version
                                             else if ($preferred-version-cookie)
@@ -43,7 +43,7 @@
 
 
   <!-- This is used for hit highlighting. Only available when the client sets it (on the search results page) -->
-  <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')"/>
+  <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')[1]"/>
 
   <!-- This must be evaluated for every page, to prevent continued (unwanted) highlighting (see page.xsl) -->
   <xsl:variable name="_reset-search-cookie"
