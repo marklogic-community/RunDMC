@@ -246,7 +246,7 @@ if(typeof jQuery != 'undefined') {
                         download_iframe = document.createElement('iframe');  
                         download_iframe.id = "hiddenDownloader";
                         download_iframe.style.visibility = 'hidden';
-                        document.body.appendChild(iframe);
+                        document.body.appendChild(download_iframe);
                     }
                     download_iframe.src = u + '?r=dmc';
                 },
