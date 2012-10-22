@@ -86,13 +86,11 @@ declare function mkto:associate-lead-via-asset($email, $cookie, $asset)
     let $soap := mkto:soap($body)
     let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
 
-    (: If lead exists, leave it alone :)
-    return 
-
+    (: if lead exists, leave it's source details alone, otherwise it's from the Community Site :)
+    let $leadSourceAttrs :=
         if ($leadExists) then
             ()
         else
-            let $leadSourceAttrs := 
             (
             <attribute>
                 <attrName>LeadSource</attrName>
@@ -105,54 +103,54 @@ declare function mkto:associate-lead-via-asset($email, $cookie, $asset)
             </attribute>
             )
     
-            let $body :=
-              <SOAP-ENV:Envelope>
-               <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
-               <SOAP-ENV:Body>
-                <ns1:paramsSyncLead>
-                  <leadRecord>
-                      <Email>{$email}</Email> 
-                      <leadAttributeList>
-                          <attribute>
-                              <attrName>Email</attrName>
-                              <attrValue>{$email}</attrValue>
-                          </attribute>
-                          {$leadSourceAttrs}
-                      </leadAttributeList>
-                  </leadRecord>
-                  {$cook}
-               </ns1:paramsSyncLead>>
-              </SOAP-ENV:Body>
-             </SOAP-ENV:Envelope>
+    let $body :=
+      <SOAP-ENV:Envelope>
+       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
+       <SOAP-ENV:Body>
+        <ns1:paramsSyncLead>
+          <leadRecord>
+              <Email>{$email}</Email> 
+              <leadAttributeList>
+                  <attribute>
+                      <attrName>Email</attrName>
+                      <attrValue>{$email}</attrValue>
+                  </attribute>
+                  {$leadSourceAttrs}
+              </leadAttributeList>
+          </leadRecord>
+          {$cook}
+       </ns1:paramsSyncLead>>
+      </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
 
-            let $soap := mkto:soap($body)
-            let $resp := $soap[1]
+    let $soap := mkto:soap($body)
+    let $resp := $soap[1]
+    return 
+        if ($resp/*:code/string() eq '200') then
+            let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
             return 
-                if ($resp/*:code/string() eq '200') then
-                    let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
-                    return 
-                        if ($ok) then
-                            ()
-                        else
-                            mkto:alert(concat("mkto: syncLead failed.
-        Error: 
-
-        ",
-        xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
-
-        Body: 
-
-        ",
-        xdmp:quote($body)))
+                if ($ok) then
+                    ()
                 else
-                            mkto:alert(concat("mkto: soap error: 
-        ",
-        xdmp:quote($soap), "
+                    mkto:alert(concat("mkto: syncLead failed.
+Error: 
 
-        Body: 
+",
+xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
 
-        ",
-        xdmp:quote($body)))
+Body: 
+
+",
+xdmp:quote($body)))
+        else
+                    mkto:alert(concat("mkto: soap error: 
+",
+xdmp:quote($soap), "
+
+Body: 
+
+",
+xdmp:quote($body)))
 };
 
 declare function mkto:associate-lead($email, $cookie, $meta) 
