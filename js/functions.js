@@ -224,6 +224,9 @@ if(typeof jQuery != 'undefined') {
                     try {
                         var s = '/start-download' + u.replace(/\?.*/, "");
                         mktoMunchkinFunction('clickLink', { href: s } );
+                    } catch (err) {}
+
+                    try {
                         if ($(this).dialog.email) {
                             $.ajax({
                                 type: 'POST',
@@ -234,8 +237,10 @@ if(typeof jQuery != 'undefined') {
                                 }
                             });
                         }
-                        $(this).dialog('close');
                     } catch (err) {}
+
+                    $(this).dialog('close');
+
                     document.location = u + '?r=dmc';
                 },
                 Cancel: function() {
