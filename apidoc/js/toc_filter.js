@@ -290,6 +290,11 @@ function updateTocForTab(tab, panel) {
   //console.log(functionPageBucketId);
   //console.log("updateTocForTab called");
 
+  // If this is the categories "tab" (radio button), take note in Google Analytics
+  if (panel.id == categoriesPanelId) {
+    _gaq.push(['_trackEvent', 'Sort order', 'Change', 'By Category'])
+  }
+
   // Hide the view toggle buttons if this isn't the functions or categories panel
   if (panel.id == categoriesPanelId || panel.id == functionsPanelId)
   {
