@@ -42,12 +42,12 @@ declare function local:extract-event($tr, $n) {
          then let $nodes   := local:extract-title( $tds )
               let $title   := $nodes [1]
               let $date    := $nodes [2]
-              let $where := $nodes [4]
+              let $where := $nodes [3]
               return <xhtml:div id="event_{$n}" class="event">
                 <xhtml:h4 id="event_{$n}_title" style="margin-bottom: 2px; margin-top: 8px;"> <xhtml:strong>{ $title } </xhtml:strong></xhtml:h4>
                 <xhtml:div class="when" id="event_{$n}_when">
-                  { let $tokens := fn:tokenize($date, " - ")
-                    let $dash := if ($tokens[2]) then " - " else " "
+                  { let $tokens := fn:tokenize($date, " – ")
+                    let $dash := if ($tokens[2]) then " – " else " "
                     return (<xhtml:span id="event_{$n}_start" class="start">
                              { $tokens [1] }
                            </xhtml:span>, $dash,
@@ -72,7 +72,7 @@ try {
     let $table :=
       ( xdmp:tidy(
           xdmp:http-get(
-            'http://www.marklogic.com/products-and-services/upcoming-classes/'
+            'http://www.marklogic.com/partners/training/class-schedule/'
           ) [2]
         ) [2]
       ) //xhtml:body//xhtml:table[1]
@@ -88,7 +88,7 @@ try {
                 </xhtml:div>
             )
         else
-            local:fail("no training events found at http://www.marklogic.com/products-and-services/upcoming-classes/")
+            local:fail("no training events found at http://www.marklogic.com/partners/training/class-schedule")
 }
 catch($e) {
   local:fail(("Stack trace: ", $e))
