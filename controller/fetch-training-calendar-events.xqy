@@ -72,7 +72,7 @@ try {
     let $table :=
       ( xdmp:tidy(
           xdmp:http-get(
-            'http://www.marklogic.com/partners/training/class-schedule/'
+            'http://www.marklogic.com/training/class-schedule/'
           ) [2]
         ) [2]
       ) //xhtml:body//xhtml:table[1]
