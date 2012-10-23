@@ -196,8 +196,17 @@ function waitToShowInTOC(tocSection) {
 
     clearTimeout(waitToShowInTOC);
 
+    var currentHref = location.href.toLowerCase();
+    var stripChapterFragment = isUserGuide && currentHref.indexOf("#") == -1;
+//console.log("currentHref: " + currentHref);
+
     var current = tocSection.find("a").filter(function() {
-      return this.href.toLowerCase() == location.href.toLowerCase();
+      var thisHref = this.href.toLowerCase();
+      var hrefToCompare = (stripChapterFragment) ? thisHref.replace(/#chapter/,"") : thisHref;
+//      console.log("hrefToCompare: " + hrefToCompare);
+      var result = hrefToCompare == location.href.toLowerCase();
+//      if (result) console.log("matching result: " + hrefToCompare);
+      return result;
     });
 
     // E.g., when hitting the Back button and reaching "All functions"
@@ -242,7 +251,8 @@ function updateTocForUrlFragment(pathname, hash) {
   if (isUserGuide) {
     // IE doesn't include the "/" at the beginning of the pathname...
     //var fullLink = this.pathname + this.hash;
-    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + hash;
+    var effective_hash = (hash == "") ? "#chapter" : hash;
+    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + effective_hash;
 
     //console.log("Calling showInTOC from updateTocForUrlFragment");
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
