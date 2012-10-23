@@ -69,10 +69,12 @@ declare function local:extract-event($tr, $n) {
 } ;
 
 try {
+    let $url := "http://www.marklogic.com/services/training/class-schedule/"
+
     let $table :=
       ( xdmp:tidy(
           xdmp:http-get(
-            'http://www.marklogic.com/training/class-schedule/'
+            $url
           ) [2]
         ) [2]
       ) //xhtml:body//xhtml:table[1]
@@ -88,7 +90,7 @@ try {
                 </xhtml:div>
             )
         else
-            local:fail("no training events found at http://www.marklogic.com/partners/training/class-schedule")
+            local:fail(concat("no training events found at ", $url))
 }
 catch($e) {
   local:fail(("Stack trace: ", $e))
