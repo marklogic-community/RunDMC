@@ -5,6 +5,6 @@
      {fn:doc('/private/training-events.xml') } 
      </div>
 
-  <div><a class="more" href="http://www.marklogic.com/services/training.html">Full Training Calendar »</a> &#160;<a href="http://www.eventbrite.com/rss/user_list_events/3692137304" 
+  <div><a class="more" href="http://www.marklogic.com/partners/training/class-schedule/">Full Training Calendar »</a> &#160;<a href="http://www.eventbrite.com/rss/user_list_events/3692137304" 
      title="Subscribe to upcoming courses"><img src="/images/feed_icon_small.png" alt="RSS" /></a></div>
 </ml:widget>
