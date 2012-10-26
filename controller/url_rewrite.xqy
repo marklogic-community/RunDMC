@@ -4,13 +4,7 @@ import module namespace ml = "http://developer.marklogic.com/site/internal"
 import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "server-urls.xqy";
 
-(:
-TODO:
-/conference/2007
-default.xqy
-/news/standards/w3c.xqy
-:)
-
+(: TODO: handle old default.xqy URLs :)
 declare function local:redir($path as xs:string) as xs:string
 {
     let $path            := xdmp:get-request-path()  
@@ -144,6 +138,10 @@ declare function local:redir($path as xs:string) as xs:string
         "/try/ninja/index"
     else if ($path = ("/business-intelligence")) then
         "/products/odbc"
+    else if ($path = ("/code/mlsql")) then
+        "/code/mlsam"
+    else if ($path = ("/learn/2006-04-mlsql")) then
+        "/learn/2006-04-mlsam"
     else if ($path = ("/products/java-api")) then
         "/products/java"
     else if ($path = ("/learn/pojo-tutorial-01.zip")) then
@@ -198,7 +196,9 @@ declare function local:gone($path as xs:string) as xs:boolean {
         "/docs/4.0",
         "/pubs/4.0",
         "/code/libmlxcc",
-        "/code/versi"
+        "/code/versi",
+        "/conference/2007",
+        "/news/standards/w3c.xqy"
     )
 };
 
