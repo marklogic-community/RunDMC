@@ -124,7 +124,7 @@
       </group>
       <group display="Connectors">
         <page display="Corona" href="/code/corona"/>
-        <page display="MLSQL" href="/code/mlsql"/>
+        <page display="MLSAM" href="/code/mlsam"/>
         <page display="MLJAM" href="/code/mljam"/>
         <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/>
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
@@ -141,7 +141,7 @@
         <page display="MLJSON - JSON conversion" href="/code/mljson"/>
         <page display="Facebook XQuery Library" href="/code/facebook"/>
         <page display="Feed" href="/code/feed"/>
-        <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/>
+        <!-- <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/> -->
         <page display="XQuery Commons" href="/code/commons"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Semantic" href="/code/semantic"/>
