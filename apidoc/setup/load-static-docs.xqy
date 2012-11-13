@@ -27,14 +27,16 @@ declare variable $version-dir                := $config/version[@number eq $api:
 
 declare function local:rewrite-uri($uri) {
        if (starts-with($uri,"/javaclient")) then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
+  else if (starts-with($uri,"/hadoop/"))    then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/") (: Move "/javadoc" to the beginning of the URL :)
   else if (starts-with($uri,"/javadoc/"))   then replace($uri,"/javadoc/","/javadoc/xcc/")
   else if (starts-with($uri,"/dotnet/"))    then replace($uri,"/dotnet/",  "/dotnet/xcc/")
+  else if (starts-with($uri,"/c++/"))       then replace($uri,"/c\+\+/", "/cpp/udf/")
 
   (: ASSUMPTION: the java docs don't include any PDFs :)
   else if (ends-with($uri,".pdf"))          then local:pdf-uri($uri)
 
-  (: ASSUMPTION: if it's not PDF and it doesn't start with "/dotnet/", then it's java :)
-                                            else concat("/javadoc", replace($uri,"/javadoc","")) (: Move "/javadoc" to the beginning of the URL :)
+  (: By default, don't change the URI (e.g., for C++ docs) :)
+  else error(xs:QName("ERROR"), concat("No case was found for rewriting this path: ", $uri))
 };
 
 declare function local:pdf-uri($uri) {
@@ -57,22 +59,28 @@ declare function local:load-pubs-docs($dir) {
     let $path    := $file/dir:pathname,
         $uri     := concat("/apidoc/", $api:version, local:rewrite-uri(translate(substring-after($path,$pubs-dir),"\","/"))),
 
+        $is-mangled-html := ends-with($uri,'-members.html'),
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
+        $is-js   := ends-with($uri,'.js'),
 
         (: If the document is JavaDoc HTML, then read it as text; if it's other HTML, repair it as XML (.NET docs) :)
         $doc := if ($is-jdoc) then xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format><encoding>auto</encoding></options>)
+           else if ($is-mangled-html) then
+               let $unparsed := xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>text</format></options>)/string(),
+                   $replaced := replace($unparsed, '"class="', '" class="')
+               return xdmp:unquote($replaced, "", "repair-full")
            else if ($is-html) then
-                              try{ xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>xml</format><repair>full</repair><encoding>UTF-8</encoding></options>) }
+                              try{ xdmp:log("TRYING FULL CONVERSION"),xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>xml</format><repair>full</repair><encoding>UTF-8</encoding></options>) }
                         catch($e){ if ($e/*:code eq 'XDMP-DOCUTF8SEQ') then
                                    xdmp:document-get($path, <options xmlns="xdmp:document-get"><format>xml</format><repair>full</repair><encoding>ISO-8859-1</encoding></options>)
                                    else error((),"Load error", xdmp:quote($e))
                                  }
            else                    xdmp:document-get($path, <options xmlns="xdmp:document-get"><encoding>auto</encoding></options>), (: Otherwise, just load the document normally :)
 
-        (: Exclude these HTML documents from the search corpus (search the Tidy'd XHTML instead; see below) :)
-        $collection := if ($is-jdoc) then "hide-from-search"
-                                     else ()
+        (: Exclude these HTML and javascript documents from the search corpus (search the Tidy'd XHTML instead; see below) :)
+        $collection := if ($is-jdoc or $is-js) then "hide-from-search"
+                                               else ()
     return
     (
       xdmp:document-insert($uri, $doc, xdmp:default-permissions(), $collection),

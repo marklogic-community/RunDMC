@@ -4,4 +4,5 @@
   <include>javadoc</include>
   <include>hadoop</include>
   <include>javaclient</include>
+  <include>c++</include>
 </static-docs>

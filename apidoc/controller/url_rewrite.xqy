@@ -96,12 +96,16 @@ declare variable $matching-function-count := count($matching-functions);
        local:redirect($path-prefix)
   (: Redirect /dotnet to /dotnet/xcc :)
   else if (substring-after($path,$path-prefix) eq "dotnet") then
-       local:redirect(concat($path,'/xcc'))
+       local:redirect(concat($path,'/xcc/index.html'))
+  (: Redirect /cpp to /cpp/udf :)
+  else if (substring-after($path,$path-prefix) eq "cpp") then
+       local:redirect(concat($path,'/udf/index.html'))
   (: Redirect path without index.html to index.html :)
   else if (substring-after($path,$path-prefix) = ("javadoc/hadoop",
                                                   "javadoc/client",
                                                   "javadoc/xcc",
-                                                  "dotnet/xcc")) then
+                                                  "dotnet/xcc",
+                                                  "cpp/udf")) then
        local:redirect(concat($path,'/index.html'))
   (: Redirect requests for older versions back to DMC :)
   else if (starts-with($path,"/4.0")) then
@@ -138,7 +142,8 @@ declare variable $matching-function-count := count($matching-functions);
     (: Respond with DB contents for PDF and HTML docs :)
     else if (ends-with($path, '.pdf')
           or contains($path,'/javadoc/')
-          or contains($path,'/dotnet/')) then
+          or contains($path,'/dotnet/')
+          or starts-with($path,'/cpp/')) then
       let $path-without-version := concat('/',substring-after($path,$path-prefix)),
           $path-with-version    := concat('/', $version, $path-without-version),
           $file-uri := concat('/apidoc', $path-with-version)

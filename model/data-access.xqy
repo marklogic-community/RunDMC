@@ -124,6 +124,7 @@ declare function ml:search-corpus-query($preferred-version as xs:string) {
       ml:live-document-query($preferred-version),
       cts:directory-query((fn:concat('/apidoc/', $preferred-version, '/javadoc/'), (: see apidoc/setup/load-static-docs.xqy :)
                            fn:concat('/apidoc/', $preferred-version, '/dotnet/'),
+                           fn:concat('/apidoc/', $preferred-version, '/cpp/'),
                            '/pubs/code/'
                           ),
                           'infinity'
@@ -244,6 +245,7 @@ declare function category-for-doc($doc-uri, $new-doc as document-node()?) as xs:
   else if (fn:contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
   else if (fn:contains($doc-uri, "/javadoc/client/")) then "java-api"
   else if (fn:contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
+  else if (fn:contains($doc-uri, "/cpp/"))            then "cpp"
   else let $doc := if ($new-doc) then $new-doc else fn:doc($doc-uri) return
        if ($doc/api:function-page/api:function[1]/@lib eq 'REST')
                                      then "rest-api"

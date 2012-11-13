@@ -478,6 +478,7 @@
                   <xsl:template mode="facet-value-display" match="*[@name eq 'hadoop']  ">Hadoop Connector API doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net doc</xsl:template>
                   <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous page</xsl:template>
+                  <xsl:template mode="facet-value-display" match="*[@name eq 'cpp']     ">C++ API doc</xsl:template>
 
                   <!-- Search result icon file names -->
                   <xsl:template mode="result-img-src" match="*[@name eq 'all']     ">i_mag_logo_small</xsl:template>
@@ -495,6 +496,7 @@
                   <xsl:template mode="result-img-src" match="*[@name eq 'hadoop']  ">i_java</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'xccn']    ">i_dotnet</xsl:template>
                   <xsl:template mode="result-img-src" match="*[@name eq 'other']   ">i_folder</xsl:template>
+                  <xsl:template mode="result-img-src" match="*[@name eq 'cpp']     ">i_folder</xsl:template>  <!-- TODO: give this a different icon -->
 
                   <!-- All icons except the user guide icon are 30 pixels wide -->
                   <xsl:template mode="result-img-width" match="*[@name eq 'guide']">29</xsl:template>
