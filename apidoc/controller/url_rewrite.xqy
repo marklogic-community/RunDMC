@@ -67,7 +67,6 @@ declare function local:transform($source-uri) as xs:string {
 
 (: Grab doc from database :)
 declare function local:get-db-file($source-uri) as xs:string {
-xdmp:log(concat("Serving up: ",$source-uri)),
   concat("/controller/get-db-file.xqy?uri=", $source-uri)
 };
 
