@@ -143,7 +143,7 @@ declare variable $matching-function-count := count($matching-functions);
     else if (ends-with($path, '.pdf')
           or contains($path,'/javadoc/')
           or contains($path,'/dotnet/')
-          or starts-with($path,'/cpp/')) then
+          or contains($path,'/cpp/')) then
       let $path-without-version := concat('/',substring-after($path,$path-prefix)),
           $path-with-version    := concat('/', $version, $path-without-version),
           $file-uri := concat('/apidoc', $path-with-version)
