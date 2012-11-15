@@ -185,6 +185,10 @@
           </node>
 
           <xsl:apply-templates mode="help-toc" select="."/>
+          <xsl:if test="number($api:version) ge 6">
+              <node display="C++ UDF API Reference" 
+                    href="/cpp/udf/index.html" external="yes"/>
+          </xsl:if>
         </node>
       </toc:other>
     </all-tocs>

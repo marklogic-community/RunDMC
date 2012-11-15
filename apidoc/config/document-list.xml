@@ -150,6 +150,13 @@
     </entry>
   </group>
 
+  <group name="C++ UDF API Reference" min-version="6.0">
+    <entry title="C++ User Defined Function API Reference">
+      API documentation for the C++ User Defined Function (UDF) API.
+      <url version="6.0" href="/6.0/cpp/udf/index.html"/>
+    </entry>
+  </group>
+
   <group name="Admin Interface Help">
     <entry title="Admin Interface Help Pages" href="/admin-help"/>
   </group>
