@@ -284,6 +284,12 @@
                     <p>For information on how to import the functions in this module, refer to the main <a href="/{$lib}"><xsl:value-of select="api:prefix-for-lib($lib)"/> library page</a>.</p>
                   </apidoc:summary>
                 </xsl:when>
+                <!-- ASSUMPTION: Only REST sub-categories may need this fallback; all main categories (e.g., Client API and Management API) already have summaries written -->
+                <xsl:when test="$lib eq 'REST'">
+                  <apidoc:summary>
+                    <p>For the complete list of REST resources in this category, refer to the main <a href="/REST/{toc:path-for-category($cat)}"><xsl:value-of select="toc:display-category($cat)"/> page</a>.</p>
+                  </apidoc:summary>
+                </xsl:when>
                 <!-- some of the xdmp sub-pages don't have descriptions either, so use this -->
                 <xsl:otherwise>
                   <apidoc:summary>
