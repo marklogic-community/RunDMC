@@ -192,6 +192,10 @@
                   </xsl:template>
 
                   <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
+                  <xsl:template mode="page-specific-title" match="page[@title]">
+                    <xsl:value-of select="@*:title"/>
+                  </xsl:template>
+
                   <xsl:template mode="page-specific-title" match="page[product-info/@name]">
                     <xsl:value-of select="product-info/@name"/>
                   </xsl:template>
