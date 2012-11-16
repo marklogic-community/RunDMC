@@ -52,18 +52,21 @@
 
   <!-- Guide title -->
   <xsl:template mode="guide" match="/*/guide-title">
-    <!-- Add a PDF link at the top of each guide, before the <h1> -->
-    <xsl:choose>
-      <xsl:when test="parent::guide">
-        <a href="{api:external-guide-uri(/)}.pdf" class="guide-pdf-link">
-          <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25"/>
-        </a>
-      </xsl:when>
-      <!-- printer-friendly link on chapter pages -->
-      <xsl:otherwise>
-        <xsl:apply-templates mode="print-friendly-link" select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <!-- Add a PDF link at the top of each guide (and chapter), before the <h1> -->
+    <a href="{api:external-guide-uri(/)}.pdf" class="guide-pdf-link" target="_blank">
+      <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25">
+        <!-- Shrink the PDF icon size if we're on a chapter page -->
+        <xsl:if test="parent::chapter">
+          <xsl:attribute name="class" select="'printerFriendly'"/> <!-- same padding, etc., as printer icon -->
+          <xsl:attribute name="height" select="16"/>
+          <xsl:attribute name="width" select="16"/>
+        </xsl:if>
+      </img>
+    </a>
+    <!-- printer-friendly link on chapter pages -->
+    <xsl:if test="parent::chapter">
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
+    </xsl:if>
     <h1>
       <xsl:apply-templates mode="guide-heading-content" select="."/>
     </h1>
