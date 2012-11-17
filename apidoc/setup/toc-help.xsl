@@ -201,7 +201,8 @@
   </xsl:template>
 
   <!-- Convert hard-coded color spans into <strong> tags -->
-  <xsl:template mode="convert-help-content" match="*:span[contains(@style,'color:')]">
+  <xsl:template mode="convert-help-content" match="*:span[contains(string(@style),'color:')]">
+                                                              <!-- string() was necessary to avoid a failed atomization attempt, at least in some builds -->
     <strong class="configOption">
       <xsl:apply-templates mode="#current"/>
     </strong>
