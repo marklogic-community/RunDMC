@@ -508,7 +508,7 @@
             <xsl:apply-templates select="api:headers[api:header/@type = 'response']">
               <xsl:with-param name="response-headers" select="true()" tunnel="yes"/>
             </xsl:apply-templates>
-            <xsl:apply-templates select="(api:privilege, api:usage, api:example)[normalize-space(.)]"/>
+            <xsl:apply-templates select="(api:response, api:privilege, api:usage, api:example)[normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
@@ -564,6 +564,14 @@
                       <xsl:apply-templates/>
                     </p>
                   </xsl:template>
+
+                  <xsl:template match="api:response">
+                    <h3>Response</h3>
+                    <p>
+                      <xsl:apply-templates/>
+                    </p>
+                  </xsl:template>
+
 
                   <xsl:template match="api:params | api:headers">
                     <xsl:param name="response-headers" tunnel="yes"/>
