@@ -248,6 +248,19 @@
     </p>
   </xsl:template>
 
+  <!-- we add this wrapper when capturing lists (see below) -->
+  <xsl:template match="NoteWithList">
+    <div class="note">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+          <xsl:template match="NoteWithList/Note">
+            <p>
+              <xsl:apply-templates/>
+            </p>
+          </xsl:template>
+
   <xsl:template match="Warning">
     <p class="warning">
       <xsl:apply-templates/>
@@ -519,6 +532,12 @@
                                     </ul>
                                   </xsl:template>
 
+                  <xsl:template mode="outer-list" match="Note[my:starts-list(.)]">
+                    <NoteWithList>
+                      <xsl:call-template name="capture-nested-bullets"/>
+                    </NoteWithList>
+                  </xsl:template>
+
                   <!-- If not part of a list, just copy the group through -->
                   <xsl:template mode="outer-list
                                       inner-list
@@ -534,7 +553,8 @@
 
                           <xsl:function name="my:starts-list">
                             <xsl:param name="e"/>
-                            <xsl:sequence select="$e/(self::Number or self::Body-bullet)"/>
+                                                                                           <!-- For when a note contains a list -->
+                            <xsl:sequence select="$e/(self::Number or self::Body-bullet or self::Note[following-sibling::*[1]/self::Body-bullet-2])"/>
                           </xsl:function>
 
                           <xsl:function name="my:ends-list">
