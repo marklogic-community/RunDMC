@@ -15,10 +15,12 @@ SETUP NOTES
     the filesystem.  The URL rewriter should be set to "/controller/url_rewrite.xqy".
     The error handler should be set to "/controller/error-handler.xqy".
 
-  API server (e.g. documentation host - like docs.marklogic.com)
-    App server roor same as Main server.
+  API/Docs server (i.e. documentation host - like docs.marklogic.com)
+    App server root same as Main server.
     URL rewriter /apidoc/controller/url_rewrite.xqy
     Error handler /controller/error-handler.xqy
+
+    See also apidoc/README.txt
    
   Draft server:
     This app server must have the word "Draft" in its name.
@@ -35,12 +37,11 @@ SETUP NOTES
     For the Admin interface, set up a different HTTP app server,
     using the same content database and same server root. But set
     the URL rewriter to "/admin/controller/url_rewrite.xqy".
-    Defa
 
   WebDAV server:
     If you want "view XML source" to work in the admin UI, set up
     a WebDAV server with root set to "/". Then add the server URL to
-    /admin/config/navigation.xml.  Default is same hostname, port 8005.
+    /config/server-urls.xml.  Default is same hostname, port 8005.
 
     Note: OS X users, you will want to keep OS X from creating .DS_Store files
     by doing the following

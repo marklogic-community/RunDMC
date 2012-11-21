@@ -18,7 +18,7 @@ if (not(xdmp:get-request-field("srcdir")))    then error(xs:QName("ERROR"), "You
 (: Optionally delete everything first (if clean=yes is specified) :)
 if (xdmp:get-request-field("clean") eq 'yes') then 
 (
-  xdmp:invoke("delete-static-docs.xqy"),
+  xdmp:invoke("delete-static-docs.xqy"), (: TODO: I believe this is obsolete and can be removed. :)
   xdmp:invoke("delete-raw-docs.xqy"),
   xdmp:invoke("delete-docs.xqy"),
   xdmp:invoke("delete-doc-images.xqy")

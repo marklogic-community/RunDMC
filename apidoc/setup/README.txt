@@ -1,126 +1,161 @@
-NOTE: See the more up-to-date README_FOR_NIGHTLY_BUILD.txt first.
+This directory contains all the scripts used at build time for preparing
+and optimizing the Docs content. See README_FOR_NIGHTLY_BUILD.txt for
+instructions on running them.
 
+setup-all.xqy
+  This script generates an HTML form which you can use to selectively run
+  parts of the build process. This is very useful for development. Rather
+  than have to wait for the entire build to run to test your changes, you
+  can just pick and choose which steps you want to run. See the
+  "MORE SELECTIVE BUILDS" section in README_FOR_NIGHTLY_BUILD.txt for more
+  details.
 
-HOW TO BUILD CONTENT
+build.xqy
+  This is the top-level script used for the nightly build. It invokes
+  everything in /apidoc/setup that needs to be invoked to load & prepare
+  the docs for a specific version. See README_FOR_NIGHTLY_BUILD.txt for
+  details on how to run the build.
 
-Content is loaded and built using a series of script invocations. You only
-ever load and build content for one version at a time, e.g., 4.1, 4.2, etc.
+  Here are the scripts invoked in turn by build.xqy:
 
-NOTE: steps 6–9 below can be more conveniently run from the browser if you visit this page:
-http://localhost:8008/apidoc/setup/setup-all.xqy
+  delete-raw-docs.xqy
+    When running a clean build, this script deletes all of the raw
+    API & guide documents in the "raw docs" database
+    (named "RunDMC-api-rawdocs" by default).
 
+  delete-docs.xqy
+    When running a clean build, this script deletes all of the primary
+    doc content--every doc URI starting with "/apidoc/5.0/", for example,
+    if you're running the build with version=5.0.
 
-STEP 1: Create an empty source database.
-  The source database is used by the setup code but not by the run-time rendering
-  code. For that reason, it will only be necessary to include this database on
-  the staging server, not the production server. The expected name of this database,
-  "RunDMC-api-rawdocs", is configured in /apidoc/config/source-database.xml.
+  delete-doc-images.xqy
+    When running a clean build, this script deletes all of the image
+    docs referred to by other docs (especially guides).
 
-  The same source database is used for all versions of the documentation. (In other
-  words, you don't need to create a separate database for each version.)
+  load-static-docs.xqy
+    This script loads all of the "static" docs, which include PDFs,
+    JavaDocs, .NET docs, and C++ docs. These are loaded straight into
+    the live database (bypassing the "raw docs" database).
 
-  This is a one-time step. Subsequent runs of the content-loading script (next step)
-  will keep using the same database.
+  load-raw-docs.xqy
+    This script loads all of the raw function, REST resource, and guide docs
+    into the "raw docs" database (RunDMC-api-rawdocs), so they'll be ready
+    for processing by subsequent scripts.
 
+  setup-guides.xqy
+    This script grabs all the guide content from the "raw docs" database,
+    and assembles and prepares all the final guide content in the live database.
+    It does this in three steps (sub-scripts, which can also be invoked
+    independently):
 
-STEP 2: Create an app server for running the setup scripts.
-  E.g., I have an app server called RunDMC-Maintenance on my machine.
+    consolidate-guides.xqy
+      Re-organizes guide chapters into the desired URI structure (but still in
+      the "raw docs" database for the time being). Also creates a chapter list
+      for the guide home page.
 
-  Database: RunDMC
-  Modules: (filesystem)
-  Root: /Users/elenz/work/rundmc.git (or wherever your code is checked out)
-  Port: 8008 (or whatever you want)
+    convert-guides.xqy
+      Grabs the consolidated guide content from the "raw docs" database and
+      converts it to its final form. The heavy-lifting in this step is done in:
 
-  (same configuration as RunDMC, except with no URL rewriter)
+      convert-guide.xsl
+        Implements a multi-stage transformation for converting the Frame-outputted
+        XML to HTML, including a hierarchy of <div> (section) elements and 
+        captured numbered and bulleted lists.
+  
+    copy-guide-images.xqy
+      Finds all the guide image references and copies the reference docs from
+      the "raw docs" database to the appropriate place in the live database.
 
+  setup.xqy
+    This script invokes multiple sub-scripts (which can also be invoked independently)
+    to prepare function/REST docs, create the TOC, and generate the various
+    function/resource library index pages:
 
-STEP 3: Setup the indexes.
-  Run http://localhost:8008/apidoc/setup/setup-indexes.xqy
+    pull-function-docs.xqy
+      This script pulls all the function/REST content from the "raw docs" database
+      into the live database using the following XSLT:
+      
+      extract-functions.xsl 
+        This script extracts individual function/REST documents (one doc for each
+        function or resource) to be inserted into the live database.
 
+    create-toc.xqy
+      This script generates an XML-based TOC file (stored at, for example,
+      /media/apiTOC/6.0/toc.xml). The heavy lifting is done in toc.xsl and its includes:
 
-STEP 4: Put the latest raw docs (from \\gfurbush\Docs) on the machine running MarkLogic Server.
-  For example, on my local machine, I put these folders into: /Users/elenz/Desktop/api-rawdocs/
+      toc.xsl
+        This script analyzes both the prepared function and guide documents to generate
+        the XML TOC, which also includes all the library/category intro content inline
+        (for index pages). This is also the file you edit to manually add or change parts of the
+        TOC structure that aren't automatically generated (like the "Other Docs" tab).
 
+        tocByCategory.xsl
+          Imported by toc.xsl to handle generation of the category-based hierarchy
+          ("Functions by category" and the REST API TOC).
 
-STEP 5: Load the raw docs into the source database.
-  Optionally, to ensure a fresh update (no obsolete docs left over), first delete the
-  contents of the RunDMC-api-rawdocs database.
+        toc-help.xsl
+          This script analyzes /apidoc/config/help-config.xml and extracts data
+          from the designated XSD files on the file system to generate the
+          "Admin Interface Help" portion of the TOC.
 
-  To load the raw docs, run the load-raw-docs.xqy script in this directory. You must
-  specify both the version of the docs that you're loading and the source directory
-  for those documents.
+    render-toc.xqy
+      This script takes the XML TOC and generates the final static HTML TOC.
+      Heavy lifting is done here:
 
-  For example, here's what I point my browser to to load the 4.2 docs:
+      render-toc.xsl
+        This script generates the final JavaScript and HTML structure of the
+        TOC and its tabs--everything in the sidebar. No manual configuration
+        is included here. It's purely about rendering what's in toc.xml (the
+        result of toc.xsl).
 
-  http://localhost:8008/apidoc/setup/load-raw-docs.xqy?srcdir=/Users/elenz/Desktop/api-rawdocs/b4_2_XML&version=4.2
+        NOTE: In addition to generating the main HTML TOC, it also generates all
+        of the sub-TOC files (also static HTML) which are lazily-loaded using the
+        Ajax-based lazy-loading feature of the (slightly modified) jQuery Tree plugin
+        that we're using.
 
-  Watch the error log as you run these scripts. They will help you keep
-  track of the progress and also report any applicable warnings.
+    delete-old-toc.xqy
+      We generate a new HTML URL for the TOC each time we run a build (to avoid
+      browsers caching an older TOC). This script ensures that we clean up the
+      old TOCs.
 
+    make-list-pages.xqy
+      This script generates all the index pages for function libraries, categories,
+      and REST resource categories, including the "all functions" page. The XML
+      TOC is the input and provides all the content for these pages.
 
-STEP 6: Run setup-guides.xqy.
-  http://localhost:8008/apidoc/setup/setup-guides.xqy?version=4.2
+  [/setup/collection-tagger.xqy]
+    Not in this directory, but this is invoked at the end of the build to ensure
+    all the documents (including both docs and DMC) are tagged with the appropriate
+    "category" tag so that faceting will work in search results.
 
+  make-standalone-search-page.xqy
+    This inserts a simple XML doc at /apidoc/do-search.xml specific to the "standalone"
+    version of the site. (Normally, in non-standalone, the search page is on the
+    DMC server; on docs, "/search" is already taken; that's why we use "/do-search")
 
-STEP 7: Run setup.xqy.
-  http://localhost:8008/apidoc/setup/setup.xqy?version=4.2
+MISCELLANEOUS SCRIPTS
+      
+common.xqy
+  This script is used by all the individual XQuery scripts that perform
+  a single step in the build process. It defines common variables such
+  as where to store the resulting TOC.
 
-  NOTE: If you get an error message having to do with an invalid lexical ID,
-        see the "WARNING" section below.
+REST-common.xsl
+  This script includes some rules for mapping between internal/external REST
+  resource doc URIs and their display names. It is included by some of the
+  setup scripts in this directory (and, perhaps less than ideally, by
+  /apidoc/view/page.xsl).
 
-STEP 8: If not already enabled, enable the collection lexicon in the RunDMC database.
+do-consolidate-guides.xqy
+  Does the dirty work for consolidate-guides.xqy (as it's run in the "raw docs" database).
 
-STEP 9: Run the collection tagger script (operates on both DMC- and AMC-related content).
-  http://localhost:8008/setup/collection-tagger.xqy
+fixup.xsl
+  Rewrites links, etc. in the input so they'll work correctly in the output.
+  Used by both toc.xsl and extract-functions.xsl.
 
-  NOTE: This script bulk-updates a lot of documents, so it may take a while to run.
+optimize-js.sh & optimize-js-requests.xsl
+  See README.js-optimization.txt
 
-
-SUMMARY
-  To load and build all the 4.1, 4.2, and 5.0 docs, here is the complete
-  series of requests you'd have to run:
-
-    http://localhost:8008/apidoc/setup/setup-indexes.xqy
-
-    http://localhost:8008/apidoc/setup/load-raw-docs.xqy?srcdir=/Users/elenz/Desktop/api-rawdocs/b4_1_XML&version=4.1
-    http://localhost:8008/apidoc/setup/setup-guides.xqy?version=4.1
-    http://localhost:8008/apidoc/setup/setup.xqy?version=4.1
-
-    http://localhost:8008/apidoc/setup/load-raw-docs.xqy?srcdir=/Users/elenz/Desktop/api-rawdocs/b4_2_XML&version=4.2
-    http://localhost:8008/apidoc/setup/setup-guides.xqy?version=4.2
-    http://localhost:8008/apidoc/setup/setup.xqy?version=4.2
-
-    http://localhost:8008/apidoc/setup/load-raw-docs.xqy?srcdir=/Users/elenz/Desktop/api-rawdocs/latest_XML&version=5.0
-    http://localhost:8008/apidoc/setup/setup-guides.xqy?version=5.0
-    http://localhost:8008/apidoc/setup/setup.xqy?version=5.0
-
-  NOTE: For each version, setup-guides.xqy must be run before setup.xqy.
-
-  There are no dependencies between versions of the documentation. You can load
-  and build one version of the documentation independently of the others.
-
-
-TODO: Still need to specify how to update the PDF docs. (The 4.1 and 4.2 PDFs are
-already there, but not the 5.0 PDF docs yet.)
-
-
-WARNING
-  One of the files in 4.1 has an issue that breaks the setup script. Until it gets
-  fixed, I have to manually fix this each time, changing id="output formats" and
-  href="#output formats" to id="output_formats" and href="#output_formats", respectively.
-  This isn't an issue for either 4.2 or 5.0. (See bug #13808)
-
-
-MORE IMPLEMENTATION NOTES
-  setup-guides.xqy and setup.xqy are the master scripts that we run to get
-  everything in place. They pull in all the relevant data from the raw docs
-  database, massaging it as necessary, generating the XML TOC, the HTML TOC,
-  the function page XML docs, the function list page XML docs, etc. For more
-  details, see the comments in each file.
-
-  For development purposes, you don't always want to re-generate all the
-  content just to test one code change. For example, if you make a change
-  to how the TOC is (pre-)rendered, you don't want to have to run the whole
-  setup.xqy script which can take over a minute to run. In that case, you
-  can run just one of the individual XQuery scripts that setup.xqy calls,
-  i.e., render-toc.xqy.
+raw-docs-access.xqy
+  Defines variables for easily accessing the various parts of the "raw docs" database.
+  Used by a number of the setup scripts. 

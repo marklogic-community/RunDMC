@@ -1,5 +1,5 @@
 The following instructions assume you have the databases
-and app servers set up for either full RunDMC (see /setup/README.txt)
+and app servers set up for either full RunDMC (see /README.txt)
 or the standalone API docs (see /setup/README_FOR_STANDALONE_APIDOC.md).
 
 This document describes the steps needed to run a full build of the
