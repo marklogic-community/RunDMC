@@ -70,10 +70,10 @@ case "$yesno" in
 esac
 
 echo "Copying $FROM to $TO"
-"$JAVA" -cp "$CP" -Dfile.encoding=UTF-8 -DLOG_LEVEL=ALL \
+"$JAVA" -Xmx1g -cp "$CP" -Dfile.encoding=UTF-8 -DLOG_LEVEL=ALL \
     -DLOG_HANDLER=FILE \
     -DINPUT_CONNECTION_STRING=xcc://$FROMCREDS@$FROM/RunDMC2 \
-    -DOUTPUT_CONNECTION_STRING=xcc://$TOCREDS@$TO/RunDMC \
+    -DOUTPUT_CONNECTION_STRING=xcc://$TOCREDS@$TO/RunDMC2 \
     -DINPUT_DIRECTORY_URI="$DIRS" \
     com.marklogic.ps.xqsync.XQSync 
 
