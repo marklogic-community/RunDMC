@@ -50,8 +50,10 @@
   <!-- /rest would be too close to /REST/ (used for REST API URLs), so use /rest-lib instead -->
   <namespace lib="rest-lib" uri="http://marklogic.com/appservices/rest" prefix="rest"/>
 
+  <namespace lib="sc" uri="http://marklogic.com/xdmp/schema-components"/>
   <namespace lib="search" uri="http://marklogic.com/appservices/search"/>
   <namespace lib="sec" uri="http://marklogic.com/xdmp/security"/>
+  <namespace lib="sem" uri="http://marklogic.com/semantics"/>
 
                                                                    <!-- for summary lookup purposes, since this is exceptional -->
   <namespace lib="spell"     uri="http://marklogic.com/xdmp/spell" category="SpellBuiltins"/>
