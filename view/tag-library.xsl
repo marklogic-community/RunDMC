@@ -142,22 +142,40 @@
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <p>
-        PLEASE NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
+        MarkLogic downloads are available to MarkLogic Community members. 
         </p>
-        
-        
-        <br/>
-        <div style="display: none" id="download-confirm-email">
-        <label for="iemail">Email:&#160;&#160;&#160;</label>
-        <input class="" size="40" type="text" id="iemail" name="iemail"/>
-            <br/>
-            <br/>
-        </div>
-        <span class="download-warn">Please confirm your acceptance of the above terms.</span> 
-        <br/>
-        <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
+        <p>
+        NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
+        </p>
+    
+        <xsl:if test="empty(users:getCurrentUser())">
+        <p>Sign in with your MarkLogic Community credentials or <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
+        </xsl:if>
 
+        <div style="margin-left: 12px; display: block" id="download-confirm-email">
+            <xsl:if test="empty(users:getCurrentUser())">
+                <div class="download-form-row">
+                    <label style="width: 160px; float: left; text-align: right" for="iemail">Email:&#160;&#160;&#160;</label>
+                    <input autofocus="autofocus" class="" size="30" type="text" id="iemail" name="iemail">
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="users:getCurrentUser()/*:email"/>
+                        </xsl:attribute>
+                    </input>
+                </div>
+                <br/>
+                <div class="download-form-row">
+                    <label style="width: 160px; float: left; text-align: right" for="ipassword">Community&#160;Password:&#160;&#160;&#160;</label>
+                    <input class="" size="30" type="password" id="ipassword" name="ipassword"/>
+                </div>
+            </xsl:if>
+           <br/>
+           <div class="download-form-row">
+               <label style="width: 160px; float: left; text-align: right" for="iaccept">&#160;</label>
+               <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;I agree to the above terms of use.</label>
+           </div>
+        </div>
     </div>
+
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
   </xsl:template>

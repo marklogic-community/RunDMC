@@ -203,6 +203,7 @@ if(typeof jQuery != 'undefined') {
                 $(":button:contains('Download')").button('disable');
                 $("#iaccept").removeAttr('checked');
                 $("#confirm-dialog").dialog.href = href;
+                $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href);
                 if ($(this).hasClass('collect-email')) {
                     $("#download-confirm-email").show();
                 }
@@ -294,7 +295,6 @@ if(typeof jQuery != 'undefined') {
 		}
 
         $(document).ready(function() {
-
 
                     
             if (navigator.appVersion.indexOf("10_7") != -1) {
@@ -488,6 +488,11 @@ if(typeof jQuery != 'undefined') {
                     dataType: 'json'
                 });
             });
+
+	        $('#s_country').selectToAutocomplete();
+
+            $(".ui-dialog-buttonset").append('<div style="font-size: 80%"><a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a><br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?</div>');
+
         });
 
         var d = $('.yearpicker').attr('data-value');

@@ -2606,7 +2606,9 @@ a.drop-down-trigger.menu-open span {
 #profile-form input[type=text], #profile-form input[type=password],
 #profile-form select,
 #reset-form input[type=text],
-#signup-form input[type=text], #signup-form input[type=password] {
+#signup-form input[type=text], #signup-form input[type=password],
+#signup-form input.countrypicker,
+#signup-form select {
 	border: 1px solid #CFCFCF;
 	padding: 0 5px;
 	height: 24px;
@@ -2615,7 +2617,9 @@ a.drop-down-trigger.menu-open span {
 }
 
 #reset-form input[type=text],
-#signup-form input[type=text], #signup-form input[type=password] {
+#signup-form input[type=text], #signup-form input[type=password],
+#signup-form input.countrypicker,
+#signup-form select {
 	width: 240px;
 }
 
