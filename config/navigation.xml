@@ -123,6 +123,7 @@
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Connectors">
+        <page display="MLPHP" href="/labs/mlphp"/>
         <page display="Corona" href="/code/corona"/>
         <page display="MLSAM" href="/code/mlsam"/>
         <page display="MLJAM" href="/code/mljam"/>
@@ -234,7 +235,14 @@
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
   </page>
-  <page display="Labs" href="/labs" tooltip="Experimental work"/> 
+  <page display="Labs" href="/labs" tooltip="Experimental work"> 
+    <group display="">
+        <group display="Labs">
+            <page display="HDFS Storage Preview" href="/labs/hdfs-preview"/>
+            <page display="MLPHP" href="/labs/mlphp"/>
+        </group>
+    </group>
+  </page>
 
   <page display="Company" href="http://www.marklogic.com/" />
 
