@@ -97,7 +97,7 @@
     <xsl:variable name="result" 
       select="setup:fix-guide-names(concat('/guide', 
                    substring-before(substring-after(., 
-                   '#display.xqy?fname=http://pubs/6.0doc/xml'), '.xml'), 
+                   'doc/xml'), '.xml'), 
                    $anchor), 1)"/>
     <xsl:value-of select="fixup:output-and-report(.,$result)"/>
   </xsl:template>
