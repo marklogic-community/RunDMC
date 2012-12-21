@@ -113,6 +113,8 @@
     <guide url-name="sql"             source-name="sql">Provides information on how to use MarkLogic's SQL interface, including the creation of relational schemas and views.</guide>
     <guide url-name="messages" source-name="messages"
       >Error Messages and Codes Reference</guide>
+    <guide url-name="cc" source-name="cc"
+      >Common Criteria Evaluated Configuration Guide</guide>
     <guide url-name="copyright"       source-name="shared">Copyright and support information.</guide>
     <!-- This seemed better, but the above matches what was on DMC
     <guide url-name="qconsole"        source-name="qconsole">Provides a full description of Query Console features, user interface, administration, and differences between Query Console and CQ.</guide>
