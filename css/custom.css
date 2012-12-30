@@ -268,7 +268,8 @@
   color: #555555;
 }
 
-.dc #interact {
+
+.dc #interact, img.banner-ad {
   clear: both;
   *zoom: 1;
   background: #dee6bc;

@@ -2440,23 +2440,6 @@ a.drop-down-trigger.menu-open span {
     color: #01639D;
 }
 
-#login-menu-separator {
-	border-style: solid;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-	border-width: 1px 0;
-	border-color: #E4E4E4 transparent #FFF;
-    margin-top: 0
-}
-#login-menu-or {
-    color: #333;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-}
-
 .login-menu-label {
     color: #333;
 }
@@ -2772,4 +2755,8 @@ a.drop-down-trigger.menu-open span {
 .smalltext {
 	font-size:x-small;
 	color:gray;
+}
+
+#ifail {
+    color: red
 }

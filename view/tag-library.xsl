@@ -155,6 +155,9 @@
         <div style="margin-left: 12px; display: block" id="download-confirm-email">
             <xsl:if test="empty(users:getCurrentUser())">
                 <div class="download-form-row">
+                    <p id="ifail"/>
+                </div>
+                <div class="download-form-row">
                     <label style="width: 160px; float: left; text-align: right" for="iemail">Email:&#160;&#160;&#160;</label>
                     <input autofocus="autofocus" class="" size="30" type="text" id="iemail" name="iemail">
                         <xsl:attribute name="value">
@@ -164,8 +167,8 @@
                 </div>
                 <br/>
                 <div class="download-form-row">
-                    <label style="width: 160px; float: left; text-align: right" for="ipassword">Community&#160;Password:&#160;&#160;&#160;</label>
-                    <input class="" size="30" type="password" id="ipassword" name="ipassword"/>
+                    <label style="width: 160px; float: left; text-align: right" for="ipass">Community&#160;Password:&#160;&#160;&#160;</label>
+                    <input class="" size="30" type="password" id="ipass" name="ipass"/>
                 </div>
             </xsl:if>
            <br/>
@@ -982,23 +985,6 @@
     <span class="server-version"><xsl:value-of select="xdmp:version()"/></span>
   </xsl:template>
 
-  <xsl:template match="fb-app-id">
-      <xsl:text>'</xsl:text>
-      <xsl:value-of select="$srv:facebook-config/*:id"/>
-      <xsl:text>'</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="fb-registration">
-      <fb:registration id="fbrb" width="530" xmlns:fb="fb">
-        <xsl:attribute name="fields">
-            <xsl:text>[{'name':'name'},{'name':'email'},{'name':'password'},{'name':'list','description':'Join developer mailing list?','type':'checkbox','default':'checked'}]</xsl:text>
-        </xsl:attribute>
-        <xsl:attribute name="redirect-uri">
-            <xsl:value-of select="$srv:facebook-config/*:redirect_url/string()"/>
-        </xsl:attribute>
-      </fb:registration>
-  </xsl:template>
-
   <xsl:template match="user-name">
     <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>
   </xsl:template>
@@ -1093,5 +1079,17 @@
     </xsl:if>
    </xsl:template>
     
+   <xsl:template match="signup-form-hidden-fields">
+      <input type="hidden" name="s_download" id="s_download">
+         <xsl:attribute name="value"> 
+            <xsl:value-of select="xdmp:get-request-field('d')"/>
+         </xsl:attribute>
+      </input>
+      <input type="hidden" name="s_page" id="s_page">
+         <xsl:attribute name="value"> 
+            <xsl:value-of select="xdmp:get-request-field('p')"/>
+         </xsl:attribute>
+      </input>
+   </xsl:template>
 
 </xsl:stylesheet>

@@ -11,12 +11,6 @@
 
     <api-server url="//docs-stage.marklogic.com"/>
 
-    <facebook-config>
-        <id>178528612252710</id>
-        <secret>39d8de131516e263d825014d60cd241f</secret>
-        <redirect_url>http://dmc-stage.marklogic.com/signup</redirect_url>
-    </facebook-config>
-
   </host>
 
   <host type="production" name="developer.marklogic.com" cookie-domain="marklogic.com">
@@ -26,28 +20,19 @@
     <admin-server url="//developer-admin.marklogic.com"/>
     <api-server url="//docs.marklogic.com"/>
     <rapi-server url="//try.marklogic.com:8005"/>
-
-    <facebook-config>
-        <id>178528612252710</id>
-        <secret>39d8de131516e263d825014d60cd241f</secret>
-        <redirect_url>http://developer.marklogic.com/signup</redirect_url>
-    </facebook-config>
   </host>
 
-  <host type="development" default-host="yes" cookie-domain="">
+  <host type="development" name="dmc-dev.marklogic.com" cookie-domain="marklogic.com">
+<!--
     <main-server port="8003"/>
+-->
+    <main-server port="//dmc-dev.marklogic.com"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
     <admin-server port="8006"/>
     <api-server port="8009"/>
-    <standalone-api-server port="8011"/>
+    <standalone-api-server port="//docs-dev.marklogic.com"/>
     <rapi-server port="4446"/>
-
-    <facebook-config>
-        <id>238848782856057</id>
-        <secret>0742a24343fff537f6f9756adedaaa5f</secret>
-        <redirect_url>http://localhost:8003/signup</redirect_url>
-    </facebook-config>
   </host>
 
 </hosts>

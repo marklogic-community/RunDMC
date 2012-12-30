@@ -66,6 +66,166 @@ declare function mkto:last-name($names)
     $names[last()]
 };
 
+declare function mkto:sync-lead($email, $user, $cookie)
+{
+    let $name := $user/name/string()
+    let $names := fn:tokenize($name, " ")
+    let $first-name := mkto:first-name($names)
+    let $last-name := mkto:last-name($names)
+    let $company := $user/organization/string()
+    let $title := $user/title/string()
+    let $industry := $user/industry/string()
+    let $city := $user/city/string()
+    let $state := $user/state/string()
+    let $country := $user/country/string()
+    let $zip := $user/zip/string()
+    let $phone := $user/phone/string()
+    let $org-size := $user/org-size/string() 
+    let $org-size := if (number($org-size) = 1) then "250" else $org-size (: silly requirement :)
+    let $deployment := $user/deployment/string() (: XXX:) 
+    let $opt-out := if ($user/mktg-list/string () ne "on") then 1 else 0
+    let $contact-me := if ($user/contact-me/string () ne "on") then 0 else 1
+    let $cook := if ($cookie ne "") then 
+        <marketoCookie>{$cookie}</marketoCookie>
+    else 
+        ()
+
+    (: First check to see if lead exists :)
+    let $body :=
+      <SOAP-ENV:Envelope>
+       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
+       <SOAP-ENV:Body>
+        <ns1:paramsGetLead>
+            <leadKey><keyType>EMAIL</keyType><keyValue>{$email}</keyValue></leadKey>
+        </ns1:paramsGetLead>
+      </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
+    let $soap := mkto:soap($body)
+    let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
+
+    (: if lead exists, leave it's source details alone, otherwise it's from the Community Site :)
+    let $leadSourceAttrs :=
+        if ($leadExists) then
+            ()
+        else
+            (
+            <attribute>
+                <attrName>LeadSource</attrName>
+                <attrValue>Community Website</attrValue>
+            </attribute>
+            ,
+            <attribute>
+                <attrName>Specific_Lead_Source__c</attrName>
+                <attrValue>Download</attrValue>
+            </attribute>
+            )
+    
+    let $body :=
+      <SOAP-ENV:Envelope>
+       <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
+       <SOAP-ENV:Body>
+        <ns1:paramsSyncLead>
+          <leadRecord>
+              <Email>{$email}</Email> 
+              <leadAttributeList>
+                  <attribute>
+                      <attrName>FirstName</attrName>
+                      <attrValue>{$first-name}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>LastName</attrName>
+                      <attrValue>{$last-name}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Email</attrName>
+                      <attrValue>{$email}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Phone</attrName>
+                      <attrValue>{$phone}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>City</attrName>
+                      <attrValue>{$city}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>State</attrName>
+                      <attrValue>{$state}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Zip_Code__c</attrName>
+                      <attrValue>{$zip}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Country</attrName>
+                      <attrValue>{$country}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Company</attrName>
+                      <attrValue>{$company}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Title</attrName>
+                      <attrValue>{$title}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Main_Industry__c</attrName>
+                      <attrValue>{$industry}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Number_of_Employees_picklist__c</attrName>
+                      <attrValue>{$org-size}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Time_to_deployment__c</attrName>
+                      <attrValue>{$deployment}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>SFDC_Opt_Out__c</attrName>
+                      <attrValue>{$opt-out}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Contact_me__c</attrName>
+                      <attrValue>{$opt-out}</attrValue>
+                  </attribute>
+                  {$leadSourceAttrs}
+              </leadAttributeList>
+          </leadRecord>
+          {$cook}
+       </ns1:paramsSyncLead>>
+      </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
+
+    let $soap := mkto:soap($body)
+    let $resp := $soap[1]
+    return 
+        if ($resp/*:code/string() eq '200') then
+            let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
+            return 
+                if ($ok) then
+                    ()
+                else
+                    mkto:alert(concat("mkto: syncLead failed.
+Error: 
+
+",
+xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
+
+Body: 
+
+",
+xdmp:quote($body)))
+        else
+                    mkto:alert(concat("mkto: soap error: 
+",
+xdmp:quote($soap), "
+
+Body: 
+
+",
+xdmp:quote($body)))
+};
+
 declare function mkto:associate-lead-via-asset($email, $cookie, $asset)
 {
     let $cook := if ($cookie ne "") then 

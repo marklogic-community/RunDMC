@@ -42,8 +42,6 @@ declare variable $s:rapi-server   := s:server-url("rapi");
 
 declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then $s:standalone-api-server
                                                                            else $s:api-server;
-declare variable $s:facebook-config := s:server-config("facebook");
-
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
                                                                    else $s:draft-server;
 

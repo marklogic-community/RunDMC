@@ -163,50 +163,6 @@
                 window.location.hostname == 'cmc-stage.marklogic.com' || window.location.hostname == 'community.marklogic.com') 
 				window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
         </script>
-      <div id="fb-root"></div>
-      <script>
-        window.fbAsyncInit = function() {
-
-        FB.init({
-            appId      : <ml:fb-app-id/>,
-            status     : true, 
-            cookie     : true,
-            xfbml      : true,
-            oauth      : true
-        });
-
-        FB.getLoginStatus(function(response) {
-            if (response.status === 'connected') {
-                $(document).ready(function() {
-
-                    // $("#signup-trigger").hide();
-                    // $("#login-trigger").hide();
-
-                    // Check to see if the server cookie is still there
-                    // which means we're still good
-                    if ( $("#session-trigger span").text() === "") {
-                        if ($.cookie('RUNDMC-NAME') !== null) {
-                            var n = $.cookie('RUNDMC-NAME');
-                            // $("#session-trigger span").text(n);
-                            // $("#session-trigger").show();
-                        } else {
-                            // Ok, no server session.  We could login now automagically but better 
-                            // to Ask the user - for now we act as if we're not logged in.
-                            $("#login-trigger").show();
-                        }
-                    }
-                });
-            }
-        });
-        };
-
-        (function(d){
-           var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-           js = d.createElement('script'); js.id = id; js.async = true;
-           js.src = "//connect.facebook.net/en_US/all.js";
-           d.getElementsByTagName('head')[0].appendChild(js);
-         }(document));
-      </script>
       <script type="text/javascript">
       (function() {
         function initMunchkin() {

@@ -17,8 +17,6 @@ declare variable $sc:this-host :=  if ($s:hosts[@name eq $s:host-name])
 (: "staging", "production", or "development" :)
 declare variable $sc:host-type := string($s:this-host/@type);
 
-declare variable $sc:facebook-config := sc:server-config("facebook");
-
 
 (: return entire config :)
 declare function sc:server-config($type as xs:string) {

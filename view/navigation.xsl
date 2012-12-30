@@ -41,6 +41,7 @@
 
   <!-- Don't show the login menu when we're viewing the standalone docs app -->
   <xsl:template match="login-menu[$srv:viewing-standalone-api]"/>
+
   <xsl:template match="login-menu">
     <nav id="login-menu-nav">
         <xsl:if test="not(users:signupsEnabled())">
@@ -77,9 +78,6 @@
             </p>
             <a class="button" id="login_submit" href="#" type="button"><span>Log in</span></a>
         </form>
-        <p id="login-menu-separator"/>
-        <p id="login-menu-or">OR</p>
-        <a id="fb-login" href="#"><div>Log in via Facebook</div></a> 
         <div style="float: right"><a href="{$srv:primary-server}/people/recovery" id="recovery">Forgot password?</a></div>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">

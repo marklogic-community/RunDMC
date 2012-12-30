@@ -174,22 +174,28 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
-        $("#iemail").keyup(function() {
+        // $("#s_download").attr("v
+
+        $("#iemail,#ipass").keyup(function() {
             var b = $(":button:contains('Download')");
             var email = $("#iemail").val();
+            var pass = $("#ipass").val();
             if ($("#iaccept").is(":checked") && isValidEmailAddress(email)) {
                 b.button("enable");
+                $("#confirm-dialog").dialog.email = email;
+                $("#confirm-dialog").dialog.pw = pass;
             } else {
                 b.button("disable");
             }
-            $("#confirm-dialog").dialog.email = email;
         });
 
         $("#iaccept").click(function() {
             var b = $(":button:contains('Download')");
             if ($("#iaccept").is(":checked") && 
-                ($("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
+                ( $('#iemail').length == 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
                 b.button("enable");
+                $("#confirm-dialog").dialog.email = $("#iemail").val()
+                $("#confirm-dialog").dialog.pw = $("#ipass").val();
             } else {
                 b.button("disable");
             }
@@ -197,20 +203,6 @@ if(typeof jQuery != 'undefined') {
 
         var download_iframe;
 
-        $('a.confirm-download').each(function() {
-            var href = $(this).attr("href");
-            $(this).click(function() {
-                $(":button:contains('Download')").button('disable');
-                $("#iaccept").removeAttr('checked');
-                $("#confirm-dialog").dialog.href = href;
-                $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href);
-                if ($(this).hasClass('collect-email')) {
-                    $("#download-confirm-email").show();
-                }
-                $("#confirm-dialog").dialog('open');
-                return false;
-            });
-        });
 
         if(jQuery().dialog) {
         	$("#confirm-dialog").dialog({
@@ -222,34 +214,76 @@ if(typeof jQuery != 'undefined') {
             buttons: {
                 Download: function() {
                     var u = $(this).dialog.href;
-                    _gaq.push(['_trackPageview', u],
-                              ['_trackEvent', 'start-download', u]);
-                    try {
-                        var s = '/start-download' + u.replace(/\?.*/, "");
-                        mktoMunchkinFunction('clickLink', { href: s } );
-                    } catch (err) {}
 
-                    if ($(this).dialog.email) {
+                    if ($("#confirm-dialog").dialog.email) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "/login",
+                            context: $(this),
+                            data: {
+                                email: $("#confirm-dialog").dialog.email,
+                                password: $("#confirm-dialog").dialog.pw,
+                                asset: u
+                            },
+                            success: function( data ) {
+                                if (data.status && data.status === 'ok') {
+                                    $(this).dialog('close');
+
+                                    _gaq.push(['_trackPageview', u],
+                                            ['_trackEvent', 'success-login-for-download', u],
+                                            ['_trackEvent', 'start-download', u]);
+                                    try {
+                                        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+                                    } catch (err) {}
+                                    download_iframe = document.getElementById("hiddenDownloader");
+                                    if (download_iframe === null) {
+                                        download_iframe = document.createElement('iframe');  
+                                        download_iframe.id = "hiddenDownloader";
+                                        download_iframe.style.visibility = 'hidden';
+                                        document.body.appendChild(download_iframe);
+                                    }
+                                    download_iframe.src = u + '?r=dmc';
+                                } else {
+                                    if (data.status) {
+                                        $("#ifail").text(data.status);
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                                    } else {
+                                        $("#ifail").text("Unknown failure"); // XXX
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
+                                    }
+                                }
+                            }
+                        }).fail(function() {
+                            alert('Failed'); // XXX
+                        });
+
+                    } else {
                         $.ajax({
                             type: 'POST',
                             url: "/sync-lead",
                             context: $(this),
                             data: {
-                                email: $(this).dialog.email,
                                 asset: u
                             }
                         })
-                    } 
-                    $(this).dialog('close');
+    
+                        $(this).dialog('close');
 
-                    download_iframe = document.getElementById("hiddenDownloader");
-                    if (download_iframe === null) {
-                        download_iframe = document.createElement('iframe');  
-                        download_iframe.id = "hiddenDownloader";
-                        download_iframe.style.visibility = 'hidden';
-                        document.body.appendChild(download_iframe);
+                        _gaq.push(['_trackPageview', u],
+                                  ['_trackEvent', 'start-download', u]);
+                        try {
+                            mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+                        } catch (err) {}
+    
+                        download_iframe = document.getElementById("hiddenDownloader");
+                        if (download_iframe === null) {
+                            download_iframe = document.createElement('iframe');  
+                            download_iframe.id = "hiddenDownloader";
+                            download_iframe.style.visibility = 'hidden';
+                            document.body.appendChild(download_iframe);
+                        }
+                        download_iframe.src = u + '?r=dmc';
                     }
-                    download_iframe.src = u + '?r=dmc';
                 },
                 Cancel: function() {
                     var u = $(this).dialog.href;
@@ -263,6 +297,28 @@ if(typeof jQuery != 'undefined') {
            	}
         	});
        	}
+
+        $('a.confirm-download').each(function() {
+            var href = $(this).attr("href");
+            $(this).click(function() {
+                $(":button:contains('Download')").button('disable');
+                $("#iaccept").removeAttr('checked');
+                $("#confirm-dialog").dialog.href = href;
+                $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
+                $("#confirm-dialog").dialog('open');
+                $("#iemail").focus();
+                return false;
+                });
+            var dp = '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
+            if (href == dp) {
+                $("#iaccept").removeAttr('checked');
+                $("#confirm-dialog").dialog.href = href;
+                $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
+                $("#confirm-dialog").dialog('open');
+                $("#iemail").focus();
+            }
+        });
+
 		if(jQuery().fancybox) {
 			$('a[rel=detail]',main).each(function() {
 				var ref = $(this).attr('href');
@@ -335,13 +391,6 @@ if(typeof jQuery != 'undefined') {
                     }
                 }
             });
-
-            //Hide login and signup when we're on a signup page
-            // console.log(window.location.pathname);
-            if (window.location.pathname == '/people/signup' || 
-                window.location.pathname == '/people/fb-signup') {
-                    $('#login-menu-nav').hide();
-            }
 
             $('input#email').focus();
 
@@ -431,32 +480,13 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
-            $("#fb-login").click(function(e) {
-
-                // console.log("fb-login");
-                $('#login-error').text("");
-                $("#login-menu").hide();
-                $("#signup-trigger").hide();
-                $("#login-trigger").hide();
-
-                FB.getLoginStatus(function(response) {
-
-                    if (response.status === 'connected') {
-
-                        doFBLogin(response);
-
-
-                    } else {
-                        FB.login(function(response){
-                            if (response.authResponse) {
-                                doFBLogin(response);
-                            } else {
-                                $('#signup-trigger').show();
-                                $('#login-trigger').show();
-                            };
-                        }, {"scope": "email"} );
-                    }
-                });
+            $("#signup-submit").click(function(e) {
+                e.preventDefault();
+                if (! $('#signup-form').validate().form()) {
+                    return;
+                }
+                $('#signup-form').cleanDirty(); // could do in success I spose
+                $('#signup-form').submit(); 
             });
 
             $("#profile-save").click(function(e) {
@@ -490,6 +520,9 @@ if(typeof jQuery != 'undefined') {
             });
 
 	        $('#s_country').selectToAutocomplete();
+	        $('#s_companysize').val([]);
+	        $('#s_industry').val([]);
+	        $('#s_deployment').val([]);
 
             $(".ui-dialog-buttonset").append('<div style="font-size: 80%"><a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a><br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?</div>');
 
@@ -564,45 +597,6 @@ function getParameterByName(name)
     return "";
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-function doFBLogin(response) {
-
-    var signedRequest = response.authResponse ? response.authResponse.signedRequest : null;
-
-    FB.api('/me', 'get', { access_token:response.authResponse.accessToken }, function(response) {
-
-        if (!response || response.error) {
-            alert('Communication with Facebook graph failed');
-            // console.log(response.error)
-            $('#signup-trigger').show();
-            $('#login-trigger').show();
-        } else {
-            // console.log(response);
-
-
-            $.ajax({
-                type: 'POST',
-                url: '/fb-login',
-                data: {
-                    signedRequest: signedRequest,
-                    facebookID: response.id,
-                    email: response.email,
-                    name: response.name
-                },
-                success: function(data) {
-                    if (data.status === 'ok') {
-                        $('#session-trigger span').text(data.name);
-                        $('#session-trigger').show();
-                    } else {
-                        $("#login-trigger").show();
-                        $('#login-error').text(data.status);
-                        $("#login-menu").show();
-                    }
-                }
-            });
-        }
-    });
 }
 
 

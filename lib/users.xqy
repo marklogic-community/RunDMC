@@ -39,11 +39,6 @@ declare function users:getUserByID($id as xs:string) as element(*)?
 };
 
 
-declare function users:getUserByFacebookID($id as xs:string) as element(*)?
-{
-    /person[facebook-id eq $id]
-};
-
 declare function users:startSession($user as element(*)) as empty-sequence()
 {
     let $sessionID := string(xdmp:random())
@@ -81,38 +76,7 @@ declare function users:getCurrentUserName()
     return if ($n eq "") then () else $n
 };
 
-declare function users:validateFacebookSignedRequest($signed_request as xs:string)
-{
-    let $secret := $srv:facebook-config/*:secret/string()
-    let $tokes := fn:tokenize($signed_request, "\.")
-    let $sig := $tokes[1]
-    let $payload := $tokes[2]
-    let $data := xdmp:base64-decode(fn:replace(fn:replace($payload, '-', '+'), '_', '/')  )
-    let $expected-sig := xdmp:hmac-sha256($secret, $payload, 'base64')
-
-    return 
-        (: todo deal with extra = at end, why?:)
-        (: if ($sig eq $expected-sig) then :)
-        if (true()) then 
-            $data
-        else
-            ()
-
-};
-
-declare function users:inUse($email as xs:string, $from-fb as xs:boolean) as xs:boolean 
-{
-    if (/person[email eq $email]) then
-        if ($from-fb) then
-             /person[email eq $email and not(facebook-id eq "")]
-        else
-             /person[email eq $email and not(password eq "")]
-    else
-        false()
-    
-};
-
-declare function users:createOrUpdateUser($name, $email, $password, $list)
+declare function users:createOrUpdateUser($name, $email, $password, $others)
 {
     let $user := /person[email eq $email]
     let $hash := xdmp:crypt($password, $email)
@@ -120,49 +84,31 @@ declare function users:createOrUpdateUser($name, $email, $password, $list)
     return
     if ($user) then
         if ($user/password = ("", $hash)) then
-            users:updateUserWithPassword($user, $name, $password, $list)
+            users:updateUserWithPassword($user, $name, $password, $others)
         else
             "Email address in already registered"
     else
-        users:createUser($name, $email, $password, (), $list)
+        users:createUser($name, $email, $password, $others)
 };
 
-declare function users:createOrUpdateFacebookUser($name, $email, $password, $facebook-id, $list)
-{
-    let $user := /person[email eq $email]
-
-    return
-    if ($user) then
-        if ($user/facebook-id = ("", $facebook-id)) then
-            users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
-        else
-            "Email address associated with this facebook account is registered here via another facebook account"
-    else
-        users:createUser($name, $email, $password, $facebook-id, $list)
-};
-
-declare function users:createUser($name, $email, $pass, $facebook-id, $list)
+declare function users:createUser($name, $email, $pass, $others)
 as element(*)? 
 {
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
-    let $picture := if ($facebook-id) then concat("https://graph.facebook.com/", $facebook-id, "/picture") else ""
     let $doc := 
         <person>
             <id>{$id}</id>
             <email>{$email}</email>
             <name>{$name}</name>
             <password>{$hash}</password>
-            <facebook-id>{$facebook-id}</facebook-id>
-            <picture>{$picture}</picture>
-            <list>{$list}</list>
             <created>{fn:current-dateTime()}</created>
-            <title>Developer</title>
-            <twitter></twitter>
+            {$others}
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
+    let $list := $others[local-name() = 'list']
     let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
     let $_ := users:logNewUser($doc)
 
@@ -192,7 +138,6 @@ as element(*)?
             <email>{$email}</email>
             <name>{$name}</name>
             <password>{$hash}</password>
-            <facebook-id></facebook-id>
             <picture>{$picture}</picture>
             <list>{$list}</list>
             <mktg-list>{$mktg-list}</mktg-list>
@@ -265,54 +210,28 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
 };
 
 
-declare function users:updateUserWithFacebookID($user, $facebook-id)
-as element(*)? 
-{
-    let $uri := base-uri($user)
-    let $doc := <person>
-        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture')) return $field }
-            <facebook-id>{$facebook-id}</facebook-id>
-            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
-        </person>
-
-    let $_ := xdmp:document-insert($uri, $doc)
-    return  $doc
-};
-
-declare function users:updateUserWithFacebookIDAndPassword($user, $facebook-id, $name, $password, $list)
+declare function users:updateUserWithPassword($user, $name, $password, $others) 
 as element(*)? 
 {
     let $uri := base-uri($user)
     let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
-    let $doc := <person>
-        { for $field in $user/* where not($field/local-name() = ('facebook-id', 'picture', 'name', 'password', 'list')) return $field }
-            <facebook-id>{$facebook-id}</facebook-id>
-            <name>{$name}</name>
-            <picture>https://graph.facebook.com/{$facebook-id}/picture</picture>
-            <password>{$hash}</password>
-            <list>{$list}</list>
-        </person>
-
-    let $_ := xdmp:document-insert($uri, $doc)
-    return  $doc
-};
-
-declare function users:updateUserWithPassword($user, $name, $password, $list)
-as element(*)? 
-{
-    let $uri := base-uri($user)
-    let $email := $user/email/string()
-    let $hash := xdmp:crypt($password, $email)
+    let $othernames := for $i in $others return local-name($i)
     let $doc := 
         <person>
-        { for $field in $user/* where not($field/local-name() = ('name', 'password', 'list')) return $field }
+        { for $field in $user/* where (
+            not($field/local-name() = ('name', 'password')) and 
+            not($field/local-name() = $othernames))  
+          return $field }
             <name>{$name}</name>
             <password>{$hash}</password>
-            <list>{$list}</list>
+            {$others}
         </person>
 
     let $_ := xdmp:document-insert($uri, $doc)
+
+    let $list := $others[local-name() = 'list']
+
     let $_ := if ($list eq "on") then 
         users:registerForMailingList($email, $password)
     else    
