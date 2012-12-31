@@ -43,3 +43,11 @@ Files in this directory:
 
     This script handles the creation of collection tags on documents to support
     constrained-search/faceted-navigation functionality.
+
+  - rundmc.conf
+
+    This is an apache config file that can be used on OS X and likely modified and used 
+    on other platforms.  It can be used to enable access via http://dmc-dev.marklogic.com 
+    to your dev box.  First, add lines to you local /etc/hosts file that point
+    the hostname dmc-dev.marklogic.com to your own localhost address.
+    Then drop this file in /etc/apache2/other and restart the apache service.

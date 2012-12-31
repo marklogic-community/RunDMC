@@ -309,7 +309,7 @@ if(typeof jQuery != 'undefined') {
                 $("#iemail").focus();
                 return false;
                 });
-            var dp = '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
+            var dp = getParameterByName('d'); // e.g. '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
             if (href == dp) {
                 $("#iaccept").removeAttr('checked');
                 $("#confirm-dialog").dialog.href = href;
