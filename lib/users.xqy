@@ -408,3 +408,15 @@ declare function users:mkto-associate-lead($email as xs:string, $doc)
         xs:QName("doc"), $doc 
     ) )
 };
+
+(: sync the given user with a lead in marketo :) 
+declare function users:mkto-sync-lead($email as xs:string, $user)
+{
+    let $cookie := cookies:get-cookie('_mkto_trk')[1]
+
+    return xdmp:spawn("marketo-sync-lead.xqy", (
+        xs:QName("email"), $email, 
+        xs:QName("user"), $user,
+        xs:QName("cookie"), if ($cookie) then $cookie else ""
+    ) )
+};

@@ -1386,16 +1386,20 @@
    </xsl:template>
     
    <xsl:template match="signup-form-hidden-fields">
+      <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
          <xsl:attribute name="value"> 
             <xsl:value-of select="xdmp:get-request-field('d')"/>
          </xsl:attribute>
       </input>
+      </xsl:if>
+      <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
       <input type="hidden" name="s_page" id="s_page">
          <xsl:attribute name="value"> 
             <xsl:value-of select="xdmp:get-request-field('p')"/>
          </xsl:attribute>
       </input>
+      </xsl:if>
    </xsl:template>
 
 </xsl:stylesheet>

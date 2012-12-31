@@ -4,8 +4,6 @@ import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/jso
 import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
 import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
-import module namespace cookies = "http://parthcomp.com/cookies" at "../lib/cookies.xqy";
-import module namespace mkto="mkto" at "../lib/marketo.xqy";
 
 (: sign up directly :)
 let $email := xdmp:get-request-field("s_email")
@@ -36,7 +34,6 @@ let $valid := util:validateEmail($email) and
     ($password and not($password eq "")) and 
     ($password eq $confirm-password) and 
     ($name and not($name eq "")) and
-    (number($companysize) = (1, 250, 1000, 10000, 100000)) and
     (fn:string-length($name) gt 0 and fn:string-length($name) le 255) and
     (fn:string-length($title) gt 0 and fn:string-length($title) le 255) and
     (fn:string-length($company) gt 0 and fn:string-length($company) le 255) and
@@ -46,6 +43,23 @@ let $valid := util:validateEmail($email) and
     (fn:string-length($zip) gt 0 and fn:string-length($zip) le 255) and
     (fn:string-length($country) gt 0 and fn:string-length($country) le 255) and
     true()
+
+let $_ :=
+    xdmp:log(fn:concat(
+        "email: ", $email, " ", 
+        "name: ", $name, " ", 
+        "companysize: ", $companysize, " ", 
+        "company: ", $company, " ", 
+        "phone: ", $phone, " ", 
+        "city: ", $city, " ", 
+        "state: ", $state, " ", 
+        "zip: ", $zip, " ", 
+        "country: ", $country, " ", 
+        "contactme: ", $contactme, " ", 
+        "industry: ", $industry, " ", 
+        "deployment: ", $deployment, " ", 
+        ""
+    ))
 
 let $others := (
     <title>{$title}</title>,
@@ -72,7 +86,7 @@ let $user := if ($valid) then users:createOrUpdateUser($name, $email, $password,
 
 
 return if ($user instance of element()) then
-    let $_ := mkto:sync-lead($email, $user, cookies:get-cookie('_mkto_trk')[1]) 
+    let $_ := users:mkto-sync-lead($email, $user)
     let $_ := xdmp:set-response-content-type("text/html")
     let $_ := users:startSession($user)
     return <html><script type="text/javascript">

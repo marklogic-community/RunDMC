@@ -11,6 +11,10 @@ return
 
         let $user := users:saveProfile(users:getCurrentUser(), param:distinct-trimmed-params())
 
+        let $email := $user/*:email/string()
+
+        let $_ := users:mkto-sync-lead($email, $user)
+
         return json:serialize(
             json:object((
                 "status", "ok",

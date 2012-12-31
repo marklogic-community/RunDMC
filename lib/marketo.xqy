@@ -116,7 +116,7 @@ declare function mkto:sync-lead($email, $user, $cookie)
             ,
             <attribute>
                 <attrName>Specific_Lead_Source__c</attrName>
-                <attrValue>Download</attrValue>
+                <attrValue>MarkLogic Download</attrValue>
             </attribute>
             )
     
