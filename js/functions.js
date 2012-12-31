@@ -492,6 +492,9 @@ if(typeof jQuery != 'undefined') {
             $("#profile-save").click(function(e) {
                 e.preventDefault();
                 if (! $('#profile-form').validate().form()) {
+                    $('#changes-saved').removeClass("successful-save").addClass("failed-save").text("Save failed").fadeIn('slow', function() {
+                        $(this).fadeOut('slow');
+                    });
                     return;
                 }
                 $('#profile-form').cleanDirty(); // could do in success I spose
@@ -520,9 +523,16 @@ if(typeof jQuery != 'undefined') {
             });
 
 	        $('#s_country').selectToAutocomplete();
+	        $('country').selectToAutocomplete();
+
 	        $('#s_companysize').val([]);
 	        $('#s_industry').val([]);
 	        $('#s_deployment').val([]);
+
+	        $('#companysize').val($('#companysize').data('initvalue'));
+	        $('#industry').val($('#industry').data('initvalue'));
+	        $('#deployment').val($('#deployment').data('initvalue'));
+	        $('#country').val($('#country').data('initvalue'));
 
             $(".ui-dialog-buttonset").append('<div style="font-size: 80%"><a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a><br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?</div>');
 

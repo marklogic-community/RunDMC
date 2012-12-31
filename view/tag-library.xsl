@@ -1052,7 +1052,7 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Country </div>
-            <select class="required countrypicker" id="country" name="country" value="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
+            <select class="required countrypicker" id="country" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
               <option value="Afghanistan" data-alternative-spellings="AF افغانستان">Afghanistan</option>
               <option value="Åland Islands" data-alternative-spellings="AX Aaland Aland" data-relevancy-booster="0.5">Åland Islands</option>
               <option value="Albania" data-alternative-spellings="AL">Albania</option>
@@ -1317,17 +1317,16 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Size </div>
-            <select class="required" id="companysize" name="companysize" value="{$user/*:company-size/string()}" type="text">
-	            <option value="1">Just me</option>
-	            <option value="250">2-250</option>
-	            <option value="1000">251-1000</option>
-	            <option value="10000">1001-10,000</option>
-	            <option value="100000">10,000+</option>
+            <select class="required" id="companysize" name="companysize" data-initvalue="{$user/*:companysize/string()}" type="text">
+	            <option>1-250</option>
+	            <option>251-1000</option>
+	            <option>1001-10,000</option>
+	            <option>10,000+</option>
             </select>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Industry </div>
-            <select class="required" id="industry" name="industry" value="{$user/*:industry/string()}">
+            <select class="required" id="industry" name="industry" data-initvalue="{$user/*:industry/string()}">
 	            <option value="Aviation/Aerospace">Aviation/Aerospace</option>
 	            <option value="Consulting">Consulting</option>
 	            <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
@@ -1352,6 +1351,7 @@
             </select>
         </div>
     </fieldset>
+    <!--
     <h3>Educational background</h3>
     <fieldset>
         <div class="profile-form-row">
@@ -1363,6 +1363,7 @@
             <select class="yearpicker" id="yog" name="yog" data-value="{$user/*:yog/string()}"></select>
         </div>
     </fieldset>
+    -->
     </div>
   </xsl:template>
 
