@@ -4,26 +4,28 @@ import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/jso
 import module namespace path="http://marklogic.com/mljson/path-parser" at "/lib/mljson/lib/path-parser.xqy";
 import module namespace users="users" at "/lib/users.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
+import module namespace param="http://marklogic.com/rundmc/params" at "modules/params.xqy";
+import module namespace functx = "http://www.functx.com" at "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
 
 (: sign up directly :)
-let $email := xdmp:get-request-field("s_email")
-let $password := xdmp:get-request-field("s_password")
-let $confirm-password := xdmp:get-request-field("s_password_confirm")
-let $name := xdmp:get-request-field("s_name")
+let $email := functx:trim(xdmp:get-request-field("s_email"))
+let $password := functx:trim(xdmp:get-request-field("s_password"))
+let $confirm-password := functx:trim(xdmp:get-request-field("s_password_confirm"))
+let $name := functx:trim(xdmp:get-request-field("s_name"))
 let $signup := xdmp:get-request-field("list", "off")
 let $msignup := xdmp:get-request-field("mlist", "off")
 
-let $title := xdmp:get-request-field("s_title")
-let $company := xdmp:get-request-field("s_company")
-let $industry := xdmp:get-request-field("s_industry")
-let $companysize := xdmp:get-request-field("s_companysize") 
-let $phone := xdmp:get-request-field("s_phone")
-let $city := xdmp:get-request-field("s_city")
-let $state := xdmp:get-request-field("s_state")
-let $zip := xdmp:get-request-field("s_zip")
-let $country := xdmp:get-request-field("s_country")
+let $title := functx:trim(xdmp:get-request-field("s_title"))
+let $company := functx:trim(xdmp:get-request-field("s_company"))
+let $industry := functx:trim(xdmp:get-request-field("s_industry"))
+let $companysize := functx:trim(xdmp:get-request-field("s_companysize") )
+let $phone := functx:trim(xdmp:get-request-field("s_phone"))
+let $city := functx:trim(xdmp:get-request-field("s_city"))
+let $state := functx:trim(xdmp:get-request-field("s_state"))
+let $zip := functx:trim(xdmp:get-request-field("s_zip"))
+let $country := functx:trim(xdmp:get-request-field("s_country"))
 let $contactme := xdmp:get-request-field("s_contactme", "off")
-let $deployment := xdmp:get-request-field("s_deployment")
+let $deployment := functx:trim(xdmp:get-request-field("s_deployment"))
 
 (: TODO validate deployment and industry picklists :)
 
