@@ -202,6 +202,11 @@ declare function local:gone($path as xs:string) as xs:boolean {
     )
 };
 
+declare function local:forbidden($path as xs:string) as xs:boolean {
+    (starts-with($path,'/download/binaries/'))
+};
+
+
 declare function local:rewrite($path as xs:string) as xs:string
 {
     let $latest-version := "6.0"
@@ -243,6 +248,8 @@ declare function local:rewrite($path as xs:string) as xs:string
 
     if (local:gone($path)) then
         "/controller/gone.xqy"
+    else if (local:forbidden($path)) then
+        "/controller/forbidden.xqy"
     else if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
