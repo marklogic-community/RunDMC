@@ -42,6 +42,9 @@ let $valid := util:validateEmail($email) and
     (fn:string-length($state) gt 0 and fn:string-length($state) le 255) and
     (fn:string-length($zip) gt 0 and fn:string-length($zip) le 255) and
     (fn:string-length($country) gt 0 and fn:string-length($country) le 255) and
+    (fn:string-length($deployment) gt 0 and fn:string-length($deployment) le 255) and
+    (fn:string-length($industry) gt 0 and fn:string-length($industry) le 255) and
+    (fn:string-length($companysize) gt 0 and fn:string-length($companysize) le 255) and
     true()
 
 let $_ :=
