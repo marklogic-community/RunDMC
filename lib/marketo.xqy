@@ -75,6 +75,7 @@ declare function mkto:sync-lead($email, $user, $cookie)
     let $company := $user/organization/string()
     let $title := $user/title/string()
     let $industry := $user/industry/string()
+    let $street := $user/street/string()
     let $city := $user/city/string()
     let $state := $user/state/string()
     let $country := $user/country/string()
@@ -145,6 +146,10 @@ declare function mkto:sync-lead($email, $user, $cookie)
                       <attrValue>{$phone}</attrValue>
                   </attribute>
                   <attribute>
+                      <attrName>Street__c</attrName>
+                      <attrValue>{$street}</attrValue>
+                  </attribute>
+                  <attribute>
                       <attrName>City</attrName>
                       <attrValue>{$city}</attrValue>
                   </attribute>
@@ -187,6 +192,10 @@ declare function mkto:sync-lead($email, $user, $cookie)
                   <attribute>
                       <attrName>Contact_me__c</attrName>
                       <attrValue>{$opt-out}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Role__c</attrName>
+                      <attrValue>Technical Evaluator</attrValue>
                   </attribute>
                   {$leadSourceAttrs}
               </leadAttributeList>
