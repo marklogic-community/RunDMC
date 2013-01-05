@@ -66,7 +66,7 @@ declare function mkto:last-name($names)
     $names[last()]
 };
 
-declare function mkto:sync-lead($email, $user, $cookie)
+declare function mkto:sync-lead($email, $user, $cookie, $source)
 {
     let $name := $user/name/string()
     let $names := fn:tokenize($name, " ")
@@ -75,14 +75,14 @@ declare function mkto:sync-lead($email, $user, $cookie)
     let $company := $user/organization/string()
     let $title := $user/title/string()
     let $industry := $user/industry/string()
+    let $street := $user/street/string()
     let $city := $user/city/string()
     let $state := $user/state/string()
     let $country := $user/country/string()
     let $zip := $user/zip/string()
     let $phone := $user/phone/string()
     let $org-size := $user/org-size/string() 
-    let $org-size := if (number($org-size) = 1) then "250" else $org-size (: silly requirement :)
-    let $deployment := $user/deployment/string() (: XXX:) 
+    let $deployment := $user/deployment/string() 
     let $opt-out := if ($user/mktg-list/string () ne "on") then 1 else 0
     let $contact-me := if ($user/contact-me/string () ne "on") then 0 else 1
     let $cook := if ($cookie ne "") then 
@@ -116,7 +116,7 @@ declare function mkto:sync-lead($email, $user, $cookie)
             ,
             <attribute>
                 <attrName>Specific_Lead_Source__c</attrName>
-                <attrValue>MarkLogic Download</attrValue>
+                <attrValue>{$source}</attrValue>
             </attribute>
             )
     
@@ -143,6 +143,10 @@ declare function mkto:sync-lead($email, $user, $cookie)
                   <attribute>
                       <attrName>Phone</attrName>
                       <attrValue>{$phone}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Street__c</attrName>
+                      <attrValue>{$street}</attrValue>
                   </attribute>
                   <attribute>
                       <attrName>City</attrName>
@@ -187,6 +191,10 @@ declare function mkto:sync-lead($email, $user, $cookie)
                   <attribute>
                       <attrName>Contact_me__c</attrName>
                       <attrValue>{$opt-out}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Role__c</attrName>
+                      <attrValue>Technical Evaluator</attrValue>
                   </attribute>
                   {$leadSourceAttrs}
               </leadAttributeList>

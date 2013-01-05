@@ -91,7 +91,7 @@ let $user := if ($valid) then users:createOrUpdateUser($name, $email, $password,
 
 
 return if ($user instance of element()) then
-    let $_ := users:mkto-sync-lead($email, $user)
+    let $_ := users:mkto-sync-lead($email, $user, "MarkLogic Download")
     let $_ := xdmp:set-response-content-type("text/html")
     let $_ := users:startSession($user)
     return <html><script type="text/javascript">

@@ -19,9 +19,11 @@ let $params         := for $p in param:trimmed-params()
 
 let $string-params := string-join($params, "&amp;")
 
+let $currentUser := users:getCurrentUser()
+
 let $version := xdmp:get-request-field("version")
-let $name := xdmp:get-request-field("name")
-let $email := xdmp:get-request-field("email")
+let $name := if ($currentUser) then $currentUser/*:name else xdmp:get-request-field("name")
+let $email := if ($currentUser) then $currentUser/*:email else xdmp:get-request-field("email")
 let $passwd := xdmp:get-request-field("password")
 let $conf_passwd := xdmp:get-request-field("password_conf")
 let $signup := xdmp:get-request-field("signup") eq "1"
@@ -32,7 +34,7 @@ let $platform := xdmp:get-request-field("platform")
 let $hostname := xdmp:get-request-field("hostname")
 let $target := xdmp:get-request-field("target") 
 
-let $company := xdmp:get-request-field("company")
+let $company := if ($currentUser) then $currentUser/*:organization else xdmp:get-request-field("company")
 let $school := xdmp:get-request-field("school")
 let $yog := xdmp:get-request-field("yog")
 
@@ -42,6 +44,19 @@ let $company := functx:trim($company)
 let $school := functx:trim($school)
 let $name := functx:trim($name)
 let $email := functx:trim($email)
+
+let $title := functx:trim(xdmp:get-request-field("title"))
+let $company := functx:trim(xdmp:get-request-field("company"))
+let $industry := functx:trim(xdmp:get-request-field("industry"))
+let $companysize := functx:trim(xdmp:get-request-field("companysize") )
+let $phone := functx:trim(xdmp:get-request-field("phone"))
+let $street := functx:trim(xdmp:get-request-field("street"))
+let $city := functx:trim(xdmp:get-request-field("city"))
+let $state := functx:trim(xdmp:get-request-field("state"))
+let $zip := functx:trim(xdmp:get-request-field("zip"))
+let $country := functx:trim(xdmp:get-request-field("country"))
+let $contactme := xdmp:get-request-field("contactme", "off")
+let $deployment := functx:trim(xdmp:get-request-field("deployment"))
 
 
 let $valid-url := fn:concat($valid-url, "?", 
@@ -57,20 +72,31 @@ let $valid-url := fn:concat($valid-url, "?",
 let $invalid-url := fn:concat($invalid-url, "?", $string-params, "&amp;retrying=1")
 
 let $valid-type := if ($type eq 'express') then
-        xdmp:get-request-field("company")
-    else
+        (
+        xdmp:get-request-field("company") 
+        and (fn:string-length($company) le 255)
+        and (fn:string-length($title) le 255 and fn:string-length($title) gt 0)
+        and (fn:string-length($street) le 255 and fn:string-length($street) gt 0)
+        and (fn:string-length($city) le 255 and fn:string-length($city) gt 0)
+        and (fn:string-length($state) le 255 and fn:string-length($state) gt 0)
+        and (fn:string-length($zip) le 255 and fn:string-length($zip) gt 0)
+        )
+    else (
         xdmp:get-request-field("yog") and xdmp:get-request-field("school")
+        and (fn:string-length($school) le 255)
+    )
 
 let $valid := 
     if ($signup) then
         $name and $email and $passwd and ($passwd eq $conf_passwd)
-        and fn:string-length($email) le 255
-        and fn:string-length($passwd) le 255
+        and fn:string-length($email) le 255 and fn:string-length($email) gt 0
+        and fn:string-length($passwd) le 255 and fn:string-length($passwd) gt 0
         and util:validateEmail($email)
         and not(users:emailInUse($email))
         and $valid-type
         and $platform 
         and $hostname 
+        and ($industry and fn:string-length($industry) le 255)
     else
         $email and
         $passwd and
@@ -78,6 +104,11 @@ let $valid :=
         $hostname and
         users:checkCreds($email, $passwd) and
         $valid-type 
+
+let $valid := if ($currentUser) then
+                 ($platform and $hostname)
+              else
+                  $valid
 
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
@@ -88,13 +119,27 @@ let $error := if ($signup) then
             "&amp;toolong=email"
         else if (fn:string-length($passwd) gt 255) then
             "&amp;toolong=passwd"
+        else if (fn:string-length($title) gt 255) then
+            "&amp;toolong=title"
+        else if (fn:string-length($company) gt 255) then
+            "&amp;toolong=company"
+        else if (fn:string-length($phone) gt 255) then
+            "&amp;toolong=phone"
+        else if (fn:string-length($street) gt 255) then
+            "&amp;toolong=street"
+        else if (fn:string-length($city) gt 255) then
+            "&amp;toolong=city"
+        else if (fn:string-length($state) gt 255) then
+            "&amp;toolong=state"
+        else if (fn:string-length($zip) gt 255) then
+            "&amp;toolong=zip"
         else
             if ($passwd ne $conf_passwd) then
                 "&amp;nonmatching=1"
             else
                 ""
     else
-        if (not(users:checkCreds($email, $passwd))) then
+        if (not($currentUser or users:checkCreds($email, $passwd))) then
             let $_ := xdmp:log(concat("Failed credential check for ", $email))
             return "&amp;badpassword=1"
         else
@@ -113,8 +158,29 @@ let $name := if ($valid) then
         let $list := xdmp:get-request-field("dev-list") 
         let $mktg-list := xdmp:get-request-field("mktg-list") 
 
+        let $others := if ($type eq 'express') then (
+            <title>{$title}</title>,
+            <organization>{$company}</organization>,
+            <industry>{$industry}</industry>,
+            <org-size>{$companysize}</org-size>,
+            <phone>{$phone}</phone>,
+            <street>{$street}</street>,
+            <city>{$city}</city>,
+            <state>{$state}</state>,
+            <zip>{$zip}</zip>,
+            <country>{$country}</country>,
+            <list>{$list}</list>,
+            <mktg-list>{$mktg-list}</mktg-list>,
+            <contact-me>{$contactme}</contact-me>,
+            <deployment>{$deployment}</deployment>,
+            ()
+        ) else (
+            <organization>{$school}</organization>,
+            <yog>{$yog}</yog>
+        )
+
         return 
-        users:createUserAndRecordLicense($name, $email, $passwd, $list, $mktg-list, $company, $school, $yog, $meta)/name/string()
+        users:createUserAndRecordLicense($type, $name, $email, $passwd, $list, $others, $meta)/name/string()
     else
         if ($type eq 'express') then
             users:recordExpressLicense($email, $company, $meta)/name/string()
@@ -158,8 +224,8 @@ return
 	<body>
         <script type="text/javascript">
         try {{
-            var is_stage = document.location.hostname == 'dmc-stage.marklogic.com';
-            var acct = is_stage ? 'UA-6638631-3' : 'UA-6638631-1' 
+            var is_prod = document.location.hostname == 'developer.marklogic.com';
+            var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3' 
             // _gat should be created bu google js include
             var pageTracker = _gat._getTracker(acct);
             pageTracker._setDomainName('marklogic.com');

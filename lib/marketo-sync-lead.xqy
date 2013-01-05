@@ -19,9 +19,10 @@ import module namespace mkto="mkto" at "marketo.xqy";
 declare variable $email as xs:string external;
 declare variable $user as element() external;
 declare variable $cookie as xs:string external;
+declare variable $source as xs:string external;
 
 try {
-    mkto:sync-lead($email, $user, $cookie)
+    mkto:sync-lead($email, $user, $cookie, $source)
 } catch ($e)  {
     (xdmp:log(concat('mkto:sync-lead failed ', $e/string())))
 }

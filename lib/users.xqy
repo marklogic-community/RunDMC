@@ -115,22 +115,14 @@ as element(*)?
     return $doc
 };
 
-declare function users:createUserAndRecordLicense($name, $email, $pass, $list, $mktg-list, $company, $school, $yog, $meta)
+declare function users:createUserAndRecordLicense($type, $name, $email, $pass, $list, $others, $meta)
 as element(*)? 
 {
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
     let $now := fn:current-dateTime()
-    let $picture := ""
-    let $type := if ($school) then "academic" else "express"
-
-    let $sch := if ($type eq 'express') then () else
-        (
-            <school>{$school}</school>,
-            <yog>{$yog}</yog>
-        )
-    let $co := if ($type eq 'academic') then $school else $company
+    let $co := $others/*:organization
 
     let $doc := 
         <person>
@@ -138,14 +130,8 @@ as element(*)?
             <email>{$email}</email>
             <name>{$name}</name>
             <password>{$hash}</password>
-            <picture>{$picture}</picture>
-            <list>{$list}</list>
-            <mktg-list>{$mktg-list}</mktg-list>
             <created>{$now}</created>
-            <title>Developer</title>
-            <twitter></twitter>
-            <organization>{$co}</organization>
-            {$sch}
+            {$others}
             <license>
                 <type>{$type}</type>
                 <company>{$co}</company>
@@ -158,7 +144,7 @@ as element(*)?
     let $_ := xdmp:document-insert($uri, $doc)
     let $_ := if ($list eq "on") then users:registerForMailingList($email, $pass) else ()
     let $_ := users:logNewUser($doc)
-    let $lead := users:mkto-associate-lead($email, $doc)
+    let $lead := users:mkto-sync-lead($email, $doc, "License Request")
 
     return $doc
 };
@@ -410,13 +396,14 @@ declare function users:mkto-associate-lead($email as xs:string, $doc)
 };
 
 (: sync the given user with a lead in marketo :) 
-declare function users:mkto-sync-lead($email as xs:string, $user)
+declare function users:mkto-sync-lead($email as xs:string, $user, $source)
 {
     let $cookie := cookies:get-cookie('_mkto_trk')[1]
 
     return xdmp:spawn("marketo-sync-lead.xqy", (
         xs:QName("email"), $email, 
         xs:QName("user"), $user,
-        xs:QName("cookie"), if ($cookie) then $cookie else ""
+        xs:QName("cookie"), if ($cookie) then $cookie else "",
+        xs:QName("source"), $source
     ) )
 };
