@@ -1039,6 +1039,10 @@
         </div>
         -->
         <div class="profile-form-row">
+            <div class="profile-form-label">Street </div>
+            <input class="required" id="street" name="street" value="{$user/*:street/string()}" type="text"/>
+        </div>
+        <div class="profile-form-row">
             <div class="profile-form-label">City </div>
             <input class="required" id="city" name="city" value="{$user/*:city/string()}" type="text"/>
         </div>

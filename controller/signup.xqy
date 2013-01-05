@@ -20,6 +20,7 @@ let $company := functx:trim(xdmp:get-request-field("s_company"))
 let $industry := functx:trim(xdmp:get-request-field("s_industry"))
 let $companysize := functx:trim(xdmp:get-request-field("s_companysize") )
 let $phone := functx:trim(xdmp:get-request-field("s_phone"))
+let $street := functx:trim(xdmp:get-request-field("s_street"))
 let $city := functx:trim(xdmp:get-request-field("s_city"))
 let $state := functx:trim(xdmp:get-request-field("s_state"))
 let $zip := functx:trim(xdmp:get-request-field("s_zip"))
@@ -40,6 +41,7 @@ let $valid := util:validateEmail($email) and
     (fn:string-length($title) gt 0 and fn:string-length($title) le 255) and
     (fn:string-length($company) gt 0 and fn:string-length($company) le 255) and
     (fn:string-length($phone) gt 0 and fn:string-length($phone) le 255) and
+    (fn:string-length($street) gt 0 and fn:string-length($street) le 255) and
     (fn:string-length($city) gt 0 and fn:string-length($city) le 255) and
     (fn:string-length($state) gt 0 and fn:string-length($state) le 255) and
     (fn:string-length($zip) gt 0 and fn:string-length($zip) le 255) and
@@ -56,6 +58,7 @@ let $_ :=
         "companysize: ", $companysize, " ", 
         "company: ", $company, " ", 
         "phone: ", $phone, " ", 
+        "street: ", $street, " ", 
         "city: ", $city, " ", 
         "state: ", $state, " ", 
         "zip: ", $zip, " ", 
@@ -72,6 +75,7 @@ let $others := (
     <industry>{$industry}</industry>,
     <org-size>{$companysize}</org-size>,
     <phone>{$phone}</phone>,
+    <street>{$street}</street>,
     <city>{$city}</city>,
     <state>{$state}</state>,
     <zip>{$zip}</zip>,
