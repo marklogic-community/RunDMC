@@ -302,8 +302,6 @@ declare function local:rewrite($path as xs:string) as xs:string
         concat("/controller/reset.xqy?", $query-string)
     else if ($path eq "/save-profile") then
         "/controller/save-profile.xqy"
-    else if ($path eq "/sync-lead") then
-        "/controller/sync-lead.xqy"
     else if ($path eq "/enable-corn") then
         "/controller/enable-corn.xqy?q=on"
     else if ($path eq "/disable-corn") then

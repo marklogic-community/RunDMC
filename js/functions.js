@@ -258,15 +258,6 @@ if(typeof jQuery != 'undefined') {
                         });
 
                     } else {
-                        $.ajax({
-                            type: 'POST',
-                            url: "/sync-lead",
-                            context: $(this),
-                            data: {
-                                asset: u
-                            }
-                        })
-    
                         $(this).dialog('close');
 
                         _gaq.push(['_trackPageview', u],
@@ -296,6 +287,7 @@ if(typeof jQuery != 'undefined') {
                 }
            	}
         	});
+            // $(".ui-dialog-titlebar").hide()     
        	}
 
         $('a.confirm-download').each(function() {
