@@ -190,7 +190,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                   </attribute>
                   <attribute>
                       <attrName>Contact_me__c</attrName>
-                      <attrValue>{$opt-out}</attrValue>
+                      <attrValue>{$contact-me}</attrValue>
                   </attribute>
                   <attribute>
                       <attrName>Role__c</attrName>
