@@ -13,7 +13,7 @@ return
 
         let $email := $user/*:email/string()
 
-        let $_ := users:mkto-sync-lead($email, $user)
+        let $_ := users:mkto-sync-lead($email, $user, "MarkLogic Download")
 
         return json:serialize(
             json:object((
