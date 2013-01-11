@@ -144,7 +144,7 @@
         <p>
         MarkLogic downloads are available to MarkLogic Community members. 
         </p>
-        <p>
+        <p style="line-height: 140%">
         NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
         </p>
     
@@ -1003,11 +1003,11 @@
     <fieldset>
         <div class="profile-form-row">
             <div class="profile-form-label">Email </div>
-            <input disabled="disabled" readonly="readonly" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
+            <input disabled="disabled" readonly="readonly" required="required" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Name </div>
-            <input autofocus="autofocus" class="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
+            <input autofocus="autofocus" class="required" required="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
         </div>
         <!--
         <div class="profile-form-row">
@@ -1026,7 +1026,7 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Phone</div>
-            <input class="phone" id="phone" name="phone" value="{$user/*:phone/string()}" type="text"/>
+            <input class="phone" id="phone" name="phone" required="required" value="{$user/*:phone/string()}" type="text"/>
         </div>
         <!--
         <div class="profile-form-row">
@@ -1040,23 +1040,23 @@
         -->
         <div class="profile-form-row">
             <div class="profile-form-label">Street </div>
-            <input class="required" id="street" name="street" value="{$user/*:street/string()}" type="text"/>
+            <input class="required" id="street" name="street" required="required" value="{$user/*:street/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">City </div>
-            <input class="required" id="city" name="city" value="{$user/*:city/string()}" type="text"/>
+            <input class="required" id="city" name="city" required="required" value="{$user/*:city/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">State </div>
-            <input class="required" id="state" name="state" value="{$user/*:state/string()}" type="text"/>
+            <input class="required" id="state" name="state" required="required" value="{$user/*:state/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Zip/Postal Code </div>
-            <input class="required" id="zip" name="zip" value="{$user/*:zip/string()}" type="text"/>
+            <input class="required" id="zip" name="zip" required="required" value="{$user/*:zip/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Country </div>
-            <select class="required countrypicker" id="country" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
+            <select class="required countrypicker" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
               <option value="Afghanistan" data-alternative-spellings="AF افغانستان">Afghanistan</option>
               <option value="Åland Islands" data-alternative-spellings="AX Aaland Aland" data-relevancy-booster="0.5">Åland Islands</option>
               <option value="Albania" data-alternative-spellings="AL">Albania</option>
@@ -1313,15 +1313,15 @@
     <fieldset>
         <div class="profile-form-row">
             <div class="profile-form-label">Title </div>
-            <input class="required" id="title" name="title" value="{$user/*:title/string()}" type="text"/>
+            <input class="required" id="title" name="title" required="required" value="{$user/*:title/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Company/Organization </div>
-            <input class="required" id="organization" name="organization" value="{$user/*:organization/string()}" type="text"/>
+            <input class="required" id="organization" name="organization" required="required" value="{$user/*:organization/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Size </div>
-            <select class="required" id="companysize" name="companysize" data-initvalue="{$user/*:companysize/string()}" type="text">
+            <select class="required" id="companysize" name="companysize" required="required" data-initvalue="{$user/*:companysize/string()}" type="text">
 	            <option>1-250</option>
 	            <option>251-1000</option>
 	            <option>1001-10,000</option>
@@ -1330,7 +1330,7 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Industry </div>
-            <select class="required" id="industry" name="industry" data-initvalue="{$user/*:industry/string()}">
+            <select class="required" id="industry" name="industry" required="required" data-initvalue="{$user/*:industry/string()}">
 	            <option value="Aviation/Aerospace">Aviation/Aerospace</option>
 	            <option value="Consulting">Consulting</option>
 	            <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>

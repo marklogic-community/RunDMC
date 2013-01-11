@@ -287,7 +287,7 @@ if(typeof jQuery != 'undefined') {
                 }
            	}
         	});
-            // $(".ui-dialog-titlebar").hide()     
+            $(".ui-dialog-titlebar").hide()     
        	}
 
         $('a.confirm-download').each(function() {
@@ -526,7 +526,12 @@ if(typeof jQuery != 'undefined') {
 	        $('#deployment').val($('#deployment').data('initvalue'));
 	        $('#country').val($('#country').data('initvalue'));
 
-            $(".ui-dialog-buttonset").append('<div style="font-size: 80%"><a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a><br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?</div>');
+            $(".ui-dialog-buttonset").append(
+                    '<div style="font-size: 80%">' + 
+                         '<a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a>' + 
+                         '<br/><a style="color: #01639D;" target="_blank" href="/products/download-via-curl">Want to download via curl?</a>' + 
+                         '<br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' + 
+                    '</div>');
 
         });
 

@@ -22,21 +22,13 @@
     <rapi-server url="//try.marklogic.com:8005"/>
   </host>
 
-  <host type="development" name="dmc-dev.marklogic.com" cookie-domain="marklogic.com"> 
-    <!--
-  <host type="development" name="localhost" cookie-domain="localhost"> 
-    <main-server port="8003"/> 
-    <api-server port="8009"/>
-    <standalone-api-server url="//docs-dev.marklogic.com"/>
-    -->
-
-    <main-server url="//dmc-dev.marklogic.com"/>
-    <api-server url="//docs-dev.marklogic.com"/>
-    <standalone-api-server url="//docs-dev.marklogic.com"/>
-
+  <host type="development" default-host="yes" cookie-domain="localhost"> 
+    <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
     <admin-server port="8006"/>
+    <api-server port="8009"/>
+    <standalone-api-server url="8011"/>
     <rapi-server port="4446"/>
   </host>
 

@@ -76,6 +76,15 @@ declare function users:getCurrentUserName()
     return if ($n eq "") then () else $n
 };
 
+declare function users:authViaParams() as xs:boolean
+{
+    let $email := xdmp:get-request-field("email")
+    let $user := /person[email eq $email]
+    let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $email)
+    return ($user and ($user/password/string() = $hash))
+    
+};
+
 declare function users:createOrUpdateUser($name, $email, $password, $others)
 {
     let $user := /person[email eq $email]

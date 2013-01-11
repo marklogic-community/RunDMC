@@ -15,4 +15,5 @@
   <prefix>/controller/tracker.xqy</prefix>
   <prefix>/try</prefix>
   <prefix>/test</prefix>
+  <prefix>/download</prefix>
 </paths>

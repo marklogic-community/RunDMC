@@ -1,6 +1,5 @@
-import module namespace ml = "http://developer.marklogic.com/site/internal"
-       at "../model/data-access.xqy";
-
+import module namespace ml = "http://developer.marklogic.com/site/internal" at "../model/data-access.xqy";
+import module namespace users = "users" at "../lib/users.xqy";
 import module namespace u = "http://marklogic.com/rundmc/util" at "../lib/util-2.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "server-urls.xqy";
 
@@ -202,10 +201,17 @@ declare function local:gone($path as xs:string) as xs:boolean {
     )
 };
 
+(: if this is a server binary (and not xcc zip) you must be logged in or provide creds :)
 declare function local:forbidden($path as xs:string) as xs:boolean {
-    (starts-with($path,'/download/binaries/'))
+    empty(users:getCurrentUser()) and not(users:authViaParams()) and not(ends-with($path, ".zip")) and
+    (
+     starts-with($path,'/download/binaries/6.0') or
+     starts-with($path,'/download/binaries/5.0') or
+     starts-with($path,'/download/binaries/4.2') or
+     starts-with($path,'/download/binaries/4.1') or
+     false()
+    )
 };
-
 
 declare function local:rewrite($path as xs:string) as xs:string
 {
