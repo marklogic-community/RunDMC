@@ -31,10 +31,21 @@ let $type := xdmp:get-request-field("type")
 
 let $cpus := xdmp:get-request-field("cpus")
 let $platform := xdmp:get-request-field("platform")
-let $hostname := xdmp:get-request-field("hostname")
 let $target := xdmp:get-request-field("target") 
+let $hostname := xdmp:get-request-field("hostname")
 
-let $company := if ($currentUser) then $currentUser/*:organization else xdmp:get-request-field("company")
+(: in staging, add somehting to the hostname so we can identify easily :)
+let $host := xdmp:host-name(xdmp:host())
+let $hostname := if ($host eq 'stage-developer.marklogic.com' and not(starts-with($hostname, "STAGE-"))) then 
+    concat("STAGE-", $hostname)
+        else 
+    $hostname
+
+let $company := if ($currentUser) then 
+        ($currentUser/*:organization/string(), $currentUser/*:license/*:company, "Unknown")[1]
+    else 
+        xdmp:get-request-field("company")
+
 let $school := xdmp:get-request-field("school")
 let $yog := xdmp:get-request-field("yog")
 
@@ -46,7 +57,6 @@ let $name := functx:trim($name)
 let $email := functx:trim($email)
 
 let $title := functx:trim(xdmp:get-request-field("title"))
-let $company := functx:trim(xdmp:get-request-field("company"))
 let $industry := functx:trim(xdmp:get-request-field("industry"))
 let $companysize := functx:trim(xdmp:get-request-field("companysize") )
 let $phone := functx:trim(xdmp:get-request-field("phone"))
@@ -57,7 +67,6 @@ let $zip := functx:trim(xdmp:get-request-field("zip"))
 let $country := functx:trim(xdmp:get-request-field("country"))
 let $contactme := xdmp:get-request-field("contactme", "off")
 let $deployment := functx:trim(xdmp:get-request-field("deployment"))
-
 
 let $valid-url := fn:concat($valid-url, "?", 
            "version=", xdmp:url-encode($version),            
@@ -73,13 +82,21 @@ let $invalid-url := fn:concat($invalid-url, "?", $string-params, "&amp;retrying=
 
 let $valid-type := if ($type eq 'express') then
         (
-        xdmp:get-request-field("company") 
-        and (fn:string-length($company) le 255)
-        and (fn:string-length($title) le 255 and fn:string-length($title) gt 0)
-        and (fn:string-length($street) le 255 and fn:string-length($street) gt 0)
-        and (fn:string-length($city) le 255 and fn:string-length($city) gt 0)
-        and (fn:string-length($state) le 255 and fn:string-length($state) gt 0)
-        and (fn:string-length($zip) le 255 and fn:string-length($zip) gt 0)
+             (fn:string-length($company) le 255) and
+        (not($signup) or (
+             (string-length($title) le 255 and string-length($title) gt 0) and
+             (string-length($industry) le 255 and string-length($industry) gt 0) and
+             (string-length($companysize) le 255 and string-length($companysize) gt 0) and
+             (string-length($phone) le 255 and string-length($phone) gt 0) and
+             (string-length($street) le 255 and string-length($street) gt 0) and
+             (string-length($city) le 255 and string-length($city) gt 0) and
+             (string-length($state) le 255 and string-length($state) gt 0) and
+             (string-length($zip) le 255 and string-length($zip) gt 0) and
+             (string-length($country) le 255 and string-length($country) gt 0) and
+             (string-length($deployment) le 255 and string-length($deployment) gt 0) and
+             (string-length($industry) le 255 and fn:string-length($industry) gt 0)
+            )
+          )
         )
     else (
         xdmp:get-request-field("yog") and xdmp:get-request-field("school")
@@ -96,19 +113,16 @@ let $valid :=
         and $valid-type
         and $platform 
         and $hostname 
-        and ($industry and fn:string-length($industry) le 255)
     else
-        $email and
-        $passwd and
         $platform and
         $hostname and
-        users:checkCreds($email, $passwd) and
+        $currentUser or 
+            (
+                $email and
+                $passwd and
+                users:checkCreds($email, $passwd)
+            ) and
         $valid-type 
-
-let $valid := if ($currentUser) then
-                 ($platform and $hostname)
-              else
-                  $valid
 
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
