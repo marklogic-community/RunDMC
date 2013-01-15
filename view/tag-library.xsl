@@ -1331,27 +1331,32 @@
         <div class="profile-form-row">
             <div class="profile-form-label">Industry </div>
             <select class="required" id="industry" name="industry" required="required" data-initvalue="{$user/*:industry/string()}">
-	            <option value="Aviation/Aerospace">Aviation/Aerospace</option>
-	            <option value="Consulting">Consulting</option>
-	            <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
-	            <option value="Education">Education</option>
-	            <option value="Energy">Energy</option>
-	            <option value="Federal Government">Federal Government</option>
-	            <option value="Financial Services">Financial Services</option>
-	            <option value="Healthcare">Healthcare</option>
-	            <option value="Insurance">Insurance</option>
-	            <option value="Legal">Legal</option>
-	            <option value="Life Sciences">Life Sciences</option>
-	            <option value="Logistics/Transportation">Logistics/Transportation</option>
-	            <option value="Manufacturing">Manufacturing</option>
-	            <option value="Non-profit/Associations">Non-profit/Associations</option>
-	            <option value="Publishing">Publishing</option>
-	            <option value="Retail">Retail</option>
-	            <option value="Services">Services</option>
-	            <option value="State and Local Government">State and Local Government</option>
-	            <option value="Technology">Technology</option>
-	            <option value="Telecommunications">Telecommunications</option>
-	            <option value="Travel/Entertainment">Travel/Entertainment</option>
+	  <option value="Aviation/Aerospace">Aviation/Aerospace</option>
+      <option value="Commodity Trading">Commodity Trading</option>
+	  <option value="Consulting">Consulting</option>
+	  <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
+	  <option value="Education">Education</option>
+	  <option value="Energy">Energy</option>
+	  <option value="Federal Government">Federal Government</option>
+	  <option value="Financial Services">Financial Services</option>
+	  <option value="Healthcare">Healthcare</option>
+	  <option value="Insurance">Insurance</option>
+	  <option value="Legal">Legal</option>
+	  <option value="Life Sciences">Life Sciences</option>
+	  <option value="Logistics/Transportation">Logistics/Transportation</option>
+	  <option value="Manufacturing">Manufacturing</option>
+      <option value="Mining/Construction/Engineering">Mining/Construction/Engineering</option>
+	  <option value="Non-profit/Associations">Non-profit/Associations</option>
+	  <option value="Other">Other</option>
+	  <option value="Publishing/Media">Publishing/Media</option>
+	  <option value="Retail">Retail</option>
+	  <option value="Services">Services</option>
+	  <option value="State and Local Government">State and Local Government</option>
+	  <option value="Technology">Technology</option>
+	  <option value="Technology - Hardware">Technology - Hardware</option>
+	  <option value="Technology - Software">Technology - Software</option>
+	  <option value="Telecommunications">Telecommunications</option>
+	  <option value="Travel/Entertainment">Travel/Entertainment</option>
             </select>
         </div>
     </fieldset>
