@@ -1056,7 +1056,7 @@
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Country </div>
-            <select class="required countrypicker" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
+            <select class="required countrypicker country" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
               <option value="Afghanistan" data-alternative-spellings="AF افغانستان">Afghanistan</option>
               <option value="Åland Islands" data-alternative-spellings="AX Aaland Aland" data-relevancy-booster="0.5">Åland Islands</option>
               <option value="Albania" data-alternative-spellings="AL">Albania</option>
@@ -1292,7 +1292,7 @@
               <option value="Ukraine" data-alternative-spellings="UA Ukrayina Україна">Ukraine</option>
               <option value="United Arab Emirates" data-alternative-spellings="AE UAE الإمارات">United Arab Emirates</option>
               <option value="United Kingdom" data-alternative-spellings="GB Great Britain England UK Wales Scotland Northern Ireland" data-relevancy-booster="2.5">United Kingdom</option>
-              <option value="United States" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States</option>
+              <option value="United States of America" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States</option>
               <option value="United States Minor Outlying Islands" data-alternative-spellings="UM">United States Minor Outlying Islands</option>
               <option value="Uruguay" data-alternative-spellings="UY">Uruguay</option>
               <option value="Uzbekistan" data-alternative-spellings="UZ Ўзбекистон O'zbekstan O‘zbekiston">Uzbekistan</option>

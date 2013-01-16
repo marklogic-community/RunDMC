@@ -515,7 +515,7 @@ if(typeof jQuery != 'undefined') {
             });
 
 	        $('#s_country').selectToAutocomplete();
-	        $('country').selectToAutocomplete();
+	        $('#country').selectToAutocomplete();
 
 	        $('#s_companysize').val([]);
 	        $('#s_industry').val([]);

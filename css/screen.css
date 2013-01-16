@@ -2606,7 +2606,7 @@ a.drop-down-trigger.menu-open span {
 	width: 240px;
 }
 
-#profile-form input[type=text], #profile-form input[type=password] {
+#profile-form input[type=text], #profile-form input[type=password], #profile-form input.countrypicker {
 	width: 360px;
     color: #666;
 }
