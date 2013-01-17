@@ -317,8 +317,10 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"
-    else
+    else if (upper-case(xdmp:get-request-method()) =  ("GET", "HEAD")) then
         $orig-url
+    else 
+        concat("/controller/get-fs-file.xqy?path=", $path)
 };
 
 let $path            := xdmp:get-request-path()  

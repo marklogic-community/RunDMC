@@ -25,6 +25,17 @@ declare function u:get-doc($path as xs:string) as node() {
 };
 
 (: 
+ : @param $path /-prefixed string that is path to the XML file
+ : that represents the document
+ :
+ : @return length of file
+ :)
+declare function u:get-doc-length($path as xs:string) as xs:unsignedLong {
+    let $root := xdmp:modules-root()
+    return xdmp:filesystem-file-length(fn:concat($root, $path))
+};
+
+(: 
  : @param $dir-uri 
  :
  : @return true if the uri is a directory in the current DB
