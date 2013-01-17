@@ -19,12 +19,13 @@ let $hostname :=
     else
         "localhost:8008"
 
-return if ($name) then
+let $_ := xdmp:set-response-content-type("text/html")
+
+let $_ := if ($name) then
 
     let $token := users:getResetToken($email)
     let $url := concat("http://", $hostname, "/reset?email=", xdmp:url-encode($email), "&amp;t=", xdmp:url-encode($token))
     let $_ := xdmp:log(concat("Sending a reset email to ", $email, " with token ", $token))
-    let $_ := xdmp:set-response-content-type("text/html")
 
     let $_ := util:sendEmail(
         "MarkLogic Community",
@@ -46,9 +47,12 @@ Best,
 The MarkLogic Community
 </em:content>)
 
-    return <html><script type="text/javascript"><![CDATA[
+    return ()
+
+else 
+    let $_ := xdmp:log(concat("Ignoring reset request for ", $email))
+    return ()
+
+return <html><script type="text/javascript"><![CDATA[
                    window.location = "/";
             ]]></script></html>
-
-    
-else ()
