@@ -524,7 +524,14 @@ if(typeof jQuery != 'undefined') {
 	        $('#companysize').val($('#companysize').data('initvalue'));
 	        $('#industry').val($('#industry').data('initvalue'));
 	        $('#deployment').val($('#deployment').data('initvalue'));
-	        $('#country').val($('#country').data('initvalue'));
+
+	        // $('#country').val($('#country').data('initvalue'));
+            var v = 
+            $("#country option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == $('#country').data('initvalue');
+            }).attr('selected', true).text();
+            $("input.country").val(v);
 
             $(".ui-dialog-buttonset").append(
                     '<div style="font-size: 80%">' + 
