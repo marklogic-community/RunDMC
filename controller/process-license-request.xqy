@@ -145,7 +145,6 @@ let $meta := (
 let $name := if ($valid) then
     if ($signup) then
         let $list := xdmp:get-request-field("dev-list") 
-        let $mktg-list := xdmp:get-request-field("mktg-list") 
 
         let $others := if ($type eq 'express') then (
             <organization>{$company}</organization>,
@@ -153,7 +152,6 @@ let $name := if ($valid) then
             <phone>{$phone}</phone>,
             <country>{$country}</country>,
             <list>{$list}</list>,
-            <mktg-list>{$mktg-list}</mktg-list>,
             <contact-me>{$contactme}</contact-me>,
             ()
         ) else (

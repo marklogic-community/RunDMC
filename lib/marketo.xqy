@@ -76,7 +76,6 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
     let $industry := $user/industry/string()
     let $country := $user/country/string()
     let $phone := $user/phone/string()
-    let $opt-out := if ($user/mktg-list/string () ne "on") then 1 else 0
     let $contact-me := if ($user/contact-me/string () ne "on") then 0 else 1
     let $cook := if ($cookie ne "") then 
         <marketoCookie>{$cookie}</marketoCookie>
@@ -150,10 +149,6 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                       <attrValue>{$industry}</attrValue>
                   </attribute>
                   <attribute>
-                      <attrName>SFDC_Opt_Out__c</attrName>
-                      <attrValue>{$opt-out}</attrValue>
-                  </attribute>
-                  <attribute>
                       <attrName>Contact_me__c</attrName>
                       <attrValue>{$contact-me}</attrValue>
                   </attribute>
@@ -206,7 +201,6 @@ declare function mkto:associate-lead($email, $cookie, $meta)
     let $first-name := mkto:first-name($names)
     let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
-    let $opt-out := if ($meta/mktg-list/string () ne "on") then 1 else 0
     let $cook := if ($cookie ne "") then 
         <marketoCookie>{$cookie}</marketoCookie>
     else 
@@ -290,10 +284,6 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                   <attribute>
                       <attrName>Company</attrName>
                       <attrValue>{$company}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>SFDC_Opt_Out__c</attrName>
-                      <attrValue>{$opt-out}</attrValue>
                   </attribute>
                   {$leadSourceAttrs}
                   {$licenseAttrs}

@@ -23,7 +23,6 @@ string-join(
  concat('"', $i/school/string(), '"'), 
  concat('"', $i/year-of-graduation/string(), '"'), 
  concat('"', $i/dev-list/string(), '"'), 
- concat('"', $i/mktg-list/string(), '"'), 
  ""
 ),
 ","
@@ -74,7 +73,6 @@ Total signups to date: {$total}
 <th><b>School</b></th>
 <th><b>Year of graduation</b></th>
 <th><b>Dev list</b></th>
-<th><b>Mktg list</b></th>
 </tr>
 </thead>
 {
@@ -91,7 +89,6 @@ return
 <td>{$i/school/name/string()}</td>
 <td>{$i/school/year-of-graduation/string()}</td>
 <td>{$i/list/string()}</td>
-<td>{$i/mktg-list/string()}</td>
 </tr>
 }
 </table>

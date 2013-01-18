@@ -13,7 +13,6 @@ let $password := functx:trim(xdmp:get-request-field("s_password"))
 let $confirm-password := functx:trim(xdmp:get-request-field("s_password_confirm"))
 let $name := functx:trim(xdmp:get-request-field("s_name"))
 let $signup := xdmp:get-request-field("list", "off")
-let $msignup := xdmp:get-request-field("mlist", "off")
 
 let $company := functx:trim(xdmp:get-request-field("s_company"))
 let $industry := functx:trim(xdmp:get-request-field("s_industry"))
@@ -55,7 +54,6 @@ let $others := (
     <phone>{$phone}</phone>,
     <country>{$country}</country>,
     <list>{$signup}</list>,
-    <mktg-list>{$msignup}</mktg-list>,
     <contact-me>{$contactme}</contact-me>,
     ()
 )
