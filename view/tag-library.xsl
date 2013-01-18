@@ -1308,9 +1308,6 @@
               <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
             </select>
         </div>
-    </fieldset>
-    <h3>Company/organization</h3>
-    <fieldset>
         <div class="profile-form-row">
             <div class="profile-form-label">Company/Organization </div>
             <input class="required" id="organization" name="organization" required="required" value="{$user/*:organization/string()}" type="text"/>
