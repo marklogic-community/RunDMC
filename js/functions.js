@@ -517,13 +517,8 @@ if(typeof jQuery != 'undefined') {
 	        $('#s_country').selectToAutocomplete();
 	        $('#country').selectToAutocomplete();
 
-	        $('#s_companysize').val([]);
 	        $('#s_industry').val([]);
-	        $('#s_deployment').val([]);
-
-	        $('#companysize').val($('#companysize').data('initvalue'));
 	        $('#industry').val($('#industry').data('initvalue'));
-	        $('#deployment').val($('#deployment').data('initvalue'));
 
 	        // $('#country').val($('#country').data('initvalue'));
             var v = 

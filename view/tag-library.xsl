@@ -1037,7 +1037,6 @@
             <div class="profile-form-label">Confirm password</div>
             <input id="password_confirm" name="password_confirm" value="" type="password"/>
         </div>
-        -->
         <div class="profile-form-row">
             <div class="profile-form-label">Street </div>
             <input class="required" id="street" name="street" required="required" value="{$user/*:street/string()}" type="text"/>
@@ -1054,6 +1053,7 @@
             <div class="profile-form-label">Zip/Postal Code </div>
             <input class="required" id="zip" name="zip" required="required" value="{$user/*:zip/string()}" type="text"/>
         </div>
+        -->
         <div class="profile-form-row">
             <div class="profile-form-label">Country </div>
             <select class="required countrypicker country" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
@@ -1312,21 +1312,8 @@
     <h3>Company/organization</h3>
     <fieldset>
         <div class="profile-form-row">
-            <div class="profile-form-label">Title </div>
-            <input class="required" id="title" name="title" required="required" value="{$user/*:title/string()}" type="text"/>
-        </div>
-        <div class="profile-form-row">
             <div class="profile-form-label">Company/Organization </div>
             <input class="required" id="organization" name="organization" required="required" value="{$user/*:organization/string()}" type="text"/>
-        </div>
-        <div class="profile-form-row">
-            <div class="profile-form-label">Size </div>
-            <select class="required" id="companysize" name="companysize" required="required" data-initvalue="{$user/*:companysize/string()}" type="text">
-	            <option>1-250</option>
-	            <option>251-1000</option>
-	            <option>1001-10,000</option>
-	            <option>10,000+</option>
-            </select>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Industry </div>

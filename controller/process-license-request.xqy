@@ -56,17 +56,10 @@ let $school := functx:trim($school)
 let $name := functx:trim($name)
 let $email := functx:trim($email)
 
-let $title := functx:trim(xdmp:get-request-field("title"))
 let $industry := functx:trim(xdmp:get-request-field("industry"))
-let $companysize := functx:trim(xdmp:get-request-field("companysize") )
 let $phone := functx:trim(xdmp:get-request-field("phone"))
-let $street := functx:trim(xdmp:get-request-field("street"))
-let $city := functx:trim(xdmp:get-request-field("city"))
-let $state := functx:trim(xdmp:get-request-field("state"))
-let $zip := functx:trim(xdmp:get-request-field("zip"))
 let $country := functx:trim(xdmp:get-request-field("country"))
 let $contactme := xdmp:get-request-field("contactme", "off")
-let $deployment := functx:trim(xdmp:get-request-field("deployment"))
 
 let $valid-url := fn:concat($valid-url, "?", 
            "version=", xdmp:url-encode($version),            
@@ -84,16 +77,8 @@ let $valid-type := if ($type eq 'express') then
         (
              (fn:string-length($company) le 255) and
         (not($signup) or (
-             (string-length($title) le 255 and string-length($title) gt 0) and
-             (string-length($industry) le 255 and string-length($industry) gt 0) and
-             (string-length($companysize) le 255 and string-length($companysize) gt 0) and
              (string-length($phone) le 255 and string-length($phone) gt 0) and
-             (string-length($street) le 255 and string-length($street) gt 0) and
-             (string-length($city) le 255 and string-length($city) gt 0) and
-             (string-length($state) le 255 and string-length($state) gt 0) and
-             (string-length($zip) le 255 and string-length($zip) gt 0) and
              (string-length($country) le 255 and string-length($country) gt 0) and
-             (string-length($deployment) le 255 and string-length($deployment) gt 0) and
              (string-length($industry) le 255 and fn:string-length($industry) gt 0)
             )
           )
@@ -133,20 +118,10 @@ let $error := if ($signup) then
             "&amp;toolong=email"
         else if (fn:string-length($passwd) gt 255) then
             "&amp;toolong=passwd"
-        else if (fn:string-length($title) gt 255) then
-            "&amp;toolong=title"
         else if (fn:string-length($company) gt 255) then
             "&amp;toolong=company"
         else if (fn:string-length($phone) gt 255) then
             "&amp;toolong=phone"
-        else if (fn:string-length($street) gt 255) then
-            "&amp;toolong=street"
-        else if (fn:string-length($city) gt 255) then
-            "&amp;toolong=city"
-        else if (fn:string-length($state) gt 255) then
-            "&amp;toolong=state"
-        else if (fn:string-length($zip) gt 255) then
-            "&amp;toolong=zip"
         else
             if ($passwd ne $conf_passwd) then
                 "&amp;nonmatching=1"
@@ -173,20 +148,13 @@ let $name := if ($valid) then
         let $mktg-list := xdmp:get-request-field("mktg-list") 
 
         let $others := if ($type eq 'express') then (
-            <title>{$title}</title>,
             <organization>{$company}</organization>,
             <industry>{$industry}</industry>,
-            <org-size>{$companysize}</org-size>,
             <phone>{$phone}</phone>,
-            <street>{$street}</street>,
-            <city>{$city}</city>,
-            <state>{$state}</state>,
-            <zip>{$zip}</zip>,
             <country>{$country}</country>,
             <list>{$list}</list>,
             <mktg-list>{$mktg-list}</mktg-list>,
             <contact-me>{$contactme}</contact-me>,
-            <deployment>{$deployment}</deployment>,
             ()
         ) else (
             <organization>{$school}</organization>,
