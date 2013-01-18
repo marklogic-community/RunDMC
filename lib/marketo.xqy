@@ -73,16 +73,9 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
     let $first-name := mkto:first-name($names)
     let $last-name := mkto:last-name($names)
     let $company := $user/organization/string()
-    let $title := $user/title/string()
     let $industry := $user/industry/string()
-    let $street := $user/street/string()
-    let $city := $user/city/string()
-    let $state := $user/state/string()
     let $country := $user/country/string()
-    let $zip := $user/zip/string()
     let $phone := $user/phone/string()
-    let $org-size := $user/org-size/string() 
-    let $deployment := $user/deployment/string() 
     let $opt-out := if ($user/mktg-list/string () ne "on") then 1 else 0
     let $contact-me := if ($user/contact-me/string () ne "on") then 0 else 1
     let $cook := if ($cookie ne "") then 
@@ -145,22 +138,6 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                       <attrValue>{$phone}</attrValue>
                   </attribute>
                   <attribute>
-                      <attrName>Street__c</attrName>
-                      <attrValue>{$street}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>City</attrName>
-                      <attrValue>{$city}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>State</attrName>
-                      <attrValue>{$state}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>Zip_Code__c</attrName>
-                      <attrValue>{$zip}</attrValue>
-                  </attribute>
-                  <attribute>
                       <attrName>Country</attrName>
                       <attrValue>{$country}</attrValue>
                   </attribute>
@@ -169,20 +146,8 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                       <attrValue>{$company}</attrValue>
                   </attribute>
                   <attribute>
-                      <attrName>Title</attrName>
-                      <attrValue>{$title}</attrValue>
-                  </attribute>
-                  <attribute>
                       <attrName>Main_Industry__c</attrName>
                       <attrValue>{$industry}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>Number_of_Employees_picklist__c</attrName>
-                      <attrValue>{$org-size}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>Time_to_deployment__c</attrName>
-                      <attrValue>{$deployment}</attrValue>
                   </attribute>
                   <attribute>
                       <attrName>SFDC_Opt_Out__c</attrName>
