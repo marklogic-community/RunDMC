@@ -22,7 +22,7 @@
     <rapi-server url="//try.marklogic.com:8005"/>
   </host>
 
-  <host type="development" default-host="yes" cookie-domain="localhost"> 
+  <host type="development" default-host="yes" cookie-domain="127.0.0.1"> 
     <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
