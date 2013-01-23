@@ -51,28 +51,22 @@ declare function users:startSession($user as element(*)) as empty-sequence()
     </session>
     let $_ := xdmp:document-insert($uri, $doc) 
 
-    return (
+    return 
         cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), 
-            $srv:cookie-domain, "/", false()),
-        cookies:add-cookie("RUNDMC-NAME", $name, current-dateTime() + xs:dayTimeDuration("P60D"), 
             $srv:cookie-domain, "/", false())
-    )
 };
 
 declare function users:endSession() as empty-sequence()
 {
 
     (: todo remove session id from /person ? :) 
-    ( 
-    cookies:delete-cookie("RUNDMC-SESSION", $srv:cookie-domain, "/"),
-    cookies:delete-cookie("RUNDMC-NAME", $srv:cookie-domain, "/")
-    )
+    cookies:delete-cookie("RUNDMC-SESSION", $srv:cookie-domain, "/")
 };
 
 declare function users:getCurrentUserName()
     as xs:string?
 {
-    let $n := cookies:get-cookie("RUNDMC-NAME")[1]
+    let $n := users:getCurrentUser()/name/string()
     return if ($n eq "") then () else $n
 };
 
@@ -377,10 +371,6 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
 
     let $_ := xdmp:document-insert(base-uri($user), $doc)
     let $_ := xdmp:log(concat("Updated profile for ", $user/email, " : ", xdmp:quote($doc)))
-
-    (: update name cookie just in case :)
-    let $_ := cookies:add-cookie("RUNDMC-NAME", $doc/name/string(), current-dateTime() + xs:dayTimeDuration("P60D"), 
-        $srv:cookie-domain, "/", false())
 
     return $doc
 };
