@@ -19,9 +19,8 @@ string-join(
  concat('"', $person/email/string(), '"'), 
  concat('"', fn:format-dateTime($license/date, "[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]"), '"'),
  concat('"', $license/type/string(), '"'),
+ concat('"', $person/country/string(), '"'), 
  concat('"', $person/organization/string(), '"'), 
- concat('"', $person/twitter/string(), '"'), 
- concat('"', $person/location/string(), '"'), 
  concat('"', $person/school/string(), '"'), 
  concat('"', $person/yog/string(), '"'), 
  concat('"', $person/dev-list/string(), '"'), 
@@ -75,9 +74,8 @@ Total licenses to date: {$total}
 <th><b>Email</b></th>
 <th><b>Date</b></th>
 <th><b>License</b></th>
+<th><b>Country</b></th>
 <th><b>Organization</b></th>
-<th><b>Twitter</b></th>
-<th><b>Location</b></th>
 <th><b>School</b></th>
 <th><b>Year of graduation</b></th>
 <th><b>Dev list</b></th>
@@ -95,9 +93,8 @@ return
 <td>{$i/../email/string()}</td>
 <td>{fn:format-dateTime($i/date,"[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]")}</td>
 <td>{$i/type/string()}</td>
+<td>{$i/../country/string()}</td>
 <td>{$i/../organization/string()}</td>
-<td>{$i/../twitter/string()}</td>
-<td>{$i/../location/string()}</td>
 <td>{$i/../school/string()}</td>
 <td>{$i/../yog/string()}</td>
 <td>{$i/../list/string()}</td>
