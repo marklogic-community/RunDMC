@@ -286,7 +286,9 @@ Username: ", $user/name/string(), "
 Email: ", $user/email/string(), "
 ID: ", $user/id/string(), "
 Organization: ", $user/organization/string(), "
-School: ", $user/school/string())
+Industry: ", $user/industry/string(), "
+Country: ", $user/country/string(), "
+")
             }
             </em:content>
         )
