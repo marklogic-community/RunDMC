@@ -23,7 +23,7 @@ string-join(
  concat('"', $person/organization/string(), '"'), 
  concat('"', $person/school/string(), '"'), 
  concat('"', $person/yog/string(), '"'), 
- concat('"', $person/dev-list/string(), '"'), 
+ concat('"', $person/list/string(), '"'), 
  concat('"', $license/cpus/string(), '"'), 
  concat('"', $license/platform/string(), '"'), 
  concat('"', $license/hostame/string(), '"'), 

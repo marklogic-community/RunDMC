@@ -19,7 +19,7 @@ string-join(
  concat('"', fn:format-dateTime($i/created, "[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]"), '"'),
  concat('"', $i/country/string(), '"'), 
  concat('"', $i/organization/string(), '"'), 
- concat('"', $i/dev-list/string(), '"'), 
+ concat('"', $i/list/string(), '"'), 
  ""
 ),
 ","
@@ -79,7 +79,7 @@ return
 <td>{fn:format-dateTime($i/created,"[Y01]/[M01]/[D01] [H01]:[m01]:[s01]:[f01]")}</td>
 <td>{$i/country/string()}</td>
 <td>{$i/organization/string()}</td>
-<td>{$i/dev-list/string()}</td>
+<td>{$i/list/string()}</td>
 </tr>
 }
 </table>
