@@ -328,7 +328,9 @@ if(typeof jQuery != 'undefined') {
                     document.body.appendChild(download_iframe);
                 }
                 download_iframe.src = u + '?r=dmc';
-            }
+
+                return false;
+            });
         });
 
 		if(jQuery().fancybox) {
