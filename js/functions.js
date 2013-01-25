@@ -311,6 +311,26 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
+        $('a.track-download').each(function() {
+            var u = $(this).attr("href");
+            $(this).click(function() {
+                _gaq.push(['_trackPageview', u],
+                          ['_trackEvent', 'start-download', u]);
+                try {
+                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+                } catch (err) {}
+    
+                download_iframe = document.getElementById("hiddenDownloader");
+                if (download_iframe === null) {
+                    download_iframe = document.createElement('iframe');  
+                    download_iframe.id = "hiddenDownloader";
+                    download_iframe.style.visibility = 'hidden';
+                    document.body.appendChild(download_iframe);
+                }
+                download_iframe.src = u + '?r=dmc';
+            }
+        });
+
 		if(jQuery().fancybox) {
 			$('a[rel=detail]',main).each(function() {
 				var ref = $(this).attr('href');
