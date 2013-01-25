@@ -141,11 +141,8 @@
     </xsl:if>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
-        <p>
-        MarkLogic downloads are available to MarkLogic Community members. 
-        </p>
         <p style="line-height: 140%">
-        NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
+        NOTE: This MarkLogic software you are about to download is protected by copyright and other laws of the United States and/or other countries. All rights in and to this MarkLogic software are reserved in their entirety by MarkLogic Corporation and its licensors. This MarkLogic software, including technical data within, is subject to U.S. export control laws, including, without limitation, the U.S. Export Administration Act and its associated regulations, and may be subject to export or import regulations in other countries. In order to activate this MarkLogic software you are required to install a license key.  By downloading this MarkLogic software, you agree that any use of this software is strictly subject to the terms and conditions of use that you will be asked to review and accept during the installation of the license key.   If you do not accept such terms of use at that time, any further use of this MarkLogic software is strictly prohibited and you must uninstall and remove any copies of this MarkLogic software and discontinue any further use.
         </p>
     
         <xsl:if test="empty(users:getCurrentUser())">
