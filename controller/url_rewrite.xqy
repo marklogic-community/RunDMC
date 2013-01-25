@@ -213,8 +213,16 @@ declare function local:forbidden($path as xs:string) as xs:boolean {
     )
 };
 
-declare function local:rewrite($path as xs:string) as xs:string
-{
+(: record all binaries :)
+declare function local:record-download($path as xs:string) {
+
+    if (starts-with($path,'/download/binaries/')) then
+        users:record-download-for-current-user($path)
+    else    
+        ()
+};
+
+declare function local:rewrite($path as xs:string) as xs:string {
     let $latest-version := "6.0"
     let $latest-sharepoint-connector-version := "1.1-1"
 
@@ -317,10 +325,12 @@ declare function local:rewrite($path as xs:string) as xs:string
     (: Control the visibility of files in the code base :)
     else if (not(u:get-doc("/controller/access.xml")/paths/prefix[starts-with($path,.)])) then
         "/controller/notfound.xqy"
-    else if (upper-case(xdmp:get-request-method()) =  ("GET", "HEAD")) then
-        $orig-url
+    else if (upper-case(xdmp:get-request-method()) = ("GET", "HEAD")) then
+        let $_ := local:record-download($path)
+        return $orig-url
     else 
-        concat("/controller/get-fs-file.xqy?path=", $path)
+        let $_ := local:record-download($path)
+        return concat("/controller/get-fs-file.xqy?path=", $path)
 };
 
 let $path            := xdmp:get-request-path()  

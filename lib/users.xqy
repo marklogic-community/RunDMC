@@ -408,3 +408,19 @@ declare function users:mkto-sync-lead($email as xs:string, $user, $source)
         xs:QName("source"), $source
     ) )
 };
+
+(: record a download :)
+declare function users:record-download-for-current-user($path as xs:string)
+{
+    let $user := users:getCurrentUser()
+    
+    return if ($user) then
+        xdmp:node-insert-child($user,
+            <download>
+                <path>{$path}</path>
+                <date>{fn:current-dateTime()}</date>
+            </download>
+        )
+    else 
+        ()
+};
