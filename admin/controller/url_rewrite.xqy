@@ -43,5 +43,7 @@ else if ($path eq "/signup-report") then
         concat("/controller/signup-report.xqy?", $query-string)
 else if ($path eq "/license-report") then
         concat("/controller/license-report.xqy?", $query-string)
+else if ($path eq "/download-report") then
+        concat("/controller/download-report.xqy?", $query-string)
      (: Otherwise, it must be some other file, e.g., CSS or JS :)
 else $orig-url
