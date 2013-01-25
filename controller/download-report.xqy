@@ -21,6 +21,7 @@ string-join(
  concat('"', $download/path/string(), '"'),
  concat('"', $person/country/string(), '"'), 
  concat('"', $person/organization/string(), '"'), 
+ concat('"', $download/fwded-for/string(), '"'), 
  ""
 ),
 ","
@@ -70,6 +71,7 @@ Total downloads to date: {$total}
 <th><b>Download</b></th>
 <th><b>Country</b></th>
 <th><b>Organization</b></th>
+<th><b>Client</b></th>
 </tr>
 </thead>
 {
@@ -83,6 +85,7 @@ return
 <td>{$i/path/string()}</td>
 <td>{$i/../country/string()}</td>
 <td>{$i/../organization/string()}</td>
+<td>{$i/fwded-for/string()}</td>
 </tr>
 }
 </table>
