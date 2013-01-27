@@ -13,15 +13,20 @@ import module namespace search = "http://marklogic.com/appservices/search"
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
 (: 
- : @param $path /-prefixed string that is path to the XML file
+ : @param $path /-prefixed string that is path to the file
  : that represents the document
  :
  : @return document read in from the give path, which is relative
  : to the current ML modules root
+ : return empty sequence if no such file exists
  :)
 declare function u:get-doc($path as xs:string) as node() {
     let $root := xdmp:modules-root()
-    return xdmp:document-get(fn:concat($root, $path))
+    let $apath := fn:concat($root, $path)
+    return if (xdmp:filesystem-file-exists($apath)) then
+        xdmp:document-get($apath)
+    else
+        ()
 };
 
 (: 
