@@ -1053,7 +1053,9 @@
         -->
         <div class="profile-form-row">
             <div class="profile-form-label">Country </div>
-            <xsl:copy-of select="doc('/private/countries.xml')"/>
+            <select class="required countrypicker country" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
+                <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
+            </select>
         </div>
         <div class="profile-form-row">
             <div class="profile-form-label">Company/Organization </div>
