@@ -424,3 +424,15 @@ declare function users:record-download-for-current-user($path as xs:string)
     else 
         ()
 };
+
+defined function users:denied() as xs:boolean
+{
+    let $user := users:getCurrentUser()
+
+    return
+    if ($user) then
+        (: TODO: see if username or org name matches AND country matches current denied list :)
+        false() 
+    else
+        false()
+};
