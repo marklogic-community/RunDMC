@@ -419,6 +419,8 @@ declare function users:record-download-for-current-user($path as xs:string)
             <download>
                 <path>{$path}</path>
                 <date>{fn:current-dateTime()}</date>
+                <client>{xdmp:get-request-client-address()}</client>
+                <fwded-for>{xdmp:get-request-header("X-Forwarded-For")}</fwded-for>
             </download>
         )
     else 
