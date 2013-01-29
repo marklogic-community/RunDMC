@@ -435,7 +435,13 @@ declare function users:denied() as xs:boolean
     if ($user) then
         let $name := $user/name/string()
         let $org := $user/organization/string()
-        return /denied-persons/person[Name/string() = $name or Name/string() = $org]
+        let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-sensitive", "punctuation-sensitive")
+        return cts:search(
+            /denied-persons/person,
+            cts:or-query(
+                (cts:element-value-query(xs:QName("Name"), $name, $opts), cts:element-value-query(xs:QName("Name"), $org, $opts))
+            )
+        )
     else
         false()
 };
