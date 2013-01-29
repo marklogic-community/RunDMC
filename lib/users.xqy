@@ -298,6 +298,51 @@ Country: ", $user/country/string(), "
     return ()
 };
 
+declare function users:warn-denied-person($user, $country, $country-code)
+{
+    let $_ := xdmp:log(concat("DENIED NAME", $user/name/string(), " from ", $country, " (", $country-code, " )")) 
+
+    let $hostname := xdmp:hostname()
+
+    let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
+
+    let $address := 
+        if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
+            "dmc-admin@marklogic.com"
+        else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
+            "eric.bloch@marklogic.com"
+        else
+            ()
+
+    let $_ := if ($address) then
+        util:sendEmail(
+
+            "RunDMC DENIED PERSON",
+            $address,
+            false(),
+            "RunDMC Admin",
+            $address,
+            "RunDMC Admin",
+            $address,
+            concat($staging, "DENIED user ", $user/email/string()), 
+            <em:content>
+            {concat("
+Username: ", $user/name/string(), "
+Email: ", $user/email/string(), "
+ID: ", $user/id/string(), "
+Organization: ", $user/organization/string(), "
+Industry: ", $user/industry/string(), "
+Country: ", $user/country/string(), "
+")
+            }
+            </em:content>
+        )
+    else
+        ()
+
+    return ()
+};
+
 declare function users:checkCreds($email as xs:string, $password as xs:string) as element(*)?
 {
     let $user := /person[email eq $email]
@@ -435,17 +480,26 @@ declare function users:denied() as xs:boolean
     if ($user) then
         let $name := $user/name/string()
         let $org := $user/organization/string()
-        let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-sensitive", "punctuation-sensitive")
-        let $denied := cts:search(
+        let $country := $user/country/string()]
+        let $country-code := doc("/private/countries.xml")/*:select/*:option[@*:value = $country]/@:data-code
+
+        let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-insensitive", "punctuation-insensitive")
+        (: match on name OR organization :)
+        let $person := cts:search(
             /denied-persons/person,
             cts:or-query(
                 (cts:element-value-query(xs:QName("Name"), $name, $opts), cts:element-value-query(xs:QName("Name"), $org, $opts))
             )
         )
 
-        let $_ := if ($denied) then xdmp:log(concat("DENIED ", $user/name/string())) else ()
-        return exists($denied)
-
+        return if ($denied) then 
+            return if ($country-code = $denied/Country/string())
+                let $_ := users:warn-denied-person($user, $country, $country-code) 
+                return true()
+            else
+                false()
+        else 
+            false()
     else
         false()
 };
