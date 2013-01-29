@@ -203,13 +203,23 @@ declare function local:gone($path as xs:string) as xs:boolean {
 
 (: if this is a server binary (and not xcc zip) you must be logged in or provide creds :)
 declare function local:forbidden($path as xs:string) as xs:boolean {
-    empty(users:getCurrentUser()) and not(users:authViaParams()) and not(users:denied()) and not(ends-with($path, ".zip")) and
+
+    not(ends-with($path, ".zip")) and
     (
      starts-with($path,'/download/binaries/6.0') or
      starts-with($path,'/download/binaries/5.0') or
      starts-with($path,'/download/binaries/4.2') or
      starts-with($path,'/download/binaries/4.1') or
      false()
+    )
+    and
+    (
+        (
+            empty(users:getCurrentUser()) and 
+            not(users:authViaParams()) 
+        )
+        or
+            users:denied()
     )
 };
 

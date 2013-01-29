@@ -436,12 +436,16 @@ declare function users:denied() as xs:boolean
         let $name := $user/name/string()
         let $org := $user/organization/string()
         let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-sensitive", "punctuation-sensitive")
-        return cts:search(
+        let $denied := cts:search(
             /denied-persons/person,
             cts:or-query(
                 (cts:element-value-query(xs:QName("Name"), $name, $opts), cts:element-value-query(xs:QName("Name"), $org, $opts))
             )
         )
+
+        let $_ := if ($denied) then xdmp:log(concat("DENIED ", $user/name/string())) else ()
+        return exists($denied)
+
     else
         false()
 };
