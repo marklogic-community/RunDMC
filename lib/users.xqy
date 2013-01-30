@@ -480,7 +480,7 @@ declare function users:denied() as xs:boolean
     if ($user) then
         let $name := $user/name/string()
         let $org := $user/organization/string()
-        let $country := $user/country/string()]
+        let $country := $user/country/string()
         let $country-code := doc("/private/countries.xml")/*:select/*:option[@*:value = $country]/@:data-code
 
         let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-insensitive", "punctuation-insensitive")
