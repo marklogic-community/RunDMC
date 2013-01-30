@@ -88,6 +88,9 @@
     <!-- Had the above description on DMC, but the description is identical to flexrep, so I left it as follows: -->
     <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
     <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
+    <guide url-name="monitoring" source-name="monitoring">Provides procedures 
+    for setting up and using monitoring applications on 
+    MarkLogic Server.</guide>
     <guide url-name="sharepoint" source-name="SharePoint-Connector">
 	    The documentation for the MarkLogic Connector for 
 	    SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>, 
@@ -98,7 +101,6 @@
   <group name="Other Reference Guides">
     <guide url-name="xquery"          source-name="xquery">A condensed overview of the XQuery language, including a description of the three XQuery dialects supported in MarkLogic Server. <added-in version="4.2">Also includes XSLT reference material, including details and extensions to the language.</added-in> This book does includes some syntax information, although it is primarily intended as an introduction and quick-reference to the languages, not as a comprehensive reference.</guide>
     <guide url-name="cpf"             source-name="cpf">Provides an introduction to the Content Processing Framework and procedures for installing the default content processing framework.</guide>
-    <guide url-name="monitoring"      source-name="monitoring">Provides procedures for setting up and using monitoring applications on MarkLogic Server.</guide>
     <guide url-name="performance"     source-name="performance">Provides performance-related information that is useful to application developers and administrators.</guide>
     <guide url-name="cluster"         source-name="cluster">Provides information on large-scale system architecture, clustering, and details on setting up both local-disk failover and shared-disk failover.</guide>
     <guide url-name="security"        source-name="security">Provides information on the role-based security model in MarkLogic Server.</guide>
