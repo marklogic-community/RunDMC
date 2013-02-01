@@ -40,6 +40,7 @@
     </group>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="MarkLogic Express" href="/express"/>
+    <generic-page display="Developer License" href="/developer"/>
     <generic-page display="Downloading Via Curl" href="/products/download-via-curl"/>
     <generic-page display="MarkLogic Academic License" href="/academic"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
