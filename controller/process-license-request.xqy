@@ -8,6 +8,15 @@ import module namespace json = "http://marklogic.com/json" at "/lib/mljson/lib/j
 
 declare option xdmp:output "method=html";
 
+(: mint has a different name for developer license type :)
+declare function local:mint-type($t as xs:string) as xs:string
+{
+    if ($t = "developer") then
+        "development"
+    else
+        $t
+};
+
 let $orig-url       := xdmp:get-request-url()
 let $query-string   := substring-after($orig-url, '?')
 let $valid-url      := xdmp:get-request-field("r")
@@ -67,13 +76,13 @@ let $valid-url := fn:concat($valid-url, "?",
            "&amp;cpus=", xdmp:url-encode($cpus),            
            "&amp;platform=", xdmp:url-encode($platform),
            "&amp;target=", xdmp:url-encode($target),
-           "&amp;type=", xdmp:url-encode($type),
-           "&amp;company=", xdmp:url-encode(if ($type eq "express") then $company else $school),
+           "&amp;type=", xdmp:url-encode(local:mint-type($type)),
+           "&amp;company=", xdmp:url-encode(if ($type ne "academic") then $company else $school),
            "&amp;email=", xdmp:url-encode($email))
 
 let $invalid-url := fn:concat($invalid-url, "?", $string-params, "&amp;retrying=1")
 
-let $valid-type := if ($type eq 'express') then
+let $valid-type := if ($type ne 'academic') then
         (
              (fn:string-length($company) le 255) and
         (not($signup) or (
@@ -146,7 +155,7 @@ let $name := if ($valid) then
     if ($signup) then
         let $list := xdmp:get-request-field("dev-list") 
 
-        let $others := if ($type eq 'express') then (
+        let $others := if ($type ne 'academic') then (
             <organization>{$company}</organization>,
             <industry>{$industry}</industry>,
             <phone>{$phone}</phone>,
@@ -162,10 +171,10 @@ let $name := if ($valid) then
         return 
         users:createUserAndRecordLicense($type, $name, $email, $passwd, $list, $others, $meta)/name/string()
     else
-        if ($type eq 'express') then
-            users:recordExpressLicense($email, $company, $meta)/name/string()
-        else
+        if ($type eq 'academic') then
             users:recordAcademicLicense($email, $school, $yog, $meta)/name/string()
+        else
+            users:recordLicense($email, $company, $meta, $type)/name/string()
 else
     $name
 

@@ -152,7 +152,7 @@ as element(*)?
     return $doc
 };
 
-declare function users:recordExpressLicense($email, $company, $license-metadata)
+declare function users:recordLicense($email, $company, $license-metadata, $type)
 {
     let $user := users:getUserByEmail($email)
     let $uri := base-uri($user)
@@ -161,7 +161,7 @@ declare function users:recordExpressLicense($email, $company, $license-metadata)
         { for $field in $user/* where not($field/local-name() = ('organization')) return $field }
             <organization>{$company}</organization>
             <license>
-                <type>express</type>
+                <type>{$type}</type>
                 <company>{$company}</company>
                 <date>{fn:current-dateTime()}</date>
                 <licensee>{$name}</licensee>
