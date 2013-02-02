@@ -107,6 +107,7 @@
       <group display="Loading and processing">
         <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
         <page display="RecordLoader" href="/code/recordloader"/>
+        <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
         <page display="Corb" href="/code/corb"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
@@ -243,6 +244,7 @@
         <group display="Labs">
             <page display="HDFS Storage Preview" href="/labs/hdfs-preview"/>
             <page display="MLPHP" href="/labs/mlphp"/>
+            <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
         </group>
     </group>
   </page>
