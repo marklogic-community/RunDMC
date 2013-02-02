@@ -251,20 +251,12 @@
   font-size: 1.4em;
   line-height: 1.3em;
 }
-.dc #hmfeature {
+.dc #hmfeature, .dc .hmround {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   border: 1px solid #CCC;
   background-color: #f8f9f1;
-  background-image: -moz-linear-gradient(top, white, #eef0dd);
-  background-image: -ms-linear-gradient(top, white, #eef0dd);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#eef0dd));
-  background-image: -webkit-linear-gradient(top, white, #eef0dd);
-  background-image: -o-linear-gradient(top, white, #eef0dd);
-  background-image: linear-gradient(top, white, #eef0dd);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='white', endColorstr='#eef0dd', GradientType=0);
   color: #555555;
 }
 
