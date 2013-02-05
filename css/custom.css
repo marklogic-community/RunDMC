@@ -217,7 +217,7 @@
   border-color: #dddddd;
 }
 .dc #banner {
-  background: #eef0dd url(/images/bannerbg.jpg) no-repeat center top;
+  xbackground: #eef0dd url(/images/bannerbg.jpg) no-repeat center top;
   color: #222222;
   *zoom: 1;
   padding: 20px 0;
