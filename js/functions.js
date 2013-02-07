@@ -227,6 +227,7 @@ if(typeof jQuery != 'undefined') {
                             },
                             success: function( data ) {
                                 if (data.status && data.status === 'ok') {
+                                    $("#ifail").text("");
                                     $(this).dialog('close');
 
                                     _gaq.push(['_trackPageview', u],
