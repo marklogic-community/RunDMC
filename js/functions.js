@@ -228,6 +228,11 @@ if(typeof jQuery != 'undefined') {
                             success: function( data ) {
                                 if (data.status && data.status === 'ok') {
                                     $("#ifail").text("");
+                                    $('#signup-trigger').hide();
+                                    $('#login-trigger').hide();
+                                    $('#session-trigger span').text(data.name);
+                                    $('#session-trigger').show();
+
                                     $(this).dialog('close');
 
                                     _gaq.push(['_trackPageview', u],
