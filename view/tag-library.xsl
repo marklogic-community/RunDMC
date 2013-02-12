@@ -1006,7 +1006,7 @@
             <input disabled="disabled" readonly="readonly" required="required" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
         </div>
         <div class="profile-form-row">
-            <div class="profile-form-label">Name </div>
+            <div class="profile-form-label">Full Name </div>
             <input autofocus="autofocus" class="required" required="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
         </div>
         <!--
