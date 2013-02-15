@@ -239,7 +239,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
         </attribute>
         ,
         <attribute>
-            <attrName>License_Type_New__c</attrName>
+            <attrName>License_Type__c</attrName>
             <attrValue>{$license/type/string()}</attrValue>
         </attribute>
     )
