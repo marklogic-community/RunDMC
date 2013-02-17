@@ -22,6 +22,9 @@ declare namespace SOAP-ENV = "http://schemas.xmlsoap.org/soap/envelope/";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace functx = "http://www.functx.com" at 
+    "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
+
 (: Store /private/marketo-config.xml in the database with actuals for these configs :)
 declare variable $mkto:endpoint := (doc("/private/marketo-config.xml")/marketo-config/endpoint/string(), "https://na-n.marketo.com/soap/mktows/1_7")[1];
 declare variable $mkto:client-id := (doc("/private/marketo-config.xml")/marketo-config/client-id/string(), "marklogic1_283493864F0B3177859B77")[1];
@@ -240,7 +243,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
         ,
         <attribute>
             <attrName>License_Type__c</attrName>
-            <attrValue>{$license/type/string()}</attrValue>
+            <attrValue>{functx:capitalize-first($license/type/string())}</attrValue>
         </attribute>
     )
 
