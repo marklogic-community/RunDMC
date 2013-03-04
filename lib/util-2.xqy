@@ -20,7 +20,7 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
  : to the current ML modules root
  : return empty sequence if no such file exists
  :)
-declare function u:get-doc($path as xs:string) as node() {
+declare function u:get-doc($path as xs:string) as node()* {
     let $root := xdmp:modules-root()
     let $apath := fn:concat($root, $path)
     return if (xdmp:filesystem-file-exists($apath)) then
