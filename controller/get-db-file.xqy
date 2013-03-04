@@ -56,5 +56,5 @@ return
                 $doc 
 
     else 
-        xdmp:set-response-code(404, "Not found")
+        (xdmp:set-response-code(404, "Not found"), "404 Not found")
 )
