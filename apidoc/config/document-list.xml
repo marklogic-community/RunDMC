@@ -131,7 +131,6 @@
       <url version="4.2" href="/4.2/javadoc/xcc/index.html"/>
       <url version="5.0" href="/5.0/javadoc/xcc/index.html"/>
       <url version="6.0" href="/6.0/javadoc/xcc/index.html"/>
-      <url version="7.0" href="/7.0/javadoc/xcc/index.html"/>
     </entry>
     <entry title="XCC .NET API Documentation (online)">
       API documentation for the MarkLogic XCC .NET C# API.
@@ -139,7 +138,6 @@
       <url version="4.2" href="/4.2/dotnet/xcc/index.html"/>
       <url version="5.0" href="/5.0/dotnet/xcc/index.html"/>
       <url version="6.0" href="/6.0/dotnet/xcc/index.html"/>
-      <url version="7.0" href="/7.0/dotnet/xcc/index.html"/>
     </entry>
   </group>
 
@@ -148,7 +146,6 @@
       API documentation for the MarkLogic Connector for Hadoop.
       <url version="5.0" href="/5.0/javadoc/hadoop/index.html"/>
       <url version="6.0" href="/6.0/javadoc/hadoop/index.html"/>
-      <url version="7.0" href="/7.0/javadoc/hadoop/index.html"/>
     </entry>
   </group>
 
@@ -156,7 +153,6 @@
     <entry title="javadoc for MarkLogic Client API for Java">
       API documentation for the MarkLogic Java API.
       <url version="6.0" href="/6.0/javadoc/client/index.html"/>
-      <url version="7.0" href="/7.0/javadoc/client/index.html"/>
     </entry>
   </group>
 
@@ -164,7 +160,6 @@
     <entry title="C++ User Defined Function API Reference">
       API documentation for the C++ User Defined Function (UDF) API.
       <url version="6.0" href="/6.0/cpp/udf/index.html"/>
-      <url version="7.0" href="/7.0/cpp/udf/index.html"/>
     </entry>
   </group>
 
