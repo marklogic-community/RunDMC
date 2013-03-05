@@ -242,7 +242,7 @@ declare function mkto:associate-lead($email, $cookie, $meta)
         </attribute>
         ,
         <attribute>
-            <attrName>License_Type__c</attrName>
+            <attrName>license_type__c</attrName>
             <attrValue>{functx:capitalize-first($license/type/string())}</attrValue>
         </attribute>
     )
