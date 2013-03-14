@@ -196,6 +196,8 @@ declare function local:gone($path as xs:string) as xs:boolean {
         "/pubs/4.0",
         "/code/libmlxcc",
         "/code/versi",
+        "/code/pomegranate",
+        "/queryingxmlbook",
         "/conference/2007",
         "/news/standards/w3c.xqy"
     )
