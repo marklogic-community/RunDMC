@@ -17,7 +17,7 @@ pre, .userguide img {
 /* Don't do border/padding on code inside a table */
 .userguide table pre {
   border-style: none;
-  padding: 0px;
+  padding: 1px;
 }
 
 ol ol {
