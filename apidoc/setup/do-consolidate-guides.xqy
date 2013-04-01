@@ -27,7 +27,6 @@ fn:distinct-values(
   return fn:concat(fn:string-join(fn:tokenize($x, "/")[1 to 4], "/"), "/") )
 
 :)
-
 declare variable $sub-dirs := xdmp:directory-properties($guides-dir)/prop:properties/prop:directory/base-uri(.);
 
 (: Just the name of each dir, not including the full path to it :)
