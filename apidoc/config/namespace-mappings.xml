@@ -46,6 +46,7 @@
   <namespace lib="plugin" uri="http://marklogic.com/extension/plugin"/>
   <namespace lib="ppt" uri="http://marklogic.com/cpf/powerpoint"/>
   <namespace lib="prof" uri="http://marklogic.com/xdmp/profile"/>
+  <namespace lib="rdf" uri="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
 
   <!-- /rest would be too close to /REST/ (used for REST API URLs), so use /rest-lib instead -->
   <namespace lib="rest-lib" uri="http://marklogic.com/appservices/rest" prefix="rest"/>
