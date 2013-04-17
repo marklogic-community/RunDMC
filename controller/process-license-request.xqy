@@ -77,6 +77,7 @@ let $valid-url := fn:concat($valid-url, "?",
            "&amp;platform=", xdmp:url-encode($platform),
            "&amp;target=", xdmp:url-encode($target),
            "&amp;type=", xdmp:url-encode(local:mint-type($type)),
+           "&amp;country=", xdmp:url-encode($country),
            "&amp;company=", xdmp:url-encode(if ($type ne "academic") then $company else $school),
            "&amp;email=", xdmp:url-encode($email))
 
@@ -87,7 +88,6 @@ let $valid-type := if ($type ne 'academic') then
              (fn:string-length($company) le 255) and
         (not($signup) or (
              (string-length($phone) le 255 and string-length($phone) gt 0) and
-             (string-length($country) le 255 and string-length($country) gt 0) and
              (string-length($industry) le 255 and fn:string-length($industry) gt 0)
             )
           )
@@ -101,6 +101,7 @@ let $valid :=
     if ($signup) then
         $name and $email and $passwd and ($passwd eq $conf_passwd)
         and fn:string-length($email) le 255 and fn:string-length($email) gt 0
+        and fn:string-length($country) le 255 and fn:string-length($country) gt 0
         and fn:string-length($passwd) le 255 and fn:string-length($passwd) gt 0
         and util:validateEmail($email)
         and not(users:emailInUse($email))
@@ -165,6 +166,7 @@ let $name := if ($valid) then
             ()
         ) else (
             <organization>{$school}</organization>,
+            <country>{$country}</country>,
             <yog>{$yog}</yog>
         )
 
