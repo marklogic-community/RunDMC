@@ -53,7 +53,7 @@ try {
 
     return
     <fetch-meetup-status>{
-        for $group in ('den-mark-logic', 'NY-MUG', 'muglondon', 'Mark-Logic-User-Group',  'Mark-UPS', 'B-MLUG')  
+        for $group in ('den-mark-logic', 'NY-MUG', 'muglondon', 'Mark-Logic-User-Group',  'Mark-UPS', 'B-MLUG', 'laxml-meetup')  
             let $url := concat('http://', $lhost, '/controller/fetch-meetup.xqy?group_urlname=', $group, '&amp;key=', $key)
             let $response := xdmp:http-get($url, $opts)
             return 

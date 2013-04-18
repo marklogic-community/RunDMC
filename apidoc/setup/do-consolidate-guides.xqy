@@ -16,6 +16,17 @@ import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
 declare variable $guides-dir := concat("/",$api:version,"/xml/");
 
 (: One sub-dir for each guide :)
+(: The code here now requires directory-creation set to automatic on the db.
+   In MarkLogic 6 and later, that is not the default.  If you want code to 
+   work with directory-creation set to manual (the new default), you can do 
+   something like this (this requires a URI lexicon):  :)
+
+(:
+fn:distinct-values(
+  for $x in cts:uri-match(fn:concat($guides-dir, "*"))
+  return fn:concat(fn:string-join(fn:tokenize($x, "/")[1 to 4], "/"), "/") )
+
+:)
 declare variable $sub-dirs := xdmp:directory-properties($guides-dir)/prop:properties/prop:directory/base-uri(.);
 
 (: Just the name of each dir, not including the full path to it :)

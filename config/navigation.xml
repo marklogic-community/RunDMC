@@ -150,7 +150,7 @@
         <page display="Feed" href="/code/feed"/>
         <!-- <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/> -->
         <page display="XQuery Commons" href="/code/commons"/>
-        <page display="rxq" href="/code/rxq"/>
+        <page display="rxq" href="/labs/rxq"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
@@ -232,6 +232,7 @@
       </group>
       <group display="MarkLogic User Groups">
         <page display="DenMark - Denver" href="/meet/denmark"/>
+        <page display="LAxML - Los Angeles" href="/meet/laxml"/>
         <page display="Mark-UPS - Maryland" href="/meet/markups"/>
         <page display="MUGL - London" href="/meet/mugl"/>
         <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>

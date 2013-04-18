@@ -423,6 +423,9 @@ table.api_table {
 .api_generic_table th
 { padding: 15px 10px; }
 
+/* workaround for nowrap attributes that jquery is adding to the td tags */
+table.api_generic_table td { white-space: normal; }
+
 
 table.api_generic_table.guide_info { width: 100%; }
 table.api_generic_table.guide_info td,
