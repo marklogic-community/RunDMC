@@ -7,7 +7,7 @@
   extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs apidoc api xdmp">
 
-  <xsl:variable name="REST-libs" select="'manage','XXX'"/>
+  <xsl:variable name="REST-libs" select="'manage','XXX','rest-client'"/>
 
   <!-- This determines where each REST doc gets stored (at what document URI) -->
   <xsl:template mode="result-path-href" match="apidoc:function[@lib = $REST-libs]">
