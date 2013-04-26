@@ -117,7 +117,7 @@ thead th:only-child {
 }
 thead th p {margin: 0;}
 tbody {border-top: 1px solid #CCC;}
-tbody th, tbody td {padding: 10px 5px;}
+tbody th, tbody td {padding: 10px 5px; white-space: normal}
 tbody td:first-child, tbody th:first-child {
 	padding-left: 15px;
 	background: url(/images/bg_cacaca.gif) top left repeat-y;
