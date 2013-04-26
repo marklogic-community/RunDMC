@@ -913,7 +913,7 @@
                 <a href="{ ml:external-uri(.)}">
                   <xsl:value-of select="title"/>
                 </a>
-                <br/><div class="doc-desc"><p><xsl:value-of select="description"/></p></div>
+                <br/><div class="doc-desc"><p><xsl:value-of select="doc(base-uri(.))//*:description"/></p></div>
               </td>
               <!--
               <td>
