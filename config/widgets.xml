@@ -154,6 +154,7 @@
 
   <widget xquery="training-calendar.xqy"> 
     <!-- <page href="/code/top-songs"/> -->
+    <page href="/learn/free-online-training"/>
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page-tree root="/news-and-events"/>
