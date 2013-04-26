@@ -61,7 +61,7 @@ declare function local:extract-event($tr, $n) {
                 { let $tokens := fn:tokenize($where, ", ")
                     return (<xhtml:span id="event_{$n}_locality" class="locality">
                              { $tokens [1] }
-                           </xhtml:span>, ", ",
+                           </xhtml:span>, if ($tokens [2]) then ", " else "",
                            <xhtml:span id="event_{$n}_region" class="region">
                              { $tokens [2] }
                            </xhtml:span>) } </xhtml:div> </xhtml:div>
