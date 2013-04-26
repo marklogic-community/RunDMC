@@ -1,0 +1,54 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+<h1><img src="/media/signature-icons-training.png" alt="" width="24" height="24" /> Free Online Training</h1>
+
+    
+     <div>
+<xhtml:div id="events_listing" class="events_listing" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+    <i>MarkLogic University offers free introductory courses online:</i>
+    <br/>
+    <br/>
+
+    <xhtml:div id="event_6" class="event">
+        <xhtml:h2 id="event_6_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=89aa2450-a0a5-4de0-931f-37439c7e04cb" target="_blank"> Introduction to MarkLogic Server </xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+
+    <xhtml:div id="event_4" class="event">
+        <xhtml:h2 id="event_4_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=eb64a99b-edf0-4e76-9c28-be2b9206aba0&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> REST API </xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+    <xhtml:div id="event_5" class="event">
+        <xhtml:h2 id="event_5_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=795c2722-ede3-4f21-9ba8-cd75f98384f1&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Java API</xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+    <xhtml:div id="event_2" class="event">
+        <xhtml:h2 id="event_2_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=55880f88-5f95-4dfb-9565-d86c52fe9440&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Loading Data with Content Pump </xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+    <xhtml:div id="event_1" class="event">
+        <xhtml:h2 id="event_1_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=77a52cc7-9198-45c9-95d3-fba5f48cb380&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> BI Tools Interface</xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+    <xhtml:div id="event_3" class="event">
+        <xhtml:h2 id="event_3_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=eb9c7a0f-3ced-4b38-9639-56b9cb02d1f4&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Data Visualization Widgets</xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+
+</xhtml:div>
+     </div>
+
+  <div><a class="more" href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=dc420957-0b7a-49c1-b791-8eaac9da05ec">Full Free Curriculum Listing »</a></div>
+</ml:widget>

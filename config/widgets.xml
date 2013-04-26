@@ -144,6 +144,14 @@
     <page href="/learn/references"/>
   </widget>
 
+  <widget xquery="online-training.xml"> 
+    <page href="/learn"/>
+    <page href="/learn/guides"/>
+    <page-tree root="/news-and-events"/>
+    <page-tree root="/news"/>
+    <page-tree root="/events"/>
+  </widget>
+
   <widget xquery="training-calendar.xqy"> 
     <!-- <page href="/code/top-songs"/> -->
     <page href="/learn"/>
@@ -153,13 +161,13 @@
     <page-tree root="/events"/>
   </widget>
 
-  <widget href="/widgets/mark-logic-authors.xml">
 <!--
+  <widget href="/widgets/mark-logic-authors.xml">
     this page is already pretty long
     <page href="/"/>
--->
     <page href="/learn"/>
   </widget>
+-->
 
   <widget href="/widgets/mugfr-flickr.xml">
     <page href="/meet/mugfr/en"/>
