@@ -41,8 +41,8 @@ declare function local:extract-event($tr, $n) {
   return if(fn:count($tds) = 4)
          then let $nodes   := local:extract-title( $tds )
               let $title   := $nodes [1]
-              let $date    := $nodes [2]
-              let $where := $nodes [3]
+              let $date    := $tds [1]
+              let $where := $tds [3]
               return <xhtml:div id="event_{$n}" class="event">
                 <xhtml:h4 id="event_{$n}_title" style="margin-bottom: 2px; margin-top: 8px;"> <xhtml:strong>{ $title } </xhtml:strong></xhtml:h4>
                 <xhtml:div class="when" id="event_{$n}_when">
