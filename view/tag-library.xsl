@@ -890,10 +890,10 @@
               </xsl:if>
               <td>
                 <img src="/images/i_monitor.png" alt="" width="24" height="22" />
-                <a href="{ ml:external-uri(.) }">
+                 <a href="{ ml:external-uri(.) }">
                   <xsl:value-of select="title"/>
                 </a>
-                <br/><div class="doc-desc"><xsl:value-of select="description"/></div>
+                <br/><div class="doc-desc"><xsl:copy-of select="doc(base-uri(.))//*:description"/></div>
               </td>
         
               <!--
