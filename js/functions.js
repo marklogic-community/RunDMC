@@ -563,6 +563,9 @@ if(typeof jQuery != 'undefined') {
                          '<br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' + 
                     '</div>');
 
+            if (getParameterByName('fs')) {
+                $(document).fartscroll(800);
+            }
         });
 
         var d = $('.yearpicker').attr('data-value');
@@ -619,6 +622,7 @@ if(typeof jQuery != 'undefined') {
         //$('#signup-form').submit(function(e) {
 		    // e.preventDefault();
         //});
+
 
 		// add new functions before this comment
 	});
