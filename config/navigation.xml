@@ -231,7 +231,6 @@
         <page display="Supernodes" href="/people/supernodes"/>
       </group>
       <group display="MarkLogic User Groups">
-        <page display="DenMark - Denver" href="/meet/denmark"/>
         <page display="LAxML - Los Angeles" href="/meet/laxml"/>
         <page display="Mark-UPS - Maryland" href="/meet/markups"/>
         <page display="MUGL - London" href="/meet/mugl"/>
@@ -239,6 +238,7 @@
         <page display="NYMUG - New York" href="/meet/nymug"/>
         <page display="SOHMUG - Southern Ohio" href="/meet/sohmug"/>
         <page display="BMLUG - Boston" href="/meet/bmug"/>
+        <page display="Benelux - Amsterdam" href="/meet/benelux"/>
       </group>
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
