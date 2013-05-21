@@ -49,11 +49,11 @@ try {
         else if ($hostname eq 'stage-developer.marklogic.com') then
             "dmc-stage-admin.marklogic.com"
         else
-            "localhost"
+            "localhost:8003"
 
     return
     <fetch-meetup-status>{
-        for $group in ('den-mark-logic', 'NY-MUG', 'muglondon', 'Mark-Logic-User-Group',  'Mark-UPS', 'B-MLUG', 'laxml-meetup')  
+        for $group in ('den-mark-logic', 'NY-MUG', 'muglondon', 'Mark-Logic-User-Group',  'Mark-UPS', 'B-MLUG', 'laxml-meetup', 'MarkLogic-User-Group-Benelux')  
             let $url := concat('http://', $lhost, '/controller/fetch-meetup.xqy?group_urlname=', $group, '&amp;key=', $key)
             let $response := xdmp:http-get($url, $opts)
             return 
