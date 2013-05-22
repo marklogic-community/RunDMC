@@ -74,6 +74,9 @@
     <guide url-name="rest-dev"        source-name="rest-dev">
 	    Provides information on administration of and application 
 	    development using the MarkLogic REST API.</guide>
+    <guide url-name="semantics" source-name="semantics">
+    Provides information on developing applications using MarkLogic Semantics.
+    </guide>
     <!--
     <guide url-name="mapreduce"       source-name="mapreduce">Provides a review of Hadoop terminology, a description of the MarkLogic-provided classes that enable data to be taken from or sent from MarkLogic, and an explanation of the sample code provided.</guide>
     -->
