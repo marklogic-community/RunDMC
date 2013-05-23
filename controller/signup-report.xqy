@@ -20,6 +20,7 @@ string-join(
  concat('"', $i/country/string(), '"'), 
  concat('"', $i/organization/string(), '"'), 
  concat('"', $i/list/string(), '"'), 
+ concat('"', $i/download[last()]/fwded-for[last()]/string(), '"'), 
  ""
 ),
 ","
@@ -67,6 +68,7 @@ Total signups to date: {$total}
 <th><b>Country</b></th>
 <th><b>Organization</b></th>
 <th><b>Dev list</b></th>
+<th><b>Latest IP</b></th>
 </tr>
 </thead>
 {
@@ -80,6 +82,7 @@ return
 <td>{$i/country/string()}</td>
 <td>{$i/organization/string()}</td>
 <td>{$i/list/string()}</td>
+<td>{$i/download[last()]/fwded-for[last()]/string()}</td>
 </tr>
 }
 </table>
