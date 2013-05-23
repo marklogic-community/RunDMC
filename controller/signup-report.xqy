@@ -20,7 +20,7 @@ string-join(
  concat('"', $i/country/string(), '"'), 
  concat('"', $i/organization/string(), '"'), 
  concat('"', $i/list/string(), '"'), 
- concat('"', $i/download[last()]/fwded-for[last()]/string(), '"'), 
+ concat('"', tokenize($i/download[last()]/fwded-for[last()]/string(), ", ")[last()], '"'), 
  ""
 ),
 ","
@@ -82,7 +82,7 @@ return
 <td>{$i/country/string()}</td>
 <td>{$i/organization/string()}</td>
 <td>{$i/list/string()}</td>
-<td>{$i/download[last()]/fwded-for[last()]/string()}</td>
+<td>{fn:tokenize($i/download[last()]/fwded-for[last()]/string(), ", ")[last()]}</td>
 </tr>
 }
 </table>
