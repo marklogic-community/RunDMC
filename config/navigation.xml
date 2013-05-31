@@ -5,12 +5,10 @@
   <page display="Docs" href="/" tooltip="MarkLogic API reference and user guides" api-server="yes" use-preferred-version-href="yes"/>
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
     <group display="MarkLogic Downloads">
-      <group display="MarkLogic Server">
-        <page display="MarkLogic 6" href="/products/marklogic-server/6.0" />
-        <page display="5.0" href="/products/marklogic-server/5.0" />
-        <page display="4.2" href="/products/marklogic-server/4.2" />
-        <page display="4.1" href="/products/marklogic-server/4.1"/>
-      </group>
+      <page display="MarkLogic Server" href="/products/marklogic-server/6.0" />
+      <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
+      <page display="4.2" href="/products/marklogic-server/4.2" hide="yes" />
+      <page display="4.1" href="/products/marklogic-server/4.1" hide="yes" />
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
         <page display="XCC Java/.NET "   href="/products/xcc"/>
@@ -27,7 +25,6 @@
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
         <page display="Plug-in for Nagios" href="/products/nagios"/>
-        <page display="Smart Plug-in for HP Operations Manager" href="/products/hp-operations-manager"/>
       </group>
       <group display="Microsoft Office Integration">
         <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
