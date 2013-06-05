@@ -85,12 +85,12 @@
   <group name="Administrator's Guides">
     <guide url-name="admin"           source-name="admin">Provides procedures for administrative tasks such as creating servers, creating databases, backing up databases, creating users, setting up your security policy, and so on.</guide>
     <guide url-name="admin-api"       source-name="adminAPI">Provides information on writing code to script various administrative tasks such as creating and modifying databases, App Servers, and so on.</guide>
-    <!--
-    <guide url-name="database-replication"  source-name="database-replication">Provides step-by-step information on replicating MarkLogic Server content.</guide>
-    -->
-    <!-- Had the above description on DMC, but the description is identical to flexrep, so I left it as follows: -->
-    <guide url-name="database-replication"  source-name="database-replication">Provides a thorough explanation of how to configure and use MarkLogic database replication.</guide>
-    <guide url-name="flexrep"         source-name="replication">Provides step-by step information on replicating MarkLogic Server content.</guide>
+    <guide url-name="database-replication" 
+           source-name="database-replication">Provides a thorough explanation 
+    of how to configure and use MarkLogic database replication.</guide>
+    <guide url-name="flexrep" source-name="replication">Provides 
+    step-by step information on replicating MarkLogic Server content
+    using Flexible Replication.</guide>
     <guide url-name="monitoring" source-name="monitoring">Provides procedures 
     for setting up and using monitoring applications on 
     MarkLogic Server.</guide>

@@ -114,7 +114,7 @@
           </xsl:template>
           <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous" name="guide-next">
             <div class="{local-name(.)}Chapter">
-              <a href="{ml:external-uri-with-prefix(.)}#chapter">
+              <a href="{ml:external-uri-with-prefix(.)}">
                 <xsl:apply-templates mode="next-or-prev" select="."/>
               </a>
             </div>
@@ -156,7 +156,7 @@
 
           <xsl:template mode="guide" match="chapter">
             <li>
-              <a href="{ml:external-uri-with-prefix(@href)}#chapter">
+              <a href="{ml:external-uri-with-prefix(@href)}">
                 <xsl:apply-templates mode="guide"/>
               </a>
             </li>
