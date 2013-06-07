@@ -34,8 +34,13 @@
     <xsl:call-template name="functions-by-category"/>
   </xsl:variable>
 
-                                                                              <!-- exclude REST API "functions" -->
-  <xsl:variable name="all-libs" select="$api:built-in-libs | $api:library-libs[not(. eq 'REST')]"/>
+  <!-- exclude REST API "functions" -->
+  <!-- hack to exclude sem -the right way to do this is to exclude the 
+       duplicate values, but that proved hard for my brain to figure out
+       how to code -->
+  <xsl:variable name="all-libs" select="
+          $api:built-in-libs[not(. eq 'sem')] | 
+          $api:library-libs[not(. eq 'REST')]"/>
 
   <xsl:variable name="guide-docs"                select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
   <xsl:variable name="guide-groups"              select="u:get-doc('/apidoc/config/document-list.xml')/docs/group[guide]"/>
@@ -313,9 +318,11 @@
                     -->
 
                     <!-- Display the wildcard (*) version in the TOC, but the original, curly-brace version on the list pages. -->
-                    <node href="{api:REST-fullname-to-external-uri(.)}" display="{api:REST-name-with-wildcards($base-display-name)}"
-                                                              list-page-display="{api:reverse-translate-REST-resource-name($base-display-name)}"
-                                                                        type="function"/>
+                  <node href="{api:REST-fullname-to-external-uri(.)}" 
+                   display="{$base-display-name}"
+                   list-page-display="{api:reverse-translate-REST-resource-name(
+                                      $base-display-name)}"
+                   type="function"/>
                   </xsl:template>
 
 </xsl:stylesheet>

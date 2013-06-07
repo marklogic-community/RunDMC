@@ -71,18 +71,15 @@ declare function get-libs($query, $builtin) {
                                            xs:QName("lib"), (), "ascending",
                                            $query)
   return
-    <wrapper> <!-- wrapper necessary for XSLTBUG 13062 workaround re: processing of parentless elements -->
       <api:lib category-bucket="{get-bucket-for-lib($lib)}">{
          if ($builtin) then attribute built-in { "yes" } else (),
          $lib
       }</api:lib>
-    </wrapper>
-    /api:lib
 };
 
 declare function function-count-for-lib($lib) {
-  let $dir := $api:version-dir return (: This line is necessary as a workaround for Bug #13385 :)
-  xdmp:estimate(xdmp:directory($dir,"1")/api:function-page/api:function[@lib eq $lib])
+  xdmp:estimate(xdmp:directory($api:version-dir,"1")/api:function-page/
+     api:function[@lib eq $lib])
 };
 
 declare function query-for-lib-functions($lib) {
