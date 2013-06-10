@@ -35,12 +35,11 @@
   </xsl:variable>
 
   <!-- exclude REST API "functions" -->
-  <!-- hack to exclude sem -the right way to do this is to exclude the 
-       duplicate values, but that proved hard for my brain to figure out
-       how to code -->
+  <!-- dedup when there is a built-in lib that has the same prefix as a library
+       lib - can probably do this more efficiently -->
   <xsl:variable name="all-libs" select="
-          $api:built-in-libs[not(. eq 'sem')] | 
-          $api:library-libs[not(. eq 'REST')]"/>
+          $api:built-in-libs | 
+          $api:library-libs[not(. eq 'REST')][not(. = $api:built-in-libs)]"/>
 
   <xsl:variable name="guide-docs"                select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
   <xsl:variable name="guide-groups"              select="u:get-doc('/apidoc/config/document-list.xml')/docs/group[guide]"/>
