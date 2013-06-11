@@ -316,12 +316,13 @@
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
 
-                    <!-- Display the wildcard (*) version in the TOC, but the original, curly-brace version on the list pages. -->
-                  <node href="{api:REST-fullname-to-external-uri(.)}" 
-                   display="{$base-display-name}"
-                   list-page-display="{api:reverse-translate-REST-resource-name(
-                                      $base-display-name)}"
-                   type="function"/>
-                  </xsl:template>
+                    <!-- Display the wildcard (*) version in the TOC, but the 
+                         original, curly-brace version on the list pages. -->
+           <node href="{api:REST-fullname-to-external-uri(.)}" 
+                 display="{api:REST-name-with-wildcards($base-display-name)}"
+                 list-page-display="{api:reverse-translate-REST-resource-name(
+                                     $base-display-name)}"
+                 type="function"/>
+         </xsl:template>
 
 </xsl:stylesheet>
