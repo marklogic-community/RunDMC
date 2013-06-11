@@ -4,11 +4,13 @@
 <navigation xmlns="http://developer.marklogic.com/site/internal">
   <page display="Docs" href="/" tooltip="MarkLogic API reference and user guides" api-server="yes" use-preferred-version-href="yes"/>
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
-    <group display="MarkLogic Downloads">
-      <page display="MarkLogic Server" href="/products/marklogic-server/6.0" />
-      <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
-      <page display="4.2" href="/products/marklogic-server/4.2" hide="yes" />
-      <page display="4.1" href="/products/marklogic-server/4.1" hide="yes" />
+    <group display="DOWNLOADS">
+      <group display="Server">
+        <page display="MarkLogic 6" href="/products/marklogic-server/6.0" />
+        <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
+        <page display="4.2" href="/products/marklogic-server/4.2" hide="yes" />
+        <page display="4.1" href="/products/marklogic-server/4.1" hide="yes" />
+      </group>
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
         <page display="XCC Java/.NET "   href="/products/xcc"/>
