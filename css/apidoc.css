@@ -457,8 +457,8 @@ a.function_prefix { text-decoration: underline; color: #899B3B; }
 */
 
 
-/* for admin help docs */
-strong.configOption {
+/* for admin help docs (actually, for all strongs) */
+strong {
   color: #2C2C2C;
 }
 
