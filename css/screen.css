@@ -883,7 +883,6 @@ footer nav .current a {color: white;}
 	margin-bottom: 10px;
 }
 .widget div div {line-height: 114%;}
-article.twitter div div {line-height: 133%;}
 .widget .code, .widget .download {
 	font-size: 12px;
 	list-style: none !important;
@@ -1316,11 +1315,6 @@ section#documentation:before {margin-bottom: 30px;}
 	font-style: italic;
 }
 #bottom1 article .date {font-style: italic;}
-#bottom1 .twitter h4 {
-	text-indent: -999em;
-	height: 0;
-}
-#bottom1 .tweet-user {font-weight: bold;}
 #bottom1 .votes, .lists.stackoverflow .votes {
 	position: absolute;
 	left: 0;
@@ -1721,7 +1715,7 @@ div.intro p + a, div.intro p + img {float: right;}
 	margin: 20px 0;
 	padding: 0 !important;
 }
-.lists.github, .lists.stackoverflow, .lists.twitter {margin: 30px 0 !important;}
+.lists.github, .lists.stackoverflow {margin: 30px 0 !important;}
 .lists header {
 	background: #ECECEC;
 	border: 1px solid white;
@@ -1754,9 +1748,7 @@ div.intro p + a, div.intro p + img {float: right;}
 	float: left;
 }
 .lists.github header h1,
-.lists.stackoverflow header h1,
-.lists.twitter header h1,
-.lists.twitter + .meetup header h1 {
+.lists.stackoverflow header h1 {
 	font-size: 24px;
 	font-weight: normal;
 }
@@ -1801,7 +1793,6 @@ div.intro p + a, div.intro p + img {float: right;}
 	min-height: 206px;
 }
 
-.lists.twitter header + div {min-height: 225px;}
 .lists table {
 	margin: 0;
 	width: 100%;
@@ -1816,15 +1807,6 @@ div.intro p + a, div.intro p + img {float: right;}
 	border: none !important;
 }
 
-/* Twitstream */
-.tweet-source {display:none;}
-
-
-.tweet-rt {
-    font-size: .9em;
-    background: url(/media/twitter/retweet.png) left center no-repeat;
-    padding-left: 19px;
-}
 .lists header + div table td, .lists header + div table th {border-top: 1px solid #E4E4E4 !important;}
 .lists header + div table tr:first-child td, .lists header + div table tr:first-child th {border-top: none !important;}
 .lists th {
@@ -1883,10 +1865,6 @@ div.intro p + a, div.intro p + img {float: right;}
 .lists.stackoverflow article .author_date {
 	font-size: 10px;
 	font-style: italic;
-}
-.lists.twitter th, .lists.twitter td {
-	padding-top: 15px;
-	padding-bottom: 15px;
 }
 .lists header + ul, .lists header + div {border-right: 1px solid #ECECEC;}
 .lists li {margin: 0 0 15px;}
@@ -1984,40 +1962,6 @@ ul.multi-page-toc {list-style: square inside;}
 /* Workaround for our css stomping on CodeMirror */
 .CodeMirror-scroll pre {overflow: hidden;}
 
-/* Twitstream */
-.tweet-source {display:none;}
-
-
-.tweet-rt {
-    font-size: .9em;
-    background: url(/media/twitter/retweet.png) left center no-repeat;
-    padding-left: 19px;
-}
-
-.tweet-reply {
-    font-size: .9em;
-    background: url(/media/twitter/reply.png) left center no-repeat;
-    padding-left: 19px;
-}
-
-.tweet-time {
-    font-style: italic;
-    font-size: .9em;
-}
-
-div.body.tweet1 {
-	float: left;
-	width: 100%;
-	padding: 0 0 15px 0;
-}
-
-div.body.tweet2ormore {
-	border-top: 1px solid #E1E1E1;
-	float: left;
-	width: 100%;
-	padding: 15px 0;
-}
-
 .features section {
 	display: inline-block;
 	width: 299px;
@@ -2066,11 +2010,6 @@ div.body.tweet2ormore {
 	bottom: 0;
 	left: 0;
 	position: absolute;
-}
-
-article.twitter {
-	font-size: 12px;
-	line-height: 133%;
 }
 
 #featured:before {content: none !important;}
