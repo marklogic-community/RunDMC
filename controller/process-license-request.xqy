@@ -31,12 +31,15 @@ let $string-params := string-join($params, "&amp;")
 let $currentUser := users:getCurrentUser()
 
 let $version := xdmp:get-request-field("version")
+let $v := fn:tokenize($version, "\.")
+let $major := $v[1]
 let $name := if ($currentUser) then $currentUser/*:name else xdmp:get-request-field("name")
 let $email := if ($currentUser) then $currentUser/*:email else xdmp:get-request-field("email")
 let $passwd := xdmp:get-request-field("password")
 let $conf_passwd := xdmp:get-request-field("password_conf")
 let $signup := xdmp:get-request-field("signup") eq "1"
 let $type := xdmp:get-request-field("type")
+let $agree := xdmp:get-request-field("agree")
 
 let $cpus := xdmp:get-request-field("cpus")
 let $platform := xdmp:get-request-field("platform")
@@ -108,6 +111,7 @@ let $valid :=
         and $valid-type
         and $platform 
         and $hostname 
+        and ($agree eq "on" or number($version) lt 7)
     else
         $platform and
         $hostname and
@@ -118,6 +122,7 @@ let $valid :=
                 users:checkCreds($email, $passwd)
             ) and
         $valid-type 
+        and ($agree eq "on" or number($version) lt 7)
 
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
