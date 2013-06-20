@@ -195,6 +195,8 @@ declare function local:gone($path as xs:string) as xs:boolean {
         "/products/marklogic-server/4.1",
         "/products/marklogic-server/requirements-4.0",
         "/products/marklogic-server/requirements-4.1",
+        "/products/xcc/4.0",
+        "/products/xcc/4.1",
         "/docs/4.0",
         "/docs/4.1",
         "/pubs/4.0",
