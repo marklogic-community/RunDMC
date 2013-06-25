@@ -26,7 +26,12 @@
 
   <xsl:include href="../view/uri-translation.xsl"/>
 
-  <xsl:variable name="REST-complexType-mappings" select="u:get-doc('/apidoc/config/REST-complexType-mappings.xml')/resources/resource"/>
+  <xsl:variable name="REST-complexType-mappings" select="
+    if ($api:version eq '6.0') 
+    then u:get-doc('/apidoc/config/REST-complexType-mappings.xml')
+            /resources/marklogic6/resource
+    else u:get-doc('/apidoc/config/REST-complexType-mappings.xml')
+            /resources/marklogic7/resource[complexType/@name ne 'woops']" />
 
   <xsl:template match="/">
 <xsl:value-of select="xdmp:log(concat('$api:version: ',$api:version))"/>

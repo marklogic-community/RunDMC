@@ -4,6 +4,7 @@
        * resources whose names end with "/edit".
 -->
 <resources>
+ <marklogic6>
   <resource name="/manage/v1/">
     <complexType name="local-cluster-default"/>
   </resource>
@@ -178,4 +179,107 @@
     <complexType name="woops"/>
   </resource>
 -->
+ </marklogic6>
+ <marklogic7>
+<resource name="/manage/v2/">
+  <complexType name="local-cluster-default"/>
+</resource>
+<resource name="/manage/v2/clusters">
+  <complexType name="cluster-default-list"/>
+</resource>
+<resource name="/manage/v2/clusters/{id|name}">
+  <complexType name="local-cluster-default"/>
+</resource>
+<resource name="/manage/v2/databases">
+  <complexType name="database-default-list"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}">
+  <complexType name="database-default"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/{custom}">
+  <complexType name="no-output"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/partitions">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/partitions/{name}">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/partitions/{name}/properties">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/rebalancer">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/sub-databases">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/sub-databases/{id|name}">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{id|name}/super-databases">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/databases/{sub-id|sub-name}/super-databases/{super-id|super-name}">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/forests">
+  <complexType name="forest-default-list"/>
+</resource>
+<resource name="/manage/v2/forests/{id|name}">
+  <complexType name="forest-default"/>
+</resource>
+<resource name="/manage/v2/forests/{id|name}/{custom}">
+  <complexType name="no-output"/>
+</resource>
+<resource name="/manage/v2/forests/{id|name}/properties">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/groups">
+  <complexType name="group-default-list"/>
+</resource>
+<resource name="/manage/v2/groups/{id|name}">
+  <complexType name="group-default"/>
+</resource>
+<resource name="/manage/v2/hosts">
+  <complexType name="host-default-list"/>
+</resource>
+<resource name="/manage/v2/hosts/{id|name}">
+  <complexType name="host-default"/>
+</resource>
+<resource name="/manage/v2/hosts/{id|name}/{custom}">
+  <complexType name="no-output"/>
+</resource>
+<resource name="/manage/v2/hosts/{id|name}/properties">
+  <complexType name="woops"/>
+</resource>
+<resource name="/manage/v2/query">
+  <complexType name="cluster-query"/>
+</resource>
+<resource name="/manage/v2/requests">
+  <complexType name="request-default-list"/>
+</resource>
+<resource name="/manage/v2/requests/{id|uri}">
+  <complexType name="request-default-list"/>
+</resource>
+<resource name="/manage/v2/servers">
+  <complexType name="server-default-list"/>
+</resource>
+<resource name="/manage/v2/servers/{id|name}">
+  <complexType name="error: missing display"/>
+</resource>
+<resource name="/manage/v2/servers/{id|name}/{custom}">
+  <complexType name="error: missing display"/>
+</resource>
+<resource name="/manage/v2/tickets/{tid}?view=process-status">
+  <complexType name="ticket-status"/>
+</resource>
+<resource name="/manage/v2/transactions">
+  <complexType name="transaction-default-list"/>
+</resource>
+<resource name="/manage/v2/transactions/{id|uri}?host-id={id|name}">
+  <complexType name="transaction-default-list"/>
+</resource>
+  
+ </marklogic7>
 </resources>
