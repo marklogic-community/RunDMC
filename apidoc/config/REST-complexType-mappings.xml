@@ -209,16 +209,16 @@
   <complexType name="woops"/>
 </resource>
 <resource name="/manage/v2/databases/{id|name}/rebalancer">
-  <complexType name="woops"/>
+  <complexType name="database-rebalancer-properties"/>
 </resource>
 <resource name="/manage/v2/databases/{id|name}/sub-databases">
-  <complexType name="woops"/>
+  <complexType name="sub-databases"/>
 </resource>
 <resource name="/manage/v2/databases/{id|name}/sub-databases/{id|name}">
   <complexType name="woops"/>
 </resource>
 <resource name="/manage/v2/databases/{id|name}/super-databases">
-  <complexType name="woops"/>
+  <complexType name="super-databases"/>
 </resource>
 <resource name="/manage/v2/databases/{sub-id|sub-name}/super-databases/{super-id|super-name}">
   <complexType name="woops"/>
@@ -233,7 +233,7 @@
   <complexType name="no-output"/>
 </resource>
 <resource name="/manage/v2/forests/{id|name}/properties">
-  <complexType name="woops"/>
+  <complexType name="forest-properties"/>
 </resource>
 <resource name="/manage/v2/groups">
   <complexType name="group-default-list"/>
@@ -251,7 +251,7 @@
   <complexType name="no-output"/>
 </resource>
 <resource name="/manage/v2/hosts/{id|name}/properties">
-  <complexType name="woops"/>
+  <complexType name="host-properties"/>
 </resource>
 <resource name="/manage/v2/query">
   <complexType name="cluster-query"/>
