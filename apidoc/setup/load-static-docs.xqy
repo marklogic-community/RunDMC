@@ -70,8 +70,20 @@ typeswitch ($x)
   case comment() return $x
   case processing-instruction() return $x
   case text() return $x
-  case element (head) return <head>{local:passthru($x), $ga }</head>
+  case element (head) return <head>{local:passthru($x), $ga ,
+  xdmp:log("*******
+  
+  In local:add-scripts head
+  
+  *******")}</head>
   case element (body) return <body>{local:passthru($x), $marketo}</body>
+  case element (HEAD) return <head>{local:passthru($x), $ga ,
+  xdmp:log("*******
+  
+  In local:add-scripts HEAD
+  
+  *******")}</head>
+  case element (BODY) return <body>{local:passthru($x), $marketo}</body>
   
   default return element {fn:node-name($x)} {$x/@*, local:passthru($x)}
 };
@@ -127,45 +139,56 @@ declare function local:load-pubs-docs($dir) {
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
         $is-js   := ends-with($uri,'.js'),
+        $tidy-options := <options xmlns="xdmp:tidy">
+                               <input-encoding>utf8</input-encoding>
+                               <output-encoding>utf8</output-encoding>
+                               <clean>true</clean>
+                             </options>,
 
         (: If the document is JavaDoc HTML, then read it as text; 
            if it's other HTML, repair it as XML (.NET docs) 
            Also, add the ga and marketo scripts to the javadoc  :)
-        $doc := if ($is-jdoc) then 
-        local:add-scripts(xdmp:document-get($path, 
+        (: don't tidy index.html because tidy throws away the frameset :)
+        $doc := if ( $is-jdoc and not(contains($uri, '/index.html')) ) 
+        then 
+        xdmp:tidy(xdmp:document-get($path, 
         <options xmlns="xdmp:document-get">
           <format>text</format>
           <encoding>auto</encoding>
-        </options>))
-           else if ($is-mangled-html) then
+        </options>), <options xmlns="xdmp:tidy">
+                               <input-encoding>utf8</input-encoding>
+                               <output-encoding>utf8</output-encoding>
+                               <output-xhtml>no</output-xhtml>
+                               <output-xml>no</output-xml>
+                               <output-html>yes</output-html>
+                             </options>)[2]
+        else if ($is-mangled-html) 
+             then
                let $unparsed := xdmp:document-get($path, 
                <options xmlns="xdmp:document-get">
                  <format>text</format>
                </options>)/string(),
                    $replaced := replace($unparsed, '"class="', '" class="')
                return 
-               local:add-scripts(xdmp:unquote($replaced, "", "repair-full"))
-           else if ($is-html) then
+               xdmp:unquote($replaced, "", "repair-full")
+             else if ($is-html) then
             try{ xdmp:log("TRYING FULL CONVERSION"),
-            local:add-scripts(
              xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                         <format>xml</format>
                                         <repair>full</repair>
                                         <encoding>UTF-8</encoding>
-                                      </options>)) }
+                                      </options>) }
             catch($e){ if ($e/*:code eq 'XDMP-DOCUTF8SEQ') then
-            local:add-scripts(
              xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                         <format>xml</format>
                                         <repair>full</repair>
                                         <encoding>ISO-8859-1</encoding>
-                                       </options>))
-                        else error((),"Load error", xdmp:quote($e)) }
-           else 
-           local:add-scripts(
-             xdmp:document-get($path, <options xmlns="xdmp:document-get">
+                                       </options>)
+                        else error((),"Load error", xdmp:quote($e)) } 
+             else 
+               xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                            <encoding>auto</encoding>
-                                         </options>)), 
+                                         </options>), 
             (: Otherwise, just load the document normally :)
 
         (: Exclude these HTML and javascript documents from the search corpus 
@@ -174,7 +197,8 @@ declare function local:load-pubs-docs($dir) {
                                                else ()
     return
     (
-      xdmp:document-insert($uri, $doc, xdmp:default-permissions(), $collection),
+      xdmp:document-insert($uri, local:add-scripts($doc), 
+         xdmp:default-permissions(), $collection),
       xdmp:log(concat("Loading ",$path," to ",$uri)),
 
       (: If the document is HTML, then store an additional copy, converted to
@@ -184,16 +208,11 @@ declare function local:load-pubs-docs($dir) {
          used for search, snippeting, etc. :)
       if ($is-jdoc)
       then
-        let $tidy-options := <options xmlns="xdmp:tidy">
-                               <input-encoding>utf8</input-encoding>
-                               <output-encoding>utf8</output-encoding>
-                               <clean>true</clean>
-                             </options>,
-            $xhtml := xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]),
+        let $xhtml := xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]),
             $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
         return
         (
-          xdmp:document-insert($xhtml-uri, $xhtml),
+          xdmp:document-insert($xhtml-uri, local:add-scripts($xhtml)),
           xdmp:log(concat("Tidying ",$path," to ",$xhtml-uri))
         )
       else ()
@@ -227,4 +246,4 @@ return
   xdmp:document-insert($zip-file-uri, $zip-file)
 ),
 
-xdmp:log("Done.")
+xdmp:log("Done loading static docs.")
