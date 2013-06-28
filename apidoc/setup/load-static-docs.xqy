@@ -214,7 +214,13 @@ declare function local:load-pubs-docs($dir) {
          used for search, snippeting, etc. :)
       if ($is-jdoc)
       then
-        let $xhtml := xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]),
+        let  $xhtml :=
+        try{ xdmp:log("TRYING FULL TIDY CONVERSION with xhtml:clean"),
+        xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]) }
+        catch($e){ xdmp:log(fn:concat($path, " failed tidy conversion with ",
+                   @e/*:code/string())),
+        $doc }
+        ,
             $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
         return
         (
