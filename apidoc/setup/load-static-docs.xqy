@@ -149,7 +149,7 @@ declare function local:load-pubs-docs($dir) {
            if it's other HTML, repair it as XML (.NET docs) 
            Also, add the ga and marketo scripts to the javadoc  :)
         (: don't tidy index.html because tidy throws away the frameset :)
-        $doc := if ( $is-jdoc and not(contains($uri, '/index')) ) 
+        $doc := if ( $is-jdoc and not(contains($uri, '/index.html')) ) 
         then 
         xdmp:tidy(xdmp:document-get($path, 
         <options xmlns="xdmp:document-get">
@@ -164,13 +164,19 @@ declare function local:load-pubs-docs($dir) {
                              </options>)[2]
         else if ($is-mangled-html) 
              then
+             try{ xdmp:log("TRYING FULL TIDY CONVERSION"),
                let $unparsed := xdmp:document-get($path, 
                <options xmlns="xdmp:document-get">
                  <format>text</format>
                </options>)/string(),
                    $replaced := replace($unparsed, '"class="', '" class="')
                return 
-               xdmp:unquote($replaced, "", "repair-full")
+               xdmp:unquote($replaced, "", "repair-full") }
+             catch($e) { xdmp:log(fn:concat("Tidy FAILED for ", $path, 
+                                            " so loading as text")),
+               xdmp:document-get($path, <options xmlns="xdmp:document-get">
+                                           <encoding>auto</encoding>
+                                         </options>)} 
              else if ($is-html) then
             try{ xdmp:log("TRYING FULL CONVERSION"),
              xdmp:document-get($path, <options xmlns="xdmp:document-get">
