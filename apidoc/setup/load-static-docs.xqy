@@ -149,7 +149,7 @@ declare function local:load-pubs-docs($dir) {
            if it's other HTML, repair it as XML (.NET docs) 
            Also, add the ga and marketo scripts to the javadoc  :)
         (: don't tidy index.html because tidy throws away the frameset :)
-        $doc := if ( $is-jdoc and not(contains($uri, '/index.html')) ) 
+        $doc := if ( $is-jdoc and not(contains($uri, '/index')) ) 
         then 
         xdmp:tidy(xdmp:document-get($path, 
         <options xmlns="xdmp:document-get">
