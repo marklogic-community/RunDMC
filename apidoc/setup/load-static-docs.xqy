@@ -218,7 +218,7 @@ declare function local:load-pubs-docs($dir) {
         try{ xdmp:log("TRYING FULL TIDY CONVERSION with xhtml:clean"),
         xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]) }
         catch($e){ xdmp:log(fn:concat($path, " failed tidy conversion with ",
-                   @e/*:code/string())),
+                   $e/*:code/string())),
         $doc }
         ,
             $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
