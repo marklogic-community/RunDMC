@@ -232,6 +232,11 @@ declare function local:forbidden($path as xs:string) as xs:boolean {
     )
 };
 
+(: this should make some annoyances go away :)
+declare function local:notfound($path as xs:string) as xs:boolean {
+    ends-with($path, ".php")
+};
+
 (: record all binaries :)
 declare function local:record-download($path as xs:string) {
 
@@ -283,6 +288,8 @@ declare function local:rewrite($path as xs:string) as xs:string {
         "/controller/gone.xqy"
     else if (local:forbidden($path)) then
         "/controller/forbidden.xqy"
+    else if (local:notfound($path)) then
+        "/controller/notfound.xqy"
     else if ($path eq '/')  then 
         "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
