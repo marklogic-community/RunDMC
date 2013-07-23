@@ -307,14 +307,22 @@
     </a>
   </xsl:template>
 
-          <!-- Remove apostrophe delimiters when present -->
-          <xsl:template mode="guide-link-content" match='A[starts-with(normalize-space(.), "&apos;")]' priority="1">
-            <xsl:value-of select='substring-before(substring-after(normalize-space(.),"&apos;"),"&apos;")'/>
+ <!-- Remove apostrophe delimiters when present (assumption is they are the 
+       first and last character in the string) and remove 'on page' -->
+	  <xsl:template mode="guide-link-content" 
+		  match='A[starts-with(normalize-space(.), "&apos;")]'
+		  priority='1'>
+		  <xsl:variable name="nopage" select="substring-before(
+			  normalize-space(.), ' on page')"/>
+		  <xsl:value-of select="substring($nopage,  2, 
+			  string-length($nopage) - 2)"/>
           </xsl:template>
 
-          <!-- Remove "on page 32" verbiage -->
-          <xsl:template mode="guide-link-content" match="A[contains(normalize-space(.), ' on page')]">
-            <xsl:value-of select="substring-before(normalize-space(.), ' on page')"/>
+          <!-- Remove "on page 32" verbiage (if there is no apos) -->
+	  <xsl:template mode="guide-link-content" 
+		  match="A[contains(normalize-space(.), ' on page')]" >
+		  <xsl:value-of select="substring-before(normalize-space(.), 
+			  ' on page')"/>
           </xsl:template>
 
           <xsl:template mode="guide-link-content" match="A">
