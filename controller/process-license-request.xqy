@@ -111,18 +111,18 @@ let $valid :=
         and $valid-type
         and $platform 
         and $hostname 
-        and ($agree eq "on" or number($version) lt 7)
+        (: and ($agree eq "on" or number($version) lt 7) :)
     else
         $platform and
         $hostname and
-        $currentUser or 
+        ($currentUser or 
             (
                 $email and
                 $passwd and
                 users:checkCreds($email, $passwd)
-            ) and
+            )) and
         $valid-type 
-        and ($agree eq "on" or number($version) lt 7)
+        (: and ($agree eq "on" or number($version) lt 7) :)
 
 let $error := if ($signup) then
         if (users:emailInUse($email)) then
