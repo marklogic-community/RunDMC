@@ -111,7 +111,7 @@ let $valid :=
         and $valid-type
         and $platform 
         and $hostname 
-        and ($agree eq "on" or number($major) lt 7) :)
+        and ($agree eq "on" or number($major) lt 7) 
     else
         $platform and
         $hostname and

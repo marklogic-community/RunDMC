@@ -2,11 +2,6 @@
 <!-- When you change the default version, you'll need to re-generate the
      TOC for the new default version. -->
 <versions>
-  <!-- Not currently importing this content (not conveniently available)
-  <version number="3.2"/>
-  <version number="4.0"/>
-  -->
-  <version number="4.1"/>
   <version number="4.2"/>
   <version number="5.0"/>
   <version number="6.0"
