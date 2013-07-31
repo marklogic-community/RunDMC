@@ -20,9 +20,12 @@
         <page display="Hadoop" href="/products/hadoop"/>
         <page display="Connector for SharePoint®" href="/products/sharepoint"/>
         <page display="ODBC Driver" href="/products/odbc"/>
+
+        <page display="Hadoop 1.0" href="/products/hadoop-1.0" hide="yes"/>
       </group>
       <group display="Libraries and Tools">
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
+        <page display="MarkLogic Content Pump (mlcp) for Hadoop 1.0"   href="/products/mlcp-for-hadoop-1.0" hide="yes"/>
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
         <page display="Plug-in for Nagios" href="/products/nagios"/>
       </group>
@@ -273,4 +276,6 @@
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="4.2 Product Documentation"         href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
   <page display="Introducing MarkLogic 5" href="/products/marklogic5" hide="yes"/>
+
+  <page display="Hadoop 1.0" href="/products/hadoop-1.0" hide="yes"/>
 </navigation>
