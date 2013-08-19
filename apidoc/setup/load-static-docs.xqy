@@ -139,6 +139,7 @@ declare function local:load-pubs-docs($dir) {
         $is-html := ends-with($uri,'.html'),
         $is-jdoc := contains($uri,'/javadoc/') and $is-html,
         $is-js   := ends-with($uri,'.js'),
+        $is-css  := ends-with($uri,'.css'),
         $tidy-options := <options xmlns="xdmp:tidy">
                                <input-encoding>utf8</input-encoding>
                                <output-encoding>utf8</output-encoding>
@@ -199,8 +200,9 @@ declare function local:load-pubs-docs($dir) {
 
         (: Exclude these HTML and javascript documents from the search corpus 
            (search the Tidy'd XHTML instead; see below) :)
-        $collection := if ($is-jdoc or $is-js) then "hide-from-search"
-                                               else ()
+        $collection := if ($is-jdoc or $is-js or $is-css) 
+                       then "hide-from-search"
+                       else ()
     return
     (
       xdmp:document-insert($uri, local:add-scripts($doc), 
