@@ -54,7 +54,7 @@ let $hostname := if ($host eq 'stage-developer.marklogic.com' and not(starts-wit
     $hostname
 
 let $company := if ($currentUser) then 
-        ($currentUser/*:organization/string(), $currentUser/*:license/*:company, "Unknown")[1]
+        ($currentUser/*:organization/text(), $currentUser/*:license/*:company/text(), "Unknown")[1]
     else 
         xdmp:get-request-field("company")
 
