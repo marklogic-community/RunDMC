@@ -126,7 +126,7 @@
       </group>
       <group display="Connectors">
         <page display="MLPHP" href="/labs/mlphp"/>
-        <page display="MLDB" href="/labs/mldb"/>
+        <page display="MLJS" href="/labs/mljs"/>
         <page display="MLDotNet" href="/labs/mldotnet"/>
         <page display="Corona" href="/code/corona"/>
         <page display="MLSAM" href="/code/mlsam"/>
