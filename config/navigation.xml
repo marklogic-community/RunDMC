@@ -249,7 +249,7 @@
             <page display="MLPHP" href="/labs/mlphp"/>
             <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
             <page display="rxq" href="/labs/rxq"/>
-            <page display="MLDB" href="/labs/mldb"/>
+            <page display="MLJS" href="/labs/mljs"/>
             <page display="MLDotNet" href="/labs/MLDotNet"/>
         </group>
     </group>
