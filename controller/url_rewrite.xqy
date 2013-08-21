@@ -139,8 +139,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/products/odbc"
     else if ($path = ("/code/mlsql")) then
         "/code/mlsam"
-    else if ($path = ("/code/mldb")) then
-        "/code/mljs"
+    else if ($path = ("/labs/mldb")) then
+        "/labs/mljs"
     else if ($path = ("/learn/2006-04-mlsql")) then
         "/learn/2006-04-mlsam"
     else if ($path = ("/products/java-api")) then
