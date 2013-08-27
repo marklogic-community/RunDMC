@@ -205,7 +205,8 @@
                 </api:function-name>
               </xsl:for-each>
             </xsl:variable>
-            <xsl:sequence select="$wrapper/api:function-name"/>
+	    <xsl:sequence select="$wrapper/api:function-name
+		                    [substring-after(., ':') ne '']"/>
           </xsl:function>
 
 

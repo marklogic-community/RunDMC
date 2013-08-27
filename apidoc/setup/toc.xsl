@@ -240,7 +240,10 @@
                 <xsl:variable name="modifier" select="if (@built-in) then 'built-in' else 'XQuery library'"/>
                 <p>The table below lists all the "<xsl:value-of select="api:prefix-for-lib(.)"/>" <xsl:value-of select="$modifier"/> functions (in this namespace: <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).</p>
 
-                <xsl:variable name="sub-pages" select="$by-category//node[starts-with(@href, concat('/',current(),'/'))]"/>
+		<xsl:variable name="sub-pages" 
+ 		  select="$by-category//node
+		  [starts-with(@href, concat('/',current(),'/'))]
+		  [not(substring-after(./@display/string(), ':') eq '')]"/>
                 <xsl:if test="$sub-pages">
                   <p>You can also view these functions broken down by category:</p>
                   <ul>
