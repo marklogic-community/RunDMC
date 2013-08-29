@@ -406,11 +406,9 @@
       <xsl:apply-templates select="api:intro/node()"/>
       <xsl:choose>
 	      <!-- Hack for showing module with no functions: 
-		   Don't show the table if the functions have no names 
+		   Don't show the table if there are no functions. 
 		   -->
-	      <xsl:when test="substring-after(
-		      string-join(api:list-entry/api:name/string(), ''),':') 
-		      eq ''"/>
+	      <xsl:when test="count(api:list-entry/api:name) eq 0"/>
 	      <xsl:otherwise>
       <div class="api_caption">
         <xsl:variable name="count" select="count(api:list-entry)"/>

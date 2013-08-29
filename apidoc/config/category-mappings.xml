@@ -29,4 +29,7 @@
   <category from="Packaging API"  to="packaging"/>
   <category from="Client API"     to="client"/>
 
+  <!-- Semantics API -->
+  <category from="Semantics"     to="semantics"/>
+
 </category-page-urls>

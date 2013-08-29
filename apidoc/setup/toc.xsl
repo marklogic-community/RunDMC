@@ -242,8 +242,7 @@
 
 		<xsl:variable name="sub-pages" 
  		  select="$by-category//node
-		  [starts-with(@href, concat('/',current(),'/'))]
-		  [not(substring-after(./@display/string(), ':') eq '')]"/>
+		  [starts-with(@href, concat('/',current(),'/'))]"/>
                 <xsl:if test="$sub-pages">
                   <p>You can also view these functions broken down by category:</p>
                   <ul>
