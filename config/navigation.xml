@@ -29,14 +29,6 @@
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
         <page display="Plug-in for Nagios" href="/products/nagios"/>
       </group>
-      <group display="Microsoft Office Integration">
-        <page display="Toolkit for Excel®" href="/code/marklogic-toolkit-for-excel"/>
-        <page display="Toolkit for PowerPoint®"  href="/code/marklogic-toolkit-for-powerpoint"/>
-        <page display="Toolkit for Word®" href="/code/marklogic-toolkit-for-word"/>
-        <page display="Authoring App for Excel®" href="/code/marklogic-sample-authoring-app-excel"/>
-        <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
-        <page display="Authoring App for Word®" href="/code/marklogic-sample-authoring"/>
-      </group>
     </group>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="MarkLogic Express" href="/express"/>
