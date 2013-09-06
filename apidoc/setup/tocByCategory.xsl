@@ -188,34 +188,42 @@
             </title>
           </xsl:function>
 
-          <xsl:function name="toc:function-name-nodes">
-            <xsl:param name="functions"/>
-            <!-- NOTE: These elements are intentionally siblings (not parentless), so the TOC construction
-                       code has the option of inspecting their siblings.  -->
-            <xsl:variable name="wrapper">
-              <xsl:for-each select="$functions">
+       <xsl:function name="toc:function-name-nodes">
+          <xsl:param name="functions"/>
+	    <!-- NOTE: These elements are intentionally siblings (not 
+		 parentless), so the TOC construction code has the option of 
+		 inspecting their siblings.  -->
+         <xsl:variable name="wrapper">
+           <xsl:for-each select="$functions">
                 <!-- By default, just use alphabetical order.
                      But for REST docs, first sort by the resource name... -->
-                <xsl:sort select="if (@lib eq 'REST') then api:name-from-REST-fullname(@fullname)
-                                                      else @fullname"/>
-                <!-- ...and then the HTTP method (only applicable to REST docs) -->
-                <xsl:sort select="api:verb-sort-key-from-REST-fullname(@fullname)"/>
+	    <xsl:sort select="if (@lib eq 'REST') 
+			then api:name-from-REST-fullname(@fullname)
+                        else @fullname"/>
+		<!-- ...and then the HTTP method (only applicable to REST docs)
+		     -->
+            <xsl:sort select="api:verb-sort-key-from-REST-fullname(@fullname)"/>
                 <api:function-name>
                   <xsl:value-of select="@fullname"/>
                 </api:function-name>
-              </xsl:for-each>
-            </xsl:variable>
-            <xsl:sequence select="$wrapper/api:function-name"/>
-          </xsl:function>
+           </xsl:for-each>
+         </xsl:variable>
+	 <xsl:sequence select="$wrapper/api:function-name[. ne 'sem:']"/> 
+       </xsl:function>
 
 
-          <!-- Returns the one library string if all the functions are in the same library; otherwise returns empty -->
-          <xsl:function name="toc:lib-for-all" as="xs:string?">
-            <xsl:param name="functions"/>
-            <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
-            <xsl:sequence select="if (count($libs) eq 1) then string(($functions/@lib)[1])
-                                                         else ()"/>
-          </xsl:function>
+	  <!-- Returns the one library string if all the functions are in the 
+	       same library; otherwise returns empty -->
+         <xsl:function name="toc:lib-for-all" as="xs:string?">
+           <xsl:param name="functions"/>
+	   <xsl:variable name="libs" select="distinct-values($functions/@lib)"/>
+	   <!-- This is a hack to make the semantics library, which has 
+		multiple namespace, work properly -->
+	   <xsl:sequence select="if (count($libs) eq 1) 
+		    then string(($functions/@lib)[1]) else 
+		    if (string(($functions/@category)[1]) eq 'Semantics') 
+		    then 'sem' else ()"/>
+         </xsl:function>
 
           <!-- Uses toc:lib-for-most() (because I already implemented it) but favors "xdmp" as primary regardless -->
           <xsl:function name="toc:primary-lib" as="xs:string">

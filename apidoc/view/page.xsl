@@ -404,6 +404,12 @@
         <xsl:apply-templates mode="list-page-heading" select="."/>
       </h1>
       <xsl:apply-templates select="api:intro/node()"/>
+      <xsl:choose>
+	      <!-- Hack for showing module with no functions: 
+		   Don't show the table if there are no functions. 
+		   -->
+	      <xsl:when test="count(api:list-entry/api:name) eq 0"/>
+	      <xsl:otherwise>
       <div class="api_caption">
         <xsl:variable name="count" select="count(api:list-entry)"/>
         <xsl:value-of select="$count"/>
@@ -428,6 +434,8 @@
           <xsl:apply-templates mode="list-page-entry" select="api:list-entry"/>
         </tbody>
       </table>
+    </xsl:otherwise>
+    </xsl:choose>
     </div>
   </xsl:template>
 
