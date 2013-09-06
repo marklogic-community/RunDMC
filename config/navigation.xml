@@ -18,7 +18,6 @@
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" hide="yes"/>
 
         <page display="Hadoop" href="/products/hadoop"/>
-        <page display="Connector for SharePoint®" href="/products/sharepoint"/>
         <page display="ODBC Driver" href="/products/odbc"/>
 
         <page display="Hadoop 1.0" href="/products/hadoop-1.0" hide="yes"/>
