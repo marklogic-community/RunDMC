@@ -93,6 +93,8 @@
         <page display="xqut" href="/code/xqut"/>
         <page display="PerformanceMeters" href="/code/performance-meters"/>
         <page display="Roxy" href="/code/roxy"/>
+        <page display="SonarQube XQuery Plugin" href="/code/sonar-xquery-plugin"/>
+
       </group>
       <group display="Loading and processing">
         <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
