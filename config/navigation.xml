@@ -126,13 +126,13 @@
         <page display="MLJAM" href="/code/mljam"/>
         <!-- <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/> -->
         <page display="XQuery JSP Tag Library" href="/code/jsp"/>
-        <!-- <page display="Scala Bindings for XCC" href="/code/xcc-scala"/> -->
+        <page display="Scala Bindings for XCC" href="/code/xcc-scala"/> 
         <!-- <page display="ActiveDocument (ruby)" href="/code/active-document"/> -->
       </group>
       <group display="Command-line interfaces">
         <page display="Ant tasks" href="/code/ant-tasks"/>
         <page display="xmlsh" href="/code/xmlsh-ext"/>
-        <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
+        <!-- <page display="CQSH - An XQuery Shell" href="/code/cqsh"/> -->
       </group>
       <group display="Libraries and Frameworks">
         <page display="Roxy" href="/code/roxy"/>
