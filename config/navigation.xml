@@ -147,7 +147,7 @@
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
-        <page display="XQMVC" href="/code/xqmvc"/>
+        <!-- <page display="XQMVC" href="/code/xqmvc"/> -->
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rewrite" href="/code/rewrite"/>
       </group>
