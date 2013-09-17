@@ -131,7 +131,7 @@
       </group>
       <group display="Command-line interfaces">
         <page display="Ant tasks" href="/code/ant-tasks"/>
-        <page display="xmlsh extension" href="/code/xmlsh-ext"/>
+        <page display="xmlsh" href="/code/xmlsh-ext"/>
         <page display="CQSH - An XQuery Shell" href="/code/cqsh"/>
       </group>
       <group display="Libraries and Frameworks">
