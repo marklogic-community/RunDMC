@@ -2699,3 +2699,23 @@ a.drop-down-trigger.menu-open span {
 #ifail {
     color: red
 }
+
+
+.force-scrollbars::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.force-scrollbars::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.force-scrollbars::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.force-scrollbars::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
