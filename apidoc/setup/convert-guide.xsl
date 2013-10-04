@@ -115,22 +115,51 @@
           </xsl:template>
 
 
-  <!-- Don't need this attribute at this stage; only used to resolve URIs of images being copied over -->
+  <!-- Don't need this attribute at this stage; only used to 
+       resolve URIs of images being copied over -->
   <xsl:template match="/*/@original-dir"/>
 
   <xsl:template match="pagenum | TITLE"/>
 
-  <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
-    <xsl:variable name="heading-level" select="1 + number(substring-after(local-name(.),'-'))"/>
-    <xsl:variable name="id">
-      <xsl:apply-templates mode="heading-anchor-id" select="."/>
-    </xsl:variable>
-    <!-- Beware of changing this structure without updating mode="guide-toc" (in toc.xsl), which depends on it -->
+  <!-- Heading-2MESSAGE case (priority should be greater 
+       than Heading-* case) -->
+  <xsl:template match="Heading-2MESSAGE" priority="1">
+	  <xsl:variable name="heading-level" 
+		  select="3"/>
+	  <xsl:variable name="id">
+		  <xsl:value-of select="normalize-space(.)"/> 
+	  </xsl:variable>
+    <!-- Beware of changing this structure without updating 
+	 mode="guide-toc" (in toc.xsl), which depends on it -->
     <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
       <a href="#{$id}" class="sectionLink">
         <xsl:value-of select="normalize-space(.)"/>
       </a>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Heading-* (except MESSAGE) case -->
+  <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
+	  <xsl:variable name="heading-level" 
+		  select="1 + number(substring-after(local-name(.),'-'))"/>
+    <xsl:variable name="id">
+      <xsl:apply-templates mode="heading-anchor-id" select="."/>
+    </xsl:variable>
+    <!-- Beware of changing this structure without updating 
+	 mode="guide-toc" (in toc.xsl), which depends on it -->
+    <a id="{$id}"/>
+    <xsl:element name="h{$heading-level}">
+      <a href="#{$id}" class="sectionLink">
+        <xsl:value-of select="normalize-space(.)"/>
+      </a>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Cause and Response headings for messages guide -->
+  <xsl:template match="Simple-Heading-3">
+    <xsl:element name="h4">
+        <xsl:value-of select="normalize-space(.)"/>
     </xsl:element>
   </xsl:template>
 
