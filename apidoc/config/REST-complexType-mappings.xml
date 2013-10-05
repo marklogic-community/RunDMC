@@ -281,5 +281,23 @@
   <complexType name="transaction-default-list"/>
 </resource>
   
+<resource name="/manage/v2/clusters?view=metrics">
+  <complexType name="clusters-metrics-list"/>
+</resource>
+<resource name="/manage/v2/clusters/{id|name}?view=metrics">
+  <complexType name="clusters-metrics-list"/>
+</resource>
+<resource name="/manage/v2/databases?view=metrics">
+  <complexType name="database-metrics-list"/>
+</resource>
+<resource name="/manage/v2/forests?view=metrics">
+  <complexType name="forest-metrics-list"/>
+</resource>
+<resource name="/manage/v2/hosts?view=metrics">
+  <complexType name="host-metrics-list"/>
+</resource>
+<resource name="/manage/v2/servers?view=metrics">
+  <complexType name="server-metrics-list"/>
+</resource>
  </marklogic7>
 </resources>
