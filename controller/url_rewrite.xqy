@@ -151,8 +151,10 @@ declare function local:redir($path as xs:string) as xs:string
         "//docs.marklogic.com/guide/installation/procedures"
     else if (starts-with($path, "/discuss/")) then (: All discuss urls are gone for now :)
         "/discuss"
+    else if ($path = ("/express", "/academic")) then
+        "/free-developer"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        if ($path = ("/people/signup", "/people/reset", "/people/fb-signup", "/people/recovery", "/people/profile")) then (: except for these :)
+        if ($path = ("/people/signup", "/people/reset", "/people/recovery", "/people/profile")) then (: except for these :)
             $path
         else
             "/people/supernodes"
@@ -332,8 +334,8 @@ declare function local:rewrite($path as xs:string) as xs:string {
         concat("/controller/license-record.xqy?", $query-string)
     else if ($path eq "/signup") then
         "/controller/signup.xqy"
-    else if ($path eq "/fb-login") then
-        "/controller/fb-login.xqy"
+    else if ($path eq "/get-download-url") then
+        concat("/controller/get-download-url.xqy?", $query-string)
     else if ($path eq "/login") then
         "/controller/login.xqy"
     else if ($path eq "/logout") then
