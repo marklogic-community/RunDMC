@@ -45,6 +45,8 @@ declare function local:redir($path as xs:string) as xs:string
     else if (starts-with($path, "/pubs/5.0/hadoop/javadoc/")) then
         local:redirect-java-url($orig-url,"/javadoc/hadoop/")
 
+    else if ($path = ("/download/7.0", "/download/7.0/")) then
+        "/products/marklogic-server/7.0"
     else if ($path = ("/download/6.0", "/download/6.0/")) then
         "/products/marklogic-server/6.0"
     else if ($path = ("/download/5.0", "/download/5.0/")) then
@@ -64,6 +66,8 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/learn/sharepoint-install-guide")) then
         "/docs/sharepoint-connector/admin-guide"
 
+    else if ($path = ("/download/binaries/7.0/requirements.xqy")) then
+        "/products/marklogic-server/requirements-7.0"
     else if ($path = ("/download/binaries/6.0/requirements.xqy")) then
         "/products/marklogic-server/requirements-6.0"
     else if ($path = ("/download/binaries/5.0/requirements.xqy")) then
@@ -73,7 +77,7 @@ declare function local:redir($path as xs:string) as xs:string
     else if ($path = ("/download/binaries/4.1/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.1"
     else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
-        "/products/marklogic-server/requirements-6.0"
+        "/products/marklogic-server/requirements-4.0"
 
     else if ($path = ("/download/confirm.xqy")) then
         "/products"
@@ -221,6 +225,7 @@ declare function local:forbidden($path as xs:string) as xs:boolean {
 
     not(ends-with($path, ".zip")) and
     (
+     starts-with($path,'/download/binaries/7.0') or
      starts-with($path,'/download/binaries/6.0') or
      starts-with($path,'/download/binaries/5.0') or
      starts-with($path,'/download/binaries/4.2') or
@@ -257,7 +262,8 @@ declare function local:rewrite($path as xs:string) as xs:string {
     let $latest-sharepoint-connector-version := "1.1-1"
 
     (: Defaults for /docs and /producs :)
-    let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version)
+    (: let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version) :)
+    let $latest-prod-uri := concat("/products/marklogic-server/", "7.0")
     let $latest-doc-uri  := concat("/docs/", $latest-version)
     let $latest-requirements-uri  := concat("/products/marklogic-server/requirements-", $latest-version) 
     let $latest-xcc-uri  := concat("/products/xcc/", $latest-version) 
