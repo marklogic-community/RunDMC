@@ -127,17 +127,13 @@
 
   <xsl:template match="product-info">
 
-    <xsl:if test="@license-page and @requirements-page">
+    <xsl:if test="@developer-license-page and @requirements-page">
       <ul class="info">
         <xsl:if test="@whats-new-page">
             <li><a href="{@whats-new-page}">What's New?&#160;»</a></li>
         </xsl:if>
         <xsl:if test="@developer-license-page">
             <li><a href="{@developer-license-page}">Read about the Developer license &#160;»</a></li>
-        </xsl:if>
-        <li><a href="{@license-page}">Read about the Express license &#160;»</a></li>
-        <xsl:if test="@academic-license-page">
-            <li><a href="{@academic-license-page}">Read about the Academic license &#160;»</a></li>
         </xsl:if>
         <li><a href="{@requirements-page}">Review System Requirements&#160;»</a></li>
       </ul>
