@@ -282,10 +282,10 @@
 </resource>
   
 <resource name="/manage/v2/clusters?view=metrics">
-  <complexType name="clusters-metrics-list"/>
+  <complexType name="cluster-metrics-list"/>
 </resource>
 <resource name="/manage/v2/clusters/{id|name}?view=metrics">
-  <complexType name="clusters-metrics-list"/>
+  <complexType name="cluster-metrics-list"/>
 </resource>
 <resource name="/manage/v2/databases?view=metrics">
   <complexType name="database-metrics-list"/>
