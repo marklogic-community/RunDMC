@@ -417,10 +417,12 @@ if(typeof jQuery != 'undefined') {
 
             $("#session-trigger").click(function(e) {
                 $("#session-menu").toggle();
+				e.preventDefault();
             });
 
             $("#login-trigger").click(function(e) {
                 $("#login-menu").toggle();
+				e.preventDefault();
             });
 
 			$(document).bind('keydown.drop-down-menu', function(event) {
@@ -434,12 +436,16 @@ if(typeof jQuery != 'undefined') {
 
 
             $("fieldset.drop-down-menu").mouseup(function() {
-                // return false;
+                return false;
             });
 
             $(document).mouseup(function(e) {
-                if ($(e.target).parents("fieldset.drop-down-menu").length == 0) { // hide if the click is outside of a menu
+                // hide if the click is outside of a menu
+                if (  (! $(e.target).hasClass("drop-down-trigger")) && 
+                      (! $(e.target).parent().hasClass("drop-down-trigger")) ) { 
+
                     $('.drop-down-menu').each(function() {
+                        console.log($(this).get());
                         $(this).hide();
                     });
                 } 
@@ -447,6 +453,12 @@ if(typeof jQuery != 'undefined') {
 
             $("#local-login").click(function(e) {
                 $("#local-login-form").toggle().appendTo('#login-menu');
+            });
+
+            $('#local-login-form').bind('keypress', function (event){
+                if (event.keyCode === 13){
+                    $('#login_submit').trigger('click');
+                }
             });
 
             $("#login_submit").click(function(e) {
