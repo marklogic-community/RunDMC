@@ -5,14 +5,16 @@ import module namespace api = "http://marklogic.com/rundmc/api" at "../model/dat
 import module namespace ml = "http://developer.marklogic.com/site/internal" at "../../model/data-access.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../../controller/server-urls.xqy";
 
-declare variable $orig-path       := xdmp:get-request-path();
+declare variable $orig-path       := xdmp:url-decode(xdmp:get-request-path());
 declare variable $orig-url        := xdmp:get-request-url();
 declare variable $query-string    := substring-after($orig-url, '?');
-                                     (: $path is just the original path, unless this is a REST doc, in which case we
-                                        also might have to look at the query string (translating "?" to "@") :)
-declare variable $path            := if (contains($orig-path,'/REST/') and $query-string) then $REST-doc-path
-                                                                                          else $orig-path;
-
+  (: $path is just the original path, unless this is a REST doc, in which 
+     case we also might have to look at the query string (translating 
+     "?" to "@") :)
+declare variable $path  := 
+ if (contains($orig-path,'/REST/') and $query-string) 
+ then $REST-doc-path 
+ else $orig-path;
 
 declare variable $version-specified := if (matches($path, '^/[0-9]\.[0-9]$')) then substring-after($path,'/')
                                   else if (matches($path, '^/[0-9]\.[0-9]/')) then substring-before(substring-after($path,'/'),'/')
@@ -180,7 +182,6 @@ declare variable $matching-function-count := count($matching-functions);
       let $function := $matching-functions[1] return
       local:redirect(concat(local:function-url($function),xdmp:url-encode("?show-alternatives=yes")))
 
-
 (: SCENARIO 4: Not found anywhere :)
-  else "/controller/notfound.xqy"
+  else ("/controller/notfound.xqy", xdmp:log(xdmp:url-decode($doc-url)) )
 
