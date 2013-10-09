@@ -30,12 +30,12 @@ ol ol {
 }
 */
 
-#header nav .current:after {border-color: #F5F5F5 transparent;}
+#header nav .current:after {border-color: #1479B2 transparent;}
 #container > footer {padding-bottom: 0;}
 #content {
 	padding-bottom: 0;
 	position: absolute;
-	top: 71px;
+	top: 91px;
 	bottom: 0;
 	width: 1100px;
 }
@@ -243,9 +243,6 @@ font-weight: bold;
 	padding: 3px 8px;
 	margin-bottom: 8px;
 	border: 1px solid #003959;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
 	font-weight: bold;
 	text-decoration: none !important;
 	text-align: center;

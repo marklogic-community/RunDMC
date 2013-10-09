@@ -1,0 +1,72 @@
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+body {
+	margin: 0;
+	padding: 0;
+	background: #666;
+	color: #666;
+	font: 14px/129% Arial, Helvetica, Sans-serif;
+	width: 1100px;
+	margin: auto;
+}
+
+#header {
+    background: black;
+    color: white;
+    height: 80px;
+	width: 1100px;
+	margin: auto;
+}
+
+#logo-container {
+    background: red;
+    float: left;
+}
+
+#main-site-container {
+    float: right;
+    background: green;
+}
+
+#search-container {
+    float: right;
+    background: blue;
+}
+
+#login-signup-container {
+    float: right;
+    background: yellow;
+}
+
+#main-nav {
+    background: orange;
+    float: right;
+}
+
+#header-bar {
+    width: 100%;
+    height: 8px;
+    background: #1479B2;
+}
+
+#body {
+    background: white;
+    width: 100%;
+    height: 400px;
+}
+
+#home-search {
+    width: 100%
+    padding: 0px; 20px; 0px; 20px;
+    background: grey;
+}
+
+#home-tabs {
+}
+
+#promos {
+}
+
+#footer {
+    background: black;
+    color: white;
+}

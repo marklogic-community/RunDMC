@@ -59,6 +59,7 @@
                 <span>Log in</span></a>
             </li>
             <li>
+                <xsl:if test="empty(users:getCurrentUserName())"> <xsl:attribute name="style">display:none</xsl:attribute></xsl:if>
                 <a class="drop-down-trigger button" id="session-trigger" href="#"><xsl:if 
                     test="empty(users:getCurrentUserName())"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
                 <span><xsl:value-of select="users:getCurrentUserName()"></xsl:value-of></span></a>

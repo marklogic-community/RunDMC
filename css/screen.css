@@ -249,7 +249,7 @@ ol {
 }
 
 #header {
-	background: black url(/images/bg_shadow_header.gif) bottom left repeat-x;
+	background: black;
 	color: white;
 	font-size: 11px;
 	position: relative;
@@ -264,7 +264,7 @@ ol {
 	position: relative;
 }
 #header a {color: #CCC;}
-#header h1 {float: left;}
+#header h1 {float: left; margin-bottom: 10px;}
 #header h1 a {
 	background: url(/images/178x44-logo.png) no-repeat;
 	display: block;
@@ -275,7 +275,8 @@ ol {
 }
 #search-header form {	
 	float: right;
-	margin-top: -8px;
+	margin-top: -1px;
+	margin-right: 10px;
 }
 /*.jsenabled */#search-header form {
 	border: 1px solid #999;
@@ -320,9 +321,11 @@ ol {
 	line-height: 17px;
 }
 nav {
-	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
-	text-transform: uppercase;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
 }
+
 nav a {color: #CCC;}
 #header nav {
 	position: absolute;
@@ -337,13 +340,13 @@ nav ul {margin: 0;}
 }
 #header nav li a {
 	display: block;
-	margin-bottom: 3px;
+	margin-bottom: 3px; /* ok to remove? */
 }
 #header nav .current {padding-bottom: 0;}
 #header nav .current:after {
 	content: "";
 	border-width: 0 7px 7px;
-	border-color: white transparent;
+	border-color: #1479B2 transparent;
 	border-style: solid;
 	display: block;
 	width: 0;
@@ -353,6 +356,15 @@ nav ul {margin: 0;}
 	color: white;
 	text-decoration: none;
 }
+
+#header-bottom-bar {
+    left: 0; 
+    right: 0; 
+    width: 100%; 
+    height: 10px;
+    background: #1479B2;
+}
+
 #content {
     left: 0;
 	background: #F5F5F5;
@@ -360,7 +372,7 @@ nav ul {margin: 0;}
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	box-shadow: 0 0 2px rgba(0,0,0,.9);
-	position: relative;
+	xposition: relative;
 	z-index: 1;
 	padding-bottom: 20px;
 }
@@ -748,7 +760,7 @@ footer nav .current a {color: white;}
 #documentation > h2 img {margin-top: -10px;}
 #container > #comments .action {
 	position: absolute;
-	top: 110px;
+	top: 120px;
 	right: 0;
 	background: white;
 	-webkit-border-radius: 3px 0 0 3px;
@@ -1173,9 +1185,11 @@ section#documentation:before {margin-bottom: 30px;}
 	padding: 5px 8px;
 	margin-bottom: 8px;
 	border: 1px solid #003959;
+    /* 
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
+    */
 	font-weight: bold;
 	text-decoration: none !important;
 	text-align: center;
@@ -2200,23 +2214,63 @@ a.hit_highlight { text-decoration: none; color: #666; }
     background-image: url(/images/ml_icons_warning.png);
 }
 
+div.header-separator {
+    float: right;
+    margin-right: 10px;
+    color: gray;
+    font-size: 20px;
+}
+                    
+/* main site button */
+#main-site {
+    float: right;
+    font-size: 12px;
+    margin-top: 2px;
+}
+#main-site a {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
 /* login, signin, profile */
 #login-header nav {
     float: right;
     position: relative;
-	margin-top: -23px;
+	margin-top: -21px;
     margin-left: 10px;
+}
+
+.drop-down-trigger {
+    margin-top: 18px;
 }
 
 .drop-down-trigger span {
 	min-width: 40px;
 	text-transform: none;
-    padding:8px 0px 0px 0;
+    padding:0px 0px 0px 0;
+}
+
+#login-trigger span {
+    padding-left: 5px;
+    padding-right: 5px;
+}  
+#signup-trigger span {
+    padding-left: 5px;
+    padding-right: 5px;
+}  
+
+#session-trigger span {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#login-trigger span, #signup-trigger span, #session-trigger span {
+    color: #666;
+	font-weight: normal;
+    font-size: 11px;
 }
 
 #login-trigger span, #session-trigger span {
-    padding:8px 16px 0px 0px;
-    color: #666;
+    padding:0px 16px 0px 0px;
     background-image:url(/images/signUpAssets/icon_login_downarrow.png);
     background-repeat:no-repeat;
     background-position:100% 100%;
@@ -2224,37 +2278,31 @@ a.hit_highlight { text-decoration: none; color: #666; }
 
 #login-header nav li {
 	float: left;
-	margin-left: 6px;
+	margin-left: 16px;
+}
+
+#login-menu-nav {
+    margin-right: 8px;
 }
 
 .drop-down-menu {
     display: none;
-    -moz-border-radius-topleft:5px;
-    -moz-border-radius-bottomleft:5px;
-    -moz-border-radius-bottomright:5px;
-	-moz-border-radius: 5px;
-    -webkit-border-top-left-radius:5px;
-    -webkit-border-bottom-left-radius:5px;
-    -webkit-border-bottom-right-radius:5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-
     position:absolute;
     width:210px;
     z-index:100;
     top: 24.5px; 
-    right: 0px; 
-    margin-top: 5px;
+    right: 186px;
+    margin-top: 14px;
 
 	border: 1px solid #CCCCCC;
 
-	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-	-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-	box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	x-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	x-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	xbox-shadow: 1px 1px 1px rgba(0,0,0,.3);
 	text-align: left;
 
 	padding: 14px;
-	background: #ECECEC;
+	background: #FEFEFE;
 
     vertical-align: middle;
     font: 11px/120% Arial, Helvetica, Sans-serif;
@@ -2262,45 +2310,13 @@ a.hit_highlight { text-decoration: none; color: #666; }
 }
 
 #login-menu {
-    right: 4px;
+    right: 192px;
 }
 
 #session-menu {
-    width:90px;
+    right: 316px;
+    width:102px;
 }
-
-/*
-.drop-down-trigger a.menu-open {
-    background:#ddeef6!important;
-    color:#666!important;
-    outline:none;
-}
-
-a.drop-down-trigger.menu-open span {
-    background-image:url(/images/toggle_up_dark.png);
-    background-repeat:no-repeat;
-    background-position:100% 100%;
-    color:#789;
-}
-*/
-/*
-	position: fixed;
-	top: 110px;
-	left: 50%;
-	margin-left: -550px;
-	background: #F4F4F4;
-	-moz-border-radius: 0 5px 5px 0;
-	-webkit-border-radius: 0 5px 5px 0;
-	border-radius: 0 5px 5px 0;
-	-webkit-box-shadow: 1px 1px 0 rgba(0,0,0,.1);
-	-moz-box-shadow: 1px 1px 0 rgba(0,0,0,.1);
-	box-shadow: 1px 1px 0 rgba(0,0,0,.1);
-	z-index: 10;
-	width: 40px;
-	padding: 50px 1px 0 0;
-	border: 1px solid #CCC;
-	border-left: 0;
-*/
 
 .drop-down-menu a, #session-menu a {
 	color: #01639D;
@@ -2381,46 +2397,30 @@ a.drop-down-trigger.menu-open span {
 
 .login-menu-label {
     color: #333;
+    float: left;
 }
 
 #login_submit {
     margin-left: auto;
     margin-right: auto;
     width: 20%;
-    color: #ccc;
 }
 
 #login_submit span {
     display: block;
     padding-left: 0px;
     min-width: 50px;
-    color: #ccc;
+    color: white;
 }
 
 #login-error {
     color: red;
 }
 
-#fb-login {
-    background-image:url(/images/signUpAssets/icon_signup_fb.png);
-    background-repeat:no-repeat;
-    background-position: left center;
-    height: 50px;
-    text-decoration: none;
-}
-
 #signup-form-separator {
     border-top: 1px solid #DEDEDE;
     padding-top: 20px;
     margin-top: 20px;
-}
-
-#fb-signup-link {
-    background-image:url(/images/signUpAssets/icon_signup_fb.png);
-    background-repeat:no-repeat;
-    background-position: left center;
-    height: 50px;
-    display: block;
 }
 
 #local-signup, #local-login {
@@ -2438,18 +2438,6 @@ a.drop-down-trigger.menu-open span {
     background-position: left center;
 }
 
-#fb-signup:hover, #fb-login:hover {
-	background: #fefefe; /* Old browsers */
-    background-image:url(/images/signUpAssets/icon_signup_fb.png);
-    background-repeat:no-repeat;
-    background-position: left center;
-}
-
-#fb-signup div, #fb-signup-link div {
-    padding-top: 16px;
-    padding-left: 50px;
-}
-
 #local-signup div {
     padding-top: 20px;
     padding-left: 50px;
@@ -2460,16 +2448,6 @@ a.drop-down-trigger.menu-open span {
     padding-left: 50px;
 }
 
-#fb-login {
-    display: block;
-}
-
-#fb-login div {
-    padding-top: 18px;
-    padding-left: 50px;
-}
-
-
 #local-signup, #local-login {
     border-top: 0;
 }
@@ -2479,7 +2457,7 @@ a.drop-down-trigger.menu-open span {
     color: #666;
 }
 
-#login-trigger, #session-trigger {
+#login-trigger, #signup-trigger, #session-trigger {
     color: #666;
     text-shadow: 0  0 rgba(0,0,0,0);*/
     text-decoration: none !important;
@@ -2498,7 +2476,7 @@ a.drop-down-trigger.menu-open span {
     line-height: 12px !important;
 
 }
-#login-trigger:hover, #session-trigger:hover {
+#login-trigger:hover, #signup-trigger:hover, #session-trigger:hover {
     background: #dcdbdb; /* Old browsers */
     background: -moz-linear-gradient(top, #efeeee 0%, #dcdbdb 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efeeee), color-stop(100%,#dcdbdb)); /* Chrome,Safari4+ */

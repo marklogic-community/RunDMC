@@ -27,7 +27,7 @@
     <draft-server port="8004"/>
     <webdav-server port="8005"/>
     <admin-server port="8006"/>
-    <api-server port="8009"/>
+    <api-server port="8809"/>
     <standalone-api-server port="8011"/>
     <rapi-server port="4446"/>
   </host>

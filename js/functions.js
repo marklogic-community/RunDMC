@@ -232,6 +232,7 @@ if(typeof jQuery != 'undefined') {
                                     $('#login-trigger').hide();
                                     $('#session-trigger span').text(data.name);
                                     $('#session-trigger').show();
+                                    $('#session-trigger').parent().show();
 
                                     $(this).dialog('close');
 
@@ -415,22 +416,17 @@ if(typeof jQuery != 'undefined') {
             $('input#email').focus();
 
             $("#session-trigger").click(function(e) {
-                e.preventDefault();
                 $("#session-menu").toggle();
-                $(this).toggleClass("menu-open");
             });
 
             $("#login-trigger").click(function(e) {
-                e.preventDefault();
                 $("#login-menu").toggle();
-                $(this).toggleClass("menu-open");
             });
 
 			$(document).bind('keydown.drop-down-menu', function(event) {
                 if (event.keyCode && event.keyCode === $.ui.keyCode.ESCAPE) {
                     $('.drop-down-menu').each(function() {
                         $(this).hide();
-                        $(this).removeClass("menu-open");
                     });
 					event.preventDefault();
                 }
@@ -438,16 +434,15 @@ if(typeof jQuery != 'undefined') {
 
 
             $("fieldset.drop-down-menu").mouseup(function() {
-                return false;
+                // return false;
             });
 
             $(document).mouseup(function(e) {
                 if ($(e.target).parents("fieldset.drop-down-menu").length == 0) { // hide if the click is outside of a menu
                     $('.drop-down-menu').each(function() {
                         $(this).hide();
-                        $(this).removeClass("menu-open");
                     });
-                }
+                } 
             });            
 
             $("#local-login").click(function(e) {
@@ -466,11 +461,11 @@ if(typeof jQuery != 'undefined') {
                         if (data.status === 'ok') {
                             $('#login-error').text("");
                             $('#login-menu').hide();
-                            $('#login-trigger').removeClass("menu-open");
 
                             $('#signup-trigger').hide();
                             $('#login-trigger').hide();
                             $('#session-trigger span').text(data.name);
+                            $('#session-trigger').parent().show();
                             $('#session-trigger').show();
                         } else {
                             $('#login-error').text(data.status);
@@ -482,8 +477,9 @@ if(typeof jQuery != 'undefined') {
 
             $("#logout").click(function(e) {
 
-                $("session-trigger span").text("");
+                $("#session-trigger span").text("");
                 $('#session-trigger').hide();
+                $('#session-trigger').parent().hide();
                 $('#session-menu').hide();
                 $('#signup-trigger').show();
                 $('#login-trigger').show();

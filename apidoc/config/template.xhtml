@@ -94,32 +94,57 @@
 		<div id="container">
 			<div id="header">
 				<header>
-					<h1><a ml:href="/" ml:class="">MarkLogic&#174; Community</a></h1>
-          <div id="login-header">
-            <ml:login-menu/>
-          </div>
-          <div id="search-header">
-            <form ml:action="/search" method="get">
-              <fieldset>
-                <legend>Search</legend>
-                <label for="s_inp">Search with MarkLogic</label>
-                <input id="s_inp" type="text" placeholder="Search with MarkLogic" name="q" ml:value=""/>
-                <input type="submit" value="Search" />
-              </fieldset>
-            </form>
-          </div>
-          <ml:top-nav/>
+					<h1>
+                        <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript> 
+                        <a href="/">MarkLogic&#174; Community</a>
+                    </h1>
+                    <div id="header-contents">
+
+                        <div id="main-site">
+                            <a href="//www.marklogic.com">Main site &#9656;</a>
+                        </div>
+                        <div class="header-separator">|</div>
+                        <div id="search-header">
+					     <form ml:action="/search" method="get">
+						    <fieldset>
+							    <legend>Search</legend>
+							    <label for="s_inp">Search with MarkLogic</label>
+							    <input id="s_inp" name="q" type="text" placeholder="Search with MarkLogic" ml:value=""/>
+							    <input type="submit" value="Search" />
+						    </fieldset>
+					     </form>
+                        </div>
+                        <div class="header-separator">|</div>
+                        <div id="login-header">
+                            <ml:login-menu/>
+                        </div>
+                    </div>
+                    
+                    <ml:top-nav/>
+          <!--
+					<nav>
+						<ul>
+							<li><a href="">Documentation</a></li>
+							<li class="current"><a href="">Downloads</a></li>
+							<li><a href="">Code</a></li>
+							<li><a href="">People</a></li>
+							<li><a href="">Blog</a></li>
+							<li><a href="">Discuss</a></li>
+							<li><a href="">Meet</a></li>
+						</ul>
+					</nav>
+          -->
 				</header>
 			</div>
-			<hr />
+            <div id="header-bottom-bar"/>
 			<div id="content">
-        <div id="breadcrumb">
-          <ml:breadcrumbs/>
-        </div>
+                <div id="breadcrumb">
+                     <ml:breadcrumbs/>
+                 </div>
 				<section id="page_content">
-          <ml:page-content/>
-          <ml:comment-section/>
-          <ml:apidoc-copyright/>
+                    <ml:page-content/>
+                    <ml:comment-section/>
+                    <ml:apidoc-copyright/>
 				</section>
         <div id="api_sub">
           <ml:api-toc/>

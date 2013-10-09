@@ -260,9 +260,6 @@
   line-height: 1.3em;
 }
 .dc #hmfeature, .dc .hmround {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
   border: 1px solid #CCC;
   background-color: #f8f9f1;
   color: #555555;
@@ -288,9 +285,6 @@
   xfilter: progid:DXImageTransform.Microsoft.gradient(startColorstr='white', endColorstr='#f1f1f1', GradientType=0);
   margin: 30px 80px 20px;
   padding: 30px 36px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
   border: 1px solid gray;
   padding-right:0;
 }
@@ -492,9 +486,6 @@
 }
 .dc #products ul li {
   border: 1px solid #d4d4d4;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
   background: white;
   background-color: #fdfdfd;
   background-image: -moz-linear-gradient(top, white, #fbfbfb);

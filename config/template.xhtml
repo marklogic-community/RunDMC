@@ -67,20 +67,29 @@
                         <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript> 
                         <a href="/">MarkLogic&#174; Community</a>
                     </h1>
-                    <div id="login-header">
-                        <ml:login-menu/>
+                    <div id="header-contents">
+
+                        <div id="main-site">
+                            <a href="//www.marklogic.com">Main site &#9656;</a>
+                        </div>
+                        <div class="header-separator">|</div>
+                        <div id="search-header">
+					     <form ml:action="/search" method="get">
+						    <fieldset>
+							    <legend>Search</legend>
+							    <label for="s_inp">Search with MarkLogic</label>
+							    <input id="s_inp" name="q" type="text" placeholder="Search with MarkLogic" ml:value=""/>
+							    <input type="submit" value="Search" />
+						    </fieldset>
+					     </form>
+                        </div>
+                        <div class="header-separator">|</div>
+                        <div id="login-header">
+                            <ml:login-menu/>
+                        </div>
                     </div>
-                    <div id="search-header">
-					<form ml:action="/search" method="get">
-						<fieldset>
-							<legend>Search</legend>
-							<label for="s_inp">Search with MarkLogic</label>
-							<input id="s_inp" name="q" type="text" placeholder="Search with MarkLogic" ml:value=""/>
-							<input type="submit" value="Search" />
-						</fieldset>
-					</form>
-                    </div>
-          <ml:top-nav/>
+                    
+                    <ml:top-nav/>
           <!--
 					<nav>
 						<ul>
@@ -96,7 +105,7 @@
           -->
 				</header>
 			</div>
-			<hr />
+            <div id="header-bottom-bar"/>
 			<div id="content">
         <ml:choose>
           <!-- Don't include the regular page divs on the home page -->

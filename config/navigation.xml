@@ -2,7 +2,7 @@
      including breadcrumb hierarchy.
 -->
 <navigation xmlns="http://developer.marklogic.com/site/internal">
-  <page display="Docs" href="/" tooltip="MarkLogic API reference and user guides" api-server="yes" use-preferred-version-href="yes"/>
+  <page display="Documentation" href="/" tooltip="MarkLogic API reference and user guides" api-server="yes" use-preferred-version-href="yes"/>
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
     <group display="DOWNLOADS">
       <group display="Server">
@@ -249,8 +249,6 @@
         </group>
     </group>
   </page>
-
-  <page display="Company" href="http://www.marklogic.com/" />
 
   <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
 
