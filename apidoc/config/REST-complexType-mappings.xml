@@ -122,14 +122,12 @@
   <resource name="/manage/v1/servers/{id|name}/config?group-id={id|name}">
     <complexType name="http-server-config"/>
   </resource>
-<!--
   <resource name="/manage/v1/servers/{id|name}/edit?group-id={id|name}">
-    <complexType name="error: missing display"/>
+    <complexType name="server-default"/>
   </resource>
   <resource name="/manage/v1/servers/{id|name}/{custom}?group-id={id|name}">
-    <complexType name="error: missing display"/>
+    <complexType name="server-default"/>
   </resource>
--->
   <resource name="/manage/v1/groups">
     <complexType name="group-default-list"/>
   </resource>
@@ -266,10 +264,10 @@
   <complexType name="server-default-list"/>
 </resource>
 <resource name="/manage/v2/servers/{id|name}">
-  <complexType name="error: missing display"/>
+  <complexType name="server-default"/>
 </resource>
 <resource name="/manage/v2/servers/{id|name}/{custom}">
-  <complexType name="error: missing display"/>
+  <complexType name="server-default"/>
 </resource>
 <resource name="/manage/v2/tickets/{tid}?view=process-status">
   <complexType name="ticket-status"/>
