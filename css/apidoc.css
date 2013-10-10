@@ -448,7 +448,7 @@ table.parameters .col2 {width: 75%;}
 /* another brute-force fix to override screen.css */
 table.parameters tbody td:last-child {background: url(/images/bg_cacaca.gif) top right repeat-y;}
 
-a.function_prefix { text-decoration: underline; color: #899B3B; }
+a.function_prefix { text-decoration: underline; color: black; }
 
 /* Disqus tooltips don't interact well with our layout */
 .dsq-tooltip-outer { display: none !important; }
