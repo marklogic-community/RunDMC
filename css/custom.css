@@ -261,8 +261,11 @@
 }
 .dc #hmfeature, .dc .hmround {
   border: 1px solid #CCC;
-  background-color: #f8f9f1;
+  background-color: white;
   color: #555555;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
 
 .dc #mlw-promo {
@@ -500,6 +503,9 @@
   margin: 0 20px 20px 0;
   width: 218px;
   height: 140px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
 .dc #products ul li:hover {
   border-color: #b9ca72;

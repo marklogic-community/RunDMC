@@ -50,7 +50,7 @@ h1, h2, h3 {
 	margin: 0;
 }
 h2 {
-	color: #899B3B;
+	color: black;
 	font-size: 27px;
 }
 h3 {font-size: 20px;}
@@ -251,12 +251,12 @@ ol {
 #header {
 	background: black;
 	color: white;
-	font-size: 11px;
+	font-size: 14px;
 	position: relative;
 	z-index: 2;
 }
 #header header, #breadcrumb > div {
-	width: 945px;
+	width: 1070px;
 	margin: auto;
 }
 #header header {
@@ -271,8 +271,8 @@ ol {
 	text-indent: -999em;
 	width: 178px;
 	height: 44px;
-	margin-left: -22px;
 }
+
 #search-header form {	
 	float: right;
 	margin-top: -1px;
@@ -284,10 +284,14 @@ ol {
 }
 #search-header form input[type=text] {
 	border: none;
-	width: 216px;
+	width: 316px;
 	padding: 0 0 3px 6px;
-	height: 18px;
+	height: 20px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
+
 #search-header form input[type=text]::-webkit-input-placeholder {
 	color: #CCC;
 	font: italic 10px Arial, Helvetica, Sans-serif;
@@ -322,14 +326,14 @@ ol {
 }
 nav {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
 }
 
 nav a {color: #CCC;}
 #header nav {
 	position: absolute;
-	right: 0;
+    right: 0px;
 	bottom: -1px;
 }
 nav ul {margin: 0;}
@@ -377,13 +381,13 @@ nav ul {margin: 0;}
 	padding-bottom: 20px;
 }
 #content #main_container {
-	width: 945px;
+	width: 1020px;
 	margin: auto;
 	background: url(/images/separator_vert.gif) 271px 0 repeat-y;
 }
 #breadcrumb {
 	background: white;
-	padding: 10px 0 20px;
+	padding: 10px 0 20px 40px;
 	font-size: 10px;
 	line-height: 100%;
 	position: relative;
@@ -391,7 +395,7 @@ nav ul {margin: 0;}
 #breadcrumb a {color: #666;}
 #breadcrumb + section > h2 {
 	background: white;
-	padding: 0 120px 10px 402px;
+	padding: 0 120px 10px 328px;
 	line-height: 100%;
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.9);
 	-moz-box-shadow: 0 0 2px rgba(0,0,0,.9);
@@ -406,7 +410,6 @@ nav ul {margin: 0;}
 #breadcrumb .version {
 	font-size: 12px;
 	position: absolute;
-	margin-left: 77px;
 	position: absolute;
 	width: auto;
 	bottom: -25px;
@@ -416,7 +419,7 @@ nav ul {margin: 0;}
 #breadcrumb .version b {color: #333;}
 #main {
 	float: right;
-	width: 620px;/*
+	width: 730px;/*
 	min-height: 500px;*/
 }
 #main > :first-child {margin-top: 0;}
@@ -745,7 +748,7 @@ footer nav .current a {color: white;}
 	clear: right;
 }
 #container > #comments > div {
-	width: 945px;
+	width: 1020px;
 	margin: auto;
 }
 #container > #comments > div > section {
@@ -1185,11 +1188,9 @@ section#documentation:before {margin-bottom: 30px;}
 	padding: 5px 8px;
 	margin-bottom: 8px;
 	border: 1px solid #003959;
-    /* 
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-    */
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
 	font-weight: bold;
 	text-decoration: none !important;
 	text-align: center;
@@ -2227,6 +2228,11 @@ div.header-separator {
     font-size: 12px;
     margin-top: 2px;
 }
+#main-triangle {
+    font-size: 16px;
+    font-stye: bold;
+}
+
 #main-site a {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
@@ -2235,7 +2241,7 @@ div.header-separator {
 #login-header nav {
     float: right;
     position: relative;
-	margin-top: -21px;
+	margin-top: -20px;
     margin-left: 10px;
 }
 
@@ -2296,13 +2302,21 @@ div.header-separator {
 
 	border: 1px solid #CCCCCC;
 
-	x-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-	x-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-	xbox-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    background: #fefefe; /* Old browsers */
+    background: -moz-linear-gradient(top, #fefefe 0%, #e9e9e9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#e9e9e9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fefefe 0%,#e9e9e9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fefefe 0%,#e9e9e9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fefefe 0%,#e9e9e9 100%); /* IE10+ */
+    -pie-background: linear-gradient(top, #fefefe 0%,#e9e9e9 100%); /* IE (through CSS3 PIE) */
+    background: linear-gradient(top, #fefefe 0%,#e9e9e9 100%); /* W3C */
+
+	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 	text-align: left;
 
 	padding: 14px;
-	background: #FEFEFE;
 
     vertical-align: middle;
     font: 11px/120% Arial, Helvetica, Sans-serif;
@@ -2520,7 +2534,7 @@ div.header-separator {
 #signup-form input[type=text], #signup-form input[type=password],
 #signup-form input.countrypicker,
 #signup-form select {
-	width: 240px;
+	width: 354px;
 }
 
 #profile-form input[type=text], #profile-form input[type=password], #profile-form input.countrypicker {

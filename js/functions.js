@@ -417,11 +417,25 @@ if(typeof jQuery != 'undefined') {
 
             $("#session-trigger").click(function(e) {
                 $("#session-menu").toggle();
+
+                $( "#session-menu" ).position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: "#session-trigger"
+                });
+
 				e.preventDefault();
             });
 
             $("#login-trigger").click(function(e) {
                 $("#login-menu").toggle();
+
+                $( "#login-menu" ).position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: "#login-trigger"
+                });
+
 				e.preventDefault();
             });
 

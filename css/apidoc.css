@@ -38,6 +38,7 @@ ol ol {
 	top: 91px;
 	bottom: 0;
 	width: 1100px;
+    background: white;
 }
 
 #copyright {
@@ -56,7 +57,7 @@ ol ol {
 #breadcrumb {
 	padding-bottom: 10px;
 	float: left;
-	padding-left: 77px;
+	padding-left: 15px;
 }
 #breadcrumb > div {
 	width: auto;
@@ -67,7 +68,7 @@ ol ol {
 #page_content {
 	height: 100%;
 	overflow: auto;
-	width: 640px;
+	width: 700px;
 	float: right;
 	padding-right: 65px;
 	padding-left: 68px;
@@ -77,7 +78,7 @@ ol ol {
 	padding: 0 !important;
 	margin: 40px 0 40px;
 	line-height: 110%;
-	color: #899B3B;
+	color: black;
 	font-size: 27px;
 }
 
@@ -107,7 +108,7 @@ ol ol {
 
 /* same as h2 in screen.css */
 .userguide h1 {
-	color: #899B3B;
+	color: black;
 	font-size: 27px;
 }
 
@@ -132,7 +133,7 @@ ol ol {
 	max-width: 440px;*/
 }
 #page_content dd pre {
-	background-color: #F9F9F9;
+	background-color: white;
 	padding-top: 5px;
 	border-radius: 4px;
 }
@@ -145,7 +146,7 @@ ol ol {
   color: #333333;
   font-size: 0.9em;
   position: absolute;
-  left: 77px;
+  left: 15px;
   top: 70px;
   bottom: 0;
 }
@@ -257,6 +258,9 @@ font-weight: bold;
 	overflow: hidden;
 	line-height: 12px !important;
 	text-transform: capitalize;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 .treecontrol.top_control > span img, .treecontrol.top_control > span span {
 	vertical-align: baseline;
@@ -301,7 +305,7 @@ code.syntax {
 /* overrides padding-left in screen.css */
 tbody td:first-child.indented_function  {padding-left: 40px;}
 
-h1 a { text-decoration: underline; color: #899B3B; }
+h1 a { text-decoration: underline; color: black; }
 
 .hide-detail { display: none; }
 
