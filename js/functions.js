@@ -459,7 +459,6 @@ if(typeof jQuery != 'undefined') {
                       (! $(e.target).parent().hasClass("drop-down-trigger")) ) { 
 
                     $('.drop-down-menu').each(function() {
-                        console.log($(this).get());
                         $(this).hide();
                     });
                 } 
