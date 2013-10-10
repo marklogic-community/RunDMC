@@ -116,24 +116,24 @@ thead th:only-child {
 		url("/images/bg_table_features_topmiddle.png") center top repeat-x #ECECEC;
 }
 thead th p {margin: 0;}
-tbody {border-top: 1px solid #CCC;}
+tbody {border: 1px solid #CCC;}
 tbody th, tbody td {padding: 10px 5px; white-space: normal}
 tbody td:first-child, tbody th:first-child {
 	padding-left: 15px;
-	background: url(/images/bg_cacaca.gif) top left repeat-y;
+	xbackground: url(/images/bg_cacaca.gif) top left repeat-y;
 }
-tbody td:last-child {background: url(/images/bg_cacaca.gif) top right repeat-y;}
+tbody td:last-child {xbackground: url(/images/bg_cacaca.gif) top right repeat-y;}
 tbody:last-child tr:last-child td {
-	background: url(/images/bg_cacaca.gif) bottom left repeat-x;
+	xbackground: url(/images/bg_cacaca.gif) bottom left repeat-x;
 }
 tbody:last-child tr:last-child td:first-child,
 tbody:last-child tr:last-child th:first-child {
-	background: url(/images/bg_table_corner_bl.gif) bottom left no-repeat,
+	xbackground: url(/images/bg_table_corner_bl.gif) bottom left no-repeat,
 		url(/images/bg_cacaca.gif) top left repeat-y,
 		url(/images/bg_cacaca.gif) bottom left repeat-x;
 }
 tbody:last-child tr:last-child td:last-child {
-	background: url(/images/bg_table_corner_br.gif) bottom right no-repeat,
+	xbackground: url(/images/bg_table_corner_br.gif) bottom right no-repeat,
 		url(/images/bg_cacaca.gif) top right repeat-y,
 		url(/images/bg_cacaca.gif) bottom left repeat-x;
 }
@@ -154,11 +154,11 @@ tbody tr:first-child th:first-child,
 tbody td:last-child,
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
-	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
+	{xbackground: url(/images/bg_table_features_bottom.png) no-repeat;}
 tbody td.last,
 tbody.last tr.last th,
 tbody.last tr.last td
-	{background: url(/images/bg_table_features_bottom.png) no-repeat;}
+	{xbackground: url(/images/bg_table_features_bottom.png) no-repeat;}
 tbody:last-child tr:last-child th,
 tbody:last-child tr:last-child td
 	{background-position: bottom center;}
@@ -1129,7 +1129,7 @@ section#documentation:before {margin-bottom: 30px;}
 */
 
 .doclist tbody:last-child tr:last-child td {
-    background: url(/images/bg_table_features_bottom.png) bottom center no-repeat;
+    xbackground: url(/images/bg_table_features_bottom.png) bottom center no-repeat;
 }
 
 /* home page styles */
