@@ -303,8 +303,7 @@ ol {
 	line-height: 17px;
 }
 #search-header form input[type=text]:focus {
-	padding-left: 2px;
-	width: 220px;
+	width: 316px;
 	outline: none;
 }
 #search-header form input[type=submit] {
@@ -2321,6 +2320,10 @@ div.header-separator {
     vertical-align: middle;
     font: 11px/120% Arial, Helvetica, Sans-serif;
     font-weight: bold;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 
 #login-menu {
