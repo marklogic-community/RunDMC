@@ -68,10 +68,10 @@ ol ol {
 #page_content {
 	height: 100%;
 	overflow: auto;
-	width: 700px;
+	width: 730px;
 	float: right;
-	padding-right: 65px;
-	padding-left: 68px;
+	padding-right: 50px;
+	padding-left: 53px;
 	position: relative;
 }
 #page_content h1 {
