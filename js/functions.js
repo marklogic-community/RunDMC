@@ -373,7 +373,46 @@ if(typeof jQuery != 'undefined') {
 
         $(document).ready(function() {
 
-                    
+  	        var container = document.getElementById("tabContainer");
+		    var tabcon = document.getElementById("tabscontent");
+            // set current tab
+            var navitem = document.getElementById("tabHeader_1");
+
+            if (!navitem) 
+                return;
+
+            //store which tab we are on
+            var ident = navitem.id.split("_")[1];
+            navitem.parentNode.setAttribute("data-current",ident);
+            //set current tab with class of activetabheader
+            navitem.setAttribute("class","tabActiveHeader");
+
+            //hide two tab contents we don't need
+            $('.tabpage').hide();
+            $('#tabpage_1').show();
+
+            //this adds click event to tabs
+            $('#tabContainer li').click(function() {
+
+                var current = $(this).parent().attr("data-current");
+                //remove class of activetabheader and hide old contents
+                document.getElementById("tabHeader_" + current).removeAttribute("class");
+                document.getElementById("tabpage_" + current).style.display="none";
+
+                var ident = this.id.split("_")[1];
+                //add class of activetabheader to new active tab and show contents
+                $(this).attr("class","tabActiveHeader");
+                document.getElementById("tabpage_" + ident).style.display="block";
+                $(this).parent().attr("data-current",ident);
+
+                $('#tabsborder').position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: $(this).get()
+                });
+                $('#tabsborder').css({marginTop: '-=3px'});
+            });
+
             if (navigator.appVersion.indexOf("10_7") != -1) {
                 $('.showScroll').addClass('lion');
             }
@@ -666,3 +705,5 @@ function isValidEmailAddress(emailAddress) {
     var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
     return pattern.test(emailAddress);
 };
+
+                    
