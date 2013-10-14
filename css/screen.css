@@ -2724,26 +2724,31 @@ div.header-separator {
     font-size: 13px;
     font-family: monospace;
     width: 400px;
-    overflow-x: hidden;
-    white-space: nowrap;
     display: inline;
     float: left;
     padding: 3px;
     background: #DDD;
     border: 1px solid gray;
+    margin: 10px 10px 10px 20px;
+    resize: none;
 }
 
-.url-copy {
-    padding: 3px 3px 3px 16px;
-    display: inline;
+.copy-button {
     float: left;
-    
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    margin: 10px 0px 10px 20px;
 }
 
-.url-box {
-    margin: 10px 0px 10px 40px;
-    height: 24px;
-    display: block;
-    background: #C9C9C9;
-    clear: both;
+.copy-button.zeroclipboard-is-hover { 
+    background-color:#fff; 
+}
+.copy-button.zeroclipboard-is-active { 
+    background-color:#aaa; 
+}
+
+.download-url-label {
+    float: left;
 }

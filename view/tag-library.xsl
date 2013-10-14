@@ -412,59 +412,16 @@
     </div>
 
     <div id="download-curl-dialog" style="display: none">
-        Please use the following, one-time-use URL to fetch the download
-        <div class="url-box">
-            <div id="curl-url" class="download-url"/>
-            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-                    width="110"
-                    height="14"
-                    class="url-copy" id="copy-url" >
-            <param name="movie" value="/flash/clippy.swf"/>
-            <param name="allowScriptAccess" value="always" />
-            <param name="quality" value="high" />
-            <param name="scale" value="noscale" />
-            <param name="FlashVars" value="id=curl-url"/>
-            <param name="bgcolor" value="#C9C9C9"/>
-            <embed src="/images/clippy.swf"
-                    width="110"
-                    height="14"
-                    name="copy-url"
-                    quality="high"
-                    allowScriptAccess="always"
-                    type="application/x-shockwave-flash"
-                    pluginspage="http://www.macromedia.com/go/getflashplayer"
-                    FlashVars="id=curl-url"
-                    bgcolor="#C9C9C9"
-            />
-            </object>
-        </div>
-        <div style="float: left;" >Or use the secure version here instead:</div>
-        <br/>
-        <div class="url-box">
-            <div id="secure-curl-url" class="download-url"/> 
-            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-                    width="110"
-                    height="14"
-                    class="url-copy" id="secure-copy-url" >
-            <param name="movie" value="/flash/clippy.swf"/>
-            <param name="allowScriptAccess" value="always" />
-            <param name="quality" value="high" />
-            <param name="scale" value="noscale" />
-            <param name="FlashVars" value="id=secure-curl-url"/>
-            <param name="bgcolor" value="#C9C9C9"/>
-            <embed src="/images/clippy.swf"
-                    width="110"
-                    height="14"
-                    name="secure-copy-url"
-                    quality="high"
-                    allowScriptAccess="always"
-                    type="application/x-shockwave-flash"
-                    pluginspage="http://www.macromedia.com/go/getflashplayer"
-                    FlashVars="id=secure-curl-url"
-                    bgcolor="#C9C9C9"
-            />
-            </object>
-        </div> 
+
+        <div class="download-url-label" >Please use the following, one-time-use URL to fetch the download:</div>
+        <textarea readonly="readonly" class="download-url" id="curl-url"/>
+        <button class="copy-button" id="copy-url-button" 
+                data-clipboard-target="curl-url" title="Click to copy">Copy to Clipboard</button>
+
+        <div class="download-url-label" >Or use the secure version here instead:</div>
+        <textarea readonly="readonly" class="download-url" id="secure-curl-url"/>
+        <button class="copy-button" id="copy-secure-url-button" 
+                data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
     </div>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">

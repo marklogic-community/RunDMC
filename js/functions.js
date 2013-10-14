@@ -814,5 +814,14 @@ function showDownloadURL(me, u) {
             }
         }
     });
+
+    ZeroClipboard.setDefaults({
+        moviePath: "/images/ZeroClipboard.swf"
+    });
+    var clip = new ZeroClipboard($("#copy-url-button"), {
+    });
+    var sclip = new ZeroClipboard($("#copy-secure-url-button"), {
+    });
+
     $(".ui-dialog-titlebar").hide();
 };
