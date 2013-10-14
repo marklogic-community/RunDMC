@@ -208,7 +208,8 @@ if(typeof jQuery != 'undefined') {
         	$("#confirm-dialog").dialog({
             resizable: false,
             autoOpen: false,
-            title: 'MarkLogic Server Download Confirmation',
+            closeOnEscape: true,
+            title: 'MarkLogic Download Confirmation',
             width: 550,
             modal: true,
             buttons: {
@@ -283,6 +284,37 @@ if(typeof jQuery != 'undefined') {
                         download_iframe.src = u + '?r=dmc';
                     }
                 },
+                "Download Via Curl": function() {
+                    var u = $(this).dialog.href;
+
+                    $('#download-curl-dialog').dialog({
+                        width: 550,
+                        modal: true,
+                        resizable: false,
+                        closeOnEscape: true,
+                        title: 'MarkLogic Download URL',
+                        open: function(event, ui) {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/get-download-url",
+                                data: {
+                                    download: u
+                                }, 
+                                context: $(this),
+                                success: function(data) {
+                                    $('pre#curl-url').text(data.url);
+                                },
+                                failure: function(data) {
+                                    // fixme
+                                    alert("Failed: " + data.error);
+                                },
+                                dataType: 'json'
+                            })
+
+                        }
+                    });
+                    $(".ui-dialog-titlebar").hide();
+                }, 
                 Cancel: function() {
                     var u = $(this).dialog.href;
                     _gaq.push(['_trackEvent', 'cancel-download', u]);
@@ -296,6 +328,26 @@ if(typeof jQuery != 'undefined') {
         	});
             $(".ui-dialog-titlebar").hide()     
        	}
+
+        $('a.license-popup').click(function() {
+            $('#license-agreement-dialog').dialog({
+                resizable: false,
+                autoOpen: true,
+                closeOnEscape: true,
+                width: 550,
+                height: 500, /* change to dynamic height XXX */
+                modal: true,
+                buttons: {
+                    'Print': function() {
+                        $('.license-header').printThis();
+                    },
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+            $(".ui-dialog-titlebar").hide()     
+        });
 
         $('a.confirm-download').each(function() {
             var href = $(this).attr("href");
@@ -619,8 +671,7 @@ if(typeof jQuery != 'undefined') {
             $(".ui-dialog-buttonset").append(
                     '<div style="font-size: 80%">' + 
                          '<a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a>' + 
-                         '<br/><a style="color: #01639D;" target="_blank" href="/products/download-via-curl">Want to download via curl?</a>' + 
-                         '<br/>Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' + 
+                         ' Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' + 
                     '</div>');
 
             if (getParameterByName('fs')) {

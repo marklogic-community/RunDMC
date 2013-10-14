@@ -372,6 +372,21 @@ declare function users:getCurrentUser() as element(*)?
     return /person[id eq $id]
 };
 
+declare function users:getDownloadToken($email as xs:string) as xs:string
+{
+    let $user := /person[email eq $email]
+    let $now := fn:string(fn:current-time())
+    let $token := xdmp:crypt($email, $now)
+    let $doc := 
+        <person>
+            { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
+            <download-token><token>{$token}</token><stamp>{$now}</stamp></download-token>
+        </person>
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+
+    return $token
+};
+
 declare function users:getResetToken($email as xs:string) as xs:string
 {
     let $user := /person[email eq $email]
