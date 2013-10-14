@@ -228,6 +228,7 @@ if(typeof jQuery != 'undefined') {
                             },
                             success: function( data ) {
                                 if (data.status && data.status === 'ok') {
+
                                     $("#ifail").text("");
                                     $('#signup-trigger').hide();
                                     $('#login-trigger').hide();
@@ -237,20 +238,55 @@ if(typeof jQuery != 'undefined') {
 
                                     $(this).dialog('close');
 
-                                    _gaq.push(['_trackPageview', u],
-                                            ['_trackEvent', 'success-login-for-download', u],
-                                            ['_trackEvent', 'start-download', u]);
-                                    try {
-                                        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
-                                    } catch (err) {}
-                                    download_iframe = document.getElementById("hiddenDownloader");
-                                    if (download_iframe === null) {
-                                        download_iframe = document.createElement('iframe');  
-                                        download_iframe.id = "hiddenDownloader";
-                                        download_iframe.style.visibility = 'hidden';
-                                        document.body.appendChild(download_iframe);
+                                    _gaq.push(['_trackEvent', 'success-login-for-download', u]);
+
+                                    doDownoad(u);
+
+                                } else {
+                                    if (data.status) {
+                                        $("#ifail").text(data.status);
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                                    } else {
+                                        $("#ifail").text("Unknown failure"); // XXX
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
                                     }
-                                    download_iframe.src = u + '?r=dmc';
+                                }
+                            }
+                        }).fail(function( jqXHR, textStatus, errorThrown ) {
+                            alert( "Failed: " + textStatus ); // FIXME
+                        });
+
+                    } else {
+                        $(this).dialog('close');
+
+                        doDownload(u);
+                    }
+                },
+                "Download Via Curl": function() {
+                    var u = $(this).dialog.href;
+
+                    if ($("#confirm-dialog").dialog.email) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "/login",
+                            context: $(this),
+                            data: {
+                                email: $("#confirm-dialog").dialog.email,
+                                password: $("#confirm-dialog").dialog.pw,
+                                asset: u
+                            },
+                            success: function( data ) {
+                                if (data.status && data.status === 'ok') {
+                                    $("#ifail").text("");
+                                    $('#signup-trigger').hide();
+                                    $('#login-trigger').hide();
+                                    $('#session-trigger span').text(data.name);
+                                    $('#session-trigger').show();
+                                    $('#session-trigger').parent().show();
+
+                                    _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
+                                    showDownloadURL(this, u);
+
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
@@ -264,56 +300,9 @@ if(typeof jQuery != 'undefined') {
                         }).fail(function() {
                             alert('Failed'); // XXX
                         });
-
                     } else {
-                        $(this).dialog('close');
-
-                        _gaq.push(['_trackPageview', u],
-                                  ['_trackEvent', 'start-download', u]);
-                        try {
-                            mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
-                        } catch (err) {}
-    
-                        download_iframe = document.getElementById("hiddenDownloader");
-                        if (download_iframe === null) {
-                            download_iframe = document.createElement('iframe');  
-                            download_iframe.id = "hiddenDownloader";
-                            download_iframe.style.visibility = 'hidden';
-                            document.body.appendChild(download_iframe);
-                        }
-                        download_iframe.src = u + '?r=dmc';
+                        showDownloadURL(this, u);
                     }
-                },
-                "Download Via Curl": function() {
-                    var u = $(this).dialog.href;
-
-                    $('#download-curl-dialog').dialog({
-                        width: 550,
-                        modal: true,
-                        resizable: false,
-                        closeOnEscape: true,
-                        title: 'MarkLogic Download URL',
-                        open: function(event, ui) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "/get-download-url",
-                                data: {
-                                    download: u
-                                }, 
-                                context: $(this),
-                                success: function(data) {
-                                    $('pre#curl-url').text(data.url);
-                                },
-                                failure: function(data) {
-                                    // fixme
-                                    alert("Failed: " + data.error);
-                                },
-                                dataType: 'json'
-                            })
-
-                        }
-                    });
-                    $(".ui-dialog-titlebar").hide();
                 }, 
                 Cancel: function() {
                     var u = $(this).dialog.href;
@@ -430,40 +419,40 @@ if(typeof jQuery != 'undefined') {
             // set current tab
             var navitem = document.getElementById("tabHeader_1");
 
-            if (!navitem) 
-                return;
+            if (navitem) {
 
-            //store which tab we are on
-            var ident = navitem.id.split("_")[1];
-            navitem.parentNode.setAttribute("data-current",ident);
-            //set current tab with class of activetabheader
-            navitem.setAttribute("class","tabActiveHeader");
+                //store which tab we are on
+                var ident = navitem.id.split("_")[1];
+                navitem.parentNode.setAttribute("data-current",ident);
+                //set current tab with class of activetabheader
+                navitem.setAttribute("class","tabActiveHeader");
+    
+                //hide two tab contents we don't need
+                $('.tabpage').hide();
+                $('#tabpage_1').show();
+    
+                //this adds click event to tabs
+                $('#tabContainer li').click(function() {
 
-            //hide two tab contents we don't need
-            $('.tabpage').hide();
-            $('#tabpage_1').show();
+                    var current = $(this).parent().attr("data-current");
+                    //remove class of activetabheader and hide old contents
+                    document.getElementById("tabHeader_" + current).removeAttribute("class");
+                    document.getElementById("tabpage_" + current).style.display="none";
 
-            //this adds click event to tabs
-            $('#tabContainer li').click(function() {
+                    var ident = this.id.split("_")[1];
+                    //add class of activetabheader to new active tab and show contents
+                    $(this).attr("class","tabActiveHeader");
+                    document.getElementById("tabpage_" + ident).style.display="block";
+                    $(this).parent().attr("data-current",ident);
 
-                var current = $(this).parent().attr("data-current");
-                //remove class of activetabheader and hide old contents
-                document.getElementById("tabHeader_" + current).removeAttribute("class");
-                document.getElementById("tabpage_" + current).style.display="none";
-
-                var ident = this.id.split("_")[1];
-                //add class of activetabheader to new active tab and show contents
-                $(this).attr("class","tabActiveHeader");
-                document.getElementById("tabpage_" + ident).style.display="block";
-                $(this).parent().attr("data-current",ident);
-
-                $('#tabsborder').position({
-                    my: "left top",
-                    at: "left bottom",
-                    of: $(this).get()
+                    $('#tabsborder').position({
+                        my: "left top",
+                        at: "left bottom",
+                        of: $(this).get()
+                    });
+                    $('#tabsborder').css({marginTop: '-=3px'});
                 });
-                $('#tabsborder').css({marginTop: '-=3px'});
-            });
+            }
 
             if (navigator.appVersion.indexOf("10_7") != -1) {
                 $('.showScroll').addClass('lion');
@@ -641,12 +630,12 @@ if(typeof jQuery != 'undefined') {
                             $(this).fadeOut('slow');
                         });
                     },
-                    error: function( data ) {
+                    error: function( ) {
                         $('#changes-saved').removeClass("successful-save").addClass("failed-save").text("Save failed").fadeIn('slow', function() {
                             $(this).fadeOut('slow');
                         });
                     },
-                    finished: function( data ) {
+                    finished: function( ) {
                         $('this').removeAttr('disabled');
                     },
                     data: $('#profile-form').serialize(),
@@ -758,3 +747,72 @@ function isValidEmailAddress(emailAddress) {
 };
 
                     
+function doDownload(u) {
+
+    _gaq.push(['_trackPageview', u],
+        ['_trackEvent', 'success-login-for-download', u],
+        ['_trackEvent', 'start-download', u]);
+
+    try {
+        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+    } catch (err) {
+    }
+
+    download_iframe = document.getElementById("hiddenDownloader");
+    if (download_iframe === null) {
+        download_iframe = document.createElement('iframe');  
+        download_iframe.id = "hiddenDownloader";
+        download_iframe.style.visibility = 'hidden';
+        document.body.appendChild(download_iframe);
+    }
+    download_iframe.src = u + '?r=dmc';
+};
+
+function showDownloadURL(me, u) {
+    $('#download-curl-dialog').dialog({
+        modal: true,
+        width: 630,
+        resizable: false,
+        closeOnEscape: true,
+        title: 'MarkLogic Download URL',
+        open: function(event, ui) {
+            $.ajax({
+                type: 'POST',
+                url: "/get-download-url",
+                data: {
+                    download: u
+                }, 
+                context: $(me),
+                success: function(data) {
+                    var port = window.location.port == 80 ? "" : ":" + window.location.port;
+                    var host = window.location.hostname + port;
+                    var sechost = window.location.port == 80 ? host : window.location.hostname;
+                    $('#curl-url').text('http://' + host + data.path);
+                    $('#secure-curl-url').text('https://' + sechost + data.path);
+                },
+                dataType: 'json'
+            }).fail(function( jqXHR, textStatus, errorThrown ) {
+                alert( "Failed: " + textStatus ); // FIXME
+            });
+
+            $('.download-url').click(function() {
+                $(this).select();
+            });
+
+            $('.download-url').focus(function() {
+                $(this).select();
+            });
+        
+            $('.download-url').mouseup(function(e) {
+                e.preventDefault();
+            });
+        },
+        buttons: {
+            'OK': function() {
+                $('#download-curl-dialog').dialog('close');
+                $('#confirm-dialog').dialog('close');
+            }
+        }
+    });
+    $(".ui-dialog-titlebar").hide();
+};

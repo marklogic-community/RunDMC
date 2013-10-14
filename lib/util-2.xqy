@@ -5,6 +5,10 @@ module namespace u="http://marklogic.com/rundmc/util";
 import module namespace search = "http://marklogic.com/appservices/search"
        at "/MarkLogic/appservices/search/search.xqy";
 
+declare namespace xhtml = "http://www.w3.org/1999/xhtml";
+declare namespace em =    "URN:ietf:params:email-xml:";
+declare namespace rf =    "URN:ietf:params:rfc822:";
+
 (: 
  : @author Eric Bloch
  : @date 21 April 2010
@@ -69,5 +73,35 @@ declare function u:epoch-seconds-to-dateTime($v)
   as xs:dateTime
 {
   xs:dateTime("1970-01-01T00:00:00-00:00") + xs:dayTimeDuration(concat("PT", $v, "S"))
+};
+
+declare function u:send-email($email, $name, $from-email, $from-name, $subject, $body)
+{
+    try {
+
+        xdmp:email(     
+                 
+        <em:Message xmlns:em="URN:ietf:params:email-xml:" xmlns:rf="URN:ietf:params:rfc822:">
+            <rf:subject>{$subject}</rf:subject>
+            <rf:from>
+                <em:Address>
+                    <em:name>{$from-name}</em:name>
+                    <em:adrs>{$from-email}</em:adrs>
+                </em:Address>
+            </rf:from>
+            <rf:to>   
+                <em:Address>
+                    <em:name>{$name}</em:name>
+                    <em:adrs>{$email}</em:adrs>
+                </em:Address>
+            </rf:to>
+            <em:content>{$body}</em:content>
+        </em:Message>
+    
+        )
+    } catch ($e) {
+        xdmp:log(concat("FAILEDEMAIL:  Unable to send confirming e-mail to ", $email))
+    }
+
 };
 

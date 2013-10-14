@@ -18,6 +18,7 @@ module namespace users = "users";
 import module namespace cookies = "http://parthcomp.com/cookies" at "cookies.xqy";
 import module namespace srv="http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
+import module namespace u="http://marklogic.com/rundmc/util" at "/lib/util-2.xqy";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
@@ -75,7 +76,14 @@ declare function users:authViaParams() as xs:boolean
     let $email := xdmp:get-request-field("email")
     let $user := /person[email eq $email]
     let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $email)
-    return ($user and ($user/password/string() = $hash))
+    let $token := xdmp:get-request-field("t")
+    return 
+        if (not(empty($hash))) then
+            ($user and ($user/password/string() = $hash))
+        else if (not(empty($token))) then
+            (($token eq users:useDownloadToken($email)) and not($token eq ""))
+        else
+            false()
     
 };
 
@@ -376,16 +384,36 @@ declare function users:getDownloadToken($email as xs:string) as xs:string
 {
     let $user := /person[email eq $email]
     let $now := fn:string(fn:current-time())
+    let $issued := fn:string(fn:current-dateTime())
     let $token := xdmp:crypt($email, $now)
     let $doc := 
         <person>
             { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
-            <download-token><token>{$token}</token><stamp>{$now}</stamp></download-token>
+            <download-token><token>{$token}</token><stamp>{$now}</stamp><issued>{$issued}</issued></download-token>
         </person>
     let $_ := xdmp:document-insert(base-uri($user), $doc)
 
     return $token
 };
+
+(: returns empty string if there is no token; also uses up any current token :)
+
+declare function users:useDownloadToken($email as xs:string) as xs:string
+{
+    let $user := /person[email eq $email]
+    let $token := $user/download-token/token
+    let $doc := 
+        <person>
+            { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
+        </person>
+    let $_ := xdmp:document-insert(base-uri($user), $doc)
+    
+    return if (not(empty($token))) then
+        $token/string()
+    else    
+        ""
+};
+
 
 declare function users:getResetToken($email as xs:string) as xs:string
 {
@@ -475,16 +503,51 @@ declare function users:record-download-for-current-user($path as xs:string)
     let $user := users:getCurrentUser()
     
     return if ($user) then
-        xdmp:node-insert-child($user,
-            <download>
-                <path>{$path}</path>
-                <date>{fn:current-dateTime()}</date>
-                <client>{xdmp:get-request-client-address()}</client>
-                <fwded-for>{xdmp:get-request-header("X-Forwarded-For")}</fwded-for>
-            </download>
+        (
+            xdmp:node-insert-child($user,
+                <download>
+                    <path>{$path}</path>
+                    <date>{fn:current-dateTime()}</date>
+                    <client>{xdmp:get-request-client-address()}</client>
+                    <fwded-for>{xdmp:get-request-header("X-Forwarded-For")}</fwded-for>
+                </download>
+            ),
+            users:send-email-about-download($user, $path)
         )
     else 
         ()
+};
+
+declare function users:send-email-about-download($user, $path) 
+{
+    let $body := 
+
+   "Thanks for downloading MarkLogic. If you have not done so already, please make sure to 
+    install a license key. You can accomplish this directly in the MarkLogic admin UI.
+    If you are running MarkLogic on your own laptop or desktop, you can simply browse to 
+
+        http://localhost:8001/license.xqy
+
+    and request a free developer license key. (If you are running on a server, you can replace
+    localhost with the server hostname (or IP address) and port you are using to access MarkLogic's
+    Admin UI. You can also install a license key via a REST API as described <a href='http://docs.marklogic.com/guide/installation'>in the
+    online documentation</a>.
+
+    Thanks!
+    Eric Bloch 
+    Director Community, MarkLogic
+    "
+
+    let $subject := "Thanks for downloading MarkLogic"
+
+    return u:send-email(
+        $user/email/string(), 
+        $user/name/string(), 
+        "community-requests@marklogic.com",
+        "Eric Bloch",
+        $subject, 
+        $body
+    )
 };
 
 declare function users:denied() as xs:boolean
