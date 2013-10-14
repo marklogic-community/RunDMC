@@ -290,10 +290,10 @@ if(typeof jQuery != 'undefined') {
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
                                     } else {
                                         $("#ifail").text("Unknown failure"); // XXX
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
+                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
                                     }
                                 }
                             }
@@ -765,10 +765,11 @@ function doDownload(u) {
         download_iframe.style.visibility = 'hidden';
         document.body.appendChild(download_iframe);
     }
-    download_iframe.src = u + '?r=dmc';
+    download_iframe.src = u;
 };
 
 function showDownloadURL(me, u) {
+
     $('#download-curl-dialog').dialog({
         modal: true,
         width: 630,
@@ -784,6 +785,16 @@ function showDownloadURL(me, u) {
                 }, 
                 context: $(me),
                 success: function(data) {
+
+                    _gaq.push(['_trackPageview', u],
+                        ['_trackEvent', 'show-url-for-download', u]
+                    );
+                
+                    try {
+                        mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?.*/, "") } );
+                    } catch (err) {
+                    }
+
                     var port = window.location.port == 80 ? "" : ":" + window.location.port;
                     var host = window.location.hostname + port;
                     var sechost = window.location.port == 80 ? host : window.location.hostname;
@@ -814,14 +825,12 @@ function showDownloadURL(me, u) {
             }
         }
     });
+    $(".ui-dialog-titlebar").hide();
 
     ZeroClipboard.setDefaults({
         moviePath: "/images/ZeroClipboard.swf"
     });
-    var clip = new ZeroClipboard($("#copy-url-button"), {
-    });
-    var sclip = new ZeroClipboard($("#copy-secure-url-button"), {
-    });
 
-    $(".ui-dialog-titlebar").hide();
+    new ZeroClipboard($("#copy-url-button"));
+    new ZeroClipboard($("#copy-secure-url-button"));
 };
