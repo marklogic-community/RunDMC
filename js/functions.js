@@ -1,6 +1,6 @@
 if(typeof jQuery != 'undefined') {
 	$(function() {
-		// cache selectors
+		// cache selectors 
 		var body = $('body');
 		var main = $('#main');
 		body.addClass('jsenabled');
