@@ -656,8 +656,16 @@
                             </dl>
                           </xsl:template>
 
-                                  <xsl:template mode="schema-info-intro" match="api:schema-info"           >The structure of the XML node returned is as follows:</xsl:template>
-                                  <xsl:template mode="schema-info-intro" match="api:schema-info[@REST-doc]">The structure of the output returned from this REST API is as follows:</xsl:template>
+			  <xsl:template mode="schema-info-intro" 
+				  match="api:schema-info
+				  [not(@print-info/string() eq 'false')]"
+				  >The structure of the data returned is as 
+				  follows:</xsl:template>
+			  <xsl:template mode="schema-info-intro" 
+				  match="api:schema-info[@REST-doc]
+				  [not(@print-info/string() eq 'false')]"
+				  >The structure of the output returned from 
+				  this REST API is as follows:</xsl:template>
 
                                   <xsl:template match="api:element">
                                     <dt>

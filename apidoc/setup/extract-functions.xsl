@@ -78,7 +78,8 @@
   <xsl:template match="apidoc:function[@hidden eq true()]"/>
 
 
-  <!-- Rename "apidoc" elements to "api" so it's clear which docs we're dealing with later -->
+  <!-- Rename "apidoc" elements to "api" so it's clear which docs 
+       we're dealing with later -->
   <xsl:template mode="fixup" match="apidoc:*">
     <xsl:element name="{name()}" namespace="http://marklogic.com/rundmc/api">
       <xsl:apply-templates mode="fixup-content-etc" select="."/>
@@ -88,26 +89,35 @@
   <xsl:template mode="fixup-content" match="apidoc:usage[@schema]">
     <xsl:next-match/>
     <xsl:variable name="current-dir" select="string-join(
-                                               tokenize(base-uri(.),'/')[position() ne last()],
-                                               '/'
-                                             )"/>
-    <xsl:variable name="schema-uri" select="concat($current-dir, '/', substring-before(@schema,'.xsd'), '.xml')"/>
+                  tokenize(base-uri(.),'/')[position() ne last()], '/')"/>
+	  <xsl:variable name="schema-uri" select="concat($current-dir, '/', 
+		  substring-before(@schema,'.xsd'), '.xml')"/>
 
-    <!-- This logic and its attendant assumptions are ported from the docapp code -->
+	  <!-- This logic and its attendant assumptions are ported from the 
+	       docapp code -->
     <xsl:variable name="function-name" select="string(../@name)"/>
-    <xsl:variable name="is-REST-resource" select="starts-with($function-name,'/')"/>
+    <xsl:variable name="is-REST-resource" 
+	    select="starts-with($function-name,'/')"/>
 
-    <xsl:variable name="given-name" select="string((@element-name, ../@name)[1])"/>
-    <xsl:variable name="complexType-name" select="if ($is-REST-resource) then my:lookup-REST-complexType($function-name)
-                                                                         else $given-name"/>
+    <xsl:variable name="given-name" 
+	    select="string((@element-name, ../@name)[1])"/>
+    <xsl:variable name="complexType-name" 
+	    select="if ($is-REST-resource and @element-name) 
+	            then my:lookup-REST-complexType($function-name)
+                    else $given-name"/>
 
     <xsl:if test="$complexType-name">
       <api:schema-info>
         <xsl:if test="$is-REST-resource">
           <xsl:attribute name="REST-doc">yes</xsl:attribute>
+	  <xsl:attribute name="print-intro">
+		  <xsl-value-of select="@print-intro"/>
+	  </xsl:attribute>
         </xsl:if>
-        <xsl:variable name="schema" select="raw:get-doc($schema-uri)/xs:schema"/>
-        <xsl:variable name="complexType" select="$schema/xs:complexType[string(@name) eq $complexType-name]"/>
+	<xsl:variable name="schema" 
+		select="raw:get-doc($schema-uri)/xs:schema"/>
+	<xsl:variable name="complexType" select="$schema/xs:complexType
+		[string(@name) eq $complexType-name]"/>
 
 <!--
 <xsl:message>
@@ -119,8 +129,10 @@
 </xsl:message>
 -->
 
-        <!-- ASSUMPTION: all the element declarations are global; complex type contains only element references -->
-        <xsl:apply-templates mode="schema-info" select="$complexType//xs:element"/>
+	<!-- ASSUMPTION: all the element declarations are global; complex 
+	     type contains only element references -->
+	<xsl:apply-templates mode="schema-info" 
+		select="$complexType//xs:element"/>
 
       </api:schema-info>
     </xsl:if>
@@ -128,25 +140,32 @@
 
           <xsl:function name="my:lookup-REST-complexType" as="xs:string?">
             <xsl:param name="resource-name"/>
-            <xsl:sequence select="$REST-complexType-mappings[@name eq $resource-name]/complexType/@name/string(.)"/>
+	    <xsl:sequence select="$REST-complexType-mappings
+		    [@name eq $resource-name]/complexType/@name/string(.)"/>
           </xsl:function>
 
           <xsl:template mode="schema-info" match="xs:element">
             <!-- ASSUMPTION: all the element declarations are global -->
-            <!-- ASSUMPTION: the schema's default namespace is the same as the target namespace (@ref uses no prefix) -->
+	    <!-- ASSUMPTION: the schema's default namespace is the same as the 
+		 target namespace (@ref uses no prefix) -->
             <xsl:variable name="current-ref" select="string(current()/@ref)"/>
-            <xsl:variable name="element-decl" select="/xs:schema/xs:element[@name eq $current-ref]"/>
+	    <xsl:variable name="element-decl" 
+		    select="/xs:schema/xs:element[@name eq $current-ref]"/>
 
-            <xsl:variable name="complexType" select="/xs:schema/xs:complexType[@name eq string($element-decl/@type)]"/>
+	    <xsl:variable name="complexType" 
+		    select="/xs:schema/xs:complexType
+		    [@name eq string($element-decl/@type)]"/>
 
             <api:element>
               <api:element-name>
                 <xsl:value-of select="@ref"/>
               </api:element-name>
               <api:element-description>
-                <xsl:value-of select="$element-decl/xs:annotation/xs:documentation"/>
+		      <xsl:value-of select="$element-decl/xs:annotation
+			      /xs:documentation"/>
               </api:element-description>
-              <xsl:apply-templates mode="#current" select="$complexType//xs:element"/>
+	      <xsl:apply-templates mode="#current"
+		     select="$complexType//xs:element"/>
             </api:element>
           </xsl:template>
 
