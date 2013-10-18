@@ -87,10 +87,9 @@
   </xsl:template>
 
   <xsl:template mode="fixup-content" match="apidoc:usage[@schema]">
-    <xsl:next-match/>
     <xsl:variable name="current-dir" select="string-join(
                   tokenize(base-uri(.),'/')[position() ne last()], '/')"/>
-	  <xsl:variable name="schema-uri" select="concat($current-dir, '/', 
+    <xsl:variable name="schema-uri" select="concat($current-dir, '/', 
 		  substring-before(@schema,'.xsd'), '.xml')"/>
 
 	  <!-- This logic and its attendant assumptions are ported from the 
@@ -102,16 +101,19 @@
     <xsl:variable name="given-name" 
 	    select="string((@element-name, ../@name)[1])"/>
     <xsl:variable name="complexType-name" 
-	    select="if ($is-REST-resource and @element-name) 
+	    select="if ($is-REST-resource and not(@element-name)) 
 	            then my:lookup-REST-complexType($function-name)
                     else $given-name"/>
+    <xsl:variable name="print-intro-value" 
+	    select="if (@print-intro) then string(@print-intro) else 'true'"/>
 
     <xsl:if test="$complexType-name">
       <api:schema-info>
         <xsl:if test="$is-REST-resource">
           <xsl:attribute name="REST-doc">yes</xsl:attribute>
 	  <xsl:attribute name="print-intro">
-		  <xsl-value-of select="@print-intro"/>
+	     <xsl:value-of 
+	       select="$print-intro-value"/>
 	  </xsl:attribute>
         </xsl:if>
 	<xsl:variable name="schema" 
