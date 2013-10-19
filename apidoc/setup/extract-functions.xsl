@@ -108,6 +108,7 @@
 	    select="if (@print-intro) then string(@print-intro) else 'true'"/>
 
     <xsl:if test="$complexType-name">
+      <xsl:apply-templates mode="fixup" />
       <api:schema-info>
         <xsl:if test="$is-REST-resource">
           <xsl:attribute name="REST-doc">yes</xsl:attribute>
