@@ -5,4 +5,4 @@ xquery version "1.0-ml";
 declare variable $uri external;
 declare variable $document external;
 
-() (: xdmp:document-insert($uri, $document) :)
+xdmp:document-insert($uri, $document)
