@@ -263,6 +263,7 @@
   <generic-page display="Videos" href="/learn/videos" hide="yes"/>
 
   <generic-page display="MarkLogic Labs" href="/labs" hide="yes"/>
+  <generic-page display="License Agreement" href="/eula" />
 
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
