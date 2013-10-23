@@ -240,7 +240,7 @@ if(typeof jQuery != 'undefined') {
 
                                     _gaq.push(['_trackEvent', 'success-login-for-download', u]);
 
-                                    doDownoad(u);
+                                    doDownload(u);
 
                                 } else {
                                     if (data.status) {
