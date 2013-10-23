@@ -822,6 +822,9 @@ function showDownloadURL(me, u) {
             'OK': function() {
                 $('#download-curl-dialog').dialog('close');
                 $('#confirm-dialog').dialog('close');
+            },
+            'Cancel': function() {
+                $('#download-curl-dialog').dialog('close');
             }
         }
     });
