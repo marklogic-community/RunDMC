@@ -522,21 +522,22 @@ declare function users:send-email-about-download($user, $path)
 {
     let $body := 
 
-   "Thanks for downloading MarkLogic. If you have not done so already, please make sure to 
-    install a license key. You can accomplish this directly in the MarkLogic admin UI.
-    If you are running MarkLogic on your own laptop or desktop, you can simply browse to 
+ "Thanks for downloading MarkLogic. If you have not done so already, once you install
+  and start MarkLogic, please remember to install a license key. You can accomplish 
+  this directly in the MarkLogic admin UI. If you are running MarkLogic on your own 
+  laptop or desktop, you can browse to 
 
-        http://localhost:8001/license.xqy
+      http://localhost:8001/license.xqy
 
-    and request a free developer license key. (If you are running on a server, you can replace
-    localhost with the server hostname (or IP address) and port you are using to access MarkLogic's
-    Admin UI. You can also install a license key via a REST API as described <a href='http://docs.marklogic.com/guide/installation'>in the
-    online documentation</a>.
+  and install your key or request a free developer key. (If you are running on MarkLogic on
+  a server, you can replace localhost with the server hostname (or IP address) and port you 
+  are using to access MarkLogic's Admin UI. And, if you prefer, you can also install a license key via 
+  a REST API as described in our Installation Guide [http://docs.marklogic.com/guide/installation] .)
 
-    Thanks!
-    Eric Bloch 
-    Director Community, MarkLogic
-    "
+  Thanks!
+  Eric Bloch 
+  Director Community, MarkLogic
+  "
 
     let $subject := "Thanks for downloading MarkLogic"
 
