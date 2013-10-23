@@ -502,6 +502,9 @@ declare function users:record-download-for-current-user($path as xs:string)
 {
     let $user := users:getCurrentUser()
     
+    let $parts := tokenize($path, "/")
+    let $m := lower-case(substring($parts[5], 0, 10))
+
     return if ($user) then
         (
             xdmp:node-insert-child($user,
@@ -512,7 +515,11 @@ declare function users:record-download-for-current-user($path as xs:string)
                     <fwded-for>{xdmp:get-request-header("X-Forwarded-For")}</fwded-for>
                 </download>
             ),
-            users:send-email-about-download($user, $path)
+            (: Only send email if they've not downloaded this specific path and we're downloading marklogic itself :)
+            if (not($user/download[contains(path, $path)]) and ($m eq 'marklogic')) then
+                users:send-email-about-download($user, $path)
+            else 
+                ()
         )
     else 
         ()
