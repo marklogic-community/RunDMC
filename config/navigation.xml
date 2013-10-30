@@ -7,7 +7,7 @@
     <group display="DOWNLOADS">
       <group display="Server">
         <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
-        <page display="MarkLogic 6" href="/products/marklogic-server/6.0" />
+        <page display="6.0" href="/products/marklogic-server/6.0" hide="yes"/>
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
         <page display="4.2" href="/products/marklogic-server/4.2" hide="yes" />
       </group>

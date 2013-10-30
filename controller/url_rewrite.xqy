@@ -18,6 +18,8 @@ declare function local:redir($path as xs:string) as xs:string
         "/learn"
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         $srv:api-server
+    else if ($path = ("/pubs/7.0", "/pubs/7.0/", "/docs/7.0")) then
+        concat($srv:api-server,"/7.0")
     else if ($path = ("/pubs/6.0", "/pubs/6.0/", "/docs/6.0")) then
         concat($srv:api-server,"/6.0")
     else if ($path = ("/pubs/5.0", "/pubs/5.0/", "/docs/5.0")) then
@@ -97,6 +99,8 @@ declare function local:redir($path as xs:string) as xs:string
         replace($path, "/5.0", "/pubs/5.0")
     else if (starts-with($path, '/6.0')) then
         replace($path, "/6.0", "/pubs/6.0")
+    else if (starts-with($path, '/7.0')) then
+        replace($path, "/7.0", "/pubs/7.0")
     else if (starts-with($path, "/xfaqtor")) then
         "/learn"
     else if (starts-with($path, "/default.xqy")) then
@@ -258,12 +262,11 @@ declare function local:record-download($path as xs:string) {
 };
 
 declare function local:rewrite($path as xs:string) as xs:string {
-    let $latest-version := "6.0"
+    let $latest-version := "7.0"
     let $latest-sharepoint-connector-version := "1.1-1"
 
     (: Defaults for /docs and /producs :)
-    (: let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version) :)
-    let $latest-prod-uri := concat("/products/marklogic-server/", "7.0")
+    let $latest-prod-uri := concat("/products/marklogic-server/", $latest-version) 
     let $latest-doc-uri  := concat("/docs/", $latest-version)
     let $latest-requirements-uri  := concat("/products/marklogic-server/requirements-", $latest-version) 
     let $latest-xcc-uri  := concat("/products/xcc/", $latest-version) 
