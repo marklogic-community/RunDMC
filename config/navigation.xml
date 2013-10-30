@@ -30,6 +30,7 @@
         <page display="Plug-in for Nagios" href="/products/nagios"/>
       </group>
     </group>
+    <generic-page display="MarkLogic and Amazon Web Services" href="/products/aws"/>
     <generic-page display="Licensing" href="/licensing"/>
     <generic-page display="MarkLogic Express" href="/express"/>
     <generic-page display="Developer License" href="/free-developer"/>
