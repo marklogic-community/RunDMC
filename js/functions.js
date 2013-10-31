@@ -798,8 +798,10 @@ function showDownloadURL(me, u) {
                     var port = (window.location.port == "") ? "" : ":" + window.location.port;
                     var host = window.location.hostname + port;
                     var sechost = (window.location.port == "") ? host : window.location.hostname;
-                    $('#curl-url').text('http://' + host + data.path);
-                    $('#secure-curl-url').text('https://' + sechost + data.path);
+                    $('#curl-url').text(window.location.protocol + '//' + host + data.path);
+                    $('#secure-curl-url').text('https:' + '//' + sechost + data.path);
+
+                    // If current URL is secure, we don't need this
                     if (window.location.protocol == "https:") {
                         $('#download-curl-dialog .secure').hide();
                     }
