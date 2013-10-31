@@ -150,9 +150,9 @@
         <button class="copy-button" id="copy-url-button" 
                 data-clipboard-target="curl-url" title="Click to copy">Copy to Clipboard</button>
 
-        <div class="download-url-label" >Or use the secure version here instead:</div>
-        <textarea readonly="readonly" class="download-url" id="secure-curl-url"/>
-        <button class="copy-button" id="copy-secure-url-button" 
+        <div class="secure download-url-label" >Or use the secure version here instead:</div>
+        <textarea readonly="readonly" class="secure download-url" id="secure-curl-url"/>
+        <button class="secure copy-button" id="copy-secure-url-button" 
                 data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
     </div>
 

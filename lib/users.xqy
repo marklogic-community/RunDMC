@@ -78,7 +78,7 @@ declare function users:authViaParams() as xs:boolean
     let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $email)
     let $token := xdmp:get-request-field("t")
     return 
-        if (not(empty($hash))) then
+        if (not(empty(xdmp:get-request-field("pass")))) then
             ($user and ($user/password/string() = $hash))
         else if (not(empty($token))) then
             (($token eq users:useDownloadToken($email)) and not($token eq ""))

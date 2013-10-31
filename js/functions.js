@@ -795,11 +795,14 @@ function showDownloadURL(me, u) {
                     } catch (err) {
                     }
 
-                    var port = window.location.port == 80 ? "" : ":" + window.location.port;
+                    var port = (window.location.port == "") ? "" : ":" + window.location.port;
                     var host = window.location.hostname + port;
-                    var sechost = window.location.port == 80 ? host : window.location.hostname;
+                    var sechost = (window.location.port == "") ? host : window.location.hostname;
                     $('#curl-url').text('http://' + host + data.path);
                     $('#secure-curl-url').text('https://' + sechost + data.path);
+                    if (window.location.protocol == "https:") {
+                        $('#download-curl-dialog .secure').hide();
+                    }
                 },
                 dataType: 'json'
             }).fail(function( jqXHR, textStatus, errorThrown ) {
