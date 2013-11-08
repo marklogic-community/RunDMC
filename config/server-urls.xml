@@ -9,7 +9,7 @@
     <admin-server url="//dmc-stage-admin.marklogic.com"/>
     <rapi-server url="//dmc-stage-admin.marklogic.com:4446"/>
 
-    <api-server url="//docs-ea.marklogic.com"/>
+    <api-server url="//docs-stage.marklogic.com"/>
 
   </host>
 

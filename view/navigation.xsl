@@ -49,20 +49,29 @@
         </xsl:if>
         <ul>
             <li>
-                <a class="drop-down-trigger button" id="signup-trigger" href="{$srv:primary-server}/people/signup"><xsl:if
-                    test="users:getCurrentUserName()"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
-                <span>Sign up</span></a>
+                <button type="button" class="drop-down-trigger gray" id="signup-trigger" 
+                        data-url="{$srv:primary-server}/people/signup">
+                    <xsl:if test="users:getCurrentUserName()"> 
+                        <xsl:attribute name="style">display:none</xsl:attribute> 
+                    </xsl:if>
+                    Sign up
+                </button>
             </li>
             <li>
-                <a class="drop-down-trigger button" id="login-trigger" href="#"><xsl:if 
-                    test="users:getCurrentUserName()"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
-                <span>Log in</span></a>
+                <button type="button" class="drop-down-trigger gray" id="login-trigger">
+                    <xsl:if test="users:getCurrentUserName()"> 
+                        <xsl:attribute name="style">display:none</xsl:attribute> 
+                    </xsl:if>
+                    Log in
+                </button>
             </li>
             <li>
-                <xsl:if test="empty(users:getCurrentUserName())"> <xsl:attribute name="style">display:none</xsl:attribute></xsl:if>
-                <a class="drop-down-trigger button" id="session-trigger" href="#"><xsl:if 
-                    test="empty(users:getCurrentUserName())"> <xsl:attribute name="style">display:none</xsl:attribute> </xsl:if>
-                <span><xsl:value-of select="users:getCurrentUserName()"></xsl:value-of></span></a>
+                <button type="button" class="drop-down-trigger gray" id="session-trigger">
+                    <xsl:if test="empty(users:getCurrentUserName())"> 
+                        <xsl:attribute name="style">display:none</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="users:getCurrentUserName()"/>
+                </button>
             </li>
         </ul>
     </nav>

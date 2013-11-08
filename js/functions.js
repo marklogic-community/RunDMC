@@ -232,7 +232,7 @@ if(typeof jQuery != 'undefined') {
                                     $("#ifail").text("");
                                     $('#signup-trigger').hide();
                                     $('#login-trigger').hide();
-                                    $('#session-trigger span').text(data.name);
+                                    $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
                                     $('#session-trigger').parent().show();
 
@@ -280,7 +280,7 @@ if(typeof jQuery != 'undefined') {
                                     $("#ifail").text("");
                                     $('#signup-trigger').hide();
                                     $('#login-trigger').hide();
-                                    $('#session-trigger span').text(data.name);
+                                    $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
                                     $('#session-trigger').parent().show();
 
@@ -495,6 +495,13 @@ if(typeof jQuery != 'undefined') {
 
             $('input#email').focus();
 
+            $("button").click(function(e) {
+                var u = $(this).data('url');
+                if (u) {
+                    window.location = u;
+                }
+            });
+
             $("#session-trigger").click(function(e) {
                 $("#session-menu").toggle();
 
@@ -569,7 +576,7 @@ if(typeof jQuery != 'undefined') {
 
                             $('#signup-trigger').hide();
                             $('#login-trigger').hide();
-                            $('#session-trigger span').text(data.name);
+                            $('#session-trigger').text(data.name);
                             $('#session-trigger').parent().show();
                             $('#session-trigger').show();
                         } else {
@@ -582,7 +589,7 @@ if(typeof jQuery != 'undefined') {
 
             $("#logout").click(function(e) {
 
-                $("#session-trigger span").text("");
+                $("#session-trigger").text("");
                 $('#session-trigger').hide();
                 $('#session-trigger').parent().hide();
                 $('#session-menu').hide();
@@ -625,7 +632,7 @@ if(typeof jQuery != 'undefined') {
                     type: 'POST',
                     url: '/save-profile',
                     success: function( data ) {
-                        $('#session-trigger span').text(data.name);
+                        $('#session-trigger').text(data.name);
                         $('#changes-saved').text('Changes saved').removeClass("failed-save").addClass("successful-save").fadeIn('slow', function() {
                             $(this).fadeOut('slow');
                         });
