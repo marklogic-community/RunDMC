@@ -14,6 +14,7 @@
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
         <page display="XCC Java/.NET "   href="/products/xcc"/>
+        <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" hide="yes"/>
