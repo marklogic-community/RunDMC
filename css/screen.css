@@ -1200,7 +1200,6 @@ section#documentation:before {margin-bottom: 30px;}
 	color: white;
 	padding: 5px 8px;
 	margin-bottom: 8px;
-	border: 1px solid #003959;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -1210,6 +1209,8 @@ section#documentation:before {margin-bottom: 30px;}
 	overflow: hidden;
 	line-height: 12px !important;
     cursor: pointer;
+
+	XXborder: 1px solid #003959;
 
 	border:1px solid #06408a;
 	-webkit-box-shadow: inset 0px 1px 0px 0px #7d9fcc;
@@ -2731,7 +2732,7 @@ button {
 	color:#fff;
 	cursor:pointer;
 	font-weight: 600; 
-	font: Tahoma, Arial, Helvetica, Sans-serif;
+	font-family: Tahoma, Arial, Helvetica, Sans-serif;
 }
 
 button.uppercase {
