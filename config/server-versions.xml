@@ -5,7 +5,9 @@
   <version number="4.2"/>
   <version number="5.0"/>
   <version number="6.0"
-           display="MarkLogic 6"
+	   display="6.0"/>
+  <version number="7.0"
+           display="MarkLogic 7"
            default="yes"/>       <!-- what we serve when the request URL
                                       does not explicitly specify a version -->
 </versions>
