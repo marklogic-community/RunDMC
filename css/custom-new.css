@@ -97,14 +97,14 @@
 
 	cursor:pointer;
 
-    background-image: url(/images/icon-search.png);
+    background-image: url(/images/button-search.png);
     background-position: center;
     background-repeat: no-repeat;
 }
 
 #mag:hover {
  	background: #01bc01;
-    background-image: url(/images/icon-search.png);
+    background-image: url(/images/button-search.png);
     background-position: center;
     background-repeat: no-repeat;
 }
