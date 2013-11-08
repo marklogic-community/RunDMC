@@ -234,7 +234,6 @@ if(typeof jQuery != 'undefined') {
                                     $('#login-trigger').hide();
                                     $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
-                                    $('#session-trigger').parent().show();
 
                                     $(this).dialog('close');
 
@@ -282,7 +281,6 @@ if(typeof jQuery != 'undefined') {
                                     $('#login-trigger').hide();
                                     $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
-                                    $('#session-trigger').parent().show();
 
                                     _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
                                     showDownloadURL(this, u);
@@ -577,7 +575,6 @@ if(typeof jQuery != 'undefined') {
                             $('#signup-trigger').hide();
                             $('#login-trigger').hide();
                             $('#session-trigger').text(data.name);
-                            $('#session-trigger').parent().show();
                             $('#session-trigger').show();
                         } else {
                             $('#login-error').text(data.status);
@@ -591,7 +588,6 @@ if(typeof jQuery != 'undefined') {
 
                 $("#session-trigger").text("");
                 $('#session-trigger').hide();
-                $('#session-trigger').parent().hide();
                 $('#session-menu').hide();
                 $('#signup-trigger').show();
                 $('#login-trigger').show();

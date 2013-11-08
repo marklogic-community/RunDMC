@@ -2154,20 +2154,18 @@ div.header-separator {
     padding-right: 5px;
 }
 
-#login-trigger span, #session-trigger span {
-    padding:0px 16px 0px 0px;
-    background-image:url(/images/signUpAssets/icon_login_downarrow.png);
-    background-repeat:no-repeat;
-    background-position:100% 100%;
-}
-
 #login-header nav li {
 	float: left;
-	margin-left: 16px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#login-header nav li button {
+	margin-right: 4px;
 }
 
 #login-menu-nav {
-    margin-right: 8px;
+    margin-right: 3px;
 }
 
 .drop-down-menu {
