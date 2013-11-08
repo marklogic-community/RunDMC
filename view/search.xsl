@@ -50,11 +50,11 @@
                 select="ck:delete-cookie('search-qtext', $srv:cookie-domain, '/')"/>
 
 
-  <!-- The "Server version" switcher code;
+  <!-- The "Version" switcher code;
        this is also customized in apidoc/view/page.xsl -->
   <xsl:template mode="version-list" match="*">
     <div class="version">
-      <span>Server version:</span>
+      <span>Version:</span>
       <xsl:text> </xsl:text>
       <!-- Only display a version link if the corresponding directory URI is present in the database -->
       <xsl:apply-templates mode="version-list-item" select="$versions[cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
