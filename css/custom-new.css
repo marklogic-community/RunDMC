@@ -52,7 +52,7 @@
     height: 200px;
 }
 
-#home-search input[type=search] {
+#home-search input[type=text] {
     margin: 30px 10px 40px 40px;
     padding: 5px;
     width: 930px;

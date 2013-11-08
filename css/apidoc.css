@@ -329,7 +329,7 @@ a.sectionLink:hover { color: #235BAB; }
 .warning { min-height: 50px }
 
 /* Override default CSS for tabs */
-#api_sub .ui-widget { font-family: Arial, Helvetica, sans-serif; }
+#api_sub .ui-widget { font-family: Tahoma, Arial, Helvetica, sans-serif; }
 #api_sub .ui-state-active,
 #api_sub .ui-widget-content .ui-state-active,
 #api_sub .ui-widget-header .ui-state-active
