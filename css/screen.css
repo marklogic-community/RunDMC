@@ -278,16 +278,22 @@ ol {
 	float: right;
 	margin-top: -1px;
 	margin-right: 10px;
-}
-/*.jsenabled */#search-header form {
-	border: 1px solid #999;
+	border: 0px;
 	background: white;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
+
 #search-header form input[type=text] {
 	width: 216px;
 	padding: 0 0 3px 6px;
 	height: 22px;
-    border: 0;
+    border-width: 0px;
+    border-color: white;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 
 #search-header form input[type=text]::-webkit-input-placeholder {
@@ -305,11 +311,11 @@ ol {
 	outline: none;
 }
 #search-header form input[type=submit] {
-	margin-bottom: -2px;
-	background: url(/images/magnify.png) no-repeat;
-	border: none;
-	width: 19px;
-	height: 19px;
+	background: url(/images/magnify.png) no-repeat center;
+    border-width: 0;
+    border-color: white;
+	width:  25px;
+	height: 25px;
 	font-size: 0;
 	cursor: pointer;
 	color: white;
