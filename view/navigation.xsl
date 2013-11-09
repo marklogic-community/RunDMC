@@ -100,11 +100,7 @@
   </xsl:template>
 
   <xsl:template match="top-nav">
-    <nav>
-      <ul>
         <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
-      </ul>
-    </nav>
   </xsl:template>
 
           <xsl:template mode="top-nav" match="page">

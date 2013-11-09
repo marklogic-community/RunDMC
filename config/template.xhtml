@@ -18,7 +18,7 @@
 		<![endif]-->
         <link type="text/css" href="/stackunderflow/v-1/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
         <ml:if href-starts-with="/try/ /learn/java /learn/rest /learn/arch/ /products/download-via-curl">
-            <link rel="stylesheet" href="//try.demo.marklogic.com/css/tryml.css" type="text/css" media="screen, projection" /> 
+            <link rel="stylesheet" href="http://localhost:8205/css/tryml.css" type="text/css" media="screen, projection" /> 
         </ml:if>
 		<link href="/css/anythingslider.css" rel="stylesheet" type="text/css" media="screen" />
         <link href="/css/theme-metallic.css" rel="stylesheet" type="text/css" media="screen" />
@@ -91,20 +91,11 @@
                         </div>
                     </div>
                     
-                    <ml:top-nav/>
-          <!--
-					<nav>
-						<ul>
-							<li><a href="">Documentation</a></li>
-							<li class="current"><a href="">Downloads</a></li>
-							<li><a href="">Code</a></li>
-							<li><a href="">People</a></li>
-							<li><a href="">Blog</a></li>
-							<li><a href="">Discuss</a></li>
-							<li><a href="">Meet</a></li>
-						</ul>
-					</nav>
-          -->
+                    <nav>
+                    <ul>
+                        <ml:top-nav/>
+                    </ul>
+                    </nav>
 				</header>
 			</div>
             <div id="header-bottom-bar"/>
@@ -138,22 +129,15 @@
       <ml:comment-section/>
 			<hr />
 			<footer>
-        <ml:top-nav/>
-        <!--
-				<nav>
-					<ul>
-						<li><a href="">Documentation</a></li>
-						<li class="current"><a href="">Downloads</a></li>
-						<li><a href="">Code</a></li>
-						<li><a href="">People</a></li>
-						<li><a href="">Blog</a></li>
-						<li><a href="">Discuss</a></li>
-						<li><a href="">Meet</a></li>
-					</ul>
-				</nav>
-        -->
-		<div id="copyright">Copyright © 2010–2013 MarkLogic Corporation. All rights reserved. | Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>. | See <a href="http://www.marklogic.com/privacy-policy">privacy policy</a> and <a href="http://www.marklogic.com/terms-of-use">terms of use</a><ml:cornify/>. <ml:edit-link/></div>
-
+            <nav>
+                <ul style="inline">
+                    <ml:top-nav/>
+                    <li><a href="//www.marklogic.com/privacy-policy">Privacy</a></li> 
+                    <li><a href="http://www.marklogic.com/terms-of-use">Terms of Use</a></li>
+                    <li style="float: right">Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</li>
+                </ul>
+            </nav>
+		    <p align="center" id="copyright">Copyright © 2013 MarkLogic Corporation. All rights reserved<ml:cornify/>. <ml:edit-link/></p>
 			</footer>
 		</div>
       <script type="text/javascript">

@@ -45,7 +45,7 @@
   -webkit-box-shadow: inset 0 0 5px #333333;
   box-shadow: inset 0 0 5px #333333;
   border: 1px solid white;
-  font-family: Arial, sans-serif;
+  font-family: Verdana, Arial, sans-serif;
   font-size: 1.4em;
   font-weight: bold;
   line-height: 1.1em;
@@ -190,7 +190,7 @@
   border-bottom: 1px solid white;
   margin-top: -5px;
   font-weight: 600;
-  font-family: Arial, sans-serif;
+  font-family: Verdana, Arial, sans-serif;
 }
 .dc #bottom2 h3:after {
   content: "";

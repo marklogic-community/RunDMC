@@ -548,7 +548,7 @@ nav ul {margin: 0;}
 #container > footer {
 	clear: both;
 	font-size: 11px;
-	text-align: center;
+	xtext-align: center;
 	padding: 0 0 15px;
 	background: black;
 	color: #999;
@@ -559,13 +559,13 @@ footer nav {
 	z-index: 2;
 }
 footer nav ul {
-	margin-bottom: 40px;
+	xmargin-bottom: 40px;
 	padding-top: 15px;
 }
 footer nav li {
 	display: inline;
 	position: relative;
-	margin: 0 20px;
+	margin: 0 13px;
 }
 #container > footer nav li a {color: #CCC;}
 #container > footer nav .current a {color: white;}
