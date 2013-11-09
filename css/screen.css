@@ -579,7 +579,7 @@ footer nav .current:before {
 	position: absolute;
 	display: block;
 	left: 50%;
-	top: -15px;
+	top: -16px;
 }
 footer nav .current a {color: white;}
 
