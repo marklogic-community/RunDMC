@@ -48,7 +48,7 @@
     else if ($api:version eq '6.0') 
          then 'MarkLogic 6 Product Documentation'
          else if ($api:version eq '7.0')
-              then 'MarkLogic 7 Early Access Documentation'
+              then 'MarkLogic 7 Product Documentation'
               else concat('MarkLogic Server ',$api:version,
                           ' Product Documentation')"/>
 
