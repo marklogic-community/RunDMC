@@ -9,6 +9,13 @@
     <br/>
     <br/>
 
+    <xhtml:div id="event_7" class="event">
+        <xhtml:h2 id="event_7_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=2227318f-1b5d-4b48-b3c6-3dfc16314c30" target="_blank">Get to Know MarkLogic Semantics </xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+
     <xhtml:div id="event_6" class="event">
         <xhtml:h2 id="event_6_title" style="margin-bottom: 2px; margin-top: 8px;">
                 <xhtml:a href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=89aa2450-a0a5-4de0-931f-37439c7e04cb" target="_blank"> Introduction to MarkLogic Server </xhtml:a>
