@@ -143,16 +143,16 @@
         <page display="XQuery Commons" href="/code/commons"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="MLJSON - JSON conversion" href="/code/mljson"/>
-        <page display="Facebook XQuery Library" href="/code/facebook"/>
+        <!-- <page display="Facebook XQuery Library" href="/code/facebook"/> -->
         <page display="Feed" href="/code/feed"/>
         <!--<page display="Marker" href="/code/marker"/> -->
         <page display="OAuth" href="/code/oauth2"/>
         <!-- <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/> -->
-        <page display="rxq" href="/labs/rxq"/>
+        <page display="rxq" href="/labs/rxq"/> 
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
         <!-- <page display="XQMVC" href="/code/xqmvc"/> -->
-        <page display="rewrite" href="/code/rewrite"/>
+        <!-- <page display="rewrite" href="/code/rewrite"/> -->
       </group>
       <group display="Miscellany">
         <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
