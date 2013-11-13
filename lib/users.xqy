@@ -536,7 +536,7 @@ declare function users:send-email-about-download($user, $path)
 
       http://localhost:8001/license.xqy
 
-  and install your key or request a free developer key. (If you are running on MarkLogic on
+  and install your key or request a free developer key. (If you are running MarkLogic on
   a server, you can replace localhost with the server hostname (or IP address) and port you 
   are using to access MarkLogic's Admin UI. And, if you prefer, you can also install a license key via 
   a REST API as described in our Installation Guide [http://docs.marklogic.com/guide/installation] .)
