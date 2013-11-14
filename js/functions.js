@@ -681,12 +681,11 @@ if(typeof jQuery != 'undefined') {
         $('.yearpicker').val(d);
         
 
-            $(".vidwrap").click(function(e) {
+            $(".vidwrap #vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
                 $(this).children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0&vq=hd720" frameborder="0" allowfullscreen=""></iframe>');
             });
 
-            /*
             $('#playlist > li').click(function(e){
                 //dont do anything if click on show me link
                 if($(e.target).is('a')){
@@ -704,7 +703,6 @@ if(typeof jQuery != 'undefined') {
                     }
                 }
             });
-            */
 
 		    $(function(){
 			    $('#slider').anythingSlider({
