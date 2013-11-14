@@ -41,6 +41,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.2"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
+    <generic-page display="Requirements" href="/products/marklogic-server/requirements-7.0"/>
   </page>
   <page display="Tutorials" href="/learn" tooltip="Learn by doing">
     <Article type="Tutorial"/>
