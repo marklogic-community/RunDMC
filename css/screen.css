@@ -887,8 +887,8 @@ section#documentation:before {margin-bottom: 30px;}
 	background: none;
 }
 #main .download th {width: 245px;}
-#main .download th.wideDownloadColumn      {width: 490px;}
-#main .download th.extraWideDownloadColumn {width: 535px;}
+#main .download th.wideDownloadColumn      {width: 590px;}
+#main .download th.extraWideDownloadColumn {width: 635px;}
 #main .download th + td {width: 145px;}
 #main .download table a {
 	font-weight: normal;

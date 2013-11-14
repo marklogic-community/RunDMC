@@ -12,7 +12,7 @@
 
 }
 
-#vidwrap {
+.vidwrap {
     background: black;
     width: 460px;
     height: 259px;
@@ -22,17 +22,24 @@
     box-shadow:         2px 2px 11px rgba(50, 50, 50, 0.51);
 }
 
-#vidstill {
+.still {
     background-repeat: no-repeat;
     cursor: pointer;
     width: 460px; 
     height: 259px; 
+}
+
+#what-is-still {
     background-image: url(/media/what-is-enterprise-nosql-still.jpg);
 }
 
-#vidstill img {
-    margin-top: 112px; 
-    margin-left: 216px;
+#getting-started-still {
+    background-image: url(/images/getting-started-still.png);
+}
+
+.still img {
+    margin-top: 50px; 
+    margin-left: 130px;
 }
 
 #home-tabs {
