@@ -516,7 +516,7 @@ declare function users:record-download-for-current-user($path as xs:string)
                 </download>
             ),
             (: Only send email if they've not downloaded this specific path and we're downloading marklogic itself :)
-            if (not($user/download[contains(path, $path)]) and ($m eq 'marklogic')) then
+            if (not($user/download[contains(path, $path)]) and ($m eq 'NOTREADYmarklogic')) then
                 users:send-email-about-download($user, $path)
             else 
                 ()
