@@ -415,19 +415,34 @@ if(typeof jQuery != 'undefined') {
   	        var container = document.getElementById("tabContainer");
 		    var tabcon = document.getElementById("tabscontent");
             // set current tab
-            var navitem = document.getElementById("tabHeader_1");
+            var cname = 'rundmc-home-tab';
+            var ident = '1';
+            if ($.cookie(cname)) {
+                ident = $.cookie(cname);
+            }
+            var navitem = document.getElementById("tabHeader_" + ident);
+
 
             if (navitem) {
 
                 //store which tab we are on
-                var ident = navitem.id.split("_")[1];
                 navitem.parentNode.setAttribute("data-current",ident);
                 //set current tab with class of activetabheader
                 navitem.setAttribute("class","tabActiveHeader");
     
                 //hide two tab contents we don't need
                 $('.tabpage').hide();
-                $('#tabpage_1').show();
+
+                $('#tabpage_' + ident).show();
+
+                var t = document.getElementById("tabHeader_" + ident);
+
+                $('#tabsborder').position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: t
+                });
+                $('#tabsborder').css({marginTop: '-=3px'});
     
                 //this adds click event to tabs
                 $('#tabContainer li').click(function() {
@@ -438,6 +453,7 @@ if(typeof jQuery != 'undefined') {
                     document.getElementById("tabpage_" + current).style.display="none";
 
                     var ident = this.id.split("_")[1];
+                    $.cookie(cname, ident);
                     //add class of activetabheader to new active tab and show contents
                     $(this).attr("class","tabActiveHeader");
                     document.getElementById("tabpage_" + ident).style.display="block";
