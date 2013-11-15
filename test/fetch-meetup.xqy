@@ -36,11 +36,11 @@ try {
     let $hostname := xdmp:host-name(xdmp:host())
     let $opts := <options xmlns="xdmp:http">{
         if ($hostname eq 'developer.marklogic.com') then
-            <authentication><username>admin</username><password>n00dlesYum!</password></authentication>
+            <authentication><username>admin</username><password>XXXX</password></authentication>
         else if ($hostname eq 'stage-developer.marklogic.com') then
-            <authentication><username>admin</username><password>adm1n</password></authentication>
+            <authentication><username>admin</username><password>XXXX</password></authentication>
         else
-            <authentication><username>admin</username><password>unknown</password></authentication>
+            <authentication><username>admin</username><password>XXXX</password></authentication>
     }</options>
 
     let $lhost := 
