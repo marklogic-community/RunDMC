@@ -697,7 +697,7 @@ if(typeof jQuery != 'undefined') {
         $('.yearpicker').val(d);
         
 
-            $("#vidwrap").click(function(e) {
+            $(".vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
                 $(this).children().replaceWith('<iframe width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0&vq=hd720" frameborder="0" allowfullscreen=""></iframe>');
             });
