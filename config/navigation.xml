@@ -244,11 +244,10 @@
   <page display="Labs" href="/labs" tooltip="Experimental work"> 
     <group display="">
         <group display="Labs">
-            <page display="HDFS Storage Preview" href="/labs/hdfs-preview"/>
             <page display="MLPHP" href="/labs/mlphp"/>
+            <page display="MLJS" href="/labs/mljs"/>
             <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
             <page display="rxq" href="/labs/rxq"/>
-            <page display="MLJS" href="/labs/mljs"/>
             <page display="MLDotNet" href="/labs/MLDotNet"/>
         </group>
     </group>
