@@ -217,7 +217,7 @@
     &lt;name&gt;MarkLogic Releases&lt;/name&gt;
     &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
 &lt;/repository&gt;</textarea>
-                    <h4>Dependency</h4>
+                    <h4>Dependencies</h4>
                     <xsl:apply-templates mode="maven" select="artifact"/>
                 </section>
               </xsl:template>
