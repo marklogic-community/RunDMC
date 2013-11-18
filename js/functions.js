@@ -412,8 +412,11 @@ if(typeof jQuery != 'undefined') {
 
         $(document).ready(function() {
 
-  	        var container = document.getElementById("tabContainer");
-		    var tabcon = document.getElementById("tabscontent");
+  	        var container = document.getElementById("home-tabs");
+            if (container == null) {
+                return;
+            }
+            
             // set current tab
             var cname = 'rundmc-home-tab';
             var ident = '1';
