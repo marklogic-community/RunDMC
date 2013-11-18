@@ -18,7 +18,7 @@
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:draft="http://developer.marklogic.com/site/internal/filter-drafts"
   xmlns:users="users"
-  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:fn   ="http://www.w3.org/2005/xpath-functions"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
 
@@ -193,6 +193,7 @@
 
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
+    <xsl:apply-templates mode="maven" select="maven"/>
   </xsl:template>
 
           <xsl:template mode="product-platform" match="platform">
@@ -205,6 +206,35 @@
               </table>
             </section>
           </xsl:template>
+
+              <xsl:template mode="maven" match="maven">
+                <section class="download">
+                    <h3>Maven</h3>
+                    <h4>Repository</h4>
+                        <textarea autofocus="autofocus" readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
+>&lt;repository&gt;
+    &lt;id&gt;MarkLogic-releases&lt;/id&gt;
+    &lt;name&gt;MarkLogic Releases&lt;/name&gt;
+    &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
+&lt;/repository&gt;</textarea>
+                    <h4>Dependency</h4>
+                        <textarea readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
+>&lt;dependency&gt;
+    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+    &lt;artifactId&gt;<xsl:value-of select="@artifactId"/>&lt;/artifactId&gt;
+    &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+                </section>
+              </xsl:template>
+
+             <xsl:template mode="maven" match="*">
+                <xsl:element name="{name()}">
+                    <xsl:apply-templates select="@* | node()"/>
+                </xsl:element>
+            </xsl:template>
+            <xsl:template mode="maven" match="@* | text()">
+                <xsl:copy/>
+            </xsl:template>
 
                   <xsl:template mode="product-download" match="download">
                     <!--
@@ -221,9 +251,6 @@
                         <a href="{@href}" class="{@anchor-class}">
                           <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
                         </a>
-                       <xsl:if test="@url-to-copy">
-                            &#160;<input readonly="true" size="47" class="url-to-copy" type="text" value="{@url-to-copy}" />
-                        </xsl:if>
                       </th>
                       <xsl:if test="$num-cols eq 3">
                         <td>
