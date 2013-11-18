@@ -211,7 +211,7 @@
                 <section class="download">
                     <h3>Maven</h3>
                     <h4>Repository</h4>
-                        <textarea autofocus="autofocus" readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
+                        <textarea autofocus="autofocus" readonly="readonly" class="maven-frag"
 >&lt;repository&gt;
     &lt;id&gt;MarkLogic-releases&lt;/id&gt;
     &lt;name&gt;MarkLogic Releases&lt;/name&gt;
@@ -223,7 +223,7 @@
               </xsl:template>
 
             <xsl:template mode="maven" match="artifact">
-                <textarea readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
+                <textarea readonly="readonly" class="maven-frag"
 >&lt;dependency&gt;
     &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
     &lt;artifactId&gt;<xsl:value-of select="@id"/>&lt;/artifactId&gt;

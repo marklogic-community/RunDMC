@@ -2596,6 +2596,13 @@ div.header-separator {
     float: left;
 }
 
+.maven-frag {
+    margin-left: 50px; 
+    margin-bottom: 5px;
+    width: 350px; 
+    height: 80px;
+}
+
 /* New Buttons */
 
 button {
