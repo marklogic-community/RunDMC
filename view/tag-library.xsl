@@ -218,22 +218,17 @@
     &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
 &lt;/repository&gt;</textarea>
                     <h4>Dependency</h4>
-                        <textarea readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
->&lt;dependency&gt;
-    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;<xsl:value-of select="@artifactId"/>&lt;/artifactId&gt;
-    &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
-&lt;/dependency&gt;</textarea>
+                    <xsl:apply-templates mode="maven" select="artifact"/>
                 </section>
               </xsl:template>
 
-             <xsl:template mode="maven" match="*">
-                <xsl:element name="{name()}">
-                    <xsl:apply-templates select="@* | node()"/>
-                </xsl:element>
-            </xsl:template>
-            <xsl:template mode="maven" match="@* | text()">
-                <xsl:copy/>
+            <xsl:template mode="maven" match="artifact">
+                <textarea readonly="readonly" style="margin-left: 50px; width: 350px; height: 80px" 
+>&lt;dependency&gt;
+    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+    &lt;artifactId&gt;<xsl:value-of select="@id"/>&lt;/artifactId&gt;
+    &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
             </xsl:template>
 
                   <xsl:template mode="product-download" match="download">
