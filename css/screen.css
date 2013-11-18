@@ -1942,6 +1942,7 @@ ul.multi-page-toc {list-style: square inside;}
 #featured > div {
 	display: table-cell;
 	width: 50%;
+    padding: 5px;
 }
 #featured > h3 + div {border-right: 1px solid white;}
 #featured > h3 + div + div {border-left: 1px solid #E4E4E4;}
