@@ -413,62 +413,61 @@ if(typeof jQuery != 'undefined') {
         $(document).ready(function() {
 
   	        var container = document.getElementById("home-tabs");
-            if (container == null) {
-                return;
-            }
+            if (container != null) {
             
-            // set current tab
-            var cname = 'rundmc-home-tab';
-            var ident = '1';
-            if ($.cookie(cname)) {
-                ident = $.cookie(cname);
-            }
-            var navitem = document.getElementById("tabHeader_" + ident);
-
-
-            if (navitem) {
-
-                //store which tab we are on
-                navitem.parentNode.setAttribute("data-current",ident);
-                //set current tab with class of activetabheader
-                navitem.setAttribute("class","tabActiveHeader");
+                // set current tab
+                var cname = 'rundmc-home-tab';
+                var ident = '1';
+                if ($.cookie(cname)) {
+                    ident = $.cookie(cname);
+                }
+                var navitem = document.getElementById("tabHeader_" + ident);
     
-                //hide two tab contents we don't need
-                $('.tabpage').hide();
-
-                $('#tabpage_' + ident).show();
-
-                var t = document.getElementById("tabHeader_" + ident);
-
-                $('#tabsborder').position({
-                    my: "left top",
-                    at: "left bottom",
-                    of: t
-                });
-                $('#tabsborder').css({marginTop: '-=3px'});
     
-                //this adds click event to tabs
-                $('#tabContainer li').click(function() {
-
-                    var current = $(this).parent().attr("data-current");
-                    //remove class of activetabheader and hide old contents
-                    document.getElementById("tabHeader_" + current).removeAttribute("class");
-                    document.getElementById("tabpage_" + current).style.display="none";
-
-                    var ident = this.id.split("_")[1];
-                    $.cookie(cname, ident);
-                    //add class of activetabheader to new active tab and show contents
-                    $(this).attr("class","tabActiveHeader");
-                    document.getElementById("tabpage_" + ident).style.display="block";
-                    $(this).parent().attr("data-current",ident);
-
+                if (navitem) {
+    
+                    //store which tab we are on
+                    navitem.parentNode.setAttribute("data-current",ident);
+                    //set current tab with class of activetabheader
+                    navitem.setAttribute("class","tabActiveHeader");
+     
+                    //hide two tab contents we don't need
+                    $('.tabpage').hide();
+    
+                    $('#tabpage_' + ident).show();
+    
+                    var t = document.getElementById("tabHeader_" + ident);
+    
                     $('#tabsborder').position({
                         my: "left top",
                         at: "left bottom",
-                        of: $(this).get()
+                        of: t
                     });
                     $('#tabsborder').css({marginTop: '-=3px'});
-                });
+     
+                    //this adds click event to tabs
+                    $('#tabContainer li').click(function() {
+
+                        var current = $(this).parent().attr("data-current");
+                        //remove class of activetabheader and hide old contents
+                        document.getElementById("tabHeader_" + current).removeAttribute("class");
+                        document.getElementById("tabpage_" + current).style.display="none";
+    
+                        var ident = this.id.split("_")[1];
+                        $.cookie(cname, ident);
+                        //add class of activetabheader to new active tab and show contents
+                        $(this).attr("class","tabActiveHeader");
+                        document.getElementById("tabpage_" + ident).style.display="block";
+                        $(this).parent().attr("data-current",ident);
+
+                        $('#tabsborder').position({
+                            my: "left top",
+                            at: "left bottom",
+                            of: $(this).get()
+                        });
+                        $('#tabsborder').css({marginTop: '-=3px'});
+                    });
+                }
             }
 
             if (navigator.appVersion.indexOf("10_7") != -1) {
