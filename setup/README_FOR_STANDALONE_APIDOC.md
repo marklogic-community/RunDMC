@@ -1,52 +1,93 @@
-This document lists the steps for getting a copy of the standalone apidoc
-application up and running on your machine.
+Follow these instructions to set up a standalone installation of the
+online documentation portion of RunDMC (i.e. docapp, evanapp, "that thing
+that runs on pubs:8011"). Do NOT use instructions you may trip over in
+other README.txt files in this distribution.
 
-NOTE: Disqus comments are currently disabled in the standalone version of the app.
+INSTALL REQUIRED SOFTWARE AND SOURCES 
+-------------------------------------
+You should only need to do this once. Thereafter, you can update the
+RunDMC sources as needed by doing a git pull. For example:
 
- 1. Install MarkLogic 5 if you haven't already.
+  $ git pull
 
- 2. Get and install git from <http://git-scm.com>.
-    Alternatively, if you use Cygwin, you can install it using Cygwin's setup.exe.
+1. Install MarkLogic Server if you don't already have it.
 
- 3. Go to the directory where you'd like to install your code,
-    e.g. your home directory.
+2. Install a git client if you don't already have one. For example,
+   from http://get-scm.com or use Cygwin setup to install the git command.
 
-    Run these commands:
+3. If you don't already have the RunDMC sources, check them out from GitHub:
+   a) cd to the directory you want to contain the RunDMC source folder,
+      such as your home directory.
+   b) Run the following commands. The first command may take awhile.
+      git clone git://github.com/marklogic/RunDMC.git
+      cd RunDMC
+      git branch apidoc origin/apidoc
+      git checkout apidoc
+   c) To update to the latest version at any time, run this command:
+      git pull
 
-        git clone git://github.com/marklogic/RunDMC.git
-        cd RunDMC
-        git branch apidoc origin/apidoc
-        git checkout apidoc
 
-    Note: The first command will take a while due to downloading a large
-          zip file that had been put in the repository (edb: we should remove this file from github)
+SETUP THE DATABASES AND APP SERVERS
+-----------------------------------
+You should only need to follow this procedure once.
 
-    Later on, whenever you need to get the latest code, run this command:
-
-        git pull
-
-    Note: The above clone URL is read-only. For push/write access, you'll
-          need the appropriate ssh credentials, etc.
-
- 4. Create an app server for running scripts in this directory.
+1. Create an app server for running scripts in this directory.
 
     Name: RunDMC-Maintenance (any name will do)  
     Port: 8008 (or a different one if that's being used already)  
-    Root: whatever directory you used above, e.g., /Users/elenz/RunDMC  
+    Root: Your RunDMC directory, e.g., /Users/elenz/RunDMC  
     Database: Documents (this will get automatically changed later)  
 
- 5. In your browser, go to the following URL (assuming you used port 8008):
+2. Hit http://localhost:8008/apidoc/setup/install-standalone-apidoc.xqy 
+   in your browser or with curl. This creates the RunDMC and
+   RunDMC-api-rawdocs databases and the RunDMC-standalone-api app server.
 
-    <http://localhost:8008/setup/install-standalone-apidoc.xqy>
+
+LOAD THE DOCUMENTATION INTO THE APPLICATION
+-------------------------------------------
+Repeat this procedure each time you want to load new documentation
+into your local version of the application.
+
+1. If you don't already have one, create a staging area that contains
+   both zipped and unzipped versions of the nightly doc build output.
+   Use the zip file created by the nightly doc build for your target version.
+   Yes, you really have to have it both zipped and unzipped. Sigh.
  
-    This script will set up your database, forest, and apidoc server.
- 
-    The port for your standalone apidoc server will be 8011. If you need it
-    to be something different, you'd need to first update /config/server-urls.xml
-    before running the above script.
+   For example, if your staging dir is /stage and you're loading ML7 docs:
 
- 6. Visit <http://localhost:8008/apidoc/setup/setup-all.xqy> to interactively
-    build the docs, or read [/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt][] for automation
-    instructions.
+     /stage/
+       MarkLogic_7_pubs/
+       MarkLogic_7_pubs.zip
 
-[/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt]: http://github.com/marklogic/RunDMC/blob/apidoc/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt
+2. If you don't have xdmp/src/Config checked out somewhere, check it out.
+   For example, in /space/svn/7.0/xdmp/src/Config.
+
+3. Load the docs for a given version by running a curl command similar to
+   the following (or hit the equivalent URL in your browser). (USER,
+   PASSWORD, VER, STAGE, and CONFIG as per your env.)
+
+     curl -i -X GET --anyauth --user USER:PASSWORD \
+       'http://localhost:8008/apidoc/setup/build.xqy?version=VER&srcdir=STAGE&help-xsd-dir=CONFIG&clean=yes'
+
+   Expect the load to take quite awhile - 10-15 minutes. If it finishes
+   quickly, it didn't work.
+
+   For example, if your staging dir is /stage/ and your xdmp checkout is
+   in /space/svn/7.0/xdmp/src, and you're loading 7.0 docs as admin, you 
+   would use the following command:
+
+     curl -i -X GET --anyauth --user admin:password \
+       'http://localhost:8008/apidoc/setup/build.xqy?version=7.0&srcdir=/stage/MarkLogic_7_pubs&help-xsd-dir=/space/svn/7.0/xdmp/src/Config&clean=yes'
+
+   NOTE:
+   - Don't forget to either put single quotes around the URL or escape
+     the &'s (\&).
+   - If you're Windows, use Windows paths not cygwin paths. It's ML you're
+     communicating the path to, not a shell script.
+
+
+For more information about loading just portions of the documentation
+(say, just the static docs), see:
+
+   RunDMC/apidoc/setup/README_FOR_NIGHTLY_BUILD.txt
+

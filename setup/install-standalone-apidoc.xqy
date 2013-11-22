@@ -61,6 +61,12 @@ return concat("Successfully enabled the collection lexicon on the ",$database-na
 
 ,
 
+let $config := admin:database-set-directory-creation($config, xdmp:database($database-name), "automatic")
+let $status := admin:save-configuration($config)
+return concat("Successfully set directory creation to automatic on the ",$database-name," database.")
+
+,
+
 try {
         let $appserver-create-config := admin:http-server-create($config, $groupid, $http-server-name, 
                     xdmp:modules-root(), $http-server-port, 0, xdmp:database($database-name))
@@ -119,6 +125,11 @@ catch ($e) {
         concat("Forest ",$raw-db-forest," is already attached to ",$raw-db-name,", skipping attach")
         else $e
 },
+
+let $raw-db-dir-create-config := admin:database-set-directory-creation($config, xdmp:database($raw-db-name), "automatic")
+let $status := admin:save-configuration($raw-db-dir-create-config)
+return concat("Successfully set directory creation to automatic on the ",$raw-db-name," database.")
+,
 
 "Setting up indexes...",
 xdmp:invoke("/apidoc/setup/setup-indexes.xqy", (), <options xmlns="xdmp:eval">
