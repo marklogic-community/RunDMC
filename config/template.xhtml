@@ -18,7 +18,7 @@
 		<![endif]-->
         <link type="text/css" href="/stackunderflow/v-1/stackoverflow.css" rel="stylesheet" /> <!-- return to min someday -->
         <ml:if href-starts-with="/try/ /learn/java /learn/rest /learn/arch/ /learn/semantics-exercises /products/download-via-curl">
-            <link rel="stylesheet" href="//try.demo.marklogic.com/css/tryml.css" type="text/css" media="screen, projection" /> 
+            <ml:try-link/>
         </ml:if>
 		<link href="/css/anythingslider.css" rel="stylesheet" type="text/css" media="screen" />
         <link href="/css/theme-metallic.css" rel="stylesheet" type="text/css" media="screen" />
@@ -161,7 +161,7 @@
 	</body>
 
     <ml:if href-starts-with="/try/ /learn/arch/ /products/download-via-curl /learn/semantics-exercises">
-        <script src="//try.demo.marklogic.com/js/tryml.js" type="text/javascript"></script>
+        <ml:try-script/>
         <script type="text/javascript">
             var s = '' + window.location.pathname;
             // Only for pages in /try

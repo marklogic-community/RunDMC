@@ -270,6 +270,20 @@
 
   <xsl:template match="if-session[users:getCurrentUser()]"/>
 
+  <!-- Try hosts -->
+  <xsl:template match="try-script">
+      <xhtml:script type="text/javascript"> 
+        <xsl:attribute name="src"><xsl:value-of select="$srv:try-server"/>/js/tryml.js</xsl:attribute>
+      </xhtml:script>
+  </xsl:template>
+
+  <xsl:template match="try-link">
+      <xhtml:link rel="stylesheet" type="text/css" media="screen, projection" > 
+        <xsl:attribute name="href"><xsl:value-of select="$srv:try-server"/>/css/tryml.css</xsl:attribute>
+      </xhtml:link>
+  </xsl:template>
+
+
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">

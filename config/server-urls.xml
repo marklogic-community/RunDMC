@@ -10,6 +10,7 @@
     <rapi-server url="//dmc-stage-admin.marklogic.com:4446"/>
 
     <api-server url="//docs-stage.marklogic.com"/>
+    <try-server url="//try.demo.marklogic.com"/>
 
   </host>
 
@@ -20,6 +21,7 @@
     <admin-server url="//developer-admin.marklogic.com"/>
     <api-server url="//docs.marklogic.com"/>
     <rapi-server url="//try.marklogic.com:8005"/>
+    <try-server url="//try.demo.marklogic.com"/>
   </host>
 
   <host type="development" default-host="yes" cookie-domain="127.0.0.1"> 
@@ -30,6 +32,7 @@
     <api-server port="8809"/>
     <standalone-api-server port="8011"/>
     <rapi-server port="4446"/>
+    <try-server url="//try.demo.marklogic.com"/>
   </host>
 
 </hosts>
