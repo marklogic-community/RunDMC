@@ -48,6 +48,8 @@
     <!-- TBD: automate this stuff below -->
     <generic-page display="Learning the MarkLogic Java API" href="/learn/java" tutorial="yes" hide="yes"/>
     <generic-page display="Learning the MarkLogic REST API" href="/learn/rest" tutorial="yes" hide="yes"/>
+    <generic-page display="Getting Started with Semantics" href="/learn/semantics-exercises" tutorial="yes" hide="yes"/>
+
     <generic-page display="Try MarkLogic!" href="/try/ninja/index" hide="yes"/>
     <generic-page display="Try MarkLogic!" href="/try/ninja/page2" hide="yes"/>
     <generic-page display="Try MarkLogic!" href="/try/ninja/page3" hide="yes"/>
@@ -81,6 +83,14 @@
     <generic-page display="Try MarkLogic!" href="/try/java/page3" hide="yes"/>
     <generic-page display="Try MarkLogic!" href="/try/java/page4" hide="yes"/>
     <generic-page display="Try MarkLogic!" href="/try/java/page5" hide="yes"/>
+
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/hello-world" hide="yes"/>
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/loading-data" hide="yes"/>
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/sparql-101" hide="yes"/>
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/sparql-xquery" hide="yes"/>
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/triple-index" hide="yes"/>
+    <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/next-steps" hide="yes"/>
+
   </page>
   <page display="Tools" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code">
     <group display="Tools &amp; Open Source Projects" closed="yes">
