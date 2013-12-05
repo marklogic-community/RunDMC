@@ -20,6 +20,11 @@ pre, .userguide img {
   padding: 1px;
 }
 
+/* Do not add extra margins around code inside a table */
+.api_generic_table td pre {
+  margin: 0;
+}
+
 ol ol {
   list-style-type: lower-alpha;
 }
@@ -427,12 +432,15 @@ table.api_table {
 /* workaround for nowrap attributes that jquery is adding to the td tags */
 table.api_generic_table td { white-space: normal; }
 
+/* prevent 1st para in multi-para table cells from having extra padding */
+.api_generic_table p:first-child { margin-top: 0px; }
 
 table.api_generic_table.guide_info { width: 100%; }
 table.api_generic_table.guide_info td,
 table.api_generic_table.guide_info th { padding: 8px; font-size: .9em; }
 
-
+/* Make code font size match normal text size in table cells */
+table.api_generic_table code { font-size: 100%; }
 
 table.parameters {
 	table-layout: fixed;
