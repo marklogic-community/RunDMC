@@ -22,7 +22,12 @@
 
   <xsl:variable name="auto-links" select="$docs-page/auto-link"/>
 
-  <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide[not(@href eq ml:external-uri($content))]"/>
+  <!-- use xsl:copy-of to make this more efficient, per bug 25175 -->
+ <xsl:variable name="other-guide-listings">
+	 <xsl:copy-of select="$docs-page/api:user-guide
+		 [not(@href eq ml:external-uri($content))]"/>
+  </xsl:variable> 
+  
 
   <!-- Disable comments on User Guide pages -->
   <xsl:template mode="comment-section" match="/guide | /chapter"/>
