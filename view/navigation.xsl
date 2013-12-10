@@ -78,17 +78,20 @@
     <fieldset id="login-menu" class="drop-down-menu">
         <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
             <span style="clear: both" id="login-error"/>
-            <p>
-                <div class="login-menu-label">Email </div>
-                <input id="email" name="email" value="" title="email" type="text" autocomplete="on"/>
-            </p>
-            <p>
-                <div class="login-menu-label">Password</div> 
-                <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/>
-            </p>
-            <a class="button" id="login_submit" href="#" type="button"><span>Log in</span></a>
+            <div class="login-form-row">
+                <label class="login-form-label" for="email">Email </label>
+                <input class="required email" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
+            </div>
+            <div class="login-form-row">
+                <label class="login-form-label" for="password">Password </label>
+                <input class="password required" required="required" id="password" name="password" title="password" value="" type="password"/>
+            </div>
+                <!-- <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/> -->
+            <div>
+                <button class="green" id="login_submit" type="button">Log in</button>
+                <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="gray" id="recovery">Forgot password?</button>
+            </div>
         </form>
-        <div style="float: right"><a href="{$srv:primary-server}/people/recovery" id="recovery">Forgot password?</a></div>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">
         <p> <a id="profile" href="{$srv:primary-server}/people/profile"><span>Edit Profile</span></a> </p>

@@ -2172,7 +2172,7 @@ div.header-separator {
 .drop-down-menu {
     display: none;
     position:absolute;
-    width:210px;
+    width:260px;
     z-index:100;
     top: 24.5px; 
     right: 186px;
@@ -2207,6 +2207,7 @@ div.header-separator {
 
 #login-menu {
     right: 192px;
+    width:300px;
 }
 
 #session-menu {
@@ -2297,16 +2298,16 @@ div.header-separator {
 }
 
 #login_submit {
-    margin-left: auto;
-    margin-right: auto;
-    width: 20%;
+    min-width: 70px;
+    color: white;
+    display: block;
+    float: left;
+    margin-left: 30px;
 }
 
-#login_submit span {
-    display: block;
-    padding-left: 0px;
-    min-width: 50px;
-    color: white;
+#recovery {
+    float: left;
+    margin-left: 50px;
 }
 
 #login-error {
@@ -2396,12 +2397,26 @@ div.header-separator {
     padding-bottom: 10px;
 }
 
+.login-form-row {
+    padding-bottom: 10px;
+}
+
 .signup-form-label, .reset-form-label {
     width: 140px;
     float: left;
 	margin-bottom: 5px;
     text-align: right;
     margin-right: 25px;
+}
+
+.login-form-label {
+    width: 50px;
+    float: left;
+    margin-top: 3px;
+	margin-bottom: 5px;
+    text-align: right;
+    margin-right: 25px;
+	color: black;
 }
 
 .profile-form-label {
