@@ -2172,13 +2172,13 @@ div.header-separator {
     border-right: 1px solid gray;
 
     xbackground: #1c6acd; /* Old browsers */
-    background: -moz-linear-gradient(top,  #ffffff 0%, #e4e5e6 99%); /* FF3.6+ */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #d4d5d6 99%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(99%,#e4e5e6)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #ffffff 0%,#e4e5e6 99%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #ffffff 0%,#e4e5e6 99%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #ffffff 0%,#e4e5e6 99%); /* IE10+ */
-    background: linear-gradient(to bottom,  #ffffff 0%,#e4e5e6 99%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e4e5e6',GradientType=0 ); /* IE6-9 */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#d4d5d6 99%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#d4d5d6 99%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#d4d5d6 99%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#d4d5d6 99%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d4d5d6',GradientType=0 ); /* IE6-9 */
 
 	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 	-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
@@ -2210,6 +2210,10 @@ div.header-separator {
 	color: #565656;
     text-shadow: 1px 1px #fff;
 	text-decoration: none;
+}
+
+#session-menu a:hover {
+    color: #1C6ACD;
 }
 
 .drop-down-menu a:hover {text-decoration: underline;}
@@ -2249,7 +2253,7 @@ div.header-separator {
 .drop-down-menu input[type=text], .drop-down-menu input[type=password] {
 	border: 1px solid #CFCFCF;
 	padding: 0 5px;
-	width: 190px;
+	width: 198px;
 	height: 19px;
 	margin-bottom: 5px;
 }
@@ -2298,12 +2302,12 @@ div.header-separator {
     min-width: 70px;
     display: block;
     float: left;
-    margin-left: 30px;
+    margin-left: 70px;
 }
 
 #recovery {
     float: left;
-    margin-left: 50px;
+    margin-left: 10px;
 }
 
 #login-error {
