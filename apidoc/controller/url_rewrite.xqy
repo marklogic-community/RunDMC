@@ -5,7 +5,13 @@ import module namespace api = "http://marklogic.com/rundmc/api" at "../model/dat
 import module namespace ml = "http://developer.marklogic.com/site/internal" at "../../model/data-access.xqy";
 import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../../controller/server-urls.xqy";
 
-declare variable $orig-path       := xdmp:url-decode(xdmp:get-request-path());
+declare variable $orig-path       := 
+    try {
+        xdmp:url-decode(xdmp:get-request-path())
+    } catch ($error) {
+        xdmp:get-request-path()
+    };
+
 declare variable $orig-url        := xdmp:get-request-url();
 declare variable $query-string    := substring-after($orig-url, '?');
   (: $path is just the original path, unless this is a REST doc, in which 

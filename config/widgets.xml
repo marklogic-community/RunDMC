@@ -4,6 +4,8 @@
     <page href="/products/marklogic-server/which-nosql"/>
     <page href="/products/marklogic-server/enterprise-nosql"/>
     <page href="/learn/arch/diagram-101"/>
+    <page href="/trails/java"/>
+    <page href="/trails"/>
   </widget>
                                      <!-- id for CSS purposes -->
   <widget href="/widgets/hadoop.xml" id="hadoop">
@@ -36,6 +38,8 @@
     <page href="/events/mlw12-activities"/>
     <page href="/learn/videos"/>
     <page href="/people/profile"/>
+    <page href="/trails/java"/>
+    <page href="/trails"/>
   </widget>
 
   <widget xquery="twitter-topic.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->

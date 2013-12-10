@@ -32,7 +32,7 @@
     <api-server port="8809"/>
     <standalone-api-server port="8011"/>
     <rapi-server port="4446"/>
-    <try-server url="//try.demo.marklogic.com"/>
+    <try-server url="//localhost:8540"/>
   </host>
 
 </hosts>

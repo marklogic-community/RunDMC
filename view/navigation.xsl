@@ -77,13 +77,13 @@
     </nav>
     <fieldset id="login-menu" class="drop-down-menu">
         <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
-            <span style="clear: both" id="login-error"/>
+            <div style="clear: both" id="login-error"/>
             <div class="login-form-row">
-                <label class="login-form-label" for="email">Email </label>
+                <label class="login-form-label" for="email">Email: </label>
                 <input class="required email" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
             </div>
             <div class="login-form-row">
-                <label class="login-form-label" for="password">Password </label>
+                <label class="login-form-label" for="password">Password: </label>
                 <input class="password required" required="required" id="password" name="password" title="password" value="" type="password"/>
             </div>
                 <!-- <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/> -->
@@ -381,15 +381,15 @@
   <xsl:template match="page-nav">
         <div class="pagination_nav">
             <xsl:if test="$content/page/@page/number() gt 1">
-            <p class="pagination_prev"><a 
-                href="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}" 
-                class="btn btn_blue">&#171; Previous</a><span>
+            <p class="pagination_prev"><button
+                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}" 
+                class="blue">&#171; Previous</button><span>
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
             </xsl:if>
             <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
-            <p class="pagination_next"><a 
-                href="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}" 
-                class="btn btn_blue">Next &#187;</a><span> 
+            <p class="pagination_next"><button
+                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}" 
+                class="blue">Next &#187;</button><span> 
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
             </xsl:if>
         </div>
