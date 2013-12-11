@@ -2447,6 +2447,7 @@ div.header-separator {
     display: block;
     margin-top: 20px;
     padding: 8px;
+    color: #333;
 }
 
 .signup-form-error {
