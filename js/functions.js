@@ -284,6 +284,8 @@ if(typeof jQuery != 'undefined') {
            	}
         	});
             $(".ui-dialog-titlebar").hide()     
+            // $(".ui-dialog-buttonpane")
+            $(".ui-dialog").addClass("download-dialog");     
        	}
 
         $('a.license-popup').click(function() {
