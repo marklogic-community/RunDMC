@@ -79,16 +79,17 @@
         <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
             <div style="clear: both" id="login-error"/>
             <div class="login-form-row">
-                <label class="login-form-label" for="email">Email: </label>
+                <label class="login-form-label" for="email">Email:</label>
                 <input class="required email" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
             </div>
             <div class="login-form-row">
-                <label class="login-form-label" for="password">Password: </label>
+                <label class="login-form-label" for="password">Password:</label>
                 <input class="password required" required="required" id="password" name="password" title="password" value="" type="password"/>
             </div>
-                <!-- <input id="password" name="password" value="" title="password" type="password" autocomplete="on"/> -->
+            <div>&#160;
+            </div>
             <div>
-                <button class="green" id="login_submit" type="button">Log in</button>
+                <button onclick="return false;" class="green" id="login_submit" type="button">Log in</button>
                 <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="gray" id="recovery">Forgot password?</button>
             </div>
         </form>

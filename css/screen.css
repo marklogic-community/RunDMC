@@ -2302,7 +2302,7 @@ div.header-separator {
     min-width: 70px;
     display: block;
     float: left;
-    margin-left: 70px;
+    margin-left: 75px;
 }
 
 #recovery {
@@ -2312,7 +2312,8 @@ div.header-separator {
 
 #login-error {
     color: red;
-    height: 20px;
+    height: 23px;
+    margin-left: 75px;
 }
 
 #signup-form-separator {
@@ -2411,12 +2412,11 @@ div.header-separator {
 }
 
 .login-form-label {
-    width: 46px;
+    width: 66px;
     float: left;
-    margin-top: 3px;
-	margin-bottom: 5px;
+    margin-top: 5px;
     text-align: right;
-    margin-right: 25px;
+    margin-right: 8px;
 	color: #565656;
     text-shadow: 1px 1px #fff;
 }

@@ -484,6 +484,7 @@ if(typeof jQuery != 'undefined') {
                 var u = $(this).data('url');
                 if (u) {
                     window.location = u;
+                    return false;
                 }
             });
 
@@ -556,6 +557,7 @@ if(typeof jQuery != 'undefined') {
             $('#local-login-form').bind('keypress', function (event){
                 if (event.keyCode === 13){
                     $('#login_submit').trigger('click');
+                    return false;
                 }
             });
 
