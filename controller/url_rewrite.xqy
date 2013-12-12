@@ -129,8 +129,8 @@ declare function local:redir($path as xs:string) as xs:string
         concat("/learn", substring($orig-url, 20))
     else if (ends-with($path, "/default.xqy")) then
         substring($path, 1, string-length($path)- 12)
-    else if ($path = ("/cloudcomputing")) then
-        "/products/server-for-ec2"
+    else if ($path = ("/cloudcomputing", "/products/server-for-ec2")) then
+        "/products/aws"
     else if ((starts-with($path, '/blog') or starts-with($path, '/learn')) and ends-with($path, '.xqy')) then 
         substring($path, 1, string-length($path) - 4)
     else if ($path = '/pubs/training/eclipse-xqdt-setup.pdf') then
