@@ -11,7 +11,7 @@
 
 .home {
     background: white;
-    height: 576px;
+    height: 776px;
 }
 
 #tabs {
@@ -60,6 +60,9 @@
 
 #home-tabs {
 	background: #FFFFFF; 
+    -webkit-box-shadow: 0px 0px 8px rgba(50, 50, 50, 0.51);
+    -moz-box-shadow:    0px 0px 8px rgba(50, 50, 50, 0.51);
+    box-shadow:         0px 0px 8px rgba(50, 50, 50, 0.51);
 }
 
 #home-search {
@@ -125,7 +128,7 @@
 
 #tabContainer {
 	width: 100%;
-    height: 300px;
+    height: 395px;
     -webkit-box-shadow: 0px 0px 8px rgba(50, 50, 50, 0.51);
     -moz-box-shadow:    0px 0px 8px rgba(50, 50, 50, 0.51);
     box-shadow:         0px 0px 8px rgba(50, 50, 50, 0.51);
@@ -153,9 +156,9 @@
 
     border-bottom: 2px solid rgba(200, 200, 200, .5);
 
-  -moz-border-radius: 2px 2px 0 0;
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
 
 }
 
@@ -175,7 +178,6 @@
     position: absolute;
     z-index: 9;
     height: 3px;
-    width: 100%;
     width: 290px;
     top: 288px;
     left: 40px;
@@ -227,10 +229,6 @@
     cursor: pointer;
 }
 
-#download-button, #download-button:hover {
-    border:4px solid #6ca054;
-}
-
 .learn-more {
     font-size: 12px;
 }
@@ -262,10 +260,13 @@
   -webkit-border-radius: 3px;
   border-radius: 3px;
 
-  border: 1px solid #d4d4d4;
+  border: 1px solid #aaa;
 
 
-  border-color: #6ca054;
+  border-color: #aaa;
+    -webkit-box-shadow: 2px 2px 11px rgba(50, 50, 50, 0.51);
+    -moz-box-shadow:    2px 2px 11px rgba(50, 50, 50, 0.51);
+    box-shadow:         2px 2px 11px rgba(50, 50, 50, 0.51);
 
   background-image: -moz-linear-gradient(top, white, #eee);
   background-image: -ms-linear-gradient(top, white, #eee);
@@ -307,3 +308,50 @@
   padding: 10px;
   color: #777;
 }
+
+.span12 {
+  width: 940px;
+}
+.span11 {
+  width: 860px;
+}
+.span10 {
+  width: 780px;
+}
+.span9 {
+  width: 700px;
+}
+.span8 {
+  width: 620px;
+}
+.span7 {
+  width: 540px;
+}
+.span6 {
+  width: 460px;
+}
+.span5 {
+  width: 380px;
+}
+.span4 {
+  width: 300px;
+}
+.span3 {
+  width: 220px;
+}
+.span2 {
+  width: 140px;
+}
+.span1 {
+  width: 60px;
+}
+
+
+h3 i.hp-ns-icon {
+    float: left; 
+    margin-top: -5px; 
+    margin-left: -1px; 
+    margin-right: 10px; 
+    font-size: 30px;
+}
+

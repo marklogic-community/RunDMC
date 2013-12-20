@@ -1187,7 +1187,7 @@
 
    <xsl:template match="entypo-attribution">
         <xsl:if test="base-uri($content) eq '/index.xml'">
-            <span class="entypo-attribution">(Entypo pictograms by <a href="http://www.entypo.com">Daniel Bruce</a>)</span>
+            <span class="entypo-attribution">(Entypo pictograms by <a target="_blank" href="http://www.entypo.com">Daniel Bruce</a>)</span>
         </xsl:if>
    </xsl:template>
 

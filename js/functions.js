@@ -420,6 +420,12 @@ if(typeof jQuery != 'undefined') {
                     $('#tabContainer li').click(function() {
 
                         var current = $(this).parent().attr("data-current");
+
+                        // Make sure current is one of our tab indexes.
+                        if (['1', '2', '3'].indexOf(current) == -1) {
+                            return;
+                        }
+
                         //remove class of activetabheader and hide old contents
                         document.getElementById("tabHeader_" + current).removeAttribute("class");
                         document.getElementById("tabpage_" + current).style.display="none";
@@ -687,7 +693,9 @@ if(typeof jQuery != 'undefined') {
 
             $(".vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
-                $(this).children('div').replaceWith('<iframe id="vidplayer" width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0&vq=hd720" frameborder="0" allowfullscreen=""></iframe>');
+                if (rel) {
+                    $(this).children('div').replaceWith('<iframe id="vidplayer" width="460" height="259" src="http://www.youtube.com/embed/'+ rel+'?autoplay=1&rel=0&vq=hd720" frameborder="0" allowfullscreen=""></iframe>');
+                }
             });
 
             $('div.thumb img').click(function(e){
