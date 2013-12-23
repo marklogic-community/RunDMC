@@ -9,7 +9,6 @@
         <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
         <page display="6.0" href="/products/marklogic-server/6.0" hide="yes" />
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
-        <page display="4.2" href="/products/marklogic-server/4.2" hide="yes" />
       </group>
       <group display="Connectors">
         <page display="MarkLogic Java API"   href="/products/java"/>
@@ -17,7 +16,6 @@
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
-        <page display="XCC Java/.NET Connectors for 4.2" href="/products/xcc/4.2" hide="yes"/>
 
         <page display="Hadoop" href="/products/hadoop"/>
         <page display="ODBC Driver" href="/products/odbc"/>
@@ -38,7 +36,6 @@
     <generic-page display="Downloading Via Curl" href="/products/download-via-curl"/>
     <generic-page display="MarkLogic Academic License" href="/academic"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements"/>
-    <generic-page display="Requirements" href="/products/marklogic-server/requirements-4.2"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-5.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-7.0"/>
@@ -281,7 +278,6 @@
   <page display="MLUC11 Labs &amp; Lounge Schedule" href="/events/mluc11-lounge-and-labs-schedule" narrow-sidebar="yes" hide="yes"/>
   <page display="MarkLogic 6 Product Documentation" href="/docs/6.0"  hide="yes" narrow-sidebar="yes"/>
   <page display="MarkLogic 5 Product Documentation" href="/docs/5.0"  hide="yes" narrow-sidebar="yes"/>
-  <page display="4.2 Product Documentation"         href="/docs/4.2"  hide="yes" narrow-sidebar="yes"/>
   <page display="Introducing MarkLogic 5" href="/products/marklogic5" hide="yes"/>
 
   <page display="Hadoop 1.0" href="/products/hadoop-1.0" hide="yes"/>
