@@ -22,11 +22,16 @@
 
   <xsl:variable name="auto-links" select="$docs-page/auto-link"/>
 
-  <!-- use xsl:copy-of to make this more efficient, per bug 25175 -->
+  <!-- use xsl:copy-of to make this more efficient, per bug 25175 
  <xsl:variable name="other-guide-listings">
 	 <xsl:copy-of select="$docs-page/api:user-guide
 		 [not(@href eq ml:external-uri($content))]"/>
-  </xsl:variable> 
+ </xsl:variable> 
+-->
+<!-- The above broke the guide links, so reverting this back.  
+     I don't yet understand why it broke them.  -->
+ <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide
+	 [not(@href eq ml:external-uri($content))]"/>
   
 
   <!-- Disable comments on User Guide pages -->
@@ -173,26 +178,30 @@
     <xsl:value-of select="concat(api:guide-image-dir(base-uri(.)), .)"/>
   </xsl:template>
 
-  <!-- Automatically convert italicized guide references to links, but not the ones that are immediately preceded by "in the",
-       in which case we assume a more specific section link was already provided. -->
+  <!-- Automatically convert italicized guide references to links, but not the 
+       ones that are immediately preceded by "in the", in which case we 
+       assume a more specific section link was already provided. -->
   <xsl:template mode="guide" match="x:em[api:config-for-title(.)]
-                                        [not(preceding-sibling::node()[1][self::text()][normalize-space(.) eq 'in the'])]">
+	  [not(preceding-sibling::node()[1][self::text()][normalize-space(.) 
+	       eq 'in the'])]">
     <a href="{$version-prefix}{api:config-for-title(.)/@href}">
       <xsl:next-match/>
     </a>
   </xsl:template>
 
-          <xsl:function name="api:config-for-title" as="element()?">
-            <xsl:param name="link-text" as="xs:string"/>
-            <xsl:variable name="title" select="api:normalize-text($link-text)"/>
-            <xsl:sequence select="$other-guide-listings[(@display|alias)/api:normalize-text(.) = $title] |
-                                  $auto-links                    [alias /api:normalize-text(.) = $title]"/>
-          </xsl:function>
+     <xsl:function name="api:config-for-title" as="element()?">
+       <xsl:param name="link-text" as="xs:string"/>
+       <xsl:variable name="title" select="api:normalize-text($link-text)"/>
+       <xsl:sequence select="$other-guide-listings[(@display|alias)
+		    /api:normalize-text(.) = $title] | 
+		    $auto-links [alias /api:normalize-text(.) = $title]"/> 
+     </xsl:function>
 
-                  <xsl:function name="api:normalize-text" as="xs:string">
-                    <xsl:param name="text" as="xs:string"/>
-                    <xsl:sequence select="normalize-space(lower-case(translate($text,'&#160;',' ')))"/>
-                  </xsl:function>
+     <xsl:function name="api:normalize-text" as="xs:string">
+        <xsl:param name="text" as="xs:string"/>
+	<xsl:sequence select="normalize-space(lower-case(
+		                translate($text,'&#160;',' ')))"/>
+     </xsl:function>
 
 
   <!-- Boilerplate copying code -->
