@@ -75,7 +75,7 @@ p {margin: 1em 0;}
   line-height: 1.5;
 }
 
-table {
+table:not(.lines) {
 	border-collapse: collapse;
 	background: white;
 	font-size: 12px;
