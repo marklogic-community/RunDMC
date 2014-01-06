@@ -75,7 +75,7 @@ p {margin: 1em 0;}
   line-height: 1.5;
 }
 
-table {
+table:not(.lines) {
 	border-collapse: collapse;
 	background: white;
 	font-size: 12px;
@@ -137,10 +137,6 @@ tbody:last-child tr:last-child td:last-child {
 	xbackground: url(/images/bg_table_corner_br.gif) bottom right no-repeat,
 		url(/images/bg_cacaca.gif) top right repeat-y,
 		url(/images/bg_cacaca.gif) bottom left repeat-x;
-}
-.post tbody td:first-child {
-	padding-left: 15px;
-	background: url(/images/bg_table_features_bottom.png) top left no-repeat;
 }
 /*
 .post tbody td:first-child {
