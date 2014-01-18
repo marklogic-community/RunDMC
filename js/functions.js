@@ -394,6 +394,13 @@ if(typeof jQuery != 'undefined') {
                 if ($.cookie(cname)) {
                     ident = $.cookie(cname);
                 }
+                if (window.location.hash != "") {
+                    var h = window.location.hash.substring(1, 2);
+                    if (['1', '2', '3'].indexOf(h) != -1) {
+                        ident = h;
+                    }
+                }
+
                 var navitem = document.getElementById("tabHeader_" + ident);
                 if (navitem) {
     
@@ -406,6 +413,7 @@ if(typeof jQuery != 'undefined') {
                     $('.tabpage').hide();
     
                     $('#tabpage_' + ident).show();
+
     
                     var t = document.getElementById("tabHeader_" + ident);
     
@@ -436,6 +444,8 @@ if(typeof jQuery != 'undefined') {
                         $(this).attr("class","tabActiveHeader");
                         document.getElementById("tabpage_" + ident).style.display="block";
                         $(this).parent().attr("data-current",ident);
+
+                        window.location.hash = "";
 
                         $('#tabsborder').position({
                             my: "left top",
