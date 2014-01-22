@@ -97,7 +97,7 @@
   </xsl:template>
 
           <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
-            <div id="copyright">Copyright &#169; 2010&#8211;2013 MarkLogic Corporation. All rights reserved. | Powered by
+            <div id="copyright">Copyright &#169; 2014 MarkLogic Corporation. All rights reserved. | Powered by
               <!-- Absolute links so they work uniformly on standalone docs app -->
               <a href="http://developer.marklogic.com/products">MarkLogic Server <ml:server-version/></a> and <a href="http://developer.marklogic.com/code/rundmc">rundmc</a>.
             </div>
