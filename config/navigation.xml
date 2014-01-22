@@ -179,7 +179,9 @@
         <page display="Heatmap" href="/code/heatmap"/>
         <page display="Alerting" href="/code/alerting"/>
         <page display="RunDMC" href="/code/rundmc"/>
+        <!--
         <page display="MLUser" href="/code/mluser"/>
+        -->
         <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
         <page display="Photo manager" href="/code/photoman"/>
         <!--
