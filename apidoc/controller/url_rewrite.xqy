@@ -157,6 +157,10 @@ declare variable $matching-function-count := count($matching-functions);
       return
         local:get-db-file($file-uri)
 
+    (: redirect /package to /pkg because we changed the prefix :)
+    else if ($path eq "/package")
+         then local:redirect("/pkg")
+
     (: Ignore URLs starting with "/private/" :)
     else if (starts-with($path,'/private/')) then
       "/controller/notfound.xqy"
