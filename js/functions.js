@@ -395,9 +395,13 @@ if(typeof jQuery != 'undefined') {
                     ident = $.cookie(cname);
                 }
                 if (window.location.hash != "") {
-                    var h = window.location.hash.substring(1, 2);
-                    if (['1', '2', '3'].indexOf(h) != -1) {
-                        ident = h;
+                    if (window.location.hash.substring(1) == 'mm-demo') {
+                        ident = 3;
+                    } else {
+                        var h = window.location.hash.substring(1, 2);
+                        if (['1', '2', '3'].indexOf(h) != -1) {
+                            ident = h;
+                        }
                     }
                 }
 
