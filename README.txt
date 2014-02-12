@@ -4,12 +4,20 @@ NOTES
 
 LICENSE
 
-  All original code in this repository is Copyright MarkLogic 2010-2012.  All Rights Reserved.  It is made available 
+  All original code in this repository is Copyright MarkLogic 2010-2014.  All Rights Reserved.  It is made available 
   for your use via an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 
 SETUP NOTES
 
+  The application assumes a single MarkLogic Database, with 3 app servers (Public/Main, API, Draft), a WebDAV server,
+  and an XDBC server.
+  
+  The default ports for each environment (product, staging, development) are listed in the /config/server-urls.xml
+  file.  If you desire to remove the port #s from the URLs for docs and developer, you can front the entire
+  application with a web server that will proxy and rewrite URLs (Like apache or nginx).
+  
+  
   Main server (like developer.marklogic.com):
     App server root should be set to the root of this distribution, on 
     the filesystem.  The URL rewriter should be set to "/controller/url_rewrite.xqy".
@@ -37,6 +45,7 @@ SETUP NOTES
     For the Admin interface, set up a different HTTP app server,
     using the same content database and same server root. But set
     the URL rewriter to "/admin/controller/url_rewrite.xqy".
+    
 
   WebDAV server:
     If you want "view XML source" to work in the admin UI, set up
@@ -54,8 +63,14 @@ SETUP NOTES
     the live developer site, you'll need an XDBC server.
     
 
-  To copy a database from the staging site, use the script in the tools
-  directory.
+DEFAULT DATABASE CONTENT
+
+  In order to function properly, the database must have some initial content.  There is no
+  definition today of what that minimum content is as some of it depends on the configuration settings.
+  
+  After you create the database and app servers, you can use use the script in the tools directory
+  to copy the contents of the dmc-stage.marklogic.com staging server into your development database.
+  You may need to adjust ports, database names and hostnames.
 
 
 CODE NOTES
