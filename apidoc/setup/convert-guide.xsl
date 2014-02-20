@@ -464,37 +464,56 @@
     </xsl:copy>
   </xsl:template>
 
-          <xsl:template mode="capture-sections-content" match="*">
-            <xsl:apply-templates mode="capture-sections"/>
-          </xsl:template>
+  <xsl:template mode="capture-sections-content" match="*">
+     <xsl:apply-templates mode="capture-sections"/>
+  </xsl:template>
 
-          <xsl:template mode="capture-sections-content" match="XML">
-            <xsl:call-template name="capture-sections"/>
-          </xsl:template>
+  <xsl:template mode="capture-sections-content" match="XML">
+     <xsl:call-template name="capture-sections"/>
+  </xsl:template>
 
-          <xsl:template name="capture-sections">
-            <xsl:param name="current-level" select="1"/>
-            <!-- Initially, group the children -->
-            <xsl:param name="current-group" select="node()"/>
-            <!-- Each heading starts a new group -->
-            <xsl:variable name="current-heading" select="concat('Heading-', $current-level)"/>
-            <xsl:for-each-group select="$current-group" group-starting-with="*[local-name(.) eq $current-heading]">
-              <xsl:choose>
-                <xsl:when test="local-name(.) eq $current-heading">
-                  <div class="section">
+  <xsl:template name="capture-sections">
+     <xsl:param name="current-level" select="1"/>
+     <!-- Initially, group the children -->
+     <xsl:param name="current-group" select="node()"/>
+     <!-- Each heading starts a new group -->
+     <xsl:variable name="current-heading" select="concat('Heading-', 
+		    $current-level)"/>
+     <xsl:variable name="simple-heading" select="concat('Simple-', 
+		    $current-heading)"/>
+     <!-- Catch Heading-N, Heading-NMESSAGE, Simple-Heading-N -->
+     <xsl:for-each-group select="$current-group" 
+		    group-starting-with="*[starts-with(local-name(.), 
+		    $current-heading) or (local-name(.) eq $simple-heading)]">
+          <xsl:choose>
+             <xsl:when test="(local-name(.) eq $current-heading) or 
+			(local-name(.) eq $simple-heading) or (local-name(.) 
+			eq 'Heading-2MESSAGE' and $current-level = 2)">
+                 <xsl:variable name="the-class" select="if (local-name(.) eq 
+			  $simple-heading) then 'message-part' 
+			  else if (local-name(.) eq 'Heading-2MESSAGE') 
+			  then 'message' 
+			  else if (local-name(.) eq $current-heading) 
+			  then 'section' else ''" />
+                  <xsl:element name="div">
+                    <xsl:attribute name="class" select="$the-class"/>
+		    <xsl:attribute name="data-fm-style" 
+			    select="local-name(.)" />
                     <!-- Recursively capture sections -->
                     <xsl:call-template name="capture-sections">
-                      <xsl:with-param name="current-level" select="$current-level + 1"/>
-                      <xsl:with-param name="current-group" select="current-group()"/>
+	  	      <xsl:with-param name="current-level" 
+				    select="$current-level + 1"/>
+		      <xsl:with-param name="current-group" 
+				    select="current-group()"/>
                     </xsl:call-template>
-                  </div>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:copy-of select="current-group()"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:for-each-group>
-          </xsl:template>
+                  </xsl:element>
+             </xsl:when>
+             <xsl:otherwise>
+                 <xsl:copy-of select="current-group()"/>
+             </xsl:otherwise>
+         </xsl:choose>
+    </xsl:for-each-group>
+  </xsl:template>
 
 
   <xsl:template mode="capture-lists" match="@* | node()">
