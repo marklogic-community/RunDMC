@@ -136,6 +136,7 @@
       <url version="5.0" href="/5.0/javadoc/xcc/index.html"/>
       <url version="6.0" href="/6.0/javadoc/xcc/index.html"/>
       <url version="7.0" href="/7.0/javadoc/xcc/index.html"/>
+      <url version="8.0" href="/8.0/javadoc/xcc/index.html"/>
     </entry>
     <entry title="XCC .NET API Documentation (online)">
       API documentation for the MarkLogic XCC .NET C# API.
@@ -144,6 +145,7 @@
       <url version="5.0" href="/5.0/dotnet/xcc/index.html"/>
       <url version="6.0" href="/6.0/dotnet/xcc/index.html"/>
       <url version="7.0" href="/7.0/dotnet/xcc/index.html"/>
+      <url version="8.0" href="/8.0/dotnet/xcc/index.html"/>
     </entry>
   </group>
 
@@ -153,6 +155,7 @@
       <url version="5.0" href="/5.0/javadoc/hadoop/index.html"/>
       <url version="6.0" href="/6.0/javadoc/hadoop/index.html"/>
       <url version="7.0" href="/7.0/javadoc/hadoop/index.html"/>
+      <url version="8.0" href="/8.0/javadoc/hadoop/index.html"/>
     </entry>
   </group>
 
@@ -161,6 +164,7 @@
       API documentation for the MarkLogic Java API.
       <url version="6.0" href="/6.0/javadoc/client/index.html"/>
       <url version="7.0" href="/7.0/javadoc/client/index.html"/>
+      <url version="8.0" href="/8.0/javadoc/client/index.html"/>
     </entry>
   </group>
 
@@ -169,20 +173,12 @@
       API documentation for the C++ User Defined Function (UDF) API.
       <url version="6.0" href="/6.0/cpp/udf/index.html"/>
       <url version="7.0" href="/7.0/cpp/udf/index.html"/>
+      <url version="8.0" href="/8.0/cpp/udf/index.html"/>
     </entry>
   </group>
 
   <group name="Admin Interface Help">
     <entry title="Admin Interface Help Pages" href="/admin-help"/>
   </group>
-
-  <!-- This doesn't seem to add any value; explicitly excluding it -->
-  <!-- We're including it now (see above)
-  <guide exclude="yes"              source-name="shared"/>
-  -->
-
-  <!--
-  <entry href="/all" title="MarkLogic API Reference">API documentation for the MarkLogic built-in and module extensions to the XQuery <added-in version="4.2">and XSLT</added-in> standard functions. It also contains API reference information for the W3C standard functions implemented in MarkLogic Server.</entry>
-  -->
 
 </docs>
