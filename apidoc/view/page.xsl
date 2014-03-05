@@ -18,7 +18,8 @@
   <xsl:include href="guide.xsl"/>
   <xsl:include href="uri-translation.xsl"/>
 
-  <xsl:variable name="is-print-request" select="$params[@name eq 'print'] eq 'yes'"/>
+  <xsl:variable name="is-print-request" select="$params[@name eq 'print'] 
+	  eq 'yes'"/>
 
   <!-- overrides variable declaration in imported code -->
   <xsl:variable name="currently-on-api-server" select="true()"/>
@@ -522,7 +523,9 @@
             <xsl:apply-templates select="api:headers[api:header/@type = 'response']">
               <xsl:with-param name="response-headers" select="true()" tunnel="yes"/>
             </xsl:apply-templates>
-            <xsl:apply-templates select="(api:response, api:privilege, api:usage, api:example)[normalize-space(.)]"/>
+	    <xsl:apply-templates select="(api:response, api:privilege, 
+		    api:usage, api:see-also-list, api:example)
+		    [normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
@@ -642,6 +645,16 @@
                     <xsl:apply-templates/>
                   </xsl:template>
 
+                  <xsl:template match="api:see-also">
+                    <li><xsl:apply-templates/></li>
+                  </xsl:template>
+                  <xsl:template match="api:see-also-list">
+                    <h3>See Also</h3>
+                    <ul>
+                      <xsl:apply-templates/>
+                    </ul>
+                  </xsl:template>
+		  
                   <xsl:template match="api:usage">
                     <h3>Usage Notes</h3>
                     <xsl:apply-templates/>
