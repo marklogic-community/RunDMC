@@ -81,7 +81,9 @@
     <xsl:variable name="result" select="'/xdmp:document-delete'"/>
     <xsl:value-of select="fixup:output-and-report(.,$result)"/>
   </xsl:template>
-  <xsl:template mode="fixup-att-value" match="a/@href[. eq 'apidocs.xqy?fname=cts:query Constructors']" priority=".8">
+  <xsl:template mode="fixup-att-value" match="a/@href[. = 
+	  ('apidocs.xqy?fname=cts:query Constructors',
+	  'cts:query Constructors')]" priority=".8">
     <xsl:variable name="result" select="'/cts/constructors'"/>
     <xsl:text>/cts/constructors</xsl:text> <!-- as we configured in ../config/category-mappings.xml -->
   </xsl:template>
