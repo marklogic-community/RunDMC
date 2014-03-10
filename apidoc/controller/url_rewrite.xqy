@@ -1,9 +1,15 @@
 xquery version "1.0-ml";
 
-import module namespace u = "http://marklogic.com/rundmc/util" at "../../lib/util-2.xqy";
-import module namespace api = "http://marklogic.com/rundmc/api" at "../model/data-access.xqy";
-import module namespace ml = "http://developer.marklogic.com/site/internal" at "../../model/data-access.xqy";
-import module namespace srv = "http://marklogic.com/rundmc/server-urls" at "../../controller/server-urls.xqy";
+import module namespace u = "http://marklogic.com/rundmc/util" 
+   at "../../lib/util-2.xqy";
+import module namespace api = "http://marklogic.com/rundmc/api" 
+   at "../model/data-access.xqy";
+import module namespace ml = "http://developer.marklogic.com/site/internal" 
+   at "../../model/data-access.xqy";
+import module namespace srv = "http://marklogic.com/rundmc/server-urls" 
+   at "../../controller/server-urls.xqy";
+
+declare namespace x="http://www.w3.org/1999/xhtml";
 
 declare variable $orig-path       := 
     try {
@@ -68,9 +74,14 @@ declare function local:REST-doc-query-param($doc-uri) {
 
 (: Render a document using XSLT :)
 declare function local:transform($source-uri) as xs:string {
-  concat("/apidoc/controller/transform.xqy?src=",          $source-uri,
+  local:transform($source-uri, "")
+};
+
+declare function local:transform($source-uri, $path) as xs:string {
+  concat("/apidoc/controller/transform.xqy?src=", $source-uri,
                                           "&amp;version=", $version-specified,
-                                          "&amp;", $query-string)
+                                          "&amp;", $query-string, 
+                   if ($path eq "") then () else "&amp;path=", $path)
 };
 
 (: Grab doc from database :)
@@ -114,11 +125,37 @@ declare variable $matching-function-count := count($matching-functions);
                                                   "dotnet/xcc",
                                                   "cpp/udf")) then
        local:redirect(concat($path,'/index.html'))
-  (: Redirect requests for older versions back to DMC :)
+  (: Redirect requests for older versions 301 and go to latest :)
+  else if (starts-with($path,"/4.2")) then
+       let $newpath := substring-after($path, "/4.2")
+       return(
+         xdmp:set-response-code(301,"Moved Permanently"),
+         xdmp:add-response-header("Location",$newpath),
+       local:redirect($newpath) )
+  else if (starts-with($path,"/4.1")) then
+       let $newpath := substring-after($path, "/4.1")
+       return(
+         xdmp:set-response-code(301,"Moved Permanently"),
+         xdmp:add-response-header("Location",$newpath),
+       local:redirect($newpath) )
   else if (starts-with($path,"/4.0")) then
-       local:redirect(concat($srv:main-server,"/docs/4.0"))
+       let $newpath := substring-after($path, "/4.0")
+       return(
+         xdmp:set-response-code(301,"Moved Permanently"),
+         xdmp:add-response-header("Location",$newpath),
+       local:redirect($newpath) )
   else if (starts-with($path,"/3.2")) then
-       local:redirect(concat($srv:main-server,"/docs/3.2"))
+       let $newpath := substring-after($path, "/3.2")
+       return(
+         xdmp:set-response-code(301,"Moved Permanently"),
+         xdmp:add-response-header("Location",$newpath),
+       local:redirect($newpath) )
+  else if (starts-with($path,"/3.1")) then
+       let $newpath := substring-after($path, "/3.1")
+       return(
+         xdmp:set-response-code(301,"Moved Permanently"),
+         xdmp:add-response-header("Location",$newpath),
+       local:redirect($newpath) )
 
 
 (: SCENARIO 2: Internal rewrite :)
@@ -160,6 +197,11 @@ declare variable $matching-function-count := count($matching-functions);
     (: redirect /package to /pkg because we changed the prefix :)
     else if ($path eq "/package")
          then local:redirect("/pkg")
+
+    (: transform /message/*-* for single page message reference :)
+    else if (fn:matches($path, "/guide/messages/[A-Z]+\-en/[A-Z]+-[A-Z]+") )
+         then local:transform($doc-url, fn:substring-after($path, 
+                "-en/"))
 
     (: Ignore URLs starting with "/private/" :)
     else if (starts-with($path,'/private/')) then
