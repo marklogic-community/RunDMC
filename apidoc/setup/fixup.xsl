@@ -27,8 +27,15 @@
 
 
   <!-- Change, e.g., #xdmp:tidy to /xdmp:tidy -->
-  <!-- ASSUMPTION: If the fragment id contains a colon, then this is a link to a function page -->
-  <xsl:template mode="fixup-att-value" match="a/@href[starts-with(.,'#') and contains(.,':')]" priority="3">
+  <!-- ASSUMPTION: If the fragment id contains a colon, then this is a link to 
+       a function page -->
+  <xsl:template mode="fixup-att-value" match="a/@href[starts-with(.,'#') and 
+	  contains(.,':')]" priority="3">
+    <xsl:variable name="result" select="translate(.,'#','/')"/>
+    <xsl:value-of select="fixup:output-and-report(., $result)"/>
+  </xsl:template>
+  <xsl:template mode="fixup-att-value" match="@href[starts-with(.,'#') and 
+	  contains(.,':')]" priority="3">
     <xsl:variable name="result" select="translate(.,'#','/')"/>
     <xsl:value-of select="fixup:output-and-report(., $result)"/>
   </xsl:template>
@@ -83,7 +90,7 @@
   </xsl:template>
   <xsl:template mode="fixup-att-value" match="a/@href[. = 
 	  ('apidocs.xqy?fname=cts:query Constructors',
-	  'SearchBuiltins&amp;sub=cts:query Constructors')]" priority=".8">
+	  'cts:query Constructors')]" priority=".8">
     <xsl:variable name="result" select="'/cts/constructors'"/>
     <xsl:text>/cts/constructors</xsl:text> <!-- as we configured in ../config/category-mappings.xml -->
   </xsl:template>
