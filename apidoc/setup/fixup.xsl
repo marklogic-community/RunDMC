@@ -90,9 +90,17 @@
   </xsl:template>
   <xsl:template mode="fixup-att-value" match="a/@href[. = 
 	  ('apidocs.xqy?fname=cts:query Constructors',
-	  'cts:query Constructors')]" priority=".8">
+	  'SearchBuiltins&amp;sub=cts:query Constructors')]" priority=".8">
     <xsl:variable name="result" select="'/cts/constructors'"/>
-    <xsl:text>/cts/constructors</xsl:text> <!-- as we configured in ../config/category-mappings.xml -->
+    <xsl:text>/cts/constructors</xsl:text> 
+    <!-- as we configured in ../config/category-mappings.xml -->
+  </xsl:template>
+  <xsl:template mode="fixup-att-value" match="@href[. = 
+	  ('apidocs.xqy?fname=cts:query Constructors',
+	  'SearchBuiltins&amp;sub=cts:query Constructors')]" priority=".8">
+    <xsl:variable name="result" select="'/cts/constructors'"/>
+    <xsl:text>/cts/constructors</xsl:text> 
+    <!-- as we configured in ../config/category-mappings.xml -->
   </xsl:template>
 
   <!-- Fixup Linkerator links
