@@ -22,14 +22,14 @@ declare variable $subdirs-to-load := $config/include/string(.);
 declare variable $src-dir  := xdmp:get-request-field("srcdir");
 declare variable $pubs-dir := concat($src-dir,'/pubs');
 
-declare variable $ga as element() := 
+declare variable $ga as element() :=
 (: google analytics script goes just before the closing the </head> tag :)
 <script type="text/javascript"><![CDATA[
   var is_prod = document.location.hostname == 'docs.marklogic.com';
   var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3';
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview']);
-            
+
   (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -37,7 +37,7 @@ declare variable $ga as element() :=
             })();]]>
 </script> ;
 
-declare variable $marketo as element() := 
+declare variable $marketo as element() :=
 (: marketo script goes just before the closing the </body> tag :)
 <script type="text/javascript"><![CDATA[
  (function() {
@@ -70,43 +70,43 @@ typeswitch ($x)
   case comment() return $x
   case processing-instruction() return $x
   case text() return $x
-  case element (head) return <head>{local:passthru($x), $ga ,
-  xdmp:log("*******
-  
-  In local:add-scripts head
-  
-  *******")}</head>
+  case element (head) return <head>
+  {
+    local:passthru($x), $ga ,
+    xdmp:log(text { "[load-static-docs] local:add-scripts head" })
+  }
+  </head>
   case element (body) return <body>{local:passthru($x), $marketo}</body>
-  case element (HEAD) return <head>{local:passthru($x), $ga ,
-  xdmp:log("*******
-  
-  In local:add-scripts HEAD
-  
-  *******")}</head>
+  case element (HEAD) return <head>
+  {
+    local:passthru($x), $ga,
+    xdmp:log(text { "[load-static-docs.xqy] local:add-scripts HEAD" })
+  }
+  </head>
   case element (BODY) return <body>{local:passthru($x), $marketo}</body>
-  
+
   default return element {fn:node-name($x)} {$x/@*, local:passthru($x)}
 };
 
 declare function local:rewrite-uri($uri) {
-  if (starts-with($uri,"/javaclient")) 
+  if (starts-with($uri,"/javaclient"))
   then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
-  else if (starts-with($uri,"/hadoop/"))    
-    then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/") 
+  else if (starts-with($uri,"/hadoop/"))
+    then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/")
     (: Move "/javadoc" to the beginning of the URL :)
-    else if (starts-with($uri,"/javadoc/"))   
+    else if (starts-with($uri,"/javadoc/"))
       then replace($uri,"/javadoc/","/javadoc/xcc/")
-      else if (starts-with($uri,"/dotnet/"))    
+      else if (starts-with($uri,"/dotnet/"))
       then replace($uri,"/dotnet/",  "/dotnet/xcc/")
-        else if (starts-with($uri,"/c++/"))       
+        else if (starts-with($uri,"/c++/"))
         then replace($uri,"/c\+\+/", "/cpp/udf/")
 
         (: ASSUMPTION: the java docs don't include any PDFs :)
-        else if (ends-with($uri,".pdf"))          
+        else if (ends-with($uri,".pdf"))
         then local:pdf-uri($uri)
 
          (: By default, don't change the URI (e.g., for C++ docs) :)
-         else error(xs:QName("ERROR"), 
+         else error(xs:QName("ERROR"),
              concat("No case was found for rewriting this path: ", $uri))
 };
 
@@ -117,9 +117,9 @@ declare function local:pdf-uri($uri) {
                           /@url-name
   return
   (
-    if (not($url-name)) 
+    if (not($url-name))
     then error(xs:QName("ERROR"), concat("The configuration for ",$uri,
-          " is missing in /apidoc/config/document-list.xml")) 
+          " is missing in /apidoc/config/document-list.xml"))
     else (),
     concat("/guide/",$url-name,".pdf")
   )
@@ -132,7 +132,7 @@ declare function local:load-pubs-docs($dir) {
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file']
     let $path    := $file/dir:pathname,
-        $uri     := concat("/apidoc/", $api:version, 
+        $uri     := concat("/apidoc/", $api:version,
                       local:rewrite-uri(translate(substring-after($path,
                                                      $pubs-dir),"\","/"))),
         $is-mangled-html := ends-with($uri,'-members.html'),
@@ -146,13 +146,13 @@ declare function local:load-pubs-docs($dir) {
                                <clean>true</clean>
                              </options>,
 
-        (: If the document is JavaDoc HTML, then read it as text; 
-           if it's other HTML, repair it as XML (.NET docs) 
+        (: If the document is JavaDoc HTML, then read it as text;
+           if it's other HTML, repair it as XML (.NET docs)
            Also, add the ga and marketo scripts to the javadoc  :)
         (: don't tidy index.html because tidy throws away the frameset :)
-        $doc := if ( $is-jdoc and not(contains($uri, '/index.html')) ) 
-        then 
-        xdmp:tidy(xdmp:document-get($path, 
+        $doc := if ( $is-jdoc and not(contains($uri, '/index.html')) )
+        then
+        xdmp:tidy(xdmp:document-get($path,
         <options xmlns="xdmp:document-get">
           <format>text</format>
           <encoding>auto</encoding>
@@ -163,21 +163,21 @@ declare function local:load-pubs-docs($dir) {
                                <output-xml>no</output-xml>
                                <output-html>yes</output-html>
                              </options>)[2]
-        else if ($is-mangled-html) 
+        else if ($is-mangled-html)
              then
              try{ xdmp:log("TRYING FULL TIDY CONVERSION"),
-               let $unparsed := xdmp:document-get($path, 
+               let $unparsed := xdmp:document-get($path,
                <options xmlns="xdmp:document-get">
                  <format>text</format>
                </options>)/string(),
                    $replaced := replace($unparsed, '"class="', '" class="')
-               return 
+               return
                xdmp:unquote($replaced, "", "repair-full") }
-             catch($e) { xdmp:log(fn:concat("Tidy FAILED for ", $path, 
+             catch($e) { xdmp:log(fn:concat("Tidy FAILED for ", $path,
                                             " so loading as text")),
                xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                            <encoding>auto</encoding>
-                                         </options>)} 
+                                         </options>)}
              else if ($is-html) then
             try{ xdmp:log("TRYING FULL CONVERSION"),
              xdmp:document-get($path, <options xmlns="xdmp:document-get">
@@ -191,28 +191,28 @@ declare function local:load-pubs-docs($dir) {
                                         <repair>full</repair>
                                         <encoding>ISO-8859-1</encoding>
                                        </options>)
-                        else error((),"Load error", xdmp:quote($e)) } 
-             else 
+                        else error((),"Load error", xdmp:quote($e)) }
+             else
                xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                            <encoding>auto</encoding>
-                                         </options>), 
+                                         </options>),
             (: Otherwise, just load the document normally :)
 
-        (: Exclude these HTML and javascript documents from the search corpus 
+        (: Exclude these HTML and javascript documents from the search corpus
            (search the Tidy'd XHTML instead; see below) :)
-        $collection := if ($is-jdoc or $is-js or $is-css) 
+        $collection := if ($is-jdoc or $is-js or $is-css)
                        then "hide-from-search"
                        else ()
     return
     (
-      xdmp:document-insert($uri, local:add-scripts($doc), 
+      xdmp:document-insert($uri, local:add-scripts($doc),
          xdmp:default-permissions(), $collection),
       xdmp:log(concat("Loading ",$path," to ",$uri)),
 
       (: If the document is HTML, then store an additional copy, converted to
          XHTML using Tidy;
-         this is using the same mechanism as the CPF "convert-html" action, 
-         except that this is done synchronously. This XHTML copy is what's 
+         this is using the same mechanism as the CPF "convert-html" action,
+         except that this is done synchronously. This XHTML copy is what's
          used for search, snippeting, etc. :)
       if ($is-jdoc)
       then

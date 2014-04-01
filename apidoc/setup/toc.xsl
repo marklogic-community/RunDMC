@@ -38,7 +38,7 @@
   <!-- dedup when there is a built-in lib that has the same prefix as a library
        lib - can probably do this more efficiently -->
   <xsl:variable name="all-libs" select="
-          $api:built-in-libs | 
+          $api:built-in-libs |
           $api:library-libs[not(. eq 'REST')][not(. = $api:built-in-libs)]"/>
 
   <xsl:variable name="guide-docs"                select="xdmp:directory(concat('/apidoc/',$api:version,'/guide/'))[guide]"/>
@@ -56,52 +56,29 @@
     <all-tocs>
       <toc:functions>
         <node href="/all"
-              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
+              display="Functions ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes"
               open="yes"
               top-control="yes">
-          <title>All functions</title>
+          <title>Functions</title>
           <intro>
             <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
           </intro>
           <xsl:apply-templates select="$all-libs">
             <xsl:sort select="."/>
           </xsl:apply-templates>
-          <!--
-          <node href="/built-in" display="Built-in functions ({$api:built-in-function-count})" title="All built-in functions">
-            <intro>
-              <p>The following table lists all built-in functions, including both the standard XQuery functions (in the <code>fn:</code> namespace) and the MarkLogic extension functions.</p>
-            </intro>
-            <xsl:apply-templates select="$api:built-in-libs"/>
-          </node>
-          <node href="/library" display="Library functions ({$api:library-function-count})" title="All library functions">
-            <intro>
-              <p>The following table lists all library functions, i.e. functions implemented in XQuery library modules that ship with MarkLogic Server.</p>
-            </intro>
-            <xsl:apply-templates select="$api:library-libs"/>
-          </node>
-          -->
         </node>
       </toc:functions>
-      <toc:categories>
-        <node href="/all"
-              display="All functions ({sum($all-libs/api:function-count-for-lib(.))})"
-              open="yes"
-              id="AllFunctionsByCat"
-              top-control="yes">
-          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
-        </node>
-      </toc:categories>
       <xsl:if test="number($api:version) ge 5">
         <toc:rest-resources top-control="yes">
           <!-- Add this wrapper so the /REST page will get created -->
           <node href="/REST"
-                display="All REST resources"
+                display="REST resources"
                 id="RESTResourcesAPI"
                 function-list-page="yes"
                 open="yes">
-            <title>All REST resources</title>
+            <title>REST resources</title>
             <!-- Just the REST API bucket contents -->
             <xsl:copy-of select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
           </node>
@@ -123,10 +100,10 @@
       <xsl:if test="number($api:version) ge 6">
         <toc:java top-control="yes">
           <node display="Java API" open="yes" id="javaTOC">
-            <node display="Java API" 
+            <node display="Java API"
                   href="/javadoc/client/index.html" external="yes"/>
             <!-- Java Client guide repeated -->
-            <xsl:apply-templates mode="toc-guide-node" 
+            <xsl:apply-templates mode="toc-guide-node"
                select="$guide-docs[ends-with(base-uri(.),'java.xml')]">
               <xsl:with-param name="is-duplicate" select="true()"/>
             </xsl:apply-templates>
@@ -171,7 +148,7 @@
         <node display="Other Documentation" open="yes" id="other" top-control="yes">
           <xsl:if test="number($api:version) ge 5">
             <node display="Hadoop Connector" open="yes">
-              <node display="Connector for Hadoop API" 
+              <node display="Connector for Hadoop API"
                     href="/javadoc/hadoop/index.html" external="yes"/>
               <!-- Hadoop guide repeated -->
               <xsl:apply-templates mode="toc-guide-node" select="$guide-docs[ends-with(base-uri(.),'mapreduce.xml')]">
@@ -190,7 +167,7 @@
 
           <xsl:apply-templates mode="help-toc" select="."/>
           <xsl:if test="number($api:version) ge 6">
-              <node display="C++ UDF API Reference" 
+              <node display="C++ UDF API Reference"
                     href="/cpp/udf/index.html" external="yes"/>
           </xsl:if>
         </node>
@@ -240,15 +217,15 @@
                 <xsl:variable name="modifier" select="if (@built-in) then 'built-in' else 'XQuery library'"/>
                 <p>The table below lists all the "<xsl:value-of select="api:prefix-for-lib(.)"/>" <xsl:value-of select="$modifier"/> functions (in this namespace: <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).</p>
 
-		<!-- Hack to exclude semantics categories, because
-		     the XQuery category is just a placeholder -->
-		<xsl:variable name="sub-pages" 
- 		  select="$by-category//node
-		  [starts-with(@href, concat('/',current(),'/'))]
-		  [not(starts-with(@href, '/sem'))]"/>
+                <!-- Hack to exclude semantics categories, because
+                     the XQuery category is just a placeholder -->
+                <xsl:variable name="sub-pages"
+                  select="$by-category//node
+                  [starts-with(@href, concat('/',current(),'/'))]
+                  [not(starts-with(@href, '/sem'))]"/>
                 <xsl:if test="$sub-pages">
-			<p>You can also view these functions broken down by 
-				category:</p>
+                        <p>You can also view these functions broken down by
+                                category:</p>
                   <ul>
                     <xsl:apply-templates mode="sub-page" select="$sub-pages">
                       <xsl:sort select="@category-name"/>
@@ -270,7 +247,7 @@
                     <xsl:copy-of select="$api:namespace-mappings[@lib eq current()]/summary-addendum/node()"/>
                   </xsl:template>
 
-                  <xsl:template mode="sub-page" match="node"> 
+                  <xsl:template mode="sub-page" match="node">
                     <li>
                       <a href="{@href}">
                         <xsl:value-of select="@category-name"/>
@@ -278,7 +255,7 @@
                     </li>
                     <!--
                     <xsl:if test="position() ne last()">, </xsl:if>
-                    <xsl:if test="position() eq (last() - 1)">and </xsl:if> 
+                    <xsl:if test="position() eq (last() - 1)">and </xsl:if>
                     -->
                   </xsl:template>
 
@@ -322,11 +299,11 @@
                     <node href="{api:REST-fullname-to-external-uri(.)}" display="{$base-display-name}" type="function"/>
                     -->
 
-                    <!-- Display the wildcard (*) version in the TOC, but the 
+                    <!-- Display the wildcard (*) version in the TOC, but the
                          original, curly-brace version on the list pages. -->
-           <node href="{api:REST-fullname-to-external-uri(.)}" 
-		   display="{api:reverse-translate-REST-resource-name(
-		             $base-display-name)}"
+           <node href="{api:REST-fullname-to-external-uri(.)}"
+                   display="{api:reverse-translate-REST-resource-name(
+                             $base-display-name)}"
                  list-page-display="{api:reverse-translate-REST-resource-name(
                                      $base-display-name)}"
                  type="function"/>

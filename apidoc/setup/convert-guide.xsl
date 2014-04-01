@@ -41,6 +41,7 @@
       <xsl:apply-templates select="$code-merged/chapter/XML"/>
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
+    <!-- TODO seems to be expensive for large guides. -->
     <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
     <xsl:result-document href="{$output-uri}">
       <xsl:for-each select="/guide | /chapter">
@@ -115,22 +116,22 @@
           </xsl:template>
 
 
-  <!-- Don't need this attribute at this stage; only used to 
+  <!-- Don't need this attribute at this stage; only used to
        resolve URIs of images being copied over -->
   <xsl:template match="/*/@original-dir"/>
 
   <xsl:template match="pagenum | TITLE"/>
 
-  <!-- Heading-2MESSAGE case (priority should be greater 
+  <!-- Heading-2MESSAGE case (priority should be greater
        than Heading-* case) -->
   <xsl:template match="Heading-2MESSAGE" priority="1">
-	  <xsl:variable name="heading-level" 
-		  select="3"/>
-	  <xsl:variable name="id">
-		  <xsl:value-of select="normalize-space(.)"/> 
-	  </xsl:variable>
-    <!-- Beware of changing this structure without updating 
-	 mode="guide-toc" (in toc.xsl), which depends on it -->
+          <xsl:variable name="heading-level"
+                  select="3"/>
+          <xsl:variable name="id">
+                  <xsl:value-of select="normalize-space(.)"/>
+          </xsl:variable>
+    <!-- Beware of changing this structure without updating
+         mode="guide-toc" (in toc.xsl), which depends on it -->
     <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
       <a href="#{$id}" class="sectionLink">
@@ -141,13 +142,13 @@
 
   <!-- Heading-* (except MESSAGE) case -->
   <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
-	  <xsl:variable name="heading-level" 
-		  select="1 + number(substring-after(local-name(.),'-'))"/>
+          <xsl:variable name="heading-level"
+                  select="1 + number(substring-after(local-name(.),'-'))"/>
     <xsl:variable name="id">
       <xsl:apply-templates mode="heading-anchor-id" select="."/>
     </xsl:variable>
-    <!-- Beware of changing this structure without updating 
-	 mode="guide-toc" (in toc.xsl), which depends on it -->
+    <!-- Beware of changing this structure without updating
+         mode="guide-toc" (in toc.xsl), which depends on it -->
     <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
       <a href="#{$id}" class="sectionLink">
@@ -336,22 +337,22 @@
     </a>
   </xsl:template>
 
- <!-- Remove apostrophe delimiters when present (assumption is they are the 
+ <!-- Remove apostrophe delimiters when present (assumption is they are the
        first and last character in the string) and remove 'on page' -->
-	  <xsl:template mode="guide-link-content" 
-		  match='A[starts-with(normalize-space(.), "&apos;")]'
-		  priority='1'>
-		  <xsl:variable name="nopage" select="substring-before(
-			  normalize-space(.), ' on page')"/>
-		  <xsl:value-of select="substring($nopage,  2, 
-			  string-length($nopage) - 2)"/>
+          <xsl:template mode="guide-link-content"
+                  match='A[starts-with(normalize-space(.), "&apos;")]'
+                  priority='1'>
+                  <xsl:variable name="nopage" select="substring-before(
+                          normalize-space(.), ' on page')"/>
+                  <xsl:value-of select="substring($nopage,  2,
+                          string-length($nopage) - 2)"/>
           </xsl:template>
 
           <!-- Remove "on page 32" verbiage (if there is no apos) -->
-	  <xsl:template mode="guide-link-content" 
-		  match="A[contains(normalize-space(.), ' on page')]" >
-		  <xsl:value-of select="substring-before(normalize-space(.), 
-			  ' on page')"/>
+          <xsl:template mode="guide-link-content"
+                  match="A[contains(normalize-space(.), ' on page')]" >
+                  <xsl:value-of select="substring-before(normalize-space(.),
+                          ' on page')"/>
           </xsl:template>
 
           <xsl:template mode="guide-link-content" match="A">
@@ -434,20 +435,20 @@
                           </xsl:function>
 
                           <xsl:variable name="fully-resolved-top-level-heading-references" as="xs:string*"
-				  select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
+                                  select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
 
 
-			  <!-- Fixup Linkerator links
-			       Change "#display.xqy&function=" to "/"
-			       -->
+                          <!-- Fixup Linkerator links
+                               Change "#display.xqy&function=" to "/"
+                               -->
           <xsl:template match="A/@href[starts-with(.,'#display.xqy?function=')]" priority="3">
             <xsl:variable name="target-doc" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
             <xsl:if test="not($target-doc)">
               <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
             </xsl:if>
-	    <xsl:attribute name="href" 
-		    select="concat('/', 
-		    substring-after(., '#display.xqy?function='))"/>
+            <xsl:attribute name="href"
+                    select="concat('/',
+                    substring-after(., '#display.xqy?function='))"/>
     </xsl:template>
     <!-- End Linkerator fixup -->
 
@@ -477,34 +478,37 @@
      <!-- Initially, group the children -->
      <xsl:param name="current-group" select="node()"/>
      <!-- Each heading starts a new group -->
-     <xsl:variable name="current-heading" select="concat('Heading-', 
-		    $current-level)"/>
-     <xsl:variable name="simple-heading" select="concat('Simple-', 
-		    $current-heading)"/>
+     <xsl:variable name="current-heading" select="concat('Heading-',
+                    $current-level)"/>
+     <xsl:variable name="simple-heading" select="concat('Simple-',
+                    $current-heading)"/>
      <!-- Catch Heading-N, Heading-NMESSAGE, Simple-Heading-N -->
-     <xsl:for-each-group select="$current-group" 
-		    group-starting-with="*[starts-with(local-name(.), 
-		    $current-heading) or (local-name(.) eq $simple-heading)]">
+     <xsl:for-each-group select="$current-group"
+                    group-starting-with="*[local-name(.) eq $simple-heading
+                                         or starts-with(
+                                         local-name(.), $current-heading)]">
           <xsl:choose>
-             <xsl:when test="(local-name(.) eq $current-heading) or 
-			(local-name(.) eq $simple-heading) or (local-name(.) 
-			eq 'Heading-2MESSAGE' and $current-level = 2)">
-                 <xsl:variable name="the-class" select="if (local-name(.) eq 
-			  $simple-heading) then 'message-part' 
-			  else if (local-name(.) eq 'Heading-2MESSAGE') 
-			  then 'message' 
-			  else if (local-name(.) eq $current-heading) 
-			  then 'section' else ''" />
+             <xsl:when test="(local-name(.) eq $current-heading)
+                             or local-name(.) eq $simple-heading
+                             or (
+                             local-name(.) eq 'Heading-2MESSAGE'
+                             and $current-level = 2)">
+                 <xsl:variable name="the-class" select="if (local-name(.) eq
+                          $simple-heading) then 'message-part'
+                          else if (local-name(.) eq 'Heading-2MESSAGE')
+                          then 'message'
+                          else if (local-name(.) eq $current-heading)
+                          then 'section' else ''" />
                   <xsl:element name="div">
                     <xsl:attribute name="class" select="$the-class"/>
-		    <xsl:attribute name="data-fm-style" 
-			    select="local-name(.)" />
+                    <xsl:attribute name="data-fm-style"
+                            select="local-name(.)" />
                     <!-- Recursively capture sections -->
                     <xsl:call-template name="capture-sections">
-	  	      <xsl:with-param name="current-level" 
-				    select="$current-level + 1"/>
-		      <xsl:with-param name="current-group" 
-				    select="current-group()"/>
+                      <xsl:with-param name="current-level"
+                                    select="$current-level + 1"/>
+                      <xsl:with-param name="current-group"
+                                    select="current-group()"/>
                     </xsl:call-template>
                   </xsl:element>
              </xsl:when>

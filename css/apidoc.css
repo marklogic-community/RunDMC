@@ -2,93 +2,93 @@ html, body, #container {height: 100%;}
 blockquote {margin-left: 0;}
 dd {margin-left: 40px;}
 pre, .userguide img {
-	max-width: 100%;
-	overflow: auto;
+    max-width: 100%;
+    overflow: auto;
 }
 /* Exclude function signatures */
 .userguide pre, .example pre  {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #CCC;
-  background-color: white;
-  padding: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #CCC;
+    background-color: white;
+    padding: 15px;
 }
 
 /* Don't do border/padding on code inside a table */
 .userguide table pre {
-  border-style: none;
-  padding: 1px;
+    border-style: none;
+    padding: 1px;
 }
 
 /* Do not add extra margins around code inside a table */
 .api_generic_table td pre {
-  margin: 0;
+    margin: 0;
 }
 
 ol ol {
-  list-style-type: lower-alpha;
+    list-style-type: lower-alpha;
 }
 
 /* Enable this to add the documentation badge for the standalone version
-#header h1 a.documentation {
-  background: url(/apidoc/images/documentation-badge.png);
-}
-*/
+   #header h1 a.documentation {
+   background: url(/apidoc/images/documentation-badge.png);
+   }
+   */
 
 #header nav .current:after {border-color: #1479B2 transparent;}
 #container > footer {padding-bottom: 0;}
 #content {
-	padding-bottom: 0;
-	position: absolute;
-	top: 91px;
-	bottom: 0;
-	width: 1100px;
+    padding-bottom: 0;
+    position: absolute;
+    top: 91px;
+    bottom: 0;
+    width: 1100px;
     background: white;
 }
 
 #copyright {
-	clear: both;
-	font-size: 11px;
-	text-align: center;
-  padding: 20px;
+    clear: both;
+    font-size: 11px;
+    text-align: center;
+    padding: 20px;
 }
 
 #breadcrumb, #container #breadcrumb + section > h2 {
-	background: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	box-shadow: none;
+    background: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 #breadcrumb {
-	padding-bottom: 10px;
-	float: left;
-	padding-left: 15px;
+    padding-bottom: 10px;
+    float: left;
+    padding-left: 15px;
 }
 #breadcrumb > div {
-	width: auto;
-	margin-left: 0 !important;
-	position: static !important;
+    width: auto;
+    margin-left: 0 !important;
+    position: static !important;
 }
 #breadcrumb > div:first-child {margin-bottom: 30px;}
 #page_content {
-	height: 100%;
-	overflow: auto;
-	width: 730px;
-	float: right;
-	padding-right: 50px;
-	padding-left: 53px;
-	position: relative;
+    height: 100%;
+    overflow: auto;
+    width: 730px;
+    float: right;
+    padding-right: 50px;
+    padding-left: 53px;
+    position: relative;
 }
 #page_content h1 {
-	padding: 0 !important;
-	margin: 40px 0 40px;
-	line-height: 110%;
-	color: black;
-	font-size: 27px;
+    padding: 0 !important;
+    margin: 40px 0 40px;
+    line-height: 110%;
+    color: black;
+    font-size: 27px;
 }
 
 #page_content .userguide h2 {
-  padding-top: 1em;
+    padding-top: 1em;
 }
 
 #page_content h2,
@@ -96,10 +96,10 @@ ol ol {
 #page_content h4,
 #page_content h5,
 #page_content h6 {
- padding-top:  1em;
- margin-bottom: .5em;
- margin-top: 0;
- line-height: 110%;
+    padding-top:  1em;
+    margin-bottom: .5em;
+    margin-top: 0;
+    line-height: 110%;
 }
 
 .userguide h2 { font-size: 1.8em; }
@@ -113,69 +113,66 @@ ol ol {
 
 /* same as h2 in screen.css */
 .userguide h1 {
-	color: black;
-	font-size: 27px;
+    color: black;
+    font-size: 27px;
 }
 
 .underline { text-decoration: underline }
 
 #page_content ul {
-	padding-left: 20px;
-	list-style: disc;
+    padding-left: 20px;
+    list-style: disc;
 }
 #page_content .shadow {
-	position: fixed;
-	left: 50%;
-	top: 70px;
-	bottom: 16px;
-	margin-left: -224px;
-	width: 5px;
-	background: url(/images/bg_shadow_vert.png) top left repeat-y;
-	display: none;
+    position: fixed;
+    left: 50%;
+    top: 70px;
+    bottom: 16px;
+    margin-left: -224px;
+    width: 5px;
+    background: url(/images/bg_shadow_vert.png) top left repeat-y;
+    display: none;
 }
 #page_content.scroll {border-left: 1px solid #CCC;}
 #page_content table pre {/*
-	max-width: 440px;*/
+	                   max-width: 440px;*/
 }
 #page_content dd pre {
-	background-color: white;
-	padding-top: 5px;
-	border-radius: 4px;
+    background-color: white;
+    padding-top: 5px;
+    border-radius: 4px;
 }
 #page_content dd pre:first-child {
-	background-color: transparent;
-	padding: 0;
+    background-color: transparent;
+    padding: 0;
 }
 #api_sub {
-	width: 265px;
-  color: #333333;
-  font-size: 0.9em;
-  position: absolute;
-  left: 15px;
-  top: 70px;
-  bottom: 0;
+    width: 265px;
+    color: #333333;
+    font-size: 0.9em;
+    position: absolute;
+    left: 15px;
+    top: 70px;
+    bottom: 0;
 }
+
 #apidoc_toc,
 #all_tocs,
-.toc_tabs {
-  top: auto;
-  bottom: auto;
-  height: 100%;
-  padding: 0;
+.toc {
+    top: auto;
+    bottom: auto;
+    height: 100%;
+    padding: 0;
 }
-#tab_bar {
-	position: relative;
-	z-index: 1;
-}
-#tab_content {
-	position: absolute;
-	top: 39px;
-	bottom: 0;
-	overflow: hidden;
-	width: 258px;
-	background: white;
-	border: 1px solid #CCC;
-	padding-top: 60px;
+#toc_content {
+    position: absolute;
+    top: 1em;
+    bottom: 0;
+    overflow: hidden;
+    width: 258px;
+    background: white;
+    border: 1px solid #CCC;
+    padding-top: 5em;
 }
 
 #splitter {
@@ -189,98 +186,101 @@ ol ol {
 }
 
 .tab_link {
-	font-size: 11px !important;
-	min-height: 27px;
-	line-height: 11px !important;
-	padding-top: 5px !important;
-	padding-bottom: 5px !important;
+    font-size: 11px !important;
+    min-height: 27px;
+    line-height: 11px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
 }
 
 /* overrides JQuery UI CSS */
 .ui-tabs .ui-tabs-nav li a {
-  padding: .5em .7em !important;
+    padding: .5em .7em !important;
 }
 
 .scrollable_section {
-	height: 100%;
-	position: relative;
+    min-height: 100%;
+    height: 100%;
+    position: relative;
 }
 .scrollable_section > input,
 .config-filter-close-button {
-	position: absolute;
-	top: -52px;
+    position: absolute;
+    top: -52px;
 }
 .scrollable_section > input {
-	border: 1px solid #CCC;
-	left: 10px;
-	font-size: 11px;
-	padding: 1px 5px;
-	width: 205px;
+    border: 1px solid #CCC;
+    left: 10px;
+    font-size: 11px;
+    padding: 1px 5px;
+    width: 205px;
 }
 .config-filter-close-button {
-  display: none;
-  cursor: pointer;
-  left: 210px;
+    display: none;
+    cursor: pointer;
+    left: 210px;
 }
 
 .function_name {
-/*font: normal 1em "Courier New", Courier, Monospace;*/
-/*white-space: nowrap;*/
-font-weight: bold;
+    /*font: normal 1em "Courier New", Courier, Monospace;*/
+    /*white-space: nowrap;*/
+    font-weight: bold;
 }
 
 .currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {color: #F86D07;}
 .treecontrol.top_control {
-  cursor: pointer;
-	position: fixed;
-	font-size: .9em !important;
+    cursor: pointer;
+    position: fixed;
+    font-size: .9em !important;
 }
 .treecontrol.top_control.local_control {
-	margin-top: -42px;
-	margin-left: -10px;
+    margin-top: -42px;
+    margin-left: -10px;
 }
 .treecontrol.top_control.global_control {
-	margin-top: -25.5px;
-	margin-left: 8.5px;
+    margin-top: -25.5px;
+    margin-left: 8.5px;
 }
 .treecontrol.top_control > span {
-	display: inline-block;
-	color: white;
-	padding: 3px 8px;
-	margin-bottom: 8px;
-	border: 1px solid #003959;
-	font-weight: bold;
-	text-decoration: none !important;
-	text-align: center;
-	background: #2a7bab; /* Old browsers */
-	background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a7bab), color-stop(100%,#014b7a)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
-	-pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
-	background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
-	overflow: hidden;
-	line-height: 12px !important;
-	text-transform: capitalize;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
+    display: inline-block;
+    color: white;
+    padding: 3px 8px;
+    margin-bottom: 8px;
+    border: 1px solid #003959;
+    font-weight: bold;
+    text-decoration: none !important;
+    text-align: center;
+    background: #2a7bab; /* Old browsers */
+    background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a7bab), color-stop(100%,#014b7a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
+    -pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
+    background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
+    overflow: hidden;
+    line-height: 12px !important;
+    text-transform: capitalize;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 .treecontrol.top_control > span img, .treecontrol.top_control > span span {
-	vertical-align: baseline;
-	background: white;
+    vertical-align: baseline;
+    background: white;
 }
+
 /* override treeview CSS */
 .treeview {
-	overflow: auto;
-	border-top: 1px solid #CCC;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 100%;
+    overflow: auto;
+    border-top: 1px solid #CCC;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
 }
-.treeview > li > a {font-weight: bold;}
+.treeview a.toc_root {font-weight: bold;}
+.treeview a.toc_top {font-weight: bold;}
 .treeview ul {line-height: 110%;}
 .treeview li {padding-left: 18px;}
 
@@ -290,21 +290,22 @@ font-weight: bold;
 
 .treeview a.selected {background-color: transparent;}
 .treeview .hitarea {margin-left: -18px;}
+
 .footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {cursor: pointer;}
 a.footnote_marker:hover {text-decoration: none;}
 
 .footnote {
-/*  font-size: .5em;*/
-  font-size: 9px;
+    /*  font-size: .5em;*/
+    font-size: 9px;
 }
 
 code.syntax {
-  white-space: pre;
-  font-size: 1.4em;
+    white-space: pre;
+    font-size: 1.4em;
 }
 
 .example pre {
-  line-height: 140%;
+    line-height: 140%;
 }
 
 /* overrides padding-left in screen.css */
@@ -338,56 +339,56 @@ a.sectionLink:hover { color: #235BAB; }
 #api_sub .ui-state-active,
 #api_sub .ui-widget-content .ui-state-active,
 #api_sub .ui-widget-header .ui-state-active
-	{border-color: #CCC;}
+{border-color: #CCC;}
 #api_sub .ui-widget-content .treeview a { color: #01639D; }
 #api_sub .ui-widget-content .treeview .selected {
-	color: black;
-	font-weight: bold;
-	text-decoration: none;
-	cursor: default;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
 }
 #api_sub .ui-widget {font-size: 1em;}
 #api_sub .ui-tabs .ui-tabs-panel {
-	padding: 0;
-	height: 100%;
+    padding: 0;
+    height: 100%;
 }
-.toc_tabs, #api_sub .ui-tabs .ui-tabs-nav {
-	border-radius: 0;
-	border: none;
-	background: none;
-	padding: 0;
-	line-height: 100%;
+.toc, #api_sub .ui-tabs .ui-tabs-nav {
+    border-radius: 0;
+    border: none;
+    background: none;
+    padding: 0;
+    line-height: 100%;
 }
 /* end override */
 
 
 .api_caption {
-	position: absolute;
-	font-size: 11px;
-	width: 610px;
-	margin-top: 41px;
-	text-align: right;
+    position: absolute;
+    font-size: 11px;
+    width: 610px;
+    margin-top: 41px;
+    text-align: right;
 }
 table.api_table {
-  width: 100%;
+    width: 100%;
 }
 .api_table thead th {
-	font-size: 20px;
-	font-weight: normal;
-	padding-top: 20px;
-	padding-bottom: 10px;
+    font-size: 20px;
+    font-weight: normal;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 .api_table thead th:first-child {
-	padding-left: 15px;
-  width: 250px;
+    padding-left: 15px;
+    width: 250px;
 }
 .api_table tbody td {
-	font-size: 11px;
-	color: #333;
-	line-height: 120%;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	vertical-align: middle;
+    font-size: 11px;
+    color: #333;
+    line-height: 120%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: middle;
 }
 .api_table tbody td:first-child {font-size: 12px;}
 
@@ -443,12 +444,12 @@ table.api_generic_table.guide_info th { padding: 8px; font-size: .9em; }
 table.api_generic_table code { font-size: 100%; }
 
 table.parameters {
-	table-layout: fixed;
-	width: 100%;
+    table-layout: fixed;
+    width: 100%;
 }
 table.parameters, table.parameters code {
-	font-size: 14px;
-	line-height: 143%;
+    font-size: 14px;
+    line-height: 143%;
 }
 table.parameters .col1 {width: 25%;}
 table.parameters .col2 {width: 75%;}
@@ -462,33 +463,33 @@ a.function_prefix { text-decoration: underline; color: black; }
 .dsq-tooltip-outer { display: none !important; }
 
 /* An alternative attempt that doesn't disable them altogether
-.dsq-tooltip-outer { top: auto !important; bottom: 0px;}
-*/
+   .dsq-tooltip-outer { top: auto !important; bottom: 0px;}
+   */
 
 
 /* for admin help docs (actually, for all strongs) */
 strong {
-  color: #2C2C2C;
+    color: #2C2C2C;
 }
 
 img.adminHelp {
-  vertical-align: baseline;
+    vertical-align: baseline;
 }
 
 a.external {
-  background: url(/apidoc/images/externalLink.png) center right no-repeat;
-  padding-right: 12px;
+    background: url(/apidoc/images/externalLink.png) center right no-repeat;
+    padding-right: 12px;
 }
 
 #function_view_buttons {
-  font-size: .8em;
-  margin-top: -30px;
-  margin-left: 170px;
-  position: fixed
+    font-size: .8em;
+    margin-top: -30px;
+    margin-left: 170px;
+    position: fixed
 }
 
 /* decrease radio button size in FF/IE */
 input.function_view {
-  width: 10px;
-  height: 10px;
+    width: 10px;
+    height: 10px;
 }

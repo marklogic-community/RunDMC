@@ -18,8 +18,8 @@
   <xsl:include href="guide.xsl"/>
   <xsl:include href="uri-translation.xsl"/>
 
-  <xsl:variable name="is-print-request" select="$params[@name eq 'print'] 
-	  eq 'yes'"/>
+  <xsl:variable name="is-print-request" select="$params[@name eq 'print']
+          eq 'yes'"/>
 
   <!-- overrides variable declaration in imported code -->
   <xsl:variable name="currently-on-api-server" select="true()"/>
@@ -44,9 +44,9 @@
   <xsl:variable name="site-title" select="concat('MarkLogic Server ',$api:version,' Product Documentation')"/>
                                                                      -->
   <xsl:variable name="site-title" select="
-    if ($api:version eq '5.0') 
+    if ($api:version eq '5.0')
     then 'MarkLogic 5 Product Documentation'
-    else if ($api:version eq '6.0') 
+    else if ($api:version eq '6.0')
          then 'MarkLogic 6 Product Documentation'
          else if ($api:version eq '7.0')
               then 'MarkLogic 7 Product Documentation'
@@ -164,9 +164,8 @@
         <xsl:comment>
 
         <xsl:call-template name="reset-global-toc-vars"/>
-
-        $('#apidoc_toc').load('<xsl:value-of select="$api:toc-url"/>');
-
+        var toc_url = '<xsl:value-of select="$api:toc-url"/>';
+        $('#apidoc_toc').load(toc_url, null, toc_init);
       </xsl:comment>
       </script>
     </div>
@@ -406,11 +405,11 @@
       </h1>
       <xsl:apply-templates select="api:intro/node()"/>
       <xsl:choose>
-	      <!-- Hack for showing module with no functions: 
-		   Don't show the table if there are no functions. 
-		   -->
-	      <xsl:when test="count(api:list-entry/api:name) eq 0"/>
-	      <xsl:otherwise>
+              <!-- Hack for showing module with no functions:
+                   Don't show the table if there are no functions.
+                   -->
+              <xsl:when test="count(api:list-entry/api:name) eq 0"/>
+              <xsl:otherwise>
       <div class="api_caption">
         <xsl:variable name="count" select="count(api:list-entry)"/>
         <xsl:value-of select="$count"/>
@@ -523,9 +522,9 @@
             <xsl:apply-templates select="api:headers[api:header/@type = 'response']">
               <xsl:with-param name="response-headers" select="true()" tunnel="yes"/>
             </xsl:apply-templates>
-	    <xsl:apply-templates select="(api:response, api:privilege, 
-		    api:usage, api:see-also-list, api:example)
-		    [normalize-space(.)]"/>
+            <xsl:apply-templates select="(api:response, api:privilege,
+                    api:usage, api:see-also-list, api:example)
+                    [normalize-space(.)]"/>
             <xsl:if test="position() ne last()"> <!-- if it's *:polygon() -->
               <br/>
               <br/>
@@ -654,7 +653,7 @@
                       <xsl:apply-templates/>
                     </ul>
                   </xsl:template>
-		  
+
                   <xsl:template match="api:usage">
                     <h3>Usage Notes</h3>
                     <xsl:apply-templates/>
@@ -662,29 +661,29 @@
 
                           <xsl:template match="api:schema-info">
                             <p>
-			    <xsl:apply-templates mode="schema-info-intro" 
-					    select="."/>
+                            <xsl:apply-templates mode="schema-info-intro"
+                                            select="."/>
                             </p>
                             <dl>
                               <xsl:apply-templates select="api:element"/>
                             </dl>
                           </xsl:template>
 
-			  <xsl:template mode="schema-info-intro" 
-				  match="api:schema-info[not(@REST-doc)]
-				  [not(@print-intro/string() eq 'false')]"
-				  >The structure of the data returned is as 
-				  follows:</xsl:template>
-			  <xsl:template mode="schema-info-intro" 
-				  match="api:schema-info[@REST-doc]
-				  [not(@print-intro/string() eq 'false')]"
-				  >The structure of the output returned from 
-				  this REST API is as follows:</xsl:template>
+                          <xsl:template mode="schema-info-intro"
+                                  match="api:schema-info[not(@REST-doc)]
+                                  [not(@print-intro/string() eq 'false')]"
+                                  >The structure of the data returned is as
+                                  follows:</xsl:template>
+                          <xsl:template mode="schema-info-intro"
+                                  match="api:schema-info[@REST-doc]
+                                  [not(@print-intro/string() eq 'false')]"
+                                  >The structure of the output returned from
+                                  this REST API is as follows:</xsl:template>
 
-			  <xsl:template mode="schema-info-intro" 
-				  match="api:schema-info[@REST-doc]
-				  [(@print-intro/string() eq 'false')]"
-				  ></xsl:template>
+                          <xsl:template mode="schema-info-intro"
+                                  match="api:schema-info[@REST-doc]
+                                  [(@print-intro/string() eq 'false')]"
+                                  ></xsl:template>
 
                                   <xsl:template match="api:element">
                                     <dt>

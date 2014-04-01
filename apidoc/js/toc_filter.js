@@ -1,21 +1,72 @@
-/* Copyright 2002-2011 MarkLogic Corporation.  All Rights Reserved. */
-var previousFilterText1 = '';
-var currentFilterText1 = '';
+/* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
+var previousFilterText = '';
+var currentFilterText = '';
 
-var previousFilterText2 = '';
-var currentFilterText2 = '';
+function toc_init() {
+    var tocPartsDir = $("#tocPartsDir").text();
+    var tocTrees = $(".treeview");
 
-var previousFilterText3 = '';
-var currentFilterText3 = '';
+    tocTrees.treeview({
+        prerendered: true,
+        url: tocPartsDir });
 
-var previousFilterText4 = '';
-var currentFilterText4 = '';
+    // Set up the filter
+    $("#config-filter").keyup(function(e) {
+        currentFilterText = $(this).val();
 
-var previousFilterText5 = '';
-var currentFilterText5 = '';
+        if (e.which == 13) // Enter key pressed
+            window.location = "/do-do-search?q=" + $(this).val();
 
-var previousFilterText6 = '';
-var currentFilterText6 = '';
+        var closeButton = $("#config-filter" + "-close-button");
+        if ($(this).val() === "") closeButton.hide();
+        else closeButton.show();
+
+        setTimeout(function() {
+            if (previousFilterText !== currentFilterText) {
+                console.log("toc filter event", currentFilterText);
+                _gaq.push(['_trackEvent',
+                           'Docs Tab',
+                           'Filter', currentFilterText]);
+                previousFilterText = currentFilterText;
+                filterConfigDetails(currentFilterText,
+                                    "#apidoc_tree"); } },
+                   350);
+        $("#config-filter" + "-close-button").click(function() {
+            $(this).hide();
+            $("#config-filter").val("").keyup().blur();
+        });
+    });
+
+    // default text, style, etc.
+    formatFilterBoxes($(".config-filter"));
+
+    // delay this work until the DOM is ready
+    $(document).ready(function(){
+
+        $('#splitter')
+            .attr({'unselectable': 'on'})
+            .css({
+                "z-index": 100,
+                cursor: "e-resize",
+                position: "absolute",
+                "user-select": "none",
+                "-webkit-user-select": "none",
+                "-khtml-user-select": "none",
+                "-moz-user-select": "none"
+            })
+            .mousedown(splitterMouseDown);
+
+        // Set up the TOC.
+        // TODO hack this should autosize but does not.
+        // The extra 35 are necessary to scroll all the way to the bottom.
+        var scrollableContainer = $('.scrollable_section');
+        scrollableContainer.height($("#splitter").height() - 35);
+        console.log("toc_init scrollable height", scrollableContainer.height());
+
+        // If this was a deep link, load and scroll.
+        updateTocForTab();
+    });
+}
 
 function filterConfigDetails(text, treeSelector) {
 
@@ -156,94 +207,52 @@ function loadTocSection(index, tocSection) {
 }
 
 
-// Switches to the appropriate TOC tab
-// Called when the initial TOC is loaded (full page load)
-// and when a pjax load finishes (including via back button)
-function changeToAppropriateTab() {
-  // Load the TOC section for the current page
-  var tocSection = $(tocSectionLinkSelector).first().parent();
-
-  // Switch to the relevant tab
-  var current_tab_index = $("#toc_tabs").tabs('option', 'selected');
-  var new_tab_index = tocSection.parents(".tabbed_section").prevAll(".tabbed_section").length;
-
-  //console.log(tocSectionLinkSelector);
-  //console.log(tocSection);
-  //console.log(current_tab_index);
-  //console.log(new_tab_index);
-
-  if (current_tab_index !== new_tab_index) {
-    // this triggers updateTocForTab for us
-    $("#toc_tabs").tabs('select',new_tab_index);
-  }
-  else { // otherwise, we have to do it ourselves
-    var tab = $("#toc_tabs .tab_link").eq(current_tab_index)[0];
-    var panel = $("#toc_tabs .ui-tabs-panel:visible")[0];
-
-    //console.log(tab);
-    //console.log(panel);
-
-    //console.log("Calling updateTocForTab from changeToAppropriateTab");
-    updateTocForTab(tab, panel);
-  }
-}
-
 // Called only from updateTocForTab
 function waitToShowInTOC(tocSection) {
+  console.log("waitToShowInTOC", tocSection);
+
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
   if (tocSection.hasClass("loaded")) {
+    console.log("waitToShowInTOC loaded", tocSection);
 
     clearTimeout(waitToShowInTOC);
 
     var currentHref = location.href.toLowerCase();
+    console.log("waitToShowInTOC", tocSection, "currentHref=" + currentHref);
     var stripChapterFragment = isUserGuide && currentHref.indexOf("#") == -1;
-//console.log("currentHref: " + currentHref);
 
+    var locationHref = location.href.toLowerCase();
     var current = tocSection.find("a").filter(function() {
       var thisHref = this.href.toLowerCase();
       var hrefToCompare = (stripChapterFragment) ? thisHref.replace(/#chapter/,"") : thisHref;
-//      console.log("hrefToCompare: " + hrefToCompare);
-      var result = hrefToCompare == location.href.toLowerCase();
-//      if (result) console.log("matching result: " + hrefToCompare);
+      var result = hrefToCompare == locationHref;
+      //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
       return result;
     });
 
     // E.g., when hitting the Back button and reaching "All functions"
     $("#api_sub a.selected").removeClass("selected");
 
-    if (current.length) {/*console.log("Calling showInTOC from waitToShowInTOC");*/ showInTOC(current);}
+    console.log("waitToShowInTOC found", current.length, current);
+    if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
     $("#api_sub a.currentPage").removeClass("currentPage");
-    $("#api_sub a[href='" + window.location.pathname + "']").addClass("currentPage");
+    $("#api_sub a[href='" + window.location.pathname + "']")
+      .addClass("currentPage");
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-      //console.log("Calling showInTOC as fallback.");
+      console.log("waitToShowInTOC calling showInTOC as fallback.");
       showInTOC($("#api_sub a.currentPage"))
     }
-
-    /*
-    if (!tocSection.hasClass("initialized")) {
-      bindFragmentLinkTocActions(tocSection);
-      tocSection.addClass("initialized");
-    }
-    */
   }
   else {
-    setTimeout(function(){ waitToShowInTOC(tocSection) }, 100);
+    console.log("waitToShowInTOC still waiting for", tocSection);
+    setTimeout(function(){ waitToShowInTOC(tocSection) }, 125);
   }
 }
-
-
-/*
-function bindFragmentLinkTocActions(context) {
-  // Link bindings for updating the TOC state when navigating inside a user guide
-  $(context).find("a[href^='" + window.location.pathname + "#']").add("a[href^='#']").not(".tab_link")
-            .click(function() { updateTocForUrlFragment(this.pathname, this.hash) });
-}
-*/
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
@@ -264,7 +273,7 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-  //console.log(a);
+  console.log("showInTOC", a);
   $("#api_sub a.selected").removeClass("selected");
   $("#api_sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
 
@@ -294,64 +303,30 @@ function toggleFunctionsView(input) {
   //console.log("Toggling function view...");
 }
 
-// Called whenever a tab changes; also called explicitly from changeToAppropriateTab
-// when the initial tab is unchanged
-function updateTocForTab(tab, panel) {
-  //console.log(functionPageBucketId);
-  //console.log("updateTocForTab called");
+// Called at init and whenever a tab changes.
+// functionPageBucketId and tocSectionLinkSelector are from apidoc/view/page.xsl
+function updateTocForTab() {
+  console.log("updateTocForTab",
+              functionPageBucketId,
+              tocSectionLinkSelector);
 
-  // If this is the categories "tab" (radio button), take note in Google Analytics
-  if (panel.id == categoriesPanelId) {
-    _gaq.push(['_trackEvent', 'Sort order', 'Change', 'By Category'])
-  }
+  if (!functionPageBucketId) return console.log(
+      'no functionPageBucketId!');
+  if (!tocSectionLinkSelector) return console.log(
+      'no functionPageBucketId!');
 
-  // Hide the view toggle buttons if this isn't the functions or categories panel
-  if (panel.id == categoriesPanelId || panel.id == functionsPanelId)
-  {
-    // Show the radio buttons
-    $("#function_view_buttons").show();
+  var tocSectionLink = $(tocSectionLinkSelector);
+  var tocSection = tocSectionLink.parent();
+  console.log("updateTocForTab",
+              functionPageBucketId,
+              tocSectionLinkSelector,
+              tocSectionLink,
+              tocSection);
+  if (!tocSection.length) return;
 
-    // Ensure the correct radio button is checked (e.g. when first loading a page that's only in the categories TOC)
-    var correctRadioButtonValue = (panel.id == functionsPanelId) ? "by_name" : "by_category";
-    var radioButton = $("input[name=function_view][value="+correctRadioButtonValue+"]");
-    radioButton.attr("checked","checked");
-
-    // Show the tab selected by the radio button; hide the other
-    var functionsTab  = $("#tab_bar a[href=#"+ functionsPanelId+"]").parent("li");
-    var categoriesTab = $("#tab_bar a[href=#"+categoriesPanelId+"]").parent("li");
-
-    if (panel.id == functionsPanelId) {
-      functionsTab.show();
-      categoriesTab.hide();
-    }
-    else {
-      functionsTab.hide();
-      categoriesTab.show();
-    }
-  }
-  else
-    $("#function_view_buttons").hide();
-
-  // When the user clicks on the "Categories" tab when on a function or list page
-  if (panel.id == categoriesPanelId && functionPageBucketId !== "") {
-    var tocSection = $("#" + functionPageBucketId, panel);
-
-    //console.log(tocSection);
-
-    loadTocSection(0, tocSection);
-    waitToShowInTOC(tocSection);
-  }
-  else {
-    var tocSectionLink = $(tocSectionLinkSelector, panel);
-    var tocSection = tocSectionLink.parent();
-
-    if (tocSection.length) {
-      //console.log("Loading tocSection");
-      //console.log(tocSection);
-      loadTocSection(0, tocSection);
-      waitToShowInTOC(tocSection);
-    }
-  }
+  console.log("updateTocForTab loading to", tocSection);
+  loadTocSection(0, tocSection);
+  waitToShowInTOC(tocSection);
 }
 
 
@@ -390,35 +365,26 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
+  console.log("scrollTOC");
   var scrollTo = $('#api_sub a.selected').filter(':visible');
-
+  console.log("scrollTOC scrollTo", scrollTo);
   scrollTo.each(function() {
-/*
-    var container = $(this).parents('.scrollable_section'),
-*/
+    var scrollableContainer = $(this).parents('.scrollable_section');
+    console.log("scrollTOC", scrollableContainer);
     var container = $(this).parents('.treeview'),
         extra = 120,
         currentTop = container.scrollTop(),
         headerHeight = 165, /* in CSS for .scrollable_section */
-        scrollTargetDistance = $(this).offset().top,
-        scrollTarget = currentTop + scrollTargetDistance,
+        scrollTarget = currentTop + $(this).offset().top,
         scrollTargetAdjusted = scrollTarget - headerHeight - extra,
         minimumSpaceAtBottom = 10,
         minimumSpaceAtTop = 10;
 
-  /*
-  console.log(this);
-  console.log(container);
-  alert("currentTop: " + currentTop);
-  alert("headerHeight: " + headerHeight);
-  alert("scrollTargetDistance: " + scrollTargetDistance);
-  alert("scrollTarget: " + scrollTarget);
-  alert("scrollTargetAdjusted: " + scrollTargetAdjusted);
-  */
-
     // Only scroll if necessary
-    if (scrollTarget < currentTop + headerHeight + minimumSpaceAtTop
-     || scrollTarget > currentTop + (container.height() - minimumSpaceAtBottom)) {
+    var marginTop = currentTop + headerHeight + minimumSpaceAtTop;
+    var marginBottom = currentTop + (
+        container.height() - minimumSpaceAtBottom) ;
+    if (scrollTarget < marginTop || scrollTarget > marginBottom) {
       container.animate({scrollTop: scrollTargetAdjusted}, 500);
     }
   });
