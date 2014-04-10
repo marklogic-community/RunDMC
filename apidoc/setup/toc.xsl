@@ -54,22 +54,18 @@
 
   <xsl:template match="/">
     <all-tocs>
-      <toc:functions>
-        <node href="/all"
-              display="Functions ({sum($all-libs/api:function-count-for-lib(.))})"
-              id="AllFunctions"
-              function-list-page="yes"
-              open="yes"
-              top-control="yes">
-          <title>Functions</title>
-          <intro>
-            <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
-          </intro>
-          <xsl:apply-templates select="$all-libs">
-            <xsl:sort select="."/>
-          </xsl:apply-templates>
-        </node>
-      </toc:functions>
+      <toc:guides top-control="yes">
+          <xsl:if test="$guide-docs-not-configured">
+            <node display="New (unclassified) guides" open="yes">
+              <xsl:apply-templates mode="toc-guide-node" select="$guide-docs-not-configured"/>
+            </node>
+          </xsl:if>
+          <xsl:for-each select="$guide-groups">
+            <node display="{@name}" id="{generate-id(.)}" open="yes">
+              <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
+            </node>
+          </xsl:for-each>
+      </toc:guides>
       <xsl:if test="number($api:version) ge 5">
         <toc:rest-resources top-control="yes">
           <!-- Add this wrapper so the /REST page will get created -->
@@ -110,40 +106,6 @@
           </node>
         </toc:java>
       </xsl:if>
-      <!--
-      <toc:categories>
-      -->
-        <!--
-        <node display="Functions by category">
-        -->
-          <!-- Every bucket except the REST API bucket -->
-          <!--
-          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
-          -->
-        <!--
-        </node>
-        -->
-      <!--
-      </toc:categories>
-      -->
-      <toc:guides top-control="yes">
-        <!--
-        <node display="User Guides" id="user_guides">
-        -->
-          <xsl:if test="$guide-docs-not-configured">
-            <node display="New (unclassified) guides" open="yes">
-              <xsl:apply-templates mode="toc-guide-node" select="$guide-docs-not-configured"/>
-            </node>
-          </xsl:if>
-          <xsl:for-each select="$guide-groups">
-            <node display="{@name}" id="{generate-id(.)}" open="yes">
-              <xsl:apply-templates mode="toc-guide-node" select="toc:guides-in-group(.)"/>
-            </node>
-          </xsl:for-each>
-        <!--
-        </node>
-        -->
-      </toc:guides>
       <toc:other>
         <node display="Other Documentation" open="yes" id="other" top-control="yes">
           <xsl:if test="number($api:version) ge 5">
@@ -172,6 +134,22 @@
           </xsl:if>
         </node>
       </toc:other>
+      <toc:functions>
+        <node href="/all"
+              display="Functions ({sum($all-libs/api:function-count-for-lib(.))})"
+              id="AllFunctions"
+              function-list-page="yes"
+              open="yes"
+              top-control="yes">
+          <title>Functions</title>
+          <intro>
+            <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
+          </intro>
+          <xsl:apply-templates select="$all-libs">
+            <xsl:sort select="."/>
+          </xsl:apply-templates>
+        </node>
+      </toc:functions>
     </all-tocs>
   </xsl:template>
 

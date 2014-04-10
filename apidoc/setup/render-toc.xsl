@@ -20,7 +20,6 @@
     <xsl:message>Creating <xsl:value-of select="$toc-url"/></xsl:message>
     <xsl:result-document href="{$toc-url}">
       <!-- Write placeholder elements for use by toc_filter.js toc_init.
-           TODO rename tab ids and classes
       -->
       <div id="all_tocs">
         <div id="tocPartsDir" style="display:none;">
