@@ -1,0 +1,255 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/lock"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd
+                     http://marklogic.com/xdmp/security security.xsd"
+ xmlns="http://marklogic.com/xdmp/lock"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml"
+ xmlns:sec="http://marklogic.com/xdmp/security">
+
+ <xs:import namespace="http://marklogic.com/xdmp/security"
+            schemaLocation="security.xsd"/>
+ 
+  <xs:element name="lock-token" type="lock-token">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock token.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="lock-token">
+    <xs:annotation>
+      <xs:documentation>
+        A lock token.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="timeout" type="timeout">
+    <xs:annotation>
+      <xs:documentation>
+  	The timeout.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timeout">
+    <xs:annotation>
+      <xs:documentation>
+	A timeout value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="timestamp" type="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+  	The timestamp.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+	A timestamp value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="owner" type="owner">
+    <xs:annotation>
+      <xs:documentation>
+  	The owner.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="owner" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        An owner.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="depth" type="depth">
+    <xs:annotation>
+      <xs:documentation>
+  	The depth.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="depth">
+    <xs:annotation>
+      <xs:documentation>
+	A depth value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+	<xs:enumeration value="0"/>
+	<xs:enumeration value="infinity"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="active-lock">
+    <xs:annotation>
+      <xs:documentation>
+	An active lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="depth"/>
+      <xs:element ref="sec:user-id"/>
+      <xs:element ref="sec:external-security-id" minOccurs="0"/>
+      <xs:element ref="sec:user-name" minOccurs="0"/>
+      <xs:element ref="timestamp"/>
+      <xs:element ref="owner"/>
+      <xs:element ref="timeout"/>
+      <xs:element ref="lock-token"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="active-lock" type="active-lock">
+    <xs:annotation>
+      <xs:documentation>
+  	The participant in a lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="lock-type">
+    <xs:annotation>
+      <xs:documentation>
+	A lock type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+	<xs:enumeration value="write"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="lock-type" type="lock-type">
+    <xs:annotation>
+      <xs:documentation>
+  	The type of lock (write).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="lock-scope">
+    <xs:annotation>
+      <xs:documentation>
+	A lock scope.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+	<xs:enumeration value="exclusive"/>
+	<xs:enumeration value="shared"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="lock-scope" type="lock-scope">
+    <xs:annotation>
+      <xs:documentation>
+  	The scope (exclusive or shared) of a lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="active-locks">
+    <xs:annotation>
+      <xs:documentation>
+        A list of lock participants.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="active-lock"/>
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:element name="active-locks" type="active-locks">
+    <xs:annotation>
+      <xs:documentation>
+  	The current participant(s) in a lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="lock" type="lock">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lock">
+    <xs:annotation>
+      <xs:documentation>
+        A lock description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="lock-scope"/>
+      <xs:element ref="lock-type"/>
+      <xs:element ref="active-locks"/>
+    </xs:all>
+  </xs:complexType>
+
+</xs:schema>

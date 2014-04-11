@@ -1,0 +1,3580 @@
+<xs:schema xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd" elementFormDefault="qualified" targetNamespace="http://marklogic.com/manage/package/databases" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://marklogic.com/manage/package/databases" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cts="http://marklogic.com/cts">
+  <xs:import namespace="http://marklogic.com/cts" schemaLocation="cts.xsd"/>
+  <xs:complexType name="assignment-policy">
+    <xs:annotation>
+      <xs:documentation>
+        The policy to use for assignment and rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="assignment-policy-name"/>
+      <xs:element ref="partition-key" minOccurs="0"/>
+      <xs:element ref="lower-bound-included" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="rebalancer-throttle">
+    <xs:annotation>
+      <xs:documentation>
+        Larger numbers mean work harder at rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="reindexer-throttle">
+    <xs:annotation>
+      <xs:documentation>
+        Larger numbers mean work harder at reindexing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="reindexer-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        The reindexer timestamp must be a positive integer.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="fragment-count">
+    <xs:annotation>
+      <xs:documentation>
+        An integer number of fragments, min 1, max 2097152.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="2097152"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="memory-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount of system memory in megabytes, min 1, max 1024.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="32768"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="in-memory-range-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount of system memory in megabytes, min 1, max 64.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="64"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="in-memory-reverse-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount of system memory in megabytes, min 1, max 64.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="64"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="in-memory-triple-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount of system memory in megabytes, min 1, max 256.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="large-size-threshold">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount in kilobytes, min 32, max 524288.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="32"/>
+      <xs:maxInclusive value="524288"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="locking">
+    <xs:annotation>
+      <xs:documentation>
+        strict, fast, or off
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="strict"/>
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="journaling">
+    <xs:annotation>
+      <xs:documentation>
+        strict, fast, or off
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="strict"/>
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="journal-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer amount of file storage in megabytes, min 1, max 2047.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="2047"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="journal-count">
+    <xs:annotation>
+      <xs:documentation>
+        An integer number of journal files, min 2, max 3.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="2"/>
+      <xs:maxInclusive value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="merge-min-size">
+    <xs:annotation>
+      <xs:documentation>
+        A number of fragments to be merged together, min 1, max 131072.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="131072"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="merge-min-ratio">
+    <xs:annotation>
+      <xs:documentation>
+        A ratio between stand sub-tree counts triggering merges, min 1, max 64.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="64"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="merge-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        An integer.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:long"/>
+  </xs:simpleType>
+  <xs:simpleType name="positions-list-max-size">
+    <xs:annotation>
+      <xs:documentation>
+        An integer number in megabytes, min 1, max 512.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="512"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        true or false
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:simpleType name="stemmed-searches">
+    <xs:annotation>
+      <xs:documentation>
+        off, basic, advanced, or decompounding
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="off"/>
+      <xs:enumeration value="basic"/>
+      <xs:enumeration value="advanced"/>
+      <xs:enumeration value="decompounding"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        A list of word lexicons.  Each lexicon is defined by its collation uri.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="word-lexicon"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="tf-normalization">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="unscaled-log"/>
+      <xs:enumeration value="weakest-scaled-log"/>
+      <xs:enumeration value="weakly-scaled-log"/>
+      <xs:enumeration value="moderately-scaled-log"/>
+      <xs:enumeration value="strongly-scaled-log"/>
+      <xs:enumeration value="scaled-log"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="fragment-parents">
+    <xs:annotation>
+      <xs:documentation>
+        The fragment parent specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="fragment-parent"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="fragment-roots">
+    <xs:annotation>
+      <xs:documentation>
+        The fragment root specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="fragment-root"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="element-word-query-throughs">
+    <xs:annotation>
+      <xs:documentation>
+        The element-word-query-through specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="element-word-query-through"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="phrase-throughs">
+    <xs:annotation>
+      <xs:documentation>
+        The phrase-through specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="phrase-through"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="phrase-arounds">
+    <xs:annotation>
+      <xs:documentation>
+        The phrase-around specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="phrase-around"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="range-element-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="range-element-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="range-element-attribute-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast element-attribute inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="range-element-attribute-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="range-path-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="range-path-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="path-namespaces">
+    <xs:annotation>
+      <xs:documentation>
+        The namespace binding specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="path-namespace"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="range-field-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="range-field-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="element-word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain lexicons of words in elements.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="element-word-lexicon"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="element-attribute-word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain lexicons of words in elements.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="element-attribute-word-lexicon"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="directory-creation">
+    <xs:annotation>
+      <xs:documentation>
+	When to create directories.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="automatic"/>
+      <xs:enumeration value="manual-enforced"/>
+      <xs:enumeration value="manual"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="retired-forest-count">
+    <xs:annotation>
+      <xs:documentation>
+        The number of retired forests in a database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt"/>
+  </xs:simpleType>
+  <xs:simpleType name="merge-max-size">
+    <xs:annotation>
+      <xs:documentation>
+        Maximum allowable size (in megabytes) for merges, 
+	or 0 for no limit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="merge-priority">
+    <xs:annotation>
+      <xs:documentation>
+	A CPU scheduler priority for merges.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="lower"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="merge-blackouts">
+    <xs:annotation>
+      <xs:documentation>
+        Periods for merge blackouts.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="merge-blackout"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="database-backups">
+    <xs:annotation>
+      <xs:documentation>
+        The scheduled backups for this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="database-backup"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="format-compatibility">
+    <xs:annotation>
+      <xs:documentation>
+	Version compatibility for indexes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="automatic"/>
+      <xs:enumeration value="5.0"/>
+      <xs:enumeration value="4.2"/>
+      <xs:enumeration value="4.1"/>
+      <xs:enumeration value="4.0"/>
+      <xs:enumeration value="3.2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="index-detection">
+    <xs:annotation>
+      <xs:documentation>
+	Handling of differences between current configuration of database indexes and on-disk settings.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="automatic"/>
+      <xs:enumeration value="none"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="expunge-locks">
+    <xs:annotation>
+      <xs:documentation>
+	Garbage collection of timed locks that have expired.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="automatic"/>
+      <xs:enumeration value="none"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="range-index-optimize">
+    <xs:annotation>
+      <xs:documentation>
+        facet-time or memory-size
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="facet-time"/>
+      <xs:enumeration value="memory-size"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="language">
+    <xs:annotation>
+      <xs:documentation>
+        A language.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="ar"/>
+      <xs:enumeration value="de"/>
+      <xs:enumeration value="en"/>
+      <xs:enumeration value="es"/>
+      <xs:enumeration value="fa"/>
+      <xs:enumeration value="fr"/>
+      <xs:enumeration value="it"/>
+      <xs:enumeration value="ja"/>
+      <xs:enumeration value="ko"/>
+      <xs:enumeration value="nb"/>
+      <xs:enumeration value="nl"/>
+      <xs:enumeration value="nn"/>
+      <xs:enumeration value="pt"/>
+      <xs:enumeration value="ru"/>
+      <xs:enumeration value="zh"/>
+      <xs:enumeration value="zh-Hant"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="fields">
+    <xs:annotation>
+      <xs:documentation>
+        A fields specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="field"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="geospatial-element-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="geospatial-path-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial path-based comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="geospatial-path-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-child-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="geospatial-element-child-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-pair-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="geospatial-element-pair-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-attribute-pair-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="geospatial-element-attribute-pair-index"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="database-replication">
+    <xs:annotation>
+      <xs:documentation>
+        Database replication configuration.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="1">
+      <xs:element ref="foreign-replicas"/>
+      <xs:element ref="foreign-master"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="database-references">
+    <xs:annotation>
+      <xs:documentation>
+        Cluster of clusters configuration.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="database-reference"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="assignment-policy-name">
+    <xs:annotation>
+      <xs:documentation>
+        What policy to use for assignment and rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="bucket"/>
+      <xs:enumeration value="statistical"/>
+      <xs:enumeration value="range"/>
+      <xs:enumeration value="legacy"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="partition-key">
+    <xs:annotation>
+      <xs:documentation>
+        The partition key of the range assignment policy.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="cts:base-reference"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="collation">
+    <xs:annotation>
+      <xs:documentation>
+        A collation URI for string comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <xs:complexType name="fragment-parent">
+    <xs:annotation>
+      <xs:documentation>
+        A fragment parent specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="fragment-root">
+    <xs:annotation>
+      <xs:documentation>
+        A fragment root specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="element-word-query-through">
+    <xs:annotation>
+      <xs:documentation>
+        Element-word-query matches may cross these markup boundaries.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="phrase-through">
+    <xs:annotation>
+      <xs:documentation>
+        Phrases may cross these markup boundaries.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="phrase-around">
+    <xs:annotation>
+      <xs:documentation>
+        Phrases may jump around these elements.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="range-element-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast element inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="scalar-type"/>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="collation"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="range-element-attribute-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast element-attribute inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="scalar-type"/>
+      <xs:element ref="parent-namespace-uri"/>
+      <xs:element ref="parent-localname"/>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="collation"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="range-path-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast path inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="scalar-type"/>
+      <xs:element ref="path-expression"/>
+      <xs:element ref="collation"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="path-namespace">
+    <xs:annotation>
+      <xs:documentation>
+        A namespace binding specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="prefix"/>
+      <xs:element ref="namespace-uri"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="range-field-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast field inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="scalar-type"/>
+      <xs:element ref="field-name"/>
+      <xs:element ref="collation"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="element-word-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of words in an element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="collation"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="element-attribute-word-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of words in an element attribute.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="parent-namespace-uri"/>
+      <xs:element ref="parent-localname"/>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="collation"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="merge-blackout">
+    <xs:annotation>
+      <xs:documentation>
+        A merge blackout period.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="blackout-type"/>
+      <xs:element ref="limit"/>
+      <xs:element ref="merge-priority"/>
+      <xs:element ref="days" minOccurs="0"/>
+      <xs:element ref="period"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="database-backup">
+    <xs:annotation>
+      <xs:documentation>
+        A scheduled database backup.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="backup-directory"/>
+      <xs:element ref="backup-type"/>
+      <xs:element ref="backup-period" minOccurs="0"/>
+      <xs:element ref="backup-month-day" minOccurs="0"/>
+      <xs:element ref="backup-days" minOccurs="0"/>
+      <xs:element ref="backup-start-date" minOccurs="0"/>
+      <xs:element ref="backup-start-time" minOccurs="0"/>
+      <xs:element ref="backup-timestamp" minOccurs="0"/>
+      <xs:element ref="max-backups"/>
+      <xs:element ref="backup-schemas-database"/>
+      <xs:element ref="backup-security-database"/>
+      <xs:element ref="backup-triggers-database"/>
+      <xs:element ref="include-replicas"/>
+      <xs:element ref="journal-archiving"/>
+      <xs:element ref="journal-archive-path"/>
+      <xs:element ref="journal-archive-lag-limit"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="field">
+    <xs:annotation>
+      <xs:documentation>
+        A field specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="field-name" minOccurs="1" maxOccurs="1"/>
+      <xs:choice minOccurs="1" maxOccurs="1">
+	<xs:element ref="include-root" minOccurs="1" maxOccurs="1"/>
+	<xs:element ref="field-path" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+      <xs:element ref="stemmed-searches" minOccurs="0"/>
+      <xs:element ref="word-searches" minOccurs="0"/>
+      <xs:element ref="field-value-searches" minOccurs="0"/>
+      <xs:element ref="field-value-positions" minOccurs="0"/>
+      <xs:element ref="fast-phrase-searches" minOccurs="0"/>
+      <xs:element ref="fast-case-sensitive-searches" minOccurs="0"/>
+      <xs:element ref="fast-diacritic-sensitive-searches" minOccurs="0"/>
+      <xs:element ref="trailing-wildcard-searches" minOccurs="0"/>
+      <xs:element ref="trailing-wildcard-word-positions" minOccurs="0"/>
+      <xs:element ref="three-character-searches" minOccurs="0"/>
+      <xs:element ref="three-character-word-positions" minOccurs="0"/>
+      <xs:element ref="two-character-searches" minOccurs="0"/>
+      <xs:element ref="one-character-searches" minOccurs="0"/>
+      <xs:element ref="word-lexicons" minOccurs="0"/>
+      <xs:element ref="included-elements" minOccurs="0"/>
+      <xs:element ref="excluded-elements" minOccurs="0"/>
+      <xs:element ref="tokenizer-overrides" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-index">
+    <xs:annotation>
+      <xs:documentation>
+      Element value geospatial index. Element content has point value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="coordinate-system"/>
+      <xs:element ref="point-format"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="geospatial-path-index">
+    <xs:annotation>
+      <xs:documentation>
+      Path value geospatial index. Path leaf content has point value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="path-expression"/>
+      <xs:element ref="coordinate-system"/>
+      <xs:element ref="point-format"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-child-index">
+    <xs:annotation>
+      <xs:documentation>
+      Element child value geospatial index. 
+      Child element content has point value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="parent-namespace-uri"/>
+      <xs:element ref="parent-localname"/>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="coordinate-system"/>
+      <xs:element ref="point-format"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-pair-index">
+    <xs:annotation>
+      <xs:documentation>Element pair geospatial index. 
+      Point value is divided into latitude and longitude
+      in child element content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="parent-namespace-uri"/>
+      <xs:element ref="parent-localname"/>
+      <xs:element ref="latitude-namespace-uri"/>
+      <xs:element ref="latitude-localname"/>
+      <xs:element ref="longitude-namespace-uri"/>
+      <xs:element ref="longitude-localname"/>
+      <xs:element ref="coordinate-system"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="geospatial-element-attribute-pair-index">
+    <xs:annotation>
+      <xs:documentation>Attribute pair geospatial index. 
+         Point value is divided into latitude and longitudes in 
+         attribute content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="parent-namespace-uri"/>
+      <xs:element ref="parent-localname"/>
+      <xs:element ref="latitude-namespace-uri"/>
+      <xs:element ref="latitude-localname"/>
+      <xs:element ref="longitude-namespace-uri"/>
+      <xs:element ref="longitude-localname"/>
+      <xs:element ref="coordinate-system"/>
+      <xs:element ref="range-value-positions" minOccurs="0"/>
+      <xs:element ref="invalid-values" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="foreign-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replicas of this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="foreign-replica"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="foreign-master">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign master for this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="foreign-cluster-id"/>
+      <xs:element ref="foreign-database-id"/>
+      <xs:element ref="connect-forests-by-name"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="database-reference">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="reference-cluster-id"/>
+      <xs:element ref="reference-database-id"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>
+        It can be absolute or relative.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="scalar-type">
+    <xs:annotation>
+      <xs:documentation>
+        An atomic type specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="unsignedInt"/>
+      <xs:enumeration value="long"/>
+      <xs:enumeration value="unsignedLong"/>
+      <xs:enumeration value="float"/>
+      <xs:enumeration value="double"/>
+      <xs:enumeration value="decimal"/>
+      <xs:enumeration value="dateTime"/>
+      <xs:enumeration value="time"/>
+      <xs:enumeration value="date"/>
+      <xs:enumeration value="gYearMonth"/>
+      <xs:enumeration value="gYear"/>
+      <xs:enumeration value="gMonth"/>
+      <xs:enumeration value="gDay"/>
+      <xs:enumeration value="yearMonthDuration"/>
+      <xs:enumeration value="dayTimeDuration"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="anyURI"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="journal-archive-path">
+    <xs:annotation>
+      <xs:documentation>
+	Path to the associated journal archive location.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="journal-archive-lag-limit">
+    <xs:annotation>
+      <xs:documentation>
+        Number of seconds the archived journal can lag the active journal.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        A namespace URI.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <xs:simpleType name="localname">
+    <xs:annotation>
+      <xs:documentation>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:list itemType="xs:NCName"/>
+  </xs:simpleType>
+  <xs:simpleType name="invalid-values">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="ignore"/>
+      <xs:enumeration value="reject"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="prefix">
+    <xs:annotation>
+      <xs:documentation>
+        A QName prefix.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NCName"/>
+  </xs:simpleType>
+  <xs:simpleType name="database-id">
+    <xs:annotation>
+      <xs:documentation>
+        The database id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+  <xs:simpleType name="start-time">
+    <xs:annotation>
+      <xs:documentation>
+	The starting time (in 24:00 notation).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:time"/>
+  </xs:simpleType>
+  <xs:simpleType name="start-date">
+    <xs:annotation>
+      <xs:documentation>
+        The starting date (in MM/DD/YYYY notation)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:date"/>
+  </xs:simpleType>
+  <xs:complexType name="period">
+    <xs:annotation>
+      <xs:documentation>
+        A period, with a start and end time/duration.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="start-date" minOccurs="0"/>
+      <xs:element ref="start-time" minOccurs="0"/>
+      <xs:choice>
+	<xs:sequence>
+	  <xs:element ref="end-date" minOccurs="0"/>
+	  <xs:element ref="end-time" minOccurs="0"/>
+	</xs:sequence>
+	<xs:element ref="duration" minOccurs="0"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="days">
+    <xs:annotation>
+      <xs:documentation>
+        A selection of days
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="7">
+      <xs:element ref="day"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="backup-days">
+    <xs:annotation>
+      <xs:documentation>
+        A selection of days.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="7">
+      <xs:element ref="backup-day"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="backup-month-day">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="31"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="backup-timestamp">
+    <xs:restriction base="xs:dateTime"/>
+  </xs:simpleType>
+  <xs:simpleType name="max-backups">
+    <xs:restriction base="xs:positiveInteger"/>
+  </xs:simpleType>
+  <xs:simpleType name="blackout-type">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="once"/>
+      <xs:enumeration value="recurring"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="backup-type">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="once"/>
+      <xs:enumeration value="monthly"/>
+      <xs:enumeration value="weekly"/>
+      <xs:enumeration value="daily"/>
+      <xs:enumeration value="hourly"/>
+      <xs:enumeration value="minutely"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="backup-period">
+    <xs:restriction base="xs:positiveInteger"/>
+  </xs:simpleType>
+  <xs:simpleType name="field-name">
+    <xs:annotation>
+      <xs:documentation>
+        The field name.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:minLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="field-path">
+    <xs:annotation>
+      <xs:documentation>
+        A field path specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="path" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="weight" minOccurs="1" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="included-elements">
+    <xs:annotation>
+      <xs:documentation>
+        A set of elements to include in the field.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="included-element"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="excluded-elements">
+    <xs:annotation>
+      <xs:documentation>
+        A set of elements to exclude from the field.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="excluded-element"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="tokenizer-overrides">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="tokenizer-override"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="path-expression">
+    <xs:annotation>
+      <xs:documentation>
+        The path expression. For example:/prefix1:locname1/prefix2:locname2...
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="coordinate-system">
+    <xs:annotation>
+      <xs:documentation>
+      Describes how points are mapped.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="wgs84"/>
+      <xs:enumeration value="raw"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="point-format">
+    <xs:annotation>
+      <xs:documentation>
+      Describes the point format. "point" means latitude precedes longitude;
+      "long-lat-point" means longitude precedes latitude.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="point"/>
+      <xs:enumeration value="long-lat-point"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="cluster-id">
+    <xs:annotation>
+      <xs:documentation>
+        A cluster id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+  <xs:complexType name="foreign-replica">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="foreign-cluster-id"/>
+      <xs:element ref="foreign-database-id"/>
+      <xs:element ref="connect-forests-by-name"/>
+      <xs:element ref="lag-limit"/>
+      <xs:element ref="replication-enabled"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="end-time">
+    <xs:annotation>
+      <xs:documentation>
+	The ending time (in 24:00 notation).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:time"/>
+  </xs:simpleType>
+  <xs:simpleType name="end-date">
+    <xs:annotation>
+      <xs:documentation>
+        The ending date (in MM/DD/YYYY notation)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:date"/>
+  </xs:simpleType>
+  <xs:simpleType name="duration">
+    <xs:annotation>
+      <xs:documentation>
+        The duration, specifed as hours:minutes (i.e. 2 hours 5 minutes is 2:05)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:duration"/>
+  </xs:simpleType>
+  <xs:simpleType name="day">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="monday"/>
+      <xs:enumeration value="tuesday"/>
+      <xs:enumeration value="wednesday"/>
+      <xs:enumeration value="thursday"/>
+      <xs:enumeration value="friday"/>
+      <xs:enumeration value="saturday"/>
+      <xs:enumeration value="sunday"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="weight">
+    <xs:annotation>
+      <xs:documentation>
+        The weight of an included element or path in a field.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:double">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="included-element">
+    <xs:annotation>
+      <xs:documentation>
+        An element included in a field.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="weight"/>
+      <xs:element ref="attribute-namespace-uri" minOccurs="0"/>
+      <xs:element ref="attribute-localname" minOccurs="0"/>
+      <xs:element ref="attribute-value" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="excluded-element">
+    <xs:annotation>
+      <xs:documentation>
+        An element excluded from a field.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="namespace-uri"/>
+      <xs:element ref="localname"/>
+      <xs:element ref="attribute-namespace-uri" minOccurs="0"/>
+      <xs:element ref="attribute-localname" minOccurs="0"/>
+      <xs:element ref="attribute-value" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="tokenizer-override">
+    <xs:sequence>
+      <xs:element ref="character"/>
+      <xs:element ref="tokenizer-class"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="lag-limit">
+    <xs:annotation>
+      <xs:documentation>
+        A lag limit, in seconds.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt"/>
+  </xs:simpleType>
+  <xs:simpleType name="attribute-localname">
+    <xs:annotation>
+      <xs:documentation>
+        An attribute localname.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+	<xs:restriction base="xs:NCName"/>
+      </xs:simpleType>
+      <xs:simpleType>
+	<xs:restriction base="xs:string">
+	  <xs:length value="0"/>
+	</xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="attribute-value">
+    <xs:annotation>
+      <xs:documentation>
+        A string value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="character">
+    <xs:annotation>
+      <xs:documentation>
+      The character to override.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:length value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="tokenizer-class">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="word"/>
+      <xs:enumeration value="space"/>
+      <xs:enumeration value="punctuation"/>
+      <xs:enumeration value="symbol"/>
+      <xs:enumeration value="remove"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="attribute-namespace-uri" abstract="false" nillable="false" type="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        Namespace of the child attribute.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="attribute-localname" abstract="false" nillable="false" type="attribute-localname">
+    <xs:annotation>
+      <xs:documentation>
+        Localname of the child attribute.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="attribute-value" abstract="false" nillable="false" type="attribute-value">
+    <xs:annotation>
+      <xs:documentation>
+        Include or Exclude only elements with the specified attribute having this value.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="character" abstract="false" nillable="false" type="character">
+    <xs:annotation>
+      <xs:documentation>
+      The character to override.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="tokenizer-class">
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="tokenizer-class">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="start-time" abstract="false" nillable="false" type="start-time">
+    <xs:annotation>
+      <xs:documentation>
+	The starting time (in 24:00 notation).
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="end-time" abstract="false" nillable="false" type="end-time">
+    <xs:annotation>
+      <xs:documentation>
+	The ending time (in 24:00 notation).
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="start-date">
+    <xs:annotation>
+      <xs:documentation>
+        The starting date (in MM/DD/YYYY notation)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="start-date">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="end-date">
+    <xs:annotation>
+      <xs:documentation>
+        The ending date (in MM/DD/YYYY notation)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="end-date">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="duration" abstract="false" nillable="false" type="duration">
+    <xs:annotation>
+      <xs:documentation>
+        The duration, specifed as hours:minutes (i.e. 2 hours 5 minutes is 2:05)
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="day">
+    <xs:annotation>
+      <xs:documentation>
+        A day that this blackout is active.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="day">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-day">
+    <xs:annotation>
+      <xs:documentation>
+        A day that this backup occurs.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="day">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="path" abstract="false" nillable="false" type="path-expression">
+    <xs:annotation>
+      <xs:documentation>
+        The path expression.
+        For example:/prefix1:locname1/prefix2:locname2...
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="weight">
+    <xs:annotation>
+      <xs:documentation>
+        The weight, used to boost or lower relevance scores.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="weight">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="included-element" abstract="false" nillable="false" type="included-element">
+    <xs:annotation>
+      <xs:documentation>
+        The element included in the field.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="excluded-element" abstract="false" nillable="false" type="excluded-element">
+    <xs:annotation>
+      <xs:documentation>
+        The element excluded from the field.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="tokenizer-override" abstract="false" nillable="false" type="tokenizer-override"/>
+  <xs:element name="lag-limit">
+    <xs:annotation>
+      <xs:documentation>
+        The maximum transaction journal lag to the foreign database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="lag-limit">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="replication-enabled">
+    <xs:annotation>
+      <xs:documentation>
+         Whether replication is enabled for this replica. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="xs:boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-directory" abstract="false" nillable="false" type="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>
+        The backup directory pathname.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="scalar-type">
+    <xs:annotation>
+      <xs:documentation>
+        An atomic type specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="scalar-type">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="journal-archiving">
+    <xs:annotation>
+      <xs:documentation>
+	  Is journal archiving enabled for a full backup?
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="journal-archive-path" abstract="false" nillable="false" type="journal-archive-path">
+    <xs:annotation>
+      <xs:documentation>
+	Path to the associated journal archive location.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="journal-archive-lag-limit">
+    <xs:annotation>
+      <xs:documentation>
+	Number of seconds the archived journal can lag the active journal.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="journal-archive-lag-limit">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="namespace-uri" abstract="false" nillable="false" type="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        A namespace URI.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="parent-namespace-uri" abstract="false" nillable="false" type="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        A parent element namespace URI.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="latitude-namespace-uri" abstract="false" nillable="false" type="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        A latitude child namespace URI.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="longitude-namespace-uri" abstract="false" nillable="false" type="namespace-uri">
+    <xs:annotation>
+      <xs:documentation>
+        A longitude child namespace URI.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="localname" abstract="false" nillable="false" type="localname">
+    <xs:annotation>
+      <xs:documentation>
+        One or more localnames.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="parent-localname" abstract="false" nillable="false" type="localname">
+    <xs:annotation>
+      <xs:documentation>
+        One or more parent element localnames.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="latitude-localname" abstract="false" nillable="false" type="localname">
+    <xs:annotation>
+      <xs:documentation>
+        One or more latitude child localnames.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="longitude-localname" abstract="false" nillable="false" type="localname">
+    <xs:annotation>
+      <xs:documentation>
+        One or more longitude child localnames.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="collation" abstract="false" nillable="false" type="collation">
+    <xs:annotation>
+      <xs:documentation>
+        A collation URI for string comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-value-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index range value positions 
+	for faster near searches involving range queries
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="invalid-values">
+    <xs:annotation>
+      <xs:documentation>
+        Allow ingestion of documents that do not have matching type of data.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="invalid-values">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="prefix" abstract="false" nillable="false" type="prefix">
+    <xs:annotation>
+      <xs:documentation>
+        A QName prefix.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="period" abstract="false" nillable="false" type="period">
+    <xs:annotation>
+      <xs:documentation>
+        A period, which is all day, a start time and a duration, or a
+	start and end time.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="days" abstract="false" nillable="false" type="days">
+    <xs:annotation>
+      <xs:documentation>
+        The days that this blackout is active.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="backup-days" abstract="false" nillable="false" type="backup-days">
+    <xs:annotation>
+      <xs:documentation>
+        The days that this backup happens.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="backup-month-day" abstract="false" nillable="false" type="backup-month-day">
+    <xs:annotation>
+      <xs:documentation>
+        The day of the month that this backup happens.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="backup-start-date">
+    <xs:annotation>
+      <xs:documentation>
+        The starting date (in MM/DD/YYYY notation) for this backup.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="start-date">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-start-time" abstract="false" nillable="false" type="start-time">
+    <xs:annotation>
+      <xs:documentation>
+	The starting time (in 24:00 notation) for this backup.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="backup-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        The date and time this backup was created.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="backup-timestamp">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="max-backups" abstract="false" nillable="false" type="max-backups">
+    <xs:annotation>
+      <xs:documentation>
+        The maximum number of backups to keep for this scheduled backup.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="include-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        Backup the replica forests as well as the master forests.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-schemas-database">
+    <xs:annotation>
+      <xs:documentation>
+        Backup the schemas database for this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-security-database">
+    <xs:annotation>
+      <xs:documentation>
+        Backup the security database for this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-triggers-database">
+    <xs:annotation>
+      <xs:documentation>
+        Backup the triggers database for this database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="blackout-type">
+    <xs:annotation>
+      <xs:documentation>
+        What type of blackout is this.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="blackout-type">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="limit">
+    <xs:annotation>
+      <xs:documentation>
+        Maximum allowable size (in megabytes) for merges 
+	that occur during a blackout period, or 0 to disable
+	merges completely.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-max-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-type">
+    <xs:annotation>
+      <xs:documentation>
+        What type of backup is this.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="backup-type">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="backup-period" abstract="false" nillable="false" type="backup-period">
+    <xs:annotation>
+      <xs:documentation>
+        How often this backup should run (every n months, weeks, days, hours or minutes).
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="field-name" abstract="false" nillable="false" type="field-name">
+    <xs:annotation>
+      <xs:documentation>
+        The field name.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="field-path" abstract="false" nillable="false" type="field-path">
+    <xs:annotation>
+      <xs:documentation>
+        The path in the field.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="include-root">
+    <xs:annotation>
+      <xs:documentation>
+        Includes elements starting at the document root.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="included-elements" abstract="false" nillable="false" type="included-elements">
+    <xs:annotation>
+      <xs:documentation>
+        The elements included in the field.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="excluded-elements" abstract="false" nillable="false" type="excluded-elements">
+    <xs:annotation>
+      <xs:documentation>
+        The elements excluded from the field.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="tokenizer-overrides" abstract="false" nillable="false" type="tokenizer-overrides"/>
+  <xs:element name="path-expression" abstract="false" nillable="false" type="path-expression">
+    <xs:annotation>
+      <xs:documentation>
+        The path expression.
+        For example:/prefix1:locname1/prefix2:locname2...
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="coordinate-system">
+    <xs:annotation>
+      <xs:documentation>
+        A coordinate system name.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="coordinate-system">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="point-format">
+    <xs:annotation>
+      <xs:documentation>
+      The general format of the point.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="point-format">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="foreign-cluster-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign cluster id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="cluster-id">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="foreign-database-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign database id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="database-id">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reference-cluster-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign cluster id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="cluster-id">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reference-database-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign database id.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="database-id">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="connect-forests-by-name">
+    <xs:annotation>
+      <xs:documentation>
+        Automatically connect local forests with foreign forests of the same name.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="foreign-replica" abstract="false" nillable="false" type="foreign-replica">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="assignment-policy-name">
+    <xs:annotation>
+      <xs:documentation>
+         What policy to use for assignment and rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="assignment-policy-name">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="partition-key" abstract="false" nillable="false" type="partition-key">
+    <xs:annotation>
+      <xs:documentation>
+         The partition key of the range assignment policy.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="lower-bound-included">
+    <xs:annotation>
+      <xs:documentation>
+         If this is true, ranges on all forests in this database include the 
+         lower bound but not the upper bound (i.e., [lower-bound, upper-bound)); 
+         if this is false, ranges on all forests include the upper bound 
+         but not the lower bound (i.e., (lower-bound, upper-bound]).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="xs:boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-lexicon" abstract="false" nillable="false" type="collation">
+    <xs:annotation>
+      <xs:documentation>
+      Maintain a lexicon of words (slower document loads and larger
+      database files).
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="fragment-parent" abstract="false" nillable="false" type="fragment-parent">
+    <xs:annotation>
+      <xs:documentation>
+        A fragment parent specification.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="fragment-root" abstract="false" nillable="false" type="fragment-root">
+    <xs:annotation>
+      <xs:documentation>
+        A fragment root specification.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-word-query-through" abstract="false" nillable="false" type="element-word-query-through">
+    <xs:annotation>
+      <xs:documentation>
+        Element-word-query matches may cross these markup boundaries.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="phrase-through" abstract="false" nillable="false" type="phrase-through">
+    <xs:annotation>
+      <xs:documentation>
+        Phrases may cross these markup boundaries.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="phrase-around" abstract="false" nillable="false" type="phrase-around">
+    <xs:annotation>
+      <xs:documentation>
+        Phrases may jump around these elements.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-element-index" abstract="false" nillable="false" type="range-element-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast element inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-element-attribute-index" abstract="false" nillable="false" type="range-element-attribute-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast element-attribute inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-path-index" abstract="false" nillable="false" type="range-path-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast path inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="path-namespace" abstract="false" nillable="false" type="path-namespace">
+    <xs:annotation>
+      <xs:documentation>
+        A namespace binding specification.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-field-index" abstract="false" nillable="false" type="range-field-index">
+    <xs:annotation>
+      <xs:documentation>
+        An index for fast field inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-word-lexicon" abstract="false" nillable="false" type="element-word-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of words in an element.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-attribute-word-lexicon" abstract="false" nillable="false" type="element-attribute-word-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of words in an element attribute.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="merge-blackout" abstract="false" nillable="false" type="merge-blackout">
+    <xs:annotation>
+      <xs:documentation>
+        A merge blackout specification.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="database-backup" abstract="false" nillable="false" type="database-backup">
+    <xs:annotation>
+      <xs:documentation>
+        A scheduled database backup.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="field" abstract="false" nillable="false" type="field">
+    <xs:annotation>
+      <xs:documentation>
+        The field specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-index" abstract="false" nillable="false" type="geospatial-element-index">
+    <xs:annotation>
+      <xs:documentation>
+      Element value geospatial index. Element content has point value.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-path-index" abstract="false" nillable="false" type="geospatial-path-index">
+    <xs:annotation>
+      <xs:documentation>
+      Path value geospatial index. Path leaf content has point value.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-child-index" abstract="false" nillable="false" type="geospatial-element-child-index">
+    <xs:annotation>
+      <xs:documentation>
+      Element child value geospatial index. 
+      Child element content has point value.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-pair-index" abstract="false" nillable="false" type="geospatial-element-pair-index">
+    <xs:annotation>
+      <xs:documentation>Element pair geospatial index. 
+      Point value is divided into latitude and longitude
+      in child element content.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-attribute-pair-index" abstract="false" nillable="false" type="geospatial-element-attribute-pair-index">
+    <xs:annotation>
+      <xs:documentation>Attribute pair geospatial index. 
+         Point value is divided into latitude and longitudes in 
+         attribute content.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="foreign-replicas" abstract="false" nillable="false" type="foreign-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replicas of this database.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="foreign-master" abstract="false" nillable="false" type="foreign-master">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="database-reference" abstract="false" nillable="false" type="database-reference">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign database.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="maintain-last-modified">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain last-modified properties of documents.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="maintain-directory-last-modified">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain last-modified properties of directories.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inherit-permissions">
+    <xs:annotation>
+      <xs:documentation>
+        New document default permissions include parent directory permissions.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inherit-collections">
+    <xs:annotation>
+      <xs:documentation>
+        New document default collections include parent directory collections.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inherit-quality">
+    <xs:annotation>
+      <xs:documentation>
+        New document default quality is inherited parent directory quality.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="assignment-policy" abstract="false" nillable="false" type="assignment-policy">
+    <xs:annotation>
+      <xs:documentation>
+        The policy to use for assignment and rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="rebalancer-enable">
+    <xs:annotation>
+      <xs:documentation>
+        Enable automatic rebalancing after configuration changes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rebalancer-throttle">
+    <xs:annotation>
+      <xs:documentation>
+        Larger numbers mean work harder at rebalancing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="rebalancer-throttle">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reindexer-enable">
+    <xs:annotation>
+      <xs:documentation>
+        Enable automatic reindexing after configuration changes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reindexer-throttle">
+    <xs:annotation>
+      <xs:documentation>
+        Larger numbers mean work harder at reindexing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="reindexer-throttle">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reindexer-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+	Reindex/refragment all fragments with timestamps less than or equal to
+        the timestamp specified.  0 means no forced reindexing.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="reindexer-timestamp">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-limit">
+    <xs:annotation>
+      <xs:documentation>
+        The maximum number of fragments in an in-memory stand.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="fragment-count">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-list-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of the in-memory list storage, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="memory-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-tree-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of the in-memory tree storage, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="memory-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-range-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of the in-memory range index storage, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="in-memory-range-index-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-reverse-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of the in-memory reverse index storage, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="in-memory-reverse-index-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in-memory-triple-index-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of the in-memory triple index storage, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="in-memory-triple-index-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="large-size-threshold">
+    <xs:annotation>
+      <xs:documentation>
+        Size threshold for large objects, in kilobytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="large-size-threshold">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="locking">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies how robust transaction locking should be.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="locking">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="journaling">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies how robust transaction journaling should be.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="journaling">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="journal-size">
+    <xs:annotation>
+      <xs:documentation>
+        Size of each journal file, in megabytes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="journal-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="journal-count">
+    <xs:annotation>
+      <xs:documentation>
+        The number of journal files.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="journal-count">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preallocate-journals">
+    <xs:annotation>
+      <xs:documentation>
+        Allocate journal files before executing transactions.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-min-size">
+    <xs:annotation>
+      <xs:documentation>
+        Stands with fewer than this number of fragments are merged together.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-min-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-min-ratio">
+    <xs:annotation>
+      <xs:documentation>
+        Larger ratios trigger more merges.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-min-ratio">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+  	The earliest system timestamp allowed for requests, or 0 to
+        indicate the timestamp corresponding to the time of latest merge.
+        Merges discard information about earlier timestamps. 
+        <br xmlns=""/>Entering a value of type xs:dateTime will have it automatically 
+        converted to its corresponding timestamp. 
+        <br xmlns=""/>A negative value indicates a timestamp relative to 
+        the time of the latest merge, at ten million ticks per second.
+        For example, -6000000000 means ten minutes before the latest merge.
+        <br xmlns=""/>A value in red indicates that you have filled in the text 
+        field with the current timestamp, but have not clicked ok to save the
+	value to your config file.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-timestamp">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="positions-list-max-size">
+    <xs:annotation>
+      <xs:documentation>
+        Maximum size of a positions-containing list, in megabytes.
+        Lists longer than this have positions discarded.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="positions-list-max-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stemmed-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable stemmed word searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="stemmed-searches">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable unstemmed word searches 
+        (slower document loads and larger database files). 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="one-character-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable wildcard searches 
+        and faster character-based XQuery predicates 
+	using one character
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="two-character-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable wildcard searches 
+        and faster character-based XQuery predicates 
+	using two character
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="trailing-wildcard-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable trailing wildcard searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="three-character-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable wildcard searches 
+        and faster character-based XQuery predicates 
+	using three or more characters
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-phrase-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster phrase searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-case-sensitive-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster case sensitive searches 
+        (slower document loads and larger database files). 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-reverse-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster reverse searches 
+        (slower document loads and larger database files). 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="triple-index">
+    <xs:annotation>
+      <xs:documentation>
+        Enable the RDF triple index
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-diacritic-sensitive-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster diacritic sensitive searches 
+        (slower document loads and larger database files). 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-element-word-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster element-word searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-element-phrase-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable faster element phrase searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-element-character-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable element wildcard searches 
+        and element-character-based XQuery predicates 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fast-element-trailing-wildcard-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Enable element trailing wildcard searches 
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index word positions 
+	for faster phrase and near searches
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="element-word-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index element word positions 
+	for faster element-based phrase and near searches
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="element-value-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index element value positions 
+	for faster near searches involving element-value-query
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="triple-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index triple positions 
+    	for faster near searches involving cts:triple-range-query
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="field-value-searches">
+    <xs:annotation>
+      <xs:documentation>
+        Index field values
+	for faster searches involving field-value-query
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="field-value-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index field value positions 
+	for faster near searches involving field-value-query
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="attribute-value-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index attribute value positions 
+	for faster near searches involving element-attribute-value-query
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="three-character-word-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index word positions 
+        for three-character searches
+        only when three-character-searches are enabled
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="trailing-wildcard-word-positions">
+    <xs:annotation>
+      <xs:documentation>
+        Index word positions 
+        for trailing-wildcard searches
+        only when trailing-wildcard-searches are enabled
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uri-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of document URIs
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="collection-lexicon">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain a lexicon of collection URIs
+        (slower document loads and larger database files).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-lexicons" abstract="false" nillable="false" type="word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        A list of word lexicons.  Each lexicon is defined by its collation uri.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="tf-normalization">
+    <xs:annotation>
+      <xs:documentation>
+         What kind of TF normalization to apply.
+       </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="tf-normalization">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fragment-parents" abstract="false" nillable="false" type="fragment-parents">
+    <xs:annotation>
+      <xs:documentation>
+        The fragment parent specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="fragment-roots" abstract="false" nillable="false" type="fragment-roots">
+    <xs:annotation>
+      <xs:documentation>
+        The fragment root specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-word-query-throughs" abstract="false" nillable="false" type="element-word-query-throughs">
+    <xs:annotation>
+      <xs:documentation>
+        The element-word-query-through specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="phrase-throughs" abstract="false" nillable="false" type="phrase-throughs">
+    <xs:annotation>
+      <xs:documentation>
+        The phrase-through specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="phrase-arounds" abstract="false" nillable="false" type="phrase-arounds">
+    <xs:annotation>
+      <xs:documentation>
+        The phrase-around specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-element-indexes" abstract="false" nillable="false" type="range-element-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-element-attribute-indexes" abstract="false" nillable="false" type="range-element-attribute-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast element-attribute inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-path-indexes" abstract="false" nillable="false" type="range-path-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="path-namespaces" abstract="false" nillable="false" type="path-namespaces">
+    <xs:annotation>
+      <xs:documentation>
+        The namespace binding specifications for Path indexes.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="range-field-indexes" abstract="false" nillable="false" type="range-field-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast inequality comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-word-lexicons" abstract="false" nillable="false" type="element-word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain lexicons of words in elements.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="element-attribute-word-lexicons" abstract="false" nillable="false" type="element-attribute-word-lexicons">
+    <xs:annotation>
+      <xs:documentation>
+        Maintain lexicons of words in elements.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="directory-creation">
+    <xs:annotation>
+      <xs:documentation>
+        Automatically (for WebDAV) or manually manage directories
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="directory-creation">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="retired-forest-count">
+    <xs:annotation>
+      <xs:documentation>
+        The number of retired forests in a database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="retired-forest-count">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enabled">
+    <xs:annotation>
+      <xs:documentation>
+        Database enabled status.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-max-size">
+    <xs:annotation>
+      <xs:documentation>
+        Maximum allowable size (in megabytes) for merges, 
+        or 0 for no limit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-max-size">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-priority">
+    <xs:annotation>
+      <xs:documentation>
+        The CPU scheduler priority for merges.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="merge-priority">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="merge-blackouts" abstract="false" nillable="false" type="merge-blackouts">
+    <xs:annotation>
+      <xs:documentation>
+        Periods during which merges will not occur.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="database-backups" abstract="false" nillable="false" type="database-backups">
+    <xs:annotation>
+      <xs:documentation>
+        Backups scheduled for this database.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="format-compatibility">
+    <xs:annotation>
+      <xs:documentation>
+        Version of on-disk forest format.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="format-compatibility">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="index-detection">
+    <xs:annotation>
+      <xs:documentation>
+        Handling of differences between the current configuration of 
+        database indexes and on-disk settings.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="index-detection">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="expunge-locks">
+    <xs:annotation>
+      <xs:documentation>
+        Garbage collection of timed locks that have expired.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="expunge-locks">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preload-mapped-data">
+    <xs:annotation>
+      <xs:documentation>
+        Preload memory mapped forest information while mounting forest.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preload-replica-mapped-data">
+    <xs:annotation>
+      <xs:documentation>
+        Preload memory mapped forest information while mounting replica forest.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="boolean">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="range-index-optimize">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies how to optimize range indexes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="range-index-optimize">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="language">
+    <xs:annotation>
+      <xs:documentation>
+        The default language assumed for content (if xml:lang encoding is absent) 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+	<xs:extension base="language">
+	  <xs:attribute name="units" type="xs:string" use="optional"/>
+	</xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fields" abstract="false" nillable="false" type="fields">
+    <xs:annotation>
+      <xs:documentation>
+        The fields specifications.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-indexes" abstract="false" nillable="false" type="geospatial-element-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-path-indexes" abstract="false" nillable="false" type="geospatial-path-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial path-based comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-child-indexes" abstract="false" nillable="false" type="geospatial-element-child-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-pair-indexes" abstract="false" nillable="false" type="geospatial-element-pair-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="geospatial-element-attribute-pair-indexes" abstract="false" nillable="false" type="geospatial-element-attribute-pair-indexes">
+    <xs:annotation>
+      <xs:documentation>
+        Indexes for fast geospatial element comparisons.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="database-replication" abstract="false" nillable="false" type="database-replication">
+    <xs:annotation>
+      <xs:documentation>
+        Database replication configuration.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="database-references" abstract="false" nillable="false" type="database-references">
+    <xs:annotation>
+      <xs:documentation>
+        Cluster of clusters configuration.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="package-database-properties">
+    <xs:annotation>
+      <xs:documentation>The packaged properties of a database.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" ref="enabled"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="retired-forest-count"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="language"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="stemmed-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="word-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="word-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-phrase-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-reverse-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="triple-index"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="triple-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-case-sensitive-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-diacritic-sensitive-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-element-word-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="element-word-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-element-phrase-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="element-value-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="attribute-value-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="field-value-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="field-value-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="three-character-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="three-character-word-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-element-character-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="trailing-wildcard-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="trailing-wildcard-word-positions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fast-element-trailing-wildcard-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="word-lexicons"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="two-character-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="one-character-searches"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="uri-lexicon"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="collection-lexicon"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="reindexer-enable"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="reindexer-throttle"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="reindexer-timestamp"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="directory-creation"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="maintain-last-modified"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="maintain-directory-last-modified"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="inherit-permissions"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="inherit-collections"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="inherit-quality"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="in-memory-limit"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="in-memory-list-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="in-memory-tree-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="in-memory-range-index-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="in-memory-reverse-index-size"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="in-memory-triple-index-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="large-size-threshold"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="locking"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="journaling"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="journal-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="journal-count"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="preallocate-journals"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="preload-mapped-data"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="preload-replica-mapped-data"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="range-index-optimize"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="positions-list-max-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="format-compatibility"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="index-detection"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="expunge-locks"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="tf-normalization"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-priority"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-max-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-min-size"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-min-ratio"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-timestamp"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="merge-blackouts"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="database-backups"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fragment-roots"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fragment-parents"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="element-word-query-throughs"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="phrase-throughs"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="phrase-arounds"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="range-element-indexes"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="range-element-attribute-indexes"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="element-word-lexicons"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="element-attribute-word-lexicons"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="path-namespaces"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="range-path-indexes"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="fields"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="range-field-indexes"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="geospatial-element-indexes"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="geospatial-element-child-indexes"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="geospatial-element-pair-indexes"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="geospatial-element-attribute-pair-indexes"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="geospatial-path-indexes"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="database-replication"/>
+      <xs:element minOccurs="0" maxOccurs="1" ref="database-references"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="rebalancer-enable"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="rebalancer-throttle"/>
+      <xs:element minOccurs="1" maxOccurs="1" ref="assignment-policy"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="package-database-properties" type="package-database-properties">
+    <xs:annotation>
+      <xs:documentation>The packaged properties of a database.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:annotation>
+    <xs:documentation>
+      Schema for package database artifacts.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:complexType name="metadata">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact metadata.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="group" type="xs:token"/>
+      <xs:element name="host" type="xs:token"/>
+      <xs:element name="package-version" type="xs:string"/>
+      <xs:element name="timestamp" type="xs:dateTime"/>
+      <xs:element name="user" type="xs:token"/>
+      <xs:element name="platform" type="xs:token"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="links">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact links.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="forests-list" type="forests-list" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="subdatabase-list" type="subdatabase-list" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="schema-database" type="xs:token" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="security-database" type="xs:token" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="triggers-database" type="xs:token" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="forests-list">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact forest list.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="forest-name" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="subdatabase-list">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact subdatabases list.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="subdatabase" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="database-config">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact database configuration.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="name" type="xs:token"/>
+      <xs:element name="package-database-properties" type="package-database-properties"/>
+      <xs:element name="links" type="links"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="package-database">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact database.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="metadata" type="metadata"/>
+      <xs:element name="config" type="database-config"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="package-database" type="package-database">
+    <xs:annotation>
+      <xs:documentation>
+        Package database artifact.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

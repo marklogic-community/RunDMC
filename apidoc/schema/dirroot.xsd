@@ -1,0 +1,55 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/dirroot"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/dirroot"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="type">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="file"/>
+      <xs:enumeration value="directory"/>
+      <xs:enumeration value="link"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="pathname" type="xs:string"/>
+
+  <xs:element name="url" type="xs:anyURI"/>
+
+  <xs:element name="type" type="type"/>
+
+  <xs:element name="size" type="xs:unsignedLong"/>
+
+  <xs:element name="last-modified" type="xs:dateTime"/>
+
+  <xs:complexType name="entry">
+    <xs:all>
+      <xs:element ref="pathname"/>
+      <xs:element ref="url"/>
+      <xs:element ref="type"/>
+      <xs:element ref="size"/>
+      <xs:element ref="last-modified"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="entry" type="entry"/>
+
+  <xs:complexType name="directory">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="entry"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="directory" type="directory"/>
+
+  <xs:complexType name="dirroot">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="directory"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="dirroot" type="dirroot"/>
+
+</xs:schema>

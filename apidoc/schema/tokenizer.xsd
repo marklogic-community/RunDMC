@@ -1,0 +1,206 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/tokenizer"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/tokenizer"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:annotation>
+    <xs:documentation>
+      Tokenizer configuration file schema.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="codepoint">
+    <xs:annotation>
+      <xs:documentation>
+        Hex unicode codepoint: 4 digits for basic plane, plus support up
+        to 10ffff.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="1?[0-9A-Fa-f]?[0-9A-Fa-f]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="class">
+    <xs:annotation>
+      <xs:documentation>
+        A character class name.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="first" type="codepoint">
+    <xs:annotation>
+      <xs:documentation>
+        The first code point (inclusive) of a range.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="last" type="codepoint">
+    <xs:annotation>
+      <xs:documentation>
+        The last code point (inclusive) of a range.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="class" type="class">
+    <xs:annotation>
+      <xs:documentation>
+        A character class name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="range">
+    <xs:annotation>
+      <xs:documentation>
+        A range specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="first"/>
+      <xs:element ref="last"/>
+      <xs:element ref="class"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="range" type="range">
+    <xs:annotation>
+      <xs:documentation>
+        A range specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="ranges">
+    <xs:annotation>
+      <xs:documentation>
+        The range specifications.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="range"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="curr" type="class">
+    <xs:annotation>
+      <xs:documentation>
+        The current tokenizer character class.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="next" type="class">
+    <xs:annotation>
+      <xs:documentation>
+        The new character class (transition to).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="rule">
+    <xs:annotation>
+      <xs:documentation>
+        A rule specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="curr"/>
+      <xs:element ref="class"/>
+      <xs:element ref="next"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="rule" type="rule">
+    <xs:annotation>
+      <xs:documentation>
+        A rule specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="rules">
+    <xs:annotation>
+      <xs:documentation>
+        The rule specifications.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="rule"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="ranges" type="ranges">
+    <xs:annotation>
+      <xs:documentation>
+        The range specifications.  Each range
+        defines one character class.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="rules" type="rules">
+    <xs:annotation>
+      <xs:documentation>
+        The rule specifications.  Each rule
+        defines a character class transition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="tokenizer">
+    <xs:annotation>
+      <xs:documentation>
+        The tokenizer specification.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="ranges"/>
+      <xs:element ref="rules"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="tokenizer" type="tokenizer">
+    <xs:annotation>
+      <xs:documentation>
+        Character classes and rules defining
+        a table-driven XML tokenizer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+</xs:schema>

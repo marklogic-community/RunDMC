@@ -1,0 +1,522 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/language"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/language"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:element name="variant" type="variant">
+    <xs:annotation>
+      <xs:documentation>
+  	The lexer or stemmer  variant.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="variant">
+    <xs:annotation>
+      <xs:documentation>
+        A lexer or stemmer variant.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="code" type="code">
+    <xs:annotation>
+      <xs:documentation>
+        The language implementation code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="code">
+    <xs:annotation>
+      <xs:documentation>
+        A language implementation code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="alias" type="alias">
+    <xs:annotation>
+      <xs:documentation>
+        The languag alias.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="alias">
+    <xs:annotation>
+      <xs:documentation>
+        A language alias.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="token-key" type="token-key">
+    <xs:annotation>
+      <xs:documentation>
+        The tokenization identifier for the language
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="token-key">
+    <xs:annotation>
+      <xs:documentation>
+        A tokenization key.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="stem-key" type="stem-key">
+    <xs:annotation>
+      <xs:documentation>
+        The stemming identifier for the language
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="stem-key">
+    <xs:annotation>
+      <xs:documentation>
+        A stemming key.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="break-compound" type="break-compound">
+    <xs:annotation>
+      <xs:documentation>
+  	The choice to break compound stems.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="break-compound">
+    <xs:annotation>
+      <xs:documentation>
+        A choice to break compound stems..
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean">
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:element name="stemmer-normalization" type="stemmer-normalization">
+    <xs:annotation>
+      <xs:documentation>
+      What Unicode normalization form to use to present strings to stemmer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="stemmer-normalization">
+    <xs:annotation>
+      <xs:documentation>
+      What Unicode normalization form to use to present strings to stemmer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="NFC"/>
+      <xs:enumeration value="NFKD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="default-script" type="class">
+    <xs:annotation>
+      <xs:documentation>
+      Default script for this language. e.g latin
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="simple" type="simple">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a simple language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="simple">
+    <xs:annotation>
+      <xs:documentation>
+        A simple language configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="fixed" type="fixed">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a fixed (built-in, not customizable) language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="fixed">
+    <xs:annotation>
+      <xs:documentation>
+        A fixed language configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="stemmer" type="stemmer">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a stemmer
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="stemmer">
+    <xs:annotation>
+      <xs:documentation>
+        A stemmer configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="variant"/>
+      <xs:element ref="break-compound"/> 
+      <xs:element ref="stemmer-normalization" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="multi-word-tokens" type="multi-word-tokens">
+    <xs:annotation>
+      <xs:documentation>
+      Whether to look for multi-word tokens.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="multi-word-tokens">
+    <xs:annotation>
+      <xs:documentation>
+      Whether to look for multi-word tokens.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="lexer" type="lexer">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a lexer
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lexer">
+    <xs:annotation>
+      <xs:documentation>
+        A lexer configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="variant"/>
+      <xs:element ref="multi-word-tokens" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="inxight" type="inxight">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a inxight-supported language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="inxight">
+    <xs:annotation>
+      <xs:documentation>
+        An inxight language configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="code" />
+      <xs:element ref="lexer" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="stemmer" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="basis" type="basis">
+    <xs:annotation>
+      <xs:documentation>
+  	The configuration of a basis-supported language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="basis">
+    <xs:annotation>
+      <xs:documentation>
+        A simple language configuration
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="name" type="name">
+    <xs:annotation>
+      <xs:documentation>
+  	The language name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="name">
+    <xs:annotation>
+      <xs:documentation>
+        A language name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="lexer-map" type="lexer-map">
+    <xs:annotation>
+      <xs:documentation>
+  	The mapping of a language to a lexer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="class">
+    <xs:annotation>
+      <xs:documentation>
+        A character class name.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="class" type="class">
+    <xs:annotation>
+      <xs:documentation>
+        A character class name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lexer-map">
+    <xs:annotation>
+      <xs:documentation>
+        A mapping of a language to a lexer..
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="class"/>
+      <xs:element ref="name"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="lexer-maps" type="lexer-maps">
+    <xs:annotation>
+      <xs:documentation>
+  	The mapping of lexers.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lexer-maps">
+    <xs:annotation>
+      <xs:documentation>
+        A mapping of lexers.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="lexer-map"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="normalization" type="normalization">
+    <xs:annotation>
+      <xs:documentation>
+      What Unicode normalization form to use to present strings to tokenizer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="normalization">
+    <xs:annotation>
+      <xs:documentation>
+      What Unicode normalization form to use to present strings to tokenizer.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="NFC"/>
+      <xs:enumeration value="NFD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="language" type="language">
+    <xs:annotation>
+      <xs:documentation>
+  	The language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="language">
+    <xs:annotation>
+      <xs:documentation>
+        A language configuration.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="name"/>
+      <xs:element ref="alias" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="normalization" minOccurs="0"/>
+      <xs:element ref="token-key" minOccurs="0"/>
+      <xs:element ref="stem-key"/>
+	  <xs:element ref="default-script" minOccurs="0"/>
+      <xs:choice minOccurs="0">
+        <xs:element ref="simple"/>
+        <xs:element ref="inxight"/>
+        <xs:element ref="basis"/>
+		<xs:element ref="fixed"/>
+      </xs:choice>
+      <xs:element ref="lexer-maps" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="languages" type="languages">
+    <xs:annotation>
+      <xs:documentation>
+  	The languages defined.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="languages">
+    <xs:annotation>
+      <xs:documentation>
+        A set of defined languages.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="lexer-maps"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="language"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

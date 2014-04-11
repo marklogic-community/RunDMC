@@ -1,0 +1,72 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/admin"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:element name="hidden" type="xs:boolean"/>
+
+  <xs:element name="optional" type="xs:boolean"/>
+
+  <xs:element name="default" type="xs:string"/>
+
+  <xs:element name="new-default" type="xs:string"/>
+
+  <xs:simpleType name="platform">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="linux"/>
+      <xs:enumeration value="solaris"/>
+      <xs:enumeration value="winnt"/>
+      <xs:enumeration value="macosx"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="platform" type="platform"/>
+
+  <xs:simpleType name="edition">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Essential Enterprise"/>
+      <xs:enumeration value="Global Enterprise"/>
+      <xs:enumeration value="Standard Edition"/>
+      <xs:enumeration value="Enterprise Edition"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="edition" type="edition"/>
+
+  <xs:simpleType name="option">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="conversion"/>
+      <xs:enumeration value="failover"/>
+      <xs:enumeration value="updatesAllowed"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="option" type="option"/>
+
+  <xs:element name="merge" type="xs:string"/>
+
+  <xs:element name="tab" type="xs:string"/>
+
+  <xs:element name="hr">
+    <xs:complexType/>
+  </xs:element>
+
+  <xs:element name="help">
+    <xs:complexType mixed="true">
+       <xs:sequence minOccurs="0" maxOccurs="unbounded">
+         <xs:any processContents="lax"/>
+       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="image">
+    <xs:complexType mixed="true">
+       <xs:sequence minOccurs="0" maxOccurs="unbounded">
+         <xs:any processContents="lax"/>
+       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

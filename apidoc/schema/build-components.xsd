@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:my="http://marklogic.com/appservices/component" targetNamespace="http://marklogic.com/appservices/component">
+  <xs:element name="components">
+    <xs:annotation>
+      <xs:documentation>
+        Outer wrapper element for a set of marklet components.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="my:marklet"/>
+      </xs:sequence>
+      <xs:attribute name="version" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="marklet">
+    <xs:annotation>
+      <xs:documentation>
+        Wrapper for metadata describing an XQuery function. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="my:description"/>
+        <xs:element maxOccurs="unbounded" ref="my:role"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="my:slot-id"/>
+        <xs:element ref="my:return-type"/>
+        <xs:element minOccurs="0" ref="my:namespace-binding"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="my:import"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="my:asset"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="my:include"/>
+   </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="ns" use="required" type="xs:anyURI"/>
+      <xs:attribute name="prefix" use="required" type="xs:NCName"/>
+      <xs:attribute name="version" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Text description of the function described by marklet metadata.
+       </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="role" type="xs:anyURI">
+    <xs:annotation>
+      <xs:documentation>
+        URI of a marklet role which may be used for dynamic marklet selection.  
+        E.g. http://marklogic.com/appservices/role/controls/toolbar.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="slot-id">
+    <xs:annotation>
+      <xs:documentation>
+        Binding to App Builder user-supplied input supplied via Project XML 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="default"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="return-type" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Return type of the function resulting from a call to the function described by the marklet.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="namespace-binding">
+    <xs:annotation>
+      <xs:documentation>
+        Empty element containing namespace nodes used to construct namespace declarations.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="asset">
+    <xs:annotation>
+      <xs:documentation>
+        Summary of an asset (e.g. image, javascript or css file) that the function described by the 
+        metatdata depends on in order to run without error. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="conditional"/>
+      <xs:attribute name="destination" use="required"/>
+      <xs:attribute name="source" use="required"/>
+      <xs:attribute name="type"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="import">
+    <xs:annotation>
+      <xs:documentation>
+        Description of a module import required in order for function to evaluate without error.  
+        An import may refer to a library packaged in the server (e.g. the Search API) using @at, or to a custom
+        library that will be bundled with the compiled XQuery application package using @destination and @source.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="at" type="xs:anyURI"/>
+      <xs:attribute name="destination" type="xs:anyURI"/>
+      <xs:attribute name="ns" use="required" type="xs:anyURI"/>
+      <xs:attribute name="prefix" use="required" type="xs:NCName"/>
+      <xs:attribute name="source" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="include">
+    <xs:annotation>
+      <xs:documentation>
+        A reference to a function that will be called from within the current marklet's 
+        XQuery function at application runtime.  For example, if the current marklet describes 
+        an asc:page() function, include elements can indicate that the compiler must create 
+        function references that will be applied to construct the header and footer.  
+        Selection of included functions is dynamic, applying App Builder user choices 
+        to customize the application.   
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="role" use="required" type="xs:anyURI"/>
+      <xs:attribute name="varname" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

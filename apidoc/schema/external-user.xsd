@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/external/user"
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd" 
+           xmlns="http://marklogic.com/xdmp/external/user"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:element name="external-security-id" type="xs:unsignedLong">
+    <xs:annotation>
+      <xs:documentation>
+        The ID of an external security config
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="user-name" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        user name
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="external-user">
+    <xs:annotation>
+      <xs:documentation>external-user</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="external-security-id"/>
+      <xs:element ref="user-name"/>
+    </xs:all>
+  </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rest="http://marklogic.com/appservices/rest"
+           elementFormDefault="qualified"
+           targetNamespace="http://marklogic.com/appservices/rest">
+
+  <xs:annotation>
+    <xs:documentation>
+      REST API options node schema.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:complexType name="options">
+    <xs:annotation>
+      <xs:documentation>
+        The options node.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="rest:request"/>
+    </xs:sequence>
+    <xs:attribute name="user-params">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ignore"/>
+          <xs:enumeration value="allow"/>
+          <xs:enumeration value="allow-dups"/>
+          <xs:enumeration value="forbid"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="options" type="rest:options">
+    <xs:annotation>
+      <xs:documentation>
+        The options node.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="request">
+    <xs:annotation>
+      <xs:documentation>
+        The request description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="rest:uri-param"/>
+      <xs:element ref="rest:param"/>
+      <xs:element ref="rest:http"/>
+      <xs:element ref="rest:Condition"/>
+    </xs:choice>
+    <xs:attribute name="uri"/>
+    <xs:attribute name="endpoint"/>
+    <xs:attribute name="user-params">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ignore"/>
+          <xs:enumeration value="allow"/>
+          <xs:enumeration value="allow-dups"/>
+          <xs:enumeration value="forbid"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="request" type="rest:request">
+    <xs:annotation>
+      <xs:documentation>
+        The request description.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="uri-param" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        A parameter extracted from the URI using a regular expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="name" use="required"/>
+    <xs:attribute name="as"/>
+  </xs:complexType>
+
+  <xs:element name="uri-param" type="rest:uri-param">
+    <xs:annotation>
+      <xs:documentation>
+        A parameter extracted from the URI using a regular expression.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="param" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        A named parameter.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="name"/>
+    <xs:attribute name="pattern"/>
+    <xs:attribute name="alias"/>
+    <xs:attribute name="as"/>
+    <xs:attribute name="values"/>
+    <xs:attribute name="match"/>
+    <xs:attribute name="default"/>
+    <xs:attribute name="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="true"/>
+          <xs:enumeration value="false"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="repeatable">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="true"/>
+          <xs:enumeration value="false"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="param" type="rest:param">
+    <xs:annotation>
+      <xs:documentation>
+        A named parameter.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="http">
+    <xs:annotation>
+      <xs:documentation>
+        The description of a request using a particular HTTP method.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="rest:param"/>
+      <xs:element ref="rest:Condition"/>
+    </xs:choice>
+    <xs:attribute name="method" use="required"/>
+    <xs:attribute name="user-params">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ignore"/>
+          <xs:enumeration value="allow"/>
+          <xs:enumeration value="allow-dups"/>
+          <xs:enumeration value="forbid"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="http" type="rest:http">
+    <xs:annotation>
+      <xs:documentation>
+        The description of a request using a particular HTTP method.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="privilege" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A privilege name.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="kind" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A privilege kind.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="or">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “or” test returns true if any of its children return true.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="rest:Condition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="and">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “and” test returns true if and only if all of its children return true.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="rest:Condition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="auth">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “auth” test returns true only if the user has the privileges described.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="rest:privilege"/>
+      <xs:element minOccurs="0" ref="rest:kind"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="function">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “function” test describes an XQuery function that will be called. It returns true if and only if the function called returns true.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="ns" use="required" type="xs:anyURI"/>
+    <xs:attribute name="apply" use="required" type="xs:Name"/>
+    <xs:attribute name="at" use="required" type="xs:anyURI"/>
+  </xs:complexType>
+
+  <xs:element name="Condition" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        An abstract conditional test; this is simply the head of a substitution group.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="or" substitutionGroup="rest:Condition" type="rest:or">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “or” test returns true if any of its children return true.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="and" substitutionGroup="rest:Condition" type="rest:and">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “and” test returns true if and only if all of its children return true.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="auth" substitutionGroup="rest:Condition" type="rest:auth">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “auth” test returns true only if the user has the privileges described.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="function" substitutionGroup="rest:Condition" type="rest:function">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “function” test describes an XQuery function that will be called. It returns true if and only if the function called returns true.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="accept" substitutionGroup="rest:Condition" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “accept” test returns true if the request will accept a response of the described content type.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="user-agent" substitutionGroup="rest:Condition" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “user-agent” test returns true if the request includes a matching user agent string.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="content-type" substitutionGroup="rest:Condition" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        A conditional test. The “content-type” test returns true if the request has the specified content-type.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,139 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:pdf-convert"
+ xmlns="xdmp:pdf-convert"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:tidy="xdmp:tidy"
+ elementFormDefault="qualified">
+
+<xs:import namespace="xdmp:tidy"
+           schemaLocation="tidy.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      Manifest and options nodes for pdf-convert schema.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:element name="anyOption" abstract="true"/>
+
+
+  <xs:simpleType name="page-end-id">
+     <xs:restriction base="xs:integer">
+       <xs:minInclusive value="-1"/>
+     </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="image-quality">
+     <xs:restriction base="xs:integer">
+       <xs:minInclusive value="10"/>
+       <xs:maxInclusive value="100"/>
+     </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="lang">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ar"/>
+      <xs:enumeration value="de"/>
+      <xs:enumeration value="en"/>
+      <xs:enumeration value="es"/>
+      <xs:enumeration value="fa"/>
+      <xs:enumeration value="fr"/>
+      <xs:enumeration value="it"/>
+      <xs:enumeration value="ja"/>
+      <xs:enumeration value="ko"/>
+      <xs:enumeration value="nb"/>
+      <xs:enumeration value="nl"/>
+      <xs:enumeration value="nn"/>
+      <xs:enumeration value="pt"/>
+      <xs:enumeration value="ru"/>
+      <xs:enumeration value="zh"/>
+      <xs:enumeration value="zh-Hant"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="tidy" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="config" type="xs:string" substitutionGroup="anyOption"/>
+
+  <xs:element name="page-by-page" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="page-start-id" type="xs:nonNegativeInteger" substitutionGroup="anyOption"/>
+  <xs:element name="page-end-id" type="page-end-id" substitutionGroup="anyOption"/>
+  <xs:element name="synth-bookmarks" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="image-output" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="text-output" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="zones" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="ignore-text" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="remove-overprint" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="line-breaks" type="xs:boolean" substitutionGroup="anyOption"/>
+  <xs:element name="image-quality" type="image-quality" substitutionGroup="anyOption"/>
+  <xs:element name="page-start" type="xs:string" substitutionGroup="anyOption"/>
+  <xs:element name="page-end" type="xs:string" substitutionGroup="anyOption"/>
+  <xs:element name="document-start" type="xs:string" substitutionGroup="anyOption"/>
+  <xs:element name="document-end" type="xs:string" substitutionGroup="anyOption"/>
+  <xs:element name="password" type="xs:string" substitutionGroup="anyOption"/>
+
+  <xs:element name="default-language" type="lang" substitutionGroup="anyOption"/>
+
+  <xs:simpleType name="option-name">
+    <xs:restriction base="xs:NCName">
+      <xs:pattern value="[^=]+"/> <!-- No embedded equal signs -->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="setting" substitutionGroup="anyOption">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="name" type="option-name" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="options">
+    <xs:annotation>
+      <xs:documentation>PDF conversion options</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+         <xs:element ref="anyOption"/>
+         <xs:element ref="tidy:anyOption"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="part">
+    <xs:annotation>
+      <xs:documentation>
+        A uri that is part of the document converted
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:complexType name="parts">
+    <xs:annotation>
+      <xs:documentation>
+        The total manifest node.  A list of all the parts of the
+	document that was converted.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice> 
+      <xs:element name="part" type="part" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="parts" type="parts">
+    <xs:annotation>
+      <xs:documentation>
+        The parts
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

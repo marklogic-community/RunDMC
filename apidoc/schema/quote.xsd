@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="xdmp:quote" xmlns:quote="xdmp:quote">
+  <!--
+    Notice: The *.rnc are the normative human-edited versions
+    Do not directly edit the *.xsd versions, any changes will be lost when rebuilding
+    To rebuild, download trang from relaxng.org, and run
+    java -jar path/to/trang.jar filename.rnc filename.xsd
+  -->
+  <xs:element name="options" type="quote:OptionsType"/>
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="quote:output-encoding"/>
+      <xs:element ref="quote:output-sgml-character-entities"/>
+      <xs:element ref="quote:method"/>
+      <xs:element ref="quote:cdata-section-elements"/>
+      <xs:element ref="quote:encoding"/>
+      <xs:element ref="quote:use-character-maps"/>
+      <xs:element ref="quote:media-type"/>
+      <xs:element ref="quote:byte-order-mark"/>
+      <xs:element ref="quote:indent"/>
+      <xs:element ref="quote:indent-untyped"/>
+      <xs:element ref="quote:include-content-type"/>
+      <xs:element ref="quote:escape-uri-attributes"/>
+      <xs:element ref="quote:doctype-public"/>
+      <xs:element ref="quote:doctype-system"/>
+      <xs:element ref="quote:omit-xml-declaration"/>
+      <xs:element ref="quote:standalone"/>
+      <xs:element ref="quote:normalization-form"/>
+      <xs:element ref="quote:default-attributes"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:element name="output-encoding" type="xs:string"/>
+  <xs:element name="output-sgml-character-entities">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="normal"/>
+        <xs:enumeration value="none"/>
+        <xs:enumeration value="math"/>
+        <xs:enumeration value="pub"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="method">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="xml"/>
+        <xs:enumeration value="html"/>
+        <xs:enumeration value="xhtml"/>
+        <xs:enumeration value="text"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="cdata-section-elements">
+    <xs:simpleType>
+      <xs:list itemType="xs:QName"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="encoding" type="xs:string"/>
+  <xs:element name="use-character-maps">
+    <xs:simpleType>
+      <xs:list itemType="xs:QName"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="media-type" type="xs:string"/>
+  <xs:element name="byte-order-mark" type="quote:YesNo"/>
+  <xs:element name="indent" type="quote:YesNo"/>
+  <xs:element name="indent-untyped" type="quote:YesNo"/>
+  <xs:element name="include-content-type" type="quote:YesNo"/>
+  <xs:element name="escape-uri-attributes" type="quote:YesNo"/>
+  <xs:element name="doctype-public" type="xs:string"/>
+  <xs:element name="doctype-system" type="xs:string"/>
+  <xs:element name="omit-xml-declaration" type="quote:YesNo"/>
+  <xs:element name="standalone" type="quote:YesNo"/>
+  <xs:element name="normalization-form">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="NFC"/>
+        <xs:enumeration value="NFD"/>
+        <xs:enumeration value="NFKD"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="default-attributes" type="quote:YesNo"/>
+  <xs:simpleType name="YesNo">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="yes"/>
+      <xs:enumeration value="no"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

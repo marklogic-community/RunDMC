@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cpf="http://marklogic.com/cpf"
+           xmlns:error="http://marklogic.com/xdmp/error"
+           targetNamespace="http://marklogic.com/cpf"
+           elementFormDefault="qualified"
+>
+
+<xs:import namespace="http://marklogic.com/xdmp/error"
+           schemaLocation="error.xsd"/>
+
+<xs:element name="state" type="cpf:state">
+   <xs:annotation>
+      <xs:documentation>
+      The document state.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:simpleType name="state">
+   <xs:annotation>
+      <xs:documentation>
+      A document state.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:restriction base="xs:anyURI"/>
+</xs:simpleType>
+
+<xs:simpleType name="processing-status">
+   <xs:annotation>
+      <xs:documentation>
+      A processing status.
+      </xs:documentation>
+   </xs:annotation>
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="created"/>
+    <xs:enumeration value="updated"/>
+    <xs:enumeration value="property-updated"/>
+    <xs:enumeration value="deleted"/>
+    <xs:enumeration value="active"/>
+    <xs:enumeration value="done"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:element name="processing-status" type="cpf:processing-status">
+   <xs:annotation>
+      <xs:documentation>
+      The processing status of the document.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:simpleType name="event">
+  <xs:annotation>
+      <xs:documentation>
+      A transition event.
+      </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="updated"/>
+    <xs:enumeration value="property-updated"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:element name="event" type="cpf:event">
+   <xs:annotation>
+      <xs:documentation>
+      A transition event.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:element name="last-updated" type="xs:dateTime">
+   <xs:annotation>
+      <xs:documentation>
+       Last update timestamp.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:complexType name="error">
+  <xs:sequence>
+    <xs:element ref="error:error"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:element name="error" type="cpf:error">
+   <xs:annotation>
+      <xs:documentation>
+        Error thrown by last failed transition.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:element name="self" type="xs:anyURI">
+   <xs:annotation>
+      <xs:documentation>
+       The URI of this document. Needed for CPF rename detection in WebDAV.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+</xs:schema>

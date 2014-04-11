@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:opt="cts:classify"
+           targetNamespace="cts:classify"
+           elementFormDefault="qualified"
+>
+
+<xs:element name="options">
+  <xs:annotation>
+    <xs:documentation>
+    Options permitted by cts:classify. Note that many options that
+    affect classification are obtained from the cts:classifier element and will
+    not be specified separately as arguments to cts:classify.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+       <xs:element ref="opt:thresholds"/>
+     </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="thresholds">
+  <xs:annotation>
+    <xs:documentation>
+    Per-class thresholds to use when determining class membership. 
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="opt:threshold"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="threshold">
+  <xs:annotation>
+    <xs:documentation>
+    The threshold for a particular class. If no class name is given, the
+    threshold is a global one, applying to every class that doesn't have a
+    more specific threshold defined for it.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="class" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element>
+</xs:schema>
+
+

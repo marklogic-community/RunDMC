@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+targetNamespace="http://www.w3.org/1999/xlink" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+elementFormDefault="qualified"
+attributeFormDefault="qualified" 
+blockDefault="#all" 
+finalDefault="#all" 
+version="1.1" 
+>
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+             This is an experimental XML Schema module for XLink 1.0.
+             XLink is currently a W3C Proposed Recommendation
+             http://www.w3.org/TR/xlink/
+            
+             This schema is non-normative. 
+             This module is intended to express the syntax for XLink
+             for use within the XHTML schema modularization framework.
+             @author: Josef Dietl josef@mozquito.com
+			 @author: Daniel Austin austin.d@ic.grainger.com
+			 $Id: xlink-1.0.xsd,v 1.2 2004-05-06 01:01:44 cjl Exp $
+		</xs:documentation>
+		<xs:documentation source="xhtml-copyright-1.xsd"/>
+	</xs:annotation>
+<!--
+
+-->
+	<xs:attribute name="href" type="xs:anyURI"/>
+	<xs:attribute name="role" type="xs:anyURI"/>
+	<xs:attribute name="arcrole" type="xs:anyURI"/>
+	<xs:attribute name="title" type="xs:string"/>
+	<xs:attribute name="label" type="xs:NCName"/>
+	<xs:attribute name="from" type="xs:NCName"/>
+	<xs:attribute name="to" type="xs:NCName"/>
+<!--
+
+-->
+	<xs:attribute name="type">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="extended"/>
+				<xs:enumeration value="locator"/>
+				<xs:enumeration value="resource"/>
+				<xs:enumeration value="arc"/>
+				<xs:enumeration value="title"/>
+				<xs:enumeration value="simple"/>
+				<xs:enumeration value="none"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+<!--
+
+-->
+	<xs:attribute name="show">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="new"/>
+				<xs:enumeration value="replace"/>
+				<xs:enumeration value="embed"/>
+				<xs:enumeration value="other"/>
+				<xs:enumeration value="none"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+<!--
+
+-->
+	<xs:attribute name="actuate">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="onLoad"/>
+				<xs:enumeration value="onRequest"/>
+				<xs:enumeration value="other"/>
+				<xs:enumeration value="none"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+<!--
+
+-->
+<xs:attributeGroup name="simpleTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+	<xs:attribute ref="xlink:href"/>
+	<xs:attribute ref="xlink:role"/>
+	<xs:attribute ref="xlink:arcrole"/>
+	<xs:attribute ref="xlink:title"/>
+	<xs:attribute ref="xlink:show"/>
+	<xs:attribute ref="xlink:actuate"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:attributeGroup name="extendedTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+	<xs:attribute ref="xlink:role"/>
+	<xs:attribute ref="xlink:title"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:attributeGroup name="locatorTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+	<xs:attribute ref="xlink:href" use="required"/>
+	<xs:attribute ref="xlink:role"/>
+	<xs:attribute ref="xlink:title"/>
+	<xs:attribute ref="xlink:label"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:attributeGroup name="arcTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+	<xs:attribute ref="xlink:arcrole"/>
+	<xs:attribute ref="xlink:title"/>
+	<xs:attribute ref="xlink:show"/>
+	<xs:attribute ref="xlink:from"/>
+	<xs:attribute ref="xlink:to"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:attributeGroup name="resourceTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+	<xs:attribute ref="xlink:role"/>
+	<xs:attribute ref="xlink:title"/>
+	<xs:attribute ref="xlink:label"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:attributeGroup name="titleTypeElement">
+	<xs:attribute ref="xlink:type" use="required"/>
+</xs:attributeGroup>
+<!--
+
+-->
+<xs:annotation>
+    <xs:documentation>
+        This attribute group allows us to easily add the xlink formalism to XHTML.
+        We can add xhtml.xlink.attlist to the attribute group each element for which we want to
+        replace the XHTML link mechanism (and remove the XHTML linking attribute). 
+	</xs:documentation> 
+</xs:annotation>
+<!--
+
+-->
+<xs:complexType name="xhtml.xlink.attlist" >
+	<xs:attributeGroup ref="xlink:locatorTypeElement"/>
+</xs:complexType>
+<!--
+
+-->
+</xs:schema>

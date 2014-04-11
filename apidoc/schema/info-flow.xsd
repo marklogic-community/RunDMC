@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/appservices/infostudio/flow" xmlns:flow="http://marklogic.com/appservices/infostudio/flow">
+  <xs:element name="flow">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="flow:policy"/>
+        <xs:element ref="flow:collectors"/>
+        <xs:element ref="flow:transforms"/>
+      </xs:all>
+      <xs:attribute name="id" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="description" use="required"/>
+      <xs:attribute name="db-name" use="required"/>
+      <xs:attribute name="source-name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="policy">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="collectors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="flow:collector"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="collector">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="flow:config"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="uri" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="config" type="flow:any-element"/>
+  <xs:element name="transforms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="flow:transform"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transform">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="flow:config"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="uri" use="required"/>
+      <xs:attribute name="mode" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="active"/>
+            <xs:enumeration value="inactive"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <!-- TODO: distributors -->
+  <xs:complexType name="any-element">
+    <xs:sequence>
+      <xs:any processContents="skip"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

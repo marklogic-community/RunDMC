@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema	
+targetNamespace="http://www.w3.org/1999/xhtml"
+xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"  
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd"
+elementFormDefault="unqualified" 
+version="1.1"
+blockDefault="#all" 
+finalDefault="#all" 
+attributeFormDefault="unqualified">
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+			 This is the XML Schema Param Element module for XHTML
+			  Please use this formal public identifier to identify it:
+			  "-//W3C//ELEMENTS XHTML Param Element 1.0//EN"
+			
+			@author: Daniel Austin austin.d@ic.grainger.com
+			$Id: xhtml-param-1.xsd,v 1.2 2009-07-16 01:58:48 aagrawal Exp $
+  		</xs:documentation>
+		<xs:documentation source="xhtml-copyright-1.xsd"/>
+	</xs:annotation>
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+			Parameters for Java Applets and Embedded Objects
+			
+			* param
+			
+			This module provides declarations for the param element, 
+			used to provide named property values for the applet
+			and object elements. 
+		</xs:documentation>
+	</xs:annotation>
+<!--
+
+-->
+	<xs:attributeGroup name="param.attlist">
+		<xs:attributeGroup ref="id"/>
+		<xs:attribute name="name" type="Text"/>
+		<xs:attribute name="value" type="Text"/>
+		<xs:attribute name="valuetype" use="required" default="data">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="data"/>
+					<xs:enumeration value="ref"/>
+					<xs:enumeration value="object"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="type" type="ContentType"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:complexType name="param.type">
+		<xs:attributeGroup ref="param.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="param" type="param.type"/>
+<!--
+
+-->
+</xs:schema>

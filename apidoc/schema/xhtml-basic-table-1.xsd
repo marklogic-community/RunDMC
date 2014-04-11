@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.w3.org/1999/xhtml" 
+elementFormDefault="unqualified"
+attributeFormDefault="unqualified"
+blockDefault="#all" 
+finalDefault="#all"
+version="1.1"
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+<!--
+
+-->
+<xs:annotation>
+     <xs:documentation>
+        This is the XML Schema Basic Tables module for XHTML
+        Please use this formal public identifier to identify it:
+        "-//W3C//ELEMENTS XHTML Basic Tables 1.0//EN"
+        
+	    @author: Daniel Austin austin.d@ic.grainger.com
+		$Id: xhtml-basic-table-1.xsd,v 1.1 2002-08-12 09:17:19 cjl Exp $
+	</xs:documentation>
+	<xs:documentation source="xhtml-copyright-1.xsd"/>
+</xs:annotation>
+<!--
+
+-->
+<xs:annotation>
+     <xs:documentation>
+        Basic Tables
+    
+        * table, caption, tr, th, td
+    
+         This table module declares elements and attributes defining
+         a table model based fundamentally on features found in the
+         widely-deployed HTML 3.2 table model.  While this module
+         mimics the content model and table attributes of HTML 3.2
+         tables, the element types declared herein also includes all
+         HTML 4 common and most of the HTML 4 table attributes.
+    </xs:documentation>
+</xs:annotation>
+<!--
+
+-->
+	<xs:attributeGroup name="CellHAlign.attrib">
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="left"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="right"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:attributeGroup name="CellVAlign.attrib">
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="top"/>
+					<xs:enumeration value="middle"/>
+					<xs:enumeration value="bottom"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+<!-- 
+
+-->
+	<xs:attributeGroup name="scope.attrib">
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="row"/>
+					<xs:enumeration value="col"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:attributeGroup name="table.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attribute name="summary" type="Text"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:group name="table.content">
+		<xs:sequence>
+			<xs:element ref="caption" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="tr" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:group>
+<!--
+
+-->
+	<xs:complexType name="table.type" >
+		<xs:group ref="table.content"/>
+		<xs:attributeGroup ref="table.attlist"/>
+	</xs:complexType>
+	<xs:element name="table" type="table.type"/>
+<!--
+
+-->
+	<xs:attributeGroup name="caption.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attribute name="summary" type="Text"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:complexType name="caption.type" mixed="true" >
+		<xs:group ref="Inline.mix"/>
+		<xs:attributeGroup ref="caption.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="caption" type="caption.type"/>
+<!--
+
+-->
+	<xs:attributeGroup name="tr.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attributeGroup ref="CellHAlign.attrib"/>
+		<xs:attributeGroup ref="CellVAlign.attrib"/>
+
+	</xs:attributeGroup>
+<!--
+MH fixed: removed maxOccurs from group and put it in the use of the group
+-->
+	<xs:group name="tr.content">
+		<xs:choice>
+			<xs:element ref="th"/>
+			<xs:element ref="td"/>
+		</xs:choice>
+	</xs:group>
+<!--
+
+-->
+	<xs:complexType name="tr.type">
+		<xs:group ref="tr.content" maxOccurs="unbounded"/>
+		<xs:attributeGroup ref="tr.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="tr" type="tr.type"/>
+<!-- 
+
+-->
+	<xs:attributeGroup name="th.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attribute name="abbr" type="Text"/>
+		<xs:attribute name="axis" type="Text"/>
+		<xs:attribute name="headers" type="xs:IDREFS"/>
+		<xs:attributeGroup ref="scope.attrib"/>
+		<xs:attribute name="rowspan" type="Number" use="optional" default="1"/>
+		<xs:attribute name="colspan" type="Number" use="optional" default="1"/>
+		<xs:attributeGroup ref="CellHAlign.attrib"/>
+		<xs:attributeGroup ref="CellVAlign.attrib"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:complexType name="th.type" mixed="true">
+		<xs:group ref="FlowNoTable.mix"/>
+		<xs:attributeGroup ref="th.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="th" type="th.type"/>
+<!--
+
+-->
+	<xs:attributeGroup name="td.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attribute name="abbr" type="Text"/>
+		<xs:attribute name="axis" type="Text"/>
+		<xs:attribute name="headers" type="xs:IDREFS"/>
+		<xs:attributeGroup ref="scope.attrib"/>
+		<xs:attribute name="rowspan" type="Number" use="optional" default="1"/>
+		<xs:attribute name="colspan" type="Number" use="optional" default="1"/>
+		<xs:attributeGroup ref="CellHAlign.attrib"/>
+		<xs:attributeGroup ref="CellVAlign.attrib"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:complexType name="td.type" mixed="true">
+		<xs:group ref="FlowNoTable.mix"/>
+		<xs:attributeGroup ref="td.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="td" type="td.type"/>
+<!--
+
+-->
+</xs:schema>

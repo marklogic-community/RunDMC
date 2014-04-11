@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/xqutils/labels" xmlns:lbl="http://marklogic.com/xqutils/labels" xmlns:search="http://marklogic.com/appservices/search" xmlns:project="http://marklogic.com/appservices/project">
+  <xs:import namespace="http://marklogic.com/appservices/project" schemaLocation="build-project.xsd"/>
+  <xs:import namespace="http://marklogic.com/appservices/search" schemaLocation="search.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!--
+    Notice: The *.rnc are the normative human-edited versions
+    Do not directly edit the *.xsd versions, any changes will be lost when rebuilding
+    To rebuild, download trang from relaxng.org, and run
+    java -jar path/to/trang.jar filename.rnc filename.xsd
+  -->
+  <!-- Root element -->
+  <xs:element name="labels">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="lbl:label"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="label">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="lbl:value"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value">
+    <xs:complexType mixed="true">
+      <xs:attribute ref="xml:lang" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

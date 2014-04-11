@@ -1,0 +1,114 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/country"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/country"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:element name="code" type="code">
+    <xs:annotation>
+      <xs:documentation>
+        The country implementation code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="code">
+    <xs:annotation>
+      <xs:documentation>
+        A country implementation code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="name" type="name">
+    <xs:annotation>
+      <xs:documentation>
+  	The country name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="alternate-name" type="name">
+    <xs:annotation>
+      <xs:documentation>
+  	The country name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="name">
+    <xs:annotation>
+      <xs:documentation>
+        A country name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="country" type="country">
+    <xs:annotation>
+      <xs:documentation>
+  	The country.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="country">
+    <xs:annotation>
+      <xs:documentation>
+        A country configuration.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="code"/>
+      <xs:element ref="name"/>
+      <xs:element ref="alternate-name" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="countries" type="countries">
+    <xs:annotation>
+      <xs:documentation>
+  	The countrys defined.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="countries">
+    <xs:annotation>
+      <xs:documentation>
+        A set of defined countrys.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="country"/>
+    </xs:choice>
+  </xs:complexType>
+
+</xs:schema>

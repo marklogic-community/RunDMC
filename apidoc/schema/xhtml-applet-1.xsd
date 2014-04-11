@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" 
+elementFormDefault="unqualified"
+attributeFormDefault="unqualified" 
+blockDefault="#all" 
+finalDefault="#all" 
+version="1.1" 
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+
+			This is the XML Schema module for Java Applets in XHTML
+  			Please use this formal public identifier to identify it:
+           		 "-//W3C//ELEMENTS XHTML Java Applets 1.0//EN"
+
+			@author: Daniel Austin austin.d@ic.grainger.com
+			$Id: xhtml-applet-1.xsd,v 1.1 2002-08-12 09:17:19 cjl Exp $
+		</xs:documentation>
+		<xs:documentation source="xhtml-copyright-1.xsd"/>
+	</xs:annotation>
+<!--
+
+-->
+
+<xs:annotation>
+	<xs:documentation>
+	
+	 	Java Applets
+	
+	        * applet
+	
+	     This module declares the applet element type and its attributes, 
+	     used to provide support for Java applets. The 'alt' attribute 
+	     is now required (as it is on images). One of either code or 
+	     object attributes must be present. In the document, place param 
+	     elements before the object elements that require their content.
+	
+	     Note that use of this module requires instantiation of the 
+	     Param Element Module.
+	</xs:documentation>
+</xs:annotation>
+<!--
+
+-->
+	<xs:attributeGroup name="applet.attlist">
+		<xs:attributeGroup ref="Core.attrib"/>
+		<xs:attribute name="alt" type="Text"/>
+		<xs:attribute name="archive" type="URI"/>
+		<xs:attribute name="code" type="URI"/>
+		<xs:attribute name="codebase" type="URI"/>
+		<xs:attribute name="object" type="URI"/>
+		<xs:attribute name="width" type="Length"/>
+		<xs:attribute name="height" type="Length"/>
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:group name="applet.content">
+		<xs:choice>
+			<xs:element ref="param"/>
+			<xs:group ref="Flow.mix"/>
+		</xs:choice>
+	</xs:group>
+<!--
+
+-->
+	<xs:complexType name="applet.type">
+		<xs:group ref="applet.content" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:attributeGroup ref="applet.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="applet" type="applet.type"/>
+<!--
+
+-->
+</xs:schema>

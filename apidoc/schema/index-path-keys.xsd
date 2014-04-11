@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/indexpath"
+ xmlns="http://marklogic.com/indexpath"
+ xmlns:err="http://marklogic.com/xdmp/error"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ elementFormDefault="qualified">
+
+  <xs:import namespace="http://marklogic.com/xdmp/error" 
+             schemaLocation="error.xsd"/>
+  
+  <xs:element name="index-path-keys" type="index-path-keys"/>
+  <xs:complexType name="index-path-keys">
+  <xs:choice>
+    <xs:sequence>
+      <xs:element ref="path-expression"/>
+      <xs:element ref="path-expression-key"/>
+      <xs:element ref="path-leaf-keys"/>
+      <xs:element ref="reindexer-keys"/>
+    </xs:sequence>
+    <xs:element ref="index-path-error"/>
+  </xs:choice>
+  </xs:complexType>
+  
+  <xs:element name="path-expression" type="path-expression"/>
+  <xs:simpleType name="path-expression">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="path-expression-key" type="leafkeybase"/>
+  
+  <xs:element name="path-leaf-keys" type="path-leaf-keys"/>
+  <xs:complexType name="path-leaf-keys">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="path-leaf-key"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:element name="path-leaf-key" type="leafkey"/>
+  <xs:complexType name="leafkey">
+    <xs:simpleContent>
+      <xs:extension base="leafkeybase">
+        <xs:attribute name="type" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:element name="reindexer-keys" type="reindexer-keys"/>
+  <xs:complexType name="reindexer-keys">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="element-reindexer-key"/>
+      <xs:element ref="descendant-reindexer-key"/>
+      <xs:element ref="attribute-reindexer-key"/>
+    </xs:choice>
+  </xs:complexType>
+   
+  <xs:element name="element-reindexer-key" type="element-reindexer-key"/>
+  <xs:complexType name="element-reindexer-key">
+    <xs:simpleContent>
+      <xs:extension base="leafkeybase">
+      <xs:attribute name="element" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:element name="attribute-reindexer-key" type="attribute-reindexer-key"/>
+  <xs:complexType name="attribute-reindexer-key">
+    <xs:simpleContent>
+      <xs:extension base="leafkeybase">
+      <xs:attribute name="attribute" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:element name="descendant-reindexer-key" type="descendant-reindexer-key"/>
+  <xs:complexType name="descendant-reindexer-key">
+    <xs:simpleContent>
+      <xs:extension base="leafkeybase">
+        <xs:attribute name="descendant" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="leafkeybase">
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="index-path-error" type="xs:string"/>
+  
+</xs:schema>

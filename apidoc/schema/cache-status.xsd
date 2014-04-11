@@ -1,0 +1,427 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/status/cache"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/status/cache"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:hst="http://marklogic.com/xdmp/hosts">
+ 
+  <xs:simpleType name="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        Host-Id
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="host-name">
+    <xs:annotation>
+      <xs:documentation>
+        Host Name
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="host-name" 
+              type="host-name">
+    <xs:annotation>
+      <xs:documentation>
+        The name of host.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="host-id" 
+              type="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        The id of host.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="memory-size">
+    <xs:annotation>
+      <xs:documentation>
+        A number of megabytes of memory.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        A percentage.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:float">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="partition-size" type="memory-size">
+    <xs:annotation>
+      <xs:documentation>
+        The size of a cache partition, in megabytes.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="partition-table" type="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        The percentage of the table for a cache partition 
+	that is currently used.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="partition-busy" type="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        The percentage of the space in a cache partition 
+	that is currently used and cannot be freed.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="partition-used" type="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        The percentage of the space in a cache partition 
+	that is currently used.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="partition-free" type="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        The percentage of the space in a cache partition 
+	that is currently free.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="partition-overhead" type="percentage">
+    <xs:annotation>
+      <xs:documentation>
+        The percentage of the space in a cache partition 
+	that is currently overhead.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="compressed-tree-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        A compressed-tree cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="partition-size"/>
+      <xs:element ref="partition-table"/>
+      <xs:element ref="partition-used"/>
+      <xs:element ref="partition-free"/>
+      <xs:element ref="partition-overhead"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="compressed-tree-cache-partition" 
+              type="compressed-tree-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        The compressed-tree cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="compressed-tree-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        A sequence of compressed-tree cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="compressed-tree-cache-partition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="compressed-tree-cache-partitions" 
+              type="compressed-tree-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        The compressed-tree cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="expanded-tree-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        A expanded-tree cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="partition-size"/>
+      <xs:element ref="partition-table"/>
+      <xs:element ref="partition-busy"/>
+      <xs:element ref="partition-used"/>
+      <xs:element ref="partition-free"/>
+      <xs:element ref="partition-overhead"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="expanded-tree-cache-partition" 
+              type="expanded-tree-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        The expanded-tree cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="expanded-tree-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        A sequence of expanded-tree cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="expanded-tree-cache-partition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="expanded-tree-cache-partitions" 
+              type="expanded-tree-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        The expanded-tree cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="list-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        A list cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="partition-size"/>
+      <xs:element ref="partition-table"/>
+      <xs:element ref="partition-busy"/>
+      <xs:element ref="partition-used"/>
+      <xs:element ref="partition-free"/>
+      <xs:element ref="partition-overhead"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="list-cache-partition" type="list-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        The list cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="list-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        A sequence of list cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="list-cache-partition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="list-cache-partitions" type="list-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        The list cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="triple-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        A triple cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="partition-size"/>
+      <xs:element ref="partition-busy"/>
+      <xs:element ref="partition-used"/>
+      <xs:element ref="partition-free"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="triple-cache-partition" type="triple-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        The triple cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="triple-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        A sequence of triple cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="triple-cache-partition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="triple-cache-partitions" type="triple-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        The triple cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="triple-value-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        A triple value cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="partition-size"/>
+      <xs:element ref="partition-busy"/>
+      <xs:element ref="partition-used"/>
+      <xs:element ref="partition-free"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="triple-value-cache-partition" type="triple-value-cache-partition">
+    <xs:annotation>
+      <xs:documentation>
+        The triple value cache partition.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="triple-value-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        A sequence of triple value cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="triple-value-cache-partition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="triple-value-cache-partitions" type="triple-value-cache-partitions">
+    <xs:annotation>
+      <xs:documentation>
+        The triple value cache partitions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="cache-status">
+    <xs:annotation>
+      <xs:documentation>
+        A cache status element.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="host-id" minOccurs="1" maxOccurs="1"/>     
+      <xs:element ref="host-name" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="compressed-tree-cache-partitions" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="expanded-tree-cache-partitions" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="list-cache-partitions" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="triple-cache-partitions" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="triple-value-cache-partitions" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="cache-status" type="cache-status">
+    <xs:annotation>
+      <xs:documentation>
+  	The status of the caches.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

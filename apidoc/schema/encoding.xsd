@@ -1,0 +1,103 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:encoding-language-detect"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ elementFormDefault="qualified"
+ xmlns="xdmp:encoding-language-detect"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xdmp="http://marklogic.com/xdmp"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:element name="encoding" type="encoding">
+    <xs:annotation>
+      <xs:documentation>
+        The encoding.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="encoding">
+    <xs:annotation>
+      <xs:documentation>
+        The encoding.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="language" type="language">
+    <xs:annotation>
+      <xs:documentation>
+        English name of the language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="language">
+    <xs:annotation>
+      <xs:documentation>
+        English name of the language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="score" type="score">
+    <xs:annotation>
+      <xs:documentation>
+        Score for encoding-language pair.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="score">
+    <xs:annotation>
+      <xs:documentation>
+        Score for encoding-language pair.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:double"/>
+  </xs:simpleType>
+
+  <xs:complexType name="encoding-language">
+    <xs:annotation>
+      <xs:documentation>
+        Container for an encoding, language, score triple.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice> 
+      <xs:element name="encoding" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="language" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="score" type="xs:double" minOccurs="1" maxOccurs="1"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="encoding-language" type="encoding-language">
+    <xs:annotation>
+      <xs:documentation>
+        Container for an encoding, language, score triple.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

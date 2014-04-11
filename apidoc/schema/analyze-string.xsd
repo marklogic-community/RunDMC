@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.w3.org/2005/xpath-functions"
+    xmlns="http://www.w3.org/2005/xpath-functions"
+    elementFormDefault="qualified"> 
+
+    <xs:element name="analyze-string-result" type="result-type"/>
+    <xs:element name="match" type="match-type"/>
+    <xs:element name="non-match" type="xs:string"/>
+    <xs:element name="group" type="group-type"/>
+    
+    <xs:complexType name="result-type" mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="match"/>
+            <xs:element ref="non-match"/>
+        </xs:choice>
+    </xs:complexType>
+        
+    <xs:complexType name="match-type" mixed="true">
+        <xs:sequence>
+            <xs:element ref="group" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="group-type" mixed="true">
+        <xs:sequence>
+            <xs:element ref="group" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="nr" type="xs:positiveInteger"/>
+    </xs:complexType>    
+ 
+</xs:schema>

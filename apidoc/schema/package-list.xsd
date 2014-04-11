@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:list="http://marklogic.com/manage/package/list"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+           elementFormDefault="qualified"
+           targetNamespace="http://marklogic.com/manage/package/list">
+
+  <xs:annotation>
+    <xs:documentation>
+      Packaging list results schema.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:complexType name="packageList">
+    <xs:annotation>
+      <xs:documentation>
+        A list of packages.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="package-name" type="xs:string"
+                  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="start" type="xs:unsignedLong"/>
+    <xs:attribute name="page-length" type="xs:unsignedLong"/>
+    <xs:attribute name="total" type="xs:unsignedLong"/>
+  </xs:complexType>
+
+  <xs:element name="package-list" type="list:packageList">
+    <xs:annotation>
+      <xs:documentation>
+        The list of packages.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="databaseList">
+    <xs:annotation>
+      <xs:documentation>
+        A list of databases.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="list:database"/>
+    </xs:sequence>
+    <xs:attribute name="start" type="xs:unsignedLong"/>
+    <xs:attribute name="page-length" type="xs:unsignedLong"/>
+    <xs:attribute name="total" type="xs:unsignedLong"/>
+  </xs:complexType>
+
+  <xs:complexType name="databaseElement">
+    <xs:annotation>
+      <xs:documentation>
+        A database.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="database-name" type="xs:string"/>
+      <xs:element name="module-path" type="xs:string"
+                  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="database-list" type="list:databaseList">
+    <xs:annotation>
+      <xs:documentation>
+        The list of databases.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="database" type="list:databaseElement">
+    <xs:annotation>
+      <xs:documentation>
+        One of the databases in a list.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="serverList">
+    <xs:annotation>
+      <xs:documentation>
+        A list of servers.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="list:server"/>
+    </xs:sequence>
+    <xs:attribute name="start" type="xs:unsignedLong"/>
+    <xs:attribute name="page-length" type="xs:unsignedLong"/>
+    <xs:attribute name="total" type="xs:unsignedLong"/>
+  </xs:complexType>
+
+  <xs:complexType name="serverElement">
+    <xs:annotation>
+      <xs:documentation>
+        A server.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="server-group" type="xs:string"/>
+      <xs:element name="server-name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="server-list" type="list:serverList">
+    <xs:annotation>
+      <xs:documentation>
+        The list of servers.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="server" type="list:serverElement">
+    <xs:annotation>
+      <xs:documentation>
+        One of the servers in a list.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

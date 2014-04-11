@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/xdmp/usage-meters" xmlns:meters="http://marklogic.com/xdmp/meters" xmlns:u="http://marklogic.com/xdmp/usage-meters">
+  
+  <xs:element name="meter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="start-time" type="xs:dateTime"/>
+        <xs:element name="end-time" type="xs:dateTime"/>
+        <xs:element ref="u:cluster-id"/>
+        <xs:element ref="u:host-id"/>
+        <xs:element ref="u:group-id"/>
+        <xs:element ref="u:cluster-name"/>
+        <xs:element ref="u:host-name"/>
+        <xs:element ref="u:group-name"/>
+        
+        <xs:element ref="u:architecture"/>
+        <xs:element ref="u:platform"/>
+        <xs:element ref="u:license-key"/>
+        <xs:element ref="u:cpus"/>
+        <xs:element ref="u:cores"/>
+        <xs:element ref="u:core-threads"/>
+        <xs:element ref="u:edition"/>
+        <xs:element ref="u:host-size"/>
+        <xs:element ref="u:host-large-data-size"/>
+        <xs:element ref="u:memory-size"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cluster-id" type="xs:unsignedLong"/>
+  <xs:element name="host-id" type="xs:unsignedLong"/>
+  <xs:element name="host-name" type="xs:string"/>
+  <xs:element name="cluster-name" type="xs:string"/>
+  <xs:element name="group-name" type="xs:string"/>
+  <xs:element name="group-id" type="xs:unsignedLong"/>
+  <xs:element name="architecture" type="xs:string"/>
+  <xs:element name="platform" type="xs:string"/>
+  <xs:element name="license-key" type="xs:string"/>
+  <xs:element name="cpus" type="xs:unsignedLong"/>
+  <xs:element name="cores" type="xs:unsignedLong"/>
+  <xs:element name="core-threads" type="xs:unsignedLong"/>
+  <xs:element name="edition" type="xs:string"/>
+  <xs:element name="host-size" type="xs:unsignedLong"/>
+  <xs:element name="host-large-data-size" type="xs:unsignedLong"/>
+  <xs:element name="memory-size" type="xs:unsignedLong"/>
+</xs:schema>

@@ -1,0 +1,460 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/debug"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/debug"
+ xmlns:err="http://marklogic.com/xdmp/error"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <?xdmp-annotations?>
+
+  <xs:import namespace="http://marklogic.com/xdmp/error" schemaLocation="error.xsd"/>
+
+  <xs:simpleType name="request-id">
+    <xs:annotation>
+      <xs:documentation>
+        A request identifier.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-id" type="request-id">
+    <xs:annotation>
+      <xs:documentation>
+        The request ID.
+      </xs:documentation>
+      <xs:appinfo>
+	<admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="server-id">
+    <xs:annotation>
+      <xs:documentation>
+        A server id.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="server-id" type="server-id">
+    <xs:annotation>
+      <xs:documentation>
+        The server id.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="request-status">
+    <xs:annotation>
+      <xs:documentation>
+        A request's status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-status" type="request-status">
+    <xs:annotation>
+      <xs:documentation>
+        The status of the request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="debugging-status">
+    <xs:annotation>
+      <xs:documentation>
+        A request's debugging status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="debugging-status" type="debugging-status">
+    <xs:annotation>
+      <xs:documentation>
+        The debugging status of the request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="expr-id">
+    <xs:annotation>
+      <xs:documentation>
+        An expression identifier.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="expr-id" type="expr-id">
+    <xs:annotation>
+      <xs:documentation>
+        The expression id.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="stmt-id">
+    <xs:annotation>
+      <xs:documentation>
+        An statement identifier.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="stmt-id" type="stmt-id">
+    <xs:annotation>
+      <xs:documentation>
+        The statement id.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="where-stopped">
+    <xs:annotation>
+      <xs:documentation>
+        Where in an expression a request is stopped.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="begin"/>
+      <xs:enumeration value="end"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="where-stopped" type="where-stopped">
+    <xs:annotation>
+      <xs:documentation>
+        Where the request is topped.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="uri">
+    <xs:annotation>
+      <xs:documentation>
+        Document URI containing expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="uri" type="uri">
+    <xs:annotation>
+      <xs:documentation>
+        The URI of the document that contains the expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="expr-source">
+    <xs:annotation>
+      <xs:documentation>
+        A serialization of an expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="expr-source" type="expr-source">
+    <xs:annotation>
+      <xs:documentation>
+        The serialization of the expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="line">
+    <xs:annotation>
+      <xs:documentation>
+        A line number associated with an expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="line" type="line">
+    <xs:annotation>
+      <xs:documentation>
+        The line number associated with the expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="column" type="line">
+    <xs:annotation>
+      <xs:documentation>
+        The column number associated with the expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="statement">
+    <xs:annotation>
+      <xs:documentation>
+        A statement position.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="statement" type="statement">
+    <xs:annotation>
+      <xs:documentation>
+        The position of a statement within a program.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="request">
+    <xs:annotation>
+      <xs:documentation>
+        A request status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="request-id"/>
+      <xs:element ref="server-id"/>
+      <xs:element ref="request-status"/>
+      <xs:element ref="stmt-id"/>
+      <xs:element ref="debugging-status"/>
+      <xs:element ref="expr-id" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="where-stopped" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="err:error" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="request" type="request">
+    <xs:annotation>
+      <xs:documentation>
+        The request status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="requests">
+    <xs:annotation>
+      <xs:documentation>
+        A set of request status elements.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="request"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="requests" type="requests">
+    <xs:annotation>
+      <xs:documentation>
+        The set of request status elements.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+
+  <xs:complexType name="stack">
+    <xs:annotation>
+      <xs:documentation>
+        A request stack.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="expr"/>
+      <xs:element ref="frame" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="stack" type="stack">
+    <xs:annotation>
+      <xs:documentation>
+        The request stack.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="expr">
+    <xs:annotation>
+      <xs:documentation>
+        An expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="expr-id"/>
+      <xs:element ref="expr-source"/>
+      <xs:element ref="uri"/>
+      <xs:element ref="line"/>
+      <xs:element ref="column"/>
+      <xs:element ref="statements"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="expr" type="expr">
+    <xs:annotation>
+      <xs:documentation>
+        The expression.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="statements">
+    <xs:annotation>
+      <xs:documentation>
+        A set of statement positions.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="statement"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="statements" type="statements">
+    <xs:annotation>
+      <xs:documentation>
+        The positions of statements in a program.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="operation" type="xs:string"/>
+
+  <xs:element name="name" type="xs:QName"/>
+
+  <xs:element name="prefix" type="xs:string"/>
+
+  <xs:element name="value" type="xs:string"/>
+
+  <xs:complexType name="variable">
+    <xs:all>
+      <xs:element ref="name"/>
+      <xs:element ref="prefix"/>
+      <xs:element ref="value"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="variable" type="variable"/>
+  <xs:element name="global-variable" type="variable"/>
+  <xs:element name="external-variable" type="variable"/>
+
+  <xs:complexType name="variables">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="variable"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="global-variables">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="global-variable"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="external-variables">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="external-variable"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="variables" type="variables"/>
+  <xs:element name="global-variables" type="global-variables"/>
+  <xs:element name="external-variables" type="external-variables"/>
+
+  <xs:element name="context-item" type="xs:string"/>
+
+  <xs:element name="context-position" type="xs:unsignedInt"/>
+
+  <xs:complexType name="frame">
+    <xs:all>
+      <xs:element ref="uri"/>
+      <xs:element ref="line"/>
+      <xs:element ref="column"/>
+      <xs:element ref="operation"/>
+      <xs:element ref="global-variables"/>
+      <xs:element ref="external-variables"/>
+      <xs:element ref="variables"/>
+      <xs:element ref="context-item"/>
+      <xs:element ref="context-position"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="frame" type="frame"/>
+
+</xs:schema>

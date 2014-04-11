@@ -1,0 +1,42 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:merge"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ elementFormDefault="qualified"
+ xmlns="xdmp:merge"
+ xmlns:xdmp="http://marklogic.com/xdmp"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="merge-priority">
+    <xs:annotation>
+      <xs:documentation>
+	A CPU scheduler priority for merges.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="lower"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="forests">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="forest" type="xs:unsignedLong"/>
+    </xs:choice>
+  </xs:complexType>
+
+   <xs:element name="options">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="merge-timestamp" type="xs:long"/>
+        <xs:element name="merge-max-size" type="xs:unsignedInt"/>
+        <xs:element name="merge-priority" type="merge-priority"/>
+	<xs:element name="stand-merge" type="xs:boolean"/>
+        <xs:element name="forests" type="forests"/>
+      </xs:choice>    
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

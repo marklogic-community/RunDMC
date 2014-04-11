@@ -1,0 +1,339 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/hosts"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd
+                     http://marklogic.com/xdmp/admin admin.xsd
+                     http://www.w3.org/1999/xhtml xhtml-inlstyle-1.xsd"
+ xmlns="http://marklogic.com/xdmp/hosts"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml" >
+
+  <?xdmp-annotations?>
+
+  <xs:annotation>
+    <xs:documentation>
+      Hosts configuration file schema.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:simpleType name="port">
+    <xs:annotation>
+      <xs:documentation>
+        An integer internet port number, min 1, max 65534.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="65534"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="connect-port" type="port">
+    <xs:annotation>
+      <xs:documentation>
+        The distributed protocol client socket connect internet port number.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+        <admin:cold/>
+        <admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="bind-port" type="port">
+    <xs:annotation>
+      <xs:documentation>
+        The distributed protocol server socket bind internet port number.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <span style="color:#800000">bind port</span> specifies the port on 
+          which the server listens for inter-host communication.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="foreign-connect-port" type="port">
+    <xs:annotation>
+      <xs:documentation>
+        The distributed protocol client socket connect internet port number.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>7998</admin:default>
+        <admin:cold/>
+        <admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="foreign-bind-port" type="port">
+    <xs:annotation>
+      <xs:documentation>
+        The distributed protocol server socket bind internet port number.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>7998</admin:default>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <span style="color:#800000">foreign bind port</span> specifies the 
+          port on which the server listens for foreign inter-host 
+          communication.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="host-name">
+    <xs:annotation>
+      <xs:documentation>
+        The name of the Host
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^ ].*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="host-name" type="host-name">
+    <xs:annotation>
+      <xs:documentation>
+        The internet host name.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <span style="color:#800000">host name</span> 
+          specifies the name of the host.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        A host unique id (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="host-id" type="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        The unique key of a host.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+        <admin:default>xdmp:random()</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="group-id">
+    <xs:annotation>
+      <xs:documentation>
+        A group unique id (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="group" type="group-id">
+    <xs:annotation>
+      <xs:documentation>
+        The group the host belongs to.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:select>group</admin:select>
+        <admin:optional>false</admin:optional>
+        <admin:default>0</admin:default>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <span style="color:#800000">group</span> 
+          specifies the group to which the host belongs.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:complexType name="ssl-certificate" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="file" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="ssl-certificate" type="ssl-certificate">
+    <xs:annotation>
+      <xs:documentation>
+        The PEM encoded certificate for the host. If the 'file' attribute is
+        present, it is a file containing the PEM encoded certificate.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>    
+  </xs:element>
+  
+   <xs:simpleType name="zone">
+    <xs:annotation>
+      <xs:documentation>
+        Zone the host belongs to.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="zone" type="zone">
+    <xs:annotation>
+      <xs:documentation>
+        Zone the host belongs to.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+        <admin:optional>true</admin:optional>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <span style="color:#800000">zone</span> 
+          specifies the zone of the host.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="host">
+    <xs:annotation>
+      <xs:documentation>
+        The host specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="host-id"/>
+      <xs:element ref="host-name"/>
+      <xs:element ref="group"/>
+      <xs:element ref="bind-port"/>
+      <xs:element ref="connect-port"/>
+      <xs:element ref="foreign-bind-port"/>
+      <xs:element ref="foreign-connect-port"/>
+      <xs:element ref="ssl-certificate"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="zone"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="host" type="host">
+    <xs:annotation>
+      <xs:documentation>
+        The host specification.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <hr class="control-line" size="1"/><br/>
+          <img src="images/varspace.gif" alt="" width="20" height="1"
+          />Host Configuration Help<br/><br/>
+          <hr class="control-line" size="1"/>
+          </span>
+          <span class="help-text">
+          <p>A <span style="color:#800000">Host</span> is an
+          instance of MarkLogic Server.</p></span>
+        </admin:help>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <hr class="control-line" size="1"/>
+          <span class="help-text"><p>Buttons and Tabs:</p></span>
+          <ul>
+  	    <li><span class="help-text">The 
+            <span style="color:#800000">leave</span> 
+            button on the host configuration screen only appears if the 
+	    Admin Interface is connected to that host.  Clicking the leave 
+            button will separate the host from the cluster.</span></li>
+	    <ul>
+              <li><span class="help-text">In a multi-host cluster, 
+              a host cannot leave the cluster if there are still forests 
+	      assigned to it or if there are any foreign clusters 
+	      associated with it. </span></li>
+	      <li><span class="help-text">In a single-host cluster, a host  
+              cannot leave the cluster.  </span></li>
+            </ul>
+	    <li><span class="help-text">The 
+            <span style="color:#800000">Status</span> 
+            tab displays current information for the specified host.</span></li>
+          </ul>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="hosts">
+    <xs:annotation>
+      <xs:documentation>
+        The host server specifications.
+        The host manages application servers and/or forests.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="host"/>
+    </xs:choice>
+    <xs:attribute name="timestamp" type="xs:unsignedLong" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="hosts" type="hosts">
+    <xs:annotation>
+      <xs:documentation>
+        The Host specifications.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+          <hr class="control-line" size="1"/><br/>
+          <img src="images/varspace.gif" alt="" width="20" height="1"
+          />Group Host Configuration Help<br/><br/>
+          <hr class="control-line" size="1"/>
+          </span>
+          <span class="help-text">A <span style="color:#800000">Host</span> 
+          is an instance of MarkLogic Server. A 
+          <span style="color:#800000">Group</span> 
+          is a set of similarly configured hosts.
+          <ul>
+          <li>Configurations are set at the group level and applied to 
+          all hosts within the group.</li>
+          <li>Clicking on a host from the Configure tab navigates to that 
+          host's admin page, where you can change group membership.</li>
+          </ul></span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>
