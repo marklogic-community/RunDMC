@@ -14,6 +14,7 @@ function toc_init() {
     $("#config-filter").keyup(function(e) {
         currentFilterText = $(this).val();
 
+        // TODO what about a confirmation alert?
         if (e.which == 13) // Enter key pressed
             window.location = "/do-do-search?q=" + $(this).val();
 
@@ -23,7 +24,7 @@ function toc_init() {
 
         setTimeout(function() {
             if (previousFilterText !== currentFilterText) {
-                console.log("toc filter event", currentFilterText);
+                //console.log("toc filter event", currentFilterText);
                 _gaq.push(['_trackEvent',
                            'Docs Tab',
                            'Filter', currentFilterText]);
@@ -58,14 +59,27 @@ function toc_init() {
 
         // Set up the TOC.
         // TODO hack this should autosize but does not.
-        // The extra 35 are necessary to scroll all the way to the bottom.
+        // The extra 35px are necessary to scroll all the way to the bottom.
         var scrollableContainer = $('.scrollable_section');
         scrollableContainer.height($("#splitter").height() - 35);
-        console.log("toc_init scrollable height", scrollableContainer.height());
+        //console.log("toc_init scrollable height", scrollableContainer.height());
 
         // If this was a deep link, load and scroll.
         updateTocForTab();
     });
+}
+
+// This logic is essentially duplicated from the treeview plugin...bad, I know
+function expandSubTree(li) {
+  if (li.children().is("ul")) {
+    li.removeClass("expandable").addClass("collapsible");//.addClass("open");
+    if (li.is(".lastExpandable"))
+      li.removeClass("lastExpandable").addClass("lastCollapsible");
+    li.children("div").removeClass("expandable-hitarea").addClass("collapsible-hitarea");
+    if (li.is(".lastExpandable-hitarea"))
+      li.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsible-hitarea");
+    li.children("ul").css("display","block");
+  }
 }
 
 function filterConfigDetails(text, treeSelector) {
@@ -98,7 +112,6 @@ var waitToSearch = function(text, tocRoot) {
   else
     setTimeout(function(){ waitToSearch(text, tocRoot) }, 350);
 }
-
     
 function searchTOC(filter, tocRoot) {
     tocRoot.find("li").each(function() {
@@ -134,73 +147,17 @@ function searchTOC(filter, tocRoot) {
     if (filter == '') scrollTOC(); // re-orient the TOC after done searching
 }
 
-// This logic is essentially duplicated from the treeview plugin...bad, I know
-function expandSubTree(li) {
-  if (li.children().is("ul")) {
-    li.removeClass("expandable").addClass("collapsable");//.addClass("open");
-    if (li.is(".lastExpandable"))
-      li.removeClass("lastExpandable").addClass("lastCollapsable");
-    li.children("div").removeClass("expandable-hitarea").addClass("collapsable-hitarea");
-    if (li.is(".lastExpandable-hitarea"))
-      li.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsable-hitarea");
-    li.children("ul").css("display","block");
-  }
-}
-
-function collapseSubTree(li) {
-  if (li.children().is("ul")) {
-    li.removeClass("collapsable").addClass("expandable");//.addClass("open");
-    if (li.is(".lastCollapsable"))
-      li.removeClass("lastCollapsable").addClass("lastExpandable");
-    li.children("div").removeClass("collapsable-hitarea").addClass("expandable-hitarea");
-    if (li.is(".lastCollapsable-hitarea"))
-      li.children("div").removeClass("lastCollapsable-hitarea").addClass("lastExpandable-hitarea");
-    li.children("ul").css("display","none");
-  }
-}
-
-
-/* These functions implement the expand/collapse buttons */
-function shallowExpandAll(ul) {
-  ul.children("li").each(function(index) {
-    loadTocSection(index, this);
-    expandSubTree($(this));
-  });
-}
-
-function shallowCollapseAll(ul) {
-  ul.children("li").each(function(index) {
-    collapseSubTree($(this));
-  });
-}
-
-function expandAll(ul) {
-  shallowExpandAll(ul);
-  if (ul.children("li").children().is("ul"))
-    ul.children("li").children("ul").each(function() {
-      expandAll($(this));
-    });
-}
-
-function collapseAll(ul) {
-  shallowCollapseAll(ul);
-  if (ul.children("li").children().is("ul"))
-    ul.children("li").children("ul").each(function() {
-      collapseAll($(this));
-    });
-}
-
-
-
 function loadAllSubSections(tocRoot) {
-  if (!tocRoot.hasClass("startedLoading")) {
-    tocRoot.find(".hasChildren").each(loadTocSection);
-    tocRoot.addClass("startedLoading");
-  }
+  //console.log('loadAllSubSections', tocRoot);
+  if (tocRoot.hasClass("startedLoading")) return;
+
+  tocRoot.find(".hasChildren").each(loadTocSection);
+  tocRoot.addClass("startedLoading");
 }
 
 // We may ignore index, but it's necessary as part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
+  //console.log("loadTocSection", index, tocSection);
   var $tocSection = $(tocSection);
   if ($tocSection.hasClass("hasChildren"))
     $tocSection.find(".hitarea").trigger("click");
@@ -209,17 +166,17 @@ function loadTocSection(index, tocSection) {
 
 // Called only from updateTocForTab
 function waitToShowInTOC(tocSection) {
-  console.log("waitToShowInTOC", tocSection);
+  //console.log("waitToShowInTOC", tocSection);
 
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
   if (tocSection.hasClass("loaded")) {
-    console.log("waitToShowInTOC loaded", tocSection);
+    //console.log("waitToShowInTOC loaded", tocSection);
 
     clearTimeout(waitToShowInTOC);
 
     var currentHref = location.href.toLowerCase();
-    console.log("waitToShowInTOC", tocSection, "currentHref=" + currentHref);
+    //console.log("waitToShowInTOC", tocSection, "currentHref=" + currentHref);
     var stripChapterFragment = isUserGuide && currentHref.indexOf("#") == -1;
 
     var locationHref = location.href.toLowerCase();
@@ -234,7 +191,7 @@ function waitToShowInTOC(tocSection) {
     // E.g., when hitting the Back button and reaching "All functions"
     $("#api_sub a.selected").removeClass("selected");
 
-    console.log("waitToShowInTOC found", current.length, current);
+    //console.log("waitToShowInTOC found", current.length, current);
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
@@ -244,7 +201,7 @@ function waitToShowInTOC(tocSection) {
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-      console.log("waitToShowInTOC calling showInTOC as fallback.");
+      //console.log("waitToShowInTOC calling showInTOC as fallback.");
       showInTOC($("#api_sub a.currentPage"))
     }
   }
@@ -256,6 +213,7 @@ function waitToShowInTOC(tocSection) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
+  //console.log('updateTocForUrlFragment', pathname, hash);
   // Only let fragment links update the TOC when this is a user guide
   if (isUserGuide) {
     // IE doesn't include the "/" at the beginning of the pathname...
@@ -268,12 +226,11 @@ function updateTocForUrlFragment(pathname, hash) {
   }
 }
 
-
 // Expands and loads (if necessary) the part of the TOC containing the given link
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-  console.log("showInTOC", a);
+  //console.log("showInTOC", a);
   $("#api_sub a.selected").removeClass("selected");
   $("#api_sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
 
@@ -289,9 +246,6 @@ function showInTOC(a) {
   scrollTOC();
 }
 
-
-var functionsPanelId = "tabs-1";
-var categoriesPanelId = "tabs-2";
 var functionPanelIndex = 0;
 var categoriesPanelIndex = 1;
 
@@ -306,9 +260,7 @@ function toggleFunctionsView(input) {
 // Called at init and whenever a tab changes.
 // functionPageBucketId and tocSectionLinkSelector are from apidoc/view/page.xsl
 function updateTocForTab() {
-  console.log("updateTocForTab",
-              functionPageBucketId,
-              tocSectionLinkSelector);
+  //console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector);
 
   if (!functionPageBucketId) return console.log(
       'no functionPageBucketId!');
@@ -317,14 +269,10 @@ function updateTocForTab() {
 
   var tocSectionLink = $(tocSectionLinkSelector);
   var tocSection = tocSectionLink.parent();
-  console.log("updateTocForTab",
-              functionPageBucketId,
-              tocSectionLinkSelector,
-              tocSectionLink,
-              tocSection);
+  //console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector, tocSectionLink, tocSection);
   if (!tocSection.length) return;
 
-  console.log("updateTocForTab loading to", tocSection);
+  //console.log("updateTocForTab loading to", tocSection);
   loadTocSection(0, tocSection);
   waitToShowInTOC(tocSection);
 }
@@ -365,12 +313,12 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
-  console.log("scrollTOC");
+  //console.log("scrollTOC");
   var scrollTo = $('#api_sub a.selected').filter(':visible');
-  console.log("scrollTOC scrollTo", scrollTo);
+  //console.log("scrollTOC scrollTo", scrollTo);
   scrollTo.each(function() {
     var scrollableContainer = $(this).parents('.scrollable_section');
-    console.log("scrollTOC", scrollableContainer);
+    //console.log("scrollTOC", scrollableContainer);
     var container = $(this).parents('.treeview'),
         extra = 120,
         currentTop = container.scrollTop(),
@@ -426,7 +374,7 @@ function formatFilterBoxes(filterBoxes) {
 }
 
 function splitterMouseUp(evt) {
-    // console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
+    //console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("moving", false);
     $(document).off('mouseup', null, splitterMouseUp);
     $(document).off('mousemove', null, splitterMouseMove);

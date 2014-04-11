@@ -347,6 +347,12 @@ a.sectionLink:hover { color: #235BAB; }
     text-decoration: none;
     cursor: default;
 }
+.selected {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+}
 #api_sub .ui-widget {font-size: 1em;}
 #api_sub .ui-tabs .ui-tabs-panel {
     padding: 0;

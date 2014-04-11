@@ -65,9 +65,9 @@
              class="pjax_enabled">
           <ul id="apidoc_tree" class="treeview">
             <li id="AllDocumentation"
-                class="hasChildren collapsable lastCollapsable">
-              <div class="hitarea collapsable-hitarea
-                          lastCollapsable-hitarea"></div>
+                class="collapsible lastCollapsible">
+              <div class="hitarea collapsible-hitarea
+                          lastCollapsible-hitarea"></div>
               <a href="/" class="toc_root">All documentation</a>
               <ul>
                 <xsl:for-each select="* except toc:categories">
@@ -115,23 +115,27 @@
     <xsl:value-of select="@id"/>
   </xsl:template>
 
-
- <!-- yes, I know this is misspelled -->
- <xsl:template mode="class" priority="1"
-               match="node[@open]">collapsable</xsl:template>
+  <xsl:template mode="class" priority="1"
+               match="node[@open]">collapsible</xsl:template>
   <xsl:template mode="class"
                 match="node[node] ">expandable</xsl:template>
   <xsl:template mode="class"
                 match="node"/>
 
   <xsl:template mode="class-last" priority="2"
-                match="node[last()][@open] ">lastCollapsable</xsl:template>
+                match="node[empty((parent::toc:*|.)/following-sibling::*)][@open]">
+    lastCollapsible
+  </xsl:template>
   <xsl:template mode="class-last" priority="1"
-                match="node[last()][node]  ">lastExpandable</xsl:template>
+                match="node[empty((parent::toc:*|.)/following-sibling::*)][node]">
+    lastExpandable
+  </xsl:template>
   <xsl:template mode="class-last"
-                match="node[last()]        ">last</xsl:template>
-  <xsl:template mode="class-last"
-                match="node                "/>
+                match="node[empty((parent::toc:*|.)/following-sibling::*)]">
+    last
+  </xsl:template>
+  <!-- default -->
+  <xsl:template mode="class-last" match="node"/>
 
   <!-- Include on nodes that will be loaded asynchronously -->
   <xsl:template mode="class-hasChildren"
@@ -174,14 +178,18 @@
   </xsl:template>
 
   <xsl:template mode="hit-area-class"
-                match="node[@open]">hitarea collapsable-hitarea</xsl:template>
+                match="node[@open]">hitarea collapsible-hitarea</xsl:template>
   <xsl:template mode="hit-area-class"
                 match="node       ">hitarea expandable-hitarea</xsl:template>
 
   <xsl:template mode="hit-area-class-last" priority="1"
-                match="node[last()][@open]">lastCollapsable-hitarea</xsl:template>
+                match="node[empty((parent::toc:*|.)/following-sibling::*)][@open]">
+    lastCollapsible-hitarea
+  </xsl:template>
   <xsl:template mode="hit-area-class-last"
-                match="node[last()]       ">lastExpandable-hitarea</xsl:template>
+                match="node[empty((parent::toc:*|.)/following-sibling::*)]">
+    lastExpandable-hitarea
+  </xsl:template>
   <xsl:template mode="hit-area-class-last"
                 match="node               "/>
 

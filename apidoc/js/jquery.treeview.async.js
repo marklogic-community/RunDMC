@@ -17,6 +17,7 @@
 
 
 function load(settings, root, child, container) {
+//console.log("async.load", settings, root, child, container);
 	function createNode(parent) {
 		var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
 		if (this.classes) {
@@ -64,7 +65,9 @@ function load(settings, root, child, container) {
 	    }
      // EDL: START CHANGES
      // If there's an error, assume it's an old TOC part (or connectivity problem) and force a refresh
-     ,error: function() {
+     ,error: function(jqXHR, textStatus, errorThrown) {
+       console.log("jquery.treeview.async.error",
+                   jqXHR, textStatus, errorThrown);
        window.location.reload();
      }
      // EDL: END CHANGES

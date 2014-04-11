@@ -86,8 +86,8 @@
 						
 				// handle open ones
 				this.not(":has(>ul:hidden)")
-						.addClass(CLASSES.collapsable)
-						.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
+						.addClass(CLASSES.collapsible)
+						.replaceClass(CLASSES.last, CLASSES.lastCollapsible);
 						
 	            // create hitarea if not present
 				var hitarea = this.find("div." + CLASSES.hitarea);
@@ -134,7 +134,7 @@
 					};
 				}
 				// click on first element to collapse tree
-				$("a:eq(0)", control).click( handler(CLASSES.collapsable) );
+				$("a:eq(0)", control).click( handler(CLASSES.collapsible) );
 				// click on second to expand tree
 				$("a:eq(1)", control).click( handler(CLASSES.expandable) );
 				// click on third to toggle tree
@@ -147,12 +147,12 @@
 					.parent()
 					// swap classes for hitarea
 					.find(">.hitarea")
-						.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-						.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea )
+						.swapClass( CLASSES.collapsibleHitarea, CLASSES.expandableHitarea )
+						.swapClass( CLASSES.lastCollapsibleHitarea, CLASSES.lastExpandableHitarea )
 					.end()
 					// swap classes for parent li
-					.swapClass( CLASSES.collapsable, CLASSES.expandable )
-					.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
+					.swapClass( CLASSES.collapsible, CLASSES.expandable )
+					.swapClass( CLASSES.lastCollapsible, CLASSES.lastExpandable )
 					// find child lists
 					.find( ">ul" )
 					// toggle them
@@ -162,11 +162,11 @@
 						.siblings()
 						// swap classes for hitarea
 						.find(">.hitarea")
-							.replaceClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-							.replaceClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea )
+							.replaceClass( CLASSES.collapsibleHitarea, CLASSES.expandableHitarea )
+							.replaceClass( CLASSES.lastCollapsibleHitarea, CLASSES.lastExpandableHitarea )
 						.end()
-						.replaceClass( CLASSES.collapsable, CLASSES.expandable )
-						.replaceClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
+						.replaceClass( CLASSES.collapsible, CLASSES.expandable )
+						.replaceClass( CLASSES.lastCollapsible, CLASSES.lastExpandable )
 						.find( ">ul" )
 						.heightHide( settings.animated, settings.toggle );
 				}
@@ -223,11 +223,11 @@
 					if (settings.prerendered) {
 						// if prerendered is on, replicate the basic class swapping
 						items.filter("li")
-							.swapClass( CLASSES.collapsable, CLASSES.expandable )
-							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
+							.swapClass( CLASSES.collapsible, CLASSES.expandable )
+							.swapClass( CLASSES.lastCollapsible, CLASSES.lastExpandable )
 							.find(">.hitarea")
-								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea );
+								.swapClass( CLASSES.collapsibleHitarea, CLASSES.expandableHitarea )
+								.swapClass( CLASSES.lastCollapsibleHitarea, CLASSES.lastExpandableHitarea );
 					}
 				}
 				break;
@@ -254,10 +254,10 @@
 		expandable: "expandable",
 		expandableHitarea: "expandable-hitarea",
 		lastExpandableHitarea: "lastExpandable-hitarea",
-		collapsable: "collapsable",
-		collapsableHitarea: "collapsable-hitarea",
-		lastCollapsableHitarea: "lastCollapsable-hitarea",
-		lastCollapsable: "lastCollapsable",
+		collapsible: "collapsible",
+		collapsibleHitarea: "collapsible-hitarea",
+		lastCollapsibleHitarea: "lastCollapsible-hitarea",
+		lastCollapsible: "lastCollapsible",
 		lastExpandable: "lastExpandable",
 		last: "last",
 		hitarea: "hitarea"

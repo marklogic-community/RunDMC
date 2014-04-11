@@ -16,7 +16,8 @@ declare function local:save-url-location($toc-url, $toc-url-location) {
 };
 
 declare function local:save-rendered-toc($toc-url, $is-default-toc) {
-  xdmp:log(concat("Rendering the XML-based TOC to HTML at ",$toc-url,"...")),
+  xdmp:log(
+    text { "Rendering the XML-based TOC to HTML at", $toc-url, "..." }),
   xdmp:xslt-invoke(
     "render-toc.xsl",
     doc($setup:toc-xml-url) treat as node(),
@@ -63,3 +64,5 @@ text {
   "Rendered the HTML TOC(s) and recorded their URL(s) in ",
   xdmp:elapsed-time() },
 text { '' }
+
+(: apidoc/setup/render-toc.xqy :)
