@@ -13,6 +13,12 @@ declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
 declare namespace api ="http://marklogic.com/rundmc/api";
 
+(: Some code treats the view HTML as a data model.
+ : This is ugly, but needs a lot of fixing
+ : and probably benefits performance as it is.
+ :)
+declare namespace x="http://www.w3.org/1999/xhtml";
+
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $ml:Comments := fn:collection()/Comments; (: backed-up Disqus conversations :)
 
@@ -170,41 +176,48 @@ declare private function ml:matches-api-page($preferred-version as xs:string) {
   ))
 };
 
-declare function ml:get-matching-functions($name as xs:string, $version) as document-node()* {
-  xdmp:query-trace(fn:true()),
-
-  let $query := cts:and-query((
-                  cts:directory-query(fn:concat("/apidoc/",$version,"/")),
-                  cts:or-query((
-                    cts:element-attribute-value-query(
-                      xs:QName("api:function"),
-                      fn:QName("","name"),  (: matches just the local name :)
-                      $name,
-                      "exact"),
-                    cts:element-attribute-value-query(
-                      xs:QName("api:function"),
-                      fn:QName("","fullname"), (: matches the full name (with prefix) :)
-                      $name,
-                      "exact")
-                  ))
-                )),
-      $results := cts:search(fn:collection(), $query),
-      $preferred := ("fn","xdmp"),
-      $ordered := for $f in $results,
-                      $lib in $f/*/api:function[1]/@lib,
-                      $name in $f/*/api:function[1]/@name
-                  order by fn:index-of($preferred, $lib),
-                           $lib,
-                           $name
-                  return $f
-  return
-    $ordered,
-
-  xdmp:query-trace(fn:false())
+declare function ml:get-matching-functions(
+  $name as xs:string,
+  $version as xs:string)
+as document-node()*
+{
+  let $query := cts:and-query(
+    (cts:directory-query(fn:concat("/apidoc/",$version,"/")),
+      cts:or-query(
+        (cts:element-attribute-value-query(
+            xs:QName("api:function"),
+            fn:QName("","name"),  (: matches just the local name :)
+            $name,
+            "exact"),
+          cts:element-attribute-value-query(
+            xs:QName("api:function"),
+            fn:QName("","fullname"), (: matches the full name (with prefix) :)
+            $name,
+            "exact") )) ))
+  let $results := cts:search(fn:collection(), $query)
+  let $preferred := ("fn","xdmp")
+  return (
+    for $f in $results
+    for $lib in $f/*/api:function[1]/@lib
+    let $index := fn:index-of($preferred, $lib)
+    for $name in $f/*/api:function[1]/@name
+    order by $index, $lib, $name
+    return $f)
 };
 
-
-
+(: Look for a message guide section with the requested version and id.
+ : This does no checking of the version or id.
+ :)
+declare function ml:get-matching-message(
+  $id as xs:string,
+  $version as xs:string)
+as element(x:div)?
+{
+  xdmp:directory(
+    '/apidoc/'||$version||'/guide/messages/',
+    'infinity')
+  /chapter/x:div/x:div[x:a/@id = $id]
+};
 
 declare variable $server-versions               := u:get-doc("/config/server-versions.xml")/*/*:version/@number;
 declare variable $default-version as xs:string  := $ml:server-versions[../@default eq 'yes']/fn:string(.);
@@ -401,7 +414,7 @@ declare function lookup-articles($type as xs:string, $server-version as xs:strin
 {
   let $filtered-articles := $Articles[(($type  eq @type)        or fn:not($type))
                                 and   (($server-version =
-                                         server-version)        or fn:not($server-version) or 
+                                         server-version)        or fn:not($server-version) or
                                         ($allow-unversioned and fn:empty(server-version)))
                                 and   (($topic =  topics/topic) or fn:not($topic))]
   return
@@ -467,7 +480,7 @@ declare variable $pre-generated-location := if ($draft:public-docs-only)
    We no longer try to detect database changes but leave it up to the admin UI
    to call invalidate-navigation-cache. To manually invalidate, just delete
    public-navigation.xml and draft-navigation.xml
-:) 
+:)
 declare function get-cached-navigation()
 {
 let $pre-generated-navigation := fn:doc($pre-generated-location),
@@ -534,7 +547,7 @@ declare function get-meetup-upcoming($group as xs:string?)
 
     return
         for $m in $doc/*:meetup/*:upcoming-events/*:event
-        return 
+        return
         <ml:meetup>
             <ml:id>{$m/@*:id/fn:string()}</ml:id>
             <ml:title>{$m/@*:name/fn:string()}</ml:title>
@@ -565,7 +578,7 @@ declare function get-meetup-recent($group as xs:string?)
 
     return
         for $m in $doc/*:meetup/*:recent-events/*:event
-        return 
+        return
         <ml:meetup>
             <ml:id>{$m/@*:id/fn:string()}</ml:id>
             <ml:title>{$m/@*:name/fn:string()}</ml:title>
@@ -596,7 +609,7 @@ declare function get-meetup-name($group as xs:string?)
     return fn:doc($url)/*:meetup/@*:name/fn:string()
 };
 
-declare function videos() 
+declare function videos()
 {
     <ml:videos>
     {
@@ -604,4 +617,4 @@ declare function videos()
             return $video
     }
     </ml:videos>
-}; 
+};
