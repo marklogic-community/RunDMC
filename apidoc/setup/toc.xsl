@@ -134,22 +134,40 @@
           </xsl:if>
         </node>
       </toc:other>
+
+      <toc:categories>
+        <node href="/all"
+              display="XQuery/XSLT Functions by Category
+                       ({sum($all-libs/api:function-count-for-lib(.))})"
+              open="yes"
+              id="AllFunctionsByCat"
+              top-control="yes">
+          <xsl:copy-of select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
+        </node>
+      </toc:categories>
       <toc:functions>
         <node href="/all"
-              display="Functions ({sum($all-libs/api:function-count-for-lib(.))})"
+              display="XQuery/XSLT Functions
+                       ({sum($all-libs/api:function-count-for-lib(.))})"
               id="AllFunctions"
               function-list-page="yes"
               open="yes"
               top-control="yes">
-          <title>Functions</title>
+          <title>XQuery/XSLT functions</title>
           <intro>
-            <p>The following table lists all functions in the MarkLogic API reference, including both built-in functions and functions implemented in XQuery library modules.</p>
+            <p>
+            The following table lists all functions
+            in the MarkLogic API reference,
+            including both built-in functions
+            and functions implemented in XQuery library modules.
+            </p>
           </intro>
           <xsl:apply-templates select="$all-libs">
             <xsl:sort select="."/>
           </xsl:apply-templates>
         </node>
       </toc:functions>
+
     </all-tocs>
   </xsl:template>
 

@@ -70,7 +70,7 @@
                           lastCollapsible-hitarea"></div>
               <a href="/" class="toc_root">All documentation</a>
               <ul>
-                <xsl:for-each select="* except toc:categories">
+                <xsl:for-each select="*">
                   <xsl:apply-templates select="node"/>
                 </xsl:for-each>
               </ul>
