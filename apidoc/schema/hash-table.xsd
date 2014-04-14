@@ -1,0 +1,125 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/hash-table"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/hash-table"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:complexType name="value" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        A value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="value" type="value">
+    <xs:annotation>
+      <xs:documentation>
+        The value being stored in the entry.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="key">
+    <xs:annotation>
+      <xs:documentation>
+        A key.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="key" type="key">
+    <xs:annotation>
+      <xs:documentation>
+  	The entry key.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="hash">
+    <xs:annotation>
+      <xs:documentation>
+        A hash value
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="hash" type="hash">
+    <xs:annotation>
+      <xs:documentation>
+        The hash value
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="entry">
+    <xs:annotation>
+      <xs:documentation>
+        A hash table entry.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="key"/>
+      <xs:element ref="hash"/>
+      <xs:element ref="value"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="entry" type="entry">
+    <xs:annotation>
+      <xs:documentation>
+        The entry.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="hash-table">
+    <xs:annotation>
+      <xs:documentation>
+        A hash table element
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="entry" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="hash-table" type="hash-table">
+    <xs:annotation>
+      <xs:documentation>
+  	The hash table
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>
+

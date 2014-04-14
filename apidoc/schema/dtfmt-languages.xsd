@@ -1,0 +1,127 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/dtfmt-language"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/dtfmt-language"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:element name="code" type="code">
+    <xs:annotation>
+      <xs:documentation>
+        The language two letter code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="code">
+    <xs:annotation>
+      <xs:documentation>
+        The language two letter code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="alias" type="alias">
+    <xs:annotation>
+      <xs:documentation>
+        The language alias.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="alias">
+    <xs:annotation>
+      <xs:documentation>
+        A language alias, typically three-letter code.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="name" type="name">
+    <xs:annotation>
+      <xs:documentation>
+  	The language name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+   <xs:simpleType name="name">
+    <xs:annotation>
+      <xs:documentation>
+        A language name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="language" type="language">
+    <xs:annotation>
+      <xs:documentation>
+  	The country.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="language">
+    <xs:annotation>
+      <xs:documentation>
+        A language configuration.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="code"/>
+      <xs:element ref="alias" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="name"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="languages" type="languages">
+    <xs:annotation>
+      <xs:documentation>
+  	The languages defined.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="languages">
+    <xs:annotation>
+      <xs:documentation>
+        A set of defined languages.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="language"/>
+    </xs:choice>
+  </xs:complexType>
+
+</xs:schema>

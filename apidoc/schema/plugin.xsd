@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/extension/plugin" xmlns:plugin="http://marklogic.com/extension/plugin">
+  <xs:element name="plugin-model">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="plugin:data"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="data">
+    <xs:complexType>
+      <xs:group minOccurs="0" maxOccurs="unbounded" ref="plugin:any-element"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="plugin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="plugin:name"/>
+        <xs:element ref="plugin:id"/>
+        <xs:element minOccurs="0" ref="plugin:version"/>
+        <xs:element minOccurs="0" ref="plugin:provider-name"/>
+        <xs:element minOccurs="0" ref="plugin:description"/>
+        <xs:element minOccurs="0" ref="plugin:module"/>
+        <xs:element minOccurs="0" ref="plugin:capabilities"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="plugin:native"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="id" type="xs:string"/>
+  <xs:element name="version" type="xs:string"/>
+  <xs:element name="provider-name" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="module">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="plugin:ns"/>
+        <xs:element ref="plugin:ns-prefix"/>
+        <xs:element ref="plugin:path"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ns" type="xs:anyURI"/>
+  <xs:element name="ns-prefix" type="xs:NCName"/>
+  <xs:element name="path" type="xs:string"/>
+  <xs:element name="capabilities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="plugin:capability"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capability">
+    <xs:complexType>
+      <xs:choice>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="plugin:ns"/>
+          <xs:element ref="plugin:local-name"/>
+        </xs:choice>
+        <xs:element ref="plugin:asset-reference"/>
+      </xs:choice>
+      <xs:attribute name="name" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="local-name" type="xs:NCName"/>
+  <xs:element name="asset-reference" type="xs:string"/>
+  <xs:element name="native">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="plugin:path"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="plugin:dependency"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dependency" type="xs:string"/>
+  <xs:group name="any-element">
+    <xs:sequence>
+      <xs:any processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>

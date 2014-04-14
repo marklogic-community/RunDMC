@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.w3.org/1999/xhtml" 
+elementFormDefault="unqualified"
+attributeFormDefault="unqualified"
+blockDefault="#all" 
+finalDefault="#all"
+version="1.1"
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+<!--
+
+-->
+<xs:annotation>
+	<xs:documentation>
+		This is the XML Schema Document Structure module for XHTML
+		Please use this formal public identifier to identify it:
+		
+		"-//W3C//ELEMENTS XHTML Document Structure 1.0//EN"
+		
+		@author: Daniel Austin austin.d@ic.grainger.com
+		$Id: xhtml-struct-1.xsd,v 1.2 2007-03-07 00:08:49 nick Exp $
+	</xs:documentation>
+	<xs:documentation source="xhtml-copyright-1.xsd"/>
+</xs:annotation>
+<!--
+
+-->
+  <xs:annotation>
+    <xs:documentation>
+		Document Structure
+		
+		* title, head, body, html
+		
+		The Structure Module defines the major structural elements and 
+		their attributes.
+		 
+		Note that the content model of the head element type is redeclared 
+		when the Base Module is included in the DTD.
+	</xs:documentation>
+  </xs:annotation>
+<!--
+
+-->
+  <xs:attributeGroup name="title.attlist">
+    <xs:attributeGroup ref="I18n.attrib"/>
+    </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="title.type" mixed="true">
+    <xs:attributeGroup ref="title.attlist"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="title" type="title.type"/>
+<!--
+
+-->
+  <xs:group name="head.content">
+    <xs:sequence>
+      <xs:group ref="HeadOpts.mix"/>
+      <xs:element ref="title" minOccurs="1"/>
+      <xs:group ref="HeadOpts.mix"/>
+    </xs:sequence>
+  </xs:group>
+<!--
+
+-->
+  <xs:attributeGroup name="head.attlist">
+    <xs:attribute name="profile" type="URI"/>
+    <xs:attributeGroup ref="I18n.attrib"/>
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="head.type">
+    <xs:group ref="head.content"/>
+    <xs:attributeGroup ref="head.attlist"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="head" type="head.type"/>
+<!--
+
+-->
+  <xs:attributeGroup name="body.attlist">
+    <xs:attributeGroup ref="Common.attrib"/>
+    </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="body.type" mixed="true">
+    <xs:group ref="Block.mix" minOccurs="1"/>
+    <xs:attributeGroup ref="body.attlist"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="body" type="body.type"/>
+<!--
+
+-->
+  <xs:attributeGroup name="html.attlist">
+    <xs:attribute name="version" type="FPI" fixed="-//W3C//DTD XHTML 1.1//EN"/>
+    <xs:attributeGroup ref="I18n.attrib"/>
+  </xs:attributeGroup>
+<!--
+MH added html.content group, which was missing
+-->
+  <xs:group name="html.content">
+    <xs:sequence/>
+  </xs:group>
+
+  <xs:complexType name="html.type">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element ref="head"/>
+        <xs:element ref="body"/>
+      </xs:sequence>
+      <xs:group ref="html.content"/>
+    </xs:choice>
+    <xs:attributeGroup ref="html.attlist"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="html" type="html.type"/>
+<!--
+
+-->
+</xs:schema>

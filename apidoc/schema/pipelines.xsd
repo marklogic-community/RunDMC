@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xsi:schemaLocation="http://www.w3.org/1999/xhtml xhtml1.1.xsd"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:p="http://marklogic.com/cpf/pipelines"
+           xmlns:cpf="http://marklogic.com/cpf"
+           xmlns:admin="http://marklogic.com/xdmp/admin"
+           targetNamespace="http://marklogic.com/cpf/pipelines"
+           elementFormDefault="qualified">
+
+<?xdmp-annotations?>
+
+<xs:import namespace="http://marklogic.com/cpf"
+           schemaLocation="cpf.xsd"/>
+
+<xs:element name="pipeline">
+  <xs:annotation>
+    <xs:documentation>
+    A pipeline definition.
+    </xs:documentation>
+    <xs:appinfo>
+      <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        <hr class="control-line" size="1"/><br/>
+        <span class="help-text">
+        <img src="images/varspace.gif" alt="" width="20" height="1"
+        />Pipeline Configuration Help<br/><br/>
+        </span>
+        <hr class="control-line" size="1"/>
+        <p><span class="help-text">
+        The pipelines configuration page shows the pipelines that are defined
+        for this database.  A <span style="color:#800000">Pipeline</span> 
+        specifies the series of operations to perform on documents in 
+        particular states.  </span></p>
+        <p><span class="help-text">For each pipeline, the Configuration page 
+        shows the following: </span></p>
+        <ul>
+           <li><span class="help-text"><span style="color:#800000">pipeline
+           description</span> lists the description (if available in 
+           the pipeline).</span></li>
+           <li><span class="help-text">Any <span style="color:#800000">on
+           success</span> or <span style="color:#800000">on
+           failure</span> actions configured in the pipeline.</span></li>
+           <li><span class="help-text">All of the 
+           <span style="color:#800000">states</span> defined in the pipeline
+           and their corresponding actions.</span></li>
+           <li><span class="help-text">A button to 
+           <span style="color:#800000">delete</span> the pipeline from the 
+           triggers database.</span></li>
+        </ul>
+
+        <p><span class="help-text">To load new pipelines into the database:
+        </span></p>
+        <ul>
+           <li><span class="help-text">Click the <span style="color:#800000">
+           Load</span> tab.</span></li>
+           <li><span class="help-text">Enter the <span style="color:#800000">
+           directory</span> where your pipeline 
+           XML file is stored. If the directory is on the filesystem, it
+           must be accessible and readable from the machine in which the 
+           Admin interface is running. If the directory is in a database,
+           the user in which you are logged into the Admin interface
+           must have the necessary permissions to read the document.</span></li>
+           <li><span class="help-text">Enter a wildcard <span style="color:#800000">
+           filter</span> to search on, or the filename of the XML
+           document.  For example, 
+           entering <code>*.xml</code> will look for all pipeline 
+           files in the directory with filenames ending with 
+           <code>.xml</code>.</span></li>
+           <li><span class="help-text">Select the 
+           <span style="color:#800000">source</span> from which to load
+           the pipeline.  You can either load a pipeline XML file from
+           the filesystem or load an XML document from a database.</span></li>
+           <li><span class="help-text">Click <span style="color:#800000">
+           OK</span>.</span></li>
+           <li><span class="help-text">On the Pipeline Load confirmation page, 
+           examine the name of the pipeline(s) displayed. Only XML documents 
+           that are in the <code>http://marklogic.com/cpf/pipelines</code>
+           namespace are displayed. If the pipeline displayed is correct, 
+           click <span style="color:#800000">OK</span> to load the pipeline 
+           into the database.</span></li>
+        </ul>
+
+        <p><span class="help-text">
+         To completely remove a pipeline from the database:</span></p>
+        <ul>
+           <li><span class="help-text">Select the pipeline you want to delete
+           from the left tree menu.</span></li>
+           <li><span class="help-text">Click the <span style="color:#800000">
+           Delete</span> button.</span></li>
+           <li><span class="help-text">It is not necessary to delete a 
+           pipeline to detach it from a domain. Instead,
+           use the 
+           <span style="color:#800000">Domains -&gt; <em>domain_name</em> 
+           -&gt; Pipelines -&gt; Detach</span> button
+           to disable the pipeline for the given domain.</span></li>
+        </ul>
+      </admin:help>
+       <admin:help xmlns="http://www.w3.org/1999/xhtml">
+         <hr class="control-line" size="1"/>
+        <p><span class="help-text">Buttons and Tabs:</span></p>
+        <ul>
+	  <li><span class="help-text">The 
+          <span style="color:#800000">Summary</span> tab displays all of the 
+          pipelines configured in this database, and includes their transitions
+          and a list of domains to which each pipeline is 
+          attached.  </span></li>
+          <li><span class="help-text">Use the 
+          <span style="color:#800000">Load</span> tab to load new pipelines 
+          into the triggers database for this database.</span>
+          </li>
+          <li><span class="help-text">Use the 
+          <span style="color:#800000">delete</span> button on the configuration 
+          page to delete the pipeline from the triggers database.</span>
+          </li>
+        </ul>
+        <span class="help-text"></span>
+       </admin:help>
+    </xs:appinfo>
+  </xs:annotation>
+  <!-- pipeline-id is required in the database but it is assigned
+       in p:insert() and can be left off for pipelines passed to p:insert()
+    -->
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+      <xs:element name="pipeline-id" type="p:pipeline-id" minOccurs="0"/>
+      <xs:element name="pipeline-name" type="p:pipeline-name"/>
+      <xs:element name="pipeline-description" type="p:pipeline-description" minOccurs="0"/>
+      <xs:element name="success-action" type="p:module-invocation"/>
+      <xs:element name="failure-action" type="p:module-invocation"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="status-transition" type="p:status-transition"/>
+        <xs:element name="state-transition" type="p:state-transition"/>
+        <xs:element name="event-transition" type="p:event-transition"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:complexType name="transition">
+  <xs:annotation>
+    <xs:documentation>
+    A transition defining what actions to take under given circumstances.
+    Base type for the specific transition types.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+    <xs:choice minOccurs="0">
+      <xs:element name="state" type="cpf:state"/>
+      <xs:element name="status" type="cpf:processing-status"/>
+      <xs:element name="event" type="cpf:event"/>
+    </xs:choice>
+    <xs:element name="on-success" type="cpf:state" minOccurs="0"/>
+    <xs:element name="on-failure" type="cpf:state" minOccurs="0"/>
+    <xs:element name="priority" type="xs:unsignedLong" minOccurs="0"/>
+    <xs:element name="always" type="xs:boolean" minOccurs="0"/>
+    <xs:element name="default-action" type="p:module-invocation" minOccurs="0"/>
+    <xs:element name="execute" type="p:execute" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="state-transition">
+  <xs:annotation>
+    <xs:documentation>
+    A transition defining what actions to take on entry into a state.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:restriction base="p:transition">
+      <xs:sequence>
+        <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+        <xs:element name="state" type="cpf:state"/>
+        <xs:element name="on-success" type="cpf:state" minOccurs="0"/>
+        <xs:element name="on-failure" type="cpf:state" minOccurs="0"/>
+        <xs:element name="priority" type="xs:unsignedLong" minOccurs="0"/>
+	<xs:element name="always" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="default-action" type="p:module-invocation" minOccurs="0"/>
+        <xs:element name="execute" type="p:execute" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:restriction>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="status-transition">
+  <xs:annotation>
+    <xs:documentation>
+    A transition defining what actions to take on create, update, or delete.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:restriction base="p:transition">
+      <xs:sequence>
+        <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+        <xs:element name="status" type="cpf:processing-status"/>
+        <xs:element name="on-success" type="cpf:state" minOccurs="0"/>
+        <xs:element name="on-failure" type="cpf:state" minOccurs="0"/>
+        <xs:element name="priority" type="xs:unsignedLong" minOccurs="0"/>
+        <xs:element name="always" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="default-action" type="p:module-invocation" minOccurs="0"/>
+        <xs:element name="execute" type="p:execute" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:restriction>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="event-transition">
+  <xs:annotation>
+    <xs:documentation>
+    A transition defining what actions to take on a transition event.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:restriction base="p:transition">
+      <xs:sequence>
+        <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+        <xs:element name="event" type="cpf:event"/>
+        <xs:element name="priority" type="xs:unsignedLong" minOccurs="0"/>
+        <xs:element name="default-action" type="p:module-invocation" minOccurs="0"/>
+        <xs:element name="execute" type="p:execute" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:restriction>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="null-transition">
+  <xs:annotation>
+    <xs:documentation>
+    A transition to use when passing null in a list of external variables.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:restriction base="p:transition">
+      <xs:sequence>
+        <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+        <xs:choice minOccurs="0">
+          <xs:element name="state" type="cpf:state"/>
+          <xs:element name="status" type="cpf:processing-status"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:restriction>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:element name="null-transition" type="p:null-transition"/>
+
+<xs:complexType name="execute">
+  <xs:annotation>
+    <xs:documentation>
+    A condition/action pair defining what to execute.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+    <xs:element name="condition" type="p:module-invocation"/>
+    <xs:element name="action" type="p:module-invocation"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="module-invocation"> 
+  <xs:annotation>
+    <xs:documentation>
+    A module to invoke, and some values to pass to the module.
+    Values are passed in an options node whose namespace is the name
+    of the module (analogous to options for built-ins). This options node
+    is passed as $cpf:options to actions.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name="annotation" type="xs:string" minOccurs="0"/>
+    <xs:element name="module" type="xs:string"/>
+    <xs:any namespace="##other" processContents="lax" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="pipeline-id">
+  <xs:annotation>
+    <xs:documentation>
+    A pipeline unique identifier.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:unsignedLong"/>
+</xs:simpleType>
+
+<xs:simpleType name="pipeline-name">
+  <xs:annotation>
+    <xs:documentation>
+    A pipeline name.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string"/>
+</xs:simpleType>
+
+<xs:simpleType name="pipeline-description"> 
+  <xs:annotation>
+    <xs:documentation>
+    A pipeline description.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string"/>
+</xs:simpleType>
+
+</xs:schema>

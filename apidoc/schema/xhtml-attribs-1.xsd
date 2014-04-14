@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="#all" finalDefault="#all" version="1.1" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+	<xs:annotation>
+		<xs:documentation>
+
+		 This is the XML Schema common attributes module for XHTML
+		  Please use this formal public identifier to identify it:
+		          "-//W3C//XHTML Common Attributes 1.0//EN"
+
+			@author: Daniel Austin austin.d@ic.grainger.com
+			$Id: xhtml-attribs-1.xsd,v 1.2 2009-10-22 20:47:58 mary Exp $
+		</xs:documentation>
+		<xs:documentation source="xhtml-copyright-1.xsd"/>
+	</xs:annotation>
+	<!--
+	This import brings in the XML language attributes xml:lang and xml:space. 
+-->
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml-attribs-1.xsd"/>
+	
+	<xs:annotation>
+		<xs:documentation>
+
+  Common Attributes
+    This module declares many of the common attributes 
+     for the XHTML Schema
+	</xs:documentation>
+	</xs:annotation>
+	<!--
+
+-->
+	<xs:attributeGroup name="id">
+		<xs:attribute name="id" type="xs:ID"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="class">
+		<xs:attribute name="class" type="xs:NMTOKENS"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="title">
+		<xs:attribute name="title" type="xs:string"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="Core.extra.attrib">
+		<!-- add your attribute here -->
+		<!-- xs:anyAttribute namespace="##other"/ -->
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="Core.attrib">
+		<xs:attributeGroup ref="id"/>
+		<xs:attributeGroup ref="class"/>
+		<xs:attributeGroup ref="title"/>
+		<xs:attributeGroup ref="Core.extra.attrib"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="BIDI"/>
+	<!--
+
+-->
+    <!-- MH 2009-10-22. Global attribute is schema design error here -->
+    <!-- Fortunately, it does not seem to be used anywhere, so keep it. -->
+	<xs:attribute name="dir">
+		<xs:simpleType>
+			<xs:restriction base="xs:NMTOKEN">
+				<xs:enumeration value="ltr"/>
+				<xs:enumeration value="rtl"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<!--
+
+-->
+
+	<xs:attributeGroup name="I18n.attrib">
+		<xs:attributeGroup ref="BIDI"/>
+		<xs:attribute ref="xml:lang"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<!-- intrinsic event attributes declared previously -->
+	<xs:attributeGroup name="Common.extra">
+		<!-- add your attributes here -->
+	</xs:attributeGroup>
+	<!--
+
+-->
+	<xs:attributeGroup name="Common.attrib">
+		<xs:attributeGroup ref="Core.attrib"/>
+		<xs:attributeGroup ref="I18n.attrib"/>
+		<!-- !!! xs:attributeGroup ref="Events.attrib"/ -->
+		<xs:attributeGroup ref="Common.extra"/>
+	</xs:attributeGroup>
+	<!--
+
+-->
+</xs:schema>

@@ -1,0 +1,105 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/apidoc" 
+           xmlns="http://marklogic.com/xdmp/apidoc" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd">
+	<xs:complexType name="html" mixed="true">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:any namespace="http://www.w3.org/1999/xhtml" 
+                                processContents="skip"/>
+		</xs:sequence>
+		<xs:anyAttribute processContents="skip"/>
+	</xs:complexType>
+	<xs:element name="summary" type="html"/>
+	<xs:element name="return" type="html"/>
+	<xs:element name="response" type="html"/>
+	<xs:element name="usage" type="html"/>
+	<xs:element name="privilege" type="html"/>
+	<xs:element name="help" type="html"/>
+	<xs:element name="param">
+		<xs:complexType>
+		  <xs:complexContent>
+			<xs:extension base="html">
+		  	   <xs:attribute name="name" type="xs:string"/>
+				<xs:attribute name="type" type="xs:string"/>
+					<xs:attribute name="optional" 
+                                                      type="xs:boolean" 
+                                                      use="optional" 
+                                                      default="false"/>
+			</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="header">
+      <xs:complexType>
+        <xs:complexContent>
+          <xs:extension base="html">
+            <xs:attribute name="name" type="xs:string"/>
+            <xs:attribute name="type" type="xs:string"/>
+            <xs:attribute name="optional" 
+                                          type="xs:boolean" 
+                                          use="optional" 
+                                          default="false"/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:element>
+	<xs:element name="example" type="html"/>
+	<xs:complexType name="params">
+		<xs:sequence>
+			<xs:element ref="param" minOccurs="0"
+				    maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="params" type="params"/>
+	<xs:complexType name="headers">
+      <xs:sequence>
+        <xs:element ref="header" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+	</xs:complexType>
+	<xs:element name="headers" type="headers"/>
+	<xs:complexType name="function">
+		<xs:sequence>
+			<xs:element ref="summary"/>
+			<xs:element ref="params" minOccurs="0"/>
+			<xs:element ref="headers" minOccurs="0"/>
+            <xs:choice>
+			  <xs:element ref="return" minOccurs="0"/>
+			  <xs:element ref="response" minOccurs="0"/>
+            </xs:choice>
+			<xs:element ref="usage" minOccurs="0"/>
+			<xs:element ref="privilege" minOccurs="0"/>
+			<xs:element ref="example" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="http-verb" type="xs:string" use="optional"/>
+		<xs:attribute name="type" type="xs:string" use="optional"/>
+		<xs:attribute name="lib" type="xs:string" use="required"/>
+		<xs:attribute name="category" type="xs:string" use="required"/>
+		<xs:attribute name="hidden" type="xs:boolean" use="optional" 
+                              default="false"/>
+		<xs:attribute name="fullname" type="xs:string"/>
+		<xs:attribute name="bucket" type="xs:string" use="optional" 
+                              default="MarkLogic Built-In Functions"/>
+		<xs:attribute name="subcategory" type="xs:string"/>
+	</xs:complexType>
+	<xs:element name="function" type="function"/>
+	<xs:complexType name="module" mixed="true">
+		<xs:sequence>
+			<xs:element ref="summary"  maxOccurs="unbounded"/>
+			<xs:element ref="function" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="module">
+		<xs:complexType>
+			<xs:complexContent>
+			   <xs:extension base="module">
+				<xs:attribute name="name" type="xs:string" 
+					use="required"/>
+				<xs:anyAttribute processContents="skip"/>
+			   </xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

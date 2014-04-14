@@ -1,0 +1,124 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:ldap"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ elementFormDefault="qualified"
+ xmlns="xdmp:ldap"
+ xmlns:xdmp="http://marklogic.com/xdmp"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="username">
+    <xs:annotation>
+      <xs:documentation>
+        ldap username.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="username" type="username">
+    <xs:annotation>
+      <xs:documentation>
+        ldap username.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="password">
+    <xs:annotation>
+      <xs:documentation>
+        ldap password.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="password" type="password">
+    <xs:annotation>
+      <xs:documentation>
+        ldap password.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="search-base">
+    <xs:annotation>
+      <xs:documentation>
+        ldap search base.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="search-base" type="search-base">
+    <xs:annotation>
+      <xs:documentation>
+        ldap search base.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="server-uri">
+    <xs:annotation>
+      <xs:documentation>
+        ldap server uri.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="server-uri" type="server-uri">
+    <xs:annotation>
+      <xs:documentation>
+        ldap server uri.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="options">
+    <xs:annotation>
+      <xs:documentation>
+        The options node for ldap builtins
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="username"/>
+      <xs:element ref="password"/>
+      <xs:element ref="search-base"/>
+      <xs:element ref="server-uri"/>
+    </xs:choice>    
+  </xs:complexType>
+
+  <xs:element name="options" type="options">
+    <xs:annotation>
+      <xs:documentation>
+  	An ldap options node
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

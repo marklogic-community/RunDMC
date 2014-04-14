@@ -1,0 +1,1139 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/assignments"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd
+                     http://marklogic.com/xdmp/admin admin.xsd
+                     http://www.w3.org/1999/xhtml xhtml-inlstyle-1.xsd"
+ xmlns="http://marklogic.com/xdmp/assignments"
+ xmlns:admin="http://marklogic.com/xdmp/admin"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <?xdmp-annotations?>
+  <xs:annotation>
+    <xs:documentation>
+      Assignments configuration file schema.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:simpleType name="data-directory">
+    <xs:annotation>
+      <xs:documentation>
+        An optional public directory for forests.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="data-directory" type="data-directory">
+    <xs:annotation>
+      <xs:documentation>
+        The optional public directory for forests.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default>""</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">data 
+            directory</span> specifies a public directory in which 
+	    the forest is located. If the data directory is not specified, 
+            the forest will be created in the default forest directory on 
+            the host machine and the specified host machine cannot be 
+            changed once the forest is created. </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="large-data-directory" type="data-directory">
+    <xs:annotation>
+      <xs:documentation>
+        The optional directory for large objects in a forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default>""</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">large data
+            directory</span> specifies a directory in which large objects
+            are stored. If the directory is not specified, large objects
+            will be stored under the data directory. </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fast-data-directory" type="data-directory">
+    <xs:annotation>
+      <xs:documentation>
+        The optional smaller but faster directory for forests.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default>""</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">fast data 
+            directory</span> specifies a directory that is smaller but 
+            faster than the data directory. The directory should be 
+            on a different storage device than the data directory.
+	    If specified, transaction journals and stands will be stored 
+	    under this directory.  When the directory becomes full, larger 
+	    stands will be merged into the data directory.  It is best to use 
+	    fast solid state device (SSD) storage for this directory (for 
+	    example, a PCI card that uses I/O accelerator technology). If 
+	    multiple forests on the same host share the same fast data 
+	    directory, the fast data directory for each forest will be 
+	    allocated a portion of the size of the fast data directory; for 
+	    example, if you have four forests on one host all configured to 
+	    use the same 250GB SSD, then each forest will be allowed up to 
+	    62.5GB.  When the size of the fast data directory approaches
+	    that limit, then stands are created in the data directory.
+            </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="forest-id">
+    <xs:annotation>
+      <xs:documentation>
+        A forest unique ID (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="forest-id" type="forest-id">
+    <xs:annotation>
+      <xs:documentation>
+        The unique key of a forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+        <admin:default>xdmp:random()</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="enabled" type="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        Forest enabled status.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>      
+        <admin:default>true()</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="forest-name">
+    <xs:annotation>
+      <xs:documentation>
+        The forest name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:minLength value="1"/>
+      <xs:pattern value='([^\\*?/:&lt;&gt;|" \.&apos;])|([^\\*?/:&lt;&gt;|" \.&apos;][^\\*?/:&lt;&gt;|"]*[^\\*?/:&lt;&gt;|" \.&apos;])'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="forest-name" type="forest-name">
+    <xs:annotation>
+      <xs:documentation>
+        The forest name.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">forest name</span>
+            is the name of the forest. The forest name must be a legal
+            directory name and cannot contain any of 
+            the following 9 characters: 
+            <code><![CDATA[\ * ? / : < > | "]]></code>. 
+            Additionally, the name cannot begin or end with a space or a 
+            dot (.). </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        A host unique ID (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="host" type="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        The primary host to which the forest is assigned.
+      </xs:documentation>
+      <xs:appinfo>
+	<admin:select>host</admin:select>
+        <admin:optional>false</admin:optional>
+        <admin:default>0</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">host</span> 
+            specifies the host on which the forest resides.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        true or false
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:element name="failover-enable" type="boolean">
+    <xs:annotation>
+      <xs:documentation>
+	Enable assignment to a failover host if the primary host is down.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default>true()</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">failover 
+            enable</span>
+            indicates if this forest is set up for failover.  To enable
+            failover on a host, you must have the failover option enabled in 
+            your license key.  Additionally, you must manually specify a data 
+            directory when you first create the forest; failover is not 
+            available in the default forest directory. To enable failover, 
+            specify a data directory that is on a storage area 
+            network (SAN); you cannot use a directory mounted with NFS for 
+            failover. Then click <code>true</code>  
+            for the <span style="color:#800000">failover enable</span> button,
+            and specify the failover host(s).</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="failover-host" type="host-id">
+    <xs:annotation>
+      <xs:documentation>
+        A failover host.
+      </xs:documentation>
+      <xs:appinfo>
+	<admin:select>host</admin:select>
+        <admin:optional>false</admin:optional>
+        <admin:default>0</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="failover-hosts">
+    <xs:annotation>
+      <xs:documentation>
+        A list of failover hosts for shared-disk failover.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="failover-host"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="failover-hosts" type="failover-hosts">
+    <xs:annotation>
+      <xs:documentation>
+        A list of failover hosts for shared-disk failover.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">failover 
+            hosts</span>
+            specifies the host(s) used for shared-disk failover for this 
+            forest.  You can 
+            specify one or more failover hosts for the forest, up to the 
+            number of hosts available in the cluster.  When a forest
+            fails over, it will first attempt to fail over to the first host
+            in the list, and then if that is not successful, move to the next
+	    one, and so on.  You cannot specify failover hosts if you have
+	    specified any forest replicas; you must choose between 
+	    local-disk and shared-disk failover.
+         </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="updates-allowed">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="all"/>
+      <xs:enumeration value="delete-only"/>
+      <xs:enumeration value="read-only"/>
+      <xs:enumeration value="flash-backup"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="updates-allowed" type="updates-allowed">
+    <xs:annotation>
+      <xs:documentation>
+      The kinds of updates that should be allowed for this forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>false</admin:optional>
+        <admin:default>"all"</admin:default>
+        <admin:option>updatesAllowed</admin:option>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+		<span class="help-text"><span style="color:#800000">updates 
+		  allowed</span>
+		  specifies which operations are allowed on this forest:
+	       <ul>
+		<li><span class="help-text"><span style="color:#800000">All
+		</span>specifies that read, insert, update, and delete operations are
+		allowed on the forest.</span></li>
+		<li><span class="help-text"><span style="color:#800000">delete-only
+		</span>specifies that read and delete operations are allowed 
+		on the forest, but insert and update operations are not allowed
+    unless a forest ID is specified, in which case it results in the document
+    being moved to another forest. Updates to a delete-only forest without
+    specifying a forest ID throw an exception;
+	  updates to a delete-only forest that specify the forest ID of one
+	  or more forests that allow updates will result in the document
+	  being moved to one of the specified forests.	
+		</span></li>
+                <li><span class="help-text">
+                <span style="color:#800000">read-only</span>
+		specifies that read operations are allowed on the forest, but 
+		insert, update, and delete operations are not allowed. A transaction 
+		attempting to make changes to fragments in the forest will throw an 
+		exception.</span></li>
+                <li><span class="help-text">
+               <span style="color:#800000">flash-backup</span>
+	       puts the forest in read-only mode without throwing exceptions on 
+	       insert, update, or delete transactions, allowing the transactions 
+	       to retry.  </span></li>
+	     </ul>	
+	  </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="rebalancer-enable" type="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        Enable automatic rebalancing after configuration changes.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>true()</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text"><span style="color:#800000">rebalancer
+          enable</span> specifies whether rebalancing are automatically
+          performed in the background after configuration settings are 
+          changed. When set to true, configuration changes automatically 
+          initiate a background rebalancing operation on this forest.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="backup-days">
+    <xs:annotation>
+      <xs:documentation>
+        A selection of days.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="7">
+      <xs:element ref="backup-day"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="backup-days" type="backup-days">
+    <xs:annotation>
+      <xs:documentation>
+        The days that this backup happens.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="day">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="monday"/>
+      <xs:enumeration value="tuesday"/>
+      <xs:enumeration value="wednesday"/>
+      <xs:enumeration value="thursday"/>
+      <xs:enumeration value="friday"/>
+      <xs:enumeration value="saturday"/>
+      <xs:enumeration value="sunday"/>
+    </xs:restriction>
+
+  </xs:simpleType>
+  <xs:element name="backup-day" type="day">
+    <xs:annotation>
+      <xs:documentation>
+        A day that this backup occurs.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>  
+
+  <xs:element name="backup-month-day" type="backup-month-day">
+    <xs:annotation>
+      <xs:documentation>
+        The day of the month that this backup happens.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">	
+        </admin:help>
+        <admin:optional>true</admin:optional>
+        <admin:default/>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="backup-month-day">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="31"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="backup-type">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="once"/>
+      <xs:enumeration value="monthly"/>
+      <xs:enumeration value="weekly"/>
+      <xs:enumeration value="daily"/>
+      <xs:enumeration value="hourly"/>
+      <xs:enumeration value="minutely"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="backup-type" type="backup-type">
+    <xs:annotation>
+      <xs:documentation>
+        What type of backup is this.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="backup-period">
+    <xs:restriction base="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <xs:element name="backup-period" type="backup-period">
+    <xs:annotation>
+      <xs:documentation>
+        How often this backup should run (every n months, weeks, days, hours or minutes).
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+        <admin:optional>true</admin:optional>
+        <admin:default>1</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>
+        It can be absolute or relative.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="backup-directory" type="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>
+        The backup directory pathname.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>""</admin:default>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="backup-start-time" type="start-time">
+    <xs:annotation>
+      <xs:documentation>
+	The starting time (in 24:00 notation).
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="backup-start-date" type="start-date">
+    <xs:annotation>
+      <xs:documentation>
+        The starting date (in MM/DD/YYYY notation) for a one-time backup
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="backup-timestamp" type="backup-timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        The date and time this backup was created.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="backup-timestamp">
+    <xs:restriction base="xs:dateTime">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="start-time">
+    <xs:annotation>
+      <xs:documentation>
+	The starting time (in 24:00 notation).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:time"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="start-date">
+    <xs:annotation>
+      <xs:documentation>
+        The starting date (in MM/DD/YYYY notation)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:date"/>
+  </xs:simpleType>
+
+  <xs:complexType name="forest-backup">
+    <xs:annotation>
+      <xs:documentation>
+        A scheduled forest backup.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="backup-directory"/>
+      <xs:element ref="backup-type"/>
+      <xs:element ref="backup-period" minOccurs="0"/>
+      <xs:element ref="backup-month-day" minOccurs="0"/>
+      <xs:element ref="backup-days" minOccurs="0"/>
+      <xs:element ref="backup-start-date" minOccurs="0"/>
+      <xs:element ref="backup-start-time" minOccurs="0"/>
+      <xs:element ref="backup-timestamp" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="forest-backup" type="forest-backup">
+    <xs:annotation>
+      <xs:documentation>
+        A scheduled forest backup.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="forest-backups">
+    <xs:annotation>
+      <xs:documentation>
+        The scheduled backups for this forest.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="forest-backup"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="forest-backups" type="forest-backups">
+    <xs:annotation>
+      <xs:documentation>
+        Backups scheduled for this forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+           <hr class="control-line" size="1"/><br/>
+           <span class="help-text">
+           <img src="images/varspace.gif" alt="" width="20" height="1"
+           />Scheduled Forest Backup Configuration Help<br/><br/>
+           </span>
+           <hr class="control-line" size="1"/>
+           <span class="help-text"><span style="color:#800000">Scheduled Backups
+           </span> allow you to specify a time in the future to perform a forest
+           backup. The backup can either be one time or recurring.
+           To schedule a forest backup, click the 
+           <span style="color:#800000">
+           Create</span> tab and specify when and how often you want the backup to occur. 
+          </span>
+         <p><span class="help-text">The following are the configuration 
+         options:</span></p>
+         <ul>
+	 <li><span class="help-text"><span style="color:#800000">backup directory</span> 
+         specifies the directory to which you want the forest backed up. </span></li> 
+         <li><span class="help-text"><span style="color:#800000">backup type</span> 
+ 	 specifies the task type:  </span></li>
+         <ul>
+	 <li><span class="help-text"><span style="color:#800000">minutely</span>
+         specifies how many minutes between each backup. </span></li>
+	 <li><span class="help-text"><span style="color:#800000">hourly</span>
+	 specifies how many hours and minutes between each backup.
+         </span></li>
+	 <li><span class="help-text"><span style="color:#800000">daily</span> 
+	 specifies how many days between each backup and the time of day 
+	 (in 24:00 notation). 
+         </span></li>
+	 <li><span class="help-text"><span style="color:#800000">weekly</span>
+	 specifies how many weeks between each backup, check one or 
+	 more days of the week, and the time of day (in 24:00 notation) for the 
+	 task to start. 
+         </span></li>
+	 <li><span class="help-text"><span style="color:#800000">monthly</span>
+	 specifies how many months between each backup, select one day 
+	 of the month (1-31), and the time of day (in 24:00 notation) for the task to start. 
+         </span></li>
+	 <li><span class="help-text"><span style="color:#800000">one-time</span>
+	 specifies the start date in MM/DD/YYYY notation (for example, 07/29/2009 
+         for July 29, 2009) and time in 24:00 notation.
+	 </span></li>
+         </ul>	
+         <li><span class="help-text"><span style="color:#800000">backup period</span> 
+ 	 specifies how often the backup should run (every n months, weeks, days, 
+ 	 hours or minutes). </span></li>
+        </ul>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="forest-replica">
+    <xs:annotation>
+      <xs:documentation>
+        A forest unique ID (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="forest-replica" type="forest-replica">
+    <xs:annotation>
+      <xs:documentation>
+        The unique key of a forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:default>0</admin:default>
+        <admin:optional>true</admin:optional>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="forest-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        A list of replica forests, used for local-disk failover.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="forest-replica"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="forest-replicas" type="forest-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        A list of replica forests, used for local-disk failover.
+      </xs:documentation>
+      <xs:appinfo>
+	<admin:help xmlns="http://www.w3.org/1999/xhtml">
+	   <span class="help-text"><span style="color:#800000">forest 
+            replicas</span>
+            specifies the forest(s) used for local-disk failover for this
+            forest.  You can 
+	    specify one or more replica forests for the forest.  Only
+	    forests that are not attached to a database are listed to be used
+	    for replicas.    Each replica forest maintains a fully replicated
+	    version of the forest.  When a forest
+            fails over, it will first attempt to fail over to the first replica
+            in the list, and then if that is not successful, move to the next
+            one, and so on.  You cannot specify forest replicas if you have
+	    specified any failover hosts; you must choose between 
+	    local-disk and shared-disk failover.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="database-id">
+    <xs:annotation>
+      <xs:documentation>
+  The database ID.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="cluster-id">
+    <xs:annotation>
+      <xs:documentation>
+        A cluster ID.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="foreign-cluster-id" type="cluster-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign cluster ID.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="foreign-database-id" type="database-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign database ID.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="foreign-forest-id" type="forest-id">
+    <xs:annotation>
+      <xs:documentation>
+        A foreign forest ID.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:complexType name="foreign-replica">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="foreign-cluster-id"/>
+      <xs:element ref="foreign-database-id"/>
+      <xs:element ref="foreign-forest-id"/>
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:element name="foreign-replica" type="foreign-replica">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:complexType name="foreign-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replicas of this database.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="foreign-replica"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:element name="foreign-replicas" type="foreign-replicas">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replicas of this database.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="foreign-master">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign master for this database.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="foreign-cluster-id"/>
+      <xs:element ref="foreign-database-id"/>
+      <xs:element ref="foreign-forest-id"/>
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:element name="foreign-master" type="foreign-master">
+    <xs:annotation>
+      <xs:documentation>
+        Foreign replica of this database.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="database-replication">
+    <xs:annotation>
+      <xs:documentation>
+        Database replication configuration.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="1">
+      <xs:element ref="foreign-replicas"/>
+      <xs:element ref="foreign-master"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="database-replication" type="database-replication">
+    <xs:annotation>
+      <xs:documentation>
+        Database replication configuration.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="range-boundary">
+    <xs:annotation>
+      <xs:documentation>
+        The type for the boundaries used by the range assignment policy
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="lower-bound" type="range-boundary">
+    <xs:annotation>
+      <xs:documentation>
+        The lower bound of the range on the forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        <span class="help-text"><span style="color:#800000">lower 
+          bound</span>The lower bound of the range on the forest.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="upper-bound" type="range-boundary">
+    <xs:annotation>
+      <xs:documentation>
+        The upper bound of the range on the forest.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+        <span class="help-text"><span style="color:#800000">upper 
+          bound</span>The upper bound of the range on the forest.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+ 
+  <xs:complexType name="range">
+    <xs:all>
+      <xs:element ref="lower-bound" minOccurs="0"/>
+      <xs:element ref="upper-bound" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>  
+
+  <xs:element name="range" type="range">
+    <xs:annotation>
+      <xs:documentation>
+        Range configuration for the range assignment policy.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+		<span class="help-text"><span style="color:#800000">range</span>
+		  specifies the partition key range assigned to this forest, when
+		  the rebalancer with the range assignment policy is set for the 
+		  database.  The range settings are:
+	       <ul>
+		<li><span class="help-text"><span style="color:#800000">lower bound
+		</span>specifies the lower bound of the range for this forest.
+		</span></li>
+		<li><span class="help-text"><span style="color:#800000">upper bound
+		</span>specifies the upper bound of the range for this forest.	
+		</span></li>  
+	     </ul>	
+	  </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>   
+
+  <xs:simpleType name="availability">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="online"/>
+      <xs:enumeration value="offline"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="availability" type="availability">
+    <xs:annotation>
+      <xs:documentation>
+        Availability of the forest data.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:optional>true</admin:optional>
+        <admin:default>"online"</admin:default>
+        <admin:cold/>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+		    <span class="help-text"><span style="color:#800000">availability</span>
+        of forest data, for use in Tiered Storage.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="assignment">
+    <xs:annotation>
+      <xs:documentation>
+        A forest assignment specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="forest-name"/>
+      <xs:element ref="enabled"/> 
+      <xs:element ref="host"/>
+      <xs:element ref="data-directory"/>
+      <xs:element ref="large-data-directory"/>
+      <xs:element ref="fast-data-directory"/>
+      <xs:element ref="updates-allowed"/>
+      <xs:element ref="availability" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="rebalancer-enable"/>
+      <xs:element ref="range" minOccurs="0"/>
+      <xs:element ref="failover-enable"/>
+      <xs:element ref="failover-hosts"/>
+      <xs:element ref="forest-id"/>
+      <xs:element ref="forest-backups"/>
+      <xs:element ref="forest-replicas"/>
+      <xs:element ref="database-replication"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="assignment" type="assignment">
+    <xs:annotation>
+      <xs:documentation>
+        The forest assignment specification.
+      </xs:documentation>
+      <xs:appinfo>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <hr class="control-line" size="1"/><br/>
+          <span class="help-text">
+          <img src="images/varspace.gif" alt="" width="20" height="1"
+           />Forest Configuration Help<br/><br/>
+          </span>
+          <hr class="control-line" size="1"/>
+          <span class="help-text"><p>A <span style="color:#800000">Forest</span>
+            is where a database stores its content and indexes.  A database
+            can have multiple forests.</p>
+            <p>A <span style="color:#800000">Forest</span> 
+            consists of Stands.  Each <span style="color:#800000">Stand</span>
+            is a set of XML fragments, and is implemented by a set 
+	    of compressed binary files contained within a sub-directory of 
+            the forest directory.</p>
+            <p>The following are the configuration parameters for each
+            forest:</p></span>
+        </admin:help>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <hr class="control-line" size="1"/>
+          <span class="help-text"><p>Buttons and Tabs:</p></span>
+          <ul>
+	    <li><span class="help-text">The 
+            <span style="color:#800000">merge</span>
+            button on the Forest Configuration page initiates a merge for
+            the forest.</span></li>
+	    <li><span class="help-text">The 
+            <span style="color:#800000">clear</span>
+            button on the Forest Configuration page deletes all the data 
+            stored in the forest permanently but preserves the forest 
+            configuration information.</span></li>
+	    <li><span class="help-text">The 
+            <span style="color:#800000">delete</span>
+            button on the Forest Configuration page deletes the forest 
+            configuration information and all the data stored in the forest 
+	    permanently.</span></li>
+            <li><span class="help-text">The 
+	    <span style="color:#800000">disable</span> button disables 
+	    this forest, which marks the forest as disabled, unmounts the 
+	    forest from the database, and 
+	    clears all memory caches for all the forests in the database.  The
+	    database remains unavailable for any query operations while any of 
+	    its forests are disabled. </span>
+            </li>
+            <li><span class="help-text">The 
+            <span style="color:#800000">Summary</span> tab lists information
+            about all of the current forest configurations, as well as
+	    the current state of each forest. Additionally, you can attach
+	    a forest to a database or change
+	    the database to which a forest is attached by selecting the 
+	    database drop-down list for one or more forests, selecting a new
+	    database, and clicking the OK button.</span></li>
+            <li><span class="help-text">The 
+            <span style="color:#800000">Status</span> tab displays current 
+            information for the specified forest, including forest size, 
+            fragment information, and other current statistics about
+            the forest.  The Status tab also has a 
+            <span style="color:#800000">restart</span> button, which forces the 
+            forest to go offline.  Once the forest has gone offline, 
+            it will automatically attempt to rejoin the host, thus
+            restarting the forest.  There
+	    is a <span style="color:#800000">show reindex</span> button that
+	    is only available when reindexing is disabled on the database. 
+	    When you click the <span style="color:#800000">show reindex</span> 
+	    button, the page displays information about what would be 
+	    reindexed if you enable reindexing for the database; the button
+  	    is greyed out when reindexing is enabled (and if reindexing is
+	    in progress, the page shows reindexing activity).
+            </span></li>
+            <li><span class="help-text">The 
+            <span style="color:#800000">Backup/Restore</span> tab is for 
+            performing forest-level backup and restore operations. </span></li>
+	     <ul>
+                <li><span class="help-text"><span style="color:#800000">backup 
+                directory</span> is the directory to which a forest is backed 
+                up, or from which a previously backed up forest is 
+                restored.</span></li>
+                <li><span class="help-text">
+                <span style="color:#800000">Backup</span>
+                will copy all files for a given forest to the specified 
+                backup directory.</span></li>
+                <li><span class="help-text">
+               <span style="color:#800000">Restore</span>
+                will restore all files for a given forest from 
+                the specfied directory, where it was previously backed  
+                up.</span></li>
+	     </ul>
+            <li><span class="help-text">The 
+            <span style="color:#800000">Create</span>
+            tab is for creating a new forest. </span></li>
+          </ul>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="assignments">
+    <xs:annotation>
+      <xs:documentation>
+        Forest assignment specifications.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="assignment"/>
+    </xs:choice>
+    <xs:attribute name="timestamp" type="xs:unsignedLong" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="assignments" type="assignments">
+    <xs:annotation>
+      <xs:documentation>
+        Forest assignment specifications.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

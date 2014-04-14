@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/appservices/infostudio" xmlns:error="http://marklogic.com/xdmp/error" xmlns:infostudio="http://marklogic.com/appservices/infostudio">
+  <xs:import namespace="http://marklogic.com/xdmp/error" schemaLocation="error.xsd"/>
+  <xs:complexType name="options">
+    <xs:sequence>
+      <xs:element ref="infostudio:options"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="options">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="infostudio:annotation"/>
+        <xs:element ref="infostudio:overwrite"/>
+        <xs:element ref="infostudio:error-handling"/>
+        <xs:element ref="infostudio:collection"/>
+        <xs:element ref="infostudio:max-docs-per-transaction"/>
+        <xs:element ref="infostudio:file-filter"/>
+        <xs:element ref="infostudio:repair"/>
+        <xs:element ref="infostudio:format"/>
+        <xs:element ref="infostudio:default-namespace"/>
+        <xs:element ref="infostudio:default-language"/>
+        <xs:element ref="infostudio:uri"/>
+        <xs:element ref="infostudio:encoding"/>
+        <xs:element ref="infostudio:filesize-limit-kb"/>
+        <xs:element ref="infostudio:permission"/>
+        <xs:element ref="infostudio:quality"/>
+        <xs:element ref="infostudio:forest"/>
+        <xs:element ref="infostudio:ticket-retention-duration"/>
+        <xs:element ref="infostudio:fab-retention-duration"/>
+      </xs:choice>
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="overwrite">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="overwrite"/>
+        <xs:enumeration value="skip"/>
+        <xs:enumeration value="error"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="error-handling">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="continue-with-warning"/>
+        <xs:enumeration value="error"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="collection">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:anyURI">
+          <xs:attribute name="add" type="xs:boolean"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="max-docs-per-transaction" type="xs:unsignedInt"/>
+  <xs:element name="file-filter" type="xs:string"/>
+  <xs:element name="repair">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="none"/>
+        <xs:enumeration value="full"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="format">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="xml"/>
+        <xs:enumeration value="text"/>
+        <xs:enumeration value="binary"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="default-namespace" type="xs:anyURI"/>
+  <xs:element name="default-language">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="ar"/>
+        <xs:enumeration value="de"/>
+        <xs:enumeration value="en"/>
+        <xs:enumeration value="es"/>
+        <xs:enumeration value="fa"/>
+        <xs:enumeration value="fr"/>
+        <xs:enumeration value="it"/>
+        <xs:enumeration value="ja"/>
+        <xs:enumeration value="ko"/>
+        <xs:enumeration value="nb"/>
+        <xs:enumeration value="nl"/>
+        <xs:enumeration value="nn"/>
+        <xs:enumeration value="pt"/>
+        <xs:enumeration value="ru"/>
+        <xs:enumeration value="zh"/>
+        <xs:enumeration value="zh-Hant"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="uri">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="infostudio:literal"/>
+        <xs:element ref="infostudio:path"/>
+        <xs:element ref="infostudio:guid"/>
+        <xs:element ref="infostudio:filename"/>
+        <xs:element ref="infostudio:ext"/>
+        <xs:element ref="infostudio:dot-ext"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="literal" type="xs:string"/>
+  <xs:element name="path">
+    <xs:complexType>
+      <xs:attribute name="strip-prefix"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="guid">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="filename">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="ext">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="dot-ext">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="encoding" type="xs:string"/>
+  <xs:element name="filesize-limit-kb" type="xs:unsignedInt"/>
+  <xs:element name="permission">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="infostudio:role"/>
+        <xs:element ref="infostudio:capability"/>
+      </xs:all>
+      <xs:attribute name="add" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="role" type="xs:string"/>
+  <xs:element name="capability">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="read"/>
+        <xs:enumeration value="insert"/>
+        <xs:enumeration value="update"/>
+        <xs:enumeration value="execute"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="quality" type="xs:integer"/>
+  <xs:element name="forest" type="xs:string"/>
+  <xs:element name="ticket-retention-duration" type="xs:duration"/>
+  <xs:element name="fab-retention-duration" type="xs:duration"/>
+  <xs:group name="any-element">
+    <xs:sequence>
+      <xs:any processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="annotation">
+    <xs:complexType mixed="true">
+      <xs:group minOccurs="0" maxOccurs="unbounded" ref="infostudio:any-element"/>
+      <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="settings">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="infostudio:wildcard"/>
+        <xs:element minOccurs="0" ref="infostudio:position"/>
+        <xs:element minOccurs="0" ref="infostudio:reverse"/>
+        <xs:element minOccurs="0" ref="infostudio:detail"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wildcard" type="xs:boolean"/>
+  <xs:element name="position" type="xs:boolean"/>
+  <xs:element name="reverse" type="xs:boolean"/>
+  <xs:element name="detail">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="infostudio:three-character-searches"/>
+        <xs:element ref="infostudio:word-lexicons"/>
+        <xs:element ref="infostudio:word-positions"/>
+        <xs:element ref="infostudio:element-word-positions"/>
+        <xs:element ref="infostudio:element-value-positions"/>
+        <xs:element ref="infostudio:three-character-word-positions"/>
+        <xs:element ref="infostudio:fast-reverse-searches"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="three-character-searches" type="xs:boolean"/>
+  <xs:element name="word-lexicons">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="infostudio:word-lexicon"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-lexicon" type="xs:anyURI"/>
+  <xs:element name="word-positions" type="xs:boolean"/>
+  <xs:element name="element-word-positions" type="xs:boolean"/>
+  <xs:element name="element-value-positions" type="xs:boolean"/>
+  <xs:element name="three-character-word-positions" type="xs:boolean"/>
+  <xs:element name="fast-reverse-searches" type="xs:boolean"/>
+  <xs:element name="ticket">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="infostudio:status"/>
+        <xs:element ref="infostudio:start-time"/>
+        <xs:element ref="infostudio:ticket-expiration"/>
+        <xs:element ref="infostudio:database"/>
+        <xs:element ref="infostudio:policy-name"/>
+        <xs:element ref="infostudio:policy-deltas"/>
+        <xs:element ref="infostudio:time-consumed"/>
+        <xs:element ref="infostudio:total-documents"/>
+        <xs:element ref="infostudio:total-transactions"/>
+        <xs:element ref="infostudio:transactions-completed"/>
+        <xs:element ref="infostudio:documents-processed"/>
+        <xs:element ref="infostudio:percent-complete"/>
+        <xs:element ref="infostudio:errors"/>
+        <xs:element ref="infostudio:annotation"/>
+      </xs:choice>
+      <xs:attribute name="id" use="required" type="xs:anyURI"/>
+      <xs:attribute name="timestamp" type="xs:dateTime"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="status">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="aborted"/>
+        <xs:enumeration value="active"/>
+        <xs:enumeration value="cancelled"/>
+        <xs:enumeration value="cleared"/>
+        <xs:enumeration value="completed"/>
+        <xs:enumeration value="inactive"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="start-time" type="xs:dateTime"/>
+  <xs:element name="ticket-expiration" type="xs:dateTime"/>
+  <xs:element name="database" type="xs:string"/>
+  <xs:element name="policy-name" type="xs:string"/>
+  <xs:element name="policy-deltas" type="infostudio:options"/>
+  <xs:element name="time-consumed" type="xs:duration"/>
+  <xs:element name="total-documents" type="xs:unsignedInt"/>
+  <xs:element name="total-transactions" type="xs:unsignedInt"/>
+  <xs:element name="transactions-completed" type="xs:unsignedInt"/>
+  <xs:element name="documents-processed" type="xs:unsignedInt"/>
+  <xs:element name="percent-complete">
+    <xs:simpleType>
+      <xs:union memberTypes="xs:double">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:length value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:union>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="errors" type="xs:unsignedInt"/>
+  <xs:element name="progress">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="infostudio:documents-processed"/>
+        <xs:element ref="infostudio:transactions-completed"/>
+        <xs:element ref="infostudio:error"/>
+        <xs:element ref="infostudio:annotation"/>
+      </xs:choice>
+      <xs:attribute name="ticket-id" use="required" type="xs:anyURI"/>
+      <xs:attribute name="timestamp" use="required" type="xs:dateTime"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="error">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="error:error"/>
+      </xs:sequence>
+      <xs:attribute name="context" use="required" type="xs:string"/>
+      <xs:attribute name="error-code" use="required" type="xs:string"/>
+      <xs:attribute name="timestamp" use="required" type="xs:dateTime"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

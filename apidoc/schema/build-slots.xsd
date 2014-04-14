@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/appservices/slots" xmlns:slots="http://marklogic.com/appservices/slots">
+  <!--
+    Notice: The *.rnc are the normative human-edited versions
+    Do not directly edit the *.xsd versions, any changes will be lost when rebuilding
+    To rebuild, download trang from relaxng.org, and run
+    java -jar path/to/trang.jar filename.rnc filename.xsd
+  -->
+  <!-- Root element -->
+  <xs:element name="slots">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="slots:title"/>
+        <xs:element minOccurs="0" ref="slots:data-location"/>
+        <xs:element ref="slots:skin"/>
+        <xs:element ref="slots:copyright-year"/>
+        <xs:element ref="slots:copyright-holder"/>
+        <xs:element ref="slots:logo-type"/>
+        <xs:element minOccurs="0" ref="slots:logo-text"/>
+        <xs:element minOccurs="0" ref="slots:logo-src"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title" type="xs:string"/>
+  <xs:element name="data-location" type="xs:string"/>
+  <xs:element name="skin" type="xs:string"/>
+  <xs:element name="copyright-year" type="xs:string"/>
+  <xs:element name="copyright-holder" type="xs:string"/>
+  <xs:element name="logo-type" type="xs:string"/>
+  <xs:element name="logo-text" type="xs:string"/>
+  <xs:element name="logo-src" type="xs:string"/>
+</xs:schema>

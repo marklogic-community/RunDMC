@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:opt="cts:distinctive-terms"
+           xmlns:db="http://marklogic.com/xdmp/database"
+           targetNamespace="cts:distinctive-terms"
+           elementFormDefault="qualified">
+
+<xs:import namespace="http://marklogic.com/xdmp/database"
+           schemaLocation="database.xsd"/>
+
+<xs:element name="options">
+  <xs:annotation>
+    <xs:documentation>
+    Options permitted by cts:train.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+       <xs:element ref="opt:max-terms"/>
+       <xs:element ref="opt:min-weight"/>
+       <xs:element ref="opt:score"/>
+       <xs:element ref="opt:complete"/>
+       <xs:element ref="opt:use-db-config"/>
+       <xs:element ref="db:word-searches"/>
+       <xs:element ref="db:stemmed-searches"/>
+       <xs:element ref="db:fast-case-sensitive-searches"/>
+       <xs:element ref="db:fast-reverse-searches"/>
+       <xs:element ref="db:fast-diacritic-sensitive-searches"/>
+       <xs:element ref="db:fast-phrase-searches"/>
+       <xs:element ref="db:phrase-throughs"/>
+       <xs:element ref="db:phrase-arounds"/>
+       <xs:element ref="db:fast-element-word-searches"/>
+       <xs:element ref="db:fast-element-phrase-searches"/>
+       <xs:element ref="db:element-word-query-throughs"/>
+       <xs:element ref="db:fast-element-character-searches"/>
+       <xs:element ref="db:range-element-indexes"/>
+       <xs:element ref="db:range-element-attribute-indexes"/>
+       <xs:element ref="db:one-character-searches"/>
+       <xs:element ref="db:two-character-searches"/>
+       <xs:element ref="db:three-character-searches"/>
+       <xs:element ref="db:trailing-wildcard-searches"/>
+       <xs:element ref="db:fast-element-trailing-wildcard-searches"/>
+       <xs:element ref="db:fields"/>
+       <xs:element ref="db:language"/>
+     </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+
+<xs:element name="max-terms" default="16" type="xs:nonNegativeInteger">
+  <xs:annotation>
+    <xs:documentation>
+    The maximum number of distinctive terms to generate. The default is 16.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:element name="min-weight" default="1" type="xs:nonNegativeInteger">
+  <xs:annotation>
+    <xs:documentation>
+    Terms with normalized scores whose absolute value is smaller than this 
+    value will not be included in the set of distinctive terms. The default is 1.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:simpleType name="score-kind">
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="logtfidf"/>
+    <xs:enumeration value="logtf"/>
+    <xs:enumeration value="simple"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:element name="score" default="logtfidf" type="opt:score-kind">
+  <xs:annotation>
+    <xs:documentation>
+      What kind of scoring method should be used.  The default is logtfidf.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:element name="use-db-config" default="false" type="xs:boolean">
+  <xs:annotation>
+    <xs:documentation>
+      Use index settings from the current database config.  These settings
+      can be modified through the use of the database indexing options.
+      If the value is set to false (the default), then the starting point is 
+      instead a default set: stemmed searches, fast phrase searches, 
+      fast element searches, and fast element phrase searches.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:element name="complete" default="false" type="xs:boolean">
+  <xs:annotation>
+    <xs:documentation>
+      Include terms that have no query associated with them. For debugging.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+</xs:schema>
+
+

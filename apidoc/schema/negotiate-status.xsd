@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/status/negotiate"
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd" xmlns="http://marklogic.com/xdmp/status/negotiate"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns="http://marklogic.com/xdmp/status/negotiate" xmlns:hfp="http://www.w3.org/2001/XMLSchema-hasFacetAndProperty"
+           xmlns:admin="http://marklogic.com/xdmp/admin"
+           xmlns:manage="http://marklogic.com/xdmp/manage">
+
+  <xs:element name="success" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>
+        true if gss_accept_sec_context returns GSS_S_COMPLETE.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="output-token" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The output token from gss_accept_sec_context.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="user" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The user name if authentication is successful.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="negotiate-status">
+    <xs:annotation>
+      <xs:documentation>A negotiate status</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" ref="success"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="output-token"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

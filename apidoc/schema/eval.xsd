@@ -1,0 +1,323 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:eval"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ elementFormDefault="qualified"
+ xmlns="xdmp:eval"
+ xmlns:xdmp="http://marklogic.com/xdmp"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="static-check">
+    <xs:annotation>
+      <xs:documentation>
+  	Only perform static checks.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="static-check" type="static-check">
+    <xs:annotation>
+      <xs:documentation>
+  	Only perform static checks.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="prevent-deadlocks">
+    <xs:annotation>
+      <xs:documentation>
+  	Prevent deadlocks in different transaction mode.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="prevent-deadlocks" type="prevent-deadlocks">
+    <xs:annotation>
+      <xs:documentation>
+  	Prevent deadlocks in different transaction mode.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="root">
+    <xs:annotation>
+      <xs:documentation>
+	The root for module imports.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="root" type="root">
+    <xs:annotation>
+      <xs:documentation>
+  	A module import root.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="database">
+    <xs:annotation>
+      <xs:documentation>
+	The database to evaluate against.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="database" type="database">
+    <xs:annotation>
+      <xs:documentation>
+  	A database for evaluation.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+
+  <xs:simpleType name="modules">
+    <xs:annotation>
+      <xs:documentation>
+	The modules database for imports
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="modules" type="modules">
+    <xs:annotation>
+      <xs:documentation>
+  	Modules database used for module imports
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+	The timestamp
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="timestamp" type="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+  	Query Timestamp
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="isolation">
+    <xs:annotation>
+      <xs:documentation>
+	The evaluation isolation.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="same-statement"/>
+      <xs:enumeration value="different-transaction"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="isolation" type="isolation">
+    <xs:annotation>
+      <xs:documentation>
+  	Evaluation isolation
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="default-xquery-version">
+    <xs:annotation>
+      <xs:documentation>
+        The default XQuery language version to use.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="1.0-ml"/>
+      <xs:enumeration value="0.9-ml"/>
+      <xs:enumeration value="1.0"/>
+      <xs:enumeration value="app-server"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="default-xquery-version" type="default-xquery-version">
+    <xs:annotation>
+      <xs:documentation>
+        An invocation's default XQuery language version.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="default-collation">
+    <xs:annotation>
+      <xs:documentation>
+        The default collation to use.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="default-collation" type="default-collation">
+    <xs:annotation>
+      <xs:documentation>
+        An invocation's default collation.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="mode" type="xs:QName">
+    <xs:annotation>
+      <xs:documentation>
+      The starting mode of an XSLT stylesheet (xslt-eval, xslt-invoke only)
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="template" type="xs:QName">
+    <xs:annotation>
+      <xs:documentation>
+      The starting named template of an XSLT stylesheet (xslt-eval, xslt-invoke only)
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="encoding" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+      The encoding of an XSLT stylesheet invoked from the filesystem.
+      The default is "UTF-8", and the value "auto" means to auto-detect the
+      encoding.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="priority">
+    <xs:annotation>
+      <xs:documentation>
+	The priority of the spawned task.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="higher"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="priority" type="priority">
+    <xs:annotation>
+      <xs:documentation>
+	The priority of the spawned task.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="result">
+    <xs:annotation>
+      <xs:documentation>
+  	Return a value future for the result of the spawned task.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="result" type="result">
+    <xs:annotation>
+      <xs:documentation>
+  	Return a value future for the result of the spawned task.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="options">
+    <xs:annotation>
+      <xs:documentation>
+        The options node for eval, invoke, or spawn
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="database"/>
+      <xs:element ref="isolation"/>
+      <xs:element ref="modules"/>
+      <xs:element ref="root"/>
+      <xs:element ref="timestamp"/>
+      <xs:element ref="static-check"/>
+      <xs:element ref="prevent-deadlocks"/>
+      <xs:element ref="default-xquery-version"/>
+      <xs:element ref="default-collation"/>
+      <xs:element ref="encoding"/>
+      <xs:element ref="mode"/>
+      <xs:element ref="template"/>
+      <xs:element ref="priority"/>
+      <xs:element ref="result"/>
+    </xs:choice>    
+  </xs:complexType>
+
+  <xs:element name="options" type="options">
+    <xs:annotation>
+      <xs:documentation>
+  	An eval/invoke/spawn options node
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

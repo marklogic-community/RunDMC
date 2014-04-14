@@ -1,0 +1,72 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/xa"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/xa"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- A Xid: http://download.oracle.com/javaee/6/api/javax/transaction/xa/XAResource.html -->
+
+  <xs:element name="global-transaction-id" type="xs:hexBinary">
+    <xs:annotation>
+      <xs:documentation>
+        The global transaction ID of a Xid.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="branch-qualifier" type="xs:hexBinary">
+    <xs:annotation>
+      <xs:documentation>
+        The branch qualifier of a Xid.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="xid">
+    <xs:annotation>
+      <xs:documentation>
+        A Xid
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="global-transaction-id"/>
+      <xs:element ref="branch-qualifier"/>
+    </xs:sequence>
+    <xs:attribute name="format-id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="xid" type="xid">
+    <xs:annotation>
+      <xs:documentation>
+        The Xid.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <!-- Prepare return code -->
+
+  <xs:simpleType name="prepare-vote">
+    <xs:annotation>
+      <xs:documentation>
+        The return type for xa:prepare().
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="XA_OK"/>
+      <xs:enumeration value="XA_RDONLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+

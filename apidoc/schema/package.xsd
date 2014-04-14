@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:sp="http://marklogic.com/manage/package/servers"
+           xmlns:dp="http://marklogic.com/manage/package/databases"
+           xmlns:pkg="http://marklogic.com/manage/package"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+           elementFormDefault="qualified"
+           targetNamespace="http://marklogic.com/manage/package">
+
+  <xs:import namespace="http://marklogic.com/manage/package/databases"
+             schemaLocation="package-databases.xsd"/>
+
+  <xs:import namespace="http://marklogic.com/manage/package/servers"
+             schemaLocation="package-servers.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      Schema for packages.
+    </xs:documentation>
+    <xs:appinfo>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:complexType name="package">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of package artifacts.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="dp:package-database"/>
+      <xs:element ref="sp:package-http-server"/>
+      <xs:element ref="sp:package-xdbc-server"/>
+      <xs:element ref="sp:package-odbc-server"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="package" type="pkg:package">
+    <xs:annotation>
+      <xs:documentation>
+        A collection of package artifacts.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/status/server"
+           xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd" xmlns="http://marklogic.com/xdmp/status/server"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns2="http://marklogic.com/xdmp/status/request"
+           xmlns:ns="http://marklogic.com/xdmp/status/server" xmlns:hfp="http://www.w3.org/2001/XMLSchema-hasFacetAndProperty"
+           xmlns:admin="http://marklogic.com/xdmp/admin"
+           xmlns:manage="http://marklogic.com/xdmp/manage">
+
+  <xs:simpleType name="server-id">
+    <xs:annotation>
+      <xs:documentation>A server id.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="server-id" type="server-id">
+    <xs:annotation>
+      <xs:documentation>The server id.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="host-id">
+    <xs:annotation>
+      <xs:documentation>A host unique id (64-bit value).</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="host-id" type="host-id">
+    <xs:annotation>
+      <xs:documentation>The unique key of the host</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="transaction-id">
+    <xs:annotation>
+      <xs:documentation>A transaction unique id (64-bit value).</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="transaction-id" type="transaction-id">
+    <xs:annotation>
+      <xs:documentation>The unique key of the transaction</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="server-status" type="server-status">
+    <xs:annotation>
+      <xs:documentation>The status of a server</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="server-name">
+    <xs:annotation>
+      <xs:documentation>A server name.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="server-name" type="server-name">
+    <xs:annotation>
+      <xs:documentation>The server name.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="server-kind">
+    <xs:annotation>
+      <xs:documentation>A kind of server</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="http-server"/>
+      <xs:enumeration value="xdbc-server"/>
+      <xs:enumeration value="odbc-server"/>
+      <xs:enumeration value="webDAV-server"/>
+      <xs:enumeration value="task-server"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="server-kind" type="server-kind">
+    <xs:annotation>
+      <xs:documentation>The kind of server</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="enabled" type="boolean">
+    <xs:annotation>
+      <xs:documentation>The server is enabled.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="request-state">
+    <xs:annotation>
+      <xs:documentation>The state of a request</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="stopped"/>
+      <xs:enumeration value="running"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-state" type="request-state">
+    <xs:annotation>
+      <xs:documentation>The state of a request</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="request-kind">
+    <xs:annotation>
+      <xs:documentation>A kind of request</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="eval"/>
+      <xs:enumeration value="invoke"/>
+      <xs:enumeration value="get"/>
+      <xs:enumeration value="copy"/>
+      <xs:enumeration value="delete"/>
+      <xs:enumeration value="lock"/>
+      <xs:enumeration value="mkcol"/>
+      <xs:enumeration value="move"/>
+      <xs:enumeration value="options"/>
+      <xs:enumeration value="propfind"/>
+      <xs:enumeration value="proppatch"/>
+      <xs:enumeration value="put"/>
+      <xs:enumeration value="unlock"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-kind" type="request-kind">
+    <xs:annotation>
+      <xs:documentation>The kind of request (for example, invoke, eval).</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="port">
+    <xs:annotation>
+      <xs:documentation>An integer internet port number, min 1, max 65534.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="65534"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="port" type="port">
+    <xs:annotation>
+      <xs:documentation>The server socket bind internet port number.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>It can be absolute or relative.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="root" type="directory-pathname">
+    <xs:annotation>
+      <xs:documentation>The root document directory pathname.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="database-id">
+    <xs:annotation>
+      <xs:documentation>A database ID.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="modules" type="database-id">
+    <xs:annotation>
+      <xs:documentation>The ID of the database that contains application modules. If on the file-system, then 0.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="database" type="database-id">
+    <xs:annotation>
+      <xs:documentation>The ID of the content database.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="last-login" type="database-id">
+    <xs:annotation>
+      <xs:documentation>The ID of the last login database.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="display-last-login" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Whether an appserver should display last-login information.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="address">
+    <xs:annotation>
+      <xs:documentation>A numeric internet address.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="address" type="address">
+    <xs:annotation>
+      <xs:documentation>The server socket bind numeric internet address.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="backlog">
+    <xs:annotation>
+      <xs:documentation>An integer number of connections, min 1, max 4096.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="4096"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="backlog" type="backlog">
+    <xs:annotation>
+      <xs:documentation>The socket listen backlog.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="threadCount">
+    <xs:annotation>
+      <xs:documentation>An integer number of threads, min 0, max 256.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="threads" type="threadCount">
+    <xs:annotation>
+      <xs:documentation>The maximum number of server threads allowed.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="max-threads" type="threadCount">
+    <xs:annotation>
+      <xs:documentation>The maximum number of server threads allowed.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="concurrent-request-limit" type="xs:integer">
+    <xs:annotation>
+      <xs:documentation>The concurrent request limit.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timeout">
+    <xs:annotation>
+      <xs:documentation>An integer number of seconds, min 0, max 4294967295.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="4294967295"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-timeout" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The request socket recv timeout, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="keep-alive-timeout" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The keep-alive socket recv timeout, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="session-timeout" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The session expiration timeout, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="static-expires" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The static content expiration interval, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="max-time-limit" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The upper bound for a request's time limit, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="time-limit" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The request's time limit, in seconds.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="default-time-limit" type="timeout">
+    <xs:annotation>
+      <xs:documentation>The default time limit for a request, in seconds.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="authentication">
+    <xs:annotation>
+      <xs:documentation>The authentication mode for the server.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="application-level"/>
+      <xs:enumeration value="basic"/>
+      <xs:enumeration value="digest"/>
+      <xs:enumeration value="digestbasic"/>
+      <xs:enumeration value="kerberos-ticket"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="authentication" type="authentication">
+    <xs:annotation>
+      <xs:documentation>The authentication scheme to use for this server</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="multi-version-concurrency-control">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="contemporaneous"/>
+      <xs:enumeration value="nonblocking"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="multi-version-concurrency-control" type="multi-version-concurrency-control"/>
+
+  <xs:simpleType name="distribute-timestamps">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="strict"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="distribute-timestamps" type="distribute-timestamps"/>
+
+  <xs:simpleType name="user">
+    <xs:annotation>
+      <xs:documentation>A user ID.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="default-user" type="user">
+    <xs:annotation>
+      <xs:documentation>The user used as the default user in application level authentication. Using the admin user as the default
+      user is equivalent to turning security off.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="privilege-id">
+    <xs:annotation>
+      <xs:documentation>A privilege to restrict access to a server.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="privilege" type="privilege-id">
+    <xs:annotation>
+      <xs:documentation>The privilege restricting access to the server.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="pathname">
+    <xs:annotation>
+      <xs:documentation>It can be absolute or relative.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="path" type="pathname">
+    <xs:annotation>
+      <xs:documentation>The path to a queery</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="text">
+    <xs:annotation>
+      <xs:documentation>A query/request text</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="request-text" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>The request text.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="request-rewritten-text" type="text">
+    <xs:annotation>
+      <xs:documentation>The rewritten request text.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="start-time">
+    <xs:annotation>
+      <xs:documentation>A Label version number.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime"/>
+  </xs:simpleType>
+
+  <xs:element name="start-time" type="start-time">
+    <xs:annotation>
+      <xs:documentation>The time the operation started.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="trigger-depth">
+    <xs:annotation>
+      <xs:documentation>An integer number of trigger invocation.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="trigger-depth" type="trigger-depth">
+    <xs:annotation>
+      <xs:documentation>The maximum depth of trigger invocation.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="user" type="user">
+    <xs:annotation>
+      <xs:documentation>The unique ID of the user executing the request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="boolean">
+    <xs:annotation>
+      <xs:documentation>true or false</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:element name="update" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Specifies if this request an update (true for update requests).</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="request-id">
+    <xs:annotation>
+      <xs:documentation>An id for a request</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="request-id" type="request-id">
+    <xs:annotation>
+      <xs:documentation>A unique id for a request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="canceled" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Has this request been canceled.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="client-address">
+    <xs:annotation>
+      <xs:documentation>An address of a client</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:element name="client-address" type="client-address">
+    <xs:annotation>
+      <xs:documentation>The network address of a client</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="profiling-allowed" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Is profiling allowed for this request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="profiling-enabled" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Is profiling currently enabled for this request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="debugging-allowed" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Is debugging allowed for this request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="debugging-status">
+    <xs:annotation>
+      <xs:documentation>A request's debugging status.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:element name="debugging-status" type="debugging-status">
+    <xs:annotation>
+      <xs:documentation>The debugging status of the request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="expr-id">
+    <xs:annotation>
+      <xs:documentation>An expression identifier.</xs:documentation>
+      <xs:appinfo>
+        <manage:no-units/>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="expr-id" type="expr-id">
+    <xs:annotation>
+      <xs:documentation>The expression id.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="where-stopped">
+    <xs:annotation>
+      <xs:documentation>Where in an expression a request is stopped.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="begin"/>
+      <xs:enumeration value="end"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="where-stopped" type="where-stopped">
+    <xs:annotation>
+      <xs:documentation>Where the request is stopped.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="request-status">
+    <xs:annotation>
+      <xs:documentation>A set of request statuses.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="request-id"/>
+      <xs:element ref="server-id"/>
+      <xs:element ref="host-id"/>
+      <xs:element ref="transaction-id"/>
+      <xs:element ref="canceled"/>
+      <xs:element ref="modules"/>
+      <xs:element ref="database"/>
+      <xs:element minOccurs="0" ref="root"/>
+      <xs:element ref="request-kind"/>
+      <xs:element ref="request-text"/>
+      <xs:element minOccurs="0" ref="request-rewritten-text"/>
+      <xs:element ref="update"/>
+      <xs:element ref="start-time"/>
+      <xs:element ref="time-limit"/>
+      <xs:element ref="max-time-limit"/>
+      <xs:element ref="user"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="client-address"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="trigger-depth"/>
+      <xs:element ref="expanded-tree-cache-hits"/>
+      <xs:element ref="expanded-tree-cache-misses"/>
+      <xs:element ref="request-state"/>
+      <xs:element ref="profiling-allowed"/>
+      <xs:element ref="profiling-enabled"/>
+      <xs:element ref="debugging-allowed"/>
+      <xs:element ref="debugging-status"/>
+      <xs:element ref="retry-count"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="expr-id"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="where-stopped"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="request-status" type="request-status">
+    <xs:annotation>
+      <xs:documentation>The request being processed by the server.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="request-statuses">
+    <xs:annotation>
+      <xs:documentation>A set of request statuses.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element ref="request-status"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="request-statuses" type="request-statuses">
+    <xs:annotation>
+      <xs:documentation>The requests being processed by the server.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="queue-size">
+    <xs:annotation>
+      <xs:documentation>An integer number of tasks.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="queue-size" type="queue-size">
+    <xs:annotation>
+      <xs:documentation>The number of tasks in the server queue.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="queue-limit" type="queue-size">
+    <xs:annotation>
+      <xs:documentation>The maximum number size of the queue.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="count">
+    <xs:annotation>
+      <xs:documentation>A count.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="average">
+    <xs:annotation>
+      <xs:documentation>An average.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:float"/>
+  </xs:simpleType>
+
+  <xs:element name="expanded-tree-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the expanded cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="expanded-tree-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the expanded cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-program-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the filesystem program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-program-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the filesystem program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-program-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the database program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-program-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the database program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="env-program-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the XSLT environment program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="env-program-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the XSLT environment program cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-main-module-seq-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the filesystem main module sequence cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-main-module-seq-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the filesystem main module sequence cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-main-module-seq-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the database main module sequence cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-main-module-seq-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the database main module sequence cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-lib-module-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the filesystem library module cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="fs-lib-module-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the filesystem library module cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-lib-module-cache-hits" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of hits on the database library module cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="db-lib-module-cache-misses" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of misses on the database library module cache.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="retry-count" type="count">
+    <xs:annotation>
+      <xs:documentation>The number of retries on the request.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="expanded-tree-cache-hit-rate" type="average">
+    <xs:annotation>
+      <xs:documentation>The average number of hits on the expanded cache.</xs:documentation>
+      <xs:appinfo>
+        <manage:units>hits/sec</manage:units>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="expanded-tree-cache-miss-rate" type="average">
+    <xs:annotation>
+      <xs:documentation>The average number of misses on the expanded cache.</xs:documentation>
+      <xs:appinfo>
+        <manage:units>misses/sec</manage:units>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="request-rate">
+    <xs:annotation>
+      <xs:documentation>A request rate (requests/sec).</xs:documentation>
+      <xs:appinfo>
+        <manage:units>quantity/sec</manage:units>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:float"/>
+  </xs:simpleType>
+
+  <xs:element name="request-rate" type="request-rate">
+    <xs:annotation>
+      <xs:documentation>The rate of a request (requests/sec).</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="error">
+    <xs:annotation>
+      <xs:documentation>An error processing server status.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:element name="error" type="error">
+    <xs:annotation>
+      <xs:documentation>The error in processing server status.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timestamp">
+    <xs:annotation>
+      <xs:documentation>A timestamp of an event.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime"/>
+  </xs:simpleType>
+
+  <xs:element name="current-time" type="timestamp">
+    <xs:annotation>
+      <xs:documentation>The current time.</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="default-xquery-version">
+    <xs:annotation>
+      <xs:documentation>
+        The default XQuery language version for this server.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="1.0-ml"/>
+      <xs:enumeration value="0.9-ml"/>
+      <xs:enumeration value="1.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="default-xquery-version" type="default-xquery-version">
+    <xs:annotation>
+      <xs:documentation>
+        An application server's default XQuery language version.
+      </xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="host-name" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The internet host name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="round-trip-count" type="xs:unsignedInt">
+    <xs:annotation>
+      <xs:documentation>
+	      The total of round-trip communications between the App Server 
+	      host and this host. A round trip is the completion of a 
+	      request sent from the App Server host to another host in the
+	      cluster.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="round-trip-time" type="xs:dayTimeDuration">
+    <xs:annotation>
+      <xs:documentation>
+	      The total time (as xs:dayTimeDuration) to complete the round 
+	      trips from the App Server to this host.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="round-trip-rate" type="xs:float">
+    <xs:annotation>
+      <xs:documentation>
+	      The moving average of the rate to send round trip data, in 
+	      megabytes per second.
+      </xs:documentation>
+      <xs:appinfo>
+        <manage:units>MB/sec</manage:units>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="round-trip-load" type="xs:float">
+    <xs:annotation>
+      <xs:documentation>
+	      The moving average of the round-trip load on the server, in 
+	      seconds per second.  
+      </xs:documentation>
+      <xs:appinfo>
+        <manage:units>sec/sec</manage:units>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="host">
+    <xs:all>
+      <xs:element ref="host-name"/>
+      <xs:element ref="round-trip-count"/>
+      <xs:element ref="round-trip-time"/>
+      <xs:element ref="round-trip-rate"/>
+      <xs:element ref="round-trip-load"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="host" type="host">
+    <xs:annotation>
+      <xs:documentation>
+        The host connection information.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="hosts">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="host"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="hosts" type="hosts">
+    <xs:annotation>
+      <xs:documentation>
+        The host's view of all other hosts in the cluster.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="output-sgml-character-entities">
+    <xs:annotation>
+      <xs:documentation>
+        The character entities to use during output.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="math"/>
+      <xs:enumeration value="pub"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="output-sgml-character-entities" 
+	  type="output-sgml-character-entities">
+    <xs:annotation>
+      <xs:documentation>
+        The character entities to use during output.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="output-encoding" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The output encoding of the App Server.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="error-handler" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The error handler used, if any.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="url-rewriter" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The url rewriter used, if any.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="request-time" type="xs:float">
+    <xs:annotation>
+      <xs:documentation>
+        1 minute avarage of request time for this server.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:complexType name="server-status">
+    <xs:annotation>
+      <xs:documentation>A server status</xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="server-id"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="server-name"/>
+      <xs:element ref="host-id"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="error"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="server-kind"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="enabled"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="port"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="root"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="modules"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="database"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="last-login"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="display-last-login"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="address"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="backlog"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="threads"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="max-threads"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="request-timeout"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="keep-alive-timeout"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="session-timeout"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="static-expires"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="max-time-limit"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="default-time-limit"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="multi-version-concurrency-control"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="distribute-timestamps"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="authentication"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="default-user"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="privilege"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="concurrent-request-limit"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="default-xquery-version"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="current-time"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="request-statuses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="request-rate"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="queue-size"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="queue-limit"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="expanded-tree-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="expanded-tree-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="expanded-tree-cache-hit-rate"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="expanded-tree-cache-miss-rate"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-program-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-program-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-program-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-program-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="env-program-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="env-program-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-main-module-seq-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-main-module-seq-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-main-module-seq-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-main-module-seq-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-lib-module-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="fs-lib-module-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-lib-module-cache-hits"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="db-lib-module-cache-misses"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="hosts"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="output-sgml-character-entities"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="output-encoding"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="error-handler"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="url-rewriter"/>
+      <xs:element maxOccurs="1" minOccurs="0" ref="request-time"/>
+      
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

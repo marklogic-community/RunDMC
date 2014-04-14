@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:css="http://marklogic.com/cpf/css"
+           targetNamespace="http://marklogic.com/cpf/css"
+           elementFormDefault="qualified"
+>
+
+<xs:element name="styles">
+   <xs:annotation>
+      <xs:documentation>
+      A bundle of CSS styles.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="css:base-factors" minOccurs="0"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+           <xs:element ref="css:style"/>
+           <xs:element ref="css:media"/>
+           <xs:element ref="css:import"/>
+           <xs:element ref="css:charset"/>
+        </xs:choice>
+      </xs:sequence>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="base-factors">
+   <xs:annotation>
+      <xs:documentation>
+      The set of base factors for an HTML document: rules from the body
+      element, the html element, or *, in that order.      
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="css:property" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="media">
+   <xs:annotation>
+      <xs:documentation>
+      A media definition: a set of style rules.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="css:style" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="import" type="xs:string">
+   <xs:annotation>
+      <xs:documentation>
+      A import definition: an external set of styles.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:element name="charset" type="xs:string">
+   <xs:annotation>
+      <xs:documentation>
+      A charset declaration: Specifying the character set of the stylesheet.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:element name="style">
+   <xs:annotation>
+      <xs:documentation>
+      A style definition.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="css:selector"/>
+         <xs:element ref="css:property" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="header-weight" type="xs:integer" use="optional"/>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="error" substitutionGroup="css:property">
+   <xs:annotation>
+      <xs:documentation>
+        Element to capture unparsable properties.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+     <xs:complexContent mixed="true">
+       <xs:extension base="css:property">
+         <xs:sequence>
+           <xs:element ref="css:original" minOccurs="0"/>
+         </xs:sequence>
+       </xs:extension>
+     </xs:complexContent>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="selector">
+   <xs:annotation>
+      <xs:documentation>
+      The selector for the style rule.
+      </xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="css:selector" minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element ref="css:original" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="type" type="xs:NMTOKEN"/>
+      <xs:attribute name="class" type="xs:string" use="optional"/>
+      <xs:attribute name="element" type="xs:string" use="optional"/>
+      <xs:attribute name="pseudo" type="xs:string" use="optional"/>
+      <xs:attribute name="id" type="xs:string" use="optional"/>
+      <xs:attribute name="condition" type="xs:string" use="optional"/>
+      <xs:attribute name="special" type="xs:string" use="optional"/>
+   </xs:complexType>
+</xs:element>
+
+<xs:element name="original" type="xs:string">
+   <xs:annotation>
+      <xs:documentation>
+      Original unparsed CSS data.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:complexType name="property">
+  <xs:complexContent mixed="true">
+     <xs:restriction base="xs:anyType">
+       <xs:sequence/>
+       <xs:attribute name="important" type="xs:boolean" use="optional"/>
+       <xs:attribute name="unit" type="xs:string" use="optional"/>
+       <xs:attribute name="original" type="xs:string" use="optional"/>
+       <xs:attribute name="relative" type="xs:boolean" use="optional"/>
+       <xs:attribute name="weight" type="xs:integer" use="optional"/>
+     </xs:restriction>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:element name="property" abstract="true" type="css:property">
+   <xs:annotation>
+      <xs:documentation>
+      A style property. Abstract base class.
+      </xs:documentation>
+   </xs:annotation>
+</xs:element>
+
+<xs:element name="font-family" substitutionGroup="css:property">
+   <xs:annotation>
+      <xs:documentation>
+      CSS font-family property; subject to further parsing
+      </xs:documentation>
+   </xs:annotation>
+  <xs:complexType>
+    <xs:complexContent mixed="true">
+      <xs:extension base="css:property">
+        <xs:sequence>
+          <xs:element ref="css:font-choice" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="font-choice">
+  <xs:complexType>
+    <xs:complexContent mixed="true">
+      <xs:extension base="css:property">
+        <xs:attribute name="generic" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:element>
+
+<!-- All the CSS properties that we handle normally -->
+<xs:element name="azimuth" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background-attachment" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background-color" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background-image" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background-position" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="background-repeat" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-collapse" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-color" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-spacing" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-style" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-top" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-right" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-bottom" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-top-color" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-top-style" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-top-width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="border-width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="bottom" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="caption-side" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="clear" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="clip" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="color" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="content" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="counter-increment" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="counter-reset" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="cue" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="cue-after" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="cue-before" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="cursor" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="direction" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="display" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="elevation" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="empty-cells" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="float" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-size" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-size-adjust" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-stretch" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-style" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-variant" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="font-weight" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="height" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="letter-spacing" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="line-height" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="list-style" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="list-style-image" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="list-style-position" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="list-style-type" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="margin" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="margin-top" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="margin-bottom" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="margin-left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="margin-right" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="marker-offset" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="marks" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="max-height" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="max-width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="min-height" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="min-width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="orphans" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="outline" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="outline-color" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="outline-style" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="outline-width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="overflow" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="padding" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="padding-top" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="padding-bottom" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="padding-left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="padding-right" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="page" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="page-break-after" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="page-break-before" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="page-break-inside" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="pause" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="pause-after" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="pause-before" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="pitch" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="pitch-range" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="play-during" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="position" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="quotes" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="richness" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="right" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="size" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="speak" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="speak-header" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="speak-numeral" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="speak-punctuation" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="speech-rate" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="stress" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="table-layout" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="text-align" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="text-decoration" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="text-indent" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="text-shadow" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="text-transform" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="top" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="unicode-bidi" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="vertical-align" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="visibility" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="voice-family" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="volume" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="white-space" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="widows" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="width" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="word-spacing" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="z-index" substitutionGroup="css:property" type="css:property"/>
+<!-- Special properties; used for tracking -->
+<xs:element name="original-font" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="original-background" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="x-line-height" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="x-margin-left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="x-margin-right" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="x-padding-left" substitutionGroup="css:property" type="css:property"/>
+<xs:element name="x-padding-right" substitutionGroup="css:property" type="css:property"/>
+</xs:schema>

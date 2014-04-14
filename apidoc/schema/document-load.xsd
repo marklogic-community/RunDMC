@@ -1,0 +1,80 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="xdmp:document-load"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ elementFormDefault="qualified"
+ xmlns="xdmp:document-load"
+ xmlns:xdmp="http://marklogic.com/xdmp"
+ xmlns:sec="http://marklogic.com/xdmp/security"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+ <xs:import namespace="http://marklogic.com/xdmp/security" 
+            schemaLocation="security.xsd"/>
+
+  <xs:simpleType name="repair">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="full"/>
+      <xs:enumeration value="none"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="format">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="binary"/>
+      <xs:enumeration value="xml"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="lang">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ar"/>
+      <xs:enumeration value="de"/>
+      <xs:enumeration value="en"/>
+      <xs:enumeration value="es"/>
+      <xs:enumeration value="fa"/>
+      <xs:enumeration value="fr"/>
+      <xs:enumeration value="it"/>
+      <xs:enumeration value="ja"/>
+      <xs:enumeration value="ko"/>
+      <xs:enumeration value="nb"/>
+      <xs:enumeration value="nl"/>
+      <xs:enumeration value="nn"/>
+      <xs:enumeration value="pt"/>
+      <xs:enumeration value="ru"/>
+      <xs:enumeration value="zh"/>
+      <xs:enumeration value="zh-Hant"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="forests">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="forest" type="xs:unsignedLong"/>
+    </xs:choice>
+  </xs:complexType>
+
+        <xs:element name="uri" type="xs:string"/>
+        <xs:element name="permissions" type="sec:permissions"/>
+        <xs:element name="collections" type="sec:collections"/>
+        <xs:element name="quality" type="xs:integer"/>
+        <xs:element name="format" type="format"/>
+
+  <xs:element name="options">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="uri"/>
+        <xs:element ref="permissions"/>
+        <xs:element ref="collections"/>
+        <xs:element ref="quality"/>
+        <xs:element name="default-namespace" type="xs:string"/>
+        <xs:element name="repair" type="repair"/>
+        <xs:element ref="format"/>
+        <xs:element name="lang" type="lang"/>
+        <xs:element name="encoding" type="xs:string"/>
+        <xs:element name="forests" type="forests"/>
+        <xs:element name="default-language" type="lang"/>
+        <xs:any namespace="xdmp:http"/>
+      </xs:choice>    
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

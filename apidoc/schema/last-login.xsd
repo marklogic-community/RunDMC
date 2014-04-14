@@ -1,0 +1,137 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/last-login"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/last-login"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:complexType name="last-login">
+    <xs:annotation>
+      <xs:documentation>
+        The last-login information for a user
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="user-id"/>
+      <xs:element ref="last-successful-login"/>
+      <xs:element ref="last-unsuccessful-login"/>
+      <xs:element ref="number-unsuccessful-logins"/>
+      <xs:element ref="display-last-login"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="last-login" type="last-login">
+    <xs:annotation>
+      <xs:documentation>
+        The last-login information for a user
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="user-id">
+    <xs:annotation>
+      <xs:documentation>
+        A user's unique id (64-bit value).
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="user-id" type="user-id">
+    <xs:annotation>
+      <xs:documentation>
+        The unique key of the user.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        A timestamp of an event.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="last-successful-login" type="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        The last time the user successfully logged in.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="last-unsuccessful-login" type="timestamp">
+    <xs:annotation>
+      <xs:documentation>
+        The last time the user unsuccessfully logged in.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="number-unsuccessful-logins">
+    <xs:annotation>
+      <xs:documentation>
+        The number of times the user has unsuccessfully logged in since their
+        last successful login.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="number-unsuccessful-logins" type="number-unsuccessful-logins">
+    <xs:annotation>
+      <xs:documentation>
+        The number of times the user has unsuccessfully logged in since their
+        last successful login.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+ 
+  <xs:simpleType name="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        true or false
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+
+  <xs:element name="display-last-login" type="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        Whether the appserver's configuration indicates it should 
+        display the last-login information.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>
+

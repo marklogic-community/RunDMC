@@ -1,0 +1,27 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/math"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/math"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="coefficients">
+    <xs:list itemType="xs:double"/>
+  </xs:simpleType>
+
+  <xs:element name="linear-model">
+    <xs:annotation>
+      <xs:documentation>
+        A math linear model
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation> 
+    <xs:complexType>
+      <xs:attribute name="intercept" type="xs:double"/>
+      <xs:attribute name="coefficients" type="coefficients"/>
+      <xs:attribute name="rsquared" type="xs:double"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" 
+elementFormDefault="unqualified" 
+attributeFormDefault="unqualified" 
+blockDefault="#all" 
+finalDefault="#all" 
+version="1.1" 
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema 
+http://www.w3.org/2001/XMLSchema.xsd">
+<!--
+
+-->
+  <xs:annotation>
+    <xs:documentation>
+		This is the XML Ruby  module for XHTML
+		Please use this formal public identifier to identify it:
+			
+		 "-//W3C//ELEMENTS XHTML Ruby 1.0//EN"
+
+		@author: Daniel Austin austin.d@ic.grainger.com
+		$Id: xhtml-ruby-1.xsd,v 1.1 2002-08-12 09:17:19 cjl Exp $
+	</xs:documentation>
+    <xs:documentation source="xhtml-copyright-1.xsd"/>
+  </xs:annotation>
+<!--
+
+-->
+  <xs:annotation>
+    <xs:documentation>
+		"Ruby" are short runs of text alongside the base text, typically used in 			East Asian documents to indicate pronunciation or to provide a 				short annotation. The full specification for Ruby is here:
+			
+		http://www.w3.org/TR/ruby
+			
+		This module defines "Ruby " or "complex Ruby" as described
+		in the specification:
+			
+		http://www.w3.org/TR/ruby/#complex
+		
+		Simple or Basic Ruby are defined in a separate module.
+			
+	</xs:documentation>
+  </xs:annotation>
+<!--
+
+-->
+  <xs:annotation>
+    <xs:documentation>
+		Ruby Elements
+					
+		* ruby, rbc, rtc, rb, rt, rp
+					
+		This module declares the elements and their attributes used to
+		support complex ruby annotation markup.
+	</xs:documentation>
+  </xs:annotation>
+<!--
+
+-->
+  <xs:group name="Ruby.content.simple">
+    <xs:sequence>
+      <xs:element ref="rb"/>
+	<xs:choice>
+		<xs:element ref="rt"/>
+		<xs:sequence>
+		      <xs:element ref="rp"/>
+		      <xs:element ref="rt"/>
+		      <xs:element ref="rp"/>
+		</xs:sequence>
+	</xs:choice>
+    </xs:sequence>
+  </xs:group>
+<!--
+
+-->
+  <xs:group name="Ruby.content.group">
+    <xs:sequence>
+      <xs:element ref="rbc"/>
+      <xs:element ref="rtc"/>
+      <xs:element ref="rtc" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+<!--
+add to this group any common attributes for all Ruby elements
+-->
+<xs:attributeGroup name="Ruby.common.attrib"/>
+<!--
+
+-->
+  <xs:attributeGroup name="Ruby.common.attlist">
+    <xs:attributeGroup ref="Ruby.common.attrib"/>
+    
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:group name="Ruby.content">
+	<xs:choice>
+		<xs:group ref="Ruby.content.simple"/>
+      		<xs:group ref="Ruby.content.group"/>
+	</xs:choice>
+  </xs:group>
+<!--
+
+-->
+  <xs:complexType name="Ruby.type">
+    <xs:group ref="Ruby.content"/>
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="ruby" type="Ruby.type"/>
+<!--
+rbc (ruby base component) element 
+-->
+  <xs:attributeGroup name="Rbc.attrib">
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="Rbc.type">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="rb"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="Rbc.attrib"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="rbc" type="Rbc.type"/>
+<!--
+ rtc (ruby text component) element
+-->
+  <xs:attributeGroup name="Rtc.attrib">
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="Rtc.type">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="rt"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="Rtc.attrib"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="rtc" type="Rtc.type"/>
+<!--
+rb (ruby base) element 
+-->
+  <xs:attributeGroup name="Rb.attrib">
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="Rb.type" mixed="true">
+    <xs:attributeGroup ref="Rb.attrib"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="rb" type="Rb.type"/>
+<!--
+ rt (ruby text) element 
+-->
+  <xs:attributeGroup name="Rt.attrib">
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+<!-- rbspan attribute is used for complex ruby only .. -->
+    <xs:attribute name="rbspan"  type="xs:positiveInteger" default="1" use="optional" />
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="Rt.type" mixed="true">
+    <xs:attributeGroup ref="Rt.attrib"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="rt" type="Rt.type"/>
+<!--
+
+-->
+<!-- rp (ruby parenthesis) element  -->
+  <xs:attributeGroup name="Rp.attrib">
+    <xs:attributeGroup ref="Ruby.common.attlist"/>
+  </xs:attributeGroup>
+<!--
+
+-->
+  <xs:complexType name="Rp.type" mixed="true">
+    <xs:attributeGroup ref="Rp.attrib"/>
+  </xs:complexType>
+<!--
+
+-->
+  <xs:element name="rp" type="Rp.type"/>
+<!--
+
+-->
+</xs:schema>

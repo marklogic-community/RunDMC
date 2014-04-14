@@ -1,0 +1,150 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/job-status"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="http://marklogic.com/xdmp/job-status"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:simpleType name="status">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="queued"/>
+      <xs:enumeration value="in-progress"/>
+      <xs:enumeration value="failed"/>
+      <xs:enumeration value="canceled"/>
+      <xs:enumeration value="completed"/>
+      <xs:enumeration value="unknown"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="forest-name" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+  	The name of the forest.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="forest-id" type="xs:unsignedLong">
+    <xs:annotation>
+      <xs:documentation>
+  	The forest ID.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="status" type="status">
+    <xs:annotation>
+      <xs:documentation>
+	      The status of the forest backup.  The status is one of: "queued", 
+	      "in-progress", "failed", "canceled", completed", or "unknown".
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="restore-to-time" type="restore-to-time">
+    <xs:annotation>
+      <xs:documentation>
+        The date and time this backup was created.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="restore-to-time">
+    <xs:restriction base="xs:dateTime">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="safe-restore-to-time" type="safe-restore-to-time">
+    <xs:annotation>
+      <xs:documentation>
+        The date and time this backup was created.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:simpleType name="safe-restore-to-time">
+    <xs:restriction base="xs:dateTime">
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="journal-archiving" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+	Is journal archiving enabled for a full backup?
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+	  
+  <xs:element name="journal-archive-path" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+	Path to the associated journal archive location.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="journal-archive-lag-limit" type="xs:unsignedInt">
+    <xs:annotation>
+      <xs:documentation>
+  	Number of seconds the archived journal can lag the active journal.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="forest">
+    <xs:all>
+      <xs:element ref="forest-name"/>
+      <xs:element ref="forest-id"/>
+      <xs:element ref="status"/>
+      <xs:element ref="restore-to-time" minOccurs="0"/>
+      <xs:element ref="journal-archiving"/>
+      <xs:element ref="journal-archive-path" minOccurs="0"/>
+      <xs:element ref="safe-restore-to-time" minOccurs="0"/>
+      <xs:element ref="journal-archive-lag-limit" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="forest" type="forest">
+    <xs:annotation>
+      <xs:documentation>
+	      The forest being backed up.  There is one forest element for each
+	      forest in the backup.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="job-status">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="forest"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="job-status" type="job-status">
+    <xs:annotation>
+      <xs:documentation>
+  	The status of a backup job.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

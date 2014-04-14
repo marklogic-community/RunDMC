@@ -1,0 +1,893 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="DAV:"
+ xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd"
+ xmlns="DAV:"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xs:element name="activelock" type="activelock">
+    <xs:annotation>
+      <xs:documentation>
+  	The activelock on a resource.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="activelock">
+    <xs:annotation>
+      <xs:documentation>
+	An activelock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="lockscope"/>
+      <xs:element ref="locktype"/>
+      <xs:element ref="depth"/>
+      <xs:element ref="owner" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="timeout" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="locktoken" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="depth" type="depth">
+    <xs:annotation>
+      <xs:documentation>
+  	The depth.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="depth">
+    <xs:annotation>
+      <xs:documentation>
+	A depth value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+	<xs:enumeration value="0"/>
+	<xs:enumeration value="1"/>
+	<xs:enumeration value="infinity"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="locktoken" type="locktoken">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock token.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="locktoken">
+    <xs:annotation>
+      <xs:documentation>
+        A lock token.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="href"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="timeout" type="timeout">
+    <xs:annotation>
+      <xs:documentation>
+  	The timeout.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="timeout">
+    <xs:annotation>
+      <xs:documentation>
+	A timeout value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(infinite)|(Second-\d+)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="collection" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The directory (DAV collection) identifier.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="href" type="xs:anyURI">
+    <xs:annotation>
+      <xs:documentation>
+  	The href uri.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="EMPTY"/>
+
+  <xs:element name="link" type="link">
+    <xs:annotation>
+      <xs:documentation>
+  	The link property.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="link">
+    <xs:annotation>
+      <xs:documentation>
+        A link.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="src" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element ref="dst" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="src" type="xs:anyURI">
+    <xs:annotation>
+      <xs:documentation>
+  	The source of a link.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="dst" type="xs:anyURI">
+    <xs:annotation>
+      <xs:documentation>
+  	The destination of a link.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="lockentry" type="lockentry">
+    <xs:annotation>
+      <xs:documentation>
+  	The types of locks that can be used with a resource.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lockentry">
+    <xs:annotation>
+      <xs:documentation>
+        A lock entry.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="lockscope"/>
+      <xs:element ref="locktype"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="lockinfo" type="lockinfo">
+    <xs:annotation>
+      <xs:documentation>
+  	The specification of a lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lockinfo">
+    <xs:annotation>
+      <xs:documentation>
+        A lock specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="lockscope" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="locktype" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="owner" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="lockscope" type="lockscope">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock scope.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lockscope">
+    <xs:annotation>
+      <xs:documentation>
+        A lock specification.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="exclusive"/>
+      <xs:element ref="shared"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="exclusive" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The exclusive lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="shared" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The shared lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="locktype" type="locktype">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="locktype">
+    <xs:annotation>
+      <xs:documentation>
+        A lock type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="write"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="write" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The write lock.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="multistatus" type="multistatus">
+    <xs:annotation>
+      <xs:documentation>
+  	The multistatus response.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="multistatus">
+    <xs:annotation>
+      <xs:documentation>
+        A multitatus response.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="response" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element ref="responsedescription" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="response" type="response">
+    <xs:annotation>
+      <xs:documentation>
+  	The response.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="response">
+    <xs:annotation>
+      <xs:documentation>
+        A response.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="href" minOccurs="1" maxOccurs="1"/>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="href" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="status" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element ref="propstat" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:choice>
+      <xs:element ref="responsedescription" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="propstat" type="propstat">
+    <xs:annotation>
+      <xs:documentation>
+  	The propstat.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="propstat">
+    <xs:annotation>
+      <xs:documentation>
+        A propstat.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="prop" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="status" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="responsedescription" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="status" type="status">
+    <xs:annotation>
+      <xs:documentation>
+  	The status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="status">
+    <xs:annotation>
+      <xs:documentation>
+        A status.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="responsedescription" type="responsedescription">
+    <xs:annotation>
+      <xs:documentation>
+  	The response description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="responsedescription">
+    <xs:annotation>
+      <xs:documentation>
+        A response description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="owner" type="owner">
+    <xs:annotation>
+      <xs:documentation>
+  	The owner.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="owner" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        An owner.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="prop" type="prop">
+    <xs:annotation>
+      <xs:documentation>
+  	The prop.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="prop">
+    <xs:annotation>
+      <xs:documentation>
+        An prop.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="propertybehavior" type="propertybehavior">
+    <xs:annotation>
+      <xs:documentation>
+  	The property behavior.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="propertybehavior">
+    <xs:annotation>
+      <xs:documentation>
+        A property behavior.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="omit"/>
+      <xs:element ref="keepalive"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="keepalive" type="keepalive">
+    <xs:annotation>
+      <xs:documentation>
+  	The keepalive requirement for live properties.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="keepalive" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+  	A keepalive requirement for live properties.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="href"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="omit" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The omit instruction.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="propertyupdate" type="propertyupdate">
+    <xs:annotation>
+      <xs:documentation>
+  	The property update request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="propertyupdate">
+    <xs:annotation>
+      <xs:documentation>
+        A property update request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element ref="remove"/>
+        <xs:element ref="set"/>
+      </xs:choice>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="remove" type="remove">
+    <xs:annotation>
+      <xs:documentation>
+  	The remove request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="remove">
+    <xs:annotation>
+      <xs:documentation>
+        A remove request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="prop"/>
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:element name="set" type="set">
+    <xs:annotation>
+      <xs:documentation>
+  	The set request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="set">
+    <xs:annotation>
+      <xs:documentation>
+        A set request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="prop"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="propfind" type="propfind">
+    <xs:annotation>
+      <xs:documentation>
+  	The propfind request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="propfind">
+    <xs:annotation>
+      <xs:documentation>
+        A propfind request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="allprop"/>
+      <xs:element ref="propname"/>
+      <xs:element ref="prop"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="allprop" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The propfind request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="propname" type="EMPTY">
+    <xs:annotation>
+      <xs:documentation>
+  	The propfind request.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="creationdate" type="creationdate">
+    <xs:annotation>
+      <xs:documentation>
+  	The creation date.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="creationdate">
+    <xs:annotation>
+      <xs:documentation>
+        A creation date.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="displayname" type="displayname">
+    <xs:annotation>
+      <xs:documentation>
+  	The display name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="displayname">
+    <xs:annotation>
+      <xs:documentation>
+        A display name.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="getcontentlanguage" type="getcontentlanguage">
+    <xs:annotation>
+      <xs:documentation>
+  	The content language.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="getcontentlanguage">
+    <xs:annotation>
+      <xs:documentation>
+        A content language header value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="getcontentlength" type="getcontentlength">
+    <xs:annotation>
+      <xs:documentation>
+  	The content length.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="getcontentlength">
+    <xs:annotation>
+      <xs:documentation>
+        A content length header value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="getcontenttype" type="getcontenttype">
+    <xs:annotation>
+      <xs:documentation>
+  	The content type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="getcontenttype">
+    <xs:annotation>
+      <xs:documentation>
+        A content type header value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="getetag" type="getetag">
+    <xs:annotation>
+      <xs:documentation>
+  	The etag.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="getetag">
+    <xs:annotation>
+      <xs:documentation>
+        An etag header value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="getlastmodified" type="getlastmodified">
+    <xs:annotation>
+      <xs:documentation>
+  	The last modified value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="getlastmodified">
+    <xs:annotation>
+      <xs:documentation>
+        A lastmodified header value.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="lockdiscovery" type="lockdiscovery">
+    <xs:annotation>
+      <xs:documentation>
+  	The lock description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="lockdiscovery">
+    <xs:annotation>
+      <xs:documentation>
+        A lock description.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="activelock"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="resourcetype" type="resourcetype">
+    <xs:annotation>
+      <xs:documentation>
+  	The resource type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="resourcetype">
+    <xs:annotation>
+      <xs:documentation>
+         A resource type.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="source" type="source">
+    <xs:annotation>
+      <xs:documentation>
+  	The source.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="source">
+    <xs:annotation>
+      <xs:documentation>
+        A set of source links.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="link"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="supportedlock" type="supportedlock">
+    <xs:annotation>
+      <xs:documentation>
+  	The supported lock property.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="supportedlock">
+    <xs:annotation>
+      <xs:documentation>
+        A description of locks supported by a resource.
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="lockentry"/>
+    </xs:choice>
+  </xs:complexType>
+
+</xs:schema>

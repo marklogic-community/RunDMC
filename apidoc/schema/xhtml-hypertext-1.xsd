@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.w3.org/1999/xhtml" 
+elementFormDefault="unqualified"
+attributeFormDefault="unqualified"
+blockDefault="#all" 
+finalDefault="#all"
+version="1.1"
+xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+			This is the XML Schema Hypertext module for XHTML
+			This is a REQUIRED module.
+			Please use this formal public identifier to identify it:
+			"-//W3C//ELEMENTS XHTML Hypertext 1.0//EN"
+			
+			@author: Daniel Austin austin.d@ic.grainger.com
+			$Id: xhtml-hypertext-1.xsd,v 1.1 2002-08-12 09:17:19 cjl Exp $
+		</xs:documentation>
+		<xs:documentation source="xhtml-copyright-1.xsd"/>
+	</xs:annotation>
+<!--
+
+-->
+	<xs:annotation>
+		<xs:documentation>
+			Hypertext
+						
+			* a
+						
+			This module declares the anchor ('a') element type, which
+			defines the source of a hypertext link. The destination
+			(or link 'target') is identified via its 'id' attribute 
+			rather than the 'name' attribute as was used in HTML.
+		  </xs:documentation>
+	</xs:annotation>
+<!--
+
+-->
+	<xs:attributeGroup name="a.attlist">
+		<xs:attributeGroup ref="Common.attrib"/>
+		<xs:attribute name="href" type="URI"/>
+		<xs:attribute name="charset" type="Charset"/>
+		<xs:attribute name="type" type="ContentType"/>
+		<xs:attribute name="hreflang" type="LanguageCode"/>
+		<xs:attribute name="rel" type="LinkTypes"/>
+		<xs:attribute name="rev" type="LinkTypes"/>
+		<xs:attribute name="accesskey" type="Character"/>
+		<xs:attribute name="tabindex" type="Number"/>
+
+	</xs:attributeGroup>
+<!--
+
+-->
+	<xs:complexType name="a.type" mixed="true">
+		<xs:group ref="InlNoAnchor.mix"/>
+		<xs:attributeGroup ref="a.attlist"/>
+	</xs:complexType>
+<!--
+
+-->
+	<xs:element name="a" type="a.type"/>
+<!--
+
+-->
+</xs:schema>

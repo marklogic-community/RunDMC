@@ -1,0 +1,243 @@
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema targetNamespace="http://marklogic.com/xdmp/pki"
+  xsi:schemaLocation="http://www.w3.org/2001/XMLSchema XMLSchema.xsd
+                      http://marklogic.com/xdmp/admin admin.xsd
+                      http://marklogic.com/xdmp/x509 x509.xsd
+                      http://www.w3.org/1999/xhtml xhtml-inlstyle-1.xsd"
+  xmlns="http://marklogic.com/xdmp/pki"
+  xmlns:admin="http://marklogic.com/xdmp/admin"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:x509="http://marklogic.com/xdmp/x509"
+  xmlns:ssl-options="ssl:options"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <?xdmp-annotations?>
+
+  <xs:import namespace="http://marklogic.com/xdmp/x509" schemaLocation="x509.xsd"/>
+
+  <xs:simpleType name="template-id">
+    <xs:annotation>
+      <xs:documentation> A certificate template ID. </xs:documentation>
+      <xs:appinfo> </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+  <xs:element name="template-id" type="template-id">
+    <xs:annotation>
+      <xs:documentation> A certificate template's id. </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="template-name">
+    <xs:annotation>
+      <xs:documentation> A certificate template name. </xs:documentation>
+      <xs:appinfo> </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="template-name" type="template-name">
+    <xs:annotation>
+      <xs:documentation> A certificate template's name. </xs:documentation>
+      <xs:appinfo> 
+	 <admin:help xmlns="http://www.w3.org/1999/xhtml">
+           <span class="help-text">The <span style="color:#800000">template 
+           name</span> 
+           is a shorthand name for this certificate template. MarkLogic 
+           Server will use this name to refer to this template on display 
+           screens in the Admin Interface.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="template-description">
+    <xs:annotation>
+      <xs:documentation> A certificate template description. </xs:documentation>
+      <xs:appinfo> </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:element name="template-description" type="template-description">
+    <xs:annotation>
+      <xs:documentation> A certificate template's description. </xs:documentation>
+      <xs:appinfo> 
+	 <admin:help xmlns="http://www.w3.org/1999/xhtml">
+           <span class="help-text">The <span style="color:#800000">template 
+           description</span> 
+           specifies an optional description for the certificate template.</span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="template-version">
+    <xs:annotation>
+      <xs:documentation> The certificate template's version. </xs:documentation>
+      <xs:appinfo> </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:element name="template-version" type="template-version">
+    <xs:annotation>
+      <xs:documentation> A certificate template's version. </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="key-type">
+    <xs:annotation>
+      <xs:documentation> The type of key: rsa </xs:documentation>
+      <xs:appinfo> </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="rsa"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="key-type" type="key-type">
+    <xs:annotation>
+      <xs:documentation> The type of key. </xs:documentation>
+      <xs:appinfo>
+        <admin:hidden>true</admin:hidden>
+        <admin:select>key-type</admin:select>
+        <admin:default>"rsa"</admin:default>
+        <admin:help xmlns="http://www.w3.org/1999/xhtml">
+          <span class="help-text">
+            <span style="color:#800000">key type</span> specifies the type of key that is to be
+            generated each time the certificate template is instantiated for a host name. </span>
+        </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:complexType name="key-options" mixed="true">
+    <xs:annotation>
+      <xs:documentation>Options to use when generating keys.</xs:documentation>      
+    </xs:annotation>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:any/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="key-options" type="key-options">
+    <xs:annotation>
+      <xs:documentation>Options to use when generating keys.</xs:documentation>      
+      <xs:appinfo>
+
+        <admin:hidden>true</admin:hidden>        
+      </xs:appinfo>
+    </xs:annotation>
+
+  </xs:element>
+
+  <xs:complexType name="template">
+    <xs:annotation>
+      <xs:documentation> A certificate template. </xs:documentation>
+      <xs:appinfo/>
+    </xs:annotation>
+    <xs:all>
+      <xs:element ref="template-id"/>
+      <xs:element ref="template-name"/>
+      <xs:element ref="template-description"/>
+      <xs:element ref="template-version"/>
+      <xs:element ref="key-type"/>
+      <xs:element ref="key-options"/>
+      <xs:element ref="x509:req"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="template" type="template">
+    <xs:annotation>
+      <xs:documentation> A certificate template. </xs:documentation>
+      <xs:appinfo> 
+	 <admin:help xmlns="http://www.w3.org/1999/xhtml">
+           <hr class="control-line" size="1"/><br/>
+           <span class="help-text">
+           <img src="images/varspace.gif" alt="" width="20" height="1"
+           />Certificate Template Configuration Help<br/><br/>
+           </span>
+           <hr class="control-line" size="1"/>
+           <span class="help-text">A <span style="color:#800000">Certificate 
+           Template</span> 
+           is used to generate certificate requests for the various hosts 
+           in a cluster.
+           </span>
+         </admin:help>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="pem" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>A PEM encoding of some X.509 structure.</xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:simpleType name="boolean">
+    <xs:annotation>
+      <xs:documentation>
+        true or false
+      </xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  
+  <xs:element name="deleted" type="boolean">
+    <xs:annotation>
+      <xs:documentation>Whether ths pem is deleted from the last default CA list.</xs:documentation>
+      <xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+     
+  <xs:complexType name="pem-content">
+    <xs:annotation>
+      <xs:documentation>The description of a pem. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="pem" maxOccurs="unbounded"/>
+      <xs:element ref="deleted"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="pem-content" type="pem-content">
+    <xs:annotation>
+      <xs:documentation>The description of a pem.</xs:documentation>
+      <xs:appinfo></xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+  
+  
+  <xs:complexType name="ca-bundle" mixed="true">
+    <xs:annotation>
+      <xs:documentation>A certificate bundle</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="pem-content" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="ca-bundle" type="ca-bundle">
+    <xs:annotation>
+      <xs:documentation>A certificate bundle.</xs:documentation>
+      <xs:appinfo></xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

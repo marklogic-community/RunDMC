@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://marklogic.com/appservices/project" xmlns:lbl="http://marklogic.com/xqutils/labels" xmlns:search="http://marklogic.com/appservices/search" xmlns:project="http://marklogic.com/appservices/project">
+  <xs:import namespace="http://marklogic.com/appservices/search" schemaLocation="search.xsd"/>
+  <xs:import namespace="http://marklogic.com/xqutils/labels" schemaLocation="build-labels.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!--
+    Notice: The *.rnc are the normative human-edited versions
+    Do not directly edit the *.xsd versions, any changes will be lost when rebuilding
+    To rebuild, download trang from relaxng.org, and run
+    java -jar path/to/trang.jar filename.rnc filename.xsd
+  -->
+  <!-- Root element -->
+  <xs:element name="project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="project:settings"/>
+        <xs:element ref="search:options"/>
+        <xs:element ref="lbl:labels"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:integer"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="db-name" use="required"/>
+      <xs:attribute name="template" use="required"/>
+      <xs:attribute name="app-server" use="required"/>
+      <xs:attribute name="version" use="required"/>
+      <xs:attribute name="data-location" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="settings">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="project:skin"/>
+        <xs:element ref="project:page-title"/>
+        <xs:element ref="project:logo-type"/>
+        <xs:element ref="project:logo-src"/>
+        <xs:element ref="project:logo-text"/>
+        <xs:element ref="project:copyright-year"/>
+        <xs:element ref="project:copyright-holder"/>
+        <xs:element ref="project:container-transform"/>
+        <xs:element ref="project:simple-transform"/>
+        <xs:element ref="project:passthrough-html"/>
+        <xs:element ref="project:custom-css"/>
+        <xs:element ref="project:custom-options"/>
+        <xs:element ref="project:abstract-title"/>
+        <xs:element ref="project:abstract-metadata"/>
+        <xs:element ref="project:transform-xslt"/>
+        <xs:element ref="project:transform-type"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skin" type="xs:string"/>
+  <xs:element name="page-title" type="xs:string"/>
+  <xs:element name="logo-type" type="xs:string"/>
+  <xs:element name="logo-src" type="xs:anyURI"/>
+  <xs:element name="logo-text" type="xs:string"/>
+  <xs:element name="copyright-year" type="xs:string"/>
+  <xs:element name="copyright-holder" type="xs:string"/>
+  <xs:element name="container-transform">
+    <xs:complexType mixed="true">
+      <xs:attribute name="role" use="required"/>
+      <xs:attribute name="rolens" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="simple-transform">
+    <xs:complexType mixed="true">
+      <xs:attribute name="role" use="required"/>
+      <xs:attribute name="rolens" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="passthrough-html" type="xs:boolean"/>
+  <xs:element name="custom-css" type="xs:string"/>
+  <xs:element name="custom-options" type="xs:string"/>
+  <xs:element name="abstract-title">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="project:node"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="abstract-metadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="project:node"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transform-xslt" type="xs:string"/>
+  <xs:element name="transform-type" type="xs:string"/>
+  <xs:element name="node">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="project:element"/>
+          <xs:element minOccurs="0" ref="project:attribute"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element ref="project:attribute"/>
+          <xs:element ref="project:element"/>
+        </xs:sequence>
+        <xs:element ref="project:literal"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="element">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="ns" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="attribute">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="ns" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="literal" type="xs:string"/>
+</xs:schema>
