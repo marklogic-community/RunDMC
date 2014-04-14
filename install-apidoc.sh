@@ -21,11 +21,14 @@ fi
 set -e
 cd $BASE
 
+echo This script should run on a host where MarkLogic is already running.
+echo
+HOSTNAME=localhost
+# TODO let the user override these if desired
+PORT=8011
+PORT_RAW=9898
+
 echo To get started we need your MarkLogic admin login.
-read -p "Hostname: [localhost] " HOSTNAME
-if [ -z "$HOSTNAME" ]; then
-    HOSTNAME=localhost
-fi
 read -p "Admin user: [admin] " ADMIN_USER
 if [ -z "$ADMIN_USER" ]; then
     ADMIN_USER=admin
@@ -114,7 +117,7 @@ echo
 VERSION=7.0
 PUBS_DIR=`pwd`"/$PUBS"
 XSD="${BASE}/apidoc/schema"
-URL="http://"${HOSTNAME}":9898/apidoc/setup/build.xqy"
+URL="http://"${HOSTNAME}":${PORT_RAW}/apidoc/setup/build.xqy"
 DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=yes"
 echo Processing... this may take some time.
 echo You can watch the ErrorLog.txt for progress.
@@ -130,7 +133,7 @@ echo apidoc install ok
 echo
 
 # Try to open the new page in a browser
-URL="http://"${HOSTNAME}":8011"
+URL="http://"${HOSTNAME}":${PORT}"
 # The user may have set BROWSER for us.
 # If not, this takes care of most linux desktops, plus OSX.
 if [ -z "$BROWSER" ]; then
