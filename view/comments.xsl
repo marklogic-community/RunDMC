@@ -69,8 +69,9 @@
               }
 
               (function() {
+                  if (!disqus_shortname) return;
                   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
                   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
               })();
           </script>
@@ -98,7 +99,7 @@
                     </span>
                   </div>
                 </div>
-              </div>   
+              </div>
               <div id="dsq-comment-message-{dq:id}" class="dsq-comment-message">
                 <xsl:value-of select="dq:message"/>
               </div>
@@ -131,15 +132,19 @@
         </li>
       </ul>
     </div>
-    <!-- Script from here: http://docs.disqus.com/developers/universal/#comment-count -->
+    <!-- Source http://docs.disqus.com/developers/universal/#comment-count
+    -->
     <script type="text/javascript">
         var disqus_shortname = '<xsl:value-of select="$dq:shortname"/>';
 
         (function () {
-            var s = document.createElement('script'); s.async = true;
+            if (!disqus_shortname) return;
+            var s = document.createElement('script');
+            s.async = true;
             s.type = 'text/javascript';
-            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0]
+             ||document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
     </script>
   </xsl:template>
