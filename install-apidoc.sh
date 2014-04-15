@@ -24,9 +24,6 @@ cd $BASE
 echo This script should run on a host where MarkLogic is already running.
 echo
 HOSTNAME=localhost
-# TODO let the user override these if desired
-PORT=8011
-PORT_RAW=9898
 
 echo To get started we need your MarkLogic admin login.
 read -p "Admin user: [admin] " ADMIN_USER
@@ -36,6 +33,17 @@ fi
 read -s -p "Admin password: [admin] " ADMIN_PASSWORD
 if [ -z "$ADMIN_PASSWORD" ]; then
     ADMIN_PASSWORD=admin
+fi
+echo
+echo The docapp server needs to use two ports.
+echo Be sure to select ports that are not already in use.
+read -p "Application port: [8011] " PORT
+if [ -z "$PORT" ]; then
+    PORT=8011
+fi
+read -p "Management port: [9898] " PORT_RAW
+if [ -z "$PORT_RAW" ]; then
+    PORT_RAW=9898
 fi
 echo
 echo
@@ -55,7 +63,7 @@ cp -r "${BASE}/apidoc/package/"* .
 SERVERS=`echo servers/Default/*.xml`
 echo processing $SERVERS
 sed -e '1,$s:RUNDMC_ROOT:'"${BASE}"':g' -i'.bak' $SERVERS
-zip -qr "$ZIP" * --exclude "*.bak"
+zip -qr "$ZIP" * -x "*.bak"
 echo
 
 # use digest not anyauth
@@ -67,8 +75,11 @@ curl --progress-bar \
     -H "Content-type: application/zip" \
     --data-binary @"$ZIP" \
     "${URL}/packages?pkgname=${PACKAGE}" \
-    | tee -a "$PACKAGE_LOG"
+    2>&1 | tee -a "$PACKAGE_LOG"
 # error detection
+if [ ${PIPESTATUS[0]} != 0 ]; then
+    exit 1
+fi
 grep -q error $PACKAGE_LOG && exit 1 || true
 echo
 
@@ -79,8 +90,11 @@ curl --progress-bar \
     --data-binary @/dev/null \
     -H "Content-type: application/zip" \
     "${URL}/packages/${PACKAGE}/install" \
-    | tee -a "$PACKAGE_LOG"
+    2>&1 | tee -a "$PACKAGE_LOG"
 # error detection
+if [ ${PIPESTATUS[0]} != 0 ]; then
+    exit 1
+fi
 grep -q error $PACKAGE_LOG && exit 1 || true
 echo
 
@@ -89,8 +103,8 @@ rm "$ZIP"
 cd "${TMPDIR}" && rm -rf "${PACKAGE}"
 
 echo fixing permissions
-find "$BASE" -type f | xargs chmod a+r
-find "$BASE" -type d | xargs chmod a+rx
+find "$BASE" -type f -print0 | xargs -0 chmod a+r
+find "$BASE" -type d -print0 | xargs -0 chmod a+rx
 
 # download raw docs for processing
 cd ${TMPDIR}
@@ -104,7 +118,10 @@ if [ -r "${ZIP}" ]; then
 else
     echo "fetching ${ZIP} from marklogic.com"
     curl --remote-name "http://docs.marklogic.com/${ZIP}" \
-    | tee -a "$PACKAGE_LOG"
+    2>&1 | tee -a "$PACKAGE_LOG"
+    if [ ${PIPESTATUS[0]} != 0 ]; then
+        exit 1
+    fi
 fi
 echo unzipping in `pwd`
 unzip -qu "${ZIP}"
@@ -122,7 +139,10 @@ DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=yes"
 echo Processing... this may take some time.
 echo You can watch the ErrorLog.txt for progress.
 time curl -D - --max-time 900 -X POST --data "$DATA" $CREDENTIAL "${URL}" \
-    | tee -a "$PACKAGE_LOG"
+    2>&1 | tee -a "$PACKAGE_LOG"
+if [ ${PIPESTATUS[0]} != 0 ]; then
+    exit 1
+fi
 # error detection
 grep -q '500 Internal Server Error' $PACKAGE_LOG && exit 1 || true
 
