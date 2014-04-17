@@ -37,9 +37,9 @@ fi
 echo
 echo The docapp server needs to use two ports.
 echo Be sure to select ports that are not already in use.
-read -p "Application port: [8011] " PORT
-if [ -z "$PORT" ]; then
-    PORT=8011
+read -p "Application port: [8011] " PORT_MAIN
+if [ -z "$PORT_MAIN" ]; then
+    PORT_MAIN=8011
 fi
 read -p "Management port: [9898] " PORT_RAW
 if [ -z "$PORT_RAW" ]; then
@@ -63,6 +63,13 @@ cp -r "${BASE}/apidoc/package/"* .
 SERVERS=`echo servers/Default/*.xml`
 echo processing $SERVERS
 sed -e '1,$s:RUNDMC_ROOT:'"${BASE}"':g' -i'.bak' $SERVERS
+sed -e '1,$s:RUNDMC_PORT_MAIN:'"${PORT_MAIN}"':g' -i'.bak' $SERVERS
+sed -e '1,$s:RUNDMC_PORT_RAW:'"${PORT_RAW}"':g' -i'.bak' $SERVERS
+# Changing these names? Also change package filename and XML element(name).
+mv "servers/Default/rundmc.xml" \
+    "servers/Default/${PORT_RAW}-rundmc.xml"
+mv "servers/Default/rundmc-apidoc.xml" \
+    "servers/Default/${PORT_MAIN}-rundmc-apidoc.xml"
 zip -qr "$ZIP" * -x "*.bak"
 echo
 
@@ -133,9 +140,31 @@ echo
 # process raw docs
 VERSION=7.0
 PUBS_DIR=`pwd`"/$PUBS"
-XSD="${BASE}/apidoc/schema"
 URL="http://"${HOSTNAME}":${PORT_RAW}/apidoc/setup/build.xqy"
+
+# doc processing needs schemas for admin help pages
+# someday these will be part of the zip
+XSD="${PUBS_DIR}/apidoc/schema"
+if [ -d "${XSD}" ]; then
+    echo using schemas in zip
+else
+    echo no schemas found in zip
+    MLCONFIG="/etc/sysconfig/MarkLogic"
+    if [ -r "${MLCONFIG}" ]; then
+        . "${MLCONFIG}"
+        XSD="$MARKLOGIC_DATA_DIR/Config"
+    elif [ -d "${HOME}/Library/MarkLogic/Config" ]; then
+        # Looks like OSX
+        XSD="${HOME}/Library/MarkLogic/Config"
+    else
+        echo no schemas found!
+        exit 1
+    fi
+fi
+echo using schemas from "${XSD}"
+
 DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=yes"
+echo $DATA
 echo Processing... this may take some time.
 echo You can watch the ErrorLog.txt for progress.
 time curl -D - --max-time 900 -X POST --data "$DATA" $CREDENTIAL "${URL}" \
@@ -153,14 +182,15 @@ echo apidoc install ok
 echo
 
 # Try to open the new page in a browser
-URL="http://"${HOSTNAME}":${PORT}"
+URL="http://"${HOSTNAME}":${PORT_MAIN}"
 # The user may have set BROWSER for us.
 # If not, this takes care of most linux desktops, plus OSX.
 if [ -z "$BROWSER" ]; then
     BROWSER=$(which xdg-open || which gnome-open || which open)
 fi
 if [ -n "$BROWSER" ]; then
-    exec "$BROWSER" "$URL"
+    exec "$BROWSER" "$URL" \
+        || echo "Try opening $URL in your favorite browser"
 else
     echo "Now open $URL in your favorite browser"
 fi

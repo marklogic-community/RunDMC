@@ -10,10 +10,10 @@
   <config>
     <server-type>http-server</server-type>
     <group-name>Default</group-name>
-    <name>9898-rundmc</name>
+    <name>RUNDMC_PORT_RAW-rundmc</name>
     <package-http-properties>
       <root>RUNDMC_ROOT/</root>
-      <port>9898</port>
+      <port>RUNDMC_PORT_RAW</port>
       <enabled>true</enabled>
       <webDAV>false</webDAV>
       <execute>true</execute>

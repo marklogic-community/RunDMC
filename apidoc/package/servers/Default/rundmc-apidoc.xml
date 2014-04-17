@@ -10,11 +10,11 @@
   <config>
     <server-type>http-server</server-type>
     <group-name>Default</group-name>
-    <name>8011-RunDMC-apidoc</name>
+    <name>RUNDMC_PORT_MAIN-rundmc-apidoc</name>
     <package-http-properties>
       <enabled>true</enabled>
       <root>RUNDMC_ROOT</root>
-      <port>8011</port>
+      <port>RUNDMC_PORT_MAIN</port>
       <webDAV>false</webDAV>
       <execute>true</execute>
       <display-last-login>false</display-last-login>
