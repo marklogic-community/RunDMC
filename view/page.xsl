@@ -22,8 +22,11 @@
   <xsl:include href="tag-library.xsl"/>
   <xsl:include href="search.xsl"/>
   <xsl:include href="xquery-imports.xsl"/>
-  <xsl:include href="uri-translation.xsl"/>
   <xsl:include href="tutorial.xsl"/>
+
+  <xdmp:import-module
+      namespace="http://developer.marklogic.com/site/internal"
+      href="/model/data-access.xqy"/>
 
   <!-- See http://www.w3.org/TR/html5/syntax.html#the-doctype and http://www.w3.org/html/wg/tracker/issues/54 -->
   <xsl:output doctype-system="about:legacy-compat"
@@ -66,7 +69,7 @@
   <xsl:variable   name="regular-template-file" select="concat($template-dir,'/template.xhtml')"/>
 
   <xsl:variable name="template" select="if (xdmp:uri-is-file($optimized-template-file))
-                                              then u:get-doc($optimized-template-file) 
+                                              then u:get-doc($optimized-template-file)
                                               else u:get-doc(  $regular-template-file)"/>
 
   <xsl:variable name="preview-context" select="$params[@name eq 'preview-as-if-at']"/>
@@ -179,16 +182,16 @@
             <xsl:apply-templates mode="page-specific-title" select="."/>
             <xsl:text> &#8212; </xsl:text>
             <xsl:value-of select="$site-title"/>
-          </xsl:template>      
+          </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page">
-                    <xsl:apply-templates select="( xhtml:h1
-                                                 | xhtml:div/xhtml:h1
-                                                 | xhtml:h2
-                                                 | xhtml:div/xhtml:h2
-                                                 )[1]
-                                                 /node()"/>
-                  </xsl:template>
+          <xsl:template mode="page-specific-title" match="page">
+            <xsl:apply-templates select="( xhtml:h1
+                                         | xhtml:div/xhtml:h1
+                                         | xhtml:h2
+                                         | xhtml:div/xhtml:h2
+                                         )[1]
+                                         /node()"/>
+          </xsl:template>
 
                   <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
                   <xsl:template mode="page-specific-title" match="page[@title]">
@@ -272,13 +275,13 @@
 
   <!-- Try hosts -->
   <xsl:template match="try-script">
-      <xhtml:script type="text/javascript"> 
+      <xhtml:script type="text/javascript">
         <xsl:attribute name="src"><xsl:value-of select="$srv:try-server"/>/js/tryml.js</xsl:attribute>
       </xhtml:script>
   </xsl:template>
 
   <xsl:template match="try-link">
-      <xhtml:link rel="stylesheet" type="text/css" media="screen, projection" > 
+      <xhtml:link rel="stylesheet" type="text/css" media="screen, projection" >
         <xsl:attribute name="href"><xsl:value-of select="$srv:try-server"/>/css/tryml.css</xsl:attribute>
       </xhtml:link>
   </xsl:template>
@@ -517,7 +520,7 @@
   <xsl:function name="ml:display-date-with-time" as="xs:string">
     <xsl:param name="dateTimeGiven"/>
     <xsl:variable name="dateTime" select="string($dateTimeGiven)"/>
-    
+
     <xsl:sequence select="if ($dateTime castable as xs:dateTime)
                           then concat(ml:display-date($dateTime),'&#160;',
                                       ml:display-time($dateTime))

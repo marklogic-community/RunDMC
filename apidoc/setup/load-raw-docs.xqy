@@ -1,15 +1,14 @@
 xquery version "1.0-ml";
 
-import module namespace u = "http://marklogic.com/rundmc/util"
-       at "../../lib/util-2.xqy";
+import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
+  at "/apidoc/setup/raw-docs-access.xqy";
 
-declare namespace dir = "http://marklogic.com/xdmp/directory";
+import module namespace u="http://marklogic.com/rundmc/util"
+  at "/lib/util-2.xqy";
 
 declare variable $srcdir  := xdmp:get-request-field("srcdir");
 declare variable $version := xdmp:get-request-field("version"); (: e.g., 4.1 :)
 declare variable $rawdir  := fn:concat($srcdir, "/pubs/raw");
-
-declare variable $database-name := u:get-doc("/apidoc/config/source-database.xml")/string(.);
 
 declare variable $legal-versions  := u:get-doc("/config/server-versions.xml")/*/version/@number;
 
@@ -22,12 +21,11 @@ declare function local:load-docs($dir) {
       let $path := $file/dir:pathname
       let $uri  := concat("/", $version, translate(substring-after($path, $rawdir),"\","/")) return
       (
-        xdmp:eval(
-          concat('xdmp:document-insert("',$uri,'", xdmp:document-get("',$path,'"))'),
-          (),
-          <options xmlns="xdmp:eval">
-            <database>{xdmp:database($database-name)}</database>
-          </options>), 
+        raw:invoke-function(
+          function() {
+            xdmp:document-insert($uri, xdmp:document-get($path)),
+            xdmp:commit() },
+          true()),
         xdmp:log(concat("Loading ",$path," to ",$uri))
       ),
 
@@ -40,7 +38,7 @@ declare function local:load-docs($dir) {
 if (not($version = $legal-versions)) then
   error(xs:QName("ERROR"), concat("You must specify a 'version' param with one of these values: ",
                                   string-join($legal-versions,", ")))
-else 
+else
   (
     local:load-docs($rawdir),
     "Documents loaded. See log for details."

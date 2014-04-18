@@ -14,9 +14,97 @@
 
   <xsl:output indent="no"/>
 
+  <xsl:param name="output-uri" select="raw:target-guide-doc-uri(.)"/>
+
   <xsl:variable name="DEBUG_GROUPING" select="$convert-at-render-time"/>
 
-  <xsl:param name="output-uri" select="raw:target-guide-doc-uri(.)"/>
+  <xsl:variable name="fully-resolved-top-level-heading-references"
+                as="xs:string*"
+                select="$raw:GUIDE-DOCS/chapter/XML/Heading-1/A/@ID/concat(
+                        ancestor::XML/@original-file,'#id(',.,')')"/>
+
+  <xsl:function name="my:full-anchor-id">
+    <xsl:param name="ID-att"/>
+    <xsl:sequence select="concat('id_',$ID-att)"/>
+  </xsl:function>
+
+  <xsl:function name="my:anchor-id-for-top-level-heading">
+    <xsl:param name="heading-1" as="element(Heading-1)"/>
+    <xsl:sequence select="my:basename-stem($heading-1/ancestor::XML/@original-file)"/>
+  </xsl:function>
+
+  <xsl:function name="my:basename-stem">
+    <xsl:param name="url"/>
+    <xsl:sequence select="substring-before(my:basename($url),'.xml')"/>
+  </xsl:function>
+
+  <xsl:function name="my:basename">
+    <xsl:param name="url"/>
+    <xsl:sequence select="tokenize($url,'/')[last()]"/>
+  </xsl:function>
+
+  <xsl:function name="my:new-name">
+    <xsl:param name="element"/>
+    <xsl:apply-templates mode="new-name" select="$element"/>
+  </xsl:function>
+
+  <xsl:function name="my:guide-doc-url">
+    <xsl:param name="guide" as="document-node()?"/> <!-- if absent, then it's a bad link, and we'll get the warning above -->
+    <xsl:sequence select="$guide/ml:external-uri-for-string(raw:target-guide-doc-uri(.))"/>
+  </xsl:function>
+
+  <xsl:function name="my:fully-resolved-href">
+    <xsl:param name="href" as="attribute(href)"/>
+    <xsl:sequence select="resolve-uri($href, $href/ancestor::XML/@original-file)"/>
+  </xsl:function>
+
+  <xsl:function name="my:anchor-id-from-href" as="xs:string?">
+    <xsl:param name="href" as="attribute(href)"/>
+    <xsl:param name="target-doc" as="document-node()?"/>
+    <xsl:variable name="resolved-href" select="my:fully-resolved-href($href)"/>
+    <xsl:variable name="is-top-level-section-link" select="$resolved-href = $fully-resolved-top-level-heading-references"/>
+
+    <xsl:value-of>
+      <!-- The section name of the guide -->
+      <!-- Leave out the _12345 part if we're linking to a top-level section -->
+      <xsl:if test="not($is-top-level-section-link)">
+        <xsl:variable name="id" select="my:extract-id-from-href($href)"/>
+        <!-- Always rewrite to the last ID that appears, so we have a canonical one we can script against in the TOC (which also uses the last one present) -->
+        <xsl:variable name="canonical-fragment-id" select="$target-doc//*[A/@ID=$id]/A[@ID][last()]/@ID"/>
+        <xsl:value-of select="concat('id_', $canonical-fragment-id)"/>
+      </xsl:if>
+    </xsl:value-of>
+  </xsl:function>
+
+  <xsl:function name="my:extract-id-from-href">
+    <xsl:param name="href" as="xs:string"/>
+    <xsl:sequence select="substring-before(substring-after($href,'#id('),')')"/>
+  </xsl:function>
+
+  <xsl:function name="my:is-part-of-list">
+    <xsl:param name="e"/>
+    <xsl:sequence select="my:starts-list($e) or my:is-before-end-of-list($e)"/>
+  </xsl:function>
+
+  <xsl:function name="my:starts-list">
+    <xsl:param name="e"/>
+    <!-- For when a note contains a list -->
+    <xsl:sequence select="$e/(self::Number or self::Body-bullet or self::Note[following-sibling::*[1]/self::Body-bullet-2])"/>
+  </xsl:function>
+
+  <xsl:function name="my:ends-list">
+    <xsl:param name="e"/>
+    <xsl:sequence select="$e/(self::EndList-root or self::Body[not(IMAGE)])"/>
+  </xsl:function>
+
+  <xsl:function name="my:is-before-end-of-list">
+    <xsl:param name="e"/>
+    <xsl:variable name="most-recent-start-or-end-element"
+                  select="$e/preceding-sibling::*[my:starts-list(.) or my:ends-list(.)][1]"/>
+    <!-- We assume that an element is included in the list unless it is a known end-of-list indicator
+         or one has appeared more recently than the most recent list start. -->
+    <xsl:sequence select="not(my:ends-list($e)) and $most-recent-start-or-end-element[my:starts-list(.)]"/>
+  </xsl:function>
 
   <xsl:template match="/">
     <!-- Strip out unhelpful list containers -->
@@ -42,7 +130,6 @@
     </xsl:variable>
     <!-- We're reading from a doc in one database and writing to a doc in a different database, using a similar URI -->
     <!-- TODO seems to be expensive for large guides. -->
-    <xsl:message>Outputting converted guide to: <xsl:value-of select="$output-uri"/></xsl:message>
     <xsl:result-document href="{$output-uri}">
       <xsl:for-each select="/guide | /chapter">
         <xsl:copy>
@@ -164,34 +251,18 @@
     </xsl:element>
   </xsl:template>
 
-          <!-- Use only the last A/@ID inside the heading, since all links get rewritten to the last one -->
-          <xsl:template mode="heading-anchor-id" match="*">
-            <xsl:value-of select="my:full-anchor-id(A[@ID][last()]/@ID)"/>
-          </xsl:template>
+  <!-- Use only the last A/@ID inside the heading, since all links get rewritten to the last one -->
+  <xsl:template mode="heading-anchor-id" match="*">
+    <xsl:value-of select="my:full-anchor-id(A[@ID][last()]/@ID)"/>
+  </xsl:template>
 
-          <!-- Top-level anchor ID is simply "chapter" -->
-          <xsl:template mode="heading-anchor-id" match="Heading-1">
-            <xsl:text>chapter</xsl:text>
-            <!--
-            <xsl:value-of select="my:anchor-id-for-top-level-heading(.)"/>
-            -->
-          </xsl:template>
-
-                  <xsl:function name="my:anchor-id-for-top-level-heading">
-                    <xsl:param name="heading-1" as="element(Heading-1)"/>
-                    <xsl:sequence select="my:basename-stem($heading-1/ancestor::XML/@original-file)"/>
-                  </xsl:function>
-
-                          <xsl:function name="my:basename-stem">
-                            <xsl:param name="url"/>
-                            <xsl:sequence select="substring-before(my:basename($url),'.xml')"/>
-                          </xsl:function>
-
-                                  <xsl:function name="my:basename">
-                                    <xsl:param name="url"/>
-                                    <xsl:sequence select="tokenize($url,'/')[last()]"/>
-                                  </xsl:function>
-
+  <!-- Top-level anchor ID is simply "chapter" -->
+  <xsl:template mode="heading-anchor-id" match="Heading-1">
+    <xsl:text>chapter</xsl:text>
+    <!--
+        <xsl:value-of select="my:anchor-id-for-top-level-heading(.)"/>
+    -->
+  </xsl:template>
 
   <xsl:template match="IMAGE">
     <img src="{@href}"/>
@@ -245,11 +316,6 @@
             <xsl:attribute name="{lower-case(name(.))}" select="."/>
           </xsl:template>
 
-
-          <xsl:function name="my:new-name">
-            <xsl:param name="element"/>
-            <xsl:apply-templates mode="new-name" select="$element"/>
-          </xsl:function>
 
                   <!-- Some need to be set to lower-case -->
                   <xsl:template mode="new-name" match="TABLE | TH">
@@ -316,16 +382,15 @@
     <xsl:value-of select="."/>
   </xsl:template>
 
-          <!--
-          <!- - TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly - ->
-          <!- - Strip out line breaks - ->
-          <xsl:template match="text()[not(ancestor::Code)]">
-            <xsl:value-of select="replace(.,'&#xA;','')"/>
-          </xsl:template>
-          <!- - Strip out isolated line breaks in Code elements - ->
-          <xsl:template match="Code/text()[not(normalize-space(.))]"/>
-          -->
-
+  <!--
+      <!- - TODO: identify significant line breaks, e.g., in code examples, and modify rule(s) accordingly - ->
+      <!- - Strip out line breaks - ->
+      <xsl:template match="text()[not(ancestor::Code)]">
+      <xsl:value-of select="replace(.,'&#xA;','')"/>
+      </xsl:template>
+      <!- - Strip out isolated line breaks in Code elements - ->
+      <xsl:template match="Code/text()[not(normalize-space(.))]"/>
+  -->
 
   <!-- Since we rewrite all links to point to the last anchor, it's safe to remove all the anchors that aren't last. -->
   <xsl:template match="A[@ID][not(position() eq last())]"/>
@@ -337,120 +402,68 @@
     </a>
   </xsl:template>
 
- <!-- Remove apostrophe delimiters when present (assumption is they are the
+  <!-- Remove apostrophe delimiters when present (assumption is they are the
        first and last character in the string) and remove 'on page' -->
-          <xsl:template mode="guide-link-content"
-                  match='A[starts-with(normalize-space(.), "&apos;")]'
-                  priority='1'>
-                  <xsl:variable name="nopage" select="substring-before(
-                          normalize-space(.), ' on page')"/>
-                  <xsl:value-of select="substring($nopage,  2,
+  <xsl:template mode="guide-link-content"
+                match='A[starts-with(normalize-space(.), "&apos;")]'
+                priority='1'>
+    <xsl:variable name="nopage" select="substring-before(
+                                        normalize-space(.), ' on page')"/>
+    <xsl:value-of select="substring($nopage,  2,
                           string-length($nopage) - 2)"/>
-          </xsl:template>
+  </xsl:template>
 
-          <!-- Remove "on page 32" verbiage (if there is no apos) -->
-          <xsl:template mode="guide-link-content"
-                  match="A[contains(normalize-space(.), ' on page')]" >
-                  <xsl:value-of select="substring-before(normalize-space(.),
+  <!-- Remove "on page 32" verbiage (if there is no apos) -->
+  <xsl:template mode="guide-link-content"
+                match="A[contains(normalize-space(.), ' on page')]" >
+    <xsl:value-of select="substring-before(normalize-space(.),
                           ' on page')"/>
-          </xsl:template>
+  </xsl:template>
 
-          <xsl:template mode="guide-link-content" match="A">
-            <xsl:value-of select="normalize-space(.)"/>
-          </xsl:template>
+  <xsl:template mode="guide-link-content" match="A">
+    <xsl:value-of select="normalize-space(.)"/>
+  </xsl:template>
 
+  <xsl:template match="A/@ID">
+    <xsl:attribute name="id" select="my:full-anchor-id(.)"/>
+  </xsl:template>
 
-          <xsl:template match="A/@ID">
-            <xsl:attribute name="id" select="my:full-anchor-id(.)"/>
-          </xsl:template>
+  <!-- Links within the same chapter -->
+  <xsl:template
+      match="A/@href[contains(.,'#id(')][
+             starts-with(.,my:basename(base-uri(.)))]" priority="2">
+    <xsl:variable name="target-doc" select="root(.)"/>
+    <xsl:attribute name="href"
+                   select="concat(
+                           '#', my:anchor-id-from-href(.,$target-doc))"/>
+  </xsl:template>
 
-                  <xsl:function name="my:full-anchor-id">
-                    <xsl:param name="ID-att"/>
-                    <xsl:sequence select="concat('id_',$ID-att)"/>
-                    <!--
-                    <xsl:sequence select="concat(my:anchor-id-for-top-level-heading($ID-att/ancestor::XML/div/Heading-1),'_',$ID-att)"/>
-                    -->
-                  </xsl:function>
+  <!-- Links to other chapters (whether the same or a different guide) -->
+  <xsl:template match="A/@href[contains(.,'#id(')]" priority="1">
+    <xsl:variable name="target-doc"
+                  select="$raw:GUIDE-DOCS[
+                          starts-with(
+                          my:fully-resolved-href(current()),
+                          */XML/@original-file)]"/>
+    <xsl:if test="not($target-doc)">
+      <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
+    </xsl:if>
+    <xsl:attribute name="href" select="concat(my:guide-doc-url($target-doc), '#', my:anchor-id-from-href(.,$target-doc))"/>
+  </xsl:template>
 
-
-
-          <!-- Links within the same chapter -->
-          <xsl:template match="A/@href[contains(.,'#id(')][starts-with(.,my:basename(base-uri(.)))]" priority="2">
-          <!--
-          <xsl:template match="A/@href[contains(.,'#id(')][starts-with(.,)]" priority="2">
-          -->
-            <xsl:variable name="target-doc" select="root(.)"/>
-            <xsl:attribute name="href" select="concat('#', my:anchor-id-from-href(.,$target-doc))"/>
-          </xsl:template>
-
-          <!-- Links to other chapters (whether the same or a different guide) -->
-          <xsl:template match="A/@href[contains(.,'#id(')]" priority="1">
-          <!--
-          <xsl:template match="A/@href[starts-with(.,'../')]" priority="2">
-          -->
-            <xsl:variable name="target-doc" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
-            <xsl:if test="not($target-doc)">
-              <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
-            </xsl:if>
-            <xsl:attribute name="href" select="concat(my:guide-doc-url($target-doc), '#', my:anchor-id-from-href(.,$target-doc))"/>
-          </xsl:template>
-
-                  <xsl:function name="my:guide-doc-url">
-                    <xsl:param name="guide" as="document-node()?"/> <!-- if absent, then it's a bad link, and we'll get the warning above -->
-                    <xsl:sequence select="$guide/ml:external-uri-for-string(raw:target-guide-doc-uri(.))"/>
-                  </xsl:function>
-
-                          <xsl:function name="my:fully-resolved-href">
-                            <xsl:param name="href" as="attribute(href)"/>
-                            <xsl:sequence select="resolve-uri($href, $href/ancestor::XML/@original-file)"/>
-                          </xsl:function>
-
-                  <xsl:function name="my:anchor-id-from-href" as="xs:string?">
-                    <xsl:param name="href" as="attribute(href)"/>
-                    <xsl:param name="target-doc" as="document-node()?"/>
-                    <xsl:variable name="resolved-href" select="my:fully-resolved-href($href)"/>
-                    <xsl:variable name="is-top-level-section-link" select="$resolved-href = $fully-resolved-top-level-heading-references"/>
-
-                    <xsl:value-of>
-                      <!-- The section name of the guide -->
-                      <!--
-                      <xsl:value-of select="my:basename-stem($href)"/>
-                      -->
-                      <!-- Leave out the _12345 part if we're linking to a top-level section -->
-                      <xsl:if test="not($is-top-level-section-link)">
-                        <xsl:variable name="id" select="my:extract-id-from-href($href)"/>
-                        <!--
-                        <xsl:variable name="section" select="$target-doc/guide/XML[starts-with($resolved-href,@original-file)]"/>
-                        -->
-                        <!-- Always rewrite to the last ID that appears, so we have a canonical one we can script against in the TOC (which also uses the last one present) -->
-                        <xsl:variable name="canonical-fragment-id" select="$target-doc//*[A/@ID=$id]/A[@ID][last()]/@ID"/>
-                        <xsl:value-of select="concat('id_', $canonical-fragment-id)"/>
-                      </xsl:if>
-                    </xsl:value-of>
-                  </xsl:function>
-
-                          <xsl:function name="my:extract-id-from-href">
-                            <xsl:param name="href" as="xs:string"/>
-                            <xsl:sequence select="substring-before(substring-after($href,'#id('),')')"/>
-                          </xsl:function>
-
-                          <xsl:variable name="fully-resolved-top-level-heading-references" as="xs:string*"
-                                  select="$raw:guide-docs/chapter/XML/Heading-1/A/@ID/concat(ancestor::XML/@original-file,'#id(',.,')')"/>
-
-
-                          <!-- Fixup Linkerator links
-                               Change "#display.xqy&function=" to "/"
-                               -->
-          <xsl:template match="A/@href[starts-with(.,'#display.xqy?function=')]" priority="3">
-            <xsl:variable name="target-doc" select="$raw:guide-docs[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
-            <xsl:if test="not($target-doc)">
-              <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
-            </xsl:if>
-            <xsl:attribute name="href"
-                    select="concat('/',
-                    substring-after(., '#display.xqy?function='))"/>
-    </xsl:template>
-    <!-- End Linkerator fixup -->
+  <!-- Fixup Linkerator links
+       Change "#display.xqy&function=" to "/"
+  -->
+  <xsl:template match="A/@href[starts-with(.,'#display.xqy?function=')]" priority="3">
+    <xsl:variable name="target-doc" select="$raw:GUIDE-DOCS[starts-with(my:fully-resolved-href(current()), */XML/@original-file)]"/>
+    <xsl:if test="not($target-doc)">
+      <xsl:message>BAD LINK FOUND! Unable to find referenced title or chapter doc for this link: <xsl:value-of select="."/></xsl:message>
+    </xsl:if>
+    <xsl:attribute name="href"
+                   select="concat('/',
+                           substring-after(., '#display.xqy?function='))"/>
+  </xsl:template>
+  <!-- End Linkerator fixup -->
 
 
   <xsl:template match="Hyperlink">
@@ -466,56 +479,60 @@
   </xsl:template>
 
   <xsl:template mode="capture-sections-content" match="*">
-     <xsl:apply-templates mode="capture-sections"/>
+    <xsl:apply-templates mode="capture-sections"/>
   </xsl:template>
 
   <xsl:template mode="capture-sections-content" match="XML">
-     <xsl:call-template name="capture-sections"/>
+    <xsl:call-template name="capture-sections"/>
   </xsl:template>
 
   <xsl:template name="capture-sections">
-     <xsl:param name="current-level" select="1"/>
-     <!-- Initially, group the children -->
-     <xsl:param name="current-group" select="node()"/>
-     <!-- Each heading starts a new group -->
-     <xsl:variable name="current-heading" select="concat('Heading-',
-                    $current-level)"/>
-     <xsl:variable name="simple-heading" select="concat('Simple-',
-                    $current-heading)"/>
-     <!-- Catch Heading-N, Heading-NMESSAGE, Simple-Heading-N -->
-     <xsl:for-each-group select="$current-group"
-                    group-starting-with="*[local-name(.) eq $simple-heading
-                                         or starts-with(
-                                         local-name(.), $current-heading)]">
-          <xsl:choose>
-             <xsl:when test="(local-name(.) eq $current-heading)
-                             or local-name(.) eq $simple-heading
-                             or (
-                             local-name(.) eq 'Heading-2MESSAGE'
-                             and $current-level = 2)">
-                 <xsl:variable name="the-class" select="if (local-name(.) eq
-                          $simple-heading) then 'message-part'
-                          else if (local-name(.) eq 'Heading-2MESSAGE')
-                          then 'message'
-                          else if (local-name(.) eq $current-heading)
-                          then 'section' else ''" />
-                  <xsl:element name="div">
-                    <xsl:attribute name="class" select="$the-class"/>
-                    <xsl:attribute name="data-fm-style"
-                            select="local-name(.)" />
-                    <!-- Recursively capture sections -->
-                    <xsl:call-template name="capture-sections">
-                      <xsl:with-param name="current-level"
-                                    select="$current-level + 1"/>
-                      <xsl:with-param name="current-group"
-                                    select="current-group()"/>
-                    </xsl:call-template>
-                  </xsl:element>
-             </xsl:when>
-             <xsl:otherwise>
-                 <xsl:copy-of select="current-group()"/>
-             </xsl:otherwise>
-         </xsl:choose>
+    <xsl:param name="current-level" select="1"/>
+    <!-- Initially, group the children -->
+    <xsl:param name="current-group" select="node()"/>
+    <!-- Each heading starts a new group -->
+    <xsl:variable name="current-heading" select="concat('Heading-',
+                                                 $current-level)"/>
+    <xsl:variable name="simple-heading" select="concat('Simple-',
+                                                $current-heading)"/>
+    <!-- Catch Heading-N, Heading-NMESSAGE, Simple-Heading-N -->
+    <!--
+        TODO group-starting-with is expensive,
+        especially for messages/XDMP-en.xml
+    -->
+    <xsl:for-each-group select="$current-group"
+                        group-starting-with="*[local-name(.) eq $simple-heading
+                                             or starts-with(
+                                             local-name(.), $current-heading)]">
+      <xsl:choose>
+        <xsl:when test="(local-name(.) eq $current-heading)
+                        or local-name(.) eq $simple-heading
+                        or (
+                        local-name(.) eq 'Heading-2MESSAGE'
+                        and $current-level = 2)">
+          <xsl:variable name="the-class" select="if (local-name(.) eq
+                                                 $simple-heading) then 'message-part'
+                                                 else if (local-name(.) eq 'Heading-2MESSAGE')
+                                                 then 'message'
+                                                 else if (local-name(.) eq $current-heading)
+                                                 then 'section' else ''" />
+          <xsl:element name="div">
+            <xsl:attribute name="class" select="$the-class"/>
+            <xsl:attribute name="data-fm-style"
+                           select="local-name(.)" />
+            <!-- Recursively capture sections -->
+            <xsl:call-template name="capture-sections">
+              <xsl:with-param name="current-level"
+                              select="$current-level + 1"/>
+              <xsl:with-param name="current-group"
+                              select="current-group()"/>
+            </xsl:call-template>
+          </xsl:element>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="current-group()"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:for-each-group>
   </xsl:template>
 
@@ -527,109 +544,84 @@
     </xsl:copy>
   </xsl:template>
 
-          <xsl:template mode="capture-lists-content" match="*">
-            <xsl:apply-templates mode="capture-lists"/>
-          </xsl:template>
+  <xsl:template mode="capture-lists-content" match="*">
+    <xsl:apply-templates mode="capture-lists"/>
+  </xsl:template>
 
-          <xsl:template mode="capture-lists-content" match="div | CELL">
-            <xsl:for-each-group select="*" group-adjacent="my:is-part-of-list(.) and not(self::div or self::CELL)">
-              <xsl:apply-templates mode="outer-list" select="."/>
-            </xsl:for-each-group>
-          </xsl:template>
+  <xsl:template mode="capture-lists-content" match="div | CELL">
+    <xsl:for-each-group select="*" group-adjacent="my:is-part-of-list(.) and not(self::div or self::CELL)">
+      <xsl:apply-templates mode="outer-list" select="."/>
+    </xsl:for-each-group>
+  </xsl:template>
 
-                  <xsl:template mode="outer-list" match="Number">
-                    <ol>
-                      <xsl:for-each-group select="current-group()" group-starting-with="Number">
-                        <li>
-                          <xsl:variable name="nested-bullets-captured" as="element()*">
-                            <xsl:call-template name="capture-nested-bullets"/>
-                          </xsl:variable>
-                          <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
-                          <xsl:variable name="first-sub-item" select="$nested-bullets-captured[self::NumberA][1]"/>
-                          <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA[. is $first-sub-item]">
-                            <xsl:apply-templates mode="inner-numbered-list" select="."/>
-                          </xsl:for-each-group>
-                        </li>
-                      </xsl:for-each-group>
-                    </ol>
-                  </xsl:template>
+  <xsl:template mode="outer-list" match="Number">
+    <ol>
+      <xsl:for-each-group select="current-group()" group-starting-with="Number">
+        <li>
+          <xsl:variable name="nested-bullets-captured" as="element()*">
+            <xsl:call-template name="capture-nested-bullets"/>
+          </xsl:variable>
+          <!-- ASSUMPTION: If there's a nested NumberA list, then it comprises the rest of this list item. -->
+          <xsl:variable name="first-sub-item" select="$nested-bullets-captured[self::NumberA][1]"/>
+          <xsl:for-each-group select="$nested-bullets-captured" group-starting-with="NumberA[. is $first-sub-item]">
+            <xsl:apply-templates mode="inner-numbered-list" select="."/>
+          </xsl:for-each-group>
+        </li>
+      </xsl:for-each-group>
+    </ol>
+  </xsl:template>
 
-                          <xsl:template mode="inner-numbered-list" match="NumberA">
-                            <ol>
-                              <xsl:for-each-group select="current-group()" group-starting-with="NumberA">
-                                <li>
-                                  <xsl:apply-templates mode="capture-lists" select="current-group()"/>
-                                </li>
-                              </xsl:for-each-group>
-                            </ol>
-                          </xsl:template>
+  <xsl:template mode="inner-numbered-list" match="NumberA">
+    <ol>
+      <xsl:for-each-group select="current-group()" group-starting-with="NumberA">
+        <li>
+          <xsl:apply-templates mode="capture-lists" select="current-group()"/>
+        </li>
+      </xsl:for-each-group>
+    </ol>
+  </xsl:template>
 
-                  <xsl:template mode="outer-list" match="Body-bullet">
-                    <ul>
-                      <xsl:for-each-group select="current-group()" group-starting-with="Body-bullet">
-                        <li>
-                          <xsl:call-template name="capture-nested-bullets"/>
-                        </li>
-                      </xsl:for-each-group>
-                    </ul>
-                  </xsl:template>
+  <xsl:template mode="outer-list" match="Body-bullet">
+    <ul>
+      <xsl:for-each-group select="current-group()" group-starting-with="Body-bullet">
+        <li>
+          <xsl:call-template name="capture-nested-bullets"/>
+        </li>
+      </xsl:for-each-group>
+    </ul>
+  </xsl:template>
 
-                          <xsl:template name="capture-nested-bullets">
-                            <!-- ASSUMPTION: each second-level bulleted list item consists of just one element (Body-bullet-2);
-                                 they don't have subsequent paragraphs. -->
-                            <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
-                              <xsl:apply-templates mode="inner-list" select="."/>
-                            </xsl:for-each-group>
-                          </xsl:template>
+  <xsl:template name="capture-nested-bullets">
+    <!-- ASSUMPTION: each second-level bulleted list item consists of just one element (Body-bullet-2);
+         they don't have subsequent paragraphs. -->
+    <xsl:for-each-group select="current-group()" group-adjacent="exists(self::Body-bullet-2)">
+      <xsl:apply-templates mode="inner-list" select="."/>
+    </xsl:for-each-group>
+  </xsl:template>
 
-                                  <xsl:template mode="inner-list" match="Body-bullet-2">
-                                    <ul>
-                                      <xsl:for-each select="current-group()">
-                                        <li>
-                                          <xsl:apply-templates mode="capture-lists" select="."/>
-                                        </li>
-                                      </xsl:for-each>
-                                    </ul>
-                                  </xsl:template>
+  <xsl:template mode="inner-list" match="Body-bullet-2">
+    <ul>
+      <xsl:for-each select="current-group()">
+        <li>
+          <xsl:apply-templates mode="capture-lists" select="."/>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
 
-                  <xsl:template mode="outer-list" match="Note[my:starts-list(.)]">
-                    <NoteWithList>
-                      <xsl:call-template name="capture-nested-bullets"/>
-                    </NoteWithList>
-                  </xsl:template>
+  <xsl:template mode="outer-list" match="Note[my:starts-list(.)]">
+    <NoteWithList>
+      <xsl:call-template name="capture-nested-bullets"/>
+    </NoteWithList>
+  </xsl:template>
 
-                  <!-- If not part of a list, just copy the group through -->
-                  <xsl:template mode="outer-list
-                                      inner-list
-                                      inner-numbered-list" match="*">
-                    <xsl:apply-templates mode="capture-lists" select="current-group()"/>
-                  </xsl:template>
+  <!-- If not part of a list, just copy the group through -->
+  <xsl:template mode="outer-list
+                      inner-list
+                      inner-numbered-list" match="*">
+    <xsl:apply-templates mode="capture-lists" select="current-group()"/>
+  </xsl:template>
 
-
-                  <xsl:function name="my:is-part-of-list">
-                    <xsl:param name="e"/>
-                    <xsl:sequence select="my:starts-list($e) or my:is-before-end-of-list($e)"/>
-                  </xsl:function>
-
-                          <xsl:function name="my:starts-list">
-                            <xsl:param name="e"/>
-                                                                                           <!-- For when a note contains a list -->
-                            <xsl:sequence select="$e/(self::Number or self::Body-bullet or self::Note[following-sibling::*[1]/self::Body-bullet-2])"/>
-                          </xsl:function>
-
-                          <xsl:function name="my:ends-list">
-                            <xsl:param name="e"/>
-                            <xsl:sequence select="$e/(self::EndList-root or self::Body[not(IMAGE)])"/>
-                          </xsl:function>
-
-                          <xsl:function name="my:is-before-end-of-list">
-                            <xsl:param name="e"/>
-                            <xsl:variable name="most-recent-start-or-end-element"
-                                          select="$e/preceding-sibling::*[my:starts-list(.) or my:ends-list(.)][1]"/>
-                            <!-- We assume that an element is included in the list unless it is a known end-of-list indicator
-                                 or one has appeared more recently than the most recent list start. -->
-                            <xsl:sequence select="not(my:ends-list($e)) and $most-recent-start-or-end-element[my:starts-list(.)]"/>
-                          </xsl:function>
 
   <xsl:template mode="merge-code-examples" match="node()">
     <xsl:copy>
@@ -643,37 +635,37 @@
     <xsl:copy/>
   </xsl:template>
 
-          <xsl:template mode="merge-code-examples-content" match="*">
-            <xsl:apply-templates mode="merge-code-examples"/>
-          </xsl:template>
+  <xsl:template mode="merge-code-examples-content" match="*">
+    <xsl:apply-templates mode="merge-code-examples"/>
+  </xsl:template>
 
-          <xsl:template mode="merge-code-examples-content" match="li | div | CELL">
-            <!-- Merge adjacent Code elements -->
-            <xsl:for-each-group select="*" group-adjacent="exists(self::Code)">
-              <xsl:apply-templates mode="code-or-not" select="."/>
-            </xsl:for-each-group>
-          </xsl:template>
+  <xsl:template mode="merge-code-examples-content" match="li | div | CELL">
+    <!-- Merge adjacent Code elements -->
+    <xsl:for-each-group select="*" group-adjacent="exists(self::Code)">
+      <xsl:apply-templates mode="code-or-not" select="."/>
+    </xsl:for-each-group>
+  </xsl:template>
 
-                  <xsl:template mode="code-or-not" match="Code">
-                    <Code>
-                      <!-- Process the content of the adjacent Code elements -->
-                      <xsl:apply-templates mode="merge-code-examples" select="current-group()/node()"/>
-                    </Code>
-                  </xsl:template>
+  <xsl:template mode="code-or-not" match="Code">
+    <Code>
+      <!-- Process the content of the adjacent Code elements -->
+      <xsl:apply-templates mode="merge-code-examples" select="current-group()/node()"/>
+    </Code>
+  </xsl:template>
 
-                  <xsl:template mode="code-or-not" match="*">
-                    <xsl:apply-templates mode="merge-code-examples" select="current-group()"/>
-                  </xsl:template>
+  <xsl:template mode="code-or-not" match="*">
+    <xsl:apply-templates mode="merge-code-examples" select="current-group()"/>
+  </xsl:template>
 
 
-          <!-- By default, don't add anything after -->
-          <xsl:template mode="merge-code-examples-after" match="node()"/>
+  <!-- By default, don't add anything after -->
+  <xsl:template mode="merge-code-examples-after" match="node()"/>
 
-          <!-- Add a marker signifying we want to preserve the whitespace at the beginning of this
-               Code element (as it's a subsequent adjacent one, which will be merged into the previous) -->
-          <xsl:template mode="merge-code-examples-after" match="Code[preceding-sibling::*[1][self::Code]]
-                                                               /A[1]">
-            <PRESERVE_FOLLOWING_WHITESPACE/>
-          </xsl:template>
+  <!-- Add a marker signifying we want to preserve the whitespace at the beginning of this
+       Code element (as it's a subsequent adjacent one, which will be merged into the previous) -->
+  <xsl:template mode="merge-code-examples-after" match="Code[preceding-sibling::*[1][self::Code]]
+                                                        /A[1]">
+    <PRESERVE_FOLLOWING_WHITESPACE/>
+  </xsl:template>
 
 </xsl:stylesheet>

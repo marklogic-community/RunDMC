@@ -79,10 +79,10 @@ declare variable $REST-DOC-PATH := (
     cts:uri-match(
       concat(
         '/apidoc/', $api:default-version, $PATH-ORIG,
-        $api:REST-uri-questionmark-substitute, "*")),
+        $api:REST-URI-QUESTIONMARK-SUBSTITUTE, "*")),
     cts:uri-match(
       concat('/apidoc/',
-        $PATH-ORIG, $api:REST-uri-questionmark-substitute, "*")))
+        $PATH-ORIG, $api:REST-URI-QUESTIONMARK-SUBSTITUTE, "*")))
 
   (: TODO use function mapping? :)
   let $known-query-params := distinct-values(
@@ -101,7 +101,7 @@ declare variable $REST-DOC-PATH := (
     if ($canonicalized-query-string)
     then concat(
       $PATH-ORIG,
-      $api:REST-uri-questionmark-substitute,
+      $api:REST-URI-QUESTIONMARK-SUBSTITUTE,
       $canonicalized-query-string)
     else $PATH-ORIG))
 ;
@@ -168,7 +168,7 @@ declare function m:REST-doc-query-param($doc-uri as xs:string)
   as xs:string
 {
   substring-before(
-    substring-after($doc-uri, $api:REST-uri-questionmark-substitute),
+    substring-after($doc-uri, $api:REST-URI-QUESTIONMARK-SUBSTITUTE),
     '=')
 };
 

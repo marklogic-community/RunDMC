@@ -68,7 +68,8 @@ function load(settings, root, child, container) {
      ,error: function(jqXHR, textStatus, errorThrown) {
        console.log("jquery.treeview.async.error",
                    jqXHR, textStatus, errorThrown);
-       window.location.reload();
+       // mblakele: or not!
+       //window.location.reload();
      }
      // EDL: END CHANGES
 	}, settings.ajax));

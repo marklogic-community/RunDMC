@@ -1,45 +1,41 @@
 xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
-  at "../model/data-access.xqy";
+  at "/apidoc/model/data-access.xqy";
 
 import module namespace setup="http://marklogic.com/rundmc/api/setup"
   at "common.xqy";
+import module namespace toc="http://marklogic.com/rundmc/api/toc"
+  at "toc.xqm";
 
 declare function local:save-url-location($toc-url, $toc-url-location) {
-  xdmp:log(text { "Recording current TOC URL (", $toc-url, ") at ", $toc-url-location}),
+  xdmp:log(
+    text {
+      "Recording current TOC URL", $toc-url, "at", $toc-url-location}),
   xdmp:document-insert(
     $toc-url-location,
-    document { <api:toc-url>{$toc-url}</api:toc-url>}
-  ),
-  xdmp:log("Done.")
+    document { element api:toc-url { $toc-url } })
 };
 
-declare function local:save-rendered-toc($toc-url, $is-default-toc) {
+declare function local:save-rendered-toc(
+  $toc-url as xs:string,
+  $is-default-toc as xs:boolean)
+{
   xdmp:log(
-    text { "Rendering the XML-based TOC to HTML at", $toc-url, "..." }),
+    text {
+      "Rendering", "default"[$is-default-toc], "HTML TOC at", $toc-url }),
   xdmp:xslt-invoke(
     "render-toc.xsl",
     doc($setup:toc-xml-url) treat as node(),
-    map:map(<map:map>
-      <map:entry>
-        <map:key>toc-url</map:key>
-        <map:value>{$toc-url}</map:value>
-      </map:entry>
-      <map:entry>
-        <map:key>prefix-for-hrefs</map:key>
-        <map:value>
-      {
-        if ($is-default-toc) then ()
-        else concat("/",$api:version)
-      }
-        </map:value>
-      </map:entry>
-      <map:entry>
-        <map:key>version</map:key>
-        <map:value>{$api:version}</map:value>
-      </map:entry>
-      </map:map>))/xdmp:document-insert(base-uri(.), .),
+    map:new(
+      (map:entry('toc-url', $toc-url),
+        map:entry(
+          'prefix-for-hrefs',
+          if ($is-default-toc) then ()
+          else concat("/",$api:version)),
+        map:entry(
+          'version', $api:version))))/
+  xdmp:document-insert(base-uri(.), .),
   xdmp:log("Done.")
 };
 
@@ -47,18 +43,21 @@ declare function local:save-rendered-toc($toc-url, $is-default-toc) {
 $setup:errorCheck,
 
 (: Save the TOC filename :)
-local:save-url-location($setup:toc-url,
-                          $api:toc-url-location),
+local:save-url-location($setup:toc-url, $api:toc-url-location),
 (: Render the HTML TOC :)
 local:save-rendered-toc($setup:toc-url, false()),
 
-(: If we're processing the default version, then we need to render another
-   copy of the TOC that doesn't include version numbers in its href links :)
-if ($setup:processing-default-version) then (
-  local:save-url-location($setup:toc-url-default-version,
-                            $api:toc-url-default-version-location),
-  local:save-rendered-toc($setup:toc-url-default-version, true())
-) else (),
+(: If we are processing the default version,
+ : then we need to render another copy of the TOC
+ : that does not include version numbers in its href links.
+ :)
+if (not($setup:processing-default-version)) then ()
+else (
+  local:save-url-location(
+    $setup:toc-url-default-version,
+    $api:toc-url-default-version-location),
+  local:save-rendered-toc($setup:toc-url-default-version, true()))
+,
 
 text {
   "Rendered the HTML TOC(s) and recorded their URL(s) in ",

@@ -13,10 +13,15 @@
   extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs api ml u toc">
 
-  <xsl:import href="../view/uri-translation.xsl"/>
-
-  <xdmp:import-module namespace="http://marklogic.com/rundmc/api" href="/apidoc/model/data-access.xqy"/>
-  <xdmp:import-module namespace="http://marklogic.com/rundmc/util" href="/lib/util-2.xqy"/>
+  <xdmp:import-module
+      namespace="http://developer.marklogic.com/site/internal"
+      href="/model/data-access.xqy"/>
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api"
+      href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/util"
+      href="/lib/util-2.xqy"/>
 
   <xsl:variable name="root" select="/"/>
 
@@ -24,7 +29,7 @@
 
   <xsl:template match="/">
     <!-- Set up the docs page for this version -->
-    <xsl:result-document href="{ml:internal-uri('/')}">
+    <xsl:result-document href="{api:internal-uri('/')}">
       <xsl:comment>This page was auto-generated. The resulting content is driven     </xsl:comment>
       <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
       <api:docs-page disable-comments="yes">
@@ -42,7 +47,7 @@
     </xsl:result-document>
     <!-- Find each function list and help page URL -->
     <xsl:for-each select="distinct-values(//node[@function-list-page or @admin-help-page]/@href)">
-      <xsl:result-document href="{ml:internal-uri(.)}">
+      <xsl:result-document href="{api:internal-uri(.)}">
         <!-- Process the first one of each that has a title (and consequently intro or help content) -->
         <xsl:apply-templates select="($root//node[@href eq current()])[title][1]"/>
       </xsl:result-document>
@@ -98,7 +103,8 @@
     <xsl:variable name="container-toc-section-id">
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
-    <api:list-page disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
+    <api:list-page disable-comments="yes"
+                   container-toc-section-id="{$container-toc-section-id}">
       <xsl:copy-of select="@category-bucket"/>
 
       <!-- can be used to trigger different display options -->
@@ -110,23 +116,24 @@
       <xsl:apply-templates select="title | intro"/>
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
+<!-- TODO bug here?
+
+XDMP-URI: (err:FODC0005) fn:doc("/apidoc/7.0/rest-client:/v1/alert/rules/{name}.xml")
+Invalid URI format: "/apidoc/7.0/rest-client:/v1/alert/rules/{name}.xml"
+
+context item is
+doc("/media/apiTOC/7.0/toc.xml")/all-tocs/toc:rest-resources/node[1]/node[1]/node[1]/node[2]
+@href="/rest-client:/v1/alert/rules/{name}"
+
+should have been remapped by api:translate-REST-resource-name earlier?
+-->
       <xsl:for-each select=".//node[not(node)]">
-        <!-- They're already sorted, and not necessarily just alphabetically (as with GET/POST/DELETE for REST resources).
-        <xsl:sort select="@display"/>
-        -->
-<!--
-<xsl:if test="@href eq '/REST/manage/v1/forests&gt;view=schema'">
-<xsl:value-of select="xdmp:log(ml:internal-uri(translate(@href,'>','@')))" xmlns:xdmp="http://marklogic.com/xdmp"/>
-        <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(translate(@href,'>','@')))
-                                                       /api:function-page/api:function[1]"/>
-                                                       -->
-        <xsl:apply-templates mode="list-entry" select="doc(ml:internal-uri(@href))
-                                                       /api:function-page/api:function[1]"> <!-- don't list multiple *:polygon() functions; just the first -->
+        <!-- don't list multiple *:polygon() functions; just the first -->
+        <xsl:apply-templates mode="list-entry"
+                             select="doc(api:internal-uri(@href))
+                                     /api:function-page/api:function[1]">
           <xsl:with-param name="toc-node" select="."/>
         </xsl:apply-templates>
-<!--
-</xsl:if>
--->
       </xsl:for-each>
 
     </api:list-page>

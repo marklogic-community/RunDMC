@@ -9,7 +9,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Set up all content</title>
-		<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+                <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
     <style type="text/css">
       td,th {{border-bottom: thin solid}}
       .versionCol {{border-left: thin solid;
@@ -43,7 +43,7 @@ declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:versi
         <th>
           <input type="button" id="runAll" value="Load and set up all docs!"/>
         </th>
-        <th>Step 1: Load raw docs<br/><span style="font-size:.8em">(into the "{$raw:db-name}" database)</span></th>
+        <th>Step 1: Load raw docs<br/><span style="font-size:.8em">(into the raw database)</span></th>
         <th>Step 2: Set up guides<br/><span style="font-size:.8em">(in the "{xdmp:database-name(xdmp:database())}" database (mostly))</span></th>
         <th>Step 3: Set up functions, TOC, etc.<br/><span style="font-size:.8em">(in the "{xdmp:database-name(xdmp:database())}" database)</span></th>
       </tr>

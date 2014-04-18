@@ -1,19 +1,22 @@
 xquery version "1.0-ml";
 
-import module namespace api = "http://marklogic.com/rundmc/api"
-       at "../model/data-access.xqy";
-
-import module namespace setup = "http://marklogic.com/rundmc/api/setup"
-       at "common.xqy";
-
-import module namespace u="http://marklogic.com/rundmc/util"
-       at "../../lib/util-2.xqy";
-
-import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
-       at "raw-docs-access.xqy";
-
 import module namespace xhtml="http://marklogic.com/cpf/xhtml"
    at "/MarkLogic/conversion/xhtml.xqy";
+
+import module namespace setup="http://marklogic.com/rundmc/api/setup"
+  at "common.xqy";
+
+import module namespace u="http://marklogic.com/rundmc/util"
+  at "/lib/util-2.xqy";
+
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "../model/data-access.xqy";
+
+import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
+  at "raw-docs-access.xqy";
+
+import module namespace tb="ns://blakeley.com/taskbot"
+  at "/taskbot/src/taskbot.xqm";
 
 declare variable $config := u:get-doc("/apidoc/config/static-docs.xml")
                                   /static-docs;
@@ -22,7 +25,7 @@ declare variable $subdirs-to-load := $config/include/string(.);
 declare variable $src-dir  := xdmp:get-request-field("srcdir");
 declare variable $pubs-dir := concat($src-dir,'/pubs');
 
-declare variable $ga as element() :=
+declare variable $GOOGLE-ANALYTICS as element() :=
 (: google analytics script goes just before the closing the </head> tag :)
 <script type="text/javascript"><![CDATA[
   var is_prod = document.location.hostname == 'docs.marklogic.com';
@@ -37,7 +40,7 @@ declare variable $ga as element() :=
             })();]]>
 </script> ;
 
-declare variable $marketo as element() :=
+declare variable $MARKETO as element() :=
 (: marketo script goes just before the closing the </body> tag :)
 <script type="text/javascript"><![CDATA[
  (function() {
@@ -58,59 +61,58 @@ declare variable $marketo as element() :=
     })();]]>
 </script> ;
 
-declare function local:passthru($x as node()) as node()*
+declare function local:element-rewrite(
+  $e as element(),
+  $new as node()*)
+as element()
 {
-for $z in $x/node() return local:add-scripts($z)
+  element { node-name($e) } {
+    $e/@*,
+    $e/node(),
+    $new }
 };
 
-declare function local:add-scripts($x as node()) as node()* {
-typeswitch ($x)
-  case document-node() return document {local:passthru($x)}
-  case binary() return $x
-  case comment() return $x
-  case processing-instruction() return $x
-  case text() return $x
-  case element (head) return <head>
-  {
-    local:passthru($x), $ga ,
-    xdmp:log(text { "[load-static-docs] local:add-scripts head" })
-  }
-  </head>
-  case element (body) return <body>{local:passthru($x), $marketo}</body>
-  case element (HEAD) return <head>
-  {
-    local:passthru($x), $ga,
-    xdmp:log(text { "[load-static-docs.xqy] local:add-scripts HEAD" })
-  }
-  </head>
-  case element (BODY) return <body>{local:passthru($x), $marketo}</body>
-
-  default return element {fn:node-name($x)} {$x/@*, local:passthru($x)}
+(: Prune more? This code seems to expect head//head or body//body. :)
+declare function local:add-scripts($n as node())
+  as node()*
+{
+  typeswitch($n)
+  case document-node() return document { local:add-scripts($n/node()) }
+  case element(head) return local:element-rewrite($n, $GOOGLE-ANALYTICS)
+  case element(HEAD) return local:element-rewrite($n, $GOOGLE-ANALYTICS)
+  case element(body) return local:element-rewrite($n, $MARKETO)
+  case element(BODY) return local:element-rewrite($n, $MARKETO)
+  (: Any other element may have head or body children. :)
+  case element() return element {fn:node-name($n)} {
+    $n/@*,
+    local:add-scripts($n/node()) }
+  (: Text, binary, comments, etc. :)
+  default return $n
 };
 
 declare function local:rewrite-uri($uri) {
   if (starts-with($uri,"/javaclient"))
   then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
   else if (starts-with($uri,"/hadoop/"))
-    then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/")
-    (: Move "/javadoc" to the beginning of the URL :)
-    else if (starts-with($uri,"/javadoc/"))
-      then replace($uri,"/javadoc/","/javadoc/xcc/")
-      else if (starts-with($uri,"/dotnet/"))
-      then replace($uri,"/dotnet/",  "/dotnet/xcc/")
-        else if (starts-with($uri,"/c++/"))
-        then replace($uri,"/c\+\+/", "/cpp/udf/")
+  then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/")
+  (: Move "/javadoc" to the beginning of the URL :)
+  else if (starts-with($uri,"/javadoc/"))
+  then replace($uri,"/javadoc/","/javadoc/xcc/")
+  else if (starts-with($uri,"/dotnet/"))
+  then replace($uri,"/dotnet/",  "/dotnet/xcc/")
+  else if (starts-with($uri,"/c++/"))
+  then replace($uri,"/c\+\+/", "/cpp/udf/")
 
-        (: ASSUMPTION: the java docs don't include any PDFs :)
-        else if (ends-with($uri,".pdf"))
-        then local:pdf-uri($uri)
+  (: ASSUMPTION: the java docs don't include any PDFs :)
+  else if (ends-with($uri,".pdf"))
+  then local:pdf-uri($uri)
 
-         (: By default, don't change the URI (e.g., for C++ docs) :)
-         else error(xs:QName("ERROR"),
-             concat("No case was found for rewriting this path: ", $uri))
+  (: By default, don't change the URI (e.g., for C++ docs) :)
+  else error((), "UNEXPECTED", ('path', $uri))
 };
 
-declare function local:pdf-uri($uri) {
+declare function local:pdf-uri($uri)
+{
   let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1"),
       $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
       $url-name      := $guide-configs[(@pdf-name,@source-name)[1] eq $pdf-name]
@@ -165,7 +167,8 @@ declare function local:load-pubs-docs($dir) {
                              </options>)[2]
         else if ($is-mangled-html)
              then
-             try{ xdmp:log("TRYING FULL TIDY CONVERSION"),
+             try {
+               xdmp:log("TRYING FULL TIDY CONVERSION", 'fine'),
                let $unparsed := xdmp:document-get($path,
                <options xmlns="xdmp:document-get">
                  <format>text</format>
@@ -179,7 +182,8 @@ declare function local:load-pubs-docs($dir) {
                                            <encoding>auto</encoding>
                                          </options>)}
              else if ($is-html) then
-            try{ xdmp:log("TRYING FULL CONVERSION"),
+            try {
+             xdmp:log("TRYING FULL CONVERSION", 'fine'),
              xdmp:document-get($path, <options xmlns="xdmp:document-get">
                                         <format>xml</format>
                                         <repair>full</repair>
@@ -200,64 +204,62 @@ declare function local:load-pubs-docs($dir) {
 
         (: Exclude these HTML and javascript documents from the search corpus
            (search the Tidy'd XHTML instead; see below) :)
-        $collection := if ($is-jdoc or $is-js or $is-css)
-                       then "hide-from-search"
-                       else ()
+        $collection := "hide-from-search"[ $is-jdoc or $is-js or $is-css ]
     return
     (
       xdmp:document-insert($uri, local:add-scripts($doc),
          xdmp:default-permissions(), $collection),
-      xdmp:log(concat("Loading ",$path," to ",$uri)),
+      xdmp:log(text { "Loading", $path, "to", $uri }, 'debug'),
 
       (: If the document is HTML, then store an additional copy, converted to
          XHTML using Tidy;
          this is using the same mechanism as the CPF "convert-html" action,
          except that this is done synchronously. This XHTML copy is what's
          used for search, snippeting, etc. :)
-      if ($is-jdoc)
-      then
+      if (not($is-jdoc)) then () else (
         let  $xhtml :=
-        try{ xdmp:log("TRYING FULL TIDY CONVERSION with xhtml:clean"),
+        try {
+        xdmp:log("TRYING FULL TIDY CONVERSION with xhtml:clean", 'fine'),
         xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]) }
         catch($e){ xdmp:log(fn:concat($path, " failed tidy conversion with ",
                    $e/*:code/string())),
         $doc }
-        ,
-            $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
-        return
-        (
-          xdmp:document-insert($xhtml-uri, local:add-scripts($xhtml)),
-          xdmp:log(concat("Tidying ",$path," to ",$xhtml-uri))
-        )
-      else ()
+        let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
+        let $_ := xdmp:log(
+          text { "Tidying", $path, "to", $xhtml-uri }, 'fine')
+      return xdmp:document-insert($xhtml-uri, local:add-scripts($xhtml)))
     ),
 
     (: Process sub-directories :)
-    for $subdir in $entries[dir:type eq 'directory'] return
-      local:load-pubs-docs($subdir/dir:pathname)
+    $entries[dir:type eq 'directory']/local:load-pubs-docs(dir:pathname)
   )
 };
 
 $setup:errorCheck,
 
-(: TODO: Load only the included directories :)
-for $included-dir in xdmp:filesystem-directory($pubs-dir)
-    /dir:entry[dir:type eq 'directory'][dir:filename = $subdirs-to-load]
-    /dir:pathname/string(.)
-return
-(
-  xdmp:log(concat("Loading static docs from: ", $included-dir)),
-  local:load-pubs-docs($included-dir)
-),
+(: Load only the included directories :)
+for $included-dir in xdmp:filesystem-directory($pubs-dir)/dir:entry[
+  dir:type eq 'directory'][
+  dir:filename = $subdirs-to-load]/dir:pathname/string()
+let $_ := xdmp:log(
+  text {
+    "[load-static-docs.xqy]", "including directory", $included-dir })
+return xdmp:spawn-function(
+  function() { local:load-pubs-docs($included-dir) },
+  $tb:OPTIONS-SYNC-UPDATE)
+,
 
-let $zip-file-name := concat(tokenize($src-dir,"/")[last()],".zip"),
-    $zip-file-path := concat($src-dir, ".zip"),
-    $zip-file      := xdmp:document-get($zip-file-path),
-    $zip-file-uri  := concat("/apidoc/",$zip-file-name)
-return
-(
-  xdmp:log(concat("Loading ",$zip-file-name," to ",$zip-file-uri)),
-  xdmp:document-insert($zip-file-uri, $zip-file)
-),
+(: Why load the zip? To support downloads? :)
+let $zip-file-name := concat(tokenize($src-dir,"/")[last()],".zip")
+let $zip-file-path := concat($src-dir, ".zip")
+let $zip-file      := xdmp:document-get($zip-file-path)
+let $zip-file-uri  := concat("/apidoc/",$zip-file-name)
+let $_ := xdmp:log(
+  text {
+    "[load-static-docs.xqy]", "zip", $zip-file-name, "as", $zip-file-uri })
+return xdmp:document-insert($zip-file-uri, $zip-file)
+,
 
-xdmp:log("Done loading static docs.")
+xdmp:log(text { "Loaded static docs in", xdmp:elapsed-time() })
+
+(: load-static-docs.xqy :)

@@ -69,7 +69,7 @@
 
                   <!-- selected -->
                   <xsl:template mode="version-list-item-selected-or-not" match="*:version[@number eq $preferred-version]"
-                                name="show-selected-version"> 
+                                name="show-selected-version">
                     <b>
                       <xsl:apply-templates mode="version-number-display" select="."/>
                     </b>
@@ -370,9 +370,6 @@
                   <xsl:template mode="page-specific-title" match="api:function-page[api:function[1]/@lib eq 'REST']">
                     <xsl:value-of select="api:REST-resource-heading(api:function[1]/@fullname)"/>
                   </xsl:template>
-
-                          <xsl:include href="../apidoc/setup/REST-common.xsl"/>
-
 
                   <xsl:template mode="search-snippet" match="search:match">
                     <xsl:apply-templates mode="#current"/>

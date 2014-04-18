@@ -157,16 +157,17 @@ function loadAllSubSections(tocRoot) {
 
 // We may ignore index, but it's necessary as part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
-  //console.log("loadTocSection", index, tocSection);
   var $tocSection = $(tocSection);
+  console.log("loadTocSection", index, tocSection, $tocSection);
   if ($tocSection.hasClass("hasChildren"))
     $tocSection.find(".hitarea").trigger("click");
 }
 
 
 // Called only from updateTocForTab
-function waitToShowInTOC(tocSection) {
-  //console.log("waitToShowInTOC", tocSection);
+function waitToShowInTOC(tocSection, sleepMillis) {
+  //console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
+  if (!sleepMillis) sleepMillis = 125;
 
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
@@ -182,7 +183,9 @@ function waitToShowInTOC(tocSection) {
     var locationHref = location.href.toLowerCase();
     var current = tocSection.find("a").filter(function() {
       var thisHref = this.href.toLowerCase();
-      var hrefToCompare = (stripChapterFragment) ? thisHref.replace(/#chapter/,"") : thisHref;
+      var hrefToCompare = stripChapterFragment
+            ? thisHref.replace(/#chapter/,"")
+            : thisHref;
       var result = hrefToCompare == locationHref;
       //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
       return result;
@@ -206,8 +209,10 @@ function waitToShowInTOC(tocSection) {
     }
   }
   else {
-    console.log("waitToShowInTOC still waiting for", tocSection);
-    setTimeout(function(){ waitToShowInTOC(tocSection) }, 125);
+    console.log("waitToShowInTOC still waiting for", tocSection[0].id, sleepMillis);
+    // back off and retry
+    setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
+               sleepMillis);
   }
 }
 
@@ -260,7 +265,7 @@ function toggleFunctionsView(input) {
 // Called at init and whenever a tab changes.
 // functionPageBucketId and tocSectionLinkSelector are from apidoc/view/page.xsl
 function updateTocForTab() {
-  //console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector);
+  console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector);
 
   if (!functionPageBucketId) return console.log(
       'no functionPageBucketId!');

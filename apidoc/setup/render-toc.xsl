@@ -4,22 +4,34 @@
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:toc="http://marklogic.com/rundmc/api/toc"
                 xmlns:api="http://marklogic.com/rundmc/api"
+                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
+                xmlns:toc="http://marklogic.com/rundmc/api/toc"
+                xmlns:u  ="http://marklogic.com/rundmc/util"
+                xmlns:ml="http://developer.marklogic.com/site/internal"
+                xmlns:xdmp="http://marklogic.com/xdmp"
                 xmlns="http://www.w3.org/1999/xhtml"
-                exclude-result-prefixes="xs toc api">
+                extension-element-prefixes="xdmp"
+                exclude-result-prefixes="xs api apidoc toc u ml xdmp">
+
+  <!-- TODO this does not seem to import anything? -->
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/toc"
+      href="toc.xqm"/>
 
   <xsl:param name="toc-url"/>
 
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
-  <xsl:variable name="toc-parts-dir" select="concat($toc-url,'/')"/>
+  <xsl:variable name="toc-parts-dir"
+                select="concat($toc-url,'/')"/>
 
   <xsl:template match="/">
-    <xsl:message>Creating <xsl:value-of select="$toc-url"/></xsl:message>
+    <xsl:message>Creating TOC <xsl:value-of select="$toc-url"/></xsl:message>
     <xsl:result-document href="{$toc-url}">
-      <!-- Write placeholder elements for use by toc_filter.js toc_init.
+      <!--
+           Write placeholder elements for use by toc_filter.js toc_init.
       -->
       <div id="all_tocs">
         <div id="tocPartsDir" style="display:none;">
@@ -81,6 +93,19 @@
     </div>
   </xsl:template>
 
+  <xsl:template mode="id-att" match="node"/>
+
+  <!-- Include an ID on nodes that have one already -->
+  <xsl:template mode="id-att" match="node[@id]">
+    <xsl:attribute name="id">
+      <xsl:value-of select="toc:node-id(.)"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!--
+      This is a TOC leaf node.
+      If async, its @id will point the way.
+  -->
   <xsl:template match="node">
     <xsl:variable name="class">
       <xsl:apply-templates mode="class" select="."/>
@@ -101,18 +126,6 @@
       <xsl:apply-templates mode="link"     select="."/>
       <xsl:apply-templates mode="children" select="."/>
     </li>
-  </xsl:template>
-
-  <xsl:template mode="id-att" match="node"/>
-  <!-- Include an ID on nodes that have one already -->
-  <xsl:template mode="id-att" match="node[@id]">
-    <xsl:attribute name="id">
-      <xsl:apply-templates mode="node-id" select="."/>
-    </xsl:attribute>
-  </xsl:template>
-
-  <xsl:template mode="node-id" match="node">
-    <xsl:value-of select="@id"/>
   </xsl:template>
 
   <xsl:template mode="class" priority="1"
@@ -153,8 +166,9 @@
   <xsl:template mode="class-initialized"
                 match="node"/>
 
-  <!-- Mark the asynchronous (unpopulated) nodes as such,
-       so the JavaScript can act accordingly.
+  <!--
+      Mark the asynchronous (unpopulated) nodes as such,
+      for the treeview JavaScript.
   -->
   <xsl:template mode="class-async" match="node[@async]">async</xsl:template>
   <xsl:template mode="class-async" match="node"/>
@@ -270,34 +284,43 @@
   <xsl:template mode="local_control-class"
                 match="node">local_control</xsl:template>
 
+  <!-- This can also be next-match for node[@async] ??? -->
   <xsl:template mode="children" match="node"/>
-  <!-- also next-match for node[@async] -->
+
+  <!-- This should also be next-match for node[@async] -->
   <xsl:template mode="children" match="node[node]">
     <xsl:variable name="display-type">
-      <xsl:apply-templates mode="ul-display-type" select="."/>
+      <xsl:apply-templates mode="ul-display-type"
+                           select="."/>
     </xsl:variable>
     <ul style="display: {$display-type};">
       <xsl:apply-templates select="node"/>
     </ul>
   </xsl:template>
 
-  <!-- Nodes to be loaded asynchronously -->
-  <xsl:template mode="children" match="node[@async]" priority="1">
+  <!--
+      Nodes to be loaded asynchronously
+      TODO the document URI needs to handle xquery vs javascript
+  -->
+  <xsl:template mode="children"
+                match="node[@async]"
+                priority="1">
     <!-- The empty placeholder -->
     <ul style="display: none">
-      <li>
-        <span class="placeholder">&#160;</span>
-      </li>
+      <li><span class="placeholder">&#160;</span></li>
     </ul>
     <xsl:if test="not(@duplicate)">
-      <xsl:variable name="url">
-        <xsl:value-of select="$toc-parts-dir"/>
-        <xsl:apply-templates mode="node-id" select="."/>
-        <xsl:text>.html</xsl:text>
-      </xsl:variable>
-      <!-- The content of the TOC node, stored in a separate document -->
-      <xsl:message>Creating <xsl:value-of select="$url"/></xsl:message>
-      <xsl:result-document href="{$url}">
+      <xsl:variable name="uri"
+                    select="toc:uri(
+                            $toc-parts-dir,
+                            @id,
+                            if (ancestor::toc:functions-javascript) then 'javascript'
+                            else ())"/>
+      <!-- New document with the contents of the TOC node. -->
+      <xsl:message>render-toc mode=children node[@async] <xsl:value-of
+      select="$uri"/> <xsl:value-of select="xdmp:describe(.)"/>
+      </xsl:message>
+      <xsl:result-document href="{$uri}">
         <xsl:next-match/>
       </xsl:result-document>
     </xsl:if>
@@ -306,6 +329,6 @@
   <xsl:template mode="ul-display-type"
                 match="node[@open or @async]">block</xsl:template>
   <xsl:template mode="ul-display-type"
-                match="node                 ">none</xsl:template>
+                match="node">none</xsl:template>
 
 </xsl:stylesheet>

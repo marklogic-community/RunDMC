@@ -1,8 +1,6 @@
 xquery version "1.0-ml";
 (: sample test module :)
 
-(: TODO submit xray pull request to support xqm :)
-
 module namespace t="http://github.com/robwhitby/xray/test";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";

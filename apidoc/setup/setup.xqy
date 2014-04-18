@@ -22,4 +22,6 @@ xdmp:invoke("delete-old-toc.xqy"),
 (: Create list pages in a subsequent transaction, since they depend on both the inserted documents and the XML TOC :)
 xdmp:invoke("make-list-pages.xqy"),
 
-xdmp:log("All done!")
+xdmp:log("[apidoc/setup.xqy] done")
+
+(: apidoc/setup.xqy :)

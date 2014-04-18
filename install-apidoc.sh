@@ -37,13 +37,13 @@ fi
 echo
 echo The docapp server needs to use two ports.
 echo Be sure to select ports that are not already in use.
-read -p "Application port: [8011] " PORT_MAIN
+read -p "Application port: [8411] " PORT_MAIN
 if [ -z "$PORT_MAIN" ]; then
-    PORT_MAIN=8011
+    PORT_MAIN=8411
 fi
-read -p "Management port: [9898] " PORT_RAW
+read -p "Management port: [8412] " PORT_RAW
 if [ -z "$PORT_RAW" ]; then
-    PORT_RAW=9898
+    PORT_RAW=8412
 fi
 echo
 echo

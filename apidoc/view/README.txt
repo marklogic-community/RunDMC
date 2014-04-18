@@ -22,11 +22,6 @@ uri-translation.xsl
   It selectively overrides function definitions in the analogous
   /view/uri-translation.xsl.
 
-xquery-imports.xsl
-  This script consolidates the XQuery imports (e.g., /apidoc/model/data-access.xqy).
-  It is analagous to /view/xquery-imports.xsl.
-
-
 WARNING: At least one script (REST-common.xsl) in /apidoc/setup is
 imported by page.xsl, so, yes, /apidoc/view does have that one dependency on
 /apidoc/setup. A good refactor might be to move that code to this

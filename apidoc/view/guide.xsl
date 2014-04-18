@@ -11,28 +11,37 @@
   extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs api xdmp map x raw ml">
 
-  <xdmp:import-module href="/apidoc/setup/raw-docs-access.xqy" namespace="http://marklogic.com/rundmc/raw-docs-access"/>
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api"
+      href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module
+      href="/apidoc/setup/raw-docs-access.xqy"
+      namespace="http://marklogic.com/rundmc/raw-docs-access"/>
 
   <xsl:output indent="no"/>
 
   <!-- Only set to true in development, not in production. -->
   <xsl:variable name="convert-at-render-time" select="doc-available('/apidoc/DEBUG.xml') and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
-  <xsl:variable name="docs-page" select="doc(concat('/apidoc/',$api:version,'/index.xml'))/api:docs-page"/>
+  <xsl:variable name="docs-page"
+                select="doc(concat($api:VERSION-DIR, 'index.xml'))/api:docs-page"/>
 
-  <xsl:variable name="auto-links" select="$docs-page/auto-link"/>
+  <xsl:variable name="auto-links"
+                select="$docs-page/auto-link"/>
 
-  <!-- use xsl:copy-of to make this more efficient, per bug 25175 
+  <!-- TODO use xsl:copy-of to make this more efficient, per bug 25175
  <xsl:variable name="other-guide-listings">
-	 <xsl:copy-of select="$docs-page/api:user-guide
-		 [not(@href eq ml:external-uri($content))]"/>
- </xsl:variable> 
--->
-<!-- The above broke the guide links, so reverting this back.  
-     I don't yet understand why it broke them.  -->
+         <xsl:copy-of select="$docs-page/api:user-guide
+                 [not(@href eq api:external-uri($content))]"/>
+ </xsl:variable>
+  -->
+  <!--
+      The above broke the guide links, so reverting this back.
+      I don't yet understand why it broke them.
+  -->
  <xsl:variable name="other-guide-listings" select="$docs-page/api:user-guide
-	 [not(@href eq ml:external-uri($content))]"/>
-  
+         [not(@href eq api:external-uri($content))]"/>
+
 
   <!-- Disable comments on User Guide pages -->
   <xsl:template mode="comment-section" match="/guide | /chapter"/>
@@ -50,7 +59,7 @@
              Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
           <!-- Convert and render the guide by directly calling the setup/conversion code -->
           <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
-                                                                      $raw:guide-docs[raw:target-guide-doc-uri(.) eq base-uri(current())])
+                                                                      $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq base-uri(current())])
                                                      /*/node()"/>
         </xsl:otherwise>
       </xsl:choose>
@@ -178,12 +187,12 @@
     <xsl:value-of select="concat(api:guide-image-dir(base-uri(.)), .)"/>
   </xsl:template>
 
-  <!-- Automatically convert italicized guide references to links, but not the 
-       ones that are immediately preceded by "in the", in which case we 
+  <!-- Automatically convert italicized guide references to links, but not the
+       ones that are immediately preceded by "in the", in which case we
        assume a more specific section link was already provided. -->
   <xsl:template mode="guide" match="x:em[api:config-for-title(.)]
-	  [not(preceding-sibling::node()[1][self::text()][normalize-space(.) 
-	       eq 'in the'])]">
+          [not(preceding-sibling::node()[1][self::text()][normalize-space(.)
+               eq 'in the'])]">
     <a href="{$version-prefix}{api:config-for-title(.)/@href}">
       <xsl:next-match/>
     </a>
@@ -193,14 +202,14 @@
        <xsl:param name="link-text" as="xs:string"/>
        <xsl:variable name="title" select="api:normalize-text($link-text)"/>
        <xsl:sequence select="$other-guide-listings[(@display|alias)
-		    /api:normalize-text(.) = $title] | 
-		    $auto-links [alias /api:normalize-text(.) = $title]"/> 
+                    /api:normalize-text(.) = $title] |
+                    $auto-links [alias /api:normalize-text(.) = $title]"/>
      </xsl:function>
 
      <xsl:function name="api:normalize-text" as="xs:string">
         <xsl:param name="text" as="xs:string"/>
-	<xsl:sequence select="normalize-space(lower-case(
-		                translate($text,'&#160;',' ')))"/>
+        <xsl:sequence select="normalize-space(lower-case(
+                                translate($text,'&#160;',' ')))"/>
      </xsl:function>
 
 

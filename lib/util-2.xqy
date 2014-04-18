@@ -9,14 +9,14 @@ declare namespace xhtml = "http://www.w3.org/1999/xhtml";
 declare namespace em =    "URN:ietf:params:email-xml:";
 declare namespace rf =    "URN:ietf:params:rfc822:";
 
-(: 
+(:
  : @author Eric Bloch
  : @date 21 April 2010
  :)
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-(: 
+(:
  : @param $path /-prefixed string that is path to the file
  : that represents the document
  :
@@ -24,28 +24,29 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
  : to the current ML modules root
  : return empty sequence if no such file exists
  :)
-declare function u:get-doc($path as xs:string) as node()? {
-    let $root := xdmp:modules-root()
-    let $apath := fn:concat($root, $path)
-    return if (xdmp:filesystem-file-exists($apath)) then
-        xdmp:document-get($apath)
-    else
-        ()
+declare function u:get-doc($path as xs:string)
+  as node()?
+{
+  let $root := xdmp:modules-root()
+  let $apath := fn:concat($root, $path)
+  where xdmp:filesystem-file-exists($apath)
+  return xdmp:document-get($apath)
 };
 
-(: 
+(:
  : @param $path /-prefixed string that is path to the XML file
  : that represents the document
  :
  : @return length of file
  :)
-declare function u:get-doc-length($path as xs:string) as xs:unsignedLong {
-    let $root := xdmp:modules-root()
-    return xdmp:filesystem-file-length(fn:concat($root, $path))
+declare function u:get-doc-length($path as xs:string)
+  as xs:unsignedLong
+{
+  xdmp:filesystem-file-length(fn:concat(xdmp:modules-root(), $path))
 };
 
-(: 
- : @param $dir-uri 
+(:
+ : @param $dir-uri
  :
  : @return true if the uri is a directory in the current DB
  : to the current ML modules root
@@ -64,10 +65,10 @@ declare function u:strip-version-from-path($path as xs:string) {
   fn:replace($path,'/[0-9]+\.[0-9]+/','/')
 };
 
-(: 
+(:
  : @param $v millis since epoch
- : 
- : convert epoch seconds to dateTime 
+ :
+ : convert epoch seconds to dateTime
  :)
 declare function u:epoch-seconds-to-dateTime($v)
   as xs:dateTime
@@ -79,8 +80,8 @@ declare function u:send-email($email, $name, $from-email, $from-name, $subject, 
 {
     try {
 
-        xdmp:email(     
-                 
+        xdmp:email(
+
         <em:Message xmlns:em="URN:ietf:params:email-xml:" xmlns:rf="URN:ietf:params:rfc822:">
             <rf:subject>{$subject}</rf:subject>
             <rf:from>
@@ -89,7 +90,7 @@ declare function u:send-email($email, $name, $from-email, $from-name, $subject, 
                     <em:adrs>{$from-email}</em:adrs>
                 </em:Address>
             </rf:from>
-            <rf:to>   
+            <rf:to>
                 <em:Address>
                     <em:name>{$name}</em:name>
                     <em:adrs>{$email}</em:adrs>
@@ -97,7 +98,7 @@ declare function u:send-email($email, $name, $from-email, $from-name, $subject, 
             </rf:to>
             <em:content>{$body}</em:content>
         </em:Message>
-    
+
         )
     } catch ($e) {
         xdmp:log(concat("FAILEDEMAIL:  Unable to send confirming e-mail to ", $email))
