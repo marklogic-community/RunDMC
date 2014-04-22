@@ -103,6 +103,10 @@
   </group>
 
   <group name="Other Reference Guides">
+	  <guide url-name="concepts" source-name="concepts">Provides 
+		  an overview of MarkLogic and conceptual information about the
+		  server architecture.
+	  </guide>
     <guide url-name="xquery"          source-name="xquery">A condensed overview of the XQuery language, including a description of the three XQuery dialects supported in MarkLogic Server. <added-in version="4.2">Also includes XSLT reference material, including details and extensions to the language.</added-in> This book does includes some syntax information, although it is primarily intended as an introduction and quick-reference to the languages, not as a comprehensive reference.</guide>
     <guide url-name="cpf"             source-name="cpf">Provides an introduction to the Content Processing Framework and procedures for installing the default content processing framework.</guide>
     <guide url-name="performance"     source-name="performance">Provides performance-related information that is useful to application developers and administrators.</guide>
