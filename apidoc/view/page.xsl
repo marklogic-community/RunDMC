@@ -349,6 +349,8 @@
                             <xsl:choose>
                               <xsl:when test="$api:version eq '5.0'">5</xsl:when>
                               <xsl:when test="$api:version eq '6.0'">6</xsl:when>
+                              <xsl:when test="$api:version eq '7.0'">7</xsl:when>
+                              <xsl:when test="$api:version eq '8.0'">8</xsl:when>
                               <xsl:otherwise>
                                 <xsl:text>Server </xsl:text>
                                 <xsl:value-of select="$api:version"/>
