@@ -26,7 +26,8 @@ declare function local:load-docs($dir) {
             xdmp:document-insert($uri, xdmp:document-get($path)),
             xdmp:commit() },
           true()),
-        xdmp:log(concat("Loading ",$path," to ",$uri))
+        xdmp:log(
+          text {"[apidoc/setup/load-raw-docs.xqy]", $path, "to", $uri})
       ),
 
     (: Process sub-directories :)

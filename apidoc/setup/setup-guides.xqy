@@ -1,5 +1,8 @@
 xquery version "1.0-ml";
 
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "../model/data-access.xqy";
+
 import module namespace setup="http://marklogic.com/rundmc/api/setup"
   at "common.xqy";
 
@@ -13,7 +16,9 @@ $setup:errorCheck,
  : This can run independently.
  : Converting all the guides will take a long time anyway.
  :)
-xdmp:spawn("copy-guide-images.xqy"),
+xdmp:spawn(
+  "copy-guide-images.xqy",
+  (xs:QName('VERSION'), $api:version)),
 
 (: Normalize the guide fragments and URLs,
  : and add a chapter list to the title doc.

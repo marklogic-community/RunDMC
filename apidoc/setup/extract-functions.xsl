@@ -40,8 +40,10 @@
     <xsl:apply-templates select="api:module-extractable-functions(
                                  apidoc:module, ())"/>
     <!-- create (fake) JavaScript function pages -->
-    <xsl:apply-templates select="api:module-extractable-functions(
-                                 apidoc:module, 'javascript')"/>
+    <xsl:if test="number($api:version) ge 8">
+      <xsl:apply-templates select="api:module-extractable-functions(
+                                   apidoc:module, 'javascript')"/>
+    </xsl:if>
   </xsl:template>
 
   <!-- Ignore hidden functions -->

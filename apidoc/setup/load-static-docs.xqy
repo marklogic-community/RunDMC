@@ -128,13 +128,16 @@ declare function local:pdf-uri($uri)
 };
 
 (: Recursively load all files :)
-declare function local:load-pubs-docs($dir) {
+declare function local:load-pubs-docs(
+  $version as xs:string,
+  $dir as xs:string)
+{
   let $entries := xdmp:filesystem-directory($dir)/dir:entry return
   (
     (: Load files in this directory :)
     for $file in $entries[dir:type eq 'file']
     let $path    := $file/dir:pathname,
-        $uri     := concat("/apidoc/", $api:version,
+        $uri     := concat("/apidoc/", $version,
                       local:rewrite-uri(translate(substring-after($path,
                                                      $pubs-dir),"\","/"))),
         $is-mangled-html := ends-with($uri,'-members.html'),
@@ -209,7 +212,10 @@ declare function local:load-pubs-docs($dir) {
     (
       xdmp:document-insert($uri, local:add-scripts($doc),
          xdmp:default-permissions(), $collection),
-      xdmp:log(text { "Loading", $path, "to", $uri }, 'debug'),
+      xdmp:log(
+        text {
+          "[apidoc/setup/load-static-docs.xqy]", $path, "to", $uri },
+        'debug'),
 
       (: If the document is HTML, then store an additional copy, converted to
          XHTML using Tidy;
@@ -231,12 +237,17 @@ declare function local:load-pubs-docs($dir) {
     ),
 
     (: Process sub-directories :)
-    $entries[dir:type eq 'directory']/local:load-pubs-docs(dir:pathname)
+    $entries[dir:type eq 'directory']/local:load-pubs-docs(
+      $version, dir:pathname)
   )
 };
 
 $setup:errorCheck,
 
+(: Set the version outside the task server, before we spawn.
+ : Otherwise the api library code will not see the request field.
+ :)
+let $version := $api:version
 (: Load only the included directories :)
 for $included-dir in xdmp:filesystem-directory($pubs-dir)/dir:entry[
   dir:type eq 'directory'][
@@ -245,7 +256,7 @@ let $_ := xdmp:log(
   text {
     "[load-static-docs.xqy]", "including directory", $included-dir })
 return xdmp:spawn-function(
-  function() { local:load-pubs-docs($included-dir) },
+  function() { local:load-pubs-docs($version, $included-dir) },
   $tb:OPTIONS-SYNC-UPDATE)
 ,
 

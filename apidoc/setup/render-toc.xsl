@@ -299,8 +299,8 @@
   </xsl:template>
 
   <!--
-      Nodes to be loaded asynchronously
-      TODO the document URI needs to handle xquery vs javascript
+      Nodes to be loaded asynchronously.
+      The document URI needs to handle xquery vs javascript.
   -->
   <xsl:template mode="children"
                 match="node[@async]"

@@ -13,7 +13,7 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 
-import module namespace api = "http://marklogic.com/rundmc/api"
+import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
@@ -36,6 +36,16 @@ declare variable $OPTIONS-UPDATE := (
   }
   </options>) ;
 
+(: The assertion is a safety check for code running on the Task Server.
+ : It should not affect HTTP requests.
+ : HTTP apidoc setup will specify a version,
+ : while HTTP apidoc views will not use raw docs.
+ :)
+declare variable $VERSION as xs:string := (
+  if ($api:version-specified) then ()
+  else error((), 'BAD', 'no version specified - bad environment?'),
+  $api:version) ;
+
 (: REST API docs, i.e. the "manage" lib,
  : are represented the same as the XQuery API docs,
  : but we're going to treat them differently.
@@ -43,12 +53,23 @@ declare variable $OPTIONS-UPDATE := (
 declare variable $API-DOCS := raw:invoke-function(
   function() {
     xdmp:directory(
-      concat("/", $api:version, "/apidoc/"))[apidoc:module] });
+      concat("/", $VERSION, "/apidoc/"))[apidoc:module] });
 
-declare variable $GUIDE-DOCS := raw:invoke-function(
-  function() {
-    xdmp:directory(
-      concat("/", $api:version, "/guide/"), "infinity")[*] }) ;
+declare variable $GUIDE-DOCS := raw:guide-docs($VERSION) ;
+
+(: If run on the task server this can return the default version
+ : because there is no access to http request-fields.
+ : Try to work around that by capturing the value.
+ :)
+declare function raw:guide-docs($version as xs:string)
+as document-node()*
+{
+  raw:invoke-function(
+    function() {
+      xdmp:log(text { '[raw-docs-access]', 'version', $version }, 'fine'),
+      xdmp:directory(
+        concat("/", $version, "/guide/"), "infinity")[*] })
+};
 
 (: Shortcut for xdmp:invoke-function. :)
 declare function raw:invoke-function(

@@ -8,6 +8,11 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 import module namespace tb="ns://blakeley.com/taskbot"
   at "/taskbot/src/taskbot.xqm";
 
+(: Set the version outside the task server, before we spawn.
+ : Otherwise the api library code will not see the request field.
+ : However the xslt-invoke still falls back on the default version!
+ :)
+let $version := $api:version
 let $_ := tb:list-segment-process(
   (: The slowest conversion is messages/XDMP-en.xml,
    : which always finishes last.
@@ -24,6 +29,11 @@ let $_ := tb:list-segment-process(
   as item()*
   {
     tb:maybe-fatal(),
+    (: Ensure code running on the Task Server sees the right version.
+     : However this does not affect the invoked stylesheet,
+     : so it does little good.
+     :)
+    xdmp:set($api:version-specified, $version),
     for $guide in $list
     let $start := xdmp:elapsed-time()
     let $converted := xdmp:xslt-invoke("convert-guide.xsl", $guide)
@@ -35,9 +45,18 @@ let $_ := tb:list-segment-process(
     return $uri
     ,
     xdmp:commit() },
-    (),
-    $tb:OPTIONS-UPDATE)
-let $_ := tb:tasks-wait(0)
+  (),
+  $tb:OPTIONS-UPDATE,
+  (: Because the task server cannot see http request fields,
+   : spawn only works properly if we are building the default version.
+   : So if we are building a non-default version, we drop concurrency.
+   :)
+  if ($api:default-version eq $api:version-specified) then 'spawn'
+  else 'invoke',
+  'caller-runs', ())
+let $_ := (
+  if ($api:default-version eq $api:version-specified) then tb:tasks-wait(0)
+  else ())
 return text {
   'Converted', count($raw:GUIDE-DOCS), 'guides',
   'in', xdmp:elapsed-time() }

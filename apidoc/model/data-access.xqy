@@ -14,6 +14,7 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
 declare variable $default-version as xs:string  := $ml:default-version ;
 (: uniformly accessed in both the setup and view code
  : rather than using $params which only the view code uses
+ : TODO refactor this out - does not work properly with spawn or invoke.
  :)
 declare variable $version-specified as xs:string? := xdmp:get-request-field(
   "version") ;
@@ -72,7 +73,8 @@ declare variable $all-function-docs := cts:search(
   collection(), $query-for-all-functions, "unfiltered") ;
 
 declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
-  $all-function-docs[
+  if (number($version) lt 8) then ()
+  else $all-function-docs[
     api:javascript-function-page/api:function/@bucket = (
       'MarkLogic Built-In Functions',
       'W3C-Standard Function')]) ;
@@ -89,10 +91,13 @@ declare variable $built-in-libs := api:get-libs(
 declare variable $library-libs  := api:get-libs(
   $query-for-library-functions, false(), ());
 
-declare variable $LIBS-JAVASCRIPT := api:get-libs(
-  cts:element-query(
-    xs:QName('api:javascript-function-page'), cts:and-query(())),
-  true(), 'javascript');
+declare variable $LIBS-JAVASCRIPT := (
+  if (number($version) lt 8) then ()
+  else api:get-libs(
+    cts:element-query(
+      xs:QName('api:javascript-function-page'),
+      cts:and-query(())),
+    true(), 'javascript'));
 
 declare variable $namespace-mappings := u:get-doc(
   "/apidoc/config/namespace-mappings.xml")/namespaces/namespace ;
@@ -115,6 +120,8 @@ declare variable $REST-COMPLEXTYPE-MAPPINGS := (
   case '5.0' return $r/marklogic6/resource (: TODO bug? :)
   case '6.0' return $r/marklogic6/resource
   case '7.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
+  (: TODO just a copy of ML7 for now. :)
+  case '8.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
   default return error((), 'UNEXPECTED', ('unknown version', $version))) ;
 
 (: TODO this seems convoluted and expensive. Really a group-by? :)

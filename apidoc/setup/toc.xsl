@@ -170,30 +170,31 @@ driving the generation of function list pages.
         </node>
       </toc:functions>
 
-      <toc:functions-javascript>
-        <node href="/js/all"
-              display="JavaScript Functions ({
-                       api:function-count(
-                       'api:javascript-function-page', ()) })"
-              id="AllFunctionsJavaScript"
-              function-list-page="yes"
-              open="yes"
-              top-control="yes">
-          <title>JavaScript functions</title>
-          <intro>
-            <p>
-              The following table lists all JavaScript functions
-              in the MarkLogic API reference,
-              including both built-in functions
-              and functions implemented in XQuery library modules.
-            </p>
-          </intro>
-          <xsl:apply-templates select="$toc:ALL-LIBS-JAVASCRIPT">
-            <xsl:sort select="."/>
-          </xsl:apply-templates>
-        </node>
-      </toc:functions-javascript>
-
+      <xsl:if test="number($api:version) ge 8">
+        <toc:functions-javascript>
+          <node href="/js/all"
+                display="JavaScript Functions ({
+                         api:function-count(
+                         'api:javascript-function-page', ()) })"
+                id="AllFunctionsJavaScript"
+                function-list-page="yes"
+                open="yes"
+                top-control="yes">
+            <title>JavaScript functions</title>
+            <intro>
+              <p>
+                The following table lists all JavaScript functions
+                in the MarkLogic API reference,
+                including both built-in functions
+                and functions implemented in XQuery library modules.
+              </p>
+            </intro>
+            <xsl:apply-templates select="$toc:ALL-LIBS-JAVASCRIPT">
+              <xsl:sort select="."/>
+            </xsl:apply-templates>
+          </node>
+        </toc:functions-javascript>
+      </xsl:if>
     </all-tocs>
   </xsl:template>
 
