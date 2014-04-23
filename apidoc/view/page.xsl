@@ -48,9 +48,11 @@
     then 'MarkLogic 5 Product Documentation'
     else if ($api:version eq '6.0') 
          then 'MarkLogic 6 Product Documentation'
-         else if ($api:version eq '7.0')
-              then 'MarkLogic 7 Product Documentation'
-              else concat('MarkLogic Server ',$api:version,
+    else if ($api:version eq '7.0')
+         then 'MarkLogic 7 Product Documentation'
+    else if ($api:version eq '8.0')
+         then 'MarkLogic 8 Early Access Product Documentation'
+    else concat('MarkLogic Server ',$api:version,
                           ' Product Documentation')"/>
 
   <xsl:variable name="site-url-for-disqus" select="'http://docs.marklogic.com'"/>
