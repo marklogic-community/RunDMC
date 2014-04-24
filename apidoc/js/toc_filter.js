@@ -387,7 +387,7 @@ function splitterMouseUp(evt) {
     $(document).off('mousemove', null, splitterMouseMove);
 
     $('#page_content').css("-webkit-user-select", "text");
-    $('#tab_content').css("-webkit-user-select", "text");
+    $('#toc_content').css("-webkit-user-select", "text");
     $('#content').css("-webkit-user-select", "text");
 }
 
@@ -396,7 +396,7 @@ function splitterMouseMove(evt) {
     if ($('#splitter').data("moving")) {
         var m = 0 - $('#splitter').data('start-page_content');
         var d = Math.max(m, $('#splitter').data("start-x") - evt.pageX); 
-        var w = $('#splitter').data("start-tab_content") - d;
+        var w = $('#splitter').data("start-toc_content") - d;
         var init_w = 258; // TBD unhardcode
 
         if (w < init_w) {
@@ -405,7 +405,7 @@ function splitterMouseMove(evt) {
         }
 
         //console.log("Splitter Mouse move: " + d);
-        $('#tab_content').css({'width': w + "px"});
+        $('#toc_content').css({'width': w + "px"});
         $('#page_content').css({'padding-right': ($('#splitter').data("start-page_content") + d) + "px"});
         $('#splitter').css({'left': ($('#splitter').data("start-splitter") - d) + "px"});
     }
@@ -414,7 +414,7 @@ function splitterMouseMove(evt) {
 function splitterMouseDown(evt) {
     //console.log("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("start-x", evt.pageX);
-    $('#splitter').data("start-tab_content", parseInt($('#tab_content').css('width'), 10));
+    $('#splitter').data("start-toc_content", parseInt($('#toc_content').css('width'), 10));
     $('#splitter').data("start-page_content", parseInt($('#page_content').css('padding-right'), 10));
     $('#splitter').data("start-splitter", parseInt($('#splitter').css('left'), 10));
     $('#splitter').data("moving", true);
@@ -422,7 +422,7 @@ function splitterMouseDown(evt) {
     $(document).on('mouseup', null, splitterMouseUp);
     $(document).on('mousemove', null, splitterMouseMove);
 
-    $('#tab_content').css("-webkit-user-select", "none");
+    $('#toc_content').css("-webkit-user-select", "none");
     $('#page_content').css("-webkit-user-select", "none");
     $('#content').css("-webkit-user-select", "none");
 }

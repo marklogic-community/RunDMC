@@ -32,7 +32,7 @@ if(typeof jQuery != 'undefined') {
 					.hide();
 		}
 		var valText = 'Type to filter TOC';
-		$('#tab_content .default','#api_sub')
+		$('#toc_content .default','#api_sub')
 			.val(valText)
 			.addClass('default')
 			.focus(function() {

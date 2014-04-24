@@ -34,17 +34,14 @@
            Write placeholder elements for use by toc_filter.js toc_init.
       -->
       <div id="all_tocs">
-        <div id="tocPartsDir" style="display:none;">
-          <xsl:value-of select="$toc-parts-dir"/>
-        </div>
-
         <div id="toc" class="toc">
           <div id="toc_content">
             <xsl:apply-templates mode="toc-content" select="/all-tocs"/>
           </div>
-
           <div id="splitter"/>
-
+        </div>
+        <div id="tocPartsDir" style="display:none;">
+          <xsl:value-of select="$toc-parts-dir"/>
         </div>
       </div>
     </xsl:result-document>
@@ -80,7 +77,8 @@
                 class="collapsible lastCollapsible">
               <div class="hitarea collapsible-hitarea
                           lastCollapsible-hitarea"></div>
-              <a href="/" class="toc_root">All documentation</a>
+              <a href="{$prefix-for-hrefs}/"
+                 class="toc_root">All documentation</a>
               <ul>
                 <xsl:for-each select="*">
                   <xsl:apply-templates select="node"/>
