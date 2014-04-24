@@ -48,6 +48,8 @@ fi
 echo
 echo
 
+# TODO rewrite ports in config/server-urls.xml to match?
+
 # local customization
 if [ -z "$TMPDIR" ]; then
     TMPDIR=/tmp
@@ -152,7 +154,7 @@ else
     MLCONFIG="/etc/sysconfig/MarkLogic"
     if [ -r "${MLCONFIG}" ]; then
         . "${MLCONFIG}"
-        XSD="$MARKLOGIC_DATA_DIR/Config"
+        XSD="$MARKLOGIC_INSTALL_DIR/Config"
     elif [ -d "${HOME}/Library/MarkLogic/Config" ]; then
         # Looks like OSX
         XSD="${HOME}/Library/MarkLogic/Config"
