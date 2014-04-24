@@ -213,11 +213,12 @@
     <xsl:sequence select="concat('/', $version, '?', $set-version-param-name, '=', @number)"/>
   </xsl:template>
 
-
   <xsl:template name="reset-global-toc-vars">
+    <xsl:message>DEBUG reset-global-toc-vars <xsl:value-of
+    select="xdmp:describe(.)"/></xsl:message>
     <!--
         Used in js/toc_filter.js to determine which TOC section to load.
-        TODO needs to distinguish XQuery/XSLT from JavaScript.
+        Also needs to distinguish XQuery/XSLT from JavaScript.
     -->
     var functionPageBucketId = "<xsl:apply-templates
     mode="function-bucket-id"
@@ -233,12 +234,13 @@
   <xsl:template mode="is-user-guide" match="guide | chapter">true</xsl:template>
   <xsl:template mode="is-user-guide" match="*"              >false</xsl:template>
 
-
-  <!-- ID for function buckets is the bucket display name minus spaces; see tocByCategory.xsl -->
+  <!--
+      ID for function buckets is the bucket display name minus spaces.
+      see tocByCategory.xsl
+  -->
   <xsl:template mode="function-bucket-id" match="@*">
     <xsl:value-of select="translate(.,' ','')"/>
   </xsl:template>
-
 
   <!-- XQuery/XSLT function lib page link -->
   <xsl:template mode="toc-section-link-selector"
@@ -260,15 +262,28 @@
     <xsl:text>']</xsl:text>
   </xsl:template>
 
-  <xsl:template mode="toc-section-link-selector" match="guide | chapter">
+  <xsl:template mode="toc-section-link-selector"
+                match="guide|chapter">
     <xsl:text>.scrollable_section a[href='</xsl:text>
     <xsl:value-of select="ml:external-uri-with-prefix(@guide-uri)"/>
     <xsl:text>']</xsl:text>
   </xsl:template>
 
   <xsl:template mode="toc-section-link-selector"
-                match="api:list-page | api:help-page">
+                match="api:list-page|api:help-page">
+    <xsl:message>DEBUG toc-section-link-selector list|help<xsl:value-of
+    select="xdmp:describe(.)"/></xsl:message>
     <xsl:text>#</xsl:text>
+    <xsl:value-of select="@container-toc-section-id"/>
+    <xsl:text> >:first-child</xsl:text>
+  </xsl:template>
+
+  <!-- JavaScript function list page -->
+  <xsl:template mode="toc-section-link-selector"
+                match="api:list-page[xs:boolean(@is-javascript)]">
+    <xsl:message>DEBUG toc-section-link-selector list js<xsl:value-of
+    select="xdmp:describe(.)"/></xsl:message>
+    <xsl:text>#js_</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>
   </xsl:template>

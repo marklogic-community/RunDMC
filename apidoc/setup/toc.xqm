@@ -338,16 +338,20 @@ as xs:string
     '.html')
 };
 
-(: Rewrite rendered node id as needed for javascript. :)
+(: Rewrite rendered node id as needed for javascript.
+ : For the toc_filter javascript this needs to be a valid xs:ID,
+ : so we use 'js_' instead of 'js/'.
+ :)
 declare function toc:node-id(
   $node as element(node))
-as xs:string
+as xs:ID
 {
-  concat(
-    if (xs:boolean($node/@is-javascript)
-      or $node/@type = 'javascript-function') then 'js/'
-    else '',
-    $node/@id)
+  xs:ID(
+    concat(
+      if (xs:boolean($node/@is-javascript)
+        or $node/@type = 'javascript-function') then 'js_'
+      else '',
+      $node/@id))
 };
 
 (: apidoc/setup/toc.xqm :)

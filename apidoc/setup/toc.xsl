@@ -177,6 +177,7 @@ driving the generation of function list pages.
                          api:function-count(
                          'api:javascript-function-page', ()) })"
                 id="AllFunctionsJavaScript"
+                is-javascript="true"
                 function-list-page="yes"
                 open="yes"
                 top-control="yes">

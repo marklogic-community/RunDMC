@@ -16,8 +16,8 @@
 ;(function($) {
 
 
-function load(settings, root, child, container) {
-//console.log("async.load", settings, root, child, container);
+function load(settings, rootId, child, container) {
+//console.log("async.load", settings, rootId, child, container);
 	function createNode(parent) {
 		var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
 		if (this.classes) {
@@ -44,12 +44,17 @@ function load(settings, root, child, container) {
 	$.ajax($.extend(true, {
     //EDL: START of changes I made (commented out original lines)
 		//url: settings.url,
-      url: settings.url + root + ".html",
+            // For javascript pages we need to rewrite the id a bit.
+      url: settings.url
+                + (rootId.startsWith("js_")
+                   ? "js/" + rootId.substring(3)
+                   : rootId)
+                + ".html",
 		//dataType: "json",
 		  dataType: "html",
     /*
 		data: {
-			root: root
+			root: rootId
 		},
     */
 		success: function(response) {
@@ -74,7 +79,7 @@ function load(settings, root, child, container) {
      // EDL: END CHANGES
 	}, settings.ajax));
 	/*
-	$.getJSON(settings.url, {root: root}, function(response) {
+	$.getJSON(settings.url, {root: rootId}, function(response) {
 		function createNode(parent) {
 			var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
 			if (this.classes) {

@@ -209,7 +209,8 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     }
   }
   else {
-    console.log("waitToShowInTOC still waiting for", tocSection[0].id, sleepMillis);
+    console.log("waitToShowInTOC still waiting for",
+                tocSection[0].id, sleepMillis);
     // back off and retry
     setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
                sleepMillis);
@@ -235,20 +236,21 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-  //console.log("showInTOC", a);
-  $("#api_sub a.selected").removeClass("selected");
-  $("#api_sub a.currentPage").removeClass("currentPage"); // e.g., arriving via back button
+    console.log("showInTOC", a);
+    $("#api_sub a.selected").removeClass("selected");
+    // e.g., arriving via back button
+    $("#api_sub a.currentPage").removeClass("currentPage");
 
-  var items = a.addClass("selected").parents("ul, li").add( a.nextAll("ul") ).show();
+    var items = a.addClass("selected").parents("ul, li").add(
+      a.nextAll("ul")).show();
 
-  loadTocSection(0,a.parent()); // If this is a TOC section that needs loading, then load it
-                                // e.g., when PJAX is enabled and the user clicks the link
+    // If this is a TOC section that needs loading, then load it
+    // e.g., when PJAX is enabled and the user clicks the link
+    loadTocSection(0,a.parent());
 
-  items.each(function(index) {
-    expandSubTree($(this));
-  });
+    items.each(function(index) { expandSubTree($(this)); });
 
-  scrollTOC();
+    scrollTOC();
 }
 
 var functionPanelIndex = 0;
@@ -318,13 +320,13 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
-  //console.log("scrollTOC");
-  var scrollTo = $('#api_sub a.selected').filter(':visible');
-  //console.log("scrollTOC scrollTo", scrollTo);
-  scrollTo.each(function() {
-    var scrollableContainer = $(this).parents('.scrollable_section');
-    //console.log("scrollTOC", scrollableContainer);
-    var container = $(this).parents('.treeview'),
+    //console.log("scrollTOC");
+    var scrollTo = $('#api_sub a.selected').filter(':visible');
+    //console.log("scrollTOC scrollTo", scrollTo);
+    scrollTo.each(function() {
+        var scrollableContainer = $(this).parents('.scrollable_section');
+        //console.log("scrollTOC", scrollableContainer);
+        var container = $(this).parents('.treeview'),
         extra = 120,
         currentTop = container.scrollTop(),
         headerHeight = 165, /* in CSS for .scrollable_section */
@@ -333,14 +335,14 @@ function scrollTOC() {
         minimumSpaceAtBottom = 10,
         minimumSpaceAtTop = 10;
 
-    // Only scroll if necessary
-    var marginTop = currentTop + headerHeight + minimumSpaceAtTop;
-    var marginBottom = currentTop + (
-        container.height() - minimumSpaceAtBottom) ;
-    if (scrollTarget < marginTop || scrollTarget > marginBottom) {
-      container.animate({scrollTop: scrollTargetAdjusted}, 500);
-    }
-  });
+        // Only scroll if necessary
+        var marginTop = currentTop + headerHeight + minimumSpaceAtTop;
+        var marginBottom = currentTop + (
+            container.height() - minimumSpaceAtBottom) ;
+        if (scrollTarget < marginTop || scrollTarget > marginBottom) {
+            container.animate({scrollTop: scrollTargetAdjusted}, 500);
+        }
+    });
 }
 
 

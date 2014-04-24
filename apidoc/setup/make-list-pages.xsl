@@ -106,6 +106,8 @@
     <api:list-page disable-comments="yes"
                    container-toc-section-id="{$container-toc-section-id}">
       <xsl:copy-of select="@category-bucket"/>
+      <!-- copy @is-javascript if present -->
+      <xsl:copy-of select="@is-javascript"/>
 
       <!-- can be used to trigger different display options -->
       <xsl:copy-of select="@type"/>
@@ -116,17 +118,6 @@
       <xsl:apply-templates select="title | intro"/>
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
-<!-- TODO bug here?
-
-XDMP-URI: (err:FODC0005) fn:doc("/apidoc/7.0/rest-client:/v1/alert/rules/{name}.xml")
-Invalid URI format: "/apidoc/7.0/rest-client:/v1/alert/rules/{name}.xml"
-
-context item is
-doc("/media/apiTOC/7.0/toc.xml")/all-tocs/toc:rest-resources/node[1]/node[1]/node[1]/node[2]
-@href="/rest-client:/v1/alert/rules/{name}"
-
-should have been remapped by api:translate-REST-resource-name earlier?
--->
       <xsl:for-each select=".//node[not(node)]">
         <!-- don't list multiple *:polygon() functions; just the first -->
         <xsl:apply-templates mode="list-entry"
