@@ -71,14 +71,17 @@
                 select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
 
   <xsl:variable name="site-title"
-                select="if ($api:version eq '5.0')
-                        then 'MarkLogic 5 Product Documentation'
-                        else if ($api:version eq '6.0')
-                        then 'MarkLogic 6 Product Documentation'
-                        else if ($api:version eq '7.0')
-                        then 'MarkLogic 7 Product Documentation'
-                        else concat('MarkLogic Server ',$api:version,
-                        ' Product Documentation')"/>
+                select="
+    if ($api:version eq '5.0')
+    then 'MarkLogic 5 Product Documentation'
+    else if ($api:version eq '6.0')
+         then 'MarkLogic 6 Product Documentation'
+    else if ($api:version eq '7.0')
+         then 'MarkLogic 7 Product Documentation'
+    else if ($api:version eq '8.0')
+         then 'MarkLogic 8 Early Access Product Documentation'
+    else concat('MarkLogic Server ',$api:version,
+                          ' Product Documentation')"/>
 
   <xsl:variable name="site-url-for-disqus"
                 select="'http://docs.marklogic.com'"/>
@@ -437,7 +440,6 @@
   <xsl:template mode="entry-title" match="entry">
     <xsl:value-of select="@title"/>
   </xsl:template>
-
 
   <xsl:template mode="page-content" match="api:help-page">
     <div>
