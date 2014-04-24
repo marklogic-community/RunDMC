@@ -15,9 +15,6 @@ import module namespace api="http://marklogic.com/rundmc/api"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "raw-docs-access.xqy";
 
-import module namespace tb="ns://blakeley.com/taskbot"
-  at "/taskbot/src/taskbot.xqm";
-
 declare variable $config := u:get-doc("/apidoc/config/static-docs.xml")
                                   /static-docs;
 declare variable $subdirs-to-load := $config/include/string(.);
@@ -255,9 +252,7 @@ for $included-dir in xdmp:filesystem-directory($pubs-dir)/dir:entry[
 let $_ := xdmp:log(
   text {
     "[load-static-docs.xqy]", "including directory", $included-dir })
-return xdmp:spawn-function(
-  function() { local:load-pubs-docs($version, $included-dir) },
-  $tb:OPTIONS-SYNC-UPDATE)
+return local:load-pubs-docs($version, $included-dir)
 ,
 
 (: Why load the zip? To support downloads? :)

@@ -1,6 +1,3 @@
 [submodule "xray"]
 	path = xray
 	url = git://github.com/robwhitby/xray.git
-[submodule "taskbot"]
-	path = taskbot
-	url = https://github.com/mblakele/taskbot.git
