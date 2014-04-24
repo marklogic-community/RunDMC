@@ -4,6 +4,8 @@
     and creates a new <api:function> document
     for each uniquely-named <apidoc:function>
     element it finds.
+
+    TODO might be a good candidate for an XQuery port.
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -87,7 +89,7 @@
       At first these are copies of the XQuery/XSLT function docs,
       but with different URIs.
   -->
-  <xsl:template match="apidoc:function[@is-javascript]">
+  <xsl:template match="apidoc:function[xs:boolean(@is-javascript)]">
     <xsl:variable name="external-uri"
                   select="api:external-uri(., 'javascript')"/>
     <xsl:variable name="internal-uri"
@@ -252,6 +254,13 @@
   <xsl:template mode="fixup-att-value"
                 match="apidoc:function[@lib = $api:REST-LIBS]/@lib">
     <xsl:text>REST</xsl:text>
+  </xsl:template>
+
+  <!-- fixup apidoc:function/@name for javascript -->
+  <xsl:template mode="fixup-att-value"
+                match="apidoc:function[xs:boolean(@is-javascript)]/@name">
+    <xsl:value-of
+        select="api:javascript-name(.)"/>
   </xsl:template>
 
 </xsl:stylesheet>
