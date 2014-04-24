@@ -306,6 +306,7 @@ driving the generation of function list pages.
                 @lib eq current()]/summary-addendum/node()"/>
   </xsl:template>
 
+  <!-- TODO needs javascript links? -->
   <xsl:template mode="sub-page" match="node">
     <li>
       <a href="{@href}"><xsl:value-of select="@category-name"/></a>

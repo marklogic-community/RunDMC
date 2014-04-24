@@ -66,17 +66,14 @@
                                         container: '#page_content',
           timeout: 4000,
                                         success: function() {
-            // Update the tab selection when the pjax call originated from a link in the body
-                                                changeToAppropriateTab();
+            // Update view when the pjax call originated from a link in the body
                                         }
                                 });
                                 $("#api_sub .pjax_enabled a:not(.external)").pjax({
                                         container: '#page_content',
           timeout: 4000,
                                         success: function() {
-            // Don't change the tab when a TOC link was clicked
-            //changeToAppropriateTab();
-                                                //$("#api_sub a.currentPage, #api_sub a.selected").removeClass("currentPage").removeClass("selected");
+            // Update view when a TOC link was clicked
                                         }
                                 });
         // This is necessary to ensure that non-fragment TOC links result in the appropriate TOC link being highlighted

@@ -214,8 +214,6 @@
   </xsl:template>
 
   <xsl:template name="reset-global-toc-vars">
-    <xsl:message>DEBUG reset-global-toc-vars <xsl:value-of
-    select="xdmp:describe(.)"/></xsl:message>
     <!--
         Used in js/toc_filter.js to determine which TOC section to load.
         Also needs to distinguish XQuery/XSLT from JavaScript.
@@ -271,8 +269,6 @@
 
   <xsl:template mode="toc-section-link-selector"
                 match="api:list-page|api:help-page">
-    <xsl:message>DEBUG toc-section-link-selector list|help<xsl:value-of
-    select="xdmp:describe(.)"/></xsl:message>
     <xsl:text>#</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>
@@ -281,8 +277,6 @@
   <!-- JavaScript function list page -->
   <xsl:template mode="toc-section-link-selector"
                 match="api:list-page[xs:boolean(@is-javascript)]">
-    <xsl:message>DEBUG toc-section-link-selector list js<xsl:value-of
-    select="xdmp:describe(.)"/></xsl:message>
     <xsl:text>#js_</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>

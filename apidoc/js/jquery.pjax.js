@@ -597,7 +597,7 @@ $(window).bind('popstate', function(event){
         fragment: state.fragment,
         timeout: state.timeout,
         scrollTo: false
-/* EDL: Added this line: */ ,success: function() { changeToAppropriateTab(); colorizeExamples() } // For back/forward button navigation with PJAX
+/* EDL: Added this line: */ ,success: function() { colorizeExamples() } // For back/forward button navigation with PJAX
       }
 
       if (contents) {
