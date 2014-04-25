@@ -29,8 +29,8 @@ declare variable $s:request-host-without-port := if (contains($s:current-request
                                         then substring-before($s:current-request-host,':')
                                         else                  $s:current-request-host;
 
-declare variable $s:viewing-standalone-api := let $server-name := xdmp:server-name(xdmp:server())
-                                              return contains($server-name,'standalone');
+declare variable $s:viewing-standalone-api := contains(
+  xdmp:server-name(xdmp:server()), 'apidoc') ;
 
 declare variable $s:main-server   := s:server-url("main");
 declare variable $s:draft-server  := s:server-url("draft");
