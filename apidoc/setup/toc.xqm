@@ -343,7 +343,7 @@ as xs:string
  : so we use 'js_' instead of 'js/'.
  :)
 declare function toc:node-id(
-  $node as element(node))
+  $node as element(toc:node))
 as xs:ID
 {
   xs:ID(

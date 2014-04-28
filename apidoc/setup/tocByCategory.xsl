@@ -1,16 +1,19 @@
-<!-- This stylesheet constructs the "Functions by category"
-     portion of the TOC hierarchy. -->
+<!--
+    This stylesheet constructs the "Functions by category"
+    portion of the TOC hierarchy.
+-->
 <xsl:stylesheet version="2.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:api="http://marklogic.com/rundmc/api"
-  xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
-  xmlns:toc="http://marklogic.com/rundmc/api/toc"
-  xmlns:u  ="http://marklogic.com/rundmc/util"
-  xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
-  extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs api apidoc toc u raw">
+                xmlns:api="http://marklogic.com/rundmc/api"
+                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
+                xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+                xmlns:toc="http://marklogic.com/rundmc/api/toc"
+                xmlns:u="http://marklogic.com/rundmc/util"
+                xmlns:xdmp="http://marklogic.com/xdmp"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://marklogic.com/rundmc/api/toc"
+                extension-element-prefixes="xdmp"
+                exclude-result-prefixes="xs api apidoc toc u raw">
 
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api"
@@ -24,13 +27,22 @@
       but that's okay, because we pre-generate this TOC.
   -->
   <xsl:template name="functions-by-category">
+    <xsl:param name="mode" as="xs:string?"/>
 
-    <xsl:variable name="forced-order" select="('MarkLogic Built-In Functions',
-          'XQuery Library Modules', 'CPF Functions', 'W3C-Standard Functions',
-          'REST Resources API')"/>
+    <xsl:variable name="forced-order"
+                  select="('MarkLogic Built-In Functions',
+                          'XQuery Library Modules', 'CPF Functions',
+                          'W3C-Standard Functions', 'REST Resources API')"/>
+
+    <xsl:variable name="functions"
+                  select="if ($mode eq 'javascript')
+                          then $toc:ALL-FUNCTIONS-JAVASCRIPT
+                          else $toc:ALL-FUNCTIONS"/>
+    <xsl:variable name="buckets"
+                  select="distinct-values($functions/@bucket)"/>
 
     <!-- for each bucket -->
-    <xsl:for-each select="distinct-values($toc:ALL-FUNCTIONS/@bucket)">
+    <xsl:for-each select="$buckets">
       <xsl:sort select="index-of($forced-order, .)" order="ascending"/>
       <xsl:sort select="."/>
 
@@ -44,7 +56,7 @@
       <!-- async is ignored for REST, because we ignore this <node> container -->
       <node display="{.}" id="{$bucket-id}" sub-control="yes" async="yes">
         <xsl:variable name="in-this-bucket"
-                      select="$toc:ALL-FUNCTIONS[@bucket eq $bucket]"/>
+                      select="$functions[@bucket eq $bucket]"/>
 
         <!-- for each category -->
         <xsl:for-each select="distinct-values($in-this-bucket/@category)">

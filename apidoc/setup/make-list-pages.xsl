@@ -35,7 +35,7 @@
       <xsl:comment>This page was auto-generated. The resulting content is driven     </xsl:comment>
       <xsl:comment>by a combination of this page and /apidoc/config/document-list.xml</xsl:comment>
       <api:docs-page disable-comments="yes">
-        <xsl:for-each select="/all-tocs/toc:guides//node[@guide]">
+        <xsl:for-each select="/toc:root//toc:node[@guide]">
           <api:user-guide href="{@href}" display="{@display}">
             <!-- Put applicable title aliases here to help facilitate automatic link creation at render time -->
             <xsl:copy-of select="$title-aliases/guide/alias
@@ -48,15 +48,15 @@
       </api:docs-page>
     </xsl:result-document>
     <!-- Find each function list and help page URL -->
-    <xsl:for-each select="distinct-values(//node[@function-list-page or @admin-help-page]/@href)">
+    <xsl:for-each select="distinct-values(//toc:node[@function-list-page or @admin-help-page]/@href)">
       <xsl:result-document href="{api:internal-uri(.)}">
         <!-- Process the first one of each that has a title (and consequently intro or help content) -->
-        <xsl:apply-templates select="($root//node[@href eq current()])[title][1]"/>
+        <xsl:apply-templates select="($root//toc:node[@href eq current()])[title][1]"/>
       </xsl:result-document>
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="node[@admin-help-page]">
+  <xsl:template match="toc:node[@admin-help-page]">
     <xsl:variable name="container-toc-section-id">
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
@@ -77,14 +77,14 @@
       <xsl:variable name="content-without-namespace">
         <p>The following is an alphabetical list of the Admin Interface's help pages:</p>
         <ul>
-          <xsl:variable name="help-nodes" select="..//node"/>
+          <xsl:variable name="help-nodes" select="..//toc:node"/>
           <!-- only select the first node for each unique @href -->
           <xsl:apply-templates mode="help-page-item" select="for $this in $help-nodes return $this[. is $help-nodes[@href eq $this/@href][1]]">
             <!-- Sort alphabetically by title -->
             <xsl:sort select="title"/>
           </xsl:apply-templates>
           <!-- hierarchical list doesn't add any value since we already have it in the TOC
-               <xsl:apply-templates mode="help-page-list" select="node"/>
+               <xsl:apply-templates mode="help-page-list" select="toc:node"/>
           -->
         </ul>
       </xsl:variable>
@@ -92,7 +92,7 @@
     </api:content>
   </xsl:template>
 
-  <xsl:template mode="help-page-item" match="node">
+  <xsl:template mode="help-page-item" match="toc:node">
     <li>
       <a href="{@href}">
         <xsl:value-of select="title"/>
@@ -101,7 +101,7 @@
   </xsl:template>
 
 
-  <xsl:template match="node[@function-list-page]">
+  <xsl:template match="toc:node[@function-list-page]">
     <xsl:variable name="container-toc-section-id">
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
@@ -120,7 +120,7 @@
       <xsl:apply-templates select="title | intro"/>
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
-      <xsl:for-each select=".//node[not(node)]">
+      <xsl:for-each select=".//toc:node[not(toc:node)]">
         <!-- don't list multiple *:polygon() functions; just the first -->
         <xsl:apply-templates mode="list-entry"
                              select="doc(api:internal-uri(@href))
@@ -134,9 +134,9 @@
 
   <!-- The container ID comes from the nearest ancestor (or self) that is marked as asynchronously loaded,
        unless nothing above this level is marked as such, in which case we use the nearest ID. -->
-  <xsl:template mode="container-toc-section-id" match="node">
-    <xsl:value-of select="(ancestor-or-self::node[@async][1],
-                          ancestor-or-self::node[@id]   [1])[1]/@id"/>
+  <xsl:template mode="container-toc-section-id" match="toc:node">
+    <xsl:value-of select="(ancestor-or-self::toc:node[@async][1],
+                          ancestor-or-self::toc:node[@id]   [1])[1]/@id"/>
   </xsl:template>
 
 

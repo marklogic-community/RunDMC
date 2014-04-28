@@ -36,7 +36,7 @@
       <div id="all_tocs">
         <div id="toc" class="toc">
           <div id="toc_content">
-            <xsl:apply-templates mode="toc-content" select="/all-tocs"/>
+            <xsl:apply-templates mode="toc-content" select="/toc:root"/>
           </div>
           <div id="splitter"/>
         </div>
@@ -47,22 +47,8 @@
     </xsl:result-document>
   </xsl:template>
 
-  <xsl:template mode="toc-label"
-                match="toc:functions|toc:categories"
-                >XQuery/XSLT</xsl:template>
-  <xsl:template mode="toc-label"
-                match="toc:guides">Guides</xsl:template>
-  <xsl:template mode="toc-label"
-                match="toc:rest-resources"
-                >REST API</xsl:template>
-  <xsl:template mode="toc-label"
-                match="toc:java"
-                >Java API</xsl:template>
-  <xsl:template mode="toc-label"
-                match="toc:other"
-                >Other Docs</xsl:template>
-
-  <xsl:template mode="toc-content" match="/all-tocs">
+  <!-- TODO could some of this chrome live in page.xsl instead? -->
+  <xsl:template mode="toc-content" match="/toc:root">
     <div id="tocs-all" class="toc_section">
       <div class="scrollable_section">
         <input id="config-filter" name="config-filter"
@@ -78,11 +64,10 @@
               <div class="hitarea collapsible-hitarea
                           lastCollapsible-hitarea"></div>
               <a href="{$prefix-for-hrefs}/"
-                 class="toc_root">All documentation</a>
+                 class="toc_root"><xsl:value-of
+                 select="@display/string()"/></a>
               <ul>
-                <xsl:for-each select="*">
-                  <xsl:apply-templates select="node"/>
-                </xsl:for-each>
+                <xsl:apply-templates select="toc:node"/>
               </ul>
             </li>
           </ul>
@@ -91,10 +76,10 @@
     </div>
   </xsl:template>
 
-  <xsl:template mode="id-att" match="node"/>
+  <xsl:template mode="id-att" match="toc:node"/>
 
   <!-- Include an ID on nodes that have one already -->
-  <xsl:template mode="id-att" match="node[@id]">
+  <xsl:template mode="id-att" match="toc:node[@id]">
     <xsl:attribute name="id">
       <xsl:value-of select="toc:node-id(.)"/>
     </xsl:attribute>
@@ -104,7 +89,7 @@
       This is a TOC leaf node.
       If async, its @id will point the way.
   -->
-  <xsl:template match="node">
+  <xsl:template match="toc:node">
     <xsl:variable name="class">
       <xsl:apply-templates mode="class" select="."/>
       <xsl:text> </xsl:text>
@@ -127,32 +112,32 @@
   </xsl:template>
 
   <xsl:template mode="class" priority="1"
-               match="node[@open]">collapsible</xsl:template>
+               match="toc:node[@open]">collapsible</xsl:template>
   <xsl:template mode="class"
-                match="node[node] ">expandable</xsl:template>
+                match="toc:node[toc:node] ">expandable</xsl:template>
   <xsl:template mode="class"
-                match="node"/>
+                match="toc:node"/>
 
   <xsl:template mode="class-last" priority="2"
-                match="node[empty((parent::toc:*|.)/following-sibling::*)][@open]">
+                match="toc:node[empty(following-sibling::*)][@open]">
     lastCollapsible
   </xsl:template>
   <xsl:template mode="class-last" priority="1"
-                match="node[empty((parent::toc:*|.)/following-sibling::*)][node]">
+                match="toc:node[empty(following-sibling::*)][toc:node]">
     lastExpandable
   </xsl:template>
   <xsl:template mode="class-last"
-                match="node[empty((parent::toc:*|.)/following-sibling::*)]">
+                match="toc:node[empty(following-sibling::*)]">
     last
   </xsl:template>
   <!-- default -->
-  <xsl:template mode="class-last" match="node"/>
+  <xsl:template mode="class-last" match="toc:node"/>
 
   <!-- Include on nodes that will be loaded asynchronously -->
   <xsl:template mode="class-hasChildren"
-                match="node[@async]">hasChildren</xsl:template>
+                match="toc:node[@async]">hasChildren</xsl:template>
   <xsl:template mode="class-hasChildren"
-                match="node"/>
+                match="toc:node"/>
 
   <!-- Include on nodes that have an @id
        (used by list pages to identify the relevant TOC section)
@@ -160,25 +145,25 @@
        (because they're already loaded)
   -->
   <xsl:template mode="class-initialized"
-                match="node[@id][not(@async)]">loaded initialized</xsl:template>
+                match="toc:node[@id][not(@async)]">loaded initialized</xsl:template>
   <xsl:template mode="class-initialized"
-                match="node"/>
+                match="toc:node"/>
 
   <!--
       Mark the asynchronous (unpopulated) nodes as such,
       for the treeview JavaScript.
   -->
-  <xsl:template mode="class-async" match="node[@async]">async</xsl:template>
-  <xsl:template mode="class-async" match="node"/>
+  <xsl:template mode="class-async" match="toc:node[@async]">async</xsl:template>
+  <xsl:template mode="class-async" match="toc:node"/>
 
   <!-- Mark the nodes whose descendant titles should be wrapped -->
   <xsl:template mode="class-wrap-titles"
-                match="node[@wrap-titles]">wrapTitles</xsl:template>
+                match="toc:node[@wrap-titles]">wrapTitles</xsl:template>
   <xsl:template mode="class-wrap-titles"
-                match="node"/>
+                match="toc:node"/>
 
-  <xsl:template mode="hit-area" match="node"/>
-  <xsl:template mode="hit-area" match="node[node]">
+  <xsl:template mode="hit-area" match="toc:node"/>
+  <xsl:template mode="hit-area" match="toc:node[toc:node]">
     <xsl:variable name="class">
       <xsl:apply-templates mode="hit-area-class"
                            select="."/>
@@ -190,28 +175,28 @@
   </xsl:template>
 
   <xsl:template mode="hit-area-class"
-                match="node[@open]">hitarea collapsible-hitarea</xsl:template>
+                match="toc:node[@open]">hitarea collapsible-hitarea</xsl:template>
   <xsl:template mode="hit-area-class"
-                match="node       ">hitarea expandable-hitarea</xsl:template>
+                match="toc:node       ">hitarea expandable-hitarea</xsl:template>
 
   <xsl:template mode="hit-area-class-last" priority="1"
-                match="node[empty((parent::toc:*|.)/following-sibling::*)][@open]">
+                match="toc:node[empty(following-sibling::*)][@open]">
     lastCollapsible-hitarea
   </xsl:template>
   <xsl:template mode="hit-area-class-last"
-                match="node[empty((parent::toc:*|.)/following-sibling::*)]">
+                match="toc:node[empty(following-sibling::*)]">
     lastExpandable-hitarea
   </xsl:template>
   <xsl:template mode="hit-area-class-last"
-                match="node               "/>
+                match="toc:node               "/>
 
-  <xsl:template mode="link" match="node">
+  <xsl:template mode="link" match="toc:node">
     <span>
       <xsl:apply-templates mode="node-display" select="."/>
     </span>
   </xsl:template>
 
-  <xsl:template mode="link" match="node[@href]">
+  <xsl:template mode="link" match="toc:node[@href]">
     <xsl:variable name="href">
       <xsl:value-of select="$prefix-for-hrefs"/>
       <xsl:apply-templates mode="link-href" select="."/>
@@ -224,18 +209,18 @@
   </xsl:template>
 
   <!-- For external links (outside the docs template) -->
-  <xsl:template mode="external-atts" match="node"/>
-  <xsl:template mode="external-atts" match="node[@external]">
+  <xsl:template mode="external-atts" match="toc:node"/>
+  <xsl:template mode="external-atts" match="toc:node[@external]">
     <xsl:attribute name="class" select="'external'"/>
     <xsl:attribute name="target" select="'_blank'"/>
   </xsl:template>
 
 
-  <xsl:template mode="node-display" match="node">
+  <xsl:template mode="node-display" match="toc:node">
     <xsl:value-of select="@display"/>
   </xsl:template>
 
-  <xsl:template mode="node-display" match="node[@function-count]">
+  <xsl:template mode="node-display" match="toc:node[@function-count]">
     <xsl:next-match/>
     <span class="function_count">
       <xsl:text> (</xsl:text>
@@ -248,7 +233,7 @@
   <!-- For most cases,
        just append the @href value after the optional version prefix
   -->
-  <xsl:template mode="link-href" match="node">
+  <xsl:template mode="link-href" match="toc:node">
     <xsl:value-of select="@href"/>
   </xsl:template>
 
@@ -257,42 +242,31 @@
        (e.g., /4.2 instead of /4.2/)
   -->
   <xsl:template mode="link-href"
-                match="node[string($prefix-for-hrefs)][@href eq '/']"/>
+                match="toc:node[string($prefix-for-hrefs)][@href eq '/']"/>
 
 
-  <xsl:template mode="title-att" match="node"/>
-  <xsl:template mode="title-att" match="node[@namespace]">
+  <xsl:template mode="title-att" match="toc:node"/>
+  <xsl:template mode="title-att" match="toc:node[@namespace]">
     <xsl:attribute name="title" select="@namespace"/>
   </xsl:template>
-
-  <!-- Don't ever display "all" at the top (in the blue buttons) -->
-  <xsl:template mode="all-suffix"
-                match="*[@top-control]"/>
-  <xsl:template mode="all-suffix" match="*"> all</xsl:template>
-
-  <!-- top_control is styled to appear at the top as a blue button -->
-  <xsl:template mode="top_control-class"
-                match="*"/>
-  <xsl:template mode="top_control-class"
-                match="*[@top-control]">top_control</xsl:template>
 
   <!-- this distinction is necessary for top_control (blue) buttons
        in order to get the correct positioning offsets
   -->
   <xsl:template mode="local_control-class"
-                match="node">local_control</xsl:template>
+                match="toc:node">local_control</xsl:template>
 
-  <!-- This can also be next-match for node[@async] ??? -->
-  <xsl:template mode="children" match="node"/>
+  <!-- This can also be next-match for toc:node[@async] ??? -->
+  <xsl:template mode="children" match="toc:node"/>
 
-  <!-- This should also be next-match for node[@async] -->
-  <xsl:template mode="children" match="node[node]">
+  <!-- This should also be next-match for toc:node[@async] -->
+  <xsl:template mode="children" match="toc:node[toc:node]">
     <xsl:variable name="display-type">
       <xsl:apply-templates mode="ul-display-type"
                            select="."/>
     </xsl:variable>
     <ul style="display: {$display-type};">
-      <xsl:apply-templates select="node"/>
+      <xsl:apply-templates select="toc:node"/>
     </ul>
   </xsl:template>
 
@@ -301,7 +275,7 @@
       The document URI needs to handle xquery vs javascript.
   -->
   <xsl:template mode="children"
-                match="node[@async]"
+                match="toc:node[@async]"
                 priority="1">
     <!-- The empty placeholder -->
     <ul style="display: none">
@@ -312,12 +286,9 @@
                     select="toc:uri(
                             $toc-parts-dir,
                             @id,
-                            if (ancestor::toc:functions-javascript) then 'javascript'
+                            if (@is-javascript) then 'javascript'
                             else ())"/>
       <!-- New document with the contents of the TOC node. -->
-      <xsl:message>render-toc mode=children node[@async] <xsl:value-of
-      select="$uri"/> <xsl:value-of select="xdmp:describe(.)"/>
-      </xsl:message>
       <xsl:result-document href="{$uri}">
         <xsl:next-match/>
       </xsl:result-document>
@@ -325,8 +296,8 @@
   </xsl:template>
 
   <xsl:template mode="ul-display-type"
-                match="node[@open or @async]">block</xsl:template>
+                match="toc:node[@open or @async]">block</xsl:template>
   <xsl:template mode="ul-display-type"
-                match="node">none</xsl:template>
+                match="toc:node">none</xsl:template>
 
 </xsl:stylesheet>

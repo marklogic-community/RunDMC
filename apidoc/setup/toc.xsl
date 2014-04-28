@@ -16,6 +16,7 @@ driving the generation of function list pages.
                 xmlns:u  ="http://marklogic.com/rundmc/util"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
                 xmlns:xdmp="http://marklogic.com/xdmp"
+                xmlns="http://marklogic.com/rundmc/api/toc"
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="xs api apidoc xhtml toc u ml xdmp">
 
@@ -25,7 +26,9 @@ driving the generation of function list pages.
       namespace="http://marklogic.com/rundmc/api/toc"
       href="toc.xqm"/>
 
+  <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="tocByCategory.xsl"/>
+  <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="toc-help.xsl"/>
 
   <!-- Implements some common content fixup rules -->
@@ -35,152 +38,41 @@ driving the generation of function list pages.
       Compute this first so we can glean the category info from the result
       and list the sub-categories on the main page intro for each lib
   -->
-  <xsl:variable name="by-category">
+  <xsl:variable name="by-category" as="element()+">
     <xsl:call-template name="functions-by-category"/>
+  </xsl:variable>
+  <xsl:variable name="javascript-by-category" as="element()+">
+    <xsl:call-template name="functions-by-category">
+      <xsl:with-param name="mode" select="'javascript'" />
+    </xsl:call-template>
   </xsl:variable>
 
   <xsl:template match="/">
-    <all-tocs>
-      <toc:guides top-control="yes">
-        <xsl:if test="$toc:GUIDE-DOCS-NOT-CONFIGURED">
-          <node display="New (unclassified) guides" open="yes">
-            <xsl:apply-templates mode="toc-guide-node"
-                                 select="$toc:GUIDE-DOCS-NOT-CONFIGURED"/>
-          </node>
-        </xsl:if>
-        <xsl:for-each select="$toc:GUIDE-GROUPS">
-          <node display="{@name}" id="{generate-id(.)}" open="yes">
-            <xsl:apply-templates mode="toc-guide-node"
-                                 select="toc:guides-in-group(.)"/>
-          </node>
-        </xsl:for-each>
-      </toc:guides>
-
-      <xsl:if test="number($api:version) ge 5">
-        <toc:rest-resources top-control="yes">
-          <!-- Add this wrapper so the /REST page will get created -->
-          <node href="/REST"
-                display="REST resources"
-                id="RESTResourcesAPI"
-                function-list-page="yes"
-                open="yes">
-            <title>REST resources</title>
-            <!-- Just the REST API bucket contents -->
+    <xsl:variable name="function-count"
+                  select="api:function-count()"/>
+    <xsl:variable name="javascript-function-count"
+                  select="api:function-count(
+                         'api:javascript-function-page', ())"/>
+    <root display="All Documentation"
+          open="true">
+      <node
+          display="Server-Side APIs"
+          open="true">
+        <xsl:if test="number($api:version) ge 8">
+          <node href="/js/all"
+                display="JavaScript Functions by Category ({
+                         $javascript-function-count })"
+                open="true"
+                id="AllFunctionsJavasScriptByCat">
             <xsl:copy-of
-                select="$by-category/node[@id eq 'RESTResourcesAPI']/node"/>
+                select="$javascript-by-category/toc:node"/>
           </node>
-          <node display="Related Guides"
-                id="RelatedRestGuides"
-                open="yes">
-            <!-- REST Client guide repeated -->
-            <xsl:apply-templates mode="toc-guide-node"
-                                 select="$toc:GUIDE-DOCS[
-                                         ends-with(base-uri(.),'rest-dev.xml')]">
-              <xsl:with-param name="is-duplicate" select="true()"/>
-            </xsl:apply-templates>
-            <!-- monitoring guide repeated -->
-            <xsl:apply-templates mode="toc-guide-node"
-                                 select="$toc:GUIDE-DOCS[
-                                         ends-with(base-uri(.),'monitoring.xml')]">
-              <xsl:with-param name="is-duplicate" select="true()"/>
-            </xsl:apply-templates>
-          </node>
-        </toc:rest-resources>
-      </xsl:if>
-
-      <xsl:if test="number($api:version) ge 6">
-        <toc:java top-control="yes">
-          <node display="Java API" open="yes" id="javaTOC">
-            <node display="Java API"
-                  href="/javadoc/client/index.html" external="yes"/>
-            <!-- Java Client guide repeated -->
-            <xsl:apply-templates
-                mode="toc-guide-node"
-                select="$toc:GUIDE-DOCS[ends-with(base-uri(.),'java.xml')]">
-              <xsl:with-param name="is-duplicate" select="true()"/>
-            </xsl:apply-templates>
-          </node>
-        </toc:java>
-      </xsl:if>
-      <toc:other>
-        <node display="Other Documentation" open="yes" id="other" top-control="yes">
-          <xsl:if test="number($api:version) ge 5">
-            <node display="Hadoop Connector" open="yes">
-              <node display="Connector for Hadoop API"
-                    href="/javadoc/hadoop/index.html" external="yes"/>
-              <!-- Hadoop guide repeated -->
-              <xsl:apply-templates mode="toc-guide-node"
-                                   select="$toc:GUIDE-DOCS[
-                                           ends-with(base-uri(.),'mapreduce.xml')]">
-                <xsl:with-param name="is-duplicate" select="true()"/>
-              </xsl:apply-templates>
-            </node>
-          </xsl:if>
-          <node display="XCC" open="yes">
-            <node display="XCC Javadoc" href="/javadoc/xcc/index.html" external="yes"/>
-            <node display="XCC .NET API" href="/dotnet/xcc/index.html" external="yes"/>
-            <!-- XCC guide repeated -->
-            <xsl:apply-templates mode="toc-guide-node"
-                                 select="$toc:GUIDE-DOCS[
-                                         ends-with(base-uri(.),'xcc.xml')]">
-              <xsl:with-param name="is-duplicate" select="true()"/>
-            </xsl:apply-templates>
-          </node>
-
-          <xsl:apply-templates mode="help-toc" select="."/>
-          <xsl:if test="number($api:version) ge 6">
-            <node display="C++ UDF API Reference"
-                  href="/cpp/udf/index.html" external="yes"/>
-          </xsl:if>
-        </node>
-      </toc:other>
-
-      <toc:categories>
-        <node href="/all"
-              display="XQuery/XSLT Functions by Category ({
-                       api:function-count() })"
-              open="yes"
-              id="AllFunctionsByCat"
-              top-control="yes">
-          <xsl:copy-of
-              select="$by-category/node[not(@id eq 'RESTResourcesAPI')]"/>
-        </node>
-      </toc:categories>
-
-      <toc:functions>
-        <node href="/all"
-              display="XQuery/XSLT Functions ({
-                       api:function-count() })"
-              id="AllFunctions"
-              function-list-page="yes"
-              open="yes"
-              top-control="yes">
-          <title>XQuery/XSLT functions</title>
-          <intro>
-            <p>
-              The following table lists all functions
-              in the MarkLogic API reference,
-              including both built-in functions
-              and functions implemented in XQuery library modules.
-            </p>
-          </intro>
-          <xsl:apply-templates select="$toc:ALL-LIBS">
-            <xsl:sort select="."/>
-          </xsl:apply-templates>
-        </node>
-      </toc:functions>
-
-      <xsl:if test="number($api:version) ge 8">
-        <toc:functions-javascript>
           <node href="/js/all"
                 display="JavaScript Functions ({
-                         api:function-count(
-                         'api:javascript-function-page', ()) })"
+                         $javascript-function-count })"
                 id="AllFunctionsJavaScript"
                 is-javascript="true"
-                function-list-page="yes"
-                open="yes"
-                top-control="yes">
+                function-list-page="true">
             <title>JavaScript functions</title>
             <intro>
               <p>
@@ -194,21 +86,165 @@ driving the generation of function list pages.
               <xsl:sort select="."/>
             </xsl:apply-templates>
           </node>
-        </toc:functions-javascript>
+        </xsl:if>
+
+        <node href="/all"
+              display="XQuery/XSLT Functions by Category ({
+                       $function-count })"
+              open="true"
+              id="AllFunctionsByCat">
+          <xsl:copy-of
+              select="$by-category/toc:node[not(@id eq 'RESTResourcesAPI')]"/>
+        </node>
+        <node href="/all"
+              display="XQuery/XSLT Functions ({
+                       $function-count })"
+              id="AllFunctions"
+              function-list-page="true">
+          <title>XQuery/XSLT functions</title>
+          <intro>
+            <p>
+              The following table lists all functions
+              in the MarkLogic API reference,
+              including both built-in functions
+              and functions implemented in XQuery library modules.
+            </p>
+          </intro>
+          <xsl:apply-templates select="$toc:ALL-LIBS">
+            <xsl:sort select="."/>
+          </xsl:apply-templates>
+        </node>
+      </node><!-- server-side APIs -->
+
+      <xsl:if test="number($api:version) ge 5">
+        <!-- Add this wrapper so the /REST page will get created -->
+        <node href="/REST"
+              display="REST Resources"
+              id="RESTResourcesAPI"
+              function-list-page="true"
+              open="true">
+          <title>REST resources</title>
+          <!-- Just the REST API bucket contents -->
+          <xsl:copy-of
+              select="$by-category/toc:node[@id eq 'RESTResourcesAPI']/toc:node"/>
+          <node display="Related Guides"
+                id="RelatedRestGuides"
+                open="true">
+            <!-- REST Client guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node"
+                                 select="$toc:GUIDE-DOCS[
+                                         ends-with(base-uri(.),'rest-dev.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+            <!-- monitoring guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node"
+                                 select="$toc:GUIDE-DOCS[
+                                         ends-with(base-uri(.),'monitoring.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+          </node>
+        </node>
       </xsl:if>
-    </all-tocs>
+
+      <xsl:if test="number($api:version) ge 6">
+        <node
+            display="Client-Side APIs"
+            open="true">
+          <node
+              display="Java API"
+              open="true"
+              id="javaTOC">
+            <node
+                display="Java API"
+                href="/javadoc/client/index.html"
+                external="true"/>
+            <!-- Java Client guide repeated -->
+            <xsl:apply-templates
+                mode="toc-guide-node"
+                select="$toc:GUIDE-DOCS[ends-with(base-uri(.),'java.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+          </node>
+        </node>
+      </xsl:if>
+
+      <node display="Guides"
+            open="true">
+        <xsl:if test="$toc:GUIDE-DOCS-NOT-CONFIGURED">
+          <node
+              display="New (unclassified) guides"
+              open="true">
+            <xsl:apply-templates mode="toc-guide-node"
+                                 select="$toc:GUIDE-DOCS-NOT-CONFIGURED"/>
+          </node>
+        </xsl:if>
+        <xsl:for-each select="$toc:GUIDE-GROUPS">
+          <node
+              display="{@name}"
+              id="{generate-id(.)}">
+            <!-- Per #204 hard-code open state by guide. -->
+            <xsl:if test="@name = ('Getting Started Guides')">
+              <xsl:attribute name="open" select="true()"/>
+            </xsl:if>
+            <xsl:apply-templates mode="toc-guide-node"
+                                 select="toc:guides-in-group(.)"/>
+          </node>
+        </xsl:for-each>
+      </node>
+
+      <node display="Other Documentation"
+            open="true"
+            id="other">
+        <xsl:if test="number($api:version) ge 5">
+          <node display="Hadoop Connector">
+            <node display="Connector for Hadoop API"
+                  href="/javadoc/hadoop/index.html" external="true"/>
+            <!-- Hadoop guide repeated -->
+            <xsl:apply-templates mode="toc-guide-node"
+                                 select="$toc:GUIDE-DOCS[
+                                         ends-with(
+                                         base-uri(.),'mapreduce.xml')]">
+              <xsl:with-param name="is-duplicate" select="true()"/>
+            </xsl:apply-templates>
+          </node>
+        </xsl:if>
+
+        <node display="XCC">
+          <node display="XCC Javadoc"
+                href="/javadoc/xcc/index.html"
+                external="true"/>
+          <node display="XCC .NET API"
+                href="/dotnet/xcc/index.html"
+                external="true"/>
+          <!-- XCC guide repeated -->
+          <xsl:apply-templates mode="toc-guide-node"
+                               select="$toc:GUIDE-DOCS[
+                                       ends-with(base-uri(.),'xcc.xml')]">
+            <xsl:with-param name="is-duplicate" select="true()"/>
+          </xsl:apply-templates>
+        </node>
+
+        <xsl:apply-templates mode="help-toc" select="."/>
+        <xsl:if test="number($api:version) ge 6">
+          <node display="C++ UDF API Reference"
+                href="/cpp/udf/index.html" external="true"/>
+        </xsl:if>
+      </node><!-- other -->
+
+    </root>
   </xsl:template>
 
   <xsl:template mode="toc-guide-node" match="/guide">
     <xsl:param name="is-duplicate" select="false()"/>
     <node href="{api:external-uri(.)}" display="{/guide/title}"
           id="{generate-id(.)}"
-          async="yes" guide="yes" sub-control="yes" wrap-titles="yes">
+          async="true" guide="true" sub-control="true" wrap-titles="true">
       <xsl:if test="$is-duplicate">
-        <xsl:attribute name="duplicate" select="'yes'"/>
+        <xsl:attribute name="duplicate" select="true()"/>
       </xsl:if>
       <xsl:for-each select="/guide/chapter-list/chapter">
-        <xsl:apply-templates mode="guide-toc" select="doc(@href)/chapter/node()"/>
+        <xsl:apply-templates mode="guide-toc"
+                             select="doc(@href)/chapter/node()"/>
       </xsl:for-each>
     </node>
   </xsl:template>
@@ -230,21 +266,17 @@ driving the generation of function list pages.
   <xsl:template match="api:lib">
     <xsl:variable name="is-javascript" as="xs:boolean?"
                   select="xs:boolean(@is-javascript)"/>
-    <node href="{
-                concat(
-                if ($is-javascript) then '/js/'
-                else '/',
+    <node href="{concat(
+                if ($is-javascript) then '/js/' else '/',
                 .) }"
-          display="{
-                   concat(
+          display="{concat(
                    api:prefix-for-lib(.),
-                   if ($is-javascript) then '.'
-                   else ':') }"
+                   if ($is-javascript) then '.' else ':') }"
           function-count="{ api:function-count(.) }"
           namespace="{ api:uri-for-lib(.) }"
           category-bucket="{ @category-bucket }"
-          function-list-page="yes"
-          async="yes"
+          function-list-page="true"
+          async="true"
           id="{.}_{generate-id(.)}">
       <xsl:if test="$is-javascript">
         <xsl:attribute name="is-javascript"
@@ -252,7 +284,7 @@ driving the generation of function list pages.
       </xsl:if>
       <xsl:if test="@built-in">
         <xsl:attribute name="footnote"
-                       select="'yes'"/>
+                       select="true()"/>
       </xsl:if>
       <title>
         <xsl:value-of select="api:prefix-for-lib(.)"/>
@@ -273,7 +305,7 @@ driving the generation of function list pages.
         <!-- Hack to exclude semantics categories, because
              the XQuery category is just a placeholder -->
         <xsl:variable name="sub-pages"
-                      select="$by-category//node
+                      select="$by-category//toc:node
                               [starts-with(@href, concat('/',current(),'/'))]
                               [not(starts-with(@href, '/sem'))]"/>
         <xsl:if test="$sub-pages">
