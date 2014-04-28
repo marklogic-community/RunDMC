@@ -126,7 +126,8 @@ driving the generation of function list pages.
           <title>REST resources</title>
           <!-- Just the REST API bucket contents -->
           <xsl:copy-of
-              select="$by-category/toc:node[@id eq 'RESTResourcesAPI']/toc:node"/>
+              select="$by-category/toc:node[
+                      starts-with(@id, 'RESTResourcesAPI')]"/>
           <node display="Related Guides"
                 id="RelatedRestGuides"
                 open="true">
