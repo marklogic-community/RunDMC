@@ -43,8 +43,8 @@ declare variable $ALL-LIBS-JAVASCRIPT as element(api:lib)* := (
 (: This is for specifying exceptions to the automated mappings
  : of categories to URIs.
  :)
-declare variable $CATEGORY-MAPPINGS := (
-  u:get-doc('/apidoc/config/category-mappings.xml')/*/category) ;
+declare variable $CATEGORY-MAPPINGS := u:get-doc(
+  '/apidoc/config/category-mappings.xml')/*/category ;
 
 declare variable $GUIDE-DOCS := xdmp:directory(
   concat($api:VERSION-DIR, 'guide/'))[guide] ;
@@ -54,6 +54,20 @@ declare variable $GUIDE-GROUPS := u:get-doc(
 
 declare variable $GUIDE-DOCS-NOT-CONFIGURED := (
   $GUIDE-DOCS except toc:guides-in-group($GUIDE-GROUPS)) ;
+
+declare variable $HELP-ROOT-HREF := '/admin-help' ;
+
+declare variable $HELP-CONFIG := u:get-doc(
+  '/apidoc/config/help-config.xml')/help ;
+
+(: TODO do not assume HTTP request environment. :)
+declare variable $XSD-DIR as xs:string := xdmp:get-request-field(
+  'help-xsd-dir') ;
+
+declare variable $XSD-DOCS as document-node()* := (
+  for $dir in xdmp:filesystem-directory($XSD-DIR)/*:entry[
+    dir:type eq 'file'][ends-with(dir:pathname, '.xsd')]
+  return xdmp:document-get($dir/dir:pathname)) ;
 
 declare function toc:display-category($cat as xs:string)
 as xs:string
@@ -687,6 +701,110 @@ as empty-sequence()
       $stp:toc-uri-default-version,
       $api:toc-uri-default-version-location),
     toc:render($stp:toc-uri-default-version, true()))
+};
+
+(: Input may be a document-node or element. :)
+declare function toc:help-extract-title(
+  $content as node())
+as xs:string
+{
+  (: Wildcard because sometimes the source uses XHTML, but sometimes not.
+   : e.g., x509.xsd
+   :)
+  normalize-space(
+    ($content//*:span[@class eq 'help-text'])[1])
+};
+
+declare function toc:help-resolve-repeat(
+  $e as element(repeat))
+{
+  let $qname := resolve-QName($e/@name,$e)
+  let $idref := $e/@idref/string()
+  return root($e)//*[@id eq $idref or node-name(.) eq $qname]
+};
+
+declare function toc:help-auto-exclude(
+  $xsd-docs as document-node()*,
+  $e as element())
+as xs:string*
+{
+  (: For each of the other applicable elements in the same namespace :)
+  let $version := number($api:version)
+  let $ns := namespace-uri($e)
+  for $other in root($e)//*[namespace-uri(.) eq $ns][not(. is $e)][
+    not(@added-in) or @added-in le $version]
+  let $this-name := local-name($other)
+  (: Automatically exclude this name, its plural forms,
+   : and whatever prefixed names it might stand for.
+   :)
+  return (
+    toc:help-prefixed-names($xsd-docs, $other),
+    $this-name,
+    concat($this-name,'s'),
+    concat($this-name,'es'))
+};
+
+declare function toc:help-path(
+  $help-root-href as xs:string,
+  $e as element())
+{
+  concat(
+    $help-root-href,
+    '/',
+    if ($e/@url-name) then $e/@url-name
+    else local-name($e))
+};
+
+declare function toc:help-element-decl(
+  $xsd-docs as document-node()*,
+  $e as element())
+as element()?
+{
+  let $ns := namespace-uri($e)
+  let $local-name := local-name($e)
+  (: Is this good enough?
+   : Are there schemas with no targetNamespace?
+   : Are there schemas that use namespace prefixes?
+   :)
+  return $xsd-docs/xs:schema[@targetNamespace eq $ns]//xs:element[
+    @name eq $local-name]
+};
+
+(: Look in the XSD to grab the list of child element names.
+ : TODO easier way to do this? Request-level caching?
+ :)
+declare function toc:help-option-names(
+  $xsd-docs as document-node()*,
+  $e as element())
+as xs:string*
+{
+  let $decl as element() := toc:help-element-decl($xsd-docs, $e)
+  let $complexType := root($decl)/*/xs:complexType[
+    @name/resolve-QName(string(.), ..)
+    eq $decl/@type/resolve-QName(string(.), ..)]
+  return $complexType//xs:element/@ref/local-name-from-QName(
+    resolve-QName(string(.), ..))
+};
+
+(: All the child element names having the given prefix :)
+declare function toc:help-prefixed-names(
+  $xsd-docs as document-node()*,
+  $e as element())
+as xs:string*
+{
+  let $sw as xs:string? := $e/@starting-with
+  where $sw
+  return toc:help-option-names($xsd-docs, $e)[starts-with(., $sw)]
+};
+
+(: All the child element names *not* having the given prefix :)
+declare function toc:help-not-prefixed-names(
+  $xsd-docs as document-node()*,
+  $e as element())
+as xs:string*
+{
+  let $sw as xs:string? := $e/@starting-with
+  return toc:help-option-names($xsd-docs, $e)[not(starts-with(., $sw))]
 };
 
 (: apidoc/setup/toc.xqm :)

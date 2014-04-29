@@ -15,12 +15,8 @@
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="xs api apidoc toc u raw">
 
-  <xdmp:import-module
-      namespace="http://marklogic.com/rundmc/api"
-      href="/apidoc/model/data-access.xqy"/>
-  <xdmp:import-module
-      namespace="http://marklogic.com/rundmc/api/toc"
-      href="toc.xqm"/>
+  <!-- The importer of this xsl should import data-access.xqm -->
+  <!-- The importer of this xsl should import toc.xqm -->
 
   <!--
       This is bound to be slow,

@@ -21,8 +21,11 @@ driving the generation of function list pages.
                 exclude-result-prefixes="xs api apidoc xhtml toc u ml xdmp">
 
   <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api"
+      href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api/toc"
-      href="toc.xqm"/>
+      href="/apidoc/setup/toc.xqm"/>
 
   <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="tocByCategory.xsl"/>
