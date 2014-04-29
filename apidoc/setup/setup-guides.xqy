@@ -1,16 +1,14 @@
 xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
-  at "../model/data-access.xqy";
-
-import module namespace setup="http://marklogic.com/rundmc/api/setup"
-  at "common.xqy";
-
+  at "/apidoc/model/data-access.xqy";
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "raw-docs-access.xqy";
 
 (: Make sure the version param was specified :)
-$setup:errorCheck,
+$stp:errorCheck,
 
 (: Copy all the image files referenced by the guides.
  : This can run independently.

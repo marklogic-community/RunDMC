@@ -1,5 +1,5 @@
 xquery version "1.0-ml";
-(: sample test module :)
+(: Test module for apidoc/setup :)
 
 module namespace t="http://github.com/robwhitby/xray/test";
 
@@ -10,14 +10,16 @@ import module namespace at="http://github.com/robwhitby/xray/assertions"
 
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
-
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "/apidoc/setup/setup.xqm";
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "/apidoc/setup/raw-docs-access.xqy";
 
 declare %t:case function t:invoke-ok()
 {
-  at:empty(
-    raw:invoke-function(function() { () }))
+  at:equal(
+    1,
+    raw:invoke-function(function() { 1 }))
 };
 
 declare %t:case function t:javascript-name()

@@ -12,14 +12,14 @@
                 xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
-                xmlns:setup="http://marklogic.com/rundmc/api/setup"
+                xmlns:stp="http://marklogic.com/rundmc/api/setup"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="xs apidoc fixup api">
 
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api/setup"
-      href="common.xqy"/>
+      href="setup.xqm"/>
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
@@ -128,7 +128,7 @@
     <xsl:variable name="anchor" select="replace(substring-after(., '.xml'),
                                         '%23', '#id_')"/>
     <xsl:variable name="result"
-                  select="setup:fix-guide-names(concat('/guide',
+                  select="stp:fix-guide-names(concat('/guide',
                           substring-before(substring-after(.,
                           'doc/xml'), '.xml'),
                           $anchor), 1)"/>

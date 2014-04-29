@@ -14,22 +14,21 @@
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="xs api apidoc toc u ml xdmp">
 
-  <!-- TODO this does not seem to import anything? -->
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api/toc"
       href="toc.xqm"/>
 
-  <xsl:param name="toc-url"/>
+  <xsl:param name="toc-uri"/>
 
   <!-- Optional version-specific prefix for link hrefs, e.g., "/4.2" -->
   <xsl:param name="prefix-for-hrefs"/>
 
   <xsl:variable name="toc-parts-dir"
-                select="concat($toc-url,'/')"/>
+                select="concat($toc-uri,'/')"/>
 
   <xsl:template match="/">
-    <xsl:message>Creating TOC <xsl:value-of select="$toc-url"/></xsl:message>
-    <xsl:result-document href="{$toc-url}">
+    <xsl:message>Creating TOC <xsl:value-of select="$toc-uri"/></xsl:message>
+    <xsl:result-document href="{$toc-uri}">
       <!--
            Write placeholder elements for use by toc_filter.js toc_init.
       -->
@@ -278,7 +277,7 @@
                 match="toc:node[@async]"
                 priority="1">
     <!-- The empty placeholder -->
-    <ul style="display: none">
+    <ul style="display: none;">
       <li><span class="placeholder">&#160;</span></li>
     </ul>
     <xsl:if test="not(@duplicate)">

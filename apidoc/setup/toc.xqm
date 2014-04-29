@@ -5,10 +5,13 @@ module namespace toc="http://marklogic.com/rundmc/api/toc" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-import module namespace api="http://marklogic.com/rundmc/api"
-  at "/apidoc/model/data-access.xqy" ;
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
+
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy" ;
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
@@ -38,7 +41,7 @@ declare variable $ALL-LIBS-JAVASCRIPT as element(api:lib)* := (
   $api:LIBS-JAVASCRIPT );
 
 (: This is for specifying exceptions to the automated mappings
- : of categories to URLs.
+ : of categories to URIs.
  :)
 declare variable $CATEGORY-MAPPINGS := (
   u:get-doc('/apidoc/config/category-mappings.xml')/*/category) ;
@@ -352,6 +355,338 @@ as xs:ID
         or $node/@type = 'javascript-function') then 'js_'
       else '',
       $node/@id))
+};
+
+declare function toc:uri-save(
+  $uri as xs:string,
+  $location as xs:string)
+as empty-sequence()
+{
+  stp:info('toc:uri-save', ($uri, '=>', $location)),
+  xdmp:document-insert($location, element api:toc-uri { $uri })
+};
+
+(: Given a node, return appropriate HTML classnames. :)
+declare function toc:render-node-class(
+  $n as element(toc:node))
+as xs:string*
+{
+  if ($n[@open]) then 'collapsible'
+  else if ($n[toc:node]) then 'expandable'
+  else (),
+
+  let $following := $n/following-sibling::*
+  return (
+    if ($following) then () else (
+      if ($n/@open) then 'lastCollapsible'
+      else if ($n/toc:node) then 'lastExpandable'
+      else 'last'))
+  ,
+
+  (: Include on nodes that will be loaded asynchronously. :)
+  'hasChildren'[$n/@async],
+
+  (: Include on nodes that have an @id
+   : (used by list pages to identify the relevant TOC section)
+   : but that aren't loaded asynchronously
+   : because they're already loaded.
+   :)
+  ("loaded", 'initialized')[$n[@id][not(@async)]],
+
+  (: Mark the asynchronous (unpopulated) nodes as such,
+   : for the treeview JavaScript.
+   :)
+  "async"[$n/@async],
+
+  (: Mark the nodes whose descendant titles should be wrapped :)
+  "wrapTitles"[$n/@wrap-titles]
+};
+
+declare function toc:render-node-display(
+  $n as element(toc:node))
+as node()+
+{
+  text { $n/@display },
+  if (not($n/@function-count)) then ()
+  else <span xmlns="http://www.w3.org/1999/xhtml" class="function_count">
+  {
+    concat(' (', $n/@function-count/string(), ')')
+  }
+  </span>
+};
+
+(: Given a node, render the hitarea for the treeview code. :)
+declare function toc:render-node-link(
+  $prefix-for-hrefs as xs:string?,
+  $n as element(toc:node))
+as element()
+{
+  let $display as node()+ := toc:render-node-display($n)
+  return (
+    if (not($n/@href)) then
+    <span xmlns="http://www.w3.org/1999/xhtml">{ $display }</span>
+    else
+    <a xmlns="http://www.w3.org/1999/xhtml">
+    {
+      attribute href {
+        (: When the @href value is just "/",
+         : leave it out when the version is specified explicitly.
+         : /4.2 instead of /4.2/
+         :)
+        concat(
+          $prefix-for-hrefs,
+          if ($prefix-for-hrefs and $n/@href eq '/') then ''
+          else $n/@href) },
+
+      if (not($n/@external)) then () else (
+        attribute class { 'external' },
+        attribute target { '_blank' }),
+
+      $n/@namespace/attribute title { . },
+
+      $display
+    }
+    </a>
+  )
+};
+
+(: Given a node, render the hitarea for the treeview code. :)
+declare function toc:render-node-hitarea(
+  $n as element(toc:node))
+as element()?
+{
+  if (not($n/toc:node)) then () else
+  <div xmlns="http://www.w3.org/1999/xhtml">
+  {
+    let $has-children := exists($n/toc:node)
+    let $following := $n/following-sibling::toc:node
+    return attribute class {
+      if ($n/@open) then ('hitarea', 'collapsible-hitarea')
+      else if ($has-children) then ('hitarea', 'expandable-hitarea')
+      else (),
+
+      (: Is this the last hitarea? :)
+      if ($following) then ()
+      else if ($n/@open) then 'lastCollapsible-hitarea'
+      else 'lastExpandable-hitarea' }
+  }
+  </div>
+};
+
+(: Given a node, render the children inline or as new documents. :)
+declare function toc:render-node-children(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $n as element(toc:node))
+as element()?
+{
+  stp:info(
+    'toc:render-node-children',
+    ($uri, $prefix-for-hrefs,
+      xdmp:describe($n),
+      exists($n/toc:node))),
+
+  if (not($n/toc:node)) then () else
+  <ul xmlns="http://www.w3.org/1999/xhtml">
+  {
+    attribute style {
+      'display:',
+      if ($n/@open) then 'block;' else 'none;' },
+    if (not($n/@async)) then toc:render-node(
+      $uri, $prefix-for-hrefs, $n/toc:node)
+    (: Placeholder for nodes to be loaded asynchronously. :)
+    else <li><span class="placeholder">&#160;</span></li>
+  }
+  </ul>
+};
+
+(: This is a TOC leaf node.
+ : If async, its @id will point the way.
+ :)
+declare function toc:render-node(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $n as element(toc:node))
+as element()
+{
+  stp:info(
+    'toc:render-node',
+    ($uri, $prefix-for-hrefs, xdmp:describe($n), xdmp:describe($n/toc:node))),
+  <li xmlns="http://www.w3.org/1999/xhtml">
+  {
+    attribute class { toc:render-node-class($n) },
+    if (not($n/@id)) then ()
+    else attribute id { toc:node-id($n) },
+    toc:render-node-hitarea($n),
+    toc:render-node-link($prefix-for-hrefs, $n),
+    toc:render-node-children($uri, $prefix-for-hrefs, $n)
+  }
+  </li>
+};
+
+(: Given a non-duplicate async node,
+ : generate a new element with the correct base-uri.
+ :)
+declare function toc:render-async(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $n as element(toc:node))
+as element()
+{
+  if ($n/@async and not($n/@duplicate)) then () else stp:error(
+      'UNEXPECTED', xdmp:describe($n)),
+  let $uri-child := toc:uri(
+    concat($uri, '/'),
+    $n/@id,
+    (: Handle javascript functions. :)
+    if ($n[@is-javascript]) then 'javascript'
+    else ())
+  let $_ := stp:info(
+    'toc:render-async',
+    ('async', 'not duplicate', $uri-child, xdmp:describe($n)))
+  return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
+  {
+    attribute xml:base { $uri-child },
+    toc:render-node(
+      $uri, $prefix-for-hrefs, $n/toc:node)
+  }
+  </ul>
+};
+
+declare function toc:render-content(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $toc as element(toc:root))
+as element()
+{
+  stp:info(
+    'toc:render-content',
+    ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
+  <div id="tocs-all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="scrollable_section">
+      <input id="config-filter" name="config-filter" class="config-filter"/>
+      <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
+         class="config-filter-close-button"/>
+      <div id="apidoc_tree_container" class="pjax_enabled">
+  {
+    element ul {
+      attribute id { "apidoc_tree" },
+      attribute class { "treeview" },
+      element li {
+        attribute id { "AllDocumentation" },
+        attribute class { 'collapsible lastCollapsible' },
+        <div class="hitarea collapsible-hitarea lastCollapsible-hitarea"></div>,
+        element a {
+          attribute href { $prefix-for-hrefs||'/' },
+          attribute class { 'toc_root' },
+          $toc/@display/string() },
+        element ul {
+          toc:render-node($uri, $prefix-for-hrefs, $toc/toc:node) } } }
+  }
+      </div>
+    </div>
+  </div>
+};
+
+declare function toc:render-root(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $toc as element(toc:root))
+as element()+
+{
+  stp:info(
+    'toc:render',
+    ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
+
+  (: The old XSL returned the async results first.
+   : Do the same to make testing easier.
+   :)
+  toc:render-async(
+    $uri, $prefix-for-hrefs,
+    $toc//toc:node[@async][not(@duplicate)]),
+
+  (: Wrapper includes placeholder elements for use by toc_filter.js toc_init.
+   : Could some of this chrome move into page rendering?
+   :)
+  <div id="all_tocs" xml:base="{ $uri }"
+       xmlns="http://www.w3.org/1999/xhtml">
+    <div id="toc" class="toc">
+      <div id="toc_content">
+  {
+    toc:render-content($uri, $prefix-for-hrefs, $toc)
+  }
+      </div>
+      <div id="splitter"/>
+    </div>
+    <div id="tocPartsDir" style="display:none;">
+  {
+    concat($uri, '/')
+  }
+    </div>
+  </div>
+
+};
+
+(: All elements returned by this function must set a base-uri.
+ : Functions from here on are free of side effects,
+ : so start here for unit tests.
+ :)
+declare function toc:render(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $toc-document as document-node())
+as node()+
+{
+  (: TODO when xqy is working, remove xsl entirely. :)
+ if (0) then xdmp:xslt-invoke(
+    "render-toc.xsl",
+    $toc-document,
+    map:new(
+      (map:entry('toc-uri', $uri),
+        map:entry('prefix-for-hrefs', $prefix-for-hrefs),
+        map:entry('version', $api:version))))
+  else toc:render-root(
+    $uri,
+    $prefix-for-hrefs,
+    $toc-document/* treat as node())
+};
+
+declare function toc:render(
+  $uri as xs:string,
+  $is-default as xs:boolean)
+as empty-sequence()
+{
+  stp:info(
+    'toc:render', ($is-default, $stp:toc-xml-uri, '=>', $uri)),
+  (: Every result element must set its own base-uri,
+   : so we known where to store it in the database.
+   :)
+  toc:render(
+    $uri,
+    if ($is-default) then () else concat("/", $api:version),
+    doc($stp:toc-xml-uri) treat as node())/
+  xdmp:document-insert(
+    (: Force an error if the base-uri was not set. :)
+    base-uri(.) treat as xs:anyURI,
+    .)
+};
+
+declare function toc:render()
+as empty-sequence()
+{
+  toc:uri-save($stp:toc-uri, $api:toc-uri-location),
+  toc:render($stp:toc-uri, false()),
+
+  (: If we are processing the default version,
+   : then we need to render another copy of the TOC
+   : that does not include version numbers in its href links.
+   :)
+  if (not($stp:processing-default-version)) then ()
+  else (
+    toc:uri-save(
+      $stp:toc-uri-default-version,
+      $api:toc-uri-default-version-location),
+    toc:render($stp:toc-uri-default-version, true()))
 };
 
 (: apidoc/setup/toc.xqm :)

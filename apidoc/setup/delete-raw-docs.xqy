@@ -1,23 +1,17 @@
 xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
-  at "../model/data-access.xqy";
-
+  at "/apidoc/model/data-access.xqy";
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "raw-docs-access.xqy";
-
-import module namespace setup="http://marklogic.com/rundmc/api/setup"
-  at "common.xqy";
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 
 (: Make sure the version param was specified :)
-$setup:errorCheck,
+$stp:errorCheck,
 
-xdmp:log(text { "Deleting all", $api:version, "raw docs" }),
-raw:invoke-function(
-  function() {
-    xdmp:directory-delete(concat("/", $api:version, "/")),
-    xdmp:commit() },
-  true()),
-concat("Finished deleting all ",$api:version," raw docs")
+stp:raw-delete($api:version),
+
+text { "Finished deleting all raw docs for", $api:version }
 
 (: delete-raw-docs.xqy :)

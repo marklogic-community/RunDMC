@@ -26,25 +26,28 @@ declare variable $version as xs:string  := (
  : because it's only in the setup scripts that we ever care about
  : more than one TOC URL at a time
  :
- : Its value must be the same as $toc-url-location
+ : Its value must be the same as $toc-uri-location
  : when $version-specified is empty,
  : so the view code will get the right default TOC.
  :)
-declare variable $toc-url-default-version-location := concat(
-  "/apidoc/private/", "toc-url.xml");
-declare variable $toc-url-location := concat(
-  "/apidoc/private/", $version-specified, "toc-url.xml");
+declare variable $toc-uri-default-version-location := concat(
+  "/apidoc/private/", "toc-uri.xml");
+declare variable $toc-uri-location := concat(
+  "/apidoc/private/",
+  $version-specified,
+  (if ($version-specified) then '/' else ''),
+  "toc-uri.xml");
 
 (: The URL of the current TOC (based on whatever version the user has requested) :)
 (:
-declare variable $toc-url := string(doc($toc-url-location)/*);
+declare variable $toc-uri := string(doc($toc-uri-location)/*);
 :)
 (: Using the alternative TOC location for now - i.e. if current version is the default,
    regardless of whether it was explicit, don't include the version number in links; see also $version-prefix in page.xsl; see also delete-old-toc.xqy :)
-declare variable $toc-url := string(doc($toc-url-location-alternative)/*);
+declare variable $toc-uri := string(doc($toc-uri-location-alternative)/*);
 
-declare variable $toc-url-location-alternative := if ($version eq $default-version) then $toc-url-default-version-location
-                                                                                                else $toc-url-location;
+declare variable $toc-uri-location-alternative := if ($version eq $default-version) then $toc-uri-default-version-location
+                                                                                                else $toc-uri-location;
 
 declare variable $VERSION-DIR := concat("/apidoc/", $version, "/");
 

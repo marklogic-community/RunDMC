@@ -18,7 +18,14 @@ import module namespace toc="http://marklogic.com/rundmc/api/toc"
 import module namespace xhtml="http://marklogic.com/cpf/xhtml"
   at "/MarkLogic/conversion/xhtml.xqy";
 
-declare namespace xh="http://www.w3.org/1999/xhtml" ;
+declare variable $toc-dir     := concat("/media/apiTOC/",$api:version,"/");
+declare variable $toc-xml-uri := concat($toc-dir,"toc.xml");
+declare variable $toc-uri     := concat($toc-dir,"apiTOC_", current-dateTime(), ".html");
+
+declare variable $toc-default-dir         := concat("/media/apiTOC/default/");
+declare variable $toc-uri-default-version := concat($toc-default-dir,"apiTOC_", current-dateTime(), ".html");
+
+declare variable $processing-default-version := $api:version eq $api:default-version;
 
 (: TODO must not assume HTTP environment. :)
 declare variable $errorCheck := (
@@ -167,7 +174,7 @@ declare function stp:static-uri-rewrite($uri) {
   then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
   else if (starts-with($uri,"/hadoop/"))
   then replace($uri,"/hadoop/javadoc/","/javadoc/hadoop/")
-  (: Move "/javadoc" to the beginning of the URL :)
+  (: Move "/javadoc" to the beginning of the URI :)
   else if (starts-with($uri,"/javadoc/"))
   then replace($uri,"/javadoc/","/javadoc/xcc/")
   else if (starts-with($uri,"/dotnet/"))
@@ -191,35 +198,29 @@ declare function stp:pdf-uri($uri)
   return
   (
     if (not($url-name))
-    then error(xs:QName("ERROR"), concat("The configuration for ",$uri,
+    then error((), "ERROR", concat("The configuration for ",$uri,
           " is missing in /apidoc/config/document-list.xml"))
     else (),
     concat("/guide/",$url-name,".pdf")
   )
 };
 
-(: Look at document-list.xml to change url names based on that list.
- : TODO WTF? Seems to discard a lot of results and do a lot of recursion.
- : Used in fixup.xsl
- :)
-declare function stp:fix-guide-names(
-  $s as xs:string,
-  $num as xs:integer)
-as xs:string
-{
-  let $x := xdmp:document-get(
-    concat(
-      xdmp:modules-root(),
-      "/apidoc/config/document-list.xml"))
-  let $guides := $x//guide[@url-name ne @source-name]
-  let $count := count($guides)
-  return (
-    if ($num gt $count) then $s
-    else stp:fix-guide-names(
-      let $guide := $guides[$num]
-      return replace(
-        $s, $guide/@source-name, $guide/@url-name),
-      $num + 1))
+(: look at document-list.xml to change url names based on that list :)
+declare function stp:fix-guide-names($s as xs:string, $num as xs:integer) {
+
+let $x := xdmp:document-get(concat(xdmp:modules-root(),
+              "/apidoc/config/document-list.xml"))
+let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
+let $url := $x//guide[@url-name ne @source-name]/@url-name/string()
+let $count := count($source)
+return
+if ($num eq $count + 1)
+then (xdmp:set($num, 9999), $s)
+else if ($num eq 9999)
+     then $s
+     else stp:fix-guide-names(replace($s, $source[$num], $url[$num]),
+             $num + 1)
+
 };
 
 declare function stp:function-docs-extract(
@@ -259,15 +260,13 @@ as empty-sequence()
 };
 
 (: Generate and insert a list page for each TOC container :)
-declare function stp:list-pages-render(
-  $version as xs:string)
+declare function stp:list-pages-render()
 as empty-sequence()
 {
   stp:info('stp:list-pages-render', "starting"),
   xdmp:xslt-invoke(
     "make-list-pages.xsl",
-    doc($toc:XML-URI),
-    map:new(map:entry('VERSION', $version)))
+    doc($toc-xml-uri))
   /xdmp:document-insert(base-uri(.), .),
   stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
 };
@@ -461,6 +460,20 @@ as empty-sequence()
       xdmp:directory-delete(concat("/", $version, "/")),
       xdmp:commit() },
     true())
+};
+
+declare function stp:toc-delete()
+as empty-sequence()
+{
+  stp:info('stp:toc-delete', $api:version),
+  let $dir := $toc-dir
+  let $prefix := string(doc($api:toc-uri-location))
+  for $toc-parts-dir in cts:uri-match(concat($dir,"*.html/"))
+  let $main-toc := substring($toc-parts-dir,1,string-length($toc-parts-dir)-1)
+  where not(starts-with($toc-parts-dir,$prefix))
+  return (
+    xdmp:document-delete($main-toc),
+    xdmp:directory-delete($toc-parts-dir))
 };
 
 declare function stp:guide-convert(

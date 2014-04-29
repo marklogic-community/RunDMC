@@ -1,13 +1,13 @@
 xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
-       at "/apidoc/model/data-access.xqy";
+  at "/apidoc/model/data-access.xqy";
 
-import module namespace setup="http://marklogic.com/rundmc/api/setup"
-       at "common.xqy";
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 
 (: Make sure the version param was specified :)
-$setup:errorCheck,
+$stp:errorCheck,
 
 xdmp:log(concat("Deleting all set-up ",$api:version," docs")),
 

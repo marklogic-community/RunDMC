@@ -37,7 +37,7 @@ declare function local:load-docs($dir) {
 };
 
 if (not($version = $legal-versions)) then
-  error(xs:QName("ERROR"), concat("You must specify a 'version' param with one of these values: ",
+  error((), "ERROR", concat("You must specify a 'version' param with one of these values: ",
                                   string-join($legal-versions,", ")))
 else
   (

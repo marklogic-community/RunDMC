@@ -2,32 +2,35 @@
    See README_FOR_NIGHTLY_BUILD.txt for more details. :)
 xquery version "1.0-ml";
 
-import module namespace setup = "http://marklogic.com/rundmc/api/setup"
-       at "common.xqy";
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 
-(: It may take some time to run :)
+(: This may take some time to run :)
 xdmp:set-request-time-limit(1800),
 
 (: Make sure the version and help-xsd-dir params were specified :)
-$setup:errorCheck,
-$setup:helpXsdCheck,
+$stp:errorCheck,
+$stp:helpXsdCheck,
 
-(: as well as these params :)
-if (not(xdmp:get-request-field("srcdir")))    then error(xs:QName("ERROR"), "You must specify a 'srcdir' param.")    else (), (: used in load-raw-docs.xqy and load-static-docs.xqy :)
+(: as well as these params,
+ : used in load-raw-docs.xqy and load-static-docs.xqy
+ :)
+if (xdmp:get-request-field("srcdir")) then ()
+else error((), "ERROR", "You must specify a 'srcdir' param.")
+,
 
-(: Optionally delete everything first (if clean=yes is specified) :)
-if (xdmp:get-request-field("clean") eq 'yes') then 
 (
-  xdmp:invoke("delete-static-docs.xqy"), (: TODO: I believe this is obsolete and can be removed. :)
-  xdmp:invoke("delete-raw-docs.xqy"),
-  xdmp:invoke("delete-docs.xqy"),
-  xdmp:invoke("delete-doc-images.xqy")
-) else (),
+  (: Optionally delete everything first (if clean=yes is specified) :)
+  if (not(xs:boolean(xdmp:get-request-field("clean")))) then ()
+  else ("delete-raw-docs", "delete-docs")
+  ,
+  (: Load and build everything :)
+  "load-static-docs",
+  "load-raw-docs",
+  "setup-guides",
+  "setup",
+  "/setup/collection-tagger",
+  "make-standalone-search-page")
+! xdmp:invoke(.||'.xqy')
 
-(: Load and build everything :)
-xdmp:invoke("load-static-docs.xqy"),
-xdmp:invoke("load-raw-docs.xqy"),
-xdmp:invoke("setup-guides.xqy"),
-xdmp:invoke("setup.xqy"),
-xdmp:invoke("/setup/collection-tagger.xqy"),
-xdmp:invoke("make-standalone-search-page.xqy")
+(: apidoc/setup/build.xqy :)

@@ -1,11 +1,11 @@
 xquery version "1.0-ml";
 
-import module namespace setup = "http://marklogic.com/rundmc/api/setup"
-       at "common.xqy";
+import module namespace stp="http://marklogic.com/rundmc/api/setup"
+  at "setup.xqm";
 
 (: Make sure the version and help-xsd-dir params were specified :)
-$setup:errorCheck,
-$setup:helpXsdCheck,
+$stp:errorCheck,
+$stp:helpXsdCheck,
 
 (: Extract the functions from the raw docs database and prepare for our use :)
 xdmp:invoke("pull-function-docs.xqy"),

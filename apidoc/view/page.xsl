@@ -36,7 +36,7 @@
       If current version is the default version,
       whether explicitly specified or not,
       then don't include the version prefix in links.
-      See also $api:toc-url in data-access.xqy
+      See also $api:toc-uri in data-access.xqy
   -->
   <xsl:variable name="version-prefix"
                 select="if ($api:version eq $api:default-version) then ''
@@ -192,7 +192,7 @@
         <xsl:comment>
 
         <xsl:call-template name="reset-global-toc-vars"/>
-        var toc_url = '<xsl:value-of select="$api:toc-url"/>';
+        var toc_url = '<xsl:value-of select="$api:toc-uri"/>';
         $('#apidoc_toc').load(toc_url, null, toc_init);
       </xsl:comment>
       </script>

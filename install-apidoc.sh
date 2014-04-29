@@ -48,7 +48,8 @@ fi
 echo
 echo
 
-# TODO rewrite ports in config/server-urls.xml to match?
+# rewrite ports in config/server-urls.xml to match
+sed -e '1,$s/8003/'"${PORT_MAIN}"'/g' -i'.bak' config/server-urls.xml
 
 # local customization
 if [ -z "$TMPDIR" ]; then
