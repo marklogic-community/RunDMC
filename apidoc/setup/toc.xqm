@@ -480,7 +480,7 @@ declare function toc:render-node-children(
   $n as element(toc:node))
 as element()?
 {
-  stp:info(
+  stp:fine(
     'toc:render-node-children',
     ($uri, $prefix-for-hrefs,
       xdmp:describe($n),
@@ -509,7 +509,7 @@ declare function toc:render-node(
   $n as element(toc:node))
 as element()
 {
-  stp:info(
+  stp:fine(
     'toc:render-node',
     ($uri, $prefix-for-hrefs, xdmp:describe($n), xdmp:describe($n/toc:node))),
   <li xmlns="http://www.w3.org/1999/xhtml">
@@ -541,7 +541,7 @@ as element()
     (: Handle javascript functions. :)
     if ($n[@is-javascript]) then 'javascript'
     else ())
-  let $_ := stp:info(
+  let $_ := stp:fine(
     'toc:render-async',
     ('async', 'not duplicate', $uri-child, xdmp:describe($n)))
   return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
@@ -559,7 +559,7 @@ declare function toc:render-content(
   $toc as element(toc:root))
 as element()
 {
-  stp:info(
+  stp:debug(
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs-all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
@@ -594,7 +594,7 @@ declare function toc:render-root(
   $toc as element(toc:root))
 as element()+
 {
-  stp:info(
+  stp:debug(
     'toc:render',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
 

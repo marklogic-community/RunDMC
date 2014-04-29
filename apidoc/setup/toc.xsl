@@ -20,8 +20,6 @@ driving the generation of function list pages.
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="xs api apidoc xhtml toc u ml xdmp">
 
-  <xsl:import href="../view/page.xsl"/>
-
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api/toc"
       href="toc.xqm"/>
@@ -170,6 +168,7 @@ driving the generation of function list pages.
       </xsl:if>
 
       <node display="Guides"
+            id="guides"
             open="true">
         <xsl:if test="$toc:GUIDE-DOCS-NOT-CONFIGURED">
           <node
