@@ -52,7 +52,7 @@
     <xsl:for-each select="distinct-values(//toc:node[@function-list-page or @admin-help-page]/@href)">
       <xsl:result-document href="{api:internal-uri(.)}">
         <!-- Process the first one of each that has a title (and consequently intro or help content) -->
-        <xsl:apply-templates select="($root//toc:node[@href eq current()])[title][1]"/>
+        <xsl:apply-templates select="($root//toc:node[@href eq current()])[toc:title][1]"/>
       </xsl:result-document>
     </xsl:for-each>
   </xsl:template>
@@ -62,18 +62,18 @@
       <xsl:apply-templates mode="container-toc-section-id" select="."/>
     </xsl:variable>
     <api:help-page disable-comments="yes" container-toc-section-id="{$container-toc-section-id}">
-      <xsl:apply-templates select="title | content"/>
+      <xsl:apply-templates select="toc:title | toc:content"/>
     </api:help-page>
   </xsl:template>
 
-  <xsl:template match="content">
+  <xsl:template match="toc:content">
     <api:content>
       <xsl:apply-templates mode="to-xhtml"/>
     </api:content>
   </xsl:template>
 
   <!-- Help index page is at the top -->
-  <xsl:template match="content[@auto-help-list]">
+  <xsl:template match="toc:content[@auto-help-list]">
     <api:content>
       <xsl:variable name="content-without-namespace">
         <p>The following is an alphabetical list of the Admin Interface's help pages:</p>
@@ -82,7 +82,7 @@
           <!-- only select the first node for each unique @href -->
           <xsl:apply-templates mode="help-page-item" select="for $this in $help-nodes return $this[. is $help-nodes[@href eq $this/@href][1]]">
             <!-- Sort alphabetically by title -->
-            <xsl:sort select="title"/>
+            <xsl:sort select="toc:title"/>
           </xsl:apply-templates>
           <!-- hierarchical list doesn't add any value since we already have it in the TOC
                <xsl:apply-templates mode="help-page-list" select="toc:node"/>
@@ -96,7 +96,7 @@
   <xsl:template mode="help-page-item" match="toc:node">
     <li>
       <a href="{@href}">
-        <xsl:value-of select="title"/>
+        <xsl:value-of select="toc:title"/>
       </a>
     </li>
   </xsl:template>
@@ -118,7 +118,7 @@
       <!-- TODO: add these to the input when applicable (toc-generation code) -->
       <xsl:copy-of select="@prefix | @namespace"/>
 
-      <xsl:apply-templates select="title | intro"/>
+      <xsl:apply-templates select="toc:title | toc:intro"/>
 
       <!-- Make an entry for the document pointed to by each descendant leaf node -->
       <xsl:for-each select=".//toc:node[not(toc:node)]">
@@ -160,13 +160,13 @@
     </api:list-entry>
   </xsl:template>
 
-  <xsl:template match="title">
+  <xsl:template match="toc:title">
     <api:title>
       <xsl:apply-templates mode="to-xhtml"/>
     </api:title>
   </xsl:template>
 
-  <xsl:template match="intro">
+  <xsl:template match="toc:intro">
     <api:intro>
       <xsl:apply-templates mode="to-xhtml"/>
     </api:intro>
