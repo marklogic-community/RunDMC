@@ -237,6 +237,7 @@ driving the generation of function list pages.
     </root>
   </xsl:template>
 
+  <!-- TODO any namespace problems here? -->
   <xsl:template mode="toc-guide-node" match="/guide">
     <xsl:param name="is-duplicate" select="false()"/>
     <node href="{api:external-uri(.)}" display="{/guide/title}"

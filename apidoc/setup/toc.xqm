@@ -92,8 +92,10 @@ declare function toc:category-page-title(
   $secondary-lib as xs:string?)
 as element()
 {
-  <title xmlns="">
-  {
+  element toc:title {
+    (: Children will be in the default element namespace,
+     : which is empty.
+     :)
     element a {
       attribute href { "/"||$lib },
       api:prefix-for-lib($lib) },
@@ -103,9 +105,7 @@ as element()
       element a {
         attribute href { "/"||$secondary-lib },
         api:prefix-for-lib($secondary-lib) },
-      'functions')
-  }
-  </title>
+      'functions') }
 };
 
 declare function toc:REST-page-title(
@@ -113,13 +113,13 @@ declare function toc:REST-page-title(
   $subcategory as xs:string?)
 as element()
 {
-  <title xmlns="">
-  {
+  element toc:title {
+    (: Children will be in the default element namespace,
+     : which is empty.
+     :)
     $category,
     if (not($subcategory)) then () else (
-      ' ('||$subcategory||')')
-  }
-  </title>
+      ' ('||$subcategory||')') }
 };
 
 declare function toc:function-name-nodes(

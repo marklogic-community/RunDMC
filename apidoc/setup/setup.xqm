@@ -18,6 +18,11 @@ import module namespace toc="http://marklogic.com/rundmc/api/toc"
 import module namespace xhtml="http://marklogic.com/cpf/xhtml"
   at "/MarkLogic/conversion/xhtml.xqy";
 
+declare namespace xh="http://www.w3.org/1999/xhtml" ;
+
+declare variable $TITLE-ALIASES := u:get-doc(
+  '/apidoc/config/title-aliases.xml')/aliases ;
+
 declare variable $toc-dir     := concat("/media/apiTOC/",$api:version,"/");
 declare variable $toc-xml-uri := concat($toc-dir,"toc.xml");
 declare variable $toc-uri     := concat($toc-dir,"apiTOC_", current-dateTime(), ".html");
@@ -259,18 +264,6 @@ as empty-sequence()
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
 };
 
-(: Generate and insert a list page for each TOC container :)
-declare function stp:list-pages-render()
-as empty-sequence()
-{
-  stp:info('stp:list-pages-render', "starting"),
-  xdmp:xslt-invoke(
-    "make-list-pages.xsl",
-    doc($toc-xml-uri))
-  /xdmp:document-insert(base-uri(.), .),
-  stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
-};
-
 (: Recursively load all files
  : TODO too long - refactor.
  :)
@@ -506,6 +499,224 @@ as empty-sequence()
     "stp:convert-guides", (base-uri($g), '=>', $uri,
       'in', xdmp:elapsed-time() - $start))
   return $uri
+};
+
+declare function stp:node-rewrite-namespace(
+  $n as node(),
+  $ns as xs:string)
+as node()
+{
+  typeswitch($n)
+  case document-node() return document {
+    stp:node-rewrite-namespace($n/node(), $ns) }
+  case element() return element { QName($ns, local-name($n)) } {
+    $n/@*,
+    stp:node-rewrite-namespace($n/node(), $ns) }
+  default return $n
+};
+
+declare function stp:node-to-xhtml(
+  $n as node())
+as node()
+{
+  stp:node-rewrite-namespace(
+    $n, "http://www.w3.org/1999/xhtml")
+};
+
+(: The container ID comes from the nearest ancestor (or self)
+ : that is marked as asynchronously loaded,
+ : unless nothing above this level is marked as such,
+ : in which case we use the nearest ID.
+ :)
+declare function stp:container-toc-section-id(
+  $e as element(toc:node))
+as xs:string
+{
+  $e/(
+    ancestor-or-self::toc:node[@async][1],
+    ancestor-or-self::toc:node[@id]   [1] )[1]/@id
+};
+
+(: Input parent may be api:function-page or api:javascript-function-page. :)
+declare function stp:list-entry(
+  $function as element(api:function),
+  $toc-node as element(toc:node))
+as element(api:list-entry)
+{
+  element api:list-entry {
+    $toc-node/@href,
+    element api:name {
+      (: Special-case the cts accessor functions; they should be indented :)
+      if (not($function/@lib eq 'cts'
+          and contains($toc-node/@display, '-query-'))) then ()
+      else attribute indent { true() },
+
+      (: Function name; prefer @list-page-display, if present :)
+      ($toc-node/@list-page-display,
+        $toc-node/@display)[1]/string() treat as xs:string },
+    element api:description {
+      (: Extracting the first line from the summary :)
+      concat(
+        substring-before($function/api:summary, '.'),
+        '.') } }
+};
+
+declare function stp:list-page-functions(
+  $uri as xs:string,
+  $toc-node as element(toc:node))
+as element(api:list-page)
+{
+  element api:list-page {
+    attribute xml:base { $uri },
+    attribute disable-comments { true() },
+    attribute container-toc-section-id {
+      stp:container-toc-section-id($toc-node) },
+    $toc-node/@*,
+
+    $toc-node/(toc:title|toc:intro) ! stp:node-to-xhtml(.),
+
+    (: Make an entry for document pointed to by
+     : each descendant leaf node with a type.
+     : This ignores internal guide links, which have no type.
+     :)
+    for $leaf in $toc-node//toc:node[not(toc:node)][@type]
+    (: For multiple *:polygon() functions, only list the first. :)
+    let $href as xs:string := $leaf/@href
+    let $_ := stp:fine(
+      'stp:list-page-functions',
+      ($uri, 'leaf', xdmp:describe($leaf),
+        'type', $leaf/@type, 'href', $href))
+    let $uri-leaf as xs:string := api:internal-uri($href)
+    let $root as document-node() := doc($uri-leaf)
+    let $function as element() := $root/(
+      api:function-page
+      |api:javascript-function-page)/api:function[1]
+    return stp:list-entry($function, $leaf) }
+};
+
+declare function stp:list-page-help-items(
+  $toc-node as element(toc:node))
+as element(xh:li)*
+{
+  (: TODO removed some weird-looking dedup code here. Did it matter? :)
+  for $n in $toc-node//toc:node[@href]
+  let $href as xs:string := $n/@href
+  let $title as xs:string := $n/toc:title
+  order by $title
+  return <li xmlns="http://www.w3.org/1999/xhtml">
+  {
+    element a {
+      attribute href { $href },
+      $title }
+  }
+  </li>
+};
+
+declare function stp:list-page-help(
+  $uri as xs:string,
+  $toc-node as element(toc:node))
+as element(api:help-page)
+{
+  element api:help-page {
+    attribute xml:base { $uri },
+    attribute disable-comments { true() },
+    attribute container-toc-section-id {
+      stp:container-toc-section-id($toc-node) },
+    $toc-node/@*,
+    stp:node-to-xhtml($toc-node/toc:title),
+    (: Help index page is at the top :)
+    if (not($toc-node/toc:content/@auto-help-list)) then stp:node-to-xhtml(
+      $toc-node/toc:content)
+    else element api:content {
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+      The following is an alphabetical list of Admin Interface help pages:
+        </p>
+        <ul>
+      {
+        stp:list-page-help-items($toc-node)
+      }
+        </ul>
+      </div>
+    }
+  }
+};
+
+declare function stp:list-pages(
+  $toc as element(toc:root))
+as element()+
+{
+  (: Set up the docs page for this version. :)
+  element api:docs-page {
+    attribute xml:base { api:internal-uri('/') },
+    attribute disable-comments { true() },
+    comment {
+      'This page was automatically generated using',
+      xdmp:node-uri($toc),
+      'and /apidoc/config/document-list.xml' },
+
+    for $guide in $toc/toc:node[@id eq 'guides']/toc:node[@guide]
+    let $display as xs:string := lower-case(
+      normalize-space($guide/@display))
+    return element api:user-guide {
+      $guide/@*,
+      (: Facilitate automatic link creation at render time.
+       : TODO why ../alias ?
+       :)
+      $stp:TITLE-ALIASES/guide/alias[
+        ../alias/normalize-space(lower-case(.)) = $display] }
+    ,
+
+    comment {
+      'copied from /apidoc/config/title-aliases.xml:',
+      $stp:TITLE-ALIASES/auto-link }
+  }
+  ,
+
+  (: Find each function list and help page URL. :)
+  for $href in distinct-values(
+    $toc//toc:node[@function-list-page or @admin-help-page]/@href)
+  let $uri := api:internal-uri($href)
+  (: Any element with into or help content will have a title.
+   : Process the first match.
+   :)
+  let $toc-node as element(toc:node) := (
+    $toc//toc:node[@href eq $href][toc:title])[1]
+  return $toc-node ! (
+    if (@admin-help-page) then stp:list-page-help($uri, .)
+    else if (@function-list-page) then stp:list-page-functions($uri, .)
+    else stp:error('UNEXPECTED', xdmp:quote(.)))
+};
+
+(: Generate and insert a list page for each TOC container.
+ : Because of the XSLT switch,
+ : this may return document-node()+ or element()+.
+ :)
+declare function stp:list-pages-render(
+  $toc-document as document-node())
+as node()+
+{
+  stp:info(
+    'stp:list-pages-render', ("starting", xdmp:describe($toc-document))),
+  if (0) then xdmp:xslt-invoke(
+    "make-list-pages.xsl",
+    $toc-document)
+  else stp:list-pages($toc-document/toc:root),
+  stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
+};
+
+(: Generate and insert a list page for each TOC container :)
+declare function stp:list-pages-render()
+as empty-sequence()
+{
+  for $n in stp:list-pages-render(
+    doc($toc-xml-uri) treat as node())
+  let $uri as xs:string := base-uri($n)
+  let $_ := if ($n/*
+    or $n/self::*) then () else stp:error('EMPTY', ($uri, xdmp:quote($n)))
+  let $_ := stp:fine(
+    'stp:list-pages-render', ($uri, xdmp:describe($n)))
+  return xdmp:document-insert($uri, $n)
 };
 
 (: apidoc/setup/setup.xqm :)
