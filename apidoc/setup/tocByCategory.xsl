@@ -52,6 +52,10 @@
       <!-- ID for function buckets is the display name minus spaces -->
       <!-- async is ignored for REST, because we ignore this <node> container -->
       <node display="{.}" id="{$bucket-id}" sub-control="yes" async="yes">
+        <xsl:if test="$mode eq 'javascript'">
+          <xsl:attribute name="is-javascript" select="true()"/>
+        </xsl:if>
+
         <xsl:variable name="in-this-bucket"
                       select="$functions[@bucket eq $bucket]"/>
 
@@ -68,7 +72,14 @@
           <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
-          <node display="{toc:display-category(.)}{toc:display-suffix($single-lib-for-category)}" function-list-page="yes" id="{$bucket-id}_{translate(.,' ','')}">
+          <node id="{$bucket-id}_{translate(.,' ','')}"
+                function-list-page="yes"
+                display="{
+                         toc:display-category(.)}{
+                         toc:display-suffix($single-lib-for-category)}" >
+            <xsl:if test="$mode eq 'javascript'">
+              <xsl:attribute name="is-javascript" select="true()"/>
+            </xsl:if>
 
             <!-- When there are sub-categories, don't create a new page for the category (they tend to be useless);
                  only create a link if it corresponds to a full lib page -->

@@ -549,18 +549,18 @@ as element()
 {
   if ($n/@async and not($n/@duplicate)) then () else stp:error(
       'UNEXPECTED', xdmp:describe($n)),
-  let $uri-child := toc:uri(
+  let $uri-new as xs:string := toc:uri(
     concat($uri, '/'),
-    $n/@id,
+    $n/@id/string() treat as xs:string,
     (: Handle javascript functions. :)
     if ($n[@is-javascript]) then 'javascript'
     else ())
-  let $_ := stp:fine(
+  let $_ := stp:debug(
     'toc:render-async',
-    ('async', 'not duplicate', $uri-child, xdmp:describe($n)))
+    ('async', 'not duplicate', $uri-new, xdmp:describe($n)))
   return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
   {
-    attribute xml:base { $uri-child },
+    attribute xml:base { $uri-new },
     toc:render-node(
       $uri, $prefix-for-hrefs, $n/toc:node)
   }
@@ -652,7 +652,7 @@ declare function toc:render(
 as node()+
 {
   (: TODO when xqy is working, remove xsl entirely. :)
- if (0) then xdmp:xslt-invoke(
+  if (0) then xdmp:xslt-invoke(
     "render-toc.xsl",
     $toc-document,
     map:new(
@@ -675,14 +675,16 @@ as empty-sequence()
   (: Every result element must set its own base-uri,
    : so we known where to store it in the database.
    :)
-  toc:render(
+  for $n in toc:render(
     $uri,
     if ($is-default) then () else concat("/", $api:version),
-    doc($stp:toc-xml-uri) treat as node())/
-  xdmp:document-insert(
-    (: Force an error if the base-uri was not set. :)
-    base-uri(.) treat as xs:anyURI,
-    .)
+    doc($stp:toc-xml-uri) treat as node())
+  (: Force an error if the base-uri was not set. :)
+  let $uri-new as xs:anyURI := base-uri($n)
+  order by $uri-new
+  return (
+    stp:debug('toc:render', ('inserting', $uri-new)),
+    xdmp:document-insert($uri-new, $n))
 };
 
 declare function toc:render()

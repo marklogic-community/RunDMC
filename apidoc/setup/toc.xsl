@@ -66,7 +66,7 @@ driving the generation of function list pages.
                 open="true"
                 id="AllFunctionsJavasScriptByCat">
             <xsl:copy-of
-                select="$javascript-by-category/toc:node"/>
+                select="$javascript-by-category"/>
           </node>
           <node href="/js/all"
                 display="JavaScript Functions ({
@@ -95,7 +95,7 @@ driving the generation of function list pages.
               open="true"
               id="AllFunctionsByCat">
           <xsl:copy-of
-              select="$by-category/toc:node[not(@id eq 'RESTResourcesAPI')]"/>
+              select="$by-category[not(@id eq 'RESTResourcesAPI')]"/>
         </node>
         <node href="/all"
               display="XQuery/XSLT Functions ({
@@ -127,7 +127,7 @@ driving the generation of function list pages.
           <title>REST resources</title>
           <!-- Just the REST API bucket contents -->
           <xsl:copy-of
-              select="$by-category/toc:node[
+              select="$by-category[
                       starts-with(@id, 'RESTResourcesAPI')]"/>
           <node display="Related Guides"
                 id="RelatedRestGuides"

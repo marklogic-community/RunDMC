@@ -547,6 +547,7 @@ as element(api:list-entry)
     $toc-node/@href,
     element api:name {
       (: Special-case the cts accessor functions; they should be indented :)
+      (: TODO this needs work for javascript. :)
       if (not($function/@lib eq 'cts'
           and contains($toc-node/@display, '-query-'))) then ()
       else attribute indent { true() },

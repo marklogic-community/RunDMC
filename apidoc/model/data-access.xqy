@@ -80,7 +80,7 @@ declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
   else $all-function-docs[
     api:javascript-function-page/api:function/@bucket = (
       'MarkLogic Built-In Functions',
-      'W3C-Standard Function')]) ;
+      'W3C-Standard Functions')]) ;
 
 declare variable $all-functions-count     := xdmp:estimate(
   cts:search(collection(),$query-for-all-functions));
@@ -484,7 +484,7 @@ as element(apidoc:function)?
 {
   if (not($function/@bucket = (
       'MarkLogic Built-In Functions',
-      'W3C-Standard Function'))) then ()
+      'W3C-Standard Functions'))) then ()
   else element apidoc:function {
     attribute is-javascript { true() },
     $function/@*,
