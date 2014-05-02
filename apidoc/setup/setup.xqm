@@ -573,7 +573,12 @@ as element(api:list-page)
       stp:container-toc-section-id($toc-node) },
     $toc-node/@*,
 
-    $toc-node/(toc:title|toc:intro) ! stp:node-to-xhtml(.),
+    $toc-node/toc:title ! element api:title {
+      @*,
+      stp:node-to-xhtml(node()) },
+    $toc-node/toc:intro ! element api:intro {
+      @*,
+      stp:node-to-xhtml(node()) },
 
     (: Make an entry for document pointed to by
      : each descendant leaf node with a type.
