@@ -48,9 +48,6 @@ fi
 echo
 echo
 
-# rewrite ports in config/server-urls.xml to match
-sed -e '1,$s/8003/'"${PORT_MAIN}"'/g' -i'.bak' config/server-urls.xml
-
 # local customization
 if [ -z "$TMPDIR" ]; then
     TMPDIR=/tmp
@@ -166,7 +163,7 @@ else
 fi
 echo using schemas from "${XSD}"
 
-DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=yes"
+DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=1"
 echo $DATA
 echo Processing... this may take some time.
 echo You can watch the ErrorLog.txt for progress.
