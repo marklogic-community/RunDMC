@@ -51,10 +51,13 @@ declare variable $s:search-page-url := if ($s:viewing-standalone-api) then conca
 
 (: Use the @url if provided in the config; otherwise, use the same server but with the specified @port :)
 declare function s:server-url($type as xs:string) {
-  let $element-name  := concat($type,'-server'),
-      $server-config := $s:this-host/*[local-name(.) eq $element-name] return
+  let $element-name  := concat($type,'-server')
+  let $server-config := $s:this-host/*[local-name(.) eq $element-name]
+  return
   if ($server-config/@url)
   then string($server-config/@url)
+  (: re-use current scheme (http or https) with default port :)
+  else if (not($server-config/@port)) then concat('//',$s:current-request-host)
   (: re-use current scheme (http or https) :)
   else concat('//',$s:request-host-without-port,':',$server-config/@port)
 };

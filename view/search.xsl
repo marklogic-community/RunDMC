@@ -14,7 +14,12 @@
   xmlns:api  ="http://marklogic.com/rundmc/api"
   xmlns:ck   ="http://parthcomp.com/cookies"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
+  extension-element-prefixes="xdmp"
   exclude-result-prefixes="xs ml xdmp qp search cts srv api ck">
+
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api"
+      href="/apidoc/model/data-access.xqy"/>
 
   <xsl:variable name="versions" select="u:get-doc('/config/server-versions.xml')/*:versions/*:version"/>
 
@@ -367,6 +372,7 @@
                     <xsl:value-of select="api:function[1]/@fullname"/>
                   </xsl:template>
 
+                  <!-- TODO should not refer directly to the apidoc code. -->
                   <xsl:template mode="page-specific-title" match="api:function-page[api:function[1]/@lib eq 'REST']">
                     <xsl:value-of select="api:REST-resource-heading(api:function[1]/@fullname)"/>
                   </xsl:template>
