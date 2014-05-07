@@ -56,6 +56,8 @@ raw:invoke-function(
      : In MarkLogic 6 and later, that is not the default.
      : Alternative code could use the URI lexicon
 
+     TODO better to use cts:uris and cts:directory-query
+
      distinct-values(
        for $x in cts:uri-match(concat($guides-dir, "*"))
        return concat(

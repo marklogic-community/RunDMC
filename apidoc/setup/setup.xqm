@@ -661,9 +661,12 @@ as element()+
       xdmp:node-uri($toc),
       'and /apidoc/config/document-list.xml' },
 
-    for $guide in $toc/toc:node[@id eq 'guides']/toc:node[@guide]
+    let $guide-nodes as element()+ := $toc/toc:node[
+      @id eq 'guides']/toc:node/toc:node[@guide]
+    for $guide in $guide-nodes
     let $display as xs:string := lower-case(
       normalize-space($guide/@display))
+    let $_ := stp:fine('stp:list-pages', (xdmp:describe($guide), $display))
     return element api:user-guide {
       $guide/@*,
       (: Facilitate automatic link creation at render time.
@@ -674,8 +677,8 @@ as element()+
     ,
 
     comment {
-      'copied from /apidoc/config/title-aliases.xml:',
-      $stp:TITLE-ALIASES/auto-link }
+      'copied from /apidoc/config/title-aliases.xml:' },
+    $stp:TITLE-ALIASES/auto-link
   }
   ,
 

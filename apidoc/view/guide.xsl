@@ -198,20 +198,19 @@
     </a>
   </xsl:template>
 
-     <xsl:function name="api:config-for-title" as="element()?">
-       <xsl:param name="link-text" as="xs:string"/>
-       <xsl:variable name="title" select="api:normalize-text($link-text)"/>
-       <xsl:sequence select="$other-guide-listings[(@display|alias)
-                    /api:normalize-text(.) = $title] |
-                    $auto-links [alias /api:normalize-text(.) = $title]"/>
-     </xsl:function>
+  <xsl:function name="api:config-for-title" as="element()?">
+    <xsl:param name="link-text" as="xs:string"/>
+    <xsl:variable name="title" select="api:normalize-text($link-text)"/>
+    <xsl:sequence select="$other-guide-listings[(@display|alias)
+                          /api:normalize-text(.) = $title] |
+                          $auto-links[alias/api:normalize-text(.) = $title]"/>
+  </xsl:function>
 
-     <xsl:function name="api:normalize-text" as="xs:string">
-        <xsl:param name="text" as="xs:string"/>
-        <xsl:sequence select="normalize-space(lower-case(
-                                translate($text,'&#160;',' ')))"/>
-     </xsl:function>
-
+  <xsl:function name="api:normalize-text" as="xs:string">
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:sequence select="normalize-space(lower-case(
+                          translate($text,'&#160;',' ')))"/>
+  </xsl:function>
 
   <!-- Boilerplate copying code -->
   <xsl:template mode="guide" match="node()">

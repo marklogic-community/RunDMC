@@ -42,7 +42,8 @@
   <xsl:variable name="original-content" select="/"/>
 
   <xsl:variable name="highlight-search" select="string($latest-search-qtext)"/>
-  <xsl:variable name="content" select="if ($highlight-search) then $highlighted-content else /"/>
+  <xsl:variable name="content"
+                select="if ($highlight-search) then $highlighted-content else /"/>
 
           <xsl:variable name="highlighted-content">
             <xsl:apply-templates mode="preserve-base-uri" select="u:highlight-doc(/, $highlight-search, ml:external-uri(/))"/>

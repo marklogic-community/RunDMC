@@ -214,6 +214,18 @@ as xs:string
   concat("/media", substring-before($page-uri, ".xml"), "/")
 };
 
+declare function api:guide-info(
+  $content as node(),
+  $url-name as attribute())
+as element()?
+{
+  if (1) then () else xdmp:log(
+    text {
+      '[api:guide-info]', xdmp:describe($content), $url-name/string() }),
+  let $suffix := concat('/', $url-name)
+  return $content/*/api:user-guide[ends-with(@href, $suffix)]
+};
+
 declare function api:translate-REST-resource-name(
   $name as xs:string)
 as xs:string

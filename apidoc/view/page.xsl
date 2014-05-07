@@ -49,12 +49,6 @@
                           ml:external-uri-for-string($internal-uri))"/>
   </xsl:function>
 
-  <xsl:function name="api:guide-info" as="element()?">
-    <xsl:param name="url-name" as="attribute()"/>
-    <xsl:sequence select="$content/*/api:user-guide[
-                          @href/ends-with(.,$url-name/concat('/',.))]"/>
-  </xsl:function>
-
   <!--
       Don't include the version in the comments doc URI.
       Use just one conversation thread per function,
@@ -283,9 +277,11 @@
   </xsl:template>
 
   <!-- On the main docs page, just let the first tab be selected by default. -->
-  <xsl:template mode="toc-section-link-selector" match="api:docs-page"/>
+  <xsl:template mode="toc-section-link-selector"
+                match="api:docs-page"/>
 
-  <xsl:template mode="page-title" match="api:docs-page">
+  <xsl:template mode="page-title"
+                match="api:docs-page">
     <xsl:value-of select="$site-title"/>
   </xsl:template>
 
@@ -353,13 +349,15 @@
   </xsl:template>
 
 
-  <xsl:template mode="page-content" match="api:docs-page">
+  <xsl:template mode="page-content"
+                match="api:docs-page">
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <h1>
         <xsl:apply-templates mode="page-title" select="."/>
       </h1>
-      <xsl:apply-templates mode="docs-page" select="$doc-list-config/*"/>
+      <xsl:apply-templates mode="docs-page"
+                           select="$doc-list-config/*"/>
     </div>
   </xsl:template>
 
@@ -367,7 +365,7 @@
                 match="group[@min-version gt $api:version]" />
 
   <xsl:template mode="docs-page" match="group" priority="2">
-    <h3><xsl:value-of select="@name"/></h3>
+    <h3 class="docs-page"><xsl:value-of select="@name"/></h3>
     <xsl:next-match/>
   </xsl:template>
 
@@ -376,16 +374,25 @@
       <!-- not using this anymore
            <xsl:apply-templates mode="hard-coded-doc-list-items" select="."/>
       -->
+      <xsl:value-of
+          select="xdmp:log(concat('docs-page group ', xdmp:describe(*)))"/>
       <xsl:apply-templates mode="docs-list-item" select="*"/>
     </ul>
   </xsl:template>
 
-  <xsl:template mode="docs-list-item" match="*"/>
+  <xsl:template mode="docs-list-item"
+                match="*"/>
 
-  <xsl:template mode="docs-list-item" match="entry[@min-version gt $api:version]" priority="1"/>
+  <xsl:template mode="docs-list-item"
+                match="entry[@min-version gt $api:version]" priority="1"/>
 
-  <xsl:template mode="docs-list-item" match="entry[@href or url/@version = $api:version]
-                                             | guide[api:guide-info(@url-name)]">
+  <!--
+       This template matches entries with links or versions,
+       plus guides that have information.
+  -->
+  <xsl:template mode="docs-list-item"
+                match="entry[@href or url/@version = $api:version]
+                       | guide[api:guide-info($content, @url-name)]">
     <xsl:variable name="href">
       <xsl:apply-templates mode="entry-href" select="."/>
     </xsl:variable>
@@ -427,7 +434,7 @@
 
   <xsl:template mode="entry-href" match="guide">
     <xsl:value-of select="$version-prefix"/>
-    <xsl:value-of select="api:guide-info(@url-name)/@href"/>
+    <xsl:value-of select="api:guide-info($content, @url-name)/@href"/>
   </xsl:template>
 
   <!-- entry/url/@href must include the whole path (version prefix not added) -->
@@ -441,9 +448,8 @@
     <xsl:value-of select="@href"/>
   </xsl:template>
 
-
   <xsl:template mode="entry-title" match="guide">
-    <xsl:value-of select="api:guide-info(@url-name)/@display"/>
+    <xsl:value-of select="api:guide-info($content, @url-name)/@display"/>
   </xsl:template>
 
   <xsl:template mode="entry-title" match="entry">

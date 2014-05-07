@@ -49,7 +49,7 @@ declare variable $CATEGORY-MAPPINGS := u:get-doc(
 declare variable $GUIDE-DOCS := xdmp:directory(
   concat($api:VERSION-DIR, 'guide/'))[guide] ;
 
-declare variable $GUIDE-GROUPS := u:get-doc(
+declare variable $GUIDE-GROUPS as element(group)+ := u:get-doc(
   '/apidoc/config/document-list.xml')/docs/group[guide] ;
 
 declare variable $GUIDE-DOCS-NOT-CONFIGURED := (
