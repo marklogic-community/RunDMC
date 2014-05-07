@@ -35,8 +35,7 @@
                           then $toc:ALL-FUNCTIONS-JAVASCRIPT
                           else $toc:ALL-FUNCTIONS"/>
     <xsl:variable name="buckets"
-                  select="distinct-values($functions/@bucket)
-                          [. ne 'REST Resources API']"/>
+                  select="distinct-values($functions/@bucket)"/>
 
     <!-- for each bucket -->
     <xsl:for-each select="$buckets">
