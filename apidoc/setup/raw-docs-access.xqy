@@ -62,13 +62,16 @@ declare variable $GUIDE-DOCS := raw:guide-docs($VERSION) ;
  : Try to work around that by capturing the value.
  :)
 declare function raw:guide-docs($version as xs:string)
-as document-node()*
+as document-node()+
 {
   raw:invoke-function(
     function() {
-      xdmp:log(text { '[raw-docs-access]', 'version', $version }, 'fine'),
-      xdmp:directory(
-        concat("/", $version, "/guide/"), "infinity")[*] })
+      let $uri := concat("/", $version, "/guide/")
+      let $_ := xdmp:log(
+        text { '[raw-docs-access]', 'version', $version, $uri },
+        'fine')
+      (: TODO is there a more efficient way to exclude binary? :)
+      return xdmp:directory($uri, "infinity")[*] })
 };
 
 (: Shortcut for xdmp:invoke-function. :)

@@ -174,7 +174,9 @@ declare function stp:static-add-scripts($n as node())
   default return $n
 };
 
-declare function stp:static-uri-rewrite($uri) {
+declare function stp:static-uri-rewrite($uri as xs:string)
+as xs:string
+{
   if (starts-with($uri,"/javaclient"))
   then replace($uri,"/javaclient/javadoc/", "/javadoc/client/")
   else if (starts-with($uri,"/hadoop/"))
@@ -194,7 +196,8 @@ declare function stp:static-uri-rewrite($uri) {
   else error((), "UNEXPECTED", ('path', $uri))
 };
 
-declare function stp:pdf-uri($uri)
+declare function stp:pdf-uri($uri as xs:string)
+as xs:string?
 {
   let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1"),
       $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
@@ -211,8 +214,10 @@ declare function stp:pdf-uri($uri)
 };
 
 (: look at document-list.xml to change url names based on that list :)
-declare function stp:fix-guide-names($s as xs:string, $num as xs:integer) {
-
+declare function stp:fix-guide-names(
+  $s as xs:string,
+  $num as xs:integer)
+{
 let $x := xdmp:document-get(concat(xdmp:modules-root(),
               "/apidoc/config/document-list.xml"))
 let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
@@ -262,26 +267,6 @@ as empty-sequence()
       <ml:search-results/>
     </ml:page>),
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
-};
-
-(: Recursively load all files
- : TODO too long - refactor.
- :)
-declare function stp:static-entries-insert(
-  $version as xs:string,
-  $entries as element(dir:entry)*,
-  $pubs-dir as xs:string)
-as empty-sequence()
-{
-  for $e in $entries return
-  switch($e/dir:type)
-  case 'file' return stp:static-file-insert(
-    $version, $e/dir:pathname, $pubs-dir)
-  case 'directory' return stp:static-entries-insert(
-    $version,
-    xdmp:filesystem-directory($e/dir:pathname)/dir:entry,
-    $pubs-dir)
-  default return ()
 };
 
 (: Load a static file.
@@ -391,6 +376,25 @@ as empty-sequence()
       let $_ := stp:fine(
         'static-file-insert', ("Tidying", $path, "to", $xhtml-uri))
       return xdmp:document-insert($xhtml-uri, stp:static-add-scripts($xhtml))))
+};
+
+(: Recursively load all files
+ :)
+declare function stp:static-entries-insert(
+  $version as xs:string,
+  $entries as element(dir:entry)*,
+  $pubs-dir as xs:string)
+as empty-sequence()
+{
+  for $e in $entries return
+  switch($e/dir:type)
+  case 'file' return stp:static-file-insert(
+    $version, $e/dir:pathname, $pubs-dir)
+  case 'directory' return stp:static-entries-insert(
+    $version,
+    xdmp:filesystem-directory($e/dir:pathname)/dir:entry,
+    $pubs-dir)
+  default return ()
 };
 
 declare function stp:static-docs-insert(

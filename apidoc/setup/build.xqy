@@ -19,7 +19,7 @@ if (xdmp:get-request-field("srcdir")) then ()
 else error((), "ERROR", "You must specify a 'srcdir' param.")
 ,
 
-(
+for $xqy at $x in (
   (: Optionally delete everything first (if clean=yes is specified) :)
   if (not(xs:boolean(xdmp:get-request-field("clean")))) then ()
   else ("delete-raw-docs", "delete-docs")
@@ -31,6 +31,6 @@ else error((), "ERROR", "You must specify a 'srcdir' param.")
   "setup",
   "/setup/collection-tagger",
   "make-standalone-search-page")
-! xdmp:invoke(.||'.xqy')
+return xdmp:invoke($xqy||'.xqy')
 
 (: apidoc/setup/build.xqy :)
