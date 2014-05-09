@@ -296,21 +296,39 @@ declare function guide:anchor(
 as element()?
 {
   (: Since we rewrite all links to point to the last anchor,
-   : it is safe to remove all the anchors that aren't last.
+   : it is safe to drop any anchors that is not last.
    :)
-  if (not($e[@id]/preceding-sibling::A)) then ()
+  if ($e[@id]/preceding-sibling::A) then ()
   (: Default :)
   else element a {
-    guide:full-anchor-id($e/@ID),
-    guide:anchor-href(
-      $raw-docs,
-      $fully-resolved-top-level-heading-references,
-      $e/@href),
+    (: Anchors may have @id or @href or both. :)
+    $e/@ID ! attribute id { guide:full-anchor-id(.) },
+    $e/@href ! attribute href {
+      guide:anchor-href(
+        $raw-docs,
+        $fully-resolved-top-level-heading-references,
+        $e/@href) },
     guide:link-content($e) }
 };
 
-(: TODO some bullet lists are missing! :)
-(: TODO some in-text links are missing! :)
+(: TODO some bullet lists are missing! Body-bullet :)
+
+declare function guide:convert(
+  $raw-docs as node()+,
+  $fully-resolved-top-level-heading-references as xs:string+,
+  $uri as xs:string,
+  $guide as document-node())
+as node()
+{
+  xdmp:xslt-invoke(
+    "convert-guide.xsl", $guide,
+    map:new(
+      (map:entry('OUTPUT-URI', $uri),
+        map:entry('RAW-DOCS', $raw-docs),
+        map:entry(
+          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES',
+          $fully-resolved-top-level-heading-references))))
+};
 
 declare function guide:render()
 as empty-sequence()
@@ -324,14 +342,9 @@ as empty-sequence()
   for $g in $raw-docs
   let $start := xdmp:elapsed-time()
   let $uri as xs:string := raw:target-guide-doc-uri($g)
-  let $converted := xdmp:xslt-invoke(
-    "convert-guide.xsl", $g,
-    map:new(
-      (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $raw-docs),
-        map:entry(
-          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES',
-          $fully-resolved-top-level-heading-references))))
+  let $converted := guide:convert(
+    $raw-docs, $fully-resolved-top-level-heading-references,
+    $uri, $g)
   let $uri as xs:string := base-uri($converted)
   let $_ := xdmp:document-insert($uri, $converted)
   let $_ := xdmp:log(

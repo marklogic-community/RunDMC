@@ -23,20 +23,24 @@
 
   <xsl:output indent="no"/>
 
-  <xsl:param name="OUTPUT-URI" as="xs:string"/>
-  <xsl:param name="RAW-DOCS" as="document-node()+"/>
-  <xsl:param name="FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES" as="xs:string+"/>
+  <xsl:param name="OUTPUT-URI"
+             as="xs:string"/>
+  <xsl:param name="RAW-DOCS"
+             as="document-node()+"/>
+  <xsl:param name="FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES"
+             as="xs:string+"/>
 
-  <xsl:variable name="DEBUG_GROUPING" select="$convert-at-render-time"/>
+  <xsl:variable name="DEBUG_GROUPING"
+                select="$convert-at-render-time"/>
 
   <xsl:template match="/">
-    <!-- Strip out unhelpful list containers -->
-    <xsl:variable name="useless-distinctions-stripped"
-                  select="guide:flatten(.)"/>
-    <!-- Capture section hierarchy -->
+    <!--
+        Capture section hierarchy,
+        starting from a flat version without unhelpful list containers.
+    -->
     <xsl:variable name="sections-captured">
       <xsl:apply-templates mode="capture-sections"
-                           select="$useless-distinctions-stripped"/>
+                           select="guide:flatten(.)"/>
     </xsl:variable>
     <!-- Capture list hierarchy -->
     <xsl:variable name="lists-captured">
@@ -206,7 +210,10 @@
     </p>
   </xsl:template>
 
-  <!-- Don't convert a single Body or CellBody child inside a CELL to a <p>; just process contents -->
+  <!--
+      Don't convert a single Body or CellBody child inside a CELL to a <p>.
+      Just process contents.
+  -->
   <xsl:template match="CELL[count(*) eq 1]/Body
                        | CELL[count(*) eq 1]/CellBody" priority="1">
     <xsl:apply-templates/>
@@ -218,10 +225,15 @@
     <xsl:value-of select="replace(., '^\s*\n', '')"/>
   </xsl:template>
 
-  <!-- Now that we're merging adjacent <Code> elements, let's be more discriminating about
-       which whitespace characters we strip. In particular, preserve the whitespace that
-       comes at the beginning of a merged Code element (see below) -->
-  <xsl:template match="text()[preceding-sibling::*[1][self::PRESERVE_FOLLOWING_WHITESPACE]]">
+  <!--
+      Now that we're merging adjacent <Code> elements,
+      let's be more discriminating about which whitespace characters we strip.
+      In particular, preserve the whitespace that comes
+      at the beginning of a merged Code element (see below).
+  -->
+  <xsl:template match="text()[
+                       preceding-sibling::*[1][
+                       self::PRESERVE_FOLLOWING_WHITESPACE]]">
     <xsl:value-of select="."/>
   </xsl:template>
 
