@@ -158,7 +158,7 @@ function loadAllSubSections(tocRoot) {
 // We may ignore index, but it's necessary as part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
   var $tocSection = $(tocSection);
-  console.log("loadTocSection", index, tocSection, $tocSection);
+  console.log("loadTocSection", index, tocSection.length);
   if ($tocSection.hasClass("hasChildren"))
     $tocSection.find(".hitarea").trigger("click");
 }
@@ -236,7 +236,7 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-    console.log("showInTOC", a);
+    console.log("showInTOC", a.href);
     $("#api_sub a.selected").removeClass("selected");
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
@@ -269,10 +269,11 @@ function toggleFunctionsView(input) {
 function updateTocForTab() {
   console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector);
 
-  if (!functionPageBucketId) return console.log(
+  if (!functionPageBucketId) console.log(
       'no functionPageBucketId!');
-  if (!tocSectionLinkSelector) return console.log(
-      'no functionPageBucketId!');
+  if (!tocSectionLinkSelector) console.log(
+      'no tocSectionLinkSelector!');
+  if (!functionPageBucketId && !tocSectionLinkSelector) return;
 
   var tocSectionLink = $(tocSectionLinkSelector);
   var tocSection = tocSectionLink.parent();
