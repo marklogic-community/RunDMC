@@ -343,7 +343,8 @@
     <xsl:apply-templates mode="capture-lists"/>
   </xsl:template>
 
-  <xsl:template mode="capture-lists-content" match="div | CELL">
+  <xsl:template mode="capture-lists-content"
+                match="div | CELL">
     <xsl:for-each-group select="*"
                         group-adjacent="guide:is-part-of-list(.)
                                         and not(self::div or self::CELL)">

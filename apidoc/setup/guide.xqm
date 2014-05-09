@@ -98,19 +98,17 @@ declare function guide:starts-list(
 as xs:boolean
 {
   (: For when a note contains a list :)
-  exists(
-    $e/self::Number
-    or $e/self::Body-bullet
-    or $e/self::Note[following-sibling::*[1]/self::Body-bullet-2])
+  $e/self::Number
+  or $e/self::Body-bullet
+  or $e/self::Note[following-sibling::*[1]/self::Body-bullet-2]
 };
 
 declare function guide:ends-list(
   $e as element())
 as xs:boolean
 {
-  exists(
-    $e/self::EndList-root
-    or $e/self::Body[not(IMAGE)])
+  $e/self::EndList-root
+  or $e/self::Body[not(IMAGE)]
 };
 
 declare function guide:is-before-end-of-list($e)
@@ -310,8 +308,6 @@ as element()?
         $e/@href) },
     guide:link-content($e) }
 };
-
-(: TODO some bullet lists are missing! Body-bullet :)
 
 declare function guide:convert(
   $raw-docs as node()+,
