@@ -655,11 +655,11 @@ as element(api:help-page)
   }
 };
 
-declare function stp:list-pages(
+(: Set up the docs page for this version. :)
+declare function stp:list-page-root(
   $toc as element(toc:root))
 as element()+
 {
-  (: Set up the docs page for this version. :)
   element api:docs-page {
     attribute xml:base { api:internal-uri('/') },
     attribute disable-comments { true() },
@@ -683,10 +683,8 @@ as element()+
         ../alias/normalize-space(lower-case(.)) = $display] }
     ,
 
-    comment {
-      'copied from /apidoc/config/title-aliases.xml:' },
-    $stp:TITLE-ALIASES/auto-link
-  }
+    comment { 'copied from /apidoc/config/title-aliases.xml:' },
+    $stp:TITLE-ALIASES/auto-link }
 };
 
 (: Generate and insert a list page for each TOC container.
@@ -699,7 +697,7 @@ as node()+
 {
   stp:info(
     'stp:list-pages-render', ("starting", xdmp:describe($toc-document))),
-  stp:list-pages($toc-document/toc:root),
+  stp:list-page-root($toc-document/toc:root),
   (: Find each function list and help page URL. :)
   let $seq as xs:string+ := distinct-values(
     $toc-document//toc:node[@function-list-page or @admin-help-page]/@href)
