@@ -687,21 +687,6 @@ as element()+
       'copied from /apidoc/config/title-aliases.xml:' },
     $stp:TITLE-ALIASES/auto-link
   }
-  ,
-
-  (: Find each function list and help page URL. :)
-  for $href in distinct-values(
-    $toc//toc:node[@function-list-page or @admin-help-page]/@href)
-  let $uri := api:internal-uri($href)
-  (: Any element with into or help content will have a title.
-   : Process the first match.
-   :)
-  let $toc-node as element(toc:node) := (
-    $toc//toc:node[@href eq $href][toc:title])[1]
-  return $toc-node ! (
-    if (@admin-help-page) then stp:list-page-help($uri, .)
-    else if (@function-list-page) then stp:list-page-functions($uri, .)
-    else stp:error('UNEXPECTED', xdmp:quote(.)))
 };
 
 (: Generate and insert a list page for each TOC container.
@@ -714,10 +699,22 @@ as node()+
 {
   stp:info(
     'stp:list-pages-render', ("starting", xdmp:describe($toc-document))),
-  if (0) then xdmp:xslt-invoke(
-    "make-list-pages.xsl",
-    $toc-document)
-  else stp:list-pages($toc-document/toc:root),
+  stp:list-pages($toc-document/toc:root),
+  (: Find each function list and help page URL. :)
+  let $seq as xs:string+ := distinct-values(
+    $toc-document//toc:node[@function-list-page or @admin-help-page]/@href)
+  for $href in $seq
+  let $uri := api:internal-uri($href)
+  (: Any element with into or help content will have a title.
+   : Process the first match.
+   :)
+  let $toc-node as element(toc:node) := (
+    $toc-document//toc:node[@href eq $href][toc:title])[1]
+  return $toc-node ! (
+    if (@admin-help-page) then stp:list-page-help($uri, .)
+    else if (@function-list-page) then stp:list-page-functions($uri, .)
+    else stp:error('UNEXPECTED', xdmp:quote(.)))
+  ,
   stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
 };
 
