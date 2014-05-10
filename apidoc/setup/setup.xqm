@@ -550,10 +550,13 @@ as element(api:list-entry)
   element api:list-entry {
     $toc-node/@href,
     element api:name {
-      (: Special-case the cts accessor functions; they should be indented :)
-      (: TODO this needs work for javascript. :)
+      (: Special-case the cts accessor functions; they should be indented.
+       : This handles XQuery and JavaScript naming conventions.
+       :)
       if (not($function/@lib eq 'cts'
-          and contains($toc-node/@display, '-query-'))) then ()
+          and $toc-node/@display ! (
+            contains(., '-query-')
+            or substring-after(., 'Query')))) then ()
       else attribute indent { true() },
 
       (: Function name; prefer @list-page-display, if present :)
@@ -727,8 +730,8 @@ as empty-sequence()
   let $uri as xs:string := base-uri($n)
   let $_ := if ($n/*
     or $n/self::*) then () else stp:error('EMPTY', ($uri, xdmp:quote($n)))
-  let $_ := stp:fine(
-    'stp:list-pages-render', ($uri, xdmp:describe($n)))
+  let $_ := stp:debug(
+    'stp:list-pages-render', ($uri))
   return xdmp:document-insert($uri, $n)
 };
 
