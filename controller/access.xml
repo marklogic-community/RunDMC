@@ -1,19 +1,18 @@
-<!-- Only file paths that begin with one of these
-     prefixes will be externally visible. -->
-<paths>
-  <prefix>/css/</prefix>
-  <prefix>/js/</prefix>
-  <prefix>/apidoc/js/</prefix>
-  <prefix>/apidoc/images/</prefix>
-  <prefix>/images/</prefix>
-  <prefix>/stackunderflow/</prefix>
-  <prefix>/hacks/</prefix>
-  <prefix>/favicon.ico</prefix>
-  <prefix>/google978d12d96932d00a.html</prefix>
-  <prefix>/maven-license.html</prefix>
-  <prefix>/robots.txt</prefix>
-  <prefix>/controller/tracker.xqy</prefix>
-  <prefix>/try</prefix>
-  <prefix>/test</prefix>
-  <prefix>/download</prefix>
-</paths>
+<!--
+    Only static file paths that follow these rules will be accessible.
+-->
+<rules>
+  <matches>^/(apidoc/)?js/.+\.js$</matches>
+  <matches>^/(apidoc/)?images/.+\.(gif|ico|jpg|png|swf)$</matches>
+  <starts-with>/controller/tracker.xqy</starts-with>
+  <starts-with>/css/</starts-with>
+  <starts-with>/download</starts-with>
+  <starts-with>/favicon.ico</starts-with>
+  <starts-with>/google978d12d96932d00a.html</starts-with>
+  <starts-with>/hacks/</starts-with>
+  <starts-with>/maven-license.html</starts-with>
+  <starts-with>/robots.txt</starts-with>
+  <starts-with>/stackunderflow/</starts-with>
+  <starts-with>/test</starts-with>
+  <starts-with>/try</starts-with>
+</rules>

@@ -7,12 +7,12 @@ module namespace m="http://marklogic.com/rundmc/apidoc/rewrite";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-import module namespace u="http://marklogic.com/rundmc/util"
-  at "/lib/util-2.xqy";
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
+import module namespace rw="http://marklogic.com/rundmc/rewrite"
+ at "/controller/rewrite.xqm";
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
   at "/controller/server-urls.xqy";
 
@@ -20,8 +20,6 @@ declare namespace x="http://www.w3.org/1999/xhtml";
 
 declare variable $DEBUG as xs:boolean? := xs:boolean(
   xdmp:get-request-field('debug')) ;
-
-declare variable $ACCESS-PATHS := u:get-doc("/controller/access.xml")/paths ;
 
 (: $PATH is just the original path, unless this is a REST doc, in which
  case we also might have to look at the query string (translating
@@ -58,8 +56,6 @@ declare variable $VERSION-SPECIFIED := (
 declare variable $VERSION := (
   if ($VERSION-SPECIFIED) then $VERSION-SPECIFIED
   else $api:default-version) ;
-
-declare variable $VERSION-LATEST := '7.0' ;
 
 declare variable $ROOT-DOC-URL := concat(
   '/apidoc/', $api:default-version, '/index.xml');
@@ -302,7 +298,7 @@ declare function m:rewrite()
   (: If the path starts with one of the designated paths in the code base,
    : then serve from filesystem.
    :)
-  else if ($ACCESS-PATHS/prefix[starts-with($PATH,.)]) then $PATH-ORIG
+  else if (rw:static-file-path($PATH)) then $PATH-ORIG
 
   (: SCENARIO 2C: Serve content from database :)
   (: Respond with DB contents for /media  :)
@@ -337,7 +333,7 @@ declare function m:rewrite()
   (: OK to expose xray like this? :)
   else if (starts-with($PATH, '/xray')) then $PATH-ORIG||'/index.xqy'
 
-  (: Root request: "/" means "index.xml" inside the default version's directory :)
+  (: Root request: "/" means "index.xml" inside the default version directory :)
   else if ($PATH eq '/') then m:transform($ROOT-DOC-URL)
 
   (: If the version-specific doc path requested, e.g., /4.2/foo, is available,
@@ -349,7 +345,9 @@ declare function m:rewrite()
   else if ($PATH eq concat('/', $VERSION-SPECIFIED)
     and doc-available($PATH-PLUS-INDEX)) then m:transform($PATH-PLUS-INDEX)
 
-  (: Otherwise, look in the default version directory :)
+  (: Otherwise, look in the default version directory.
+   : Requests like /all end up here.
+   :)
   else if (doc-available($DOC-URL-DEFAULT)) then m:transform($DOC-URL-DEFAULT)
 
   (: SCENARIO 3: External redirect to matching function page
@@ -370,7 +368,7 @@ declare function m:rewrite()
   (: SCENARIO 4: Not found anywhere :)
   else (
     "/controller/notfound.xqy",
-    xdmp:log(text { 'NOTFOUND', xdmp:url-decode($DOC-URL) }))
+    xdmp:log(text { 'NOTFOUND', $PATH, xdmp:url-decode($DOC-URL) }))
 };
 
 (: rewrite.xqm :)
