@@ -25,11 +25,6 @@
   <xsl:template name="functions-by-category">
     <xsl:param name="mode" as="xs:string?"/>
 
-    <xsl:variable name="forced-order"
-                  select="('MarkLogic Built-In Functions',
-                          'XQuery Library Modules', 'CPF Functions',
-                          'W3C-Standard Functions', 'REST Resources API')"/>
-
     <xsl:variable name="functions"
                   select="if ($mode eq 'javascript')
                           then $toc:ALL-FUNCTIONS-JAVASCRIPT
@@ -39,19 +34,20 @@
 
     <!-- for each bucket -->
     <xsl:for-each select="$buckets">
-      <xsl:sort select="index-of($forced-order, .)" order="ascending"/>
+      <xsl:sort select="index-of($toc:FORCED-ORDER, .)" order="ascending"/>
       <xsl:sort select="."/>
 
       <xsl:variable name="bucket" select="."/>
       <xsl:variable name="bucket-id" select="translate($bucket,' ','')"/>
 
+      <xsl:variable name="is-javascript" select="$mode eq 'javascript'"/>
       <xsl:variable name="is-REST" select="$bucket eq 'REST Resources API'"/>
 
       <!-- bucket node -->
       <!-- ID for function buckets is the display name minus spaces -->
       <!-- async is ignored for REST, because we ignore this <node> container -->
       <node display="{.}" id="{$bucket-id}" sub-control="yes" async="yes">
-        <xsl:if test="$mode eq 'javascript'">
+        <xsl:if test="$is-javascript">
           <xsl:attribute name="is-javascript" select="true()"/>
         </xsl:if>
 
@@ -62,13 +58,19 @@
         <xsl:for-each select="distinct-values($in-this-bucket/@category)">
           <xsl:sort select="."/>
           <xsl:variable name="category" select="."/>
-          <xsl:variable name="in-this-category" select="$in-this-bucket[@category eq $category]"/>
-
-          <xsl:variable name="single-lib-for-category" select="toc:lib-for-all($in-this-category)"/>
-
-          <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, (), $single-lib-for-category)"/>
-
-          <xsl:variable name="sub-categories" select="distinct-values($in-this-category/@subcategory)"/>
+          <xsl:variable
+              name="in-this-category"
+              select="$in-this-bucket[@category eq $category]"/>
+          <xsl:variable
+              name="single-lib-for-category"
+              select="toc:lib-for-all($in-this-category)"/>
+          <xsl:variable
+              name="is-exhaustive"
+              select="toc:category-is-exhaustive(
+                      $category, (), $single-lib-for-category)"/>
+          <xsl:variable
+              name="sub-categories"
+              select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
           <node id="{$bucket-id}_{translate(.,' ','')}"
@@ -76,7 +78,7 @@
                 display="{
                          toc:display-category(.)}{
                          toc:display-suffix($single-lib-for-category)}" >
-            <xsl:if test="$mode eq 'javascript'">
+            <xsl:if test="$is-javascript">
               <xsl:attribute name="is-javascript" select="true()"/>
             </xsl:if>
 
@@ -84,27 +86,49 @@
                  only create a link if it corresponds to a full lib page -->
             <xsl:choose>
               <xsl:when test="$is-exhaustive">
-                <xsl:attribute name="href" select="concat('/',$single-lib-for-category)"/>
+                <xsl:attribute
+                    name="href"
+                    select="toc:category-href(
+                            $category, .,
+                            $is-exhaustive, false(), $is-javascript,
+                            $single-lib-for-category, '')"/>
               </xsl:when>
+
               <!-- Create a new page for this category if it doesn't contain sub-categories
                    and does not already correspond to a full lib page,
                    unless it's a REST doc category, in which case we do want to create the category page (e.g., for Client API)  -->
               <xsl:when test="not($sub-categories) or $is-REST">
+                <!--
+                    ASSUMPTION:
+                    $single-lib-for-category is supplied/applicable
+                    if we are in this code branch;
+                    in other words, every top-level category page
+                    only pertains to one library
+                    (sub-categories can have more than one; see below).
+                -->
+                <xsl:attribute
+                    name="href"
+                    select="toc:category-href(
+                            $category, .,
+                            $is-exhaustive, false(), $is-javascript,
+                            '', $single-lib-for-category)"/>
+                <xsl:attribute
+                    name="category-name"
+                    select="toc:display-category(.)"/>
 
-                <!-- ASSUMPTION: $single-lib-for-category is supplied/applicable if we are in this code branch;
-                                 in other words, every top-level category page only pertains to one library (sub-categories can have more than one; see below). -->
-                <xsl:attribute name="href" select="concat('/',$single-lib-for-category,
-                                                          '/',toc:path-for-category(.))"/>
-
-                <xsl:attribute name="category-name" select="toc:display-category(.)"/>
-
-                <xsl:copy-of select="if ($is-REST) then toc:REST-page-title($category, ())
-                                                   else toc:category-page-title(., $single-lib-for-category, ())"/>
+                <xsl:copy-of
+                    select="if ($is-REST) then toc:REST-page-title($category, ())
+                            else toc:category-page-title(
+                            ., $single-lib-for-category, ())"/>
 
                 <intro>
-                  <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category,(),$single-lib-for-category)"/>
+                  <xsl:apply-templates
+                      mode="render-summary"
+                      select="toc:get-summary-for-category(
+                              $category,(),$single-lib-for-category)"/>
                 </intro>
               </xsl:when>
+
               <!-- otherwise, don't create a page/link for this category -->
             </xsl:choose>
 
@@ -115,47 +139,69 @@
                 <xsl:apply-templates
                     select="toc:function-name-nodes($in-this-category)"/>
               </xsl:when>
+
               <xsl:otherwise>
                 <xsl:for-each select="$sub-categories">
                   <xsl:sort select="."/>
+
                   <xsl:variable name="subcategory" select="."/>
-
-                  <xsl:variable name="in-this-subcategory" select="$in-this-category[@subcategory eq $subcategory]"/>
-
-                  <xsl:variable  name="one-subcategory-lib" select="toc:lib-for-all($in-this-subcategory)"/>
-                  <xsl:variable name="main-subcategory-lib" select="toc:primary-lib($in-this-subcategory)"/>
-
-                  <xsl:variable name="is-exhaustive" select="toc:category-is-exhaustive($category, $subcategory, $one-subcategory-lib)"/>
-
-                  <xsl:variable name="href"
-                                select="if ($is-exhaustive) then concat('/', $one-subcategory-lib)
-                                                                                                                   (: REST docs include category in path :)
-                                               else if ($is-REST)       then concat('/', $one-subcategory-lib, '/', toc:path-for-category($category), '/', toc:path-for-category(.))
-                                                                        else concat('/', $main-subcategory-lib,                                       '/', toc:path-for-category(.))"/>
+                  <xsl:variable
+                      name="in-this-subcategory"
+                      select="$in-this-category[@subcategory eq $subcategory]"/>
+                  <xsl:variable
+                      name="one-subcategory-lib"
+                      select="toc:lib-for-all($in-this-subcategory)"/>
+                  <xsl:variable
+                      name="main-subcategory-lib"
+                      select="toc:primary-lib($in-this-subcategory)"/>
+                  <xsl:variable
+                      name="is-exhaustive"
+                      select="toc:category-is-exhaustive(
+                              $category, $subcategory, $one-subcategory-lib)"/>
 
                   <!-- Only display, e.g, "(xdmp:)" if just one library is represented in this sub-category and if the parent category doesn't already display it -->
-                  <xsl:variable name="suffix" select="if ($one-subcategory-lib and not($single-lib-for-category))
-                                                      then toc:display-suffix($one-subcategory-lib)
-                                                      else ()"/>
+                  <xsl:variable
+                      name="suffix"
+                      select="if ($one-subcategory-lib and not($single-lib-for-category))
+                              then toc:display-suffix($one-subcategory-lib)
+                              else ()"/>
 
-                  <node href="{$href}" display="{toc:display-category(.)}{$suffix}" function-list-page="yes">
+                  <node function-list-page="yes"
+                        display="{toc:display-category(.)}{$suffix}">
+                    <xsl:attribute
+                        name="href"
+                        select="toc:category-href(
+                                $category, .,
+                                $is-exhaustive, $is-REST, $is-javascript,
+                                $one-subcategory-lib, $main-subcategory-lib)"/>
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">
-                      <xsl:attribute name="category-name" select="toc:display-category(.)"/>
+                      <xsl:attribute name="category-name"
+                                     select="toc:display-category(.)"/>
 
-                      <xsl:variable name="secondary-lib"
-                                    select="if (not($one-subcategory-lib)) then ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1]
-                                                                           else ()"/>
+                      <xsl:variable
+                          name="secondary-lib"
+                          select="if ($one-subcategory-lib) then ()
+                                  else ($in-this-subcategory/@lib[
+                                  not(. eq $main-subcategory-lib)])[1]"/>
 
-                      <xsl:copy-of select="if ($is-REST) then toc:REST-page-title($category, $subcategory)
-                                                         else toc:category-page-title(., $main-subcategory-lib, $secondary-lib)"/>
+                      <xsl:copy-of
+                          select="if ($is-REST) then toc:REST-page-title(
+                                  $category, $subcategory)
+                                  else toc:category-page-title(
+                                  ., $main-subcategory-lib, $secondary-lib)"/>
 
                       <intro>
-                        <xsl:apply-templates mode="render-summary" select="toc:get-summary-for-category($category, $subcategory, $main-subcategory-lib)"/>
+                        <xsl:apply-templates
+                            mode="render-summary"
+                            select="toc:get-summary-for-category(
+                                    $category, $subcategory,
+                                    $main-subcategory-lib)"/>
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->
-                    <xsl:apply-templates select="toc:function-name-nodes($in-this-subcategory)"/>
+                    <xsl:apply-templates
+                        select="toc:function-name-nodes($in-this-subcategory)"/>
                   </node>
                 </xsl:for-each>
               </xsl:otherwise>

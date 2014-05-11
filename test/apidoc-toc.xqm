@@ -27,10 +27,7 @@ declare %t:case function t:render-0-empty()
   xmlns="http://marklogic.com/rundmc/api/toc"/>
   !
   at:equal(
-    toc:render(
-      'toc-test', '/3.14', document { . })
-    (: Handle document vs element :)
-    ! (if (. instance of document-node()) then * else .)
+    toc:render('toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -71,11 +68,7 @@ declare %t:case function t:render-1-simple()
     <node display="node 3" open="true"></node>
   </root>
   ! at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document { . })
-    (: Handle document vs element :)
-    ! (if (. instance of document-node()) then * else .)
+    toc:render('toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -114,33 +107,29 @@ declare %t:case function t:render-1-simple()
 
 declare %t:case function t:render-1-simple-href()
 {
-  at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document {
-        <root display="All Documentation"
-        open="true" xmlns="http://marklogic.com/rundmc/api/toc">
-          <node display="node 1" href="/node/1"></node>
-          <node display="node 2" open="true"></node>
-          <node display="node 3" open="true"></node>
-        </root>
-        })//xh:a/@href/string(),
+  <root display="All Documentation"
+  open="true" xmlns="http://marklogic.com/rundmc/api/toc">
+    <node display="node 1" href="/node/1"></node>
+    <node display="node 2" open="true"></node>
+    <node display="node 3" open="true"></node>
+  </root>
+  ! at:equal(
+    toc:render('toc-test', '/3.14', .)
+    //xh:a/@href/string(),
     ('/3.14/', '/3.14/node/1'))
 };
 
 declare %t:case function t:render-1-simple-uri()
 {
-  at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document {
-        <root display="All Documentation"
-        open="true" xmlns="http://marklogic.com/rundmc/api/toc">
-          <node display="node 1" open="true"></node>
-          <node display="node 2" open="true"></node>
-          <node display="node 3" open="true"></node>
-        </root>
-        }) ! base-uri(.),
+  <root display="All Documentation"
+  open="true" xmlns="http://marklogic.com/rundmc/api/toc">
+    <node display="node 1" open="true"></node>
+    <node display="node 2" open="true"></node>
+    <node display="node 3" open="true"></node>
+  </root>
+  ! at:equal(
+    toc:render('toc-test', '/3.14', .)
+    ! base-uri(.),
     'toc-test')
 };
 
@@ -155,11 +144,7 @@ declare %t:case function t:render-async-2-content()
     </node>
   </root>
   ! at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document { . })
-    (: Handle document vs element :)
-    ! (if (. instance of document-node()) then * else .)
+    toc:render('toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -184,9 +169,8 @@ declare %t:case function t:render-async-2-placeholder()
     </node>
   </root>
   ! at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document { . })[base-uri(.) eq 'toc-test']
+    toc:render('toc-test', '/3.14', .)[
+      base-uri(.) eq 'toc-test']
     //xh:li[@id eq 'node-2']
     ,
     <li class="expandable lastExpandable hasChildren async" id="node-2"
@@ -211,9 +195,7 @@ declare %t:case function t:render-2-async-uris()
     </node>
   </root>
   ! at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document { . })
+    toc:render('toc-test', '/3.14', .)
     ! base-uri(.),
     ('toc-test/node-2.html', 'toc-test'))
 };
@@ -235,9 +217,7 @@ declare %t:case function t:render-2-async-xdmp()
     </node>
   </root>
   ! at:equal(
-    toc:render(
-      'toc-test', '/3.14',
-      document { . })
+    toc:render('toc-test', '/3.14', .)
     //xh:div[@id = 'apidoc_tree_container']
 ,
 

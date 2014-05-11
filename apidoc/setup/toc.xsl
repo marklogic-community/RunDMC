@@ -76,7 +76,7 @@ driving the generation of function list pages.
                 function-list-page="true">
             <title>JavaScript functions</title>
             <intro>
-              <p>
+              <p xmlns="http://www.w3.org/1999/xhtml">
                 The following table lists all JavaScript functions
                 in the MarkLogic API reference,
                 including both built-in functions
@@ -104,7 +104,7 @@ driving the generation of function list pages.
               function-list-page="true">
           <title>XQuery/XSLT functions</title>
           <intro>
-            <p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
               The following table lists all functions
               in the MarkLogic API reference,
               including both built-in functions
@@ -269,26 +269,9 @@ driving the generation of function list pages.
   <xsl:template match="api:lib">
     <xsl:variable name="is-javascript" as="xs:boolean?"
                   select="xs:boolean(@is-javascript)"/>
-    <node href="{concat(
-                if ($is-javascript) then '/js/' else '/',
-                .) }"
-          display="{concat(
-                   api:prefix-for-lib(.),
-                   if ($is-javascript) then '.' else ':') }"
-          function-count="{ api:function-count(.) }"
-          namespace="{ api:uri-for-lib(.) }"
-          category-bucket="{ @category-bucket }"
-          function-list-page="true"
-          async="true"
-          id="{.}_{generate-id(.)}">
-      <xsl:if test="$is-javascript">
-        <xsl:attribute name="is-javascript"
-                       select="$is-javascript"/>
-      </xsl:if>
-      <xsl:if test="@built-in">
-        <xsl:attribute name="footnote"
-                       select="true()"/>
-      </xsl:if>
+    <node>
+      <xsl:copy-of
+          select="toc:node-attributes-for-lib(., $is-javascript)"/>
       <title>
         <xsl:value-of select="api:prefix-for-lib(.)"/>
         <xsl:text> functions</xsl:text>
@@ -297,7 +280,7 @@ driving the generation of function list pages.
         <xsl:variable name="modifier"
                       select="if (@built-in) then 'built-in'
                               else 'XQuery library'"/>
-        <p>
+        <p xmlns="http://www.w3.org/1999/xhtml">
           The table below lists all the
           "<xsl:value-of select="api:prefix-for-lib(.)"/>"
           <xsl:value-of select="$modifier"/> functions
@@ -305,26 +288,18 @@ driving the generation of function list pages.
           <code><xsl:value-of select="api:uri-for-lib(.)"/></code>).
         </p>
 
-        <!-- Hack to exclude semantics categories, because
-             the XQuery category is just a placeholder -->
-        <xsl:variable name="sub-pages"
-                      select="$by-category//toc:node
-                              [starts-with(@href, concat('/',current(),'/'))]
-                              [not(starts-with(@href, '/sem'))]"/>
-        <xsl:if test="$sub-pages">
-          <p>You can also view these functions broken down by
-          category:</p>
-          <ul>
-            <xsl:apply-templates mode="sub-page" select="$sub-pages">
-              <xsl:sort select="@category-name"/>
-            </xsl:apply-templates>
-          </ul>
-        </xsl:if>
+        <xsl:copy-of
+            select="toc:lib-sub-pages(
+                    .,
+                    if ($is-javascript) then $javascript-by-category
+                    else $by-category,
+                    $is-javascript)"/>
 
         <xsl:apply-templates mode="render-summary"
                              select="toc:get-summary-for-lib(.)"/>
-        <xsl:apply-templates mode="summary-addendum"
-                             select="."/>
+        <xsl:copy-of
+            select="$api:namespace-mappings[
+                    @lib eq current()]/summary-addendum/node()"/>
       </intro>
       <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
       <xsl:apply-templates
@@ -335,28 +310,20 @@ driving the generation of function list pages.
     </node>
   </xsl:template>
 
-  <xsl:template mode="summary-addendum" match="api:lib">
-    <xsl:copy-of
-        select="$api:namespace-mappings[
-                @lib eq current()]/summary-addendum/node()"/>
+  <xsl:template mode="render-summary"
+                match="apidoc:summary">
+    <xsl:apply-templates mode="fixup"/>
   </xsl:template>
 
-  <!-- TODO needs javascript links? -->
-  <xsl:template mode="sub-page" match="toc:node">
-    <li>
-      <a href="{@href}"><xsl:value-of select="@category-name"/></a>
-    </li>
-  </xsl:template>
-
-  <!-- Wrap summary content with <p> if not already present -->
-  <xsl:template mode="render-summary" match="apidoc:summary[not(xhtml:p)]">
-    <p>
+  <!--
+      Wrap summary content with <p> if not already present.
+      The wrapper might be in several namespaces.
+  -->
+  <xsl:template mode="render-summary"
+                match="apidoc:summary[not(xhtml:p|apidoc:p|p)]">
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:next-match/>
     </p>
-  </xsl:template>
-
-  <xsl:template mode="render-summary" match="apidoc:summary">
-    <xsl:apply-templates mode="fixup"/>
   </xsl:template>
 
   <!-- XQuery/XSLT functions -->

@@ -69,6 +69,11 @@ declare variable $XSD-DOCS as document-node()* := (
     dir:type eq 'file'][ends-with(dir:pathname, '.xsd')]
   return xdmp:document-get($dir/dir:pathname)) ;
 
+declare variable $FORCED-ORDER := (
+  'MarkLogic Built-In Functions',
+  'XQuery Library Modules', 'CPF Functions',
+  'W3C-Standard Functions', 'REST Resources API') ;
+
 declare function toc:display-category($cat as xs:string)
 as xs:string
 {
@@ -602,7 +607,11 @@ as element()
   </div>
 };
 
-declare function toc:render-root(
+(: All elements returned by this function must set a base-uri.
+ : Functions from here on are free of side effects,
+ : so start here for unit tests.
+ :)
+declare function toc:render(
   $uri as xs:string,
   $prefix-for-hrefs as xs:string?,
   $toc as element(toc:root))
@@ -638,31 +647,6 @@ as element()+
   }
     </div>
   </div>
-
-};
-
-(: All elements returned by this function must set a base-uri.
- : Functions from here on are free of side effects,
- : so start here for unit tests.
- :)
-declare function toc:render(
-  $uri as xs:string,
-  $prefix-for-hrefs as xs:string?,
-  $toc-document as document-node())
-as node()+
-{
-  (: TODO when xqy is working, remove xsl entirely. :)
-  if (0) then xdmp:xslt-invoke(
-    "render-toc.xsl",
-    $toc-document,
-    map:new(
-      (map:entry('toc-uri', $uri),
-        map:entry('prefix-for-hrefs', $prefix-for-hrefs),
-        map:entry('version', $api:version))))
-  else toc:render-root(
-    $uri,
-    $prefix-for-hrefs,
-    $toc-document/* treat as node())
 };
 
 declare function toc:render(
@@ -678,7 +662,7 @@ as empty-sequence()
   for $n in toc:render(
     $uri,
     if ($is-default) then () else concat("/", $api:version),
-    doc($stp:toc-xml-uri) treat as node())
+    doc($stp:toc-xml-uri)/* treat as element())
   (: Force an error if the base-uri was not set. :)
   let $uri-new as xs:anyURI := base-uri($n)
   order by $uri-new
@@ -807,6 +791,112 @@ as xs:string*
 {
   let $sw as xs:string? := $e/@starting-with
   return toc:help-option-names($xsd-docs, $e)[not(starts-with(., $sw))]
+};
+
+(: Create sub-page list item for toc:intro with sub-categories.
+ :)
+declare function toc:li-for-sub-page(
+  $n as element(toc:node))
+as element(xhtml:li)
+{
+  <li xmlns="http://www.w3.org/1999/xhtml">
+  {
+    element a {
+      $n/@href,
+      $n/@category-name/string() }
+  }
+  </li>
+};
+
+declare function toc:lib-sub-pages(
+  $lib as element(api:lib),
+  $by-category as element()+,
+  $is-javascript as xs:boolean?)
+as element()*
+{
+  (: Hack to exclude semantics categories, because
+   : the XQuery category is just a placeholder.
+   :)
+  let $current-href as xs:string := concat(
+    '/', (if ($is-javascript) then 'js/' else ''),
+    $lib, '/')
+  let $excluded-prefix := (
+    if ($is-javascript) then '/js/sem'
+    else '/sem')
+  (: TODO could we make this more efficient?
+   : The sub-pages should be children of the toc:node for $lib.
+   :)
+  let $sub-pages := $by-category//toc:node[
+    starts-with(@href, $current-href)][
+    not(starts-with(@href, $excluded-prefix))]
+  let $_ := stp:fine(
+    'toc:lib-sub-pages', ($current-href, xdmp:describe($sub-pages)))
+  where $sub-pages
+  return <div xmlns="http://www.w3.org/1999/xhtml">
+  {
+    <p>You can also view these functions broken down by category:</p>,
+    element ul {
+      for $i in $sub-pages
+      order by $i/@category-name
+      return toc:li-for-sub-page($i) }
+  }
+  </div>
+};
+
+declare function toc:node-attributes-for-lib(
+  $lib as element(api:lib),
+  $is-javascript as xs:boolean?)
+as attribute()+
+{
+  attribute function-list-page { true() },
+  attribute async { true() },
+  attribute id { concat($lib, '_', generate-id($lib)) },
+  $lib/@category-bucket,
+
+  attribute function-count {
+    api:function-count($lib) },
+  attribute namespace {
+    api:uri-for-lib($lib) },
+
+  attribute href {
+    concat(
+      if ($is-javascript) then '/js/' else '/',
+      $lib) },
+  attribute display {
+    concat(
+      api:prefix-for-lib($lib),
+      if ($is-javascript) then '.' else ':') },
+
+  if (not($is-javascript)) then ()
+  else attribute is-javascript { $is-javascript },
+  if (not($lib/@built-in)) then ()
+  else attribute footnote { true() }
+};
+
+declare function toc:category-href(
+  $category as xs:string,
+  $subcategory as xs:string,
+  $is-exhaustive as xs:boolean,
+  $use-category as xs:boolean,
+  $is-javascript as xs:boolean?,
+  $one-subcategory-lib as xs:string?,
+  $main-subcategory-lib as xs:string?)
+as xs:string
+{
+  (: The initial empty string ensures a leading '/'. :)
+  string-join(
+    ('',
+      if (not($is-javascript)) then () else 'js',
+      if ($is-exhaustive) then $one-subcategory-lib
+      (: Include category in path - eg usually for REST :)
+      else if ($use-category) then (
+        $one-subcategory-lib,
+        toc:path-for-category($category),
+        toc:path-for-category($subcategory))
+      else (
+        $main-subcategory-lib,
+        toc:path-for-category($subcategory))),
+    '/')
 };
 
 (: apidoc/setup/toc.xqm :)
