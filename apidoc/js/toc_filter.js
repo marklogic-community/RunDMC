@@ -57,13 +57,6 @@ function toc_init() {
             })
             .mousedown(splitterMouseDown);
 
-        // Set up the TOC.
-        // TODO hack this should autosize but does not.
-        // The extra 35px are necessary to scroll all the way to the bottom.
-        var scrollableContainer = $('.scrollable_section');
-        scrollableContainer.height($("#splitter").height() - 35);
-        //console.log("toc_init scrollable height", scrollableContainer.height());
-
         // If this was a deep link, load and scroll.
         updateTocForTab();
     });
@@ -251,17 +244,6 @@ function showInTOC(a) {
     items.each(function(index) { expandSubTree($(this)); });
 
     scrollTOC();
-}
-
-var functionPanelIndex = 0;
-var categoriesPanelIndex = 1;
-
-// Called when a user changes the radio button
-function toggleFunctionsView(input) {
-  // Switch to the relevant tab
-  var new_tab_index = (input.val() === 'by_name') ? functionPanelIndex : categoriesPanelIndex;
-  $("#toc_tabs").tabs('select',new_tab_index);
-  //console.log("Toggling function view...");
 }
 
 // Called at init and whenever a tab changes.

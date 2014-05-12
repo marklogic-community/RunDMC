@@ -367,6 +367,9 @@ a.sectionLink:hover { color: #235BAB; }
 }
 /* end override */
 
+.toc_section {
+    height: 100%
+}
 
 .api_caption {
     position: absolute;

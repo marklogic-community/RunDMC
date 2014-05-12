@@ -36,7 +36,7 @@ declare %t:case function t:render-0-empty()
     <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
       <div id="toc" class="toc">
         <div id="toc_content">
-          <div id="tocs-all" class="toc_section">
+          <div id="tocs_all" class="toc_section">
             <div class="scrollable_section">
               <input id="config-filter" name="config-filter" class="config-filter"/>
               <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>
@@ -77,7 +77,7 @@ declare %t:case function t:render-1-simple()
     <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
       <div id="toc" class="toc">
         <div id="toc_content">
-          <div id="tocs-all" class="toc_section">
+          <div id="tocs_all" class="toc_section">
             <div class="scrollable_section">
               <input id="config-filter" name="config-filter" class="config-filter"/>
               <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>

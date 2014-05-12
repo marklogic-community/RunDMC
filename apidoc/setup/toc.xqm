@@ -581,11 +581,11 @@ as element()
   stp:debug(
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
-  <div id="tocs-all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
+  <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
     <div class="scrollable_section">
       <input id="config-filter" name="config-filter" class="config-filter"/>
       <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
-         class="config-filter-close-button"/>
+  class="config-filter-close-button"/>
       <div id="apidoc_tree_container" class="pjax_enabled">
   {
     element ul {
