@@ -15,8 +15,8 @@ $stp:helpXsdCheck,
 (: as well as these params,
  : used in load-raw-docs.xqy and load-static-docs.xqy
  :)
-if (xdmp:get-request-field("srcdir")) then ()
-else error((), "ERROR", "You must specify a 'srcdir' param.")
+if (xdmp:get-request-field("zip")) then ()
+else error((), "ERROR", "You must specify a 'zip' param.")
 ,
 
 for $xqy at $x in (

@@ -115,11 +115,9 @@ find "$BASE" -type d -print0 | xargs -0 chmod a+rx
 
 # download raw docs for processing
 cd ${TMPDIR}
-PUBS=MarkLogic_7_pubs
-ZIP="${PUBS}.zip"
+ZIP="MarkLogic_7_pubs.zip"
 echo $ZIP
-[ -r "${ZIP}" ] && unzip -qt "${ZIP}" \
-    || rm -f "${ZIP}"
+[ -r "${ZIP}" ] && unzip -qt "${ZIP}" || rm -f "${ZIP}"
 if [ -r "${ZIP}" ]; then
     echo "using existing ${ZIP}"
 else
@@ -130,40 +128,28 @@ else
         exit 1
     fi
 fi
-echo unzipping in `pwd`
-unzip -qu "${ZIP}"
-echo fixing permissions
-find "$PUBS" -type f | xargs chmod a+r
-find "$PUBS" -type d | xargs chmod a+rx
 echo
 
 # process raw docs
 VERSION=7.0
-PUBS_DIR=`pwd`"/$PUBS"
 URL="http://"${HOSTNAME}":${PORT_RAW}/apidoc/setup/build.xqy"
 
 # doc processing needs schemas for admin help pages
-# someday these will be part of the zip
-XSD="${PUBS_DIR}/apidoc/schema"
-if [ -d "${XSD}" ]; then
-    echo using schemas in zip
+# someday these may be part of the zip
+MLCONFIG="/etc/sysconfig/MarkLogic"
+if [ -r "${MLCONFIG}" ]; then
+    . "${MLCONFIG}"
+    XSD="$MARKLOGIC_INSTALL_DIR/Config"
+elif [ -d "${HOME}/Library/MarkLogic/Config" ]; then
+    # Looks like OSX
+    XSD="${HOME}/Library/MarkLogic/Config"
 else
-    echo no schemas found in zip
-    MLCONFIG="/etc/sysconfig/MarkLogic"
-    if [ -r "${MLCONFIG}" ]; then
-        . "${MLCONFIG}"
-        XSD="$MARKLOGIC_INSTALL_DIR/Config"
-    elif [ -d "${HOME}/Library/MarkLogic/Config" ]; then
-        # Looks like OSX
-        XSD="${HOME}/Library/MarkLogic/Config"
-    else
-        echo no schemas found!
-        exit 1
-    fi
+    echo no schemas found!
+    exit 1
 fi
 echo using schemas from "${XSD}"
 
-DATA="version=${VERSION}&srcdir=${PUBS_DIR}&help-xsd-dir=${XSD}&clean=1"
+DATA="version=${VERSION}&zip=${TMPDIR}/${ZIP}&help-xsd-dir=${XSD}&clean=1"
 echo $DATA
 echo Processing... this may take some time.
 echo You can watch the ErrorLog.txt for progress.
@@ -176,7 +162,6 @@ fi
 grep -q '500 Internal Server Error' $PACKAGE_LOG && exit 1 || true
 
 echo cleaning up
-rm -rf "$PUBS"
 
 echo apidoc install ok
 echo
