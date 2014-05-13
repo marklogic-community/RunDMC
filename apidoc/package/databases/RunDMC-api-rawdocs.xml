@@ -43,7 +43,7 @@
       <reindexer-enable>true</reindexer-enable>
       <reindexer-throttle>5</reindexer-throttle>
       <reindexer-timestamp>0</reindexer-timestamp>
-      <directory-creation>automatic</directory-creation>
+      <directory-creation>manual</directory-creation>
       <maintain-last-modified>false</maintain-last-modified>
       <maintain-directory-last-modified>false</maintain-directory-last-modified>
       <inherit-permissions>false</inherit-permissions>

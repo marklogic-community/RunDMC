@@ -51,26 +51,23 @@ declare function local:insert(
 
 raw:invoke-function(
   function() {
-    (: This code expects one sub-dir for each guide,
-     : with database directory-creation=automatic.
-     : In MarkLogic 6 and later, that is not the default.
-     : Alternative code could use the URI lexicon
-
-     TODO better to use cts:uris and cts:directory-query
-
-     distinct-values(
-       for $x in cts:uri-match(concat($guides-dir, "*"))
-       return concat(
-         string-join(tokenize($x, "/")[1 to 4], "/"), "/"))
-     :)
-
-    (: Directory in which to find guide XML for the requested server version :)
+    (: Directory in which to find guide XML for the server version :)
     let $guides-dir := concat("/", $api:version, "/xml/")
     (: The list of guide configs :)
-    let $guide-list := u:get-doc(
-      "/apidoc/config/document-list.xml")/docs//guide
-    for $dir in xdmp:directory-properties(
-      $guides-dir)/prop:properties/prop:directory/base-uri(.)
+    let $guide-list as element()+ := u:get-doc(
+      "/apidoc/config/document-list.xml")/docs/*/guide
+    (: Assume every guide has a title.xml document.
+     : This might seem inefficient,
+     : but consider that we will want to look at most of these documents.
+     : Anyway we probably just loaded them, so they should be cached.
+     :)
+    let $directory-uris as xs:string+ := (
+      xdmp:directory(
+        $guides-dir, 'infinity')/xdmp:node-uri(.)[
+        ends-with(., '/title.xml')]
+      ! substring-before(., '/title.xml')
+      ! concat(., '/'))
+    for $dir in $directory-uris
     (: Basename of each dir, not including the full path to it :)
     let $dir-name := substring-before(
       substring-after($dir, $guides-dir), "/")
