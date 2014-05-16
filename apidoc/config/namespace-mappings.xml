@@ -63,6 +63,7 @@
   <namespace lib="spell-lib" uri="http://marklogic.com/xdmp/spell" prefix="spell"/>
 
   <namespace lib="sql" uri="http://marklogic.com/xdmp/sql"/>
+  <namespace lib="temporal" uri="http://marklogic.com/xdmp/temporal"/>
   <namespace lib="tieredstorage" uri="http://marklogic.com/xdmp/tieredstorage"/>
   <namespace lib="thsr" uri="http://marklogic.com/xdmp/thesaurus"/>
   <namespace lib="trgr" uri="http://marklogic.com/xdmp/triggers"/>
