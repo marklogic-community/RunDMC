@@ -58,9 +58,13 @@
           <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
              Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
           <!-- Convert and render the guide by directly calling the setup/conversion code -->
-          <xsl:apply-templates mode="guide"  select="xdmp:xslt-invoke('../setup/convert-guide.xsl',
-                                                                      $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq base-uri(current())])
-                                                     /*/node()"/>
+          <xsl:apply-templates
+              mode="guide"
+              select="xdmp:xslt-invoke(
+                      '../setup/convert-guide.xsl',
+                      $raw:GUIDE-DOCS[
+                      raw:target-guide-doc-uri(.) eq base-uri(current())])
+                      /*/node()"/>
         </xsl:otherwise>
       </xsl:choose>
     </div>

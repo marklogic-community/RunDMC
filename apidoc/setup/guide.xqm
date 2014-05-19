@@ -326,12 +326,15 @@ as node()
           $fully-resolved-top-level-heading-references))))
 };
 
-declare function guide:render()
+(: The input documents are consolidated raw guides,
+ : not raw raw guides.
+ :)
+declare function guide:render(
+  $raw-docs as document-node())
 as empty-sequence()
 {
   (: The slowest conversion is messages/XDMP-en.xml. :)
   (: TODO arrange to spawn these tasks, then wait for all to complete. :)
-  let $raw-docs := $raw:GUIDE-DOCS
   let $fully-resolved-top-level-heading-references as xs:string+ := (
     $raw-docs/chapter/XML/Heading-1/A/@ID/concat(
       ancestor::XML/@original-file, '#id(', ., ')'))

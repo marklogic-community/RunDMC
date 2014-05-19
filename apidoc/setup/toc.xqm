@@ -228,12 +228,14 @@ declare function toc:get-summary-for-category(
   $lib as xs:string?)
   as element(apidoc:summary)*
 {
-  let $summaries-with-category := $raw:API-DOCS/apidoc:module/apidoc:summary[
+  (: TODO refactor so Task Server can do this. :)
+  let $raw-modules as element()+ := $raw:API-DOCS/apidoc:module
+  let $summaries-with-category := $raw-modules/apidoc:summary[
     @category eq $cat][not($subcat) or @subcategory eq $subcat]
   return (
     if ($summaries-with-category) then $summaries-with-category
     else (
-      let $modules-with-category := $raw:API-DOCS/apidoc:module[
+      let $modules-with-category := $raw-modules[
         @category eq $cat][not($subcat) or @subcategory eq $subcat]
       return (
         if ($modules-with-category/apidoc:summary)
@@ -278,20 +280,22 @@ declare function toc:get-summary-for-category(
 declare function toc:get-summary-for-lib($lib as xs:string)
   as element()?
 {
+  (: TODO refactor so Task Server can do this. :)
+  let $raw-modules as element()+ := $raw:API-DOCS/apidoc:module
   (: exceptional ("json" built-in) :)
   let $lib-subcat := toc:hard-coded-subcategory($lib)
-  let $summaries-by-summary-subcat := $raw:API-DOCS/apidoc:module/apidoc:summary[
+  let $summaries-by-summary-subcat := $raw-modules/apidoc:summary[
     @subcategory eq $lib-subcat]
   (: exceptional ("spell" built-in) :)
   let $lib-cat := toc:hard-coded-category($lib)
-  let $summaries-by-module-cat := $raw:API-DOCS/apidoc:module[
+  let $summaries-by-module-cat := $raw-modules[
     @category eq $lib-cat]/apidoc:summary
   (: the most common case :)
   let $lib-prefix := api:prefix-for-lib($lib)
-  let $summaries-by-module-lib := $raw:API-DOCS/apidoc:module[
+  let $summaries-by-module-lib := $raw-modules[
     @lib eq $lib-prefix]/apidoc:summary
   (: exceptional ("map") :)
-  let $summaries-by-summary-lib := $raw:API-DOCS/apidoc:module/apidoc:summary[
+  let $summaries-by-summary-lib := $raw-modules/apidoc:summary[
     @lib eq $lib-prefix]
   (: exceptional ("dls") :)
   let $summaries-by-module-lib-no-subcat := $summaries-by-module-lib[

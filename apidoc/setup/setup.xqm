@@ -241,15 +241,14 @@ declare function stp:function-docs-extract(
 as empty-sequence()
 {
   stp:info('stp:function-docs-extract', ('starting', $version)),
-
-  for $doc in $raw:API-DOCS
-  let $_ := stp:info(
+  for $doc in raw:api-docs($version)
+  let $_ := stp:debug(
     "stp:function-docs-extract", ('starting', xdmp:describe($doc)))
   for $func in xdmp:xslt-invoke(
     "extract-functions.xsl", $doc,
     map:new(map:entry('VERSION', $version)))
   let $uri := base-uri($func)
-  let $_ := stp:info(
+  let $_ := stp:debug(
     "stp:function-docs-extract",
     ("inserting", xdmp:describe($doc), 'at', $uri))
   return xdmp:document-insert($uri, $func)
@@ -941,6 +940,42 @@ declare function stp:guides-consolidate($version as xs:string)
       stp:info('stp:guides-consolidate', 'ok') },
     (: This is an update. :)
     true())
+};
+
+declare function stp:function-docs(
+  $version as xs:string)
+as empty-sequence()
+{
+  stp:info("stp:function-docs", $version),
+  for $doc in raw:api-docs($version)
+  let $_ := stp:info("stp:function-docs", xdmp:describe($doc))
+  for $func in xdmp:xslt-invoke("extract-functions.xsl", $doc)
+  let $uri := base-uri($func)
+  let $_ := stp:debug(
+    "stp:function-docs",
+    ('inserting', xdmp:describe($doc), 'at', $uri))
+  return xdmp:document-insert($uri, $func)
+  ,
+  stp:info("stp:function-docs", xdmp:elapsed-time())
+};
+
+declare function stp:guide-images(
+  $version as xs:string)
+as empty-sequence()
+{
+  stp:info('stp:guide-images', $version),
+  let $guide-docs as node()+ := raw:guide-docs($version)
+  for $doc in $guide-docs
+  let $base-dir := string($doc/(guide|chapter)/@original-dir)
+  let $img-dir := api:guide-image-dir(raw:target-guide-doc-uri($doc))
+  (: Copy every distinct image referenced by this guide.
+   : Images are not shared across guides.
+   :)
+  for $img-path in distinct-values($doc//IMAGE/@href)
+  let $source-uri := resolve-uri($img-path, $base-dir)
+  let $dest-uri := concat($img-dir, $img-path)
+  let $_ := stp:info('stp:guide-images', ($source-uri, "to", $dest-uri))
+  return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
 };
 
 (: apidoc/setup/setup.xqm :)
