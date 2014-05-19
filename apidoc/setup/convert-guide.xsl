@@ -432,7 +432,6 @@
     <xsl:apply-templates mode="capture-lists" select="current-group()"/>
   </xsl:template>
 
-
   <xsl:template mode="merge-code-examples" match="node()">
     <xsl:copy>
       <xsl:apply-templates mode="#current" select="@*"/>
