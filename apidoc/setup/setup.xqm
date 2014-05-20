@@ -295,12 +295,7 @@ as empty-sequence()
   for $doc in raw:api-docs($version)
   let $_ := stp:debug(
     "stp:function-docs", ('starting', xdmp:describe($doc)))
-  let $extracted as node()+ := (
-    (: TODO remove XSL :)
-    if (0) then xdmp:xslt-invoke(
-      "extract-functions.xsl", $doc,
-      map:new(map:entry('VERSION', $version)))
-    else stp:function-docs($version, $doc))
+  let $extracted as node()+ := stp:function-docs($version, $doc)
   for $func in $extracted
   let $uri := base-uri($func)
   let $_ := stp:debug(
