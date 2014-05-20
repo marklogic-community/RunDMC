@@ -53,13 +53,12 @@ declare variable $toc-uri-location-alternative := if ($version eq $default-versi
 
 declare variable $VERSION-DIR := concat("/apidoc/", $version, "/");
 
-(: TODO this also matches api:javascript-function-page/api:function docs. :)
 (: Thing is... we always look at every single function. So why search? :)
 declare variable $query-for-all-functions :=
   cts:and-query((
     (: REST "function" docs are in sub-directories :)
     cts:directory-query($VERSION-DIR, "infinity"),
-    cts:element-query(xs:QName("api:function"),cts:and-query(()))
+    cts:element-query(xs:QName("api:function"), cts:and-query(()))
   ));
 
 declare variable $query-for-builtin-functions := cts:and-query(
@@ -77,10 +76,11 @@ declare variable $query-for-library-functions := cts:and-not-query(
 declare variable $all-function-docs := cts:search(
   collection(), $query-for-all-functions, "unfiltered") ;
 
+(: TODO is the bucket check obsolete? Make it so? :)
 declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
   if (number($version) lt 8) then ()
   else $all-function-docs[
-    api:javascript-function-page/api:function/@bucket = (
+    api:function-page[@mode eq 'javascript']/api:function/@bucket = (
       'MarkLogic Built-In Functions',
       'W3C-Standard Functions')]) ;
 
@@ -92,16 +92,17 @@ declare variable $library-function-count  := xdmp:estimate(
   cts:search(collection(),$query-for-library-functions));
 
 declare variable $built-in-libs := api:get-libs(
-  $query-for-builtin-functions, true(), () );
+  $query-for-builtin-functions, true(), 'xpath' );
 declare variable $library-libs  := api:get-libs(
-  $query-for-library-functions, false(), ());
+  $query-for-library-functions, false(), 'xpath');
 
 declare variable $LIBS-JAVASCRIPT := (
   if (number($version) lt 8) then ()
   else api:get-libs(
-    cts:element-query(
-      xs:QName('api:javascript-function-page'),
-      cts:and-query(())),
+    cts:element-attribute-value-query(
+      xs:QName('api:function-page'),
+      xs:QName('mode'),
+      'javascript'),
     true(), 'javascript'));
 
 declare variable $namespace-mappings := u:get-doc(
@@ -133,7 +134,7 @@ declare variable $REST-COMPLEXTYPE-MAPPINGS := (
 declare function api:get-libs(
   $query as cts:query,
   $builtin as xs:boolean,
-  $mode as xs:string?)
+  $mode as xs:string)
 as element(api:lib)*
 {
   for $lib in cts:element-attribute-values(
@@ -143,68 +144,47 @@ as element(api:lib)*
     attribute category-bucket { api:get-bucket-for-lib($lib) },
     if (not($builtin)) then ()
     else attribute built-in { true() },
-    (: Handle mode - right now just for JavaScript :)
-    switch($mode)
-    case 'javascript' return attribute is-javascript { true() }
-    default return ()
-    ,
+    attribute mode { $mode },
     $lib }
 };
 
-declare function api:function-count(
-  $element-name as xs:string,
-  $lib as xs:string?)
-as xs:integer
-{
-  xdmp:estimate(
-    cts:search(
-      collection(),
-      cts:and-query(
-        (cts:directory-query($VERSION-DIR, "1"),
-          cts:element-query(xs:QName($element-name), cts:and-query(())),
-          if (not($lib)) then ()
-          else cts:element-attribute-value-query(
-            xs:QName('api:function'), xs:QName('lib'), $lib)))))
-};
-
-declare function api:function-count(
-  $lib as xs:string?)
-as xs:integer
-{
-  api:function-count('api:function-page', $lib)
-};
-
-declare function api:function-count()
-as xs:integer
-{
-  api:function-count(())
-};
-
-declare function api:query-for-lib-functions($lib)
+declare function api:query-for-lib-functions(
+  $lib as xs:string)
 as cts:query
 {
-  cts:and-query((
-    $query-for-all-functions,
-    cts:element-attribute-value-query(xs:QName("api:function"),
-                                      xs:QName("lib"),
-                                      $lib)))
+  cts:and-query(
+    ($query-for-all-functions,
+      cts:element-attribute-value-query(
+        xs:QName("api:function"), xs:QName("lib"), $lib)))
 };
 
-(: Used to associate library containers under the "API" tab with their corresponding "Categories" tab TOC container :)
-declare function api:get-bucket-for-lib($lib)
-as xs:string* {
+(: Used to associate library containers under the "API" tab
+ : with corresponding "Categories" tab TOC container.
+ :)
+declare function api:get-bucket-for-lib(
+  $lib as xs:string)
+as xs:string*
+{
   cts:search(collection(), api:query-for-lib-functions($lib))[1]
   /api:function-page/api:function[1]/@bucket
 };
 
 (: Returns the namespace URI associated with the given lib name :)
-declare function api:uri-for-lib($lib) {
-  string($namespace-mappings[@lib eq $lib]/@uri)
+declare function api:uri-for-lib($lib)
+as xs:string?
+{
+  $namespace-mappings[@lib eq $lib]/@uri
 };
 
-(: Normally, just use the lib name as the prefix, unless specially configured to do otherwise :)
-declare function api:prefix-for-lib($lib) {
-  string($namespace-mappings[@lib eq $lib]/(if (@prefix) then @prefix else $lib))
+(: Normally just use the lib name as the prefix,
+ : unless specially configured to do otherwise.
+ :)
+declare function api:prefix-for-lib(
+  $lib as xs:string)
+as xs:string?
+{
+  $namespace-mappings[@lib eq $lib]/(
+    if (@prefix) then @prefix else $lib)
 };
 
 (: E.g., store the images for /apidoc/4.2/guides/performance.xml
@@ -316,7 +296,7 @@ as xs:string
 (: The fullname is a derived value :)
 declare function api:fixup-fullname(
   $function as element(apidoc:function),
-  $mode as xs:string?)
+  $mode as xs:string)
 as xs:string
 {
   (: REST docs (lib="manage" in the raw source)
@@ -326,6 +306,7 @@ as xs:string
   case 'REST' return api:REST-fullname($function)
   case 'javascript' return concat(
     $function/@lib, '.', api:javascript-name($function/@name))
+  (: Covers mode=xpath and any unknown values. :)
   default return concat(
     $function/@lib, ':', $function/@name)
 };
@@ -337,11 +318,7 @@ declare function api:function-detect-mode(
   $function as element(apidoc:function))
 as xs:string
 {
-  if (starts-with($function/@name, '/')) then 'REST'
-  else if ($function/
-    parent::apidoc:javascript-function-page) then 'javascript'
-  (: XQuery/XSLT :)
-  else ()
+  $function/parent::apidoc:function-page/@mode
 };
 
 (: Determine the document URI for a function page. :)
@@ -477,8 +454,7 @@ as xs:string?
 };
 
 (: Used by extract-functions.xsl
- : This fakes a raw javascript page
- : so that we can test @is-javascript later on.
+ : This fakes mode=javascript so we can test for it on.
  :)
 declare function api:function-fake-javascript(
   $function as element(apidoc:function))
@@ -488,7 +464,7 @@ as element(apidoc:function)?
       'MarkLogic Built-In Functions',
       'W3C-Standard Functions'))) then ()
   else element apidoc:function {
-    attribute is-javascript { true() },
+    attribute mode { 'javascript' },
     $function/@*,
     $function/node() }
 };
@@ -504,7 +480,7 @@ as element(apidoc:function)*
   case 'javascript' return document {
     element apidoc:module {
       attribute xml:base { base-uri($module) },
-      attribute is-javascript { true() },
+      attribute mode { 'javascript' },
       api:function-fake-javascript(
         $module/apidoc:function[
           not(api:fixup-fullname(., ()) =

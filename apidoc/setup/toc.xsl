@@ -36,12 +36,16 @@ driving the generation of function list pages.
   <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="toc-help.xsl"/>
 
+  <xsl:param name="VERSION-NUMBER" as="xs:double"/>
+
   <!--
       Compute this first so we can glean the category info from the result
       and list the sub-categories on the main page intro for each lib
   -->
   <xsl:variable name="by-category" as="element()+">
-    <xsl:call-template name="functions-by-category"/>
+    <xsl:call-template name="functions-by-category">
+      <xsl:with-param name="mode" select="'xpath'" />
+    </xsl:call-template>
   </xsl:variable>
   <xsl:variable name="javascript-by-category" as="element()+">
     <xsl:call-template name="functions-by-category">
@@ -50,17 +54,18 @@ driving the generation of function list pages.
   </xsl:variable>
 
   <xsl:template match="/">
-    <xsl:variable name="function-count"
-                  select="api:function-count()"/>
-    <xsl:variable name="javascript-function-count"
-                  select="api:function-count(
-                         'api:javascript-function-page', ())"/>
+    <xsl:variable
+        name="function-count"
+        select="toc:function-count('xpath', ())"/>
+    <xsl:variable
+        name="javascript-function-count"
+        select="toc:function-count('javascript', ())"/>
     <root display="All Documentation"
           open="true">
       <node
           display="Server-Side APIs"
           open="true">
-        <xsl:if test="number($api:version) ge 8">
+        <xsl:if test="$VERSION-NUMBER ge 8">
           <node href="/js/all"
                 display="JavaScript Functions by Category ({
                          $javascript-function-count })"
@@ -73,7 +78,7 @@ driving the generation of function list pages.
                 display="JavaScript Functions ({
                          $javascript-function-count })"
                 id="AllFunctionsJavaScript"
-                is-javascript="true"
+                mode="javascript"
                 function-list-page="true">
             <title>JavaScript functions</title>
             <intro>
@@ -118,7 +123,7 @@ driving the generation of function list pages.
         </node>
       </node><!-- server-side APIs -->
 
-      <xsl:if test="number($api:version) ge 5">
+      <xsl:if test="$VERSION-NUMBER ge 5">
         <!-- Add this wrapper so the /REST page will get created -->
         <node href="/REST"
               display="REST Resources"
@@ -148,7 +153,7 @@ driving the generation of function list pages.
         </node>
       </xsl:if>
 
-      <xsl:if test="number($api:version) ge 6">
+      <xsl:if test="$VERSION-NUMBER ge 6">
         <node
             display="Client-Side APIs"
             open="true">
@@ -198,7 +203,7 @@ driving the generation of function list pages.
       <node display="Other Documentation"
             open="true"
             id="other">
-        <xsl:if test="number($api:version) ge 5">
+        <xsl:if test="$VERSION-NUMBER ge 5">
           <node display="Hadoop Connector">
             <node display="Connector for Hadoop API"
                   href="/javadoc/hadoop/index.html" external="true"/>
@@ -228,7 +233,7 @@ driving the generation of function list pages.
         </node>
 
         <xsl:apply-templates mode="help-toc" select="."/>
-        <xsl:if test="number($api:version) ge 6">
+        <xsl:if test="$VERSION-NUMBER ge 6">
           <node display="C++ UDF API Reference"
                 href="/cpp/udf/index.html" external="true"/>
         </xsl:if>
@@ -268,11 +273,11 @@ driving the generation of function list pages.
       This is javascript-aware.
   -->
   <xsl:template match="api:lib">
-    <xsl:variable name="is-javascript" as="xs:boolean?"
-                  select="xs:boolean(@is-javascript)"/>
+    <xsl:variable name="mode" as="xs:string"
+                  select="@mode"/>
     <node>
       <xsl:copy-of
-          select="toc:node-attributes-for-lib(., $is-javascript)"/>
+          select="toc:node-attributes-for-lib(., $mode)"/>
       <title>
         <xsl:value-of select="api:prefix-for-lib(.)"/>
         <xsl:text> functions</xsl:text>
@@ -292,9 +297,9 @@ driving the generation of function list pages.
         <xsl:copy-of
             select="toc:lib-sub-pages(
                     .,
-                    if ($is-javascript) then $javascript-by-category
+                    if ($mode eq 'javascript') then $javascript-by-category
                     else $by-category,
-                    $is-javascript)"/>
+                    $mode)"/>
 
         <xsl:apply-templates mode="render-summary"
                              select="toc:get-summary-for-lib(.)"/>
@@ -305,7 +310,7 @@ driving the generation of function list pages.
       <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
       <xsl:apply-templates
           select="toc:function-name-nodes(
-                  if ($is-javascript)
+                  if ($mode eq 'javascript')
                   then $toc:ALL-FUNCTIONS-JAVASCRIPT[@lib eq current()]
                   else $toc:ALL-FUNCTIONS[@lib eq current()])"/>
     </node>
@@ -327,49 +332,9 @@ driving the generation of function list pages.
     </p>
   </xsl:template>
 
-  <!-- XQuery/XSLT functions -->
+  <!-- function nodes -->
   <xsl:template match="api:function-name">
-    <node href="/{.}" display="{.}" type="function"/>
-  </xsl:template>
-
-  <!--
-      JavaScript functions.
-      However function names are not ambiguous, i.e. fn:abs vs fn.abs
-  -->
-  <xsl:template match="api:function-name[@is-javascript]">
-    <xsl:variable name="js-name" select="api:javascript-name(.)"/>
-    <node type="javascript-function"
-          href="/{$js-name}" display="{$js-name}" />
-  </xsl:template>
-
-  <!-- A "function" name starting with a "/" is a REST resource -->
-  <xsl:template match="api:function-name[starts-with(.,'/')]">
-    <xsl:variable name="resource-name" select="api:name-from-REST-fullname(.)"/>
-    <xsl:variable name="http-method"   select="api:verb-from-REST-fullname(.)"/>
-    <!-- ASSUMPTION: the input elements are pre-sorted by resource name, then by preferred HTTP verb (GET's always first) -->
-    <xsl:variable name="is-same-resource-as-next" select="following-sibling::*[1][api:name-from-REST-fullname(.) eq $resource-name]"/>
-
-
-    <!-- If we decide to prefer signal over noise... then re-enable this. -->
-    <!-- If the method is GET and the next resource in the list is different, don't include the "(GET)" at the end of the name;
-         it only adds unnecessary clutter in that case. -->
-    <!-- This isn't wanted for now:
-         <xsl:variable name="base-display-name" select="if ($http-method eq 'GET' and not($is-same-resource-as-next)) then $resource-name
-         else string(.)"/>
-    -->
-    <!-- Always display the verb for now (except in 5.0 where the distinction is *never* made). -->
-    <xsl:variable name="base-display-name"
-                  select="if ($api:version eq '5.0') then $resource-name
-                          else string(.)"/>
-
-    <!-- Display the wildcard (*) version in the TOC, but the
-         original, curly-brace version on the list pages. -->
-    <node href="{api:REST-fullname-to-external-uri(.)}"
-          display="{api:reverse-translate-REST-resource-name(
-                   $base-display-name)}"
-          list-page-display="{api:reverse-translate-REST-resource-name(
-                             $base-display-name)}"
-          type="function"/>
+    <xsl:copy-of select="toc:function-node(., $VERSION-NUMBER)"/>
   </xsl:template>
 
 </xsl:stylesheet>

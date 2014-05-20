@@ -6,10 +6,10 @@ xquery version "1.0-ml";
 
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy" ;
-import module namespace stp="http://marklogic.com/rundmc/api/setup"
-  at "setup.xqm" ;
+import module namespace guide="http://marklogic.com/rundmc/api/guide"
+  at "guide.xqm" ;
 
-stp:guides-consolidate($api:version),
+guide:consolidate($api:version),
 "Done consolidating guides."
 
 (: apidoc/setup/consolidate-guides.xqy :)

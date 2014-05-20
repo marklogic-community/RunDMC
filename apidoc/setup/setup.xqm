@@ -238,14 +238,16 @@ declare function stp:fix-guide-names(
 };
 
 declare function stp:function-extract(
-  $function as element(apidoc:function))
+  $function as element(apidoc:function),
+  $uris-seen as map:map)
 as element()*
 {
   if ($function/@hidden/xs:boolean(.)) then () else
-  let $mode := (
-    if (xs:boolean($function/@is-javascript)) then 'javascript'
-    else if ($function/@lib = $api:REST-LIBS) then 'REST'
-    else 'xpath')
+  (: These are raw functions, so only javascript will have a mode. :)
+  let $mode as xs:string := (
+    if ($function/@mode) then $function/@mode
+    else if (starts-with($function/@name, '/')) then 'REST'
+    else 'xpath')[1]
   let $external-uri := api:external-uri($function, $mode)
   let $internal-uri := api:internal-uri($external-uri)
   let $lib as xs:string := $function/@lib
@@ -259,15 +261,17 @@ as element()*
    : are each (dubiously) documented as two separate functions so
    : that raises the possibility of needing to include two different
    : api:function elements in the same page.
+   : Likewise process all functions having the same name in the same lib.
+   : However this means that the resulting xml:base values may conflict,
+   : so we have to check $uris-seen.
    :)
+  where not(map:contains($uris-seen, $internal-uri))
   return element api:function-page {
     attribute xml:base { $internal-uri },
+    attribute mode { $mode },
+    map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
-    element api:function-name {
-      api:fixup-fullname($function, $mode) },
-    (: TODO why not just $function?
-     : Seems to grab any functions from the same lib that share the same name.
-     :)
+    element api:function-name { api:fixup-fullname($function, $mode) },
     stp:fixup(
       $function/../apidoc:function[@name eq $name][@lib eq $lib],
       $mode) }
@@ -280,11 +284,13 @@ as element()*
 {
   (: create XQuery/XSLT function pages :)
   stp:function-extract(
-    api:module-extractable-functions($doc/apidoc:module, ())),
+    api:module-extractable-functions($doc/apidoc:module, ()),
+    map:map()),
   (: create JavaScript function pages :)
   if (number($api:version) lt 8) then ()
   else stp:function-extract(
-    api:module-extractable-functions($doc/apidoc:module, 'javascript'))
+    api:module-extractable-functions($doc/apidoc:module, 'javascript'),
+    map:map())
 };
 
 declare function stp:function-docs(
@@ -551,38 +557,6 @@ as empty-sequence()
     xdmp:directory-delete($toc-parts-dir))
 };
 
-declare function stp:guide-convert(
-  $version as xs:string,
-  $guide as document-node()*)
-as node()
-{
-  xdmp:xslt-invoke(
-    "convert-guide.xsl", $guide,
-    map:new(
-      (map:entry('OUTPUT-URI', raw:target-guide-doc-uri($guide)),
-        map:entry("VERSION", $version))))
-};
-
-declare function stp:guides-convert(
-  $version as xs:string,
-  $guides as document-node()*)
-as empty-sequence()
-{
-  (: The slowest conversion is messages/XDMP-en.xml,
-   : which always finishes last.
-   :)
-  for $g in $guides
-  (:order by ends-with(xdmp:node-uri($g), '/XDMP-en.xml') descending:)
-  let $start := xdmp:elapsed-time()
-  let $converted := stp:guide-convert($version, $g)
-  let $uri := base-uri($converted)
-  let $_ := xdmp:document-insert($uri, $converted)
-  let $_ := stp:debug(
-    "stp:convert-guides", (base-uri($g), '=>', $uri,
-      'in', xdmp:elapsed-time() - $start))
-  return $uri
-};
-
 declare function stp:node-rewrite-namespace(
   $n as node(),
   $ns as xs:string)
@@ -619,7 +593,7 @@ as xs:string
     ancestor-or-self::toc:node[@id]   [1] )[1]/@id
 };
 
-(: Input parent may be api:function-page or api:javascript-function-page. :)
+(: Input parent should be api:function-page. :)
 declare function stp:list-entry(
   $function as element(api:function),
   $toc-node as element(toc:node))
@@ -679,9 +653,7 @@ as element(api:list-page)
         'type', $leaf/@type, 'href', $href))
     let $uri-leaf as xs:string := api:internal-uri($href)
     let $root as document-node() := doc($uri-leaf)
-    let $function as element() := $root/(
-      api:function-page
-      |api:javascript-function-page)/api:function[1]
+    let $function as element() := ($root/api:function-page/api:function)[1]
     return stp:list-entry($function, $leaf) }
 };
 
@@ -766,12 +738,11 @@ as element()+
 };
 
 (: Generate and insert a list page for each TOC container.
- : Because of the XSLT switch,
- : this may return document-node()+ or element()+.
+ : This may return element()+ with a variety of QNames.
  :)
 declare function stp:list-pages-render(
   $toc-document as document-node())
-as node()+
+as element()+
 {
   stp:info(
     'stp:list-pages-render', ("starting", xdmp:describe($toc-document))),
@@ -780,16 +751,18 @@ as node()+
   let $seq as xs:string+ := distinct-values(
     $toc-document//toc:node[@function-list-page or @admin-help-page]/@href)
   for $href in $seq
-  let $uri := api:internal-uri($href)
-  (: Any element with into or help content will have a title.
+  (: Any element with intro or help content will have a title.
    : Process the first match.
    :)
-  let $toc-node as element(toc:node) := (
+  let $toc-node as element(toc:node)? := (
     $toc-document//toc:node[@href eq $href][toc:title])[1]
-  return $toc-node ! (
-    if (@admin-help-page) then stp:list-page-help($uri, .)
-    else if (@function-list-page) then stp:list-page-functions($uri, .)
-    else stp:error('UNEXPECTED', xdmp:quote(.)))
+  where $toc-node
+  return (
+    if ($toc-node/@admin-help-page) then stp:list-page-help(
+      api:internal-uri($href), $toc-node)
+    else if ($toc-node/@function-list-page) then stp:list-page-functions(
+      api:internal-uri($href), $toc-node)
+    else stp:error('UNEXPECTED', xdmp:quote($toc-node)))
   ,
   stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
 };
@@ -843,172 +816,6 @@ declare function stp:zip-load-raw-docs(
 as empty-sequence()
 {
   stp:zip-load-raw-docs($api:version, $zip)
-};
-
-(: This should run in the raw database. :)
-declare function stp:guides-consolidate-insert(
-  $doc as node(),
-  $title as xs:string?,
-  $guide-title as xs:string?,
-  $target-url as xs:string,
-  $orig-dir as xs:string,
-  $guide-uri as xs:string,
-  $previous as xs:string?,
-  $next as xs:string?,
-  $number as xs:integer?,
-  $chapter-list as element()?)
-  as empty-sequence()
-{
-  stp:info(
-    'stp:guides-consolidate-insert',
-    (xdmp:describe($doc), xdmp:describe($title),
-      xdmp:describe($guide-title), $target-url)),
-  xdmp:document-insert(
-    $target-url,
-    element { if ($chapter-list) then "guide" else "chapter" } {
-      attribute original-dir { $orig-dir },
-      attribute guide-uri { $guide-uri },
-
-      $previous ! attribute previous { . },
-      $next ! attribute next { . },
-      $number ! attribute number { . },
-
-      element guide-title { $guide-title },
-      element title { $title },
-
-      element XML {
-        attribute original-file { concat('file:',base-uri($doc)) },
-        $doc/XML/node() },
-
-      $chapter-list })
-};
-
-(: This should run in the raw database. :)
-declare function stp:guide-consolidate-chapter(
-  $dir as xs:string,
-  $guide-title as xs:string,
-  $final-guide-uri as xs:string,
-  $chapter as element(chapter))
-as element(chapter)
-{
-  let $chapter-doc   := doc($chapter/@source-uri)
-  let $chapter-num   := 1 + count($chapter/preceding-sibling::chapter)
-  let $chapter-title := normalize-space($chapter-doc/XML/Heading-1)
-  let $next as xs:string? := $chapter/following-sibling::chapter[1]/@final-uri
-  let $previous := (
-    $chapter/preceding-sibling::chapter[1]/@final-uri,
-    $final-guide-uri)[1]
-  let $_ := stp:guides-consolidate-insert(
-    $chapter-doc, $chapter-title, $guide-title,
-    $chapter/@target-uri, $dir, $final-guide-uri,
-    $previous, $next, $chapter-num, ())
-  return element chapter {
-    attribute href { $chapter/@final-uri },
-    element chapter-title { $chapter-title } }
-};
-
-(: This should run in the raw database. :)
-declare function stp:guide-consolidate(
-  $version as xs:string,
-  $dir as xs:string,
-  $dir-name as xs:string,
-  $guide-config as element(guide)?)
-as empty-sequence()
-{
-  let $title-doc := doc(concat($dir,'title.xml'))
-  let $guide-title := $title-doc/XML/Title/normalize-space(.)
-  let $url-name := (
-    if ($guide-config) then $guide-config/@url-name
-    else $dir-name)
-  let $target-url   := concat("/",$version,"/guide/",$url-name,".xml")
-  let $final-guide-uri := raw:target-guide-doc-uri-for-string($target-url)
-  let $chapters := xdmp:directory($dir)[XML] except $title-doc
-  (: In two stages,
-   : so we can get the next and previous chapter links in the next stage.
-   :)
-  (: Get each chapter doc in order :)
-  let $chapter-manifest := element chapters {
-    for $doc in $chapters
-    let $uri := base-uri($doc)
-    let $chapter-file-name  := substring-after($uri, $dir)
-    let $chapter-target-uri := concat(
-      "/",$version,"/guide/",$url-name,"/",$chapter-file-name)
-    order by number(normalize-space($doc/XML/pagenum))
-    return element chapter {
-      attribute source-uri {$uri},
-      attribute target-uri {$chapter-target-uri},
-      attribute final-uri {
-        raw:target-guide-doc-uri-for-string($chapter-target-uri)} } }
-  (: This inserts chapter documents and creates a manifest. :)
-  let $chapter-list := element chapter-list {
-    stp:guide-consolidate-chapter(
-      $dir, $guide-title, $final-guide-uri,
-      (: Function mapping. :)
-      $chapter-manifest/chapter) }
-  let $first-chapter-uri := $chapter-manifest/chapter[1]/@final-uri
-  let $_ := stp:info(
-    'stp:guides-consolidate', (xdmp:describe($chapter-manifest)))
-  return stp:guides-consolidate-insert(
-    $title-doc, $guide-title, $guide-title,
-    $target-url, $dir, $final-guide-uri,
-    (), $first-chapter-uri, (),
-    $chapter-list)
-};
-
-declare function stp:guides-consolidate($version as xs:string)
-  as empty-sequence()
-{
-  raw:invoke-function(
-    function() {
-      (: Directory in which to find guide XML for the server version :)
-      let $guides-dir := concat("/", $version, "/xml/")
-      (: The list of guide configs :)
-      let $guide-list as element()+ := u:get-doc(
-        "/apidoc/config/document-list.xml")/docs/*/guide
-      (: Assume every guide has a title.xml document.
-       : This might seem inefficient,
-       : but consider that we will want to look at most of these documents.
-       : Anyway we probably just loaded them, so they should be cached.
-       :)
-      let $directory-uris as xs:string+ := (
-        xdmp:directory(
-          $guides-dir, 'infinity')/xdmp:node-uri(.)[
-          ends-with(., '/title.xml')]
-        ! substring-before(., '/title.xml')
-        ! concat(., '/'))
-      for $dir in $directory-uris
-      (: Basename of each dir, not including the full path to it :)
-      let $dir-name := substring-before(
-        substring-after($dir, $guides-dir), "/")
-      let $guide-config as element(guide)? := $guide-list[
-        @source-name eq $dir-name]
-      where not($guide-config/@exclude)
-      return stp:guide-consolidate(
-        $version, $dir, $dir-name, $guide-config)
-      ,
-      xdmp:commit(),
-      stp:info('stp:guides-consolidate', 'ok') },
-    (: This is an update. :)
-    true())
-};
-
-declare function stp:guide-images(
-  $version as xs:string)
-as empty-sequence()
-{
-  stp:info('stp:guide-images', $version),
-  let $guide-docs as node()+ := raw:guide-docs($version)
-  for $doc in $guide-docs
-  let $base-dir := string($doc/(guide|chapter)/@original-dir)
-  let $img-dir := api:guide-image-dir(raw:target-guide-doc-uri($doc))
-  (: Copy every distinct image referenced by this guide.
-   : Images are not shared across guides.
-   :)
-  for $img-path in distinct-values($doc//IMAGE/@href)
-  let $source-uri := resolve-uri($img-path, $base-dir)
-  let $dest-uri := concat($img-dir, $img-path)
-  let $_ := stp:info('stp:guide-images', ($source-uri, "to", $dest-uri))
-  return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
 };
 
 declare function stp:fixup-attribute-href(
@@ -1109,7 +916,7 @@ as attribute()?
   if (not($a/parent::apidoc:function)) then $a
   else attribute name {
     (: fixup apidoc:function/@name for javascript :)
-    if (xs:boolean($a/../@is-javascript)) then api:javascript-name($a)
+    if (xs:boolean($a/../@mode eq 'javascript')) then api:javascript-name($a)
     else $a }
 };
 
@@ -1128,24 +935,27 @@ as attribute()?
   default return $a
 };
 
-declare function stp:fixup-attributes-new($e as element())
+declare function stp:fixup-attributes-new(
+  $e as element(),
+  $context as xs:string*)
 as attribute()*
 {
   typeswitch($e)
   case element(apidoc:function) return (
-    (: Add the prefix and namespace URI of the function. :)
-    attribute prefix { $e/@lib },
-    attribute namespace { api:uri-for-lib($e/@lib) },
-    (: Add the @fullname attribute, which we depend on later.
-     : This depends on the @is-javascript attribute,
-     : which is faked in api:function-fake-javascript.
-     :)
-    attribute fullname {
-      api:fixup-fullname(
-        $e,
-        if (starts-with($e/@name, '/')) then 'REST'
-        else if (xs:boolean($e/@is-javascript)) then 'javascript'
-        else ()) })
+    (($e/@mode, $context)[1] treat as item()) ! (
+      (: Add the prefix and namespace URI of the function. :)
+      attribute prefix { $e/@lib },
+      attribute namespace { api:uri-for-lib($e/@lib) },
+      (: Watch for duplicates!
+       : Any existing attributes will be copies by the caller.
+       :)
+      if ($e/@mode) then () else attribute mode { . },
+      (: Add the @fullname attribute, which we depend on later.
+       : This depends on the @mode attribute,
+       : which is faked in api:function-fake-javascript
+       : but missing from non-fake raw function XML.
+       :)
+      attribute fullname { api:fixup-fullname($e, .) }))
   default return ()
 };
 
@@ -1245,7 +1055,7 @@ as element()?
   if ($e/@class eq 'javascript' and not($context = 'javascript')) then ()
   else element { stp:fixup-element-name($e) } {
     stp:fixup-attribute($e/@*),
-    stp:fixup-attributes-new($e),
+    stp:fixup-attributes-new($e, $context),
     stp:fixup-children($e, $context) }
 };
 

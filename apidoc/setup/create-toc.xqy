@@ -2,16 +2,16 @@ xquery version "1.0-ml";
 
 (: Create the new XML TOC :)
 
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy" ;
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
-  at "setup.xqm";
+  at "setup.xqm" ;
+import module namespace toc="http://marklogic.com/rundmc/api/toc"
+  at "toc.xqm" ;
 
-$stp:helpXsdCheck,
+toc:toc($api:version),
+text {
+  "Created the XML-based TOC at ",$stp:toc-xml-uri, " in ",
+  xdmp:elapsed-time() }
 
-xdmp:log(concat("Creating the new XML-based TOC at ",$stp:toc-xml-uri,"...")),
-
-xdmp:document-insert($stp:toc-xml-uri,
-                     xdmp:xslt-invoke("toc.xsl", document{ <empty/> })),
-
-xdmp:log("Done."),
-concat("Created the XML-based TOC at ",$stp:toc-xml-uri, " in ",
-       xs:string(xdmp:elapsed-time()), ".")
+(: create-toc.xqy :)

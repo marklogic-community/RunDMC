@@ -23,11 +23,12 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
-declare variable $ALL-FUNCTIONS := (
+declare variable $ALL-FUNCTIONS as element()+ := (
   $api:all-function-docs/api:function-page/api:function[1]) ;
 
-declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
-  $api:ALL-FUNCTIONS-JAVASCRIPT/api:javascript-function-page/api:function[1]) ;
+declare variable $ALL-FUNCTIONS-JAVASCRIPT as element()+ := (
+  $api:ALL-FUNCTIONS-JAVASCRIPT/api:function-page[
+    @mode eq 'javascript']/api:function[1]) ;
 
 (: exclude REST API "functions"
  : dedup when there is a built-in lib that has the same prefix as a library
@@ -137,7 +138,6 @@ as element(api:function-name)*
    :)
   let $wrapper := element api:wrapper {
     for $f in $functions
-    let $is-javascript := xs:boolean($f/@is-javascript)
     (: By default, just use alphabetical order.
      : But for REST docs, first sort by the resource name
      : and then the HTTP method.
@@ -149,11 +149,8 @@ as element(api:function-name)*
       if ($not-rest) then ()
       else api:verb-sort-key-from-REST-fullname($f/@fullname)
     return element api:function-name {
-      if ($not-rest) then ()
-      else attribute is-REST { not($not-rest) },
-      if (not($is-javascript)) then ()
-      else attribute is-javascript { $is-javascript },
-      $f/@fullname/string() } }
+      $f/@mode treat as attribute(),
+      $f/@fullname/string() treat as xs:string } }
   (: TODO why exclude 'sem:'? :)
   return $wrapper/api:function-name[. ne 'sem:']
 };
@@ -374,8 +371,7 @@ as xs:ID
 {
   xs:ID(
     concat(
-      if (xs:boolean($node/@is-javascript)
-        or $node/@type = 'javascript-function') then 'js_'
+      if ($node/@mode eq 'javascript') then 'js_'
       else '',
       $node/@id))
 };
@@ -561,12 +557,11 @@ as element()
   let $uri-new as xs:string := toc:uri(
     concat($uri, '/'),
     $n/@id/string() treat as xs:string,
-    (: Handle javascript functions. :)
-    if ($n[@is-javascript]) then 'javascript'
-    else ())
+    $n/@mode)
   let $_ := stp:debug(
     'toc:render-async',
-    ('async', 'not duplicate', $uri-new, xdmp:describe($n)))
+    ('async', 'not duplicate', 'mode', $n/@mode,
+      $uri-new, xdmp:describe($n)))
   return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
   {
     attribute xml:base { $uri-new },
@@ -815,17 +810,17 @@ as element(xhtml:li)
 declare function toc:lib-sub-pages(
   $lib as element(api:lib),
   $by-category as element()+,
-  $is-javascript as xs:boolean?)
+  $mode as xs:string)
 as element()*
 {
   (: Hack to exclude semantics categories, because
    : the XQuery category is just a placeholder.
    :)
   let $current-href as xs:string := concat(
-    '/', (if ($is-javascript) then 'js/' else ''),
+    '/', (if ($mode eq 'javascript') then 'js/' else ''),
     $lib, '/')
   let $excluded-prefix := (
-    if ($is-javascript) then '/js/sem'
+    if ($mode eq 'javascript') then '/js/sem'
     else '/sem')
   (: TODO could we make this more efficient?
    : The sub-pages should be children of the toc:node for $lib.
@@ -847,9 +842,28 @@ as element()*
   </div>
 };
 
+declare function toc:function-count(
+  $mode as xs:string,
+  $lib as xs:string?)
+as xs:integer
+{
+  xdmp:estimate(
+    cts:search(
+      collection(),
+      cts:and-query(
+        (cts:directory-query($api:VERSION-DIR, "1"),
+          cts:element-attribute-value-query(
+            xs:QName('api:function-page'),
+            xs:QName('mode'),
+            $mode),
+          if (not($lib)) then ()
+          else cts:element-attribute-value-query(
+            xs:QName('api:function'), xs:QName('lib'), $lib)))))
+};
+
 declare function toc:node-attributes-for-lib(
   $lib as element(api:lib),
-  $is-javascript as xs:boolean?)
+  $mode as xs:string)
 as attribute()+
 {
   attribute function-list-page { true() },
@@ -858,21 +872,20 @@ as attribute()+
   $lib/@category-bucket,
 
   attribute function-count {
-    api:function-count($lib) },
+    toc:function-count($mode, $lib) },
   attribute namespace {
     api:uri-for-lib($lib) },
 
   attribute href {
     concat(
-      if ($is-javascript) then '/js/' else '/',
+      if ($mode eq 'javascript') then '/js/' else '/',
       $lib) },
   attribute display {
     concat(
       api:prefix-for-lib($lib),
-      if ($is-javascript) then '.' else ':') },
+      if ($mode eq 'javascript') then '.' else ':') },
 
-  if (not($is-javascript)) then ()
-  else attribute is-javascript { $is-javascript },
+  attribute mode { $mode },
   if (not($lib/@built-in)) then ()
   else attribute footnote { true() }
 };
@@ -882,7 +895,7 @@ declare function toc:category-href(
   $subcategory as xs:string,
   $is-exhaustive as xs:boolean,
   $use-category as xs:boolean,
-  $is-javascript as xs:boolean?,
+  $mode as xs:string,
   $one-subcategory-lib as xs:string?,
   $main-subcategory-lib as xs:string?)
 as xs:string
@@ -890,7 +903,7 @@ as xs:string
   (: The initial empty string ensures a leading '/'. :)
   string-join(
     ('',
-      if (not($is-javascript)) then () else 'js',
+      if ($mode eq 'javascript') then () else 'js',
       if ($is-exhaustive) then $one-subcategory-lib
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
@@ -901,6 +914,69 @@ as xs:string
         $main-subcategory-lib,
         toc:path-for-category($subcategory))),
     '/')
+};
+
+declare function toc:toc($version as xs:string)
+as empty-sequence()
+{
+  $stp:helpXsdCheck,
+  stp:info(
+    'toc:toc', ("Creating new XML-based TOC at", $stp:toc-xml-uri, "...")),
+  xdmp:document-insert(
+    $stp:toc-xml-uri,
+    xdmp:xslt-invoke(
+      "toc.xsl",
+      document{ <empty/> },
+      map:new((map:entry('VERSION-NUMBER', number($version)))))),
+  stp:info(
+    'toc:toc', xdmp:elapsed-time())
+};
+
+declare function toc:function-node(
+  $function-name as element(api:function-name),
+  $version-number as xs:double)
+as element(toc:node)
+{
+  (: TODO can we rely on mode for REST,
+   : or check starts-with($function-name, '/') instead?
+   :)
+  let $mode as xs:string := $function-name/@mode
+  let $_ := (
+    if ($mode ne 'REST' and starts-with($function-name, '/')) then stp:error(
+      'ASSERT',
+      (xdmp:describe($mode),
+        $function-name, xdmp:describe($function-name)))
+    else ())
+  return switch($mode)
+  case 'javascript' return (
+    let $name := api:javascript-name($function-name)
+    return element toc:node {
+      attribute type { 'javascript-function' },
+      attribute href { '/'||$name },
+      attribute display { $name } })
+  case 'REST' return (
+    (: For 5.0 hide the verb. :)
+    let $base-display-name as xs:string := (
+      if ($version-number gt 5.0) then $function-name
+      else api:name-from-REST-fullname($function-name))
+    return element toc:node {
+      attribute type { 'function' },
+      attribute href {
+        api:REST-fullname-to-external-uri($function-name) },
+      attribute display {
+        (: Display the wildcard (*) version in the TOC,
+         : but the original, curly-brace version on the list pages.
+         : TODO comment is out of date? These are identical.
+         :)
+        api:reverse-translate-REST-resource-name($base-display-name) },
+      attribute list-page-display {
+        api:reverse-translate-REST-resource-name($base-display-name) } })
+  default return element toc:node {
+    if ($function-name/string()) then ()
+    else stp:error('ASSERT', $function-name),
+    attribute type { 'function' },
+    attribute href { '/'||$function-name },
+    attribute display { $function-name } }
 };
 
 (: apidoc/setup/toc.xqm :)

@@ -23,7 +23,7 @@
       but that's okay, because we pre-generate this TOC.
   -->
   <xsl:template name="functions-by-category">
-    <xsl:param name="mode" as="xs:string?"/>
+    <xsl:param name="mode" as="xs:string"/>
 
     <xsl:variable name="functions"
                   select="if ($mode eq 'javascript')
@@ -40,16 +40,13 @@
       <xsl:variable name="bucket" select="."/>
       <xsl:variable name="bucket-id" select="translate($bucket,' ','')"/>
 
-      <xsl:variable name="is-javascript" select="$mode eq 'javascript'"/>
       <xsl:variable name="is-REST" select="$bucket eq 'REST Resources API'"/>
 
       <!-- bucket node -->
       <!-- ID for function buckets is the display name minus spaces -->
       <!-- async is ignored for REST, because we ignore this <node> container -->
       <node display="{.}" id="{$bucket-id}" sub-control="yes" async="yes">
-        <xsl:if test="$is-javascript">
-          <xsl:attribute name="is-javascript" select="true()"/>
-        </xsl:if>
+        <xsl:attribute name="mode" select="$mode"/>
 
         <xsl:variable name="in-this-bucket"
                       select="$functions[@bucket eq $bucket]"/>
@@ -78,9 +75,7 @@
                 display="{
                          toc:display-category(.)}{
                          toc:display-suffix($single-lib-for-category)}" >
-            <xsl:if test="$is-javascript">
-              <xsl:attribute name="is-javascript" select="true()"/>
-            </xsl:if>
+            <xsl:attribute name="mode" select="$mode"/>
 
             <!-- When there are sub-categories, don't create a new page for the category (they tend to be useless);
                  only create a link if it corresponds to a full lib page -->
@@ -90,7 +85,8 @@
                     name="href"
                     select="toc:category-href(
                             $category, .,
-                            $is-exhaustive, false(), $is-javascript,
+                            $is-exhaustive, false(),
+                            $mode,
                             $single-lib-for-category, '')"/>
               </xsl:when>
 
@@ -110,7 +106,8 @@
                     name="href"
                     select="toc:category-href(
                             $category, .,
-                            $is-exhaustive, false(), $is-javascript,
+                            $is-exhaustive, false(),
+                            $mode,
                             '', $single-lib-for-category)"/>
                 <xsl:attribute
                     name="category-name"
@@ -172,7 +169,8 @@
                         name="href"
                         select="toc:category-href(
                                 $category, .,
-                                $is-exhaustive, $is-REST, $is-javascript,
+                                $is-exhaustive, $is-REST,
+                                $mode,
                                 $one-subcategory-lib, $main-subcategory-lib)"/>
                     <!-- We already have the intro text if this is a lib-exhaustive category -->
                     <xsl:if test="not($is-exhaustive)">

@@ -214,8 +214,7 @@
     -->
     var functionPageBucketId = "<xsl:apply-templates
     mode="function-bucket-id"
-    select="$content/(api:function-page
-      |api:javascript-function-page)/api:function[1]/@bucket
+    select="$content/api:function-page/api:function[1]/@bucket
     | $content/api:list-page/@category-bucket"/>";
     var tocSectionLinkSelector = "<xsl:apply-templates
     mode="toc-section-link-selector" select="$content/*"/>";
@@ -246,7 +245,7 @@
 
   <!-- JavaScript function lib page link -->
   <xsl:template mode="toc-section-link-selector"
-                match="api:javascript-function-page">
+                match="api:function-page[@mode eq 'javascript']">
     <xsl:text>.scrollable_section a[href='</xsl:text>
     <xsl:value-of select="$version-prefix"/>
     <xsl:text>/js/</xsl:text>
@@ -262,7 +261,8 @@
   </xsl:template>
 
   <xsl:template mode="toc-section-link-selector"
-                match="api:list-page|api:help-page">
+                match="api:list-page[@mode ne 'javascript']
+                       |api:help-page">
     <xsl:text>#</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>
@@ -270,7 +270,7 @@
 
   <!-- JavaScript function list page -->
   <xsl:template mode="toc-section-link-selector"
-                match="api:list-page[xs:boolean(@is-javascript)]">
+                match="api:list-page[@mode eq 'javascript']">
     <xsl:text>#js_</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>
@@ -287,7 +287,7 @@
 
   <!-- TODO why is this needed? Nothing similar for api:function-page. -->
   <xsl:template mode="page-specific-title"
-                match="api:javascript-function-page">
+                match="api:function-page[@mode eq 'javascript']">
     <xsl:value-of select="api:function-name"/>
   </xsl:template>
 
@@ -317,12 +317,16 @@
   </xsl:template>
 
   <xsl:template mode="api-page-heading"
-                match="api:function-page
-                       |api:javascript-function-page">
-    <xsl:variable name="name" select="api:function[1]/@fullname"/>
-    <xsl:variable name="lib"  select="api:function[1]/@lib"/>
-    <xsl:variable name="is-javascript"
-                  select="local-name(.) eq 'javascript-function-page'"/>
+                match="api:function-page">
+    <xsl:variable
+        name="name"
+        select="api:function[1]/@fullname"/>
+    <xsl:variable
+        name="lib"
+        select="api:function[1]/@lib"/>
+    <xsl:variable
+        name="is-javascript"
+        select="@mode eq 'javascript'"/>
     <!-- Expect this to change. -->
     <xsl:variable name="delimiter"
                   select="if ($is-javascript) then '.'
@@ -552,8 +556,7 @@
   </xsl:template>
 
   <xsl:template mode="page-content"
-                match="api:function-page
-                       |api:javascript-function-page">
+                match="api:function-page">
     <xsl:if test="$show-alternative-functions or $q">
       <xsl:variable name="other-matches"
                     select="ml:get-matching-functions(
@@ -654,16 +657,12 @@
       For the *:polygon functions,
       which have more than one function element on the same page.
   -->
-  <xsl:template mode="param-anchor-id"
-                match="/api:function-page
-                       /api:function[2]/api:params/api:param
-                       |
-                       /api:javascript-function-page
-                       /api:function[2]/api:params/api:param">
+  <xsl:template
+      mode="param-anchor-id"
+      match="/api:function-page/api:function[2]/api:params/api:param">
     <xsl:next-match/>
     <xsl:text>2</xsl:text>
   </xsl:template>
-
 
   <xsl:template match="api:summary">
     <h3>Summary</h3>
@@ -678,7 +677,6 @@
       <xsl:apply-templates/>
     </p>
   </xsl:template>
-
 
   <xsl:template match="api:params | api:headers">
     <xsl:param name="response-headers" tunnel="yes"/>
