@@ -64,7 +64,7 @@
                           'Extracting document:',
                           ' external=', $external-uri,
                           ' internal=', $internal-uri,
-                          ' mode=', $mode))"/>
+                          ' mode=', $mode), 'debug')"/>
     <xsl:result-document href="{$internal-uri}">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
@@ -129,10 +129,14 @@
   </xsl:template>
 
   <xsl:template mode="fixup-content" match="apidoc:usage[@schema]">
-    <xsl:variable name="current-dir" select="string-join(
-                                             tokenize(base-uri(.),'/')[position() ne last()], '/')"/>
-    <xsl:variable name="schema-uri" select="concat($current-dir, '/',
-                                            substring-before(@schema,'.xsd'), '.xml')"/>
+    <xsl:variable
+        name="current-dir"
+        select="string-join(
+                tokenize(base-uri(.),'/')[position() ne last()], '/')"/>
+    <xsl:variable
+        name="schema-uri"
+        select="concat($current-dir, '/',
+                substring-before(@schema,'.xsd'), '.xml')"/>
 
     <!-- This logic and its attendant assumptions are ported from the
          docapp code -->
@@ -146,8 +150,9 @@
                   select="if ($is-REST-resource and not(@element-name))
                           then api:lookup-REST-complexType($function-name)
                           else $given-name"/>
-    <xsl:variable name="print-intro-value"
-                  select="if (@print-intro) then string(@print-intro) else 'true'"/>
+    <xsl:variable
+        name="print-intro-value"
+        select="if (@print-intro) then string(@print-intro) else 'true'"/>
 
     <xsl:if test="$complexType-name">
       <xsl:apply-templates mode="fixup" />
@@ -214,53 +219,6 @@
                            if (starts-with(@name, '/')) then 'REST'
                            else if (@is-javascript) then 'javascript'
                            else ())"/>
-  </xsl:template>
-
-  <!--
-      Change the "spell" library to "spell-lib"
-      to disambiguate from the built-in "spell" module
-  -->
-  <xsl:template mode="fixup-att-value"
-                match="apidoc:function[
-                       @lib eq 'spell' and not(@type eq 'builtin')]/@lib">
-    <xsl:text>spell-lib</xsl:text>
-  </xsl:template>
-
-  <!--
-      Similarly, change the "json" library to "json-lib"
-      to disambiguate from the built-in "json" module
-  -->
-  <xsl:template mode="fixup-att-value"
-                match="apidoc:function[
-                       @lib eq 'json' and not(@type eq 'builtin')]/@lib">
-    <xsl:text>json-lib</xsl:text>
-  </xsl:template>
-
-  <!--
-      Change the "rest" library to "rest-lib"
-      because we're reserving the "/REST/" prefix for the REST API docs,
-      and I don't want case to be the only thing
-      distinguishing between the two URLs.
-  -->
-  <xsl:template mode="fixup-att-value"
-                match="apidoc:function[@lib eq 'rest']/@lib">
-    <xsl:text>rest-lib</xsl:text>
-  </xsl:template>
-
-  <!--
-      Change the "manage" (and "XXX" for now...) library to "REST"
-      so the TOC code treats it like a library with that name.
-  -->
-  <xsl:template mode="fixup-att-value"
-                match="apidoc:function[@lib = $api:REST-LIBS]/@lib">
-    <xsl:text>REST</xsl:text>
-  </xsl:template>
-
-  <!-- fixup apidoc:function/@name for javascript -->
-  <xsl:template mode="fixup-att-value"
-                match="apidoc:function[xs:boolean(@is-javascript)]/@name">
-    <xsl:value-of
-        select="api:javascript-name(.)"/>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -18,6 +18,8 @@ import module namespace toc="http://marklogic.com/rundmc/api/toc"
 import module namespace xhtml="http://marklogic.com/cpf/xhtml"
   at "/MarkLogic/conversion/xhtml.xqy";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $TITLE-ALIASES := u:get-doc(
@@ -48,6 +50,7 @@ declare variable $helpXsdCheck := (
     (), "ERROR", "You must specify a 'help-xsd-dir' param.")
   else ()) ;
 
+(: TODO skip for standalone? :)
 declare variable $GOOGLE-ANALYTICS as element() :=
 (: google analytics script goes just before the closing the </head> tag :)
 <script type="text/javascript"><![CDATA[
@@ -67,6 +70,7 @@ declare variable $GOOGLE-ANALYTICS as element() :=
             })();]]>
 </script> ;
 
+(: TODO skip for standalone? :)
 declare variable $MARKETO as element() :=
 (: marketo script goes just before the closing the </body> tag :)
 <script type="text/javascript"><![CDATA[
@@ -253,7 +257,7 @@ as empty-sequence()
     ("inserting", xdmp:describe($doc), 'at', $uri))
   return xdmp:document-insert($uri, $func)
   ,
-  xdmp:log("[stp:function-docs-extract] ok")
+  stp:info("stp:function-docs-extract", xdmp:elapsed-time())
 };
 
 declare function stp:search-results-page-insert()
@@ -976,6 +980,123 @@ as empty-sequence()
   let $dest-uri := concat($img-dir, $img-path)
   let $_ := stp:info('stp:guide-images', ($source-uri, "to", $dest-uri))
   return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
+};
+
+declare function stp:fixup-attribute-href(
+  $a as attribute(href))
+as attribute()?
+{
+  if (not($a/parent::a or $a/parent::xh:a)) then $a
+  else attribute href {
+    (: Fixup Linkerator links
+     : Change "#display.xqy&fname=http://pubs/5.1doc/xml/admin/foo.xml"
+     : to "/guide/admin/foo"
+     :)
+    if (starts-with(
+        $a/../@href, '#display.xqy?fname=')) then (
+      let $anchor := replace(
+        substring-after($a, '.xml'), '%23', '#id_')
+      return stp:fix-guide-names(
+        concat('/guide',
+          substring-before(
+            substring-after($a, 'doc/xml'), '.xml'),
+          $anchor), 1))
+
+    (: If a fragment id contains a colon, it is a link to a function page.
+     : TODO JavaScript handle fn.abs etc.
+     : Change, e.g., #xdmp:tidy to /xdmp:tidy
+     :)
+    else if (starts-with($a, '#') and contains($a, ':')) then translate(
+      $a, '#', '/')
+
+    (: A relative fragment link points somewhere in the same apidoc:module. :)
+    else if (starts-with($a, '#')) then (
+      let $fid := substring-after($a, '#')
+      let $relevant-function := $a/root()/apidoc:module/apidoc:function[
+        .//*/@id eq $fid]
+      let $result as xs:string := (
+        (: Link within same page. :)
+        if ($a/ancestor::apidoc:function is $relevant-function) then '.'
+        (: If we are on a different page, insert a link to the target page. :)
+        else (
+          (: REST URLs are written differently than function URLs :)
+          (: path to resource page :)
+          if ($relevant-function/@lib
+            = $api:REST-LIBS) then api:REST-fullname-to-external-uri(
+            api:fixup-fullname($relevant-function, 'REST'))
+          (: regular function page :)
+          (: path to function page TODO add mode when javascript :)
+          else '/'||api:fixup-fullname($relevant-function, ())))
+      return $result)
+
+    (: For an absolute path like http://w3.org leave the value alone. :)
+    else if (contains($a, '://')) then $a
+
+    (: Handle some odd corner-cases. TODO maybe dead code? :)
+    else if ($a
+      eq 'apidocs.xqy?fname=UpdateBuiltins#xdmp:document-delete') then '/xdmp:document-delete'
+    (: as we configured in config/category-mappings.xml :)
+    else if ($a =
+      ('apidocs.xqy?fname=cts:query Constructors',
+        'SearchBuiltins&amp;sub=cts:query Constructors')) then '/cts/constructors'
+
+    (: Otherwise, assume a function page with an optional fragment id,
+     : so we need only prepend a slash.
+     :)
+    else concat('/', $a) }
+};
+
+declare function stp:fixup-attribute-lib(
+  $a as attribute(lib))
+as attribute()?
+{
+  if (not($a/parent::apidoc:function)) then $a
+  else attribute lib {
+
+    (: Change the "spell" library to "spell-lib"
+     : to disambiguate from the built-in "spell" module.
+     :)
+    if ($a eq 'spell' and not($a/../@type eq 'builtin')) then 'spell-lib'
+    (: Similarly, change the "json" library to "json-lib"
+     : to disambiguate from the built-in "json" module.
+     :)
+    else if ($a eq 'json' and not($a/../@type eq 'builtin')) then 'json-lib'
+    (: Change the "rest" library to "rest-lib"
+     : because we reserve the "/REST/" prefix for the REST API docs.
+     : We do not want case to be the only difference.
+     :)
+    else if ($a eq 'rest') then 'rest-lib'
+    (: Change designated values to "REST",
+     : so the TOC code treats it like a library with that name.
+     :)
+    else if ($a = $api:REST-LIBS) then 'REST'
+    else $a}
+};
+
+declare function stp:fixup-attribute-name(
+  $a as attribute(name))
+as attribute()?
+{
+  if (not($a/parent::apidoc:function)) then $a
+  else attribute name {
+    (: fixup apidoc:function/@name for javascript :)
+    if (xs:boolean($a/../@is-javascript)) then api:javascript-name($a)
+    else $a }
+};
+
+(: Ported from fixup.xsl,
+ : where it was only used by extract-functions.
+ :)
+declare function stp:fixup-attribute(
+  $a as attribute())
+as attribute()?
+{
+  (: By default, just use the given value :)
+  typeswitch($a)
+  case attribute(href) return stp:fixup-attribute-href($a)
+  case attribute(lib) return stp:fixup-attribute-lib($a)
+  case attribute(name) return stp:fixup-attribute-name($a)
+  default return $a
 };
 
 (: apidoc/setup/setup.xqm :)

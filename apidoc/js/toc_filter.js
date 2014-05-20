@@ -173,6 +173,8 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     //console.log("waitToShowInTOC", tocSection, "currentHref=" + currentHref);
     var stripChapterFragment = isUserGuide && currentHref.indexOf("#") == -1;
 
+    // TODO needs special handling for /7.0/fn:abs vs /fn:abs ?
+
     var locationHref = location.href.toLowerCase();
     var current = tocSection.find("a").filter(function() {
       var thisHref = this.href.toLowerCase();
@@ -197,7 +199,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-      //console.log("waitToShowInTOC calling showInTOC as fallback.");
+      console.log("waitToShowInTOC calling showInTOC as fallback.");
       showInTOC($("#api_sub a.currentPage"))
     }
   }
@@ -220,7 +222,7 @@ function updateTocForUrlFragment(pathname, hash) {
     var effective_hash = (hash == "") ? "#chapter" : hash;
     var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + effective_hash;
 
-    //console.log("Calling showInTOC from updateTocForUrlFragment");
+    console.log("Calling showInTOC from updateTocForUrlFragment");
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
   }
 }
@@ -229,7 +231,7 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-    console.log("showInTOC", a.href);
+    console.log("showInTOC", a.href, a.length, a.parent().length);
     $("#api_sub a.selected").removeClass("selected");
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
@@ -262,7 +264,7 @@ function updateTocForTab() {
   //console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector, tocSectionLink, tocSection);
   if (!tocSection.length) return;
 
-  //console.log("updateTocForTab loading to", tocSection);
+  console.log("updateTocForTab loading to", tocSection);
   loadTocSection(0, tocSection);
   waitToShowInTOC(tocSection);
 }

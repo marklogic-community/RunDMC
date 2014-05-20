@@ -379,18 +379,6 @@ as xs:string
     else concat(ml:escape-uri($doc-path), '.xml'))
 };
 
-(: Log the fixups so we can diagnose any problems,
- : while yielding the result.
- :)
-declare function api:fixup-trace(
-  $from as xs:string*,
-  $to as xs:string*)
-as xs:string*
-{
-  xdmp:log(text { 'Fixing up a/@href', $from, 'to', $to }),
-  $to
-};
-
 (: E.g.,     "/v1/rest-apis/[name] (GET)"
  : ==> "GET /v1/rest-apis/[name]"
  :)
