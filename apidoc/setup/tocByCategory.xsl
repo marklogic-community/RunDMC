@@ -28,7 +28,7 @@
     <xsl:variable name="functions"
                   select="if ($mode eq 'javascript')
                           then $toc:ALL-FUNCTIONS-JAVASCRIPT
-                          else $toc:ALL-FUNCTIONS"/>
+                          else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT"/>
     <xsl:variable name="buckets"
                   select="distinct-values($functions/@bucket)"/>
 

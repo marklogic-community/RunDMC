@@ -23,8 +23,9 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
-declare variable $ALL-FUNCTIONS as element()+ := (
-  $api:all-function-docs/api:function-page/api:function[1]) ;
+declare variable $ALL-FUNCTIONS-NOT-JAVASCRIPT as element()+ := (
+  $api:all-function-docs/api:function-page[
+    @mode ne 'javascript']/api:function[1]) ;
 
 declare variable $ALL-FUNCTIONS-JAVASCRIPT as element()+ := (
   $api:ALL-FUNCTIONS-JAVASCRIPT/api:function-page[
@@ -201,10 +202,14 @@ declare function toc:category-is-exhaustive(
   $lib-for-all as xs:string?)
 as xs:boolean
 {
+  (: It should be safe to look at the non-javascript functions,
+   : no matter which mode the caller is in.
+   :)
   $lib-for-all and (
-    let $num-functions-in-lib := count($ALL-FUNCTIONS[@lib eq $lib-for-all])
+    let $num-functions-in-lib := count(
+      $ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq $lib-for-all])
     let $num-functions-in-category := count(
-      $ALL-FUNCTIONS[@category eq $category]
+      $ALL-FUNCTIONS-NOT-JAVASCRIPT[@category eq $category]
       [not($sub-category) or @subcategory eq $sub-category])
     return $num-functions-in-lib eq $num-functions-in-category)
 };

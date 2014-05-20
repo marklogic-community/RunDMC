@@ -312,7 +312,7 @@ driving the generation of function list pages.
           select="toc:function-name-nodes(
                   if ($mode eq 'javascript')
                   then $toc:ALL-FUNCTIONS-JAVASCRIPT[@lib eq current()]
-                  else $toc:ALL-FUNCTIONS[@lib eq current()])"/>
+                  else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq current()])"/>
     </node>
   </xsl:template>
 
