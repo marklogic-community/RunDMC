@@ -12,6 +12,7 @@ driving the generation of function list pages.
                 xmlns:api="http://marklogic.com/rundmc/api"
                 xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:stp="http://marklogic.com/rundmc/api/setup"
                 xmlns:toc="http://marklogic.com/rundmc/api/toc"
                 xmlns:u  ="http://marklogic.com/rundmc/util"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
@@ -24,6 +25,9 @@ driving the generation of function list pages.
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
   <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/setup"
+      href="/apidoc/setup/setup.xqm"/>
+  <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api/toc"
       href="/apidoc/setup/toc.xqm"/>
 
@@ -31,9 +35,6 @@ driving the generation of function list pages.
   <xsl:include href="tocByCategory.xsl"/>
   <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="toc-help.xsl"/>
-
-  <!-- Implements some common content fixup rules -->
-  <xsl:include href="fixup.xsl"/>
 
   <!--
       Compute this first so we can glean the category info from the result
@@ -312,7 +313,7 @@ driving the generation of function list pages.
 
   <xsl:template mode="render-summary"
                 match="apidoc:summary">
-    <xsl:apply-templates mode="fixup"/>
+    <xsl:copy-of select="stp:fixup(., 'toc')"/>
   </xsl:template>
 
   <!--

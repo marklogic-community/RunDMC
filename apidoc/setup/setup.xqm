@@ -225,39 +225,90 @@ declare function stp:fix-guide-names(
   $s as xs:string,
   $num as xs:integer)
 {
-let $x := xdmp:document-get(concat(xdmp:modules-root(),
-              "/apidoc/config/document-list.xml"))
-let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
-let $url := $x//guide[@url-name ne @source-name]/@url-name/string()
-let $count := count($source)
-return
-if ($num eq $count + 1)
-then (xdmp:set($num, 9999), $s)
-else if ($num eq 9999)
-     then $s
-     else stp:fix-guide-names(replace($s, $source[$num], $url[$num]),
-             $num + 1)
-
+  let $x := xdmp:document-get(
+    concat(xdmp:modules-root(), "/apidoc/config/document-list.xml"))
+  let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
+  let $url := $x//guide[@url-name ne @source-name]/@url-name/string()
+  let $count := count($source)
+  return (
+    if ($num eq $count + 1) then (xdmp:set($num, 9999), $s)
+    else if ($num eq 9999) then $s
+    else stp:fix-guide-names(replace($s, $source[$num], $url[$num]),
+      $num + 1))
 };
 
-declare function stp:function-docs-extract(
+declare function stp:function-extract(
+  $function as element(apidoc:function))
+as element()*
+{
+  if ($function/@hidden/xs:boolean(.)) then () else
+  let $mode := (
+    if (xs:boolean($function/@is-javascript)) then 'javascript'
+    else if ($function/@lib = $api:REST-LIBS) then 'REST'
+    else 'xpath')
+  let $external-uri := api:external-uri($function, $mode)
+  let $internal-uri := api:internal-uri($external-uri)
+  let $lib as xs:string := $function/@lib
+  let $name as xs:string := $function/@name
+  let $_ := stp:debug(
+    'stp:function-extract',
+    ('external', $external-uri,
+      'internal', $internal-uri,
+      'mode', $mode))
+  (: This wrapper is necessary because the *:polygon() functions
+   : are each (dubiously) documented as two separate functions so
+   : that raises the possibility of needing to include two different
+   : api:function elements in the same page.
+   :)
+  return element api:function-page {
+    attribute xml:base { $internal-uri },
+    (: For word search purposes. :)
+    element api:function-name {
+      api:fixup-fullname($function, $mode) },
+    (: TODO why not just $function?
+     : Seems to grab any functions from the same lib that share the same name.
+     :)
+    stp:fixup(
+      $function/../apidoc:function[@name eq $name][@lib eq $lib],
+      $mode) }
+};
+
+declare function stp:function-docs(
+  $version as xs:string,
+  $doc as document-node())
+as element()*
+{
+  (: create XQuery/XSLT function pages :)
+  stp:function-extract(
+    api:module-extractable-functions($doc/apidoc:module, ())),
+  (: create JavaScript function pages :)
+  if (number($api:version) lt 8) then ()
+  else stp:function-extract(
+    api:module-extractable-functions($doc/apidoc:module, 'javascript'))
+};
+
+declare function stp:function-docs(
   $version as xs:string)
 as empty-sequence()
 {
-  stp:info('stp:function-docs-extract', ('starting', $version)),
+  stp:info('stp:function-docs', ('starting', $version)),
   for $doc in raw:api-docs($version)
   let $_ := stp:debug(
-    "stp:function-docs-extract", ('starting', xdmp:describe($doc)))
-  for $func in xdmp:xslt-invoke(
-    "extract-functions.xsl", $doc,
-    map:new(map:entry('VERSION', $version)))
+    "stp:function-docs", ('starting', xdmp:describe($doc)))
+  let $extracted as node()+ := (
+    (: TODO remove XSL :)
+    if (0) then xdmp:xslt-invoke(
+      "extract-functions.xsl", $doc,
+      map:new(map:entry('VERSION', $version)))
+    else stp:function-docs($version, $doc))
+  for $func in $extracted
   let $uri := base-uri($func)
   let $_ := stp:debug(
-    "stp:function-docs-extract",
+    "stp:function-docs",
     ("inserting", xdmp:describe($doc), 'at', $uri))
   return xdmp:document-insert($uri, $func)
   ,
-  stp:info("stp:function-docs-extract", xdmp:elapsed-time())
+  stp:info("stp:function-docs", xdmp:elapsed-time())
 };
 
 declare function stp:search-results-page-insert()
@@ -946,23 +997,6 @@ declare function stp:guides-consolidate($version as xs:string)
     true())
 };
 
-declare function stp:function-docs(
-  $version as xs:string)
-as empty-sequence()
-{
-  stp:info("stp:function-docs", $version),
-  for $doc in raw:api-docs($version)
-  let $_ := stp:info("stp:function-docs", xdmp:describe($doc))
-  for $func in xdmp:xslt-invoke("extract-functions.xsl", $doc)
-  let $uri := base-uri($func)
-  let $_ := stp:debug(
-    "stp:function-docs",
-    ('inserting', xdmp:describe($doc), 'at', $uri))
-  return xdmp:document-insert($uri, $func)
-  ,
-  stp:info("stp:function-docs", xdmp:elapsed-time())
-};
-
 declare function stp:guide-images(
   $version as xs:string)
 as empty-sequence()
@@ -1091,12 +1125,150 @@ declare function stp:fixup-attribute(
   $a as attribute())
 as attribute()?
 {
-  (: By default, just use the given value :)
   typeswitch($a)
   case attribute(href) return stp:fixup-attribute-href($a)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
+  (: By default, return the input. :)
   default return $a
+};
+
+declare function stp:fixup-attributes-new($e as element())
+as attribute()*
+{
+  typeswitch($e)
+  case element(apidoc:function) return (
+    (: Add the prefix and namespace URI of the function. :)
+    attribute prefix { $e/@lib },
+    attribute namespace { api:uri-for-lib($e/@lib) },
+    (: Add the @fullname attribute, which we depend on later.
+     : This depends on the @is-javascript attribute,
+     : which is faked in api:function-fake-javascript.
+     :)
+    attribute fullname {
+      api:fixup-fullname(
+        $e,
+        if (starts-with($e/@name, '/')) then 'REST'
+        else if (xs:boolean($e/@is-javascript)) then 'javascript'
+        else ()) })
+  default return ()
+};
+
+declare function stp:fixup-element-name($e as element())
+as xs:anyAtomicType
+{
+  (: Move "apidoc" elements to the "api" namespace,
+   : to avoid confusion.
+   :)
+  if ($e/self::apidoc:*) then QName($api:NAMESPACE, local-name($e))
+  else node-name($e)
+};
+
+declare function stp:schema-info(
+  $xse as element(xs:element))
+as element(api:element)
+{
+  (: ASSUMPTION: all the element declarations are global.
+   : ASSUMPTION: the schema default namespace is the same as
+   : the target namespace (@ref uses no prefix).
+   :)
+  let $current-ref := $xse/@ref/string()
+  let $root := $xse/root()
+  let $element-decl := $root/xs:schema/xs:element[
+    @name eq $current-ref]
+  (: This is natively a QName,
+   : but we assume we can ignore namespace prefixes.
+   :)
+  let $element-decl-type := $element-decl/@type/string()
+  let $complexType := $root/xs:schema/xs:complexType[
+    @name eq $element-decl-type]
+  return element api:element {
+    element api:element-name { $current-ref },
+    element api:element-description {
+      $element-decl/xs:annotation/xs:documentation },
+    (: Recursion continues via function mapping.
+     : TODO Could this get into a loop?
+     :)
+    stp:schema-info($complexType//xs:element)
+  }
+};
+
+declare function stp:fixup-children-apidoc-usage(
+  $e as element(apidoc:usage),
+  $context as xs:string*)
+as node()*
+{
+  if (not($e/@schema)) then stp:fixup($e/node(), $context) else (
+    let $current-dir := string-join(
+      tokenize(base-uri($e), '/')[position() ne last()], '/')
+    let $schema-uri := concat(
+      $current-dir, '/',
+      substring-before($e/@schema,'.xsd'), '.xml')
+    (: This logic and attendant assumptions come from the docapp code. :)
+    let $function-name := string($e/../@name)
+    let $is-REST-resource := starts-with($function-name,'/')
+    let $given-name := ($e/@element-name, $e/../@name)[1]/string()
+    let $complexType-name := (
+      if ($is-REST-resource and not($e/@element-name))
+      then api:lookup-REST-complexType($function-name)
+      else $given-name)
+    let $print-intro-value := (string($e/@print-intro), true())[1]
+    where $complexType-name
+    return (
+      stp:fixup($e/node(), $context),
+      element api:schema-info {
+        if (not($is-REST-resource)) then () else (
+          attribute REST-doc { true() },
+          attribute print-intro { $print-intro-value }),
+        let $schema := raw:get-doc($schema-uri)/xs:schema
+        let $complexType := $schema/xs:complexType[@name eq $complexType-name]
+        (: This presumes that all the element declarations are global,
+         : and complex type contains only element references.
+         :)
+        return stp:schema-info($complexType//xs:element) }))
+};
+
+declare function stp:fixup-children(
+  $e as element(),
+  $context as xs:string*)
+as node()*
+{
+  typeswitch($e)
+  case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
+    $e, $context)
+  default return stp:fixup($e/node(), $context)
+};
+
+declare function stp:fixup-element(
+  $e as element(),
+  $context as xs:string*)
+as element()?
+{
+  (: Hide javascript-specific content
+   : unless this is a javascript function page.
+   :)
+  if ($e/@class eq 'javascript' and not($context = 'javascript')) then ()
+  else element { stp:fixup-element-name($e) } {
+    stp:fixup-attribute($e/@*),
+    stp:fixup-attributes-new($e),
+    stp:fixup-children($e, $context) }
+};
+
+(: Ported from fixup.xsl
+ : This takes care of fixing internal links and references,
+ : and any other transform work.
+ :)
+declare function stp:fixup(
+  $n as node(),
+  $context as xs:string*)
+as node()*
+{
+  typeswitch($n)
+  case document-node() return document { stp:fixup($n/node(), $context) }
+  case element() return stp:fixup-element($n, $context)
+  case attribute() return stp:fixup-attribute($n)
+  (: By default, return the input. :)
+  default return $n
 };
 
 (: apidoc/setup/setup.xqm :)

@@ -8,18 +8,18 @@
     TODO might be a good candidate for an XQuery port.
 -->
 <xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
                 xmlns:api="http://marklogic.com/rundmc/api"
-                xmlns:xdmp="http://marklogic.com/xdmp"
-                xmlns:fixup="http://marklogic.com/rundmc/api/fixup"
-                xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
-                xmlns:my="http://localhost"
-                xmlns:u="http://marklogic.com/rundmc/util"
+                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
+                xmlns:my="http://localhost"
+                xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+                xmlns:stp="http://marklogic.com/rundmc/api/setup"
+                xmlns:u="http://marklogic.com/rundmc/util"
+                xmlns:xdmp="http://marklogic.com/xdmp"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 extension-element-prefixes="xdmp"
-                exclude-result-prefixes="xs apidoc fixup raw my u ml">
+                exclude-result-prefixes="xs apidoc raw my u ml">
 
   <xdmp:import-module
       namespace="http://developer.marklogic.com/site/internal"
@@ -31,11 +31,11 @@
       namespace="http://marklogic.com/rundmc/raw-docs-access"
       href="/apidoc/setup/raw-docs-access.xqy"/>
   <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/setup"
+      href="/apidoc/setup/setup.xqm"/>
+  <xdmp:import-module
       namespace="http://marklogic.com/rundmc/util"
       href="/lib/util-2.xqy"/>
-
-  <!-- Implements some common content fixup rules -->
-  <xsl:include href="fixup.xsl"/>
 
   <xsl:template match="/">
     <!-- create XQuery/XSLT function pages -->
@@ -60,11 +60,11 @@
     <xsl:variable name="internal-uri"
                   select="api:internal-uri($external-uri)"/>
     <xsl:variable name="_LOG"
-                  select="xdmp:log(concat(
-                          'Extracting document:',
-                          ' external=', $external-uri,
-                          ' internal=', $internal-uri,
-                          ' mode=', $mode), 'debug')"/>
+                  select="stp:debug(
+                          'extract-functions.xsl',
+                          ('external', $external-uri,
+                          'internal', $internal-uri,
+                          'mode', $mode))"/>
     <xsl:result-document href="{$internal-uri}">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
@@ -75,11 +75,11 @@
         <api:function-name>
           <xsl:value-of select="api:fixup-fullname(., ())"/>
         </api:function-name>
-        <xsl:apply-templates
-            mode="fixup"
-            select="../apidoc:function[
-                    api:fixup-fullname(., ()) eq current()
-                    /api:fixup-fullname(., ())]"/>
+        <xsl:copy-of
+            select="stp:fixup(
+                    ../apidoc:function[
+                    api:fixup-fullname(., ())
+                    eq api:fixup-fullname(current(), ())])"/>
       </api:function-page>
     </xsl:result-document>
   </xsl:template>
@@ -95,11 +95,11 @@
     <xsl:variable name="internal-uri"
                   select="api:internal-uri($external-uri)"/>
     <xsl:variable name="_LOG"
-                  select="xdmp:log(concat(
-                          'Extracting document:',
-                          ' external=', $external-uri,
-                          ' internal=', $internal-uri,
-                          ' mode=javascript'))"/>
+                  select="stp:debug(
+                          'extract-functions.xsl',
+                          ('external', $external-uri,
+                          'internal', $internal-uri,
+                          'mode', 'javascript'))"/>
     <xsl:result-document href="{$internal-uri}">
       <!-- This wrapper is necessary because the *:polygon() functions
            are each (dubiously) documented as two separate functions so
@@ -110,115 +110,13 @@
         <api:function-name>
           <xsl:value-of select="api:fixup-fullname(., 'javascript')"/>
         </api:function-name>
-        <xsl:apply-templates
-            mode="fixup"
-            select="../apidoc:function[
-                      api:fixup-fullname(., 'javascript') eq current()
-                    /api:fixup-fullname(., 'javascript')]"/>
+        <xsl:copy-of
+            select="stp:fixup(
+                    ../apidoc:function[
+                    api:fixup-fullname(., 'javascript')
+                    eq api:fixup-fullname(current(), 'javascript')])"/>
       </api:javascript-function-page>
     </xsl:result-document>
-  </xsl:template>
-
-  <!-- Rename "apidoc" elements to "api" so it's clear which docs
-       we're dealing with later -->
-  <xsl:template mode="fixup" match="apidoc:*">
-    <xsl:element name="{local-name()}"
-                 namespace="http://marklogic.com/rundmc/api">
-      <xsl:apply-templates mode="fixup-content-etc" select="."/>
-    </xsl:element>
-  </xsl:template>
-
-  <xsl:template mode="fixup-content" match="apidoc:usage[@schema]">
-    <xsl:variable
-        name="current-dir"
-        select="string-join(
-                tokenize(base-uri(.),'/')[position() ne last()], '/')"/>
-    <xsl:variable
-        name="schema-uri"
-        select="concat($current-dir, '/',
-                substring-before(@schema,'.xsd'), '.xml')"/>
-
-    <!-- This logic and its attendant assumptions are ported from the
-         docapp code -->
-    <xsl:variable name="function-name" select="string(../@name)"/>
-    <xsl:variable name="is-REST-resource"
-                  select="starts-with($function-name,'/')"/>
-
-    <xsl:variable name="given-name"
-                  select="string((@element-name, ../@name)[1])"/>
-    <xsl:variable name="complexType-name"
-                  select="if ($is-REST-resource and not(@element-name))
-                          then api:lookup-REST-complexType($function-name)
-                          else $given-name"/>
-    <xsl:variable
-        name="print-intro-value"
-        select="if (@print-intro) then string(@print-intro) else 'true'"/>
-
-    <xsl:if test="$complexType-name">
-      <xsl:apply-templates mode="fixup" />
-      <api:schema-info>
-        <xsl:if test="$is-REST-resource">
-          <xsl:attribute name="REST-doc">yes</xsl:attribute>
-          <xsl:attribute name="print-intro">
-            <xsl:value-of
-                select="$print-intro-value"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:variable name="schema"
-                      select="raw:get-doc($schema-uri)/xs:schema"/>
-        <xsl:variable name="complexType"
-                      select="$schema/xs:complexType
-                              [string(@name) eq $complexType-name]"/>
-
-        <!-- ASSUMPTION: all the element declarations are global; complex
-             type contains only element references -->
-        <xsl:apply-templates mode="schema-info"
-                             select="$complexType//xs:element"/>
-
-      </api:schema-info>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template mode="schema-info" match="xs:element">
-    <!-- ASSUMPTION: all the element declarations are global -->
-    <!-- ASSUMPTION: the schema's default namespace is the same as the
-         target namespace (@ref uses no prefix) -->
-    <xsl:variable name="current-ref" select="string(current()/@ref)"/>
-    <xsl:variable name="element-decl"
-                  select="/xs:schema/xs:element[@name eq $current-ref]"/>
-
-    <xsl:variable name="complexType"
-                  select="/xs:schema/xs:complexType
-                          [@name eq string($element-decl/@type)]"/>
-
-    <api:element>
-      <api:element-name>
-        <xsl:value-of select="@ref"/>
-      </api:element-name>
-      <api:element-description>
-        <xsl:value-of select="$element-decl/xs:annotation
-                              /xs:documentation"/>
-      </api:element-description>
-      <xsl:apply-templates mode="#current"
-                           select="$complexType//xs:element"/>
-    </api:element>
-  </xsl:template>
-
-  <!-- Add the namespace URI of the function to the <api:function> result -->
-  <xsl:template mode="fixup-add-atts" match="apidoc:function">
-    <xsl:attribute name="prefix" select="@lib"/>
-    <xsl:attribute name="namespace" select="api:uri-for-lib(@lib)"/>
-    <!--
-        Add the @fullname attribute, which we depend on later.
-        This depends on the @is-javascript attribute,
-        which is faked in api:function-fake-javascript.
-    -->
-    <xsl:attribute name="fullname"
-                   select="api:fixup-fullname(
-                           .,
-                           if (starts-with(@name, '/')) then 'REST'
-                           else if (@is-javascript) then 'javascript'
-                           else ())"/>
   </xsl:template>
 
 </xsl:stylesheet>

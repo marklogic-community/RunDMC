@@ -11,6 +11,8 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 
+declare variable $NAMESPACE := "http://marklogic.com/rundmc/api" ;
+
 declare variable $default-version as xs:string  := $ml:default-version ;
 (: uniformly accessed in both the setup and view code
  : rather than using $params which only the view code uses
