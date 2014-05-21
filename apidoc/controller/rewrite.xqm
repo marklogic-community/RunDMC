@@ -107,8 +107,14 @@ declare variable $MATCHING-FUNCTIONS := ml:get-matching-functions(
 
 declare variable $MATCHING-FUNCTION-COUNT := count($MATCHING-FUNCTIONS) ;
 
+declare variable $GUIDE-MESSAGE-PAT := (
+  '^/guide/messages/([A-Z])+\-[a-z][a-z]/([A-Z]+-[A-Z]+)$') ;
+
 declare variable $MESSAGE-PAT := (
-  '^/guide/messages/([A-Z])+\-en/([A-Z]+-[A-Z]+)$') ;
+  '^/messages/([A-Z])+\-[a-z][a-z]/([A-Z]+-[A-Z]+)$') ;
+
+declare variable $MESSAGE-SHORT-PAT := (
+  '^/messages/([A-Z]+-[A-Z]+)$') ;
 
 declare function m:log(
   $label as xs:string,
@@ -223,6 +229,21 @@ as xs:string
 (: Redirect to the right place,
  : and rely on the page anchor matching the id.
  :)
+declare function m:redirect-for-guide-message(
+  $path as xs:string,
+  $id as xs:string)
+as xs:string
+{
+  if (not($DEBUG)) then () else m:debug(
+    'redirect-for-guide-message', ('path', $path, 'id', $id)),
+  m:redirect(
+    concat(
+      substring-before($path, '/'||$id),
+      '#', $id))
+};
+
+(: Redirect to the right page.
+ :)
 declare function m:redirect-for-message(
   $path as xs:string,
   $id as xs:string)
@@ -230,10 +251,21 @@ as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
     'redirect-for-message', ('path', $path, 'id', $id)),
-  m:redirect(
-    concat(
-      substring-before($path, '/'||$id),
-      '#', $id))
+  m:redirect($path)
+};
+
+(: Redirect to the right page.
+ :)
+declare function m:redirect-for-short-message(
+  $path as xs:string,
+  $id as xs:string)
+as xs:string
+{
+  let $lib := substring-before($id, '-')
+  let $path := replace($path, $id, $lib||'-en/'||$id)
+  let $_ := if (not($DEBUG)) then () else m:debug(
+    'redirect-for-message', ('path', $path, 'lib', $lib, 'id', $id))
+  return m:redirect($path)
 };
 
 declare function m:redirect-for-version($version as xs:string)
@@ -317,15 +349,35 @@ declare function m:rewrite()
   (: redirect /package to /pkg because we changed the prefix :)
   else if ($PATH eq "/package") then m:redirect("/pkg")
 
-  (: Transform /message/*-* for single page message reference.
+  (: Handle single-page messages in short form.
+   : This expects something like
+   : /messages/XDMP-BAD
+   : and we want to redirect to something like
+   : /apidoc/8.0/messages/XDMP-en/XDMP-BAD.xml
+   :)
+  else if (matches($PATH, $MESSAGE-SHORT-PAT)) then m:redirect-for-short-message(
+    $PATH-WITH-VERSION,
+    replace($PATH, $MESSAGE-SHORT-PAT, '$1'))
+
+  (: Handle single-page messages.
+   : This expects something like
+   : /messages/XDMP-en/XDMP-BAD
+   : and we want to redirect to something like
+   : /apidoc/8.0/messages/XDMP-en/XDMP-BAD.xml
+   :)
+  else if (matches($PATH, $MESSAGE-PAT)) then m:redirect-for-message(
+    $PATH-WITH-VERSION,
+    replace($PATH, $MESSAGE-PAT, '$2'))
+
+  (: Handle deep links into message guides.
    : This expects something like
    : /guide/messages/XDMP-en/XDMP-BAD
    : and we want to redirect to something like
    : /apidoc/7.0/guide/messages/XDMP-en.xml#XDMP-BAD
    :)
-  else if (matches($PATH, $MESSAGE-PAT)) then m:redirect-for-message(
+  else if (matches($PATH, $GUIDE-MESSAGE-PAT)) then m:redirect-for-guide-message(
     $PATH-WITH-VERSION,
-    replace($PATH, $MESSAGE-PAT, '$2'))
+    replace($PATH, $GUIDE-MESSAGE-PAT, '$2'))
 
   (: Ignore URLs starting with "/private/" :)
   else if (starts-with($PATH, '/private/')) then "/controller/notfound.xqy"

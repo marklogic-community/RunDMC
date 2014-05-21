@@ -314,6 +314,30 @@ as element()?
     guide:link-content($e) }
 };
 
+(: Extract one document per message. :)
+declare function guide:convert-messages(
+  $uri as xs:string,
+  $guide as element(chapter))
+as node()+
+{
+  stp:debug('guide:convert-messages', ($uri)),
+  let $base-uri := replace(
+    replace($uri, '/guide/', '/'),
+    '\.xml$', '/')
+  (: TODO remove hack for duplicate ids in this content. :)
+  let $seen := map:map()
+  for $message in $guide//xhtml:div[xhtml:h3]
+  let $id as xs:string := $message/xhtml:a/@id
+  where not(map:contains($seen, $id))
+  return (
+    map:put($seen, $id, $id),
+    ($base-uri||$id||'.xml')
+    ! element message {
+      attribute xml:base { . },
+      attribute id { $id },
+      $message })
+};
+
 declare function guide:convert(
   $raw-docs as node()+,
   $fully-resolved-top-level-heading-references as xs:string+,
@@ -346,15 +370,20 @@ as empty-sequence()
   for $g in $raw-docs
   let $start := xdmp:elapsed-time()
   let $uri as xs:string := raw:target-guide-doc-uri($g)
-  let $converted := guide:convert(
+  let $converted as node() := guide:convert(
     $raw-docs, $fully-resolved-top-level-heading-references,
     $uri, $g)
-  let $uri as xs:string := base-uri($converted)
-  let $_ := xdmp:document-insert($uri, $converted)
-  let $_ := xdmp:log(
-    text {
-      "convert-guides", (base-uri($g), '=>', $uri,
-        'in', xdmp:elapsed-time() - $start) }, 'debug')
+  let $messages := (
+    if (not(contains($uri, '/messages/'))) then ()
+    (: Allow for porting the XSL to XQuery. :)
+    else guide:convert-messages($uri, $converted/(self::chapter|chapter)))
+  for $c in ($converted, $messages)
+  let $uri as xs:string := base-uri($c)
+  let $_ := xdmp:document-insert($uri, $c)
+  let $_ := stp:debug(
+    'guide:render',
+    (base-uri($g), '=>', $uri,
+      'in', xdmp:elapsed-time() - $start))
   return ()
 };
 

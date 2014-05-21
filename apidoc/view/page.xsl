@@ -3,15 +3,15 @@
     Overrides behavior of /view/page.xsl.
 -->
 <xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xdmp="http://marklogic.com/xdmp"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:u="http://marklogic.com/rundmc/util"
                 xmlns:api="http://marklogic.com/rundmc/api"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
                 xmlns:srv="http://marklogic.com/rundmc/server-urls"
+                xmlns:u="http://marklogic.com/rundmc/util"
                 xmlns:x="http://www.w3.org/1999/xhtml"
+                xmlns:xdmp="http://marklogic.com/xdmp"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="xdmp"
                 exclude-result-prefixes="x xs ml xdmp api u srv">
 
@@ -26,6 +26,8 @@
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
 
+  <xsl:param name="VERSION" select="$api:version"/>
+
   <xsl:variable name="is-print-request"
                 select="$params[@name eq 'print'] eq 'yes'"/>
 
@@ -39,7 +41,7 @@
       See also $api:toc-uri in data-access.xqy
   -->
   <xsl:variable name="version-prefix"
-                select="if ($api:version eq $api:default-version) then ''
+                select="if ($VERSION eq $api:default-version) then ''
                         else concat('/',$api:version-specified)"/>
 
   <xsl:function name="ml:external-uri-with-prefix" as="xs:string">
@@ -66,15 +68,15 @@
 
   <xsl:variable name="site-title"
                 select="
-    if ($api:version eq '5.0')
+    if ($VERSION eq '5.0')
     then 'MarkLogic 5 Product Documentation'
-    else if ($api:version eq '6.0')
+    else if ($VERSION eq '6.0')
          then 'MarkLogic 6 Product Documentation'
-    else if ($api:version eq '7.0')
+    else if ($VERSION eq '7.0')
          then 'MarkLogic 7 Product Documentation'
-    else if ($api:version eq '8.0')
+    else if ($VERSION eq '8.0')
          then 'MarkLogic 8 Early Access Product Documentation'
-    else concat('MarkLogic Server ',$api:version,
+    else concat('MarkLogic Server ',$VERSION,
                           ' Product Documentation')"/>
 
   <xsl:variable name="site-url-for-disqus"
@@ -152,7 +154,7 @@
   <!-- Make search stick to the current API version -->
   <xsl:template match="x:input[@name eq $set-version-param-name]/@ml:value">
     <xsl:attribute name="value">
-      <xsl:value-of select="$api:version"/>
+      <xsl:value-of select="$VERSION"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -184,7 +186,6 @@
     <div id="apidoc_toc">
       <script type="text/javascript">
         <xsl:comment>
-
         <xsl:call-template name="reset-global-toc-vars"/>
         var toc_url = '<xsl:value-of select="$api:toc-uri"/>';
         $('#apidoc_toc').load(toc_url, null, toc_init);
@@ -195,7 +196,7 @@
 
   <!-- Customizations of the "Server version" switcher code (slightly different than the search results page) -->
 
-  <xsl:template mode="version-list-item-selected-or-not" match="version[@number eq $api:version]">
+  <xsl:template mode="version-list-item-selected-or-not" match="version[@number eq $VERSION]">
     <xsl:call-template name="show-selected-version"/>
   </xsl:template>
   <xsl:template mode="version-list-item-selected-or-not" match="version">
@@ -276,6 +277,12 @@
     <xsl:text> >:first-child</xsl:text>
   </xsl:template>
 
+  <!-- Message page for error code, without any TOC data. -->
+  <xsl:template mode="toc-section-link-selector"
+                match="message">
+    <xsl:value-of select="@id"/>
+  </xsl:template>
+
   <!-- On the main docs page, just let the first tab be selected by default. -->
   <xsl:template mode="toc-section-link-selector"
                 match="api:docs-page"/>
@@ -283,6 +290,13 @@
   <xsl:template mode="page-title"
                 match="api:docs-page">
     <xsl:value-of select="$site-title"/>
+  </xsl:template>
+
+  <xsl:template mode="page-title"
+                match="message">
+    <xsl:value-of select="$site-title"/>
+    <xsl:text> &#x2014; </xsl:text>
+    <xsl:value-of select="@id"/>
   </xsl:template>
 
   <!-- TODO why is this needed? Nothing similar for api:function-page. -->
@@ -352,6 +366,10 @@
     <xsl:value-of select="$local"/>
   </xsl:template>
 
+  <xsl:template mode="page-content"
+                match="message">
+    <xsl:apply-templates select="*"/>
+  </xsl:template>
 
   <xsl:template mode="page-content"
                 match="api:docs-page">
@@ -366,7 +384,7 @@
   </xsl:template>
 
   <xsl:template mode="docs-page" priority="3"
-                match="group[@min-version gt $api:version]" />
+                match="group[@min-version gt $VERSION]" />
 
   <xsl:template mode="docs-page" match="group" priority="2">
     <h3 class="docs-page"><xsl:value-of select="@name"/></h3>
@@ -388,14 +406,14 @@
                 match="*"/>
 
   <xsl:template mode="docs-list-item"
-                match="entry[@min-version gt $api:version]" priority="1"/>
+                match="entry[@min-version gt $VERSION]" priority="1"/>
 
   <!--
        This template matches entries with links or versions,
        plus guides that have information.
   -->
   <xsl:template mode="docs-list-item"
-                match="entry[@href or url/@version = $api:version]
+                match="entry[@href or url/@version = $VERSION]
                        | guide[api:guide-info($content, @url-name)]">
     <xsl:variable name="href">
       <xsl:apply-templates mode="entry-href" select="."/>
@@ -422,15 +440,15 @@
   <!-- The following group of rules is used by the list page too -->
 
   <!-- Strip out phrases that don't apply to older server versions -->
-  <xsl:template mode="entry-description" match="added-in[$api:version lt @version]"/>
+  <xsl:template mode="entry-description" match="added-in[$VERSION lt @version]"/>
 
   <xsl:template mode="entry-description" match="version-suffix">
     <xsl:choose>
-      <xsl:when test="$api:version eq '5.0'">5</xsl:when>
-      <xsl:when test="$api:version eq '6.0'">6</xsl:when>
+      <xsl:when test="$VERSION eq '5.0'">5</xsl:when>
+      <xsl:when test="$VERSION eq '6.0'">6</xsl:when>
       <xsl:otherwise>
         <xsl:text>Server </xsl:text>
-        <xsl:value-of select="$api:version"/>
+        <xsl:value-of select="$VERSION"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -443,7 +461,7 @@
 
   <!-- entry/url/@href must include the whole path (version prefix not added) -->
   <xsl:template mode="entry-href" match="entry[url]" priority="1">
-    <xsl:value-of select="url[@version eq $api:version]/@href"/>
+    <xsl:value-of select="url[@version eq $VERSION]/@href"/>
   </xsl:template>
 
   <!-- entry/@href gets the version prefix added -->
@@ -560,7 +578,7 @@
     <xsl:if test="$show-alternative-functions or $q">
       <xsl:variable name="other-matches"
                     select="ml:get-matching-functions(
-                            api:function[1]/@name, $api:version)
+                            api:function[1]/@name, $VERSION)
                             /api:function-page except ."/>
       <p class="didYouMean">
         <xsl:if test="$other-matches">
