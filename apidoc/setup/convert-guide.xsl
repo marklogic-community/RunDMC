@@ -34,14 +34,10 @@
                 select="$convert-at-render-time"/>
 
   <xsl:template match="/">
-    <!--
-        Capture section hierarchy,
-        starting from a flat version without unhelpful list containers.
-    -->
-    <xsl:variable name="sections-captured">
-      <xsl:apply-templates mode="capture-sections"
-                           select="guide:flatten(.)"/>
-    </xsl:variable>
+    <!-- Capture section hierarchy -->
+    <xsl:variable
+        name="sections-captured"
+        select="guide:sections(*)"/>
     <!-- Capture list hierarchy -->
     <xsl:variable name="lists-captured">
       <xsl:apply-templates mode="capture-lists"
@@ -257,79 +253,6 @@
 
   <xsl:template match="Hyperlink">
     <xsl:apply-templates/>
-  </xsl:template>
-
-  <xsl:template mode="capture-sections" match="@* | node()">
-    <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@*"/>
-      <xsl:apply-templates mode="capture-sections-content" select="."/>
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template mode="capture-sections-content" match="*">
-    <xsl:apply-templates mode="capture-sections"/>
-  </xsl:template>
-
-  <xsl:template mode="capture-sections-content" match="XML">
-    <xsl:call-template name="capture-sections"/>
-  </xsl:template>
-
-  <xsl:template name="capture-sections">
-    <xsl:param name="current-level" select="1"/>
-    <!-- Initially, group the children -->
-    <xsl:param name="current-group" select="node()"/>
-    <!-- Each heading starts a new group -->
-    <xsl:variable name="current-heading"
-                  select="concat('Heading-', $current-level)"/>
-    <xsl:variable name="simple-heading"
-                  select="concat('Simple-', $current-heading)"/>
-    <!-- Catch Heading-N, Heading-NMESSAGE, Simple-Heading-N -->
-    <!--
-        TODO group-starting-with seems to be expensive,
-        especially for messages/XDMP-en.xml
-        Basically this starts a group every time the expression changes.
-    -->
-    <xsl:for-each-group select="$current-group"
-                        group-starting-with="*[local-name(.) eq $simple-heading
-                                             or starts-with(
-                                             local-name(.), $current-heading)]">
-      <xsl:variable name="name" select="local-name(.)"/>
-      <xsl:variable name="is-current" select="$name eq $current-heading"/>
-      <xsl:variable name="is-simple" select="$name eq $simple-heading"/>
-      <xsl:variable name="is-level2" select="$name eq 'Heading-2MESSAGE'"/>
-      <!--
-          <xsl:value-of
-          select="xdmp:log(
-          concat(
-          '[convert-guide] for-each-group',
-          ' ', $is-current, ' ', $is-simple, ' ', $is-level2,
-          ' ', xdmp:describe(current-group())))"/>
-      -->
-      <xsl:choose>
-        <xsl:when test="$is-current or $is-simple
-                        or ($is-level2 and $current-level = 2)">
-          <xsl:variable name="the-class"
-                        select="if ($is-simple) then 'message-part'
-                                else if ($is-level2) then 'message'
-                                else if ($is-current) then 'section'
-                                else ''" />
-          <div>
-            <xsl:attribute name="class" select="$the-class"/>
-            <xsl:attribute name="data-fm-style" select="$name" />
-            <!-- Recursively capture sections -->
-            <xsl:call-template name="capture-sections">
-              <xsl:with-param name="current-level"
-                              select="$current-level + 1"/>
-              <xsl:with-param name="current-group"
-                              select="current-group()"/>
-            </xsl:call-template>
-          </div>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="current-group()"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each-group>
   </xsl:template>
 
   <xsl:template mode="capture-lists" match="@* | node()">

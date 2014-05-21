@@ -547,10 +547,104 @@ as empty-sequence()
    : Images are not shared across guides.
    :)
   for $img-path in distinct-values($doc//IMAGE/@href)
-  let $source-uri := resolve-uri($img-path, $base-dir)
+  let $source-uri as xs:string := resolve-uri($img-path, $base-dir)
   let $dest-uri := concat($img-dir, $img-path)
   let $_ := stp:info('guide:images', ($source-uri, "to", $dest-uri))
   return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
+};
+
+declare function guide:sections(
+  $level as xs:integer,
+  $list as element()*,
+  $heading-positions as xs:integer*)
+as element()*
+{
+  (: If there are no heading positions that means we never had any.
+   : See below for halting recursion when we run out.
+   :)
+  if (empty($heading-positions)) then $list else
+  let $heading-position := $heading-positions[1]
+  let $heading-positions-rest := subsequence($heading-positions, 2)
+  let $section as element()+ := (
+    if (exists($heading-positions-rest)) then subsequence(
+      $list, $heading-position,
+      $heading-positions-rest[1] - $heading-position)
+    (: End of the list, so grab everything. :)
+    else subsequence($list, $heading-position))
+  let $heading := $section[1]
+  let $heading-name := local-name($heading)
+  return (
+    (: Gather this section and recurse with its contents.
+     :)
+    element div {
+      attribute class {
+        if (starts-with($heading-name, 'Simple-')) then 'message-part'
+        else if ($heading-name eq 'Heading-2MESSAGE') then 'message'
+        else if (starts-with($heading-name, 'Heading-')) then 'section'
+        else '' },
+      attribute data-fm-style { $heading-name },
+      $heading,
+      guide:sections(1 + $level, subsequence($section, 2)) },
+    (: Recurse until the current level is complete. :)
+    if (empty($heading-positions-rest)) then ()
+    else guide:sections(
+      $level, $list, $heading-positions-rest))
+};
+
+(: Capture flat sections in nested structure.
+ : Turn something like this
+ : <Heading-1>...
+ : Into something like this:
+ : <div class="section" data-fm-style="Heading-1">...
+ : with nested content.
+ :)
+declare function guide:sections(
+  $level as xs:integer,
+  $list as element()*)
+as element()*
+{
+  if (empty($list)) then () else
+  (: Find all the headings for the current level,
+   : and gather them into div elements.
+   :)
+  let $current-heading := concat('Heading-', $level)
+  let $simple-heading := concat('Simple-', $current-heading)
+  (: Discover the position of each heading in this section
+   : and at this level.
+   : TODO Is this faster or slower than an iterative XPath approach?
+   :)
+  let $heading-positions := (
+    for $e at $x in $list
+    let $name := local-name($e)
+    where (
+      $name eq $simple-heading
+      or starts-with($name, $current-heading))
+    return $x)
+  return (
+    if (not($heading-positions)) then $list
+    else guide:sections($level, $list, $heading-positions))
+};
+
+(: Capture flat sections in nested structure.
+ : This replaces the old XSL capture-sections code.
+ : Input will be something like a guide chapter in consolidated raw form.
+ :)
+declare function guide:sections(
+  $raw as element())
+as element()
+{
+  (: First we strip out some unhelpful hierarchy. :)
+  let $flat as element() := guide:flatten($raw)
+  return element { node-name($flat) } {
+    $flat/namespace::*,
+    $flat/@*,
+    $flat/node() ! (
+      typeswitch(.)
+      case element(XML) return element XML {
+        namespace::*,
+        @*,
+        guide:sections(1, *) }
+      default return .) }
 };
 
 (: apidoc/setup/guide.xqm :)
