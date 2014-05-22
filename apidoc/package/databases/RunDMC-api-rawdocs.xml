@@ -13,18 +13,18 @@
       <enabled>true</enabled>
       <retired-forest-count>0</retired-forest-count>
       <language>en</language>
-      <stemmed-searches>basic</stemmed-searches>
+      <stemmed-searches>off</stemmed-searches>
       <word-searches>false</word-searches>
       <word-positions>false</word-positions>
-      <fast-phrase-searches>true</fast-phrase-searches>
+      <fast-phrase-searches>false</fast-phrase-searches>
       <fast-reverse-searches>false</fast-reverse-searches>
       <triple-index>false</triple-index>
       <triple-positions>false</triple-positions>
-      <fast-case-sensitive-searches>true</fast-case-sensitive-searches>
-      <fast-diacritic-sensitive-searches>true</fast-diacritic-sensitive-searches>
-      <fast-element-word-searches>true</fast-element-word-searches>
+      <fast-case-sensitive-searches>false</fast-case-sensitive-searches>
+      <fast-diacritic-sensitive-searches>false</fast-diacritic-sensitive-searches>
+      <fast-element-word-searches>false</fast-element-word-searches>
       <element-word-positions>false</element-word-positions>
-      <fast-element-phrase-searches>true</fast-element-phrase-searches>
+      <fast-element-phrase-searches>false</fast-element-phrase-searches>
       <element-value-positions>false</element-value-positions>
       <attribute-value-positions>false</attribute-value-positions>
       <field-value-searches>false</field-value-searches>
@@ -50,8 +50,8 @@
       <inherit-collections>false</inherit-collections>
       <inherit-quality>false</inherit-quality>
       <large-size-threshold>1024</large-size-threshold>
-      <locking>fast</locking>
-      <journaling>fast</journaling>
+      <locking>off</locking>
+      <journaling>off</journaling>
       <journal-size>128</journal-size>
       <journal-count>2</journal-count>
       <preallocate-journals>false</preallocate-journals>
