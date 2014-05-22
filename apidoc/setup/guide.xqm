@@ -575,6 +575,13 @@ as element()*
   let $heading-name := local-name($heading)
   return (
     (: Gather this section and recurse with its contents.
+    stp:debug(
+      'guide:sections',
+      ('level', $level,
+        'list', count($list),
+        'heading-positions', count($heading-positions),
+        xdmp:describe($heading-positions),
+        normalize-space($heading), count($section), xdmp:describe($section))),
      :)
     element div {
       attribute class {
@@ -611,7 +618,6 @@ as element()*
   let $simple-heading := concat('Simple-', $current-heading)
   (: Discover the position of each heading in this section
    : and at this level.
-   : TODO Is this faster or slower than an iterative XPath approach?
    :)
   let $heading-positions := (
     for $e at $x in $list
@@ -621,8 +627,22 @@ as element()*
       or starts-with($name, $current-heading))
     return $x)
   return (
+    (: The list may not have any headings,
+     : and may not start with a heading.
+     stp:debug(
+      'guide:sections',
+      ('level', $level,
+        'list', count($list), xdmp:describe($list),
+        'heading-positions', count($heading-positions),
+        xdmp:describe($heading-positions))),
+     :)
     if (not($heading-positions)) then $list
-    else guide:sections($level, $list, $heading-positions))
+    else (
+      let $first := $heading-positions[1]
+      where $first gt 1
+      return subsequence($list, 1, $first - 1)
+      ,
+      guide:sections($level, $list, $heading-positions)))
 };
 
 (: Capture flat sections in nested structure.
