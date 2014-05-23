@@ -227,6 +227,9 @@ as node()?
   case element(NumberA1) return element NumberA {
     $n/@*,
     guide:flatten($n/node()) }
+  case element() return element { node-name($n) } {
+    $n/@*,
+    guide:flatten($n/node()) }
   default return $n
 };
 
