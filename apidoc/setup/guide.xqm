@@ -358,6 +358,16 @@ as node()
           $fully-resolved-top-level-heading-references))))
 };
 
+(: This is for development work only, so efficiency is not paramount. :)
+declare function guide:convert-uri(
+  $uri as xs:string)
+as document-node()
+{
+  xdmp:xslt-invoke(
+    '/apidoc/setup/convert-guide.xsl',
+    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri])
+};
+
 (: The input documents are consolidated raw guides,
  : not raw raw guides.
  :)

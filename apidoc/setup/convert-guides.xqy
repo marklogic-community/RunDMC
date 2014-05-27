@@ -7,9 +7,7 @@ import module namespace guide="http://marklogic.com/rundmc/api/guide"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "raw-docs-access.xqy" ;
 
-let $raw := raw:guide-docs($api:version)
-let $_ := guide:render($raw)
-return text {
-  'Converted', count($raw), 'guides', 'in', xdmp:elapsed-time() }
+guide:render(raw:guide-docs($api:version)),
+text { 'Converted guides', 'in', xdmp:elapsed-time() }
 
 (: convert-guides.xqy :)

@@ -224,14 +224,21 @@ declare function toc:display-suffix($lib-for-all as xs:string?)
   else ()
 };
 
+(: TODO refactor with version, so Task Server can do this. :)
+(: TODO refactor to read directly from zip. :)
+declare function toc:modules-raw()
+as element(apidoc:module)+
+{
+  $raw:API-DOCS/apidoc:module
+};
+
 declare function toc:get-summary-for-category(
   $cat as xs:string,
   $subcat as xs:string?,
   $lib as xs:string?)
   as element(apidoc:summary)*
 {
-  (: TODO refactor so Task Server can do this. :)
-  let $raw-modules as element()+ := $raw:API-DOCS/apidoc:module
+  let $raw-modules as element()+ := toc:modules-raw()
   let $summaries-with-category := $raw-modules/apidoc:summary[
     @category eq $cat][not($subcat) or @subcategory eq $subcat]
   return (
@@ -282,8 +289,7 @@ declare function toc:get-summary-for-category(
 declare function toc:get-summary-for-lib($lib as xs:string)
   as element()?
 {
-  (: TODO refactor so Task Server can do this. :)
-  let $raw-modules as element()+ := $raw:API-DOCS/apidoc:module
+  let $raw-modules as element()+ := toc:modules-raw()
   (: exceptional ("json" built-in) :)
   let $lib-subcat := toc:hard-coded-subcategory($lib)
   let $summaries-by-summary-subcat := $raw-modules/apidoc:summary[

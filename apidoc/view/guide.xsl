@@ -1,19 +1,23 @@
 <xsl:stylesheet version="2.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:api="http://marklogic.com/rundmc/api"
-  xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns:map="http://marklogic.com/xdmp/map"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:x="http://www.w3.org/1999/xhtml"
-  xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
-  xmlns:ml="http://developer.marklogic.com/site/internal"
-  extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs api xdmp map x raw ml">
+                xmlns:api="http://marklogic.com/rundmc/api"
+                xmlns:guide="http://marklogic.com/rundmc/api/guide"
+                xmlns:map="http://marklogic.com/xdmp/map"
+                xmlns:ml="http://developer.marklogic.com/site/internal"
+                xmlns:raw="http://marklogic.com/rundmc/raw-docs-access"
+                xmlns:x="http://www.w3.org/1999/xhtml"
+                xmlns:xdmp="http://marklogic.com/xdmp"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="xdmp"
+                exclude-result-prefixes="xs api xdmp map x raw ml">
 
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/guide"
+      href="/apidoc/setup/guide.xqm"/>
   <xdmp:import-module
       href="/apidoc/setup/raw-docs-access.xqy"
       namespace="http://marklogic.com/rundmc/raw-docs-access"/>
@@ -57,14 +61,10 @@
         <xsl:otherwise>
           <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
              Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
-          <!-- Convert and render the guide by directly calling the setup/conversion code -->
+          <!-- Convert and render the guide directly, for development.  -->
           <xsl:apply-templates
               mode="guide"
-              select="xdmp:xslt-invoke(
-                      '../setup/convert-guide.xsl',
-                      $raw:GUIDE-DOCS[
-                      raw:target-guide-doc-uri(.) eq base-uri(current())])
-                      /*/node()"/>
+              select="guide:convert-uri(base-uri(current()))/*/node()"/>
         </xsl:otherwise>
       </xsl:choose>
     </div>
