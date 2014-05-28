@@ -39,7 +39,7 @@ declare variable $ga as element() :=
 
 declare variable $gtm :=
 <!-- Google Tag Manager --> ,
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-S7BZ"
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MBC6N2"
 height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript> ,
 <script><![CDATA[if ( document.location.hostname == 'docs.marklogic.com') {
@@ -47,7 +47,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-S7BZ'); } ]]> </script> ,
+})(window,document,'script','dataLayer','GTM-MBC6N2'); } ]]> </script> ,
 <!-- End Google Tag Manager --> ;
 
 declare variable $marketo as element() := 
