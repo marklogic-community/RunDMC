@@ -331,9 +331,9 @@ if(typeof jQuery != 'undefined') {
 
         $('a.track-download').each(function() {
             var u = $(this).attr("href");
-            $(this).click(function() {
+            // $(this).click(function() {
                // _gaq.push(['_trackPageview', u],
-                          ['_trackEvent', 'start-download', u]);
+               //           ['_trackEvent', 'start-download', u]);
                 try {
                     mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
                 } catch (err) {}
@@ -362,13 +362,13 @@ if(typeof jQuery != 'undefined') {
 				});
 			});
 		}
-		var apiCaption = $('.api_table caption',main).text();
-		$('.api_table',main).find('caption').remove().end().before(
-			$('<div>', {
-				'class': 'api_caption',
-				text: apiCaption
-			})
-		);
+//		var apiCaption = $('.api_table caption',main).text();
+//		$('.api_table',main).find('caption').remove().end().before(
+//			$('<div>', {
+//				'class': 'api_caption',
+//				text: apiCaption
+//			})
+//		);
 		if($('#page_content').length) {
 		$('body:not(.sticky) #page_content')
 			.append($('<div>', {'class': 'shadow'}))
@@ -750,7 +750,7 @@ if(typeof jQuery != 'undefined') {
 
 
 		// add new functions before this comment
-	});
+//	});
 };
 
 function getParameterByName(name)
@@ -813,7 +813,7 @@ function showDownloadURL(me, u) {
 
                   //  _gaq.push(['_trackPageview', u],
                   //      ['_trackEvent', 'show-url-for-download', u]
-                    );
+                  //  );
                 
                     try {
                         mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?.*/, "") } );
