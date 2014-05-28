@@ -207,17 +207,17 @@ if(typeof jQuery != 'undefined') {
 
                                     $(this).dialog('close');
 
-                                    _gaq.push(['_trackEvent', 'success-login-for-download', u]);
+                                 //  _gaq.push(['_trackEvent', 'success-login-for-download', u]);
 
                                     doDownload(u);
 
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
                                     } else {
                                         $("#ifail").text("Unknown failure"); // XXX
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
+                                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
                                     }
                                 }
                             }
@@ -252,16 +252,16 @@ if(typeof jQuery != 'undefined') {
                                     $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
 
-                                    _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
+                                   // _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
                                     showDownloadURL(this, u);
 
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
+                                       // _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
                                     } else {
                                         $("#ifail").text("Unknown failure"); // XXX
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
+                                       // _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
                                     }
                                 }
                             }
@@ -274,7 +274,7 @@ if(typeof jQuery != 'undefined') {
                 }, 
                 Cancel: function() {
                     var u = $(this).dialog.href;
-                    _gaq.push(['_trackEvent', 'cancel-download', u]);
+                   // _gaq.push(['_trackEvent', 'cancel-download', u]);
                     try {
                         var s = '/cancel-download' + u.replace(/\?.*/, "");
                         mktoMunchkinFunction('clickLink', { href: s } );
@@ -332,7 +332,7 @@ if(typeof jQuery != 'undefined') {
         $('a.track-download').each(function() {
             var u = $(this).attr("href");
             $(this).click(function() {
-                _gaq.push(['_trackPageview', u],
+               // _gaq.push(['_trackPageview', u],
                           ['_trackEvent', 'start-download', u]);
                 try {
                     mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
@@ -774,9 +774,9 @@ function isValidEmailAddress(emailAddress) {
                     
 function doDownload(u) {
 
-    _gaq.push(['_trackPageview', u],
-        ['_trackEvent', 'success-login-for-download', u],
-        ['_trackEvent', 'start-download', u]);
+  //  _gaq.push(['_trackPageview', u],
+  //      ['_trackEvent', 'success-login-for-download', u],
+  //      ['_trackEvent', 'start-download', u]);
 
     try {
         mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
@@ -811,8 +811,8 @@ function showDownloadURL(me, u) {
                 context: $(me),
                 success: function(data) {
 
-                    _gaq.push(['_trackPageview', u],
-                        ['_trackEvent', 'show-url-for-download', u]
+                  //  _gaq.push(['_trackPageview', u],
+                  //      ['_trackEvent', 'show-url-for-download', u]
                     );
                 
                     try {
