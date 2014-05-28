@@ -37,6 +37,19 @@ declare variable $ga as element() :=
             })();]]>
 </script> ;
 
+declare variable $gtm :=
+<!-- Google Tag Manager --> ,
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-S7BZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript> ,
+<script><![CDATA[if ( document.location.hostname == 'docs.marklogic.com') {
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-S7BZ'); } ]]> </script> ,
+<!-- End Google Tag Manager --> ;
+
 declare variable $marketo as element() := 
 (: marketo script goes just before the closing the </body> tag :)
 <script type="text/javascript"><![CDATA[
@@ -70,20 +83,8 @@ typeswitch ($x)
   case comment() return $x
   case processing-instruction() return $x
   case text() return $x
-  case element (head) return <head>{local:passthru($x), $ga ,
-  xdmp:log("*******
-  
-  In local:add-scripts head
-  
-  *******")}</head>
-  case element (body) return <body>{local:passthru($x), $marketo}</body>
-  case element (HEAD) return <head>{local:passthru($x), $ga ,
-  xdmp:log("*******
-  
-  In local:add-scripts HEAD
-  
-  *******")}</head>
-  case element (BODY) return <body>{local:passthru($x), $marketo}</body>
+  case element (body) return <body>{$gtm, local:passthru($x), $marketo}</body>
+  case element (BODY) return <body>{$gtm, local:passthru($x), $marketo}</body>
   
   default return element {fn:node-name($x)} {$x/@*, local:passthru($x)}
 };
