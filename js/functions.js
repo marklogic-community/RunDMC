@@ -351,17 +351,17 @@ if(typeof jQuery != 'undefined') {
             });
         });
 
-		if(jQuery().fancybox) {
-			$('a[rel=detail]',main).each(function() {
-				var ref = $(this).attr('href');
-				$(this).append(
-					$('<span>',{'class':'caption',text: 'Enlarge image'})
-				).fancybox({
-					transitionIn: 'elastic',
-					transitionOut: 'elastic'
-				});
-			});
-		}
+//		if(jQuery().fancybox) {
+//			$('a[rel=detail]',main).each(function() {
+//				var ref = $(this).attr('href');
+//				$(this).append(
+//					$('<span>',{'class':'caption',text: 'Enlarge image'})
+//				).fancybox({
+//					transitionIn: 'elastic',
+//					transitionOut: 'elastic'
+//				});
+//			});
+//		}
 //		var apiCaption = $('.api_table caption',main).text();
 //		$('.api_table',main).find('caption').remove().end().before(
 //			$('<div>', {
