@@ -339,7 +339,6 @@ if(typeof jQuery != 'undefined') {
                 try {
                     mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
                 } catch (err) {}
-*/
     
                 download_iframe = document.getElementById("hiddenDownloader");
                 if (download_iframe === null) {
