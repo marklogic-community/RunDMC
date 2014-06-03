@@ -210,11 +210,13 @@ return
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
+<!--
         <script type="text/javascript">
         document.write(unescape("%3Cscript src='" + document.location.protocol +
           "//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
         </script>
          <script>Munchkin.init('371-XVQ-609');</script>
+-->
          <meta http-equiv="refresh" content="1; url=/license-record?url={xdmp:url-encode($valid-url)}"/>
         </head>
 	<body>

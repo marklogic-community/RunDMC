@@ -83,8 +83,8 @@ typeswitch ($x)
   case comment() return $x
   case processing-instruction() return $x
   case text() return $x
-  case element (body) return <body>{$gtm, local:passthru($x), $marketo}</body>
-  case element (BODY) return <body>{$gtm, local:passthru($x), $marketo}</body>
+  case element (body) return <body>{$gtm, local:passthru($x)}</body>
+  case element (BODY) return <body>{$gtm, local:passthru($x)}</body>
   
   default return element {fn:node-name($x)} {$x/@*, local:passthru($x)}
 };
