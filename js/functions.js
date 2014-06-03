@@ -753,7 +753,7 @@ if(typeof jQuery != 'undefined') {
 
 
 		// add new functions before this comment
-//	});
+	});
 };
 
 function getParameterByName(name)
