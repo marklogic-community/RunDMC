@@ -275,10 +275,11 @@ if(typeof jQuery != 'undefined') {
                 Cancel: function() {
                     var u = $(this).dialog.href;
                    // _gaq.push(['_trackEvent', 'cancel-download', u]);
-                    try {
-                        var s = '/cancel-download' + u.replace(/\?.*/, "");
+             /*       try {
+                        var s = '/cancel-download' + u.replace(/\?., "");
                         mktoMunchkinFunction('clickLink', { href: s } );
-                    } catch (err) {}
+                    } catch (err) {}  
+		*/
                     $(this).dialog('close');
                 }
            	}
@@ -336,8 +337,9 @@ if(typeof jQuery != 'undefined') {
                // _gaq.push(['_trackPageview', u],
                //           ['_trackEvent', 'start-download', u]);
                 try {
-                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
                 } catch (err) {}
+*/
     
                 download_iframe = document.getElementById("hiddenDownloader");
                 if (download_iframe === null) {
@@ -780,10 +782,12 @@ function doDownload(u) {
   //      ['_trackEvent', 'success-login-for-download', u],
   //      ['_trackEvent', 'start-download', u]);
 
+/*
     try {
-        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
     } catch (err) {
     }
+*/
 
     download_iframe = document.getElementById("hiddenDownloader");
     if (download_iframe === null) {
@@ -816,11 +820,13 @@ function showDownloadURL(me, u) {
                   //  _gaq.push(['_trackPageview', u],
                   //      ['_trackEvent', 'show-url-for-download', u]
                   //  );
-                
+               
+/*	
                     try {
-                        mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?.*/, "") } );
+                        mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?., "") } );
                     } catch (err) {
                     }
+*/
 
                     var port = (window.location.port == "") ? "" : ":" + window.location.port;
                     var host = window.location.hostname + port;
