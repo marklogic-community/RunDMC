@@ -329,6 +329,7 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
+/*
         $('a.track-download').each(function() {
             var u = $(this).attr("href");
             // $(this).click(function() {
@@ -350,6 +351,7 @@ if(typeof jQuery != 'undefined') {
                 return false;
             });
         });
+*/
 
 //		if(jQuery().fancybox) {
 //			$('a[rel=detail]',main).each(function() {
