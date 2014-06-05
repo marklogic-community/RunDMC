@@ -17,7 +17,145 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "/apidoc/setup/raw-docs-access.xqy";
 
-declare %t:case function t:invoke-ok()
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
+declare %t:case function t:function-hide-javascript-specific()
+{
+  at:empty(
+    stp:fixup(
+      element apidoc:function {
+        attribute class { 'javascript' },
+        'Hello world!' },
+      'xpath'))
+};
+
+declare %t:case function t:function-show-javascript-specific()
+{
+  at:true(
+    exists(
+      stp:fixup(
+        element apidoc:function {
+          attribute class { 'javascript' },
+          'Hello world!' },
+        'javascript')))
+};
+
+declare %t:case function t:function-hide-javascript-specific-example()
+{
+  at:empty(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
+        'Hello world!' },
+      'xpath')/api:example)
+};
+
+declare %t:case function t:function-show-javascript-specific-example()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
+        'Hello world!' },
+      'javascript')/api:example/string(),
+    'fubar')
+};
+
+declare %t:case function t:function-hide-javascript-specific-param()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:params {
+          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
+          element apidoc:param { 'snafu' } },
+        'Hello world!' },
+      'xpath')/api:params/api:param/string(),
+    'snafu')
+};
+
+declare %t:case function t:function-show-javascript-specific-param()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:params {
+          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
+          element apidoc:param { 'snafu' } },
+        'Hello world!' },
+      'javascript')/api:params/api:param/string(),
+    ('fubar', 'snafu'))
+};
+
+declare %t:case function t:function-hide-xquery-specific()
+{
+  at:empty(
+    stp:fixup(
+      element apidoc:function {
+        attribute class { 'xpath' },
+        'Hello world!' },
+      'javascript'))
+};
+
+declare %t:case function t:function-show-xquery-specific()
+{
+  at:true(
+    exists(
+      stp:fixup(
+        element apidoc:function {
+          attribute class { 'xpath' },
+          'Hello world!' },
+        'xpath')))
+};
+
+declare %t:case function t:function-hide-xquery-specific-example()
+{
+  at:empty(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
+        'Hello world!' },
+      'javascript')/api:example)
+};
+
+declare %t:case function t:function-show-xquery-specific-example()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
+        'Hello world!' },
+      'xpath')/api:example/string(),
+    'fubar')
+};
+
+declare %t:case function t:function-hide-xquery-specific-param()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:params {
+          element apidoc:param { attribute class { 'xpath' }, 'fubar' },
+          element apidoc:param { 'snafu' } },
+        'Hello world!' },
+      'javascript')/api:params/api:param/string(),
+    'snafu')
+};
+
+declare %t:case function t:function-show-xquery-specific-param()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:params {
+          element apidoc:param { attribute class { 'xpath' }, 'fubar' },
+          element apidoc:param { 'snafu' } },
+        'Hello world!' },
+      'xpath')/api:params/api:param/string(),
+    ('fubar', 'snafu'))
+};
+
+declare %t:case function t:raw-invoke-ok()
 {
   at:equal(
     1,

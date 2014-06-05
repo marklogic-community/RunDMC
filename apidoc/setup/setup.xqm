@@ -253,13 +253,15 @@ as element()*
     else 'xpath')[1]
   let $external-uri := api:external-uri($function, $mode)
   let $internal-uri := api:internal-uri($external-uri)
+  let $seen := map:contains($uris-seen, $internal-uri)
   let $lib as xs:string := $function/@lib
   let $name as xs:string := $function/@name
   let $_ := stp:debug(
     'stp:function-extract',
-    ('external', $external-uri,
+    ('mode', $mode,
+      'external', $external-uri,
       'internal', $internal-uri,
-      'mode', $mode))
+      'seen', $seen))
   (: This wrapper is necessary because the *:polygon() functions
    : are each (dubiously) documented as two separate functions so
    : that raises the possibility of needing to include two different
@@ -268,7 +270,7 @@ as element()*
    : However this means that the resulting xml:base values may conflict,
    : so we have to check $uris-seen.
    :)
-  where not(map:contains($uris-seen, $internal-uri))
+  where not($seen)
   return element api:function-page {
     attribute xml:base { $internal-uri },
     attribute mode { $mode },
@@ -1061,8 +1063,9 @@ as element()?
   (: Hide javascript-specific content
    : unless this is a javascript function page.
    :)
-  if ($e/@class eq 'javascript' and not($context = 'javascript')) then ()
-  else element { stp:fixup-element-name($e) } {
+  let $includes := xs:NMTOKENS($e/@class)
+  where empty($includes) or $includes = $context
+  return element { stp:fixup-element-name($e) } {
     stp:fixup-attribute($e/@*),
     stp:fixup-attributes-new($e, $context),
     stp:fixup-children($e, $context) }
