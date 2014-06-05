@@ -48,8 +48,8 @@ declare variable $URL-ORIG := xdmp:get-request-url();
 declare variable $QUERY-STRING := substring-after($URL-ORIG, '?');
 
 declare variable $VERSION-SPECIFIED := (
-  if (matches($PATH, '^/[0-9]\.[0-9]$')) then substring-after($PATH, '/')
-  else if (matches($PATH, '^/[0-9]\.[0-9]/')) then substring-before(
+  if (matches($PATH, '^/\d\.\d$')) then substring-after($PATH, '/')
+  else if (matches($PATH, '^/\d\.\d/')) then substring-before(
     substring-after($PATH, '/'), '/')
   else "") ;
 
@@ -324,8 +324,8 @@ declare function m:rewrite()
 
   (: SCENARIO 2B: Serve content from file system :)
   (: Remove version from the URL for versioned assets :)
-  else if (matches($PATH, '^/(css|images)/v-[0-9]*/.*')) then replace(
-    $PATH, '/v-[0-9]*', '')
+  else if (matches($PATH, '^/(css|images)/v-\d*/.*')) then replace(
+    $PATH, '/v-\d*', '')
 
   (: If the path starts with one of the designated paths in the code base,
    : then serve from filesystem.

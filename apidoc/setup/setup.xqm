@@ -50,7 +50,10 @@ declare variable $helpXsdCheck := (
     (), "ERROR", "You must specify a 'help-xsd-dir' param.")
   else ()) ;
 
-(: TODO skip for standalone? :)
+(: TODO skip for standalone?
+ : Right now that works by looking at server-name,
+ : which introduces another HTTP dependency.
+ :)
 declare variable $GOOGLE-ANALYTICS as element() :=
 (: google analytics script goes just before the closing the </head> tag :)
 <script type="text/javascript"><![CDATA[
