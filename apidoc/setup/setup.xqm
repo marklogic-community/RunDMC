@@ -289,7 +289,7 @@ as element()*
 {
   (: create XQuery/XSLT function pages :)
   stp:function-extract(
-    api:module-extractable-functions($doc/apidoc:module, ()),
+    api:module-extractable-functions($doc/apidoc:module, 'xpath'),
     map:map()),
   (: create JavaScript function pages :)
   if (number($api:version) lt 8) then ()
