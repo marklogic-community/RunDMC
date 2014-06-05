@@ -29,17 +29,6 @@ declare %t:case function t:function-hide-javascript-specific()
       'xpath'))
 };
 
-declare %t:case function t:function-show-javascript-specific()
-{
-  at:true(
-    exists(
-      stp:fixup(
-        element apidoc:function {
-          attribute class { 'javascript' },
-          'Hello world!' },
-        'javascript')))
-};
-
 declare %t:case function t:function-hide-javascript-specific-example()
 {
   at:empty(
@@ -48,17 +37,6 @@ declare %t:case function t:function-hide-javascript-specific-example()
         element apidoc:example { attribute class { 'javascript' }, 'fubar' },
         'Hello world!' },
       'xpath')/api:example)
-};
-
-declare %t:case function t:function-show-javascript-specific-example()
-{
-  at:equal(
-    stp:fixup(
-      element apidoc:function {
-        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
-        'Hello world!' },
-      'javascript')/api:example/string(),
-    'fubar')
 };
 
 declare %t:case function t:function-hide-javascript-specific-param()
@@ -74,19 +52,6 @@ declare %t:case function t:function-hide-javascript-specific-param()
     'snafu')
 };
 
-declare %t:case function t:function-show-javascript-specific-param()
-{
-  at:equal(
-    stp:fixup(
-      element apidoc:function {
-        element apidoc:params {
-          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
-          element apidoc:param { 'snafu' } },
-        'Hello world!' },
-      'javascript')/api:params/api:param/string(),
-    ('fubar', 'snafu'))
-};
-
 declare %t:case function t:function-hide-xquery-specific()
 {
   at:empty(
@@ -97,17 +62,6 @@ declare %t:case function t:function-hide-xquery-specific()
       'javascript'))
 };
 
-declare %t:case function t:function-show-xquery-specific()
-{
-  at:true(
-    exists(
-      stp:fixup(
-        element apidoc:function {
-          attribute class { 'xpath' },
-          'Hello world!' },
-        'xpath')))
-};
-
 declare %t:case function t:function-hide-xquery-specific-example()
 {
   at:empty(
@@ -116,17 +70,6 @@ declare %t:case function t:function-hide-xquery-specific-example()
         element apidoc:example { attribute class { 'xpath' }, 'fubar' },
         'Hello world!' },
       'javascript')/api:example)
-};
-
-declare %t:case function t:function-show-xquery-specific-example()
-{
-  at:equal(
-    stp:fixup(
-      element apidoc:function {
-        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
-        'Hello world!' },
-      'xpath')/api:example/string(),
-    'fubar')
 };
 
 declare %t:case function t:function-hide-xquery-specific-param()
@@ -140,6 +83,74 @@ declare %t:case function t:function-hide-xquery-specific-param()
         'Hello world!' },
       'javascript')/api:params/api:param/string(),
     'snafu')
+};
+
+declare %t:case function t:function-ignore-unknown-mode()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        attribute class { 'fubar' },
+        'snafu' },
+      'xpath')/string(),
+    'snafu')
+};
+
+declare %t:case function t:function-show-javascript-specific()
+{
+  at:true(
+    exists(
+      stp:fixup(
+        element apidoc:function {
+          attribute class { 'javascript' },
+          'Hello world!' },
+        'javascript')))
+};
+
+declare %t:case function t:function-show-javascript-specific-example()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
+        'Hello world!' },
+      'javascript')/api:example/string(),
+    'fubar')
+};
+
+declare %t:case function t:function-show-javascript-specific-param()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:params {
+          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
+          element apidoc:param { 'snafu' } },
+        'Hello world!' },
+      'javascript')/api:params/api:param/string(),
+    ('fubar', 'snafu'))
+};
+
+declare %t:case function t:function-show-xquery-specific()
+{
+  at:true(
+    exists(
+      stp:fixup(
+        element apidoc:function {
+          attribute class { 'xpath' },
+          'Hello world!' },
+        'xpath')))
+};
+
+declare %t:case function t:function-show-xquery-specific-example()
+{
+  at:equal(
+    stp:fixup(
+      element apidoc:function {
+        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
+        'Hello world!' },
+      'xpath')/api:example/string(),
+    'fubar')
 };
 
 declare %t:case function t:function-show-xquery-specific-param()

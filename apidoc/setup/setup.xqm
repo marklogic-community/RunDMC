@@ -37,6 +37,11 @@ declare variable $processing-default-version := $api:version eq $api:default-ver
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
   "/config/server-versions.xml")/*/version/@number ;
 
+declare variable $MODE-JAVASCRIPT := 'javascript' ;
+declare variable $MODE-REST := 'REST' ;
+declare variable $MODE-XPATH := 'xpath' ;
+declare variable $MODES := ($MODE-JAVASCRIPT, $MODE-REST, $MODE-XPATH) ;
+
 (: TODO must not assume HTTP environment. :)
 declare variable $errorCheck := (
   if (not($api:version-specified)) then error(
@@ -249,8 +254,8 @@ as element()*
   (: These are raw functions, so only javascript will have a mode. :)
   let $mode as xs:string := (
     if ($function/@mode) then $function/@mode
-    else if (starts-with($function/@name, '/')) then 'REST'
-    else 'xpath')[1]
+    else if (starts-with($function/@name, '/')) then $MODE-REST
+    else $MODE-XPATH)[1]
   let $external-uri := api:external-uri($function, $mode)
   let $internal-uri := api:internal-uri($external-uri)
   let $seen := map:contains($uris-seen, $internal-uri)
@@ -287,14 +292,14 @@ declare function stp:function-docs(
   $doc as document-node())
 as element()*
 {
-  (: create XQuery/XSLT function pages :)
+  (: create XQuery/XSLT function pages - and REST? :)
   stp:function-extract(
-    api:module-extractable-functions($doc/apidoc:module, 'xpath'),
+    api:module-extractable-functions($doc/apidoc:module, $MODE-XPATH),
     map:map()),
   (: create JavaScript function pages :)
   if (number($api:version) lt 8) then ()
   else stp:function-extract(
-    api:module-extractable-functions($doc/apidoc:module, 'javascript'),
+    api:module-extractable-functions($doc/apidoc:module, $MODE-JAVASCRIPT),
     map:map())
 };
 
@@ -870,7 +875,7 @@ as attribute()?
           (: path to resource page :)
           if ($relevant-function/@lib
             = $api:REST-LIBS) then api:REST-fullname-to-external-uri(
-            api:fixup-fullname($relevant-function, 'REST'))
+            api:fixup-fullname($relevant-function, $MODE-REST))
           (: regular function page :)
           (: path to function page TODO add mode when javascript :)
           else '/'||api:fixup-fullname($relevant-function, ())))
@@ -899,7 +904,6 @@ as attribute()?
 {
   if (not($a/parent::apidoc:function)) then $a
   else attribute lib {
-
     (: Change the "spell" library to "spell-lib"
      : to disambiguate from the built-in "spell" module.
      :)
@@ -927,8 +931,9 @@ as attribute()?
   if (not($a/parent::apidoc:function)) then $a
   else attribute name {
     (: fixup apidoc:function/@name for javascript :)
-    if (xs:boolean($a/../@mode eq 'javascript')) then api:javascript-name($a)
-    else $a }
+    switch ($a/../@mode/string())
+    case $MODE-JAVASCRIPT return api:javascript-name($a)
+    default return $a }
 };
 
 (: Ported from fixup.xsl,
@@ -1060,10 +1065,10 @@ declare function stp:fixup-element(
   $context as xs:string*)
 as element()?
 {
-  (: Hide javascript-specific content
-   : unless this is a javascript function page.
+  (: Hide mode-specific content unless the correct mode is set.
+   : Ignore unknown classes.
    :)
-  let $includes := xs:NMTOKENS($e/@class)
+  let $includes := xs:NMTOKENS($e/@class)[. eq $MODES]
   where empty($includes) or $includes = $context
   return element { stp:fixup-element-name($e) } {
     stp:fixup-attribute($e/@*),
