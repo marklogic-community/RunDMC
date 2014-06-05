@@ -44,22 +44,22 @@ driving the generation of function list pages.
   -->
   <xsl:variable name="by-category" as="element()+">
     <xsl:call-template name="functions-by-category">
-      <xsl:with-param name="mode" select="'xpath'" />
+      <xsl:with-param name="mode" select="$api:MODE-XPATH" />
     </xsl:call-template>
   </xsl:variable>
   <xsl:variable name="javascript-by-category" as="element()+">
     <xsl:call-template name="functions-by-category">
-      <xsl:with-param name="mode" select="'javascript'" />
+      <xsl:with-param name="mode" select="$api:MODE-JAVASCRIPT" />
     </xsl:call-template>
   </xsl:variable>
 
   <xsl:template match="/">
     <xsl:variable
         name="function-count"
-        select="toc:function-count('xpath', ())"/>
+        select="toc:function-count($api:MODE-XPATH, ())"/>
     <xsl:variable
         name="javascript-function-count"
-        select="toc:function-count('javascript', ())"/>
+        select="toc:function-count($api:MODE-JAVASCRIPT, ())"/>
     <root display="All Documentation"
           open="true">
       <node
@@ -78,7 +78,7 @@ driving the generation of function list pages.
                 display="JavaScript Functions ({
                          $javascript-function-count })"
                 id="AllFunctionsJavaScript"
-                mode="javascript"
+                mode="{ $api:MODE-JAVASCRIPT }"
                 function-list-page="true">
             <title>JavaScript functions</title>
             <intro>
@@ -297,7 +297,7 @@ driving the generation of function list pages.
         <xsl:copy-of
             select="toc:lib-sub-pages(
                     .,
-                    if ($mode eq 'javascript') then $javascript-by-category
+                    if ($mode eq $api:MODE-JAVASCRIPT) then $javascript-by-category
                     else $by-category,
                     $mode)"/>
 
@@ -310,7 +310,7 @@ driving the generation of function list pages.
       <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
       <xsl:apply-templates
           select="toc:function-name-nodes(
-                  if ($mode eq 'javascript')
+                  if ($mode eq $api:MODE-JAVASCRIPT)
                   then $toc:ALL-FUNCTIONS-JAVASCRIPT[@lib eq current()]
                   else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq current()])"/>
     </node>

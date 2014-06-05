@@ -24,9 +24,9 @@ declare %t:case function t:function-hide-javascript-specific()
   at:empty(
     stp:fixup(
       element apidoc:function {
-        attribute class { 'javascript' },
+        attribute class { $api:MODE-JAVASCRIPT },
         'Hello world!' },
-      'xpath'))
+      $api:MODE-XPATH))
 };
 
 declare %t:case function t:function-hide-javascript-specific-example()
@@ -34,9 +34,10 @@ declare %t:case function t:function-hide-javascript-specific-example()
   at:empty(
     stp:fixup(
       element apidoc:function {
-        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
+        element apidoc:example {
+          attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
         'Hello world!' },
-      'xpath')/api:example)
+      $api:MODE-XPATH)/api:example)
 };
 
 declare %t:case function t:function-hide-javascript-specific-param()
@@ -45,10 +46,11 @@ declare %t:case function t:function-hide-javascript-specific-param()
     stp:fixup(
       element apidoc:function {
         element apidoc:params {
-          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
+          element apidoc:param {
+            attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
           element apidoc:param { 'snafu' } },
         'Hello world!' },
-      'xpath')/api:params/api:param/string(),
+      $api:MODE-XPATH)/api:params/api:param/string(),
     'snafu')
 };
 
@@ -57,9 +59,9 @@ declare %t:case function t:function-hide-xquery-specific()
   at:empty(
     stp:fixup(
       element apidoc:function {
-        attribute class { 'xpath' },
+        attribute class { $api:MODE-XPATH },
         'Hello world!' },
-      'javascript'))
+      $api:MODE-JAVASCRIPT))
 };
 
 declare %t:case function t:function-hide-xquery-specific-example()
@@ -67,9 +69,9 @@ declare %t:case function t:function-hide-xquery-specific-example()
   at:empty(
     stp:fixup(
       element apidoc:function {
-        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
+        element apidoc:example { attribute class { $api:MODE-XPATH }, 'fubar' },
         'Hello world!' },
-      'javascript')/api:example)
+      $api:MODE-JAVASCRIPT)/api:example)
 };
 
 declare %t:case function t:function-hide-xquery-specific-param()
@@ -78,10 +80,11 @@ declare %t:case function t:function-hide-xquery-specific-param()
     stp:fixup(
       element apidoc:function {
         element apidoc:params {
-          element apidoc:param { attribute class { 'xpath' }, 'fubar' },
+          element apidoc:param {
+            attribute class { $api:MODE-XPATH }, 'fubar' },
           element apidoc:param { 'snafu' } },
         'Hello world!' },
-      'javascript')/api:params/api:param/string(),
+      $api:MODE-JAVASCRIPT)/api:params/api:param/string(),
     'snafu')
 };
 
@@ -92,7 +95,7 @@ declare %t:case function t:function-ignore-unknown-mode()
       element apidoc:function {
         attribute class { 'fubar' },
         'snafu' },
-      'xpath')/string(),
+      $api:MODE-XPATH)/string(),
     'snafu')
 };
 
@@ -102,9 +105,9 @@ declare %t:case function t:function-show-javascript-specific()
     exists(
       stp:fixup(
         element apidoc:function {
-          attribute class { 'javascript' },
+          attribute class { $api:MODE-JAVASCRIPT },
           'Hello world!' },
-        'javascript')))
+        $api:MODE-JAVASCRIPT)))
 };
 
 declare %t:case function t:function-show-javascript-specific-example()
@@ -112,9 +115,10 @@ declare %t:case function t:function-show-javascript-specific-example()
   at:equal(
     stp:fixup(
       element apidoc:function {
-        element apidoc:example { attribute class { 'javascript' }, 'fubar' },
+        element apidoc:example {
+          attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
         'Hello world!' },
-      'javascript')/api:example/string(),
+      $api:MODE-JAVASCRIPT)/api:example/string(),
     'fubar')
 };
 
@@ -124,10 +128,11 @@ declare %t:case function t:function-show-javascript-specific-param()
     stp:fixup(
       element apidoc:function {
         element apidoc:params {
-          element apidoc:param { attribute class { 'javascript' }, 'fubar' },
+          element apidoc:param {
+            attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
           element apidoc:param { 'snafu' } },
         'Hello world!' },
-      'javascript')/api:params/api:param/string(),
+      $api:MODE-JAVASCRIPT)/api:params/api:param/string(),
     ('fubar', 'snafu'))
 };
 
@@ -137,9 +142,9 @@ declare %t:case function t:function-show-xquery-specific()
     exists(
       stp:fixup(
         element apidoc:function {
-          attribute class { 'xpath' },
+          attribute class { $api:MODE-XPATH },
           'Hello world!' },
-        'xpath')))
+        $api:MODE-XPATH)))
 };
 
 declare %t:case function t:function-show-xquery-specific-example()
@@ -147,9 +152,9 @@ declare %t:case function t:function-show-xquery-specific-example()
   at:equal(
     stp:fixup(
       element apidoc:function {
-        element apidoc:example { attribute class { 'xpath' }, 'fubar' },
+        element apidoc:example { attribute class { $api:MODE-XPATH }, 'fubar' },
         'Hello world!' },
-      'xpath')/api:example/string(),
+      $api:MODE-XPATH)/api:example/string(),
     'fubar')
 };
 
@@ -159,10 +164,10 @@ declare %t:case function t:function-show-xquery-specific-param()
     stp:fixup(
       element apidoc:function {
         element apidoc:params {
-          element apidoc:param { attribute class { 'xpath' }, 'fubar' },
+          element apidoc:param { attribute class { $api:MODE-XPATH }, 'fubar' },
           element apidoc:param { 'snafu' } },
         'Hello world!' },
-      'xpath')/api:params/api:param/string(),
+      $api:MODE-XPATH)/api:params/api:param/string(),
     ('fubar', 'snafu'))
 };
 

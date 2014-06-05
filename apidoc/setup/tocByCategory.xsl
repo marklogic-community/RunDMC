@@ -26,7 +26,7 @@
     <xsl:param name="mode" as="xs:string"/>
 
     <xsl:variable name="functions"
-                  select="if ($mode eq 'javascript')
+                  select="if ($mode eq $api:MODE-JAVASCRIPT)
                           then $toc:ALL-FUNCTIONS-JAVASCRIPT
                           else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT"/>
     <xsl:variable name="buckets"

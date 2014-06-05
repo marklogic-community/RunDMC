@@ -209,7 +209,7 @@ declare %t:case function t:render-2-async-xdmp()
   namespace="http://marklogic.com/xdmp"
   category-bucket="MarkLogic Built-In Functions"
   function-list-page="true" async="true" id="xdmp_n9b9475fceb6b577b"
-  mode="javascript" footnote="true"
+  mode="{ $api:MODE-JAVASCRIPT }" footnote="true"
   xmlns="http://marklogic.com/rundmc/api/toc">
         <node display="node 2.1"></node>
         <node display="node 2.2"></node>

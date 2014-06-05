@@ -246,7 +246,7 @@
 
   <!-- JavaScript function lib page link -->
   <xsl:template mode="toc-section-link-selector"
-                match="api:function-page[@mode eq 'javascript']">
+                match="api:function-page[@mode eq $api:MODE-JAVASCRIPT]">
     <xsl:text>.scrollable_section a[href='</xsl:text>
     <xsl:value-of select="$version-prefix"/>
     <xsl:text>/js/</xsl:text>
@@ -262,7 +262,7 @@
   </xsl:template>
 
   <xsl:template mode="toc-section-link-selector"
-                match="api:list-page[@mode ne 'javascript']
+                match="api:list-page[@mode ne $api:MODE-JAVASCRIPT]
                        |api:help-page">
     <xsl:text>#</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
@@ -271,7 +271,7 @@
 
   <!-- JavaScript function list page -->
   <xsl:template mode="toc-section-link-selector"
-                match="api:list-page[@mode eq 'javascript']">
+                match="api:list-page[@mode eq $api:MODE-JAVASCRIPT]">
     <xsl:text>#js_</xsl:text>
     <xsl:value-of select="@container-toc-section-id"/>
     <xsl:text> >:first-child</xsl:text>
@@ -301,7 +301,7 @@
 
   <!-- TODO why is this needed? Nothing similar for api:function-page. -->
   <xsl:template mode="page-specific-title"
-                match="api:function-page[@mode eq 'javascript']">
+                match="api:function-page[@mode eq $api:MODE-JAVASCRIPT]">
     <xsl:value-of select="api:function-name"/>
   </xsl:template>
 
@@ -326,7 +326,7 @@
   -->
   <xsl:template mode="api-page-heading"
                 match="*
-                       |api:function-page[api:function[1]/@lib eq 'REST']">
+                       |api:function-page[api:function[1]/@lib eq $api:MODE-REST]">
     <xsl:apply-templates mode="page-specific-title" select="."/>
   </xsl:template>
 
@@ -340,7 +340,7 @@
         select="api:function[1]/@lib"/>
     <xsl:variable
         name="is-javascript"
-        select="@mode eq 'javascript'"/>
+        select="@mode eq $api:MODE-JAVASCRIPT"/>
     <!-- Expect this to change. -->
     <xsl:variable name="delimiter"
                   select="if ($is-javascript) then '.'
@@ -635,7 +635,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template mode="function-signature" match="api:function[@lib eq 'REST']"/>
+  <xsl:template mode="function-signature" match="api:function[@lib eq $api:MODE-REST]"/>
   <xsl:template mode="function-signature" match="api:function">
     <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
     <xsl:element name="pre">
@@ -717,7 +717,7 @@
     </table>
   </xsl:template>
 
-  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:headers">
+  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq $api:MODE-REST]/api:headers">
     <xsl:param name="response-headers" tunnel="yes"/>
     <xsl:choose>
       <xsl:when test="$response-headers">Response</xsl:when>
@@ -725,7 +725,7 @@
     </xsl:choose>
     <xsl:text> Headers</xsl:text>
   </xsl:template>
-  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq 'REST']/api:params">URL Parameters</xsl:template>
+  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq $api:MODE-REST]/api:params">URL Parameters</xsl:template>
   <xsl:template mode="parameters-table-heading" match="                             api:params">Parameters</xsl:template>
 
   <xsl:template match="api:param | api:header">
@@ -735,7 +735,7 @@
           <xsl:apply-templates mode="param-anchor-id" select="."/>
         </xsl:variable>
         <a name="{$anchor}"/>
-        <xsl:if test="not(../../@lib eq 'REST')">
+        <xsl:if test="not(../../@lib eq $api:MODE-REST)">
           <xsl:text>$</xsl:text>
         </xsl:if>
         <xsl:value-of select="@name"/>

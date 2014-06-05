@@ -25,11 +25,11 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
 declare variable $ALL-FUNCTIONS-NOT-JAVASCRIPT as element()+ := (
   $api:all-function-docs/api:function-page[
-    @mode ne 'javascript']/api:function[1]) ;
+    @mode ne $api:MODE-JAVASCRIPT]/api:function[1]) ;
 
 declare variable $ALL-FUNCTIONS-JAVASCRIPT as element()+ := (
   $api:ALL-FUNCTIONS-JAVASCRIPT/api:function-page[
-    @mode eq 'javascript']/api:function[1]) ;
+    @mode eq $api:MODE-JAVASCRIPT]/api:function[1]) ;
 
 (: exclude REST API "functions"
  : dedup when there is a built-in lib that has the same prefix as a library
@@ -37,7 +37,7 @@ declare variable $ALL-FUNCTIONS-JAVASCRIPT as element()+ := (
  :)
 declare variable $ALL-LIBS as element(api:lib)* := (
   $api:built-in-libs,
-  $api:library-libs[not(. eq 'REST')][not(. = $api:built-in-libs)]) ;
+  $api:library-libs[not(. eq $api:MODE-REST)][not(. = $api:built-in-libs)]) ;
 
 declare variable $ALL-LIBS-JAVASCRIPT as element(api:lib)* := (
   $api:LIBS-JAVASCRIPT );
@@ -143,7 +143,7 @@ as element(api:function-name)*
      : But for REST docs, first sort by the resource name
      : and then the HTTP method.
      :)
-    let $not-rest := not($f/@lib eq 'REST')
+    let $not-rest := not($f/@lib eq $api:MODE-REST)
     order by
       if ($not-rest) then $f/@fullname
       else api:name-from-REST-fullname($f/@fullname),
@@ -218,7 +218,7 @@ declare function toc:display-suffix($lib-for-all as xs:string?)
   as xs:string?
 {
   (: Don't display a suffix for REST categories :)
-  if ($lib-for-all eq 'REST') then ()
+  if ($lib-for-all eq $api:MODE-REST) then ()
   else if ($lib-for-all) then concat(
     ' (', api:prefix-for-lib($lib-for-all), ':)')
   else ()
@@ -267,7 +267,7 @@ declare function toc:get-summary-for-category(
            : all main categories (e.g., Client API and Management API)
            : already have summaries written
            :)
-          else if ($lib eq 'REST') then element apidoc:summary {
+          else if ($lib eq $api:MODE-REST) then element apidoc:summary {
             <p>
             For the complete list of REST resources in this category,
             refer to the main <a href="/REST/{toc:path-for-category($cat)}">{
@@ -366,7 +366,7 @@ as xs:string
   concat(
     $parent,
     switch($mode)
-    case 'javascript' return 'js/'
+    case $api:MODE-JAVASCRIPT return 'js/'
     default return '',
     $id,
     '.html')
@@ -382,7 +382,7 @@ as xs:ID
 {
   xs:ID(
     concat(
-      if ($node/@mode eq 'javascript') then 'js_'
+      if ($node/@mode eq $api:MODE-JAVASCRIPT) then 'js_'
       else '',
       $node/@id))
 };
@@ -828,10 +828,10 @@ as element()*
    : the XQuery category is just a placeholder.
    :)
   let $current-href as xs:string := concat(
-    '/', (if ($mode eq 'javascript') then 'js/' else ''),
+    '/', (if ($mode eq $api:MODE-JAVASCRIPT) then 'js/' else ''),
     $lib, '/')
   let $excluded-prefix := (
-    if ($mode eq 'javascript') then '/js/sem'
+    if ($mode eq $api:MODE-JAVASCRIPT) then '/js/sem'
     else '/sem')
   (: TODO could we make this more efficient?
    : The sub-pages should be children of the toc:node for $lib.
@@ -889,12 +889,12 @@ as attribute()+
 
   attribute href {
     concat(
-      if ($mode eq 'javascript') then '/js/' else '/',
+      if ($mode eq $api:MODE-JAVASCRIPT) then '/js/' else '/',
       $lib) },
   attribute display {
     concat(
       api:prefix-for-lib($lib),
-      if ($mode eq 'javascript') then '.' else ':') },
+      if ($mode eq $api:MODE-JAVASCRIPT) then '.' else ':') },
 
   attribute mode { $mode },
   if (not($lib/@built-in)) then ()
@@ -914,7 +914,7 @@ as xs:string
   (: The initial empty string ensures a leading '/'. :)
   string-join(
     ('',
-      if ($mode eq 'javascript') then () else 'js',
+      if ($mode eq $api:MODE-JAVASCRIPT) then () else 'js',
       if ($is-exhaustive) then $one-subcategory-lib
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
@@ -953,19 +953,20 @@ as element(toc:node)
    :)
   let $mode as xs:string := $function-name/@mode
   let $_ := (
-    if ($mode ne 'REST' and starts-with($function-name, '/')) then stp:error(
+    if ($mode ne $api:MODE-REST
+      and starts-with($function-name, '/')) then stp:error(
       'ASSERT',
       (xdmp:describe($mode),
         $function-name, xdmp:describe($function-name)))
     else ())
   return switch($mode)
-  case 'javascript' return (
+  case $api:MODE-JAVASCRIPT return (
     let $name := api:javascript-name($function-name)
     return element toc:node {
       attribute type { 'javascript-function' },
       attribute href { '/'||$name },
       attribute display { $name } })
-  case 'REST' return (
+  case $api:MODE-REST return (
     (: For 5.0 hide the verb. :)
     let $base-display-name as xs:string := (
       if ($version-number gt 5.0) then $function-name

@@ -11,6 +11,11 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 
+declare variable $MODE-JAVASCRIPT := 'javascript' ;
+declare variable $MODE-REST := 'REST' ;
+declare variable $MODE-XPATH := 'xquery' ;
+declare variable $MODES := ($MODE-JAVASCRIPT, $MODE-REST, $MODE-XPATH) ;
+
 declare variable $NAMESPACE := "http://marklogic.com/rundmc/api" ;
 
 declare variable $default-version as xs:string  := $ml:default-version ;
@@ -80,7 +85,7 @@ declare variable $all-function-docs := cts:search(
 declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
   if (number($version) lt 8) then ()
   else $all-function-docs[
-    api:function-page[@mode eq 'javascript']/api:function/@bucket = (
+    api:function-page[@mode eq $MODE-JAVASCRIPT]/api:function/@bucket = (
       'MarkLogic Built-In Functions',
       'W3C-Standard Functions')]) ;
 
@@ -92,9 +97,9 @@ declare variable $library-function-count  := xdmp:estimate(
   cts:search(collection(),$query-for-library-functions));
 
 declare variable $built-in-libs := api:get-libs(
-  $query-for-builtin-functions, true(), 'xpath' );
+  $query-for-builtin-functions, true(), $MODE-XPATH );
 declare variable $library-libs  := api:get-libs(
-  $query-for-library-functions, false(), 'xpath');
+  $query-for-library-functions, false(), $MODE-XPATH);
 
 declare variable $LIBS-JAVASCRIPT := (
   if (number($version) lt 8) then ()
@@ -102,8 +107,8 @@ declare variable $LIBS-JAVASCRIPT := (
     cts:element-attribute-value-query(
       xs:QName('api:function-page'),
       xs:QName('mode'),
-      'javascript'),
-    true(), 'javascript'));
+      $MODE-JAVASCRIPT),
+    true(), $MODE-JAVASCRIPT));
 
 declare variable $namespace-mappings := u:get-doc(
   "/apidoc/config/namespace-mappings.xml")/namespaces/namespace ;
@@ -303,10 +308,10 @@ as xs:string
    : should not have a namespace prefix in the full name.
    :)
   switch($mode)
-  case 'REST' return api:REST-fullname($function)
-  case 'javascript' return concat(
+  case $MODE-REST return api:REST-fullname($function)
+  case $MODE-JAVASCRIPT return concat(
     $function/@lib, '.', api:javascript-name($function/@name))
-  (: Covers mode=xpath and any unknown values. :)
+  (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
     $function/@lib, ':', $function/@name)
 };
@@ -332,7 +337,7 @@ as xs:string
    :)
   let $fullname := api:fixup-fullname($function, $mode)
   return switch($mode)
-  case 'REST' return api:REST-fullname-to-external-uri($fullname)
+  case $MODE-REST return api:REST-fullname-to-external-uri($fullname)
   default return concat('/', $fullname)
 };
 
@@ -464,7 +469,7 @@ as element(apidoc:function)?
       'MarkLogic Built-In Functions',
       'W3C-Standard Functions'))) then ()
   else element apidoc:function {
-    attribute mode { 'javascript' },
+    attribute mode { $MODE-JAVASCRIPT },
     $function/@*,
     $function/node() }
 };
@@ -477,10 +482,10 @@ as element(apidoc:function)*
 {
   switch($mode)
   (: Fake a raw doc, creating all the necessary context.  :)
-  case 'javascript' return document {
+  case $MODE-JAVASCRIPT return document {
     element apidoc:module {
       attribute xml:base { base-uri($module) },
-      attribute mode { 'javascript' },
+      attribute mode { $MODE-JAVASCRIPT },
       api:function-fake-javascript(
         $module/apidoc:function[
           not(api:fixup-fullname(., ()) =
