@@ -12,6 +12,6 @@ $stp:errorCheck,
 
 stp:raw-delete($api:version),
 
-text { "Finished deleting all raw docs for", $api:version }
+text { "Deleted raw docs for", $api:version, xdmp:elapsed-time() }
 
 (: delete-raw-docs.xqy :)

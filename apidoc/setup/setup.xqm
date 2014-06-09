@@ -39,15 +39,15 @@ declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
 
 (: TODO must not assume HTTP environment. :)
 declare variable $errorCheck := (
-  if (not($api:version-specified)) then error(
-    (), "ERROR", "You must specify a 'version' param.")
+  if (not($api:version-specified)) then stp:error(
+    "ERROR", "You must specify a 'version' param.")
   else ()) ;
 
 (: TODO must not assume HTTP environment. :)
 (: used in create-toc.xqy / toc-help.xsl :)
 declare variable $helpXsdCheck := (
-  if (not(xdmp:get-request-field("help-xsd-dir"))) then error(
-    (), "ERROR", "You must specify a 'help-xsd-dir' param.")
+  if (not(xdmp:get-request-field("help-xsd-dir"))) then stp:error(
+    "ERROR", "You must specify a 'help-xsd-dir' param.")
   else ()) ;
 
 (: TODO skip for standalone?
@@ -203,7 +203,7 @@ as xs:string
   else if (ends-with($uri,".pdf")) then stp:pdf-uri($uri)
 
   (: By default, don't change the URI (e.g., for C++ docs) :)
-  else error((), "UNEXPECTED", ('path', $uri))
+  else stp:error("UNEXPECTED", ('path', $uri))
 };
 
 declare function stp:pdf-uri($uri as xs:string)
@@ -216,7 +216,7 @@ as xs:string?
   return
   (
     if (not($url-name))
-    then error((), "ERROR", concat("The configuration for ",$uri,
+    then stp:error("ERROR", concat("The configuration for ",$uri,
           " is missing in /apidoc/config/document-list.xml"))
     else (),
     concat("/guide/",$url-name,".pdf")

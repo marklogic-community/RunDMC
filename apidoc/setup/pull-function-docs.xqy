@@ -10,6 +10,7 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm" ;
 
 stp:function-docs($api:version),
-"Inserted function docs and comment containers."
+
+text { "Extracted function docs for", $api:version, xdmp:elapsed-time() }
 
 (: pull-function-docs.xqy :)

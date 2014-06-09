@@ -15,6 +15,6 @@ xdmp:log(concat("Deleting all set-up ",$api:version," docs")),
 xdmp:directory-delete($api:VERSION-DIR),
 xdmp:log(text { "Done deleting:", $api:VERSION-DIR }),
 
-concat("Finished deleting all set-up ",$api:version," docs")
+text { "Deleted docs for", $api:version, xdmp:elapsed-time() }
 
 (: delete-docs.xqy :)

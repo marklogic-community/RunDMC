@@ -14,6 +14,7 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
     string-join($stp:LEGAL-VERSIONS,", ")))
 ,
 stp:zip-load-raw-docs(xdmp:document-get($ZIP)/node()),
-"Documents loaded. See log for details."
+
+text { "Loaded raw docs for", $VERSION, xdmp:elapsed-time() }
 
 (: load-raw-docs.xqy :)

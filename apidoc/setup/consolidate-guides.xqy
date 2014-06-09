@@ -10,6 +10,6 @@ import module namespace guide="http://marklogic.com/rundmc/api/guide"
   at "guide.xqm" ;
 
 guide:consolidate($api:version),
-"Done consolidating guides."
+text { "Consolidated guides in", xdmp:elapsed-time() }
 
 (: apidoc/setup/consolidate-guides.xqy :)
