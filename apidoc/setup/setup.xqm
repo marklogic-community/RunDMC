@@ -794,12 +794,9 @@ as empty-sequence()
 {
   (: Using encoding=auto is necessary for some of the content,
    : especially javadoc.
-   : But it messes up binary content.
+   : But it messes up binary content and some XML.
    :)
-  let $opts-text := (
-    <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
-  let $opts-binary := <options xmlns="xdmp:zip-get"/>
-  return raw:invoke-function(
+  raw:invoke-function(
     function() {
       for $e in xdmp:zip-manifest($zip)/*[
         contains(., '_pubs/pubs/raw/') ][
@@ -807,10 +804,11 @@ as empty-sequence()
       let $uri as xs:string := concat(
         '/', $version,
         '/', substring-after($e, '_pubs/pubs/raw/'))
-      let $_ := stp:debug('stp:zip-load-raw-docs', ($e, '=>', $uri))
+      let $type := xdmp:uri-content-type($uri)
+      let $_ := stp:debug('stp:zip-load-raw-docs', ($e, '=>', $uri, $type))
       let $opts := (
-        if (starts-with(xdmp:uri-content-type($uri), 'text/')) then $opts-text
-        else $opts-binary)
+        if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
+        else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
       return xdmp:document-insert(
         $uri,
         xdmp:zip-get($zip, $e, $opts),
