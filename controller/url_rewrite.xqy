@@ -32,6 +32,8 @@ declare function local:redir($path as xs:string) as xs:string
         $srv:api-server
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then
         $srv:api-server
+    else if ($path eq "/tools") then
+        "/code"
 
     else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
         local:redirect-function-url($path)
