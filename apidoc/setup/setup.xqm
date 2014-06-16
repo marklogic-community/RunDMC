@@ -54,46 +54,18 @@ declare variable $helpXsdCheck := (
  : Right now that works by looking at server-name,
  : which introduces another HTTP dependency.
  :)
-declare variable $GOOGLE-ANALYTICS as element() :=
-(: google analytics script goes just before the closing the </head> tag :)
-<script type="text/javascript"><![CDATA[
-  var is_prod = document.location.hostname == 'docs.marklogic.com';
-  var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3';
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'],
-            ['_trackPageview']);
-
-  (function() {
-      var ga = document.createElement('script');
-      ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl'
-               : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(ga, s);
-            })();]]>
-</script> ;
-
-(: TODO skip for standalone? :)
-declare variable $MARKETO as element() :=
-(: marketo script goes just before the closing the </body> tag :)
-<script type="text/javascript"><![CDATA[
- (function() {
-      function initMunchkin() {
-      Munchkin.init('371-XVQ-609');
-    }
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
-    s.onreadystatechange = function() {
-        if (this.readyState == 'complete' || this.readyState == 'loaded') {
-            initMunchkin();
-          }
-        };
-    s.onload = initMunchkin;
-    document.getElementsByTagName('body')[0].appendChild(s);
-    })();]]>
-</script> ;
+declare variable $GOOGLE-TAGMANAGER as node()* := (
+<!-- Google Tag Manager -->,
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MBC6N2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>,
+<script><![CDATA[if ( document.location.hostname == 'docs.marklogic.com') {
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MBC6N2'); } ]]> </script>,
+<!-- End Google Tag Manager -->
+) ;
 
 declare function stp:log(
   $label as xs:string,
@@ -172,10 +144,8 @@ declare function stp:static-add-scripts($n as node())
 {
   typeswitch($n)
   case document-node() return document { stp:static-add-scripts($n/node()) }
-  case element(head) return stp:element-rewrite($n, $GOOGLE-ANALYTICS)
-  case element(HEAD) return stp:element-rewrite($n, $GOOGLE-ANALYTICS)
-  case element(body) return stp:element-rewrite($n, $MARKETO)
-  case element(BODY) return stp:element-rewrite($n, $MARKETO)
+  case element(body) return stp:element-rewrite($n, $GOOGLE-TAGMANAGER)
+  case element(BODY) return stp:element-rewrite($n, $GOOGLE-TAGMANAGER)
   (: Any other element may have head or body children. :)
   case element() return element {fn:node-name($n)} {
     $n/@*,
@@ -346,10 +316,9 @@ as document-node()
   return (
     (: If the document is JavaDoc HTML, then read it as text;
      : if it's other HTML, repair it as XML (.NET docs)
-     : Also, add the ga and marketo scripts to the javadoc.
      : Don't tidy index.html because tidy throws away the frameset.
-     : TODO should this be ends-with rather than contains?
      :)
+    (: TODO should this be ends-with rather than contains? :)
     if ($is-jdoc and not(contains($path, '/index.html'))) then xdmp:tidy(
       xdmp:zip-get(
         $zip,

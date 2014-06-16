@@ -207,17 +207,17 @@ if(typeof jQuery != 'undefined') {
 
                                     $(this).dialog('close');
 
-                                    _gaq.push(['_trackEvent', 'success-login-for-download', u]);
+                                 //  _gaq.push(['_trackEvent', 'success-login-for-download', u]);
 
                                     doDownload(u);
 
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
                                     } else {
                                         $("#ifail").text("Unknown failure"); // XXX
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
+                                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
                                     }
                                 }
                             }
@@ -252,16 +252,16 @@ if(typeof jQuery != 'undefined') {
                                     $('#session-trigger').text(data.name);
                                     $('#session-trigger').show();
 
-                                    _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
+                                   // _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
                                     showDownloadURL(this, u);
 
                                 } else {
                                     if (data.status) {
                                         $("#ifail").text(data.status);
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
+                                       // _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
                                     } else {
                                         $("#ifail").text("Unknown failure"); // XXX
-                                        _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
+                                       // _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
                                     }
                                 }
                             }
@@ -274,11 +274,12 @@ if(typeof jQuery != 'undefined') {
                 }, 
                 Cancel: function() {
                     var u = $(this).dialog.href;
-                    _gaq.push(['_trackEvent', 'cancel-download', u]);
-                    try {
-                        var s = '/cancel-download' + u.replace(/\?.*/, "");
+                   // _gaq.push(['_trackEvent', 'cancel-download', u]);
+             /*       try {
+                        var s = '/cancel-download' + u.replace(/\?., "");
                         mktoMunchkinFunction('clickLink', { href: s } );
-                    } catch (err) {}
+                    } catch (err) {}  
+		*/
                     $(this).dialog('close');
                 }
            	}
@@ -329,13 +330,14 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
+/*
         $('a.track-download').each(function() {
             var u = $(this).attr("href");
-            $(this).click(function() {
-                _gaq.push(['_trackPageview', u],
-                          ['_trackEvent', 'start-download', u]);
+            // $(this).click(function() {
+               // _gaq.push(['_trackPageview', u],
+               //           ['_trackEvent', 'start-download', u]);
                 try {
-                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
                 } catch (err) {}
     
                 download_iframe = document.getElementById("hiddenDownloader");
@@ -350,25 +352,26 @@ if(typeof jQuery != 'undefined') {
                 return false;
             });
         });
+*/
 
-		if(jQuery().fancybox) {
-			$('a[rel=detail]',main).each(function() {
-				var ref = $(this).attr('href');
-				$(this).append(
-					$('<span>',{'class':'caption',text: 'Enlarge image'})
-				).fancybox({
-					transitionIn: 'elastic',
-					transitionOut: 'elastic'
-				});
-			});
-		}
-		var apiCaption = $('.api_table caption',main).text();
-		$('.api_table',main).find('caption').remove().end().before(
-			$('<div>', {
-				'class': 'api_caption',
-				text: apiCaption
-			})
-		);
+//		if(jQuery().fancybox) {
+//			$('a[rel=detail]',main).each(function() {
+//				var ref = $(this).attr('href');
+//				$(this).append(
+//					$('<span>',{'class':'caption',text: 'Enlarge image'})
+//				).fancybox({
+//					transitionIn: 'elastic',
+//					transitionOut: 'elastic'
+//				});
+//			});
+//		}
+//		var apiCaption = $('.api_table caption',main).text();
+//		$('.api_table',main).find('caption').remove().end().before(
+//			$('<div>', {
+//				'class': 'api_caption',
+//				text: apiCaption
+//			})
+//		);
 		if($('#page_content').length) {
 		$('body:not(.sticky) #page_content')
 			.append($('<div>', {'class': 'shadow'}))
@@ -774,14 +777,16 @@ function isValidEmailAddress(emailAddress) {
                     
 function doDownload(u) {
 
-    _gaq.push(['_trackPageview', u],
-        ['_trackEvent', 'success-login-for-download', u],
-        ['_trackEvent', 'start-download', u]);
+  //  _gaq.push(['_trackPageview', u],
+  //      ['_trackEvent', 'success-login-for-download', u],
+  //      ['_trackEvent', 'start-download', u]);
 
+/*
     try {
-        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?.*/, "") } );
+        mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
     } catch (err) {
     }
+*/
 
     download_iframe = document.getElementById("hiddenDownloader");
     if (download_iframe === null) {
@@ -811,14 +816,16 @@ function showDownloadURL(me, u) {
                 context: $(me),
                 success: function(data) {
 
-                    _gaq.push(['_trackPageview', u],
-                        ['_trackEvent', 'show-url-for-download', u]
-                    );
-                
+                  //  _gaq.push(['_trackPageview', u],
+                  //      ['_trackEvent', 'show-url-for-download', u]
+                  //  );
+               
+/*	
                     try {
-                        mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?.*/, "") } );
+                        mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?., "") } );
                     } catch (err) {
                     }
+*/
 
                     var port = (window.location.port == "") ? "" : ":" + window.location.port;
                     var host = window.location.hostname + port;

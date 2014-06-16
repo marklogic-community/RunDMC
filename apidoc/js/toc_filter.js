@@ -25,9 +25,6 @@ function toc_init() {
         setTimeout(function() {
             if (previousFilterText !== currentFilterText) {
                 //console.log("toc filter event", currentFilterText);
-                _gaq.push(['_trackEvent',
-                           'Docs Tab',
-                           'Filter', currentFilterText]);
                 previousFilterText = currentFilterText;
                 filterConfigDetails(currentFilterText,
                                     "#apidoc_tree"); } },
@@ -268,7 +265,6 @@ function updateTocForTab() {
   loadTocSection(0, tocSection);
   waitToShowInTOC(tocSection);
 }
-
 
 function hasText(item,text) {
     var fieldTxt = item.text().toLowerCase();
