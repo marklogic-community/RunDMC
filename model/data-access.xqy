@@ -278,7 +278,9 @@ declare function ml:reset-category-tags($doc-uri, $new-doc as document-node()?) 
   let $category-value := ml:category-for-doc($doc-uri, $new-doc)
   let $category-tag   := concat("category/",$category-value)
   return
-  (xdmp:log(concat("Adding tag '", $category-tag, "' to ", $doc-uri)),
+  (xdmp:log(
+      text { "Adding tag ", xdmp:describe($category-tag), 'to', $doc-uri },
+      'debug'),
     xdmp:document-add-collections($doc-uri, $category-tag))
 };
 
