@@ -6,7 +6,6 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 declare variable $ZIP as xs:string := xdmp:get-request-field("zip") ;
 (: e.g., 4.1 :)
 declare variable $VERSION as xs:string := xdmp:get-request-field("version") ;
-declare variable $RAWDIR := "/pubs/raw" ;
 
 if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
   "ERROR",
