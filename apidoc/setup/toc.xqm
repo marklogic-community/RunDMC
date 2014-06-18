@@ -152,8 +152,13 @@ as element(api:function-name)*
     return element api:function-name {
       $f/@mode treat as attribute(),
       $f/@fullname/string() treat as xs:string } }
-  (: TODO why exclude 'sem:'? :)
-  return $wrapper/api:function-name[. ne 'sem:']
+  (: TODO why exclude 'sem:'? 
+     ANSWER: because there is a hack that has a blank function in the 
+     xquery module bucket for semantics (and now also for temporal).  This 
+     is because we have categorized built-in and library functions together
+     for these two libraries.
+     :)
+  return $wrapper/api:function-name[. != ('sem:', 'temporal:')]
 };
 
 (: Returns the one library string if all the functions are in the same library.
