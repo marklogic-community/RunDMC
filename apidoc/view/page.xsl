@@ -186,10 +186,10 @@
     <div id="apidoc_toc">
       <script type="text/javascript">
         <xsl:comment>
-        <xsl:call-template name="reset-global-toc-vars"/>
-        var toc_url = '<xsl:value-of select="$api:toc-uri"/>';
-        $('#apidoc_toc').load(toc_url, null, toc_init);
-      </xsl:comment>
+          <xsl:call-template name="reset-global-toc-vars"/>
+          var toc_url = '<xsl:value-of select="$api:toc-uri"/>';
+          $('#apidoc_toc').load(toc_url, null, toc_init);
+        </xsl:comment>
       </script>
     </div>
   </xsl:template>

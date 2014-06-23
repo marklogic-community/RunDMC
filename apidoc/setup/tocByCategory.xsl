@@ -20,7 +20,7 @@
 
   <!--
       This is bound to be slow,
-      but that's okay, because we pre-generate this TOC.
+      but that's okay because we pre-generate this TOC.
   -->
   <xsl:template name="functions-by-category">
     <xsl:param name="mode" as="xs:string"/>
@@ -70,7 +70,7 @@
               select="distinct-values($in-this-category/@subcategory)"/>
 
           <!-- category node -->
-          <node id="{$bucket-id}_{translate(.,' ','')}"
+          <node id="{$bucket-id}_{translate(., ' ' , '')}"
                 function-list-page="yes"
                 display="{
                          toc:display-category(.)}{
@@ -156,10 +156,15 @@
                       select="toc:category-is-exhaustive(
                               $category, $subcategory, $one-subcategory-lib)"/>
 
-                  <!-- Only display, e.g, "(xdmp:)" if just one library is represented in this sub-category and if the parent category doesn't already display it -->
+                  <!--
+                      If just one library is represented in this sub-category,
+                      and if the parent category doesn't already display it,
+                      only display, e.g, "(xdmp:)"
+                  -->
                   <xsl:variable
                       name="suffix"
-                      select="if ($one-subcategory-lib and not($single-lib-for-category))
+                      select="if ($one-subcategory-lib
+                              and not($single-lib-for-category))
                               then toc:display-suffix($one-subcategory-lib)
                               else ()"/>
 

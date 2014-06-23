@@ -21,6 +21,15 @@ import module namespace toc="http://marklogic.com/rundmc/api/toc"
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
+declare %t:case function t:category-href-xquery()
+{
+  toc:category-href(
+    'Library Services', 'Library Services',
+    true(), false(),
+    $api:MODE-XPATH, 'dls', '')
+  ! at:equal(., '/dls')
+};
+
 declare %t:case function t:render-0-empty()
 {
   <root display="All Documentation"

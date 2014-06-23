@@ -915,10 +915,19 @@ declare function toc:category-href(
   $main-subcategory-lib as xs:string?)
 as xs:string
 {
+  stp:fine(
+    'toc:category-href',
+    ('category', $category, 'subcat', $subcategory,
+      'is-exhaustive', $is-exhaustive, 'use-category', $use-category,
+      'mode', $mode,
+      'one-subcat', xdmp:describe($one-subcategory-lib),
+      'main-subcat', xdmp:describe($main-subcategory-lib))),
   (: The initial empty string ensures a leading '/'. :)
   string-join(
     ('',
-      if ($mode eq $api:MODE-JAVASCRIPT) then () else 'js',
+      switch($mode)
+      case $api:MODE-JAVASCRIPT return 'js'
+      default return (),
       if ($is-exhaustive) then $one-subcategory-lib
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
