@@ -129,37 +129,6 @@ as element()
       ' ('||$subcategory||')') }
 };
 
-declare function toc:function-name-nodes(
-  $functions as element(api:function)*)
-as element(api:function-name)*
-{
-  (: NOTE: These elements are intentionally siblings (not parentless),
-   : so the TOC construction code has the option of
-   : inspecting their siblings.
-   :)
-  let $wrapper := element api:wrapper {
-    for $f in $functions
-    (: By default, just use alphabetical order.
-     : But for REST docs, first sort by the resource name
-     : and then the HTTP method.
-     :)
-    let $not-rest := not($f/@lib eq $api:MODE-REST)
-    order by
-      if ($not-rest) then $f/@fullname
-      else api:name-from-REST-fullname($f/@fullname),
-      if ($not-rest) then ()
-      else api:verb-sort-key-from-REST-fullname($f/@fullname)
-    return element api:function-name {
-      $f/@mode treat as attribute(),
-      $f/@fullname/string() treat as xs:string } }
-  (: Why exclude some prefixes?
-   : Because there is a hack that has a blank function in the
-   : xquery module bucket for some prefixes: semantics, now also temporal.
-   : This is because these libraries include both built-in and library functions.
-   :)
-  return $wrapper/api:function-name[not(. = ('sem:', 'temporal:'))]
-};
-
 (: Returns the one library string if all the functions are in the same library.
  : Otherwise returns empty.
  :)
@@ -956,11 +925,51 @@ as empty-sequence()
     'toc:toc', xdmp:elapsed-time())
 };
 
+declare function toc:function-name-nodes(
+  $functions as element(api:function)*)
+as element(api:function-name)*
+{
+  (: NOTE: These elements are intentionally siblings (not parentless),
+   : so the TOC construction code has the option of
+   : inspecting their siblings.
+   :)
+  let $wrapper := element api:wrapper {
+    for $f in $functions
+    (: By default, just use alphabetical order.
+     : But for REST docs, first sort by the resource name
+     : and then the HTTP method.
+     :)
+    let $not-rest := not($f/@lib eq $api:MODE-REST)
+    let $mode as attribute() := $f/@mode
+    let $fullname as xs:string := $f/@fullname
+    order by
+      if ($not-rest) then $fullname
+      else api:name-from-REST-fullname($fullname),
+      if ($not-rest) then ()
+      else api:verb-sort-key-from-REST-fullname($fullname)
+    return element api:function-name {
+      stp:debug(
+        'toc:function-name-nodes',
+        ('function', xdmp:describe($f), 'not-rest', $not-rest,
+          'mode', $mode, 'fullname', $fullname)),
+      $mode,
+      $fullname } }
+  (: Why exclude some prefixes?
+   : Because there is a hack that has a blank function in the
+   : xquery module bucket for some prefixes: semantics, now also temporal.
+   : This is because these libraries include both built-in and library functions.
+   :)
+  return $wrapper/api:function-name[not(. = ('sem:', 'temporal:'))]
+};
+
 declare function toc:function-node(
   $function-name as element(api:function-name),
   $version-number as xs:double)
 as element(toc:node)
 {
+  stp:debug(
+    'toc:function-node',
+    (xdmp:describe($function-name), $version-number)),
   (: TODO can we rely on mode for REST,
    : or check starts-with($function-name, '/') instead?
    :)
@@ -1002,6 +1011,18 @@ as element(toc:node)
     attribute type { 'function' },
     attribute href { '/'||$function-name },
     attribute display { $function-name } }
+};
+
+declare function toc:function-nodes(
+  $functions as element(api:function)*,
+  $version-number as xs:double)
+as element(toc:node)*
+{
+  stp:debug(
+    'toc:function-nodes',
+    (xdmp:describe($functions), $version-number)),
+  toc:function-node(
+    toc:function-name-nodes($functions), $version-number)
 };
 
 (: apidoc/setup/toc.xqm :)

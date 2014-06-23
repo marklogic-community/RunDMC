@@ -308,11 +308,12 @@ driving the generation of function list pages.
                     @lib eq current()]/summary-addendum/node()"/>
       </intro>
       <xsl:comment>Current lib: <xsl:value-of select="."/></xsl:comment>
-      <xsl:apply-templates
-          select="toc:function-name-nodes(
+      <xsl:copy-of
+          select="toc:function-nodes(
                   if ($mode eq $api:MODE-JAVASCRIPT)
                   then $toc:ALL-FUNCTIONS-JAVASCRIPT[@lib eq current()]
-                  else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq current()])"/>
+                  else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq current()],
+                  $VERSION-NUMBER)"/>
     </node>
   </xsl:template>
 
@@ -330,11 +331,6 @@ driving the generation of function list pages.
     <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:next-match/>
     </p>
-  </xsl:template>
-
-  <!-- function nodes -->
-  <xsl:template match="api:function-name">
-    <xsl:copy-of select="toc:function-node(., $VERSION-NUMBER)"/>
   </xsl:template>
 
 </xsl:stylesheet>

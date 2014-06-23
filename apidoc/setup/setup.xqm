@@ -229,11 +229,22 @@ as element()*
   let $seen := map:contains($uris-seen, $internal-uri)
   let $lib as xs:string := $function/@lib
   let $name as xs:string := $function/@name
+  let $verb as xs:string? := $function/@http-verb
+  let $children := $function/../apidoc:function[
+    @name eq $name][@lib eq $lib][
+    if (not($verb)) then true()
+    else (@http-verb eq $verb)]
+  let $_ := (
+    if ($mode = ($api:MODE-JAVASCRIPT, $api:MODE-XPATH)
+      or count($children) eq 1) then ()
+    else stp:error(
+      'UNEXPECTED', (count($children), xdmp:describe($children))))
   let $_ := stp:debug(
     'stp:function-extract',
     ('mode', $mode,
       'external', $external-uri,
       'internal', $internal-uri,
+      'children', count($children),
       'seen', $seen))
   (: This wrapper is necessary because the *:polygon() functions
    : are each (dubiously) documented as two separate functions so
@@ -246,12 +257,13 @@ as element()*
   where not($seen)
   return element api:function-page {
     attribute xml:base { $internal-uri },
+    attribute generated { current-dateTime() },
     attribute mode { $mode },
     map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
     element api:function-name { api:fixup-fullname($function, $mode) },
     stp:fixup(
-      $function/../apidoc:function[@name eq $name][@lib eq $lib],
+      $children,
       $mode) }
 };
 
@@ -568,6 +580,10 @@ declare function stp:list-entry(
   $toc-node as element(toc:node))
 as element(api:list-entry)
 {
+  stp:fine(
+    'stp:list-entry',
+    ('function', xdmp:describe($function),
+      'toc', xdmp:describe($toc-node))),
   element api:list-entry {
     $toc-node/@href,
     element api:name {
@@ -597,6 +613,7 @@ as element(api:list-page)
 {
   element api:list-page {
     attribute xml:base { $uri },
+    attribute generated { current-dateTime() },
     attribute disable-comments { true() },
     attribute container-toc-section-id {
       stp:container-toc-section-id($toc-node) },
@@ -791,7 +808,8 @@ as empty-sequence()
 };
 
 declare function stp:fixup-attribute-href(
-  $a as attribute(href))
+  $a as attribute(href),
+  $context as xs:string*)
 as attribute()?
 {
   if (not($a/parent::a or $a/parent::xh:a)) then $a
@@ -832,9 +850,9 @@ as attribute()?
           if ($relevant-function/@lib
             = $api:REST-LIBS) then api:REST-fullname-to-external-uri(
             api:fixup-fullname($relevant-function, $api:MODE-REST))
-          (: regular function page :)
-          (: path to function page TODO add mode when javascript :)
-          else '/'||api:fixup-fullname($relevant-function, ())))
+          (: path to regular function page :)
+          else '/'||api:fixup-fullname(
+            $relevant-function, $context[. = $api:MODES])))
       return $result)
 
     (: For an absolute path like http://w3.org leave the value alone. :)
@@ -896,11 +914,12 @@ as attribute()?
  : where it was only used by extract-functions.
  :)
 declare function stp:fixup-attribute(
-  $a as attribute())
+  $a as attribute(),
+  $context as xs:string*)
 as attribute()?
 {
   typeswitch($a)
-  case attribute(href) return stp:fixup-attribute-href($a)
+  case attribute(href) return stp:fixup-attribute-href($a, $context)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
   (: By default, return the input. :)
@@ -1027,7 +1046,7 @@ as element()?
   let $includes := xs:NMTOKENS($e/@class)[. eq $api:MODES]
   where empty($includes) or $includes = $context
   return element { stp:fixup-element-name($e) } {
-    stp:fixup-attribute($e/@*),
+    stp:fixup-attribute($e/@*, $context),
     stp:fixup-attributes-new($e, $context),
     stp:fixup-children($e, $context) }
 };
@@ -1041,10 +1060,13 @@ declare function stp:fixup(
   $context as xs:string*)
 as node()*
 {
+  stp:fine(
+    'stp:fixup',
+    (xdmp:describe($n), xdmp:describe($context))),
   typeswitch($n)
   case document-node() return document { stp:fixup($n/node(), $context) }
   case element() return stp:fixup-element($n, $context)
-  case attribute() return stp:fixup-attribute($n)
+  case attribute() return stp:fixup-attribute($n, $context)
   (: By default, return the input. :)
   default return $n
 };

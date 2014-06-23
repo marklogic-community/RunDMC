@@ -264,19 +264,6 @@ as xs:string
       api:name-from-REST-fullname($fullname)))
 };
 
-(: Example input:  <function name="/v1/rest-apis/{name}" http-verb="GET"/>
- : Example output: "/v1/rest-apis/[name] (GET)"
- :)
-declare function api:REST-fullname(
-    $e as element())
-{
-  concat(
-    api:translate-REST-resource-name($e/@name),
-    ' (',
-    ($e/@http-verb, 'GET')[1],
-    ')')
-};
-
 (: This handles the local-name or full name. :)
 declare function api:javascript-name(
   $name as xs:string)
@@ -296,6 +283,19 @@ as xs:string
             substring(., 2))),
         '')),
     ':', '.')
+};
+
+(: Example input:  <function name="/v1/rest-apis/{name}" http-verb="GET"/>
+ : Example output: "/v1/rest-apis/[name] (GET)"
+ :)
+declare function api:REST-fullname(
+  $e as element(apidoc:function))
+{
+  concat(
+    api:translate-REST-resource-name($e/@name),
+    ' (',
+    ($e/@http-verb, 'GET')[1],
+    ')')
 };
 
 (: The fullname is a derived value :)
@@ -394,7 +394,8 @@ declare function api:REST-name-with-wildcards(
  : ==> "GET"
  :)
 declare function api:verb-from-REST-fullname(
-  $fullname)
+  $fullname as xs:string)
+as xs:string
 {
   substring-before( substring-after(
       $fullname,' (' ), ')')
@@ -404,17 +405,19 @@ declare function api:verb-from-REST-fullname(
  : ==> "/v1/rest-apis/[name]"
  :)
 declare function api:name-from-REST-fullname(
-  $fullname)
+  $fullname as xs:string)
+as xs:string
 {
   substring-before( $fullname,' (' )
 };
 
 declare function api:verb-sort-key-from-REST-fullname(
-  $fullname)
+  $fullname as xs:string)
+as xs:integer?
 {
-  let $verb-list := ('GET','POST','PUT','HEAD','DELETE')
+  let $verb-list := ('PATCH', 'GET', 'POST', 'PUT', 'HEAD', 'DELETE')
   let $verb := api:verb-from-REST-fullname($fullname)
-  return index-of($verb-list,$verb)
+  return index-of($verb-list, $verb)
 };
 
 (: This is intended to be temporary, with the idea that the docs
@@ -494,6 +497,59 @@ as element(apidoc:function)*
   default return $module/apidoc:function[
     not(api:fixup-fullname(., ()) =
       preceding-sibling::apidoc:function/api:fixup-fullname(., ()))]
+};
+
+declare function api:external-uri-with-prefix(
+  $version-prefix as xs:string,
+  $internal-uri as xs:string)
+as xs:string
+{
+  $version-prefix
+  ||ml:external-uri-for-string($internal-uri)
+};
+
+(: Used by page.xsl :)
+declare function api:toc-section-link-selector(
+  $e as element(),
+  $version-prefix as xs:string)
+as xs:string
+{
+  typeswitch($e)
+  (: function lib page link :)
+  case element(api:function-page) return (
+    ".scrollable_section a[href='"
+    ||$version-prefix
+    ||(
+      switch($e/@mode)
+      (: JavaScript function lib page link :)
+      case $api:MODE-JAVASCRIPT return '/js/'
+      default return '')
+    ||$e/api:function[1]/@lib
+    ||"']")
+  case element(guide) return (
+    ".scrollable_section a[href='"
+    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
+    ||"']")
+  case element(chapter) return (
+    ".scrollable_section a[href='"
+    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
+    ||"']")
+  case element(api:help-page) return (
+    '#'
+    ||$e/@container-toc-section-id
+    ||' >:first-child')
+  case element(api:list-page) return (
+    (
+      switch($e/@mode)
+      case $api:MODE-JAVASCRIPT return '#js_'
+      default return '#')
+    ||$e/@container-toc-section-id
+    ||' >:first-child')
+  (: Message page for error code, without any TOC data. :)
+  case element(message) return $e/@id
+  (: On the main docs page, just let the first tab be selected by default. :)
+  case element(api:docs-page) return ''
+  default return error((), 'UNEXPECTED', xdmp:describe($e))
 };
 
 (: apidoc/model/data-access.xqy :)

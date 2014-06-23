@@ -71,7 +71,7 @@
 
           <!-- category node -->
           <node id="{$bucket-id}_{translate(., ' ' , '')}"
-                function-list-page="yes"
+                function-list-page="true"
                 display="{
                          toc:display-category(.)}{
                          toc:display-suffix($single-lib-for-category)}" >
@@ -133,8 +133,9 @@
             <xsl:choose>
               <xsl:when test="not($sub-categories)">
                 <!-- function TOC nodes -->
-                <xsl:apply-templates
-                    select="toc:function-name-nodes($in-this-category)"/>
+                <xsl:copy-of
+                    select="toc:function-nodes(
+                            $in-this-category, $VERSION-NUMBER)"/>
               </xsl:when>
 
               <xsl:otherwise>
@@ -168,7 +169,7 @@
                               then toc:display-suffix($one-subcategory-lib)
                               else ()"/>
 
-                  <node function-list-page="yes"
+                  <node function-list-page="true"
                         display="{toc:display-category(.)}{$suffix}">
                     <xsl:attribute
                         name="href"
@@ -203,8 +204,9 @@
                       </intro>
                     </xsl:if>
                     <!-- function TOC nodes -->
-                    <xsl:apply-templates
-                        select="toc:function-name-nodes($in-this-subcategory)"/>
+                    <xsl:copy-of
+                        select="toc:function-nodes(
+                                $in-this-subcategory, $VERSION-NUMBER)"/>
                   </node>
                 </xsl:for-each>
               </xsl:otherwise>

@@ -44,13 +44,6 @@
                 select="if ($VERSION eq $api:default-version) then ''
                         else concat('/',$api:version-specified)"/>
 
-  <xsl:function name="ml:external-uri-with-prefix" as="xs:string">
-    <xsl:param name="internal-uri" as="xs:string"/>
-    <xsl:sequence select="concat(
-                          $version-prefix,
-                          ml:external-uri-for-string($internal-uri))"/>
-  </xsl:function>
-
   <!--
       Don't include the version in the comments doc URI.
       Use just one conversation thread per function,
@@ -217,8 +210,9 @@
     mode="function-bucket-id"
     select="$content/api:function-page/api:function[1]/@bucket
     | $content/api:list-page/@category-bucket"/>";
-    var tocSectionLinkSelector = "<xsl:apply-templates
-    mode="toc-section-link-selector" select="$content/*"/>";
+    var tocSectionLinkSelector = "<xsl:copy-of
+      select="api:toc-section-link-selector(
+              $content/*, $version-prefix)"/>";
 
     var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>;
   </xsl:template>
@@ -233,59 +227,6 @@
   <xsl:template mode="function-bucket-id" match="@*">
     <xsl:value-of select="translate(.,' ','')"/>
   </xsl:template>
-
-  <!-- XQuery/XSLT function lib page link -->
-  <xsl:template mode="toc-section-link-selector"
-                match="api:function-page">
-    <xsl:text>.scrollable_section a[href='</xsl:text>
-    <xsl:value-of select="$version-prefix"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="api:function[1]/@lib"/>
-    <xsl:text>']</xsl:text>
-  </xsl:template>
-
-  <!-- JavaScript function lib page link -->
-  <xsl:template mode="toc-section-link-selector"
-                match="api:function-page[@mode eq $api:MODE-JAVASCRIPT]">
-    <xsl:text>.scrollable_section a[href='</xsl:text>
-    <xsl:value-of select="$version-prefix"/>
-    <xsl:text>/js/</xsl:text>
-    <xsl:value-of select="api:function[1]/@lib"/>
-    <xsl:text>']</xsl:text>
-  </xsl:template>
-
-  <xsl:template mode="toc-section-link-selector"
-                match="guide|chapter">
-    <xsl:text>.scrollable_section a[href='</xsl:text>
-    <xsl:value-of select="ml:external-uri-with-prefix(@guide-uri)"/>
-    <xsl:text>']</xsl:text>
-  </xsl:template>
-
-  <xsl:template mode="toc-section-link-selector"
-                match="api:list-page[@mode ne $api:MODE-JAVASCRIPT]
-                       |api:help-page">
-    <xsl:text>#</xsl:text>
-    <xsl:value-of select="@container-toc-section-id"/>
-    <xsl:text> >:first-child</xsl:text>
-  </xsl:template>
-
-  <!-- JavaScript function list page -->
-  <xsl:template mode="toc-section-link-selector"
-                match="api:list-page[@mode eq $api:MODE-JAVASCRIPT]">
-    <xsl:text>#js_</xsl:text>
-    <xsl:value-of select="@container-toc-section-id"/>
-    <xsl:text> >:first-child</xsl:text>
-  </xsl:template>
-
-  <!-- Message page for error code, without any TOC data. -->
-  <xsl:template mode="toc-section-link-selector"
-                match="message">
-    <xsl:value-of select="@id"/>
-  </xsl:template>
-
-  <!-- On the main docs page, just let the first tab be selected by default. -->
-  <xsl:template mode="toc-section-link-selector"
-                match="api:docs-page"/>
 
   <xsl:template mode="page-title"
                 match="api:docs-page">
