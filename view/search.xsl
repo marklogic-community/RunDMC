@@ -109,6 +109,7 @@
     <search:options>
       <xsl:copy-of select="$common-search-options"/>
       <search:return-query>true</search:return-query>
+      <search:search-option>unfiltered</search:search-option>
     </search:options>
   </xsl:variable>
 
