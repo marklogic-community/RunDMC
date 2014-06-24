@@ -528,5 +528,11 @@
                           else $dateTime"/>
   </xsl:function>
 
+  <!-- Make search stick to the current API version -->
+  <xsl:template match="xhtml:input[@name eq $set-version-param-name]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of select="xdmp:get-request-field('v')"/>
+    </xsl:attribute>
+  </xsl:template>
 
 </xsl:stylesheet>

@@ -198,7 +198,9 @@
 
   <xsl:template mode="version-list-item-href" match="version">
     <xsl:variable name="version" select="if (@number eq $api:default-version) then '' else @number"/>
-    <xsl:sequence select="concat('/', $version, '?', $set-version-param-name, '=', @number)"/>
+    <xsl:sequence select="concat(
+                          '/', $version, '?',
+                          $set-version-param-name, '=', @number)"/>
   </xsl:template>
 
   <xsl:template name="reset-global-toc-vars">
