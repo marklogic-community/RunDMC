@@ -523,7 +523,7 @@ as xs:string
       switch($e/@mode)
       (: JavaScript function lib page link :)
       case $api:MODE-JAVASCRIPT return '/js/'
-      default return '')
+      default return '/')
     ||$e/api:function[1]/@lib
     ||"']")
   case element(guide) return (
