@@ -317,88 +317,93 @@ as empty-sequence()
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
 };
 
-(: Load a static file.
+(: Load a static file from a zip binary node.
  :)
 declare function stp:zip-static-file-get(
   $zip as binary(),
   $path as xs:string,
+  $is-binary as xs:boolean,
   $is-html as xs:boolean,
-  $is-jdoc as xs:boolean)
+  $is-jdoc as xs:boolean,
+  $is-mangled-html as xs:boolean)
 as document-node()
 {
-  let $is-mangled-html := ends-with($path, '-members.html')
+  stp:fine(
+    "stp:zip-static-file-get",
+    (xdmp:describe($zip), 'path', $path,
+      'html', $is-html, 'jdoc', $is-jdoc,
+      'mangled', $is-mangled-html)),
+  if ($is-binary) then xdmp:zip-get($zip, $path)
+  (: If the document is JavaDoc HTML, then read it as text;
+   : if it's other HTML, repair it as XML (.NET docs)
+   : Don't tidy index.html because tidy throws away the frameset.
+   :)
+  (: TODO should this be ends-with rather than contains? :)
+  else if ($is-jdoc and not(contains($path, '/index.html'))) then xdmp:tidy(
+    xdmp:zip-get(
+      $zip,
+      $path,
+      <options xmlns="xdmp:zip-get">
+        <format>text</format>
+        <encoding>auto</encoding>
+      </options>
+    ),
+    <options xmlns="xdmp:tidy">
+      <input-encoding>utf8</input-encoding>
+      <output-encoding>utf8</output-encoding>
+      <output-xhtml>no</output-xhtml>
+      <output-xml>no</output-xml>
+      <output-html>yes</output-html>
+    </options>
+    )[2]
 
-  return (
-    (: If the document is JavaDoc HTML, then read it as text;
-     : if it's other HTML, repair it as XML (.NET docs)
-     : Don't tidy index.html because tidy throws away the frameset.
-     :)
-    (: TODO should this be ends-with rather than contains? :)
-    if ($is-jdoc and not(contains($path, '/index.html'))) then xdmp:tidy(
-      xdmp:zip-get(
-        $zip,
-        $path,
-        <options xmlns="xdmp:zip-get">
-          <format>text</format>
-          <encoding>auto</encoding>
-        </options>
-      ),
-      <options xmlns="xdmp:tidy">
-        <input-encoding>utf8</input-encoding>
-        <output-encoding>utf8</output-encoding>
-        <output-xhtml>no</output-xhtml>
-        <output-xml>no</output-xml>
-        <output-html>yes</output-html>
-        </options>
-      )[2]
-
-    else if ($is-mangled-html) then try {
-      stp:fine('stp:zip-static-file-get', ('trying unquote for', $path)),
-      let $unparsed as xs:string := xdmp:zip-get(
-        $zip,
-        $path,
-        <options xmlns="xdmp:zip-get"
-        ><format>text</format></options>)
-      let $replaced := replace($unparsed, '"class="', '" class="')
-      return xdmp:unquote($replaced, "", "repair-full") }
-    catch($e) {
-      stp:info(
-        'stp:zip-static-file-get',
-        ("loading", $path, "with encoding=auto because", $e/error:message)),
-      xdmp:zip-get(
-        $zip,
-        $path,
-        <options xmlns="xdmp:zip-get"
-        ><encoding>auto</encoding></options>) }
-    else if ($is-html) then try {
-      stp:fine(
-        'stp:zip-static-file-get',
-        ("trying html as XML UTF8")),
-      xdmp:zip-get(
-        $zip,
-        $path,
-        <options xmlns="xdmp:zip-get">
-          <format>xml</format>
-          <repair>full</repair>
-          <encoding>UTF-8</encoding>
-        </options>
-        ) }
-    catch($e) {
-      if ($e/error:code ne 'XDMP-DOCUTF8SEQ') then xdmp:rethrow()
-      else xdmp:zip-get(
-        $zip,
-        $path,
-        <options xmlns="xdmp:zip-get">
-          <format>xml</format>
-          <repair>full</repair>
-          <encoding>ISO-8859-1</encoding>
-        </options>
+  else if ($is-mangled-html) then try {
+    stp:fine('stp:zip-static-file-get', ('trying unquote for', $path)),
+    let $unparsed as xs:string := xdmp:zip-get(
+      $zip,
+      $path,
+      <options xmlns="xdmp:zip-get"
+      ><format>text</format></options>)
+    let $replaced := replace($unparsed, '"class="', '" class="')
+    return xdmp:unquote($replaced, "", "repair-full") }
+  catch($e) {
+    stp:info(
+      'stp:zip-static-file-get',
+      ("loading", $path, "with encoding=auto because", $e/error:message)),
+    xdmp:zip-get(
+      $zip,
+      $path,
+      <options xmlns="xdmp:zip-get"
+      ><encoding>auto</encoding></options>) }
+  else if ($is-html) then try {
+    stp:fine(
+      'stp:zip-static-file-get',
+      ("trying html as XML UTF8")),
+    xdmp:zip-get(
+      $zip,
+      $path,
+      <options xmlns="xdmp:zip-get">
+        <format>xml</format>
+        <repair>full</repair>
+        <encoding>UTF-8</encoding>
+      </options>
       ) }
-    (: Otherwise, just load the document normally :)
+  catch($e) {
+    if ($e/error:code ne 'XDMP-DOCUTF8SEQ') then xdmp:rethrow()
     else xdmp:zip-get(
       $zip,
       $path,
-      <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>))
+      <options xmlns="xdmp:zip-get">
+        <format>xml</format>
+        <repair>full</repair>
+        <encoding>ISO-8859-1</encoding>
+      </options>
+      ) }
+  (: Otherwise, just load the document with encoding=auto. :)
+  else xdmp:zip-get(
+    $zip,
+    $path,
+    <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
 };
 
 declare function stp:zip-static-file-insert(
@@ -408,6 +413,9 @@ declare function stp:zip-static-file-insert(
   $is-jdoc as xs:boolean)
 as empty-sequence()
 {
+  stp:debug(
+    "stp:zip-static-file-insert",
+    (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)),
   xdmp:document-insert(
     $uri,
     stp:static-add-scripts($doc),
@@ -416,7 +424,6 @@ as empty-sequence()
      : Instead search the XHTML after tidy - see below.
      :)
     "hide-from-search"[$is-hidden]),
-  stp:debug("static-file-insert", $uri),
 
   (: If the document is HTML, then store an additional copy,
    : converted to XHTML using Tidy.
@@ -426,7 +433,7 @@ as empty-sequence()
    :)
   if (not($is-jdoc)) then () else (
     stp:fine(
-      'static-file-insert',
+      'stp:zip-static-file-insert',
       ($uri, "trying xdmp:tidy with xhtml:clean")),
     let $tidy-options := (
       <options xmlns="xdmp:tidy">
@@ -463,15 +470,18 @@ as empty-sequence()
     not(ends-with(., '/')) ][
     some $path in $subdirs-to-load
     satisfies contains(., $path) ]
+  let $is-binary := xdmp:uri-content-type($e) ! (
+    not(starts-with(., 'text/'))
+    and not(. = ('application/javascript')))
   let $is-html := ends-with($e, '.html')
   let $is-jdoc := $is-html and contains($e, '/javadoc/')
-  let $is-js := ends-with($e,'.js')
-  let $is-css := ends-with($e,'.css')
   let $uri := concat(
     "/apidoc/", $version,
     stp:static-uri-rewrite('/'||substring-after($e, '_pubs/pubs/')))
-  let $is-hidden := $is-jdoc or $is-js or $is-css
-  let $doc := stp:zip-static-file-get($zip, $e, $is-html, $is-jdoc)
+  let $is-hidden := $is-jdoc or matches($e, '\.(css|js)$')
+  let $is-mangled-html := ends-with($e, '-members.html')
+  let $doc := stp:zip-static-file-get(
+    $zip, $e, $is-binary, $is-html, $is-jdoc, $is-mangled-html)
   return stp:zip-static-file-insert($doc, $uri, $is-hidden, $is-jdoc)
   ,
 
@@ -742,6 +752,9 @@ as element()+
    :)
   let $toc-node as element(toc:node)? := (
     $toc-document//toc:node[@href eq $href][toc:title])[1]
+  let $_ := stp:debug(
+    'stp:list-pages-render',
+    ('href', $href, 'toc-node', xdmp:describe($toc-node)))
   where $toc-node
   return (
     if ($toc-node/@admin-help-page) then stp:list-page-help(
@@ -760,10 +773,10 @@ as empty-sequence()
   for $n in stp:list-pages-render(
     doc($toc-xml-uri) treat as node())
   let $uri as xs:string := base-uri($n)
-  let $_ := if ($n/*
-    or $n/self::*) then () else stp:error('EMPTY', ($uri, xdmp:quote($n)))
-  let $_ := stp:debug(
-    'stp:list-pages-render', ($uri))
+  let $_ := (
+    if ($n/* or $n/self::*) then ()
+    else stp:error('EMPTY', ($uri, xdmp:quote($n))))
+  let $_ := stp:debug('stp:list-pages-render', ($uri))
   return xdmp:document-insert($uri, $n)
 };
 
