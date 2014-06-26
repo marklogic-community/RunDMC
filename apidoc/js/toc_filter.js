@@ -387,8 +387,12 @@ function splitterMouseMove(evt) {
 
         //console.log("Splitter Mouse move: " + d);
         $('#toc_content').css({'width': w + "px"});
-        $('#page_content').css({'padding-right': ($('#splitter').data("start-page_content") + d) + "px"});
-        $('#splitter').css({'left': ($('#splitter').data("start-splitter") - d) + "px"});
+        $('#page_content').css({'padding-right':
+                                ($('#splitter').data("start-page_content") + d)
+                                + "px"});
+        $('#splitter').css({'left':
+                            ($('#splitter').data("start-splitter") - d)
+                            + "px"});
     }
 }
 
@@ -407,3 +411,5 @@ function splitterMouseDown(evt) {
     $('#page_content').css("-webkit-user-select", "none");
     $('#content').css("-webkit-user-select", "none");
 }
+
+// toc_filter.js
