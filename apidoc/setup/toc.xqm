@@ -206,6 +206,7 @@ as element(apidoc:module)+
 };
 
 declare function toc:get-summary-for-category(
+  $mode as xs:string,
   $cat as xs:string,
   $subcat as xs:string?,
   $lib as xs:string?)
@@ -233,7 +234,13 @@ declare function toc:get-summary-for-category(
             <p>
             For information on how to import the functions in this module,
             refer to the main
-            <a href="/{$lib}">{ api:prefix-for-lib($lib) } library page</a>.
+            <a href="{
+            concat(
+            switch($mode)
+            case $api:MODE-JAVASCRIPT return 'js/'
+            default return '',
+            $lib)
+            }">{ api:prefix-for-lib($lib) } library page</a>.
             </p> }
 
           (: ASSUMPTION Only REST sub-categories may need this fallback
@@ -247,14 +254,20 @@ declare function toc:get-summary-for-category(
               toc:display-category($cat) } page</a>.
             </p> }
 
-          (: some of the xdmp sub-pages don't have descriptions either,
-           : so use this
+          (: Some of the xdmp sub-pages don't have descriptions either,
+           : so use this.
            :)
           else element apidoc:summary {
             <p>
             For the complete list of functions and categories in this namespace,
-            refer to the main <a href="/{$lib}">{
-              api:prefix-for-lib($lib) } functions page</a>.
+            refer to the main <a href="{
+            concat(
+            switch($mode)
+            case $api:MODE-JAVASCRIPT return 'js/'
+            default return '',
+            $lib)
+            }">{ api:prefix-for-lib($lib) }
+            functions page</a>.
             </p> }))))
 };
 

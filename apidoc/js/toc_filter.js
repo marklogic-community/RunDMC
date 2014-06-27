@@ -211,7 +211,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-  //console.log('updateTocForUrlFragment', pathname, hash);
+  console.log('updateTocForUrlFragment', pathname, hash);
   // Only let fragment links update the TOC when this is a user guide
   if (isUserGuide) {
     // IE doesn't include the "/" at the beginning of the pathname...
@@ -248,13 +248,12 @@ function showInTOC(a) {
 // Called at init and whenever a tab changes.
 // functionPageBucketId and tocSectionLinkSelector are from apidoc/view/page.xsl
 function updateTocForTab() {
-  console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector);
+  console.log("updateTocForTab",
+              "functionPageBucketId", functionPageBucketId,
+              "tocSectionLinkSelector", tocSectionLinkSelector);
 
-  if (!functionPageBucketId) console.log(
-      'no functionPageBucketId!');
-  if (!tocSectionLinkSelector) console.log(
-      'no tocSectionLinkSelector!');
-  if (!functionPageBucketId && !tocSectionLinkSelector) return;
+  if (!tocSectionLinkSelector) console.log('no tocSectionLinkSelector!');
+  if (!tocSectionLinkSelector) return;
 
   var tocSectionLink = $(tocSectionLinkSelector);
   var tocSection = tocSectionLink.parent();
@@ -268,10 +267,7 @@ function updateTocForTab() {
 
 function hasText(item,text) {
     var fieldTxt = item.text().toLowerCase();
-    if (fieldTxt.indexOf(text.toLowerCase()) !== -1)
-        return true;
-    else
-        return false;
+    return (fieldTxt.indexOf(text.toLowerCase()) !== -1);
 }
 
 function addHighlightToText(element,filter) {
@@ -301,7 +297,7 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
-    //console.log("scrollTOC");
+    console.log("scrollTOC");
     var scrollTo = $('#api_sub a.selected').filter(':visible');
     //console.log("scrollTOC scrollTo", scrollTo);
     scrollTo.each(function() {
@@ -410,6 +406,15 @@ function splitterMouseDown(evt) {
     $('#toc_content').css("-webkit-user-select", "none");
     $('#page_content').css("-webkit-user-select", "none");
     $('#content').css("-webkit-user-select", "none");
+}
+
+function tocUpdateFromPageContent()
+{
+    // Load the TOC section for the current page
+    var tocSection = $(tocSectionLinkSelector).first().parent();
+    console.log('tocUpdateFromPageContent',
+                tocSectionLinkSelector, tocSection);
+    updateTocForTab();
 }
 
 // toc_filter.js

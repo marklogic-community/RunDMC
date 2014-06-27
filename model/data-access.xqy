@@ -271,14 +271,18 @@ declare function ml:reset-category-tags($doc-uri) {
   ml:reset-category-tags($doc-uri, ())
 };
 
-declare function ml:reset-category-tags($doc-uri, $new-doc as document-node()?) {
+declare function ml:reset-category-tags(
+  $doc-uri as xs:string,
+  $new-doc as document-node()?)
+{
   (: Start by removing any existing category collection URIs :)
+  (: TODO skip this for binary nodes? :)
   xdmp:document-remove-collections($doc-uri, $all-category-tags),
 
   let $category-value := ml:category-for-doc($doc-uri, $new-doc)
   let $category-tag   := concat("category/",$category-value)
-  return
-  (xdmp:log(
+  return (
+    xdmp:log(
       text { "Adding tag ", xdmp:describe($category-tag), 'to', $doc-uri },
       'debug'),
     xdmp:document-add-collections($doc-uri, $category-tag))

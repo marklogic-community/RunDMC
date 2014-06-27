@@ -35,28 +35,12 @@
     <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-autocomplete.js"></script>
     <script type="text/javascript" src="/js/jquery.select-to-autocomplete.min.js"></script>
-    <!--
-                <script type="text/javascript" src="/apidoc/js/jquery-ui-1.8.16.custom.min.js"></script>
-    -->
                 <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
 
                 <script type="text/javascript" src="/js/functions.js"></script>
         <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
         <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
 
-<!--        <script type="text/javascript">
-            var is_prod = document.location.hostname == 'docs.marklogic.com';
-            var acct = is_prod ? 'UA-6638631-1' : 'UA-6638631-3';
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', acct], ['_setDomainName', 'marklogic.com'], ['_trackPageview']);
-
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-         </script>
--->
           <script type="text/javascript">
                 //<![CDATA[
                         $(function(){
@@ -67,6 +51,8 @@
           timeout: 4000,
                                         success: function() {
             // Update view when the pjax call originated from a link in the body
+            console.log("pjax_enabled fired ok");
+            tocUpdateFromPageContent();
                                         }
                                 });
                                 $("#api_sub .pjax_enabled a:not(.external)").pjax({
@@ -74,14 +60,16 @@
           timeout: 4000,
                                         success: function() {
             // Update view when a TOC link was clicked
+            console.log("pjax_enabled fired ok");
                                         }
                                 });
         // This is necessary to ensure that non-fragment TOC links result in the appropriate TOC link being highlighted
         $(document).on('pjax:end', function(event, options) {
-          // If the clicked link is in the TOC
-          if ($(event.relatedTarget).parents("#api_sub").length)
-          // then show it
-          {/*console.log("Calling showInTOC via pjax:end handler.");*/ showInTOC($(event.relatedTarget)); }});
+          // If the clicked link is in the TOC then show it.
+          var target = $(event.relatedTarget)
+          if (target.parents("#api_sub").length) {
+            console.log("Calling showInTOC via pjax:end handler.", target[0]);
+            showInTOC(target); }});
                         })
           //]]>
         </script>

@@ -517,11 +517,10 @@ as xs:string
   typeswitch($e)
   (: function lib page link :)
   case element(api:function-page) return (
+    (: TODO needs to supply parent lib also? :)
     ".scrollable_section a[href='"
     ||$version-prefix
-    ||(
-      switch($e/@mode)
-      (: JavaScript function lib page link :)
+    ||(switch($e/@mode)
       case $api:MODE-JAVASCRIPT return '/js/'
       default return '/')
     ||$e/api:function[1]/@lib
@@ -539,8 +538,7 @@ as xs:string
     ||$e/@container-toc-section-id
     ||' >:first-child')
   case element(api:list-page) return (
-    (
-      switch($e/@mode)
+    (switch($e/@mode)
       case $api:MODE-JAVASCRIPT return '#js_'
       default return '#')
     ||$e/@container-toc-section-id

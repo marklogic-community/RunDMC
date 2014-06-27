@@ -122,7 +122,7 @@
                   <xsl:apply-templates
                       mode="render-summary"
                       select="toc:get-summary-for-category(
-                              $category,(),$single-lib-for-category)"/>
+                              $mode, $category,(),$single-lib-for-category)"/>
                 </intro>
               </xsl:when>
 
@@ -199,7 +199,7 @@
                         <xsl:apply-templates
                             mode="render-summary"
                             select="toc:get-summary-for-category(
-                                    $category, $subcategory,
+                                    $mode, $category, $subcategory,
                                     $main-subcategory-lib)"/>
                       </intro>
                     </xsl:if>
