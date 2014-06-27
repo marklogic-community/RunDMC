@@ -1038,4 +1038,171 @@ as element(toc:node)*
     toc:function-name-nodes($functions), $version-number)
 };
 
+declare function toc:render-summary(
+  $summary as element(apidoc:summary))
+as element()
+{
+  stp:fixup($summary, 'toc')
+  ! (
+    (: Wrap summary content with <p> if not already present.
+     : The wrapper might be in several namespaces.
+     :)
+    if (not($summary[not(xhtml:p|apidoc:p|p)])) then .
+    else <p xmlns="http://www.w3.org/1999/xhtml">{ . }</p>)
+};
+
+declare function toc:functions-by-category-subcat(
+  $cat as xs:string,
+  $is-REST as xs:boolean,
+  $in-this-category as element()+,
+  $single-lib-for-category as xs:string?,
+  $sub-categories as xs:string+,
+  $version-number as xs:double,
+  $mode as xs:string)
+as element(toc:node)+
+{
+  for $subcat in $sub-categories
+  let $in-this-subcategory := $in-this-category[@subcategory eq $subcat]
+  let $one-subcategory-lib := toc:lib-for-all($in-this-subcategory)
+  let $main-subcategory-lib := toc:primary-lib($in-this-subcategory)
+  let $is-exhaustive := toc:category-is-exhaustive(
+    $cat, $subcat, $one-subcategory-lib)
+  order by $subcat
+  return element toc:node {
+    attribute function-list-page { true() },
+    (:
+     : If just one library is represented in this sub-category,
+     : and if the parent category doesn't already display it,
+     : only display, e.g, "xdmp:" in parens.
+     :)
+    attribute display {
+      toc:display-category($subcat)
+      ||(
+        if ($one-subcategory-lib and not($single-lib-for-category))
+        then toc:display-suffix($one-subcategory-lib)
+        else ()) },
+    attribute href {
+      toc:category-href(
+        $cat, $subcat,
+        $is-exhaustive, $is-REST,
+        $mode,
+        $one-subcategory-lib, $main-subcategory-lib) },
+    (: If this is lib-exhaustive we already have the intro text. :)
+    if ($is-exhaustive) then ()
+    else attribute category-name { toc:display-category($subcat) },
+
+    let $secondary-lib := (
+      if ($one-subcategory-lib) then ()
+      else ($in-this-subcategory/@lib[
+          not(. eq $main-subcategory-lib)])[1])
+    return (
+      if ($is-REST) then toc:REST-page-title($cat, $subcat)
+      else toc:category-page-title(
+        $subcat, $main-subcategory-lib, $secondary-lib),
+      element toc:intro {
+        toc:render-summary(
+          toc:get-summary-for-category(
+            $mode, $cat, $subcat,
+            $main-subcategory-lib)) },
+      (: function TOC nodes :)
+      toc:function-nodes($in-this-subcategory, $version-number)) }
+};
+
+(: This is bound to be slow,
+ : but that's okay because we pre-generate the TOC.
+ : TODO refactor.
+ :)
+declare function toc:functions-by-category(
+  $version-number as xs:double,
+  $functions as element()+,
+  $mode as xs:string)
+as element(toc:node)+
+{
+  let $buckets := distinct-values($functions/@bucket)
+  for $b in $buckets
+  let $bucket-id := translate($b, ' ', '')
+  let $is-REST := $b eq 'REST Resources API'
+  order by index-of($toc:FORCED-ORDER, $b) ascending, $b
+  (: bucket node
+   : ID for function buckets is the display name minus spaces.
+   : async is ignored for REST, because we ignore this <node> container.
+   :)
+  return element toc:node {
+    attribute display { $b },
+    attribute id { $bucket-id},
+    attribute sub-control { 'yes' },
+    attribute async { 'yes' },
+    attribute mode { $mode },
+
+    let $in-this-bucket := $functions[@bucket eq $b]
+    for $cat in distinct-values($in-this-bucket/@category)
+    let $in-this-category := $in-this-bucket[@category eq $cat]
+    let $single-lib-for-category := toc:lib-for-all($in-this-category)
+    let $is-exhaustive := toc:category-is-exhaustive(
+      $cat, (), $single-lib-for-category)
+    let $sub-categories := distinct-values($in-this-category/@subcategory)
+    order by $cat
+    return element toc:node {
+      attribute id { $bucket-id||'_'||translate($cat, ' ' , '') },
+      attribute function-list-page { true() },
+      attribute display {
+        toc:display-category($cat)
+        ||toc:display-suffix($single-lib-for-category) },
+      attribute mode { $mode },
+
+      (: When there are sub-categories, don't create a new page for the category.
+       : They tend to be useless.
+       : Only create a link if it corresponds to a full lib page.
+       :)
+      if ($is-exhaustive) then attribute href {
+        toc:category-href(
+          $cat, $cat,
+          $is-exhaustive, false(),
+          $mode,
+          $single-lib-for-category, '') }
+
+      (: Create a new page for this category if it doesn't contain sub-categories
+       : and does not already correspond to a full lib page,
+       : unless it is a REST doc category,
+       : in which case we do want to create the category page
+       : (e.g., for Client API).
+       :
+       : ASSUMPTION
+       : $single-lib-for-category is supplied/applicable
+       : if we are in this code branch;
+       : in other words, every top-level category page
+       : only pertains to one library
+       : (sub-categories can have more than one; see below).
+       :)
+      else if (not($sub-categories) or $is-REST) then (
+        attribute href {
+          toc:category-href(
+            $cat, $cat,
+            $is-exhaustive, false(),
+            $mode,
+            '', $single-lib-for-category) },
+        attribute category-name { toc:display-category($cat) },
+        if ($is-REST) then toc:REST-page-title($cat, ())
+        else toc:category-page-title($cat, $single-lib-for-category, ()),
+        element toc:intro {
+          toc:render-summary(
+            toc:get-summary-for-category(
+              $mode, $cat, (), $single-lib-for-category)) })
+      (: Otherwise do not create a page/link for this category. :)
+      else (),
+
+      (: ASSUMPTION
+       : A category has either functions as children or sub-categories,
+       : never both.
+       :)
+      (: Are these function TOC nodes? :)
+      if (not($sub-categories)) then toc:function-nodes(
+        $in-this-category, $version-number)
+      else toc:functions-by-category-subcat(
+        $cat, $is-REST, $in-this-category, $single-lib-for-category,
+        $sub-categories, $version-number, $mode)
+    }
+  }
+};
+
 (: apidoc/setup/toc.xqm :)

@@ -32,8 +32,6 @@ driving the generation of function list pages.
       href="/apidoc/setup/toc.xqm"/>
 
   <!-- TODO inline? Nothing else uses this. -->
-  <xsl:include href="tocByCategory.xsl"/>
-  <!-- TODO inline? Nothing else uses this. -->
   <xsl:include href="toc-help.xsl"/>
 
   <xsl:param name="VERSION-NUMBER" as="xs:double"/>
@@ -43,14 +41,16 @@ driving the generation of function list pages.
       and list the sub-categories on the main page intro for each lib
   -->
   <xsl:variable name="by-category" as="element()+">
-    <xsl:call-template name="functions-by-category">
-      <xsl:with-param name="mode" select="$api:MODE-XPATH" />
-    </xsl:call-template>
+    <xsl:copy-of
+        select="toc:functions-by-category(
+                $VERSION-NUMBER,
+                $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT, $api:MODE-XPATH)"/>
   </xsl:variable>
   <xsl:variable name="javascript-by-category" as="element()+">
-    <xsl:call-template name="functions-by-category">
-      <xsl:with-param name="mode" select="$api:MODE-JAVASCRIPT" />
-    </xsl:call-template>
+    <xsl:copy-of
+        select="toc:functions-by-category(
+                $VERSION-NUMBER,
+                $toc:ALL-FUNCTIONS-JAVASCRIPT, $api:MODE-JAVASCRIPT)"/>
   </xsl:variable>
 
   <xsl:template match="/">
@@ -301,8 +301,9 @@ driving the generation of function list pages.
                     else $by-category,
                     $mode)"/>
 
-        <xsl:apply-templates mode="render-summary"
-                             select="toc:get-summary-for-lib(.)"/>
+        <!-- Summary may be empty. -->
+        <xsl:copy-of
+            select="toc:get-summary-for-lib(.)/toc:render-summary(.)"/>
         <xsl:copy-of
             select="$api:namespace-mappings[
                     @lib eq current()]/summary-addendum/node()"/>
@@ -315,22 +316,6 @@ driving the generation of function list pages.
                   else $toc:ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq current()],
                   $VERSION-NUMBER)"/>
     </node>
-  </xsl:template>
-
-  <xsl:template mode="render-summary"
-                match="apidoc:summary">
-    <xsl:copy-of select="stp:fixup(., 'toc')"/>
-  </xsl:template>
-
-  <!--
-      Wrap summary content with <p> if not already present.
-      The wrapper might be in several namespaces.
-  -->
-  <xsl:template mode="render-summary"
-                match="apidoc:summary[not(xhtml:p|apidoc:p|p)]">
-    <p xmlns="http://www.w3.org/1999/xhtml">
-      <xsl:next-match/>
-    </p>
   </xsl:template>
 
 </xsl:stylesheet>

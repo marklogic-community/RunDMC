@@ -224,7 +224,7 @@
 
   <!--
       ID for function buckets is the bucket display name minus spaces.
-      see tocByCategory.xsl
+      see toc:functions-by-category for implementation.
   -->
   <xsl:template mode="function-bucket-id" match="@*">
     <xsl:value-of select="translate(.,' ','')"/>
