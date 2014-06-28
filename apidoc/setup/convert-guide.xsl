@@ -112,7 +112,7 @@
     </xsl:variable>
     <!--
         Beware of changing this structure without updating
-        mode="guide-toc" (in toc.xsl), which depends on it.
+        the toc.xqm toc:guide-* functions, which depend on it.
     -->
     <a id="{$id}"/>
     <h3>
@@ -129,7 +129,7 @@
     <xsl:variable name="id" select="guide:heading-anchor-id(.)"/>
     <!--
         Beware of changing this structure without updating
-        mode="guide-toc" (in toc.xsl), which depends on it.
+        the toc.xqm toc:guide-* functions, which depend on it.
     -->
     <a id="{$id}"/>
     <xsl:element name="h{$heading-level}">
@@ -391,7 +391,6 @@
     <xsl:apply-templates mode="merge-code-examples"
                          select="current-group()"/>
   </xsl:template>
-
 
   <!-- By default, don't add anything after -->
   <xsl:template mode="merge-code-examples-after"

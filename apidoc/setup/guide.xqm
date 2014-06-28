@@ -323,7 +323,7 @@ declare function guide:convert-messages(
   $guide as element(chapter))
 as node()+
 {
-  stp:debug('guide:convert-messages', ($uri)),
+  if (not($stp:DEBUG)) then () else stp:debug('guide:convert-messages', ($uri)),
   let $base-uri := replace(
     replace($uri, '/guide/', '/'),
     '\.xml$', '/')
@@ -393,7 +393,7 @@ as empty-sequence()
   for $c in ($converted, $messages)
   let $uri as xs:string := base-uri($c)
   let $_ := xdmp:document-insert($uri, $c)
-  let $_ := stp:debug(
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:render',
     (base-uri($g), '=>', $uri,
       'in', xdmp:elapsed-time() - $start))
@@ -588,7 +588,7 @@ as element()*
   let $heading-name := local-name($heading)
   return (
     (: Gather this section and recurse with its contents.
-    stp:debug(
+    if (not($stp:DEBUG)) then () else stp:debug(
       'guide:sections',
       ('level', $level,
         'list', count($list),
@@ -642,7 +642,7 @@ as element()*
   return (
     (: The list may not have any headings,
      : and may not start with a heading.
-     stp:debug(
+     if (not($stp:DEBUG)) then () else stp:debug(
       'guide:sections',
       ('level', $level,
         'list', count($list), xdmp:describe($list),

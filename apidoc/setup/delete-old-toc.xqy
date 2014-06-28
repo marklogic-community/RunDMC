@@ -6,7 +6,8 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
 stp:toc-delete(),
-text { "Finished deleting old TOC parts for", $api:version }
+text {
+  "Finished deleting old TOC parts for", $api:version, xdmp:elapsed-time() }
 
 (: apidoc/setup/delete-old-toc.xqy :)
 

@@ -5,6 +5,6 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 
 stp:list-pages-render(),
 
-"Generated all function list pages, etc."
+text { "Generated all function list pages", xdmp:elapsed-time() }
 
 (: make-list-pages.xqy :)

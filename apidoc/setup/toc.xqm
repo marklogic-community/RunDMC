@@ -29,14 +29,6 @@ import module namespace af="http://marklogic.com/xdmp/admin/admin-forms"
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
-declare variable $ALL-FUNCTIONS-NOT-JAVASCRIPT as element()+ := (
-  $api:all-function-docs/api:function-page[
-    @mode ne $api:MODE-JAVASCRIPT]/api:function[1]) ;
-
-declare variable $ALL-FUNCTIONS-JAVASCRIPT as element()+ := (
-  $api:ALL-FUNCTIONS-JAVASCRIPT/api:function-page[
-    @mode eq $api:MODE-JAVASCRIPT]/api:function[1]) ;
-
 (: exclude REST API "functions"
  : dedup when there is a built-in lib that has the same prefix as a library
  : lib - can probably do this more efficiently
@@ -55,7 +47,7 @@ declare variable $CATEGORY-MAPPINGS := u:get-doc(
   '/apidoc/config/category-mappings.xml')/*/category ;
 
 declare variable $GUIDE-DOCS := xdmp:directory(
-  concat($api:VERSION-DIR, 'guide/'))[guide] ;
+  concat(api:version-dir($api:version), 'guide/'))[guide] ;
 
 declare variable $GUIDE-GROUPS as element(group)+ := u:get-doc(
   '/apidoc/config/document-list.xml')/docs/group[guide] ;
@@ -65,22 +57,55 @@ declare variable $GUIDE-DOCS-NOT-CONFIGURED := (
 
 declare variable $HELP-ROOT-HREF := '/admin-help' ;
 
-declare variable $HELP-CONFIG := u:get-doc(
-  '/apidoc/config/help-config.xml')/help ;
+declare variable $MAP-KEY-BUCKET := 'BUCKET' ;
+declare variable $MAP-KEY-CATSUBCAT := 'CATSUBCAT' ;
+declare variable $MAP-KEY-LIB := 'LIBRARY' ;
 
-(: TODO do not assume HTTP request environment. :)
-declare variable $XSD-DIR as xs:string := xdmp:get-request-field(
-  'help-xsd-dir') ;
-
-declare variable $XSD-DOCS as document-node()* := (
-  for $dir in xdmp:filesystem-directory($XSD-DIR)/*:entry[
-    dir:type eq 'file'][ends-with(dir:pathname, '.xsd')]
-  return xdmp:document-get($dir/dir:pathname)) ;
-
-declare variable $FORCED-ORDER := (
-  'MarkLogic Built-In Functions',
-  'XQuery Library Modules', 'CPF Functions',
-  'W3C-Standard Functions', 'REST Resources API') ;
+(: Prestructured map by mode,
+ : containing maps by bucket, category+subcategory, and lib.
+ : This allows easy access to all the grouping info
+ : after one pass through the function sequence.
+ :)
+declare function toc:functions-map($version as xs:string)
+as map:map
+{
+  let $m := map:map()
+  let $_ := (
+    for $mode in $api:MODES
+    let $_ := map:put(
+      $m, $mode,
+      map:new(
+        (map:entry($MAP-KEY-BUCKET, map:map()),
+          map:entry($MAP-KEY-CATSUBCAT, map:map()),
+          map:entry($MAP-KEY-LIB, map:map()))))
+    return ())
+  let $_ := (
+    for $f in api:functions($version)
+    let $fp := $f/api:function-page
+    let $f1 := $fp/api:function[1]
+    let $mode as xs:string := $fp/@mode
+    let $m-mode := map:get($m, $mode)
+    let $bucket as xs:string := $f1/@bucket
+    let $cat as xs:string := $f1/@category
+    let $subcat as xs:string? := $f1/@subcategory
+    let $catsubcat as xs:string := $cat||'#'||$subcat
+    let $lib as xs:string := $f1/@lib
+    let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
+    let $m-catsubcat := map:get($m-mode, $MAP-KEY-CATSUBCAT)
+    let $m-lib := map:get($m-mode, $MAP-KEY-LIB)
+    let $m-cat := map:get($m-bucket, $bucket)
+    let $_ := (
+      if (exists($m-cat)) then map:put(
+        $m-cat, $cat, (map:get($m-cat, $cat), $f1))
+      else map:put(
+        $m-bucket, $bucket, map:new(map:entry($cat, $f1))))
+    let $_ := map:put(
+      $m-catsubcat, $catsubcat, (map:get($m-catsubcat, $catsubcat), $f1))
+    let $_ := map:put(
+      $m-lib, $lib, (map:get($m-lib, $lib), $f1))
+    return ())
+  return $m
+} ;
 
 declare function toc:display-category($cat as xs:string)
 as xs:string
@@ -168,39 +193,37 @@ declare function toc:primary-lib($functions as element()*)
 declare function toc:lib-for-most($functions as element()*)
   as xs:string
 {
-  (
-    for $name in distinct-values($functions/@lib)
+  (for $name in distinct-values($functions/@lib)
     let $count := count($functions[@lib eq $name])
     order by $count descending
     return $name)[1]
 };
 
 declare function toc:category-is-exhaustive(
+  $m-mode-functions as map:map,
   $category as xs:string,
-  $sub-category as xs:string?,
-  $lib-for-all as xs:string?)
+  $subcategory as xs:string?,
+  $lib as xs:string?)
 as xs:boolean
 {
-  (: It should be safe to look at the non-javascript functions,
-   : no matter which mode the caller is in.
-   :)
-  $lib-for-all and (
+  $lib and (
+    let $m-lib as map:map := map:get(
+      $m-mode-functions, $MAP-KEY-LIB)
+    let $m-catsubcat as map:map := map:get(
+      $m-mode-functions, $MAP-KEY-CATSUBCAT)
     let $num-functions-in-lib := count(
-      $ALL-FUNCTIONS-NOT-JAVASCRIPT[@lib eq $lib-for-all])
+      map:get($m-lib, $lib))
     let $num-functions-in-category := count(
-      $ALL-FUNCTIONS-NOT-JAVASCRIPT[@category eq $category]
-      [not($sub-category) or @subcategory eq $sub-category])
+      map:get($m-catsubcat, $category||'#'||$subcategory))
     return $num-functions-in-lib eq $num-functions-in-category)
 };
 
-declare function toc:display-suffix($lib-for-all as xs:string?)
+declare function toc:display-suffix($lib as xs:string?)
   as xs:string?
 {
   (: Don't display a suffix for REST categories :)
-  if ($lib-for-all eq $api:MODE-REST) then ()
-  else if ($lib-for-all) then concat(
-    ' (', api:prefix-for-lib($lib-for-all), ':)')
-  else ()
+  if (not($lib) or $lib eq $api:MODE-REST) then ()
+  else concat(' (', api:prefix-for-lib($lib), ':)')
 };
 
 (: TODO refactor with version, so Task Server can do this. :)
@@ -283,11 +306,11 @@ declare function toc:get-summary-for-lib($lib as xs:string)
 {
   let $raw-modules as element()+ := toc:modules-raw()
   (: exceptional ("json" built-in) :)
-  let $lib-subcat := toc:hard-coded-subcategory($lib)
+  let $lib-subcat as xs:string? := api:namespace($lib)/@subcategory
   let $summaries-by-summary-subcat := $raw-modules/apidoc:summary[
     @subcategory eq $lib-subcat]
   (: exceptional ("spell" built-in) :)
-  let $lib-cat := toc:hard-coded-category($lib)
+  let $lib-cat as xs:string? := api:namespace($lib)/@category
   let $summaries-by-module-cat := $raw-modules[
     @category eq $lib-cat]/apidoc:summary
   (: the most common case :)
@@ -308,32 +331,12 @@ declare function toc:get-summary-for-lib($lib as xs:string)
     else ())
 };
 
-(: Look in the  namespaces/libs config file
- : to see if we've forced a hard-coded category
- : for summary-lookup purposes.
- :)
-declare function toc:hard-coded-category($lib as xs:string)
-  as xs:string?
-{
-  $api:namespace-mappings[@lib eq $lib]/@category
-};
-
-(: Look in the  namespaces/libs config file
- : to see if we've forced a hard-coded subcategory
- : for summary-lookup purposes.
- :)
-declare function toc:hard-coded-subcategory($lib as xs:string)
-  as xs:string?
-{
-  $api:namespace-mappings[@lib eq $lib]/@subcategory
-};
-
 declare function toc:guides-in-group($groups as element(group)*)
 as document-node()*
 {
   doc(
     $groups/guide/concat(
-      $api:VERSION-DIR, 'guide/', @url-name, '.xml'))
+      api:version-dir($api:version), 'guide/', @url-name, '.xml'))
 };
 
 (: Build a TOC href with fragment for this guide section.
@@ -346,6 +349,97 @@ as xs:string
     api:external-uri($e),
     '#',
     ($e/*[1] treat as element(xhtml:a))/@id)
+};
+
+declare function toc:id($n as node())
+as xs:string
+{
+  generate-id($n)
+};
+
+declare function toc:id()
+as xs:string
+{
+  toc:id(text { xdmp:random() })
+};
+
+declare function toc:node(
+  $id as xs:string,
+  $display as xs:string,
+  $href as xs:string?,
+  $is-async as xs:boolean?,
+  $type as xs:string?,
+  $extra-boolean-attributes as xs:string*,
+  $body as item()*)
+as element(toc:node)
+{
+  (: TODO validate structure? :)
+  element toc:node {
+    attribute id { $id },
+    attribute display { $display },
+    $href ! attribute href { . },
+    $is-async ! attribute async { . },
+    $type ! attribute type { . },
+    $extra-boolean-attributes ! attribute { . } { true() },
+    $body }
+};
+
+declare function toc:node(
+  $id as xs:string,
+  $display as xs:string,
+  $href as xs:string?,
+  $body as item()*)
+as element(toc:node)
+{
+  toc:node($id, $display, $href, (), (), (), $body)
+};
+
+declare function toc:node(
+  $id as xs:string,
+  $display as xs:string,
+  $body as item()*)
+as element(toc:node)
+{
+  toc:node($id, $display, (), (), (), (), $body)
+};
+
+declare function toc:guide($n as node())
+as node()?
+{
+  typeswitch($n)
+  (: TODO why copy this text at all? :)
+  case text() return $n
+  case element(xhtml:div) return (
+    if (not($n/@class = 'section')) then $n
+    else toc:node(
+      toc:id($n),
+      (: ASSUMPTION Second element is a heading. :)
+      $n/*[2],
+      toc:guide-href($n),
+      toc:guide($n/node())))
+  default return ()
+};
+
+declare function toc:guide-node(
+  $root as document-node(),
+  $is-duplicate as xs:boolean)
+as element(toc:node)
+{
+  toc:node(
+    toc:id($root),
+    ($root/guide treat as element())/title,
+    api:external-uri($root),
+    true(),
+    'guide',
+    ('sub-control', 'wrap-titles', 'duplicate'[$is-duplicate]),
+    $root/guide/chapter-list/chapter/toc:guide(doc(@href)/chapter/node()))
+};
+
+declare function toc:guide-node(
+  $root as document-node())
+as element(toc:node)
+{
+  toc:guide-node($root, false())
 };
 
 (: Database URI for a rendered async TOC section. :)
@@ -367,6 +461,7 @@ as xs:string
 (: Rewrite rendered node id as needed for javascript.
  : For the toc_filter javascript this needs to be a valid xs:ID,
  : so we use 'js_' instead of 'js/'.
+ : TODO build this into the original toc:node generation instead?
  :)
 declare function toc:node-id(
   $node as element(toc:node))
@@ -502,7 +597,7 @@ declare function toc:render-node-children(
   $n as element(toc:node))
 as element()?
 {
-  stp:fine(
+  if (not($stp:DEBUG)) then () else stp:fine(
     'toc:render-node-children',
     ($uri, $prefix-for-hrefs,
       xdmp:describe($n),
@@ -531,7 +626,7 @@ declare function toc:render-node(
   $n as element(toc:node))
 as element()
 {
-  stp:fine(
+  if (not($stp:DEBUG)) then () else stp:fine(
     'toc:render-node',
     ($uri, $prefix-for-hrefs, xdmp:describe($n), xdmp:describe($n/toc:node))),
   <li xmlns="http://www.w3.org/1999/xhtml">
@@ -561,7 +656,7 @@ as element()
     concat($uri, '/'),
     $n/@id/string() treat as xs:string,
     $n/@mode)
-  let $_ := stp:debug(
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render-async',
     ('async', 'not duplicate', 'mode', $n/@mode,
       $uri-new, xdmp:describe($n)))
@@ -580,7 +675,7 @@ declare function toc:render-content(
   $toc as element(toc:root))
 as element()
 {
-  stp:debug(
+  if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
@@ -619,7 +714,7 @@ declare function toc:render(
   $toc as element(toc:root))
 as element()+
 {
-  stp:debug(
+  if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
 
@@ -661,6 +756,7 @@ as empty-sequence()
   (: Every result element must set its own base-uri,
    : so we known where to store it in the database.
    :)
+  let $m-seen := map:map()
   for $n in toc:render(
     $uri,
     if ($is-default) then () else concat("/", $api:version),
@@ -669,7 +765,9 @@ as empty-sequence()
   let $uri-new as xs:anyURI := base-uri($n)
   order by $uri-new
   return (
-    stp:debug('toc:render', ('inserting', $uri-new)),
+    stp:info('toc:render', ('inserting', $uri-new)),
+    if (map:get($m-seen, $uri-new)) then stp:error('CONFLICT', $uri-new)
+    else map:put($m-seen, $uri-new, $uri-new),
     xdmp:document-insert($uri-new, $n))
 };
 
@@ -747,7 +845,7 @@ declare function toc:help-path(
 declare function toc:help-element-decl(
   $xsd-docs as document-node()*,
   $e as element())
-as element()?
+as element()
 {
   let $ns := namespace-uri($e)
   let $local-name := local-name($e)
@@ -755,8 +853,8 @@ as element()?
    : Are there schemas with no targetNamespace?
    : Are there schemas that use namespace prefixes?
    :)
-  return $xsd-docs/xs:schema[@targetNamespace eq $ns]//xs:element[
-    @name eq $local-name]
+  return ($xsd-docs/xs:schema[@targetNamespace eq $ns]/xs:element[
+    @name eq $local-name])[1]
 };
 
 (: Look in the XSD to grab the list of child element names.
@@ -812,13 +910,14 @@ as element(xhtml:li)
 };
 
 declare function toc:lib-sub-pages(
-  $lib as element(api:lib),
-  $by-category as element()+,
-  $mode as xs:string)
+  $mode as xs:string,
+  $m-mode-functions as map:map,
+  $by-bucket as element(toc:node)+,
+  $lib as xs:string)
 as element()*
 {
-  (: Hack to exclude semantics categories, because
-   : the XQuery category is just a placeholder.
+  (: Hack to exclude semantic functions,
+   : because the XQuery lib is just a placeholder.
    :)
   let $current-href as xs:string := concat(
     '/', (if ($mode eq $api:MODE-JAVASCRIPT) then 'js/' else ''),
@@ -826,13 +925,13 @@ as element()*
   let $excluded-prefix := (
     if ($mode eq $api:MODE-JAVASCRIPT) then '/js/sem'
     else '/sem')
-  (: TODO could we make this more efficient?
-   : The sub-pages should be children of the toc:node for $lib.
+  (: The sub-pages should be children of the toc:node for $lib.
+   : TODO hotspot - provide map where key is href prefix?
    :)
-  let $sub-pages := $by-category//toc:node[
+  let $sub-pages := $by-bucket/(toc:node|toc:node/toc:node)[
     starts-with(@href, $current-href)][
     not(starts-with(@href, $excluded-prefix))]
-  let $_ := stp:fine(
+  let $_ := if (not($stp:DEBUG)) then () else stp:fine(
     'toc:lib-sub-pages', ($current-href, xdmp:describe($sub-pages)))
   where $sub-pages
   return <div xmlns="http://www.w3.org/1999/xhtml">
@@ -855,7 +954,7 @@ as xs:integer
     cts:search(
       collection(),
       cts:and-query(
-        (cts:directory-query($api:VERSION-DIR, "1"),
+        (cts:directory-query(api:version-dir($api:version), "1"),
           cts:element-attribute-value-query(
             xs:QName('api:function-page'),
             xs:QName('mode'),
@@ -863,35 +962,6 @@ as xs:integer
           if (not($lib)) then ()
           else cts:element-attribute-value-query(
             xs:QName('api:function'), xs:QName('lib'), $lib)))))
-};
-
-declare function toc:node-attributes-for-lib(
-  $lib as element(api:lib),
-  $mode as xs:string)
-as attribute()+
-{
-  attribute function-list-page { true() },
-  attribute async { true() },
-  attribute id { concat($lib, '_', generate-id($lib)) },
-  $lib/@category-bucket,
-
-  attribute function-count {
-    toc:function-count($mode, $lib) },
-  attribute namespace {
-    api:uri-for-lib($lib) },
-
-  attribute href {
-    concat(
-      if ($mode eq $api:MODE-JAVASCRIPT) then '/js/' else '/',
-      $lib) },
-  attribute display {
-    concat(
-      api:prefix-for-lib($lib),
-      if ($mode eq $api:MODE-JAVASCRIPT) then '.' else ':') },
-
-  attribute mode { $mode },
-  if (not($lib/@built-in)) then ()
-  else attribute footnote { true() }
 };
 
 declare function toc:category-href(
@@ -904,7 +974,7 @@ declare function toc:category-href(
   $main-subcategory-lib as xs:string?)
 as xs:string
 {
-  stp:fine(
+  if (not($stp:DEBUG)) then () else stp:fine(
     'toc:category-href',
     ('category', $category, 'subcat', $subcategory,
       'is-exhaustive', $is-exhaustive, 'use-category', $use-category,
@@ -927,22 +997,6 @@ as xs:string
         $main-subcategory-lib,
         toc:path-for-category($subcategory))),
     '/')
-};
-
-declare function toc:toc($version as xs:string)
-as empty-sequence()
-{
-  $stp:helpXsdCheck,
-  stp:info(
-    'toc:toc', ("Creating new XML-based TOC at", $stp:toc-xml-uri, "...")),
-  xdmp:document-insert(
-    $stp:toc-xml-uri,
-    xdmp:xslt-invoke(
-      "toc.xsl",
-      document{ <empty/> },
-      map:new((map:entry('VERSION-NUMBER', number($version)))))),
-  stp:info(
-    'toc:toc', xdmp:elapsed-time())
 };
 
 declare function toc:function-name-nodes(
@@ -968,7 +1022,7 @@ as element(api:function-name)*
       if ($not-rest) then ()
       else api:verb-sort-key-from-REST-fullname($fullname)
     return element api:function-name {
-      stp:debug(
+      if (not($stp:DEBUG)) then () else stp:debug(
         'toc:function-name-nodes',
         ('function', xdmp:describe($f), 'not-rest', $not-rest,
           'mode', $mode, 'fullname', $fullname)),
@@ -987,9 +1041,6 @@ declare function toc:function-node(
   $version-number as xs:double)
 as element(toc:node)
 {
-  stp:debug(
-    'toc:function-node',
-    (xdmp:describe($function-name), $version-number)),
   (: TODO can we rely on mode for REST,
    : or check starts-with($function-name, '/') instead?
    :)
@@ -1001,44 +1052,34 @@ as element(toc:node)
       (xdmp:describe($mode),
         $function-name, xdmp:describe($function-name)))
     else ())
-  return switch($mode)
-  case $api:MODE-JAVASCRIPT return (
-    let $name := api:javascript-name($function-name)
-    return element toc:node {
-      attribute type { 'javascript-function' },
-      attribute href { '/'||$name },
-      attribute display { $name } })
-  case $api:MODE-REST return (
-    (: For 5.0 hide the verb. :)
-    let $base-display-name as xs:string := (
+  let $display as xs:string := (
+    switch($mode)
+    case $api:MODE-JAVASCRIPT return api:javascript-name($function-name)
+    case $api:MODE-REST return api:reverse-translate-REST-resource-name(
+      (: For 5.0 hide the verb. :)
       if ($version-number gt 5.0) then $function-name
       else api:name-from-REST-fullname($function-name))
-    return element toc:node {
-      attribute type { 'function' },
-      attribute href {
-        api:REST-fullname-to-external-uri($function-name) },
-      attribute display {
-        (: Display the wildcard (*) version in the TOC,
-         : but the original, curly-brace version on the list pages.
-         : TODO comment is out of date? These are identical.
-         :)
-        api:reverse-translate-REST-resource-name($base-display-name) },
-      attribute list-page-display {
-        api:reverse-translate-REST-resource-name($base-display-name) } })
-  default return element toc:node {
-    if ($function-name/string()) then ()
-    else stp:error('ASSERT', $function-name),
-    attribute type { 'function' },
-    attribute href { '/'||$function-name },
-    attribute display { $function-name } }
+    default return $function-name)
+  let $href as xs:string := (
+    switch($mode)
+    case $api:MODE-REST return api:REST-fullname-to-external-uri(
+      $function-name)
+    default return '/'||$display)
+  let $type as xs:string := (
+    switch($mode)
+    case $api:MODE-JAVASCRIPT return 'javascript-function'
+    default return 'function')
+  return toc:node(
+    toc:id($function-name), $display, $href,
+    (), $type, (), ())
 };
 
 declare function toc:function-nodes(
-  $functions as element(api:function)*,
-  $version-number as xs:double)
+  $version-number as xs:double,
+  $functions as element(api:function)*)
 as element(toc:node)*
 {
-  stp:debug(
+  if (not($stp:DEBUG)) then () else stp:debug(
     'toc:function-nodes',
     (xdmp:describe($functions), $version-number)),
   toc:function-node(
@@ -1058,145 +1099,132 @@ as element()
     else <p xmlns="http://www.w3.org/1999/xhtml">{ . }</p>)
 };
 
-declare function toc:functions-by-category-subcat(
+declare function toc:functions-by-category-subcat-node(
+  $version-number as xs:double,
+  $mode as xs:string,
+  $m-mode-functions as map:map,
   $cat as xs:string,
   $is-REST as xs:boolean,
-  $in-this-category as element()+,
   $single-lib-for-category as xs:string?,
-  $sub-categories as xs:string+,
-  $version-number as xs:double,
-  $mode as xs:string)
-as element(toc:node)+
+  $subcat as xs:string,
+  $in-this-subcategory as element(api:function)+)
+as element(toc:node)
 {
-  for $subcat in $sub-categories
-  let $in-this-subcategory := $in-this-category[@subcategory eq $subcat]
   let $one-subcategory-lib := toc:lib-for-all($in-this-subcategory)
   let $main-subcategory-lib := toc:primary-lib($in-this-subcategory)
+  let $secondary-lib := (
+    if ($one-subcategory-lib) then ()
+    else ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1])
   let $is-exhaustive := toc:category-is-exhaustive(
-    $cat, $subcat, $one-subcategory-lib)
-  order by $subcat
-  return element toc:node {
-    attribute function-list-page { true() },
-    (:
-     : If just one library is represented in this sub-category,
+    $m-mode-functions, $cat, $subcat, $one-subcategory-lib)
+  return toc:node(
+    toc:id(),
+    (: If just one library is represented in this sub-category,
      : and if the parent category doesn't already display it,
      : only display, e.g, "xdmp:" in parens.
      :)
-    attribute display {
-      toc:display-category($subcat)
-      ||(
-        if ($one-subcategory-lib and not($single-lib-for-category))
-        then toc:display-suffix($one-subcategory-lib)
-        else ()) },
-    attribute href {
-      toc:category-href(
-        $cat, $subcat,
-        $is-exhaustive, $is-REST,
-        $mode,
-        $one-subcategory-lib, $main-subcategory-lib) },
-    (: If this is lib-exhaustive we already have the intro text. :)
-    if ($is-exhaustive) then ()
-    else attribute category-name { toc:display-category($subcat) },
-
-    let $secondary-lib := (
-      if ($one-subcategory-lib) then ()
-      else ($in-this-subcategory/@lib[
-          not(. eq $main-subcategory-lib)])[1])
-    return (
+    toc:display-category($subcat)||(
+      if (not($one-subcategory-lib and not($single-lib-for-category))) then ()
+      else toc:display-suffix($one-subcategory-lib)),
+    toc:category-href(
+      $cat, $subcat,
+      $is-exhaustive, $is-REST,
+      $mode, $one-subcategory-lib, $main-subcategory-lib),
+    (), (), ('function-list-page'),
+    (
+      (: If this is lib-exhaustive we already have the intro text. :)
+      if ($is-exhaustive) then ()
+      else attribute category-name { toc:display-category($subcat) },
       if ($is-REST) then toc:REST-page-title($cat, $subcat)
       else toc:category-page-title(
         $subcat, $main-subcategory-lib, $secondary-lib),
       element toc:intro {
         toc:render-summary(
           toc:get-summary-for-category(
-            $mode, $cat, $subcat,
-            $main-subcategory-lib)) },
-      (: function TOC nodes :)
-      toc:function-nodes($in-this-subcategory, $version-number)) }
+            $mode, $cat, $subcat, $main-subcategory-lib)) },
+      (: function TOC node :)
+      toc:function-nodes($version-number, $in-this-subcategory)))
 };
 
-(: This is bound to be slow,
- : but that's okay because we pre-generate the TOC.
- : TODO refactor.
- :)
-declare function toc:functions-by-category(
+declare function toc:functions-by-category-subcat(
   $version-number as xs:double,
-  $functions as element()+,
-  $mode as xs:string)
+  $mode as xs:string,
+  $m-mode-functions as map:map,
+  $cat as xs:string,
+  $is-REST as xs:boolean,
+  $in-this-category as element()+,
+  $single-lib-for-category as xs:string?,
+  $sub-categories as xs:string+)
 as element(toc:node)+
 {
-  let $buckets := distinct-values($functions/@bucket)
-  for $b in $buckets
-  let $bucket-id := translate($b, ' ', '')
-  let $is-REST := $b eq 'REST Resources API'
-  order by index-of($FORCED-ORDER, $b) ascending, $b
-  (: bucket node
-   : ID for function buckets is the display name minus spaces.
-   : async is ignored for REST, because we ignore this <node> container.
+  let $m-catsubcat := map:get($m-mode-functions, $MAP-KEY-CATSUBCAT)
+  for $subcat in $sub-categories
+  let $in-this-subcategory as element(api:function)+ := map:get(
+    $m-catsubcat, $cat||'#'||$subcat)
+  order by $subcat
+  return toc:functions-by-category-subcat-node(
+    $version-number, $mode, $m-mode-functions,
+    $cat, $is-REST,
+    $single-lib-for-category, $subcat, $in-this-subcategory)
+};
+
+(: TODO refactor. :)
+declare function toc:functions-by-category(
+  $version-number as xs:double,
+  $mode as xs:string,
+  $m-mode-functions as map:map,
+  $bucket-id as xs:string,
+  $cat as xs:string,
+  $is-REST as xs:boolean,
+  $in-this-category as element(api:function)+)
+as element(toc:node)+
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'toc:functions-by-category', ($version-number, $mode)),
+  let $single-lib-for-category := toc:lib-for-all($in-this-category)
+  let $is-exhaustive := toc:category-is-exhaustive(
+    $m-mode-functions, $cat, (), $single-lib-for-category)
+  let $sub-categories as xs:string* := distinct-values(
+    $in-this-category/@subcategory)
+  (: When there are sub-categories, don't create a new page for the category.
+   : They tend to be useless.
+   : Only create a link if it corresponds to a full lib page,
+   : or if it doesn't contain sub-categories
+   : and does not already correspond to a full lib page,
+   : unless it is a REST doc category,
+   : in which case we do want to create the category page
+   : (e.g., for Client API).
    :)
-  return element toc:node {
-    attribute display { $b },
-    attribute id { $bucket-id},
-    attribute sub-control { 'yes' },
-    attribute async { 'yes' },
-    attribute mode { $mode },
+  let $href := (
+    if (not($is-exhaustive or (not($sub-categories) or $is-REST))) then ()
+    else toc:category-href(
+      $cat, $cat, $is-exhaustive,
+      false(), $mode,
+      if ($is-exhaustive) then $single-lib-for-category else '',
+      if ($is-exhaustive) then '' else $single-lib-for-category))
+  return toc:node(
+    $bucket-id||'_'||translate($cat, ' ' , ''),
+    toc:display-category($cat)||toc:display-suffix($single-lib-for-category),
+    $href,
+    (), (), ('function-list-page'),
+    (attribute mode { $mode },
 
-    let $in-this-bucket := $functions[@bucket eq $b]
-    for $cat in distinct-values($in-this-bucket/@category)
-    let $in-this-category := $in-this-bucket[@category eq $cat]
-    let $single-lib-for-category := toc:lib-for-all($in-this-category)
-    let $is-exhaustive := toc:category-is-exhaustive(
-      $cat, (), $single-lib-for-category)
-    let $sub-categories := distinct-values($in-this-category/@subcategory)
-    order by $cat
-    return element toc:node {
-      attribute id { $bucket-id||'_'||translate($cat, ' ' , '') },
-      attribute function-list-page { true() },
-      attribute display {
-        toc:display-category($cat)
-        ||toc:display-suffix($single-lib-for-category) },
-      attribute mode { $mode },
-
-      (: When there are sub-categories, don't create a new page for the category.
-       : They tend to be useless.
-       : Only create a link if it corresponds to a full lib page.
-       :)
-      if ($is-exhaustive) then attribute href {
-        toc:category-href(
-          $cat, $cat,
-          $is-exhaustive, false(),
-          $mode,
-          $single-lib-for-category, '') }
-
-      (: Create a new page for this category if it doesn't contain sub-categories
-       : and does not already correspond to a full lib page,
-       : unless it is a REST doc category,
-       : in which case we do want to create the category page
-       : (e.g., for Client API).
-       :
-       : ASSUMPTION
+      (: ASSUMPTION
        : $single-lib-for-category is supplied/applicable
        : if we are in this code branch;
        : in other words, every top-level category page
        : only pertains to one library
        : (sub-categories can have more than one; see below).
        :)
-      else if (not($sub-categories) or $is-REST) then (
-        attribute href {
-          toc:category-href(
-            $cat, $cat,
-            $is-exhaustive, false(),
-            $mode,
-            '', $single-lib-for-category) },
+      if ($is-exhaustive or ($sub-categories and not($is-REST))) then ()
+      else (
         attribute category-name { toc:display-category($cat) },
         if ($is-REST) then toc:REST-page-title($cat, ())
         else toc:category-page-title($cat, $single-lib-for-category, ()),
         element toc:intro {
           toc:render-summary(
             toc:get-summary-for-category(
-              $mode, $cat, (), $single-lib-for-category)) })
-      (: Otherwise do not create a page/link for this category. :)
-      else (),
+              $mode, $cat, (), $single-lib-for-category)) }),
 
       (: ASSUMPTION
        : A category has either functions as children or sub-categories,
@@ -1204,12 +1232,46 @@ as element(toc:node)+
        :)
       (: Are these function TOC nodes? :)
       if (not($sub-categories)) then toc:function-nodes(
-        $in-this-category, $version-number)
+        $version-number, $in-this-category)
       else toc:functions-by-category-subcat(
-        $cat, $is-REST, $in-this-category, $single-lib-for-category,
-        $sub-categories, $version-number, $mode)
-    }
-  }
+        $version-number, $mode, $m-mode-functions,
+        $cat, $is-REST,
+        $in-this-category, $single-lib-for-category, $sub-categories)))
+};
+
+declare function toc:functions-by-bucket(
+  $version-number as xs:double,
+  $m-mode-functions as map:map,
+  $mode as xs:string)
+as element(toc:node)+
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'toc:functions-by-bucket', ($version-number, $mode)),
+  let $m-buckets as map:map := map:get($m-mode-functions, $MAP-KEY-BUCKET)
+  let $forced-order := (
+    'MarkLogic Built-In Functions',
+    'XQuery Library Modules', 'CPF Functions',
+    'W3C-Standard Functions', 'REST Resources API')
+  for $b in map:keys($m-buckets)
+  (: bucket node
+   : ID for function buckets is the display name minus spaces.
+   : async is ignored for REST, because we ignore this toc:node.
+   :)
+  let $bucket-id := (
+    if ($mode eq $api:MODE-JAVASCRIPT) then 'js_'
+    else '')||translate($b, ' ', '')
+  let $is-REST := $mode eq $api:MODE-REST
+  order by index-of($forced-order, $b) ascending, $b
+  return toc:node(
+    $bucket-id, $b, (),
+    true(), (), ('sub-control'),
+    (attribute mode { $mode },
+      let $m-cats := map:get($m-buckets, $b)
+      for $cat in map:keys($m-cats)
+      order by $cat
+      return toc:functions-by-category(
+        $version-number, $mode, $m-mode-functions,
+        $bucket-id, $cat, $is-REST, map:get($m-cats, $cat))))
 };
 
 declare function toc:help-fixup(
@@ -1235,59 +1297,48 @@ as node()
 
 declare function toc:help-content-element(
   $version-number as xs:double,
+  $xsd-docs as document-node()*,
   $e as element())
 as node()+
 {
-  let $element-decl := toc:help-element-decl($XSD-DOCS, $e)
   let $exclusion-list := (
     tokenize($e/@exclude, '\s+'),
-    if ($e/@starting-with) then toc:help-not-prefixed-names($XSD-DOCS, $e)
-    else if ($e/@auto-exclude) then toc:help-auto-exclude($XSD-DOCS, $e)
+    if ($e/@starting-with) then toc:help-not-prefixed-names($xsd-docs, $e)
+    else if ($e/@auto-exclude) then toc:help-auto-exclude($xsd-docs, $e)
     else ())
-  let $line-after-list := tokenize($e/@line-after, '\s+')
   let $help-content := element api:help-node {
     af:displayHelp(
-      root($element-decl)/*,                            (: $schemaroot    :)
+      toc:help-element-decl($xsd-docs, $e)/root()/*, (: $schemaroot :)
       local-name($e),
       if ($e/@help-position eq 2) then 2 else 1, (: $multiple-uses :)
       $exclusion-list,
-      $line-after-list,
-      not($e/@append)             (: $print-buttons :)
-    ) }
-  let $proxy-element := $e/@append/element {
-    resolve-QName($e/@append, $e) } { () }
-  let $schema-element := $e/@append/toc:help-element-decl(
-    $XSD-DOCS, $proxy-element)/root()/*
-  let $help-content-except-title := (
-    (: Copy everything after the second <hr>.
-     : ASSUMPTION
-     : The title of the page appears between two <hr> elements
-     : at the beginning.
-     : The page for flexrep-domain is missing the second <hr>.
-     :)
-    if ($help-content/*:hr[2])
-    then $help-content/*:hr[2]/following-sibling::node()
-    else $help-content/*:span[1]/following-sibling::node())
+      tokenize($e/@line-after, '\s+'),
+      not($e/@append) (: $print-buttons :) ) }
   let $title as xs:string+ := (
     if ($e/@content-title) then $e/@content-title
     else toc:help-extract-title($help-content)[1])
-  return element toc:node {
-    $e/@display,
-    attribute href { toc:help-path($HELP-ROOT-HREF, $e) },
-    attribute admin-help-page { "yes" },
-    element toc:title { $title },
-    element toc:content {
-      let $help-content-converted := toc:help-fixup(
-        $help-content-except-title)
-      return (
-        if ($e/@show-only-the-list) then ($help-content-converted//*:ul)[1]
-        else $help-content-converted) },
-    (: Recurse on any children. :)
-    toc:help-content($version-number, $e/*) }
+  (: ASSUMPTION The title of the page appears at the beginning,
+   : between two hr elements.
+   : But the page for flexrep-domain is missing the second hr.
+   :)
+  let $body as node()+ := toc:help-fixup(
+    $help-content/(
+      if (*:hr[2]) then *:hr[2]/following-sibling::node()
+      else *:span[1]/following-sibling::node()))
+  return toc:node(
+    toc:id($e), $e/@display, toc:help-path($HELP-ROOT-HREF, $e),
+    (), (), 'admin-help-page',
+    (element toc:title { $title },
+      element toc:content {
+        if ($e/@show-only-the-list) then ($body//*:ul)[1]
+        else $body },
+      (: Recurse on any children. :)
+      toc:help-content($version-number, $xsd-docs, $e/*)))
 };
 
 declare function toc:help-content(
   $version-number as xs:double,
+  $xsd-docs as document-node()*,
   $e as element())
 as node()+
 {
@@ -1295,32 +1346,274 @@ as node()+
   if ($version-number lt $e/@added-in) then ()
   else typeswitch($e)
   case element(repeat) return toc:help-content(
-    $version-number, toc:help-resolve-repeat($e))
-  case element(container) return element toc:node {
-    $e/@display,
-    toc:help-content($version-number, $e/*) }
-  default return toc:help-content-element($version-number, $e)
+    $version-number, $xsd-docs, toc:help-resolve-repeat($e))
+  case element(container) return toc:node(
+    toc:id($e), $e/@display,
+    toc:help-content($version-number, $xsd-docs, $e/*))
+  default return toc:help-content-element($version-number, $xsd-docs, $e)
 };
 
 declare function toc:help(
   $version-number as xs:double,
+  $xsd-docs as document-node()*,
   $help as element(help))
 as element(toc:node)
 {
-  element toc:node {
-    (:
-     : For error-checking only,
-     : helps propagate a more useful error: directory not found.
-     :)
-    if ($XSD-DOCS) then () else (),
-    $help/@display,
-    attribute href { $HELP-ROOT-HREF },
-    attribute id { "HelpTOC" },
-    attribute admin-help-page { "yes" },
-    element toc:title { 'Admin Interface Help Pages' },
-    element toc:content {
-      attribute auto-help-list { "yes" },
-      toc:help-content($version-number, $help/*) } }
+  toc:node(
+    "HelpTOC", $help/@display, $HELP-ROOT-HREF,
+    (), (), ('admin-help-page'),
+    (element toc:title { 'Admin Interface Help Pages' },
+      element toc:content {
+        attribute auto-help-list { true() },
+        toc:help-content($version-number, $xsd-docs, $help/*) }))
+};
+
+(:
+ : This creates an XML TOC section for a library, with an id.
+ : The api:lib elements are generated in api:get-libs.
+ : This is javascript-aware.
+ :)
+declare function toc:api-lib(
+  $version-number as xs:double,
+  $mode as xs:string,
+  $m-mode-functions as map:map,
+  $by-bucket as element(toc:node)+,
+  $lib as element(api:lib))
+as element(toc:node)
+{
+  toc:node(
+    concat($lib, '_', toc:id($lib)),
+    concat(
+      api:prefix-for-lib($lib),
+      if ($mode eq $api:MODE-JAVASCRIPT) then '.' else ':'),
+    concat(
+      if ($mode eq $api:MODE-JAVASCRIPT) then '/js/' else '/',
+      $lib),
+    true(), (), ('function-list-page', 'footnote'[$lib/@built-in]),
+    ($lib/@category-bucket,
+      attribute function-count { toc:function-count($mode, $lib) },
+      attribute namespace { api:namespace($lib)/@uri },
+      attribute mode { $mode },
+
+      element toc:title {
+        api:prefix-for-lib($lib), 'functions' },
+      element toc:intro {
+        <p xmlns="http://www.w3.org/1999/xhtml">
+        The table below lists all the
+        {
+          api:prefix-for-lib($lib),
+          if ($lib/@built-in) then 'built-in' else 'XQuery library'
+        }
+        functions (in this namespace: <code>{ api:namespace($lib)/@uri }</code>).
+        </p>,
+        (: TODO Right now this really wants toc:nodes not functions. :)
+        toc:lib-sub-pages($mode, $m-mode-functions, $by-bucket, $lib),
+        (: Summary may be empty. :)
+        $lib/toc:get-summary-for-lib(.)/toc:render-summary(.),
+        api:namespace($lib)/summary-addendum/node()
+      },
+      comment { 'Current lib:', $lib },
+      toc:function-nodes(
+        $version-number,
+        let $m-lib as map:map := map:get($m-mode-functions, $MAP-KEY-LIB)
+        return map:get($m-lib, $lib)) ))
+};
+
+declare function toc:node-external(
+  $display as xs:string,
+  $href as xs:string)
+{
+  toc:node(
+    toc:id(), $display, $href,
+    (), (), 'external',
+    ())
+};
+
+(: TODO refactor. :)
+declare function toc:create(
+  $version as xs:string,
+  $xsd-docs as document-node()*)
+as element(toc:root)
+{
+  let $version-number := xs:double($version)
+  let $m-functions := toc:functions-map($version)
+  let $m-by-bucket := map:new(
+    $api:MODES ! map:entry(
+      .,
+      toc:functions-by-bucket(
+        $version-number, map:get($m-functions, .), .)))
+  let $function-count := toc:function-count($api:MODE-XPATH, ())
+  let $javascript-function-count := toc:function-count($api:MODE-JAVASCRIPT, ())
+  return element toc:root {
+    attribute display { "All Documentation" },
+    attribute open { true() },
+    toc:node(
+      toc:id(), "Server-Side APIs", (),
+      (), (), 'open',
+
+      (: JavaScript :)
+      (if ($version-number lt 8) then () else (
+        toc:node(
+          'AllFunctionsJavasScriptByCat',
+          "JavaScript Functions by Category ("
+          ||$javascript-function-count||')',
+          "/js/all",
+          (), (), ('open'),
+          (attribute mode { $api:MODE-JAVASCRIPT },
+           map:get($m-by-bucket, $api:MODE-JAVASCRIPT))),
+
+          toc:node(
+            'AllFunctionsJavaScript',
+            "JavaScript Functions ("||$javascript-function-count||')',
+            "/js/all",
+            (), (), ('open', 'function-list-page'),
+            (attribute mode { $api:MODE-JAVASCRIPT },
+              element toc:title { 'JavaScript Functions' },
+              element toc:intro {
+                <p xmlns="http://www.w3.org/1999/xhtml">
+                The following table lists all JavaScript functions
+                in the MarkLogic API reference,
+                including both built-in functions
+                and functions implemented in XQuery library modules.
+                </p> },
+              for $lib in $ALL-LIBS-JAVASCRIPT
+              order by $lib
+              return toc:api-lib(
+                $version-number, $api:MODE-JAVASCRIPT,
+                map:get($m-functions, $api:MODE-JAVASCRIPT),
+                map:get($m-by-bucket, $api:MODE-JAVASCRIPT),
+                $lib))))
+        ,
+
+        toc:node(
+          'AllFunctionsByCat',
+          "XQuery/XSLT Functions by Category ("||$function-count||')',
+          "/all",
+          (), (), ('open'),
+          (attribute mode { $api:MODE-XPATH },
+           map:get($m-by-bucket, $api:MODE-XPATH))),
+
+        toc:node(
+          'AllFunctions',
+          "XQuery/XSLT Functions ("||$function-count||')',
+          "/all",
+          (), (), ('open', 'function-list-page'),
+          (attribute mode { $api:MODE-XPATH },
+            element toc:title { 'XQuery/XSLT Functions' },
+            element toc:intro {
+              <p xmlns="http://www.w3.org/1999/xhtml">
+              The following table lists all XQuery/XSLT functions
+              in the MarkLogic API reference,
+              including both built-in functions
+              and functions implemented in XQuery library modules.
+              </p> },
+            for $lib in $ALL-LIBS
+            order by $lib
+            return toc:api-lib(
+              $version-number, $api:MODE-XPATH,
+              map:get($m-functions, $api:MODE-XPATH),
+              map:get($m-by-bucket, $api:MODE-XPATH),
+              $lib)))))
+    ,
+
+    (: REST API :)
+    if ($version-number lt 5) then () else toc:node(
+      "RESTResourcesAPI", "REST Resources", '/REST',
+      (), (), ('function-list-page', 'open'),
+      (
+        element toc:title { 'REST resources' },
+        map:get($m-by-bucket, $api:MODE-REST),
+        toc:node(
+          "RelatedRestGuides", "Related Guides", (),
+          (), (), 'open',
+          (: Repeat REST client guide, Monitoring guide. :)
+          ($GUIDE-DOCS[ends-with(base-uri(.), 'rest-dev.xml')]
+            /toc:guide-node(., true()),
+            $GUIDE-DOCS[ends-with(base-uri(.),'monitoring.xml')]
+            /toc:guide-node(., true())))))
+    ,
+
+    if ($version-number lt 6) then () else toc:node(
+      toc:id(), "Client-Side APIs", (),
+      (), (), 'open',
+      toc:node(
+        "javaTOC", "Java API", "/javadoc/client/index.html",
+        (), (), ('external'),
+        (: Java Client guide repeated. :)
+        $GUIDE-DOCS[ends-with(base-uri(.),'java.xml')]
+        /toc:guide-node(., true()))),
+
+    toc:node(
+      "guides", "Guides", (),
+      (), (), 'open',
+      (if (not($GUIDE-DOCS-NOT-CONFIGURED)) then () else toc:node(
+          toc:id(),
+          "New (unclassified) guides", (),
+          (), (), 'open',
+          $GUIDE-DOCS-NOT-CONFIGURED/toc:guide-node(.))
+        ,
+        for $guide in $GUIDE-GROUPS
+        return toc:node(
+          toc:id($guide), $guide/@name, (),
+          (: Per #204 hard-code open state by guide. :)
+          (), (), ('open'[$guide/@name = ('Getting Started Guides')]),
+          $guide/toc:guides-in-group(.)/toc:guide-node(.))))
+    ,
+
+    toc:node(
+      "other", "Other Documentation", (),
+      (), (), 'open',
+      (if ($version-number lt 5) then () else toc:node(
+          toc:id(), 'Hadoop Connector', (),
+          (), (), (),
+          toc:node(
+            toc:id(),
+            "Connector for Hadoop API",
+            "/javadoc/hadoop/index.html",
+            (), (), 'external',
+            (: Hadoop guide repeated :)
+            $GUIDE-DOCS[ends-with(base-uri(.),'mapreduce.xml')]
+            /toc:guide-node(., true()))),
+
+        toc:node(
+          toc:id(), "XCC", (),
+          (toc:node-external(
+              "XCC Javadoc", "/javadoc/xcc/index.html"),
+            toc:node-external(
+              "XCC .NET API", "/dotnet/xcc/index.html"),
+            (: XCC guide repeated :)
+            $GUIDE-DOCS[ends-with(base-uri(.),'xcc.xml')]
+            /toc:guide-node(., true()))),
+
+        toc:help(
+          $version-number,
+          $xsd-docs,
+          u:get-doc('/apidoc/config/help-config.xml')/help),
+
+        if ($version-number lt 6) then () else toc:node-external(
+          "C++ UDF API Reference", "/cpp/udf/index.html"))) }
+};
+
+declare function toc:xsd-docs($path as xs:string)
+as document-node()*
+{
+  xdmp:document-get(
+    xdmp:filesystem-directory($path)/dir:entry[
+      dir:type eq 'file'][
+      ends-with(dir:pathname, '.xsd')]/dir:pathname)
+};
+
+declare function toc:toc(
+  $version as xs:string,
+  $xsd-path as xs:string)
+as empty-sequence()
+{
+  $stp:helpXsdCheck,
+  stp:info('toc:toc', ("Creating new TOC at", $stp:toc-xml-uri)),
+  xdmp:document-insert(
+    $stp:toc-xml-uri,
+    toc:create($version, toc:xsd-docs($xsd-path))),
+  stp:info('toc:toc', xdmp:elapsed-time())
 };
 
 (: apidoc/setup/toc.xqm :)

@@ -25,6 +25,6 @@ $stp:helpXsdCheck,
 ! xdmp:invoke(.)
 ,
 
-xdmp:log("[apidoc/setup.xqy] done")
+stp:info("apidoc/setup.xqy", (xdmp:elapsed-time()))
 
 (: apidoc/setup.xqy :)

@@ -42,6 +42,7 @@ declare variable $OPTIONS-UPDATE := (
  : while HTTP apidoc views will not use raw docs.
  :)
 declare variable $VERSION as xs:string := (
+  (: TODO get rid of the dependency on http request fields. :)
   if ($api:version-specified) then ()
   else error((), 'BAD', 'no version specified - bad environment?'),
   $api:version) ;

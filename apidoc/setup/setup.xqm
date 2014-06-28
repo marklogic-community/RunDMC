@@ -22,6 +22,11 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
+declare variable $DEBUG := true() ;
+
+declare variable $DOCUMENT-LIST := xdmp:document-get(
+  concat(xdmp:modules-root(), "/apidoc/config/document-list.xml")) ;
+
 declare variable $RAW-PAT := (
   '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' );
 
@@ -84,7 +89,8 @@ declare function stp:fine(
   $list as xs:anyAtomicType*)
 as empty-sequence()
 {
-  stp:log($label, $list, 'fine')
+  if ($DEBUG) then stp:log($label, $list, 'fine')
+  else stp:error('BADDEBUG', 'Modify the caller to check $stp:DEBUG')
 };
 
 declare function stp:debug(
@@ -92,7 +98,8 @@ declare function stp:debug(
   $list as xs:anyAtomicType*)
 as empty-sequence()
 {
-  stp:log($label, $list, 'debug')
+  if ($DEBUG) then stp:log($label, $list, 'debug')
+  else stp:error('BADDEBUG', 'Modify the caller to check $stp:DEBUG')
 };
 
 declare function stp:info(
@@ -201,8 +208,7 @@ declare function stp:fix-guide-names(
   $s as xs:string,
   $num as xs:integer)
 {
-  let $x := xdmp:document-get(
-    concat(xdmp:modules-root(), "/apidoc/config/document-list.xml"))
+  let $x := $DOCUMENT-LIST
   let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
   let $url := $x//guide[@url-name ne @source-name]/@url-name/string()
   let $count := count($source)
@@ -239,7 +245,7 @@ as element()*
       or count($children) eq 1) then ()
     else stp:error(
       'UNEXPECTED', (count($children), xdmp:describe($children))))
-  let $_ := stp:debug(
+  let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:function-extract',
     ('mode', $mode,
       'external', $external-uri,
@@ -289,12 +295,12 @@ as empty-sequence()
 {
   stp:info('stp:function-docs', ('starting', $version)),
   for $doc in raw:api-docs($version)
-  let $_ := stp:debug(
+  let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs", ('starting', xdmp:describe($doc)))
   let $extracted as node()+ := stp:function-docs($version, $doc)
   for $func in $extracted
   let $uri := base-uri($func)
-  let $_ := stp:debug(
+  let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs",
     ("inserting", xdmp:describe($doc), 'at', $uri))
   return xdmp:document-insert($uri, $func)
@@ -328,7 +334,7 @@ declare function stp:zip-static-file-get(
   $is-mangled-html as xs:boolean)
 as document-node()
 {
-  stp:fine(
+  if (not($DEBUG)) then () else stp:fine(
     "stp:zip-static-file-get",
     (xdmp:describe($zip), 'path', $path,
       'html', $is-html, 'jdoc', $is-jdoc,
@@ -358,7 +364,8 @@ as document-node()
     )[2]
 
   else if ($is-mangled-html) then try {
-    stp:fine('stp:zip-static-file-get', ('trying unquote for', $path)),
+    if (not($DEBUG)) then () else  stp:fine(
+      'stp:zip-static-file-get', ('trying unquote for', $path)),
     let $unparsed as xs:string := xdmp:zip-get(
       $zip,
       $path,
@@ -376,7 +383,7 @@ as document-node()
       <options xmlns="xdmp:zip-get"
       ><encoding>auto</encoding></options>) }
   else if ($is-html) then try {
-    stp:fine(
+    if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-get',
       ("trying html as XML UTF8")),
     xdmp:zip-get(
@@ -413,7 +420,7 @@ declare function stp:zip-static-file-insert(
   $is-jdoc as xs:boolean)
 as empty-sequence()
 {
-  stp:debug(
+  if (not($DEBUG)) then () else stp:debug(
     "stp:zip-static-file-insert",
     (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)),
   xdmp:document-insert(
@@ -432,7 +439,7 @@ as empty-sequence()
    : used for search, snippeting, etc.
    :)
   if (not($is-jdoc)) then () else (
-    stp:fine(
+    if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert',
       ($uri, "trying xdmp:tidy with xhtml:clean")),
     let $tidy-options := (
@@ -450,7 +457,7 @@ as empty-sequence()
         ("failed tidy conversion with", $e/error:code)),
       $doc }
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
-    let $_ := stp:fine(
+    let $_ := if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert', ('Tidying', $uri, 'to', $xhtml-uri))
     return xdmp:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
 };
@@ -590,7 +597,7 @@ declare function stp:list-entry(
   $toc-node as element(toc:node))
 as element(api:list-entry)
 {
-  stp:fine(
+  if (not($DEBUG)) then () else stp:fine(
     'stp:list-entry',
     ('function', xdmp:describe($function),
       'toc', xdmp:describe($toc-node))),
@@ -643,7 +650,7 @@ as element(api:list-page)
     for $leaf in $toc-node//toc:node[not(toc:node)][@type]
     (: For multiple *:polygon() functions, only list the first. :)
     let $href as xs:string := $leaf/@href
-    let $_ := stp:fine(
+    let $_ := if (not($DEBUG)) then () else stp:fine(
       'stp:list-page-functions',
       ($uri, 'leaf', xdmp:describe($leaf),
         'type', $leaf/@type, 'href', $href))
@@ -711,11 +718,12 @@ as element()+
       'and /apidoc/config/document-list.xml' },
 
     let $guide-nodes as element()+ := $toc/toc:node[
-      @id eq 'guides']/toc:node/toc:node[@guide]
+      @id eq 'guides']/toc:node/toc:node[@type eq 'guide']
     for $guide in $guide-nodes
     let $display as xs:string := lower-case(
       normalize-space($guide/@display))
-    let $_ := stp:fine('stp:list-pages', (xdmp:describe($guide), $display))
+    let $_ := if (not($DEBUG)) then () else stp:fine(
+      'stp:list-pages', (xdmp:describe($guide), $display))
     return element api:user-guide {
       $guide/@*,
       (: Facilitate automatic link creation at render time.
@@ -748,7 +756,7 @@ as element()+
    :)
   let $toc-node as element(toc:node)? := (
     $toc-document//toc:node[@href eq $href][toc:title])[1]
-  let $_ := stp:debug(
+  let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:list-pages-render',
     ('href', $href, 'toc-node', xdmp:describe($toc-node)))
   where $toc-node
@@ -772,7 +780,8 @@ as empty-sequence()
   let $_ := (
     if ($n/* or $n/self::*) then ()
     else stp:error('EMPTY', ($uri, xdmp:quote($n))))
-  let $_ := stp:debug('stp:list-pages-render', ($uri))
+  let $_ := if (not($DEBUG)) then () else stp:debug(
+    'stp:list-pages-render', ($uri))
   return xdmp:document-insert($uri, $n)
 };
 
@@ -794,7 +803,8 @@ as empty-sequence()
       let $suffix as xs:string := replace($e, $RAW-PAT, '$2')
       let $uri as xs:string := concat('/', $version, '/', $suffix)
       let $type := xdmp:uri-content-type($uri)
-      let $_ := stp:debug('stp:zip-load-raw-docs', ($e, '=>', $uri, $type))
+      let $_ := if (not($DEBUG)) then () else stp:debug(
+        'stp:zip-load-raw-docs', ($e, '=>', $uri, $type))
       let $opts := (
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
@@ -945,7 +955,7 @@ as attribute()*
     (($e/@mode, $context)[1] treat as item()) ! (
       (: Add the prefix and namespace URI of the function. :)
       attribute prefix { $e/@lib },
-      attribute namespace { api:uri-for-lib($e/@lib) },
+      attribute namespace { api:namespace($e/@lib)/@uri },
       (: Watch for duplicates!
        : Any existing attributes will be copies by the caller.
        :)
@@ -1069,7 +1079,7 @@ declare function stp:fixup(
   $context as xs:string*)
 as node()*
 {
-  stp:fine(
+  if (not($DEBUG)) then () else stp:fine(
     'stp:fixup',
     (xdmp:describe($n), xdmp:describe($context))),
   typeswitch($n)

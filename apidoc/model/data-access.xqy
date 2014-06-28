@@ -37,81 +37,47 @@ declare variable $version as xs:string  := (
  : when $version-specified is empty,
  : so the view code will get the right default TOC.
  :)
-declare variable $toc-uri-default-version-location := concat(
-  "/apidoc/private/", "toc-uri.xml");
+declare variable $toc-uri-default-version-location := "/apidoc/private/toc-uri.xml" ;
 declare variable $toc-uri-location := concat(
   "/apidoc/private/",
   $version-specified,
   (if ($version-specified) then '/' else ''),
   "toc-uri.xml");
 
-(: The URL of the current TOC (based on whatever version the user has requested) :)
-(:
-declare variable $toc-uri := string(doc($toc-uri-location)/*);
-:)
 (: Using the alternative TOC location for now - i.e. if current version is the default,
    regardless of whether it was explicit, don't include the version number in links; see also $version-prefix in page.xsl; see also delete-old-toc.xqy :)
-declare variable $toc-uri := string(doc($toc-uri-location-alternative)/*);
+declare variable $toc-uri as xs:string := doc($toc-uri-location-alternative) ;
 
-declare variable $toc-uri-location-alternative := if ($version eq $default-version) then $toc-uri-default-version-location
-                                                                                                else $toc-uri-location;
-
-declare variable $VERSION-DIR := concat("/apidoc/", $version, "/");
-
-(: Thing is... we always look at every single function. So why search? :)
-declare variable $query-for-all-functions :=
-  cts:and-query((
-    (: REST "function" docs are in sub-directories :)
-    cts:directory-query($VERSION-DIR, "infinity"),
-    cts:element-query(xs:QName("api:function"), cts:and-query(()))
-  ));
-
-declare variable $query-for-builtin-functions := cts:and-query(
-  ($query-for-all-functions,
-    cts:element-attribute-value-query(
-      xs:QName("api:function"), xs:QName("type"),
-      "builtin"))) ;
-
-(: Every function that's not a built-in function is a library function :)
-declare variable $query-for-library-functions := cts:and-not-query(
-  $query-for-all-functions,
-  $query-for-builtin-functions) ;
-
-(: Used only by TOC-generating code :)
-declare variable $all-function-docs := cts:search(
-  collection(), $query-for-all-functions, "unfiltered") ;
-
-(: TODO is the bucket check obsolete? Make it so? :)
-declare variable $ALL-FUNCTIONS-JAVASCRIPT := (
-  if (number($version) lt 8) then ()
-  else $all-function-docs[
-    api:function-page[@mode eq $MODE-JAVASCRIPT]/api:function/@bucket = (
-      'MarkLogic Built-In Functions',
-      'W3C-Standard Functions')]) ;
-
-declare variable $all-functions-count     := xdmp:estimate(
-  cts:search(collection(),$query-for-all-functions));
-declare variable $built-in-function-count := xdmp:estimate(
-  cts:search(collection(),$query-for-builtin-functions));
-declare variable $library-function-count  := xdmp:estimate(
-  cts:search(collection(),$query-for-library-functions));
+declare variable $toc-uri-location-alternative := (
+  if ($version eq $default-version) then $toc-uri-default-version-location
+  else $toc-uri-location) ;
 
 declare variable $built-in-libs := api:get-libs(
-  $query-for-builtin-functions, true(), $MODE-XPATH );
+  $version,
+  api:query-for-builtin-functions($version),
+  true(), $MODE-XPATH );
 declare variable $library-libs  := api:get-libs(
-  $query-for-library-functions, false(), $MODE-XPATH);
+  $version, api:query-for-library-functions($version),
+  false(), $MODE-XPATH);
 
 declare variable $LIBS-JAVASCRIPT := (
   if (number($version) lt 8) then ()
   else api:get-libs(
+    $version,
     cts:element-attribute-value-query(
       xs:QName('api:function-page'),
       xs:QName('mode'),
       $MODE-JAVASCRIPT),
     true(), $MODE-JAVASCRIPT));
 
-declare variable $namespace-mappings := u:get-doc(
-  "/apidoc/config/namespace-mappings.xml")/namespaces/namespace ;
+declare variable $M-NAMESPACES as map:map := (
+  let $m := map:map()
+  let $_ := (
+    for $ns in u:get-doc(
+      "/apidoc/config/namespace-mappings.xml")/namespaces/namespace
+    let $_ := map:put($m, $ns/@lib, $ns)
+    return ())
+  return $m) ;
 
 (: Replace "?" in the names of REST resources
  : with a character that will work in doc URIs
@@ -135,8 +101,15 @@ declare variable $REST-COMPLEXTYPE-MAPPINGS := (
   case '8.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
   default return error((), 'UNEXPECTED', ('unknown version', $version))) ;
 
+declare function api:version-dir($version as xs:string)
+as xs:string
+{
+  concat("/apidoc/", $version, "/")
+};
+
 (: TODO this seems convoluted and expensive. Really a group-by? :)
 declare function api:get-libs(
+  $version as xs:string,
   $query as cts:query,
   $builtin as xs:boolean,
   $mode as xs:string)
@@ -146,39 +119,81 @@ as element(api:lib)*
     xs:QName("api:function"), xs:QName("lib"),
     (), "ascending", $query)
   return element api:lib {
-    attribute category-bucket { api:get-bucket-for-lib($lib) },
+    attribute category-bucket { api:get-bucket-for-lib($version, $lib) },
     if (not($builtin)) then ()
     else attribute built-in { true() },
     attribute mode { $mode },
     $lib }
 };
 
+declare function api:query-for-all-functions(
+  $version as xs:string)
+as cts:query
+{
+  cts:and-query(
+    (cts:directory-query(api:version-dir($version), "infinity"),
+      cts:element-query(xs:QName("api:function"), cts:and-query(()))))
+};
+
+declare function api:query-for-builtin-functions(
+  $version as xs:string)
+as cts:query
+{
+  cts:and-query(
+    (api:query-for-all-functions($version),
+      cts:element-attribute-value-query(
+        xs:QName("api:function"), xs:QName("type"), "builtin")))
+};
+
 declare function api:query-for-lib-functions(
+  $version as xs:string,
   $lib as xs:string)
 as cts:query
 {
   cts:and-query(
-    ($query-for-all-functions,
+    (api:query-for-all-functions($version),
       cts:element-attribute-value-query(
         xs:QName("api:function"), xs:QName("lib"), $lib)))
+};
+
+(: Every function that is not a built-in function is a library function :)
+declare function api:query-for-library-functions(
+  $version as xs:string)
+as cts:query
+{
+  cts:and-not-query(
+    api:query-for-all-functions($version),
+    api:query-for-builtin-functions($version))
+};
+
+declare function api:functions(
+  $version as xs:string)
+as document-node()+
+{
+  cts:search(
+    collection(),
+    api:query-for-all-functions($api:version),
+    "unfiltered")
 };
 
 (: Used to associate library containers under the "API" tab
  : with corresponding "Categories" tab TOC container.
  :)
 declare function api:get-bucket-for-lib(
+  $version as xs:string,
   $lib as xs:string)
 as xs:string*
 {
-  cts:search(collection(), api:query-for-lib-functions($lib))[1]
+  cts:search(collection(), api:query-for-lib-functions($version, $lib))[1]
   /api:function-page/api:function[1]/@bucket
 };
 
-(: Returns the namespace URI associated with the given lib name :)
-declare function api:uri-for-lib($lib)
-as xs:string?
+(: Returns the namespace associated with the given lib name. :)
+declare function api:namespace(
+  $lib as xs:string)
+as element(namespace)?
 {
-  $namespace-mappings[@lib eq $lib]/@uri
+  map:get($M-NAMESPACES, $lib)
 };
 
 (: Normally just use the lib name as the prefix,
@@ -188,8 +203,8 @@ declare function api:prefix-for-lib(
   $lib as xs:string)
 as xs:string?
 {
-  $namespace-mappings[@lib eq $lib]/(
-    if (@prefix) then @prefix else $lib)
+  (api:namespace($lib)/@prefix,
+    $lib)[1]
 };
 
 (: E.g., store the images for /apidoc/4.2/guides/performance.xml

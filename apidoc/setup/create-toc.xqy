@@ -9,7 +9,7 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace toc="http://marklogic.com/rundmc/api/toc"
   at "toc.xqm" ;
 
-toc:toc($api:version),
+toc:toc($api:version, xdmp:get-request-field('help-xsd-dir')),
 text {
   "Created the XML-based TOC at ",$stp:toc-xml-uri, " in ",
   xdmp:elapsed-time() }
