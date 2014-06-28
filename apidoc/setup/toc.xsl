@@ -31,9 +31,6 @@ driving the generation of function list pages.
       namespace="http://marklogic.com/rundmc/api/toc"
       href="/apidoc/setup/toc.xqm"/>
 
-  <!-- TODO inline? Nothing else uses this. -->
-  <xsl:include href="toc-help.xsl"/>
-
   <xsl:param name="VERSION-NUMBER" as="xs:double"/>
 
   <!--
@@ -232,7 +229,9 @@ driving the generation of function list pages.
           </xsl:apply-templates>
         </node>
 
-        <xsl:apply-templates mode="help-toc" select="."/>
+        <xsl:copy-of
+            select="toc:help($VERSION-NUMBER, $toc:HELP-CONFIG)"/>
+
         <xsl:if test="$VERSION-NUMBER ge 6">
           <node display="C++ UDF API Reference"
                 href="/cpp/udf/index.html" external="true"/>

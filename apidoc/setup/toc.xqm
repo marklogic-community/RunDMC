@@ -21,6 +21,12 @@ declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "/apidoc/setup/raw-docs-access.xqy" ;
 
+(: The help page code relies on undocumented and unsupported functions
+ : found in the MarkLogic admin UI code.
+ :)
+import module namespace af="http://marklogic.com/xdmp/admin/admin-forms"
+  at "/MarkLogic/admin/admin-forms.xqy" ;
+
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
 declare variable $ALL-FUNCTIONS-NOT-JAVASCRIPT as element()+ := (
@@ -688,19 +694,20 @@ as empty-sequence()
 (: Input may be a document-node or element. :)
 declare function toc:help-extract-title(
   $content as node())
-as xs:string
+as xs:string?
 {
   (: Wildcard because sometimes the source uses XHTML, but sometimes not.
    : e.g., x509.xsd
    :)
   normalize-space(
-    ($content//*:span[@class eq 'help-text'])[1])
+    ($content//*:span[@class eq 'help-text'])[1])[.]
 };
 
 declare function toc:help-resolve-repeat(
   $e as element(repeat))
+as element()
 {
-  let $qname := resolve-QName($e/@name,$e)
+  let $qname := resolve-QName($e/@name, $e)
   let $idref := $e/@idref/string()
   return root($e)//*[@id eq $idref or node-name(.) eq $qname]
 };
@@ -1122,7 +1129,7 @@ as element(toc:node)+
   for $b in $buckets
   let $bucket-id := translate($b, ' ', '')
   let $is-REST := $b eq 'REST Resources API'
-  order by index-of($toc:FORCED-ORDER, $b) ascending, $b
+  order by index-of($FORCED-ORDER, $b) ascending, $b
   (: bucket node
    : ID for function buckets is the display name minus spaces.
    : async is ignored for REST, because we ignore this <node> container.
@@ -1203,6 +1210,117 @@ as element(toc:node)+
         $sub-categories, $version-number, $mode)
     }
   }
+};
+
+declare function toc:help-fixup(
+  $n as node())
+as node()
+{
+  (: Convert hard-coded color spans into <strong> tags.
+   : Namespaces are not consistent in help docs.
+   :)
+  if ($n/self::*:span[contains(@style, 'color:')]) then element strong {
+    attribute class { 'configOption' },
+    toc:help-fixup($n/node()) }
+  (: Rewrite image URLs. These should always be empty. :)
+  else if ($n/self::*:img[@src]) then element img {
+    $n/@* except ($n/@src, $n/@class),
+    attribute src { concat('/apidoc/images/admin-help/', $n/@src) },
+    attribute class { 'adminHelp' } }
+  else if ($n/self::*) then element { node-name($n) } {
+    $n/@*,
+    toc:help-fixup($n/node()) }
+  else $n
+};
+
+declare function toc:help-content-element(
+  $version-number as xs:double,
+  $e as element())
+as node()+
+{
+  let $element-decl := toc:help-element-decl($XSD-DOCS, $e)
+  let $exclusion-list := (
+    tokenize($e/@exclude, '\s+'),
+    if ($e/@starting-with) then toc:help-not-prefixed-names($XSD-DOCS, $e)
+    else if ($e/@auto-exclude) then toc:help-auto-exclude($XSD-DOCS, $e)
+    else ())
+  let $line-after-list := tokenize($e/@line-after, '\s+')
+  let $help-content := element api:help-node {
+    af:displayHelp(
+      root($element-decl)/*,                            (: $schemaroot    :)
+      local-name($e),
+      if ($e/@help-position eq 2) then 2 else 1, (: $multiple-uses :)
+      $exclusion-list,
+      $line-after-list,
+      not($e/@append)             (: $print-buttons :)
+    ) }
+  let $proxy-element := $e/@append/element {
+    resolve-QName($e/@append, $e) } { () }
+  let $schema-element := $e/@append/toc:help-element-decl(
+    $XSD-DOCS, $proxy-element)/root()/*
+  let $help-content-except-title := (
+    (: Copy everything after the second <hr>.
+     : ASSUMPTION
+     : The title of the page appears between two <hr> elements
+     : at the beginning.
+     : The page for flexrep-domain is missing the second <hr>.
+     :)
+    if ($help-content/*:hr[2])
+    then $help-content/*:hr[2]/following-sibling::node()
+    else $help-content/*:span[1]/following-sibling::node())
+  let $title as xs:string+ := (
+    if ($e/@content-title) then $e/@content-title
+    else toc:help-extract-title($help-content)[1])
+  return element toc:node {
+    $e/@display,
+    attribute href { toc:help-path($HELP-ROOT-HREF, $e) },
+    attribute admin-help-page { "yes" },
+    element toc:title { $title },
+    element toc:content {
+      let $help-content-converted := toc:help-fixup(
+        $help-content-except-title)
+      return (
+        if ($e/@show-only-the-list) then ($help-content-converted//*:ul)[1]
+        else $help-content-converted) },
+    (: Recurse on any children. :)
+    toc:help-content($version-number, $e/*) }
+};
+
+declare function toc:help-content(
+  $version-number as xs:double,
+  $e as element())
+as node()+
+{
+  (: Ignore sections that were added in a later server version :)
+  if ($version-number lt $e/@added-in) then ()
+  else typeswitch($e)
+  case element(repeat) return toc:help-content(
+    $version-number, toc:help-resolve-repeat($e))
+  case element(container) return element toc:node {
+    $e/@display,
+    toc:help-content($version-number, $e/*) }
+  default return toc:help-content-element($version-number, $e)
+};
+
+declare function toc:help(
+  $version-number as xs:double,
+  $help as element(help))
+as element(toc:node)
+{
+  element toc:node {
+    (:
+     : For error-checking only,
+     : helps propagate a more useful error: directory not found.
+     :)
+    if ($XSD-DOCS) then () else (),
+    $help/@display,
+    attribute href { $HELP-ROOT-HREF },
+    attribute id { "HelpTOC" },
+    attribute admin-help-page { "yes" },
+    element toc:title { 'Admin Interface Help Pages' },
+    element toc:content {
+      attribute auto-help-list { "yes" },
+      toc:help-content($version-number, $help/*) } }
 };
 
 (: apidoc/setup/toc.xqm :)

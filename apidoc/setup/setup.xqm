@@ -682,20 +682,16 @@ as element(api:help-page)
     attribute container-toc-section-id {
       stp:container-toc-section-id($toc-node) },
     $toc-node/@*,
-    stp:node-to-xhtml($toc-node/toc:title),
+    element api:title { $toc-node/toc:title/node() },
     (: Help index page is at the top :)
-    if (not($toc-node/toc:content/@auto-help-list)) then stp:node-to-xhtml(
-      $toc-node/toc:content)
-    else element api:content {
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <p>
+    element api:content {
+      if (not($toc-node/toc:content/@auto-help-list))
+      then stp:node-to-xhtml($toc-node/toc:content/node())
+      else <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>
       The following is an alphabetical list of Admin Interface help pages:
-        </p>
-        <ul>
-      {
-        stp:list-page-help-items($toc-node)
-      }
-        </ul>
+      </p>
+      <ul>{ stp:list-page-help-items($toc-node) }</ul>
       </div>
     }
   }

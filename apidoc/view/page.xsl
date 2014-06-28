@@ -483,7 +483,6 @@
     <xsl:apply-templates select="api:title/node()"/>
   </xsl:template>
 
-
   <!-- If a name starts with a "/", that means this is a list of REST resources -->
   <xsl:template mode="list-page-col-heading"
                 match="api:list-page[
