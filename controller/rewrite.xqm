@@ -17,8 +17,15 @@ import module namespace users="users"
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
  at "server-urls.xqy";
 
+(: TODO can we find a way to avoid calling apidoc code here? :)
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
+
 declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := "8.0" ;
+
+declare variable $GUIDE-MAPPINGS as element(guide)+ := $api:DOCUMENT-LIST/*/guide ;
+
 declare variable $SHAREPOINT-CONNECTOR-VERSION := "1.1-1" ;
 
 (: TODO handle old default.xqy URLs :)
@@ -208,12 +215,13 @@ declare function m:redirect-function-url($path as xs:string) as xs:string {
     concat($srv:api-server, $new-path)
 };
 
-declare function m:redirect-guide-url($path as xs:string) as xs:string {
-  let $file-stem := substring-before(tokenize($path,'/')[last()], '.pdf'),
-      $mappings  := u:get-doc("/apidoc/config/document-list.xml")/docs/*/guide,
-      $new-stem  := $mappings[(@pdf-name,@source-name)[1] eq $file-stem]/@url-name/string(.)
-  return
-    concat($srv:api-server, '/guide/', $new-stem, '.pdf')
+declare function m:redirect-guide-url($path as xs:string)
+  as xs:string
+{
+  let $file-stem := substring-before(tokenize($path,'/')[last()], '.pdf')
+  let $new-stem as xs:string := $GUIDE-MAPPINGS[
+    (@pdf-name,@source-name)[1] eq $file-stem]/@url-name
+  return concat($srv:api-server, '/guide/', $new-stem, '.pdf')
 };
 
 declare function m:gone($path as xs:string) as xs:boolean {

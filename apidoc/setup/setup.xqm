@@ -22,15 +22,12 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
-declare variable $DEBUG := true() ;
-
-declare variable $DOCUMENT-LIST := xdmp:document-get(
-  concat(xdmp:modules-root(), "/apidoc/config/document-list.xml")) ;
+declare variable $DEBUG := false() ;
 
 declare variable $RAW-PAT := (
   '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' );
 
-declare variable $TITLE-ALIASES := u:get-doc(
+declare variable $TITLE-ALIASES as element(aliases) := u:get-doc(
   '/apidoc/config/title-aliases.xml')/aliases ;
 
 declare variable $toc-dir     := concat("/media/apiTOC/",$api:version,"/");
@@ -189,28 +186,21 @@ as xs:string
 declare function stp:pdf-uri($uri as xs:string)
 as xs:string?
 {
-  let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1"),
-      $guide-configs := u:get-doc("/apidoc/config/document-list.xml")//guide,
-      $url-name      := $guide-configs[(@pdf-name,@source-name)[1] eq $pdf-name]
-                          /@url-name
-  return
-  (
-    if (not($url-name))
-    then stp:error("ERROR", concat("The configuration for ",$uri,
-          " is missing in /apidoc/config/document-list.xml"))
-    else (),
-    concat("/guide/",$url-name, ".pdf")
-  )
+  let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1")
+  let $guide-configs := $api:DOCUMENT-LIST/*/guide
+  let $url-name as xs:string := $guide-configs[
+    (@pdf-name, @source-name)[1] eq $pdf-name]/@url-name
+  return concat("/guide/",$url-name, ".pdf")
 };
 
-(: look at document-list.xml to change url names based on that list :)
+(: Change guide urls according to the data in the document-list. :)
 declare function stp:fix-guide-names(
   $s as xs:string,
   $num as xs:integer)
 {
-  let $x := $DOCUMENT-LIST
-  let $source := $x//guide[@url-name ne @source-name]/@source-name/string()
-  let $url := $x//guide[@url-name ne @source-name]/@url-name/string()
+  let $guides := $api:DOCUMENT-LIST/*/guide[@url-name ne @source-name]
+  let $source as xs:string* := $guides/@source-name
+  let $url as xs:string* := $guides/@url-name
   let $count := count($source)
   return (
     if ($num eq $count + 1) then (xdmp:set($num, 9999), $s)
@@ -714,8 +704,7 @@ as element()+
     attribute disable-comments { true() },
     comment {
       'This page was automatically generated using',
-      xdmp:node-uri($toc),
-      'and /apidoc/config/document-list.xml' },
+      xdmp:node-uri($toc), 'and document-list.xml' },
 
     let $guide-nodes as element()+ := $toc/toc:node[
       @id eq 'guides']/toc:node/toc:node[@type eq 'guide']

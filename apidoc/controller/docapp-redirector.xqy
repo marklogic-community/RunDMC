@@ -1,6 +1,7 @@
 xquery version "1.0-ml";
 
-import module namespace u = "http://marklogic.com/rundmc/util" at "../../lib/util-2.xqy";
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
 
 xdmp:set-response-content-type("text/html"),
 <html>
@@ -24,7 +25,7 @@ xdmp:set-response-content-type("text/html"),
         else
           fragment = "chapter";
         var guideUrlName;
-        {for $guide at $pos in u:get-doc("/apidoc/config/document-list.xml")//guide
+        {for $guide at $pos in $api:DOCUMENT-LIST/*/guide
          return
          (
            if ($pos ne 1) then text{" else "} else (),

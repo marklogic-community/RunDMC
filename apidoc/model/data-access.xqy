@@ -11,6 +11,10 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 
+(: TODO refactor for #230. :)
+declare variable $DOCUMENT-LIST as element(docs) := u:get-doc(
+  '/apidoc/config/document-list.xml')/docs ;
+
 declare variable $MODE-JAVASCRIPT := 'javascript' ;
 declare variable $MODE-REST := 'REST' ;
 declare variable $MODE-XPATH := 'xquery' ;

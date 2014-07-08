@@ -28,7 +28,10 @@
   <xsl:variable name="convert-at-render-time" select="doc-available('/apidoc/DEBUG.xml') and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
   <xsl:variable name="docs-page"
-                select="doc(concat($api:VERSION-DIR, 'index.xml'))/api:docs-page"/>
+                select="doc(
+                        concat(
+                        api:version-dir($api:version),
+                        'index.xml'))/api:docs-page"/>
 
   <xsl:variable name="auto-links"
                 select="$docs-page/auto-link"/>

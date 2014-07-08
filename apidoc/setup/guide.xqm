@@ -518,8 +518,7 @@ declare function guide:consolidate($version as xs:string)
       (: Directory in which to find guide XML for the server version :)
       let $guides-dir := concat("/", $version, "/xml/")
       (: The list of guide configs :)
-      let $guide-list as element()+ := u:get-doc(
-        "/apidoc/config/document-list.xml")/docs/*/guide
+      let $guide-list as element()+ := $api:DOCUMENT-LIST/*/guide
       (: Assume every guide has a title.xml document.
        : This might seem inefficient,
        : but consider that we will want to look at most of these documents.
