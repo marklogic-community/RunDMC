@@ -594,25 +594,25 @@ as element()?
 declare function toc:render-node-children(
   $uri as xs:string,
   $prefix-for-hrefs as xs:string?,
-  $n as element(toc:node))
+  $is-open as xs:boolean?,
+  $is-async as xs:boolean?,
+  $children as element(toc:node)*)
 as element()?
 {
   if (not($stp:DEBUG)) then () else stp:fine(
     'toc:render-node-children',
     ($uri, $prefix-for-hrefs,
-      xdmp:describe($n),
-      exists($n/toc:node))),
+      count($children), xdmp:describe($children))),
 
-  if (not($n/toc:node)) then () else
+  if (not($children)) then () else
   <ul xmlns="http://www.w3.org/1999/xhtml">
   {
     attribute style {
       'display:',
-      if ($n/@open) then 'block;' else 'none;' },
-    if (not($n/@async)) then toc:render-node(
-      $uri, $prefix-for-hrefs, $n/toc:node)
+      if ($is-open) then 'block;' else 'none;' },
     (: Placeholder for nodes to be loaded asynchronously. :)
-    else <li><span class="placeholder">&#160;</span></li>
+    if ($is-async) then <li><span class="placeholder">&#160;</span></li>
+    else toc:render-node($uri, $prefix-for-hrefs, $children)
   }
   </ul>
 };
@@ -632,13 +632,34 @@ as element()
   <li xmlns="http://www.w3.org/1999/xhtml">
   {
     attribute class { toc:render-node-class($n) },
-    if (not($n/@id)) then ()
-    else attribute id { toc:node-id($n) },
+    $n[@id]/attribute id { toc:node-id($n) },
     toc:render-node-hitarea($n),
     toc:render-node-link($prefix-for-hrefs, $n),
-    toc:render-node-children($uri, $prefix-for-hrefs, $n)
+    toc:render-node-children(
+      $uri, $prefix-for-hrefs,
+      xs:boolean($n/@open), xs:boolean($n/@async),
+      $n/toc:node)
   }
   </li>
+};
+
+declare function toc:render-node-tree(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $n as element(toc:node),
+  $selected as xs:boolean)
+as element()
+{
+  <ul xmlns="http://www.w3.org/1999/xhtml">
+  {
+    $n/@id,
+    attribute style {
+      'display:',
+      if ($selected) then 'block;' else 'none;' },
+    attribute class { 'treeview', 'apidoc_tree' },
+    toc:render-node($uri, $prefix-for-hrefs, $n)
+  }
+  </ul>
 };
 
 (: Given a non-duplicate async node,
@@ -663,41 +684,59 @@ as element()
   return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
   {
     attribute xml:base { $uri-new },
-    toc:render-node(
-      $uri, $prefix-for-hrefs, $n/toc:node)
+    toc:render-node($uri, $prefix-for-hrefs, $n/toc:node)
   }
   </ul>
+};
+
+declare function toc:render-select-option(
+  $n as element(toc:node),
+  $selected as xs:boolean)
+as element()
+{
+  <option xmlns="http://www.w3.org/1999/xhtml" class="toc_select_option">
+  {
+    (: JavaScript will decorate the parent select with an onchange handler.
+     : Selecting any option will change the TOC display,
+     : using this value to find the right top-level TOC entry.
+     :)
+    attribute value { $n/@id/string() treat as xs:string },
+    if (not($selected)) then () else attribute selected { true() },
+    $n/@display/string() treat as xs:string
+  }
+  </option>
 };
 
 declare function toc:render-content(
   $uri as xs:string,
   $prefix-for-hrefs as xs:string?,
-  $toc as element(toc:root))
+  $toc as element(toc:root),
+  $selected as element(toc:node))
 as element()
 {
   if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="toc_select">
+      Select section:
+      <select id="toc_select">
+  {
+    (: To preserve node order, use SMO rather than XPath. :)
+    $toc/toc:node
+    ! toc:render-select-option(., . is $selected)
+  }
+      </select>
+    </div>
     <div class="scrollable_section">
       <input id="config-filter" name="config-filter" class="config-filter"/>
       <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
   class="config-filter-close-button"/>
       <div id="apidoc_tree_container" class="pjax_enabled">
   {
-    element ul {
-      attribute id { "apidoc_tree" },
-      attribute class { "treeview" },
-      element li {
-        attribute id { "AllDocumentation" },
-        attribute class { 'collapsible lastCollapsible' },
-        <div class="hitarea collapsible-hitarea lastCollapsible-hitarea"></div>,
-        element a {
-          attribute href { $prefix-for-hrefs||'/' },
-          attribute class { 'toc_root' },
-          $toc/@display/string() },
-        element ul {
-          toc:render-node($uri, $prefix-for-hrefs, $toc/toc:node) } } }
+    $toc/toc:node/toc:render-node-tree(
+      $uri, $prefix-for-hrefs, .,
+      . is $selected)
   }
       </div>
     </div>
@@ -733,7 +772,10 @@ as element()+
     <div id="toc" class="toc">
       <div id="toc_content">
   {
-    toc:render-content($uri, $prefix-for-hrefs, $toc)
+    toc:render-content(
+      $uri, $prefix-for-hrefs, $toc,
+      (: TODO infer selection from document-list? Cookie? :)
+      $toc/toc:node[1])
   }
       </div>
       <div id="splitter"/>
@@ -1364,9 +1406,8 @@ as element(toc:node)
     "HelpTOC", $help/@display, $HELP-ROOT-HREF,
     (), (), ('admin-help-page'),
     (element toc:title { 'Admin Interface Help Pages' },
-      element toc:content {
-        attribute auto-help-list { true() },
-        toc:help-content($version-number, $xsd-docs, $help/*) }))
+      element toc:content { attribute auto-help-list { true() } },
+      toc:help-content($version-number, $xsd-docs, $help/*)))
 };
 
 (:
@@ -1448,6 +1489,8 @@ as element(toc:root)
   return element toc:root {
     attribute display { "All Documentation" },
     attribute open { true() },
+
+    (: TODO #230 infer structure from document-list. :)
     toc:node(
       toc:id(), "Server-Side APIs", (),
       (), (), 'open',

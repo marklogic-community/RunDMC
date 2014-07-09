@@ -1,18 +1,32 @@
 /* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
-var previousFilterText = '';
-var currentFilterText = '';
+var tocSelect = null;
 
 function toc_init() {
     var tocPartsDir = $("#tocPartsDir").text();
     var tocTrees = $(".treeview");
+    tocSelect = $("#toc_select");
 
     tocTrees.treeview({
         prerendered: true,
         url: tocPartsDir });
 
+    // Set up the select widget
+    tocSelect.change(function(e) {
+        console.log('TOC select option changed');
+        // Hide the old TOC tree.
+        $(".apidoc_tree:visible").hide()
+        // Show the corresponding TOC tree.
+        var n = tocSelect.children("option").filter(":selected");
+        var id = n.val();
+        console.log("TOC select option changed to", n.val());
+        var tree = $('#' + id);
+        tree.show()
+    });
+
     // Set up the filter
+    var previousFilterText = '';
     $("#config-filter").keyup(function(e) {
-        currentFilterText = $(this).val();
+        var currentFilterText = $(this).val();
 
         // TODO what about a confirmation alert?
         if (e.which == 13) // Enter key pressed
@@ -26,8 +40,9 @@ function toc_init() {
             if (previousFilterText !== currentFilterText) {
                 //console.log("toc filter event", currentFilterText);
                 previousFilterText = currentFilterText;
+                // The current TOC tree root should be visible.
                 filterConfigDetails(currentFilterText,
-                                    "#apidoc_tree"); } },
+                                    ".apidoc_tree:visible"); } },
                    350);
         $("#config-filter" + "-close-button").click(function() {
             $(this).hide();
@@ -55,7 +70,7 @@ function toc_init() {
             .mousedown(splitterMouseDown);
 
         // If this was a deep link, load and scroll.
-        updateTocForTab();
+        updateTocForSelection();
     });
 }
 
@@ -154,15 +169,15 @@ function loadTocSection(index, tocSection) {
 }
 
 
-// Called only from updateTocForTab
+// Called only from updateTocForSelection
 function waitToShowInTOC(tocSection, sleepMillis) {
-  //console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
+  console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
   if (!sleepMillis) sleepMillis = 125;
 
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
   if (tocSection.hasClass("loaded")) {
-    //console.log("waitToShowInTOC loaded", tocSection);
+    console.log("waitToShowInTOC loaded", tocSection);
 
     clearTimeout(waitToShowInTOC);
 
@@ -233,6 +248,24 @@ function showInTOC(a) {
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
 
+    // If there is a different TOC section visible, hide it.
+    var treeVisible = $(".apidoc_tree:visible");
+    var treeForA = a.parents(".apidoc_tree");
+    // console.log("showInTOC",
+    //             "visible", treeVisible.attr('id'),
+    //             "a", treeForA.attr('id'));
+    if (treeForA.attr('id') != treeVisible.attr('id')) {
+        treeVisible.hide();
+        // Update the selector to match.
+        var options = tocSelect.children("option");
+        //console.log(options.filter(":selected"));
+        options.filter(":selected").removeAttr('selected');
+        var id = treeForA.attr('id');
+        var selector = "[value='" + id + "']";
+        //console.log(options.filter(selector));
+        options.filter(selector).attr('selected', 'true');
+    }
+
     var items = a.addClass("selected").parents("ul, li").add(
       a.nextAll("ul")).show();
 
@@ -246,23 +279,38 @@ function showInTOC(a) {
 }
 
 // Called at init and whenever a tab changes.
-// functionPageBucketId and tocSectionLinkSelector are from apidoc/view/page.xsl
-function updateTocForTab() {
-  console.log("updateTocForTab",
-              "functionPageBucketId", functionPageBucketId,
-              "tocSectionLinkSelector", tocSectionLinkSelector);
+function updateTocForSelection() {
+    // See apidoc/view/page.xsl for functionPageBucketId, tocSectionLinkSelector
+    console.log("updateTocForSelection",
+                "functionPageBucketId", functionPageBucketId,
+                "tocSectionLinkSelector", tocSectionLinkSelector);
 
-  if (!tocSectionLinkSelector) console.log('no tocSectionLinkSelector!');
-  if (!tocSectionLinkSelector) return;
+    if (!tocSectionLinkSelector) {
+        console.log('no tocSectionLinkSelector!');
+        return;
+    }
 
-  var tocSectionLink = $(tocSectionLinkSelector);
-  var tocSection = tocSectionLink.parent();
-  //console.log("updateTocForTab", functionPageBucketId, tocSectionLinkSelector, tocSectionLink, tocSection);
-  if (!tocSection.length) return;
+    var tocSectionLink = $(tocSectionLinkSelector);
+    var tocSection = tocSectionLink.parent();
+    if (!tocSection.length) {
+        console.log("updateTocForSelection",
+                    functionPageBucketId, tocSectionLinkSelector,
+                    "nothing selected!");
+        return;
+    }
 
-  console.log("updateTocForTab loading to", tocSection);
-  loadTocSection(0, tocSection);
-  waitToShowInTOC(tocSection);
+    console.log("updateTocForSelection loading to", tocSection);
+    loadTocSection(0, tocSection);
+    waitToShowInTOC(tocSection);
+}
+
+function tocUpdateFromPageContent()
+{
+    // Load the TOC section for the current page
+    var tocSection = $(tocSectionLinkSelector).first().parent();
+    console.log('tocUpdateFromPageContent',
+                tocSectionLinkSelector, tocSection);
+    updateTocForSelection();
 }
 
 function hasText(item,text) {
@@ -406,15 +454,6 @@ function splitterMouseDown(evt) {
     $('#toc_content').css("-webkit-user-select", "none");
     $('#page_content').css("-webkit-user-select", "none");
     $('#content').css("-webkit-user-select", "none");
-}
-
-function tocUpdateFromPageContent()
-{
-    // Load the TOC section for the current page
-    var tocSection = $(tocSectionLinkSelector).first().parent();
-    console.log('tocUpdateFromPageContent',
-                tocSectionLinkSelector, tocSection);
-    updateTocForTab();
 }
 
 // toc_filter.js

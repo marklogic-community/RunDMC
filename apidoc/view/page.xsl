@@ -338,9 +338,9 @@
     <ul class="doclist">
       <!-- not using this anymore
            <xsl:apply-templates mode="hard-coded-doc-list-items" select="."/>
-      -->
       <xsl:value-of
           select="xdmp:log(concat('docs-page group ', xdmp:describe(*)))"/>
+      -->
       <xsl:apply-templates mode="docs-list-item" select="*"/>
     </ul>
   </xsl:template>

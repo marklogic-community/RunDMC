@@ -528,12 +528,15 @@ as xs:string
   ||ml:external-uri-for-string($internal-uri)
 };
 
-(: Used by page.xsl :)
+(: Used by page.xsl for toc_filter.js :)
 declare function api:toc-section-link-selector(
   $e as element(),
   $version-prefix as xs:string)
 as xs:string
 {
+  if (1) then () else xdmp:log(
+    text {
+      'api:toc-section-link-selector', xdmp:describe($e), $version-prefix }),
   typeswitch($e)
   (: function lib page link :)
   case element(api:function-page) return (

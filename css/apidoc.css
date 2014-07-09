@@ -197,19 +197,26 @@ ol ol {
     padding: .5em .7em !important;
 }
 
+.toc_select {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+
 .scrollable_section {
     min-height: 100%;
     height: 100%;
     position: relative;
 }
+
 .scrollable_section > input,
 .config-filter-close-button {
     position: absolute;
-    top: -52px;
+    top: -24px;
 }
 .scrollable_section > input {
     border: 1px solid #CCC;
-    left: 10px;
+    left: 8px;
     font-size: 11px;
     padding: 1px 5px;
     width: 205px;
