@@ -13,9 +13,9 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
-  at "raw-docs-access.xqy";
+  at "/apidoc/setup/raw-docs-access.xqy";
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
-  at "setup.xqm";
+  at "/apidoc/setup/setup.xqm";
 
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
@@ -83,51 +83,65 @@ as xs:string?
   return (
     (: The section name of the guide :)
     (: Leave out the _12345 part if we are linking to a top-level section :)
-    let $id := guide:extract-id-from-href($href)
+    let $id := substring-before(substring-after($href, '#id('), ')')
     (: Always rewrite to the last ID that appears,
      : so we have a canonical one we can script against in the TOC,
-     : which also uses the last one present. :)
-    let $canonical-fragment-id := $target-doc//*[A/@ID=$id]/A[@ID][last()]/@ID
-    return concat('id_', $canonical-fragment-id))
-};
-
-declare function guide:extract-id-from-href(
-  $href as xs:string)
-as xs:string
-{
-  substring-before(substring-after($href,'#id('),')')
+     : which also uses the last one present.
+     : This is a hotspot, called for most A elements.
+     :)
+    let $id := ($target-doc//A[@ID eq $id])[1]/../A[@ID][last()]/@ID
+    return concat('id_', $id))
 };
 
 declare function guide:starts-list(
   $e as element())
 as xs:boolean
 {
+  (: Use instance of element as much as possible: faster than self axis. :)
   (: For when a note contains a list :)
-  $e/self::Number
-  or $e/self::Body-bullet
-  or $e/self::Note[following-sibling::*[1]/self::Body-bullet-2]
+  $e instance of element(Number)
+  or $e instance of element(Body-bullet)
+  (: Very expensive so try it last. :)
+  or ($e instance of element(Note)
+    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
+};
+
+declare function guide:starts-or-ends-list(
+  $e as element())
+as xs:boolean
+{
+  (: Use instance of element as much as possible: faster than self axis. :)
+  $e instance of element(Body-bullet)
+  or $e instance of element(Number)
+  or $e instance of element(EndList-root)
+  (: For when a note contains a list :)
+  or ($e instance of element(Body) and not($e/IMAGE))
+  (: Very expensive so try it last. :)
+  or ($e instance of element(Note)
+    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
 };
 
 declare function guide:ends-list(
   $e as element())
 as xs:boolean
 {
-  $e/self::EndList-root
-  or $e/self::Body[not(IMAGE)]
+  (: Use instance of element as much as possible: faster than self axis. :)
+  $e instance of element(EndList-root)
+  or ($e instance of element(Body) and not($e/IMAGE))
 };
 
-declare function guide:is-before-end-of-list($e)
+declare function guide:is-before-end-of-list(
+  $e as element())
 as xs:boolean
 {
-  let $most-recent-start-or-end-element := $e/preceding-sibling::*[
-    guide:starts-list(.) or guide:ends-list(.)][1]
   (: We assume that an element is included in the list,
    : unless it is a known end-of-list indicator
    : or one has appeared more recently than the most recent list start.
+   : This is a hotspot, the worst in this code path.
    :)
-  return (
-    not(guide:ends-list($e))
-    and $most-recent-start-or-end-element[guide:starts-list(.)])
+  not(guide:ends-list($e))
+  and ($e/preceding-sibling::*[
+      guide:starts-or-ends-list(.) ][1]/guide:starts-list(.))[1]
 };
 
 declare function guide:is-part-of-list($e)
@@ -140,6 +154,7 @@ as xs:boolean
 declare function guide:new-name($e as element())
 as xs:string?
 {
+  (: This is a hotspot. :)
   typeswitch($e)
   (: Some need to be set to lower-case :)
   case element(TABLE) return 'table'
@@ -156,7 +171,7 @@ as xs:string?
   case element(CodeNoIndent) return 'pre'
   case element(Emphasis) return 'em'
   case element(ROW) return 'tr'
-  (: By default, we just strip the start and end tags out :)
+  (: By default we just strip the start and end tags out. :)
   default return ()
 };
 
@@ -235,13 +250,14 @@ as node()?
 
 declare function guide:target-doc(
   $raw-docs as document-node()*,
-  $href as attribute())
+  $fully-resolved-href as xs:string)
 as document-node()*
 {
-  $raw-docs[
-    starts-with(
-      guide:fully-resolved-href($href),
-      */XML/@original-file)]
+  (: This is a hotspot.
+   : In this form it is pretty well optimized.
+   :)
+  $raw-docs/*/XML/@original-file[ starts-with($fully-resolved-href, .) ]
+  /root()
 };
 
 declare function guide:anchor-href-missing(
@@ -272,7 +288,8 @@ as attribute(href)
         $fully-resolved-top-level-heading-references, $href, $target-doc)) }
   (: Links to other chapters (whether the same or a different guide) :)
   else if (contains($href,'#id(')) then (
-    let $target-doc := guide:target-doc($raw-docs, $href)
+    let $target-doc := guide:target-doc(
+      $raw-docs, guide:fully-resolved-href($href))
     return (
       if ($target-doc) then () else guide:anchor-href-missing($href),
       attribute href {
@@ -286,13 +303,33 @@ as attribute(href)
    : Change "#display.xqy&function=" to "/"
    :)
   else if (starts-with($href, '#display.xqy?function=')) then (
-    let $target-doc := guide:target-doc($raw-docs, $href)
+    let $target-doc := guide:target-doc(
+      $raw-docs, guide:fully-resolved-href($href))
     return (
       if ($target-doc) then () else guide:anchor-href-missing($href),
       attribute href {
         concat('/',
           substring-after($href, '#display.xqy?function=')) }))
   else $href
+};
+
+declare function guide:heading-anchor(
+  $e as element(),
+  $name as xs:string)
+as element()+
+{
+  let $heading-level := 1 + number(substring-after($name, '-'))
+  let $id := guide:heading-anchor-id($e)
+  (: Beware of changing this structure without updating
+   : the toc.xqm toc:guide-* functions, which depend on it.
+   :)
+  return (
+    element a { attribute id { $id } },
+    element { 'h'||$heading-level } {
+      element a {
+        attribute href { "#"||$id },
+        attribute class { "sectionLink" },
+        normalize-space($e) } })
 };
 
 declare function guide:anchor(
@@ -304,10 +341,10 @@ as element()?
   (: Since we rewrite all links to point to the last anchor,
    : it is safe to drop any anchors that is not last.
    :)
-  if ($e[@id]/preceding-sibling::A) then ()
+  if ($e[@ID]/preceding-sibling::A) then ()
   (: Default :)
   else element a {
-    (: Anchors may have @id or @href or both. :)
+    (: Anchors may have @ID or @href or both. :)
     $e/@ID ! attribute id { guide:full-anchor-id(.) },
     $e/@href ! attribute href {
       guide:anchor-href(
@@ -341,6 +378,36 @@ as node()+
       $message })
 };
 
+(: This is for development work only, so efficiency is not paramount. :)
+declare function guide:convert-uri(
+  $uri as xs:string)
+as document-node()
+{
+  xdmp:xslt-invoke(
+    '/apidoc/setup/convert-guide.xsl',
+    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri] treat as node(),
+    map:new(
+      (map:entry('OUTPUT-URI', $uri),
+        map:entry('RAW-DOCS', $raw:GUIDE-DOCS),
+        map:entry(
+          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
+};
+
+(: This is for development work only, so efficiency is not paramount. :)
+declare function guide:convert-uri-profiled(
+  $uri as xs:string)
+as node()+
+{
+  prof:xslt-invoke(
+    '/apidoc/setup/convert-guide.xsl',
+    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri] treat as node(),
+    map:new(
+      (map:entry('OUTPUT-URI', $uri),
+        map:entry('RAW-DOCS', $raw:GUIDE-DOCS),
+        map:entry(
+          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
+};
+
 declare function guide:convert(
   $raw-docs as node()+,
   $fully-resolved-top-level-heading-references as xs:string+,
@@ -358,18 +425,29 @@ as node()
           $fully-resolved-top-level-heading-references))))
 };
 
-(: This is for development work only, so efficiency is not paramount. :)
-declare function guide:convert-uri(
-  $uri as xs:string)
-as document-node()
+(: The input documents are consolidated raw guides,
+ : not raw raw guides.
+ :)
+declare function guide:render(
+  $raw-docs as document-node()+,
+  $fully-resolved-top-level-heading-references as xs:string+,
+  $g as document-node())
+as node()+
 {
-  xdmp:xslt-invoke(
-    '/apidoc/setup/convert-guide.xsl',
-    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri])
+  let $uri as xs:string := raw:target-guide-doc-uri($g)
+  let $converted as node() := guide:convert(
+    $raw-docs, $fully-resolved-top-level-heading-references,
+    $uri, $g)
+  let $messages := (
+    if (not(contains($uri, '/messages/'))) then ()
+    else guide:convert-messages($uri, $converted/(self::chapter|chapter)))
+  return ($converted, $messages)
 };
 
 (: The input documents are consolidated raw guides,
  : not raw raw guides.
+ : This is pretty slow, because it does massive amounts of node traversal.
+ : The message guides tend to be slowest.
  :)
 declare function guide:render(
   $raw-docs as document-node()+)
@@ -378,25 +456,20 @@ as empty-sequence()
   (: The slowest conversion is messages/XDMP-en.xml. :)
   (: TODO arrange to spawn these tasks, then wait for all to complete. :)
   let $fully-resolved-top-level-heading-references as xs:string+ := (
-    $raw-docs/chapter/XML/Heading-1/A/@ID/concat(
-      ancestor::XML/@original-file, '#id(', ., ')'))
+    for $orig in $raw-docs/chapter/XML[@original-file]
+    let $orig-file as xs:string := $orig/@original-file
+    return $orig/Heading-1/A/@ID/concat($orig-file, '#id(', ., ')'))
   for $g in $raw-docs
   let $start := xdmp:elapsed-time()
-  let $uri as xs:string := raw:target-guide-doc-uri($g)
-  let $converted as node() := guide:convert(
-    $raw-docs, $fully-resolved-top-level-heading-references,
-    $uri, $g)
-  let $messages := (
-    if (not(contains($uri, '/messages/'))) then ()
-    (: Allow for porting the XSL to XQuery. :)
-    else guide:convert-messages($uri, $converted/(self::chapter|chapter)))
-  for $c in ($converted, $messages)
+  for $c at $x in guide:render(
+    $raw-docs, $fully-resolved-top-level-heading-references, $g)
   let $uri as xs:string := base-uri($c)
   let $_ := xdmp:document-insert($uri, $c)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:render',
     (base-uri($g), '=>', $uri,
-      'in', xdmp:elapsed-time() - $start))
+      if ($x ne 1) then ()
+      else ('in', xdmp:elapsed-time() - $start)))
   return ()
 };
 
@@ -414,7 +487,7 @@ declare function guide:consolidate-insert(
   $chapter-list as element()?)
   as empty-sequence()
 {
-  stp:info(
+  if (not($stp:DEBUG)) then () else stp:debug(
     'guide:consolidate-insert',
     (xdmp:describe($doc), xdmp:describe($title),
       xdmp:describe($guide-title), $target-url)),
@@ -501,7 +574,7 @@ as empty-sequence()
       (: Function mapping. :)
       $chapter-manifest/chapter) }
   let $first-chapter-uri := $chapter-manifest/chapter[1]/@final-uri
-  let $_ := stp:info(
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:consolidate', (xdmp:describe($chapter-manifest)))
   return guide:consolidate-insert(
     $title-doc, $guide-title, $guide-title,
@@ -561,7 +634,8 @@ as empty-sequence()
   for $img-path in distinct-values($doc//IMAGE/@href)
   let $source-uri as xs:string := resolve-uri($img-path, $base-dir)
   let $dest-uri := concat($img-dir, $img-path)
-  let $_ := stp:info('guide:images', ($source-uri, "to", $dest-uri))
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:images', ($source-uri, "to", $dest-uri))
   return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
 };
 

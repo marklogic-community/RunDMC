@@ -751,7 +751,7 @@ declare function toc:render(
   $is-default as xs:boolean)
 as empty-sequence()
 {
-  stp:info(
+  if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render', ($is-default, $stp:toc-xml-uri, '=>', $uri)),
   (: Every result element must set its own base-uri,
    : so we known where to store it in the database.
@@ -765,7 +765,8 @@ as empty-sequence()
   let $uri-new as xs:anyURI := base-uri($n)
   order by $uri-new
   return (
-    stp:info('toc:render', ('inserting', $uri-new)),
+    if (not($stp:DEBUG)) then () else stp:debug(
+      'toc:render', ('inserting', $uri-new)),
     if (map:get($m-seen, $uri-new)) then stp:error('CONFLICT', $uri-new)
     else map:put($m-seen, $uri-new, $uri-new),
     xdmp:document-insert($uri-new, $n))

@@ -22,7 +22,7 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
-declare variable $DEBUG := true() ;
+declare variable $DEBUG := false() ;
 
 declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 

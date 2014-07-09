@@ -63,7 +63,7 @@
     <xsl:result-document href="{$OUTPUT-URI}">
       <xsl:for-each select="/guide | /chapter">
         <xsl:copy>
-          <xsl:apply-templates select="@*"/>
+          <xsl:copy-of select="@*"/>
           <xsl:copy-of select="guide-title | title"/>
           <xsl:copy-of select="guide:metadata(.)"/>
           <xsl:copy-of select="chapter-list"/>
@@ -86,14 +86,6 @@
                   concat('/DEBUG/code-merged'      ,$OUTPUT-URI),
                   $code-merged)"/>
     </xsl:if>
-  </xsl:template>
-
-  <!-- Convert elements that should be converted -->
-  <xsl:template match="*[guide:new-name(.)]">
-    <xsl:element name="{guide:new-name(.)}">
-      <xsl:copy-of select="guide:attributes(@*)"/>
-      <xsl:apply-templates/>
-    </xsl:element>
   </xsl:template>
 
   <!-- Don't need this attribute at this stage; only used to
@@ -122,23 +114,6 @@
     </h3>
   </xsl:template>
 
-  <!-- Heading-* (except MESSAGE) case -->
-  <xsl:template match="*[starts-with(local-name(.),'Heading-')]">
-    <xsl:variable name="heading-level"
-                  select="1 + number(substring-after(local-name(.),'-'))"/>
-    <xsl:variable name="id" select="guide:heading-anchor-id(.)"/>
-    <!--
-        Beware of changing this structure without updating
-        the toc.xqm toc:guide-* functions, which depend on it.
-    -->
-    <a id="{$id}"/>
-    <xsl:element name="h{$heading-level}">
-      <a href="#{$id}" class="sectionLink">
-        <xsl:value-of select="normalize-space(.)"/>
-      </a>
-    </xsl:element>
-  </xsl:template>
-
   <!-- Cause and Response headings for messages guide -->
   <xsl:template match="Simple-Heading-3">
     <h4>
@@ -150,15 +125,45 @@
     <img src="{@href}"/>
   </xsl:template>
 
-  <!-- By default, do *not* copy elements -->
   <xsl:template match="*">
-    <xsl:apply-templates/>
+    <xsl:variable name="local-name"
+                  select="local-name(.)"/>
+    <xsl:variable name="is-heading"
+                  select="starts-with($local-name, 'Heading-')"/>
+    <xsl:variable name="new-name"
+                  select="if ($is-heading) then () else guide:new-name(.)"/>
+    <xsl:choose>
+
+      <!-- Heading-* (except MESSAGE) case -->
+      <xsl:when test="$is-heading">
+        <xsl:copy-of select="guide:heading-anchor(., $local-name)"/>
+      </xsl:when>
+
+      <!-- Convert elements that should be converted -->
+      <xsl:when test="$new-name">
+        <xsl:element name="{$new-name}">
+          <xsl:copy-of select="guide:attributes(@*)"/>
+          <xsl:apply-templates/>
+        </xsl:element>
+      </xsl:when>
+
+      <!-- Do not copy, but keep processing. -->
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
-  <!-- Copy these elements (and attributes too) -->
-  <xsl:template match="@* | div | ul | ol | li | code">
+  <!-- Copy attributes -->
+  <xsl:template match="@*">
+    <xsl:copy-of select="@*"/>
+  </xsl:template>
+
+  <!-- Copy these elements -->
+  <xsl:template match="div | ul | ol | li | code">
     <xsl:copy>
-      <xsl:apply-templates select="@* | node()"/>
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
 
@@ -229,7 +234,7 @@
   -->
   <xsl:template match="text()[
                        preceding-sibling::*[1][
-                       self::PRESERVE_FOLLOWING_WHITESPACE]]">
+                       . instance of element(PRESERVE_FOLLOWING_WHITESPACE)]]">
     <xsl:value-of select="."/>
   </xsl:template>
 
@@ -257,7 +262,7 @@
 
   <xsl:template mode="capture-lists" match="@* | node()">
     <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:copy-of select="@*"/>
       <xsl:apply-templates mode="capture-lists-content" select="."/>
     </xsl:copy>
   </xsl:template>
@@ -357,14 +362,10 @@
 
   <xsl:template mode="merge-code-examples" match="node()">
     <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:copy-of select="@*"/>
       <xsl:apply-templates mode="merge-code-examples-content" select="."/>
     </xsl:copy>
     <xsl:apply-templates mode="merge-code-examples-after" select="."/>
-  </xsl:template>
-
-  <xsl:template mode="merge-code-examples" match="@*">
-    <xsl:copy/>
   </xsl:template>
 
   <xsl:template mode="merge-code-examples-content" match="*">

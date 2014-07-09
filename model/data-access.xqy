@@ -284,7 +284,7 @@ declare function ml:reset-category-tags(
   return (
     xdmp:log(
       text { "Adding tag ", xdmp:describe($category-tag), 'to', $doc-uri },
-      'debug'),
+      'fine'),
     xdmp:document-add-collections($doc-uri, $category-tag))
 };
 
