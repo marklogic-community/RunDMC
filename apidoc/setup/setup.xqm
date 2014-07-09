@@ -22,10 +22,9 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
-declare variable $DEBUG := false() ;
+declare variable $DEBUG := true() ;
 
-declare variable $RAW-PAT := (
-  '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' );
+declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 
 declare variable $TITLE-ALIASES as element(aliases) := u:get-doc(
   '/apidoc/config/title-aliases.xml')/aliases ;
@@ -161,7 +160,21 @@ declare function stp:static-add-scripts($n as node())
   default return $n
 };
 
-declare function stp:static-uri-rewrite($uri as xs:string)
+declare function stp:pdf-uri(
+  $document-list as element(docs),
+  $uri as xs:string)
+as xs:string?
+{
+  let $pdf-name := replace($uri, ".*/(.*).pdf", "$1")
+  let $guide-configs := $document-list/*/guide
+  let $url-name as xs:string := $guide-configs[
+    (@pdf-name, @source-name)[1] eq $pdf-name]/@url-name
+  return concat("/guide/", $url-name, ".pdf")
+};
+
+declare function stp:static-uri-rewrite(
+  $document-list as element(docs),
+  $uri as xs:string)
 as xs:string
 {
   if (starts-with($uri, "/javaclient")) then replace(
@@ -177,20 +190,10 @@ as xs:string
     $uri, "/c\+\+/", "/cpp/udf/")
 
   (: ASSUMPTION: the java docs don't include any PDFs :)
-  else if (ends-with($uri, ".pdf")) then stp:pdf-uri($uri)
+  else if (ends-with($uri, ".pdf")) then stp:pdf-uri($document-list, $uri)
 
   (: By default, don't change the URI (e.g., for C++ docs) :)
   else stp:error("UNEXPECTED", ('path', $uri))
-};
-
-declare function stp:pdf-uri($uri as xs:string)
-as xs:string?
-{
-  let $pdf-name      := replace($uri, ".*/(.*).pdf", "$1")
-  let $guide-configs := $api:DOCUMENT-LIST/*/guide
-  let $url-name as xs:string := $guide-configs[
-    (@pdf-name, @source-name)[1] eq $pdf-name]/@url-name
-  return concat("/guide/",$url-name, ".pdf")
 };
 
 (: Change guide urls according to the data in the document-list. :)
@@ -314,6 +317,7 @@ as empty-sequence()
 };
 
 (: Load a static file from a zip binary node.
+ : TODO refactor this function.
  :)
 declare function stp:zip-static-file-get(
   $zip as binary(),
@@ -428,7 +432,7 @@ as empty-sequence()
    : except that this is done synchronously. This XHTML copy is
    : used for search, snippeting, etc.
    :)
-  if (not($is-jdoc)) then () else (
+  if ($is-hidden or not($is-jdoc)) then () else (
     if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert',
       ($uri, "trying xdmp:tidy with xhtml:clean")),
@@ -452,21 +456,13 @@ as empty-sequence()
     return xdmp:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
 };
 
-declare function stp:zip-static-docs-insert(
+declare function stp:zip-static-doc-insert(
   $version as xs:string,
-  $zip-path as xs:string,
-  $zip as binary())
+  $zip as binary(),
+  $document-list as element(docs),
+  $e as xs:string)
 as empty-sequence()
 {
-  let $config := u:get-doc("/apidoc/config/static-docs.xml")
-  let $subdirs-to-load as xs:string+ := (
-    $config/static-docs/include
-    ! concat('/pubs/', ., '/'))
-  for $e in xdmp:zip-manifest($zip)/*[
-    contains(., '_pubs/pubs/') ][
-    not(ends-with(., '/')) ][
-    some $path in $subdirs-to-load
-    satisfies contains(., $path) ]
   let $is-binary := xdmp:uri-content-type($e) ! (
     not(starts-with(., 'text/'))
     and not(. = ('application/javascript')))
@@ -474,13 +470,58 @@ as empty-sequence()
   let $is-jdoc := $is-html and contains($e, '/javadoc/')
   let $uri := concat(
     "/apidoc/", $version,
-    stp:static-uri-rewrite('/'||substring-after($e, '_pubs/pubs/')))
+    stp:static-uri-rewrite(
+      $document-list,
+      '/'||substring-after($e, '_pubs/pubs/')))
   let $is-hidden := $is-jdoc or matches($e, '\.(css|js)$')
   let $is-mangled-html := ends-with($e, '-members.html')
   let $doc := stp:zip-static-file-get(
     $zip, $e, $is-binary, $is-html, $is-jdoc, $is-mangled-html)
   return stp:zip-static-file-insert($doc, $uri, $is-hidden, $is-jdoc)
-  ,
+};
+
+declare function stp:zip-static-docs-insert(
+  $version as xs:string,
+  $zip-path as xs:string,
+  $zip as binary(),
+  $subdirs-to-load as xs:string+,
+  $document-list as element(docs))
+as empty-sequence()
+{
+  (: Always load document-list.xml from the root, as a hidden document. :)
+  stp:zip-static-file-insert(
+    $document-list/root(),
+    concat('/apidoc/', $version, '/document-list.xml'),
+    true(), false()),
+
+  (: Ignore any directory entries,
+   : and any file entries that do not match the included subdirs.
+   :)
+  stp:zip-static-doc-insert(
+    $version, $zip, $document-list,
+    xdmp:zip-manifest($zip)/*[
+      contains(., '_pubs/pubs/') ][
+      not(ends-with(., '/')) ][
+      some $path in $subdirs-to-load
+      satisfies contains(., $path) ])
+};
+
+declare function stp:zip-static-docs-insert(
+  $version as xs:string,
+  $zip-path as xs:string,
+  $zip as binary(),
+  $subdirs-to-load as xs:string+)
+as empty-sequence()
+{
+  (: Always load the document-list XML manifest. :)
+  stp:zip-static-docs-insert(
+    $version, $zip-path, $zip,
+    $subdirs-to-load,
+    xdmp:zip-get(
+      $zip,
+      xdmp:zip-manifest($zip)/*[
+        ends-with(., '_pubs/pubs/document-list.xml')] treat as item())/*
+    treat as element(docs)),
 
   (: Load the zip itself, to support downloads. :)
   let $zip-uri := concat(
@@ -504,7 +545,10 @@ as empty-sequence()
   stp:zip-static-docs-insert(
     $version,
     $zip-path,
-    xdmp:document-get($zip-path)/node())
+    xdmp:document-get($zip-path)/node(),
+    (u:get-doc("/apidoc/config/static-docs.xml")/static-docs/include
+      /concat('/pubs/', ., '/'))
+    treat as xs:string+)
 };
 
 (: Delete all docs for a version. :)

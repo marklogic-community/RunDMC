@@ -12,8 +12,9 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 
 (: TODO refactor for #230. :)
-declare variable $DOCUMENT-LIST as element(docs) := u:get-doc(
-  '/apidoc/config/document-list.xml')/docs ;
+declare variable $DOCUMENT-LIST as element(docs) := (
+  if (1) then doc('/apidoc/'||$api:version||'/document-list.xml')
+  else u:get-doc('/apidoc/config/document-list.xml'))/docs ;
 
 declare variable $MODE-JAVASCRIPT := 'javascript' ;
 declare variable $MODE-REST := 'REST' ;
