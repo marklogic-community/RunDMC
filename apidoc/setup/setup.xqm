@@ -1123,4 +1123,37 @@ as node()*
   default return $n
 };
 
+declare function stp:function-modes(
+  $f as element(apidoc:function))
+as xs:string+
+{
+  $api:MODES[
+    api:function-appears-in-mode($f, .) ]
+};
+
+declare function stp:function-names(
+  $f as element(apidoc:function))
+as xs:string+
+{
+  api:fixup-fullname($f, stp:function-modes($f))
+};
+
+declare function stp:zip-function-names(
+  $zip as binary())
+as xs:string*
+{
+  stp:function-names(
+    xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
+    /xdmp:zip-get($zip, .)
+    /apidoc:module/apidoc:function)
+};
+
+declare function stp:zipfile-function-names(
+  $zip-path as xs:string)
+as xs:string*
+{
+  stp:zip-function-names(
+    xdmp:document-get($zip-path)/binary() treat as node())
+};
+
 (: apidoc/setup/setup.xqm :)

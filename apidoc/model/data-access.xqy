@@ -481,6 +481,21 @@ as xs:string?
     @name eq $resource-name]/complexType/@name
 };
 
+declare function api:function-appears-in-mode(
+  $function as element(apidoc:function),
+  $mode as xs:string)
+as xs:boolean
+{
+  switch($mode)
+  case $MODE-JAVASCRIPT return (
+    $function/@bucket = (
+      'MarkLogic Built-In Functions',
+      'W3C-Standard Functions'))
+  case $MODE-REST return starts-with($function/@name, '/')
+  case $MODE-XPATH return not(starts-with($function/@name, '/'))
+  default return error((), 'UNEXPECTED', ($mode))
+};
+
 (: Used by extract-functions.xsl
  : This fakes mode=javascript so we can test for it on.
  :)
@@ -488,9 +503,7 @@ declare function api:function-fake-javascript(
   $function as element(apidoc:function))
 as element(apidoc:function)?
 {
-  if (not($function/@bucket = (
-      'MarkLogic Built-In Functions',
-      'W3C-Standard Functions'))) then ()
+  if (not(api:function-appears-in-mode($function, $MODE-JAVASCRIPT))) then ()
   else element apidoc:function {
     attribute mode { $MODE-JAVASCRIPT },
     $function/@*,
