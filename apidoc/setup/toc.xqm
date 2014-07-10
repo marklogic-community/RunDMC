@@ -711,7 +711,7 @@ declare function toc:render-content(
   $uri as xs:string,
   $prefix-for-hrefs as xs:string?,
   $toc as element(toc:root),
-  $selected as element(toc:node))
+  $selected as element(toc:node)?)
 as element()
 {
   if (not($stp:DEBUG)) then () else stp:debug(
@@ -734,9 +734,10 @@ as element()
   class="config-filter-close-button"/>
       <div id="apidoc_tree_container" class="pjax_enabled">
   {
-    $toc/toc:node/toc:render-node-tree(
-      $uri, $prefix-for-hrefs, .,
-      . is $selected)
+    (: To preserve node order, use SMO rather than XPath. :)
+    $toc/toc:node
+    ! toc:render-node-tree(
+      $uri, $prefix-for-hrefs, ., . is $selected)
   }
       </div>
     </div>
