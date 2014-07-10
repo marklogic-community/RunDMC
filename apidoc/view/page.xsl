@@ -4,9 +4,11 @@
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:api="http://marklogic.com/rundmc/api"
+                xmlns:guide="http://marklogic.com/rundmc/api/guide"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
                 xmlns:srv="http://marklogic.com/rundmc/server-urls"
                 xmlns:u="http://marklogic.com/rundmc/util"
+                xmlns:v="http://marklogic.com/rundmc/api/view"
                 xmlns:x="http://www.w3.org/1999/xhtml"
                 xmlns:xdmp="http://marklogic.com/xdmp"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -17,14 +19,22 @@
 
   <xsl:import href="/view/page.xsl"/>
 
-  <xsl:include href="guide.xsl"/>
-
   <xdmp:import-module
       namespace="http://developer.marklogic.com/site/internal"
       href="/model/data-access.xqy"/>
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/view"
+      href="/apidoc/view/view.xqm"/>
+
+  <!-- Only used for a debugging function. -->
+  <xdmp:import-module
+      namespace="http://marklogic.com/rundmc/api/guide"
+      href="/apidoc/setup/guide.xqm"/>
+
+  <xsl:output indent="no"/>
 
   <xsl:param name="VERSION" select="$api:version"/>
 
@@ -44,33 +54,11 @@
                 select="if ($VERSION eq $api:default-version) then ''
                         else concat('/',$api:version-specified)"/>
 
-  <!--
-      Don't include the version in the comments doc URI.
-      Use just one conversation thread per function,
-      regardless of server version.
-  -->
-  <!-- Redefines the function in ../../view/comments.xsl -->
-  <xsl:function name="ml:uri-for-commenting-purposes" as="xs:string">
-    <xsl:param name="node"/>
-    <!-- Remove the version from the path -->
-    <xsl:sequence select="u:strip-version-from-path(base-uri($node))"/>
-  </xsl:function>
-
   <xsl:variable name="doc-list-config"
                 select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
 
   <xsl:variable name="site-title"
-                select="
-    if ($VERSION eq '5.0')
-    then 'MarkLogic 5 Product Documentation'
-    else if ($VERSION eq '6.0')
-         then 'MarkLogic 6 Product Documentation'
-    else if ($VERSION eq '7.0')
-         then 'MarkLogic 7 Product Documentation'
-    else if ($VERSION eq '8.0')
-         then 'MarkLogic 8 Early Access Product Documentation'
-    else concat('MarkLogic Server ',$VERSION,
-                          ' Product Documentation')"/>
+                select="v:site-title($VERSION)"/>
 
   <xsl:variable name="site-url-for-disqus"
                 select="'http://docs.marklogic.com'"/>
@@ -83,6 +71,39 @@
 
   <xsl:variable name="is-pjax-request"
                 select="xdmp:get-request-header('X-PJAX') eq 'true'"/>
+
+  <!-- Only set to true in development, not in production. -->
+  <xsl:variable name="convert-at-render-time"
+                select="doc-available('/apidoc/DEBUG.xml')
+                        and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
+
+  <xsl:variable name="DOCS-PAGE" as="element()"
+                select="doc(
+                        concat(
+                        api:version-dir($VERSION), 'index.xml'))/api:docs-page"/>
+
+  <xsl:variable name="AUTO-LINKS" as="element(auto-link)*"
+                select="$DOCS-PAGE/auto-link"/>
+
+  <xsl:variable name="OTHER-GUIDE-LISTINGS" as="element(api:user-guide)*">
+    <xsl:variable name="content-uri-external" as="xs:string"
+                  select="api:external-uri($content)"/>
+    <xsl:copy-of select="$DOCS-PAGE/api:user-guide[
+                         not(@href eq $content-uri-external) ]"/>
+  </xsl:variable>
+
+  <!--
+      Redefines the function in ../../view/comments.xsl
+
+      Don't include the version in the comments doc URI.
+      Use just one conversation thread per function,
+      regardless of server version.
+  -->
+  <xsl:function name="ml:uri-for-commenting-purposes" as="xs:string">
+    <xsl:param name="node" as="node()"/>
+    <!-- Remove the version from the path -->
+    <xsl:sequence select="u:strip-version-from-path(base-uri($node))"/>
+  </xsl:function>
 
   <xsl:template match="/">
     <!-- empty sequence; evaluated only for side effect -->
@@ -106,20 +127,13 @@
           </script>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="comment-section"/>
-          <xsl:call-template name="apidoc-copyright"/>
+          <xsl:copy-of select="v:apidoc-copyright()"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-imports/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
-    <div id="copyright">Copyright &#169; 2014 MarkLogic Corporation. All rights reserved. | Powered by
-    <!-- Absolute links so they work uniformly on standalone docs app -->
-    <a href="http://developer.marklogic.com/products">MarkLogic Server <ml:server-version/></a> and <a href="http://developer.marklogic.com/code/rundmc">rundmc</a>.
-    </div>
   </xsl:template>
 
   <xsl:template mode="print-view" match="*">
@@ -133,7 +147,7 @@
       </head>
       <body>
         <xsl:apply-templates mode="page-content" select="."/>
-        <xsl:call-template name="apidoc-copyright"/>
+        <xsl:copy-of select="v:apidoc-copyright()"/>
       </body>
     </html>
   </xsl:template>
@@ -242,7 +256,7 @@
     <xsl:value-of select="@id"/>
   </xsl:template>
 
-  <!-- TODO why is this needed? Nothing similar for api:function-page. -->
+  <!-- Override and extend base page.xsl page-specific-title mode. -->
   <xsl:template mode="page-specific-title"
                 match="api:function-page[@mode eq $api:MODE-JAVASCRIPT]">
     <xsl:value-of select="api:function-name"/>
@@ -255,18 +269,6 @@
     </xsl:value-of>
   </xsl:template>
 
-
-  <!-- currently not used -->
-  <xsl:template match="ml:page-heading">
-    <h1>
-      <xsl:apply-templates mode="api-page-heading" select="$content/*"/>
-    </h1>
-  </xsl:template>
-
-  <!--
-      This match seems pointless, because * matches any element.
-      Might be dead code anyway? TODO
-  -->
   <xsl:template mode="api-page-heading"
                 match="*
                        |api:function-page[api:function[1]/@lib eq $api:MODE-REST]">
@@ -326,6 +328,7 @@
     </div>
   </xsl:template>
 
+  <!-- Handle document-list.xml groups -->
   <xsl:template mode="docs-page" priority="3"
                 match="group[@min-version gt $VERSION]" />
 
@@ -334,13 +337,8 @@
     <xsl:next-match/>
   </xsl:template>
 
-  <xsl:template mode="docs-page" match="group | unnamed-group" priority="1">
+  <xsl:template mode="docs-page" match="group" priority="1">
     <ul class="doclist">
-      <!-- not using this anymore
-           <xsl:apply-templates mode="hard-coded-doc-list-items" select="."/>
-      <xsl:value-of
-          select="xdmp:log(concat('docs-page group ', xdmp:describe(*)))"/>
-      -->
       <xsl:apply-templates mode="docs-list-item" select="*"/>
     </ul>
   </xsl:template>
@@ -380,7 +378,9 @@
     </li>
   </xsl:template>
 
-  <!-- The following group of rules is used by the list page too -->
+  <!-- The following group of rules is used by the list page too.
+       TODO good candidates to port to XQuery.
+  -->
 
   <!-- Strip out phrases that don't apply to older server versions -->
   <xsl:template mode="entry-description" match="added-in[$VERSION lt @version]"/>
@@ -432,7 +432,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template mode="page-content" match="api:list-page"><!-- | api:docs-page">-->
+  <xsl:template mode="page-content" match="api:list-page">
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <xsl:apply-templates mode="print-friendly-link" select="."/>
@@ -479,6 +479,7 @@
     <xsl:attribute name="class">pjax_enabled</xsl:attribute>
   </xsl:template>
 
+  <!-- These api:title elements may contain links which need to be rewritten. -->
   <xsl:template mode="list-page-heading" match="api:list-page | api:help-page">
     <xsl:apply-templates select="api:title/node()"/>
   </xsl:template>
@@ -536,7 +537,8 @@
         </xsl:if>
         <xsl:if test="$q">
           <xsl:text>Did you mean to search for the term </xsl:text>
-          <a href="{$srv:search-page-url}?q={$q}&amp;p=1"> <!-- p=1 effectively forces the search -->
+          <!-- p=1 effectively forces the search -->
+          <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
             <xsl:value-of select="$q"/>
           </a>
           <xsl:text>?</xsl:text>
@@ -784,5 +786,165 @@
 
   <!-- Don't ever add any special CSS classes -->
   <xsl:template mode="body-class-extra" match="*"/>
+
+  <!-- guide templates -->
+  <!-- Disable comments on User Guide pages -->
+  <xsl:template mode="comment-section" match="/guide | /chapter"/>
+
+  <xsl:template mode="page-content" match="/guide | /chapter">
+    <div class="userguide pjax_enabled">
+      <xsl:choose>
+        <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
+        <xsl:when test="not($convert-at-render-time)">
+          <xsl:apply-templates mode="guide"/>
+        </xsl:when>
+        <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
+        <xsl:otherwise>
+          <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
+             Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
+          <!-- Convert and render the guide directly, for development.  -->
+          <xsl:apply-templates
+              mode="guide"
+              select="guide:convert-uri(base-uri(current()))/*/node()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
+    <xsl:apply-templates mode="chapter-next-prev" select="@previous,@next"/>
+    <!-- "Next" link on Table of Contents (guide) page -->
+    <xsl:apply-templates mode="guide-next" select="@next"/>
+  </xsl:template>
+
+  <!-- Guide title -->
+  <xsl:template mode="guide" match="/*/guide-title">
+    <!-- Add a PDF link at the top of each guide (and chapter), before the <h1> -->
+    <a href="{ v:external-guide-uri($version-prefix, /) }.pdf"
+       class="guide-pdf-link" target="_blank">
+      <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25">
+        <!-- Shrink the PDF icon size if we're on a chapter page -->
+        <xsl:if test="parent::chapter">
+          <xsl:attribute name="class" select="'printerFriendly'"/> <!-- same padding, etc., as printer icon -->
+          <xsl:attribute name="height" select="16"/>
+          <xsl:attribute name="width" select="16"/>
+        </xsl:if>
+      </img>
+    </a>
+    <!-- printer-friendly link on chapter pages -->
+    <xsl:if test="parent::chapter">
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
+    </xsl:if>
+    <h1>
+      <xsl:apply-templates mode="guide-heading-content" select="."/>
+    </h1>
+    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@next"/>
+  </xsl:template>
+
+  <!-- Don't link to the guide root when we're already on it -->
+  <xsl:template mode="guide-heading-content" match="/guide/guide-title">
+    <xsl:apply-templates mode="guide-title" select="."/>
+  </xsl:template>
+
+  <!-- Make the guide heading a link when we're on a chapter page -->
+  <xsl:template mode="guide-heading-content" match="/chapter/guide-title">
+    <a href="{ v:external-guide-uri($version-prefix, /) }">
+      <xsl:apply-templates mode="guide-title" select="."/>
+    </a>
+    <span class="chapterNumber"> &#8212; Chapter&#160;<xsl:value-of select="../@number"/></span>
+  </xsl:template>
+
+  <!-- Wrap <sup> around ® character -->
+  <xsl:template mode="guide-title" match="guide-title">
+    <xsl:analyze-string select="." regex="®">
+      <xsl:matching-substring>
+        <sup>
+          <xsl:value-of select="."/>
+        </sup>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:value-of select="."/>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
+  </xsl:template>
+
+
+  <!-- Only show the next/prev links on chapter pages (and just "Next" on the guide page) -->
+  <xsl:template mode="chapter-next-prev
+                      guide-next" match="@*"/>
+  <xsl:template mode="guide-next" match="guide/@next">
+    <xsl:call-template name="guide-next"/>
+  </xsl:template>
+  <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous" name="guide-next">
+    <div class="{local-name(.)}Chapter">
+      <a href="{api:external-uri-with-prefix($version-prefix, .)}">
+        <xsl:apply-templates mode="next-or-prev" select="."/>
+      </a>
+    </div>
+  </xsl:template>
+
+  <xsl:template mode="next-or-prev" match="guide/@next"                 >Next&#160;»</xsl:template>
+  <xsl:template mode="next-or-prev" match="@next"                       >Next&#160;chapter&#160;»</xsl:template>
+  <xsl:template mode="next-or-prev" match="@previous"                   >«&#160;Previous&#160;chapter</xsl:template>
+  <xsl:template mode="next-or-prev" match="@previous[../@number eq '1']">«&#160;Table&#160;of&#160;contents</xsl:template>
+
+  <xsl:template mode="guide" match="guide/info">
+    <table class="guide_info api_generic_table">
+      <tr>
+        <th>Server version</th>
+        <th>Date</th>
+        <th>Revision</th>
+      </tr>
+      <tr>
+        <td>
+          <xsl:value-of select="version"/>
+        </td>
+        <td>
+          <xsl:value-of select="date"/>
+        </td>
+        <td>
+          <xsl:value-of select="revision"/>
+        </td>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template mode="guide" match="guide/chapter-list">
+    <p>This guide includes the following chapters:</p>
+    <ol>
+      <xsl:apply-templates mode="guide" select="chapter"/>
+    </ol>
+  </xsl:template>
+
+  <xsl:template mode="guide" match="chapter">
+    <li>
+      <a href="{api:external-uri-with-prefix($version-prefix, @href)}">
+        <xsl:apply-templates mode="guide"/>
+      </a>
+    </li>
+  </xsl:template>
+
+  <!-- Automatically convert italicized guide references to links, but not the
+       ones that are immediately preceded by "in the", in which case we
+       assume a more specific section link was already provided.
+  -->
+  <xsl:template mode="guide" match="x:em[v:config-for-title(
+                                    ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS) ][
+          not(preceding-sibling::node()[1][self::text()][
+          normalize-space(.) eq 'in the'])]">
+    <a href="{$version-prefix}{
+             v:config-for-title(., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)/@href}">
+      <xsl:next-match/>
+    </a>
+  </xsl:template>
+
+  <!-- Boilerplate copying code -->
+  <xsl:template mode="guide" match="node()">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template mode="guide" match="*">
+    <xsl:copy>
+      <xsl:copy-of select="v:guide-attributes(.)"/>
+      <xsl:apply-templates mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
 
 </xsl:stylesheet>
