@@ -19,10 +19,13 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
+declare variable $VERSION := '8.0' ;
+
 declare %t:case function t:function-hide-javascript-specific()
 {
   at:empty(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         attribute class { $api:MODE-JAVASCRIPT },
         'Hello world!' },
@@ -33,6 +36,7 @@ declare %t:case function t:function-hide-javascript-specific-example()
 {
   at:empty(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:example {
           attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
@@ -44,6 +48,7 @@ declare %t:case function t:function-hide-javascript-specific-param()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:params {
           element apidoc:param {
@@ -58,6 +63,7 @@ declare %t:case function t:function-hide-xquery-specific()
 {
   at:empty(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         attribute class { $api:MODE-XPATH },
         'Hello world!' },
@@ -68,6 +74,7 @@ declare %t:case function t:function-hide-xquery-specific-example()
 {
   at:empty(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:example { attribute class { $api:MODE-XPATH }, 'fubar' },
         'Hello world!' },
@@ -78,6 +85,7 @@ declare %t:case function t:function-hide-xquery-specific-param()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:params {
           element apidoc:param {
@@ -92,6 +100,7 @@ declare %t:case function t:function-ignore-unknown-mode()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         attribute class { 'fubar' },
         'snafu' },
@@ -104,6 +113,7 @@ declare %t:case function t:function-show-javascript-specific()
   at:true(
     exists(
       stp:fixup(
+       $VERSION,
         element apidoc:function {
           attribute class { $api:MODE-JAVASCRIPT },
           'Hello world!' },
@@ -114,6 +124,7 @@ declare %t:case function t:function-show-javascript-specific-example()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:example {
           attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
@@ -126,6 +137,7 @@ declare %t:case function t:function-show-javascript-specific-param()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:params {
           element apidoc:param {
@@ -141,6 +153,7 @@ declare %t:case function t:function-show-xquery-specific()
   at:true(
     exists(
       stp:fixup(
+        $VERSION,
         element apidoc:function {
           attribute class { $api:MODE-XPATH },
           'Hello world!' },
@@ -151,6 +164,7 @@ declare %t:case function t:function-show-xquery-specific-example()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:example { attribute class { $api:MODE-XPATH }, 'fubar' },
         'Hello world!' },
@@ -162,6 +176,7 @@ declare %t:case function t:function-show-xquery-specific-param()
 {
   at:equal(
     stp:fixup(
+      $VERSION,
       element apidoc:function {
         element apidoc:params {
           element apidoc:param { attribute class { $api:MODE-XPATH }, 'fubar' },

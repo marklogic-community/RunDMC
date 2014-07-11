@@ -21,6 +21,8 @@ import module namespace toc="http://marklogic.com/rundmc/api/toc"
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
+declare variable $VERSION := '8.0' ;
+
 declare %t:case function t:category-href-xquery()
 {
   toc:category-href(
@@ -36,7 +38,7 @@ declare %t:case function t:render-0-empty()
   xmlns="http://marklogic.com/rundmc/api/toc"/>
   !
   at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -75,7 +77,7 @@ declare %t:case function t:render-1-simple()
     <node id="n3" display="node 3" open="true"></node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -111,7 +113,7 @@ declare %t:case function t:render-1-simple-href()
     <node id="n3" display="node 3" open="true"></node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     //xh:a/@href/string(),
     ('/3.14/node/1'))
 };
@@ -125,7 +127,7 @@ declare %t:case function t:render-1-simple-uri()
     <node id="n3" display="node 3" open="true"></node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     ! base-uri(.),
     'toc-test')
 };
@@ -141,7 +143,7 @@ declare %t:case function t:render-async-2-content()
     </node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     (: Handle xml:base attribute :)
     ! element { node-name(.) } {
       @* except @xml:base,
@@ -166,7 +168,7 @@ declare %t:case function t:render-async-2-placeholder()
     </node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)[
+    toc:render($VERSION, 'toc-test', '/3.14', .)[
       base-uri(.) eq 'toc-test']
     //xh:li[@id eq 'node-2']
     ,
@@ -192,7 +194,7 @@ declare %t:case function t:render-2-async-uris()
     </node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     ! base-uri(.),
     ('toc-test/n2.html', 'toc-test'))
 };
@@ -215,7 +217,7 @@ declare %t:case function t:render-2-async-xdmp()
     </node>
   </root>
   ! at:equal(
-    toc:render('toc-test', '/3.14', .)
+    toc:render($VERSION, 'toc-test', '/3.14', .)
     //xh:div[@id = 'apidoc_tree_container']
 ,
 
