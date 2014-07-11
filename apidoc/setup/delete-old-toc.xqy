@@ -1,13 +1,11 @@
 xquery version "1.0-ml";
 
-import module namespace api="http://marklogic.com/rundmc/api"
-  at "/apidoc/model/data-access.xqy";
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
-stp:toc-delete(),
-text {
-  "Finished deleting old TOC parts for", $api:version, xdmp:elapsed-time() }
+declare variable $VERSION as xs:string external ;
+
+stp:toc-delete($VERSION)
 
 (: apidoc/setup/delete-old-toc.xqy :)
 

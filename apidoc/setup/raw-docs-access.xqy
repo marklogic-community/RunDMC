@@ -36,25 +36,10 @@ declare variable $OPTIONS-UPDATE := (
   }
   </options>) ;
 
-(: The assertion is a safety check for code running on the Task Server.
- : It should not affect HTTP requests.
- : HTTP apidoc setup will specify a version,
- : while HTTP apidoc views will not use raw docs.
- :)
-declare variable $VERSION as xs:string := (
-  (: TODO get rid of the dependency on http request fields. :)
-  if ($api:version-specified) then ()
-  else error((), 'BAD', 'no version specified - bad environment?'),
-  $api:version) ;
-
 (: REST API docs, i.e. the "manage" lib,
  : are represented the same as the XQuery API docs,
  : but we're going to treat them differently.
  :)
-declare variable $API-DOCS := raw:api-docs($VERSION) ;
-
-declare variable $GUIDE-DOCS := raw:guide-docs($VERSION) ;
-
 declare function raw:api-docs($version as xs:string)
 as document-node()+
 {
@@ -76,12 +61,9 @@ as document-node()+
 {
   raw:invoke-function(
     function() {
-      let $uri := concat("/", $version, "/guide/")
-      let $_ := xdmp:log(
-        text { '[raw-docs-access]', 'version', $version, $uri },
-        'fine')
       (: TODO is there a more efficient way to exclude binary? :)
-      return xdmp:directory($uri, "infinity")[*] })
+      xdmp:directory(
+        concat("/", $version, "/guide/"), "infinity")[*] })
 };
 
 (: Shortcut for xdmp:invoke-function. :)

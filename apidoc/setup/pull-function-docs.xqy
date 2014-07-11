@@ -9,8 +9,8 @@ import module namespace api="http://marklogic.com/rundmc/api"
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm" ;
 
-stp:function-docs($api:version),
+declare variable $VERSION as xs:string external ;
 
-text { "Extracted function docs for", $api:version, xdmp:elapsed-time() }
+stp:function-docs($VERSION)
 
 (: pull-function-docs.xqy :)

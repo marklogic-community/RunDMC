@@ -3,8 +3,8 @@ xquery version "1.0-ml";
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
-stp:list-pages-render(),
+declare variable $VERSION as xs:string external ;
 
-text { "Generated all function list pages", xdmp:elapsed-time() }
+stp:list-pages-render($VERSION)
 
 (: make-list-pages.xqy :)

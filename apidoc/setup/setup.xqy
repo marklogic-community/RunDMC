@@ -3,9 +3,13 @@ xquery version "1.0-ml";
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
-(: Make sure the version and help-xsd-dir params were specified :)
-$stp:errorCheck,
-$stp:helpXsdCheck,
+declare variable $VERSION as xs:string external ;
+
+declare variable $HELP-XSD-DIR as xs:string external ;
+
+declare variable $VARS := (
+  xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR,
+  xs:QName('VERSION'), $VERSION) ;
 
 (
   (: Extract the functions from the raw docs database and prepare for our use :)
@@ -22,7 +26,7 @@ $stp:helpXsdCheck,
    : since they depend on both the inserted documents and the XML TOC.
    :)
   "make-list-pages.xqy")
-! xdmp:invoke(.)
+! xdmp:invoke(., $VARS)
 ,
 
 stp:info("apidoc/setup.xqy", (xdmp:elapsed-time()))

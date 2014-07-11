@@ -24,7 +24,10 @@ import module namespace api="http://marklogic.com/rundmc/api"
 declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := "8.0" ;
 
-declare variable $GUIDE-MAPPINGS as element(guide)+ := $api:DOCUMENT-LIST/*/guide ;
+declare variable $VERSION := xdmp:get-request-field('version') ;
+
+declare variable $GUIDE-MAPPINGS as element(guide)+ := api:document-list(
+  ($VERSION, $api:DEFAULT-VERSION)[1])/*/guide ;
 
 declare variable $SHAREPOINT-CONNECTOR-VERSION := "1.1-1" ;
 

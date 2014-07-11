@@ -31,11 +31,11 @@
                                                                                                         else 'preferred-server-version'"/>
 
   <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
-  <xsl:variable name="preferred-version" select="if ($set-version)
-                                                then $set-version
-                                            else if ($preferred-version-cookie)
-                                                then $preferred-version-cookie
-                                            else     $ml:default-version"/>
+  <xsl:variable name="preferred-version"
+                select="if ($set-version) then $set-version
+                        else if ($preferred-version-cookie)
+                        then $preferred-version-cookie
+                        else $ml:default-version"/>
 
   <xsl:variable name="_set-cookie"
                 select="if ($set-version) then ck:add-cookie($preferred-version-cookie-name,
@@ -80,13 +80,13 @@
                     </b>
                   </xsl:template>
 
-                          <!-- When @display is present, show that instead. -->
-                          <xsl:template mode="version-number-display" match="*:version[@display]">
-                            <xsl:value-of select="@display"/>
-                          </xsl:template>
-                          <xsl:template mode="version-number-display" match="*:version">
-                            <xsl:value-of select="@number"/>
-                          </xsl:template>
+                  <!-- When @display is present, show that instead. -->
+                  <xsl:template mode="version-number-display" match="*:version[@display]">
+                    <xsl:value-of select="@display"/>
+                  </xsl:template>
+                  <xsl:template mode="version-number-display" match="*:version">
+                    <xsl:value-of select="@number"/>
+                  </xsl:template>
 
                   <!-- not selected -->
                   <xsl:template mode="version-list-item-selected-or-not" match="*:version"

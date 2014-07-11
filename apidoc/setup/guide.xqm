@@ -380,30 +380,36 @@ as node()+
 
 (: This is for development work only, so efficiency is not paramount. :)
 declare function guide:convert-uri(
+  $version as xs:string,
   $uri as xs:string)
 as document-node()
 {
-  xdmp:xslt-invoke(
+  let $guide-docs := raw:guide-docs($version)
+  return xdmp:xslt-invoke(
     '/apidoc/setup/convert-guide.xsl',
-    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri] treat as node(),
+    $guide-docs[
+      raw:target-guide-doc-uri(.) eq $uri] treat as node(),
     map:new(
       (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $raw:GUIDE-DOCS),
+        map:entry('RAW-DOCS', $guide-docs),
         map:entry(
           'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
 };
 
 (: This is for development work only, so efficiency is not paramount. :)
 declare function guide:convert-uri-profiled(
+  $version as xs:string,
   $uri as xs:string)
 as node()+
 {
-  prof:xslt-invoke(
+  let $guide-docs := raw:guide-docs($version)
+  return prof:xslt-invoke(
     '/apidoc/setup/convert-guide.xsl',
-    $raw:GUIDE-DOCS[raw:target-guide-doc-uri(.) eq $uri] treat as node(),
+    $guide-docs[
+      raw:target-guide-doc-uri(.) eq $uri] treat as node(),
     map:new(
       (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $raw:GUIDE-DOCS),
+        map:entry('RAW-DOCS', $guide-docs),
         map:entry(
           'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
 };
@@ -583,15 +589,17 @@ as empty-sequence()
     $chapter-list)
 };
 
-declare function guide:consolidate($version as xs:string)
-  as empty-sequence()
+declare function guide:consolidate(
+  $version as xs:string)
+as empty-sequence()
 {
-  raw:invoke-function(
+  (: The list of guide configs comes from the main database. :)
+  let $guide-list as element()+ := api:document-list($version)/*/guide
+  (: Run the rest of the work in the raw database. :)
+  return raw:invoke-function(
     function() {
       (: Directory in which to find guide XML for the server version :)
       let $guides-dir := concat("/", $version, "/xml/")
-      (: The list of guide configs :)
-      let $guide-list as element()+ := $api:DOCUMENT-LIST/*/guide
       (: Assume every guide has a title.xml document.
        : This might seem inefficient,
        : but consider that we will want to look at most of these documents.
@@ -613,20 +621,20 @@ declare function guide:consolidate($version as xs:string)
       return guide:consolidate(
         $version, $dir, $dir-name, $guide-config)
       ,
-      xdmp:commit(),
-      stp:info('guide:consolidate', 'ok') },
+      xdmp:commit() },
     (: This is an update. :)
     true())
 };
 
+(: This function copies all guide images into place. :)
 declare function guide:images(
-  $version as xs:string)
+  $version as xs:string,
+  $guide-docs as node()*)
 as empty-sequence()
 {
-  stp:info('guide:images', $version),
-  let $guide-docs as node()+ := raw:guide-docs($version)
+  stp:info('guide:images', ($version, count($guide-docs))),
   for $doc in $guide-docs
-  let $base-dir := string($doc/(guide|chapter)/@original-dir)
+  let $base-dir := $doc/(guide|chapter)/@original-dir/string()
   let $img-dir := api:guide-image-dir(raw:target-guide-doc-uri($doc))
   (: Copy every distinct image referenced by this guide.
    : Images are not shared across guides.
@@ -637,6 +645,14 @@ as empty-sequence()
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:images', ($source-uri, "to", $dest-uri))
   return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
+};
+
+(: This function copies all guide images into place. :)
+declare function guide:images(
+  $version as xs:string)
+as empty-sequence()
+{
+  guide:images($version, raw:guide-docs($version))
 };
 
 declare function guide:sections(

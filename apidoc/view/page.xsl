@@ -36,7 +36,12 @@
 
   <xsl:output indent="no"/>
 
-  <xsl:param name="VERSION" select="$api:version"/>
+  <!-- This may be empty. -->
+  <xsl:variable name="VERSION" select="$params[@name eq 'version']/string()"/>
+
+  <xsl:variable name="VERSION-FINAL"
+                select="if ($VERSION) then $VERSION
+                        else $api:DEFAULT-VERSION"/>
 
   <xsl:variable name="is-print-request"
                 select="$params[@name eq 'print'] eq 'yes'"/>
@@ -51,14 +56,14 @@
       See also $api:toc-uri in data-access.xqy
   -->
   <xsl:variable name="version-prefix"
-                select="if ($VERSION eq $api:default-version) then ''
-                        else concat('/',$api:version-specified)"/>
+                select="if ($VERSION-FINAL eq $api:DEFAULT-VERSION) then ''
+                        else concat('/', $VERSION-FINAL)"/>
 
   <xsl:variable name="doc-list-config"
                 select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
 
   <xsl:variable name="site-title"
-                select="v:site-title($VERSION)"/>
+                select="v:site-title($VERSION-FINAL)"/>
 
   <xsl:variable name="site-url-for-disqus"
                 select="'http://docs.marklogic.com'"/>
@@ -80,7 +85,8 @@
   <xsl:variable name="DOCS-PAGE" as="element()"
                 select="doc(
                         concat(
-                        api:version-dir($VERSION), 'index.xml'))/api:docs-page"/>
+                        api:version-dir($VERSION-FINAL), 'index.xml'))
+                        /api:docs-page"/>
 
   <xsl:variable name="AUTO-LINKS" as="element(auto-link)*"
                 select="$DOCS-PAGE/auto-link"/>
@@ -161,7 +167,7 @@
   <!-- Make search stick to the current API version -->
   <xsl:template match="x:input[@name eq $set-version-param-name]/@ml:value">
     <xsl:attribute name="value">
-      <xsl:value-of select="$VERSION"/>
+      <xsl:value-of select="$VERSION-FINAL"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -194,7 +200,7 @@
       <script type="text/javascript">
         <xsl:comment>
           <xsl:call-template name="reset-global-toc-vars"/>
-          var toc_url = '<xsl:value-of select="$api:toc-uri"/>';
+          var toc_url = '<xsl:value-of select="api:toc-uri()"/>';
           $('#apidoc_toc').load(toc_url, null, toc_init);
         </xsl:comment>
       </script>
@@ -203,7 +209,8 @@
 
   <!-- Customizations of the "Server version" switcher code (slightly different than the search results page) -->
 
-  <xsl:template mode="version-list-item-selected-or-not" match="version[@number eq $VERSION]">
+  <xsl:template mode="version-list-item-selected-or-not"
+                match="version[@number eq $VERSION-FINAL]">
     <xsl:call-template name="show-selected-version"/>
   </xsl:template>
   <xsl:template mode="version-list-item-selected-or-not" match="version">
@@ -211,9 +218,9 @@
   </xsl:template>
 
   <xsl:template mode="version-list-item-href" match="version">
-    <xsl:variable name="version" select="if (@number eq $api:default-version) then '' else @number"/>
+    <xsl:variable name="version" select="if (@number eq $api:DEFAULT-VERSION) then '' else @number"/>
     <xsl:sequence select="concat(
-                          '/', $version, '?',
+                          '/', @number, '?',
                           $set-version-param-name, '=', @number)"/>
   </xsl:template>
 
@@ -328,9 +335,12 @@
     </div>
   </xsl:template>
 
-  <!-- Handle document-list.xml groups -->
+  <!--
+      Handle document-list.xml groups
+      TODO adjust for version-specific document-list structure.
+  -->
   <xsl:template mode="docs-page" priority="3"
-                match="group[@min-version gt $VERSION]" />
+                match="group[@min-version gt $VERSION-FINAL]" />
 
   <xsl:template mode="docs-page" match="group" priority="2">
     <h3 class="docs-page"><xsl:value-of select="@name"/></h3>
@@ -347,14 +357,14 @@
                 match="*"/>
 
   <xsl:template mode="docs-list-item"
-                match="entry[@min-version gt $VERSION]" priority="1"/>
+                match="entry[@min-version gt $VERSION-FINAL]" priority="1"/>
 
   <!--
        This template matches entries with links or versions,
        plus guides that have information.
   -->
   <xsl:template mode="docs-list-item"
-                match="entry[@href or url/@version = $VERSION]
+                match="entry[@href or url/@version = $VERSION-FINAL]
                        | guide[api:guide-info($content, @url-name)]">
     <xsl:variable name="href">
       <xsl:apply-templates mode="entry-href" select="."/>
@@ -383,15 +393,16 @@
   -->
 
   <!-- Strip out phrases that don't apply to older server versions -->
-  <xsl:template mode="entry-description" match="added-in[$VERSION lt @version]"/>
+  <xsl:template mode="entry-description"
+                match="added-in[$VERSION-FINAL lt @version]"/>
 
   <xsl:template mode="entry-description" match="version-suffix">
     <xsl:choose>
-      <xsl:when test="$VERSION eq '5.0'">5</xsl:when>
-      <xsl:when test="$VERSION eq '6.0'">6</xsl:when>
+      <xsl:when test="$VERSION-FINAL eq '5.0'">5</xsl:when>
+      <xsl:when test="$VERSION-FINAL eq '6.0'">6</xsl:when>
       <xsl:otherwise>
         <xsl:text>Server </xsl:text>
-        <xsl:value-of select="$VERSION"/>
+        <xsl:value-of select="$VERSION-FINAL"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -404,7 +415,7 @@
 
   <!-- entry/url/@href must include the whole path (version prefix not added) -->
   <xsl:template mode="entry-href" match="entry[url]" priority="1">
-    <xsl:value-of select="url[@version eq $VERSION]/@href"/>
+    <xsl:value-of select="url[@version eq $VERSION-FINAL]/@href"/>
   </xsl:template>
 
   <!-- entry/@href gets the version prefix added -->
@@ -521,7 +532,7 @@
     <xsl:if test="$show-alternative-functions or $q">
       <xsl:variable name="other-matches"
                     select="ml:get-matching-functions(
-                            api:function[1]/@name, $VERSION)
+                            api:function[1]/@name, $VERSION-FINAL)
                             /api:function-page except ."/>
       <p class="didYouMean">
         <xsl:if test="$other-matches">
@@ -805,7 +816,9 @@
           <!-- Convert and render the guide directly, for development.  -->
           <xsl:apply-templates
               mode="guide"
-              select="guide:convert-uri(base-uri(current()))/*/node()"/>
+              select="guide:convert-uri(
+                      $VERSION-FINAL,
+                      base-uri(current()))/*/node()"/>
         </xsl:otherwise>
       </xsl:choose>
     </div>

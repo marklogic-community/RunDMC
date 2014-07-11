@@ -29,30 +29,8 @@ declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 declare variable $TITLE-ALIASES as element(aliases) := u:get-doc(
   '/apidoc/config/title-aliases.xml')/aliases ;
 
-declare variable $toc-dir     := concat("/media/apiTOC/",$api:version,"/");
-declare variable $toc-xml-uri := concat($toc-dir,"toc.xml");
-declare variable $toc-uri     := concat($toc-dir,"apiTOC_", current-dateTime(), ".html");
-
-declare variable $toc-default-dir         := concat("/media/apiTOC/default/");
-declare variable $toc-uri-default-version := concat($toc-default-dir,"apiTOC_", current-dateTime(), ".html");
-
-declare variable $processing-default-version := $api:version eq $api:default-version;
-
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
   "/config/server-versions.xml")/*/version/@number ;
-
-(: TODO must not assume HTTP environment. :)
-declare variable $errorCheck := (
-  if (not($api:version-specified)) then stp:error(
-    "ERROR", "You must specify a 'version' param.")
-  else ()) ;
-
-(: TODO must not assume HTTP environment. :)
-(: used in create-toc.xqy / toc-help.xsl :)
-declare variable $helpXsdCheck := (
-  if (not(xdmp:get-request-field("help-xsd-dir"))) then stp:error(
-    "ERROR", "You must specify a 'help-xsd-dir' param.")
-  else ()) ;
 
 (: TODO skip for standalone?
  : Right now that works by looking at server-name,
@@ -198,21 +176,24 @@ as xs:string
 
 (: Change guide urls according to the data in the document-list. :)
 declare function stp:fix-guide-names(
+  $version as xs:string,
   $s as xs:string,
   $num as xs:integer)
 {
-  let $guides := $api:DOCUMENT-LIST/*/guide[@url-name ne @source-name]
+  let $guides := api:document-list($version)/*/guide[@url-name ne @source-name]
   let $source as xs:string* := $guides/@source-name
   let $url as xs:string* := $guides/@url-name
   let $count := count($source)
   return (
     if ($num eq $count + 1) then (xdmp:set($num, 9999), $s)
     else if ($num eq 9999) then $s
-    else stp:fix-guide-names(replace($s, $source[$num], $url[$num]),
+    else stp:fix-guide-names(
+      $version, replace($s, $source[$num], $url[$num]),
       $num + 1))
 };
 
 declare function stp:function-extract(
+  $version as xs:string,
   $function as element(apidoc:function),
   $uris-seen as map:map)
 as element()*
@@ -224,7 +205,7 @@ as element()*
     else if (starts-with($function/@name, '/')) then $api:MODE-REST
     else $api:MODE-XPATH)[1]
   let $external-uri := api:external-uri($function, $mode)
-  let $internal-uri := api:internal-uri($external-uri)
+  let $internal-uri := api:internal-uri($version, $external-uri)
   let $seen := map:contains($uris-seen, $internal-uri)
   let $lib as xs:string := $function/@lib
   let $name as xs:string := $function/@name
@@ -261,9 +242,7 @@ as element()*
     map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
     element api:function-name { api:fixup-fullname($function, $mode) },
-    stp:fixup(
-      $children,
-      $mode) }
+    stp:fixup($version, $children, $mode) }
 };
 
 declare function stp:function-docs(
@@ -273,11 +252,13 @@ as element()*
 {
   (: create XQuery/XSLT function pages - and REST? :)
   stp:function-extract(
+    $version,
     api:module-extractable-functions($doc/apidoc:module, $api:MODE-XPATH),
     map:map()),
   (: create JavaScript function pages :)
-  if (number($api:version) lt 8) then ()
+  if (number($version) lt 8) then ()
   else stp:function-extract(
+    $version,
     api:module-extractable-functions($doc/apidoc:module, $api:MODE-JAVASCRIPT),
     map:map())
 };
@@ -575,12 +556,14 @@ as empty-sequence()
     true())
 };
 
-declare function stp:toc-delete()
+(: TODO move to toc.xqm? :)
+declare function stp:toc-delete(
+  $version as xs:string)
 as empty-sequence()
 {
-  stp:info('stp:toc-delete', $api:version),
-  let $dir := $toc-dir
-  let $prefix := string(doc($api:toc-uri-location))
+  stp:info('stp:toc-delete', $version),
+  let $dir := toc:directory-uri($version)
+  let $prefix := string(doc(api:toc-uri-location($version)))
   for $toc-parts-dir in cts:uri-match(concat($dir, "*.html/"))
   let $main-toc := substring($toc-parts-dir,1,string-length($toc-parts-dir)-1)
   where not(starts-with($toc-parts-dir,$prefix))
@@ -658,6 +641,7 @@ as element(api:list-entry)
 };
 
 declare function stp:list-page-functions(
+  $version as xs:string,
   $uri as xs:string,
   $toc-node as element(toc:node))
 as element(api:list-page)
@@ -688,7 +672,7 @@ as element(api:list-page)
       'stp:list-page-functions',
       ($uri, 'leaf', xdmp:describe($leaf),
         'type', $leaf/@type, 'href', $href))
-    let $uri-leaf as xs:string := api:internal-uri($href)
+    let $uri-leaf as xs:string := api:internal-uri($version, $href)
     let $root as document-node() := doc($uri-leaf)
     let $function as element() := ($root/api:function-page/api:function)[1]
     return stp:list-entry($function, $leaf) }
@@ -740,11 +724,12 @@ as element(api:help-page)
 
 (: Set up the docs page for this version. :)
 declare function stp:list-page-root(
+  $version as xs:string,
   $toc as element(toc:root))
 as element()+
 {
   element api:docs-page {
-    attribute xml:base { api:internal-uri('/') },
+    attribute xml:base { api:internal-uri($version, '/') },
     attribute disable-comments { true() },
     comment {
       'This page was automatically generated using',
@@ -774,12 +759,14 @@ as element()+
  : This may return element()+ with a variety of QNames.
  :)
 declare function stp:list-pages-render(
+  $version as xs:string,
   $toc-document as document-node())
 as element()+
 {
   stp:info(
-    'stp:list-pages-render', ("starting", xdmp:describe($toc-document))),
-  stp:list-page-root($toc-document/toc:root),
+    'stp:list-pages-render',
+    ("starting", $version, xdmp:describe($toc-document))),
+  stp:list-page-root($version, $toc-document/toc:root),
   (: Find each function list and help page URL. :)
   let $seq as xs:string+ := distinct-values(
     $toc-document//toc:node[@function-list-page or @admin-help-page]/@href)
@@ -795,20 +782,22 @@ as element()+
   where $toc-node
   return (
     if ($toc-node/@admin-help-page) then stp:list-page-help(
-      api:internal-uri($href), $toc-node)
+      api:internal-uri($version, $href), $toc-node)
     else if ($toc-node/@function-list-page) then stp:list-page-functions(
-      api:internal-uri($href), $toc-node)
+      $version, api:internal-uri($version, $href), $toc-node)
     else stp:error('UNEXPECTED', xdmp:quote($toc-node)))
   ,
   stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
 };
 
 (: Generate and insert a list page for each TOC container :)
-declare function stp:list-pages-render()
+declare function stp:list-pages-render(
+  $version as xs:string)
 as empty-sequence()
 {
   for $n in stp:list-pages-render(
-    doc($toc-xml-uri) treat as node())
+    $version,
+    doc(toc:root-uri($version)) treat as node())
   let $uri as xs:string := base-uri($n)
   let $_ := (
     if ($n/* or $n/self::*) then ()
@@ -851,15 +840,8 @@ as empty-sequence()
     true())
 };
 
-(: Recursively load all files, retaining the subdir structure :)
-declare function stp:zip-load-raw-docs(
-  $zip as binary())
-as empty-sequence()
-{
-  stp:zip-load-raw-docs($api:version, $zip)
-};
-
 declare function stp:fixup-attribute-href(
+  $version as xs:string,
   $a as attribute(href),
   $context as xs:string*)
 as attribute()?
@@ -875,6 +857,7 @@ as attribute()?
       let $anchor := replace(
         substring-after($a, '.xml'), '%23', '#id_')
       return stp:fix-guide-names(
+        $version,
         concat('/guide',
           substring-before(
             substring-after($a, 'doc/xml'), '.xml'),
@@ -966,12 +949,14 @@ as attribute()?
  : where it was only used by extract-functions.
  :)
 declare function stp:fixup-attribute(
+  $version as xs:string,
   $a as attribute(),
   $context as xs:string*)
 as attribute()?
 {
   typeswitch($a)
-  case attribute(href) return stp:fixup-attribute-href($a, $context)
+  case attribute(href) return stp:fixup-attribute-href(
+    $version, $a, $context)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
   (: By default, return the input. :)
@@ -1042,11 +1027,12 @@ as element(api:element)
 };
 
 declare function stp:fixup-children-apidoc-usage(
+  $version as xs:string,
   $e as element(apidoc:usage),
   $context as xs:string*)
 as node()*
 {
-  if (not($e/@schema)) then stp:fixup($e/node(), $context) else (
+  if (not($e/@schema)) then stp:fixup($version, $e/node(), $context) else (
     let $current-dir := string-join(
       tokenize(base-uri($e), '/')[position() ne last()], '/')
     let $schema-uri := concat(
@@ -1058,12 +1044,12 @@ as node()*
     let $given-name := ($e/@element-name, $e/../@name)[1]/string()
     let $complexType-name := (
       if ($is-REST-resource and not($e/@element-name))
-      then api:lookup-REST-complexType($function-name)
+      then api:lookup-REST-complexType($version, $function-name)
       else $given-name)
     let $print-intro-value := (string($e/@print-intro), true())[1]
     where $complexType-name
     return (
-      stp:fixup($e/node(), $context),
+      stp:fixup($version, $e/node(), $context),
       element api:schema-info {
         if (not($is-REST-resource)) then () else (
           attribute REST-doc { true() },
@@ -1077,17 +1063,19 @@ as node()*
 };
 
 declare function stp:fixup-children(
+  $version as xs:string,
   $e as element(),
   $context as xs:string*)
 as node()*
 {
   typeswitch($e)
   case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
-    $e, $context)
-  default return stp:fixup($e/node(), $context)
+    $version, $e, $context)
+  default return stp:fixup($version, $e/node(), $context)
 };
 
 declare function stp:fixup-element(
+  $version as xs:string,
   $e as element(),
   $context as xs:string*)
 as element()?
@@ -1098,9 +1086,9 @@ as element()?
   let $includes := xs:NMTOKENS($e/@class)[. eq $api:MODES]
   where empty($includes) or $includes = $context
   return element { stp:fixup-element-name($e) } {
-    stp:fixup-attribute($e/@*, $context),
+    stp:fixup-attribute($version, $e/@*, $context),
     stp:fixup-attributes-new($e, $context),
-    stp:fixup-children($e, $context) }
+    stp:fixup-children($version, $e, $context) }
 };
 
 (: Ported from fixup.xsl
@@ -1108,6 +1096,7 @@ as element()?
  : and any other transform work.
  :)
 declare function stp:fixup(
+  $version as xs:string,
   $n as node(),
   $context as xs:string*)
 as node()*
@@ -1116,9 +1105,10 @@ as node()*
     'stp:fixup',
     (xdmp:describe($n), xdmp:describe($context))),
   typeswitch($n)
-  case document-node() return document { stp:fixup($n/node(), $context) }
-  case element() return stp:fixup-element($n, $context)
-  case attribute() return stp:fixup-attribute($n, $context)
+  case document-node() return document {
+    stp:fixup($version, $n/node(), $context) }
+  case element() return stp:fixup-element($version, $n, $context)
+  case attribute() return stp:fixup-attribute($version, $n, $context)
   (: By default, return the input. :)
   default return $n
 };

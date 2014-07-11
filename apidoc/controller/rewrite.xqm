@@ -7,14 +7,17 @@ module namespace m="http://marklogic.com/rundmc/apidoc/rewrite";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-import module namespace api="http://marklogic.com/rundmc/api"
-  at "/apidoc/model/data-access.xqy";
-import module namespace ml="http://developer.marklogic.com/site/internal"
-  at "/model/data-access.xqy";
 import module namespace rw="http://marklogic.com/rundmc/rewrite"
  at "/controller/rewrite.xqm";
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
   at "/controller/server-urls.xqy";
+import module namespace ml="http://developer.marklogic.com/site/internal"
+  at "/model/data-access.xqy";
+
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
+import module namespace c="http://marklogic.com/rundmc/api/controller"
+  at "/apidoc/controller/controller.xqm";
 
 declare namespace x="http://www.w3.org/1999/xhtml";
 
@@ -53,15 +56,13 @@ declare variable $VERSION-SPECIFIED := (
     substring-after($PATH, '/'), '/')
   else "") ;
 
-declare variable $VERSION := (
-  if ($VERSION-SPECIFIED) then $VERSION-SPECIFIED
-  else $api:default-version) ;
+declare variable $VERSION := c:version($VERSION-SPECIFIED) ;
 
 declare variable $ROOT-DOC-URL := concat(
-  '/apidoc/', $api:default-version, '/index.xml');
+  '/apidoc/', $api:DEFAULT-VERSION, '/index.xml');
 (: when version is unspecified in path :)
 declare variable $DOC-URL-DEFAULT := concat(
-  '/apidoc/', $api:default-version, $PATH, '.xml');
+  '/apidoc/', $api:DEFAULT-VERSION, $PATH, '.xml');
 (: when version is specified in path :)
 declare variable $DOC-URL := concat(
   '/apidoc', $PATH, '.xml');
@@ -74,7 +75,7 @@ declare variable $REST-DOC-PATH := (
   let $candidate-uris := (
     cts:uri-match(
       concat(
-        '/apidoc/', $api:default-version, $PATH-ORIG,
+        '/apidoc/', $api:DEFAULT-VERSION, $PATH-ORIG,
         $api:REST-URI-QUESTIONMARK-SUBSTITUTE, "*")),
     cts:uri-match(
       concat('/apidoc/',
@@ -103,7 +104,7 @@ declare variable $REST-DOC-PATH := (
 ;
 
 declare variable $MATCHING-FUNCTIONS := ml:get-matching-functions(
-  $PATH-TAIL, $api:version) ;
+  $PATH-TAIL, $VERSION) ;
 
 declare variable $MATCHING-FUNCTION-COUNT := count($MATCHING-FUNCTIONS) ;
 

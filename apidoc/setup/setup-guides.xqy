@@ -7,26 +7,23 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "raw-docs-access.xqy";
 
-(: Make sure the version param was specified :)
-$stp:errorCheck,
+declare variable $VERSION as xs:string external ;
+
+declare variable $VARS := (xs:QName('VERSION'), $VERSION) ;
 
 (: Normalize the guide fragments and URLs,
  : and add a chapter list to the title doc.
  :)
-xdmp:invoke("consolidate-guides.xqy"),
+xdmp:invoke("consolidate-guides.xqy", $VARS),
 
 (: Copy all the image files referenced by the guides.
  : This can run independently.
  : Converting all the guides will take a long time anyway.
  : This has to start after consolidate-guides finishes.
  :)
-xdmp:spawn(
-  "copy-guide-images.xqy",
-  (xs:QName('VERSION'), $api:version-specified)),
+xdmp:spawn("copy-guide-images.xqy", $VARS),
 
 (: Convert each title and chapter doc into renderable XML. :)
-xdmp:invoke("convert-guides.xqy"),
-
-xdmp:log("[setup-guides.xqy] done")
+xdmp:invoke("convert-guides.xqy", $VARS)
 
 (: apidoc/setup-guides.xqy :)

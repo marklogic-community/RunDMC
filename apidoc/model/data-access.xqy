@@ -11,10 +11,8 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 
-(: TODO refactor for #230. :)
-declare variable $DOCUMENT-LIST as element(docs) := (
-  if (1) then doc('/apidoc/'||$api:version||'/document-list.xml')
-  else u:get-doc('/apidoc/config/document-list.xml'))/docs ;
+import module namespace c="http://marklogic.com/rundmc/api/controller"
+  at "/apidoc/controller/controller.xqm";
 
 declare variable $MODE-JAVASCRIPT := 'javascript' ;
 declare variable $MODE-REST := 'REST' ;
@@ -23,57 +21,12 @@ declare variable $MODES := ($MODE-JAVASCRIPT, $MODE-REST, $MODE-XPATH) ;
 
 declare variable $NAMESPACE := "http://marklogic.com/rundmc/api" ;
 
-declare variable $default-version as xs:string  := $ml:default-version ;
-(: uniformly accessed in both the setup and view code
- : rather than using $params which only the view code uses
- : TODO refactor this out - does not work properly with spawn or invoke.
- :)
-declare variable $version-specified as xs:string? := xdmp:get-request-field(
-  "version") ;
-declare variable $version as xs:string  := (
-  if ($version-specified) then $version-specified
-  else $default-version) ;
+declare variable $DEFAULT-VERSION as xs:string  := $ml:default-version ;
 
-(: This variable is only used by the setup script,
- : because it's only in the setup scripts that we ever care about
- : more than one TOC URL at a time
- :
- : Its value must be the same as $toc-uri-location
- : when $version-specified is empty,
- : so the view code will get the right default TOC.
- :)
-declare variable $toc-uri-default-version-location := "/apidoc/private/toc-uri.xml" ;
-declare variable $toc-uri-location := concat(
-  "/apidoc/private/",
-  $version-specified,
-  (if ($version-specified) then '/' else ''),
-  "toc-uri.xml");
+declare private variable $DOCUMENT-LIST-CACHED := () ;
 
-(: Using the alternative TOC location for now - i.e. if current version is the default,
-   regardless of whether it was explicit, don't include the version number in links; see also $version-prefix in page.xsl; see also delete-old-toc.xqy :)
-declare variable $toc-uri as xs:string := doc($toc-uri-location-alternative) ;
-
-declare variable $toc-uri-location-alternative := (
-  if ($version eq $default-version) then $toc-uri-default-version-location
-  else $toc-uri-location) ;
-
-declare variable $built-in-libs := api:get-libs(
-  $version,
-  api:query-for-builtin-functions($version),
-  true(), $MODE-XPATH );
-declare variable $library-libs  := api:get-libs(
-  $version, api:query-for-library-functions($version),
-  false(), $MODE-XPATH);
-
-declare variable $LIBS-JAVASCRIPT := (
-  if (number($version) lt 8) then ()
-  else api:get-libs(
-    $version,
-    cts:element-attribute-value-query(
-      xs:QName('api:function-page'),
-      xs:QName('mode'),
-      $MODE-JAVASCRIPT),
-    true(), $MODE-JAVASCRIPT));
+(: Used by page.xsl to write ajax URL for toc_filter.js :)
+declare variable $TOC-URI-DEFAULT := "/apidoc/private/toc-uri.xml" ;
 
 declare variable $M-NAMESPACES as map:map := (
   let $m := map:map()
@@ -84,6 +37,8 @@ declare variable $M-NAMESPACES as map:map := (
     return ())
   return $m) ;
 
+declare private variable $REST-COMPLEXTYPE-MAPPINGS := () ;
+
 (: Replace "?" in the names of REST resources
  : with a character that will work in doc URIs
  :)
@@ -92,24 +47,105 @@ declare variable $REST-URI-QUESTIONMARK-SUBSTITUTE := "@";
 (: TODO is XXX a placeholder? :)
 declare variable $REST-LIBS := ('manage', 'XXX', 'rest-client') ;
 
-declare variable $REST-COMPLEXTYPE-MAPPINGS := (
-  (: This is sensitive to a bug in 7.0-2.3 (SUPPORT-13991),
-   : so leave the expression alone until the bug is fixed.
-   :)
-  let $r := u:get-doc(
-    '/apidoc/config/REST-complexType-mappings.xml')/resources
-  return switch($version)
-  case '5.0' return $r/marklogic6/resource (: TODO bug? :)
-  case '6.0' return $r/marklogic6/resource
-  case '7.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
-  (: TODO just a copy of ML7 for now. :)
-  case '8.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
-  default return error((), 'UNEXPECTED', ('unknown version', $version))) ;
-
 declare function api:version-dir($version as xs:string)
 as xs:string
 {
   concat("/apidoc/", $version, "/")
+};
+
+(: TODO move to toc.xqm? :)
+declare function api:toc-uri-location(
+  $version-specified as xs:string)
+as xs:string
+{
+  concat(
+    "/apidoc/private/",
+    $version-specified,
+    (if ($version-specified) then '/' else ''),
+    "toc-uri.xml")
+};
+
+declare function api:toc-uri-location-alternative(
+  $version as xs:string,
+  $version-specified as xs:string)
+{
+  if ($version eq $DEFAULT-VERSION) then $TOC-URI-DEFAULT
+  else api:toc-uri-location($version-specified)
+};
+
+(: Using the alternative TOC location for now.
+ : So if current version is the default,
+ : regardless of whether it was explicit,
+ : don't include the version number in links.
+ : See also $version-prefix in page.xsl, delete-old-toc.xqy.
+ :)
+declare function api:toc-uri(
+  $version as xs:string,
+  $version-specified as xs:string)
+as xs:string
+{
+  doc(api:toc-uri-location-alternative($version, $version-specified))
+};
+
+(: Specifically for page.xsl via HTTP request. :)
+declare function api:toc-uri()
+as xs:string
+{
+  let $version-specified as xs:string? := c:http-request-version()
+  return api:toc-uri(
+    c:version($version-specified), $version-specified)
+};
+
+declare function api:builtin-libs-for-mode(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  if (number($version) lt 8) then ()
+  else api:get-libs(
+    $version,
+    cts:element-attribute-value-query(
+      xs:QName('api:function-page'),
+      xs:QName('mode'),
+      $mode),
+    true(), $mode)
+};
+
+declare function api:libs-for-mode(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  if (number($version) lt 8) then ()
+  else api:get-libs(
+    $version,
+    cts:element-attribute-value-query(
+      xs:QName('api:function-page'),
+      xs:QName('mode'),
+      $mode),
+    false(), $mode)
+};
+
+declare function api:builtin-libs(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  api:get-libs(
+    $version,
+    api:query-for-builtin-functions($version),
+    true(), $mode)
+};
+
+declare function api:library-libs(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  api:get-libs(
+    $version,
+    api:query-for-library-functions($version),
+    false(), $mode)
 };
 
 (: TODO this seems convoluted and expensive. Really a group-by? :)
@@ -177,7 +213,7 @@ as document-node()+
 {
   cts:search(
     collection(),
-    api:query-for-all-functions($api:version),
+    api:query-for-all-functions($version),
     "unfiltered")
 };
 
@@ -374,6 +410,7 @@ declare function api:external-uri($n as node())
  : as they appear in the XML TOCs.
  :)
 declare function api:internal-uri(
+  $version as xs:string,
   $doc-path as xs:string)
 as xs:string
 {
@@ -473,11 +510,38 @@ declare function api:reverse-translate-REST-resource-name(
   return replace($step3, $REST-URI-QUESTIONMARK-SUBSTITUTE, '?')
 };
 
+(: This might be a hot-spot,
+ : so cache the filesystem document in a module variable.
+ : ASSUMPTION = We only process one version per request.
+ :)
+declare function api:rest-complextype-mappings(
+  $version as xs:string)
+as element(resource)+
+{
+  if ($REST-COMPLEXTYPE-MAPPINGS) then $REST-COMPLEXTYPE-MAPPINGS else (
+    let $resources := (
+      (: This is sensitive to a bug in 7.0-2.3 (SUPPORT-13991),
+       : so leave the expression alone until the bug is fixed.
+       :)
+      let $r := u:get-doc(
+        '/apidoc/config/REST-complexType-mappings.xml')/resources
+      return switch($version)
+      case '5.0' (: No ML5 in config file, so fall through to ML6. :)
+      case '6.0' return $r/marklogic6/resource
+      case '7.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
+      (: TODO just a copy of ML7 for now. :)
+      case '8.0' return $r/marklogic7/resource[complexType/@name ne 'woops']
+      default return error((), 'UNEXPECTED', ('unknown version', $version)))
+    let $_ := xdmp:set($REST-COMPLEXTYPE-MAPPINGS, $resources)
+    return $resources)
+};
+
 declare function api:lookup-REST-complexType(
+  $version as xs:string,
   $resource-name as xs:string)
 as xs:string?
 {
-  $REST-COMPLEXTYPE-MAPPINGS[
+  api:rest-complextype-mappings($version)[
     @name eq $resource-name]/complexType/@name
 };
 
@@ -557,7 +621,7 @@ as xs:string
     ".scrollable_section a[href='"
     ||$version-prefix
     ||(switch($e/@mode)
-      case $api:MODE-JAVASCRIPT return '/js/'
+      case $MODE-JAVASCRIPT return '/js/'
       default return '/')
     ||$e/api:function[1]/@lib
     ||"']")
@@ -575,7 +639,7 @@ as xs:string
     ||' >:first-child')
   case element(api:list-page) return (
     (switch($e/@mode)
-      case $api:MODE-JAVASCRIPT return '#js_'
+      case $MODE-JAVASCRIPT return '#js_'
       default return '#')
     ||$e/@container-toc-section-id
     ||' >:first-child')
@@ -584,6 +648,23 @@ as xs:string
   (: On the main docs page, just let the first tab be selected by default. :)
   case element(api:docs-page) return ''
   default return error((), 'UNEXPECTED', xdmp:describe($e))
+};
+
+(: TODO refactor for #230. :)
+declare function api:document-list(
+  $version as xs:string)
+as element(docs)
+{
+  (: Lazy init of module variable.
+   : ASSUMPTION = We only process one version per request.
+   :)
+  if ($DOCUMENT-LIST-CACHED) then $DOCUMENT-LIST-CACHED
+  else (
+    let $v as element(docs) := (
+      if (1) then doc('/apidoc/'||$version||'/document-list.xml')
+      else u:get-doc('/apidoc/config/document-list.xml'))/docs
+    let $_ := xdmp:set($DOCUMENT-LIST-CACHED, $v)
+    return $v)
 };
 
 (: apidoc/model/data-access.xqy :)

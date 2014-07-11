@@ -7,11 +7,8 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
-(: Make sure the version param was specified :)
-$stp:errorCheck,
+declare variable $VERSION as xs:string external ;
 
-stp:raw-delete($api:version),
-
-text { "Deleted raw docs for", $api:version, xdmp:elapsed-time() }
+stp:raw-delete($VERSION)
 
 (: delete-raw-docs.xqy :)
