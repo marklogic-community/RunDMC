@@ -13,8 +13,6 @@ import module namespace api="http://marklogic.com/rundmc/api"
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "setup.xqm";
 
-declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
-
 (: We look back into the raw docs database
  : to get the introductory content for each function list page.
  :)
@@ -28,6 +26,8 @@ import module namespace af="http://marklogic.com/xdmp/admin/admin-forms"
   at "/MarkLogic/admin/admin-forms.xqy" ;
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
+
+declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
 (: This is for specifying exceptions to the automated mappings
  : of categories to URIs.
@@ -339,11 +339,11 @@ as element()?
 
 declare function toc:guides-in-group(
   $version as xs:string,
-  $groups as element(group)*)
+  $groups as element(apidoc:group)*)
 as document-node()*
 {
   doc(
-    $groups/guide/concat(
+    $groups/apidoc:guide/concat(
       api:version-dir($version), 'guide/', @url-name, '.xml'))
 };
 
@@ -415,39 +415,40 @@ declare function toc:guide($n as node())
 as node()?
 {
   typeswitch($n)
-  (: TODO why copy this text at all? :)
-  case text() return $n
   case element(xhtml:div) return (
-    if (not($n/@class = 'section')) then $n
-    else toc:node(
+    switch($n/@class)
+    case 'section' return toc:node(
       toc:id($n),
       (: ASSUMPTION Second element is a heading. :)
       $n/*[2],
       toc:guide-href($n),
-      toc:guide($n/node())))
+      toc:guide($n/node()))
+    default return ())
   default return ()
 };
 
 declare function toc:guide-node(
-  $root as document-node(),
-  $is-duplicate as xs:boolean)
+  $guide as element(guide),
+  $is-duplicate as xs:boolean?)
 as element(toc:node)
 {
   toc:node(
-    toc:id($root),
-    ($root/guide treat as element())/title,
-    api:external-uri($root),
+    toc:id($guide),
+    $guide/title,
+    api:external-uri($guide),
     true(),
     'guide',
     ('sub-control', 'wrap-titles', 'duplicate'[$is-duplicate]),
-    $root/guide/chapter-list/chapter/toc:guide(doc(@href)/chapter/node()))
+    (: To preserve node order, use SMO rather than XPath. :)
+    $guide/chapter-list/chapter
+    ! toc:guide(doc(@href)/chapter/node()))
 };
 
 declare function toc:guide-node(
-  $root as document-node())
+  $guide as element(guide))
 as element(toc:node)
 {
-  toc:guide-node($root, false())
+  toc:guide-node($guide, false())
 };
 
 (: Database URI for a rendered async TOC section. :)
@@ -509,19 +510,19 @@ as xs:string*
   ,
 
   (: Include on nodes that will be loaded asynchronously. :)
-  'hasChildren'[$n/@async],
+  'hasChildren'[$n/@async/xs:boolean(.)],
 
   (: Include on nodes that have an @id
    : (used by list pages to identify the relevant TOC section)
    : but that aren't loaded asynchronously
    : because they're already loaded.
    :)
-  ("loaded", 'initialized')[$n[@id][not(@async)]],
+  ("loaded", 'initialized')[$n[@id][not(@async/xs:boolean(.))]],
 
   (: Mark the asynchronous (unpopulated) nodes as such,
    : for the treeview JavaScript.
    :)
-  "async"[$n/@async],
+  "async"[$n/@async/xs:boolean(.)],
 
   (: Mark the nodes whose descendant titles should be wrapped :)
   "wrapTitles"[$n/@wrap-titles]
@@ -645,7 +646,7 @@ as element()
     toc:render-node-link($prefix-for-hrefs, $n),
     toc:render-node-children(
       $uri, $prefix-for-hrefs,
-      xs:boolean($n/@open), xs:boolean($n/@async),
+      $n/@open/xs:boolean(.), $n/@async/xs:boolean(.),
       $n/toc:node)
   }
   </li>
@@ -665,7 +666,7 @@ as element()
       'display:',
       if ($selected) then 'block;' else 'none;' },
     attribute class { 'treeview', 'apidoc_tree' },
-    toc:render-node($uri, $prefix-for-hrefs, $n)
+    toc:render-node($uri, $prefix-for-hrefs, $n/toc:node)
   }
   </ul>
 };
@@ -679,7 +680,7 @@ declare function toc:render-async(
   $n as element(toc:node))
 as element()
 {
-  if ($n/@async and not($n/@duplicate)) then () else stp:error(
+  if ($n/@async/xs:boolean(.) and not($n/@duplicate)) then () else stp:error(
       'UNEXPECTED', xdmp:describe($n)),
   let $uri-new as xs:string := toc:uri(
     concat($uri, '/'),
@@ -772,7 +773,7 @@ as element()+
    :)
   toc:render-async(
     $uri, $prefix-for-hrefs,
-    $toc//toc:node[@async][not(@duplicate)]),
+    $toc//toc:node[@async/xs:boolean(.)][not(@duplicate)]),
 
   (: Wrapper includes placeholder elements for use by toc_filter.js toc_init.
    : Could some of this chrome move into page rendering?
@@ -784,7 +785,7 @@ as element()+
   {
     toc:render-content(
       $uri, $prefix-for-hrefs, $toc,
-      (: TODO infer selection from document-list? Cookie? :)
+      (: First node always starts selected. :)
       $toc/toc:node[1])
   }
       </div>
@@ -1307,6 +1308,8 @@ as element(toc:node)+
         $in-this-category, $single-lib-for-category, $sub-categories)))
 };
 
+(: Build toc:nodes for functions by category.
+ :)
 declare function toc:functions-by-bucket(
   $version as xs:string,
   $mode as xs:string,
@@ -1317,6 +1320,7 @@ as element(toc:node)+
   if (not($stp:DEBUG)) then () else stp:debug(
     'toc:functions-by-bucket', ($version, $mode)),
   let $m-buckets as map:map := map:get($m-mode-functions, $MAP-KEY-BUCKET)
+  (: TODO move this into configuration. :)
   let $forced-order := (
     'MarkLogic Built-In Functions',
     'XQuery Library Modules', 'CPF Functions',
@@ -1448,7 +1452,8 @@ declare function toc:api-lib(
   $mode as xs:string,
   $m-mode-functions as map:map,
   $by-bucket as element(toc:node)+,
-  $lib as element(api:lib))
+  $lib as element(api:lib),
+  $function-count as xs:integer)
 as element(toc:node)
 {
   toc:node(
@@ -1461,8 +1466,7 @@ as element(toc:node)
       $lib),
     true(), (), ('function-list-page', 'footnote'[$lib/@built-in]),
     ($lib/@category-bucket,
-      attribute function-count {
-        toc:function-count($version, $mode, $lib) },
+      attribute function-count { $function-count },
       attribute namespace { api:namespace($lib)/@uri },
       attribute mode { $mode },
 
@@ -1516,186 +1520,227 @@ as map:map
         api:builtin-libs($version, $api:MODE-JAVASCRIPT))))
 };
 
-(: TODO refactor - too long. :)
+(: Convenience constructor for a toc:node
+ : based on a document-list entry.
+ :)
+declare function toc:entry-to-node(
+  $entry as element(apidoc:entry),
+  $id as xs:string,
+  $title as xs:string,
+  $body as item()*)
+as element(toc:node)
+{
+  toc:node(
+    $id,
+    $title,
+    $entry/@href,
+    $entry/@async/xs:boolean(.),
+    $entry/@type,
+    ('open',
+      (: Transform any of these attributes to toc:node attributes.
+       : Extend as needed.
+       :)
+      $entry/(@TBD)[xs:boolean(.)]/local-name(.)),
+    ($entry/@mode,
+      $body))
+};
+
+(: Convenience constructor for a toc:node
+ : based on a document-list entry.
+ :)
+declare function toc:entry-to-node(
+  $entry as element(apidoc:entry),
+  $body as item()*)
+as element(toc:node)
+{
+  toc:entry-to-node(
+    $entry,
+    if ($entry/@id) then $entry/@id else toc:id($entry),
+    ($entry/@toc-title, $entry/@title)[1],
+    $body)
+};
+
+(: Transform a document-list entry element
+ : for a function-reference to a toc:node.
+ :)
+declare function toc:function-reference-node(
+  $version as xs:string,
+  $m-mode-libs as map:map,
+  $m-functions as map:map,
+  $m-mode-categories as map:map,
+  $entry as element(apidoc:entry))
+as element(toc:node)+
+{
+  (: A function-reference entry may not have any entry children.
+   : Any @id will be ignored.
+   : Construct the body directly.
+   : We may want a flat list, and we always want a list by category.
+   :)
+  let $mode as xs:string := $entry/@mode
+  let $function-count := string(toc:function-count($version, $mode, ()))
+  let $title as xs:string := replace(
+    ($entry/@toc-title, $entry/@title)[1], '%d', $function-count)
+  let $all-functions := $entry/@all-functions/xs:boolean(.)
+  let $title-all-functions := (
+    if (not($all-functions)) then ()
+    else replace($entry/@all-functions-title, '%d', $function-count))
+  return (
+    toc:entry-to-node(
+      $entry,
+      'AllFunctionsByCat-'||$mode,
+      $title,
+      (
+        element toc:title { $title },
+        element toc:intro { $entry/apidoc:intro/node() },
+        map:get($m-mode-categories, $mode))),
+
+    if (not($all-functions)) then () else toc:entry-to-node(
+      $entry,
+      'AllFunctions.'||$mode,
+      $title-all-functions,
+      (element toc:title { $title-all-functions },
+        element toc:intro { $entry/apidoc:intro/node() },
+        for $lib in map:get($m-mode-libs, $mode)
+        let $count := toc:function-count($version, $mode, $lib)
+        where $count
+        order by $lib
+        return toc:api-lib(
+          $version, $mode,
+          map:get($m-functions, $mode),
+          map:get($m-mode-categories, $mode),
+          $lib, $count))))
+};
+
+(: Transform a document-list entry element to a toc:node.
+ : Some entry types can return multiple nodes.
+ : Some entry types are ignored.
+ :)
+declare function toc:entry-node(
+  $version as xs:string,
+  $xsd-docs as document-node()*,
+  $prefixes-not-builtin as xs:string+,
+  $m-mode-libs as map:map,
+  $m-functions as map:map,
+  $m-mode-categories as map:map,
+  $guide-docs as element(guide)+,
+  $help-config as element(help),
+  $entry as element(apidoc:entry))
+as element(toc:node)*
+{
+  let $type as xs:string? := $entry/@type
+  return switch($type)
+  case 'download' return ()
+  case 'external' return toc:node-external(
+    ($entry/@toc-title, $entry/@title)[1], $entry/@href)
+  case 'function-reference' return toc:function-reference-node(
+    $version,
+    $m-mode-libs, $m-functions, $m-mode-categories,
+    $entry)
+  case 'help' return toc:help(
+    number($version), $xsd-docs, $help-config)
+  (: At the moment an entry with no @type is always
+   : a wrapper for guide elements.
+   : For each guide child, find the right guide node
+   : and build its toc node.
+   :)
+  case () return toc:entry-to-node(
+    $entry,
+    for $guide in $entry/apidoc:guide
+    let $is-duplicate := $guide/@duplicate/xs:boolean(.)
+    let $name as xs:string := $guide/@url-name
+    let $match as element() := $guide-docs[
+      ends-with(base-uri(.), '/'||$name||'.xml')]
+    return toc:guide-node($match, $is-duplicate))
+  default return stp:error(
+    'UNEXPECTED', ('no handler for type', xdmp:describe($type)))
+};
+
+(: Transform a document-list group element to a toc:node. :)
+declare function toc:group-node(
+  $version as xs:string,
+  $xsd-docs as document-node()*,
+  $prefixes-not-builtin as xs:string+,
+  $m-mode-libs as map:map,
+  $m-functions as map:map,
+  $m-mode-categories as map:map,
+  $guide-docs as element(guide)+,
+  $help-config as element(help),
+  $group as element(apidoc:group))
+as element(toc:node)
+{
+  toc:node(
+    if ($group/@id) then $group/@id else toc:id($group),
+    ($group/@toc-title, $group/@title)[1],
+    $group/@href,
+    (),
+    $group/@type,
+    ('open'
+      (: Transform any of these attributes to toc:node attributes.
+       : Extend as needed.
+       :)
+      , $group/(@TBD)[xs:boolean(.)]/local-name(.)),
+    ($group/@mode,
+      (: Handle entries. :)
+      toc:entry-node(
+        $version, $xsd-docs, $prefixes-not-builtin,
+        $m-mode-libs, $m-functions, $m-mode-categories,
+        $guide-docs, $help-config, $group/apidoc:entry)))
+};
+
 declare function toc:create(
   $version as xs:string,
   $xsd-docs as document-node()*)
 as element(toc:root)
 {
-  let $version-number := xs:double($version)
-  let $m-libs := toc:libs-by-mode($version)
+  let $document-list as element(apidoc:docs) := api:document-list($version)
+  let $m-mode-libs := toc:libs-by-mode($version)
   (: This works for JavaScript too,
    : because the XPath prefixes are a superset.
    :)
   let $prefixes-not-builtin as xs:string+ := map:get(
-    $m-libs, $api:MODE-XPATH)[not(@built-in)]
+    $m-mode-libs, $api:MODE-XPATH)[not(@built-in)]
   let $m-functions := toc:functions-map($version)
-  let $m-by-bucket := map:new(
+  let $m-mode-categories := map:new(
     $api:MODES ! map:entry(
       .,
       toc:functions-by-bucket(
         $version, ., map:get($m-functions, .),
         $prefixes-not-builtin)))
-  let $function-count := toc:function-count(
-    $version, $api:MODE-XPATH, ())
-  let $javascript-function-count := toc:function-count(
-    $version, $api:MODE-JAVASCRIPT, ())
-  let $guide-docs := xdmp:directory(
-    concat(api:version-dir($version), 'guide/'))[guide]
-  let $guide-groups := api:document-list($version)/group[guide]
-  let $guide-docs-not-configured := (
-    $guide-docs except toc:guides-in-group($version, $guide-groups))
+  (: These are consolidated guides. :)
+  let $guide-docs as element(guide)+ := xdmp:directory(
+    concat(api:version-dir($version), 'guide/'))/guide
+  let $help-config as element(help) := u:get-doc(
+    '/apidoc/config/help-config.xml')/help
+
+  (: Detect any guides that would not be displayed,
+   : or would be displayed too many times.
+   :)
+  let $_ := (
+    for $uri in $guide-docs/base-uri(.)
+    let $id as xs:string := replace($uri, '^.+/([^/]+)\.xml$', '$1')
+    let $matches := $document-list//apidoc:guide[
+      not(@duplicate/xs:boolean(.))][
+      @url-name eq $id]
+    let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+      'toc:create', ('checking', $uri, $id, xdmp:describe($matches)))
+    where not($matches instance of item())
+    return (
+      if (not($matches)) then stp:error(
+        'NOGUIDE', ('No document-list guide element found for', $id))
+      else stp:error(
+        'TOOMANYGUIDES',
+        ('Guide', $id, 'appears more than once without @duplicate set',
+          xdmp:describe($matches)))))
+
   return element toc:root {
-    attribute display { "All Documentation" },
+    attribute display {
+      ($document-list/@toc-title, $document-list/@title)[1]/string()
+      treat as xs:string },
     attribute open { true() },
-
-    (: TODO #230 infer structure from document-list. :)
-    toc:node(
-      toc:id(), "Server-Side APIs", (),
-      (), (), 'open',
-
-      (: JavaScript :)
-      (if ($version-number lt 8) then () else (
-        toc:node(
-          'AllFunctionsJavasScriptByCat',
-          "JavaScript Functions by Category ("
-          ||$javascript-function-count||')',
-          "/js/all",
-          (), (), ('open'),
-          (attribute mode { $api:MODE-JAVASCRIPT },
-           map:get($m-by-bucket, $api:MODE-JAVASCRIPT))),
-
-          toc:node(
-            'AllFunctionsJavaScript',
-            "JavaScript Functions ("||$javascript-function-count||')',
-            "/js/all",
-            (), (), ('open', 'function-list-page'),
-            (attribute mode { $api:MODE-JAVASCRIPT },
-              element toc:title { 'JavaScript Functions' },
-              element toc:intro {
-                <p xmlns="http://www.w3.org/1999/xhtml">
-                The following table lists all JavaScript functions
-                in the MarkLogic API reference,
-                including both built-in functions
-                and functions implemented in XQuery library modules.
-                </p> },
-              for $lib in map:get($m-libs, $api:MODE-JAVASCRIPT)
-              order by $lib
-              return toc:api-lib(
-                $version, $api:MODE-JAVASCRIPT,
-                map:get($m-functions, $api:MODE-JAVASCRIPT),
-                map:get($m-by-bucket, $api:MODE-JAVASCRIPT),
-                $lib))))
-        ,
-
-        toc:node(
-          'AllFunctionsByCat',
-          "XQuery/XSLT Functions by Category ("||$function-count||')',
-          "/all",
-          (), (), ('open'),
-          (attribute mode { $api:MODE-XPATH },
-           map:get($m-by-bucket, $api:MODE-XPATH))),
-
-        toc:node(
-          'AllFunctions',
-          "XQuery/XSLT Functions ("||$function-count||')',
-          "/all",
-          (), (), ('open', 'function-list-page'),
-          (attribute mode { $api:MODE-XPATH },
-            element toc:title { 'XQuery/XSLT Functions' },
-            element toc:intro {
-              <p xmlns="http://www.w3.org/1999/xhtml">
-              The following table lists all XQuery/XSLT functions
-              in the MarkLogic API reference,
-              including both built-in functions
-              and functions implemented in XQuery library modules.
-              </p> },
-            for $lib in map:get($m-libs, $api:MODE-XPATH)
-            order by $lib
-            return toc:api-lib(
-              $version, $api:MODE-XPATH,
-              map:get($m-functions, $api:MODE-XPATH),
-              map:get($m-by-bucket, $api:MODE-XPATH),
-              $lib)))))
-    ,
-
-    (: REST API :)
-    if ($version-number lt 5) then () else toc:node(
-      "RESTResourcesAPI", "REST Resources", '/REST',
-      (), (), ('function-list-page', 'open'),
-      (
-        element toc:title { 'REST resources' },
-        map:get($m-by-bucket, $api:MODE-REST),
-        toc:node(
-          "RelatedRestGuides", "Related Guides", (),
-          (), (), 'open',
-          (: Repeat REST client guide, Monitoring guide. :)
-          ($guide-docs[ends-with(base-uri(.), 'rest-dev.xml')]
-            /toc:guide-node(., true()),
-            $guide-docs[ends-with(base-uri(.),'monitoring.xml')]
-            /toc:guide-node(., true())))))
-    ,
-
-    if ($version-number lt 6) then () else toc:node(
-      toc:id(), "Client-Side APIs", (),
-      (), (), 'open',
-      toc:node(
-        "javaTOC", "Java API", "/javadoc/client/index.html",
-        (), (), ('external'),
-        (: Java Client guide repeated. :)
-        $guide-docs[ends-with(base-uri(.),'java.xml')]
-        /toc:guide-node(., true()))),
-
-    toc:node(
-      "guides", "Guides", (),
-      (), (), 'open',
-      (if (not($guide-docs-not-configured)) then () else toc:node(
-          toc:id(),
-          "New (unclassified) guides", (),
-          (), (), 'open',
-          $guide-docs-not-configured/toc:guide-node(.))
-        ,
-        $guide-groups ! toc:node(
-          toc:id(.), @name, (),
-          (: Per #204 hard-code open state by guide. :)
-          (), (), (
-            if (not(@name = ('Getting Started Guides'))) then ()
-            else 'open'),
-          toc:guides-in-group($version, .) ! toc:guide-node(.))))
-    ,
-
-    toc:node(
-      "other", "Other Documentation", (),
-      (), (), 'open',
-      (if ($version-number lt 5) then () else toc:node(
-          toc:id(), 'Hadoop Connector', (),
-          (), (), (),
-          toc:node(
-            toc:id(),
-            "Connector for Hadoop API",
-            "/javadoc/hadoop/index.html",
-            (), (), 'external',
-            (: Hadoop guide repeated :)
-            $guide-docs[ends-with(base-uri(.), 'mapreduce.xml')]
-            ! toc:guide-node(., true()))),
-
-        toc:node(
-          toc:id(), "XCC", (),
-          (toc:node-external(
-              "XCC Javadoc", "/javadoc/xcc/index.html"),
-            toc:node-external(
-              "XCC .NET API", "/dotnet/xcc/index.html"),
-            (: XCC guide repeated :)
-            $guide-docs[ ends-with(base-uri(.), 'xcc.xml') ]
-            ! toc:guide-node(., true()))),
-
-        toc:help(
-          $version-number,
-          $xsd-docs,
-          u:get-doc('/apidoc/config/help-config.xml')/help),
-
-        if ($version-number lt 6) then () else toc:node-external(
-          "C++ UDF API Reference", "/cpp/udf/index.html"))) }
+    toc:group-node(
+      $version, $xsd-docs, $prefixes-not-builtin,
+      $m-mode-libs, $m-functions, $m-mode-categories,
+      $guide-docs, $help-config, $document-list/apidoc:group) }
 };
 
 declare function toc:xsd-docs($path as xs:string)

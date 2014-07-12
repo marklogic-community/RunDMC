@@ -226,27 +226,35 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-  console.log('updateTocForUrlFragment', pathname, hash);
-  // Only let fragment links update the TOC when this is a user guide
-  if (isUserGuide) {
+    console.log('updateTocForUrlFragment', pathname, hash);
+    // Only let fragment links update the TOC
+    // when page.xsl says this is a user guide.
+    // Or not! The back button should update the TOC for functions too.
+    //if (!isUserGuide) return;
+
     // IE doesn't include the "/" at the beginning of the pathname...
     //var fullLink = this.pathname + this.hash;
-    var effective_hash = (hash == "") ? "#chapter" : hash;
-    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname) + effective_hash;
+    var effective_hash = (isUserGuide && hash == "") ? "#chapter" : hash;
+    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname)
+        + effective_hash;
 
-    console.log("Calling showInTOC from updateTocForUrlFragment");
+    console.log("Calling showInTOC from updateTocForUrlFragment", fullLink);
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
-  }
 }
 
 // Expands and loads (if necessary) the part of the TOC containing the given link
 // Also highlights the given link
 // Called whenever a tab changes or a fragment link is clicked
 function showInTOC(a) {
-    console.log("showInTOC", a.href, a.length, a.parent().length);
+    console.log("showInTOC", a.length, a.parent().length);
     $("#api_sub a.selected").removeClass("selected");
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
+
+    if (a.length === 0) {
+        console.log("showInTOC: no link!");
+        return;
+    }
 
     // If there is a different TOC section visible, hide it.
     var treeVisible = $(".apidoc_tree:visible");
@@ -254,7 +262,8 @@ function showInTOC(a) {
     // console.log("showInTOC",
     //             "visible", treeVisible.attr('id'),
     //             "a", treeForA.attr('id'));
-    if (treeForA.attr('id') != treeVisible.attr('id')) {
+    if (treeForA.length === 1
+        && treeForA.attr('id') != treeVisible.attr('id')) {
         treeVisible.hide();
         // Update the selector to match.
         var options = tocSelect.children("option");
@@ -280,7 +289,8 @@ function showInTOC(a) {
 
 // Called at init and whenever a tab changes.
 function updateTocForSelection() {
-    // See apidoc/view/page.xsl for functionPageBucketId, tocSectionLinkSelector
+    // See apidoc/view/page.xsl for definitions of
+    // functionPageBucketId, tocSectionLinkSelector.
     console.log("updateTocForSelection",
                 "functionPageBucketId", functionPageBucketId,
                 "tocSectionLinkSelector", tocSectionLinkSelector);
@@ -345,9 +355,9 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
-    console.log("scrollTOC");
+    //console.log("scrollTOC");
     var scrollTo = $('#api_sub a.selected').filter(':visible');
-    //console.log("scrollTOC scrollTo", scrollTo);
+    console.log("scrollTOC scrollTo", scrollTo.length);
     scrollTo.each(function() {
         var scrollableContainer = $(this).parents('.scrollable_section');
         //console.log("scrollTOC", scrollableContainer);
@@ -360,13 +370,10 @@ function scrollTOC() {
         minimumSpaceAtBottom = 10,
         minimumSpaceAtTop = 10;
 
-        // Only scroll if necessary
         var marginTop = currentTop + headerHeight + minimumSpaceAtTop;
         var marginBottom = currentTop + (
             container.height() - minimumSpaceAtBottom) ;
-        if (scrollTarget < marginTop || scrollTarget > marginBottom) {
-            container.animate({scrollTop: scrollTargetAdjusted}, 500);
-        }
+        container.animate({scrollTop: scrollTargetAdjusted}, 500);
     });
 }
 

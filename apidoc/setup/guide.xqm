@@ -17,6 +17,8 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "/apidoc/setup/setup.xqm";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
+
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
 declare function guide:full-anchor-id($ID-att as xs:string)
@@ -546,10 +548,10 @@ declare function guide:consolidate(
   $version as xs:string,
   $dir as xs:string,
   $dir-name as xs:string,
-  $guide-config as element(guide)?)
+  $guide-config as element(apidoc:guide)?)
 as empty-sequence()
 {
-  let $title-doc := doc(concat($dir,'title.xml'))
+  let $title-doc := doc(concat($dir, 'title.xml'))
   let $guide-title := $title-doc/XML/Title/normalize-space(.)
   let $url-name := (
     if ($guide-config) then $guide-config/@url-name
@@ -594,7 +596,7 @@ declare function guide:consolidate(
 as empty-sequence()
 {
   (: The list of guide configs comes from the main database. :)
-  let $guide-list as element()+ := api:document-list($version)/*/guide
+  let $guide-list as element()+ := api:document-list($version)//apidoc:guide
   (: Run the rest of the work in the raw database. :)
   return raw:invoke-function(
     function() {
@@ -615,11 +617,10 @@ as empty-sequence()
       (: Basename of each dir, not including the full path to it :)
       let $dir-name := substring-before(
         substring-after($dir, $guides-dir), "/")
-      let $guide-config as element(guide)? := $guide-list[
-        @source-name eq $dir-name]
+      let $guide-config as element()? := $guide-list[
+        @source-name eq $dir-name ]
       where not($guide-config/@exclude)
-      return guide:consolidate(
-        $version, $dir, $dir-name, $guide-config)
+      return guide:consolidate($version, $dir, $dir-name, $guide-config)
       ,
       xdmp:commit() },
     (: This is an update. :)

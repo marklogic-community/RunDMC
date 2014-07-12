@@ -35,10 +35,25 @@ declare variable $ACTIONS as xs:string+ := (
     "/setup/collection-tagger",
     "make-standalone-search-page")) ;
 
+declare variable $ACTIONS-NEEDING-XSD := (
+  "create-toc",
+  "delete-old-toc",
+  "pull-function-docs",
+  'setup',
+  'setup-guides',
+  ()) ;
+
+declare variable $ACTIONS-NEEDING-ZIP := (
+  'load-static-docs',
+  'load-raw-docs',
+  ());
+
 declare variable $VARS := (
-  xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR,
+  if (not($ACTIONS = $ACTIONS-NEEDING-XSD)) then ()
+  else (xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR),
   xs:QName('VERSION'), $VERSION,
-  xs:QName('ZIP'), $ZIP) ;
+  if (not($ACTIONS = $ACTIONS-NEEDING-ZIP)) then ()
+  else (xs:QName('ZIP'), $ZIP)) ;
 
 if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
   "ERROR",
@@ -52,11 +67,12 @@ xdmp:set-request-time-limit(1800),
  : used in load-raw-docs.xqy and load-static-docs.xqy
  :)
 for $xqy at $x in $ACTIONS
-let $_ := stp:info(
-  'build.xqy', ($VERSION, 'starting', $xqy, xdmp:elapsed-time()))
+let $start := xdmp:elapsed-time()
+let $_ := stp:info('build.xqy', ($VERSION, 'starting', $xqy, $start))
 let $_ := xdmp:invoke($xqy||'.xqy', $VARS)
-return text { $xqy, $VERSION, xdmp:elapsed-time() }
+return text { $xqy, $VERSION, xdmp:elapsed-time() - $start }
 ,
-text { ''}
+text { 'build', $VERSION, xdmp:elapsed-time() },
+text { '' }
 
 (: apidoc/setup/build.xqy :)

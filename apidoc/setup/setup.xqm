@@ -26,9 +26,6 @@ declare variable $DEBUG := false() ;
 
 declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 
-declare variable $TITLE-ALIASES as element(aliases) := u:get-doc(
-  '/apidoc/config/title-aliases.xml')/aliases ;
-
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
   "/config/server-versions.xml")/*/version/@number ;
 
@@ -139,19 +136,18 @@ declare function stp:static-add-scripts($n as node())
 };
 
 declare function stp:pdf-uri(
-  $document-list as element(docs),
+  $document-list as element(apidoc:docs),
   $uri as xs:string)
 as xs:string?
 {
   let $pdf-name := replace($uri, ".*/(.*).pdf", "$1")
-  let $guide-configs := $document-list/*/guide
-  let $url-name as xs:string := $guide-configs[
+  let $url-name as xs:string := $document-list//apidoc:guide[
     (@pdf-name, @source-name)[1] eq $pdf-name]/@url-name
   return concat("/guide/", $url-name, ".pdf")
 };
 
 declare function stp:static-uri-rewrite(
-  $document-list as element(docs),
+  $document-list as element(apidoc:docs),
   $uri as xs:string)
 as xs:string
 {
@@ -440,7 +436,7 @@ as empty-sequence()
 declare function stp:zip-static-doc-insert(
   $version as xs:string,
   $zip as binary(),
-  $document-list as element(docs),
+  $document-list as element(apidoc:docs),
   $e as xs:string)
 as empty-sequence()
 {
@@ -466,7 +462,7 @@ declare function stp:zip-static-docs-insert(
   $zip-path as xs:string,
   $zip as binary(),
   $subdirs-to-load as xs:string+,
-  $document-list as element(docs))
+  $document-list as element(apidoc:docs))
 as empty-sequence()
 {
   (: Always load document-list.xml from the root, as a hidden document. :)
@@ -494,15 +490,23 @@ declare function stp:zip-static-docs-insert(
   $subdirs-to-load as xs:string+)
 as empty-sequence()
 {
-  (: Always load the document-list XML manifest. :)
+  (: Load the document-list XML manifest if present.
+   : Older zips may not include it.
+   :)
   stp:zip-static-docs-insert(
     $version, $zip-path, $zip,
     $subdirs-to-load,
-    xdmp:zip-get(
+    (: If the document-list is in the zip, get it directly.
+     : Otherwise fall back on the filesystem copy.
+     :)
+    let $v := xdmp:zip-get(
       $zip,
       xdmp:zip-manifest($zip)/*[
-        ends-with(., '_pubs/pubs/document-list.xml')] treat as item())/*
-    treat as element(docs)),
+        ends-with(., '_pubs/pubs/document-list.xml')])/*
+    let $v as element(apidoc:docs) := (
+      if ($v) then $v/* else u:get-doc(
+        '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
+    return $v),
 
   (: Load the zip itself, to support downloads. :)
   let $zip-uri := concat(
@@ -604,8 +608,8 @@ declare function stp:container-toc-section-id(
 as xs:string
 {
   $e/(
-    ancestor-or-self::toc:node[@async][1],
-    ancestor-or-self::toc:node[@id]   [1] )[1]/@id
+    ancestor-or-self::toc:node[@async/xs:boolean(.)][1],
+    ancestor-or-self::toc:node[@id][1])[1]/@id
 };
 
 (: Input parent should be api:function-page. :)
@@ -665,7 +669,7 @@ as element(api:list-page)
      : each descendant leaf node with a type.
      : This ignores internal guide links, which have no type.
      :)
-    for $leaf in $toc-node//toc:node[not(toc:node)][@type]
+    for $leaf in $toc-node//toc:node[@type][not(toc:node)]
     (: For multiple *:polygon() functions, only list the first. :)
     let $href as xs:string := $leaf/@href
     let $_ := if (not($DEBUG)) then () else stp:fine(
@@ -675,6 +679,7 @@ as element(api:list-page)
     let $uri-leaf as xs:string := api:internal-uri($version, $href)
     let $root as document-node() := doc($uri-leaf)
     let $function as element() := ($root/api:function-page/api:function)[1]
+    order by $leaf/@list-page-display, $leaf/@display
     return stp:list-entry($function, $leaf) }
 };
 
@@ -722,10 +727,46 @@ as element(api:help-page)
   }
 };
 
-(: Set up the docs page for this version. :)
+declare function stp:list-page-root-group(
+  $group as element(apidoc:group))
+as node()*
+{
+  if (not($group/apidoc:entry/@type
+      = ('function-reference', 'download'))) then ()
+  else
+  <div xmlns="http://www.w3.org/1999/xhtml" class="doclist">
+  {
+    $group/@title[.]/element h2 { . },
+
+    element ul {
+      attribute class { "doclist" },
+      for $entry in $group/apidoc:entry[
+        @type = ('function-reference', 'download')
+        or apidoc:guide[not(@duplicate/xs:boolean(.))]]
+      return element li {
+        if ($entry/@href) then element a {
+          $entry/@href,
+          $entry/@title/string() }
+        else $entry/@title[.]/element h3 {
+          attribute class { 'docs-page' },
+          string() }
+        ,
+        $entry/apidoc:description/element div {
+          attribute class { "entry-description" },
+          @*,
+          node() } } }
+  }
+  </div>
+};
+
+(: Set up the root docs page for this version.
+ : TODO refactor.
+ :)
 declare function stp:list-page-root(
   $version as xs:string,
-  $toc as element(toc:root))
+  $toc as element(toc:root),
+  $title-aliases as element(aliases),
+  $document-list as element(apidoc:docs))
 as element()+
 {
   element api:docs-page {
@@ -733,26 +774,61 @@ as element()+
     attribute disable-comments { true() },
     comment {
       'This page was automatically generated using',
-      xdmp:node-uri($toc), 'and document-list.xml' },
+      xdmp:node-uri($toc),
+      'and', (xdmp:node-uri($document-list), 'document-list.xml')[1] },
 
-    let $guide-nodes as element()+ := $toc/toc:node[
-      @id eq 'guides']/toc:node/toc:node[@type eq 'guide']
-    for $guide in $guide-nodes
-    let $display as xs:string := lower-case(
-      normalize-space($guide/@display))
-    let $_ := if (not($DEBUG)) then () else stp:fine(
-      'stp:list-pages', (xdmp:describe($guide), $display))
-    return element api:user-guide {
-      $guide/@*,
-      (: Facilitate automatic link creation at render time.
-       : TODO why ../alias ?
-       :)
-      $stp:TITLE-ALIASES/guide/alias[
-        ../alias/normalize-space(lower-case(.)) = $display] }
+    (: Pre-rendered html section. :)
+    <div xmlns="http://www.w3.org/1999/xhtml" class="doclist">
+    {
+      stp:list-page-root-group($document-list/apidoc:group),
+
+      (: Guides :)
+      let $document-list-guide-entries as node()+ := (
+        $document-list/apidoc:group[@id eq 'guides']/apidoc:entry)
+      for $section at $x in (
+        $toc/toc:node[@id eq 'guides']/toc:node treat as node()+)
+      let $document-list-guides as node()+ := (
+        $document-list-guide-entries[$x]/apidoc:guide[
+          not(@excluded/xs:boolean(.))])
+      return element div {
+        attribute class { 'doclist-guide-section' },
+        element h3 {
+          attribute class { 'docs-page' },
+          $section/@display/string() },
+        element ul {
+          attribute class { 'doclist' },
+          for $guide at $y in (
+            $section/toc:node[@type eq 'guide'] treat as node()+)
+          let $document-list-guide := $document-list-guides[$y]
+          let $display as xs:string := lower-case(
+            normalize-space($guide/@display))
+          (: Facilitate automatic link creation at render time.
+           : TODO why alias[../alias/...] ?
+           :)
+          let $alias as xs:string? := $title-aliases/guide/alias[
+            ../alias/normalize-space(lower-case(.)) = $display]
+          let $body as node()+ := $document-list-guide/node()
+          let $_ := if (not($DEBUG)) then () else stp:fine(
+            'stp:list-page-root',
+            (xdmp:describe($guide), $display, $alias))
+          return element li {
+            (: At display time page.xsl will rewrite these links a bit. :)
+            element a {
+              attribute class { 'guide-link' },
+              $guide/@href,
+              if ($alias) then $alias
+              else $guide/@display/string() },
+            (: Pull guide description text from document-list.
+             : Today this is flat text, but someday it might have structure.
+             :)
+            element div { $body } } } }
+    }
+    </div>
     ,
 
     comment { 'copied from /apidoc/config/title-aliases.xml:' },
-    $stp:TITLE-ALIASES/auto-link }
+    (: TODO The auto-link elements are in the empty namespace. Change that? :)
+    $stp:title-aliases/auto-link }
 };
 
 (: Generate and insert a list page for each TOC container.
@@ -766,10 +842,17 @@ as element()+
   stp:info(
     'stp:list-pages-render',
     ("starting", $version, xdmp:describe($toc-document))),
-  stp:list-page-root($version, $toc-document/toc:root),
+  stp:list-page-root(
+    $version, $toc-document/toc:root,
+    u:get-doc('/apidoc/config/title-aliases.xml')/aliases,
+    api:document-list($version)),
+
   (: Find each function list and help page URL. :)
   let $seq as xs:string+ := distinct-values(
-    $toc-document//toc:node[@function-list-page or @admin-help-page]/@href)
+    $toc-document//toc:node[
+      @type = 'function-reference'
+      or @function-list-page
+      or @admin-help-page]/@href)
   for $href in $seq
   (: Any element with intro or help content will have a title.
    : Process the first match.
@@ -783,7 +866,9 @@ as element()+
   return (
     if ($toc-node/@admin-help-page) then stp:list-page-help(
       api:internal-uri($version, $href), $toc-node)
-    else if ($toc-node/@function-list-page) then stp:list-page-functions(
+    else if ($toc-node[
+        @type = 'function-reference'
+        or @function-list-page]) then stp:list-page-functions(
       $version, api:internal-uri($version, $href), $toc-node)
     else stp:error('UNEXPECTED', xdmp:quote($toc-node)))
   ,

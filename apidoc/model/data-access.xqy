@@ -4,8 +4,6 @@ module namespace api="http://marklogic.com/rundmc/api";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
-
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
@@ -13,6 +11,8 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
 
 import module namespace c="http://marklogic.com/rundmc/api/controller"
   at "/apidoc/controller/controller.xqm";
+
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare variable $MODE-JAVASCRIPT := 'javascript' ;
 declare variable $MODE-REST := 'REST' ;
@@ -617,7 +617,6 @@ as xs:string
   typeswitch($e)
   (: function lib page link :)
   case element(api:function-page) return (
-    (: TODO needs to supply parent lib also? :)
     ".scrollable_section a[href='"
     ||$version-prefix
     ||(switch($e/@mode)
@@ -653,16 +652,20 @@ as xs:string
 (: TODO refactor for #230. :)
 declare function api:document-list(
   $version as xs:string)
-as element(docs)
+as element(apidoc:docs)
 {
   (: Lazy init of module variable.
    : ASSUMPTION = We only process one version per request.
    :)
   if ($DOCUMENT-LIST-CACHED) then $DOCUMENT-LIST-CACHED
   else (
-    let $v as element(docs) := (
-      if (1) then doc('/apidoc/'||$version||'/document-list.xml')
-      else u:get-doc('/apidoc/config/document-list.xml'))/docs
+    (: Prefer database document if present.
+     : Fall back to version-specific copy from filesystem.
+     :)
+    let $v := doc('/apidoc/'||$version||'/document-list.xml')
+    let $v as element(apidoc:docs) := (
+      if ($v) then $v/* else u:get-doc(
+        '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
     let $_ := xdmp:set($DOCUMENT-LIST-CACHED, $v)
     return $v)
 };

@@ -4,6 +4,7 @@
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:api="http://marklogic.com/rundmc/api"
+                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
                 xmlns:guide="http://marklogic.com/rundmc/api/guide"
                 xmlns:ml="http://developer.marklogic.com/site/internal"
                 xmlns:srv="http://marklogic.com/rundmc/server-urls"
@@ -59,9 +60,6 @@
                 select="if ($VERSION-FINAL eq $api:DEFAULT-VERSION) then ''
                         else concat('/', $VERSION-FINAL)"/>
 
-  <xsl:variable name="doc-list-config"
-                select="u:get-doc('/apidoc/config/document-list.xml')/docs"/>
-
   <xsl:variable name="site-title"
                 select="v:site-title($VERSION-FINAL)"/>
 
@@ -82,11 +80,8 @@
                 select="doc-available('/apidoc/DEBUG.xml')
                         and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
-  <xsl:variable name="DOCS-PAGE" as="element()"
-                select="doc(
-                        concat(
-                        api:version-dir($VERSION-FINAL), 'index.xml'))
-                        /api:docs-page"/>
+  <xsl:variable name="DOCS-PAGE" as="element(api:docs-page)"
+                select="doc(api:internal-uri($VERSION-FINAL, '/'))/*"/>
 
   <xsl:variable name="AUTO-LINKS" as="element(auto-link)*"
                 select="$DOCS-PAGE/auto-link"/>
@@ -133,13 +128,16 @@
           </script>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="comment-section"/>
-          <xsl:copy-of select="v:apidoc-copyright()"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-imports/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
+    <xsl:copy-of select="v:apidoc-copyright()"/>
   </xsl:template>
 
   <xsl:template mode="print-view" match="*">
@@ -153,7 +151,7 @@
       </head>
       <body>
         <xsl:apply-templates mode="page-content" select="."/>
-        <xsl:copy-of select="v:apidoc-copyright()"/>
+        <xsl:call-template name="apidoc-copyright"/>
       </body>
     </html>
   </xsl:template>
@@ -330,42 +328,28 @@
       <h1>
         <xsl:apply-templates mode="page-title" select="."/>
       </h1>
-      <xsl:apply-templates mode="docs-page"
-                           select="$doc-list-config/*"/>
+      <xsl:apply-templates select="x:*"/>
     </div>
   </xsl:template>
 
   <!--
-      Handle document-list.xml groups
-      TODO adjust for version-specific document-list structure.
+      Decorate guide links with pdf link.
+      TODO make sure links are rewritten properly for version.
+      TODO PDF links do not work?
   -->
-  <xsl:template mode="docs-page" priority="3"
-                match="group[@min-version gt $VERSION-FINAL]" />
-
-  <xsl:template mode="docs-page" match="group" priority="2">
-    <h3 class="docs-page"><xsl:value-of select="@name"/></h3>
-    <xsl:next-match/>
+  <xsl:template match="x:a[@class eq 'guide-link']">
+    <xsl:copy-of select="."/>
+    <xsl:text> | </xsl:text>
+    <xsl:copy-of select="v:pdf-anchor(., @href, false())"/>
   </xsl:template>
-
-  <xsl:template mode="docs-page" match="group" priority="1">
-    <ul class="doclist">
-      <xsl:apply-templates mode="docs-list-item" select="*"/>
-    </ul>
-  </xsl:template>
-
-  <xsl:template mode="docs-list-item"
-                match="*"/>
-
-  <xsl:template mode="docs-list-item"
-                match="entry[@min-version gt $VERSION-FINAL]" priority="1"/>
 
   <!--
        This template matches entries with links or versions,
        plus guides that have information.
   -->
   <xsl:template mode="docs-list-item"
-                match="entry[@href or url/@version = $VERSION-FINAL]
-                       | guide[api:guide-info($content, @url-name)]">
+                match="apidoc:entry[@href]
+                       | apidoc:guide[api:guide-info($content, @url-name)]">
     <xsl:variable name="href">
       <xsl:apply-templates mode="entry-href" select="."/>
     </xsl:variable>
@@ -376,11 +360,9 @@
       <a href="{$href}">
         <xsl:value-of select="$title"/>
       </a>
-      <xsl:if test="self::guide">
+      <xsl:if test="self::apidoc:guide">
         <xsl:text> | </xsl:text>
-        <a href="{$href}.pdf">
-          <img src="/images/i_pdf.png" alt="{$title} (PDF)" width="25" height="26"/>
-        </a>
+        <xsl:copy-of select="v:pdf-anchor($title, $href, false())"/>
       </xsl:if>
       <div>
         <xsl:apply-templates mode="entry-description" select="."/>
@@ -388,15 +370,30 @@
     </li>
   </xsl:template>
 
+  <!-- Guide title -->
+  <xsl:template mode="guide" match="/*/guide-title">
+    <!--
+        Add a PDF link at the top of each guide (and chapter), before the <h1>.
+        If this is a chapter also provide a printer-friendly version.
+    -->
+    <xsl:copy-of select="v:pdf-anchor(
+                         ., v:external-guide-uri($version-prefix, /),
+                         parent::chapter)"/>
+    <!-- printer-friendly link on chapter pages -->
+    <xsl:if test="parent::chapter">
+      <xsl:apply-templates mode="print-friendly-link" select="."/>
+    </xsl:if>
+    <h1>
+      <xsl:apply-templates mode="guide-heading-content" select="."/>
+    </h1>
+    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@next"/>
+  </xsl:template>
+
   <!-- The following group of rules is used by the list page too.
        TODO good candidates to port to XQuery.
   -->
 
-  <!-- Strip out phrases that don't apply to older server versions -->
-  <xsl:template mode="entry-description"
-                match="added-in[$VERSION-FINAL lt @version]"/>
-
-  <xsl:template mode="entry-description" match="version-suffix">
+  <xsl:template mode="entry-description" match="apidoc:version-suffix">
     <xsl:choose>
       <xsl:when test="$VERSION-FINAL eq '5.0'">5</xsl:when>
       <xsl:when test="$VERSION-FINAL eq '6.0'">6</xsl:when>
@@ -407,28 +404,27 @@
     </xsl:choose>
   </xsl:template>
 
-
-  <xsl:template mode="entry-href" match="guide">
+  <xsl:template mode="entry-href" match="apidoc:guide">
     <xsl:value-of select="$version-prefix"/>
     <xsl:value-of select="api:guide-info($content, @url-name)/@href"/>
   </xsl:template>
 
   <!-- entry/url/@href must include the whole path (version prefix not added) -->
-  <xsl:template mode="entry-href" match="entry[url]" priority="1">
-    <xsl:value-of select="url[@version eq $VERSION-FINAL]/@href"/>
+  <xsl:template mode="entry-href" match="apidoc:entry[url]" priority="1">
+    <xsl:value-of select="url/@href"/>
   </xsl:template>
 
   <!-- entry/@href gets the version prefix added -->
-  <xsl:template mode="entry-href" match="entry[@href]">
+  <xsl:template mode="entry-href" match="apidoc:entry[@href]">
     <xsl:value-of select="$version-prefix"/>
     <xsl:value-of select="@href"/>
   </xsl:template>
 
-  <xsl:template mode="entry-title" match="guide">
+  <xsl:template mode="entry-title" match="apidoc:guide">
     <xsl:value-of select="api:guide-info($content, @url-name)/@display"/>
   </xsl:template>
 
-  <xsl:template mode="entry-title" match="entry">
+  <xsl:template mode="entry-title" match="apidoc:entry">
     <xsl:value-of select="@title"/>
   </xsl:template>
 
@@ -825,30 +821,6 @@
     <xsl:apply-templates mode="chapter-next-prev" select="@previous,@next"/>
     <!-- "Next" link on Table of Contents (guide) page -->
     <xsl:apply-templates mode="guide-next" select="@next"/>
-  </xsl:template>
-
-  <!-- Guide title -->
-  <xsl:template mode="guide" match="/*/guide-title">
-    <!-- Add a PDF link at the top of each guide (and chapter), before the <h1> -->
-    <a href="{ v:external-guide-uri($version-prefix, /) }.pdf"
-       class="guide-pdf-link" target="_blank">
-      <img src="/images/i_pdf.png" title="{.} (PDF)" alt="{.} (PDF)" height="25" width="25">
-        <!-- Shrink the PDF icon size if we're on a chapter page -->
-        <xsl:if test="parent::chapter">
-          <xsl:attribute name="class" select="'printerFriendly'"/> <!-- same padding, etc., as printer icon -->
-          <xsl:attribute name="height" select="16"/>
-          <xsl:attribute name="width" select="16"/>
-        </xsl:if>
-      </img>
-    </a>
-    <!-- printer-friendly link on chapter pages -->
-    <xsl:if test="parent::chapter">
-      <xsl:apply-templates mode="print-friendly-link" select="."/>
-    </xsl:if>
-    <h1>
-      <xsl:apply-templates mode="guide-heading-content" select="."/>
-    </h1>
-    <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@next"/>
   </xsl:template>
 
   <!-- Don't link to the guide root when we're already on it -->

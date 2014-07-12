@@ -93,4 +93,28 @@ as element()
   </div>
 };
 
+declare function v:pdf-anchor(
+  $title as xs:string,
+  $href as xs:string,
+  $printer-friendly as xs:boolean?)
+as element()
+{
+  <a xmlns="http://www.w3.org/1999/xhtml">
+  {
+    attribute href { $href||".pdf" },
+    element img {
+      attribute src { "/images/i_pdf.png" },
+      attribute alt { $title||' (PDF)' },
+      (: Shrink the PDF icon size if this is a printer-friendly page. :)
+      if (not($printer-friendly)) then (
+        attribute width { 25 },
+        attribute height { 26 })
+      else (
+        attribute class { 'printerFriendly' },
+        attribute width { 16 },
+        attribute height { 16 }) }
+  }
+  </a>
+};
+
 (: apidoc/view/view.xqm :)
