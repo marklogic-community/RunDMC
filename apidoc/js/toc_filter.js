@@ -1,4 +1,5 @@
 /* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
+var breadcrumb = null;
 var functionPageBucketId = null;
 var isUserGuide = null;
 var tocSectionLinkSelector = null;
@@ -38,6 +39,10 @@ $(function() {
 });
 
 function toc_init() {
+
+    breadcrumb = $("#breadcrumb");
+    if (!breadcrumb.length) console.log("No breadcrumb!");
+
     // Initialize values from page.xsl content.
     functionPageBucketId = $("#functionPageBucketId");
     if (!functionPageBucketId.length) console.log("No functionPageBucketId!");
@@ -338,6 +343,28 @@ function showInTOC(a) {
     scrollTOC();
 }
 
+function breadcrumbString(n) {
+    var text = n.children("a").contents()[0];
+    if (!text) return '';
+
+    text = text.data.replace(/[:\.]$/, '').replace(/\s+\(\d+\)/, "");
+    //console.log('breadcrumbString', n[0], text);
+
+    // Climb the tree to the next li, if there is one.
+    // The immediate parent should be a ul.
+    var parent = n.parents()[1];
+    if (!parent) return text;
+
+    parent = $(parent).filter("li");
+    if (!parent.length) {
+        // This must be the top.
+        return tocSelect.children("option:selected").text() + " > " + text;
+    }
+
+    // recurse
+    return breadcrumbString(parent) + " > " + text;
+}
+
 // Called at init and whenever a tab changes.
 function updateTocForSelection() {
     console.log("updateTocForSelection",
@@ -357,6 +384,10 @@ function updateTocForSelection() {
                     "nothing selected!");
         return;
     }
+
+    var breadcrumbText = breadcrumbString(tocSection);
+    console.log('updating breadcrumb', breadcrumbText);
+    if (breadcrumbText) breadcrumb.text(breadcrumbText);
 
     console.log("updateTocForSelection loading to", tocSection);
     loadTocSection(0, tocSection);
