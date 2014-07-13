@@ -331,6 +331,10 @@ function showInTOC(a) {
         options.filter(selector).attr('selected', 'true');
     }
 
+    // Climb up to the section level.
+    var li = a.parent().parent().parent();
+    updateBreadcrumb(li);
+
     var items = a.addClass("selected").parents("ul, li").add(
       a.nextAll("ul")).show();
 
@@ -345,6 +349,8 @@ function showInTOC(a) {
 
 function breadcrumbString(n) {
     var text = n.children("a").contents()[0];
+    //console.log('breadcrumbString', text);
+    if (!text) text = n.children("span").contents()[0];
     if (!text) return '';
 
     text = text.data.replace(/[:\.]$/, '').replace(/\s+\(\d+\)/, "");
@@ -352,8 +358,11 @@ function breadcrumbString(n) {
 
     // Climb the tree to the next li, if there is one.
     // The immediate parent should be a ul.
-    var parent = n.parents()[1];
-    if (!parent) return text;
+    var parent = n.parent().parent();
+    if (!parent) {
+        // This must be the top.
+        return tocSelect.children("option:selected").text() + " > " + text;
+    }
 
     parent = $(parent).filter("li");
     if (!parent.length) {
@@ -363,6 +372,15 @@ function breadcrumbString(n) {
 
     // recurse
     return breadcrumbString(parent) + " > " + text;
+}
+
+function updateBreadcrumb(n)
+{
+    //console.log('updating breadcrumb', n.length ? n[0] : null);
+    var breadcrumbText = breadcrumbString(n);
+    console.log('updating breadcrumb', breadcrumbText);
+    if (!breadcrumbText) return;
+    breadcrumb.text(breadcrumbText);
 }
 
 // Called at init and whenever a tab changes.
@@ -385,9 +403,7 @@ function updateTocForSelection() {
         return;
     }
 
-    var breadcrumbText = breadcrumbString(tocSection);
-    console.log('updating breadcrumb', breadcrumbText);
-    if (breadcrumbText) breadcrumb.text(breadcrumbText);
+    updateBreadcrumb(tocSection);
 
     console.log("updateTocForSelection loading to", tocSection);
     loadTocSection(0, tocSection);
