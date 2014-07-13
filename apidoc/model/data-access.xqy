@@ -96,77 +96,6 @@ as xs:string
     c:version($version-specified), $version-specified)
 };
 
-declare function api:builtin-libs-for-mode(
-  $version as xs:string,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  if (number($version) lt 8) then ()
-  else api:get-libs(
-    $version,
-    cts:element-attribute-value-query(
-      xs:QName('api:function-page'),
-      xs:QName('mode'),
-      $mode),
-    true(), $mode)
-};
-
-declare function api:libs-for-mode(
-  $version as xs:string,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  if (number($version) lt 8) then ()
-  else api:get-libs(
-    $version,
-    cts:element-attribute-value-query(
-      xs:QName('api:function-page'),
-      xs:QName('mode'),
-      $mode),
-    false(), $mode)
-};
-
-declare function api:builtin-libs(
-  $version as xs:string,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  api:get-libs(
-    $version,
-    api:query-for-builtin-functions($version),
-    true(), $mode)
-};
-
-declare function api:library-libs(
-  $version as xs:string,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  api:get-libs(
-    $version,
-    api:query-for-library-functions($version),
-    false(), $mode)
-};
-
-(: TODO this seems convoluted and expensive. Really a group-by? :)
-declare function api:get-libs(
-  $version as xs:string,
-  $query as cts:query,
-  $builtin as xs:boolean,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  for $lib in cts:element-attribute-values(
-    xs:QName("api:function"), xs:QName("lib"),
-    (), "ascending", $query)
-  return element api:lib {
-    attribute category-bucket { api:get-bucket-for-lib($version, $lib) },
-    if (not($builtin)) then ()
-    else attribute built-in { true() },
-    attribute mode { $mode },
-    $lib }
-};
-
 declare function api:query-for-all-functions(
   $version as xs:string)
 as cts:query
@@ -207,14 +136,12 @@ as cts:query
     api:query-for-builtin-functions($version))
 };
 
-declare function api:functions(
-  $version as xs:string)
-as document-node()+
+declare function api:query-by-mode(
+  $mode as xs:string)
+as cts:query
 {
-  cts:search(
-    collection(),
-    api:query-for-all-functions($version),
-    "unfiltered")
+  cts:element-attribute-value-query(
+    xs:QName('api:function-page'), xs:QName('mode'), $mode)
 };
 
 (: Used to associate library containers under the "API" tab
@@ -227,6 +154,75 @@ as xs:string*
 {
   cts:search(collection(), api:query-for-lib-functions($version, $lib))[1]
   /api:function-page/api:function[1]/@bucket
+};
+
+(: TODO this seems convoluted and expensive. Really a group-by? :)
+declare function api:get-libs(
+  $version as xs:string,
+  $query as cts:query,
+  $builtin as xs:boolean,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  for $lib in cts:element-attribute-values(
+    xs:QName("api:function"), xs:QName("lib"),
+    (), "ascending", cts:and-query(
+      (api:query-for-all-functions($version),
+        $query)))
+  return element api:lib {
+    attribute category-bucket { api:get-bucket-for-lib($version, $lib) },
+    if (not($builtin)) then ()
+    else attribute built-in { true() },
+    attribute mode { $mode },
+    $lib }
+};
+
+declare function api:builtin-libs-for-mode(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  if ($mode eq $MODE-JAVASCRIPT and number($version) lt 8) then ()
+  else api:get-libs(
+    $version, api:query-by-mode($mode), true(), $mode)
+};
+
+declare function api:libs-for-mode(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  if ($mode eq $MODE-JAVASCRIPT and number($version) lt 8) then ()
+  else api:get-libs(
+    $version, api:query-by-mode($mode), false(), $mode)
+};
+
+declare function api:builtin-libs(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  api:get-libs(
+    $version, api:query-for-builtin-functions($version), true(), $mode)
+};
+
+declare function api:library-libs(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
+{
+  api:get-libs(
+    $version, api:query-for-library-functions($version), false(), $mode)
+};
+
+declare function api:functions(
+  $version as xs:string)
+as document-node()+
+{
+  cts:search(
+    collection(),
+    api:query-for-all-functions($version),
+    "unfiltered")
 };
 
 (: Returns the namespace associated with the given lib name. :)

@@ -462,11 +462,16 @@ declare function stp:zip-static-docs-insert(
   $zip-path as xs:string,
   $zip as binary(),
   $subdirs-to-load as xs:string+,
-  $document-list as element(apidoc:docs))
+  $document-list as element(apidoc:docs),
+  $document-list-from-zip as xs:boolean)
 as empty-sequence()
 {
-  (: Always load document-list.xml from the root, as a hidden document. :)
-  stp:zip-static-file-insert(
+  (: Load document-list.xml if it came from the zip.
+   : Otherwise this is probably a dev environment so keep using the filesystem.
+   : If we load it, do so as a hidden document.
+   :)
+  if (not($document-list-from-zip)) then ()
+  else stp:zip-static-file-insert(
     $document-list/root(),
     concat('/apidoc/', $version, '/document-list.xml'),
     true(), false()),
@@ -492,21 +497,21 @@ as empty-sequence()
 {
   (: Load the document-list XML manifest if present.
    : Older zips may not include it.
+   :
+   : If the document-list is in the zip, get it directly.
+   : Otherwise fall back on the filesystem copy.
    :)
-  stp:zip-static-docs-insert(
+  let $document-list as element()? := xdmp:zip-get(
+    $zip,
+    xdmp:zip-manifest($zip)/*[
+      ends-with(., '_pubs/pubs/document-list.xml')])/*
+  let $document-list-from-zip := exists($document-list)
+  let $v as element(apidoc:docs) := (
+    if ($document-list) then $document-list else u:get-doc(
+      '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
+  return stp:zip-static-docs-insert(
     $version, $zip-path, $zip,
-    $subdirs-to-load,
-    (: If the document-list is in the zip, get it directly.
-     : Otherwise fall back on the filesystem copy.
-     :)
-    let $v := xdmp:zip-get(
-      $zip,
-      xdmp:zip-manifest($zip)/*[
-        ends-with(., '_pubs/pubs/document-list.xml')])/*
-    let $v as element(apidoc:docs) := (
-      if ($v) then $v/* else u:get-doc(
-        '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
-    return $v),
+    $subdirs-to-load, $document-list, $document-list-from-zip),
 
   (: Load the zip itself, to support downloads. :)
   let $zip-uri := concat(

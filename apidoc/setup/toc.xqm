@@ -68,7 +68,8 @@ as xs:string
  : This allows easy access to all the grouping info
  : after one pass through the function sequence.
  :)
-declare function toc:functions-map($version as xs:string)
+declare function toc:functions-map(
+  $version as xs:string)
 as map:map
 {
   let $m := map:map()
@@ -239,7 +240,7 @@ as element(apidoc:module)+
 declare function toc:get-summary-for-category(
   $version as xs:string,
   $mode as xs:string,
-  $prefixes-not-builtin as xs:string+,
+  $prefixes-not-builtin as xs:string*,
   $cat as xs:string,
   $subcat as xs:string?,
   $lib as xs:string?)
@@ -1165,7 +1166,7 @@ declare function toc:functions-by-category-subcat-node(
   $version as xs:string,
   $mode as xs:string,
   $m-mode-functions as map:map,
-  $prefixes-not-builtin as xs:string+,
+  $prefixes-not-builtin as xs:string*,
   $cat as xs:string,
   $is-REST as xs:boolean,
   $single-lib-for-category as xs:string?,
@@ -1215,7 +1216,7 @@ declare function toc:functions-by-category-subcat(
   $version as xs:string,
   $mode as xs:string,
   $m-mode-functions as map:map,
-  $prefixes-not-builtin as xs:string+,
+  $prefixes-not-builtin as xs:string*,
   $cat as xs:string,
   $is-REST as xs:boolean,
   $in-this-category as element()+,
@@ -1239,7 +1240,7 @@ declare function toc:functions-by-category(
   $version as xs:string,
   $mode as xs:string,
   $m-mode-functions as map:map,
-  $prefixes-not-builtin as xs:string+,
+  $prefixes-not-builtin as xs:string*,
   $bucket-id as xs:string,
   $cat as xs:string,
   $is-REST as xs:boolean,
@@ -1314,7 +1315,7 @@ declare function toc:functions-by-bucket(
   $version as xs:string,
   $mode as xs:string,
   $m-mode-functions as map:map,
-  $prefixes-not-builtin as xs:string+)
+  $prefixes-not-builtin as xs:string*)
 as element(toc:node)+
 {
   if (not($stp:DEBUG)) then () else stp:debug(
@@ -1505,19 +1506,19 @@ declare function toc:node-external(
     ())
 };
 
-declare function toc:libs-by-mode(
-  $version as xs:string)
-as map:map
+declare function toc:libs-for-mode(
+  $version as xs:string,
+  $mode as xs:string)
+as element(api:lib)*
 {
-  map:new(
-    (map:entry(
-        $api:MODE-XPATH,
-        (: TODO need to dedup when built-in and lib share prefix? :)
-        (api:builtin-libs($version, $api:MODE-XPATH),
-          api:library-libs($version, $api:MODE-XPATH))),
-      map:entry(
-        $api:MODE-JAVASCRIPT,
-        api:builtin-libs($version, $api:MODE-JAVASCRIPT))))
+  switch($mode)
+  case $api:MODE-JAVASCRIPT return api:builtin-libs($version, $mode)
+  case $api:MODE-XPATH return (
+    (: TODO need to dedup when built-in and lib share prefix? :)
+    api:builtin-libs($version, $mode),
+    api:library-libs($version, $mode))
+  case $api:MODE-REST return ()
+  default return stp:error('UNEXPECTED', $mode)
 };
 
 (: Convenience constructor for a toc:node
@@ -1565,9 +1566,7 @@ as element(toc:node)
  :)
 declare function toc:function-reference-node(
   $version as xs:string,
-  $m-mode-libs as map:map,
   $m-functions as map:map,
-  $m-mode-categories as map:map,
   $entry as element(apidoc:entry))
 as element(toc:node)+
 {
@@ -1577,6 +1576,12 @@ as element(toc:node)+
    : We may want a flat list, and we always want a list by category.
    :)
   let $mode as xs:string := $entry/@mode
+  (: For MODE-REST there will be no libs nor prefixes. :)
+  let $mode-libs := toc:libs-for-mode($version, $mode)
+  let $prefixes-not-builtin as xs:string* := $mode-libs[not(@built-in)]
+  let $m-mode-functions := map:get($m-functions, $mode)
+  let $m-mode-categories as element(toc:node)+ := toc:functions-by-bucket(
+    $version, $mode, $m-mode-functions, $prefixes-not-builtin)
   let $function-count := string(toc:function-count($version, $mode, ()))
   let $title as xs:string := replace(
     ($entry/@toc-title, $entry/@title)[1], '%d', $function-count)
@@ -1592,7 +1597,7 @@ as element(toc:node)+
       (
         element toc:title { $title },
         element toc:intro { $entry/apidoc:intro/node() },
-        map:get($m-mode-categories, $mode))),
+        $m-mode-categories)),
 
     if (not($all-functions)) then () else toc:entry-to-node(
       $entry,
@@ -1600,15 +1605,13 @@ as element(toc:node)+
       $title-all-functions,
       (element toc:title { $title-all-functions },
         element toc:intro { $entry/apidoc:intro/node() },
-        for $lib in map:get($m-mode-libs, $mode)
+        for $lib in ($mode-libs treat as element()+)
         let $count := toc:function-count($version, $mode, $lib)
         where $count
         order by $lib
         return toc:api-lib(
-          $version, $mode,
-          map:get($m-functions, $mode),
-          map:get($m-mode-categories, $mode),
-          $lib, $count))))
+          $version, $mode, $m-mode-functions,
+          $m-mode-categories, $lib, $count))))
 };
 
 (: Transform a document-list entry element to a toc:node.
@@ -1618,10 +1621,7 @@ as element(toc:node)+
 declare function toc:entry-node(
   $version as xs:string,
   $xsd-docs as document-node()*,
-  $prefixes-not-builtin as xs:string+,
-  $m-mode-libs as map:map,
   $m-functions as map:map,
-  $m-mode-categories as map:map,
   $guide-docs as element(guide)+,
   $help-config as element(help),
   $entry as element(apidoc:entry))
@@ -1633,9 +1633,7 @@ as element(toc:node)*
   case 'external' return toc:node-external(
     ($entry/@toc-title, $entry/@title)[1], $entry/@href)
   case 'function-reference' return toc:function-reference-node(
-    $version,
-    $m-mode-libs, $m-functions, $m-mode-categories,
-    $entry)
+    $version, $m-functions, $entry)
   case 'help' return toc:help(
     number($version), $xsd-docs, $help-config)
   (: At the moment an entry with no @type is always
@@ -1648,8 +1646,9 @@ as element(toc:node)*
     for $guide in $entry/apidoc:guide
     let $is-duplicate := $guide/@duplicate/xs:boolean(.)
     let $name as xs:string := $guide/@url-name
-    let $match as element() := $guide-docs[
+    let $match as element()? := $guide-docs[
       ends-with(base-uri(.), '/'||$name||'.xml')]
+    let $_ := if ($match) then () else stp:error('NOGUIDE', $name)
     return toc:guide-node($match, $is-duplicate))
   default return stp:error(
     'UNEXPECTED', ('no handler for type', xdmp:describe($type)))
@@ -1659,10 +1658,7 @@ as element(toc:node)*
 declare function toc:group-node(
   $version as xs:string,
   $xsd-docs as document-node()*,
-  $prefixes-not-builtin as xs:string+,
-  $m-mode-libs as map:map,
   $m-functions as map:map,
-  $m-mode-categories as map:map,
   $guide-docs as element(guide)+,
   $help-config as element(help),
   $group as element(apidoc:group))
@@ -1682,8 +1678,7 @@ as element(toc:node)
     ($group/@mode,
       (: Handle entries. :)
       toc:entry-node(
-        $version, $xsd-docs, $prefixes-not-builtin,
-        $m-mode-libs, $m-functions, $m-mode-categories,
+        $version, $xsd-docs, $m-functions,
         $guide-docs, $help-config, $group/apidoc:entry)))
 };
 
@@ -1693,19 +1688,8 @@ declare function toc:create(
 as element(toc:root)
 {
   let $document-list as element(apidoc:docs) := api:document-list($version)
-  let $m-mode-libs := toc:libs-by-mode($version)
-  (: This works for JavaScript too,
-   : because the XPath prefixes are a superset.
-   :)
-  let $prefixes-not-builtin as xs:string+ := map:get(
-    $m-mode-libs, $api:MODE-XPATH)[not(@built-in)]
+  (: Build expensive data structures up front. :)
   let $m-functions := toc:functions-map($version)
-  let $m-mode-categories := map:new(
-    $api:MODES ! map:entry(
-      .,
-      toc:functions-by-bucket(
-        $version, ., map:get($m-functions, .),
-        $prefixes-not-builtin)))
   (: These are consolidated guides. :)
   let $guide-docs as element(guide)+ := xdmp:directory(
     concat(api:version-dir($version), 'guide/'))/guide
@@ -1738,8 +1722,7 @@ as element(toc:root)
       treat as xs:string },
     attribute open { true() },
     toc:group-node(
-      $version, $xsd-docs, $prefixes-not-builtin,
-      $m-mode-libs, $m-functions, $m-mode-categories,
+      $version, $xsd-docs, $m-functions,
       $guide-docs, $help-config, $document-list/apidoc:group) }
 };
 
