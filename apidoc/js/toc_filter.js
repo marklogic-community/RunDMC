@@ -1,10 +1,62 @@
 /* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
+var functionPageBucketId = null;
+var isUserGuide = null;
+var tocSectionLinkSelector = null;
 var tocSelect = null;
 
+$(function() {
+    // When the DOM is ready, load the TOC into the TOC div.
+    // Then finish with toc_init.
+    $('#apidoc_toc').load($("#toc_url").val(), null, toc_init);
+
+    colorizeExamples();
+
+    // Don't use pjax on pdf, zip files, and printer-friendly links
+    var selector = "#page_content .pjax_enabled"
+        + " a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])";
+    $(selector).pjax({
+        container: '#page_content',
+        timeout: 4000,
+        success: function() {
+            // Update view when the pjax call originated from a link in the body
+            console.log("pjax_enabled fired ok");
+            tocUpdateFromPageContent(); } });
+
+    $("#api_sub .pjax_enabled a:not(.external)").pjax({
+        container: '#page_content',
+        timeout: 4000,
+        success: function() {
+            // Update view when a TOC link was clicked
+            console.log("pjax_enabled fired ok"); } });
+
+    // Ensure that non-fragment TOC links highlight appropriate TOC links.
+    $(document).on('pjax:end', function(event, options) {
+        var target = $(event.relatedTarget)
+        if (target.parents("#api_sub").length) {
+            console.log("Calling showInTOC via pjax:end handler.", target[0]);
+            showInTOC(target); }});
+});
+
 function toc_init() {
+    // Initialize values from page.xsl content.
+    functionPageBucketId = $("#functionPageBucketId");
+    if (!functionPageBucketId.length) console.log("No functionPageBucketId!");
+    functionPageBucketId = functionPageBucketId.val();
+
+    isUserGuide = $("#isUserGuide");
+    if (!isUserGuide.length) console.log("No isUserGuide!");
+    isUserGuide = isUserGuide.val() === "true";
+
+    tocSectionLinkSelector = $("#tocSectionLinkSelector");
+    if (!tocSectionLinkSelector.length) console.log("No tocSectionLinkSelector!");
+    tocSectionLinkSelector = tocSectionLinkSelector.val();
+
+    // Set up tree view select widget.
     var tocPartsDir = $("#tocPartsDir").text();
     var tocTrees = $(".treeview");
+    if (!tocTrees) console.log("No tocTrees!");
     tocSelect = $("#toc_select");
+    if (!tocSelect) console.log("No tocSelect!");
 
     tocTrees.treeview({
         prerendered: true,
@@ -226,9 +278,8 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-    console.log('updateTocForUrlFragment', pathname, hash);
-    // Only let fragment links update the TOC
-    // when page.xsl says this is a user guide.
+    console.log('updateTocForUrlFragment', pathname, hash, isUserGuide);
+    // Only let fragment links update the TOC when this is a user guide.
     // Or not! The back button should update the TOC for functions too.
     //if (!isUserGuide) return;
 
@@ -289,8 +340,6 @@ function showInTOC(a) {
 
 // Called at init and whenever a tab changes.
 function updateTocForSelection() {
-    // See apidoc/view/page.xsl for definitions of
-    // functionPageBucketId, tocSectionLinkSelector.
     console.log("updateTocForSelection",
                 "functionPageBucketId", functionPageBucketId,
                 "tocSectionLinkSelector", tocSectionLinkSelector);

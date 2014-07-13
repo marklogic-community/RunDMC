@@ -14,7 +14,7 @@
   xmlns:users="users"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="qp xs ml xdmp srv">
+  exclude-result-prefixes="ml qp srv u users xs xdmp">
 
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>

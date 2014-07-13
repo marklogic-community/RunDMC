@@ -20,7 +20,7 @@
   xmlns:users="users"
   xmlns:fn   ="http://www.w3.org/2005/xpath-functions"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp qp search cts srv draft">
+  exclude-result-prefixes="cts draft fn ml qp search so srv u users xdmp xs">
 
   <xsl:variable name="page-number-supplied" select="boolean(string($params[@name eq 'p']))"/>
 
@@ -147,20 +147,20 @@
 
         <div class="download-url-label" >Please use the following, one-time-use URL to fetch the download:</div>
         <textarea readonly="readonly" class="download-url" id="curl-url"/>
-        <button class="copy-button" id="copy-url-button" 
+        <button class="copy-button" id="copy-url-button"
                 data-clipboard-target="curl-url" title="Click to copy">Copy to Clipboard</button>
 
         <div class="secure download-url-label" >Or use the secure version here instead:</div>
         <textarea readonly="readonly" class="secure download-url" id="secure-curl-url"/>
-        <button class="secure copy-button" id="copy-secure-url-button" 
+        <button class="secure copy-button" id="copy-secure-url-button"
                 data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
     </div>
 
     <div class="download-confirmation" id="confirm-dialog" style="display: none">
         <p style="line-height: 140%">
-        In order to download and use this MarkLogic software you are required to accept the <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and install a license key.  
+        In order to download and use this MarkLogic software you are required to accept the <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and install a license key.
         </p>
-    
+
         <xsl:if test="empty(users:getCurrentUser())">
         <p>Sign in with your MarkLogic Community credentials or <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
         </xsl:if>
@@ -254,7 +254,7 @@
                       </xsl:if>
                       <xsl:if test="$num-cols gt 1">
                         <td>
-                          <xsl:value-of select="@size"/>&#160;&#160; 
+                          <xsl:value-of select="@size"/>&#160;&#160;
 <!--
                           <xsl:if test="@md5">
                               <a href="#" onclick="alert('$md5'); return true;"> (MD5) </a>
@@ -337,7 +337,7 @@
                   <xsl:template mode="product-doc-title" match="new-doc">
                     <xsl:variable name="version" select="if (@version) then @version else $ml:default-version"/>
                     <xsl:variable name="source" select="replace(@source, '#.*', '')"/>
-                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, $source, '.xml'))/*/*:title)[1]/string()"/> 
+                    <xsl:value-of select="if (@title) then @title else (document(concat('/apidoc/', $version, $source, '.xml'))/*/*:title)[1]/string()"/>
                   </xsl:template>
 
                   <xsl:template mode="product-doc-url" match="old-doc">
@@ -411,7 +411,7 @@
 
 
 
-          <xsl:template mode="display-thread" match="thread">            
+          <xsl:template mode="display-thread" match="thread">
             <li>
               <a href="{@href}" title="{blurb}">
                 <xsl:value-of select="@title"/>
@@ -441,7 +441,7 @@
     <div id="stackunderflow-widget"/>
     <script type="text/javascript">
         $(function() {
-            stackunderflow.getQuestionsWithBodyWithTags("marklogic", 3).render("#stackunderflow-widget", 'widget', 
+            stackunderflow.getQuestionsWithBodyWithTags("marklogic", 3).render("#stackunderflow-widget", 'widget',
                 function() {
                     $('article.so-widget').unwrap();
                 }
@@ -929,7 +929,7 @@
                 </a>
                 <br/><div class="doc-desc"><xsl:copy-of select="doc(base-uri(.))//*:description"/></div>
               </td>
-        
+
               <!--
               <td>
                   <xsl:value-of select="replace(last-updated,' ','&#160;')"/>
@@ -1101,32 +1101,32 @@
         <div class="profile-form-row">
             <div class="profile-form-label">Industry </div>
             <select class="required" id="industry" name="industry" required="required" data-initvalue="{$user/*:industry/string()}">
-	  <option value="Aviation/Aerospace">Aviation/Aerospace</option>
+          <option value="Aviation/Aerospace">Aviation/Aerospace</option>
       <option value="Commodity Trading">Commodity Trading</option>
-	  <option value="Consulting">Consulting</option>
-	  <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
-	  <option value="Education">Education</option>
-	  <option value="Energy">Energy</option>
-	  <option value="Federal Government">Federal Government</option>
-	  <option value="Financial Services">Financial Services</option>
-	  <option value="Healthcare">Healthcare</option>
-	  <option value="Insurance">Insurance</option>
-	  <option value="Legal">Legal</option>
-	  <option value="Life Sciences">Life Sciences</option>
-	  <option value="Logistics/Transportation">Logistics/Transportation</option>
-	  <option value="Manufacturing">Manufacturing</option>
+          <option value="Consulting">Consulting</option>
+          <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
+          <option value="Education">Education</option>
+          <option value="Energy">Energy</option>
+          <option value="Federal Government">Federal Government</option>
+          <option value="Financial Services">Financial Services</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Insurance">Insurance</option>
+          <option value="Legal">Legal</option>
+          <option value="Life Sciences">Life Sciences</option>
+          <option value="Logistics/Transportation">Logistics/Transportation</option>
+          <option value="Manufacturing">Manufacturing</option>
       <option value="Mining/Construction/Engineering">Mining/Construction/Engineering</option>
-	  <option value="Non-profit/Associations">Non-profit/Associations</option>
-	  <option value="Other">Other</option>
-	  <option value="Publishing/Media">Publishing/Media</option>
-	  <option value="Retail">Retail</option>
-	  <option value="Services">Services</option>
-	  <option value="State and Local Government">State and Local Government</option>
-	  <option value="Technology">Technology</option>
-	  <option value="Technology - Hardware">Technology - Hardware</option>
-	  <option value="Technology - Software">Technology - Software</option>
-	  <option value="Telecommunications">Telecommunications</option>
-	  <option value="Travel/Entertainment">Travel/Entertainment</option>
+          <option value="Non-profit/Associations">Non-profit/Associations</option>
+          <option value="Other">Other</option>
+          <option value="Publishing/Media">Publishing/Media</option>
+          <option value="Retail">Retail</option>
+          <option value="Services">Services</option>
+          <option value="State and Local Government">State and Local Government</option>
+          <option value="Technology">Technology</option>
+          <option value="Technology - Hardware">Technology - Hardware</option>
+          <option value="Technology - Software">Technology - Software</option>
+          <option value="Telecommunications">Telecommunications</option>
+          <option value="Travel/Entertainment">Travel/Entertainment</option>
             </select>
         </div>
     </fieldset>
@@ -1163,18 +1163,18 @@
         &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
     </xsl:if>
    </xsl:template>
-    
+
    <xsl:template match="signup-form-hidden-fields">
       <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
-         <xsl:attribute name="value"> 
+         <xsl:attribute name="value">
             <xsl:value-of select="xdmp:get-request-field('d')"/>
          </xsl:attribute>
       </input>
       </xsl:if>
       <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
       <input type="hidden" name="s_page" id="s_page">
-         <xsl:attribute name="value"> 
+         <xsl:attribute name="value">
             <xsl:value-of select="xdmp:get-request-field('p')"/>
          </xsl:attribute>
       </input>

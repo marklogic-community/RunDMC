@@ -12,7 +12,7 @@
   xmlns:ml   ="http://developer.marklogic.com/site/internal"
   xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="xs ml xdmp srv">
+  exclude-result-prefixes="ml srv u users xdmp xs">
 
   <xsl:import href="pre-process-navigation.xsl"/>
 
@@ -49,25 +49,25 @@
         </xsl:if>
         <ul>
             <li>
-                <button type="button" class="drop-down-trigger gray" id="signup-trigger" 
+                <button type="button" class="drop-down-trigger gray" id="signup-trigger"
                         data-url="{$srv:primary-server}/people/signup">
-                    <xsl:if test="users:getCurrentUserName()"> 
-                        <xsl:attribute name="style">display:none</xsl:attribute> 
+                    <xsl:if test="users:getCurrentUserName()">
+                        <xsl:attribute name="style">display:none</xsl:attribute>
                     </xsl:if>
                     Sign up
                 </button>
             </li>
             <li>
                 <button type="button" class="drop-down-trigger gray" id="login-trigger">
-                    <xsl:if test="users:getCurrentUserName()"> 
-                        <xsl:attribute name="style">display:none</xsl:attribute> 
+                    <xsl:if test="users:getCurrentUserName()">
+                        <xsl:attribute name="style">display:none</xsl:attribute>
                     </xsl:if>
                     Log in
                 </button>
             </li>
             <li>
                 <button type="button" class="drop-down-trigger gray" id="session-trigger">
-                    <xsl:if test="empty(users:getCurrentUserName())"> 
+                    <xsl:if test="empty(users:getCurrentUserName())">
                         <xsl:attribute name="style">display:none</xsl:attribute>
                     </xsl:if>
                     <xsl:value-of select="users:getCurrentUserName()"/>
@@ -383,14 +383,14 @@
         <div class="pagination_nav">
             <xsl:if test="$content/page/@page/number() gt 1">
             <p class="pagination_prev"><button
-                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}" 
+                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}"
                 class="blue">&#171; Previous</button><span>
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
             </xsl:if>
             <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
             <p class="pagination_next"><button
-                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}" 
-                class="blue">Next &#187;</button><span> 
+                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}"
+                class="blue">Next &#187;</button><span>
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
             </xsl:if>
         </div>

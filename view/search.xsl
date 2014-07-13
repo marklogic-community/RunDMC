@@ -1,21 +1,21 @@
 
 <xsl:stylesheet version="2.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xdmp="http://marklogic.com/xdmp"
   xmlns      ="http://www.w3.org/1999/xhtml"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:search="http://marklogic.com/appservices/search"
-  xmlns:cts   ="http://marklogic.com/cts"
-  xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
   xmlns:api  ="http://marklogic.com/rundmc/api"
   xmlns:ck   ="http://parthcomp.com/cookies"
+  xmlns:cts   ="http://marklogic.com/cts"
+  xmlns:ml               ="http://developer.marklogic.com/site/internal"
+  xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
+  xmlns:search="http://marklogic.com/appservices/search"
+  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
+  xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:xdmp="http://marklogic.com/xdmp"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   extension-element-prefixes="xdmp"
-  exclude-result-prefixes="xs ml xdmp qp search cts srv api ck">
+  exclude-result-prefixes="api ck cts ml qp search srv u xs xdmp">
 
   <xdmp:import-module
       namespace="http://marklogic.com/rundmc/api"

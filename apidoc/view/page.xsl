@@ -16,7 +16,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="xdmp"
-                exclude-result-prefixes="x xs ml xdmp api u srv">
+                exclude-result-prefixes="api apidoc guide ml srv u v x xs xdmp">
 
   <xsl:import href="/view/page.xsl"/>
 
@@ -121,13 +121,7 @@
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
-          <script type="text/javascript">
-            <xsl:comment>
-              <xsl:call-template name="reset-global-toc-vars"/>
-            </xsl:comment>
-          </script>
           <xsl:call-template name="page-content"/>
-          <xsl:call-template name="comment-section"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
@@ -191,17 +185,25 @@
   </xsl:template>
 
   <!-- TODO: Make the breadcrumbs more useful (and make sure PJAX is supported) -->
-  <xsl:template mode="breadcrumb-display" match="ml:breadcrumbs"> > Documentation</xsl:template>
+  <xsl:template mode="breadcrumb-display"
+                match="ml:breadcrumbs"> > Documentation</xsl:template>
 
   <xsl:template match="ml:api-toc">
+    <!--
+        Used in js/toc_filter.js to determine which TOC section to load.
+    -->
+    <input id="functionPageBucketId" type="hidden"
+           value="{ $content/api:function-page/api:function[1]/@bucket
+                  | $content/api:list-page/@category-bucket }"/>
+    <input id="tocSectionLinkSelector" type="hidden"
+           value="{ api:toc-section-link-selector(
+                  $content/*, $version-prefix) }"/>
+    <input id="isUserGuide" type="hidden"
+           value="{ exists($content/(guide|chapter)) }"/>
+    <input id="toc_url" type="hidden"
+           value="{ api:toc-uri() }"/>
     <div id="apidoc_toc">
-      <script type="text/javascript">
-        <xsl:comment>
-          <xsl:call-template name="reset-global-toc-vars"/>
-          var toc_url = '<xsl:value-of select="api:toc-uri()"/>';
-          $('#apidoc_toc').load(toc_url, null, toc_init);
-        </xsl:comment>
-      </script>
+      <xsl:comment>TOC goes here</xsl:comment>
     </div>
   </xsl:template>
 
@@ -221,25 +223,6 @@
                           '/', @number, '?',
                           $set-version-param-name, '=', @number)"/>
   </xsl:template>
-
-  <xsl:template name="reset-global-toc-vars">
-    <!--
-        Used in js/toc_filter.js to determine which TOC section to load.
-        Also needs to distinguish XQuery/XSLT from JavaScript.
-    -->
-    var functionPageBucketId = "<xsl:apply-templates
-    mode="function-bucket-id"
-    select="$content/api:function-page/api:function[1]/@bucket
-    | $content/api:list-page/@category-bucket"/>";
-    var tocSectionLinkSelector = "<xsl:copy-of
-      select="api:toc-section-link-selector(
-              $content/*, $version-prefix)"/>";
-
-    var isUserGuide = <xsl:apply-templates mode="is-user-guide" select="$content/*"/>;
-  </xsl:template>
-
-  <xsl:template mode="is-user-guide" match="guide | chapter">true</xsl:template>
-  <xsl:template mode="is-user-guide" match="*"              >false</xsl:template>
 
   <!--
       ID for function buckets is the bucket display name minus spaces.
