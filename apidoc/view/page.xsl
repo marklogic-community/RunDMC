@@ -361,7 +361,7 @@
     -->
     <xsl:copy-of select="v:pdf-anchor(
                          ., v:external-guide-uri($version-prefix, /),
-                         parent::chapter)"/>
+                         exists(parent::chapter))"/>
     <!-- printer-friendly link on chapter pages -->
     <xsl:if test="parent::chapter">
       <xsl:apply-templates mode="print-friendly-link" select="."/>
