@@ -673,9 +673,12 @@ as xs:string
 {
   switch($type)
   case 'document-node()'
-  case 'element()' return 'Node'
+  case 'element()'
+  case 'node()' return 'Node'
 
   case 'empty-sequence()' return 'null'
+
+  case 'map:map' return 'object'
 
   case 'xdmp:function' return 'function'
 
@@ -706,7 +709,7 @@ as xs:string?
   default return $quantifier
 };
 
-declare function api:return-type-javascript(
+declare function api:type-javascript(
   $return as xs:string)
 as xs:string
 {
@@ -718,13 +721,13 @@ as xs:string
 };
 
 (: Translate XDM types to JavaScript types. :)
-declare function api:return-type(
+declare function api:type(
   $mode as xs:string,
   $return as xs:string)
 as xs:string
 {
   switch($mode)
-  case $MODE-JAVASCRIPT return api:return-type-javascript(
+  case $MODE-JAVASCRIPT return api:type-javascript(
     normalize-space($return))
   default return normalize-space($return)
 };

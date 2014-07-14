@@ -582,7 +582,7 @@
       </xsl:if>
       <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
       <xsl:text>) as </xsl:text>
-      <xsl:value-of select="api:return-type(@mode, api:return)"/>
+      <xsl:value-of select="api:type(@mode, api:return)"/>
     </xsl:element>
   </xsl:template>
 
@@ -597,7 +597,7 @@
       <xsl:value-of select="@name"/>
     </a>
     <xsl:text> as </xsl:text>
-    <xsl:value-of select="@type"/>
+    <xsl:value-of select="api:type(../../@mode, @type)"/>
     <xsl:if test="@optional eq 'true'">]</xsl:if>
     <xsl:if test="position() ne last()">,</xsl:if>
     <xsl:text>&#xA;</xsl:text>
@@ -647,8 +647,11 @@
         </tr>
       </thead>
       <tbody>
-        <xsl:apply-templates select="api:param | api:header[if ($response-headers) then (@type eq 'response')
-                                     else (@type eq 'request')]"/>
+        <xsl:apply-templates
+            select="api:param
+                    | api:header[
+                    if ($response-headers) then (@type eq 'response')
+                    else (@type eq 'request')]"/>
       </tbody>
     </table>
   </xsl:template>
