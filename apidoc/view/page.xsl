@@ -569,7 +569,9 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template mode="function-signature" match="api:function[@lib eq $api:MODE-REST]"/>
+  <xsl:template mode="function-signature"
+                match="api:function[@lib eq $api:MODE-REST]"/>
+
   <xsl:template mode="function-signature" match="api:function">
     <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
     <xsl:element name="pre">
@@ -580,7 +582,7 @@
       </xsl:if>
       <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
       <xsl:text>) as </xsl:text>
-      <xsl:value-of select="normalize-space(api:return)"/>
+      <xsl:value-of select="api:return-type(@mode, api:return)"/>
     </xsl:element>
   </xsl:template>
 

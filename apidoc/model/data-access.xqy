@@ -666,4 +666,67 @@ as element(apidoc:docs)
     return $v)
 };
 
+(: TODO Handle more types, eg element(fubar) and semantic types. :)
+declare function api:javascript-type(
+  $type as xs:string)
+as xs:string
+{
+  switch($type)
+  case 'document-node()'
+  case 'element()' return 'Node'
+
+  case 'empty-sequence()' return 'null'
+
+  case 'xdmp:function' return 'function'
+
+  case 'xs:boolean' return 'boolean'
+
+  case 'xs:dateTime' return 'Date'
+
+  case 'xs:decimal'
+  case 'xs:double'
+  case 'xs:float'
+  case 'xs:integer'
+  case 'xs:long'
+  case 'xs:positiveInteger'
+  case 'xs:unsignedInt'
+  case 'xs:unsignedLong' return 'number'
+
+  case 'xs:string' return 'string'
+  default return $type
+};
+
+declare function api:javascript-quantifier(
+  $quantifier as xs:string?)
+as xs:string?
+{
+  switch($quantifier)
+  case '*'
+  case '+' return '[]'
+  default return $quantifier
+};
+
+declare function api:return-type-javascript(
+  $return as xs:string)
+as xs:string
+{
+  concat(
+    api:javascript-type(
+      replace($return, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
+    api:javascript-quantifier(
+      replace($return, '(.+[^\?\*\+])([\?\*\+])?', '$2')))
+};
+
+(: Translate XDM types to JavaScript types. :)
+declare function api:return-type(
+  $mode as xs:string,
+  $return as xs:string)
+as xs:string
+{
+  switch($mode)
+  case $MODE-JAVASCRIPT return api:return-type-javascript(
+    normalize-space($return))
+  default return normalize-space($return)
+};
+
 (: apidoc/model/data-access.xqy :)
