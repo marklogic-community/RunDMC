@@ -75,7 +75,6 @@
     </entry>
 
     <entry toc-title="Related Guides">
-      <guide url-name="rest-dev" duplicate="true"/>
       <guide url-name="monitoring" duplicate="true"/>
     </entry>
   </group>
