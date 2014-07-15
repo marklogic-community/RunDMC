@@ -1412,15 +1412,17 @@ as node()+
       toc:help-content($version-number, $xsd-docs, $e/*)))
 };
 
+(: This ignores sections that were added in a later server version,
+ : yielding an empty sequence.
+ :)
 declare function toc:help-content(
   $version-number as xs:double,
   $xsd-docs as document-node()*,
   $e as element())
-as node()+
+as node()*
 {
-  (: Ignore sections that were added in a later server version :)
-  if ($version-number lt $e/@added-in) then ()
-  else typeswitch($e)
+  if ($version-number lt $e/@added-in) then () else
+  typeswitch($e)
   case element(repeat) return toc:help-content(
     $version-number, $xsd-docs, toc:help-resolve-repeat($e))
   case element(container) return toc:node(
