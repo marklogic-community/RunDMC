@@ -440,6 +440,9 @@ declare function stp:zip-static-doc-insert(
   $e as xs:string)
 as empty-sequence()
 {
+  if (not($stp:DEBUG)) then () else stp:debug(
+    "stp:zip-static-doc-insert",
+    ($version, xdmp:describe($zip), xdmp:describe($document-list), $e)),
   let $is-binary := xdmp:uri-content-type($e) ! (
     not(starts-with(., 'text/'))
     and not(. = ('application/javascript')))
@@ -466,6 +469,11 @@ declare function stp:zip-static-docs-insert(
   $document-list-from-zip as xs:boolean)
 as empty-sequence()
 {
+  if (not($stp:DEBUG)) then () else stp:debug(
+    "stp:zip-static-docs-insert",
+    ($version, $zip-path, xdmp:describe($subdirs-to-load),
+      xdmp:describe($document-list), $document-list-from-zip)),
+
   (: Load document-list.xml if it came from the zip.
    : Otherwise this is probably a dev environment so keep using the filesystem.
    : If we load it, do so as a hidden document.
@@ -495,6 +503,10 @@ declare function stp:zip-static-docs-insert(
   $subdirs-to-load as xs:string+)
 as empty-sequence()
 {
+  if (not($stp:DEBUG)) then () else stp:debug(
+    "stp:zip-static-docs-insert",
+    ($version, $zip-path, xdmp:describe($subdirs-to-load))),
+
   (: Load the document-list XML manifest if present.
    : Older zips may not include it.
    :
@@ -506,7 +518,7 @@ as empty-sequence()
     xdmp:zip-manifest($zip)/*[
       ends-with(., '_pubs/pubs/document-list.xml')])/*
   let $document-list-from-zip := exists($document-list)
-  let $v as element(apidoc:docs) := (
+  let $document-list as element(apidoc:docs) := (
     if ($document-list) then $document-list else u:get-doc(
       '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
   return stp:zip-static-docs-insert(
