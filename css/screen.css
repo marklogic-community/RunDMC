@@ -416,16 +416,18 @@ nav ul {margin: 0;}
 	display: block;
 	float: right;
 }
-#breadcrumb .version {
-	font-size: 12px;
-	position: absolute;
-	width: auto;
-	bottom: -25px;
-    left: 16px;
-}
 #breadcrumb .version span {font-weight: bold;}
 #breadcrumb .version a {color: #01639D;}
 #breadcrumb .version b {color: #333;}
+
+.version {
+    font-size: 12px;
+    position: absolute;
+    width: auto;
+    bottom: -25px;
+    left: 16px;
+}
+
 #main {
 	float: right;
 	width: 780px;/*

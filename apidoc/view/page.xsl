@@ -180,13 +180,15 @@
 
   <xsl:template match="ml:breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="."/>
-    <!-- Always append the "Server version" switcher -->
+    <!-- Server version widget. -->
     <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
   <!-- Placeholder for toc_filter.js init code. -->
   <xsl:template mode="breadcrumb-display"
-                match="ml:breadcrumbs"> > Documentation</xsl:template>
+                match="ml:breadcrumbs">
+    <span id="breadcrumbText"> > Documentation</span>
+  </xsl:template>
 
   <xsl:template match="ml:api-toc">
     <!--
@@ -218,7 +220,9 @@
   </xsl:template>
 
   <xsl:template mode="version-list-item-href" match="version">
-    <xsl:variable name="version" select="if (@number eq $api:DEFAULT-VERSION) then '' else @number"/>
+    <xsl:variable name="version"
+                  select="if (@number eq $api:DEFAULT-VERSION) then ''
+                          else @number"/>
     <xsl:sequence select="concat(
                           '/', @number, '?',
                           $set-version-param-name, '=', @number)"/>

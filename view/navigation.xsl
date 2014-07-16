@@ -193,38 +193,37 @@
     <xsl:apply-templates mode="version-list" select=".[$external-uri = ('/search','/apidoc/do-search')]"/>
   </xsl:template>
 
-          <!-- No breadcrumbs on home page -->
-          <xsl:template mode="breadcrumbs" match="page[@href eq '/']"/>
+  <!-- No breadcrumbs on home page -->
+  <xsl:template mode="breadcrumbs" match="page[@href eq '/']"/>
 
-          <!-- But do display them on every other page -->
-          <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
-            <xsl:param name="site-name" select="'Developer Community'"/>
-            <div>
-              <a href="/">
-                <xsl:value-of select="$site-name"/>
-              </a>
-              <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
-              <xsl:apply-templates mode="breadcrumb-display" select="."/>
-            </div>
-          </xsl:template>
+  <!-- But do display them on every other page -->
+  <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
+    <xsl:param name="site-name" select="'Developer Community'"/>
+    <div>
+      <a href="/">
+        <xsl:value-of select="$site-name"/>
+      </a>
+      <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>
+      <xsl:apply-templates mode="breadcrumb-display" select="."/>
+    </div>
+  </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="page | generic-page">
-                    <xsl:text> > </xsl:text>
-                    <xsl:apply-templates mode="nav-text" select="@display"/>
-                  </xsl:template>
+  <xsl:template mode="breadcrumb-display" match="page | generic-page">
+    <xsl:text> > </xsl:text>
+    <xsl:apply-templates mode="nav-text" select="@display"/>
+  </xsl:template>
 
-                  <xsl:template mode="breadcrumb-display" match="*">
-                    <xsl:text> > </xsl:text>
-                    <xsl:value-of select="$content/*/title"/>
-                  </xsl:template>
+  <xsl:template mode="breadcrumb-display" match="*">
+    <xsl:text> > </xsl:text>
+    <xsl:value-of select="$content/*/title"/>
+  </xsl:template>
 
-
-                  <xsl:template mode="breadcrumb-link" match="page">
-                    <xsl:text> > </xsl:text>
-                    <a href="{@href}">
-                      <xsl:apply-templates mode="nav-text" select="@display"/>
-                    </a>
-                  </xsl:template>
+  <xsl:template mode="breadcrumb-link" match="page">
+    <xsl:text> > </xsl:text>
+    <a href="{@href}">
+      <xsl:apply-templates mode="nav-text" select="@display"/>
+    </a>
+  </xsl:template>
 
   <xsl:template match="sub-nav[$content/Article]">
     <xsl:if test="$content//(xhtml:h3 | xhtml:figure)">

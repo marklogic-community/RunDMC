@@ -66,44 +66,43 @@
     </div>
   </xsl:template>
 
-          <!-- separator between each version -->
-          <xsl:template mode="version-list-item" match="*:version">
-            <xsl:apply-templates mode="version-list-item-selected-or-not" select="."/>
-            <xsl:if test="position() ne last()"> | </xsl:if>
-          </xsl:template>
+  <!-- separator between each version -->
+  <xsl:template mode="version-list-item" match="*:version">
+    <xsl:apply-templates mode="version-list-item-selected-or-not" select="."/>
+    <xsl:if test="position() ne last()"> | </xsl:if>
+  </xsl:template>
 
-                  <!-- selected -->
-                  <xsl:template mode="version-list-item-selected-or-not" match="*:version[@number eq $preferred-version]"
-                                name="show-selected-version">
-                    <b>
-                      <xsl:apply-templates mode="version-number-display" select="."/>
-                    </b>
-                  </xsl:template>
+  <!-- selected -->
+  <xsl:template mode="version-list-item-selected-or-not" match="*:version[@number eq $preferred-version]"
+                name="show-selected-version">
+    <b>
+      <xsl:apply-templates mode="version-number-display" select="."/>
+    </b>
+  </xsl:template>
 
-                  <!-- When @display is present, show that instead. -->
-                  <xsl:template mode="version-number-display" match="*:version[@display]">
-                    <xsl:value-of select="@display"/>
-                  </xsl:template>
-                  <xsl:template mode="version-number-display" match="*:version">
-                    <xsl:value-of select="@number"/>
-                  </xsl:template>
+  <!-- When @display is present, show that instead. -->
+  <xsl:template mode="version-number-display" match="*:version[@display]">
+    <xsl:value-of select="@display"/>
+  </xsl:template>
+  <xsl:template mode="version-number-display" match="*:version">
+    <xsl:value-of select="@number"/>
+  </xsl:template>
 
-                  <!-- not selected -->
-                  <xsl:template mode="version-list-item-selected-or-not" match="*:version"
-                                name="show-unselected-version">
-                    <xsl:variable name="href">
-                      <xsl:apply-templates mode="version-list-item-href" select="."/>
-                    </xsl:variable>
-                    <a href="{$href}">
-                      <xsl:apply-templates mode="version-number-display" select="."/>
-                    </a>
-                  </xsl:template>
+  <!-- not selected -->
+  <xsl:template mode="version-list-item-selected-or-not" match="*:version"
+                name="show-unselected-version">
+    <xsl:variable name="href">
+      <xsl:apply-templates mode="version-list-item-href" select="."/>
+    </xsl:variable>
+    <a href="{$href}">
+      <xsl:apply-templates mode="version-number-display" select="."/>
+    </a>
+  </xsl:template>
 
-                          <!-- version-specific results URL -->
-                          <xsl:template mode="version-list-item-href" match="*:version">
-                            <xsl:sequence select="concat('?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
-                          </xsl:template>
-
+  <!-- version-specific results URL -->
+  <xsl:template mode="version-list-item-href" match="*:version">
+    <xsl:sequence select="concat('?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
+  </xsl:template>
 
   <xsl:variable name="search-options" as="element()">
     <search:options>

@@ -1,5 +1,5 @@
 /* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
-var breadcrumb = null;
+var breadcrumbNode = null;
 var functionPageBucketId = null;
 var isUserGuide = null;
 var tocSectionLinkSelector = null;
@@ -40,8 +40,8 @@ $(function() {
 
 function toc_init() {
 
-    breadcrumb = $("#breadcrumb");
-    if (!breadcrumb.length) console.log("No breadcrumb!");
+    breadcrumbNode = $("#breadcrumbText");
+    if (!breadcrumbNode.length) console.log("No breadcrumb!");
 
     // Initialize values from page.xsl content.
     functionPageBucketId = $("#functionPageBucketId");
@@ -380,7 +380,7 @@ function updateBreadcrumb(n)
     var breadcrumbText = breadcrumbString(n);
     console.log('updating breadcrumb', breadcrumbText);
     if (!breadcrumbText) return;
-    breadcrumb.text(breadcrumbText);
+    breadcrumbNode.text(' > ' + breadcrumbText);
 }
 
 // Called at init and whenever a tab changes.
