@@ -21,7 +21,13 @@
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
 
-  <xsl:variable name="versions" select="u:get-doc('/config/server-versions.xml')/*:versions/*:version"/>
+  <!--
+      Uses *:version because server-versions.xml is in empty namespace,
+      and xpath-default-namespace has been set.
+  -->
+  <xsl:variable name="versions"
+                select="u:get-doc(
+                        '/config/server-versions.xml')/*:versions/*:version"/>
 
   <xsl:variable name="set-version-param-name" select="'v'"/>
   <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
@@ -56,50 +62,52 @@
 
 
   <!-- The "Version" switcher code;
-       this is also customized in apidoc/view/page.xsl -->
+       this is also customized in apidoc/view/page.xsl
+  -->
   <xsl:template mode="version-list" match="*">
+    <!--
+        Only display a version link if the corresponding directory URI
+        is present in the database.
+        TODO Turn this into a single doc() call.
+    -->
+    <xsl:variable name="available-versions"
+                  select="$versions[
+                          cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
     <div class="version">
       <span>Version:</span>
       <xsl:text> </xsl:text>
-      <!-- Only display a version link if the corresponding directory URI is present in the database -->
-      <xsl:apply-templates mode="version-list-item" select="$versions[cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
+      <select id="version_list" data-default="{$ml:default-version}">
+        <xsl:apply-templates mode="version-list-item"
+                             select="$available-versions"/>
+      </select>
     </div>
   </xsl:template>
 
+  <!-- In apidoc/view/page.xsl this function is a little different. -->
+  <xsl:function name="ml:version-is-selected" as="xs:boolean">
+    <xsl:param name="_version" as="xs:string"/>
+    <xsl:copy-of select="$_version eq $preferred-version"/>
+  </xsl:function>
+
+  <!--
+      All this uses *:version because server-versions.xml is in empty namespace,
+      and xpath-default-namespace has been set.
+  -->
+
   <!-- separator between each version -->
   <xsl:template mode="version-list-item" match="*:version">
-    <xsl:apply-templates mode="version-list-item-selected-or-not" select="."/>
-    <xsl:if test="position() ne last()"> | </xsl:if>
+    <option value="{@number}">
+      <xsl:if test="ml:version-is-selected(@number)">
+        <xsl:attribute name="selected">
+          <xsl:value-of select="true()"/>
+        </xsl:attribute>
+      </xsl:if>
+      <!-- Display label. -->
+      <xsl:value-of select="(@display, @number)[1]"/>
+    </option>
   </xsl:template>
 
-  <!-- selected -->
-  <xsl:template mode="version-list-item-selected-or-not" match="*:version[@number eq $preferred-version]"
-                name="show-selected-version">
-    <b>
-      <xsl:apply-templates mode="version-number-display" select="."/>
-    </b>
-  </xsl:template>
-
-  <!-- When @display is present, show that instead. -->
-  <xsl:template mode="version-number-display" match="*:version[@display]">
-    <xsl:value-of select="@display"/>
-  </xsl:template>
-  <xsl:template mode="version-number-display" match="*:version">
-    <xsl:value-of select="@number"/>
-  </xsl:template>
-
-  <!-- not selected -->
-  <xsl:template mode="version-list-item-selected-or-not" match="*:version"
-                name="show-unselected-version">
-    <xsl:variable name="href">
-      <xsl:apply-templates mode="version-list-item-href" select="."/>
-    </xsl:variable>
-    <a href="{$href}">
-      <xsl:apply-templates mode="version-number-display" select="."/>
-    </a>
-  </xsl:template>
-
-  <!-- version-specific results URL -->
+  <!-- TODO version-specific results URL -->
   <xsl:template mode="version-list-item-href" match="*:version">
     <xsl:sequence select="concat('?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
   </xsl:template>

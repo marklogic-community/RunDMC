@@ -209,24 +209,11 @@
     </div>
   </xsl:template>
 
-  <!-- Customizations of the "Server version" switcher code (slightly different than the search results page) -->
-
-  <xsl:template mode="version-list-item-selected-or-not"
-                match="version[@number eq $VERSION-FINAL]">
-    <xsl:call-template name="show-selected-version"/>
-  </xsl:template>
-  <xsl:template mode="version-list-item-selected-or-not" match="version">
-    <xsl:call-template name="show-unselected-version"/>
-  </xsl:template>
-
-  <xsl:template mode="version-list-item-href" match="version">
-    <xsl:variable name="version"
-                  select="if (@number eq $api:DEFAULT-VERSION) then ''
-                          else @number"/>
-    <xsl:sequence select="concat(
-                          '/', @number, '?',
-                          $set-version-param-name, '=', @number)"/>
-  </xsl:template>
+  <!-- Customizations of the "Server version" switcher code. -->
+  <xsl:function name="ml:version-is-selected" as="xs:boolean">
+    <xsl:param name="_version" as="xs:string"/>
+    <xsl:copy-of select="$_version eq $VERSION-FINAL"/>
+  </xsl:function>
 
   <xsl:template mode="page-title"
                 match="api:docs-page">
