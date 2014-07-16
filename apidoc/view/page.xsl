@@ -184,7 +184,7 @@
     <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
-  <!-- TODO: Make the breadcrumbs more useful (and make sure PJAX is supported) -->
+  <!-- Placeholder for toc_filter.js init code. -->
   <xsl:template mode="breadcrumb-display"
                 match="ml:breadcrumbs"> > Documentation</xsl:template>
 
@@ -222,14 +222,6 @@
     <xsl:sequence select="concat(
                           '/', @number, '?',
                           $set-version-param-name, '=', @number)"/>
-  </xsl:template>
-
-  <!--
-      ID for function buckets is the bucket display name minus spaces.
-      see toc:functions-by-category for implementation.
-  -->
-  <xsl:template mode="function-bucket-id" match="@*">
-    <xsl:value-of select="translate(.,' ','')"/>
   </xsl:template>
 
   <xsl:template mode="page-title"
@@ -333,12 +325,10 @@
   <xsl:template mode="docs-list-item"
                 match="apidoc:entry[@href]
                        | apidoc:guide[api:guide-info($content, @url-name)]">
-    <xsl:variable name="href">
-      <xsl:apply-templates mode="entry-href" select="."/>
-    </xsl:variable>
-    <xsl:variable name="title">
-      <xsl:apply-templates mode="entry-title" select="."/>
-    </xsl:variable>
+    <xsl:variable name="href"
+                  select="v:entry-href($version-prefix, ., $content)"/>
+    <xsl:variable name="title"
+                  select="v:entry-title(., $content)"/>
     <li>
       <a href="{$href}">
         <xsl:value-of select="$title"/>
@@ -348,7 +338,7 @@
         <xsl:copy-of select="v:pdf-anchor($title, $href, false())"/>
       </xsl:if>
       <div>
-        <xsl:apply-templates mode="entry-description" select="."/>
+        <xsl:copy-of select="v:entry-description($VERSION-FINAL, .)"/>
       </div>
     </li>
   </xsl:template>
@@ -370,45 +360,6 @@
       <xsl:apply-templates mode="guide-heading-content" select="."/>
     </h1>
     <xsl:apply-templates mode="chapter-next-prev" select="../@previous, ../@next"/>
-  </xsl:template>
-
-  <!-- The following group of rules is used by the list page too.
-       TODO good candidates to port to XQuery.
-  -->
-
-  <xsl:template mode="entry-description" match="apidoc:version-suffix">
-    <xsl:choose>
-      <xsl:when test="$VERSION-FINAL eq '5.0'">5</xsl:when>
-      <xsl:when test="$VERSION-FINAL eq '6.0'">6</xsl:when>
-      <xsl:otherwise>
-        <xsl:text>Server </xsl:text>
-        <xsl:value-of select="$VERSION-FINAL"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template mode="entry-href" match="apidoc:guide">
-    <xsl:value-of select="$version-prefix"/>
-    <xsl:value-of select="api:guide-info($content, @url-name)/@href"/>
-  </xsl:template>
-
-  <!-- entry/url/@href must include the whole path (version prefix not added) -->
-  <xsl:template mode="entry-href" match="apidoc:entry[url]" priority="1">
-    <xsl:value-of select="url/@href"/>
-  </xsl:template>
-
-  <!-- entry/@href gets the version prefix added -->
-  <xsl:template mode="entry-href" match="apidoc:entry[@href]">
-    <xsl:value-of select="$version-prefix"/>
-    <xsl:value-of select="@href"/>
-  </xsl:template>
-
-  <xsl:template mode="entry-title" match="apidoc:guide">
-    <xsl:value-of select="api:guide-info($content, @url-name)/@display"/>
-  </xsl:template>
-
-  <xsl:template mode="entry-title" match="apidoc:entry">
-    <xsl:value-of select="@title"/>
   </xsl:template>
 
   <xsl:template mode="page-content" match="api:help-page">

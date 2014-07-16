@@ -8,6 +8,8 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy" ;
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
 (: This is an html view library so it is tempting to declare
  : xhtml as the default element namespace.
  : But some of the content has elements in the empty namespace,
@@ -116,6 +118,48 @@ as element()
         attribute height { 16 }) }
   }
   </a>
+};
+
+
+(: Used for list-page and entry descriptions. :)
+declare function v:entry-description(
+  $version as xs:string,
+  $e as element(apidoc:version-suffix))
+as xs:string
+{
+  switch($version)
+  case '5.0' return '5'
+  case '6.0' return '6'
+  default return 'Server '||$version
+};
+
+declare function v:entry-href(
+  $version-prefix as xs:string,
+  $e as element(),
+  $content as node())
+as xs:string?
+{
+  typeswitch($e)
+  case element(apidoc:entry) return (
+    if ($e/url) then $e/url/@href
+    else if ($e/@href) then concat($version-prefix, $e/@href)
+    else ())
+  case element(apidoc:guide) return concat(
+    $version-prefix,
+    api:guide-info($content, @url-name)/@href)
+  default return ()
+};
+
+declare function v:entry-title(
+  $e as element(),
+  $content as node())
+as xs:string?
+{
+  typeswitch($e)
+  case element(apidoc:entry) return $e/@title
+  case element(apidoc:guide) return api:guide-info(
+    $content, $e/@url-name)/@display
+  default return ()
 };
 
 (: apidoc/view/view.xqm :)
