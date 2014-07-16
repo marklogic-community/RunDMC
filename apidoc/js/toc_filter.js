@@ -4,7 +4,6 @@ var functionPageBucketId = null;
 var isUserGuide = null;
 var tocSectionLinkSelector = null;
 var tocSelect = null;
-var versionSelect = null;
 
 $(function() {
     // When the DOM is ready, load the TOC into the TOC div.
@@ -43,41 +42,6 @@ function toc_init() {
 
     breadcrumbNode = $("#breadcrumbText");
     if (!breadcrumbNode.length) console.log("No breadcrumb!");
-
-    versionSelect = $("#version_list");
-    if (!versionSelect.length) {
-        console.log("No version_list!");
-    } else {
-        versionSelect.change(function(e) {
-            var defaultVersion = versionSelect.attr('data-default');
-            var version = versionSelect.children("option")
-                .filter(":selected").val();
-            //console.log('version select option changed',
-            //            defaultVersion, version);
-            // TODO Redirect to an appropriate page.
-            var oldPath = window.location.pathname;
-            var newPath = oldPath;
-            if (version == defaultVersion) {
-                //console.log("using default", defaultVersion);
-                newPath = oldPath.replace(/^\/\d+\.\d+/, "");
-            } else if (oldPath.match(/^\/\d+\.\d+/)) {
-                //console.log("replacing old with", version);
-                newPath = oldPath.replace(
-                        /^\/\d+\.\d+/, "/" + version);
-            } else {
-                //console.log("prepending", version);
-                newPath = '/' + version + oldPath;
-            }
-            //console.log('old', oldPath, 'new', newPath);
-            // Do not set query string, because it might set the version too.
-            window.location =
-                window.location.protocol
-                + "//"
-                + window.location.host
-                + newPath
-                + window.location.hash;
-        });
-    }
 
     // Initialize values from page.xsl content.
     functionPageBucketId = $("#functionPageBucketId");
