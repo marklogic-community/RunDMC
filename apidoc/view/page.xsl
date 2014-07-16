@@ -310,12 +310,11 @@
   <!--
       Decorate guide links with pdf link.
       TODO make sure links are rewritten properly for version.
-      TODO PDF links do not work?
   -->
   <xsl:template match="x:a[@class eq 'guide-link']">
     <xsl:copy-of select="."/>
     <xsl:text> | </xsl:text>
-    <xsl:copy-of select="v:pdf-anchor(., @href, false())"/>
+    <xsl:copy-of select="v:pdf-anchor(., @href, false(), false())"/>
   </xsl:template>
 
   <!--
@@ -335,7 +334,7 @@
       </a>
       <xsl:if test="self::apidoc:guide">
         <xsl:text> | </xsl:text>
-        <xsl:copy-of select="v:pdf-anchor($title, $href, false())"/>
+        <xsl:copy-of select="v:pdf-anchor($title, $href, false(), false())"/>
       </xsl:if>
       <div>
         <xsl:copy-of select="v:entry-description($VERSION-FINAL, .)"/>
@@ -351,7 +350,7 @@
     -->
     <xsl:copy-of select="v:pdf-anchor(
                          ., v:external-guide-uri($version-prefix, /),
-                         exists(parent::chapter))"/>
+                         exists(parent::chapter), true())"/>
     <!-- printer-friendly link on chapter pages -->
     <xsl:if test="parent::chapter">
       <xsl:apply-templates mode="print-friendly-link" select="."/>

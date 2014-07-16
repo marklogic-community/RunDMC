@@ -98,12 +98,14 @@ as element()
 declare function v:pdf-anchor(
   $title as xs:string,
   $href as xs:string,
-  $printer-friendly as xs:boolean?)
+  $printer-friendly as xs:boolean?,
+  $in-header as xs:boolean?)
 as element()
 {
   <a xmlns="http://www.w3.org/1999/xhtml">
   {
-    attribute class { 'guide-pdf-link' },
+    if (not($in-header)) then ()
+    else attribute class { 'guide-pdf-link' },
     attribute href { $href||".pdf" },
     element img {
       attribute src { "/images/i_pdf.png" },
