@@ -1607,9 +1607,13 @@ as element(toc:node)+
       $title-all-functions,
       (element toc:title { $title-all-functions },
         element toc:intro { $entry/apidoc:intro/node() },
+        let $m-seen := map:map()
         for $lib in ($mode-libs treat as element()+)
+        (: Skip duplicates per #246. This affects "sem:". :)
+        let $is-duplicate := map:contains($m-seen, $lib)
+        let $_ := if ($is-duplicate) then () else map:put($m-seen, $lib, 1)
         let $count := toc:function-count($version, $mode, $lib)
-        where $count
+        where $count and not($is-duplicate)
         order by $lib
         return toc:api-lib(
           $version, $mode, $m-mode-functions,
