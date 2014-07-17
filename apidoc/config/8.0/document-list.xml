@@ -111,6 +111,17 @@
     </entry>
   </group>
 
+  <group toc-title="Node.js API Reference">
+    <entry toc-title="jsdoc for Node.js Client API"
+           href="/jsdoc/index.html"
+           type="external">
+      API documentation for the MarkLogic Node.js Client API.
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="node-dev" duplicate="true"/>
+    </entry>
+  </group>
+
   <group>
     <entry title="ZIP File of All MarkLogic Product Documentation"
            href="/MarkLogic_8_pubs.zip"
@@ -149,13 +160,14 @@
 	about developing search-related applications in MarkLogic Server. 
 	Includes information about the Search API and the built-in search 
 	features of MarkLogic Server.</guide>
-      <guide url-name="app-builder" source-name="appbuilder">
-	Provides step-by-step information on using the Application Builder 
-	to build a search application, and also provides information on 
-	customizing applications built with the Application Builder.</guide>
-      <guide url-name="infostudio" source-name="info_studio">
-	Provides step-by step information on using the Information Studio 
-	to load content into MarkLogic Server.</guide>
+      <guide url-name="node-dev" source-name="node-dev">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Node.js
+        API. </guide>
+      <guide url-name="java" source-name="java-client">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Java
+        API. </guide>
       <guide url-name="xcc" source-name="xcc">Contains an overview of the 
 	what you can do with the XCC libraries, examples of how to use XCC, 
 	and an overview of the sample applications included with XCC.</guide>
@@ -163,10 +175,6 @@
 	Apache Hadoop MapReduce jobs that use MarkLogic Server as an input 
 	data source or an output destination. This book includes an overview 
 	of the sample applications.</guide>
-      <guide url-name="java" source-name="java-client">
-        Provides procedures, methodologies, and conceptual information
-        about developing MarkLogic Server applications using the Java
-        API. </guide>
       <guide url-name="rest-dev" source-name="rest-dev">
         Provides information on administration of and application
         development using the MarkLogic REST API.</guide>
@@ -178,6 +186,13 @@
         Provides information on developing applications using MarkLogic
         bi-temporal features.
       </guide>
+      <guide url-name="app-builder" source-name="appbuilder">
+	Provides step-by-step information on using the Application Builder 
+	to build a search application, and also provides information on 
+	customizing applications built with the Application Builder.</guide>
+      <guide url-name="infostudio" source-name="info_studio">
+	Provides step-by step information on using the Information Studio 
+	to load content into MarkLogic Server.</guide>
     </entry>
 
     <entry title="Administrator's Guides">
