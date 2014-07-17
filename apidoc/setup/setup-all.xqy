@@ -4,7 +4,8 @@ import module namespace u="http://marklogic.com/rundmc/util"
 import module namespace raw = "http://marklogic.com/rundmc/raw-docs-access"
        at "raw-docs-access.xqy";
 
-declare variable $versions := u:get-doc("/config/server-versions.xml")/*/*:version/@number/string(.);
+declare variable $versions := u:get-doc(
+  "/apidoc/config/server-versions.xml")/*/*:version/@number/string(.);
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>

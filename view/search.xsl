@@ -27,7 +27,8 @@
   -->
   <xsl:variable name="versions"
                 select="u:get-doc(
-                        '/config/server-versions.xml')/*:versions/*:version"/>
+                        '/apidoc/config/server-versions.xml')
+                        /*:versions/*:version"/>
 
   <xsl:variable name="set-version-param-name" select="'v'"/>
   <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>

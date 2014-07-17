@@ -27,7 +27,7 @@ declare variable $DEBUG := false() ;
 declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
-  "/config/server-versions.xml")/*/version/@number ;
+  "/apidoc/config/server-versions.xml")/*/version/@number ;
 
 (: TODO skip for standalone?
  : Right now that works by looking at server-name,

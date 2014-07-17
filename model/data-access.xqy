@@ -46,7 +46,8 @@ declare variable $Posts         := ml:docs((xs:QName("Post"), xs:QName("Announce
 (: Get a complete listing of all live documents on DMC (used by retroactive comment script) :)
 declare variable $live-dmc-documents := cts:search(collection(), ml:matches-dmc-page());
 
-declare variable $server-version-nodes          := u:get-doc("/config/server-versions.xml")/*/*:version;
+(: This creates a dependency on apidoc. :)
+declare variable $server-version-nodes          := u:get-doc("/apidoc/config/server-versions.xml")/*/*:version;
 declare variable $server-versions               := $server-version-nodes/@number;
 declare variable $default-version as xs:string  := $server-version-nodes[@default eq 'yes']/@number ;
 
