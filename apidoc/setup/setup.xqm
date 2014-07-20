@@ -24,10 +24,12 @@ declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $DEBUG := false() ;
 
-declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
-
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
   "/apidoc/config/server-versions.xml")/*/version/@number ;
+
+declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
+
+declare variable $REST-LIBS := ('manage', 'rest-client') ;
 
 (: TODO skip for standalone?
  : Right now that works by looking at server-name,
@@ -188,6 +190,19 @@ declare function stp:fix-guide-names(
       $num + 1))
 };
 
+declare function stp:function-children(
+  $function as element(apidoc:function))
+as element(apidoc:function)*
+{
+  let $lib as xs:string := $function/@lib
+  let $name as xs:string := $function/@name
+  let $verb as xs:string? := $function/@http-verb
+  return $function/../apidoc:function[
+    @name eq $name][
+    @lib eq $lib][
+    not($verb) or @http-verb eq $verb]
+};
+
 declare function stp:function-extract(
   $version as xs:string,
   $function as element(apidoc:function),
@@ -203,13 +218,7 @@ as element()*
   let $external-uri := api:external-uri($function, $mode)
   let $internal-uri := api:internal-uri($version, $external-uri)
   let $seen := map:contains($uris-seen, $internal-uri)
-  let $lib as xs:string := $function/@lib
-  let $name as xs:string := $function/@name
-  let $verb as xs:string? := $function/@http-verb
-  let $children := $function/../apidoc:function[
-    @name eq $name][@lib eq $lib][
-    if (not($verb)) then true()
-    else (@http-verb eq $verb)]
+  let $children := stp:function-children($function)
   let $_ := (
     if ($mode = ($api:MODE-JAVASCRIPT, $api:MODE-XPATH)
       or count($children) eq 1) then ()
@@ -985,7 +994,7 @@ as attribute()?
           (: REST URLs are written differently than function URLs :)
           (: path to resource page :)
           if ($relevant-function/@lib
-            = $api:REST-LIBS) then api:REST-fullname-to-external-uri(
+            = $REST-LIBS) then api:REST-fullname-to-external-uri(
             api:fixup-fullname($relevant-function, $api:MODE-REST))
           (: path to regular function page :)
           else '/'||api:fixup-fullname(
@@ -1015,23 +1024,11 @@ as attribute()?
 {
   if (not($a/parent::apidoc:function)) then $a
   else attribute lib {
-    (: Change the "spell" library to "spell-lib"
-     : to disambiguate from the built-in "spell" module.
-     :)
-    if ($a eq 'spell' and not($a/../@type eq 'builtin')) then 'spell-lib'
-    (: Similarly, change the "json" library to "json-lib"
-     : to disambiguate from the built-in "json" module.
-     :)
-    else if ($a eq 'json' and not($a/../@type eq 'builtin')) then 'json-lib'
-    (: Change the "rest" library to "rest-lib"
-     : because we reserve the "/REST/" prefix for the REST API docs.
-     : We do not want case to be the only difference.
-     :)
-    else if ($a eq 'rest') then 'rest-lib'
+    if ($a eq 'rest') then 'rest-lib'
     (: Change designated values to "REST",
      : so the TOC code treats it like a library with that name.
      :)
-    else if ($a = $api:REST-LIBS) then $api:MODE-REST
+    else if ($a = $REST-LIBS) then $api:MODE-REST
     else $a}
 };
 

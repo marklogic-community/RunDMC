@@ -44,13 +44,11 @@ declare private variable $REST-COMPLEXTYPE-MAPPINGS := () ;
  :)
 declare variable $REST-URI-QUESTIONMARK-SUBSTITUTE := "@";
 
-(: TODO is XXX a placeholder? :)
-declare variable $REST-LIBS := ('manage', 'XXX', 'rest-client') ;
-
 declare function api:version-dir($version as xs:string)
 as xs:string
 {
-  concat("/apidoc/", $version, "/")
+  if (matches($version, '^\d+\.\d+$')) then concat("/apidoc/", $version, "/")
+  else error((), 'APIDOC-BADVERSION', xdmp:describe($version))
 };
 
 (: TODO move to toc.xqm? :)
@@ -96,46 +94,6 @@ as xs:string
     c:version($version-specified), $version-specified)
 };
 
-declare function api:query-for-all-functions(
-  $version as xs:string)
-as cts:query
-{
-  cts:and-query(
-    (cts:directory-query(api:version-dir($version), "infinity"),
-      cts:element-query(xs:QName("api:function"), cts:and-query(()))))
-};
-
-declare function api:query-for-builtin-functions(
-  $version as xs:string)
-as cts:query
-{
-  cts:and-query(
-    (api:query-for-all-functions($version),
-      cts:element-attribute-value-query(
-        xs:QName("api:function"), xs:QName("type"), "builtin")))
-};
-
-declare function api:query-for-lib-functions(
-  $version as xs:string,
-  $lib as xs:string)
-as cts:query
-{
-  cts:and-query(
-    (api:query-for-all-functions($version),
-      cts:element-attribute-value-query(
-        xs:QName("api:function"), xs:QName("lib"), $lib)))
-};
-
-(: Every function that is not a built-in function is a library function :)
-declare function api:query-for-library-functions(
-  $version as xs:string)
-as cts:query
-{
-  cts:and-not-query(
-    api:query-for-all-functions($version),
-    api:query-for-builtin-functions($version))
-};
-
 declare function api:query-by-mode(
   $mode as xs:string)
 as cts:query
@@ -144,84 +102,156 @@ as cts:query
     xs:QName('api:function-page'), xs:QName('mode'), $mode)
 };
 
+declare function api:query-by-version(
+  $version as xs:string,
+  $extra as cts:query*)
+as cts:query
+{
+  cts:directory-query(api:version-dir($version), "infinity")
+  ! (if (empty($extra)) then .
+    else cts:and-query((., $extra)))
+};
+
+declare function api:query-for-functions(
+  $version as xs:string,
+  $extra as cts:query*)
+as cts:query
+{
+  api:query-by-version(
+    $version,
+    (cts:element-query(xs:QName("api:function"), cts:and-query(())),
+      $extra))
+};
+
+declare function api:query-for-functions(
+  $version as xs:string,
+  $mode as xs:string,
+  $extra as cts:query*)
+as cts:query
+{
+  api:query-for-functions(
+    $version,
+    (api:query-by-mode($mode),
+      $extra))
+};
+
+declare function api:query-for-functions(
+  $version as xs:string)
+as cts:query
+{
+  api:query-for-functions(
+    $version, ())
+};
+
+declare function api:query-for-builtin-functions(
+  $version as xs:string,
+  $mode as xs:string)
+as cts:query
+{
+  api:query-for-functions(
+    $version, $mode,
+    cts:element-attribute-value-query(
+      xs:QName("api:function"), xs:QName("type"), "builtin"))
+};
+
+declare function api:query-for-user-functions(
+  $version as xs:string,
+  $mode as xs:string)
+as cts:query
+{
+  api:query-for-functions(
+    $version, $mode,
+    cts:not-query(
+      cts:element-attribute-value-query(
+        xs:QName("api:function"), xs:QName("type"), "builtin")))
+};
+
+declare function api:query-for-lib-functions(
+  $version as xs:string,
+  $mode as xs:string,
+  $lib as xs:string)
+as cts:query
+{
+  api:query-for-functions(
+    $version, $mode,
+    cts:element-attribute-value-query(
+      xs:QName("api:function"), xs:QName("lib"), $lib))
+};
+
 (: Used to associate library containers under the "API" tab
  : with corresponding "Categories" tab TOC container.
  :)
 declare function api:get-bucket-for-lib(
   $version as xs:string,
+  $mode as xs:string,
   $lib as xs:string)
-as xs:string*
+as xs:string
 {
-  cts:search(collection(), api:query-for-lib-functions($version, $lib))[1]
+  cts:search(
+    collection(), api:query-for-lib-functions($version, $mode, $lib))[1]
   /api:function-page/api:function[1]/@bucket
 };
 
 (: TODO this seems convoluted and expensive. Really a group-by? :)
 declare function api:get-libs(
   $version as xs:string,
-  $query as cts:query,
-  $builtin as xs:boolean,
-  $mode as xs:string)
+  $mode as xs:string,
+  $extra as cts:query*,
+  $builtin as xs:boolean)
 as element(api:lib)*
 {
-  for $lib in cts:element-attribute-values(
+  if ($mode eq $MODE-JAVASCRIPT and number($version) lt 8) then ()
+  else
+  let $q := api:query-for-functions($version, $mode, $extra)
+  let $list := cts:element-attribute-values(
     xs:QName("api:function"), xs:QName("lib"),
-    (), "ascending", cts:and-query(
-      (api:query-for-all-functions($version),
-        $query)))
+    (), "ascending", $q)
+  for $lib in $list
   return element api:lib {
-    attribute category-bucket { api:get-bucket-for-lib($version, $lib) },
+    attribute mode { $mode },
     if (not($builtin)) then ()
     else attribute built-in { true() },
-    attribute mode { $mode },
+    attribute category-bucket {
+      api:get-bucket-for-lib($version, $mode, $lib) },
     $lib }
 };
 
-declare function api:builtin-libs-for-mode(
+declare function api:libs-all(
   $version as xs:string,
   $mode as xs:string)
 as element(api:lib)*
 {
-  if ($mode eq $MODE-JAVASCRIPT and number($version) lt 8) then ()
-  else api:get-libs(
-    $version, api:query-by-mode($mode), true(), $mode)
+  (: TODO Does it cause any problems to set builtin when we want both? :)
+  api:get-libs($version, $mode, (), true())
 };
 
-declare function api:libs-for-mode(
-  $version as xs:string,
-  $mode as xs:string)
-as element(api:lib)*
-{
-  if ($mode eq $MODE-JAVASCRIPT and number($version) lt 8) then ()
-  else api:get-libs(
-    $version, api:query-by-mode($mode), false(), $mode)
-};
-
-declare function api:builtin-libs(
+declare function api:libs-user(
   $version as xs:string,
   $mode as xs:string)
 as element(api:lib)*
 {
   api:get-libs(
-    $version, api:query-for-builtin-functions($version), true(), $mode)
+    $version, $mode,
+    api:query-for-user-functions($version, $mode), false())
 };
 
-declare function api:library-libs(
+declare function api:libs-builtin(
   $version as xs:string,
   $mode as xs:string)
 as element(api:lib)*
 {
   api:get-libs(
-    $version, api:query-for-library-functions($version), false(), $mode)
+    $version, $mode,
+    api:query-for-builtin-functions($version, $mode), true())
 };
 
-declare function api:functions(
+declare function api:functions-all(
   $version as xs:string)
 as document-node()+
 {
   cts:search(
     collection(),
-    api:query-for-all-functions($version),
+    api:query-for-functions($version),
     "unfiltered")
 };
 

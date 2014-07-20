@@ -83,7 +83,7 @@ as map:map
           map:entry($MAP-KEY-LIB, map:map()))))
     return ())
   let $_ := (
-    for $f in api:functions($version)
+    for $f in api:functions-all($version)
     let $fp := $f/api:function-page
     let $f1 := $fp/api:function[1]
     let $mode as xs:string := $fp/@mode
@@ -1066,7 +1066,7 @@ declare function toc:function-name-nodes(
   $functions as element(api:function)*)
 as element(api:function-name)*
 {
-  (: NOTE: These elements are intentionally siblings (not parentless),
+  (: NOTE: These elements are intentionally siblings, not parentless,
    : so the TOC construction code has the option of
    : inspecting their siblings.
    :)
@@ -1091,12 +1091,15 @@ as element(api:function-name)*
           'mode', $mode, 'fullname', $fullname)),
       $mode,
       $fullname } }
-  (: Why exclude some prefixes?
-   : Because there is a hack that has a blank function in the
-   : xquery module bucket for some prefixes: semantics, now also temporal.
+  (:
+   : There is a hack that puts a blank function in the
+   : xquery module bucket for some prefixes.
    : This is because these libraries include both built-in and library functions.
+   : This affects semantics and temporal.
+   :
+   : These are easily detected by looking for names that end with a colon.
    :)
-  return $wrapper/api:function-name[not(. = ('sem:', 'temporal:'))]
+  return $wrapper/api:function-name[not(ends-with(., ':'))]
 };
 
 declare function toc:function-node(
@@ -1514,11 +1517,8 @@ declare function toc:libs-for-mode(
 as element(api:lib)*
 {
   switch($mode)
-  case $api:MODE-JAVASCRIPT return api:builtin-libs($version, $mode)
-  case $api:MODE-XPATH return (
-    (: TODO need to dedup when built-in and lib share prefix? :)
-    api:builtin-libs($version, $mode),
-    api:library-libs($version, $mode))
+  case $api:MODE-JAVASCRIPT return api:libs-builtin($version, $mode)
+  case $api:MODE-XPATH return api:libs-all($version, $mode)
   case $api:MODE-REST return ()
   default return stp:error('UNEXPECTED', $mode)
 };
