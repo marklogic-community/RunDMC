@@ -514,7 +514,11 @@
                 match="api:function[@lib eq $api:MODE-REST]"/>
 
   <xsl:template mode="function-signature" match="api:function">
-    <!-- Workaround for "not a bug" #13495 (automatic setting of xml:space="preserve" on <pre> thanks to application of the XHTML schema to the stylesheet) -->
+    <!--
+        Workaround for "not a bug" #13495
+        (automatic setting of xml:space="preserve" on <pre>
+        thanks to application of the XHTML schema to the stylesheet)
+    -->
     <xsl:element name="pre">
       <xsl:value-of select="@fullname"/>
       <xsl:text>(</xsl:text>
@@ -523,7 +527,9 @@
       </xsl:if>
       <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
       <xsl:text>) as </xsl:text>
-      <xsl:value-of select="api:type(@mode, api:return)"/>
+      <xsl:if test="api:return">
+        <xsl:value-of select="api:type(@mode, api:return)"/>
+      </xsl:if>
     </xsl:element>
   </xsl:template>
 
@@ -597,7 +603,8 @@
     </table>
   </xsl:template>
 
-  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq $api:MODE-REST]/api:headers">
+  <xsl:template mode="parameters-table-heading"
+                match="api:function[@lib eq $api:MODE-REST]/api:headers">
     <xsl:param name="response-headers" tunnel="yes"/>
     <xsl:choose>
       <xsl:when test="$response-headers">Response</xsl:when>
@@ -605,8 +612,10 @@
     </xsl:choose>
     <xsl:text> Headers</xsl:text>
   </xsl:template>
-  <xsl:template mode="parameters-table-heading" match="api:function[@lib eq $api:MODE-REST]/api:params">URL Parameters</xsl:template>
-  <xsl:template mode="parameters-table-heading" match="                             api:params">Parameters</xsl:template>
+  <xsl:template mode="parameters-table-heading"
+                match="api:function[@lib eq $api:MODE-REST]/api:params">URL Parameters</xsl:template>
+  <xsl:template mode="parameters-table-heading"
+                match=" api:params">Parameters</xsl:template>
 
   <xsl:template match="api:param | api:header">
     <tr>

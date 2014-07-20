@@ -710,26 +710,26 @@ as xs:string?
 };
 
 declare function api:type-javascript(
-  $return as xs:string)
+  $expr as xs:string)
 as xs:string
 {
   concat(
     api:javascript-type(
-      replace($return, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
+      replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
     api:javascript-quantifier(
-      replace($return, '(.+[^\?\*\+])([\?\*\+])?', '$2')))
+      replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$2')))
 };
 
 (: Translate XDM types to JavaScript types. :)
 declare function api:type(
   $mode as xs:string,
-  $return as xs:string)
+  $expr as xs:string)
 as xs:string
 {
   switch($mode)
   case $MODE-JAVASCRIPT return api:type-javascript(
-    normalize-space($return))
-  default return normalize-space($return)
+    normalize-space($expr))
+  default return normalize-space($expr)
 };
 
 (: apidoc/model/data-access.xqy :)
