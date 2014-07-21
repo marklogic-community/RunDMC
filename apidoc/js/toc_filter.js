@@ -74,6 +74,13 @@ function toc_init() {
         $(".apidoc_tree:visible").hide()
         // Show the corresponding TOC tree.
         var n = tocSelect.children("option").filter(":selected");
+        if (n.length == 0) console.log("tocSelect nothing selected!", n);
+        if (n.length != 1) {
+            console.log("tocSelect multiple selected!", n);
+            // Continue with the first one.
+            n = n.first();
+        }
+
         var id = n.val();
         console.log("TOC select option changed to", n.val());
         var tree = $('#' + id);
@@ -300,9 +307,9 @@ function updateTocForUrlFragment(pathname, hash) {
 
 // Expands and loads (if necessary) the part of the TOC containing the given link
 // Also highlights the given link
-// Called whenever a tab changes or a fragment link is clicked
+// Called whenever TOC selection changes.
 function showInTOC(a) {
-    console.log("showInTOC", a.length, a.parent().length);
+    console.log("showInTOC", 'link', a.length, 'parent', a.parent().length);
     $("#api_sub a.selected").removeClass("selected");
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
@@ -315,9 +322,9 @@ function showInTOC(a) {
     // If there is a different TOC section visible, hide it.
     var treeVisible = $(".apidoc_tree:visible");
     var treeForA = a.parents(".apidoc_tree");
-    // console.log("showInTOC",
-    //             "visible", treeVisible.attr('id'),
-    //             "a", treeForA.attr('id'));
+    console.log("showInTOC",
+                "visible", treeVisible.attr('id'),
+                "a", treeForA.attr('id'));
     if (treeForA.length === 1
         && treeForA.attr('id') != treeVisible.attr('id')) {
         treeVisible.hide();
@@ -383,7 +390,7 @@ function updateBreadcrumb(n)
     breadcrumbNode.text(' > ' + breadcrumbText);
 }
 
-// Called at init and whenever a tab changes.
+// Called at init and whenever TOC selection changes.
 function updateTocForSelection() {
     console.log("updateTocForSelection",
                 "functionPageBucketId", functionPageBucketId,
@@ -396,11 +403,18 @@ function updateTocForSelection() {
 
     var tocSectionLink = $(tocSectionLinkSelector);
     var tocSection = tocSectionLink.parent();
-    if (!tocSection.length) {
+    if (0 == tocSection.length) {
         console.log("updateTocForSelection",
                     functionPageBucketId, tocSectionLinkSelector,
                     "nothing selected!");
         return;
+    }
+    if (1 != tocSection.length) {
+        console.log("updateTocForSelection",
+                    functionPageBucketId, tocSectionLinkSelector,
+                    "multiple selected!", tocSection);
+        // Continue with the first one.
+        tocSection = tocSection.first();
     }
 
     updateBreadcrumb(tocSection);
