@@ -2,6 +2,7 @@
   <include>books</include>
   <include>dotnet</include>
   <include>javadoc</include>
+  <include>nodeclient/jsdoc</include>
   <include>hadoop</include>
   <include>javaclient</include>
   <include>c++</include>

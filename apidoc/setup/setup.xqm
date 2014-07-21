@@ -148,22 +148,25 @@ as xs:string?
   return concat("/guide/", $url-name, ".pdf")
 };
 
+(: TODO Make this behavior configurable via document-list. :)
 declare function stp:static-uri-rewrite(
   $document-list as element(apidoc:docs),
   $uri as xs:string)
 as xs:string
 {
-  if (starts-with($uri, "/javaclient")) then replace(
-    $uri, "/javaclient/javadoc/", "/javadoc/client/")
+  if (starts-with($uri, "/c++/")) then replace(
+    $uri, "/c\+\+/", "/cpp/udf/")
+  else if (starts-with($uri, "/dotnet/")) then replace(
+    $uri, "/dotnet/",  "/dotnet/xcc/")
   else if (starts-with($uri, "/hadoop/")) then replace(
     $uri, "/hadoop/javadoc/", "/javadoc/hadoop/")
+  else if (starts-with($uri, "/javaclient")) then replace(
+    $uri, "/javaclient/javadoc/", "/javadoc/client/")
   (: Move "/javadoc" to the beginning of the URI :)
   else if (starts-with($uri, "/javadoc/")) then replace(
     $uri, "/javadoc/", "/javadoc/xcc/")
-  else if (starts-with($uri, "/dotnet/")) then replace(
-    $uri, "/dotnet/",  "/dotnet/xcc/")
-  else if (starts-with($uri, "/c++/")) then replace(
-    $uri, "/c\+\+/", "/cpp/udf/")
+  else if (starts-with($uri, "/nodeclient/jsdoc/")) then replace(
+    $uri, "/nodeclient/jsdoc/", "/jsdoc/")
 
   (: ASSUMPTION: the java docs don't include any PDFs :)
   else if (ends-with($uri, ".pdf")) then stp:pdf-uri($document-list, $uri)
@@ -456,7 +459,7 @@ as empty-sequence()
     not(starts-with(., 'text/'))
     and not(. = ('application/javascript')))
   let $is-html := ends-with($e, '.html')
-  let $is-jdoc := $is-html and contains($e, '/javadoc/')
+  let $is-jdoc := $is-html and matches($e, '/(javadoc|jsdoc)/')
   let $uri := concat(
     "/apidoc/", $version,
     stp:static-uri-rewrite(
@@ -514,7 +517,7 @@ as empty-sequence()
 {
   if (not($stp:DEBUG)) then () else stp:debug(
     "stp:zip-static-docs-insert",
-    ($version, $zip-path, xdmp:describe($subdirs-to-load))),
+    ($version, $zip-path, xdmp:describe($subdirs-to-load, 32))),
 
   (: Load the document-list XML manifest if present.
    : Older zips may not include it.

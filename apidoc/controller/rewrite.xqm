@@ -293,8 +293,8 @@ declare function m:rewrite()
     concat(
       substring($PATH, 1, string-length($PATH) - 1),
       if ($QUERY-STRING) then concat('&amp;', $QUERY-STRING) else ()))
-  (: Redirect naked /guide and /javadoc to / :)
-  else if ($PATH-TAIL = ("guide", "javadoc")) then m:redirect(
+  (: Redirect some naked top-level paths to / :)
+  else if ($PATH-TAIL = ("guide", "javadoc", 'jsdoc')) then m:redirect(
     $PATH-PREFIX)
   (: Redirect /dotnet to /dotnet/xcc :)
   else if ($PATH-TAIL eq "dotnet") then m:redirect(
@@ -343,7 +343,7 @@ declare function m:rewrite()
 
   (: Respond with DB contents for PDF and HTML docs :)
   else if (ends-with($PATH, '.pdf')
-    or matches($PATH, '/(cpp|dotnet|javadoc)/')) then (
+    or matches($PATH, '/(cpp|dotnet|javadoc|jsdoc)/')) then (
     let $file-uri := concat('/apidoc', $PATH-WITH-VERSION)
     return m:get-db-file($file-uri))
 
