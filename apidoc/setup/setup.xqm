@@ -779,40 +779,117 @@ as element(api:help-page)
   }
 };
 
-declare function stp:list-page-root-group(
+declare function stp:list-page-root-guides(
+  $toc as element(toc:root),
+  $title-aliases as element(aliases),
   $group as element(apidoc:group))
 as node()*
 {
-  if (not($group/apidoc:entry/@type
-      = ('function-reference', 'download'))) then ()
-  else
+  let $document-list-guide-entries as node()+ := $group/apidoc:entry
+  for $section at $x in (
+    $toc/toc:node[@id eq 'guides']/toc:node treat as node()+)
+  let $document-list-guides as node()+ := (
+    $document-list-guide-entries[$x]/apidoc:guide[
+      not(@excluded/xs:boolean(.))])
+  return element div {
+    attribute class { 'doclist-guide-section' },
+    element h3 {
+      attribute class { 'docs-page' },
+      $section/@display/string() },
+    element ul {
+      attribute class { 'doclist' },
+      for $guide at $y in (
+        $section/toc:node[@type eq 'guide'] treat as node()+)
+      let $document-list-guide := $document-list-guides[$y]
+      let $display as xs:string := lower-case(
+        normalize-space($guide/@display))
+      (: Facilitate automatic link creation at render time. :)
+      let $alias as xs:string? := $title-aliases/guide/alias[
+        normalize-space(lower-case(.)) = $display]
+      let $body as node()+ := $document-list-guide/node()
+      let $_ := if (not($DEBUG)) then () else stp:fine(
+        'stp:list-page-root',
+        (xdmp:describe($guide), $display, $alias))
+      return element li {
+        (: At display time page.xsl will rewrite these links a bit. :)
+        element a {
+          attribute class { 'guide-link' },
+          $guide/@href,
+          if ($alias) then $alias
+          else $guide/@display/string() },
+        (: Pull guide description text from document-list.
+         : Today this is flat text, but someday it might have structure.
+         :)
+        element div { $body } } } }
+};
+
+declare function stp:list-page-root-entry-title(
+  $entry as element(apidoc:entry))
+as node()*
+{
+  if ($entry/@href) then element a {
+    $entry/@href,
+    $entry/@title/string() }
+  else $entry/@title[.]/element {
+    if ($entry/.. instance of element(apidoc:group)) then 'h3'
+    else 'div' } {
+    string() }
+};
+
+declare function stp:list-page-root-entry(
+  $entry as element(apidoc:entry))
+as node()*
+{
+  <li xmlns="http://www.w3.org/1999/xhtml">
+  {
+    if ($entry/apidoc:entry) then (
+      stp:list-page-root-entry-title($entry),
+      element ul {
+        attribute class { "doclist" },
+        stp:list-page-root-entry($entry/apidoc:entry) })
+    else (
+      stp:list-page-root-entry-title($entry),
+      if ($entry/apidoc:description) then element div {
+        attribute class { "entry-description", $entry/@class },
+        $entry/@* except $entry/@class,
+        $entry/node() }
+      else $entry[normalize-space(.)]/element div {
+        $entry/string() })
+  }
+  </li>
+};
+
+declare function stp:list-page-root-group(
+  $toc as element(toc:root),
+  $title-aliases as element(aliases),
+  $group as element(apidoc:group))
+as node()*
+{
+  if (not($DEBUG)) then () else stp:debug(
+    'stp:list-page-root-group',
+    (xdmp:describe($toc),
+      xdmp:describe($title-aliases),
+      xdmp:describe($group),
+      'id', xdmp:describe($group/@id/string()))),
+  switch($group/@id)
+  case 'guides' return stp:list-page-root-guides(
+    $toc, $title-aliases, $group)
+  default return
   <div xmlns="http://www.w3.org/1999/xhtml" class="doclist">
   {
-    $group/@title[.]/element h2 { . },
+    $group/@title/element h3 { . },
 
     element ul {
       attribute class { "doclist" },
-      for $entry in $group/apidoc:entry[
-        @type = ('function-reference', 'download')
-        or apidoc:guide[not(@duplicate/xs:boolean(.))]]
-      return element li {
-        if ($entry/@href) then element a {
-          $entry/@href,
-          $entry/@title/string() }
-        else $entry/@title[.]/element h3 {
-          attribute class { 'docs-page' },
-          string() }
-        ,
-        $entry/apidoc:description/element div {
-          attribute class { "entry-description" },
-          @*,
-          node() } } }
+      stp:list-page-root-entry(
+        $group/apidoc:entry[
+          apidoc:entry
+          or not(apidoc:guide/@duplicate/xs:boolean(.)) ]) }
   }
   </div>
 };
 
 (: Set up the root docs page for this version.
- : TODO refactor.
  :)
 declare function stp:list-page-root(
   $version as xs:string,
@@ -832,55 +909,16 @@ as element()+
     (: Pre-rendered html section. :)
     <div xmlns="http://www.w3.org/1999/xhtml" class="doclist">
     {
-      stp:list-page-root-group($document-list/apidoc:group),
-
-      (: Guides :)
-      let $document-list-guide-entries as node()+ := (
-        $document-list/apidoc:group[@id eq 'guides']/apidoc:entry)
-      for $section at $x in (
-        $toc/toc:node[@id eq 'guides']/toc:node treat as node()+)
-      let $document-list-guides as node()+ := (
-        $document-list-guide-entries[$x]/apidoc:guide[
-          not(@excluded/xs:boolean(.))])
-      return element div {
-        attribute class { 'doclist-guide-section' },
-        element h3 {
-          attribute class { 'docs-page' },
-          $section/@display/string() },
-        element ul {
-          attribute class { 'doclist' },
-          for $guide at $y in (
-            $section/toc:node[@type eq 'guide'] treat as node()+)
-          let $document-list-guide := $document-list-guides[$y]
-          let $display as xs:string := lower-case(
-            normalize-space($guide/@display))
-          (: Facilitate automatic link creation at render time.
-           : TODO why alias[../alias/...] ?
-           :)
-          let $alias as xs:string? := $title-aliases/guide/alias[
-            ../alias/normalize-space(lower-case(.)) = $display]
-          let $body as node()+ := $document-list-guide/node()
-          let $_ := if (not($DEBUG)) then () else stp:fine(
-            'stp:list-page-root',
-            (xdmp:describe($guide), $display, $alias))
-          return element li {
-            (: At display time page.xsl will rewrite these links a bit. :)
-            element a {
-              attribute class { 'guide-link' },
-              $guide/@href,
-              if ($alias) then $alias
-              else $guide/@display/string() },
-            (: Pull guide description text from document-list.
-             : Today this is flat text, but someday it might have structure.
-             :)
-            element div { $body } } } }
+      stp:list-page-root-group(
+        $toc, $title-aliases,
+        $document-list/apidoc:group)
     }
     </div>
     ,
 
     comment { 'copied from /apidoc/config/title-aliases.xml:' },
     (: TODO The auto-link elements are in the empty namespace. Change that? :)
-    $stp:title-aliases/auto-link }
+    $title-aliases/auto-link }
 };
 
 (: Generate and insert a list page for each TOC container.
