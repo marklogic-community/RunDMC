@@ -36,9 +36,6 @@ $(function() {
         if (target.parents("#api_sub").length) {
             console.log("Calling showInTOC via pjax:end handler.", target[0]);
             showInTOC(target); }});
-});
-
-function toc_init() {
 
     breadcrumbNode = $("#breadcrumbText");
     if (!breadcrumbNode.length) console.log("No breadcrumb!");
@@ -55,7 +52,12 @@ function toc_init() {
     tocSectionLinkSelector = $("#tocSectionLinkSelector");
     if (!tocSectionLinkSelector.length) console.log("No tocSectionLinkSelector!");
     tocSectionLinkSelector = tocSectionLinkSelector.val();
+});
 
+function toc_init() {
+    console.log("toc_init");
+
+    // This widget comes with the toc root via ajax, so init it here.
     var treeGlobal = $('#treeglobal');
     if (!treeGlobal.length) console.log("No treeglobal!");
     treeGlobal.show();
@@ -77,14 +79,16 @@ function toc_init() {
 
     // Set up tree view select widget.
     var tocPartsDir = $("#tocPartsDir").text();
-    var tocTrees = $(".treeview");
-    if (!tocTrees) console.log("No tocTrees!");
     tocSelect = $("#toc_select");
     if (!tocSelect) console.log("No tocSelect!");
 
-    tocTrees.treeview({
-        prerendered: true,
-        url: tocPartsDir });
+    var tocTrees = $(".treeview");
+    if (!tocTrees) console.log("No tocTrees!");
+    // Be careful to init each tree individually, and only once!
+    tocTrees.each(function(index, n) {
+        $(n).treeview({
+            prerendered: true,
+            url: tocPartsDir }); });
 
     // Set up the select widget
     tocSelect.change(function(e) {
@@ -136,25 +140,21 @@ function toc_init() {
     // default text, style, etc.
     formatFilterBoxes($(".config-filter"));
 
-    // delay this work until the DOM is ready
-    $(document).ready(function(){
+    $('#splitter')
+        .attr({'unselectable': 'on'})
+        .css({
+            "z-index": 100,
+            cursor: "e-resize",
+            position: "absolute",
+            "user-select": "none",
+            "-webkit-user-select": "none",
+            "-khtml-user-select": "none",
+            "-moz-user-select": "none"
+        })
+        .mousedown(splitterMouseDown);
 
-        $('#splitter')
-            .attr({'unselectable': 'on'})
-            .css({
-                "z-index": 100,
-                cursor: "e-resize",
-                position: "absolute",
-                "user-select": "none",
-                "-webkit-user-select": "none",
-                "-khtml-user-select": "none",
-                "-moz-user-select": "none"
-            })
-            .mousedown(splitterMouseDown);
-
-        // If this was a deep link, load and scroll.
-        updateTocForSelection();
-    });
+    // If this was a deep link, load and scroll.
+    updateTocForSelection();
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
