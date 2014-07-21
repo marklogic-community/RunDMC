@@ -219,7 +219,7 @@ ol ol {
     left: 8px;
     font-size: 11px;
     padding: 1px 5px;
-    width: 205px;
+    width: 144px;
 }
 .config-filter-close-button {
     display: none;
@@ -234,6 +234,7 @@ ol ol {
 }
 
 .currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {color: #F86D07;}
+
 .treecontrol.top_control {
     cursor: pointer;
     position: fixed;
@@ -244,14 +245,15 @@ ol ol {
     margin-left: -10px;
 }
 .treecontrol.top_control.global_control {
-    margin-top: -25.5px;
-    margin-left: 8.5px;
+    margin-top: -24px;
+    margin-left: 164px;
 }
 .treecontrol.top_control > span {
     display: inline-block;
     color: white;
     padding: 3px 8px;
     margin-bottom: 8px;
+    margin-left: 8px;
     border: 1px solid #003959;
     font-weight: bold;
     text-decoration: none !important;
@@ -271,9 +273,14 @@ ol ol {
     -webkit-border-radius: 3px;
     border-radius: 3px;
 }
-.treecontrol.top_control > span img, .treecontrol.top_control > span span {
+
+.treecontrol.top_control > span img {
     vertical-align: baseline;
     background: white;
+}
+.treecontrol.top_control > span span {
+    vertical-align: baseline;
+    padding-left: 2px;
 }
 
 /* override treeview CSS */

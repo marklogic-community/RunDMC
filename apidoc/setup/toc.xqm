@@ -742,6 +742,12 @@ as element()
       <input id="config-filter" name="config-filter" class="config-filter"/>
       <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
   class="config-filter-close-button"/>
+      <div id="treeglobal" class="treecontrol top_control global_control">
+        <span class="expand" title="Expand the entire tree below">
+          <img id="treeglobalimage" src="/css/apidoc/images/plus.gif"></img>
+          <span id="treeglobaltext">expand</span>
+        </span>
+      </div>
       <div id="apidoc_tree_container" class="pjax_enabled">
   {
     (: To preserve node order, use SMO rather than XPath. :)

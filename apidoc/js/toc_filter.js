@@ -56,6 +56,25 @@ function toc_init() {
     if (!tocSectionLinkSelector.length) console.log("No tocSectionLinkSelector!");
     tocSectionLinkSelector = tocSectionLinkSelector.val();
 
+    var treeGlobal = $('#treeglobal');
+    if (!treeGlobal.length) console.log("No treeglobal!");
+    treeGlobal.show();
+    treeGlobal.click(function(e) {
+        var n = treeGlobal.children("span");
+        var img = n.children("img");
+        var label = n.children("span");
+        var isExpand = label.text().trim() === "expand";
+        // expand or collaps all
+        var tree = $(".apidoc_tree:visible");
+        if (isExpand) {
+            label.text("collapse");
+            expandAll(tree);
+        } else {
+            label.text("expand");
+            collapseAll(tree);
+        }
+    });
+
     // Set up tree view select widget.
     var tocPartsDir = $("#tocPartsDir").text();
     var tocTrees = $(".treeview");
@@ -149,6 +168,48 @@ function expandSubTree(li) {
       li.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsible-hitarea");
     li.children("ul").css("display","block");
   }
+}
+
+function collapseSubTree(li) {
+  if (li.children().is("ul")) {
+    li.removeClass("collapsable").addClass("expandable");//.addClass("open");
+    if (li.is(".lastCollapsable"))
+      li.removeClass("lastCollapsable").addClass("lastExpandable");
+    li.children("div").removeClass("collapsable-hitarea").addClass("expandable-hitarea");
+    if (li.is(".lastCollapsable-hitarea"))
+      li.children("div").removeClass("lastCollapsable-hitarea").addClass("lastExpandable-hitarea");
+    li.children("ul").css("display","none");
+  }
+}
+
+/* These functions implement the expand/collapse buttons */
+function shallowExpandAll(ul) {
+  ul.children("li").each(function(index) {
+    loadTocSection(index, this);
+    expandSubTree($(this));
+  });
+}
+
+function shallowCollapseAll(ul) {
+  ul.children("li").each(function(index) {
+    collapseSubTree($(this));
+  });
+}
+
+function expandAll(ul) {
+  shallowExpandAll(ul);
+  if (ul.children("li").children().is("ul"))
+    ul.children("li").children("ul").each(function() {
+      expandAll($(this));
+    });
+}
+
+function collapseAll(ul) {
+  shallowCollapseAll(ul);
+  if (ul.children("li").children().is("ul"))
+    ul.children("li").children("ul").each(function() {
+      collapseAll($(this));
+    });
 }
 
 function filterConfigDetails(text, treeSelector) {
