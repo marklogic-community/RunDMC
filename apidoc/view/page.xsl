@@ -789,15 +789,20 @@
   </xsl:template>
 
 
-  <!-- Only show the next/prev links on chapter pages (and just "Next" on the guide page) -->
+  <!--
+      Only show the next/prev links on chapter pages,
+      and just "Next" on the guide page.
+  -->
   <xsl:template mode="chapter-next-prev
                       guide-next" match="@*"/>
   <xsl:template mode="guide-next" match="guide/@next">
     <xsl:call-template name="guide-next"/>
   </xsl:template>
-  <xsl:template mode="chapter-next-prev" match="chapter/@next | chapter/@previous" name="guide-next">
+  <xsl:template mode="chapter-next-prev" name="guide-next"
+                match="chapter/@next | chapter/@previous">
     <div class="{local-name(.)}Chapter">
-      <a href="{api:external-uri-with-prefix($version-prefix, .)}">
+      <a href="{api:external-uri-with-prefix($version-prefix, .)}"
+         accesskey="{if (local-name(.) eq 'previous') then 'p' else 'n'}">
         <xsl:apply-templates mode="next-or-prev" select="."/>
       </a>
     </div>
