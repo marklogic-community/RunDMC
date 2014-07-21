@@ -180,14 +180,17 @@
 
   <xsl:template match="ml:breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select="."/>
-    <!-- Server version widget. -->
-    <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
   <!-- Placeholder for toc_filter.js init code. -->
   <xsl:template mode="breadcrumb-display"
                 match="ml:breadcrumbs">
     <span id="breadcrumbText"> > Documentation</span>
+  </xsl:template>
+
+  <xsl:template match="ml:versions">
+    <!-- Server version widget. -->
+    <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
   <xsl:template match="ml:api-toc">

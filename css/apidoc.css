@@ -36,15 +36,21 @@ ol ol {
    */
 
 #header nav .current:after {border-color: #1479B2 transparent;}
-#container > footer {padding-bottom: 0;}
+
+#header-below-bottom-bar {
+    background: white;
+}
+
 #content {
     padding-bottom: 0;
     position: absolute;
-    top: 91px;
+    top: 112px;
     bottom: 0;
     width: 1100px;
     background: white;
 }
+
+#container > footer {padding-bottom: 0;}
 
 #copyright {
     clear: both;
@@ -60,12 +66,9 @@ ol ol {
     box-shadow: none;
 }
 #breadcrumb {
-    padding-bottom: 10px;
-    float: left;
-    padding-left: 15px;
+    padding-left: 16px;
 }
 #breadcrumb > div {
-    width: auto;
     margin-left: 0 !important;
     position: static !important;
 }
@@ -150,8 +153,8 @@ ol ol {
     color: #333333;
     font-size: 0.9em;
     position: absolute;
-    left: 15px;
-    top: 70px;
+    left: 16px;
+    top: 48px;
     bottom: 0;
 }
 
@@ -167,8 +170,7 @@ ol ol {
     position: absolute;
     top: 1em;
     bottom: 0;
-    overflow: hidden;
-    width: 258px;
+    width: 256px;
     background: white;
     border: 1px solid #CCC;
     padding-top: 5em;
@@ -515,3 +517,14 @@ input.function_view {
     width: 10px;
     height: 10px;
 }
+
+#widgets {
+    width: 265px;
+}
+
+.version {
+    position: relative;
+    font-weight: bold;
+}
+
+/* apidoc.css */
