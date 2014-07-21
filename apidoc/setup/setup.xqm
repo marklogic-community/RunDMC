@@ -305,30 +305,18 @@ as empty-sequence()
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
 };
 
-(: Load a static file from a zip binary node.
- : TODO refactor this function.
- :)
-declare function stp:zip-static-file-get(
+declare function stp:zip-jdoc-get(
   $zip as binary(),
-  $path as xs:string,
-  $is-binary as xs:boolean,
-  $is-html as xs:boolean,
-  $is-jdoc as xs:boolean,
-  $is-mangled-html as xs:boolean)
+  $path as xs:string)
 as document-node()
 {
-  if (not($DEBUG)) then () else stp:fine(
-    "stp:zip-static-file-get",
-    (xdmp:describe($zip), 'path', $path,
-      'html', $is-html, 'jdoc', $is-jdoc,
-      'mangled', $is-mangled-html)),
-  if ($is-binary) then xdmp:zip-get($zip, $path)
-  (: If the document is JavaDoc HTML, then read it as text;
-   : if it's other HTML, repair it as XML (.NET docs)
-   : Don't tidy index.html because tidy throws away the frameset.
+  (: Don't tidy index.html, because tidy
+   : throws away the frameset with javadoc
+   : and closes the script tags with jsdoc.
    :)
-  (: TODO should this be ends-with rather than contains? :)
-  else if ($is-jdoc and not(contains($path, '/index.html'))) then xdmp:tidy(
+  if (ends-with($path, '/index.html')) then xdmp:zip-get($zip, $path)
+  (: Read it as text and tidy, because the HTML may be broken. :)
+  else xdmp:tidy(
     xdmp:zip-get(
       $zip,
       $path,
@@ -345,10 +333,16 @@ as document-node()
       <output-html>yes</output-html>
     </options>
     )[2]
+};
 
-  else if ($is-mangled-html) then try {
+declare function stp:zip-mangled-html-get(
+  $zip as binary(),
+  $path as xs:string)
+as document-node()
+{
+  try {
     if (not($DEBUG)) then () else  stp:fine(
-      'stp:zip-static-file-get', ('trying unquote for', $path)),
+      'stp:zip-mangled-html-get', ('trying unquote for', $path)),
     let $unparsed as xs:string := xdmp:zip-get(
       $zip,
       $path,
@@ -358,16 +352,23 @@ as document-node()
     return xdmp:unquote($replaced, "", "repair-full") }
   catch($e) {
     stp:info(
-      'stp:zip-static-file-get',
+      'stp:zip-mangled-html-get',
       ("loading", $path, "with encoding=auto because", $e/error:message)),
     xdmp:zip-get(
       $zip,
       $path,
       <options xmlns="xdmp:zip-get"
       ><encoding>auto</encoding></options>) }
-  else if ($is-html) then try {
+};
+
+declare function stp:zip-html-get(
+  $zip as binary(),
+  $path as xs:string)
+as document-node()
+{
+  try {
     if (not($DEBUG)) then () else stp:fine(
-      'stp:zip-static-file-get',
+      'stp:zip-html-get',
       ("trying html as XML UTF8")),
     xdmp:zip-get(
       $zip,
@@ -389,10 +390,32 @@ as document-node()
         <encoding>ISO-8859-1</encoding>
       </options>
       ) }
+};
+
+(: Load a static file from a zip binary node. :)
+declare function stp:zip-static-file-get(
+  $zip as binary(),
+  $path as xs:string,
+  $is-binary as xs:boolean,
+  $is-html as xs:boolean,
+  $is-jdoc as xs:boolean,
+  $is-mangled-html as xs:boolean)
+as document-node()
+{
+  if (not($DEBUG)) then () else stp:fine(
+    "stp:zip-static-file-get",
+    (xdmp:describe($zip), 'path', $path,
+      'html', $is-html, 'jdoc', $is-jdoc,
+      'mangled', $is-mangled-html)),
+  (: Load binary without any options, to preserve integrity. :)
+  if ($is-binary) then xdmp:zip-get($zip, $path)
+  else if ($is-jdoc) then stp:zip-jdoc-get($zip, $path)
+  (: Repair other HTML as XML, including .NET docs. :)
+  else if ($is-mangled-html) then stp:zip-mangled-html-get($zip, $path)
+  else if ($is-html) then stp:zip-html-get($zip, $path)
   (: Otherwise, just load the document with encoding=auto. :)
   else xdmp:zip-get(
-    $zip,
-    $path,
+    $zip, $path,
     <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
 };
 
