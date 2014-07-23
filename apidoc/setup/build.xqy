@@ -38,7 +38,6 @@ declare variable $ACTIONS as xs:string+ := (
 declare variable $ACTIONS-NEEDING-XSD := (
   "create-toc",
   "delete-old-toc",
-  "pull-function-docs",
   'setup',
   'setup-guides',
   ()) ;

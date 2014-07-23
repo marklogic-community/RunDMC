@@ -210,7 +210,7 @@ declare function stp:function-extract(
   $version as xs:string,
   $function as element(apidoc:function),
   $uris-seen as map:map)
-as element()*
+as element(api:function-page)*
 {
   if ($function/@hidden/xs:boolean(.)) then () else
   (: These are raw functions, so only javascript will have a mode. :)
@@ -256,7 +256,7 @@ as element()*
 declare function stp:function-docs(
   $version as xs:string,
   $doc as document-node())
-as element()*
+as element(api:function-page)*
 {
   (: create XQuery/XSLT function pages - and REST? :)
   stp:function-extract(
@@ -279,9 +279,15 @@ as empty-sequence()
   for $doc in raw:api-docs($version)
   let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs", ('starting', xdmp:describe($doc)))
-  let $extracted as node()+ := stp:function-docs($version, $doc)
-  for $func in $extracted
+  (: Some stub pages may not have any extractable functions. :)
+  let $extracted as node()* := stp:function-docs($version, $doc)
+  for $func as element(api:function-page) in $extracted
   let $uri := base-uri($func)
+  let $_ := (
+    (: Detect bad functions, but allow stubs. :)
+    if ($func/api:function/@name/string()[.]
+      or not($func/api:function)) then ()
+    else stp:error('NONAME', ($uri, xdmp:quote($func))))
   let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs",
     ("inserting", xdmp:describe($doc), 'at', $uri))

@@ -614,11 +614,13 @@ as element(apidoc:function)*
       attribute mode { $MODE-JAVASCRIPT },
       api:function-fake-javascript(
         $module/apidoc:function[
-          not(api:fixup-fullname(., ()) =
+          not(@name eq '')
+          and not(api:fixup-fullname(., ()) =
             preceding-sibling::apidoc:function/api:fixup-fullname(., ()))])
       } }/apidoc:module/apidoc:function
   default return $module/apidoc:function[
-    not(api:fixup-fullname(., ()) =
+    not(@name eq '')
+    and not(api:fixup-fullname(., ()) =
       preceding-sibling::apidoc:function/api:fixup-fullname(., ()))]
 };
 
