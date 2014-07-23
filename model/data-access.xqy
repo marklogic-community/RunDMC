@@ -222,28 +222,31 @@ declare function ml:get-matching-functions(
   $version as xs:string)
 as document-node()*
 {
-  let $query := cts:and-query(
+  (: The input may be empty or all whitespace,
+   : or may be impossible as a function name.
+   : XQuery function names are always castable as xs:QName,
+   : but that is not true for REST endpoints.
+   : Whitespace is a pretty good test for both.
+   : REST fullnames can look like '/v1/qbe (GET)',
+   : but I don't think anyone would expect that to work
+   : as a matching-function search anyway.
+   :)
+  let $name := normalize-space($name)[.][not(contains(., ' '))]
+  let $query := $name ! cts:and-query(
     (cts:directory-query(concat("/apidoc/",$version,"/")),
-      cts:or-query(
-        (cts:element-attribute-value-query(
-            xs:QName("api:function"),
-            QName("","name"),  (: matches just the local name :)
-            $name,
-            "exact"),
-          cts:element-attribute-value-query(
-            xs:QName("api:function"),
-            QName("","fullname"), (: matches the full name (with prefix) :)
-            $name,
-            "exact") )) ))
-  let $results := cts:search(collection(), $query)
+      (: Matches either the local name, or the name with prefix? :)
+      cts:element-attribute-value-query(
+        xs:QName("api:function"),
+        (QName('', "name"), QName('', 'fullname')),
+        $name, "exact")))
+  let $results := $query ! cts:search(collection(), $query, 'unfiltered')
   let $preferred := ("fn","xdmp")
-  return (
-    for $f in $results
-    for $lib in $f/*/api:function[1]/@lib
-    let $index := index-of($preferred, $lib)
-    for $name in $f/*/api:function[1]/@name
-    order by $index, $lib, $name
-    return $f)
+  for $f in $results
+  for $lib in $f/*/api:function[1]/@lib/string()
+  let $index := index-of($preferred, $lib)
+  for $name in $f/*/api:function[1]/@name/string()[.]
+  order by $index, $lib, $name
+  return $f
 };
 
 (: Look for a message guide section with the requested version and id.
