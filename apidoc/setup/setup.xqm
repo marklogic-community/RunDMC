@@ -334,9 +334,7 @@ as document-node()
     <options xmlns="xdmp:tidy">
       <input-encoding>utf8</input-encoding>
       <output-encoding>utf8</output-encoding>
-      <output-xhtml>no</output-xhtml>
-      <output-xml>no</output-xml>
-      <output-html>yes</output-html>
+      <output-xhtml>yes</output-xhtml>
     </options>
     )[2]
 };
