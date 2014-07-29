@@ -1033,8 +1033,7 @@ as attribute()?
      : Change "#display.xqy&fname=http://pubs/5.1doc/xml/admin/foo.xml"
      : to "/guide/admin/foo"
      :)
-    if (starts-with(
-        $a/../@href, '#display.xqy?fname=')) then (
+    if (starts-with($a, '#display.xqy?fname=')) then (
       let $anchor := replace(
         substring-after($a, '.xml'), '%23', '#id_')
       return stp:fix-guide-names(
@@ -1051,14 +1050,17 @@ as attribute()?
     else if (starts-with($a, '#') and contains($a, ':')) then translate(
       $a, '#', '/')
 
-    (: A relative fragment link points somewhere in the same apidoc:module. :)
+    (: A fragment link sometimes points elsewhere in the same apidoc:module,
+     : or sometimes elsewhere within the same function.
+     :)
     else if (starts-with($a, '#')) then (
       let $fid := substring-after($a, '#')
       let $relevant-function := $a/root()/apidoc:module/apidoc:function[
-        .//*/@id eq $fid]
+        @id eq $fid]
       let $result as xs:string := (
         (: Link within same page. :)
-        if ($a/ancestor::apidoc:function is $relevant-function) then '.'
+        if (empty($relevant-function)) then ''
+        else if ($a/ancestor::apidoc:function[1] is $relevant-function) then '.'
         (: If we are on a different page, insert a link to the target page. :)
         else (
           (: REST URLs are written differently than function URLs :)
@@ -1069,7 +1071,7 @@ as attribute()?
           (: path to regular function page :)
           else '/'||api:fixup-fullname(
             $relevant-function, $context[. = $api:MODES])))
-      return $result)
+      return $result||'#'||$fid)
 
     (: For an absolute path like http://w3.org leave the value alone. :)
     else if (contains($a, '://')) then $a
