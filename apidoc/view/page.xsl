@@ -531,7 +531,12 @@
       <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
       <xsl:text>) as </xsl:text>
       <xsl:if test="api:return">
-        <xsl:value-of select="api:type(@mode, api:return)"/>
+        <!-- Guard against bad content. -->
+        <xsl:variable name="mode" as="xs:string" select="@mode"/>
+        <xsl:value-of select="api:type(
+                              $mode,
+                              (api:return[not(@class)
+                              or xs:NMTOKENS(@class) = $mode])[1])"/>
       </xsl:if>
     </xsl:element>
   </xsl:template>

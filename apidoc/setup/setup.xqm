@@ -227,6 +227,9 @@ as element(api:function-page)*
       or count($children) eq 1) then ()
     else stp:error(
       'UNEXPECTED', (count($children), xdmp:describe($children))))
+  (: Allow empty, generic, or mode-specific return type, but no more than one. :)
+  let $_ := zero-or-one(
+    $function/apidoc:return[not(@class) or xs:NMTOKENS(@class) = $mode])
   let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:function-extract',
     ('mode', $mode,
