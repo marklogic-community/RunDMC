@@ -831,12 +831,12 @@ declare function stp:list-page-root-entry-title(
   $entry as element(apidoc:entry))
 as node()*
 {
-  if ($entry/@href) then element a {
+  if ($entry/@href) then element xh:a {
     $entry/@href,
     $entry/@title/string() }
   else $entry/@title[.]/element {
-    if ($entry/.. instance of element(apidoc:group)) then 'h3'
-    else 'div' } {
+    if ($entry/.. instance of element(apidoc:group)) then 'xh:h3'
+    else 'xh:div' } {
     string() }
 };
 
@@ -846,19 +846,18 @@ as node()*
 {
   <li xmlns="http://www.w3.org/1999/xhtml">
   {
-    if ($entry/apidoc:entry) then (
-      stp:list-page-root-entry-title($entry),
-      element ul {
-        attribute class { "doclist" },
-        stp:list-page-root-entry($entry/apidoc:entry) })
-    else (
-      stp:list-page-root-entry-title($entry),
-      if ($entry/apidoc:description) then element div {
-        attribute class { "entry-description", $entry/@class },
-        $entry/@* except $entry/@class,
-        $entry/node() }
-      else $entry[normalize-space(.)]/element div {
-        $entry/string() })
+    stp:list-page-root-entry-title($entry),
+    if ($entry/apidoc:entry) then element ul {
+      attribute class { "doclist" },
+      (: Recurse. :)
+      stp:list-page-root-entry($entry/apidoc:entry) }
+    else if (not($entry/apidoc:description)) then element div {
+      attribute class { "entry-no-description" },
+      string($entry) }
+    else $entry/apidoc:description/element div {
+      attribute class { "entry-description", @class },
+      @* except @class,
+      node() }
   }
   </li>
 };
