@@ -5,7 +5,7 @@ body {
 	background: #666;
 	color: #666;
 	font: 14px/129% Tahoma, Arial, Helvetica, Sans-serif;
-	min-width: 1050px;
+	min-width: 95%;
 }
 a {
 	color: #01639D;
@@ -172,9 +172,6 @@ tbody:last-child tr:last-child th:first-child,
 tbody:last-child tr:last-child td:first-child
 	{background-position: bottom left;}
 tbody:last-child tr:last-child td:last-child {background-position: bottom right;}
-/* disabling this perverse rule
-tbody th + th {width: 150px;}
-*/
 th:last-child,  td:last-child {padding-right: 15px; !important;}
 th.last,  td.last {padding-right: 15px;}
 /*
@@ -240,7 +237,7 @@ ol {
 .nocomment #content #main_container:after, #content.subnav:after {clear: both;}
 #container {
 	position: relative;
-	width: 1100px;
+	width: 92%;
 	margin: auto;
         overflow: hidden;
 }
@@ -253,7 +250,7 @@ ol {
 	z-index: 2;
 }
 #header header, #breadcrumb > div {
-	width: 1070px;
+	width: 97%;
 	margin: auto;
 }
 #header header {
@@ -387,7 +384,7 @@ nav ul {margin: 0;}
 	padding-bottom: 20px;
 }
 #content #main_container {
-	width: 1070px;
+	width: 97%;
 	margin: auto;
 	background: url(/images/separator_vert.gif) 271px 0 repeat-y;
 }
@@ -427,13 +424,10 @@ nav ul {margin: 0;}
 
 #main {
 	float: right;
-	width: 780px;/*
-	min-height: 500px;*/
+	width: 72%;
 }
 #main > :first-child {margin-top: 0;}
-/*
-#main > h3 {margin-top: 34px;} */
-#main   h3 {margin-top: 34px;}
+#main h3 {margin-top: 34px;}
 #main ul {
 	padding-left: 20px;
 	list-style: disc;
@@ -442,9 +436,8 @@ nav ul {margin: 0;}
 	list-style-type: circle;
 	margin: .5em 0;
 }
-#sub {/*
-	float: left;*/
-	width: 250px;
+#sub {
+	width: 25%;
 	padding-right: 20px;
 }
 #sub h2 {
@@ -602,13 +595,6 @@ footer nav .current a {color: white;}
 	font-size: 12px;
 	font-weight: bold;
 }
-/*
-.features tbody td:first-child, .features tbody th:first-child {
-	padding-left: 5px;
-	width: auto;
-	background-image: none;
-}
-*/
 .features tbody tr:first-child th:first-child {
 	padding-left: 15px;
 	width: 110px;
@@ -634,11 +620,11 @@ footer nav .current a {color: white;}
 	clear: right;
 }
 #container > #comments > div {
-	width: 1020px;
+	width: 1070px;
 	margin: auto;
 }
 #container > #comments > div > section {
-	width: 750px;
+	width: 97%;
 	float: right;
 }
 #container > #comments > div > section > h2, #documentation > h2 {
@@ -710,7 +696,7 @@ footer nav .current a {color: white;}
 	margin-bottom: 30px;
 	float: left;
 	clear: left;
-	width: 248px;
+	width: 97%;
 	padding-top: 0 !important;
 }
 .widget:before {content: none !important;}
@@ -995,26 +981,6 @@ section#documentation:before {margin-bottom: 30px;}
     padding-left: 20px;
 }
 
-/*
-.doclist tr.alt td {
-    background-color: #ECECEC;
-}
-.doclist tr.alt td:last-child {
-    background-color: #ECECEC;
-}
-
-.doclist tbody tr td:last-child {
-    background-image: none;
-    border-right: 1px solid #CCC;
-}
-*/
-/*
-.doclist tbody tr.alt td:last-child {
-    background-image: none;
-    background-color: #ECECEC;
-}
-*/
-
 .doclist tbody:last-child tr:last-child td {
     xbackground: url(/images/bg_table_features_bottom.png) bottom center no-repeat;
 }
@@ -1054,7 +1020,7 @@ section#documentation:before {margin-bottom: 30px;}
 }
 #homepage_intro p {
 	float: left;
-	width: 700px;
+	width: 727px;
 	font-size: 21px;
 	line-height: 143%;
 	margin: 0;
@@ -1288,7 +1254,7 @@ section#documentation:before {margin-bottom: 30px;}
 	font-weight: bold;
 	padding: 10px 0;
 	position: absolute;
-	width: 300px;
+	width: 327px;
 	bottom: 5px;
 }
 #bottom1 .more li {
@@ -1349,8 +1315,7 @@ section#documentation:before {margin-bottom: 30px;}
 #bottom2 .more {
 	font-size: 12px;
 	font-weight: bold;
-	width: 225px;/*
-	left: 8px;*/
+	width: 225px;
 	left: auto;
 	border-color: #CBCBCB;
 }
@@ -1485,11 +1450,11 @@ div.intro {
 	margin-bottom: 30px;
 }
 div.intro p {
-	width: 600px;
+	width: 627px;
 	float: left;
 	margin: 0;
 }
-div.intro.var2 p {width: 385px;}
+div.intro.var2 p { width: 412px; }
 div.intro p + a, div.intro p + img {float: right;}
 #main > section, #main > article {
 	clear: both;

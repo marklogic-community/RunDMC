@@ -29,12 +29,6 @@ ol ol {
     list-style-type: lower-alpha;
 }
 
-/* Enable this to add the documentation badge for the standalone version
-   #header h1 a.documentation {
-   background: url(/apidoc/images/documentation-badge.png);
-   }
-   */
-
 #header nav .current:after {border-color: #1479B2 transparent;}
 
 #header-below-bottom-bar {
@@ -46,7 +40,7 @@ ol ol {
     position: absolute;
     top: 112px;
     bottom: 0;
-    width: 1100px;
+    width: 100%;
     background: white;
 }
 
@@ -76,7 +70,7 @@ ol ol {
 #page_content {
     height: 100%;
     overflow: auto;
-    width: 730px;
+    width: 67%;
     float: right;
     padding-right: 50px;
     position: relative;
@@ -136,8 +130,7 @@ ol ol {
     display: none;
 }
 #page_content.scroll {border-left: 1px solid #CCC;}
-#page_content table pre {/*
-	                   max-width: 440px;*/
+#page_content table pre {
 }
 #page_content dd pre {
     background-color: white;
@@ -149,7 +142,7 @@ ol ol {
     padding: 0;
 }
 #api_sub {
-    width: 265px;
+    width: 25%;
     color: #333333;
     font-size: 0.9em;
     position: absolute;
@@ -170,7 +163,7 @@ ol ol {
     position: absolute;
     top: 1em;
     bottom: 0;
-    width: 256px;
+    width: 97%;
     background: white;
     border: 1px solid #CCC;
     padding-top: 5em;
@@ -178,11 +171,11 @@ ol ol {
 
 #splitter {
     background: #eee;
-    width: 10px;
+    width: 8px;
     position: absolute;
     bottom: 0px;
-    top: 39px;
-    left: 260px;
+    top: 13px;
+    left: 97.9%;
     z-index: 100;
 }
 
@@ -221,17 +214,15 @@ ol ol {
     left: 8px;
     font-size: 11px;
     padding: 1px 5px;
-    width: 144px;
+    width: 60%;
 }
 .config-filter-close-button {
     display: none;
     cursor: pointer;
-    left: 210px;
+    left: 59%;
 }
 
 .function_name {
-    /*font: normal 1em "Courier New", Courier, Monospace;*/
-    /*white-space: nowrap;*/
     font-weight: bold;
 }
 
@@ -247,8 +238,8 @@ ol ol {
     margin-left: -10px;
 }
 .treecontrol.top_control.global_control {
-    margin-top: -24px;
-    margin-left: 164px;
+    margin-top: -25px;
+    margin-left: 15.5%;
 }
 .treecontrol.top_control > span {
     display: inline-block;
@@ -310,7 +301,6 @@ ol ol {
 a.footnote_marker:hover {text-decoration: none;}
 
 .footnote {
-    /*  font-size: .5em;*/
     font-size: 9px;
 }
 
@@ -389,7 +379,7 @@ a.sectionLink:hover { color: #235BAB; }
 .api_caption {
     position: absolute;
     font-size: 11px;
-    width: 610px;
+    width: 90%;
     margin-top: 41px;
     text-align: right;
 }
@@ -519,7 +509,7 @@ input.function_view {
 }
 
 #widgets {
-    width: 265px;
+    width: 25%;
 }
 
 .version {
