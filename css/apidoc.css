@@ -230,7 +230,7 @@ ol ol {
 
 .treecontrol.top_control {
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     font-size: .9em !important;
 }
 .treecontrol.top_control.local_control {
@@ -239,7 +239,7 @@ ol ol {
 }
 .treecontrol.top_control.global_control {
     margin-top: -25px;
-    margin-left: 15.5%;
+    margin-left: 67%;
 }
 .treecontrol.top_control > span {
     display: inline-block;
