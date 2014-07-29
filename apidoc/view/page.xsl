@@ -179,7 +179,9 @@
   </xsl:template>
 
   <xsl:template match="ml:breadcrumbs">
-    <xsl:apply-templates mode="breadcrumbs" select="."/>
+    <xsl:apply-templates mode="breadcrumbs" select=".">
+      <xsl:with-param name="site-name" select="'Docs'"/>
+    </xsl:apply-templates>
   </xsl:template>
 
   <!-- Placeholder for toc_filter.js init code. -->
