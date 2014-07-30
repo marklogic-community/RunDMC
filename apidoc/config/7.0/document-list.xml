@@ -86,7 +86,9 @@
            type="external">
       API documentation for the MarkLogic Java API.
     </entry>
-    <guide url-name="java" duplicate="true"/>
+    <entry toc-title="Related Guides">
+      <guide url-name="java" duplicate="true"/>
+    </entry>
   </group>
 
   <group>
