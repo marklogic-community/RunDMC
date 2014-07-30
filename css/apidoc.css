@@ -1,4 +1,6 @@
-html, body, #container {height: 100%;}
+html, body {
+    height: 100%;
+}
 blockquote {margin-left: 0;}
 dd {margin-left: 40px;}
 pre, .userguide img {
@@ -36,10 +38,10 @@ ol ol {
 }
 
 #content {
-    padding-bottom: 0;
     position: absolute;
     top: 112px;
     bottom: 0;
+    height: 100%;
     width: 100%;
     background: white;
 }
@@ -72,7 +74,7 @@ ol ol {
     overflow: auto;
     width: 67%;
     float: right;
-    padding-right: 50px;
+    padding-right: 3%;
     position: relative;
 }
 #page_content h1 {
@@ -143,12 +145,15 @@ ol ol {
 }
 #api_sub {
     width: 25%;
+    height: 87%;
     color: #333333;
     font-size: 0.9em;
     position: absolute;
     left: 16px;
     top: 48px;
-    bottom: 0;
+    bottom: auto;
+    margin: 0;
+    padding: 0;
 }
 
 #apidoc_toc,
@@ -244,9 +249,10 @@ ol ol {
 .treecontrol.top_control > span {
     display: inline-block;
     color: white;
-    padding: 3px 8px;
+    padding-top: 3px;
+    padding-right: 2px;
     margin-bottom: 8px;
-    margin-left: 8px;
+    margin-left: 2px;
     border: 1px solid #003959;
     font-weight: bold;
     text-decoration: none !important;

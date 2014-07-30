@@ -237,9 +237,9 @@ ol {
 .nocomment #content #main_container:after, #content.subnav:after {clear: both;}
 #container {
 	position: relative;
+        height: 100%;
 	width: 92%;
 	margin: auto;
-        overflow: hidden;
 }
 
 #header {
