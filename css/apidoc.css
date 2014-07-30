@@ -250,9 +250,11 @@ ol ol {
     display: inline-block;
     color: white;
     padding-top: 3px;
-    padding-right: 2px;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
     margin-bottom: 8px;
-    margin-left: 2px;
+    margin-left: 3px;
     border: 1px solid #003959;
     font-weight: bold;
     text-decoration: none !important;
