@@ -80,8 +80,8 @@
     </entry>
   </group>
 
-  <group toc-title="Java API Reference">
-    <entry toc-title="javadoc for MarkLogic Client API for Java"
+  <group title="Java API Reference">
+    <entry title="javadoc for MarkLogic Client API for Java"
            href="/javadoc/client/index.html"
            type="external">
       API documentation for the MarkLogic Java API.
