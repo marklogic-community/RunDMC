@@ -187,7 +187,7 @@
   <!-- Placeholder for toc_filter.js init code. -->
   <xsl:template mode="breadcrumb-display"
                 match="ml:breadcrumbs">
-    <span id="breadcrumbText"> > Documentation</span>
+    <span id="breadcrumbDynamic"></span>
   </xsl:template>
 
   <xsl:template match="ml:versions">

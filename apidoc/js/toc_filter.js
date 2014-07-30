@@ -37,7 +37,7 @@ $(function() {
             console.log("Calling showInTOC via pjax:end handler.", target[0]);
             showInTOC(target); }});
 
-    breadcrumbNode = $("#breadcrumbText");
+    breadcrumbNode = $("#breadcrumbDynamic");
     if (!breadcrumbNode.length) console.log("No breadcrumb!");
 
     // Initialize values from page.xsl content.
@@ -415,40 +415,61 @@ function showInTOC(a) {
     scrollTOC();
 }
 
-function breadcrumbString(n) {
-    var text = n.children("a").contents()[0];
-    //console.log('breadcrumbString', text);
-    if (!text) text = n.children("span").contents()[0];
-    if (!text) return '';
+function breadcrumbChrome() {
+    // Must create a new text node for each call.
+    return document.createTextNode(' > ');
+}
+
+function breadcrumbBuilder(results, n) {
+    var stage;
+    var text;
+    var links = n.children('a');
+    if (links.length) {
+        // Link to appropriate level.
+        stage = $('<a>').attr('href', links.attr('href'));
+        text = links.contents()[0];
+    } else {
+        // Display only, not linkable.
+        stage = $('<span>');
+        text = n.children("span").contents()[0];
+    }
+    //console.log('breadcrumbBuilder', stage, text);
+    // Halt recursion if we did not find anything.
+    if (!text) {
+        console.log('breadcrumbBuilder: no text found', results.length);
+        return results;
+    }
 
     text = text.data.replace(/[:\.]$/, '').replace(/\s+\(\d+\)/, "");
-    //console.log('breadcrumbString', n[0], text);
+    //console.log('breadcrumbBuilder', n[0], text);
+    stage.text(text);
+    results = results.concat(stage[0]).concat(breadcrumbChrome());
+    //console.log('breadcrumbBuilder', text, results.length);
 
     // Climb the tree to the next li, if there is one.
     // The immediate parent should be a ul.
-    var parent = n.parent().parent();
-    if (!parent) {
-        // This must be the top.
-        return tocSelect.children("option:selected").text() + " > " + text;
-    }
-
-    parent = $(parent).filter("li");
+    var parent = n.parent().parent().filter("li");
     if (!parent.length) {
-        // This must be the top.
-        return tocSelect.children("option:selected").text() + " > " + text;
+        //console.log('breadcrumbBuilder: no parent found', results.length);
+        // This must be the top. Add a label for it and halt.
+        return results.concat(
+                document.createTextNode(
+                    tocSelect.children("option:selected").text()))
+            .concat(breadcrumbChrome());
     }
 
     // recurse
-    return breadcrumbString(parent) + " > " + text;
+    return breadcrumbBuilder(results, parent);
 }
 
 function updateBreadcrumb(n)
 {
     //console.log('updating breadcrumb', n.length ? n[0] : null);
-    var breadcrumbText = breadcrumbString(n);
-    console.log('updating breadcrumb', breadcrumbText);
-    if (!breadcrumbText) return;
-    breadcrumbNode.text(' > ' + breadcrumbText);
+    breadcrumbNode.empty();
+    var breadcrumb = breadcrumbBuilder([], n).reverse();
+    //console.log('updating breadcrumb', breadcrumb);
+    if (!breadcrumb || !breadcrumb.length) return;
+    breadcrumbNode.append(breadcrumb);
 }
 
 // Called at init and whenever TOC selection changes.
