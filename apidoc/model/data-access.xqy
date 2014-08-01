@@ -704,30 +704,41 @@ declare function api:javascript-type(
 as xs:string
 {
   switch($type)
+  case 'xs:anyURI'
+  case 'xs:string' return 'string'
+
   case 'document-node()'
   case 'element()'
   case 'node()' return 'Node'
 
   case 'empty-sequence()' return 'null'
 
+  case 'item()' return 'String'
+
+  case 'json:array' return 'Array'
+
+  case 'json:object'
   case 'map:map' return 'object'
 
   case 'xdmp:function' return 'function'
 
-  case 'xs:boolean' return 'boolean'
+  case 'xs:boolean' return 'Boolean'
 
+  case 'xs:date'
   case 'xs:dateTime' return 'Date'
 
   case 'xs:decimal'
   case 'xs:double'
   case 'xs:float'
-  case 'xs:integer'
   case 'xs:long'
   case 'xs:positiveInteger'
   case 'xs:unsignedInt'
-  case 'xs:unsignedLong' return 'number'
+  case 'xs:unsignedLong' return 'Number'
 
-  case 'xs:string' return 'string'
+  case 'xs:integer' return 'Integer'
+
+  case 'xs:time' return 'String'
+
   default return $type
 };
 
@@ -745,7 +756,14 @@ declare function api:type-javascript(
   $expr as xs:string)
 as xs:string
 {
-  concat(
+  switch($expr)
+  case 'document-node()*'
+  case 'document-node()+'
+  case 'element()*'
+  case 'element()+'
+  case 'node()*'
+  case 'node()+' return 'ValueIterator'
+  default return concat(
     api:javascript-type(
       replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
     api:javascript-quantifier(
