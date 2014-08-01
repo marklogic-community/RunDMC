@@ -452,6 +452,19 @@
     </tr>
   </xsl:template>
 
+  <xsl:template mode="function-links"
+                match="api:function-page[api:function-link]">
+    <div class="api-function-links">
+      <h3 class="api-function-link-heading">Related Functions</h3>
+      <xsl:for-each select="api:function-link">
+        <a class="api-function-link"
+           href="{ $version-prefix }/{ @fullname/string() }">
+          <xsl:value-of select="@fullname/string()"/>
+        </a>
+      </xsl:for-each>
+    </div>
+  </xsl:template>
+
   <xsl:template mode="page-content"
                 match="api:function-page">
     <xsl:if test="$show-alternative-functions or $q">
@@ -488,6 +501,7 @@
         <xsl:apply-templates mode="api-page-heading" select="."/>
       </h1>
       <xsl:apply-templates select="api:function"/>
+      <xsl:apply-templates mode="function-links" select="."/>
     </div>
   </xsl:template>
 
