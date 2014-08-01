@@ -232,32 +232,43 @@
   <xsl:variable name="api-version-prefix" select="if ($preferred-version eq $ml:default-version) then ''
                                                                                                  else concat('/',$preferred-version)"/>
 
-  <!-- Prefer exact function matches over searching -->
+  <!--
+      Prefer exact function matches over search results.
+      Prefer exact error message matches over search results.
+  -->
   <xsl:template match="search-results">
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$search-response"/>
       <xsl:copy-of select="$facets-response"/>
     </xsl:if>
-    <xsl:variable name="matching-functions" select="ml:get-matching-functions($q,$preferred-version)"/>
-    <!-- Outer choose was necessary as opposed to buggy template rule behavior... -->
+    <!-- Skip any shortcuts if there is a category constraint or page number. -->
+    <xsl:variable name="skip-exact-matches"
+                  select="$page-number-supplied or contains($q,'cat:')"/>
+    <xsl:variable name="matching-functions"
+                  select="if ($skip-exact-matches) then ()
+                          else ml:get-matching-functions($q,$preferred-version)"/>
+    <xsl:variable name="matching-messages"
+                  select="if ($skip-exact-matches or $matching-functions) then ()
+                          else ml:get-matching-messages($q, $preferred-version)"/>
+    <xsl:variable name="redirect"
+                  select="if (not($matching-functions or $matching-messages))
+                          then ()
+                          else concat(
+                          $srv:effective-api-server,
+                          $api-version-prefix,
+                          '/',
+                          if ($matching-functions)
+                          then $matching-functions[1]/*/api:function[1]/@fullname
+                          else concat(
+                          'messages/XDMP-en/', $matching-messages/*/@id))"/>
     <xsl:choose>
-      <!-- Don't do the function shortcut if a category constraint or page number was supplied -->
-      <xsl:when test="$page-number-supplied or contains($q,'cat:')">
-        <xsl:apply-templates mode="search-results" select="$search-response"/>
+      <xsl:when test="$redirect">
+        <!-- Keep the query intact for an undo link. -->
+        <xsl:value-of
+            select="xdmp:redirect-response(concat($redirect, '?q=', $q))"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="$matching-functions">
-            <xsl:variable name="function-url" select="concat($srv:effective-api-server,
-                                                             $api-version-prefix,
-                                                             '/',
-                                                             $matching-functions[1]/*/api:function[1]/@fullname)"/>
-            <xsl:value-of select="xdmp:redirect-response(concat($function-url, '?q=', $q))"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates mode="search-results" select="$search-response"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates mode="search-results" select="$search-response"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

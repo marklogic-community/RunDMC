@@ -249,6 +249,20 @@ as document-node()*
   return $f
 };
 
+declare function ml:get-matching-messages(
+  $name as xs:string,
+  $version as xs:string)
+as document-node()*
+{
+  (: A valid message will always match this pattern. :)
+  let $name := normalize-space($name)[.][matches(., '^[A-Z]+-[A-Z]+$')]
+  let $query := $name ! cts:and-query(
+    (cts:directory-query('/apidoc/'||$version||'/messages/', 'infinity'),
+      cts:element-attribute-value-query(
+        QName('', "message"), QName('', "id"), $name)))
+  return $query ! cts:search(collection(), $query, 'unfiltered')
+};
+
 (: Look for a message guide section with the requested version and id.
  : This does no checking of the version or id.
  :)
