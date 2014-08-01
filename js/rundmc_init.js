@@ -16,13 +16,17 @@ $(function() {
             .filter(":selected").val();
         //console.log('version select option changed',
         //            defaultVersion, version);
-        // TODO Redirect to an appropriate page.
+        // Redirect to an appropriate page.
         var oldPath = window.location.pathname;
         // Search pages are different, and use q=fubar&v=8.0 etc. in query string.
         if (oldPath == "/search"
            || oldPath == "/do-search") {
             var oldQuery = window.location.search;
-            var newQuery = oldQuery.replace(/&v=\d+\.\d+/, "&v=" + version);
+            // Handle different positioning of version strings.
+            var newQuery = oldQuery
+                .replace(/\?v=\d+\.\d+/, "?v=" + version)
+                .replace(/&v=\d+\.\d+/, "&v=" + version);
+            // Handle no version string.
             if (newQuery == oldQuery) newQuery += "&v=" + version;
 
             window.location =
