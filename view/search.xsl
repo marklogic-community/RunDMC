@@ -30,14 +30,20 @@
                         '/apidoc/config/server-versions.xml')
                         /*:versions/*:version"/>
 
-  <xsl:variable name="set-version-param-name" select="'v'"/>
-  <xsl:variable name="set-version"            select="string($params[@name eq $set-version-param-name])"/>
+  <xsl:variable name="set-version-param-name"
+                select="'v'"/>
+  <xsl:variable name="set-version"
+                select="string($params[@name eq $set-version-param-name])"/>
 
-  <xsl:variable name="preferred-version-cookie-name" select="if ($srv:cookie-domain ne 'marklogic.com') then 'preferred-server-version-not-on-live-site'
-                                                        else if ($srv:host-type eq 'staging')           then 'preferred-server-version-staging'
-                                                                                                        else 'preferred-server-version'"/>
+  <xsl:variable name="preferred-version-cookie-name"
+                select="if ($srv:cookie-domain ne 'marklogic.com')
+                        then 'preferred-server-version-not-on-live-site'
+                        else if ($srv:host-type eq 'staging')
+                        then 'preferred-server-version-staging'
+                        else 'preferred-server-version'"/>
 
-  <xsl:variable name="preferred-version-cookie" select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
+  <xsl:variable name="preferred-version-cookie"
+                select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
   <xsl:variable name="preferred-version"
                 select="if ($set-version) then $set-version
                         else if ($preferred-version-cookie)
@@ -45,14 +51,14 @@
                         else $ml:default-version"/>
 
   <xsl:variable name="_set-cookie"
-                select="if ($set-version) then ck:add-cookie($preferred-version-cookie-name,
-                                                             $set-version,
-                                                             xs:dateTime('2100-01-01T12:00:00'), (: expires :)
-                                                             $srv:cookie-domain,
-                                                             '/',
-                                                             false())
-                                          else ()"/>
-
+                select="if (not($set-version)) then ()
+                        else ck:add-cookie(
+                        $preferred-version-cookie-name,
+                        $set-version,
+                        xs:dateTime('2100-01-01T12:00:00'), (: expires :)
+                        $srv:cookie-domain,
+                        '/',
+                        false())"/>
 
   <!-- This is used for hit highlighting. Only available when the client sets it (on the search results page) -->
   <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')[1]"/>
@@ -62,8 +68,9 @@
                 select="ck:delete-cookie('search-qtext', $srv:cookie-domain, '/')"/>
 
 
-  <!-- The "Version" switcher code;
-       this is also customized in apidoc/view/page.xsl
+  <!--
+      The "Version" switcher code.
+      This is also customized in apidoc/view/page.xsl
   -->
   <xsl:template mode="version-list" match="*">
     <!--
@@ -143,7 +150,13 @@
             </search:constraint>
           </xsl:variable>
 
-  <xsl:variable name="q"            select="string($params[@name eq 'q'])"/>
+  <xsl:variable name="q"
+                select="string($params[@name eq 'q'])"/>
+
+  <!-- qtext without the constraints -->
+  <xsl:variable name="clean-q"
+                select="ml:qtext-with-no-constraints(
+                        $search-response, $search-options)"/>
 
   <xsl:variable name="search-response" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
@@ -153,8 +166,7 @@
       <xsl:copy-of select="search:search($q,
                                          $search-options,
                                          $start,
-                                         $results-per-page
-                                        )"/>
+                                         $results-per-page)"/>
     </xsl:variable>
     <xsl:sequence select="$search-response-doc/search:response"/>
   </xsl:variable>
@@ -250,82 +262,117 @@
     </xsl:choose>
   </xsl:template>
 
-          <xsl:template mode="search-results" match="search:response[@total eq 0]">
-            <h3>
-              <xsl:text>Your search – </xsl:text>
-              <em>
-                <xsl:value-of select="search:qtext"/>
-              </em>
-              <xsl:text> – did not match any documents.</xsl:text>
-            </h3>
-          </xsl:template>
+  <xsl:template name="did-you-mean">
+    <xsl:param name="q"/>
+    <xsl:variable name="pat" select="'^(\d+\.?0?)\s+(.+)$'"/>
+    <!--
+        Did the query start with something like a version number?
+        ASSUMPTION: future versions will match regex '\d+.0'.
+    -->
+    <xsl:if test="matches($q, $pat)">
+      <xsl:variable name="q-version" select="replace($q, $pat, '$1')"/>
+      <xsl:variable name="q-clean" select="replace($q, $pat, '$2')"/>
+      <p class="didYouMean">
+        <xsl:text>Did you mean to search for </xsl:text>
+        <a href="{$srv:search-page-url}?q={$q-clean}&amp;v={
+                 if (ends-with($q-version, '.0')) then $q-version
+                 else concat($q-version, '.0') }">
+          <xsl:value-of select="$q-clean"/>
+          <xsl:text> in version </xsl:text>
+          <xsl:value-of select="$q-version"/>
+        </a>
+        <xsl:text>?</xsl:text>
+      </p>
+    </xsl:if>
+  </xsl:template>
 
-          <xsl:template mode="search-results" match="search:response">
-            <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
-            <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
-                                                      else $last-in-full-page"/>
-            <h3>
-              <xsl:text>Results </xsl:text>
-              <em>
-                <xsl:value-of select="@start"/>–<xsl:value-of select="$end-result-index"/>
-              </em>
-              <xsl:text> of </xsl:text>
-              <xsl:value-of select="@total"/>
-              <xsl:text> for </xsl:text>
-              <em>
-                <xsl:value-of select="search:qtext"/>
-              </em>
-            </h3>
-            <xsl:apply-templates mode="prev-and-next" select="."/>
-            <table>
-              <xsl:apply-templates mode="#current" select="search:result"/>
-            </table>
-            <xsl:apply-templates mode="prev-and-next" select="."/>
+  <xsl:template mode="search-results" match="search:response[@total eq 0]">
+    <xsl:call-template name="did-you-mean">
+      <xsl:with-param name="q" select="$q"/>
+    </xsl:call-template>
+    <h3>
+      <xsl:text>Your search – </xsl:text>
+      <em>
+        <xsl:value-of select="search:qtext"/>
+      </em>
+      <xsl:text> – did not match any documents.</xsl:text>
+    </h3>
+  </xsl:template>
 
-            <!-- We set the search qtext on click to a cookie to enable highlighting on the next page only. -->
-            <script type="text/javascript">
-              //<xsl:comment>
-                $("a.search_result").click(function(){
-                  $.cookie("search-qtext",
-                           "<xsl:value-of select="replace($clean-q,'&quot;','\\&quot;')"/>", <!-- js-escape quotes -->
-                           {"domain":"<xsl:value-of select="$srv:cookie-domain"/>", "path":"/"});
-                });
-              //</xsl:comment>
-            </script>
-          </xsl:template>
+  <xsl:template mode="search-results" match="search:response">
+    <xsl:call-template name="did-you-mean">
+      <xsl:with-param name="q" select="$q"/>
+    </xsl:call-template>
+    <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
+    <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
+                                                   else $last-in-full-page"/>
+    <h3>
+      <xsl:text>Results </xsl:text>
+      <em>
+        <xsl:value-of select="@start"/>–<xsl:value-of select="$end-result-index"/>
+      </em>
+      <xsl:text> of </xsl:text>
+      <xsl:value-of select="@total"/>
+      <xsl:text> for </xsl:text>
+      <em>
+        <xsl:value-of select="search:qtext"/>
+      </em>
+    </h3>
+    <xsl:apply-templates mode="prev-and-next" select="."/>
+    <table>
+      <xsl:apply-templates mode="#current" select="search:result"/>
+    </table>
+    <xsl:apply-templates mode="prev-and-next" select="."/>
 
-                  <!-- qtext without the constraints -->
-                  <xsl:variable name="clean-q" select="ml:qtext-with-no-constraints($search-response, $search-options)"/>
+    <!-- We set the search qtext on click to a cookie to enable highlighting on the next page only. -->
+    <script type="text/javascript">
+      //<xsl:comment>
+      $("a.search_result").click(function(){
+      $.cookie("search-qtext",
+      "<xsl:value-of select="replace($clean-q,'&quot;','\\&quot;')"/>", <!-- js-escape quotes -->
+      {"domain":"<xsl:value-of select="$srv:cookie-domain"/>", "path":"/"});
+      });
+      //</xsl:comment>
+    </script>
+  </xsl:template>
 
-
-          <xsl:template mode="search-results" match="search:result">
-            <xsl:variable name="doc" select="doc(@uri)"/>
-            <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
-            <xsl:variable name="anchor" select="if ($doc/*:chapter) then '#chapter' else ''"/>
-            <xsl:variable name="result-uri" select="if ($is-api-doc) then concat($srv:effective-api-server, $api-version-prefix, ml:external-uri-for-string(ml:rewrite-html-links(@uri)), $anchor)
-                                                                     else ml:external-uri-main($doc)"/>
-            <tr>
-              <th>
-                <xsl:variable name="category">
-                  <ml:category name="{ml:category-for-doc(@uri)}"/>
-                </xsl:variable>
-                <xsl:apply-templates mode="category-image" select="$category/*"/>
-              </th>
-              <td>
-                <h4>
-                  <a href="{$result-uri}" class="search_result">
-                    <xsl:variable name="page-specific-title">
-                      <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
-                    </xsl:variable>
-                    <xsl:value-of select="if (string($page-specific-title)) then $page-specific-title else @uri"/>
-                  </a>
-                </h4>
-                <div class="text">
-                  <xsl:apply-templates mode="search-snippet" select="search:snippet/search:match"/>
-                </div>
-              </td>
-            </tr>
-          </xsl:template>
+  <!-- Render one result from a search:response. -->
+  <xsl:template mode="search-results" match="search:result">
+    <xsl:variable name="doc" select="doc(@uri)"/>
+    <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
+    <xsl:variable name="anchor"
+                  select="if ($doc/*:chapter) then '#chapter' else ''"/>
+    <xsl:variable name="result-uri"
+                  select="if ($is-api-doc) then concat(
+                          $srv:effective-api-server, $api-version-prefix,
+                          ml:external-uri-for-string(ml:rewrite-html-links(@uri)),
+                          $anchor)
+                          else ml:external-uri-main($doc)"/>
+    <tr>
+      <th>
+        <xsl:variable name="category">
+          <ml:category name="{ml:category-for-doc(@uri)}"/>
+        </xsl:variable>
+        <xsl:apply-templates mode="category-image" select="$category/*"/>
+      </th>
+      <td>
+        <h4>
+          <a href="{$result-uri}" class="search_result">
+            <xsl:variable name="page-specific-title">
+              <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+            </xsl:variable>
+            <xsl:value-of
+                select="if (string($page-specific-title)) then $page-specific-title
+                        else @uri"/>
+          </a>
+        </h4>
+        <div class="text">
+          <xsl:apply-templates mode="search-snippet"
+                               select="search:snippet/search:match"/>
+        </div>
+      </td>
+    </tr>
+  </xsl:template>
 
                   <!-- If applicable, translate URIs for XHTML-Tidy'd docs back to the original HTML URI -->
                   <xsl:function name="ml:rewrite-html-links">
