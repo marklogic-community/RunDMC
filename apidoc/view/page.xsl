@@ -357,6 +357,12 @@
     </li>
   </xsl:template>
 
+  <xsl:template mode="print-friendly-link" match="*">
+    <a href="?print=yes" target="_blank" class="printerFriendly">
+      <img src="/apidoc/images/printerFriendly.png"/>
+    </a>
+  </xsl:template>
+
   <!-- Guide title -->
   <xsl:template mode="guide" match="/*/guide-title">
     <!--
@@ -474,12 +480,15 @@
   <xsl:template mode="function-links"
                 match="api:function-page[api:function-link]">
     <div class="api-function-links">
-      <h3 class="api-function-link-heading">Related Functions</h3>
       <xsl:for-each select="api:function-link">
         <a class="api-function-link"
            href="{ $version-prefix }/{ @fullname/string() }">
+          <xsl:value-of select="if (@mode = $api:MODE-XPATH) then 'XQuery'
+                                else 'JavaScript'"/>
+          <xsl:text> </xsl:text>
           <xsl:value-of select="@fullname/string()"/>
         </a>
+        <xsl:text> </xsl:text>
       </xsl:for-each>
     </div>
   </xsl:template>
@@ -511,20 +520,13 @@
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <xsl:apply-templates mode="print-friendly-link" select="."/>
+      <xsl:apply-templates mode="function-links" select="."/>
       <h1>
         <xsl:apply-templates mode="api-page-heading" select="."/>
       </h1>
       <xsl:apply-templates select="api:function"/>
-      <xsl:apply-templates mode="function-links" select="."/>
     </div>
   </xsl:template>
-
-  <xsl:template mode="print-friendly-link" match="*">
-    <a href="?print=yes" target="_blank" class="printerFriendly">
-      <img src="/apidoc/images/printerFriendly.png"/>
-    </a>
-  </xsl:template>
-
 
   <xsl:template match="api:function">
     <xsl:apply-templates mode="function-signature" select="."/>
