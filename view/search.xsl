@@ -21,15 +21,6 @@
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
 
-  <!--
-      Uses *:version because server-versions.xml is in empty namespace,
-      and xpath-default-namespace has been set.
-  -->
-  <xsl:variable name="versions"
-                select="u:get-doc(
-                        '/apidoc/config/server-versions.xml')
-                        /*:versions/*:version"/>
-
   <xsl:variable name="set-version-param-name"
                 select="'v'"/>
   <xsl:variable name="set-version"
@@ -73,20 +64,12 @@
       This is also customized in apidoc/view/page.xsl
   -->
   <xsl:template mode="version-list" match="*">
-    <!--
-        Only display a version link if the corresponding directory URI
-        is present in the database.
-        TODO Turn this into a single doc() call.
-    -->
-    <xsl:variable name="available-versions"
-                  select="$versions[
-                          cts:uri-match(concat('/apidoc/',@number,'/*'))[1]]"/>
     <div class="version">
       <span>Version:</span>
       <xsl:text> </xsl:text>
       <select id="version_list" data-default="{$ml:default-version}">
         <xsl:apply-templates mode="version-list-item"
-                             select="$available-versions"/>
+                             select="$ml:server-version-nodes-available"/>
       </select>
     </div>
   </xsl:template>
@@ -117,7 +100,9 @@
 
   <!-- TODO version-specific results URL -->
   <xsl:template mode="version-list-item-href" match="*:version">
-    <xsl:sequence select="concat('?q=', $q, '&amp;', $set-version-param-name, '=', @number)"/>
+    <xsl:sequence select="concat(
+                          '?q=', $q, '&amp;',
+                          $set-version-param-name, '=', @number)"/>
   </xsl:template>
 
   <xsl:variable name="search-options" as="element()">
@@ -279,21 +264,27 @@
     <!--
         Did the query start with something like a version number?
         ASSUMPTION: future versions will match regex '\d+.0'.
+        Is the requested version supposed to be available?
     -->
     <xsl:if test="matches($q, $pat)">
-      <xsl:variable name="q-version" select="replace($q, $pat, '$1')"/>
-      <xsl:variable name="q-clean" select="replace($q, $pat, '$2')"/>
-      <p class="didYouMean">
-        <xsl:text>Did you mean to search for </xsl:text>
-        <a href="{$srv:search-page-url}?q={$q-clean}&amp;v={
-                 if (ends-with($q-version, '.0')) then $q-version
-                 else concat($q-version, '.0') }">
-          <xsl:value-of select="$q-clean"/>
-          <xsl:text> in version </xsl:text>
-          <xsl:value-of select="$q-version"/>
-        </a>
-        <xsl:text>?</xsl:text>
-      </p>
+      <xsl:variable name="q-version-raw"
+                    select="replace($q, $pat, '$1')"/>
+      <xsl:variable name="q-version"
+                    select="if (ends-with($q-version-raw, '.0'))
+                            then $q-version-raw
+                            else concat($q-version-raw, '.0')"/>
+      <xsl:if test="$q-version = $ml:server-versions-available">
+        <xsl:variable name="q-clean" select="replace($q, $pat, '$2')"/>
+        <p class="didYouMean">
+          <xsl:text>Did you mean to search for </xsl:text>
+          <a href="{$srv:search-page-url}?q={$q-clean}&amp;v={ $q-version }">
+            <xsl:value-of select="$q-clean"/>
+            <xsl:text> in version </xsl:text>
+            <xsl:value-of select="$q-version"/>
+          </a>
+          <xsl:text>?</xsl:text>
+        </p>
+      </xsl:if>
     </xsl:if>
   </xsl:template>
 
