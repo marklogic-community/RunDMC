@@ -255,7 +255,8 @@ declare function ml:get-matching-messages(
 as document-node()*
 {
   (: A valid message will always match this pattern. :)
-  let $name := normalize-space($name)[.][matches(., '^[A-Z]+-[A-Z]+$')]
+  let $name := upper-case(normalize-space($name))[.][
+    matches(., '^[A-Z]+-[A-Z]+$')]
   let $query := $name ! cts:and-query(
     (cts:directory-query('/apidoc/'||$version||'/messages/', 'infinity'),
       cts:element-attribute-value-query(

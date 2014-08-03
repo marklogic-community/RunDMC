@@ -287,8 +287,27 @@
     <xsl:value-of select="$local"/>
   </xsl:template>
 
+  <xsl:template name="did-you-mean-undo">
+    <xsl:param name="q"/>
+    <xsl:if test="$q">
+      <xsl:text>Did you mean to search for the term </xsl:text>
+      <!-- p=1 effectively forces the search -->
+      <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
+        <xsl:value-of select="$q"/>
+      </a>
+      <xsl:text>?</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template mode="page-content"
                 match="message">
+    <xsl:if test="$q">
+      <p class="didYouMean">
+        <xsl:call-template name="did-you-mean-undo">
+          <xsl:with-param name="q" select="$q"/>
+        </xsl:call-template>
+      </p>
+    </xsl:if>
     <xsl:apply-templates select="*"/>
   </xsl:template>
 
@@ -484,14 +503,9 @@
           </xsl:for-each>
           <xsl:text>? </xsl:text>
         </xsl:if>
-        <xsl:if test="$q">
-          <xsl:text>Did you mean to search for the term </xsl:text>
-          <!-- p=1 effectively forces the search -->
-          <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
-            <xsl:value-of select="$q"/>
-          </a>
-          <xsl:text>?</xsl:text>
-        </xsl:if>
+        <xsl:call-template name="did-you-mean-undo">
+          <xsl:with-param name="q" select="$q"/>
+        </xsl:call-template>
       </p>
     </xsl:if>
     <div>

@@ -81,19 +81,11 @@ declare variable $REST-DOC-PATH := (
       concat('/apidoc/',
         $PATH-ORIG, $api:REST-URI-QUESTIONMARK-SUBSTITUTE, "*")))
 
-  (: TODO use function mapping? :)
-  let $known-query-params := distinct-values(
-    for $uri in $candidate-uris
-    return m:REST-doc-query-param($uri))[string(.)]
-
-  let $canonicalized-query-string := string-join(
-    for $name in xdmp:get-request-field-names()
-    where $name = $known-query-params
-    order by $name
-    return (
-      for $value in xdmp:get-request-field($name)
-      return concat($name, '=', $value)
-      , '&amp;'))
+  let $canonicalized-query-string := m:query-string(
+    (: TODO use function mapping? :)
+    distinct-values(
+      for $uri in $candidate-uris
+      return m:REST-doc-query-param($uri))[string(.)])
   return (
     if ($canonicalized-query-string)
     then concat(
@@ -164,6 +156,24 @@ declare function m:error(
 as empty-sequence()
 {
   error((), 'REWRITE-'||$code, $items)
+};
+
+declare function m:query-string(
+  $field-names as xs:string+)
+as xs:string?
+{
+  string-join(
+    for $name in $field-names
+    order by $name
+    return (xdmp:get-request-field($name) ! concat($name, '=', .))
+    , '&amp;')
+};
+
+declare function m:query-string()
+as xs:string?
+{
+  m:query-string(
+    xdmp:get-request-field-names())
 };
 
 (: ASSUMPTION: each REST doc will have at most one query parameter in its URI :)
@@ -244,6 +254,7 @@ as xs:string
 };
 
 (: Redirect to the right page.
+ : Preserve any query string.
  :)
 declare function m:redirect-for-message(
   $path as xs:string,
@@ -252,10 +263,11 @@ as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
     'redirect-for-message', ('path', $path, 'id', $id)),
-  m:redirect($path)
+  m:redirect($path||'?'||m:query-string())
 };
 
 (: Redirect to the right page.
+ : Preserve any query string.
  :)
 declare function m:redirect-for-short-message(
   $path as xs:string,
@@ -266,7 +278,7 @@ as xs:string
   let $path := replace($path, $id, $lib||'-en/'||$id)
   let $_ := if (not($DEBUG)) then () else m:debug(
     'redirect-for-message', ('path', $path, 'lib', $lib, 'id', $id))
-  return m:redirect($path)
+  return m:redirect($path||'?'||m:query-string())
 };
 
 declare function m:redirect-for-version($version as xs:string)
