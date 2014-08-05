@@ -113,6 +113,7 @@
 
   <group title="Node.js API Reference">
     <entry toc-title="jsdoc for Node.js Client API"
+           title="jsdoc for Node.js Client API"
            href="/jsdoc/index.html"
            type="external">
       API documentation for the MarkLogic Node.js Client API.
