@@ -231,6 +231,12 @@ ol ol {
     font-weight: bold;
 }
 
+.api-function-links {
+    float: right;
+    margin: 1em;
+    padding: 1em;
+}
+
 .currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {color: #F86D07;}
 
 .treecontrol.top_control {
@@ -353,7 +359,9 @@ a.sectionLink:hover { color: #235BAB; }
 #api_sub .ui-widget-content .ui-state-active,
 #api_sub .ui-widget-header .ui-state-active
 {border-color: #CCC;}
-#api_sub .ui-widget-content .treeview a { color: #01639D; }
+#api_sub .ui-widget-content .treeview .api-function-link a {
+    color: #01639D;
+}
 #api_sub .ui-widget-content .treeview .selected {
     color: black;
     font-weight: bold;

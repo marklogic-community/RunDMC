@@ -46,10 +46,24 @@ declare variable $Posts         := ml:docs((xs:QName("Post"), xs:QName("Announce
 (: Get a complete listing of all live documents on DMC (used by retroactive comment script) :)
 declare variable $live-dmc-documents := cts:search(collection(), ml:matches-dmc-page());
 
-(: This creates a dependency on apidoc. :)
-declare variable $server-version-nodes          := u:get-doc("/apidoc/config/server-versions.xml")/*/*:version;
-declare variable $server-versions               := $server-version-nodes/@number;
-declare variable $default-version as xs:string  := $server-version-nodes[@default eq 'yes']/@number ;
+(: TODO This creates a dependency on apidoc.
+ : TODO consider putting server-versions into a namespace.
+ :)
+declare variable $server-version-nodes := u:get-doc(
+  "/apidoc/config/server-versions.xml")/*/*:version;
+declare variable $server-versions as xs:string+ := $server-version-nodes/@number;
+declare variable $default-version as xs:string  := $server-version-nodes[
+  @default eq 'yes']/@number ;
+(: Limit to available versions.
+ : There should always be an index.xml if a version is loaded.
+ :)
+declare variable $server-versions-available as xs:string+ := cts:uris(
+  (), (),
+  cts:document-query(
+    $server-versions ! concat('/apidoc/', ., '/index.xml')))
+! replace(., '/apidoc/(\d+\.\d+)/index.xml', '$1') ;
+declare variable $server-version-nodes-available as element()+ := (
+  $server-version-nodes[@number = $server-versions-available]) ;
 
 declare variable $all-category-tags as xs:string* := cts:collection-match("category/*");
 
@@ -247,6 +261,21 @@ as document-node()*
   for $name in $f/*/api:function[1]/@name/string()[.]
   order by $index, $lib, $name
   return $f
+};
+
+declare function ml:get-matching-messages(
+  $name as xs:string,
+  $version as xs:string)
+as document-node()*
+{
+  (: A valid message will always match this pattern. :)
+  let $name := upper-case(normalize-space($name))[.][
+    matches(., '^[A-Z]+-[A-Z]+$')]
+  let $query := $name ! cts:and-query(
+    (cts:directory-query('/apidoc/'||$version||'/messages/', 'infinity'),
+      cts:element-attribute-value-query(
+        QName('', "message"), QName('', "id"), $name)))
+  return $query ! cts:search(collection(), $query, 'unfiltered')
 };
 
 (: Look for a message guide section with the requested version and id.

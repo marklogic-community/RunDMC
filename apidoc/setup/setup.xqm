@@ -206,6 +206,41 @@ as element(apidoc:function)*
     not($verb) or @http-verb eq $verb]
 };
 
+(: If a function has an equivalent in another mode,
+ : link to it.
+ :)
+declare function stp:function-links(
+  $version as xs:string,
+  $mode as xs:string,
+  $function as element(apidoc:function))
+as element(api:function-link)*
+{
+  switch($mode)
+  (: REST endpoints never have equivalents in other modes. :)
+  case $api:MODE-REST return ()
+  (: JavaScript functions always have an XPath equivalent. :)
+  case $api:MODE-JAVASCRIPT return element api:function-link {
+    attribute mode { $api:MODE-XPATH },
+    attribute fullname {
+      api:fixup-fullname($function, $api:MODE-XPATH) },
+    api:internal-uri(
+      $version,
+      api:external-uri($function, $api:MODE-XPATH)) }
+  (: JavaScript functions sometimes have a JavaScript equivalent. :)
+  case $api:MODE-XPATH return (
+    if (number($version) lt 8 or not(
+        api:function-appears-in-mode(
+          $function, $api:MODE-JAVASCRIPT))) then ()
+    else element api:function-link {
+      attribute mode { $api:MODE-JAVASCRIPT },
+      attribute fullname {
+        api:fixup-fullname($function, $api:MODE-JAVASCRIPT) },
+      api:internal-uri(
+        $version,
+        api:external-uri($function, $api:MODE-JAVASCRIPT)) })
+  default return stp:error('UNEXPECTED', $mode)
+};
+
 declare function stp:function-extract(
   $version as xs:string,
   $function as element(apidoc:function),
@@ -253,6 +288,7 @@ as element(api:function-page)*
     map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
     element api:function-name { api:fixup-fullname($function, $mode) },
+    stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };
 

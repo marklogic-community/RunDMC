@@ -287,8 +287,27 @@
     <xsl:value-of select="$local"/>
   </xsl:template>
 
+  <xsl:template name="did-you-mean-undo">
+    <xsl:param name="q"/>
+    <xsl:if test="$q">
+      <xsl:text>Did you mean to search for the term </xsl:text>
+      <!-- p=1 effectively forces the search -->
+      <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
+        <xsl:value-of select="$q"/>
+      </a>
+      <xsl:text>?</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template mode="page-content"
                 match="message">
+    <xsl:if test="$q">
+      <p class="didYouMean">
+        <xsl:call-template name="did-you-mean-undo">
+          <xsl:with-param name="q" select="$q"/>
+        </xsl:call-template>
+      </p>
+    </xsl:if>
     <xsl:apply-templates select="*"/>
   </xsl:template>
 
@@ -336,6 +355,12 @@
         <xsl:copy-of select="v:entry-description($VERSION-FINAL, .)"/>
       </div>
     </li>
+  </xsl:template>
+
+  <xsl:template mode="print-friendly-link" match="*">
+    <a href="?print=yes" target="_blank" class="printerFriendly">
+      <img src="/apidoc/images/printerFriendly.png"/>
+    </a>
   </xsl:template>
 
   <!-- Guide title -->
@@ -452,6 +477,22 @@
     </tr>
   </xsl:template>
 
+  <xsl:template mode="function-links"
+                match="api:function-page[api:function-link]">
+    <div class="api-function-links">
+      <xsl:for-each select="api:function-link">
+        <a class="api-function-link"
+           href="{ $version-prefix }/{ @fullname/string() }">
+          <xsl:value-of select="if (@mode = $api:MODE-XPATH) then 'XQuery'
+                                else 'JavaScript'"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="@fullname/string()"/>
+        </a>
+        <xsl:text> </xsl:text>
+      </xsl:for-each>
+    </div>
+  </xsl:template>
+
   <xsl:template mode="page-content"
                 match="api:function-page">
     <xsl:if test="$show-alternative-functions or $q">
@@ -471,32 +512,21 @@
           </xsl:for-each>
           <xsl:text>? </xsl:text>
         </xsl:if>
-        <xsl:if test="$q">
-          <xsl:text>Did you mean to search for the term </xsl:text>
-          <!-- p=1 effectively forces the search -->
-          <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
-            <xsl:value-of select="$q"/>
-          </a>
-          <xsl:text>?</xsl:text>
-        </xsl:if>
+        <xsl:call-template name="did-you-mean-undo">
+          <xsl:with-param name="q" select="$q"/>
+        </xsl:call-template>
       </p>
     </xsl:if>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <xsl:apply-templates mode="print-friendly-link" select="."/>
+      <xsl:apply-templates mode="function-links" select="."/>
       <h1>
         <xsl:apply-templates mode="api-page-heading" select="."/>
       </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
   </xsl:template>
-
-  <xsl:template mode="print-friendly-link" match="*">
-    <a href="?print=yes" target="_blank" class="printerFriendly">
-      <img src="/apidoc/images/printerFriendly.png"/>
-    </a>
-  </xsl:template>
-
 
   <xsl:template match="api:function">
     <xsl:apply-templates mode="function-signature" select="."/>
