@@ -782,6 +782,9 @@ as xs:string
   case 'element()+'
   case 'node()*'
   case 'node()+' return 'ValueIterator'
+
+  case '(element()|map:map)?' return 'Object?'
+
   default return concat(
     api:javascript-type(
       replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
