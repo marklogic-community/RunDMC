@@ -209,6 +209,20 @@ as element(apidoc:function)*
 (: If a function has an equivalent in another mode,
  : link to it.
  :)
+declare function stp:function-link(
+  $version as xs:string,
+  $mode as xs:string,
+  $function as element(apidoc:function))
+as element(api:function-link)?
+{
+  if (($mode eq $api:MODE-JAVASCRIPT and number($version) lt 8.0)
+    or not(api:function-appears-in-mode($function, $mode))) then ()
+  else element api:function-link {
+    attribute mode { $mode },
+    attribute fullname { api:fixup-fullname($function, $mode) },
+    api:internal-uri($version, api:external-uri($function, $mode)) }
+};
+
 declare function stp:function-links(
   $version as xs:string,
   $mode as xs:string,
@@ -219,25 +233,11 @@ as element(api:function-link)*
   (: REST endpoints never have equivalents in other modes. :)
   case $api:MODE-REST return ()
   (: JavaScript functions usually have an XPath equivalent. :)
-  case $api:MODE-JAVASCRIPT return element api:function-link {
-    attribute mode { $api:MODE-XPATH },
-    attribute fullname {
-      api:fixup-fullname($function, $api:MODE-XPATH) },
-    api:internal-uri(
-      $version,
-      api:external-uri($function, $api:MODE-XPATH)) }
+  case $api:MODE-JAVASCRIPT return stp:function-link(
+    $version, $api:MODE-XPATH, $function)
   (: XPath functions sometimes have a JavaScript equivalent. :)
-  case $api:MODE-XPATH return (
-    if (number($version) lt 8 or not(
-        api:function-appears-in-mode(
-          $function, $api:MODE-JAVASCRIPT))) then ()
-    else element api:function-link {
-      attribute mode { $api:MODE-JAVASCRIPT },
-      attribute fullname {
-        api:fixup-fullname($function, $api:MODE-JAVASCRIPT) },
-      api:internal-uri(
-        $version,
-        api:external-uri($function, $api:MODE-JAVASCRIPT)) })
+  case $api:MODE-XPATH return stp:function-link(
+    $version, $api:MODE-JAVASCRIPT, $function)
   default return stp:error('UNEXPECTED', $mode)
 };
 
