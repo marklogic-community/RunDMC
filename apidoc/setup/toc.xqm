@@ -1159,15 +1159,15 @@ as element(toc:node)*
 
 declare function toc:render-summary(
   $version as xs:string,
+  $mode as xs:string,
   $summary as element(apidoc:summary))
 as element()
 {
-  stp:fixup($version, $summary, 'toc')
-  ! (
-    (: Wrap summary content with <p> if not already present.
-     : The wrapper might be in several namespaces.
-     :)
-    if (not($summary[not(xhtml:p|apidoc:p|p)])) then .
+  (: Wrap summary content with <p> if not already present.
+   : The wrapper might be in several namespaces.
+   :)
+  stp:fixup($version, $summary, ($mode, 'toc'))
+  ! (if (not($summary[not(xhtml:p|apidoc:p|p)])) then .
     else <p xmlns="http://www.w3.org/1999/xhtml">{ . }</p>)
 };
 
@@ -1213,7 +1213,7 @@ as element(toc:node)
         $subcat, $main-subcategory-lib, $secondary-lib),
       element toc:intro {
         toc:render-summary(
-          $version,
+          $version, $mode,
           toc:get-summary-for-category(
             $version, $mode, $prefixes-not-builtin,
             $cat, $subcat, $main-subcategory-lib)) },
@@ -1300,7 +1300,7 @@ as element(toc:node)+
         else toc:category-page-title($cat, $single-lib-for-category, ()),
         element toc:intro {
           toc:render-summary(
-            $version,
+            $version, $mode,
             toc:get-summary-for-category(
               $version, $mode, $prefixes-not-builtin,
               $cat, (), $single-lib-for-category)) }),
@@ -1497,7 +1497,7 @@ as element(toc:node)
         toc:lib-sub-pages($mode, $m-mode-functions, $by-bucket, $lib),
         (: Summary may be empty. :)
         toc:get-summary-for-lib(
-          $version, $lib)/toc:render-summary($version, .),
+          $version, $lib)/toc:render-summary($version, $mode, .),
         api:namespace($lib)/summary-addendum/node()
       },
       comment { 'Current lib:', $lib },
