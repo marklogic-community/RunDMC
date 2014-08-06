@@ -165,6 +165,8 @@
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Node.js
         API. </guide>
+      <guide url-name="jsref" source-name="jsref">
+         TODO PLACEHOLDER </guide>
       <guide url-name="java" source-name="java-client">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Java
