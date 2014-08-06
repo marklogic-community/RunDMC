@@ -1361,7 +1361,7 @@ as element(toc:node)+
   order by index-of($forced-order, $b) ascending, $b
   return toc:node(
     $bucket-id, $b, (),
-    true(), (), ('sub-control'),
+    false(), (), ('open', 'sub-control'),
     (attribute mode { $mode },
       let $m-cats := map:get($m-buckets, $b)
       for $cat in map:keys($m-cats)
