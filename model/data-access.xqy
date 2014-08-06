@@ -179,25 +179,23 @@ declare private function ml:query-for-doc-element($qname) as cts:query? {
 
 
 (: Used as the additional query passed to search:search() :)
-declare function ml:search-corpus-query($preferred-version as xs:string) {
-  cts:and-query((
-      cts:or-query((
-          ml:live-document-query($preferred-version),
-          cts:directory-query((concat('/apidoc/', $preferred-version, '/javadoc/'), (: see apidoc/setup/load-static-docs.xqy :)
-              concat('/apidoc/', $preferred-version, '/dotnet/'),
-              concat('/apidoc/', $preferred-version, '/cpp/'),
-              '/pubs/code/'
-            ),
-            'infinity'
-          )
-          )),
+declare function ml:search-corpus-query(
+  $versions as xs:string+)
+{
+  cts:and-query(
+    (cts:or-query(
+        (ml:live-document-query($versions),
+          cts:directory-query(
+            ('/pubs/code/',
+              (: See apidoc/setup/load-static-docs.xqy :)
+              for $v in $versions
+              for $location in ('/cpp/', '/dotnet/', '/javadoc/')
+              return concat('/apidoc/', $v, $location)),
+            'infinity'))),
       cts:not-query(
-        ml:has-attribute("hide-from-search","yes")
-      ),
-      cts:not-query(
-        cts:collection-query("hide-from-search")
-      )
-      ))
+        cts:or-query(
+          (ml:has-attribute("hide-from-search", "yes"),
+            cts:collection-query("hide-from-search")))) ))
 };
 
 declare private function ml:has-attribute($att-name, $value) {
@@ -207,28 +205,33 @@ declare private function ml:has-attribute($att-name, $value) {
       ))
 };
 
-(: Query for all live DMC and AMC documents :)
-declare private function ml:live-document-query($preferred-version as xs:string) {
-  cts:or-query((
-      (: Pages on developer.marklogic.com :)
-      ml:matches-dmc-page(),
-      (: Pages on docs.marklogic.com, specific to the given docs version :)
-      ml:matches-api-page($preferred-version)
-      ))
+(: Match only the supplied server version(s). :)
+declare private function ml:matches-api-page($versions as xs:string+)
+{
+  cts:and-query(
+    (cts:directory-query(
+        $versions ! concat("/apidoc/", ., "/"),
+        "infinity"),
+      (: Consider re-visiting this;
+       : can we avoid having to enumerate the element names here?
+       :)
+      cts:element-query(
+        (xs:QName("api:function-page"),
+          xs:QName("api:help-page"),
+          QName("","guide"),
+          QName("","chapter")),
+        cts:and-query(()))))
 };
 
-(: Search only goes across the preferred server version :)
-declare private function ml:matches-api-page($preferred-version as xs:string) {
-  cts:and-query((
-      cts:directory-query(concat("/apidoc/",$preferred-version,"/"), "infinity"),
-      (: Consider re-visiting this; can we avoid having to enumerate the element names here? :)
-      cts:or-query((
-          cts:element-query(xs:QName("api:function-page"),cts:and-query(())),
-          cts:element-query(xs:QName("api:help-page"),cts:and-query(())),
-          cts:element-query(QName("","guide")  ,cts:and-query(())),
-          cts:element-query(QName("","chapter"),cts:and-query(()))
-          ))
-      ))
+(: Query for all live DMC and AMC documents :)
+declare private function ml:live-document-query(
+  $versions as xs:string+)
+{
+  cts:or-query(
+    (: Pages on developer.marklogic.com :)
+    (ml:matches-dmc-page(),
+      (: Pages on docs.marklogic.com, specific to the given docs version :)
+      ml:matches-api-page($versions)))
 };
 
 declare function ml:get-matching-functions(
