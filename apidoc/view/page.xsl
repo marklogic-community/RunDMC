@@ -470,6 +470,9 @@
   </xsl:template>
 
   <xsl:template mode="function-links"
+                match="api:function-page"/>
+
+  <xsl:template mode="function-links"
                 match="api:function-page[api:function-link]">
     <div class="api-function-links">
       <xsl:for-each select="api:function-link">
