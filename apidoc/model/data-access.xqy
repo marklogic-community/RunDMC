@@ -571,57 +571,76 @@ as xs:string?
     @name eq $resource-name]/complexType/@name
 };
 
+declare function api:has-mode-class(
+  $e as element(),
+  $mode as xs:string+)
+as xs:boolean
+{
+  (: Test for mode-specific content, ignoring unknown classes.
+   :)
+  let $includes := xs:NMTOKENS($e/@class)[. eq $api:MODES]
+  return empty($includes) or $includes = $mode
+};
+
 declare function api:function-appears-in-mode(
   $function as element(apidoc:function),
   $mode as xs:string)
 as xs:boolean
 {
-  switch($mode)
-  case $MODE-JAVASCRIPT return (
-    $function/@bucket = (
-      'MarkLogic Built-In Functions',
-      'W3C-Standard Functions'))
-  case $MODE-REST return starts-with($function/@name, '/')
-  case $MODE-XPATH return not(starts-with($function/@name, '/'))
-  default return error((), 'UNEXPECTED', ($mode))
+  (switch($mode)
+    case $MODE-JAVASCRIPT return (
+      $function/@bucket = (
+        'MarkLogic Built-In Functions',
+        'W3C-Standard Functions'))
+    case $MODE-REST return starts-with($function/@name, '/')
+    case $MODE-XPATH return not(starts-with($function/@name, '/'))
+    default return error((), 'UNEXPECTED', ($mode)))
+  (: Also apply class exclusion rules. :)
+  and api:has-mode-class($function, $mode)
 };
 
 (: Used by extract-functions.xsl
- : This fakes mode=javascript so we can test for it on.
+ : This fakes mode=javascript so we can test for it later on.
  :)
 declare function api:function-fake-javascript(
   $function as element(apidoc:function))
 as element(apidoc:function)?
 {
-  if (not(api:function-appears-in-mode($function, $MODE-JAVASCRIPT))) then ()
-  else element apidoc:function {
+  element apidoc:function {
     attribute mode { $MODE-JAVASCRIPT },
     $function/@*,
     $function/node() }
 };
 
-(: Used by extract-functions.xsl :)
+(: Used by stp:function-docs to determine which functions are in a mode. :)
 declare function api:module-extractable-functions(
   $module as element(apidoc:module),
-  $mode as xs:string?)
+  $mode as xs:string)
 as element(apidoc:function)*
 {
+  if (not(api:has-mode-class($module, $mode))) then () else
   switch($mode)
-  (: Fake a raw doc, creating all the necessary context.  :)
+  (: Fake a raw module doc, creating all the necessary context.
+   : Return the fake module only if it contains at least one function.
+   :)
   case $MODE-JAVASCRIPT return document {
     element apidoc:module {
       attribute xml:base { base-uri($module) },
       attribute mode { $MODE-JAVASCRIPT },
       api:function-fake-javascript(
         $module/apidoc:function[
-          not(@name eq '')
-          and not(api:fixup-fullname(., ()) =
-            preceding-sibling::apidoc:function/api:fixup-fullname(., ()))])
+          not(@name eq '') ][
+          not(api:fixup-fullname(., ()) =
+            preceding-sibling::apidoc:function/api:fixup-fullname(., ())) ][
+          api:function-appears-in-mode(., $mode) ])
       } }/apidoc:module/apidoc:function
-  default return $module/apidoc:function[
-    not(@name eq '')
-    and not(api:fixup-fullname(., ()) =
-      preceding-sibling::apidoc:function/api:fixup-fullname(., ()))]
+  case $MODE-REST
+  case $MODE-XPATH return $module/apidoc:function[
+    not(@name eq '') ][
+    not(api:fixup-fullname(., ()) =
+      preceding-sibling::apidoc:function/api:fixup-fullname(., ())) ][
+    api:function-appears-in-mode(., $mode) ]
+  default return error((), 'UNEXPECTED', ('Unexpected mode', $mode))
 };
 
 declare function api:external-uri-with-prefix(

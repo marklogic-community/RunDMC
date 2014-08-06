@@ -63,6 +63,38 @@ as xs:string
     ".html")
 };
 
+declare function toc:functions-map(
+  $version as xs:string,
+  $m as map:map)
+as empty-sequence()
+{
+  let $functions-all as item()+ := api:functions-all($version)
+  for $f in $functions-all
+  let $fp := $f/api:function-page
+  let $f1 := $fp/api:function[1]
+  let $mode as xs:string := $fp/@mode
+  let $m-mode := map:get($m, $mode)
+  let $bucket as xs:string := $f1/@bucket
+  let $cat as xs:string := $f1/@category
+  let $subcat as xs:string? := $f1/@subcategory
+  let $catsubcat as xs:string := $cat||'#'||$subcat
+  let $lib as xs:string := $f1/@lib
+  let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
+  let $m-catsubcat := map:get($m-mode, $MAP-KEY-CATSUBCAT)
+  let $m-lib := map:get($m-mode, $MAP-KEY-LIB)
+  let $m-cat := map:get($m-bucket, $bucket)
+  let $_ := (
+    if (exists($m-cat)) then map:put(
+      $m-cat, $cat, (map:get($m-cat, $cat), $f1))
+    else map:put(
+      $m-bucket, $bucket, map:new(map:entry($cat, $f1))))
+  let $_ := map:put(
+    $m-catsubcat, $catsubcat, (map:get($m-catsubcat, $catsubcat), $f1))
+  let $_ := map:put(
+    $m-lib, $lib, (map:get($m-lib, $lib), $f1))
+  return ()
+};
+
 (: Prestructured map by mode,
  : containing maps by bucket, category+subcategory, and lib.
  : This allows easy access to all the grouping info
@@ -82,31 +114,10 @@ as map:map
           map:entry($MAP-KEY-CATSUBCAT, map:map()),
           map:entry($MAP-KEY-LIB, map:map()))))
     return ())
-  let $_ := (
-    for $f in api:functions-all($version)
-    let $fp := $f/api:function-page
-    let $f1 := $fp/api:function[1]
-    let $mode as xs:string := $fp/@mode
-    let $m-mode := map:get($m, $mode)
-    let $bucket as xs:string := $f1/@bucket
-    let $cat as xs:string := $f1/@category
-    let $subcat as xs:string? := $f1/@subcategory
-    let $catsubcat as xs:string := $cat||'#'||$subcat
-    let $lib as xs:string := $f1/@lib
-    let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
-    let $m-catsubcat := map:get($m-mode, $MAP-KEY-CATSUBCAT)
-    let $m-lib := map:get($m-mode, $MAP-KEY-LIB)
-    let $m-cat := map:get($m-bucket, $bucket)
-    let $_ := (
-      if (exists($m-cat)) then map:put(
-        $m-cat, $cat, (map:get($m-cat, $cat), $f1))
-      else map:put(
-        $m-bucket, $bucket, map:new(map:entry($cat, $f1))))
-    let $_ := map:put(
-      $m-catsubcat, $catsubcat, (map:get($m-catsubcat, $catsubcat), $f1))
-    let $_ := map:put(
-      $m-lib, $lib, (map:get($m-lib, $lib), $f1))
-    return ())
+  let $_ := toc:functions-map($version, $m)
+  let $_ := $api:MODES ! (
+    if (map:count(map:get(map:get($m, .), $MAP-KEY-BUCKET))) then ()
+    else stp:error('BAD', ('No functions for mode', .)))
   return $m
 } ;
 
@@ -1318,7 +1329,7 @@ as element(toc:node)+
         $in-this-category, $single-lib-for-category, $sub-categories)))
 };
 
-(: Build toc:nodes for functions by category.
+(: Build toc nodes for functions by category.
  :)
 declare function toc:functions-by-bucket(
   $version as xs:string,
@@ -1328,13 +1339,16 @@ declare function toc:functions-by-bucket(
 as element(toc:node)+
 {
   if (not($stp:DEBUG)) then () else stp:debug(
-    'toc:functions-by-bucket', ($version, $mode)),
-  let $m-buckets as map:map := map:get($m-mode-functions, $MAP-KEY-BUCKET)
-  (: TODO move this into configuration. :)
+    'toc:functions-by-bucket',
+    ($version, $mode,
+      map:count($m-mode-functions),
+      map:count(map:get($m-mode-functions, $MAP-KEY-BUCKET)))),
+  (: TODO Move this into configuration. :)
   let $forced-order := (
     'MarkLogic Built-In Functions',
     'XQuery Library Modules', 'CPF Functions',
     'W3C-Standard Functions', 'REST Resources API')
+  let $m-buckets as map:map := map:get($m-mode-functions, $MAP-KEY-BUCKET)
   for $b in map:keys($m-buckets)
   (: bucket node
    : ID for function buckets is the display name minus spaces.
@@ -1602,8 +1616,7 @@ as element(toc:node)+
       $entry,
       'AllFunctionsByCat-'||$mode,
       $title,
-      (
-        element toc:title { $title },
+      (element toc:title { $title },
         element toc:intro { $entry/apidoc:intro/node() },
         $m-mode-categories)),
 

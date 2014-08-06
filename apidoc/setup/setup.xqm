@@ -218,7 +218,7 @@ as element(api:function-link)*
   switch($mode)
   (: REST endpoints never have equivalents in other modes. :)
   case $api:MODE-REST return ()
-  (: JavaScript functions always have an XPath equivalent. :)
+  (: JavaScript functions usually have an XPath equivalent. :)
   case $api:MODE-JAVASCRIPT return element api:function-link {
     attribute mode { $api:MODE-XPATH },
     attribute fullname {
@@ -226,7 +226,7 @@ as element(api:function-link)*
     api:internal-uri(
       $version,
       api:external-uri($function, $api:MODE-XPATH)) }
-  (: JavaScript functions sometimes have a JavaScript equivalent. :)
+  (: XPath functions sometimes have a JavaScript equivalent. :)
   case $api:MODE-XPATH return (
     if (number($version) lt 8 or not(
         api:function-appears-in-mode(
@@ -262,9 +262,14 @@ as element(api:function-page)*
       or count($children) eq 1) then ()
     else stp:error(
       'UNEXPECTED', (count($children), xdmp:describe($children))))
-  (: Allow empty, generic, or mode-specific return type, but no more than one. :)
+  let $_ := (
+    if (api:has-mode-class($function, $mode)) then ()
+    else stp:error('NOTINMODE', ($mode, xdmp:quote($function))))
+  (: Allow no more than one matching return type.
+   : Exclusion of non-matching return types happens in fixup-element.
+   :)
   let $_ := zero-or-one(
-    $function/apidoc:return[not(@class) or xs:NMTOKENS(@class) = $mode])
+    $function/apidoc:return[ api:has-mode-class(., $mode) ])
   let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:function-extract',
     ('mode', $mode,
@@ -280,6 +285,8 @@ as element(api:function-page)*
    : However this means that the resulting xml:base values may conflict,
    : so we have to check $uris-seen.
    :)
+  let $_ := if (not($seen)) then () else stp:info(
+    'Skipping duplicate function', $internal-uri)
   where not($seen)
   return element api:function-page {
     attribute xml:base { $internal-uri },
@@ -292,21 +299,20 @@ as element(api:function-page)*
     stp:fixup($version, $children, $mode) }
 };
 
+(: Extract functions from a raw module page. :)
 declare function stp:function-docs(
   $version as xs:string,
   $doc as document-node())
 as element(api:function-page)*
 {
-  (: create XQuery/XSLT function pages - and REST? :)
   stp:function-extract(
     $version,
-    api:module-extractable-functions($doc/apidoc:module, $api:MODE-XPATH),
-    map:map()),
-  (: create JavaScript function pages :)
-  if (number($version) lt 8) then ()
-  else stp:function-extract(
-    $version,
-    api:module-extractable-functions($doc/apidoc:module, $api:MODE-JAVASCRIPT),
+    (api:module-extractable-functions(
+      $doc/apidoc:module, ($api:MODE-REST, $api:MODE-XPATH)),
+      (: create JavaScript function pages :)
+      if (number($version) lt 8) then ()
+      else api:module-extractable-functions(
+        $doc/apidoc:module, $api:MODE-JAVASCRIPT)),
     map:map())
 };
 
@@ -1287,12 +1293,10 @@ declare function stp:fixup-element(
   $context as xs:string*)
 as element()?
 {
-  (: Hide mode-specific content unless the correct mode is set.
-   : Ignore unknown classes.
+  (: Hide mode-specific content from different modes.
    :)
-  let $includes := xs:NMTOKENS($e/@class)[. eq $api:MODES]
-  where empty($includes) or $includes = $context
-  return element { stp:fixup-element-name($e) } {
+  if (not(api:has-mode-class($e, $context))) then ()
+  else element { stp:fixup-element-name($e) } {
     stp:fixup-attribute($version, $e/@*, $context),
     stp:fixup-attributes-new($e, $context),
     stp:fixup-children($version, $e, $context) }
