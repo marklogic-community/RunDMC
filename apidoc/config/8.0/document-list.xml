@@ -165,8 +165,6 @@
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Node.js
         API. </guide>
-      <guide url-name="jsref" source-name="jsref">
-         TODO PLACEHOLDER </guide>
       <guide url-name="java" source-name="java-client">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Java
@@ -230,9 +228,9 @@
         server architecture.
       </guide>
       <guide url-name="jsref" source-name="jsref">A condensed overview
-	of Server-Side JavaScript in MarkLogic.  Contains reference material 
-	for MarkLogic-specific JavaScript objects available to server-side
-	programmers.
+        of Server-Side JavaScript in MarkLogic.  Contains reference material
+        for MarkLogic-specific JavaScript objects available to server-side
+        programmers.
       </guide>
       <guide url-name="xquery" source-name="xquery">A condensed overview of
         the XQuery language, including a description of the three XQuery
