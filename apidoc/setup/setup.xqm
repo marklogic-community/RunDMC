@@ -1086,10 +1086,9 @@ as attribute()?
           $anchor), 1))
 
     (: If a fragment id contains a colon, it is a link to a function page.
-     : TODO JavaScript handle fn.abs etc.
-     : Change, e.g., #xdmp:tidy to /xdmp:tidy
+     : #xdmp:tidy => /xdmp:tidy or /xdmp.tidy
      :)
-    else if (starts-with($a, '#') and contains($a, ':')) then translate(
+    else if (matches($a, '^#([\w-]+)[:\.]([\w-]+)$')) then translate(
       $a, '#', '/')
 
     (: A fragment link sometimes points elsewhere in the same apidoc:module,
