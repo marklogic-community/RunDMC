@@ -164,4 +164,22 @@ as xs:string?
   default return ()
 };
 
+declare function v:toc-references(
+  $version-prefix as xs:string,
+  $content as document-node())
+as node()*
+{
+  (: Used in js/toc_filter.js to determine which TOC section to load. :)
+  <input id="functionPageBucketId" type="hidden"
+  value="{ $content/api:function-page/api:function[1]/@bucket
+  | $content/api:list-page/@category-bucket }"/>,
+  <input id="tocSectionLinkSelector" type="hidden"
+  value="{ api:toc-section-link-selector(
+  $content/*, $version-prefix) }"/>,
+  <input id="isUserGuide" type="hidden"
+  value="{ exists($content/(guide|chapter)) }"/>,
+  <input id="toc_url" type="hidden"
+  value="{ api:toc-uri() }"/>
+};
+
 (: apidoc/view/view.xqm :)

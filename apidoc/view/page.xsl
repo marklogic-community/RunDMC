@@ -121,6 +121,7 @@
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
+          <xsl:copy-of select="v:toc-references($version-prefix, .)"/>
           <xsl:call-template name="page-content"/>
         </div>
       </xsl:when>
@@ -196,19 +197,6 @@
   </xsl:template>
 
   <xsl:template match="ml:api-toc">
-    <!--
-        Used in js/toc_filter.js to determine which TOC section to load.
-    -->
-    <input id="functionPageBucketId" type="hidden"
-           value="{ $content/api:function-page/api:function[1]/@bucket
-                  | $content/api:list-page/@category-bucket }"/>
-    <input id="tocSectionLinkSelector" type="hidden"
-           value="{ api:toc-section-link-selector(
-                  $content/*, $version-prefix) }"/>
-    <input id="isUserGuide" type="hidden"
-           value="{ exists($content/(guide|chapter)) }"/>
-    <input id="toc_url" type="hidden"
-           value="{ api:toc-uri() }"/>
     <div id="apidoc_toc">
       <xsl:comment>TOC goes here</xsl:comment>
     </div>
@@ -301,6 +289,7 @@
 
   <xsl:template mode="page-content"
                 match="message">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <xsl:if test="$q">
       <p class="didYouMean">
         <xsl:call-template name="did-you-mean-undo">
@@ -313,6 +302,7 @@
 
   <xsl:template mode="page-content"
                 match="api:docs-page">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <h1>
@@ -383,6 +373,7 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="api:help-page">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <xsl:apply-templates mode="print-friendly-link" select="."/>
@@ -394,6 +385,7 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="api:list-page">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <div>
       <xsl:apply-templates mode="pjax_enabled-class-att" select="."/>
       <xsl:apply-templates mode="print-friendly-link" select="."/>
@@ -495,6 +487,7 @@
 
   <xsl:template mode="page-content"
                 match="api:function-page">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <xsl:if test="$show-alternative-functions or $q">
       <xsl:variable name="other-matches"
                     select="ml:get-matching-functions(
@@ -777,6 +770,7 @@
   <xsl:template mode="comment-section" match="/guide | /chapter"/>
 
   <xsl:template mode="page-content" match="/guide | /chapter">
+    <xsl:copy-of select="v:toc-references($version-prefix, root())"/>
     <div class="userguide pjax_enabled">
       <xsl:choose>
         <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->

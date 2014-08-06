@@ -20,25 +20,34 @@ $(function() {
         timeout: 4000,
         success: function() {
             // Update view when the pjax call originated from a link in the body
-            console.log("pjax_enabled fired ok");
-            tocUpdateFromPageContent(); } });
+            console.log("pjax_enabled A fired ok", this);
+            // The tocSectionLinkSelector may have changed.
+            toc_init_globals();
+            updateTocForSelection(); } });
 
     $("#api_sub .pjax_enabled a:not(.external)").pjax({
         container: '#page_content',
         timeout: 4000,
         success: function() {
             // Update view when a TOC link was clicked
-            console.log("pjax_enabled fired ok"); } });
+            console.log("pjax_enabled B fired ok"); } });
 
     // Ensure that non-fragment TOC links highlight appropriate TOC links.
     $(document).on('pjax:end', function(event, options) {
-        var target = $(event.relatedTarget)
+        var target = $(event.relatedTarget);
+        //console.log("pjax:end", event, options, target);
         if (target.parents("#api_sub").length) {
             console.log("Calling showInTOC via pjax:end handler.", target[0]);
             showInTOC(target); }});
 
     breadcrumbNode = $("#breadcrumbDynamic");
     if (!breadcrumbNode.length) console.log("No breadcrumb!");
+
+    toc_init_globals();
+});
+
+function toc_init_globals() {
+    console.log("toc_init_globals");
 
     // Initialize values from page.xsl content.
     functionPageBucketId = $("#functionPageBucketId");
@@ -52,7 +61,7 @@ $(function() {
     tocSectionLinkSelector = $("#tocSectionLinkSelector");
     if (!tocSectionLinkSelector.length) console.log("No tocSectionLinkSelector!");
     tocSectionLinkSelector = tocSectionLinkSelector.val();
-});
+};
 
 function toc_init() {
     console.log("toc_init");
@@ -293,15 +302,22 @@ function loadTocSection(index, tocSection) {
     $tocSection.find(".hitarea").trigger("click");
 }
 
-
 // Called only from updateTocForSelection
 function waitToShowInTOC(tocSection, sleepMillis) {
-  console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
-  if (!sleepMillis) sleepMillis = 125;
+    console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
+    if (!sleepMillis) sleepMillis = 125;
 
-  // Repeatedly check to see if the TOC section has finished loading
-  // Once it has, highlight the current page
-  if (tocSection.hasClass("loaded")) {
+    // Repeatedly check to see if the TOC section has finished loading
+    // Once it has, highlight the current page
+    if (! tocSection.hasClass("loaded")) {
+        console.log("waitToShowInTOC still waiting for",
+                    tocSection[0].id, sleepMillis);
+        // back off and retry
+        setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
+                   sleepMillis);
+        return;
+    }
+
     console.log("waitToShowInTOC loaded", tocSection);
 
     clearTimeout(waitToShowInTOC);
@@ -314,13 +330,13 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
     var locationHref = location.href.toLowerCase();
     var current = tocSection.find("a").filter(function() {
-      var thisHref = this.href.toLowerCase();
-      var hrefToCompare = stripChapterFragment
+        var thisHref = this.href.toLowerCase();
+        var hrefToCompare = stripChapterFragment
             ? thisHref.replace(/#chapter/,"")
             : thisHref;
-      var result = hrefToCompare == locationHref;
-      //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
-      return result;
+        var result = hrefToCompare == locationHref;
+        //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
+        return result;
     });
 
     // E.g., when hitting the Back button and reaching "All functions"
@@ -332,21 +348,13 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     // Also show the currentPage link (possibly distinct from guide fragment link)
     $("#api_sub a.currentPage").removeClass("currentPage");
     $("#api_sub a[href='" + window.location.pathname + "']")
-      .addClass("currentPage");
+        .addClass("currentPage");
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-      console.log("waitToShowInTOC calling showInTOC as fallback.");
-      showInTOC($("#api_sub a.currentPage"))
+        console.log("waitToShowInTOC calling showInTOC as fallback.");
+        showInTOC($("#api_sub a.currentPage"))
     }
-  }
-  else {
-    console.log("waitToShowInTOC still waiting for",
-                tocSection[0].id, sleepMillis);
-    // back off and retry
-    setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
-               sleepMillis);
-  }
 }
 
 // Called via (edited) pjax module on popstate
@@ -504,15 +512,6 @@ function updateTocForSelection() {
     console.log("updateTocForSelection loading to", tocSection);
     loadTocSection(0, tocSection);
     waitToShowInTOC(tocSection);
-}
-
-function tocUpdateFromPageContent()
-{
-    // Load the TOC section for the current page
-    var tocSection = $(tocSectionLinkSelector).first().parent();
-    console.log('tocUpdateFromPageContent',
-                tocSectionLinkSelector, tocSection);
-    updateTocForSelection();
 }
 
 function hasText(item,text) {
