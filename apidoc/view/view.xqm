@@ -196,4 +196,15 @@ as node()*
   v:input-hidden('toc_url', api:toc-uri())
 };
 
+declare function v:search-path(
+  $url as xs:string,
+  $q as xs:string,
+  $version as xs:string?)
+as xs:string
+{
+  $url||'?q='||$q||(
+    if (not($version)) then ''
+    else '&amp;v='||$version)
+};
+
 (: apidoc/view/view.xqm :)

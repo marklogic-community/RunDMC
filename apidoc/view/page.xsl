@@ -283,8 +283,9 @@
     <xsl:param name="q"/>
     <xsl:if test="$q">
       <xsl:text>Did you mean to search for the term </xsl:text>
-      <!-- p=1 effectively forces the search -->
-      <a href="{$srv:search-page-url}?q={$q}&amp;p=1">
+      <!-- Force the search with p=1. -->
+      <a href="{v:search-path($srv:search-page-url, $q, $VERSION)
+               }&amp;p=1">
         <xsl:value-of select="$q"/>
       </a>
       <xsl:text>?</xsl:text>
