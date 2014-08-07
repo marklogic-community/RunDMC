@@ -637,15 +637,15 @@ as empty-sequence()
     treat as xs:string+)
 };
 
-(: Delete all docs for a version. :)
-declare function stp:docs-delete($version as xs:string)
+(: Delete all static docs for a version. :)
+declare function stp:static-docs-delete($version as xs:string)
 as empty-sequence()
 {
-  stp:info('stp:docs-delete', $version),
+  stp:info('stp:static-docs-delete', $version),
   let $dir := concat('/media/apidoc/', $version, '/')
   let $_ := xdmp:directory-delete($dir)
   let $_ := stp:info(
-    'stp:docs-delete', ($version, $dir, 'ok', xdmp:elapsed-time()))
+    'stp:static-docs-delete', ($version, $dir, 'ok', xdmp:elapsed-time()))
   return ()
 };
 
@@ -661,20 +661,42 @@ as empty-sequence()
     true())
 };
 
+(: Delete all api docs for a version. :)
+declare function stp:api-docs-delete($version as xs:string)
+as empty-sequence()
+{
+  stp:info('stp:api-docs-delete', $version),
+  let $dir := api:version-dir($version)
+  let $_ := xdmp:directory-delete($dir)
+  let $_ := stp:info(
+    'stp:api-docs-delete', ($version, $dir, 'ok', xdmp:elapsed-time()))
+  return ()
+};
+
 (: TODO move to toc.xqm? :)
-declare function stp:toc-delete(
+declare function stp:toc-docs-delete(
   $version as xs:string)
 as empty-sequence()
 {
-  stp:info('stp:toc-delete', $version),
-  let $dir := toc:directory-uri($version)
-  let $prefix := string(doc(api:toc-uri-location($version)))
-  for $toc-parts-dir in cts:uri-match(concat($dir, "*.html/"))
-  let $main-toc := substring($toc-parts-dir,1,string-length($toc-parts-dir)-1)
-  where not(starts-with($toc-parts-dir,$prefix))
-  return (
-    xdmp:document-delete($main-toc),
-    xdmp:directory-delete($toc-parts-dir))
+  stp:info('stp:toc-docs-delete', $version),
+  let $uri-toc := toc:directory-uri($version)
+  let $_ := xdmp:directory-delete($uri-toc)
+  let $uri-toc-location := api:toc-uri-location($version)
+  let $_ := doc($uri-toc-location) ! xdmp:document-delete($uri-toc-location)
+  let $_ := stp:info(
+    'stp:toc-docs-delete',
+    ($version, $uri-toc, $uri-toc-location, 'ok', xdmp:elapsed-time()))
+  return ()
+};
+
+declare function stp:clean(
+  $version as xs:string)
+{
+  stp:static-docs-delete($version),
+  stp:api-docs-delete($version),
+  stp:toc-docs-delete($version),
+  if ($version ne $api:DEFAULT-VERSION) then ()
+  else stp:toc-docs-delete('default')
 };
 
 declare function stp:node-rewrite-namespace(
@@ -1013,7 +1035,9 @@ as element()+
   stp:info('stp:list-pages-render', ("ok", xdmp:elapsed-time()))
 };
 
-(: Generate and insert a list page for each TOC container :)
+(: Generate and insert a list page for each TOC container.
+ : TOC must exist.
+ :)
 declare function stp:list-pages-render(
   $version as xs:string)
 as empty-sequence()

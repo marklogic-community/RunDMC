@@ -21,10 +21,6 @@ declare variable $ZIP as xs:string := xdmp:get-request-field(
   'zip') ;
 
 declare variable $ACTIONS as xs:string+ := (
-  (: Optionally delete everything first (if clean=yes is specified) :)
-  if (not($CLEAN)) then ()
-  else ("delete-raw-docs", "delete-docs")
-  ,
   if ($ACTION) then $ACTION
   else (
     (: Load and build everything :)
@@ -37,7 +33,6 @@ declare variable $ACTIONS as xs:string+ := (
 
 declare variable $ACTIONS-NEEDING-XSD := (
   "create-toc",
-  "delete-old-toc",
   'setup',
   'setup-guides',
   ()) ;
@@ -61,6 +56,11 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
 
 (: This may take some time to run :)
 xdmp:set-request-time-limit(1800),
+
+(: Optionally delete everything first (if clean=yes is specified) :)
+if (not($CLEAN)) then ()
+else xdmp:invoke('clean.xqy', (xs:QName('VERSION'), $VERSION))
+,
 
 (: as well as these params,
  : used in load-raw-docs.xqy and load-static-docs.xqy

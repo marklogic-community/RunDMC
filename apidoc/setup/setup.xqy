@@ -14,14 +14,15 @@ declare variable $VARS := (
 (
   (: Extract the functions from the raw docs database and prepare for our use :)
   "pull-function-docs.xqy",
+
   (: Create the XML TOC as a subsequent transaction,
    : since it depends on the documents inserted above.
    :)
   "create-toc.xqy",
+
   (: Create the HTML TOC based on the XML TOC we just created :)
   "render-toc.xqy",
-  (: Clean up the old HTML TOC(s) :)
-  "delete-old-toc.xqy",
+
   (: Create list pages in a subsequent transaction,
    : since they depend on both the inserted documents and the XML TOC.
    :)
