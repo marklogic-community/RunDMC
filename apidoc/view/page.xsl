@@ -123,6 +123,7 @@
           </title>
           <xsl:copy-of select="v:toc-references($version-prefix, .)"/>
           <xsl:call-template name="page-content"/>
+          <xsl:call-template name="apidoc-copyright"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
