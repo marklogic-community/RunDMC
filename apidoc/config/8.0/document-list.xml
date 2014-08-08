@@ -36,7 +36,31 @@
 <docs xmlns="http://marklogic.com/xdmp/apidoc"
       title="All Documentation">
 
-  <group toc-title="Server-Side APIs">
+  <group toc-title="Server-Side JavaScript APIs">
+    <entry title="JavaScript Function Reference"
+           toc-title="JavaScript Functions By Category (%d)"
+           href="/js/all"
+           type="function-reference"
+           all-functions="true"
+           all-functions-title="JavaScript Functions by Name (%d)"
+           mode="javascript">
+      <description>
+	API documentation for the Server-Side MarkLogic built-in 
+	extensions to the JavaScript standard functions.
+      </description>
+      <intro>
+        The following table lists all Server-Side JavaScript functions
+        in the MarkLogic API reference,
+        including all built-in functions available to JavaScript.
+      </intro>
+      <path>/pubs/raw/apidoc/</path>
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="jsref" duplicate="true"/>
+    </entry>
+    </group>
+
+    <group toc-title="Server-Side XQuery APIs">
     <entry title="XQuery/XSLT Function Reference"
            toc-title="XQuery/XSLT Functions By Category (%d)"
            href="/all"
@@ -58,25 +82,8 @@
       </intro>
       <path>/pubs/raw/apidoc/</path>
     </entry>
-
-    <entry title="JavaScript Function Reference"
-           toc-title="JavaScript Functions By Category (%d)"
-           href="/js/all"
-           type="function-reference"
-           all-functions="true"
-           all-functions-title="JavaScript Functions by Name (%d)"
-           mode="javascript">
-      <description>
-        API documentation for the MarkLogic built-in and module extensions
-        to the JavaScript standard functions.
-      </description>
-      <intro>
-        The following table lists all JavaScript functions
-        in the MarkLogic API reference,
-        including both built-in functions
-        and functions implemented in library modules.
-      </intro>
-      <path>/pubs/raw/apidoc/</path>
+    <entry toc-title="Related Guides">
+      <guide url-name="xquery" duplicate="true"/>
     </entry>
   </group>
 
