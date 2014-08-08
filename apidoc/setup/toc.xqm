@@ -117,6 +117,7 @@ as map:map
   let $_ := toc:functions-map($version, $m)
   let $_ := $api:MODES ! (
     if (map:count(map:get(map:get($m, .), $MAP-KEY-BUCKET))) then ()
+    else if (. eq $api:MODE-JAVASCRIPT and number($version) lt 8.0) then ()
     else stp:error('BAD', ('No functions for mode', .)))
   return $m
 } ;
