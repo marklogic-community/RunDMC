@@ -35,9 +35,10 @@
 
   <xsl:variable name="preferred-version-cookie"
                 select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
+  <!-- #198 The version cookie is set, but never honored. -->
   <xsl:variable name="preferred-version"
                 select="if ($set-version) then $set-version
-                        else if ($preferred-version-cookie)
+                        else if (0 and $preferred-version-cookie)
                         then $preferred-version-cookie
                         else $ml:default-version"/>
 
