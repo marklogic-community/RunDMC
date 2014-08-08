@@ -36,7 +36,31 @@
 <docs xmlns="http://marklogic.com/xdmp/apidoc"
       title="All Documentation">
 
-  <group toc-title="Server-Side APIs">
+  <group toc-title="Server-Side JavaScript APIs">
+    <entry title="JavaScript Function Reference"
+           toc-title="JavaScript Functions By Category (%d)"
+           href="/js/all"
+           type="function-reference"
+           all-functions="true"
+           all-functions-title="JavaScript Functions by Name (%d)"
+           mode="javascript">
+      <description>
+	API documentation for the Server-Side MarkLogic built-in 
+	extensions to the JavaScript standard functions.
+      </description>
+      <intro>
+        The following table lists all Server-Side JavaScript functions
+        in the MarkLogic API reference,
+        including all built-in functions available to JavaScript.
+      </intro>
+      <path>/pubs/raw/apidoc/</path>
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="jsref" duplicate="true"/>
+    </entry>
+    </group>
+
+    <group toc-title="Server-Side XQuery APIs">
     <entry title="XQuery/XSLT Function Reference"
            toc-title="XQuery/XSLT Functions By Category (%d)"
            href="/all"
@@ -58,78 +82,8 @@
       </intro>
       <path>/pubs/raw/apidoc/</path>
     </entry>
-
-    <entry title="JavaScript Function Reference"
-           toc-title="JavaScript Functions By Category (%d)"
-           href="/js/all"
-           type="function-reference"
-           all-functions="true"
-           all-functions-title="JavaScript Functions by Name (%d)"
-           mode="javascript">
-      <description>
-        API documentation for the MarkLogic built-in and module extensions
-        to the JavaScript standard functions.
-      </description>
-      <intro>
-        The following table lists all JavaScript functions
-        in the MarkLogic API reference,
-        including both built-in functions
-        and functions implemented in library modules.
-      </intro>
-      <path>/pubs/raw/apidoc/</path>
-    </entry>
-  </group>
-
-  <group toc-title="REST API">
-    <entry title="REST API Reference"
-           toc-title="All REST Resources"
-           href="/REST"
-           type="function-reference"
-           mode="REST">
-      <description>
-        This API reference documents the REST API for creating client
-        applications without a need to write or understand XQuery as well as
-        the REST resources available on port 8002 for monitoring, managing,
-        and packaging.
-      </description>
-    </entry>
-
     <entry toc-title="Related Guides">
-      <guide url-name="rest-dev" duplicate="true"/>
-      <guide url-name="monitoring" duplicate="true"/>
-    </entry>
-  </group>
-
-  <group title="Java API Reference">
-    <entry title="javadoc for MarkLogic Client API for Java"
-           href="/javadoc/client/index.html"
-           type="external">
-      API documentation for the MarkLogic Java API.
-    </entry>
-    <entry toc-title="Related Guides">
-      <guide url-name="java" duplicate="true"/>
-    </entry>
-  </group>
-
-  <group title="Node.js API Reference">
-    <entry toc-title="jsdoc for Node.js Client API"
-           title="jsdoc for Node.js Client API"
-           href="/jsdoc/index.html"
-           type="external">
-      API documentation for the MarkLogic Node.js Client API.
-    </entry>
-    <entry toc-title="Related Guides">
-      <guide url-name="node-dev" duplicate="true"/>
-    </entry>
-  </group>
-
-  <group>
-    <entry title="ZIP File of All MarkLogic Product Documentation"
-           href="/MarkLogic_8_pubs.zip"
-           type="download">
-      <description>
-        A zip file containing this documentation.
-      </description>
+      <guide url-name="xquery" duplicate="true"/>
     </entry>
   </group>
 
@@ -275,8 +229,60 @@
 
   </group>
 
-  <group toc-title="Other Docs">
+  <group toc-title="REST API">
+    <entry title="REST API Reference"
+           toc-title="All REST Resources"
+           href="/REST"
+           type="function-reference"
+           mode="REST">
+      <description>
+        This API reference documents the REST API for creating client
+        applications without a need to write or understand XQuery as well as
+        the REST resources available on port 8002 for monitoring, managing,
+        and packaging.
+      </description>
+    </entry>
 
+    <entry toc-title="Related Guides">
+      <guide url-name="rest-dev" duplicate="true"/>
+      <guide url-name="monitoring" duplicate="true"/>
+    </entry>
+  </group>
+
+  <group title="Java API Reference">
+    <entry title="javadoc for MarkLogic Client API for Java"
+           href="/javadoc/client/index.html"
+           type="external">
+      API documentation for the MarkLogic Java API.
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="java" duplicate="true"/>
+    </entry>
+  </group>
+
+  <group title="Node.js API Reference">
+    <entry toc-title="jsdoc for Node.js Client API"
+           title="jsdoc for Node.js Client API"
+           href="/jsdoc/index.html"
+           type="external">
+      API documentation for the MarkLogic Node.js Client API.
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="node-dev" duplicate="true"/>
+    </entry>
+  </group>
+
+  <group>
+    <entry title="ZIP File of All MarkLogic Product Documentation"
+           href="/MarkLogic_8_pubs.zip"
+           type="download">
+      <description>
+        A zip file containing this documentation.
+      </description>
+    </entry>
+  </group>
+
+  <group toc-title="Other Docs">
     <entry title="XCC API Reference"
            toc-title="XCC">
       <entry title="XCC Javadoc (online)"
@@ -316,7 +322,6 @@
            href="/admin-help"
            type="help">
     </entry>
-
   </group>
 
 </docs>

@@ -144,13 +144,12 @@ ol ol {
 }
 #api_sub {
     width: 25%;
-    height: 87%;
     color: #333333;
     font-size: 0.9em;
     position: absolute;
     left: 16px;
     top: 48px;
-    bottom: auto;
+    bottom: 0;
     margin: 0;
     padding: 0;
 }
