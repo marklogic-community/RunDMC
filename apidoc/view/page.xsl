@@ -688,7 +688,9 @@
   </xsl:template>
 
   <xsl:template match="api:usage">
-    <h3>Usage Notes</h3>
+    <xsl:if test="empty(preceding-sibling::api:usage)">
+      <h3>Usage Notes</h3>
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
