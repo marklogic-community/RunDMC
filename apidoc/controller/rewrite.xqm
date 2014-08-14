@@ -159,7 +159,7 @@ as empty-sequence()
 };
 
 declare function m:query-string(
-  $field-names as xs:string+)
+  $field-names as xs:string)
 as xs:string?
 {
   string-join(
