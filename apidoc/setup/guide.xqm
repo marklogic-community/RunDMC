@@ -343,7 +343,7 @@ as element()?
   (: Since we rewrite all links to point to the last anchor,
    : it is safe to drop any anchors that is not last.
    :)
-  if ($e[@ID]/preceding-sibling::A) then ()
+  if ($e[@ID]/following-sibling::A) then ()
   (: Default :)
   else element a {
     (: Anchors may have @ID or @href or both. :)
