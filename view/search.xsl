@@ -274,7 +274,11 @@
                     select="if (ends-with($q-version-raw, '.0'))
                             then $q-version-raw
                             else concat($q-version-raw, '.0')"/>
-      <xsl:if test="$q-version = $ml:server-versions-available">
+      <xsl:if test="$q-version = $ml:server-versions-available
+                    and not(
+                      $q-version eq $set-version
+                      or (not($set-version)
+                        and $q-version eq $ml:default-version))">
         <xsl:variable name="q-clean" select="replace($q, $pat, '$2')"/>
         <p class="didYouMean">
           <xsl:text>Did you mean to search for </xsl:text>
