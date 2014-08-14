@@ -892,20 +892,27 @@
     </li>
   </xsl:template>
 
-  <!-- Automatically convert italicized guide references to links, but not the
-       ones that are immediately preceded by "in the", in which case we
-       assume a more specific section link was already provided.
+  <!--
+      Automatically convert italicized guide references to links,
+      unless they are immediately preceded by "in the".
+      Then we assume a more specific section link was already provided.
   -->
-  <xsl:template mode="guide"
-                match="x:em[
-                       v:config-for-title(
-                       ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS) ][
-                       not(preceding-sibling::node()[1][self::text() ][
-                       normalize-space(.) eq 'in the']) ]">
-    <a href="{$version-prefix}{
-             v:config-for-title(., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)/@href}">
-      <xsl:next-match/>
-    </a>
+  <xsl:template mode="guide" match="x:em">
+    <xsl:variable name="config-for-title"
+                  select="v:config-for-title(
+                          ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
+    <xsl:choose>
+      <xsl:when test="$config-for-title and not(
+                      preceding-sibling::node()[1][self::text() ][
+                      normalize-space(.) eq 'in the'])">
+        <a href="{$version-prefix}{ $config-for-title/@href }">
+          <xsl:next-match/>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Elements that need attribute rewrites. -->
