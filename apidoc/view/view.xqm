@@ -41,8 +41,8 @@ as xs:string
 declare function v:string-normalize($str as xs:string)
 as xs:string
 {
-  normalize-space(
-    lower-case(
+  lower-case(
+    normalize-space(
       translate($str, '&#160;', ' ')))
 };
 
@@ -178,6 +178,8 @@ declare function v:input-hidden(
 };
 
 declare function v:toc-references(
+  $version as xs:string,
+  $version-specified as xs:string,
   $version-prefix as xs:string,
   $content as document-node())
 as node()*
@@ -193,7 +195,7 @@ as node()*
   v:input-hidden(
     'isUserGuide',
     exists($content/(guide|chapter))),
-  v:input-hidden('toc_url', api:toc-uri())
+  v:input-hidden('toc_url', api:toc-uri($version, $version-specified))
 };
 
 declare function v:search-path(

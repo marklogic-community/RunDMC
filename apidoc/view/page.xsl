@@ -121,7 +121,9 @@
           <title>
             <xsl:apply-templates mode="page-title" select="*"/>
           </title>
-          <xsl:copy-of select="v:toc-references($version-prefix, .)"/>
+          <xsl:copy-of
+              select="v:toc-references(
+                      $VERSION-FINAL, $VERSION, $version-prefix, .)"/>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="apidoc-copyright"/>
         </div>
@@ -133,7 +135,9 @@
   </xsl:template>
 
   <xsl:template match="ml:toc-state" name="toc-state">
-    <xsl:copy-of select="v:toc-references($version-prefix, $content)"/>
+    <xsl:copy-of
+        select="v:toc-references(
+                $VERSION-FINAL, $VERSION, $version-prefix, $content)"/>
   </xsl:template>
 
   <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
@@ -892,25 +896,34 @@
        ones that are immediately preceded by "in the", in which case we
        assume a more specific section link was already provided.
   -->
-  <xsl:template mode="guide" match="x:em[v:config-for-title(
-                                    ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS) ][
-          not(preceding-sibling::node()[1][self::text()][
-          normalize-space(.) eq 'in the'])]">
+  <xsl:template mode="guide"
+                match="x:em[
+                       v:config-for-title(
+                       ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS) ][
+                       not(preceding-sibling::node()[1][self::text() ][
+                       normalize-space(.) eq 'in the']) ]">
     <a href="{$version-prefix}{
              v:config-for-title(., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)/@href}">
       <xsl:next-match/>
     </a>
   </xsl:template>
 
-  <!-- Boilerplate copying code -->
-  <xsl:template mode="guide" match="node()">
-    <xsl:copy-of select="."/>
-  </xsl:template>
-
-  <xsl:template mode="guide" match="*">
+  <!-- Elements that need attribute rewrites. -->
+  <xsl:template mode="guide" match="x:img">
     <xsl:copy>
       <xsl:copy-of select="v:guide-attributes(.)"/>
       <xsl:apply-templates mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!--
+      Boilerplate copying code.
+      This is a hotspot for large guides, eg /guide/messages/XDMP-en.xml
+  -->
+  <xsl:template mode="guide" match="*">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates mode="#current" select="node()"/>
     </xsl:copy>
   </xsl:template>
 
