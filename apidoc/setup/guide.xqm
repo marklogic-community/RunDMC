@@ -334,6 +334,26 @@ as element()+
         normalize-space($e) } })
 };
 
+(: This function converts a guide section id
+ : to an appropriate href value.
+ :)
+declare function guide:heading-2message-href(
+  $uri as xs:string,
+  $id as xs:string)
+as xs:string
+{
+  (: Non-message sections get a fragment reference. :)
+  if (not(contains($uri, '/messages/'))) then ('#'||$id)
+  (: #277 Message sections link to something like
+   : /8.0/messages/XDMP-en/XDMP-BAD
+   :)
+  else (
+    replace(
+      $uri, '^/apidoc/(\d+\.\d+)/guide/(messages/[A-Z]+-[a-z]+).xml$',
+      '/$1/$2')||'/'
+    ||$id)
+};
+
 declare function guide:anchor(
   $raw-docs as document-node()*,
   $fully-resolved-top-level-heading-references as xs:string*,

@@ -102,13 +102,16 @@
     <xsl:variable name="id">
       <xsl:value-of select="normalize-space(.)"/>
     </xsl:variable>
+    <xsl:variable name="href">
+      <xsl:value-of select="guide:heading-2message-href($OUTPUT-URI, $id)"/>
+    </xsl:variable>
     <!--
         Beware of changing this structure without updating
         the toc.xqm toc:guide-* functions, which depend on it.
     -->
     <a id="{$id}"/>
     <h3>
-      <a href="#{$id}" class="sectionLink">
+      <a href="{$href}" class="sectionLink">
         <xsl:value-of select="$id"/>
       </a>
     </h3>
