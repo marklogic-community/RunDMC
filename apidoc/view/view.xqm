@@ -191,10 +191,10 @@ as node()*
       | $content/api:list-page/@category-bucket)[1]),
   v:input-hidden(
     'tocSectionLinkSelector',
-    api:toc-section-link-selector($content/*, $version-prefix)),
+    api:toc-section-link-selector($version, $version-prefix, $content/*)),
   v:input-hidden(
     'isUserGuide',
-    exists($content/(guide|chapter))),
+    exists($content/(chapter|guide|message))),
   v:input-hidden('toc_url', api:toc-uri($version, $version-specified))
 };
 

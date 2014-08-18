@@ -654,13 +654,15 @@ as xs:string
 
 (: Used by page.xsl for toc_filter.js :)
 declare function api:toc-section-link-selector(
-  $e as element(),
-  $version-prefix as xs:string)
+  $version as xs:string,
+  $version-prefix as xs:string,
+  $e as element())
 as xs:string
 {
-  if (1) then () else xdmp:log(
+  if (0) then () else xdmp:log(
     text {
-      'api:toc-section-link-selector', xdmp:describe($e), $version-prefix }),
+      'api:toc-section-link-selector', $version, $version-prefix,
+      xdmp:describe($e), 'guide-uri', xdmp:describe($e/@guide-uri/string()) }),
   typeswitch($e)
   (: function lib page link :)
   case element(api:function-page) return (
@@ -670,14 +672,6 @@ as xs:string
       case $MODE-JAVASCRIPT return '/js/'
       default return '/')
     ||$e/api:function[1]/@lib
-    ||"']")
-  case element(guide) return (
-    ".scrollable_section a[href='"
-    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
-    ||"']")
-  case element(chapter) return (
-    ".scrollable_section a[href='"
-    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
     ||"']")
   case element(api:help-page) return (
     '#'
@@ -689,8 +683,21 @@ as xs:string
       default return '#')
     ||$e/@container-toc-section-id
     ||' >:first-child')
-  (: Message page for error code, without any TOC data. :)
-  case element(message) return $e/@id
+  case element(chapter) return (
+    ".scrollable_section a[href='"
+    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
+    ||"']")
+  case element(guide) return (
+    ".scrollable_section a[href='"
+    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
+    ||"']")
+  (: Message page for error code, without any TOC data.
+   : #277 Display TOC for corresponding guide page.
+   :)
+  case element(message) return (
+    ".scrollable_section a[href='"
+    ||api:external-uri-with-prefix($version-prefix, $e/@guide-uri)
+    ||"']")
   (: On the main docs page, just let the first tab be selected by default. :)
   case element(api:docs-page) return ''
   default return error((), 'UNEXPECTED', xdmp:describe($e))

@@ -386,6 +386,10 @@ as node()+
   let $base-uri := replace(
     replace($uri, '/guide/', '/'),
     '\.xml$', '/')
+  (: #277 We want the same value that the guide pages use,
+   : so we can find the right TOC entry at display time.
+   :)
+  let $guide-uri as xs:string := $guide/@guide-uri
   (: TODO remove hack for duplicate ids in this content. :)
   let $seen := map:map()
   for $message in $guide//xhtml:div[xhtml:h3]
@@ -397,6 +401,7 @@ as node()+
     ! element message {
       attribute xml:base { . },
       attribute id { $id },
+      attribute guide-uri { $guide-uri },
       $message })
 };
 

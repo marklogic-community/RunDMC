@@ -322,13 +322,29 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
     clearTimeout(waitToShowInTOC);
 
-    var currentHref = location.href.toLowerCase();
-    //console.log("waitToShowInTOC", tocSection, "currentHref=" + currentHref);
-    var stripChapterFragment = isUserGuide && currentHref.indexOf("#") == -1;
+    // Do not include query string. Do not include fragment.
+    var locationHref = location.protocol+'//'+location.host+location.pathname;
+    locationHref = locationHref.toLowerCase();
+    //console.log("waitToShowInTOC", "locationHref=" + locationHref);
+    var stripChapterFragment = isUserGuide && locationHref.indexOf("#") == -1;
+    var stripMessage = isUserGuide && locationHref.indexOf('/messages/') != -1;
+    var stripVersion = isUserGuide;
 
     // TODO needs special handling for /7.0/fn:abs vs /fn:abs ?
 
-    var locationHref = location.href.toLowerCase();
+    //console.log("waitToShowInTOC", "stripMessage=" + stripMessage,
+    //            "locationHref=" + locationHref);
+    if (stripMessage) locationHref = locationHref.replace(
+            /\/messages\/[a-z]+-[a-z]+\/[a-z]+-[a-z]+$/,
+        '/guide/messages');
+
+    //console.log("waitToShowInTOC", "stripVersion=" + stripVersion,
+    //            "locationHref=" + locationHref);
+    if (stripVersion) locationHref = locationHref.replace(
+            /\/(\d+\.\d+)\/(\w+)\//,
+            /guide/);
+
+    console.log("waitToShowInTOC filtering for", locationHref);
     var current = tocSection.find("a").filter(function() {
         var thisHref = this.href.toLowerCase();
         var hrefToCompare = stripChapterFragment
@@ -342,7 +358,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     // E.g., when hitting the Back button and reaching "All functions"
     $("#api_sub a.selected").removeClass("selected");
 
-    //console.log("waitToShowInTOC found", current.length, current);
+    console.log("waitToShowInTOC found", current.length);
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
@@ -352,7 +368,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-        console.log("waitToShowInTOC calling showInTOC as fallback.");
+        console.log("waitToShowInTOC: no selection. Calling showInTOC as fallback.");
         showInTOC($("#api_sub a.currentPage"))
     }
 }
