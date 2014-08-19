@@ -36,7 +36,7 @@
 <docs xmlns="http://marklogic.com/xdmp/apidoc"
       title="All Documentation">
 
-  <group toc-title="Server-Side APIs">
+      <group toc-title="XQuery/XSLT APIs">
     <entry title="XQuery/XSLT Function Reference"
            toc-title="XQuery/XSLT Functions By Category (%d)"
            href="/all"
