@@ -45,26 +45,10 @@ declare %t:case function t:render-0-empty()
       node() }
     ,
 
-    <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
-      <div id="toc" class="toc">
-        <div id="toc_content">
-          <div id="tocs_all" class="toc_section">
-            <div class="toc_select">
+<div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
       Select section:
-      <select id="toc_select"></select>
-            </div>
-            <div class="scrollable_section">
-              <input id="config-filter" name="config-filter" class="config-filter"/>
-              <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>
-              <div id="apidoc_tree_container" class="pjax_enabled">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="splitter"></div>
-      </div>
-      <div id="tocPartsDir" style="display:none;">toc-test/</div>
-    </div>
+      <select id="toc_select"></select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
+
   )
 };
 
@@ -84,22 +68,13 @@ declare %t:case function t:render-1-simple()
       node() }
     ,
 
-    <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
+<div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
       Select section:
       <select id="toc_select">
-                <option class="toc_select_option" value="n1" selected="true">node 1</option>
-                <option class="toc_select_option" value="n2">node 2</option>
-                <option class="toc_select_option" value="n3">node 3</option>
-              </select></div><div class="scrollable_section">
-<input id="config-filter" name="config-filter" class="config-filter"/>
-<img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>
-<div id="apidoc_tree_container" class="pjax_enabled"><ul id="n1" style="display: block;" class="treeview apidoc_tree">
-                  <li class="collapsible loaded initialized" id="n1"><span>node 1</span></li>
-                </ul><ul id="n2" style="display: none;" class="treeview apidoc_tree">
-                  <li class="collapsible loaded initialized" id="n2"><span>node 2</span></li>
-                </ul><ul id="n3" style="display: none;" class="treeview apidoc_tree">
-                  <li class="collapsible lastCollapsible loaded initialized" id="n3"><span>node 3</span></li>
-                </ul></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
+            <option class="toc_select_option" value="n1" selected="true">node 1</option>
+            <option class="toc_select_option" value="n2">node 2</option>
+            <option class="toc_select_option" value="n3">node 3</option>
+          </select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"><ul id="n1" style="display: block;" class="treeview apidoc_tree"></ul><ul id="n2" style="display: none;" class="treeview apidoc_tree"></ul><ul id="n3" style="display: none;" class="treeview apidoc_tree"></ul></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
 
   )
 };
@@ -112,10 +87,9 @@ declare %t:case function t:render-1-simple-href()
     <node id="n2" display="node 2" open="true"></node>
     <node id="n3" display="node 3" open="true"></node>
   </root>
-  ! at:equal(
+  ! at:empty(
     toc:render($VERSION, 'toc-test', '/3.14', .)
-    //xh:a/@href/string(),
-    ('/3.14/node/1'))
+    //xh:a[@href])
 };
 
 declare %t:case function t:render-1-simple-uri()
@@ -170,16 +144,14 @@ declare %t:case function t:render-async-2-placeholder()
   ! at:equal(
     toc:render($VERSION, 'toc-test', '/3.14', .)[
       base-uri(.) eq 'toc-test']
-    //xh:li[@id eq 'node-2']
+    //xh:ul[@id eq 'node-2']
     ,
-    <li class="expandable lastExpandable hasChildren async" id="node-2"
-      xmlns="http://www.w3.org/1999/xhtml">
-      <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div>
-      <span>node 2</span>
-      <ul style="display: none;">
-        <li><span class="placeholder">&#160;</span></li>
-      </ul>
-    </li>
+
+<ul id="node-2" style="display: none;" class="treeview apidoc_tree" xmlns="http://www.w3.org/1999/xhtml">
+  <li class="loaded initialized" id="n1_1"><span>node 2.1</span></li>
+  <li class="last loaded initialized" id="n1_2"><span>node 2.2</span></li>
+</ul>
+
   )
 };
 
@@ -221,13 +193,11 @@ declare %t:case function t:render-2-async-xdmp()
     //xh:div[@id = 'apidoc_tree_container']
 ,
 
-    <div id="apidoc_tree_container" class="pjax_enabled" xmlns="http://www.w3.org/1999/xhtml"><ul id="n1" style="display: block;" class="treeview apidoc_tree">
-        <li class="expandable lastExpandable loaded initialized" id="n1"><div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><a href="/3.14/node/1">node 1</a><ul style="display: none;">
-            <li class="expandable lastExpandable hasChildren async" id="js_xdmp_n9b9475fceb6b577b"><div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><a href="/3.14/js/xdmp" title="http://marklogic.com/xdmp">xdmp.<span class="function_count"> (337)</span></a><ul style="display: none;">
+  <div id="apidoc_tree_container" class="pjax_enabled" xmlns="http://www.w3.org/1999/xhtml"><ul id="n1" style="display: block;" class="treeview apidoc_tree">
+    <li class="expandable lastExpandable hasChildren async" id="js_xdmp_n9b9475fceb6b577b"><div class="hitarea expandable-hitarea lastExpandable-hitarea"></div><a href="/3.14/js/xdmp" title="http://marklogic.com/xdmp">xdmp.<span class="function_count"> (337)</span></a><ul style="display: none;">
         <li><span class="placeholder">&#160;</span></li>
-              </ul></li>
-          </ul></li>
-      </ul></div>
+      </ul></li>
+  </ul></div>
 
   )
 };
