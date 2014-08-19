@@ -200,4 +200,14 @@ declare %t:case function t:javascript-name()
     api:javascript-name('foo-bar-baz'))
 };
 
+declare %t:case function t:function-names-REST()
+{
+  at:equal(
+    stp:function-names(
+      element apidoc:function {
+        attribute http-verb { 'POST' },
+        attribute name { '/foo/bar' } }),
+    'POST:/foo/bar')
+};
+
 (: test/apidoc-setup.xqm :)

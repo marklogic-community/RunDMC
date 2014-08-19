@@ -1359,17 +1359,18 @@ declare function stp:function-names(
   $f as element(apidoc:function))
 as xs:string+
 {
-  api:fixup-fullname($f, stp:function-modes($f))
+  api:fixup-fullname($f, stp:function-modes($f), true())
 };
 
 declare function stp:zip-function-names(
   $zip as binary())
 as xs:string*
 {
+  (: Ignore function elements with missing or empty names. :)
   stp:function-names(
     xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
     /xdmp:zip-get($zip, .)
-    /apidoc:module/apidoc:function)
+    /apidoc:module/apidoc:function[@name/string()])
 };
 
 declare function stp:zipfile-function-names(

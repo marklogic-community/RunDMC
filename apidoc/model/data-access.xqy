@@ -371,31 +371,53 @@ as xs:string
  : Example output: "/v1/rest-apis/[name] (GET)"
  :)
 declare function api:REST-fullname(
-  $e as element(apidoc:function))
+  $e as element(apidoc:function),
+  $prefix as xs:boolean)
+as xs:string
 {
-  concat(
+  if ($prefix) then concat(
+    ($e/@http-verb, 'GET')[1],
+    ':',
+    api:translate-REST-resource-name($e/@name))
+  else concat(
     api:translate-REST-resource-name($e/@name),
     ' (',
     ($e/@http-verb, 'GET')[1],
     ')')
 };
 
+declare function api:REST-fullname(
+  $e as element(apidoc:function))
+as xs:string
+{
+  api:REST-fullname($e, false())
+};
+
 (: The fullname is a derived value :)
 declare function api:fixup-fullname(
   $function as element(apidoc:function),
-  $mode as xs:string)
+  $mode as xs:string,
+  $prefix as xs:boolean)
 as xs:string
 {
   (: REST docs (lib="manage" in the raw source)
    : should not have a namespace prefix in the full name.
    :)
   switch($mode)
-  case $MODE-REST return api:REST-fullname($function)
+  case $MODE-REST return api:REST-fullname($function, $prefix)
   case $MODE-JAVASCRIPT return concat(
     $function/@lib, '.', api:javascript-name($function/@name))
   (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
     $function/@lib, ':', $function/@name)
+};
+
+declare function api:fixup-fullname(
+  $function as element(apidoc:function),
+  $mode as xs:string)
+as xs:string
+{
+  api:fixup-fullname($function, $mode, false())
 };
 
 (: As long as we have complete information,
