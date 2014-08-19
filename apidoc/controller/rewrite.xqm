@@ -159,7 +159,7 @@ as empty-sequence()
 };
 
 declare function m:query-string(
-  $field-names as xs:string)
+  $field-names as xs:string*)
 as xs:string?
 {
   string-join(
@@ -263,7 +263,7 @@ as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
     'redirect-for-message', ('path', $path, 'id', $id)),
-  m:redirect($path||'?'||m:query-string())
+  m:redirect($path||(m:query-string()[.] ! ('?'||.)))
 };
 
 (: Redirect to the right page.
@@ -278,7 +278,7 @@ as xs:string
   let $path := replace($path, $id, $lib||'-en/'||$id)
   let $_ := if (not($DEBUG)) then () else m:debug(
     'redirect-for-message', ('path', $path, 'lib', $lib, 'id', $id))
-  return m:redirect($path||'?'||m:query-string())
+  return m:redirect($path||(m:query-string()[.] ! ('?'||.)))
 };
 
 declare function m:redirect-for-version($version as xs:string)
