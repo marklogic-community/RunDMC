@@ -162,8 +162,11 @@
 
   <!-- Links in content (including guide content) may need to be rewritten
        to include the current explicitly specified version -->
-  <xsl:template mode="#default guide" match="x:a/@href[starts-with(.,'/')]">
-    <xsl:attribute name="href" select="concat($version-prefix,.)"/>
+  <xsl:template mode="#default guide"
+                match="x:a/@href[starts-with(.,'/')]
+                       [not(starts-with(., $version-prefix))]">
+    <xsl:attribute name="href"
+                   select="concat($version-prefix,.)"/>
   </xsl:template>
 
   <!-- Make search stick to the current API version -->
