@@ -408,6 +408,11 @@ function showInTOC(a) {
         console.log("showInTOC: no link!");
         return;
     }
+    // This should not happen, but control the damage.
+    if (a.length > 1) {
+        console.log("showInTOC: multiple links, using first", a);
+        a = a.slice(0, 1);
+    }
 
     // If there is a different TOC section visible, hide it.
     var treeVisible = $(".apidoc_tree:visible");
