@@ -323,12 +323,12 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     clearTimeout(waitToShowInTOC);
 
     // Do not include query string. Do not include fragment.
-    var locationHref = location.protocol+'//'+location.host+location.pathname;
+    var locationHref = location.protocol
+        + '//' + location.host+location.pathname;
     locationHref = locationHref.toLowerCase();
     //console.log("waitToShowInTOC", "locationHref=" + locationHref);
     var stripChapterFragment = isUserGuide && locationHref.indexOf("#") == -1;
     var stripMessage = isUserGuide && locationHref.indexOf('/messages/') != -1;
-    var stripVersion = isUserGuide;
 
     // TODO needs special handling for /7.0/fn:abs vs /fn:abs ?
 
@@ -338,19 +338,24 @@ function waitToShowInTOC(tocSection, sleepMillis) {
             /\/messages\/[a-z]+-[a-z]+\/[a-z]+-[a-z]+$/,
         '/guide/messages');
 
-    //console.log("waitToShowInTOC", "stripVersion=" + stripVersion,
-    //            "locationHref=" + locationHref);
-    if (stripVersion) locationHref = locationHref.replace(
-            /\/(\d+\.\d+)\/(\w+)\//,
-            /guide/);
+    //console.log("waitToShowInTOC", "locationHref=" + locationHref);
+    // The TOC locations are a little inconsistent,
+    // so look for the href with and without a version prefix.
+    var locationHrefNoVersion = locationHref.replace(
+            /\/(\d+\.\d+)\//,
+            '/');
+    if (locationHref == locationHrefNoVersion) locationHrefNoVersion = null;
 
-    console.log("waitToShowInTOC filtering for", locationHref);
+    console.log("waitToShowInTOC filtering for",
+                locationHref, locationHrefNoVersion);
     var current = tocSection.find("a").filter(function() {
         var thisHref = this.href.toLowerCase();
         var hrefToCompare = stripChapterFragment
             ? thisHref.replace(/#chapter/,"")
             : thisHref;
-        var result = hrefToCompare == locationHref;
+        var result = hrefToCompare == locationHref
+            || (locationHrefNoVersion
+                && hrefToCompare == locationHrefNoVersion);
         //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
         return result;
     });
