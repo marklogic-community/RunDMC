@@ -349,6 +349,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     console.log("waitToShowInTOC filtering for",
                 locationHref, locationHrefNoVersion);
     var current = tocSection.find("a").filter(function() {
+        // TODO can we stop this after the first match?
         var thisHref = this.href.toLowerCase();
         var hrefToCompare = stripChapterFragment
             ? thisHref.replace(/#chapter/,"")
@@ -442,7 +443,7 @@ function showInTOC(a) {
 
     // If this is a TOC section that needs loading, then load it
     // e.g., when PJAX is enabled and the user clicks the link
-    loadTocSection(0,a.parent());
+    loadTocSection(0, a.parent());
 
     items.each(function(index) { expandSubTree($(this)); });
 
@@ -538,6 +539,12 @@ function updateTocForSelection() {
     console.log("updateTocForSelection loading to", tocSection);
     loadTocSection(0, tocSection);
     waitToShowInTOC(tocSection);
+}
+
+// Called from pjax event handlers
+function tocUpdateFromPageContent() {
+    console.log("tocUpdateFromPageContent");
+    updateTocForSelection();
 }
 
 function hasText(item,text) {
