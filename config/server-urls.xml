@@ -1,20 +1,22 @@
 <hosts>
 
-  <host type="staging" name="stage-developer.marklogic.com" cookie-domain="marklogic.com">
-
+  <host type="staging"
+        default-host="false"
+        name="stage-developer.marklogic.com"
+        cookie-domain="marklogic.com">
     <main-server url="//dmc-stage.marklogic.com"/>
-
     <draft-server url="//dmc-stage-draft.marklogic.com"/>
     <webdav-server url="//dmc-stage.marklogic.com:8005"/>
     <admin-server url="//dmc-stage-admin.marklogic.com"/>
     <rapi-server url="//dmc-stage-admin.marklogic.com:4446"/>
-
     <api-server url="//docs-stage.marklogic.com"/>
     <try-server url="//try.demo.marklogic.com"/>
-
   </host>
 
-  <host type="production" name="developer.marklogic.com" cookie-domain="marklogic.com">
+  <host type="production"
+        default-host="false"
+        name="developer.marklogic.com"
+        cookie-domain="marklogic.com">
     <main-server url="//developer.marklogic.com"/>
     <draft-server url="//developer-draft.marklogic.com"/>
     <webdav-server url="//developer.marklogic.com:8005"/>
@@ -24,7 +26,9 @@
     <try-server url="//try.demo.marklogic.com"/>
   </host>
 
-  <host type="development" default-host="yes" cookie-domain="127.0.0.1">
+  <host type="development"
+        default-host="true"
+        cookie-domain="127.0.0.1">
     <main-server port="8003"/>
     <draft-server port="8004"/>
     <webdav-server port="8005"/>

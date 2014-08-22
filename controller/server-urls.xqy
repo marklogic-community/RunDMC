@@ -4,24 +4,18 @@ module namespace s = "http://marklogic.com/rundmc/server-urls";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace sc="http://marklogic.com/rundmc/server-config"
+  at "server-config.xqy" ;
+
 import module namespace u = "http://marklogic.com/rundmc/util"
-       at "../lib/util-2.xqy";
+  at "/lib/util-2.xqy";
 
-import module namespace draft = "http://developer.marklogic.com/site/internal/filter-drafts"
-       at "../model/filter-drafts.xqy";
-
-declare variable $s:hosts := u:get-doc('/config/server-urls.xml')/hosts/host;
-
-declare variable $s:host-name := xdmp:host-name(xdmp:host());
-
-declare variable $s:this-host :=  if ($s:hosts[@name eq $s:host-name])
-                                 then $s:hosts[@name eq $s:host-name]
-                                 else $s:hosts[@default-host]; (: default means we're on a development machine :)
-
-declare variable $s:cookie-domain := string($this-host/@cookie-domain);
+import module namespace draft="http://developer.marklogic.com/site/internal/filter-drafts"
+at "/model/filter-drafts.xqy";
 
 (: "staging", "production", or "development" :)
-declare variable $s:host-type := string($s:this-host/@type);
+declare variable $s:host-type as xs:string := $sc:THIS-HOST/@type ;
+declare variable $s:cookie-domain as xs:string := $sc:THIS-HOST/@cookie-domain ;
 
 declare variable $s:current-request-host := xdmp:get-request-header('Host');
 
@@ -49,22 +43,19 @@ declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-
 declare variable $s:search-page-url := if ($s:viewing-standalone-api) then concat($s:standalone-api-server, "/do-search")
                                                                       else concat($s:main-server, "/search");
 
-(: Use the @url if provided in the config; otherwise, use the same server but with the specified @port :)
-declare function s:server-url($type as xs:string) {
-  let $element-name  := concat($type,'-server')
-  let $server-config := $s:this-host/*[local-name(.) eq $element-name]
-  return
-  if ($server-config/@url)
-  then string($server-config/@url)
-  (: re-use current scheme (http or https) with default port :)
-  else if (not($server-config/@port)) then concat('//',$s:current-request-host)
-  (: re-use current scheme (http or https) :)
-  else concat('//',$s:request-host-without-port,':',$server-config/@port)
+(: Use the @url if provided in the config.
+ : Otherwise use the same server but with the specified @port.
+ :)
+declare function s:server-url($type as xs:string)
+  as xs:string
+{
+  let $server-config := sc:server-config($type)
+  return (
+    if ($server-config/@url) then string($server-config/@url)
+    (: re-use current scheme (http or https) with default port :)
+    else if (not($server-config/@port)) then concat('//',$s:current-request-host)
+    (: re-use current scheme (http or https) :)
+    else concat('//',$s:request-host-without-port,':',$server-config/@port))
 };
 
-(: return entire config as well :)
-declare function s:server-config($type as xs:string) {
-  let $element-name  := concat($type,'-config'),
-      $server-config := $s:this-host/*[local-name(.) eq $element-name] return
-  $server-config
-};
+(: server-urls.xqy :)

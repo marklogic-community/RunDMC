@@ -107,10 +107,9 @@ as xs:string
     else if ($path = ("/download/binaries/4.0/requirements.xqy")) then
         "/products/marklogic-server/requirements-4.0"
 
-    else if ($path = ("/download/confirm.xqy")) then
-        "/products"
-    else if (starts-with($path, "/about")) then
-        "/"
+    else if ($path = ("/download/confirm.xqy")) then "/products"
+    else if (starts-with($path, "/about")) then "/"
+
     else if (starts-with($path, "/pubs/3.1")) then
         replace($path, "/pubs/3.1", "/pubs/3.2")
     else if (starts-with($path, "/3.1")) then
