@@ -240,6 +240,9 @@ ol {
         height: 100%;
 	width: 92%;
 	margin: auto;
+        min-width: 1100px;
+        overflow: hidden;
+	
 }
 
 #header {
