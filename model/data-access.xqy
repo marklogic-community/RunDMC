@@ -53,7 +53,7 @@ declare variable $server-version-nodes := u:get-doc(
   "/apidoc/config/server-versions.xml")/*/*:version;
 declare variable $server-versions as xs:string+ := $server-version-nodes/@number;
 declare variable $default-version as xs:string  := $server-version-nodes[
-  @default eq 'yes']/@number ;
+  xs:boolean(@default)]/@number ;
 (: Limit to available versions.
  : There should always be an index.xml if a version is loaded.
  :)

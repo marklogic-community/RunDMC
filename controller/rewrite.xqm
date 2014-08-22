@@ -17,12 +17,14 @@ import module namespace users="users"
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
  at "server-urls.xqy";
 
-(: TODO can we find a way to avoid calling apidoc code here? :)
+(: TODO can we find a way to avoid calling apidoc code here?
+ : Needed for guide-mappings.
+ :)
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
 declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
-declare variable $API-VERSION := "8.0" ;
+declare variable $API-VERSION := $ml:default-version ;
 
 declare variable $VERSION := xdmp:get-request-field('version') ;
 
