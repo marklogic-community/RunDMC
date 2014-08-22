@@ -23,7 +23,7 @@ declare variable $THIS-HOST := (
 declare function sc:server-config($type as xs:string)
 as element()
 {
-  let $name := xs:QName($type||'-config')
+  let $name := xs:QName($type||'-server')
   return $THIS-HOST/*[node-name(.) eq $name]
 };
 
