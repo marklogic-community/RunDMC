@@ -862,7 +862,8 @@ as node()*
   let $document-list-guides as node()+ := (
     $document-list-guide-entries[$x]/apidoc:guide[
       not(@excluded/xs:boolean(.))])
-  return element div {
+  return <div xmlns="http://www.w3.org/1999/xhtml">
+  {
     attribute class { 'doclist-guide-section' },
     element h3 {
       attribute class { 'docs-page' },
@@ -891,7 +892,9 @@ as node()*
         (: Pull guide description text from document-list.
          : Today this is flat text, but someday it might have structure.
          :)
-        element div { $body } } } }
+        element div { $body } } }
+  }
+  </div>
 };
 
 declare function stp:list-page-root-entry-title(

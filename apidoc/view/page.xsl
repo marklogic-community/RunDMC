@@ -160,11 +160,16 @@
     </html>
   </xsl:template>
 
-  <!-- Links in content (including guide content) may need to be rewritten
-       to include the current explicitly specified version -->
+  <!--
+      Links in content (including guide content) may need to be rewritten
+      for an explicitly specified version.
+      Only do this for absolute paths.
+      Do not rewrite zip paths.
+  -->
   <xsl:template mode="#default guide"
                 match="x:a/@href[starts-with(.,'/')]
-                       [not(starts-with(., $version-prefix))]">
+                       [not(starts-with(., $version-prefix))]
+                       [not(ends-with(., '_pubs.zip'))]">
     <xsl:attribute name="href"
                    select="concat($version-prefix,.)"/>
   </xsl:template>
@@ -180,6 +185,16 @@
   <xsl:template match="x:header/x:h1/x:a/@ml:class"/>
   <xsl:template match="x:header/x:h1/x:a/@ml:class[$srv:viewing-standalone-api]" priority="1">
     <xsl:attribute name="class" select="'documentation'"/>
+  </xsl:template>
+
+  <!--
+      Decorate guide links with pdf link.
+      Give other templates a chance to rewrite the link itself, too.
+  -->
+  <xsl:template match="x:a[@class eq 'guide-link']">
+    <xsl:next-match/>
+    <xsl:text> | </xsl:text>
+    <xsl:copy-of select="v:pdf-anchor(., @href, false(), false())"/>
   </xsl:template>
 
   <!-- Add "apidoc" class to tables in content, so we can adjust the CSS without disrupting the rest of DMC -->
@@ -321,16 +336,6 @@
       </h1>
       <xsl:apply-templates select="x:*"/>
     </div>
-  </xsl:template>
-
-  <!--
-      Decorate guide links with pdf link.
-      TODO make sure links are rewritten properly for version.
-  -->
-  <xsl:template match="x:a[@class eq 'guide-link']">
-    <xsl:copy-of select="."/>
-    <xsl:text> | </xsl:text>
-    <xsl:copy-of select="v:pdf-anchor(., @href, false(), false())"/>
   </xsl:template>
 
   <!--
