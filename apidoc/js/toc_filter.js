@@ -117,6 +117,12 @@ function toc_init() {
         console.log("TOC select option changed to", n.val());
         var tree = $('#' + id);
         tree.show();
+
+        // simulate filter action
+        if (previousFilterText) {
+            previousFilterText = null;
+            $("#config-filter").trigger('keyup');
+        }
     });
 
     // Set up the filter
