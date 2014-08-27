@@ -66,13 +66,15 @@ function toc_init_globals() {
 function toc_init() {
     console.log("toc_init");
 
+    // Track filter state with this closure variable.
+    var previousFilterText = '';
+
     // This widget comes with the toc root via ajax, so init it here.
     var treeGlobal = $('#treeglobal');
     if (!treeGlobal.length) console.log("No treeglobal!");
     treeGlobal.show();
     treeGlobal.click(function(e) {
         var n = treeGlobal.children("span");
-        var img = n.children("img");
         var label = n.children("span");
         var isExpand = label.text().trim() === "expand";
         // expand or collaps all
@@ -118,23 +120,27 @@ function toc_init() {
         var tree = $('#' + id);
         tree.show();
 
-        // simulate filter action
+        // Force filter update by simulating keyup from null previous.
+        // Must set previousFilterText *after* testing.
         if (previousFilterText) {
             previousFilterText = null;
             $("#config-filter").trigger('keyup');
+        } else {
+            previousFilterText = null;
+            $("#config-filter-close-button").trigger('click');
         }
     });
 
     // Set up the filter
-    var previousFilterText = '';
     $("#config-filter").keyup(function(e) {
         var currentFilterText = $(this).val();
+        console.log("config-filter current=", currentFilterText);
 
         // TODO what about a confirmation alert?
         if (e.which == 13) // Enter key pressed
             window.location = "/do-do-search?q=" + $(this).val();
 
-        var closeButton = $("#config-filter" + "-close-button");
+        var closeButton = $("#config-filter-close-button");
         if ($(this).val() === "") closeButton.hide();
         else closeButton.show();
 
@@ -146,10 +152,13 @@ function toc_init() {
                 filterConfigDetails(currentFilterText,
                                     ".apidoc_tree:visible"); } },
                    350);
-        $("#config-filter" + "-close-button").click(function() {
-            $(this).hide();
-            $("#config-filter").val("").keyup().blur();
-        });
+    });
+
+    $("#config-filter-close-button").click(function() {
+        console.log("config-filter-close-button");
+        $(this).hide();
+        // simulate keyup
+        $("#config-filter").val("").trigger('keyup').blur();
     });
 
     // default text, style, etc.
@@ -625,7 +634,6 @@ function colorizeExamples() {
 
 function formatFilterBoxes(filterBoxes) {
   var defaultFilterMsg = "Type to filter TOC...";
-
   filterBoxes.each(function() {
     // set the default message
     $(this).defaultvalue(defaultFilterMsg);
