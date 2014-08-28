@@ -757,7 +757,7 @@ declare function ml:internal-uri(
   $doc-path as xs:string)
 as xs:string
 {
-    (: TODO Use admin version when needed. :)
+    (: Use admin version when needed. :)
     if ($ADMIN) then ml:internal-uri-admin($doc-path)
     else ml:internal-uri-main($doc-path)
 };
