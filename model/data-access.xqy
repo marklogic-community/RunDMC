@@ -109,7 +109,10 @@ declare private function ml:docs($qnames) as element()* {
 };
 
 (: Used by URL rewriter to control access to DMC pages :)
-declare function ml:doc-matches-dmc-page-or-preview($doc as document-node()) {
+declare function ml:doc-matches-dmc-page-or-preview($doc as document-node())
+  as xs:boolean
+{
+  (: TODO Rewrite the query generation for this. It is terrible. :)
   cts:contains($doc, ml:matches-any-dmc-page(true()))
 };
 
@@ -761,5 +764,28 @@ as xs:string
     if ($ADMIN) then ml:internal-uri-admin($doc-path)
     else ml:internal-uri-main($doc-path)
 };
+
+(: Get the last part of the page's URL :)
+declare function ml:tutorial-page-url-name($node as node())
+as xs:string
+{
+  tokenize(ml:external-uri($node), '/')[last()]
+};
+
+(: Get the parent tutorial for this page. :)
+declare function ml:parent-tutorial($node as node())
+as element(Tutorial)?
+{
+  typeswitch ($node)
+  case element(Tutorial) return $node
+  default return (
+    let $uri-external as xs:string := ml:external-uri($node)
+    let $page-name := concat('/', ml:tutorial-page-url-name($node))
+    let $parent-uri as xs:string := substring-before(
+      $uri-external, $page-name)
+    let $uri-internal := ml:internal-uri($parent-uri)
+    return doc($uri-internal)/Tutorial)
+};
+
 
 (: model/data-access.xqy :)

@@ -106,27 +106,4 @@
     </xsl:apply-templates>
   </xsl:template>
 
-
-  <!-- Get the parent tutorial that this page is a part of -->
-  <xsl:function name="ml:parent-tutorial" as="element(Tutorial)">
-    <xsl:param name="node"/>
-    <xsl:choose>
-      <xsl:when test="$node/self::Tutorial">
-        <xsl:sequence select="$node"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:variable name="parent-uri" select="substring-before(ml:external-uri($node), concat('/',ml:tutorial-page-url-name($node)))"/>
-        <xsl:sequence select="doc(ml:internal-uri($parent-uri))/Tutorial"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:function>
-
-  <!-- Get the last part of the page's URL -->
-  <xsl:function name="ml:tutorial-page-url-name" as="xs:string">
-    <xsl:param name="node"/>
-    <xsl:variable name="this-uri" select="ml:external-uri($node)"/>
-    <xsl:variable name="url-name" select="tokenize($this-uri,'/')[last()]"/>
-    <xsl:sequence select="$url-name"/>
-  </xsl:function>
-
 </xsl:stylesheet>

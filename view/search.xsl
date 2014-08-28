@@ -159,17 +159,25 @@
 
   <xsl:variable name="facets-response" as="element(search:response)">
     <xsl:choose>
-      <!-- When a category constraint isn't supplied, just use the main search results;
-           (don't run search:search again) -->
+      <!--
+          When a category constraint isn't supplied,
+          use the main search results
+          and don't call search:search again.
+      -->
       <xsl:when test="not(contains($q,'cat:'))">
         <xsl:sequence select="$search-response"/>
       </xsl:when>
-      <!-- Otherwise, run the search without the category constraint, so we get the full list of facet values -->
+      <!--
+          Otherwise, run the search without the category constraint,
+          so we can still display the full list of facet values.
+      -->
       <xsl:otherwise>
         <!-- Adding the document wrapper is a workaround for XSLTBUG 13062 -->
         <xsl:variable name="response-doc">
-          <xsl:copy-of select="search:search(ml:qtext-with-no-constraints($search-response,$search-options),
-                                             $facet-options)"/>
+          <xsl:copy-of select="search:search(
+                               ml:qtext-with-no-constraints(
+                               $search-response,$search-options),
+                               $facet-options)"/>
         </xsl:variable>
         <xsl:sequence select="$response-doc/search:response"/>
       </xsl:otherwise>
