@@ -21,6 +21,8 @@ declare namespace api ="http://marklogic.com/rundmc/api";
  :)
 declare namespace x="http://www.w3.org/1999/xhtml";
 
+declare variable $ADMIN as xs:boolean := false() ;
+
 declare variable $questionmark-substitute := '@' ;
 
 (: used by get-updated-disqus-threads.xqy :)
@@ -681,40 +683,6 @@ as xs:string
   translate($doc-uri, $questionmark-substitute, '?')
 };
 
-(: Some apidoc code uses api:internal-uri instead.
- : NOTE: only intended for docs whose URIs end in ".xml"
- :)
-declare function ml:internal-uri(
-  $doc-path as xs:string)
-as xs:string
-{
-  if ($doc-path eq '/') then '/index.xml'
-  else concat($doc-path, '.xml')
-};
-
-declare function ml:external-uri($node as node()*)
-  as xs:string
-{
-  ml:external-uri-main($node)
-};
-
-(: Mapping of internal->external URIs for main server :)
-declare function ml:external-uri-main($node as node()*)
-  as xs:string
-{
-  let $doc-path := base-uri($node)
-  return
-  if ($doc-path eq '/index.xml') then '/'
-  else substring-before($doc-path, '.xml')
-};
-
-(: Mapping of internal->external URIs for API server :)
-declare function ml:external-uri-api($node as node())
-  as xs:string
-{
-  ml:external-uri-for-string(base-uri($node))
-};
-
 (: Account for "/apidoc" prefix in internal/external URI mappings :)
 declare function ml:external-uri-for-string($doc-uri as xs:string)
   as xs:string
@@ -730,6 +698,68 @@ declare function ml:external-uri-for-string($doc-uri as xs:string)
   if ($path eq '/index.xml') then '/'
   else if (ends-with($path,'.xml')) then substring-before($path, '.xml')
   else $path
+};
+
+(: Mapping of internal->external URIs for API server :)
+declare function ml:external-uri-api($node as node())
+  as xs:string
+{
+  ml:external-uri-for-string(base-uri($node))
+};
+
+(: Mapping of internal->external URIs for admin server. :)
+declare function ml:external-uri-admin(
+  $doc-path as xs:string)
+as xs:string
+{
+  if ($doc-path eq '/admin/index.xml') then '/'
+  else substring-before(substring-after($doc-path,'/admin'), '.xml')
+};
+
+(: Mapping of internal->external URIs for main server :)
+declare function ml:external-uri-main(
+  $doc-path as xs:string)
+as xs:string
+{
+  if ($doc-path eq '/index.xml') then '/'
+  else substring-before($doc-path, '.xml')
+};
+
+declare function ml:external-uri(
+  $node as node()?)
+as xs:string?
+{
+  base-uri($node) ! (
+    if (not(starts-with(., '/admin'))) then ml:external-uri-main(.)
+    else ml:external-uri-admin(.))
+};
+
+declare function ml:internal-uri-admin(
+  $doc-path as xs:string)
+as xs:string
+{
+  if ($doc-path eq '/') then '/admin/index.xml'
+  else concat('/admin', $doc-path, '.xml')
+};
+
+declare function ml:internal-uri-main(
+  $doc-path as xs:string)
+as xs:string
+{
+  if ($doc-path eq '/') then '/index.xml'
+  else concat($doc-path, '.xml')
+};
+
+(: Some apidoc code uses api:internal-uri instead.
+ : NOTE: only intended for docs whose URIs end in ".xml"
+ :)
+declare function ml:internal-uri(
+  $doc-path as xs:string)
+as xs:string
+{
+    (: TODO Use admin version when needed. :)
+    if ($ADMIN) then ml:internal-uri-admin($doc-path)
+    else ml:internal-uri-main($doc-path)
 };
 
 (: model/data-access.xqy :)
