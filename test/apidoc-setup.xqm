@@ -210,4 +210,15 @@ declare %t:case function t:function-names-REST()
     'POST:/foo/bar')
 };
 
+declare %t:case function t:function-guide-link()
+{
+  at:equal(
+    stp:fixup-attribute-href(
+      '8.0',
+      <a xmlns=""
+      href="#display.xqy?fname=http://pubs/6.0doc/xml/search-dev-guide/search-api.xml%2341745"/>/@href,
+      ())/string(),
+    '/guide/search-dev/search-api#id_41745')
+};
+
 (: test/apidoc-setup.xqm :)

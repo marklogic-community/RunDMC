@@ -725,7 +725,6 @@ as xs:string
   default return error((), 'UNEXPECTED', xdmp:describe($e))
 };
 
-(: TODO refactor for #230. :)
 declare function api:document-list(
   $version as xs:string)
 as element(apidoc:docs)

@@ -175,22 +175,32 @@ as xs:string
   else stp:error("UNEXPECTED", ('path', $uri))
 };
 
+declare function stp:fix-guide-names(
+  $version as xs:string,
+  $href as xs:string,
+  $guides as element(apidoc:guide)*)
+as xs:string
+{
+  if (empty($guides)) then $href
+  else stp:fix-guide-names(
+    $version,
+    replace($href, $guides[1]/@source-name, $guides[1]/@url-name),
+    subsequence($guides, 2))
+};
+
 (: Change guide urls according to the data in the document-list. :)
 declare function stp:fix-guide-names(
   $version as xs:string,
-  $s as xs:string,
-  $num as xs:integer)
+  $href as xs:string)
+as xs:string
 {
-  let $guides := api:document-list($version)/*/guide[@url-name ne @source-name]
-  let $source as xs:string* := $guides/@source-name
-  let $url as xs:string* := $guides/@url-name
-  let $count := count($source)
-  return (
-    if ($num eq $count + 1) then (xdmp:set($num, 9999), $s)
-    else if ($num eq 9999) then $s
-    else stp:fix-guide-names(
-      $version, replace($s, $source[$num], $url[$num]),
-      $num + 1))
+  stp:fix-guide-names(
+    $version, $href,
+    api:document-list(
+      $version)/apidoc:group/apidoc:entry/apidoc:guide[
+      not(xs:boolean(@duplicate))][
+      contains($href, @source-name)][
+      @url-name ne @source-name])
 };
 
 declare function stp:function-children(
@@ -1110,7 +1120,7 @@ as attribute()?
         concat('/guide',
           substring-before(
             substring-after($a, 'doc/xml'), '.xml'),
-          $anchor), 1))
+          $anchor)))
 
     (: If a fragment id contains a colon, it is a link to a function page.
      : #xdmp:tidy => /xdmp:tidy or /xdmp.tidy
