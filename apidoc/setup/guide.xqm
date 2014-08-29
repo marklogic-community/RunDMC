@@ -283,13 +283,12 @@ as attribute(href)
   if (contains($href, '#id(')
     and starts-with(
       $href, guide:basename(base-uri($href)))) then attribute href {
-    let $target-doc := root($href)
-    return concat(
+    concat(
       '#',
       guide:anchor-id-from-href(
-        $fully-resolved-top-level-heading-references, $href, $target-doc)) }
+        $fully-resolved-top-level-heading-references, $href, root($href))) }
   (: Links to other chapters (whether the same or a different guide) :)
-  else if (contains($href,'#id(')) then (
+  else if (contains($href, '#id(')) then (
     let $target-doc := guide:target-doc(
       $raw-docs, guide:fully-resolved-href($href))
     return (
@@ -367,12 +366,12 @@ as element()?
   (: Default :)
   else element a {
     (: Anchors may have @ID or @href or both. :)
-    $e/@ID ! attribute id { guide:full-anchor-id(.) },
-    $e/@href ! attribute href {
+    $e/@ID/attribute id { guide:full-anchor-id(.) },
+    $e/@href/attribute href {
       guide:anchor-href(
         $raw-docs,
         $fully-resolved-top-level-heading-references,
-        $e/@href) },
+        .) },
     guide:link-content($e) }
 };
 
@@ -790,6 +789,8 @@ as element()
       typeswitch(.)
       case element(XML) return element XML {
         namespace::*,
+        (: Preserve input URI. :)
+        base-uri($raw) ! attribute xml:base { . },
         @*,
         guide:sections(1, *) }
       default return .) }
