@@ -188,9 +188,12 @@
   -->
 
   <xsl:template match="breadcrumbs" name="breadcrumbs">
-    <xsl:apply-templates mode="breadcrumbs" select="$page-in-navigation[1]"/>
+    <xsl:apply-templates
+        mode="breadcrumbs" select="$page-in-navigation[1]"/>
     <!-- Append the "Server version" switcher if we're on the search results page -->
-    <xsl:apply-templates mode="version-list" select=".[$external-uri = ('/search','/apidoc/do-search')]"/>
+    <xsl:apply-templates
+        mode="version-list"
+        select=".[$external-uri = ('/search','/apidoc/do-search')]"/>
   </xsl:template>
 
   <!-- No breadcrumbs on home page -->
@@ -199,8 +202,9 @@
   <!-- But do display them on every other page -->
   <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
     <xsl:param name="site-name" select="'Developer Community'"/>
+    <xsl:param name="version"/>
     <div>
-      <a href="/">
+      <a href="{ concat('/', if ($version) then $version else '') }">
         <xsl:value-of select="$site-name"/>
       </a>
       <xsl:apply-templates mode="breadcrumb-link" select="ancestor::page"/>

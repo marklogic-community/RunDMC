@@ -209,6 +209,7 @@
   <xsl:template match="ml:breadcrumbs">
     <xsl:apply-templates mode="breadcrumbs" select=".">
       <xsl:with-param name="site-name" select="'Docs'"/>
+      <xsl:with-param name="version" select="$VERSION"/>
     </xsl:apply-templates>
   </xsl:template>
 
