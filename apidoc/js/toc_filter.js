@@ -2,6 +2,7 @@
 var breadcrumbNode = null;
 var functionPageBucketId = null;
 var isUserGuide = null;
+var previousFilterText = '';
 var tocSectionLinkSelector = null;
 var tocSelect = null;
 
@@ -23,6 +24,8 @@ $(function() {
             console.log("pjax_enabled A fired ok", this);
             // The tocSectionLinkSelector may have changed.
             toc_init_globals();
+            // The TOC filter may need updating.
+            tocFilterUpdate();
             updateTocForSelection(); } });
 
     $("#api_sub .pjax_enabled a:not(.external)").pjax({
@@ -65,9 +68,6 @@ function toc_init_globals() {
 
 function toc_init() {
     console.log("toc_init");
-
-    // Track filter state with this closure variable.
-    var previousFilterText = '';
 
     // This widget comes with the toc root via ajax, so init it here.
     var treeGlobal = $('#treeglobal');
@@ -120,15 +120,7 @@ function toc_init() {
         var tree = $('#' + id);
         tree.show();
 
-        // Force filter update by simulating keyup from null previous.
-        // Must set previousFilterText *after* testing.
-        if (previousFilterText) {
-            previousFilterText = null;
-            $("#config-filter").trigger('keyup');
-        } else {
-            previousFilterText = null;
-            $("#config-filter-close-button").trigger('click');
-        }
+        tocFilterUpdate();
     });
 
     // Set up the filter
@@ -699,6 +691,24 @@ function splitterMouseDown(evt) {
     $('#toc_content').css("-webkit-user-select", "none");
     $('#page_content').css("-webkit-user-select", "none");
     $('#content').css("-webkit-user-select", "none");
+}
+
+function tocFilterUpdate()
+{
+    //console.log("tocFilterUpdate", previousFilterText);
+
+    // Is the filter set or clear?
+    // Must set previousFilterText *after* testing.
+    if (previousFilterText) {
+        previousFilterText = null;
+        $("#config-filter").trigger('keyup');
+        return;
+    }
+
+    // Setting previous to null acts like a poison value,
+    // forcing the filter to update.
+    previousFilterText = null;
+    $("#config-filter-close-button").trigger('click');
 }
 
 // toc_filter.js
