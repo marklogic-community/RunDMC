@@ -56,7 +56,7 @@
       then don't include the version prefix in links.
       See also $api:toc-uri in data-access.xqy
   -->
-  <xsl:variable name="version-prefix"
+  <xsl:variable name="VERSION-PREFIX"
                 select="if ($VERSION-FINAL eq $api:DEFAULT-VERSION) then ''
                         else concat('/', $VERSION-FINAL)"/>
 
@@ -123,7 +123,7 @@
           </title>
           <xsl:copy-of
               select="v:toc-references(
-                      $VERSION-FINAL, $VERSION, $version-prefix, .)"/>
+                      $VERSION-FINAL, $VERSION, $VERSION-PREFIX, .)"/>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="apidoc-copyright"/>
         </div>
@@ -137,7 +137,7 @@
   <xsl:template match="ml:toc-state" name="toc-state">
     <xsl:copy-of
         select="v:toc-references(
-                $VERSION-FINAL, $VERSION, $version-prefix, $content)"/>
+                $VERSION-FINAL, $VERSION, $VERSION-PREFIX, $content)"/>
   </xsl:template>
 
   <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
@@ -168,10 +168,10 @@
   -->
   <xsl:template mode="#default guide"
                 match="x:a/@href[starts-with(.,'/')]
-                       [not(starts-with(., $version-prefix))]
+                       [not(starts-with(., $VERSION-PREFIX))]
                        [not(ends-with(., '_pubs.zip'))]">
     <xsl:attribute name="href"
-                   select="concat($version-prefix,.)"/>
+                   select="concat($VERSION-PREFIX,.)"/>
   </xsl:template>
 
   <!-- Make search stick to the current API version -->
@@ -293,7 +293,7 @@
 
     <a href="{
              concat(
-             $version-prefix,
+             $VERSION-PREFIX,
              if ($is-javascript) then '/js/'
              else '/',
              $lib) }">
@@ -347,7 +347,7 @@
                 match="apidoc:entry[@href]
                        | apidoc:guide[api:guide-info($content, @url-name)]">
     <xsl:variable name="href"
-                  select="v:entry-href($version-prefix, ., $content)"/>
+                  select="v:entry-href($VERSION-PREFIX, ., $content)"/>
     <xsl:variable name="title"
                   select="v:entry-title(., $content)"/>
     <li>
@@ -377,7 +377,7 @@
         If this is a chapter also provide a printer-friendly version.
     -->
     <xsl:copy-of select="v:pdf-anchor(
-                         ., v:external-guide-uri($version-prefix, /),
+                         ., v:external-guide-uri($VERSION-PREFIX, /),
                          exists(parent::chapter), true())"/>
     <!-- printer-friendly link on chapter pages -->
     <xsl:if test="parent::chapter">
@@ -474,7 +474,7 @@
         <xsl:if test="api:name/@indent">
           <xsl:attribute name="class" select="'indented_function'"/>
         </xsl:if>
-        <a href="{$version-prefix}{@href}">
+        <a href="{$VERSION-PREFIX}{@href}">
           <xsl:value-of select="api:name"/>
         </a>
       </td>
@@ -492,7 +492,7 @@
     <div class="api-function-links">
       <xsl:for-each select="api:function-link">
         <a class="api-function-link"
-           href="{ $version-prefix }/{ @fullname/string() }">
+           href="{ $VERSION-PREFIX }/{ @fullname/string() }">
           <xsl:value-of select="if (@mode = $api:MODE-XPATH) then 'XQuery'
                                 else 'JavaScript'"/>
           <xsl:text> </xsl:text>
@@ -515,7 +515,7 @@
           <xsl:text>Did you mean </xsl:text>
           <xsl:for-each select="$other-matches">
             <xsl:variable name="fullname" select="api:function[1]/@fullname"/>
-            <a href="{$version-prefix}/{$fullname}">
+            <a href="{$VERSION-PREFIX}/{$fullname}">
               <xsl:value-of select="$fullname"/>
             </a>
             <xsl:if test="position() ne last()"> or </xsl:if>
@@ -820,7 +820,7 @@
 
   <!-- Make the guide heading a link when we're on a chapter page -->
   <xsl:template mode="guide-heading-content" match="/chapter/guide-title">
-    <a href="{ v:external-guide-uri($version-prefix, /) }">
+    <a href="{ v:external-guide-uri($VERSION-PREFIX, /) }">
       <xsl:apply-templates mode="guide-title" select="."/>
     </a>
     <span class="chapterNumber"> &#8212; Chapter&#160;<xsl:value-of select="../@number"/></span>
@@ -853,7 +853,7 @@
   <xsl:template mode="chapter-next-prev" name="guide-next"
                 match="chapter/@next | chapter/@previous">
     <div class="{local-name(.)}Chapter">
-      <a href="{api:external-uri-with-prefix($version-prefix, .)}"
+      <a href="{api:external-uri-with-prefix($VERSION-PREFIX, .)}"
          accesskey="{if (local-name(.) eq 'previous') then 'p' else 'n'}">
         <xsl:apply-templates mode="next-or-prev" select="."/>
       </a>
@@ -895,7 +895,7 @@
 
   <xsl:template mode="guide" match="chapter">
     <li>
-      <a href="{api:external-uri-with-prefix($version-prefix, @href)}">
+      <a href="{api:external-uri-with-prefix($VERSION-PREFIX, @href)}">
         <xsl:apply-templates mode="guide"/>
       </a>
     </li>
@@ -914,7 +914,7 @@
       <xsl:when test="$config-for-title and not(
                       preceding-sibling::node()[1][self::text() ][
                       normalize-space(.) eq 'in the'])">
-        <a href="{$version-prefix}{ $config-for-title/@href }">
+        <a href="{$VERSION-PREFIX}{ $config-for-title/@href }">
           <xsl:next-match/>
         </a>
       </xsl:when>
@@ -925,9 +925,16 @@
   </xsl:template>
 
   <!-- Elements that need attribute rewrites. -->
+  <xsl:template mode="guide" match="x:a[starts-with(@href, '/')]">
+    <xsl:copy>
+      <xsl:copy-of select="v:guide-attributes($VERSION-PREFIX, .)"/>
+      <xsl:apply-templates mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
+
   <xsl:template mode="guide" match="x:img">
     <xsl:copy>
-      <xsl:copy-of select="v:guide-attributes(.)"/>
+      <xsl:copy-of select="v:guide-attributes($VERSION-PREFIX, .)"/>
       <xsl:apply-templates mode="#current"/>
     </xsl:copy>
   </xsl:template>

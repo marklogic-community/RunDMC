@@ -62,6 +62,18 @@ as element()?
     alias/v:string-normalize(.) = $title]
 };
 
+declare function v:guide-anchor-attribute(
+  $version-prefix as xs:string,
+  $a as attribute())
+as attribute()
+{
+  typeswitch($a)
+  case attribute(href) return attribute href {
+    $version-prefix||$a
+  }
+  default return $a
+};
+
 declare function v:guide-image-attribute($a as attribute())
 as attribute()
 {
@@ -72,10 +84,15 @@ as attribute()
   default return $a
 };
 
-declare function v:guide-attributes($e as element())
+(: This is basically a shim for function mapping. :)
+declare function v:guide-attributes(
+  $version-prefix as xs:string,
+  $e as element())
 as attribute()*
 {
   typeswitch($e)
+  case element(xhtml:a) return v:guide-anchor-attribute(
+    $version-prefix, $e/@*)
   case element(xhtml:img) return v:guide-image-attribute($e/@*)
   default return $e/@*
 };
