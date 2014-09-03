@@ -224,7 +224,8 @@
 
     <entry title="XCC API Reference"
         toc-title="XCC">
-      <entry toc-title="XCC Javadoc"
+      <entry title="XCC Javadoc (online)"
+             toc-title="XCC Javadoc"
              href="/javadoc/xcc/index.html"
              type="external">
         API documentation for the MarkLogic XML Content Connector for
