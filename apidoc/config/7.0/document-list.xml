@@ -210,7 +210,8 @@
         API documentation for the MarkLogic XML Content Connector for
         Java (XCC/J) API.
       </entry>
-      <entry toc-title="XCC .NET API"
+      <entry title="XCC .NET API (online)"
+             toc-title="XCC .NET API"
              href="/dotnet/xcc/index.html"
              type="external">
         API documentation for the MarkLogic XCC .NET C# API.
@@ -219,7 +220,8 @@
     </entry>
 
     <entry toc-title="Hadoop Connector">
-      <entry toc-title="Hadoop Connector API Reference"
+      <entry title="javadoc for MarkLogic Connector for Hadoop"
+             toc-title="Hadoop Connector API Reference"
              href="/javadoc/hadoop/index.html"
              type="external">
         API documentation for the MarkLogic Connector for Hadoop.
