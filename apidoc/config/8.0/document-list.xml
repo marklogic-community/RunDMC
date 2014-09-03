@@ -87,6 +87,18 @@
     </entry>
   </group>
 
+  <group>
+    <entry title="Zip File of All Documentaion">
+    <entry title="ZIP File of All MarkLogic Product Documentation"
+           href="/MarkLogic_8_pubs.zip"
+           type="download">
+      <description>
+        A zip file containing this documentation.
+      </description>
+    </entry>
+    </entry>
+  </group>
+
   <group toc-title="Guides"
          id="guides">
 
@@ -131,11 +143,10 @@
         data source or an output destination. This book includes an overview
         of the sample applications.</guide>
       <guide url-name="rest-dev" source-name="rest-dev">
-        Provides information on administration of and application
+        Provides information on MarkLogic Server administration and application
         development using the MarkLogic REST API.</guide>
       <guide url-name="semantics" source-name="semantics">
-        Provides information on developing applications using MarkLogic
-        Semantics.
+        Provides information on developing semantic applications with MarkLogic.
       </guide>
       <guide url-name="temporal" source-name="temporal">
         Provides information on developing applications using MarkLogic
@@ -146,7 +157,7 @@
         to build a search application, and also provides information on
         customizing applications built with the Application Builder.</guide>
       <guide url-name="infostudio" source-name="info_studio">
-        Provides step-by step information on using the Information Studio
+        Provides step-by-step information on using the Information Studio
         to load content into MarkLogic Server.</guide>
     </entry>
 
@@ -164,13 +175,13 @@
         Provides a thorough explanation of how to configure and use
         MarkLogic database replication.</guide>
       <guide url-name="flexrep" source-name="replication">
-        Provides step-by step information on replicating MarkLogic Server
+        Provides step-by-step information on replicating MarkLogic Server
         content using Flexible Replication.</guide>
       <guide url-name="monitoring" source-name="monitoring">
         Provides procedures for setting up and using monitoring applications
         on MarkLogic Server.</guide>
       <guide url-name="sharepoint" source-name="SharePoint-Connector">
-        The documentation for the MarkLogic Connector for
+        Documentation for the MarkLogic Connector for
         SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>,
         which allows you to mirror documents from a Microsoft SharePoint
         repository in MarkLogic Server.</guide>
@@ -249,12 +260,13 @@
     </entry>
   </group>
 
-  <group title="Java API Reference">
-    <entry title="Java Client API Reference"
-        toc-title="Java Client">
-      <entry title="javadoc for MarkLogic Client API for Java"
-             href="/javadoc/client/index.html"
-             type="external">
+  <group toc-title="Java API Reference"
+	 title="Java API Reference">
+    <entry title="Java Client API Reference">
+	<entry toc-title="javadoc for MarkLogic Client API for Java"
+	       title="javadoc for MarkLogic Client API for Java"
+               href="/javadoc/client/index.html"
+               type="external">
         API documentation for the MarkLogic Java API.
       </entry>
       <entry toc-title="Related Guides">
@@ -263,25 +275,18 @@
     </entry>
   </group>
 
-  <group title="Node.js API Reference">
-    <entry toc-title="jsdoc for Node.js Client API"
-           title="jsdoc for Node.js Client API"
-           href="/jsdoc/index.html"
-           type="external">
+  <group toc-title="Node.js API Reference"
+	 title="Node.js API Reference">
+    <entry title="Node.js API Reference">
+      <entry toc-title="jsdoc for Node.js Client API"
+             title="jsdoc for Node.js Client API"
+             href="/jsdoc/index.html"
+             type="external">
       API documentation for the MarkLogic Node.js Client API.
-    </entry>
-    <entry toc-title="Related Guides">
-      <guide url-name="node-dev" duplicate="true"/>
-    </entry>
-  </group>
-
-  <group>
-    <entry title="ZIP File of All MarkLogic Product Documentation"
-           href="/MarkLogic_8_pubs.zip"
-           type="download">
-      <description>
-        A zip file containing this documentation.
-      </description>
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="node-dev" duplicate="true"/>
+      </entry>
     </entry>
   </group>
 
@@ -315,15 +320,19 @@
       <guide url-name="mapreduce" duplicate="true"/>
     </entry>
 
-    <entry title="C++ UDF API Reference"
-           href="/cpp/udf/index.html"
-           type="external">
-      API documentation for the C++ User Defined Function (UDF) API.
+    <entry title="C++ UDF">
+      <entry title="C++ UDF API Reference"
+             href="/cpp/udf/index.html"
+             type="external">
+        API documentation for the C++ User Defined Function (UDF) API.
+      </entry>
     </entry>
 
-    <entry title="Admin Interface Help"
-           href="/admin-help"
-           type="help">
+    <entry title="Admin Interface Help">
+      <entry title="Admin Interface Help"
+             href="/admin-help"
+             type="help">
+      </entry>
     </entry>
   </group>
 
