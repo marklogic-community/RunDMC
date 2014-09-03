@@ -250,13 +250,16 @@
   </group>
 
   <group title="Java API Reference">
-    <entry title="javadoc for MarkLogic Client API for Java"
-           href="/javadoc/client/index.html"
-           type="external">
-      API documentation for the MarkLogic Java API.
-    </entry>
-    <entry toc-title="Related Guides">
-      <guide url-name="java" duplicate="true"/>
+    <entry title="Java Client API Reference"
+        toc-title="Java Client">
+      <entry title="javadoc for MarkLogic Client API for Java"
+             href="/javadoc/client/index.html"
+             type="external">
+        API documentation for the MarkLogic Java API.
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="java" duplicate="true"/>
+      </entry>
     </entry>
   </group>
 
