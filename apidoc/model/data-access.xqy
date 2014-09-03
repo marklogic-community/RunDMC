@@ -779,12 +779,12 @@ as xs:string
   case 'xs:float'
   case 'xs:long'
   case 'xs:positiveInteger'
-  case 'xs:unsignedInt'
-  case 'xs:unsignedLong' return 'Number'
+  case 'xs:unsignedInt' return 'Number'
 
   case 'xs:integer' return 'Integer'
 
-  case 'xs:time' return 'String'
+  case 'xs:time'
+  case 'xs:unsignedLong' return 'String'
 
   default return $type
 };
