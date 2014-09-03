@@ -116,7 +116,7 @@
       <guide url-name="app-builder" source-name="appbuilder">
       Provides step-by-step information on using the Application Builder to build a search application, and also provides information on customizing applications built with the Application Builder.</guide>
       <guide url-name="infostudio" source-name="info_studio">
-      Provides step-by step information on using the Information Studio to load content into MarkLogic Server.</guide>
+      Provides step-by-step information on using the Information Studio to load content into MarkLogic Server.</guide>
       <guide url-name="xcc" source-name="xcc">Contains an overview of the what you can do with the XCC libraries, examples of how to use XCC, and an overview of the sample applications included with XCC.</guide>
       <guide url-name="mapreduce" source-name="mapreduce">How to create Apache Hadoop MapReduce jobs that use MarkLogic Server as an input data source or an output destination. This book includes an overview of the sample applications.</guide>
       <guide url-name="java" source-name="java-client">
@@ -124,10 +124,10 @@
         about developing MarkLogic Server applications using the Java
       API. </guide>
       <guide url-name="rest-dev" source-name="rest-dev">
-        Provides information on administration of and application
+        Provides information on MarkLogic Server administration and application
       development using the MarkLogic REST API.</guide>
       <guide url-name="semantics" source-name="semantics">
-        Provides information on developing applications using MarkLogic Semantics.
+       Provides information on developing semantic applications with MarkLogic. 
       </guide>
     </entry>
 
@@ -142,14 +142,14 @@
       of how to configure and use MarkLogic database replication.</guide>
       <guide url-name="flexrep" source-name="replication">
         Provides
-        step-by step information on replicating MarkLogic Server content
+        step-by-step information on replicating MarkLogic Server content
       using Flexible Replication.</guide>
       <guide url-name="monitoring" source-name="monitoring">
         Provides procedures
         for setting up and using monitoring applications on
       MarkLogic Server.</guide>
       <guide url-name="sharepoint" source-name="SharePoint-Connector">
-        The documentation for the MarkLogic Connector for
+        Documentation for the MarkLogic Connector for
         SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>,
         which allows you to mirror documents from a Microsoft SharePoint
       repository in MarkLogic Server.</guide>
@@ -185,12 +185,13 @@
 
   </group>
 
-  <group title="Java API Reference">
-    <entry title="Java Client API Reference"
-        toc-title="Java Client">
-      <entry title="javadoc for MarkLogic Client API for Java"
-             href="/javadoc/client/index.html"
-             type="external">
+  <group toc-title="Java API Reference"
+	 title="Java API Reference">
+    <entry title="Java Client API Reference">
+	<entry toc-title="javadoc for MarkLogic Client API for Java"
+	       title="javadoc for MarkLogic Client API for Java"
+               href="/javadoc/client/index.html"
+               type="external">
         API documentation for the MarkLogic Java API.
       </entry>
       <entry toc-title="Related Guides">
