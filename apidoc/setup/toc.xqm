@@ -1554,6 +1554,10 @@ declare function toc:entry-to-node(
   $body as item()*)
 as element(toc:node)
 {
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'toc:entry-to-node#4',
+    (xdmp:describe($entry), 'id', $id, 'title', $title,
+      'body', xdmp:describe($body))),
   toc:node(
     $id,
     $title,
@@ -1654,6 +1658,9 @@ declare function toc:entry-node(
 as element(toc:node)*
 {
   let $type as xs:string? := $entry/@type
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+    'toc:entry-node#6',
+    ($version, xdmp:describe($entry), 'type', xdmp:describe($type)))
   return switch($type)
   case 'download' return ()
   case 'external' return toc:node-external(
@@ -1669,13 +1676,23 @@ as element(toc:node)*
    :)
   case () return toc:entry-to-node(
     $entry,
-    for $guide in $entry/apidoc:guide
-    let $is-duplicate := $guide/@duplicate/xs:boolean(.)
-    let $name as xs:string := $guide/@url-name
-    let $match as element()? := $guide-docs[
-      ends-with(base-uri(.), '/'||$name||'.xml')]
-    let $_ := if ($match) then () else stp:error('NOGUIDE', $name)
-    return toc:guide-node($match, $is-duplicate))
+    $entry/*/(
+      typeswitch(.)
+      case element(apidoc:entry) return toc:entry-node(
+        $version, $xsd-docs, $m-functions,
+        $guide-docs, $help-config, .)
+      case element(apidoc:guide) return (
+        let $is-duplicate := @duplicate/xs:boolean(.)
+        let $name as xs:string := @url-name
+        let $match as element()? := $guide-docs[
+          ends-with(base-uri(.), '/'||$name||'.xml')]
+        let $_ := if ($match) then () else stp:error('NOGUIDE', $name)
+        return toc:guide-node($match, $is-duplicate))
+      default return stp:error(
+        'UNEXPECTED',
+        ('no handler for child element',
+          xdmp:key-from-QName(node-name($entry)),
+          xdmp:describe($entry)))))
   default return stp:error(
     'UNEXPECTED', ('no handler for type', xdmp:describe($type)))
 };
