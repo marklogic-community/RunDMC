@@ -1551,6 +1551,7 @@ declare function toc:entry-to-node(
   $entry as element(apidoc:entry),
   $id as xs:string,
   $title as xs:string,
+  $is-closed as xs:boolean?,
   $body as item()*)
 as element(toc:node)
 {
@@ -1564,13 +1565,28 @@ as element(toc:node)
     $entry/@href,
     $entry/@async/xs:boolean(.),
     $entry/@type,
-    ('open',
+    (if ($is-closed) then () else 'open',
       (: Transform any of these attributes to toc:node attributes.
        : Extend as needed.
        :)
       $entry/(@TBD)[xs:boolean(.)]/local-name(.)),
     ($entry/@mode,
       $body))
+};
+
+(: Convenience constructor for a toc:node
+ : based on a document-list entry.
+ :)
+declare function toc:entry-to-node(
+  $entry as element(apidoc:entry),
+  $id as xs:string,
+  $title as xs:string,
+  $body as item()*)
+as element(toc:node)
+{
+  toc:entry-to-node(
+    $entry, $id, $title,
+    xs:boolean($entry/@toc-closed), $body)
 };
 
 (: Convenience constructor for a toc:node
@@ -1629,6 +1645,7 @@ as element(toc:node)+
       $entry,
       'AllFunctions.'||$mode,
       $title-all-functions,
+      xs:boolean($entry/@all-functions-toc-closed),
       (element toc:title { $title-all-functions },
         element toc:intro { $entry/apidoc:intro/node() },
         let $m-seen := map:map()
@@ -1714,11 +1731,11 @@ as element(toc:node)
     $group/@href,
     (),
     $group/@type,
-    ('open'
+    ('open',
       (: Transform any of these attributes to toc:node attributes.
        : Extend as needed.
        :)
-      , $group/(@TBD)[xs:boolean(.)]/local-name(.)),
+      $group/(@TBD)[xs:boolean(.)]/local-name(.)),
     ($group/@mode,
       (: Handle entries. :)
       toc:entry-node(

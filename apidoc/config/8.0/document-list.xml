@@ -32,6 +32,10 @@
     The TOC can show duplicate references to a single guide.
     All but the main reference should set @duplicate true.
 
+    Set @toc-closed="1" to tell the TOC to collapse
+    any entry initially. It is false by default: initially expanded.
+    Set @all-functions-toc-closed="1" to tell the TOC to collapse
+    the all-functions variant initially. It is false by default.
 -->
 <docs xmlns="http://marklogic.com/xdmp/apidoc"
       title="All Documentation">
@@ -39,14 +43,16 @@
   <group toc-title="Server-Side JavaScript APIs">
     <entry title="JavaScript Function Reference"
            toc-title="JavaScript Functions By Category (%d)"
+           toc-closed="0"
            href="/js/all"
            type="function-reference"
            all-functions="true"
            all-functions-title="JavaScript Functions by Name (%d)"
+           all-functions-toc-closed="1"
            mode="javascript">
       <description>
-	API documentation for the Server-Side MarkLogic built-in 
-	extensions to the JavaScript standard functions.
+        API documentation for the Server-Side MarkLogic built-in
+        extensions to the JavaScript standard functions.
       </description>
       <intro>
         The following table lists all Server-Side JavaScript functions
@@ -261,11 +267,11 @@
   </group>
 
   <group toc-title="Java API Reference"
-	 title="Java API Reference">
+         title="Java API Reference">
      <entry toc-title="Java Client API Reference"
             title="Java Client API Reference">
-	<entry toc-title="javadoc for MarkLogic Client API for Java"
-	       title="javadoc for MarkLogic Client API for Java"
+        <entry toc-title="javadoc for MarkLogic Client API for Java"
+               title="javadoc for MarkLogic Client API for Java"
                href="/javadoc/client/index.html"
                type="external">
         API documentation for the MarkLogic Java API.
@@ -277,9 +283,9 @@
   </group>
 
   <group toc-title="Node.js API Reference"
-	 title="Node.js API Reference">
+         title="Node.js API Reference">
     <entry toc-title="Node.js API Reference"
-	   title="Node.js API Reference">
+           title="Node.js API Reference">
       <entry toc-title="jsdoc for Node.js Client API"
              title="jsdoc for Node.js Client API"
              href="/jsdoc/index.html"
@@ -295,9 +301,9 @@
   <group toc-title="Other Docs">
 
     <entry toc-title="XCC"
-  	   title="XCC API Reference">
+           title="XCC API Reference">
       <entry toc-title="XCC Javadoc"
-  	     title="XCC Javadoc (online)"
+             title="XCC Javadoc (online)"
              href="/javadoc/xcc/index.html"
              type="external">
         API documentation for the MarkLogic XML Content Connector for
@@ -315,7 +321,7 @@
     </entry>
 
     <entry toc-title="Hadoop Connector"
-	   title="Hadoop Connector API Reference">
+           title="Hadoop Connector API Reference">
       <entry toc-title="Hadoop Connector API Reference"
              title="javadoc for MarkLogic Connector for Hadoop"
              href="/javadoc/hadoop/index.html"
