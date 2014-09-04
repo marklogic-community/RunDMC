@@ -135,9 +135,9 @@
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Java
         API. </guide>
-      <guide url-name="xcc" source-name="xcc">Contains an overview of the
-        what you can do with the XCC libraries, examples of how to use XCC,
-        and an overview of the sample applications included with XCC.</guide>
+      <guide url-name="xcc" source-name="xcc">Contains an overview of what
+        you can do with the XCC libraries, examples of how to use XCC, and an
+        overview of the sample applications included with XCC.</guide>
       <guide url-name="mapreduce" source-name="mapreduce">How to create
         Apache Hadoop MapReduce jobs that use MarkLogic Server as an input
         data source or an output destination. This book includes an overview
@@ -249,7 +249,7 @@
       <description>
         This API reference documents the REST API for creating client
         applications without a need to write or understand XQuery as well as
-        the REST resources available on port 8002 for monitoring, managing,
+        the REST resources available on port 8000 for monitoring, managing,
         and packaging.
       </description>
     </entry>
@@ -262,7 +262,8 @@
 
   <group toc-title="Java API Reference"
 	 title="Java API Reference">
-    <entry title="Java Client API Reference">
+     <entry toc-title="Java Client API Reference"
+            title="Java Client API Reference">
 	<entry toc-title="javadoc for MarkLogic Client API for Java"
 	       title="javadoc for MarkLogic Client API for Java"
                href="/javadoc/client/index.html"
@@ -291,6 +292,7 @@
   </group>
 
   <group toc-title="Other Docs">
+
     <entry toc-title="XCC"
   	   title="XCC API Reference">
       <entry toc-title="XCC Javadoc"
@@ -309,7 +311,8 @@
       <guide url-name="xcc" duplicate="true"/>
     </entry>
 
-    <entry toc-title="Hadoop Connector">
+    <entry toc-title="Hadoop Connector"
+	   title="Hadoop Connector API Reference">
       <entry toc-title="Hadoop Connector API Reference"
              title="javadoc for MarkLogic Connector for Hadoop"
              href="/javadoc/hadoop/index.html"

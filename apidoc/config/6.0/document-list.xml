@@ -60,37 +60,6 @@
     </entry>
   </group>
 
-  <group toc-title="REST API">
-    <entry title="REST API Reference"
-           toc-title="All REST Resources"
-           href="/REST"
-           type="function-reference"
-           mode="REST">
-      <description>
-        This API reference documents the REST API for creating client
-        applications without a need to write or understand XQuery as well as
-        the REST resources available on port 8002 for monitoring, managing,
-        and packaging.
-      </description>
-    </entry>
-
-    <entry toc-title="Related Guides">
-      <guide url-name="rest-dev" duplicate="true"/>
-      <guide url-name="monitoring" duplicate="true"/>
-    </entry>
-  </group>
-
-  <group toc-title="Java API Reference">
-    <entry toc-title="javadoc for MarkLogic Client API for Java"
-           href="/javadoc/client/index.html"
-           type="external">
-      API documentation for the MarkLogic Java API.
-    </entry>
-    <entry toc-title="Related Guides">
-      <guide url-name="java" duplicate="true"/>
-    </entry>
-  </group>
-
   <group>
     <entry title="ZIP File of All MarkLogic Product Documentation"
            href="/MarkLogic_7_pubs.zip"
@@ -136,9 +105,9 @@
       <guide url-name="infostudio" source-name="info_studio">
 	Provides step-by step information on using the Information Studio to 
 	load content into MarkLogic Server.</guide>
-      <guide url-name="xcc" source-name="xcc">Contains an overview of the 
-	what you can do with the XCC libraries, examples of how to use XCC, 
-	and an overview of the sample applications included with XCC.</guide>
+      <guide url-name="xcc" source-name="xcc">Contains an overview of what 
+	you can do with the XCC libraries, examples of how to use XCC, and an 
+	overview of the sample applications included with XCC.</guide>
       <guide url-name="mapreduce" source-name="mapreduce">How to create 
 	Apache Hadoop MapReduce jobs that use MarkLogic Server as an input 
 	data source or an output destination. This book includes an overview 
@@ -220,19 +189,57 @@
 
   </group>
 
+  <group toc-title="REST API">
+    <entry title="REST API Reference"
+           toc-title="All REST Resources"
+           href="/REST"
+           type="function-reference"
+           mode="REST">
+      <description>
+        This API reference documents the REST API for creating client
+        applications without a need to write or understand XQuery as well as
+        the REST resources available on port 8002 for monitoring, managing,
+        and packaging.
+      </description>
+    </entry>
+
+    <entry toc-title="Related Guides">
+      <guide url-name="rest-dev" duplicate="true"/>
+      <guide url-name="monitoring" duplicate="true"/>
+    </entry>
+  </group>
+
+
+
+  <group toc-title="Java API Reference"
+	 title="Java API Reference">
+      <entry toc-title="Java Client API Reference"
+	     title="Java Client API Reference">
+	<entry toc-title="javadoc for MarkLogic Client API for Java"
+	       title="javadoc for MarkLogic Client API for Java"
+               href="/javadoc/client/index.html"
+               type="external">
+        API documentation for the MarkLogic Java API.
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="java" duplicate="true"/>
+      </entry>
+    </entry>
+  </group>
+
   <group toc-title="Other Docs">
 
-    <entry title="XCC API Reference"
-        toc-title="XCC">
-      <entry title="XCC Javadoc (online)"
-             toc-title="XCC Javadoc"
+    <entry toc-title="XCC"
+	   title="XCC API Reference">
+      <entry toc-title="XCC Javadoc"
+	     title="XCC Javadoc (online)"
              href="/javadoc/xcc/index.html"
              type="external">
         API documentation for the MarkLogic XML Content Connector for
         Java (XCC/J) API.
       </entry>
-      <entry title="XCC .NET API (online)"
-             toc-title="XCC .NET API"
+      <entry toc-title="XCC .NET API"
+	     title="XCC .NET API (online)"
              href="/dotnet/xcc/index.html"
              type="external">
         API documentation for the MarkLogic XCC .NET C# API.
@@ -240,9 +247,10 @@
       <guide url-name="xcc" duplicate="true"/>
     </entry>
 
-    <entry toc-title="Hadoop Connector">
-      <entry title="javadoc for MarkLogic Connector for Hadoop"
-             toc-title="Hadoop Connector API Reference"
+    <entry toc-title="Hadoop Connector"
+	   title="Hadoop Connector API Reference">
+      <entry toc-title="Hadoop Connector API Reference"
+	     title="javadoc for MarkLogic Connector for Hadoop"
              href="/javadoc/hadoop/index.html"
              type="external">
         API documentation for the MarkLogic Connector for Hadoop.
@@ -251,15 +259,20 @@
       <guide url-name="mapreduce" duplicate="true"/>
     </entry>
 
-    <entry title="C++ UDF API Reference"
-           href="/cpp/udf/index.html"
-           type="external">
+    <entry title="C++ UDF">
+      <entry toc-title="C++ UDF API Reference"
+	     title="C++ UDF API Reference"
+             href="/cpp/udf/index.html"
+             type="external">
       API documentation for the C++ User Defined Function (UDF) API.
+      </entry>
     </entry>
 
-    <entry title="Admin Interface Help"
-           href="/admin-help"
-           type="help">
+    <entry title="Admin Interface Help">
+      <entry title="Admin Interface Help"
+             href="/admin-help"
+             type="help">
+      </entry>
     </entry>
 
   </group>
