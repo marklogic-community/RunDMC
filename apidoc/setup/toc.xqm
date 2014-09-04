@@ -1676,7 +1676,8 @@ as element(toc:node)*
    :)
   case () return toc:entry-to-node(
     $entry,
-    $entry/*/(
+    (: To preserve node order, use SMO rather than XPath. :)
+    $entry/* ! (
       typeswitch(.)
       case element(apidoc:entry) return toc:entry-node(
         $version, $xsd-docs, $m-functions,
