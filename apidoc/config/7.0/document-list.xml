@@ -251,7 +251,9 @@
              type="external">
         API documentation for the MarkLogic XCC .NET C# API.
       </entry>
-      <guide url-name="xcc" duplicate="true"/>
+      <entry toc-title="Developer's Guide">
+        <guide url-name="xcc" duplicate="true"/>
+      </entry>
     </entry>
 
     <entry toc-title="Hadoop Connector"
@@ -263,7 +265,9 @@
         API documentation for the MarkLogic Connector for Hadoop.
       </entry>
 
-      <guide url-name="mapreduce" duplicate="true"/>
+      <entry toc-title="Developer's Guide">
+        <guide url-name="mapreduce" duplicate="true"/>
+      </entry>
     </entry>
 
     <entry title="C++ UDF">
