@@ -362,7 +362,7 @@
                           $srv:effective-api-server, $api-version-prefix,
                           ml:external-uri-for-string(ml:rewrite-html-links(@uri)),
                           $anchor)
-                          else ml:external-uri-main($doc)"/>
+                          else ml:external-uri-main(@uri)"/>
     <tr>
       <th>
         <xsl:variable name="category">
