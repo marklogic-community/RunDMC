@@ -200,23 +200,25 @@
 
   </group>
 
-  <group toc-title="REST API">
-    <entry title="REST API Reference"
-           toc-title="All REST Resources"
-           href="/REST"
-           type="function-reference"
-           mode="REST">
-      <description>
+  <entry toc-title="REST API Reference"
+           title="REST API Reference">
+      <entry title="REST API Reference"
+             toc-title="All REST Resources"
+             href="/REST"
+             type="function-reference"
+             mode="REST">
+        <description>
         This API reference documents the REST API for creating client
         applications without a need to write or understand XQuery as well as
-        the REST resources available on port 8002 for monitoring, managing,
+        the REST resources available on port 8000 for monitoring, managing,
         and packaging.
-      </description>
-    </entry>
+        </description>
+      </entry>
 
-    <entry toc-title="Related Guides">
-      <guide url-name="rest-dev" duplicate="true"/>
-      <guide url-name="monitoring" duplicate="true"/>
+      <entry toc-title="Related Guides">
+        <guide url-name="rest-dev" duplicate="true"/>
+        <guide url-name="monitoring" duplicate="true"/>
+      </entry>
     </entry>
   </group>
 
