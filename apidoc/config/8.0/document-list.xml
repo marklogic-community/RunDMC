@@ -240,7 +240,8 @@
       <guide url-name="messages" source-name="messages">
         Error Messages and Codes Reference</guide>
       <guide url-name="copyright" source-name="shared">
-        Copyright and support information.
+	Includes a glossary of terms as well as copyright and support 
+	information.
       </guide>
     </entry>
 
