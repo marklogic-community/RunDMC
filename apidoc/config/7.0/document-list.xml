@@ -200,7 +200,8 @@
 
   </group>
 
-  <entry toc-title="REST API Reference"
+  <group toc-title="REST API">
+    <entry toc-title="REST API Reference"
            title="REST API Reference">
       <entry title="REST API Reference"
              toc-title="All REST Resources"
