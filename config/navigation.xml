@@ -92,7 +92,7 @@
   <page display="Tools" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code" closed="yes">
     <group display="Tools &amp; Open Source Projects">
       <group display="Debugging, profiling, and exploring">
-        <page display="Sublime Plugin" href="/code/sublime"/>
+        <page display="Sublime Text Plugin" href="/code/sublime"/>
         <page display="Oxygen" href="/code/oxygen"/>
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
