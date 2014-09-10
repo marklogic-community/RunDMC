@@ -2,21 +2,23 @@
     Stylesheet that's invoked for rendering every page in apidocs.
     Overrides behavior of /view/page.xsl.
 -->
-<xsl:stylesheet version="2.0"
-                xmlns:api="http://marklogic.com/rundmc/api"
-                xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
-                xmlns:guide="http://marklogic.com/rundmc/api/guide"
-                xmlns:ml="http://developer.marklogic.com/site/internal"
-                xmlns:srv="http://marklogic.com/rundmc/server-urls"
-                xmlns:u="http://marklogic.com/rundmc/util"
-                xmlns:v="http://marklogic.com/rundmc/api/view"
-                xmlns:x="http://www.w3.org/1999/xhtml"
-                xmlns:xdmp="http://marklogic.com/xdmp"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
-                extension-element-prefixes="xdmp"
-                exclude-result-prefixes="api apidoc guide ml srv u v x xs xdmp">
+<xsl:stylesheet
+    version="2.0"
+    xmlns:api="http://marklogic.com/rundmc/api"
+    xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
+    xmlns:guide="http://marklogic.com/rundmc/api/guide"
+    xmlns:ml="http://developer.marklogic.com/site/internal"
+    xmlns:srv="http://marklogic.com/rundmc/server-urls"
+    xmlns:ss="http://developer.marklogic.com/site/search"
+    xmlns:u="http://marklogic.com/rundmc/util"
+    xmlns:v="http://marklogic.com/rundmc/api/view"
+    xmlns:x="http://www.w3.org/1999/xhtml"
+    xmlns:xdmp="http://marklogic.com/xdmp"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns="http://www.w3.org/1999/xhtml"
+    extension-element-prefixes="xdmp"
+    exclude-result-prefixes="api apidoc guide ml srv ss u v x xs xdmp">
 
   <xsl:import href="/view/page.xsl"/>
 
@@ -175,9 +177,16 @@
   </xsl:template>
 
   <!-- Make search stick to the current API version -->
-  <xsl:template match="x:input[@name eq $set-version-param-name]/@ml:value">
+  <xsl:template match="x:input[@name eq $ss:INPUT-NAME-API-VERSION]/@ml:value">
     <xsl:attribute name="value">
       <xsl:value-of select="$VERSION-FINAL"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- Tell search this is an API search. -->
+  <xsl:template match="x:input[@name eq $ss:INPUT-NAME-API]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of select="1"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -318,10 +327,10 @@
 
   <xsl:template mode="page-content"
                 match="message">
-    <xsl:if test="$q">
+    <xsl:if test="$QUERY">
       <p class="didYouMean">
         <xsl:call-template name="did-you-mean-undo">
-          <xsl:with-param name="q" select="$q"/>
+          <xsl:with-param name="q" select="$QUERY"/>
         </xsl:call-template>
       </p>
     </xsl:if>
@@ -505,7 +514,7 @@
 
   <xsl:template mode="page-content"
                 match="api:function-page">
-    <xsl:if test="$show-alternative-functions or $q">
+    <xsl:if test="$show-alternative-functions or $QUERY">
       <xsl:variable name="other-matches"
                     select="ml:get-matching-functions(
                             api:function[1]/@name, $VERSION-FINAL)
@@ -523,7 +532,7 @@
           <xsl:text>? </xsl:text>
         </xsl:if>
         <xsl:call-template name="did-you-mean-undo">
-          <xsl:with-param name="q" select="$q"/>
+          <xsl:with-param name="q" select="$QUERY"/>
         </xsl:call-template>
       </p>
     </xsl:if>

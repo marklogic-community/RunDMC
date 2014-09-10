@@ -182,11 +182,6 @@
     </div>
   </xsl:template>
 
-  <!-- For Learn content, breadcrumbs are handled elsewhere -->
-  <!-- since when?
-  <xsl:template match="breadcrumbs[$content/Article]"/>
-  -->
-
   <xsl:template match="breadcrumbs" name="breadcrumbs">
     <xsl:apply-templates
         mode="breadcrumbs" select="$page-in-navigation[1]"/>
@@ -219,7 +214,8 @@
 
   <xsl:template mode="breadcrumb-display" match="*">
     <xsl:text> > </xsl:text>
-    <xsl:value-of select="$content/*/title"/>
+    <xsl:value-of
+        select="($content/*/title, $content/*/xhtml:h1)[1]"/>
   </xsl:template>
 
   <xsl:template mode="breadcrumb-link" match="page">

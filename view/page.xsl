@@ -2,19 +2,21 @@
      every page of the site. Called directly by the controller scripts
      (transform.xqy).
 -->
-<xsl:stylesheet version="2.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xdmp="http://marklogic.com/xdmp"
-  xmlns      ="http://www.w3.org/1999/xhtml"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
-  xmlns:u    ="http://marklogic.com/rundmc/util"
-  xmlns:srv  ="http://marklogic.com/rundmc/server-urls"
-  xmlns:users="users"
-  xmlns:ml               ="http://developer.marklogic.com/site/internal"
-  xpath-default-namespace="http://developer.marklogic.com/site/internal"
-  exclude-result-prefixes="ml qp srv u users xs xdmp">
+<xsl:stylesheet
+    version="2.0"
+    xmlns:ml="http://developer.marklogic.com/site/internal"
+    xmlns:qp="http://www.marklogic.com/ps/lib/queryparams"
+    xmlns:srv="http://marklogic.com/rundmc/server-urls"
+    xmlns:ss="http://developer.marklogic.com/site/search"
+    xmlns:u="http://marklogic.com/rundmc/util"
+    xmlns:users="users"
+    xmlns:xdmp="http://marklogic.com/xdmp"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xpath-default-namespace="http://developer.marklogic.com/site/internal"
+    exclude-result-prefixes="ml qp srv ss u users xs xdmp">
 
   <xsl:include href="navigation.xsl"/>
   <xsl:include href="widgets.xsl"/>
@@ -27,6 +29,10 @@
   <xdmp:import-module
       namespace="http://developer.marklogic.com/site/internal"
       href="/model/data-access.xqy"/>
+
+  <xdmp:import-module
+      namespace="http://developer.marklogic.com/site/search"
+      href="/controller/search.xqm"/>
 
   <!-- See http://www.w3.org/TR/html5/syntax.html#the-doctype and http://www.w3.org/html/wg/tracker/issues/54 -->
   <xsl:output doctype-system="about:legacy-compat"
@@ -529,9 +535,18 @@
   </xsl:function>
 
   <!-- Make search stick to the current API version -->
-  <xsl:template match="xhtml:input[@name eq $set-version-param-name]/@ml:value">
+  <xsl:template match="input[@name eq $ss:INPUT-NAME-API-VERSION]/@ml:value">
     <xsl:attribute name="value">
-      <xsl:value-of select="xdmp:get-request-field('v')"/>
+      <xsl:value-of
+          select="xdmp:get-request-field($ss:INPUT-NAME-API-VERSION)"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- Make search stick to the current API state. -->
+  <xsl:template match="input[@name eq $ss:INPUT-NAME-API]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of
+          select="xdmp:get-request-field($ss:INPUT-NAME-API)"/>
     </xsl:attribute>
   </xsl:template>
 
