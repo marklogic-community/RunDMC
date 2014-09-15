@@ -9,7 +9,9 @@ import module namespace search="http://marklogic.com/appservices/search"
   at "/MarkLogic/appservices/search/search.xqy" ;
 
 import module namespace ml="http://developer.marklogic.com/site/internal"
-  at "/model/data-access.xqy";
+  at "/model/data-access.xqy" ;
+import module namespace srv="http://marklogic.com/rundmc/server-urls"
+  at "/controller/server-urls.xqy" ;
 
 declare variable $INPUT-NAME-API := 'api' ;
 
@@ -149,6 +151,42 @@ as element(search:response)
     $start, $size,
     ss:options(
       $version, $is-api, not(contains($query, 'cat:')), true(), true()))
+};
+
+declare function ss:param(
+  $name as xs:string,
+  $value as xs:string)
+as xs:string
+{
+  concat($name, '=', encode-for-uri($value))
+};
+
+declare function ss:href(
+  $version as xs:string,
+  $query as xs:string,
+  $is-api as xs:boolean,
+  $page as xs:integer?)
+as xs:string
+{
+  concat(
+    $srv:search-page-url,
+    '?',
+    string-join(
+      (ss:param('q', $query),
+        if (not($is-api)) then ()
+        else ss:param($ss:INPUT-NAME-API, xs:string($is-api)),
+        ss:param($ss:INPUT-NAME-API-VERSION, $version),
+        ss:param('p', xs:string($page))),
+      '&amp;'))
+};
+
+declare function ss:href(
+  $version as xs:string,
+  $query as xs:string,
+  $is-api as xs:boolean)
+as xs:string
+{
+  ss:href($version, $query, $is-api, ())
 };
 
 (: search.xqm :)

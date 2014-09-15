@@ -6,7 +6,7 @@
   xmlns:ml="http://developer.marklogic.com/site/internal"
   xmlns:qp="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:search="http://marklogic.com/appservices/search"
-  xmlns:srv ="http://marklogic.com/rundmc/server-urls"
+  xmlns:srv="http://marklogic.com/rundmc/server-urls"
   xmlns:ss="http://developer.marklogic.com/site/search"
   xmlns:u="http://marklogic.com/rundmc/util"
   xmlns:xdmp="http://marklogic.com/xdmp"
@@ -35,8 +35,8 @@
                         ($params[@name eq $ss:INPUT-NAME-API], 0)[1])"/>
 
   <xsl:variable name="API-VERSION-PREFIX"
-                select="if ($preferred-version eq $ml:default-version) then ''
-                        else concat('/',$preferred-version)"/>
+                select="if ($PREFERRED-VERSION eq $ml:default-version) then ''
+                        else concat('/',$PREFERRED-VERSION)"/>
 
   <!-- This is used for hit highlighting. Only available when the client sets it (on the search results page) -->
   <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')[1]"/>
@@ -48,7 +48,7 @@
     <xsl:variable name="results-per-page" select="10"/>
     <xsl:sequence
         select="ss:search(
-                $preferred-version, $IS-API-SEARCH, $QUERY,
+                $PREFERRED-VERSION, $IS-API-SEARCH, $QUERY,
                 ml:start-index($results-per-page), $results-per-page)"/>
   </xsl:variable>
 
@@ -65,8 +65,9 @@
 
   <xsl:variable name="preferred-version-cookie"
                 select="ck:get-cookie($preferred-version-cookie-name)[1]"/>
+
   <!-- #198 The version cookie is set, but never honored. -->
-  <xsl:variable name="preferred-version"
+  <xsl:variable name="PREFERRED-VERSION"
                 select="if ($set-version) then $set-version
                         else if (0 and $preferred-version-cookie)
                         then $preferred-version-cookie
@@ -90,7 +91,7 @@
   <!-- Overriden by apidoc/view/page.xsl so this has to use XSL. -->
   <xsl:function name="ml:version-is-selected" as="xs:boolean">
     <xsl:param name="_version" as="xs:string"/>
-    <xsl:copy-of select="$_version eq $preferred-version"/>
+    <xsl:copy-of select="$_version eq $PREFERRED-VERSION"/>
   </xsl:function>
 
   <!--
@@ -126,11 +127,9 @@
     </option>
   </xsl:template>
 
-  <!-- TODO version-specific results URL -->
+  <!-- TODO version-specific results URL - dead code? -->
   <xsl:template mode="version-list-item-href" match="*:version">
-    <xsl:sequence select="concat(
-                          '?q=', $QUERY, '&amp;',
-                          $ss:INPUT-NAME-API-VERSION, '=', @number)"/>
+    <xsl:value-of select="ss:href(@number, $QUERY, $IS-API-SEARCH)"/>
   </xsl:template>
 
   <xsl:template match="sub-nav[$external-uri = ('/search','/apidoc/do-search')]">
@@ -160,10 +159,10 @@
                   select="$page-number-supplied or contains($QUERY,'cat:')"/>
     <xsl:variable name="matching-functions"
                   select="if ($skip-exact-matches) then ()
-                          else ml:get-matching-functions($QUERY,$preferred-version)"/>
+                          else ml:get-matching-functions($QUERY,$PREFERRED-VERSION)"/>
     <xsl:variable name="matching-messages"
                   select="if ($skip-exact-matches or $matching-functions) then ()
-                          else ml:get-matching-messages($QUERY, $preferred-version)"/>
+                          else ml:get-matching-messages($QUERY, $PREFERRED-VERSION)"/>
     <xsl:variable name="redirect"
                   select="if (not($matching-functions or $matching-messages))
                           then ()
@@ -210,7 +209,7 @@
         <xsl:variable name="q-clean" select="replace($q, $pat, '$2')"/>
         <p class="didYouMean">
           <xsl:text>Did you mean to search for </xsl:text>
-          <a href="{$srv:search-page-url}?q={$q-clean}&amp;v={ $q-version }">
+          <a href="{ ss:href($q-version, $q-clean, $IS-API-SEARCH) }">
             <xsl:value-of select="$q-clean"/>
             <xsl:text> in version </xsl:text>
             <xsl:value-of select="$q-version"/>
@@ -292,7 +291,7 @@
       </th>
       <td>
         <h4>
-          <a href="{$result-uri}" class="search_result">
+          <a href="{ $result-uri }" class="search_result">
             <xsl:variable name="page-specific-title">
               <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
             </xsl:variable>
@@ -376,7 +375,11 @@
     <form class="pagination" action="/search" method="get">
       <div>
         <xsl:if test="$page-number gt 1">
-          <a class="prev" href="{$search-url}?q={encode-for-uri($QUERY)}&amp;p={$page-number - 1}">«</a>
+          <a class="prev"
+             href="{
+                   ss:href(
+                   $PREFERRED-VERSION, $QUERY, $IS-API-SEARCH,
+                   $page-number - 1) }">«</a>
           <xsl:text> </xsl:text>
         </xsl:if>
         <label>
@@ -388,7 +391,11 @@
         </label>
         <xsl:if test="@total gt (@start + @page-length - 1)">
           <xsl:text> </xsl:text>
-          <a class="next" href="{$search-url}?q={encode-for-uri($QUERY)}&amp;p={$page-number + 1}">»</a>
+          <a class="next"
+             href="{
+                   ss:href(
+                   $PREFERRED-VERSION, $QUERY, $IS-API-SEARCH,
+                   1 + $page-number) }">«</a>
         </xsl:if>
       </div>
     </form>
@@ -424,8 +431,15 @@
       <xsl:if test="$selected">
         <xsl:attribute name="class" select="'current'"/>
       </xsl:if>
-      <!-- "All categories" link effectively forces the search by including p=1 (preventing function page redirects) -->
-      <a href="?q={encode-for-uri($new-q)}{if (not($this-constraint)) then '&amp;p=1' else ''}">
+      <!--
+          "All categories" link forces the search by including p=1
+          (preventing function page redirects).
+          This also resets to page 1.
+      -->
+      <a href="{
+               ss:href(
+               $PREFERRED-VERSION, $new-q, $IS-API-SEARCH,
+               if ($this-constraint) then () else 1) }">
         <xsl:variable name="category">
           <ml:category name="{(@name,'all')[1]}"/>
         </xsl:variable>
@@ -506,7 +520,7 @@
     <xsl:apply-templates mode="breadcrumbs"
                          select=".">
       <xsl:with-param name="site-name" select="'Docs'"/>
-      <xsl:with-param name="version" select="$preferred-version"/>
+      <xsl:with-param name="version" select="$PREFERRED-VERSION"/>
     </xsl:apply-templates>
   </xsl:template>
 

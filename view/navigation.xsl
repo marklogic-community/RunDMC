@@ -145,8 +145,8 @@
                   </xsl:template>
 
                           <xsl:template mode="top-nav-href-suffix" match="page"/>
-                          <xsl:template mode="top-nav-href-suffix" match="page[@use-preferred-version-href][not($preferred-version eq $ml:default-version)]">
-                            <xsl:value-of select="$preferred-version"/>
+                          <xsl:template mode="top-nav-href-suffix" match="page[@use-preferred-version-href][not($PREFERRED-VERSION eq $ml:default-version)]">
+                            <xsl:value-of select="$PREFERRED-VERSION"/>
                           </xsl:template>
 
 
