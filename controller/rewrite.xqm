@@ -8,6 +8,8 @@ module namespace m="http://marklogic.com/rundmc/rewrite";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
 import module namespace u="http://marklogic.com/rundmc/util"
  at "/lib/util-2.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
@@ -31,8 +33,8 @@ declare variable $NOTFOUND := "/controller/notfound.xqy" ;
 declare variable $VERSION := xdmp:get-request-field('version') ;
 
 (: #296 If a version does not exist there will be no mappings. :)
-declare variable $GUIDE-MAPPINGS as element(guide)* := api:document-list(
-  ($VERSION, $api:DEFAULT-VERSION)[1])/*/guide ;
+declare variable $GUIDE-MAPPINGS as element(apidoc:guide)* := api:document-list(
+  ($VERSION, $api:DEFAULT-VERSION)[1])//apidoc:guide ;
 
 declare variable $SHAREPOINT-CONNECTOR-VERSION := "1.1-1" ;
 

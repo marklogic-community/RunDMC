@@ -19,7 +19,7 @@ declare %t:case function t:guide-296()
       '/pubs/3.2/books/install.pdf',
       'http://developer.marklogic.com/pubs/3.2/books/install.pdf',
       ''),
-    '/controller/301redirect.xqy?path=/controller/notfound.xqy')
+    '/controller/301redirect.xqy?path=//localhost:8809/guide/installation.pdf')
 };
 
 (: test/apidoc-rewrite.xqm :)
