@@ -574,7 +574,8 @@
       <xsl:text>) as </xsl:text>
       <xsl:if test="api:return">
         <!-- Guard against bad content. -->
-        <xsl:variable name="mode" as="xs:string" select="@mode"/>
+        <xsl:variable name="mode" as="xs:string"
+                      select="(@mode, 'xquery')[1]"/>
         <xsl:value-of select="api:type(
                               $mode,
                               (api:return[not(@class)
