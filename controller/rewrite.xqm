@@ -34,7 +34,8 @@ declare variable $VERSION := xdmp:get-request-field('version') ;
 
 (: #296 If a version does not exist there will be no mappings. :)
 declare variable $GUIDE-MAPPINGS as element(apidoc:guide)* := api:document-list(
-  ($VERSION, $api:DEFAULT-VERSION)[1])//apidoc:guide ;
+  ($VERSION, $api:DEFAULT-VERSION)[1])//apidoc:guide[
+  not(xs:boolean(@duplicate))] ;
 
 declare variable $SHAREPOINT-CONNECTOR-VERSION := "1.1-1" ;
 
@@ -230,9 +231,11 @@ declare function m:redirect-guide-url($path as xs:string)
   (: #296 If there are no mappings there are no guides. :)
   if (empty($GUIDE-MAPPINGS)) then $NOTFOUND else
   let $file-stem := substring-before(tokenize($path,'/')[last()], '.pdf')
-  let $new-stem as xs:string := $GUIDE-MAPPINGS[
+  let $new-stem as xs:string? := $GUIDE-MAPPINGS[
     (@pdf-name,@source-name)[1] eq $file-stem]/@url-name
-  return concat($srv:api-server, '/guide/', $new-stem, '.pdf')
+  return (
+    if (not($new-stem)) then $NOTFOUND
+    else concat($srv:api-server, '/guide/', $new-stem, '.pdf'))
 };
 
 declare function m:gone($path as xs:string) as xs:boolean {
