@@ -9,47 +9,57 @@
     <br/>
     <br/>
 
-    <xhtml:div id="event_7" class="event">
-        <xhtml:h2 id="event_7_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=2227318f-1b5d-4b48-b3c6-3dfc16314c30" target="_blank">Get to Know MarkLogic Semantics </xhtml:a>
-        </xhtml:h2>
-        <br/>
-    </xhtml:div>
-
     <xhtml:div id="event_6" class="event">
         <xhtml:h2 id="event_6_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=89aa2450-a0a5-4de0-931f-37439c7e04cb" target="_blank"> Introduction to MarkLogic Server </xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML5_ML_Server_Overview.xml&course=MarkLogic%20Server%20Overview" target="_blank"> MarkLogic Server Overview </xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
 
     <xhtml:div id="event_4" class="event">
         <xhtml:h2 id="event_4_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=eb64a99b-edf0-4e76-9c28-be2b9206aba0&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> REST API </xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/MLNFD_REST_API.xml&course=MarkLogic%20REST%20API" target="_blank"> REST API </xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
+
     <xhtml:div id="event_5" class="event">
         <xhtml:h2 id="event_5_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=795c2722-ede3-4f21-9ba8-cd75f98384f1&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Java API</xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML6NFD_Java_API2.xml&course=MarkLogic%20Java%20API" target="_blank"> Java API</xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
+
+    <xhtml:div id="event_8" class="event">
+        <xhtml:h2 id="event_8_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/mlu_roxy_1intro_2014_08.xml&course=Introduction%20to%20Roxy%20for%20MarkLogic,%20Part%201%20of%205" target="_blank"> Introduction to Roxy</xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+
+    <xhtml:div id="event_7" class="event">
+        <xhtml:h2 id="event_7_title" style="margin-bottom: 2px; margin-top: 8px;">
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/mlu_semantics_2013_10.xml&course=Getting%20to%20Know%20MarkLogic%20Semantics" target="_blank">Get to Know MarkLogic Semantics </xhtml:a>
+        </xhtml:h2>
+        <br/>
+    </xhtml:div>
+
     <xhtml:div id="event_2" class="event">
         <xhtml:h2 id="event_2_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=55880f88-5f95-4dfb-9565-d86c52fe9440&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Loading Data with Content Pump </xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML6NFD_Content_Pump.xml&course=MarkLogic%20Content%20Pump" target="_blank"> Loading Data with Content Pump </xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
+
     <xhtml:div id="event_1" class="event">
         <xhtml:h2 id="event_1_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=77a52cc7-9198-45c9-95d3-fba5f48cb380&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> BI Tools Interface</xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML6NFD_BI_Tools_Int.xml&course=Business%20Intelligence%20Tools%20Interface" target="_blank"> BI Tools Interface</xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
     <xhtml:div id="event_3" class="event">
         <xhtml:h2 id="event_3_title" style="margin-bottom: 2px; margin-top: 8px;">
-                <xhtml:a href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=eb9c7a0f-3ced-4b38-9639-56b9cb02d1f4&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True" target="_blank"> Data Visualization Widgets</xhtml:a>
+                <xhtml:a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/mlu_geospatialbasics_2014_06.xml&course=Geospatial%20Basics" target="_blank"> Geospatial Basics</xhtml:a>
         </xhtml:h2>
         <br/>
     </xhtml:div>
