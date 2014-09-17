@@ -23,8 +23,10 @@
 
   <xsl:variable name="set-version-param-name"
                 select="'v'"/>
-  <xsl:variable name="set-version"
-                select="string($params[@name eq $set-version-param-name])"/>
+  <!-- There may be a bug somewhere that adds multiple version params. -->
+  <xsl:variable name="set-version" as="xs:string?"
+                select="distinct-values(
+                        $params[@name eq $set-version-param-name])[.][1]"/>
 
   <xsl:variable name="preferred-version-cookie-name"
                 select="if ($srv:cookie-domain ne 'marklogic.com')

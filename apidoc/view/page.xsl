@@ -38,9 +38,10 @@
   <xsl:output indent="no"/>
 
   <!-- This may be empty. -->
-  <xsl:variable name="VERSION" select="$params[@name eq 'version']/string()"/>
+  <xsl:variable name="VERSION" as="xs:string?"
+                select="ml:version-select($params[@name eq 'version'])"/>
 
-  <xsl:variable name="VERSION-FINAL"
+  <xsl:variable name="VERSION-FINAL" as="xs:string"
                 select="if ($VERSION) then $VERSION
                         else $api:DEFAULT-VERSION"/>
 
