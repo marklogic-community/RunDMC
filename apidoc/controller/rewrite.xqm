@@ -393,7 +393,7 @@ declare function m:rewrite()
     replace($PATH, $GUIDE-MESSAGE-PAT, '$2'))
 
   (: Ignore URLs starting with "/private/" :)
-  else if (starts-with($PATH, '/private/')) then "/controller/notfound.xqy"
+  else if (starts-with($PATH, '/private/')) then $rw:NOTFOUND
 
   (: OK to expose xray like this? :)
   else if (starts-with($PATH, '/xray')) then $PATH-ORIG||'/index.xqy'
@@ -432,7 +432,7 @@ declare function m:rewrite()
 
   (: SCENARIO 4: Not found anywhere :)
   else (
-    "/controller/notfound.xqy",
+    $rw:NOTFOUND,
     xdmp:log(text { 'NOTFOUND', $PATH, xdmp:url-decode($DOC-URL) }))
 };
 
