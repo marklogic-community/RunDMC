@@ -3,6 +3,8 @@ xquery version "1.0-ml";
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
 xdmp:set-response-content-type("text/html"),
 <html>
   <head>
@@ -25,17 +27,20 @@ xdmp:set-response-content-type("text/html"),
         else
           fragment = "chapter";
         var guideUrlName;
-        {for $guide at $pos in $api:DOCUMENT-LIST/*/guide
-         return
-         (
+        {
+      (: #296 might want to figure out the correct version. :)
+      let $version := $api:DEFAULT-VERSION
+      let $guides := api:document-list($version)//apidoc:guide[
+        not(xs:boolean(@duplicate))]
+      for $guide at $pos in $guides
+      return (
            if ($pos ne 1) then text{" else "} else (),
            text{ "if (guide == '"     },
            text{ $guide/@source-name  },
            text{ "') guideUrlName = '"},
            text{ $guide/@url-name     },
-           text{ "'; " }
-         )
-        }
+           text{ "'; " } )
+      }
         /*
         alert(guide);
         alert(fragment);

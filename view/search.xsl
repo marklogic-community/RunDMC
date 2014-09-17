@@ -28,7 +28,8 @@
       href="/apidoc/model/data-access.xqy"/>
 
   <xsl:variable name="set-version"
-                select="string($params[@name eq $ss:INPUT-NAME-API-VERSION])"/>
+                select="ml:version-select(
+                        $params[@name eq $ss:INPUT-NAME-API-VERSION])"/>
 
   <xsl:variable name="IS-API-SEARCH" as="xs:boolean"
                 select="xs:boolean(

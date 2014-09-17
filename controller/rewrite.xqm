@@ -8,6 +8,8 @@ module namespace m="http://marklogic.com/rundmc/rewrite";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+
 import module namespace u="http://marklogic.com/rundmc/util"
  at "/lib/util-2.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
@@ -26,10 +28,14 @@ import module namespace api="http://marklogic.com/rundmc/api"
 declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := $ml:default-version ;
 
+declare variable $NOTFOUND := "/controller/notfound.xqy" ;
+
 declare variable $VERSION := xdmp:get-request-field('version') ;
 
-declare variable $GUIDE-MAPPINGS as element(guide)+ := api:document-list(
-  ($VERSION, $api:DEFAULT-VERSION)[1])/*/guide ;
+(: #296 If a version does not exist there will be no mappings. :)
+declare variable $GUIDE-MAPPINGS as element(apidoc:guide)* := api:document-list(
+  ($VERSION, $api:DEFAULT-VERSION)[1])//apidoc:guide[
+  not(xs:boolean(@duplicate))] ;
 
 declare variable $SHAREPOINT-CONNECTOR-VERSION := "1.1-1" ;
 
@@ -222,10 +228,14 @@ declare function m:redirect-function-url($path as xs:string) as xs:string {
 declare function m:redirect-guide-url($path as xs:string)
   as xs:string
 {
+  (: #296 If there are no mappings there are no guides. :)
+  if (empty($GUIDE-MAPPINGS)) then $NOTFOUND else
   let $file-stem := substring-before(tokenize($path,'/')[last()], '.pdf')
-  let $new-stem as xs:string := $GUIDE-MAPPINGS[
+  let $new-stem as xs:string? := $GUIDE-MAPPINGS[
     (@pdf-name,@source-name)[1] eq $file-stem]/@url-name
-  return concat($srv:api-server, '/guide/', $new-stem, '.pdf')
+  return (
+    if (not($new-stem)) then $NOTFOUND
+    else concat($srv:api-server, '/guide/', $new-stem, '.pdf'))
 };
 
 declare function m:gone($path as xs:string) as xs:boolean {
@@ -349,7 +359,7 @@ as xs:string
   return (
     if (m:gone($path)) then "/controller/gone.xqy"
     else if (m:forbidden($path)) then "/controller/forbidden.xqy"
-    else if (m:notfound($path)) then "/controller/notfound.xqy"
+    else if (m:notfound($path)) then $NOTFOUND
     else if ($path eq '/')  then "/controller/transform.xqy?src=/index"
     (: Support /download[s] and map them and /products to latest product URI :)
     else if ($path =
@@ -406,7 +416,7 @@ as xs:string
       xdmp:url-encode(
         concat(replace($path, "/rex", ""), "?", $query-string)))
     (: Control the visibility of files in the code base :)
-    else if (not(m:static-file-path($path))) then "/controller/notfound.xqy"
+    else if (not(m:static-file-path($path))) then $NOTFOUND
     else (
       m:record-download($path),
       if ($method = ("GET", "HEAD")) then $orig-url

@@ -546,7 +546,8 @@
   <xsl:template match="input[@name eq $ss:INPUT-NAME-API]/@ml:value">
     <xsl:attribute name="value">
       <xsl:value-of
-          select="xdmp:get-request-field($ss:INPUT-NAME-API)"/>
+          select="ml:version-select(
+                  xdmp:get-request-field($ss:INPUT-NAME-API))"/>
     </xsl:attribute>
   </xsl:template>
 

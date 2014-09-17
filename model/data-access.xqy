@@ -798,5 +798,17 @@ as element(Tutorial)?
     return doc($uri-internal)/Tutorial)
 };
 
+(: Given a sequence of possible version strings,
+ : return the best one available.
+ :)
+declare function ml:version-select(
+  $list as xs:string*)
+as xs:string?
+{
+  (for $v in distinct-values($list ! normalize-space(.))
+    where $v = $server-versions-available
+    order by xs:double($v) descending
+    return $v)[1]
+};
 
 (: model/data-access.xqy :)

@@ -40,9 +40,10 @@
   <xsl:output indent="no"/>
 
   <!-- This may be empty. -->
-  <xsl:variable name="VERSION" select="$params[@name eq 'version']/string()"/>
+  <xsl:variable name="VERSION" as="xs:string?"
+                select="ml:version-select($params[@name eq 'version'])"/>
 
-  <xsl:variable name="VERSION-FINAL"
+  <xsl:variable name="VERSION-FINAL" as="xs:string"
                 select="if ($VERSION) then $VERSION
                         else $api:DEFAULT-VERSION"/>
 
@@ -583,7 +584,8 @@
       <xsl:text>) as </xsl:text>
       <xsl:if test="api:return">
         <!-- Guard against bad content. -->
-        <xsl:variable name="mode" as="xs:string" select="@mode"/>
+        <xsl:variable name="mode" as="xs:string"
+                      select="(@mode, 'xquery')[1]"/>
         <xsl:value-of select="api:type(
                               $mode,
                               (api:return[not(@class)
