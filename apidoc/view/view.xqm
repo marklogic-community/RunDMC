@@ -196,7 +196,7 @@ declare function v:input-hidden(
 
 declare function v:toc-references(
   $version as xs:string,
-  $version-specified as xs:string,
+  $version-specified as xs:string?,
   $version-prefix as xs:string,
   $content as document-node())
 as node()*
