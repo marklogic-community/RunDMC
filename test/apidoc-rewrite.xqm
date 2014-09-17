@@ -20,9 +20,10 @@ declare %t:case function t:js-all()
   xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
   at:equal(
     rwa:rewrite(),
-    '/apidoc/controller/transform.xqy?src=/apidoc/'
-    ||$rw:API-VERSION
-    ||'/js/all.xml&amp;version=&amp;')
+    if ($rw:API-VERSION lt '8.0') then $rw:NOTFOUND
+    else ('/apidoc/controller/transform.xqy?src=/apidoc/'
+      ||$rw:API-VERSION
+      ||'/js/all.xml&amp;version=&amp;'))
 };
 
 declare %t:case function t:js-static()
@@ -51,7 +52,8 @@ declare %t:case function t:message-XDMP-en-XDMP-BAD()
   xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
   at:equal(
     rwa:rewrite(),
-    '/controller/redirect.xqy?path=/8.0/messages/XDMP-en/XDMP-BAD')
+    '/controller/redirect.xqy?path=/'
+    ||$rw:API-VERSION||'/messages/XDMP-en/XDMP-BAD')
 };
 
 declare %t:case function t:message-XDMP-BAD()
@@ -60,7 +62,8 @@ declare %t:case function t:message-XDMP-BAD()
   xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
   at:equal(
     rwa:rewrite(),
-    '/controller/redirect.xqy?path=/8.0/messages/XDMP-en/XDMP-BAD')
+    '/controller/redirect.xqy?path=/'
+    ||$rw:API-VERSION||'/messages/XDMP-en/XDMP-BAD')
 };
 
 declare %t:case function t:root()
