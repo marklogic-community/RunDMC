@@ -791,40 +791,50 @@ as xs:string
 };
 
 declare function api:type-expr-javascript(
+  $context as xs:string?,
   $type as xs:string,
   $quantifier as xs:string)
 as xs:string
 {
   switch($quantifier)
   case '*'
-  case '+' return 'ValueIterator'
+  case '+' return (
+    if ($context = 'return') then 'ValueIterator'
+    else 'String[]')
   default return concat(api:type-javascript($type), $quantifier)
 };
 
 declare function api:type-expr-javascript(
+  $context as xs:string?,
   $expr as xs:string)
 as xs:string
 {
-  (: Special case per #262 for xdmp:invoke et. al. :)
-  if ($expr = '(element()|map:map)?') then 'Object?'
+  switch($expr)
+  (: #262 for xdmp.invoke et. al. :)
+  case '(element()|map:map)?' return 'Object?'
+  (: #301 cts.search :)
+  case '(cts:order|xs:string)*' return 'String[]'
 
-  (: If there is a quantifier, tokenize and handle it. :)
-  else if (matches($expr, $TYPE-JS-PAT)) then api:type-expr-javascript(
-    replace($expr, $TYPE-JS-PAT, '$1'),
-    replace($expr, $TYPE-JS-PAT, '$2'))
-
-  (: No quantifier. :)
-  else api:type-javascript($expr)
+  default return (
+    (: If there is a quantifier, tokenize and handle it. :)
+    if (matches($expr, $TYPE-JS-PAT)) then api:type-expr-javascript(
+      $context,
+      replace($expr, $TYPE-JS-PAT, '$1'),
+      replace($expr, $TYPE-JS-PAT, '$2'))
+    (: No quantifier. :)
+    else api:type-javascript($expr))
 };
 
 (: Translate XDM types to JavaScript types. :)
 declare function api:type(
   $mode as xs:string,
+  $context as xs:string?,
   $expr as xs:string)
 as xs:string
 {
   switch($mode)
   case $MODE-JAVASCRIPT return api:type-expr-javascript(
+    $context,
     normalize-space($expr))
   default return normalize-space($expr)
 };

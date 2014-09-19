@@ -588,6 +588,7 @@
                       select="(@mode, 'xquery')[1]"/>
         <xsl:value-of select="api:type(
                               $mode,
+                              'return',
                               (api:return[not(@class)
                               or xs:NMTOKENS(@class) = $mode])[1])"/>
       </xsl:if>
@@ -605,7 +606,7 @@
       <xsl:value-of select="@name"/>
     </a>
     <xsl:text> as </xsl:text>
-    <xsl:value-of select="api:type(../../@mode, @type)"/>
+    <xsl:value-of select="api:type(../../@mode, (), @type)"/>
     <xsl:if test="@optional eq 'true'">]</xsl:if>
     <xsl:if test="position() ne last()">,</xsl:if>
     <xsl:text>&#xA;</xsl:text>
