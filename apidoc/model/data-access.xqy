@@ -67,9 +67,10 @@ as xs:string
 
 declare function api:toc-uri-location-alternative(
   $version as xs:string,
-  $version-specified as xs:string)
+  $version-specified as xs:string?)
 {
   if ($version eq $DEFAULT-VERSION) then $TOC-URI-DEFAULT
+  else if (not($version-specified)) then $TOC-URI-DEFAULT
   else api:toc-uri-location($version-specified)
 };
 
@@ -81,7 +82,7 @@ declare function api:toc-uri-location-alternative(
  :)
 declare function api:toc-uri(
   $version as xs:string,
-  $version-specified as xs:string)
+  $version-specified as xs:string?)
 as xs:string
 {
   doc(api:toc-uri-location-alternative($version, $version-specified))

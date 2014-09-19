@@ -27,6 +27,7 @@
       namespace="http://marklogic.com/rundmc/api"
       href="/apidoc/model/data-access.xqy"/>
 
+  <!-- There may be a bug somewhere that adds multiple version params. -->
   <xsl:variable name="set-version"
                 select="ml:version-select(
                         $params[@name eq $ss:INPUT-NAME-API-VERSION])"/>
