@@ -62,7 +62,7 @@
       <path>/pubs/raw/apidoc/</path>
     </entry>
     <entry toc-title="Related Guides">
-      <guide url-name="jsref" duplicate="true"/>
+      <guide url-name="jsref" toc-closed="1" duplicate="true"/>
     </entry>
     </group>
 
@@ -89,7 +89,7 @@
       <path>/pubs/raw/apidoc/</path>
     </entry>
     <entry toc-title="Related Guides">
-      <guide url-name="xquery" duplicate="true"/>
+      <guide url-name="xquery" toc-closed="1" duplicate="true"/>
     </entry>
   </group>
 
@@ -264,10 +264,10 @@
       </entry>
 
       <entry toc-title="Related Guides">
-        <guide url-name="rest-dev" duplicate="true"/>
-        <guide url-name="monitoring" duplicate="true"/>
-        <guide url-name="admin" duplicate="true"/>
-        <guide url-name="admin-api" duplicate="true"/>
+        <guide url-name="rest-dev" toc-closed="1" duplicate="true"/>
+        <guide url-name="monitoring" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin-api" toc-closed="1" duplicate="true"/>
       </entry>
     </entry>
   </group>
