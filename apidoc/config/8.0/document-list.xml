@@ -267,7 +267,7 @@
         <guide url-name="rest-dev" duplicate="true"/>
         <guide url-name="monitoring" duplicate="true"/>
         <guide url-name="admin" duplicate="true"/>
-        <guide url-name="admin-api" source-name="adminAPI" duplicate="true"/>
+        <guide url-name="admin-api" duplicate="true"/>
       </entry>
     </entry>
   </group>
