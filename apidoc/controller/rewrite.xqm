@@ -433,7 +433,14 @@ declare function m:rewrite()
   (: SCENARIO 4: Not found anywhere :)
   else (
     $rw:NOTFOUND,
-    xdmp:log(text { 'NOTFOUND', $PATH, xdmp:url-decode($DOC-URL) }))
+    xdmp:log(
+      text {
+        'NOTFOUND', $PATH,
+        (: The URL is easier to read decoded.
+         : #304 But sometimes the URL will not decode cleanly.
+         :)
+        try { xdmp:url-decode($DOC-URL) }
+        catch ($ex) { $DOC-URL } }))
 };
 
 (: rewrite.xqm :)
