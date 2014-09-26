@@ -19,6 +19,7 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace toc="http://marklogic.com/rundmc/api/toc"
   at "/apidoc/setup/toc.xqm";
 
+declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $VERSION := '8.0' ;
@@ -30,6 +31,39 @@ declare %t:case function t:category-href-xquery()
     true(), false(),
     $api:MODE-XPATH, 'dls', '')
   ! at:equal(., '/dls')
+};
+
+declare %t:case function t:guide-toc-closed()
+{
+  toc:entry-node(
+    $VERSION, (), map:map(),
+    element guide {
+      attribute xml:base { '/test.xml' },
+      element title { 'test' } },
+    element help { () },
+    element apidoc:entry {
+      attribute title { 'test' },
+      element apidoc:guide {
+        attribute url-name { 'test' },
+        attribute toc-closed { true() } } })
+  ! at:empty(toc:node/@open/xs:boolean(.))
+};
+
+declare %t:case function t:guide-toc-open()
+{
+  toc:entry-node(
+    $VERSION, (), map:map(),
+    element guide {
+      attribute xml:base { '/test.xml' },
+      element title { 'test' } },
+    element help { () },
+    element apidoc:entry {
+      attribute title { 'test' },
+      element apidoc:guide {
+        attribute url-name { 'test' } } })
+  ! at:equal(
+    toc:node/@open/xs:boolean(.),
+    true())
 };
 
 declare %t:case function t:render-0-empty()

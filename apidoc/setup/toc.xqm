@@ -442,26 +442,22 @@ as node()?
 
 declare function toc:guide-node(
   $guide as element(guide),
-  $is-duplicate as xs:boolean?)
+  $is-duplicate as xs:boolean?,
+  $is-closed as xs:boolean?)
 as element(toc:node)
 {
   toc:node(
     toc:id($guide),
-    $guide/title,
+    $guide/title treat as node(),
     api:external-uri($guide),
     true(),
     'guide',
-    ('sub-control', 'wrap-titles', 'duplicate'[$is-duplicate]),
+    (if ($is-duplicate) then 'duplicate' else (),
+      if ($is-closed) then () else 'open',
+      'sub-control', 'wrap-titles'),
     (: To preserve node order, use SMO rather than XPath. :)
     $guide/chapter-list/chapter
     ! toc:guide(doc(@href)/chapter/node()))
-};
-
-declare function toc:guide-node(
-  $guide as element(guide))
-as element(toc:node)
-{
-  toc:guide-node($guide, false())
 };
 
 (: Database URI for a rendered async TOC section. :)
@@ -1600,7 +1596,7 @@ as element(toc:node)
   toc:entry-to-node(
     $entry,
     if ($entry/@id) then $entry/@id else toc:id($entry),
-    ($entry/@toc-title, $entry/@title)[1],
+    ($entry/@toc-title, $entry/@title)[1] treat as item(),
     $body)
 };
 
@@ -1700,12 +1696,12 @@ as element(toc:node)*
         $version, $xsd-docs, $m-functions,
         $guide-docs, $help-config, .)
       case element(apidoc:guide) return (
-        let $is-duplicate := @duplicate/xs:boolean(.)
         let $name as xs:string := @url-name
         let $match as element()? := $guide-docs[
           ends-with(base-uri(.), '/'||$name||'.xml')]
         let $_ := if ($match) then () else stp:error('NOGUIDE', $name)
-        return toc:guide-node($match, $is-duplicate))
+        return toc:guide-node(
+          $match, @duplicate/xs:boolean(.), @toc-closed/xs:boolean(.)))
       default return stp:error(
         'UNEXPECTED',
         ('no handler for child element',
