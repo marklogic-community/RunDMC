@@ -77,4 +77,13 @@ declare %t:case function t:root()
     ||'/index.xml&amp;version=&amp;')
 };
 
+declare %t:case function t:issue-304()
+{
+  xdmp:set($rwa:PATH-ORIG, '/guide/app-dev/aggregateUDFs/+%E8'),
+  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    $rw:NOTFOUND)
+};
+
 (: test/apidoc-rewrite.xqm :)
