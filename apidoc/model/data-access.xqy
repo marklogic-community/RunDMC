@@ -44,6 +44,8 @@ declare private variable $REST-COMPLEXTYPE-MAPPINGS := () ;
  :)
 declare variable $REST-URI-QUESTIONMARK-SUBSTITUTE := "@";
 
+declare variable $TYPE-JS-PAT := '(.+[^\?\*\+])([\?\*\+])?' ;
+
 declare function api:version-dir($version as xs:string)
 as xs:string
 {
@@ -746,14 +748,11 @@ as element(apidoc:docs)
     return $v)
 };
 
-(: TODO Handle more types, eg element(fubar) and semantic types. :)
-declare function api:javascript-type(
+declare function api:type-javascript(
   $type as xs:string)
 as xs:string
 {
   switch($type)
-  case 'xs:anyURI'
-  case 'xs:string' return 'string'
 
   case 'document-node()'
   case 'element()'
@@ -761,7 +760,11 @@ as xs:string
 
   case 'empty-sequence()' return 'null'
 
-  case 'item()' return 'String'
+  case 'item()'
+  case 'xs:anyURI'
+  case 'xs:string'
+  case 'xs:time'
+  case 'xs:unsignedLong' return 'String'
 
   case 'json:array' return 'Array'
 
@@ -784,51 +787,54 @@ as xs:string
 
   case 'xs:integer' return 'Integer'
 
-  case 'xs:time'
-  case 'xs:unsignedLong' return 'String'
-
   default return $type
 };
 
-declare function api:javascript-quantifier(
-  $quantifier as xs:string?)
-as xs:string?
+declare function api:type-expr-javascript(
+  $context as xs:string?,
+  $type as xs:string,
+  $quantifier as xs:string)
+as xs:string
 {
   switch($quantifier)
   case '*'
-  case '+' return '[]'
-  default return $quantifier
+  case '+' return (
+    if ($context = 'return') then 'ValueIterator'
+    else 'String[]')
+  default return concat(api:type-javascript($type), $quantifier)
 };
 
-declare function api:type-javascript(
+declare function api:type-expr-javascript(
+  $context as xs:string?,
   $expr as xs:string)
 as xs:string
 {
   switch($expr)
-  case 'document-node()*'
-  case 'document-node()+'
-  case 'element()*'
-  case 'element()+'
-  case 'node()*'
-  case 'node()+' return 'ValueIterator'
-
+  (: #262 for xdmp.invoke et. al. :)
   case '(element()|map:map)?' return 'Object?'
+  (: #301 cts.search :)
+  case '(cts:order|xs:string)*' return 'String[]'
 
-  default return concat(
-    api:javascript-type(
-      replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$1')),
-    api:javascript-quantifier(
-      replace($expr, '(.+[^\?\*\+])([\?\*\+])?', '$2')))
+  default return (
+    (: If there is a quantifier, tokenize and handle it. :)
+    if (matches($expr, $TYPE-JS-PAT)) then api:type-expr-javascript(
+      $context,
+      replace($expr, $TYPE-JS-PAT, '$1'),
+      replace($expr, $TYPE-JS-PAT, '$2'))
+    (: No quantifier. :)
+    else api:type-javascript($expr))
 };
 
 (: Translate XDM types to JavaScript types. :)
 declare function api:type(
   $mode as xs:string,
+  $context as xs:string?,
   $expr as xs:string)
 as xs:string
 {
   switch($mode)
-  case $MODE-JAVASCRIPT return api:type-javascript(
+  case $MODE-JAVASCRIPT return api:type-expr-javascript(
+    $context,
     normalize-space($expr))
   default return normalize-space($expr)
 };

@@ -62,7 +62,7 @@
       <path>/pubs/raw/apidoc/</path>
     </entry>
     <entry toc-title="Related Guides">
-      <guide url-name="jsref" duplicate="true"/>
+      <guide url-name="jsref" toc-closed="1" duplicate="true"/>
     </entry>
     </group>
 
@@ -89,7 +89,7 @@
       <path>/pubs/raw/apidoc/</path>
     </entry>
     <entry toc-title="Related Guides">
-      <guide url-name="xquery" duplicate="true"/>
+      <guide url-name="xquery" toc-closed="1" duplicate="true"/>
     </entry>
   </group>
 
@@ -264,14 +264,16 @@
       </entry>
 
       <entry toc-title="Related Guides">
-        <guide url-name="rest-dev" duplicate="true"/>
-        <guide url-name="monitoring" duplicate="true"/>
+        <guide url-name="rest-dev" toc-closed="1" duplicate="true"/>
+        <guide url-name="monitoring" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin-api" toc-closed="1" duplicate="true"/>
       </entry>
     </entry>
   </group>
 
-  <group toc-title="Java API Reference"
-         title="Java API Reference">
+  <group toc-title="Java Client API"
+         title="Java Client API">
      <entry toc-title="Java Client API Reference"
             title="Java Client API Reference">
         <entry toc-title="javadoc for MarkLogic Client API for Java"
@@ -286,11 +288,11 @@
     </entry>
   </group>
 
-  <group toc-title="Node.js API Reference"
-         title="Node.js API Reference">
-    <entry toc-title="Node.js API Reference"
-           title="Node.js API Reference">
-      <entry toc-title="jsdoc for Node.js Client API"
+  <group toc-title="Node.js Client API"
+         title="Node.js Client API">
+    <entry toc-title="Node.js Client API Reference"
+           title="Node.js Client API Reference">
+      <entry toc-title="Node.js Client API Reference"
              title="jsdoc for Node.js Client API"
              href="/jsdoc/index.html"
              type="external">

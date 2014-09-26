@@ -40,8 +40,10 @@ declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then 
 declare variable $s:primary-server := if ($draft:public-docs-only) then $s:main-server
                                                                    else $s:draft-server;
 
-declare variable $s:search-page-url := if ($s:viewing-standalone-api) then concat($s:standalone-api-server, "/do-search")
-                                                                      else concat($s:main-server, "/search");
+declare variable $s:search-page-url := (
+  if ($s:viewing-standalone-api) then concat(
+    $s:standalone-api-server, "/do-search")
+  else concat($s:main-server, "/search") );
 
 (: Use the @url if provided in the config.
  : Otherwise use the same server but with the specified @port.

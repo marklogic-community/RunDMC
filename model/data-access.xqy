@@ -185,13 +185,17 @@ declare private function ml:query-for-doc-element($qname) as cts:query? {
 
 (: Used as the additional query passed to search:search() :)
 declare function ml:search-corpus-query(
-  $versions as xs:string+)
+  $versions as xs:string+,
+  $is-api as xs:boolean)
+as cts:query
 {
   cts:and-query(
     (cts:or-query(
-        (ml:live-document-query($versions),
+        (
+          if ($is-api) then ml:matches-api-page($versions)
+          else ml:live-document-query($versions),
           cts:directory-query(
-            ('/pubs/code/',
+            (if ($is-api) then () else '/pubs/code/',
               (: See apidoc/setup/load-static-docs.xqy :)
               for $v in $versions
               for $location in ('/cpp/', '/dotnet/', '/javadoc/')
@@ -201,6 +205,13 @@ declare function ml:search-corpus-query(
         cts:or-query(
           (ml:has-attribute("hide-from-search", "yes"),
             cts:collection-query("hide-from-search")))) ))
+};
+
+declare function ml:search-corpus-query(
+  $versions as xs:string+)
+as cts:query
+{
+  ml:search-corpus-query($versions, false())
 };
 
 declare private function ml:has-attribute($att-name, $value) {
