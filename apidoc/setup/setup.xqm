@@ -1190,7 +1190,8 @@ as attribute()?
   else attribute name {
     (: fixup apidoc:function/@name for javascript :)
     switch ($a/../@mode/string())
-    case $api:MODE-JAVASCRIPT return api:javascript-name($a)
+    case $api:MODE-JAVASCRIPT return api:javascript-name(
+      $a/.. treat as node())
     default return $a }
 };
 

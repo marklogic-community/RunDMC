@@ -1134,7 +1134,7 @@ as element(toc:node)
     else ())
   let $display as xs:string := (
     switch($mode)
-    case $api:MODE-JAVASCRIPT return api:javascript-name($function-name)
+    (: By now the JavaScript translation should already have happened. :)
     case $api:MODE-REST return api:reverse-translate-REST-resource-name(
       (: For 5.0 hide the verb. :)
       if (xs:double($version) gt 5.0) then $function-name

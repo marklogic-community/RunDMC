@@ -349,25 +349,30 @@ as xs:string
       api:name-from-REST-fullname($fullname)))
 };
 
+declare function api:camel-case($toks as xs:string+)
+  as xs:string
+{
+  string-join(
+    ($toks[1],
+      subsequence($toks, 2)
+      ! concat(
+        upper-case(substring(., 1, 1)),
+        substring(., 2))),
+    '')
+};
+
 (: This handles the local-name or full name. :)
 declare function api:javascript-name(
-  $name as xs:string)
+  $function as element(apidoc:function))
 as xs:string
 {
-  translate(
-    (: Underscores are simple, but probably camel-case is better. :)
-    if (false()) then translate($name, '-', '_')
-    (: camel-case :)
-    else (
-      let $toks := tokenize($name, '[\-]+')[.]
-      return string-join(
-        ($toks[1],
-        subsequence($toks, 2)
-          ! concat(
-            upper-case(substring(., 1, 1)),
-            substring(., 2))),
-        '')),
-    ':', '.')
+  let $override as xs:string? := $function/apidoc:name[
+    @class eq 'javascript']
+  return (
+    if ($override) then $override
+    else translate(
+      api:camel-case(tokenize($function/@name, '[\-]+')[.]),
+      ':', '.'))
 };
 
 (: Example input:  <function name="/v1/rest-apis/{name}" http-verb="GET"/>
@@ -409,7 +414,7 @@ as xs:string
   switch($mode)
   case $MODE-REST return api:REST-fullname($function, $prefix)
   case $MODE-JAVASCRIPT return concat(
-    $function/@lib, '.', api:javascript-name($function/@name))
+    $function/@lib, '.', api:javascript-name($function))
   (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
     $function/@lib, ':', $function/@name)

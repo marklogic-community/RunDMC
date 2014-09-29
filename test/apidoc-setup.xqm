@@ -76,6 +76,7 @@ declare %t:case function t:function-hide-xquery-specific-example()
     stp:fixup(
       $VERSION,
       element apidoc:function {
+        attribute name { 'test' },
         element apidoc:example { attribute class { $api:MODE-XPATH }, 'fubar' },
         'Hello world!' },
       $api:MODE-JAVASCRIPT)/api:example)
@@ -87,6 +88,7 @@ declare %t:case function t:function-hide-xquery-specific-param()
     stp:fixup(
       $VERSION,
       element apidoc:function {
+        attribute name { 'test' },
         element apidoc:params {
           element apidoc:param {
             attribute class { $api:MODE-XPATH }, 'fubar' },
@@ -115,6 +117,7 @@ declare %t:case function t:function-show-javascript-specific()
       stp:fixup(
        $VERSION,
         element apidoc:function {
+          attribute name { 'test' },
           attribute class { $api:MODE-JAVASCRIPT },
           'Hello world!' },
         $api:MODE-JAVASCRIPT)))
@@ -126,6 +129,7 @@ declare %t:case function t:function-show-javascript-specific-example()
     stp:fixup(
       $VERSION,
       element apidoc:function {
+        attribute name { 'test' },
         element apidoc:example {
           attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
         'Hello world!' },
@@ -139,6 +143,7 @@ declare %t:case function t:function-show-javascript-specific-param()
     stp:fixup(
       $VERSION,
       element apidoc:function {
+        attribute name { 'test' },
         element apidoc:params {
           element apidoc:param {
             attribute class { $api:MODE-JAVASCRIPT }, 'fubar' },
@@ -193,11 +198,31 @@ declare %t:case function t:raw-invoke-ok()
     raw:invoke-function(function() { 1 }))
 };
 
-declare %t:case function t:javascript-name()
+declare %t:case function t:function-name-javascript-noop()
 {
-  at:equal(
-    "fooBarBaz",
-    api:javascript-name('foo-bar-baz'))
+  element apidoc:function {
+    attribute name { 'fubar' } }
+  ! api:javascript-name(.)
+  ! at:equal(., 'fubar')
+};
+
+declare %t:case function t:function-name-javascript-camelcase()
+{
+  element apidoc:function {
+    attribute name { 'foo-bar-baz' } }
+  ! api:javascript-name(.)
+  ! at:equal(., "fooBarBaz")
+};
+
+declare %t:case function t:function-name-javascript-override()
+{
+  element apidoc:function {
+    attribute name { 'to-json' },
+    element apidoc:name {
+      attribute class { 'javascript' },
+      'toJSON' } }
+  ! api:javascript-name(.)
+  ! at:equal(., 'toJSON')
 };
 
 declare %t:case function t:function-names-REST()
