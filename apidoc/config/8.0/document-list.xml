@@ -276,8 +276,8 @@
          title="Java Client API">
      <entry toc-title="Java Client API Reference"
             title="Java Client API Reference">
-        <entry toc-title="javadoc for MarkLogic Client API for Java"
-               title="javadoc for MarkLogic Client API for Java"
+        <entry toc-title="Java Client API javadoc"
+               title="Java Client API javadoc"
                href="/javadoc/client/index.html"
                type="external">
         API documentation for the MarkLogic Java API.
@@ -329,7 +329,7 @@
     <entry toc-title="Hadoop Connector"
            title="Hadoop Connector API Reference">
       <entry toc-title="Hadoop Connector API Reference"
-             title="javadoc for MarkLogic Connector for Hadoop"
+             title="MarkLogic Connector for Hadoop javadoc"
              href="/javadoc/hadoop/index.html"
              type="external">
         API documentation for the MarkLogic Connector for Hadoop.
