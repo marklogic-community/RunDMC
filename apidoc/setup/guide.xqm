@@ -357,7 +357,7 @@ declare function guide:anchor(
   $raw-docs as document-node()*,
   $fully-resolved-top-level-heading-references as xs:string*,
   $e as element(A))
-as element()?
+as element(a)?
 {
   (: Since we rewrite all links to point to the last anchor,
    : it is safe to drop any anchors that is not last.

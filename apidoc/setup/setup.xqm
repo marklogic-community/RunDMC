@@ -999,6 +999,23 @@ as element()+
     </div>
     ,
 
+    (: guide data :)
+    comment { 'copied from TOC data:' },
+    let $guide-nodes as element()+ := $toc/toc:node[
+      @id eq 'guides']/toc:node/toc:node[@type eq 'guide']
+    for $guide in $guide-nodes
+    let $display as xs:string := lower-case(
+      normalize-space($guide/@display))
+    let $_ := if (not($DEBUG)) then () else stp:fine(
+      'stp:list-pages', (xdmp:describe($guide), $display))
+    return element api:user-guide {
+      $guide/@*,
+      (: Facilitate automatic link creation at render time.
+       : Copy in aliases with any sibling that matches this display-name.
+       :)
+      $title-aliases/guide/alias[
+        ../alias/normalize-space(lower-case(.)) = $display] },
+
     comment { 'copied from /apidoc/config/title-aliases.xml:' },
     (: TODO The auto-link elements are in the empty namespace. Change that? :)
     $title-aliases/auto-link }

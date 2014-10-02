@@ -689,7 +689,7 @@ declare function api:toc-section-link-selector(
   $e as element())
 as xs:string
 {
-  if (0) then () else xdmp:log(
+  if (1) then () else xdmp:log(
     text {
       'api:toc-section-link-selector', $version, $version-prefix,
       xdmp:describe($e), 'guide-uri', xdmp:describe($e/@guide-uri/string()) }),

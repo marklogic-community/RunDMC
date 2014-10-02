@@ -86,10 +86,10 @@
   <xsl:variable name="DOCS-PAGE" as="element(api:docs-page)"
                 select="doc(api:internal-uri($VERSION-FINAL, '/'))/*"/>
 
-  <xsl:variable name="AUTO-LINKS" as="element(auto-link)*"
+  <xsl:variable name="AUTO-LINKS" as="element(auto-link)+"
                 select="$DOCS-PAGE/auto-link"/>
 
-  <xsl:variable name="OTHER-GUIDE-LISTINGS" as="element(api:user-guide)*">
+  <xsl:variable name="OTHER-GUIDE-LISTINGS" as="element(api:user-guide)+">
     <xsl:variable name="content-uri-external" as="xs:string"
                   select="api:external-uri($content)"/>
     <xsl:copy-of select="$DOCS-PAGE/api:user-guide[
@@ -921,7 +921,7 @@
   <xsl:template mode="guide" match="x:em">
     <xsl:variable name="config-for-title"
                   select="v:config-for-title(
-                          ., $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
+                          string(), $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
     <xsl:choose>
       <xsl:when test="$config-for-title and not(
                       preceding-sibling::node()[1][self::text() ][
