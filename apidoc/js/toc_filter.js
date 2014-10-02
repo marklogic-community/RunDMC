@@ -5,6 +5,17 @@ var isUserGuide = null;
 var previousFilterText = '';
 var tocSectionLinkSelector = null;
 var tocSelect = null;
+var DEBUG = false;
+var LOGGER = {};
+
+LOGGER.debug = function() {
+    if (!DEBUG) return;
+    console.log.apply(arguments);
+}
+
+LOGGER.warn = function() {
+    console.log.apply(arguments);
+}
 
 $(function() {
     // When the DOM is ready, load the TOC into the TOC div.
@@ -21,7 +32,7 @@ $(function() {
         timeout: 4000,
         success: function() {
             // Update view when the pjax call originated from a link in the body
-            console.log("pjax_enabled A fired ok", this);
+            LOGGER.debug("pjax_enabled A fired ok", this);
             // The tocSectionLinkSelector may have changed.
             toc_init_globals();
             // The TOC filter may need updating.
@@ -33,45 +44,48 @@ $(function() {
         timeout: 4000,
         success: function() {
             // Update view when a TOC link was clicked
-            console.log("pjax_enabled B fired ok"); } });
+            LOGGER.debug("pjax_enabled B fired ok"); } });
 
     // Ensure that non-fragment TOC links highlight appropriate TOC links.
     $(document).on('pjax:end', function(event, options) {
         var target = $(event.relatedTarget);
-        //console.log("pjax:end", event, options, target);
+        //LOGGER.debug("pjax:end", event, options, target);
         if (target.parents("#api_sub").length) {
-            console.log("Calling showInTOC via pjax:end handler.", target[0]);
+            LOGGER.debug("Calling showInTOC via pjax:end handler.", target[0]);
             showInTOC(target); }});
 
     breadcrumbNode = $("#breadcrumbDynamic");
-    if (!breadcrumbNode.length) console.log("No breadcrumb!");
+    if (!breadcrumbNode.length) LOGGER.warn("No breadcrumb!");
 
     toc_init_globals();
 });
 
 function toc_init_globals() {
-    console.log("toc_init_globals");
+    LOGGER.debug("toc_init_globals");
 
     // Initialize values from page.xsl content.
     functionPageBucketId = $("#functionPageBucketId");
-    if (!functionPageBucketId.length) console.log("No functionPageBucketId!");
+    if (!functionPageBucketId.length) LOGGER.warn(
+        "No functionPageBucketId!");
     functionPageBucketId = functionPageBucketId.val();
 
     isUserGuide = $("#isUserGuide");
-    if (!isUserGuide.length) console.log("No isUserGuide!");
+    if (!isUserGuide.length) LOGGER.warn(
+        "No isUserGuide!");
     isUserGuide = isUserGuide.val() === "true";
 
     tocSectionLinkSelector = $("#tocSectionLinkSelector");
-    if (!tocSectionLinkSelector.length) console.log("No tocSectionLinkSelector!");
+    if (!tocSectionLinkSelector.length) LOGGER.warn(
+        "No tocSectionLinkSelector!");
     tocSectionLinkSelector = tocSectionLinkSelector.val();
 };
 
 function toc_init() {
-    console.log("toc_init");
+    LOGGER.debug("toc_init");
 
     // This widget comes with the toc root via ajax, so init it here.
     var treeGlobal = $('#treeglobal');
-    if (!treeGlobal.length) console.log("No treeglobal!");
+    if (!treeGlobal.length) LOGGER.warn("No treeglobal!");
     treeGlobal.show();
     treeGlobal.click(function(e) {
         var n = treeGlobal.children("span");
@@ -91,10 +105,10 @@ function toc_init() {
     // Set up tree view select widget.
     var tocPartsDir = $("#tocPartsDir").text();
     tocSelect = $("#toc_select");
-    if (!tocSelect) console.log("No tocSelect!");
+    if (!tocSelect) LOGGER.warn("No tocSelect!");
 
     var tocTrees = $(".treeview");
-    if (!tocTrees) console.log("No tocTrees!");
+    if (!tocTrees) LOGGER.warn("No tocTrees!");
     // Be careful to init each tree individually, and only once!
     tocTrees.each(function(index, n) {
         $(n).treeview({
@@ -103,20 +117,20 @@ function toc_init() {
 
     // Set up the select widget
     tocSelect.change(function(e) {
-        console.log('TOC select option changed');
+        LOGGER.debug('TOC select option changed');
         // Hide the old TOC tree.
         $(".apidoc_tree:visible").hide()
         // Show the corresponding TOC tree.
         var n = tocSelect.children("option").filter(":selected");
-        if (n.length == 0) console.log("tocSelect nothing selected!", n);
+        if (n.length == 0) LOGGER.warn("tocSelect nothing selected!", n);
         if (n.length != 1) {
-            console.log("tocSelect multiple selected!", n);
+            LOGGER.warn("tocSelect multiple selected!", n);
             // Continue with the first one.
             n = n.first();
         }
 
         var id = n.val();
-        console.log("TOC select option changed to", n.val());
+        LOGGER.debug("TOC select option changed to", n.val());
         var tree = $('#' + id);
         tree.show();
 
@@ -126,7 +140,7 @@ function toc_init() {
     // Set up the filter
     $("#config-filter").keyup(function(e) {
         var currentFilterText = $(this).val();
-        console.log("config-filter current=", currentFilterText);
+        LOGGER.debug("config-filter current=", currentFilterText);
 
         // TODO what about a confirmation alert?
         if (e.which == 13) // Enter key pressed
@@ -138,7 +152,7 @@ function toc_init() {
 
         setTimeout(function() {
             if (previousFilterText !== currentFilterText) {
-                //console.log("toc filter event", currentFilterText);
+                //LOGGER.debug("toc filter event", currentFilterText);
                 previousFilterText = currentFilterText;
                 // The current TOC tree root should be visible.
                 filterConfigDetails(currentFilterText,
@@ -147,7 +161,7 @@ function toc_init() {
     });
 
     $("#config-filter-close-button").click(function() {
-        console.log("config-filter-close-button");
+        LOGGER.debug("config-filter-close-button");
         $(this).hide();
         // simulate keyup
         $("#config-filter").val("").trigger('keyup').blur();
@@ -294,7 +308,7 @@ function searchTOC(filter, tocRoot) {
 }
 
 function loadAllSubSections(tocRoot) {
-  //console.log('loadAllSubSections', tocRoot);
+  //LOGGER.debug('loadAllSubSections', tocRoot);
   if (tocRoot.hasClass("startedLoading")) return;
 
   tocRoot.find(".hasChildren").each(loadTocSection);
@@ -304,20 +318,25 @@ function loadAllSubSections(tocRoot) {
 // We may ignore index, but it's necessary as part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
   var $tocSection = $(tocSection);
-  console.log("loadTocSection", index, tocSection.length);
-  if ($tocSection.hasClass("hasChildren"))
-    $tocSection.find(".hitarea").trigger("click");
+  LOGGER.debug("loadTocSection", index, $tocSection.length,
+              $tocSection.hasClass("hasChildren"));
+  if (!$tocSection.hasClass("hasChildren")) {
+      LOGGER.debug("loadTocSection: no children");
+      return;
+  }
+
+  $tocSection.find(".hitarea").trigger("click");
 }
 
 // Called only from updateTocForSelection
 function waitToShowInTOC(tocSection, sleepMillis) {
-    console.log("waitToShowInTOC", tocSection[0].id, sleepMillis);
+    LOGGER.debug("waitToShowInTOC", tocSection[0].id, sleepMillis);
     if (!sleepMillis) sleepMillis = 125;
 
     // Repeatedly check to see if the TOC section has finished loading
     // Once it has, highlight the current page
     if (! tocSection.hasClass("loaded")) {
-        console.log("waitToShowInTOC still waiting for",
+        LOGGER.debug("waitToShowInTOC still waiting for",
                     tocSection[0].id, sleepMillis);
         // back off and retry
         setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
@@ -325,7 +344,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
         return;
     }
 
-    console.log("waitToShowInTOC loaded", tocSection);
+    LOGGER.debug("waitToShowInTOC loaded", tocSection);
 
     clearTimeout(waitToShowInTOC);
 
@@ -333,19 +352,19 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     var locationHref = location.protocol
         + '//' + location.host+location.pathname;
     locationHref = locationHref.toLowerCase();
-    //console.log("waitToShowInTOC", "locationHref=" + locationHref);
+    //LOGGER.debug("waitToShowInTOC", "locationHref=" + locationHref);
     var stripChapterFragment = isUserGuide && locationHref.indexOf("#") == -1;
     var stripMessage = isUserGuide && locationHref.indexOf('/messages/') != -1;
 
     // TODO needs special handling for /7.0/fn:abs vs /fn:abs ?
 
-    //console.log("waitToShowInTOC", "stripMessage=" + stripMessage,
+    //LOGGER.debug("waitToShowInTOC", "stripMessage=" + stripMessage,
     //            "locationHref=" + locationHref);
     if (stripMessage) locationHref = locationHref.replace(
             /\/messages\/[a-z]+-[a-z]+\/[a-z]+-[a-z]+$/,
         '/guide/messages');
 
-    //console.log("waitToShowInTOC", "locationHref=" + locationHref);
+    //LOGGER.debug("waitToShowInTOC", "locationHref=" + locationHref);
     // The TOC locations are a little inconsistent,
     // so look for the href with and without a version prefix.
     var locationHrefNoVersion = locationHref.replace(
@@ -353,7 +372,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
             '/');
     if (locationHref == locationHrefNoVersion) locationHrefNoVersion = null;
 
-    console.log("waitToShowInTOC filtering for",
+    LOGGER.debug("waitToShowInTOC filtering for",
                 locationHref, locationHrefNoVersion);
     var current = tocSection.find("a").filter(function() {
         // TODO can we stop this after the first match?
@@ -364,14 +383,14 @@ function waitToShowInTOC(tocSection, sleepMillis) {
         var result = hrefToCompare == locationHref
             || (locationHrefNoVersion
                 && hrefToCompare == locationHrefNoVersion);
-        //console.log("filtering", thisHref, hrefToCompare, locationHref, result);
+        //LOGGER.debug("filtering", thisHref, hrefToCompare, locationHref, result);
         return result;
     });
 
     // E.g., when hitting the Back button and reaching "All functions"
     $("#api_sub a.selected").removeClass("selected");
 
-    console.log("waitToShowInTOC found", current.length);
+    LOGGER.debug("waitToShowInTOC found", current.length);
     if (current.length) showInTOC(current);
 
     // Also show the currentPage link (possibly distinct from guide fragment link)
@@ -381,14 +400,14 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
-        console.log("waitToShowInTOC: no selection. Calling showInTOC as fallback.");
+        LOGGER.debug("waitToShowInTOC: no selection. Calling showInTOC as fallback.");
         showInTOC($("#api_sub a.currentPage"))
     }
 }
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-    console.log('updateTocForUrlFragment', pathname, hash, isUserGuide);
+    LOGGER.debug('updateTocForUrlFragment', pathname, hash, isUserGuide);
     // Only let fragment links update the TOC when this is a user guide.
     // Or not! The back button should update the TOC for functions too.
     //if (!isUserGuide) return;
@@ -399,7 +418,7 @@ function updateTocForUrlFragment(pathname, hash) {
     var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname)
         + effective_hash;
 
-    console.log("Calling showInTOC from updateTocForUrlFragment", fullLink);
+    LOGGER.debug("Calling showInTOC from updateTocForUrlFragment", fullLink);
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
 }
 
@@ -407,25 +426,25 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever TOC selection changes.
 function showInTOC(a) {
-    console.log("showInTOC", 'link', a.length, 'parent', a.parent().length);
+    LOGGER.debug("showInTOC", 'link', a.length, 'parent', a.parent().length);
     $("#api_sub a.selected").removeClass("selected");
     // e.g., arriving via back button
     $("#api_sub a.currentPage").removeClass("currentPage");
 
     if (a.length === 0) {
-        console.log("showInTOC: no link!");
+        LOGGER.warn("showInTOC: no link!");
         return;
     }
     // This should not happen, but control the damage.
     if (a.length > 1) {
-        console.log("showInTOC: multiple links, using first", a);
+        LOGGER.debug("showInTOC: multiple links, using first", a);
         a = a.slice(0, 1);
     }
 
     // If there is a different TOC section visible, hide it.
     var treeVisible = $(".apidoc_tree:visible");
     var treeForA = a.parents(".apidoc_tree");
-    console.log("showInTOC",
+    LOGGER.debug("showInTOC",
                 "visible", treeVisible.attr('id'),
                 "a", treeForA.attr('id'));
     if (treeForA.length === 1
@@ -433,11 +452,11 @@ function showInTOC(a) {
         treeVisible.hide();
         // Update the selector to match.
         var options = tocSelect.children("option");
-        //console.log(options.filter(":selected"));
+        //LOGGER.debug(options.filter(":selected"));
         options.filter(":selected").removeAttr('selected');
         var id = treeForA.attr('id');
         var selector = "[value='" + id + "']";
-        //console.log(options.filter(selector));
+        //LOGGER.debug(options.filter(selector));
         options.filter(selector).attr('selected', 'true');
     }
 
@@ -475,24 +494,24 @@ function breadcrumbBuilder(results, n) {
         stage = $('<span>');
         text = n.children("span").contents()[0];
     }
-    //console.log('breadcrumbBuilder', stage, text);
+    //LOGGER.debug('breadcrumbBuilder', stage, text);
     // Halt recursion if we did not find anything.
     if (!text) {
-        console.log('breadcrumbBuilder: no text found', results.length);
+        LOGGER.debug('breadcrumbBuilder: no text found', results.length);
         return results;
     }
 
     text = text.data.replace(/[:\.]$/, '').replace(/\s+\(\d+\)/, "");
-    //console.log('breadcrumbBuilder', n[0], text);
+    //LOGGER.debug('breadcrumbBuilder', n[0], text);
     stage.text(text);
     results = results.concat(stage[0]).concat(breadcrumbChrome());
-    //console.log('breadcrumbBuilder', text, results.length);
+    //LOGGER.debug('breadcrumbBuilder', text, results.length);
 
     // Climb the tree to the next li, if there is one.
     // The immediate parent should be a ul.
     var parent = n.parent().parent().filter("li");
     if (!parent.length) {
-        //console.log('breadcrumbBuilder: no parent found', results.length);
+        //LOGGER.debug('breadcrumbBuilder: no parent found', results.length);
         // This must be the top. Add a label for it and halt.
         return results.concat(
                 document.createTextNode(
@@ -506,35 +525,37 @@ function breadcrumbBuilder(results, n) {
 
 function updateBreadcrumb(n)
 {
-    //console.log('updating breadcrumb', n.length ? n[0] : null);
+    //LOGGER.debug('updating breadcrumb', n.length ? n[0] : null);
     breadcrumbNode.empty();
     var breadcrumb = breadcrumbBuilder([], n).reverse();
-    //console.log('updating breadcrumb', breadcrumb);
+    //LOGGER.debug('updating breadcrumb', breadcrumb);
     if (!breadcrumb || !breadcrumb.length) return;
     breadcrumbNode.append(breadcrumb);
 }
 
 // Called at init and whenever TOC selection changes.
 function updateTocForSelection() {
-    console.log("updateTocForSelection",
+    LOGGER.debug("updateTocForSelection",
                 "functionPageBucketId", functionPageBucketId,
                 "tocSectionLinkSelector", tocSectionLinkSelector);
 
     if (!tocSectionLinkSelector) {
-        console.log('no tocSectionLinkSelector!');
+        LOGGER.debug('no tocSectionLinkSelector!');
         return;
     }
 
+    LOGGER.debug("updateTocForSelection tocSectionLinkSelector",
+                tocSectionLinkSelector);
     var tocSectionLink = $(tocSectionLinkSelector);
     var tocSection = tocSectionLink.parent();
     if (0 == tocSection.length) {
-        console.log("updateTocForSelection",
+        LOGGER.warn("updateTocForSelection",
                     functionPageBucketId, tocSectionLinkSelector,
                     "nothing selected!");
         return;
     }
     if (1 != tocSection.length) {
-        console.log("updateTocForSelection",
+        LOGGER.warn("updateTocForSelection",
                     functionPageBucketId, tocSectionLinkSelector,
                     "multiple selected!", tocSection);
         // Continue with the first one.
@@ -543,14 +564,14 @@ function updateTocForSelection() {
 
     updateBreadcrumb(tocSection);
 
-    console.log("updateTocForSelection loading to", tocSection);
+    LOGGER.debug("updateTocForSelection loading to", tocSection);
     loadTocSection(0, tocSection);
     waitToShowInTOC(tocSection);
 }
 
 // Called from pjax event handlers
 function tocUpdateFromPageContent() {
-    console.log("tocUpdateFromPageContent");
+    LOGGER.debug("tocUpdateFromPageContent");
     updateTocForSelection();
 }
 
@@ -586,12 +607,12 @@ function scrollContent(container, target) {
 }
 
 function scrollTOC() {
-    //console.log("scrollTOC");
+    //LOGGER.debug("scrollTOC");
     var scrollTo = $('#api_sub a.selected').filter(':visible');
-    console.log("scrollTOC scrollTo", scrollTo.length);
+    LOGGER.debug("scrollTOC scrollTo", scrollTo.length);
     scrollTo.each(function() {
         var scrollableContainer = $(this).parents('.scrollable_section');
-        //console.log("scrollTOC", scrollableContainer);
+        //LOGGER.debug("scrollTOC", scrollableContainer);
         var container = $(this).parents('.treeview'),
         extra = 120,
         currentTop = container.scrollTop(),
@@ -643,7 +664,7 @@ function formatFilterBoxes(filterBoxes) {
 }
 
 function splitterMouseUp(evt) {
-    //console.log("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
+    //LOGGER.debug("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("moving", false);
     $(document).off('mouseup', null, splitterMouseUp);
     $(document).off('mousemove', null, splitterMouseMove);
@@ -654,7 +675,7 @@ function splitterMouseUp(evt) {
 }
 
 function splitterMouseMove(evt) {
-    //console.log("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
+    //LOGGER.debug("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
     if ($('#splitter').data("moving")) {
         var m = 0 - $('#splitter').data('start-page_content');
         var d = Math.max(m, $('#splitter').data("start-x") - evt.pageX); 
@@ -666,7 +687,7 @@ function splitterMouseMove(evt) {
             w = init_w;
         }
 
-        //console.log("Splitter Mouse move: " + d);
+        //LOGGER.debug("Splitter Mouse move: " + d);
         $('#toc_content').css({'width': w + "px"});
         $('#page_content').css({'padding-right':
                                 ($('#splitter').data("start-page_content") + d)
@@ -678,7 +699,7 @@ function splitterMouseMove(evt) {
 }
 
 function splitterMouseDown(evt) {
-    //console.log("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
+    //LOGGER.debug("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
     $('#splitter').data("start-x", evt.pageX);
     $('#splitter').data("start-toc_content", parseInt($('#toc_content').css('width'), 10));
     $('#splitter').data("start-page_content", parseInt($('#page_content').css('padding-right'), 10));
@@ -695,7 +716,7 @@ function splitterMouseDown(evt) {
 
 function tocFilterUpdate()
 {
-    //console.log("tocFilterUpdate", previousFilterText);
+    //LOGGER.debug("tocFilterUpdate", previousFilterText);
 
     // Is the filter set or clear?
     // Must set previousFilterText *after* testing.

@@ -395,6 +395,8 @@ declare function toc:node(
 as element(toc:node)
 {
   (: TODO validate structure? :)
+  if (not($is-async and $extra-boolean-attributes = 'open')) then ()
+  else stp:error('BADOPTIONS', 'async and open are mutually exclusive'),
   element toc:node {
     attribute id { $id },
     attribute display { $display },
@@ -450,7 +452,8 @@ as element(toc:node)
     toc:id($guide),
     $guide/title treat as node(),
     api:external-uri($guide),
-    true(),
+    (: If the guide node is closed, load async. Otherwise preload. :)
+    $is-closed,
     'guide',
     (if ($is-duplicate) then 'duplicate' else (),
       if ($is-closed) then () else 'open',
@@ -501,40 +504,54 @@ as empty-sequence()
   xdmp:document-insert($location, element api:toc-uri { $uri })
 };
 
-(: Given a node, return appropriate HTML classnames. :)
+(: Given node state, return appropriate HTML classnames. :)
 declare function toc:render-node-class(
-  $n as element(toc:node))
+  $is-async as xs:boolean?,
+  $is-open as xs:boolean?,
+  $has-children as xs:boolean?,
+  $has-following as xs:boolean?,
+  $has-id as xs:boolean?,
+  $wrap-titles as xs:boolean?)
 as xs:string*
 {
-  if ($n[@open]) then 'collapsible'
-  else if ($n[toc:node]) then 'expandable'
+  if ($is-open) then 'collapsible'
+  else if ($has-children) then 'expandable'
   else (),
 
-  let $following := $n/following-sibling::*
-  return (
-    if ($following) then () else (
-      if ($n/@open) then 'lastCollapsible'
-      else if ($n/toc:node) then 'lastExpandable'
-      else 'last'))
-  ,
+  if ($has-following) then ()
+  else if ($is-open) then 'lastCollapsible'
+  else if ($has-children) then 'lastExpandable'
+  else 'last',
 
   (: Include on nodes that will be loaded asynchronously. :)
-  'hasChildren'[$n/@async/xs:boolean(.)],
+  if (not($is-async)) then () else 'hasChildren',
 
   (: Include on nodes that have an @id
    : (used by list pages to identify the relevant TOC section)
    : but that aren't loaded asynchronously
    : because they're already loaded.
    :)
-  ("loaded", 'initialized')[$n[@id][not(@async/xs:boolean(.))]],
+  if (not($has-id) or $is-async) then ()
+  else ('loaded', 'initialized'),
 
-  (: Mark the asynchronous (unpopulated) nodes as such,
-   : for the treeview JavaScript.
-   :)
-  "async"[$n/@async/xs:boolean(.)],
-
+  (: Mark asynchronous placeholder nodes for the treeview JavaScript. :)
+  if (not($is-async)) then () else "async",
   (: Mark the nodes whose descendant titles should be wrapped :)
-  "wrapTitles"[$n/@wrap-titles]
+  if (not($wrap-titles)) then () else "wrapTitles"
+};
+
+(: Given a node, return appropriate HTML classnames. :)
+declare function toc:render-node-class(
+  $n as element(toc:node))
+as xs:string*
+{
+  toc:render-node-class(
+    xs:boolean($n/@async),
+    xs:boolean($n/@open),
+    exists($n/toc:node),
+    exists($n/following-sibling::*),
+    exists($n/@id),
+    $n/@wrap-titles)
 };
 
 declare function toc:render-node-display(
