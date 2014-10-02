@@ -346,11 +346,11 @@ as xs:string
   (: #277 Message sections link to something like
    : /8.0/messages/XDMP-en/XDMP-BAD
    :)
-  else (
+  else concat(
     replace(
       $uri, '^/apidoc/(\d+\.\d+)/guide/(messages/[A-Z]+-[a-z]+).xml$',
-      '/$1/$2')||'/'
-    ||$id)
+      '/$2'),
+    '/', $id)
 };
 
 declare function guide:anchor(
