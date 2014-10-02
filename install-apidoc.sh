@@ -11,16 +11,20 @@ if [ -z "$READLINK" ]; then
     READLINK=`type -P readlink`
 fi
 BASE=`$READLINK -f $0`
-BASE=`dirname $BASE`
 if [ -z "$BASE" ]; then
-    echo Error initializing environment from $READLINK
-    $READLINK --help
-    exit 1
+    BASE=`stat -f $0`
 fi
+BASE=`dirname $BASE`
 
 set -e
-cd $BASE
+if [ -d "$BASE" ]; then
+    cd $BASE
+else
+    echo There were problems initializing the environment!
+    echo Make sure you are running in the git clone directory.
+fi
 
+echo
 echo This script should run on a host where MarkLogic is already running.
 echo
 HOSTNAME=localhost
