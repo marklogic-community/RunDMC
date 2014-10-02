@@ -277,7 +277,7 @@
     <xsl:variable name="doc" select="doc(@uri)"/>
     <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
     <xsl:variable name="anchor"
-                  select="if ($doc/*:chapter) then '#chapter' else ''"/>
+                  select="if ($doc/*:chapter) then '' else ''"/>
     <xsl:variable name="result-uri"
                   select="if ($is-api-doc) then concat(
                           $srv:effective-api-server, $API-VERSION-PREFIX,
