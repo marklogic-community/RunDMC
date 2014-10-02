@@ -38,7 +38,10 @@ declare function guide:heading-anchor-id(
 as xs:string
 {
   typeswitch($e)
-  (: Top-level anchor ID is simply "chapter" :)
+  (: Top-level anchor ID is simply "chapter".
+   : Per #310 we do not actually use this chapter fragment,
+   : but generating it is easier than not.
+   :)
   case element(Heading-1) return 'chapter'
   (: Otherwise use only the last A/@ID inside the heading,
    : since all links get rewritten to the last one.

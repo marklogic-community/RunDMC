@@ -361,15 +361,16 @@ as document-node()*
 };
 
 (: Build a TOC href with fragment for this guide section.
+ : Per #310 we do not actually use the chapter fragment.
  :)
 declare function toc:guide-href(
   $e as element(xhtml:div))
 as xs:string
 {
-  concat(
-    api:external-uri($e),
-    '#',
-    ($e/*[1] treat as element(xhtml:a))/@id)
+  string-join(
+    (api:external-uri($e),
+      ($e/*[1] treat as element(xhtml:a)?)/@id[. ne 'chapter']),
+    '#')
 };
 
 declare function toc:id($n as node())
