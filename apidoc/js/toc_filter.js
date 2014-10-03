@@ -10,11 +10,11 @@ var LOGGER = {};
 
 LOGGER.debug = function() {
     if (!DEBUG) return;
-    console.log.apply(arguments);
+    console.log.apply(console, arguments);
 }
 
 LOGGER.warn = function() {
-    console.log.apply(arguments);
+    console.log.apply(console, arguments);
 }
 
 $(function() {
@@ -432,7 +432,8 @@ function showInTOC(a) {
     $("#api_sub a.currentPage").removeClass("currentPage");
 
     if (a.length === 0) {
-        LOGGER.warn("showInTOC: no link!");
+        // This is harmless.
+        LOGGER.debug("showInTOC: no link");
         return;
     }
     // This should not happen, but control the damage.
