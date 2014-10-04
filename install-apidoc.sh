@@ -23,6 +23,10 @@ else
     echo There were problems initializing the environment!
     echo Make sure you are running in the git clone directory.
 fi
+# In BSD stat -f returns a relative path.
+# For app-server config we need an absolute path.
+# We should now be in that directory.
+BASE=`pwd`
 
 echo
 echo This script should run on a host where MarkLogic is already running.
@@ -62,10 +66,15 @@ echo building $ZIP
 mkdir -p "${TMPDIR}/${PACKAGE}"
 PACKAGE_LOG=${TMPDIR}/$PACKAGE.log
 echo logging to $PACKAGE_LOG
+TARGET="${TMPDIR}/${PACKAGE}/"
+echo fixing permissions
+find "$BASE" -type f -print0 | xargs -0 chmod a+r
+find "$BASE" -type d -print0 | xargs -0 chmod a+rx
+cp -r "${BASE}/apidoc/package/"* "${TARGET}"
 cd "${TMPDIR}/${PACKAGE}"
-cp -r "${BASE}/apidoc/package/"* .
 SERVERS=`echo servers/Default/*.xml`
 echo processing $SERVERS
+# Set the doc roots. This means BASE must be an absolute path.
 sed -e '1,$s:RUNDMC_ROOT:'"${BASE}"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_MAIN:'"${PORT_MAIN}"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_RAW:'"${PORT_RAW}"':g' -i'.bak' $SERVERS
@@ -111,11 +120,7 @@ echo
 
 echo cleaning up
 rm "$ZIP"
-cd "${TMPDIR}" && rm -rf "${PACKAGE}"
-
-echo fixing permissions
-find "$BASE" -type f -print0 | xargs -0 chmod a+r
-find "$BASE" -type d -print0 | xargs -0 chmod a+rx
+(cd "${TMPDIR}" && rm -rf "${PACKAGE}")
 
 # download raw docs for processing
 cd ${TMPDIR}
