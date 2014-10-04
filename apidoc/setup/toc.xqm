@@ -698,24 +698,20 @@ as element()
   </ul>
 };
 
-(: Given a non-duplicate async node,
- : generate a new element with the correct base-uri.
- :)
-declare function toc:render-async(
+(: Given an async node, generate a new element with the correct base-uri. :)
+declare function toc:render-async-node(
   $uri as xs:string,
   $prefix-for-hrefs as xs:string?,
   $n as element(toc:node))
 as element()
 {
-  if ($n/@async/xs:boolean(.) and not($n/@duplicate)) then () else stp:error(
-      'UNEXPECTED', xdmp:describe($n)),
   let $uri-new as xs:string := toc:uri(
     concat($uri, '/'),
     $n/@id/string() treat as xs:string,
     $n/@mode)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'toc:render-async',
-    ('async', 'not duplicate', 'mode', $n/@mode,
+    ('async', 'mode', $n/@mode,
       $uri-new, xdmp:describe($n)))
   return <ul style="display: block;" xmlns="http://www.w3.org/1999/xhtml">
   {
@@ -723,6 +719,22 @@ as element()
     toc:render-node($uri, $prefix-for-hrefs, $n/toc:node)
   }
   </ul>
+};
+
+(: Given an async node, generate a new element with the correct base-uri. :)
+declare function toc:render-async(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $list as element(toc:node)*)
+as element()*
+{
+  let $m-seen := map:map()
+  for $n in $list
+  let $id as xs:string := $n/@id
+  let $exists := map:contains($m-seen, $id)
+  let $_ := map:put($m-seen, $id, true())
+  where not($exists)
+  return toc:render-async-node($uri, $prefix-for-hrefs, $n)
 };
 
 declare function toc:render-select-option(
@@ -803,10 +815,11 @@ as element()+
 
   (: The old XSL returned the async results first.
    : Do the same to make testing easier.
+   : We do not filter out duplicates here,
+   : because the async state of the original may differ.
    :)
   toc:render-async(
-    $uri, $prefix-for-hrefs,
-    $toc//toc:node[@async/xs:boolean(.)][not(@duplicate)]),
+    $uri, $prefix-for-hrefs, $toc//toc:node[@async/xs:boolean(.)]),
 
   (: Wrapper includes placeholder elements for use by toc_filter.js toc_init.
    : Could some of this chrome move into page rendering?
