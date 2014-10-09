@@ -802,7 +802,11 @@ declare function api:type-expr-javascript(
 as xs:string
 {
   switch($quantifier)
-  case '*'
+  case '*' return (
+    (: #317 for params with item()* :)
+    if ($context = 'return') then 'ValueIterator'
+    else if ($type = 'item()') then '(Object[] | ValueIterator)'
+    else 'String[]')
   case '+' return (
     if ($context = 'return') then 'ValueIterator'
     else 'String[]')
