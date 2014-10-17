@@ -131,8 +131,8 @@
       <root>@ml.modules-root</root>
       <authentication>@ml.authentication-method</authentication>
       <default-user name="@ml.default-user"/>
-      <url-rewriter>@ml.url-rewriter</url-rewriter>
-      <error-handler>@ml.error-handler</error-handler>
+      <url-rewriter>/admin/controller/url_rewrite.xqy</url-rewriter>
+      <error-handler></error-handler>
       <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
       <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
     </http-server>
