@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>News Edit</h1>
+  <p/>
+  <p style="text-transform: uppercase; color: red; font-weight: bold">Don't use this doc type anymore for new announcements. Instead, create a
+    <a href="/blog/edit">blog post</a>
+    .</p>
+  <ml:auto-form template="Announcement.xml"/>
+</ml:page>
