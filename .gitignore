@@ -1,3 +1,5 @@
 .history
 tools/simplelogger-*
 dpl.xml
+deploy/local.properties
+src/config/server-urls-local.xml

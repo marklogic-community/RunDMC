@@ -39,4 +39,18 @@
     <try-server url="//localhost:8540"/>
   </host>
 
+<!--
+  <host type="local"
+        default-host="true"
+        cookie-domain="127.0.0.1">
+    <main-server port="8012"/>
+    <draft-server port="8014"/>
+    <webdav-server port="8018"/>
+    <admin-server port="8015"/>
+    <api-server port="8011"/>
+    <standalone-api-server/>
+    <rapi-server port="8016"/>
+    <try-server url="//localhost:8017"/>
+  </host>
+ -->
 </hosts>
