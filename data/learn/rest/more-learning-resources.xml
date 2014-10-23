@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>More learning resources</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Congratulations! You completed the tutorial. For more information
+on developing MarkLogic applications using the REST API, check out
+the following resources:</p><ul>
+    <li>
+<a href="//docs.marklogic.com/REST/client" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">REST API
+reference</a></li>
+    <li>
+<a href="//docs.marklogic.com/guide/rest-dev" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">REST Application
+Developer's Guide</a></li>
+    <li>
+<a href="//docs.marklogic.com/guide/search-dev" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Search Developer's
+Guide</a></li>
+  </ul>
+
+</ml:page>

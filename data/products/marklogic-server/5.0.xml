@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+  <x:p>
+   Download the <x:a title="What's new in 5?" href="/products/marklogic5">MarkLogic 5</x:a> below.  This is the same version of the software you need to use our free Developer license.
+   </x:p>
+
+  <product-info name="MarkLogic 5" developer-license-page="/free-developer" requirements-page="/products/marklogic-server/requirements-5.0">
+
+    <platform name="Microsoft Windows (Server, XP, and Vista)">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1-amd64.msi" size="119 MB" date="2014-04-12">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1-i686.msi" size="110 MB" date="2014-04-12">x86 (Intel i686) 32-bit Installer</download>
+    </platform>
+     <platform name="Mac OS X 10.6">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1-x86_64.dmg" size="91 MB" date="2014-04-12">OS X disk image </download>
+    </platform>
+    <platform name="Red Hat Enterprise Linux 6">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1.x86_64.rpm" size="118 MB" date="2014-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="Red Hat Enterprise Linux 5">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1.x86_64.rpm" size="118 MB" date="2014-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1.i686.rpm" size="118 MB" date="2014-04-11">x86 (Intel i686) 32-bit RPM</download>
+    </platform>
+    <platform name="CentOS 5">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1.x86_64.rpm" size="118 MB" date="2014-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="SUSE Linux Enterprise Server 11">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MarkLogic-5.0-6.1.x86_64.rpm" size="118 MB" date="2014-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="Sun Solaris 10">
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MARKlogic-5.0-6.1-sparcv9.tar.Z" size="189 MB" date="2014-04-12">SPARC pkgadd </download>
+      <download anchor-class="confirm-download" href="/download/binaries/5.0/MARKlogic-5.0-6.1-amd64.tar.Z" size="180 MB" date="2014-04-11">x64 (AMD64, Intel EM64T) pkgadd </download>
+    </platform>
+  </product-info>
+
+  <product-documentation>
+    <old-doc desc="Online 5.0 product documentation" path="//docs.marklogic.com/5.0"/>
+    <new-doc source="/guide/installation" version="5.0"/>
+    <new-doc source="/guide/relnotes" version="5.0"/>
+    <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_5_pubs.zip"/>
+  </product-documentation>
+
+</page>

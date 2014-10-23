@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:Article status="Published" type="OnlineTraining" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <ml:title>Data Visualization Widgets</ml:title>
+  <ml:author>MarkLogic University</ml:author>
+  <ml:created>
+  <ml:last-updated>6.0-1</ml:last-updated>
+  <ml:external-link href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=eb9c7a0f-3ced-4b38-9639-56b9cb02d1f4&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True">
+  </ml:external-link>
+  
+  <ml:server-version>6.0</ml:server-version>
+  
+  <ml:description>This self-paced tutorial teaches you to use the HTML5 visualization widgets in Application Builder.
+  By the end of this tutorial, you should be able to:
+    <ul>
+	<li>Create and configure interactive charts and maps for a search application</li>
+	<li>Modify the layout of your visualization widgets</li>
+      </ul>
+  </ml:description>
+
+  <ml:body/>
+
+</ml:created></ml:Article>

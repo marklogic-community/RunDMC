@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:Article status="Published" type="OnlineTraining" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <ml:title>Java API</ml:title>
+  <ml:author>MarkLogic University</ml:author>
+  <ml:created>
+  <ml:last-updated>6.0-1</ml:last-updated>
+  <ml:external-link href="https://marklogic.csod.com/LMS/LoActions/lo_detail.aspx?loid=795c2722-ede3-4f21-9ba8-cd75f98384f1&amp;redirect=../UserTranscript/MainView.aspx&amp;BackToPrevious=TRUE&amp;NoLink=&amp;newlocss=True">
+  </ml:external-link>
+  
+  <ml:server-version>6.0</ml:server-version>
+  
+  <ml:description>An architectural introduction to the MarkLogic Java API </ml:description>
+
+  <ml:body/>
+
+</ml:created></ml:Article>

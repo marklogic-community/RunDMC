@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Java API basics</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+You're back! Let's dive in. The first step to interacting with a
+MarkLogic database is to create an instance of the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/DatabaseClient.html">
+DatabaseClient</a> class. Each of the example programs in this
+tutorial start with a step that looks something like this.</p><script src="https://gist.github.com/3290041.js?file=ex02.java" xml:space="preserve"> </script><noscript id="ex02.java">
+    <pre class="java" xml:space="preserve">// create the client
+DatabaseClient client = DatabaseClientFactory.newClient(host, port, user, password, authType);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Notice the arguments passed to the factory method. As seen in the
+<a href="//docs.marklogic.com/javadoc/client/com/marklogic/client/DatabaseClientFactory.html#newClient(java.lang.String,%20int,%20java.lang.String,%20java.lang.String,%20com.marklogic.client.DatabaseClientFactory.Authentication)">
+online javadoc for the newClient() method</a>, these correspond
+to:</p><ul>
+    <li>
+<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">host</code>
+— the host
+with the REST server</li>
+    <li>
+<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">port</code>
+— the port
+for the REST server</li>
+    <li>
+<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">user</code>
+— the user
+with read, write, or administrative privileges</li>
+    <li>
+<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">password</code>
+— the
+password for the user</li>
+    <li>
+<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">type</code>
+— the type of
+authentication applied to the request</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+all of the sample apps in the project you downloaded, these
+parameters are configured using the <em>Config.properties</em> file:</p><script src="https://gist.github.com/3290041.js?file=ex03.txt" xml:space="preserve"> </script><noscript id="ex03.txt">
+    <pre class="txt" xml:space="preserve"># properties to configure the examples
+example.writer_user=rest-writer
+example.writer_password=x
+example.admin_user=rest-admin
+example.admin_password=x
+example.host=localhost
+example.port=8011
+example.authentication_type=digest</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+you want to see how the tutorial project extracts these properties,
+see its <em>Config.java</em>
+file.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Once
+you're done interacting with MarkLogic, you should always release
+the DatabaseClient:</p><script src="https://gist.github.com/3290041.js?file=ex04.java" xml:space="preserve"> </script><noscript id="ex04.java">
+    <pre class="java" xml:space="preserve">// release the client
+client.release();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+rest of this tutorial is about the things you might do in between
+creating the DatabaseClient and releasing it.</p></ml:page>

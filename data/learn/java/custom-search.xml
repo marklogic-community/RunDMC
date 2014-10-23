@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Custom search</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">All
+of the search examples thus far in this tutorial have used
+MarkLogic's default <em>query
+options</em> (interchangeably called "search options"). This may
+suffice for some basic applications, but most of the time you will
+end up wanting to provide custom options. Custom options let you do
+things like:</p><ul>
+    <li>
+define
+named <em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">constraints</em>
+which can be
+used in string queries, such as "tag" in "flower
+tag:shakespeare"</li>
+    <li>
+enable
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">analytics</em>
+and
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">faceting</em>
+by identifying
+lexicons and range indexes from which to retrieve
+values</li>
+    <li>
+extend or alter
+the default search grammar</li>
+    <li>
+customize the
+structure of the search results, including snippeting and default
+pagination</li>
+    <li>
+control search
+options such as case sensitivity and ordering</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Options are grouped into named <em>option sets</em> on your REST API server.
+You can customize these either by updating the default option set,
+or by creating a new named option set.</p><h3 id="get-a-list-of-the-servers-option-sets"><a href="#get-a-list-of-the-servers-option-sets">
+Get a list of the server's option
+sets</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Before we start manipulating option sets, let's query the list of
+current option sets. Open <em>Example_23_ListOptionSets.java</em>. We can
+read the list as a POJO by using a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/QueryOptionsListHandle.html">
+QueryOptionsListHandle</a>:</p><script src="https://gist.github.com/3290041.js?file=ex57.java" xml:space="preserve"> </script><noscript id="ex57.java">
+    <pre class="java" xml:space="preserve">// handle for list of named option sets
+QueryOptionsListHandle listHandle = new QueryOptionsListHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We
+then call our query manager's <strong>optionsList()</strong> method to retrieve the
+list, storing it in our handle:</p><script src="https://gist.github.com/3290041.js?file=ex58.java" xml:space="preserve"> </script><noscript id="ex58.java">
+    <pre class="java" xml:space="preserve">// get the list of named option sets
+queryMgr.optionsList(listHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">And
+then iterate over the Map returned by the now-populated handle's
+<strong>getValuesMap()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex59.java" xml:space="preserve"> </script><noscript id="ex59.java">
+    <pre class="java" xml:space="preserve">// iterate over the option sets; print each's name &amp; URI
+for (Map.Entry&lt;String,String&gt; optionsSet : listHandle.getValuesMap().entrySet()) {
+    System.out.println(optionsSet.getKey() + ": " + optionsSet.getValue());                        
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">What this does is give you, the developer, a
+list of the available option set names you can pass to the
+<strong>search()</strong>
+method. If you don't pass a name
+explicitly (as in our examples so far), then the option set
+named <code>default</code> is used.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Since we haven't added any custom options
+yet, when you run this program, you should just see the "default"
+option set and its URI, <code>/v1/config/query/default</code>,
+which reveals the fact that you can view the raw options in your
+browser if you want:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/config/query/default" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/config/query/default</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/config/query/default?format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/config/query/default?format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's create a new set of options.</p><h3 id="upload-custom-search-options"><a href="#upload-custom-search-options">
+Upload custom search
+options</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Only
+users with the "rest-admin" role can update option sets. Until now,
+all the examples in this tutorial have used the "rest-writer" user
+to connect to MarkLogic. Now, whenever we need to update options,
+we'll connect with our "rest-admin" user instead. See in
+<em>Example_24_LoadOptions.java</em>:</p><script src="https://gist.github.com/3290041.js?file=ex60.java" xml:space="preserve"> </script><noscript id="ex60.java">
+    <pre class="java" xml:space="preserve">// create the client, connecting as the rest-admin user
+DatabaseClient client = DatabaseClientFactory.newClient(
+    Config.host,
+    Config.port,
+    Config.admin_user,
+    Config.admin_password,
+    Config.authType);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+manipulate query options, we need a manager object (<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/admin/QueryOptionsManager.html">QueryOptionsManager</a>),
+just as we need managers for other kinds of server interactions
+(DocumentManager for CRUD, and QueryManager for search). However,
+getting this manager (and other admin-related managers) takes an
+extra, intermediate call to <strong>newServerConfigManager()</strong>:</p><script src="https://gist.github.com/3290041.js?file=ex61.java" xml:space="preserve"> </script><noscript id="ex61.java">
+    <pre class="java" xml:space="preserve">// get an options manager
+QueryOptionsManager optionsMgr = client.newServerConfigManager().newQueryOptionsManager();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we get a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/admin/config/QueryOptionsBuilder.html">
+QueryOptionsBuilder</a>, which we'll use to construct individual
+query options:</p><script src="https://gist.github.com/3290041.js?file=ex62.java" xml:space="preserve"> </script><noscript id="ex62.java">
+    <pre class="java" xml:space="preserve">// Create a builder for constructing query configurations.
+QueryOptionsBuilder qob = new QueryOptionsBuilder();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+with other kinds of payloads we transmit, we need a handle to
+contain the query options (<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/QueryOptionsHandle.html">QueryOptionsHandle</a>).
+We then use our query builder to initialize the options, passing
+them in using our handle's <strong>withConstraints()</strong> method, which is part
+of a <a href="http://en.wikipedia.org/wiki/Fluent_interface" target="_blank">fluent
+interface</a> for immediately populating the handle with query
+options:</p><script src="https://gist.github.com/3290041.js?file=ex63.java" xml:space="preserve"> </script><noscript id="ex63.java">
+    <pre class="java" xml:space="preserve">// create the query options, defining a collection constraint
+QueryOptionsHandle optsHandle = new QueryOptionsHandle().withConstraints(
+    qob.constraint("tag",
+        qob.collection("")));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In this case, we're building a constraint
+option. <em>Constraint</em>
+means something very specific in
+MarkLogic. Whenever a user types a phrase of the form
+<em>name</em><code>:</code><em>text</em> in their search string, they're using a
+constraint (assuming one has been defined for them). For example,
+they might type "author:melville" to constrain their search to
+documents authored by Herman Melville. But for this to have the
+intended behavior, a constraint named "author" must first be
+defined in the server's query options. In our case, we want to
+enable users to type things like "tag:shakespeare" and
+"tag:mlw12".</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">So we
+must name our constraint "tag", which is the first argument passed
+to the <strong>constraint()</strong> option
+constructor:</p><script src="https://gist.github.com/3290041.js?file=ex64.java" xml:space="preserve"> </script><noscript id="ex64.java">
+    <pre class="java" xml:space="preserve">    qob.constraint("tag",
+        qob.collection(""))</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+second argument is the constraint source. In this case, we want the
+constraint to be backed by our collection tags, so we call our
+builder's <strong>collection()</strong>
+method. Its argument is an optional collection tag prefix, which
+would be handy if we wanted to power multiple constraints via
+collection tags such as "author/shakespeare" and "state/california"
+using the prefixes "author/" and "state/", respectively. We're not
+doing this, so we pass an empty prefix ("").</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now that the options are configured, all we
+need to do is write them to the server, using a name of our
+choosing (<code>tutorial</code>):</p><script src="https://gist.github.com/3290041.js?file=ex65.java" xml:space="preserve"> </script><noscript id="ex65.java">
+    <pre class="java" xml:space="preserve">// write the query options to the database
+optionsMgr.writeOptions("tutorial", optsHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run the program. Then go back and re-run the
+previous example (<em>Example_23_ListOptionSets.java</em>).
+You should now see that two option sets are available:
+<code>default</code>
+and <code>tutorial</code>.</p><h3 id="search-using-a-collection-constraint"><a href="#search-using-a-collection-constraint">
+Search using a collection
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Let's
+make use of our new configuration and run a search using our "tag"
+constraint. Open <em>Example_25_ConstraintOnCollection.java</em>.
+To make the new option available, we need to associate our string
+query with the tutorial options on the server:</p><script src="https://gist.github.com/3290041.js?file=ex66.java" xml:space="preserve"> </script><noscript id="ex66.java">
+    <pre class="java" xml:space="preserve">// use the server's "tutorial" options set
+query.setOptionsName("tutorial");
+query.setCriteria("flower tag:shakespeare");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+time (and from now on), we'll slim down our code by creating the
+handle and populating it on the same line, taking advantage of the
+fact that <strong>read()</strong> returns the
+handle:</p><script src="https://gist.github.com/3290041.js?file=ex67.java" xml:space="preserve"> </script><noscript id="ex67.java">
+    <pre class="java" xml:space="preserve">// run the search
+SearchHandle resultsHandle = queryMgr.search(query, new SearchHandle());</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program. It should yield the same results as <em>Example_20_SearchCollection.java</em>. The
+only difference is that now, the "shakespeare" collection criterion
+is user-supplied as part of their search string in the form of the
+"tag" constraint.</p><h3 id="search-using-a-json-key-value-constraint"><a href="#search-using-a-json-key-value-constraint">
+Search using a JSON key value
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Normally, the code that you use to define and upload query options
+should reside in a different place than the code you use to run
+searches. For one thing, the two tasks require different levels of
+access. For another, your application code is designed to be run
+over and over again, whereas server configuration is more of a
+one-time thing. However, for purposes of this tutorial, we're going
+to mix the two in the remaining examples. The rest of the examples
+will thus include two steps:</p><ol>
+    <li>
+Update the server configuration</li>
+    <li>
+Run a query making use of the updated configuration</li>
+  </ol><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We're
+going to keep using the "tutorial" options set, but rather than
+replacing it anew each time, we're going to add to it. That means
+we'll need to fetch it, modify it, and send the updated
+configuration back to the server. That's exactly what <em>Example_26_ConstraintOnJSONValue.java</em>
+starts off by doing. First, we fetch the existing "tutorial"
+options by calling the <strong>readOptions()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex68.java" xml:space="preserve"> </script><noscript id="ex68.java">
+    <pre class="java" xml:space="preserve">// get the existing tutorial options
+QueryOptionsHandle tutorialOpts =
+    optionsMgr.readOptions("tutorial", new QueryOptionsHandle());</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we use one of the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/QueryOptionsHandle.html">
+QueryOptionsHandle</a>'s add methods to augment the options. In
+this case, we'll create another constraint using <strong>addConstraint()</strong>:</p><script src="https://gist.github.com/3290041.js?file=ex69.java" xml:space="preserve"> </script><noscript id="ex69.java">
+    <pre class="java" xml:space="preserve">// add a JSON value constraint
+    tutorialOpts.addConstraint(
+        qob.constraint("company",
+            qob.value(
+                qob.jsonTermIndex("affiliation"))));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+the "company" constraint isn't already configured, we add it,
+backed by the JSON key named "affiliation". In this case, we're
+using a <em>value constraint</em>,
+which means a searched-for value must match the affiliation
+exactly.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we write the updated options back to the server:</p><script src="https://gist.github.com/3290041.js?file=ex70.java" xml:space="preserve"> </script><noscript id="ex70.java">
+    <pre class="java" xml:space="preserve">// write the query options back to the server
+optionsMgr.writeOptions("tutorial", tutorialOpts);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+we're ready to test it out.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Instead of calling the query definition's <strong>setOptionsName()</strong> method, we can also set
+the options when constructing the query (which we'll do from now
+on):</p><script src="https://gist.github.com/3290041.js?file=ex71.java" xml:space="preserve"> </script><noscript id="ex71.java">
+    <pre class="java" xml:space="preserve">// create a search definition using the "tutorial" options
+StringQueryDefinition query = queryMgr.newStringDefinition("tutorial");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's find all the MarkLogic engineers who spoke at the
+conference:</p><script src="https://gist.github.com/3290041.js?file=ex72.java" xml:space="preserve"> </script><noscript id="ex72.java">
+    <pre class="java" xml:space="preserve">// find talks with MarkLogic engineers
+query.setCriteria("engineer company:marklogic");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the search results. You can also see the updated
+query options at <a href="http://localhost:8011/v1/config/query/tutorial" target="_blank">http://localhost:8011/v1/config/query/tutorial</a>.</p><h3 id="search-using-an-element-value-constraint"><a href="#search-using-an-element-value-constraint">
+Search using an element value
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_27_ConstraintOnElementValue.java</em>.
+Here we're defining another value constraint but against an element
+this time instead of a JSON key:</p><script src="https://gist.github.com/3290041.js?file=ex73.java" xml:space="preserve"> </script><noscript id="ex73.java">
+    <pre class="java" xml:space="preserve">    tutorialOpts.addConstraint(
+        qob.constraint("person",
+            qob.value(
+                qob.elementTermIndex(new QName("PERSONA")))));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+we can search for the King of France directly in our query
+text:</p><script src="https://gist.github.com/3290041.js?file=ex74.java" xml:space="preserve"> </script><noscript id="ex74.java">
+    <pre class="java" xml:space="preserve">// find plays featuring the King of France
+query.setCriteria("person:\"KING OF FRANCE\"");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the results.</p><h3 id="search-using-a-json-key-word-constraint"><a href="#search-using-a-json-key-word-constraint">
+Search using a JSON key word
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_28_ConstraintOnJSONWords.java</em>.
+Here, instead of a value constraint, we're using a <em>word constraint</em> scoped within all JSON
+"bio" keys:</p><script src="https://gist.github.com/3290041.js?file=ex75.java" xml:space="preserve"> </script><noscript id="ex75.java">
+    <pre class="java" xml:space="preserve">    tutorialOpts.addConstraint(
+        qob.constraint("bio",
+            qob.word(
+                qob.jsonTermIndex("bio"))));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Unlike a value constraint (which tests for the value of the key or
+element), a word constraint uses normal search-engine semantics.
+The search will succeed if the word is found anywhere in the given
+context. Also, it uses <em>stemming</em>, which means that matching
+words will include equivalent forms: "strategies" and "strategy",
+"run" and "ran", etc.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's use the "bio" constraint in some search text:</p><script src="https://gist.github.com/3290041.js?file=ex76.java" xml:space="preserve"> </script><noscript id="ex76.java">
+    <pre class="java" xml:space="preserve">// search for speakers whose bio mentions "strategy"
+query.setCriteria("bio:strategy");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the results:</p><h3 id="search-using-an-element-word-constraint"><a href="#search-using-an-element-word-constraint">
+Search using an element word
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_29_ConstraintOnElementWords.java</em>.
+This time our word constraint is against the &lt;STAGEDIR&gt;
+element:</p><script src="https://gist.github.com/3290041.js?file=ex77.java" xml:space="preserve"> </script><noscript id="ex77.java">
+    <pre class="java" xml:space="preserve">    tutorialOpts.addConstraint(
+        qob.constraint("stagedir",
+            qob.word(
+                qob.elementTermIndex(new QName("STAGEDIR")))));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+we can find all the Shakespeare plays where, for example, swords
+are involved on stage:</p><script src="https://gist.github.com/3290041.js?file=ex78.java" xml:space="preserve"> </script><noscript id="ex78.java">
+    <pre class="java" xml:space="preserve">// search for stage directions involving swords
+query.setCriteria("stagedir:sword");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the results.</p><h3 id="search-using-an-element-constraint"><a href="#search-using-an-element-constraint">
+Search using an element
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_30_ConstraintOnElement.jav</em>a.
+Here we're defining an <em>element
+constraint</em>:</p><script src="https://gist.github.com/3290041.js?file=ex79.java" xml:space="preserve"> </script><noscript id="ex79.java">
+    <pre class="java" xml:space="preserve">    tutorialOpts.addConstraint(
+        qob.constraint("spoken",
+            qob.elementQuery(new QName("SPEECH"))));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">An
+element constraint is similar to a word constraint, except that it
+will match words in the element <em>and any of its descendants</em>. In the
+above case, it will match text in &lt;LINE&gt; element children of
+&lt;SPEECH&gt;. This is useful for searching documents that contain
+"mixed content" (i.e. text mixed with markup, such as &lt;em&gt;
+and &lt;strong&gt;).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Using
+this constraint will restrict the search to the spoken lines of
+text (excluding, for example, stage directions):</p><script src="https://gist.github.com/3290041.js?file=ex80.java" xml:space="preserve"> </script><noscript id="ex80.java">
+    <pre class="java" xml:space="preserve">// search for mentions of swords in the script itself
+query.setCriteria("spoken:sword");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the result.</p><h3 id="search-using-a-properties-constraint"><a href="#search-using-a-properties-constraint">
+Search using a properties
+constraint</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We
+can also create a constraint for searching properties. See in
+<em>Example_31_ConstraintOnProperties.java</em>,
+how we do this to enable searching an image's metadata:</p><script src="https://gist.github.com/3290041.js?file=ex81.java" xml:space="preserve"> </script><noscript id="ex81.java">
+    <pre class="java" xml:space="preserve">    tutorialOpts.addConstraint(
+        qob.constraint("image",
+            qob.properties()));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+it's easy for a user to search for photos of fish (or anything
+else):</p><script src="https://gist.github.com/3290041.js?file=ex82.java" xml:space="preserve"> </script><noscript id="ex82.java">
+    <pre class="java" xml:space="preserve">// find photos of fish
+query.setCriteria("image:fish");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the list of matching image docs.</p><h3 id="search-using-a-structured-query"><a href="#search-using-a-structured-query">
+Search using a structured
+query</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Recall that the Java API supports three kinds of queries that can
+be passed to <strong>search()</strong>:</p><ul>
+    <li>
+key/value
+queries</li>
+    <li>
+string
+queries</li>
+    <li>
+structured
+queries</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We
+briefly touched on a structured query in <em>Example_18_SearchProperties.java</em>. Now
+we'll take a look at a richer use of it, utilizing the constraints
+we've defined so far. Open up <em>Example_32_StructuredQuery.java</em>. We'll
+start by creating a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/StructuredQueryBuilder.html">
+StructuredQueryBuilder</a>, associating it with our "tutorial"
+options:</p><script src="https://gist.github.com/3290041.js?file=ex83.java" xml:space="preserve"> </script><noscript id="ex83.java">
+    <pre class="java" xml:space="preserve">// create a query builder using the "tutorial" options
+StructuredQueryBuilder qb = new StructuredQueryBuilder("tutorial");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+query builder is analogous to the options builder in that it gives
+us a way of building up complex object structures using nested
+method calls. Only this time, rather than building up options to
+store on the server, we're building up an actual query:</p><script src="https://gist.github.com/3290041.js?file=ex84.java" xml:space="preserve"> </script><noscript id="ex84.java">
+    <pre class="java" xml:space="preserve">// build a search definition
+StructuredQueryDefinition query =
+    qb.or(
+        // find MarkLogic speakers whose bio mentions "product"
+        qb.and(
+            qb.wordConstraint("bio","product"),
+            qb.valueConstraint("company","MarkLogic")),
+        // find plays matching all three of these constraints
+        qb.and(
+            qb.elementConstraint("spoken", qb.term("fie")),
+            qb.wordConstraint("stagedir", "fall"),
+            qb.valueConstraint("person", "GRUMIO")),
+        // find photos of fish taken on February 27th
+        qb.and(
+            qb.properties(qb.term("fish")),
+            qb.directory(true, "/images/2012/02/27/")),
+        // find conference docs mentioning "fun"
+        qb.and(
+            qb.collection("mlw2012"),
+            qb.term("fun")));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+builder's <strong>or()</strong> method
+constructs a query that will find documents matching <em>any</em> of its argument queries (union). In
+contrast, an <strong>and()</strong> query
+restricts its results to those documents matching <em>all</em> of its child queries
+(intersection). Take a look at the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/StructuredQueryBuilder.html">
+StructuredQueryBuilder javadocs</a> to see what methods you can use
+to construct queries. Many of these (particularly the ones with
+"Constraint" in their names) require you to have defined options
+for them to be of any use.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+run the query, we pass it to our query manager's <strong>search()</strong> method, just as we do with
+string and key/value queries:</p><script src="https://gist.github.com/3290041.js?file=ex85.java" xml:space="preserve"> </script><noscript id="ex85.java">
+    <pre class="java" xml:space="preserve">// run the search
+queryMgr.search(query, resultsHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the results. Note that the search will only give
+you the expected results if you've previously defined the "bio",
+"company", "spoken", "stagedir", and "person" constraints (see
+previous examples in this section).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+more details on the kinds of constraints you can define, see
+<a href="//docs.marklogic.com/guide/search-dev/search-api#id_95820">"Constraint
+Options" in the Search Developer's Guide</a>.</p></ml:page>
