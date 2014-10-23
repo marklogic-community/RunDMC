@@ -35,7 +35,7 @@ class ServerConfig
     puts "XSD directory is #{xsd_dir}"
 
     # Send the docs to MarkLogic
-    http = Net::HTTP.new(@properties['ml.server'], @properties['ml.app-port'])
+    http = Net::HTTP.new(@properties['ml.server'], @properties['ml.maintenance-port'])
     # This process takes time. Make sure we wait for the answer.
     http.read_timeout = 900
     response = http.post("/apidoc/setup/build.xqy", "version=#{version}&zip=#{zip}&help-xsd-dir=#{xsd_dir}&clean=#{clean}")

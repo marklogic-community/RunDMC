@@ -92,8 +92,8 @@
       <root>@ml.modules-root</root>
       <authentication>@ml.authentication-method</authentication>
       <default-user name="@ml.default-user"/>
-      <url-rewriter></url-rewriter>
-      <error-handler></error-handler>
+      <url-rewriter>/controller/url_rewrite.xqy</url-rewriter>
+      <error-handler>/controller/error-handler.xqy</error-handler>
       <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
       <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
     </http-server>
@@ -164,15 +164,29 @@
     </http-server>
     <http-server>
       <http-server-name>@ml.app-name-webdav</http-server-name>
+      <webDAV>true</webDAV>
       <port>@ml.webdav-port</port>
       <database name="@ml.content-db"/>
       <modules name="@ml.app-modules-db"/>
-      <root>@ml.modules-root</root>
+      <root>/</root>
       <authentication>@ml.authentication-method</authentication>
       <default-user name="@ml.default-user"/>
       <url-rewriter>@ml.url-rewriter</url-rewriter>
       <error-handler>@ml.error-handler</error-handler>
       <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-maintenance</http-server-name>
+      <port>@ml.maintenance-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter></url-rewriter>
+      <error-handler></error-handler>
+      <rewrite-resolves-globally>false</rewrite-resolves-globally>
       <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
     </http-server>
     @ml.test-appserver
