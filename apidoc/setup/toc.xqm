@@ -1533,7 +1533,8 @@ as element(toc:node)
           api:prefix-for-lib($lib),
           if ($lib/@built-in) then 'built-in' else 'XQuery library'
         }
-        functions (in this namespace: <code>{ api:namespace($lib)/@uri }</code>).
+        functions (in this namespace:
+          <code>{ api:namespace($lib)/@uri/string() }</code>).
         </p>,
         (: TODO Right now this really wants toc:nodes not functions. :)
         toc:lib-sub-pages($mode, $m-mode-functions, $by-bucket, $lib),
