@@ -57,7 +57,7 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
 (: This may take some time to run :)
 xdmp:set-request-time-limit(1800),
 
-(: Optionally delete everything first (if clean=yes is specified) :)
+(: If "clean" is specified, delete everything first. :)
 if (not($CLEAN)) then ()
 else xdmp:invoke('clean.xqy', (xs:QName('VERSION'), $VERSION))
 ,

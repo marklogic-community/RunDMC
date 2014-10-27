@@ -702,6 +702,7 @@ as empty-sequence()
 declare function stp:clean(
   $version as xs:string)
 {
+  stp:raw-delete($version),
   stp:static-docs-delete($version),
   stp:api-docs-delete($version),
   stp:toc-docs-delete($version),
