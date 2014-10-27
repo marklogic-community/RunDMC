@@ -54,7 +54,6 @@ if [ -z "$PORT_RAW" ]; then
     PORT_RAW=8412
 fi
 echo
-echo
 
 # local customization
 if [ -z "$TMPDIR" ]; then

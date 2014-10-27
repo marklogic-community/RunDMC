@@ -363,16 +363,23 @@ declare function api:camel-case($toks as xs:string+)
 
 (: This handles the local-name or full name. :)
 declare function api:javascript-name(
+  $name as xs:string,
+  $override as xs:string?)
+as xs:string
+{
+  if ($override) then $override
+  else translate(
+    api:camel-case(tokenize($name, '[\-]+')[.]),
+    ':', '.')
+};
+
+declare function api:javascript-name(
   $function as element(apidoc:function))
 as xs:string
 {
-  let $override as xs:string? := $function/apidoc:name[
-    @class eq 'javascript']
-  return (
-    if ($override) then $override
-    else translate(
-      api:camel-case(tokenize($function/@name, '[\-]+')[.]),
-      ':', '.'))
+  api:javascript-name(
+    $function/@name,
+    $function/apidoc:name[@class eq 'javascript'])
 };
 
 (: Example input:  <function name="/v1/rest-apis/{name}" http-verb="GET"/>
@@ -792,7 +799,8 @@ as xs:string
 
   case 'xs:integer' return 'Integer'
 
-  default return $type
+  (: #318 Translate any namespaced type names too. :)
+  default return api:javascript-name($type, ())
 };
 
 declare function api:type-expr-javascript(

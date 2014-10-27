@@ -11,6 +11,13 @@ import module namespace at="http://github.com/robwhitby/xray/assertions"
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
+declare %t:case function t:type-javascript-sem-iri()
+{
+  at:equal(
+    api:type($api:MODE-JAVASCRIPT, (), 'sem:iri'),
+    'sem.iri')
+};
+
 declare %t:case function t:type-javascript-xs-unsignedLong()
 {
   at:equal(
