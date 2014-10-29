@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <h1>Which NoSQL?</h1>
+  <div class="intro var2">
+    <p>If you need the agility, flexibilty, and performance of a <a href="http://en.wikipedia.org/wiki/Document-oriented_database">NoSQL document database</a>, along with enterprise-class
+       <a href="http://en.wikipedia.org/wiki/ACID">transaction processing</a>, security, and robustness, check out MarkLogic.</p>
+    <img src="/images/logo_marklogic5.png" alt="MarkLogic 5" width="197" height="36"/>
+  </div>
+  <section>
+    <header>
+      <h3>What’s MarkLogic?</h3>
+      <a class="button" href="/products"><img src="/images/i_arrow_down.png" alt="↓" width="20" height="23"/> <span>Hey, Just Download It!</span></a>
+    </header>
+    <p>MarkLogic is a database that is...</p>
+    <dl>
+      <dt>Document-oriented</dt>
+      <dd>MarkLogic stores data in <i>Documents</i>, be they encoded as JSON, XML, text, or even binary.  This document-centric model is ideal for data that should not be 
+          disassembled into rows and columns, such as contracts, manuals, books, and metadata.
+      </dd>
+
+      <dt>Fast</dt>
+      <dd>MarkLogic is built for speed and implemented via optimized, native C++ code.  Documents are stored on disk as compressed trees, aside rich, powerful indexes.
+         MarkLogic users regularly run advanced queries across terabytes of data in billions of documents with sub-second responses.
+      </dd>
+
+      <dt>Scalable</dt>
+      <dd>MarkLogic's <a href="http://en.wikipedia.org/wiki/Shared_nothing_architecture">shared-nothing architecture</a> enables speed and scale on commodity hardware.  
+         As data volume or CPU load grows, near linear scaling is achieved by adding more hardware nodes.
+      </dd>
+
+      <dt>Transactional</dt>
+      <dd>MarkLogic is an <a href="http://en.wikipedia.org/wiki/ACID">ACID (atomicity, consistency, isolation, durability)</a> transactional database. 
+         Insert/update/delete operations can be performed atomically and 
+         subsequent queries can see those changes with zero latency. MarkLogic supports distributed transactions, multi-statement transactions, and 
+         even <a href="http://en.wikipedia.org/wiki/X/Open_XA">XA</a> transactions. </dd>
+
+      <dt>Schema-free, yet structure-aware</dt>
+      <dd>MarkLogic does not require pre-defined schemas, allowing you to load data “as is.” Data with poorly defined, poorly followed, changing, 
+         and/or unknowable schemas are efficiently stored and indexed.   When you insert/update/delete a document, MarkLogic updates its
+         indexes for <b>both text and structure found in the data</b>.  The structure-aware indexing can capture embedded meaning in documents, such as names or phone numbers, for more precise 
+         search and analysis.</dd>
+      
+
+      <dt>Built as a real-time search engine</dt>
+      <dd>Like Google's <a href="http://research.google.com/pubs/pub36726.html">Percolator</a>, MarkLogic was architected from the ground up with advanced real-time search capabilities, so it requires no third-party search engine. It supports all the search capabilities today’s organizations need, ranging from word/phrase search and stemming, to advanced capabilities like geospatial search and alerting.  And like Percolator, there is no batch indexing required.  Search indexes are updated in real-time during a transaction.</dd>
+
+      <dt>Highly-available</dt>
+      <dd>MarkLogic ensures high availability and disaster recovery through enterprise-class, battle-tested implementations of 
+         automatic failover, replication, journaling, clustering, database rollback, and point-in-time recovery.
+      </dd>
+
+      <dt>Secure</dt>
+      <dd>With fine-grained privileges, role-based security, document-level permissions, HTTPS access, as well as validation in accordance with the provisions of the 
+         National Information Assurance Partnership (NIAP) Common Criteria Evaluation and Validation Scheme (CCEVS) for IT Security, MarkLogic is the most secure 
+         NoSQL database on the planet.  
+      </dd>
+
+      <dt>Free and easy to get going</dt>
+      <dd>MarkLogic provides a free <a href="/express">Express license</a> for developers to learn MarkLogic and deploy small projects.  There 
+         is a <a href="/try/corona/index">REST API</a> to get you going quickly, as well as a W3C standard query language (<a href="/try/ninja/index">XQuery</a>) for authoring application-specific, tuned queries. </dd>
+
+</dl></section></ml:page>

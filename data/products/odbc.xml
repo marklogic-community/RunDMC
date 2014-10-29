@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+ 
+<p>
+The MarkLogic ODBC driver lets you add MarkLogic as a new ODBC data source to your 
+existing <a href="http://www-01.ibm.com/software/analytics/cognos/downloads.html">Cognos</a> or 
+<a href="http://www.tableausoftware.com/">Tableau</a> installation.
+</p>
+ 
+
+    <ml:product-info name="MarkLogic ODBC Driver">
+        <ml:platform name="MarkLogic 7, Linux (Red Hat Enterprise Linux, Versions 6)">
+            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4.x86_64.rpm" size="632 KB" date="2014-09-12">64-bit ODBC Driver
+            </ml:download>
+        </ml:platform>
+        <ml:platform name="MarkLogic 7, Microsoft Windows (7, 8, Server 2008)">
+            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4-i686.msi" size="4.2MB" date="2014-09-12">32-bit ODBC Driver
+            </ml:download>
+            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4-amd64.msi" size="3.9MB" date="2014-09-12">64-bit ODBC Driver
+            </ml:download>
+        </ml:platform>
+        <ml:platform name="MarkLogic 6, Microsoft Windows (Server, Vista, and 7)">
+            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.0-5.3-i686.msi" size="4.1MB" date="2014-06-30">32-bit ODBC Driver
+            </ml:download>
+        </ml:platform>
+    </ml:product-info>
+
+<p>
+  <ml:product-documentation>
+    <ml:new-doc source="/guide/sql/odbc-driver"/>
+    <ml:new-doc source="/guide/sql"/>
+    <ml:new-doc source="/guide/admin/odbc"/>
+  </ml:product-documentation>
+</p>
+</ml:page>

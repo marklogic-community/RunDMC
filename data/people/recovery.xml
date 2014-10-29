@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+        <h1>Forgot my password</h1>
+
+        <p>Please provide your email address and we'll send you an email that you can use
+            to reset your password.</p>
+
+        <form id="reset-form" action="/reset-email" method="post" enctype="application/x-www-form-urlencoded">
+    <input autofocus="autofocus" style="display: inline" id="email" name="email" value="" title="email" tabindex="1" type="text"/>
+    <input class="button" id="reset-submit" value="Send mail" type="submit" tabindex="2"/>
+  </form>
+
+</ml:page>

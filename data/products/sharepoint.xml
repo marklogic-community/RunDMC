@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+
+<h2>
+        MarkLogic Connector for SharePoint®
+    </h2>
+<p>
+     The MarkLogic Connector for SharePoint® provides out of the box integration between MarkLogic Server and SharePoint®. Using the MarkLogic Connector for SharePoint® organizations can also easily add document services to their existing MarkLogic Server deployment. The integration means that check-in, check-out and other basic document services are available for content stored in MarkLogic Server.
+</p>
+<p>
+<strong>Document library mirroring</strong>
+</p>
+<p>
+The MarkLogic Connector for SharePoint® transparently mirrors content from SharePoint® document libraries to MarkLogic. It will actively listen for changes to major versions of documents and automatically propagate those changes to MarkLogic where they can be exploited for content assembly and reuse applications. The library mirroring provides "Set-and-forget" capabilities for bulk push operations with no end user intervention and minimal administrator set-up. This provides consistent handling of many documents at a time and can be customized to include various kinds of processing such as entity enrichment.
+</p>
+<p>
+<strong>Workflow integration</strong>
+</p>
+<p>
+The MarkLogic Connector for SharePoint® provides components for integrating directly within SharePoint® workflows. Common workflow components are available such as copy or delete a document from/to MarkLogic and are easily incorporated as part of a workflow, such as an approval process. There is also a component which allows for integration of advanced XML processing within sophisticated business workflows for element and attribute level processing. The MarkLogic Connector for SharePoint® integrates with Microsoft® visual workflow design tools and can be used with or without library mirroring.
+</p>
+<p>
+<img style="border: 1px black solid;" src="/media/sharePoint-adminScreen-small.png" alt="SharePoint" width="608" height="507"/>
+</p>
+
+
+  <ml:product-info name="MarkLogic Connector for SharePoint®" license-page="">
+    <ml:platform name="Microsoft Windows (Server, XP, and Vista)">
+      <ml:download href="/download/binaries/SharePoint/MarkLogic-Connector-for-SharePoint-1.1-2.zip" size="33MB" date="2013-01-10">Release 1.1-2 zip package</ml:download>
+    </ml:platform>
+  </ml:product-info>
+
+  <ml:product-documentation>
+    <ml:new-doc source="/guide/sharepoint"/>
+  </ml:product-documentation>
+</ml:page>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:Article status="Published" type="OnlineTraining" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <ml:title>Introduction to MarkLogic Server</ml:title>
+  <ml:author>MarkLogic University</ml:author>
+  <ml:created>
+  <ml:last-updated>6.0-1</ml:last-updated>
+  <ml:external-link href="https://marklogic.csod.com/LMS/LoDetails/LoDetails.aspx?loid=89aa2450-a0a5-4de0-931f-37439c7e04cb">
+  </ml:external-link>
+  
+  <ml:server-version>6.0</ml:server-version>
+  
+  <ml:description>This self-paced tutorial teaches you the fundamentals about MarkLogic Server. By the end of this tutorial, 
+you should be able to:<ul>
+	<li>Explain the use and benefits of MarkLogic Server</li>
+	<li>Discuss the MarkLogic Server architecture and components</li>
+	<li>Describe the application development workflow</li>
+      </ul>
+    </ml:description>
+
+  <ml:body/>
+
+</ml:created></ml:Article>

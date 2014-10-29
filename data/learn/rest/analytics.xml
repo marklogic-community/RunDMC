@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Analytics</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+"Analytics" is used to describe a class of functionality in
+MarkLogic that relates to retrieving values and frequencies of
+values across a large number of documents. With search/query, we're
+interested in finding documents themselves. With analytics, we're
+interested in extracting all the unique values that appear within a
+particular context (such as an XML element or JSON key), as well as
+the number of times each value occurs. An example of analytics in a
+MarkLogic application is the message traffic chart on <a href="http://markmail.org/" target="_blank">MarkMail.org</a>:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot19.jpg"><img alt="Machine generated alternative text: 0 0 0 Home - MarkMaiI - Commt (- C [markmail.org s  I ]UIM[ark Ìt o- Want your own MarkMair? Tell us about it. Sign In or Sign Up (Why?) Summary of all Messages What’s New Search for: T (_Search_J ç Actions &gt; Previous news itE &gt; Subscribe to the &gt; Read the FAQ &gt; Give feedback &gt; Advertise here &gt; 1 FINDMEOII-’1 I ¡‘‘‘ ‘- I I._ ) About MarkMall harmony mozilia spamassassin Who invoked Godwin’s Law? MarkMaiI is devel apache hibernate myfaces squid-cache MarkLogic Corpor cocoon httpd mysal struts “godwin’s law” opt:noquote MarkMail is a free s incubator pj thunderbird mailing list archives discuss advantages over tr jdom p.jj tomcat engines. It is power fìrfrw jri.h, nhñ Searches for these SDeclfies that tte Server: Each email" src="/media/marklogic-rest-api_files/screenshot19.jpg" width="469" height="384"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above chart portrays ranges of email message dates bucketed by
+month, as well as the number of messages that appear each month.
+Since MarkMail hosts over 50 million messages, it of course does
+not go read all those messages when you load the page. Instead,
+whenever a new document (email message) is loaded into the
+database, its date is added to a sorted, in-memory list of message
+dates (values), each associated with a count (frequency). This is
+achieved through an administrator-defined index (called a
+<em>range index</em>).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">A
+range index is one kind of <em>lexicon</em>. Whenever you want to perform
+analytics, you need to have a lexicon configured. In addition to
+range indexes, other lexicons include the <em>URI lexicon</em> and the <em>collection lexicon</em>. Each of these must
+be explicitly configured in the database.</p><h3 id="retrieve-all-collection-tags"><a href="#retrieve-all-collection-tags">
+Retrieve all collection
+tags</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+this example, you need to have the collection lexicon enabled.
+Fortunately, we already took care of that at the beginning when we
+set up the database. Run the following command:</p><script src="https://gist.github.com/3555546.js?file=ex40.sh" xml:space="preserve"> </script><noscript id="ex40.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"values":{"name":"tag","collection":{"prefix":""}}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+option exposes the database's collection tags as a set of values
+we're naming "tag":</p><script src="https://gist.github.com/3555546.js?file=ex41.json" xml:space="preserve"> </script><noscript id="ex41.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "values": {
+            "collection": {
+                "prefix": ""
+            },
+            "name": "tag"
+        }
+    }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Collection values configured in XML:</p><script src="https://gist.github.com/3555546.js?file=ex42.xml" xml:space="preserve"> </script><noscript id="ex42.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="tag"&gt;
+    &lt;collection prefix=""/&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+<strong>name</strong> of the values option is
+the name we'll be using when we fetch the values ("tag"). The child
+of the values option defines the source of those values. In this
+case, "collection" indicates the collection lexicon as the
+source.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+that you've configured the values, retrieve them using a GET
+request using the <strong>/values/</strong><em><strong>name</strong></em> endpoint:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/tag?options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">http://localhost:8011/v1/values/tag?options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/tag?options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/tag?options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+results show all the distinct values of collection tags and their
+frequency of usage (in other words, how many documents are in each
+collection), whether in XML:</p><script src="https://gist.github.com/3555546.js?file=ex43.xml" xml:space="preserve"> </script><noscript id="ex43.xml">
+    <pre class="xml" xml:space="preserve">&lt;values-response name="tag" type="xs:string" xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;distinct-value frequency="88"&gt;mlw2012&lt;/distinct-value&gt;
+   &lt;distinct-value frequency="140"&gt;photos&lt;/distinct-value&gt;
+   &lt;distinct-value frequency="22"&gt;shakespeare&lt;/distinct-value&gt;
+   &lt;metrics&gt;
+     &lt;values-resolution-time&gt;PT0.000195S&lt;/values-resolution-time&gt;
+      &lt;aggregate-resolution-time&gt;PT0.000017S&lt;/aggregate-resolution-time&gt;
+      &lt;total-time&gt;PT0.001873S&lt;/total-time&gt;
+   &lt;/metrics&gt;
+ &lt;/values-response&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">or
+JSON:</p><script src="https://gist.github.com/3555546.js?file=ex44.json" xml:space="preserve"> </script><noscript id="ex44.json">
+    <pre class="json" xml:space="preserve">{
+  "values-response": {
+    "metrics": {
+      "aggregate-resolution-time": "PT0.000017S",
+      "total-time": "PT0.001675S",
+      "values-resolution-time": "PT0.000189S"
+    },
+    "distinct-value": [
+      {
+        "_value": "mlw2012",
+        "frequency": 88
+      },
+      {
+        "_value": "photos",
+        "frequency": 140
+      },
+      {
+        "_value": "shakespeare",
+        "frequency": 22
+      }
+    ],
+    "type": "xs:string",
+    "name": "tag"
+  }
+}
+</pre>
+  </noscript><h3 id="retrieve-all-document-uris"><a href="#retrieve-all-document-uris">
+Retrieve all document
+URIs</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+example requires the URI lexicon to be enabled. Starting in
+MarkLogic 6, it's enabled by default, so here too we're ready to
+go. This example is almost identical to the previous one except
+that we're choosing a different values name ("uri") and a different
+values source (the URI lexicon):</p><script src="https://gist.github.com/3555546.js?file=ex45.sh" xml:space="preserve"> </script><noscript id="ex45.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/xml" \
+  -d'&lt;options xmlns="http://marklogic.com/appservices/search"&gt;&lt;values name="uri"&gt;&lt;uri/&gt;&lt;/values&gt;&lt;/options&gt;' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+&lt;uri/&gt; element indicates the URI lexicon as the source:</p><script src="https://gist.github.com/3555546.js?file=ex46.xml" xml:space="preserve"> </script><noscript id="ex46.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="uri"&gt;
+    &lt;uri/&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">URI
+values configured using JSON:</p><script src="https://gist.github.com/3555546.js?file=ex47.json" xml:space="preserve"> </script><noscript id="ex47.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "values": {
+            "name": "uri",
+            "uri": null
+        }
+    }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Retrieve the values using a GET request:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/uri?options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">http://localhost:8011/v1/values/uri?options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/uri?options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/uri?options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+will return all the document URIs in the database, as well as how
+many documents they're each associated with (the frequency). For
+all the JSON and XML document URIs, the answer of course is just
+one per document. But you might be surprised to see that each image
+document URI yields a count of 2. That's because each image
+document has an associated properties document which shares the
+same URI.</p><h3 id="set-up-some-range-indexes"><a href="#set-up-some-range-indexes">
+Set up some range
+indexes</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Before we can run the remaining examples in this section, we need
+to enable some range indexes in our database. Since we have a small
+number of documents, it won't take long for MarkLogic to re-index
+everything. At a much larger scale, you'd want to be careful about
+what indexes you enable and when you enable them. That's why such
+changes require database administrator access.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We're
+going to set up the following range indexes:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>
+scalar type</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>
+namespace uri</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>
+localname</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<em>empty</em></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+SPEAKER</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/xdmp/json/basic" target="_blank">http://marklogic.com/xdmp/json/basic</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+affiliation</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+int</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/xdmp/json/basic" target="_blank">http://marklogic.com/xdmp/json/basic</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+contentRating</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+unsignedLong</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/filter" target="_blank">http://marklogic.com/filter</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+size</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/filter" target="_blank">http://marklogic.com/filter</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+Exposure_Time</p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Navigate to your database's configuration page for element range
+indexes (at <a href="http://localhost:8001/" target="_blank">http://localhost:8001/</a>):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot20.jpg"><img alt="Machine generated alternative text: [] Configure ! Groups iL Databases IFIS App-Services E}I Documents Extensions EF Fab E}i Last-Login Modules LEF Security EI Tnggers $Ctona1DB ¡ Ei[ Forests I I E Flexible Replication ! ! Database Replication I Ei Fragment Roots ¡ EI Fragment Parents I EF Triggers ! ! Merge Policy I E Scheduled Backups ¡ EI Content Processin I I a Element Range Indexes ! ! Ifl Attribute Range Indexes ! Field Range Indexes" src="/media/marklogic-rest-api_files/screenshot20.jpg" width="199" height="384"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">At
+the top of the page, click the "Add" tab:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot21.jpg"><img alt="Machine generated alternative text: Element Range Index Configuration Configure [ Add ( Help _______ ______________________ -::= ---Z&gt;" src="/media/marklogic-rest-api_files/screenshot21.jpg" width="576" height="56"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Here
+you will enter the appropriate values for one range index. We'll be
+concerned with just three form fields (leaving the rest at their
+defaults):</p><ul>
+    <li>
+scalar
+type</li>
+    <li>
+namespace
+uri</li>
+    <li>
+localname</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+configure the first range index, choose "string" for scalar type,
+leave the namespace uri field blank, type "SPEAKER" for localname,
+and hit "OK":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot22.jpg"><img alt="Machine generated alternative text: Add Range Indexes to Database scalar type ng An atonr type spffton. namespace un A names pace URI. lo cal name CR One or more localnamnes. collation http://marklogic.conVcollationi Root Collation collation builder A collatbn LJRI for string comparisons. rango value posItions :Thtrue Øfalse Index range value positions for faster near searches involving range queries (slower document loads and larger database files). InvalId values reject 1 Allow ingestion of documents that do not have matching type of data. more items cancel -" src="/media/marklogic-rest-api_files/screenshot22.jpg" width="449" height="384"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+will cause the database to build a range index on all
+&lt;SPEAKER&gt; elements. Using the same process described above,
+add each of the remaining range indexes to your database:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>
+scalar type</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>
+namespace uri</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>
+localname</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/xdmp/json/basic" target="_blank">http://marklogic.com/xdmp/json/basic</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+affiliation</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+int</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/xdmp/json/basic" target="_blank">http://marklogic.com/xdmp/json/basic</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+contentRating</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+unsignedLong</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/filter" target="_blank">http://marklogic.com/filter</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+size</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+<a href="http://marklogic.com/filter" target="_blank">http://marklogic.com/filter</a></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+Exposure_Time</p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+that we have the indexes configured, let's jump back over to the
+command line.</p><h3 id="retrieve-values-of-a-json-key"><a href="#retrieve-values-of-a-json-key">
+Retrieve values of a JSON
+key</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We're
+now ready to make use of some range indexes. Run the following
+command:</p><script src="https://gist.github.com/3555546.js?file=ex48.sh" xml:space="preserve"> </script><noscript id="ex48.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"values":{"name":"company","range":{"type":"xs:string","collation":"http://marklogic.com/collation/","json-key":"affiliation"},"values-option":["frequency-order"]}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+with collection and URI values, we start by choosing a name
+("company"). This time, instead of "uri" or "collection", we use a
+"range" field to indicate that a range index is the source of the
+values. We identify the range index by the name of the JSON key
+("affiliation") and the type of the indexed values (string, using
+the default collation). Here we must make sure that the
+configuration lines up exactly with the range index that's
+configured in the database. Otherwise, we'll get an "index not
+found" error when we try to retrieve the values.</p><script src="https://gist.github.com/3555546.js?file=ex49.json" xml:space="preserve"> </script><noscript id="ex49.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "values": {
+      "name": "company",
+      "range": {
+        "collation": "http://marklogic.com/collation/",
+        "json-key": "affiliation",
+        "type": "xs:string"
+      },
+      "values-option": [
+        "frequency-order"
+      ]
+    }
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Range
+values configured using XML:</p><script src="https://gist.github.com/3555546.js?file=ex50.xml" xml:space="preserve"> </script><noscript id="ex50.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="company"&gt;
+    &lt;range type="xs:string" collation="http://marklogic.com/collation/"&gt;
+      &lt;json-key&gt;affiliation&lt;/json-key&gt;
+    &lt;/range&gt;
+    &lt;values-option&gt;frequency-order&lt;/values-option&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+last thing to point out above is that, rather than return the
+values in alphabetical (collation) order, we want to get them in
+"frequency order" (using the corresponding <a href="//docs.marklogic.com/guide/rest-dev/appendixa#id_34346">"values-option"</a>).
+In other words, return the most commonly mentioned companies first.
+That's what the "frequency-order" option lets you do.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Retrieve the values by making a GET request:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/company?options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/company?options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/company?options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/company?options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Unsurprisingly, you'll see that MarkLogic was the most common
+company affiliation at the MarkLogic World conference.</p><h3 id="retrieve-values-of-an-element"><a href="#retrieve-values-of-an-element">
+Retrieve values of an
+element</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this example, we're using an element range index to indicate the
+source of our "speaker" values:</p><script src="https://gist.github.com/3555546.js?file=ex51.json" xml:space="preserve"> </script><noscript id="ex51.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "values": {
+      "range": {
+        "collation": "http://marklogic.com/collation/",
+        "type": "xs:string",
+        "element": {
+          "ns": "",
+          "name": "SPEAKER"
+        }
+      },
+      "name": "speaker",
+      "values-option": [
+        "frequency-order"
+      ]
+    }
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">XML
+equivalent:</p><script src="https://gist.github.com/3555546.js?file=ex52.xml" xml:space="preserve"> </script><noscript id="ex52.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="speaker"&gt;
+    &lt;values-option&gt;frequency-order&lt;/values-option&gt;
+    &lt;range type="xs:string" collation="http://marklogic.com/collation/"&gt;
+      &lt;element ns="" name="SPEAKER"/&gt;
+    &lt;/range&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following command to upload the values configuration:</p><script src="https://gist.github.com/3555546.js?file=ex53.sh" xml:space="preserve"> </script><noscript id="ex53.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"values":{"name":"speaker","range":{"type":"xs:string","collation":"http://marklogic.com/collation/","element":{"name":"SPEAKER","ns":""}},"values-option":["frequency-order"]}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+make use of the new "speaker" values, retrieve them using a GET
+request:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/speaker?frequency=item&amp;options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/speaker?frequency=item&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/speaker?frequency=item&amp;options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/speaker?frequency=item&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see all the unique speakers in the Shakespeare
+plays, starting with the most garrulous.</p><h3 id="compute-aggregates-on-values"><a href="#compute-aggregates-on-values">
+Compute aggregates on
+values</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Not
+only can we retrieve values and their frequencies; we can also
+perform aggregate math on the server. MarkLogic provides a series
+of built-in aggregate functions such as avg, max, count, and
+covariance, as well as the ability to construct user-defined
+functions (UDFs) in C++ for close-to-the-database computations.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this example, we're going to access an integer index on the
+"contentRating" JSON key, exposing it as "rating" values:</p><script src="https://gist.github.com/3555546.js?file=ex54.json" xml:space="preserve"> </script><noscript id="ex54.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "values": {
+      "range": {
+        "json-key": "contentRating",
+        "type": "xs:int"
+      },
+      "name": "rating"
+    }
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">XML
+equivalent:</p><script src="https://gist.github.com/3555546.js?file=ex55.xml" xml:space="preserve"> </script><noscript id="ex55.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="rating"&gt;
+    &lt;range type="xs:int"&gt;
+      &lt;json-key&gt;contentRating&lt;/json-key&gt;
+    &lt;/range&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+this command to upload the new option:</p><script src="https://gist.github.com/3555546.js?file=ex56.sh" xml:space="preserve"> </script><noscript id="ex56.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"values":{"name":"rating","range":{"type":"xs:int","json-key":"contentRating"}}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+time, in our GET request, we'll also request the mean and median
+averages by using the <strong>aggregate</strong> parameter. And to specify that
+we want the results in descending order (highest ratings first), we
+can use the <strong>direction</strong>
+parameter:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;direction=descending&amp;options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;direction=descending&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;direction=descending&amp;options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;direction=descending&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Fetch
+the results to see how many conference talks scored 5 stars, how
+many scored 4 stars, etc.—as well as the mean and median rating
+for all conference talks, as XML:</p><script src="https://gist.github.com/3555546.js?file=ex57.xml" xml:space="preserve"> </script><noscript id="ex57.xml">
+    <pre class="xml" xml:space="preserve">  &lt;!--...--&gt;
+  &lt;aggregate-result name="avg"&gt;3.71839080459770115&lt;/aggregate-result&gt;
+  &lt;aggregate-result name="median"&gt;4&lt;/aggregate-result&gt;
+  &lt;!--...--&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Or as
+JSON:</p><script src="https://gist.github.com/3555546.js?file=ex58.json" xml:space="preserve"> </script><noscript id="ex58.json">
+    <pre class="json" xml:space="preserve">  "aggregate-result": [
+    {
+      "_value": "3.71839080459770115",
+      "name": "avg"
+    },
+    {
+      "_value": "4",
+      "name": "median"
+    }
+  ]</pre>
+  </noscript><h3 id="constrain-the-values-returned-using-a-query"><a href="#constrain-the-values-returned-using-a-query">
+Constrain the values returned using
+a query</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+example starts to hint at the real power of MarkLogic: combining
+analytics with search. Rather than retrieve <em>all</em> the values of a given key, we're
+going to retrieve only the values from documents meeting a certain
+criterion. In this case, we'll get all the ratings for conference
+talks given by employees of a certain organization. To configure
+this, we first need to supply a "rating" values option, backed by
+the "contentRating" key index, whether in JSON:</p><script src="https://gist.github.com/3555546.js?file=ex59.json" xml:space="preserve"> </script><noscript id="ex59.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "values": {
+      "range": {
+        "json-key": "contentRating",
+        "type": "xs:int"
+      },
+      "name": "rating"
+    }
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Or in
+XML:</p><script src="https://gist.github.com/3555546.js?file=ex60.xml" xml:space="preserve"> </script><noscript id="ex60.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;values name="rating"&gt;
+    &lt;range type="xs:int"&gt;
+      &lt;json-key&gt;contentRating&lt;/json-key&gt;
+    &lt;/range&gt;
+  &lt;/values&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following command to upload the "rating" values option:</p><script src="https://gist.github.com/3555546.js?file=ex61.sh" xml:space="preserve"> </script><noscript id="ex61.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"values":{"name":"rating","range":{"type":"xs:int","json-key":"contentRating"}}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now,
+when you retrieve the values, restrict the values to come only from
+those documents matching a particular query by using the
+<strong>q</strong> parameter:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;q=company:marklogic&amp;direction=descending&amp;options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;q=company:marklogic&amp;direction=descending&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;q=company:marklogic&amp;direction=descending&amp;options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/rating?aggregate=avg&amp;aggregate=median&amp;q=company:marklogic&amp;direction=descending&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the ratings of all talks given by MarkLogic
+employees (documents matching the "company:marklogic" string
+query).</p><h3 id="retrieving-tuples-of-values-(co-occurrences)"><a href="#retrieving-tuples-of-values-(co-occurrences)">
+Retrieving tuples of values
+(co-occurrences)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition to retrieving values from a single source, you can also
+retrieve co-occurrences of values from two different value sources.
+In other words, you can perform analytics on multi-dimensional data
+sets. The following JSON document configures tuples (named
+"size-exposure") backed by two different range indexes. In
+particular, it will enable you to get all the unique pairings of
+photo size and exposure time in image metadata:</p><script src="https://gist.github.com/3555546.js?file=ex62.json" xml:space="preserve"> </script><noscript id="ex62.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "tuples": {
+      "range": [
+        {
+          "type": "xs:unsignedLong",
+          "element": {
+            "ns": "http://marklogic.com/filter",
+            "name": "size"
+          }
+        },
+        {
+          "collation": "http://marklogic.com/collation/",
+          "type": "xs:string",
+          "element": {
+            "ns": "http://marklogic.com/filter",
+            "name": "Exposure_Time"
+          }
+        }
+      ],
+      "name": "size-exposure"
+    }
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Equivalent configuration in XML:</p><script src="https://gist.github.com/3555546.js?file=ex63.xml" xml:space="preserve"> </script><noscript id="ex63.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;tuples name="size-exposure"&gt;
+    &lt;range type="xs:unsignedLong"&gt;
+      &lt;element ns="http://marklogic.com/filter" name="size"/&gt;
+    &lt;/range&gt;
+    &lt;range type="xs:string" collation="http://marklogic.com/collation/"&gt;
+      &lt;element ns="http://marklogic.com/filter" name="Exposure_Time"/&gt;
+    &lt;/range&gt;
+  &lt;/tuples&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following command to upload the options:</p><script src="https://gist.github.com/3555546.js?file=ex64.sh" xml:space="preserve"> </script><noscript id="ex64.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"tuples":{"name":"size-exposure","range":[{"type":"xs:unsignedLong","element":{"name":"size","ns":"http://marklogic.com/filter"}}, {"type":"xs:string","collation":"http://marklogic.com/collation/", "element":{"name":"Exposure_Time","ns":"http://marklogic.com/filter"} } ]}}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+view the tuples, make a GET request:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/values/size-exposure?options=tutorial" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/size-exposure?options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/values/size-exposure?options=tutorial&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/values/size-exposure?options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+results include unique pairings of distinct values, whether in
+XML:</p><script src="https://gist.github.com/3555546.js?file=ex65.xml" xml:space="preserve"> </script><noscript id="ex65.xml">
+    <pre class="xml" xml:space="preserve">  &lt;!--...--&gt;
+  &lt;tuple frequency="1"&gt;
+    &lt;distinct-value xsi:type="xs:unsignedLong" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;60641&lt;/distinct-value&gt;
+    &lt;distinct-value xsi:type="xs:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;1/100&lt;/distinct-value&gt;
+  &lt;/tuple&gt;
+  &lt;!--...--&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Or in JSON:</p><script src="https://gist.github.com/3555546.js?file=ex66.json" xml:space="preserve"> </script><noscript id="ex66.json">
+    <pre class="json" xml:space="preserve">"tuple": [
+  {
+    "distinct-value": [
+      {
+        "_value": "60641",
+         "type": "xs:unsignedLong"
+      },
+       {
+        "_value": "1/100",
+         "type": "xs:string"
+      }
+    ],
+    "frequency": 1
+  }</pre>
+  </noscript><h3 id="searching-with-facets"><a href="#searching-with-facets">
+Searching with facets</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+mentioned earlier, MarkLogic's real power lies in the combination
+of search and analytics. A couple examples ago we saw how a query
+could be used to constrain a values retrieval. What we haven't seen
+yet is how the /search endpoint can also return lists of values
+(called "facet values") along with its search results. These facets
+can then be used to interactively explore your data. In this case,
+we're not calling /values at all, just /search.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">But
+before we can run a faceted search, we need to define one or more
+constraints that are backed by a lexicon or range index. The
+following XML options configures two range-index backed
+constraints:</p><script src="https://gist.github.com/3555546.js?file=ex67.xml" xml:space="preserve"> </script><noscript id="ex67.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;!-- expose the "contentRating" JSON key range index as "rating" values --&gt;
+  &lt;constraint name="rating"&gt;
+    &lt;range type="xs:int" facet="true"&gt;
+      &lt;json-key&gt;contentRating&lt;/json-key&gt;
+      &lt;!-- highest ratings first --&gt;
+      &lt;facet-option&gt;descending&lt;/facet-option&gt;
+    &lt;/range&gt;
+  &lt;/constraint&gt;
+  &lt;!-- expose the "affiliation" JSON key range index as "company" values --&gt;
+  &lt;constraint name="company"&gt;
+    &lt;range type="xs:string" facet="true" collation="http://marklogic.com/collation/"&gt;
+      &lt;json-key&gt;affiliation&lt;/json-key&gt;
+      &lt;!-- most common values first --&gt;
+      &lt;facet-option&gt;frequency-order&lt;/facet-option&gt;
+    &lt;/range&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Here's the equivalent option set in JSON:</p><script src="https://gist.github.com/3555546.js?file=ex68.json" xml:space="preserve"> </script><noscript id="ex68.json">
+    <pre class="json" xml:space="preserve">{
+  "options": {
+    "constraint": [
+      {
+        "range": {
+          "json-key": "contentRating",
+          "type": "xs:int",
+          "facet-option": "descending"
+        },
+        "name": "rating"
+      },
+      {
+        "range": {
+          "collation": "http://marklogic.com/collation/",
+          "json-key": "affiliation",
+          "type": "xs:string",
+          "facet-option": "frequency-order"
+        },
+        "name": "company"
+      }
+    ]
+  }
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+this example, we'll use a different options set instead of the
+"tutorial" options. Run the following command to upload the new
+options set ("tutorial2"):</p><script src="https://gist.github.com/3555546.js?file=ex69.sh" xml:space="preserve"> </script><noscript id="ex69.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"rating","range":{"type":"xs:int","json-key":"contentRating","facet-option":"descending"}}, {"name":"company","range":{"type":"xs:string","collation":"http://marklogic.com/collation/","json-key":"affiliation","facet-option":"frequency-order"}} ]}}' \
+  'http://localhost:8011/v1/config/query/tutorial2'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">GET
+the options to verify they've been uploaded:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/config/query/tutorial2" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">http://localhost:8011/v1/config/query/tutorial2</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/config/query/tutorial2?format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/config/query/tutorial2?format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above configuration makes the "rating" and "company" constraints
+available for users to type in their query search string. You may
+be thinking "Isn't that only going to be useful for power users?
+Most users aren't going to bother learning a search grammar."
+That's true, but with a UI that supports <em>faceted navigation</em>, they won't need to.
+All they'll have to do is click a link to get the results
+constrained by a particular value. For example, the screenshot
+below from MarkMail shows four facets: month, list, sender, and
+attachment type:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot23.jpg"><img alt="Machine generated alternative text: MarkM1it j) Home Messages per 12000C 100000 80000 60000 20000 ‘00 .01 ‘02 ‘03 ‘04 ‘05 ‘06 ‘07 jWhat List? . netjava.dev.opensso.issues netjava,dev.glassfish.users net.java.dev.maven-repository.cvs org .jboss.I ists.jboss-cvs-commits org.netbeans.nbusers netjava.dev.glassfish.issues org .j boss.I ists.jboss-user org.apache.tuscany.dev netjava.dev.mojarra.commits netjavadev.mifosissues netjava.dev.sailrinissues net.java.dev.hudson.users orgapache.hadoop.core-dev com.googlegroups.google-web-toolkit Month Remove date refinements’ tir.  ‘08 ‘09 ‘10 ‘11 12 View morel 9,034 8,095 7,282 6,767 6,079 5,503 5,188 5,097 5,004 4,721 4,686 4,665 4,467 4,278 ‘Who Sent It? View more LS’] Attachments? View moro kohs,..©dev.java.net 7,321 patch 980 mave..©dev.java.net 7,280 zip 858 rlu.,cdev.java.net 6,741 txt 713 jbos...©lists.jboss.org 6,270 jpg 686 glas..javadesktop.org 5,725 java 578 Continuum VMBuild Server 4,334 gif 466 Build Daemon user 3,428 png 445 sv...©wso2.org 3,343 log 437 met...©javadesktop.org 3,139 html 393 cont..©apache.org 2,888 duff 353 to...©freenetprojectorg 2,718 xml 335 jbos...lists.jboss.org 2,541 pdf 236 dcleal 2,529 dat 208 code...tgoogle.com 2,454 Other 201" src="/media/marklogic-rest-api_files/screenshot23.jpg" width="366" height="728"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Each
+of these is a facet, whose values are retrieved from a range index.
+Moreover, users can drill down and pick various combinations of
+facets simply by clicking a link, or in the case of the histogram,
+swiping their mouse pointer.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+MarkLogic's REST API gives you everything you need to construct a
+model for faceted navigation. We're not building any UI in this
+tutorial, but we can simulate faceted search by trying out
+different links representing a series of searches a user might
+make.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Find
+all conference talks (and list all facets):</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=&amp;collection=mlw2012&amp;options=tutorial2" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=&amp;collection=mlw2012&amp;options=tutorial2</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Find
+and list facets for only the talks given by MarkLogic
+employees:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=company:MarkLogic&amp;collection=mlw2012&amp;options=tutorial2" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=company:MarkLogic&amp;collection=mlw2012&amp;options=tutorial2</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=company:MarkLogic&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=company:MarkLogic&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Find
+and list facets for MarkLogic talks that garnered a 5-star
+rating:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=company:MarkLogic+rating:5&amp;collection=mlw2012&amp;options=tutorial2" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=company:MarkLogic+rating:5&amp;collection=mlw2012&amp;options=tutorial2</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=company:MarkLogic+rating:5&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=company:MarkLogic+rating:5&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Find
+talks mentioning "java" that were rated 4 or higher:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=java+rating+GE+4&amp;collection=mlw2012&amp;options=tutorial2" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=java+rating+GE+4&amp;collection=mlw2012&amp;options=tutorial2</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=java+rating+GE+4&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=java+rating+GE+4&amp;collection=mlw2012&amp;options=tutorial2&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition to the normal search results listing documents and their
+matching snippets, the results of a faceted search include lists of
+facets, whether in JSON:</p><script src="https://gist.github.com/3555546.js?file=ex70.json" xml:space="preserve"> </script><noscript id="ex70.json">
+    <pre class="json" xml:space="preserve">  "facets": {
+    "rating": {
+      "facetValues": [
+        {
+          "count": 61,
+          "name": "5"
+        },
+        {
+          "count": 54,
+          "name": "4"
+        },
+        {
+          "count": 34,
+          "name": "3"
+        },
+        {
+          "count": 11,
+          "name": "2"
+        },
+        {
+          "count": 2,
+          "name": "1"
+        },
+        {
+          "count": 12,
+          "name": "0"
+        }
+      ],
+      "type": "xs:int"
+    },
+    "company": {
+      "facetValues": [
+        {
+          "count": 38,
+          "name": "MarkLogic"
+        },
+        {
+          "count": 2,
+          "name": "Avalon Consulting, LLC"
+        },
+        {
+          "count": 2,
+          "name": "Overstory, Ltd."
+        }
+      ],
+      "type": "xs:string"
+    }
+  }</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Or in
+XML:</p><script src="https://gist.github.com/3555546.js?file=ex71.xml" xml:space="preserve"> </script><noscript id="ex71.xml">
+    <pre class="xml" xml:space="preserve">  &lt;search:facet name="rating" type="xs:int"&gt;
+    &lt;search:facet-value name="5" count="61"&gt;5&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="4" count="54"&gt;4&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="3" count="34"&gt;3&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="2" count="11"&gt;2&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="1" count="2"&gt;1&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="0" count="12"&gt;0&lt;/search:facet-value&gt;
+  &lt;/search:facet&gt;
+  &lt;search:facet name="company" type="xs:string"&gt;
+    &lt;search:facet-value name="MarkLogic" count="38"&gt;MarkLogic&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="Avalon Consulting, LLC" count="2"&gt;Avalon Consulting, LLC&lt;/search:facet-value&gt;
+    &lt;search:facet-value name="Overstory, Ltd." count="2"&gt;Overstory, Ltd.&lt;/search:facet-value&gt;
+    &lt;!--...--&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">These
+values can be used to drive a faceted navigation UI. We saw earlier
+how the results structure maps to the search results on this
+website. Now we can see how it maps to facet results. One facet
+("Category") is represented by a &lt;facet&gt; element (or the
+"facets" array in JSON):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot24.jpg"><img alt="Machine generated alternative text: CATEGORIES &lt;tacet&gt; All categories [87] J Functìon pages [50) ¿ Userguides[12) Bkg posts [11)" src="/media/marklogic-rest-api_files/screenshot24.jpg" width="323" height="208"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">And
+its values are modeled by &lt;facet-result&gt; elements (or the
+facet-results array in JSON):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot25.jpg"><img alt="Machine generated alternative text: CATEGORIES All categorIes [87] Functìon pages [50) I2r9uL121If’ Bkg posts [11)" src="/media/marklogic-rest-api_files/screenshot25.jpg" width="323" height="206"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">When
+a user clicks on one of these values, it takes them to a new
+automatically constrained search results page. For example, if they
+click "Blog posts," it will re-run their search with the additional
+constraint "category:blog".</p></ml:page>

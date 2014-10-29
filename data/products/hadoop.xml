@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" title="Hadoop" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+  <h3>Connector for Hadoop</h3>
+
+      <p>
+      <p><img src="/media/elephant_rgb-TRANS_sm.png" width="100" height="71" alt="Hadoop" style="float:right"/> </p>
+      Hadoop is an open-source framework for distributed processing of large data sets across 
+      clusters of computers using simple programming models. When used with MarkLogic, Hadoop 
+      provides cost-effective batch computation and distributed storage. 
+      </p>
+      <p>
+      The Connector for Hadoop is certified against the <a href="http://hortonworks.com/products/hdp-1-3/">Hortonworks Data Platform (HDP) version 1.3</a> 
+      and the <a href="https://www.cloudera.com/content/support/en/downloads.html">Cloudera Distribution of Hadoop (CDH) version 4.3</a>. The source is 
+      licensed under the 
+      commercial-friendly <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> 
+      and is freely available for inspection or modification. 
+      </p>
+   
+  <ml:product-info license-page="">
+
+    <ml:platform name="Downloads">
+      <ml:download anchor-class="track-download" href="/download/binaries/hadoop/Connector-for-Hadoop2-2.0-3.zip" size="1.9 MB" date="2014-09-12">Connector 2.0-3 zip</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/hadoop/Connector-for-Hadoop2-2.0-3-src.zip" size="168 KB" date="2014-09-12">Connector 2.0-3 source zip</ml:download>
+    </ml:platform>
+
+     <ml:maven> 
+        <ml:artifact id="client-mapreduce1" version="1.2.1"/>
+        <ml:artifact id="client-mapreduce2" version="1.2.1"/>
+     </ml:maven>
+  </ml:product-info>
+
+
+<p></p>
+
+<p></p>
+
+<p>
+The Connector for Hadoop is a drop-in extension to Hadoop's MapReduce framework that allows you to 
+easily and efficiently communicate with a MarkLogic database from within a MapReduce job. 
+You can use the connector to:
+</p>
+
+<ul>
+    <li>Stage raw data in HDFS and prepare, reformat, extract, join, or filter for use in interactive applications in MarkLogic</li>
+    <li>Enrich or transform data in situ in MarkLogic using Java and MapReduce, taking advantage of MarkLogic's fast indexes and security model</li>
+    <li>Age data out of a MarkLogic database into archival storage on HDFS or transfer it in parallel to another system</li>
+  </ul>
+
+<p>The MarkLogic Connector for Hadoop enables you to run Hadoop MapReduce jobs on data in a MarkLogic Server cluster.  You can</p>
+<p></p>
+<ul>
+    <li>Leverage existing MapReduce and Java libraries to process MarkLogic data</li>
+    <li>Operate on data as Documents, Nodes, or Values</li>
+    <li>Access MarkLogic text, geospatial, value, and document structure indexes to send only the most relevant data to Hadoop for processing </li>
+    <li>Send Hadoop Reduce results to multiple MarkLogic forests in parallel</li>
+    <li>Rely on the connector to optimize data access (for both locality and streaming IO) across MarkLogic forests</li>
+  </ul>
+
+<p></p>
+The Connector's drop-in set of Java classes includes:
+<p></p>
+<ul>
+    <li>MarkLogic-specific implementations of the 
+        <ul>
+	<li>Hadoop <a href="http://hadoop.apache.org/common/docs/current/api/org/apache/hadoop/mapred/InputFormat.html"><code>InputFormat</code></a> class for reading data from MarkLogic</li>
+	<li>Hadoop <a href="http://hadoop.apache.org/common/docs/current/api/org/apache/hadoop/mapred/OutputFormat.html"><code>OutputFormat</code></a> class for writing data to MarkLogic</li>
+      </ul>
+      </li>
+    <li>Sample code for a variety of use cases</li>
+  </ul>
+
+<h4>Which connector to use?</h4>
+<p>Inside the download, you will find two versions of the connector, one that works against Hadoop 1 (e.g., HDP 1.3) and another 
+for use with Hadoop 2 (e.g., CDH 4.3).  Similarly, if you use maven, use the <b>client-mapreduce1</b> 
+artifact against Hadoop 1 or the <b>client-mapreduce2</b> against Hadoop2.
+</p>
+
+  <ml:product-info license-page="">
+    <ml:platform name="Downloads for MarkLogic 6">
+	<!--
+      <ml:download anchor-class="track-download" href="/download/binaries/hadoop/MarkLogic-Connector-for-Hadoop-1.1-3.zip" size="1.5 MB" date="2013-04-22">Connector 1.1-3 zip for Hortonworks Data Platform 1.3</ml:download>
+
+	  <ml:download anchor-class="track-download" href="/download/binaries/hadoop/MarkLogic-Connector-for-Hadoop-1.1-3-src.zip" size="104 KB" date="2013-04-22">Connector 1.1.3 source zip </ml:download>
+    -->
+      <ml:download anchor-class="track-download" href="/download/binaries/hadoop/Connector-for-Hadoop2-1.1-5.zip" size="12 MB" date="2014-03-21">Connector 1.1-5 zip for Cloudera Distribution of Hadoop 4.3</ml:download>
+	  
+     <ml:download anchor-class="track-download" href="/download/binaries/hadoop/Connector-for-Hadoop2-1.1-5-src.zip" size="104 KB" date="2014-03-21">Connector 1.1-5 zip source</ml:download>
+
+    </ml:platform>
+
+  </ml:product-info>
+<p>
+  <ml:product-documentation>
+    <ml:new-doc type="javadoc" title="MarkLogic Connector for Hadoop Javadoc" source="/javadoc/hadoop"/>
+    <ml:new-doc source="/guide/mapreduce"/>
+  </ml:product-documentation>
+</p>
+
+</ml:page>

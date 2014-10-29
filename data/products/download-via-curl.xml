@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <h1>Downloading via CURL</h1>
+  <div>
+    <p>
+    The well-known <a href="http://curl.haxx.se/">curl</a> tool can be used to download binaries from our developer site.  
+    </p>
+    If you have already <a href="/people/signup">signed up</a>, then simply use your browser, click on the download
+    dialog, and choose <code>Get Via Curl</code>.
+    </div>
+</ml:page>

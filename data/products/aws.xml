@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+    <h1>
+        MarkLogic and Amazon Web Services
+    </h1>
+
+    <p>
+    To help you get going in the cloud quickly, MarkLogic provides 
+    <img style="float:right" width="200" height="86" alt="Amazon Partner" src="/media/amazon/APN_Advanced-Technology-Partner-200.png"/>
+    <a href="https://aws.amazon.com/amis">Amazon Machine Images (AMIs)</a> 
+    and <a href="http://aws.amazon.com/cloudformation/">Cloud Formation templates</a>.
+    The templates, which build on the AMIs, can be used to construct MarkLogic <a href="#clusters">Managed Clusters</a>.
+    </p>
+
+    <h3>MarkLogic AMIs</h3>
+    <p>
+        MarkLogic provides two AMI series, <strong><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a></strong> and 
+            <strong><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></strong>. 
+    </p>
+
+        <a name="developer"></a>
+        <p>
+        The free Developer AMI is suited for a variety of purposes, from development to proof-of-concept work. 
+        You can also bring your own license (BYOL) to this AMI
+        (and use it for those purposes allowed by the terms of your license).
+        After you start up this AMI, you must request and install a <a href="/free-developer">free developer license key</a>
+        <strong>OR</strong> <a href="//docs.marklogic.com/guide/installation/procedures#id_18057">install</a> your own pre-paid license key.
+        </p>
+            
+        <a name="ee"></a>
+        <p>
+        Available for purchase hourly, the <a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise AMI</a> comes with a pre-packaged MarkLogic <a href="//www.marklogic.com/pricing">Essential Enterprise</a> license key and the following features:
+        <ul>
+      <li>Search</li>
+      <li>HA/DR/Replication</li>
+      <li>Government-grade Security</li>
+      <li>Alerting</li>
+      <li>Location Services</li>
+      <li>Semantics (Limited-time, promotional offer)</li>
+    </ul>
+        </p>
+
+        <p>
+        If you prefer, you can also build your own custom AMIs using <a href="/downloads">MarkLogic installers</a>.<a href="#caveat">*</a>.
+        </p>
+
+        <h4>Launching an AMI with EC2 Console</h4>
+        <p>To gain the benefits of high-availability and scalability, the best practice is to run MarkLogic as a cluster.
+        The MarkLogic Cloud Formation templates provide the easiest way to make use of MarkLogic <a href="#clusters">Managed Clusters</a>, 
+        described below.</p>
+        <p> If you prefer to launch an AMI directly, here are the steps (these are covered in the <a href="#ec2">short video below</a>):</p>
+        <p>
+            <ol>
+      <li>
+                    Create yourself an Amazon account and sign up for <a href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html">Amazon Web Services</a>.  (You may need to 
+                    provide personal details, verification, credit card information and the like).
+                </li>
+      <li>
+                    Browse to the <a href="https://aws.amazon.com/marketplace">AWS Marketplace</a>, search for 
+                    <i>marklogic</i>, choose an AMI (or choose one of the Marketplace links from this page), 
+                     select a region, and accept the terms.
+                </li>
+      <li>
+                    Launch the AMI with the EC2 Console:
+                    <ul>
+	  <li>
+                            Choose a supported instance type (<strong>NB</strong>: MarkLogic AMIs will not run on micro instances).
+                        </li>
+	  <li>
+                            Add EBS storage. Specifically, assign an EBS volume to <code>/dev/sdf</code> and leave off the 
+                            <i>Delete-on-termination</i> checkbox, to enable you to keep your data.  
+                            (If you prefer, you can launch the AMI and subsequently attach an existing EBS 
+                            volume to <code>/dev/sdf</code>).
+                        </li>
+	  <li>
+                            Use a Security Group that will open ports 7997-8100. (If you don't have such a group, you
+                            can create one directly in the EC2 Console UI).
+                        </li>
+	  <li>Proceed to start your instance.
+                        </li>
+	</ul>
+                </li>
+      <li>
+                    When your instance is started, browse to your host's port 8001, skip over the offer
+                    to join a cluster (unless you want to), create the default
+                    admin user, and continue on.  When this is completed, log back in via the admin user.
+                    You can then browse to port 8000 to gain access to the MarkLogic home page and developer tools.
+                </li>
+    </ol>
+        </p>
+        <p>
+        <strong>NB</strong>: If you want to use one of the larger instance types (hi1.4xlarge, cc1.4xlarge, cc2.8xlarge, 
+        cr1.8xlarge), you will need to use the <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">Developer (HVM) AMI</a>.
+        The Essential Enterprise AMI does not support those instance types.
+        </p>
+
+        <!--
+        <h4>MarkLogic Amazon Machine Images (AMIs)</h4>
+        <ul>
+            <li><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a> and 
+                <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">Developer (HVM)</a></li>
+            <li><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></li>
+        </ul>
+        -->
+
+        <p>
+        <a name="ec2"></a>
+        <h4>Getting Started with MarkLogic on EC2</h4>
+        <iframe width="460" height="259" src="//www.youtube.com/embed/Zih7RUHSE5k?autoplay=0&amp;rel=0&amp;vq=hd720" frameborder="0" allowfullscreen="">
+        </iframe>
+        </p>
+        <p><i>This video is best watched in full-screen mode, 720p resolution</i></p>
+
+    <a name="clusters"></a>
+    <h3>Cloud Formation Templates and MarkLogic <i>Managed Clusters</i></h3>
+
+        <p>To gain the benefits of high-availability and scalability, the best practice is to run MarkLogic as a cluster.
+        The MarkLogic Cloud Formation templates provide the easiest way to make use of MarkLogic <i>Managed Clusters</i>, the 
+        benefits of which include:
+        </p>
+
+        <ul>
+    <li>Automatic handling of changes in EC2 instance hostnames.</li>
+    <li>Automatic placement and management of data, to insure that nothing is lost on transient volumes.</li>
+    <li>Configuration of best-practice security, load balancing, routing, and handling of volatile instances.</li>
+    <li>Automatic restarting and reconfiguring of failed or unhealthy nodes in a cluster.
+    </li>
+    <li>Pausing of entire clusters, while maintaining <i>all</i> configuration and data.</li>
+    <li>Simplified re-configuration of cluster instance types and topologies.</li>
+  </ul>
+
+        <p>If you choose to launch the MarkLogic AMIs outside of the Cloud Formation templates, you will not have <i>automatic</i> 
+        access to the Managed Cluster features. (You can still gain access to those features via your own custom configuration
+        and automation and the documented series of <a href="//docs.marklogic.com/guide/ec2/GettingStarted#id_63042">environment variables</a> 
+        and the <a href="//docs.marklogic.com/guide/ec2/managing#id_77550">mlcmd utility</a>.)
+        For these reasons, we highly recommend starting with the Cloud Formation templates, even if you plan to start with a 
+        single-node cluster.</p>
+
+
+        <p>
+        The templates serve both as <i>Getting Started</i> points as well as examples. Once you are comfortable with 
+        them, we encourage and expect you to copy and modify them to suit your specific needs.  
+        </p>
+
+        <div class="note"><strong>NOTE</strong>: Successful launching of EC2 instances via a Cloud Formation template requires acceptance 
+        of the License Agreement for the underlying AMI. Please visit the corresponding AWS Marketplace AMI page to accept the 
+        License Agreement <strong>before</strong> attempting to launch a stack from any of the templates. For details see the Getting Started video below.
+        Also, if you plan to launch one of the larger instance types (hi1.4xlarge, cc1.4xlarge, cc2.8xlarge, cr1.8xlarge) with the 
+        Developer AMI, please accept terms on the 
+        <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a> page.  The Essential Enterprise AMI (and Cloud Formation
+        template) can not be launched on these instance types.
+        </div>
+
+        <table>
+        <thead></thead>
+        <tbody>
+      <tr>
+	<th>Description</th>
+	<th>AWS Marketplace page (including Agreement Terms)</th>
+	<th>Template URL</th>
+	<th>Launch in US East (N. Virginia) Region</th>
+      </tr>
+      <tr>
+	<td>Single-instance Developer (Free, BYOL)</td>
+	<td><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a> (and <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a>)</td>
+	<td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4/SingleNode-BYOL.template">SingleNode-BYOL.template</a></td>
+	<td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4/SingleNode-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+      </tr>
+      <tr>
+	<td>Cluster Developer (Free, BYOL)</td>
+	<td><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a> (and <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a>)</td>
+	<td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4/ThreePlusCluster-BYOL.template">ThreePlusCluster-BYOL.template</a></td>
+	<td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4/ThreePlusCluster-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+      </tr>
+      <tr>
+	<td>Single-instance Essential Enterprise </td>
+	<td><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></td>
+	<td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4/SingleNode-Enterprise.template">SingleNode-Enterprise.template</a></td>
+	<td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4/SingleNode-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+      </tr>
+      <tr>
+	<td>Cluster Essential Enterprise </td>
+	<td><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></td>
+	<td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4/ThreePlusCluster-Enterprise.template">ThreePlusCluster-Enterprise.template</a></td>
+	<td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4/ThreePlusCluster-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+      </tr>
+    </tbody>
+
+        </table>
+
+    <h3>Getting Started via Cloud Formation templates</h3>
+        <p>
+        <iframe width="460" height="259" src="//www.youtube.com/embed/nDPipDR7GSs?autoplay=0&amp;rel=0&amp;vq=hd720" frameborder="0" allowfullscreen="">
+        </iframe>
+        </p>
+        <p><i>This video is best watched in full-screen mode, 720p resolution</i></p>
+
+    <h3>Support</h3>
+        <p>Community-based support can be found on the <a href="/">developer website</a>, 
+           by joining the <a href="/discuss">mailing list</a> as well as 
+           <a href="/qa">Q &amp; A</a> . Beyond that, please also see 
+           the <a href="//www.marklogic.com/services/developer-training-and-support">Developer 
+           Support Program</a> we offer.
+        </p>
+        
+    <ml:product-documentation>
+        <ml:new-doc source="/guide/ec2"/>
+    </ml:product-documentation>
+
+    <h3>Notes</h3>
+    <p>
+    <a name="caveat"></a>
+
+    * <i>Any distribution or sale of custom AMIs with MarkLogic installed is subject to 
+    MarkLogic License Agreement terms.</i>
+    <br/>
+    </p>
+
+</ml:page>

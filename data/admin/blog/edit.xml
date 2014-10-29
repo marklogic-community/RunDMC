@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+  <h1>Blog Edit</h1>
+
+  <p></p>
+  <p>NOTE: Changing the status to "Published" will automatically make this the most recent post (by resetting the created date).</p>
+
+  <ml:auto-form template="Post.xml"/>
+
+</ml:page>

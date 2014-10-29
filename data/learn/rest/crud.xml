@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>CRUD</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+manage documents, you use the <strong>/documents</strong> endpoint. In the normal
+manner of a RESTful interface, you use the corresponding HTTP
+method:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>
+Task</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>HTTP
+method</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Create &amp; update</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+PUT</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Read</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+GET</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Delete</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+DELETE</p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition, you can use a HEAD request to retrieve just the HTTP
+headers that a GET would give you.</p><h3 id="create-a-json-document"><a href="#create-a-json-document">
+Create a JSON document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Let's
+get started by loading a JSON document into the database. Run the
+following command to load a simple JSON document into the database
+at the URI /example/recipe.json:</p><script src="https://gist.github.com/3555546.js?file=ex02.sh" xml:space="preserve"> </script><noscript id="ex02.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-writer:x \
+  -d'{"recipe":"Apple pie", "fromScratch":true, "ingredients":"The Universe"}' \
+  -H "Content-type: application/json" \
+  'http://localhost:8011/v1/documents?uri=/example/recipe.json'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+"Content-Type" header is necessary to tell MarkLogic to index the
+content as JSON data (as opposed to simple text). Alternatively,
+you can use the <strong>format</strong>
+parameter (which takes precedence if both are supplied):</p><script src="https://gist.github.com/3555546.js?file=ex03.sh" xml:space="preserve"> </script><noscript id="ex03.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-writer:x \
+  -d'{"recipe":"Apple pie", "fromScratch":true, "ingredients":"The Universe"}' \
+  'http://localhost:8011/v1/documents?uri=/example/recipe.json&amp;format=json'</pre>
+  </noscript><h3 id="read-a-json-document"><a href="#read-a-json-document">
+Read a JSON document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+prove that the document has been loaded, GET it from this URL:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/recipe.json&amp;format=json" target="_blank">
+http://localhost:8011/v1/documents?uri=/example/recipe.json&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If you leave off the format parameter,
+you'll see MarkLogic's internal XML representation of the JSON
+document. In general, you can ignore this and work exclusively with
+your data as JSON by always specifying <code>format=json</code> in the URL.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can also see that the document is loaded in that now you'll get
+search results for "apple":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/search?q=apple&amp;format=json" target="_blank">http://localhost:8011/v1/search?q=apple&amp;format=json</a></p><h3 id="update-a-document"><a href="#update-a-document">
+Update a document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+update a document, use exactly the same method as when creating a
+document (HTTP PUT; see above). The only difference will be in the
+response ("204 Content Updated" as opposed to "201 Document
+Created").</p><h3 id="create-an-xml-document"><a href="#create-an-xml-document">
+Create an XML document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following command to insert an XML document into the
+database:</p><script src="https://gist.github.com/3555546.js?file=ex04.sh" xml:space="preserve"> </script><noscript id="ex04.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-writer:x \
+  -d'&lt;person&gt;&lt;first&gt;Carl&lt;/first&gt;&lt;last&gt;Sagan&lt;/last&gt;&lt;/person&gt;' \
+  'http://localhost:8011/v1/documents?uri=/example/person.xml'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this case, since we didn't specify a content type, MarkLogic
+automatically infers "application/xml" based on the default
+mimetype mapping for URIs ending with ".xml". But since you have to
+be explicit when working with JSON, it's a good practice to always
+be explicit (and specify either "format=xml" in the URL or
+"Content-type: application/xml" as a header):</p><script src="https://gist.github.com/3555546.js?file=ex05.sh" xml:space="preserve"> </script><noscript id="ex05.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-writer:x \
+  -d'&lt;person&gt;&lt;first&gt;Carl&lt;/first&gt;&lt;last&gt;Sagan&lt;/last&gt;&lt;/person&gt;' \
+  -H "Content-type: application/xml" \
+  'http://localhost:8011/v1/documents?uri=/example/person.xml'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Since
+PUT commands are <a href="http://en.wikipedia.org/wiki/Idempotence" target="_blank">idempotent</a>, the
+result of running the command more than once is the same as if you
+had only run it once.</p><h3 id="read-an-xml-document"><a href="#read-an-xml-document">
+Read an XML document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+read the document you just loaded, make a simple GET request:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/person.xml&amp;format=xml" target="_blank">
+http://localhost:8011/v1/documents?uri=/example/person.xml&amp;format=xml</a></p><h3 id="create-a-text-document-(with-metadata)"><a href="#create-a-text-document-(with-metadata)">
+Create a text document (with
+metadata)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Inserting a text document is similar, except you specify the
+content type as "text/plain". Regardless of the content type, you
+can also associate a new document with a collection tag, using the
+<strong>collection</strong> parameter. Run
+the following command:</p><script src="https://gist.github.com/3555546.js?file=ex06.sh" xml:space="preserve"> </script><noscript id="ex06.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-writer:x \
+  -d'This is a text file.' \
+  -H "Content-type: text/plain" \
+  'http://localhost:8011/v1/documents?uri=/foo.txt&amp;collection=examples&amp;collection=mine'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above request creates the text document and associates it with both
+the "examples" and "mine" collection tags. Recall that collections
+are just tags so they don't need to already exist for you to start
+using them.</p><h3 id="read-a-documents-metadata"><a href="#read-a-documents-metadata">
+Read a document's
+metadata</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+prove that the document you just inserted is in those collections,
+GET the metadata for the document by using the <strong>category</strong> parameter with a value of
+"collections":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/foo.txt&amp;category=collections&amp;format=json" target="_blank">
+http://localhost:8011/v1/documents?uri=/foo.txt&amp;category=collections&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can also view all of the document's metadata by specifying
+"metadata" instead of "collections":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/foo.txt&amp;category=metadata&amp;format=json" target="_blank">
+http://localhost:8011/v1/documents?uri=/foo.txt&amp;category=metadata&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">See
+<a href="//docs.marklogic.com/guide/rest-dev/documents#id_63117">Working
+with Metadata</a> for full details on the metadata categories and
+formats.</p><h3 id="create-a-binary-document-(with-metadata-extracted)"><a href="#create-a-binary-document-(with-metadata-extracted)">
+Create a binary document (with
+metadata extracted)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Collections represent just one of the four kinds of metadata that
+can be associated with a document:</p><ul>
+    <li>
+collections,</li>
+    <li>
+permissions,</li>
+    <li>
+quality,
+and</li>
+    <li>
+properties.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<em>Permissions</em> associate roles
+(such as "rest-writer") with privileges (such as "update") for the
+document. <em>Quality</em> is a
+numeric value that can be used to boost a document's ranking in
+search results. <em>Properties</em>
+are arbitrary name/value pairs that you can associate with a
+document, outside of and in addition to its actual content.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+the next example, you'll associate a new document with some
+properties.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following curl commands. The first downloads a sample image
+file. The second inserts it into MarkLogic. Since this is a binary
+document, MarkLogic can automatically extract metadata from it,
+storing it in the resulting document's properties. To specify this
+behavior, you use the <strong>extract</strong> parameter:</p><script src="https://gist.github.com/3555546.js?file=ex07.sh" xml:space="preserve"> </script><noscript id="ex07.sh">
+    <pre class="sh" xml:space="preserve">curl http://developer.marklogic.com/media/learn/rest/mlfavicon.png &gt;mlfavicon.png
+curl -v -X PUT \
+  --digest --user rest-writer:x \
+  --data-binary '@mlfavicon.png' \
+  -H "Content-type: image/png" \
+  'http://localhost:8011/v1/documents?uri=/example/mlfavicon.png&amp;extract=properties'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+see the resulting properties, make a GET request, setting the
+<strong>category</strong> parameter to
+"properties" (this time using the default XML format):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/mlfavicon.png&amp;category=properties" target="_blank">
+http://localhost:8011/v1/documents?uri=/example/mlfavicon.png&amp;category=properties</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You can also specify properties explicitly
+using the <strong>prop:</strong><em><strong>name</strong></em>
+parameter. For example, to
+insert a document having a  property named "favorite" with a
+value of "yes", you would append <code>prop:favorite=yes</code> to the URL.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+REST API provides flexible ways of working with metadata. In
+addition to specifying metadata using request parameters, you can
+upload metadata as the body of a PUT request, update only
+individual property values, or even upload and download document
+content and metadata together, using multipart/mixed content. For
+full details, see <a href="//docs.marklogic.com/guide/rest-dev/documents#chapter">Manipulating
+Documents</a> in the REST developer's guide.</p><h3 id="delete-a-document"><a href="#delete-a-document">
+Delete a document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the following command to delete the text document using the HTTP
+DELETE method:</p><script src="https://gist.github.com/3555546.js?file=ex08.sh" xml:space="preserve"> </script><noscript id="ex08.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X DELETE \
+  --digest --user rest-writer:x \
+  'http://localhost:8011/v1/documents?uri=/foo.txt'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+verify the document has been deleted, try requesting it using
+GET:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/foo.txt" target="_blank">http://localhost:8011/v1/documents?uri=/foo.txt</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">It
+will return an error complaining the document does not exist.</p><div class="note">
+The format of error messages is either XML or JSON, depending on
+the "error-format" property for your REST API instance. See
+<a href="//docs.marklogic.com/guide/rest-dev/intro#id_34966" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Error
+Reporting</a> in the REST Application Developer's Guide.<p></p></div><h3 id="bulk-load-documents-from-a-script"><a href="#bulk-load-documents-from-a-script">
+Bulk-load documents from a
+script</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+preparation for the search and query examples in the next section,
+let's populate the database with more data, including a bunch of
+JSON, XML, and image files. The JSON documents describe talks given
+at the last MarkLogic World conference; the XML consists of a set
+of Shakespeare plays (associated with the "shakespeare" collection
+on load); and the images are photos with embedded metadata.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Download the following zip file containing the documents: <a href="/media/learn/rest/rest-api-tutorial.zip">
+rest-api-tutorial.zip</a>. Unzip the file and run the load.sh shell
+script (first editing the host/port/user/pass as necessary in
+scripts.conf). This will load all the documents into the database
+using the REST API and cURL.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+loading larger amounts of data, I recommend checking out <a href="/learn/5-minute-infostudio-walkthrough">
+Information Studio</a>, which lets you efficiently load large
+numbers of documents asynchronously, automatically dividing them up
+into appropriately sized chunks for loading.</p></ml:page>

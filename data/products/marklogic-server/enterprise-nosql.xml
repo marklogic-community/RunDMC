@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <h1>What is Enterprise NoSQL?</h1>
+
+   An <strong>Enterprise NoSQL</strong> database includes all the benefits of a <strong>NoSQL database</strong> along with <strong>Enterprise-required</strong> features. 
+    <p>Like other NoSQL databases, MarkLogic is </p>
+    <p>
+    </p><ul>
+    <li>Flexible, with a schema-free, document data model (XML, Text, Binary, JSON)</li>
+    <li>Fast (implemented in C++, optimized for today’s IO systems)</li>
+    <li>Scalable (with a <a href="http://en.wikipedia.org/wiki/Shared_nothing_architecture">shared nothing</a> distributed architecture)</li>
+    <li>And highly available, with automatic failover and replication</li>
+  </ul>
+
+<p>
+What is distinctive about an <strong>Enterprise NoSQL database</strong> is its support for enterprise-class and enterprise-scale application requirements, including:
+</p>
+
+<dl>
+<dt>ACID Transactions</dt>
+<dd>
+Enterprise applications require <a href="http://en.wikipedia.org/wiki/ACID">ACID</a> (atomic, consistent, isolated, and durable) transactions. 
+MarkLogic Insert/update/delete operations can be performed atomically and subsequent queries see those changes with zero latency. MarkLogic 
+supports distributed transactions, multi-document and multi-statement transactions, and 
+even <a href="http://en.wikipedia.org/wiki/X/Open_XA">XA</a> transactions.
+</dd>
+
+<dt>Security</dt>
+<dd>
+Modern enterprises simply can not allow individuals (including developers) to have carte blanche access to all of their sensitive data stored in a database.
+With fine-grained privileges, role-based security, document-level permissions, HTTPS access, as well as validation in accordance with the provisions 
+of a number of U.S. National Government programs, MarkLogic is the most secure NoSQL database on the planet.
+</dd>
+
+<dt>Robustness</dt>
+<dd>
+With proven reliability, uptime, fantastic <a href="http://en.wikipedia.org/wiki/Service-level_agreement">SLAs</a>, as well as over 500 deployed mission-critical and 
+enterprise projects, MarkLogic is the most trusted NoSQL database. It's what pros use for storing data that can't be lost or for running applications that can't go down.
+</dd>
+
+
+<dt>Real-time indexing and full-text search</dt>
+<dd>
+Every day, enterprises have to react quickly and answer questions using their data at hand, be it well-structured data or unstructed text.
+MarkLogic was architected from the ground up with advanced, real-time indexing. These indexes support queries over structured data as well as full-text search. 
+They provide all the modern search capabilities enterprise applications need, ranging from word/phrase search, wildcards, case and diacritic sensitivity options, and 
+stemming/tokenization of hundreds of languages, to advanced capabilities like geospatial search and alerting. No batch indexing or third-party 
+search engine is required. Search and other indexes are all updated in real-time during a transaction. 
+</dd>
+</dl>
+
+<p>So, that's it.  
+      <a style="float: right; margin-left: 4px" class="button" href="/products"><img src="/images/i_arrow_down.png" alt="↓" width="20" height="23"/> <span>Free Download</span></a>
+When you need an Enterprise NoSQL database, <a href="/products">download</a> MarkLogic, grab a free <a href="/free-developer">Developer license</a>, and try one of our
+<a href="/learn/tutorials">tutorials</a>. 
+
+</p></ml:page>

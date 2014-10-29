@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Setup</h1><h3 id="install-marklogic"><a href="#install-marklogic">
+Install MarkLogic</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Download and install the latest version of MarkLogic from this
+page: <a href="/products">http://developer.marklogic.com/products</a>.
+Once you've installed and started up MarkLogic, go to the
+browser-based administrative interface (at <a href="http://localhost:8001/" target="_blank">http://localhost:8001/</a>), where you'll
+be walked through the process of getting a Developer License, as
+well as setting up an admin user. (This tutorial assumes you'll be
+running MarkLogic on your local machine; if that's not the case,
+just substitute your server name whenever you see "localhost" in
+this tutorial.)</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+you need more detailed instructions on installing and running
+MarkLogic, see <a href="//docs.marklogic.com/guide/installation/procedures#id_28962">Installing
+MarkLogic Server</a>.</p><h3 id="set-up-the-tutorial-project"><a href="#set-up-the-tutorial-project">
+Set up the tutorial
+project</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+download the tutorial project: <a href="/media/learn/java/java-api-tutorial.zip">
+<em>java-api-tutorial.zip</em></a>.
+Unzip the file into a directory of your choice on your machine.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Although you're free to use whatever IDE you prefer, the tutorial
+files have been packaged as a Maven project and can be opened in
+Eclipse using the <a href="http://www.sonatype.org/m2eclipse/" target="_blank">m2eclipse</a> plugin. If you'd
+like to not have to worry about CLASSPATHs and dependencies to work
+through this tutorial, then I encourage you to follow the
+additional steps below. (If you'd rather wire everything up for
+yourself, you can download the <a href="/products/java">Java API
+distribution</a> directly and skip the rest of this section.)</p>
+<ol>
+    <li>
+Download and install the latest stable release of <a href="http://www.eclipse.org/downloads/" target="_blank">Eclipse</a>
+
+(I used the "Indigo" and "Juno" versions while writing this
+tutorial.)</li>
+    <li>
+Start up
+Eclipse and select the "Help"-&gt;"Install New Software…"
+menu.</li>
+    <li>
+In the "Work
+with:" field, paste the following URL: <a href="http://download.eclipse.org/technology/m2e/releases" target="_blank"><code>http://download.eclipse.org/technology/m2e/releases</code></a><code><br/>
+</code> <p><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot1.jpg"><img alt="Machine generated alternative text: 0 0 0 Install _____________________ Available Software Select a site or enter the location of a site. Work wit ttp//download.eclipse.orgftechnology/m2e/re s Find more software by working with the Available Software Sites preferences. flter text Name Version cO There is no site selected." src="/media/marklogic-for-java-developers_files/screenshot1.jpg" width="576" height="164"/></a></p></li>
+    <li>
+Click the "Add…" button.</li>
+    <li>
+In the next
+dialog, give the new repository a name, e.g., "m2e", and hit
+OK:<br/> <p><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot2.jpg"><img alt="Machine generated alternative text: 0 C) O Add Repository Name: ______________________ J ( Local... ] Location: http://download,eclipse.org/technology/m2e/releases ‘ (__Archive.., J Cancel OK" src="/media/marklogic-for-java-developers_files/screenshot2.jpg" width="411" height="152"/></a></p></li>
+    <li>
+Once it appears, check the checkbox next to "Maven Integration for
+Eclipse":<br/> <p><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot3.jpg"><img alt="Machine generated alternative text: ‘Name g O[ Maven Integration for Eclipse" src="/media/marklogic-for-java-developers_files/screenshot3.jpg" width="422" height="90"/></a></p></li>
+    <li>
+Click the "Next" button and "Next" again to confirm
+installation.</li>
+    <li>
+Review and
+accept the license in order to begin the installation. Once the
+installation is complete, you'll be prompted to restart
+Eclipse.</li>
+    <li>
+After Eclipse
+has restarted, select File-&gt;Import…</li>
+    <li>
+In the Import
+dialog, select "Existing Maven Projects" under the "Maven" folder,
+and click the Next button.<br/> <p><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot4.jpg"><img alt="Machine generated alternative text: 0 0 0 Import Select Import Existing Maven Projects [ì’Iá 9 Select an import source: t. t 1 tut tt LEI’ Install Java EE V Maven Check out Maven Projects from SCM Lng I!ivii Projects ______ ________________________ flInstaII or deploy an artifact to a Maven repository Materialize Maven Projects from SCM Plug—in Development Remote Systems &lt;Back Next J ( Cancel ] Finish" src="/media/marklogic-for-java-developers_files/screenshot4.jpg" width="418" height="384"/></a></p></li>
+    <li>
+On the next screen, click "Browse…" and browse to the
+location where you unzipped the tutorial project, selecting
+"java-api-tutorial" as the root directory.</li>
+    <li>
+Ensure that the
+checkbox for the project is checked and click the "Finish"
+button.</li>
+  </ol>
+
+<p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+rest of this section will walk you through these steps.</p><h3 id="create-a-database"><a href="#create-a-database">
+Create a database</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Navigate in your browser to <a href="http://localhost:8000/appservices/" target="_blank">http://localhost:8000/appservices/</a>
+and click the "New Database" button near the top of the screen:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot7.jpg"><img alt="Machine generated alternative text: F Database - All - t J Welcome, admln Help" src="/media/marklogic-for-java-developers_files/screenshot7.jpg" width="576" height="75"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+the dialog that pops up, type the new database name "TutorialDB"
+and click "Create Database":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot8.jpg"><img alt="Machine generated alternative text: New Database Database name(TutoI Cancel Create Database" src="/media/marklogic-for-java-developers_files/screenshot8.jpg" width="510" height="133"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+You've now created the "TutorialDB" database with the default
+configuration.</p><h4>
+Enable the collection
+lexicon</h4><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+collection lexicon is an indexing feature that we'll need for the
+tutorial. Back at the top of the window, make sure "TutorialDB" is
+selected and click the "Configure" button:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot9.jpg"><img alt="Machine generated alternative text: Welcome, admln F DatabaseID jJ gure Delete + New Database Help" src="/media/marklogic-for-java-developers_files/screenshot9.jpg" width="576" height="60"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+click the checkbox next to "Collection Lexicon":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/v7/screenshot10.png"><img alt="Machine generated alternative text: Database Settings Enable Indexes U Wildcards oI1onLeœn Fie a ue earches" src="/media/marklogic-for-java-developers_files/v7/screenshot10.png" width="375" height="181"/></a></p><h3 id="create-a-rest-api-instance"><a href="#create-a-rest-api-instance">
+Create a REST API
+instance</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+you'll create the REST API instance, which the Java API uses to
+interact with the database. On the same page, under "REST API
+Instances," click the "Add New" button:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot11.jpg"><img alt="Machine generated alternative text: REST API Instances Create a REST API instance for accessing a database with the Java API or another HTTP client. Server Name Port Group" src="/media/marklogic-for-java-developers_files/screenshot11.jpg" width="576" height="133"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Type
+"TutorialServer" as the server name and choose a port number. In
+this tutorial, we'll use port 8011:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot12.jpg"><img alt="Machine generated alternative text: New REST API Instance Server Name ialSee Po Group Default Cancel EST API Instan" src="/media/marklogic-for-java-developers_files/screenshot12.jpg" width="512" height="195"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+should now see "TutorialServer" in the list:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot13.jpg"><img alt="Machine generated alternative text: REST API Instances Create a REST API instance for accessing a database with the Java API or another HTTP client. Server Name Port Group aIr 8011 Default Delete" src="/media/marklogic-for-java-developers_files/screenshot13.jpg" width="576" height="126"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">By
+creating a REST API instance in this way, MarkLogic has
+automatically created and configured the underlying components for
+you (specifically, an HTTP app server and an associated modules
+database). To prove that the REST API instance is running, navigate
+in your browser to <a href="http://localhost:8011/" target="_blank">http://localhost:8011/</a>. You should see
+a page that looks something like this:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/v7/screenshot14.png"><img alt="Machine generated alternative text: 0,IiiMarkLoglc REST Server (— - C Lb0ca1ho5t8Oh1 MarkLogic REST Server . Search and retrieve XML results - /vl/search?format=xml . Search and retrieve JSON results - /vl/search?format=json . Search example - /vl/search?g=.&amp;start=1O&amp;pagel.ength=5 . Query Config - /vl/conÍig/gucry . Transform Config - /vl/conÍig/transforms . Add document (HT!? PUT) o Add JSON document: curl -v --digest --user -H “Content-Type: applicationljson” -X PUT -d ‘{ “person” :{ “first”: “John”, “last”:” Doe” }}‘ “http://localhost:80031v 1/documents? un=/docs/person .json” o Add XML document: curl -v --digest --user admin:***** -H “Content-Type: application/xml” -X PUT -d ‘JohnDoe’ “http://localhost:8003/v 1/documents?un/docsIperson .xml” . View document (HT!? GET) o View JSON document: /vl/documents?uri=Idocs/personjson o View XML document: N1/documcnts?uñ=/docs/personxml . Remove document (HT!? DELETh) o Remove JSON document: curl -v --digest --user admin:***** -H “Content-Type: application/json” -X DELETh “http://localhost:8003/v 1/documents?uri=/docs/person .json” o Remove XML document: curl -v --digest --user admin:***** -H “Content-Type: application/xml” -X DELETh “http://localhost:8003/v 1/documents?uri=/docs/person .xml”" src="/media/marklogic-for-java-developers_files/v7/screenshot14.png"/></a></p><h3 id="create-rest-users"><a href="#create-rest-users">
+Create REST users</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+MarkLogic has a powerful and flexible security system. Before you
+can run the Java examples, you'll first need to create a user with
+the appropriate execute privileges. You of course could use the
+"admin" user (which has no security restrictions), but as a best
+practice, we're going to create two users:</p><ul>
+    <li>
+one with the
+"rest-writer" role, and</li>
+    <li>
+one with the
+"rest-admin" role.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+(There is also a "rest-reader" role available, which provides
+read-only access to the REST API, but we won't be using that.)</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Before we create the users, let's go back into Eclipse and open the
+<em>Config.properties</em> file:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot15.jpg"><img alt="Machine generated alternative text: Package Exporer  V java-api-tutoriaI Q src/main/java V Ç, src/mainfresources Ç3data I E] Config.properties I" src="/media/marklogic-for-java-developers_files/screenshot15.jpg" width="280" height="140"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Take
+a look at its contents:</p><script src="https://gist.github.com/3290041.js?file=ex01.txt" xml:space="preserve"> </script><noscript id="ex01.txt">
+    <pre class="txt" xml:space="preserve"># properties to configure the examples
+example.writer_user=rest-writer
+example.writer_password=x
+example.admin_user=rest-admin
+example.admin_password=x
+example.host=localhost
+example.port=8011
+example.authentication_type=digest</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+is the default configuration file that comes with the tutorial
+project. You can modify it as necessary (for example, if MarkLogic
+is running on a different machine), but the rest of this tutorial
+will assume the REST API instance is located at <a href="http://localhost:8011/" target="_blank">http://localhost:8011/</a>. Now we just
+need to create the "rest-writer" and "rest-admin" users referenced
+in the above properties file.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Back
+in your web browser, navigate to "Security"-&gt;"Users" in the
+admin UI at <a href="http://localhost:8001/" target="_blank">http://localhost:8001/</a>:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot16.jpg"><img alt="Machine generated alternative text: L] Configure Ø Groups Databases Hosts Forests Miirietypes Clusters S.curlty Robs Execute Prrvdeges URI Privileges EF Amps Collections Certificate Authorities El Certificate Templetes" src="/media/marklogic-for-java-developers_files/screenshot16.jpg" width="238" height="337"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">At
+the top of the User Summary screen, click the "Create" tab:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot17.jpg"><img alt="Machine generated alternative text: L J L I User Summary Summary Create Help _____________________" src="/media/marklogic-for-java-developers_files/screenshot17.jpg" width="576" height="54"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">On
+the New User screen, enter the username ("rest-writer"), password
+("x"), and optional description:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot18.jpg"><img alt="Machine generated alternative text: New User [ 0k ] carìcei user A database user. user name 7name(unique) Required. You must supply a value for user-name. description REST writer user for Java tutorial An objecrs description. password Encrypted Password. Required. confirm password Encrypted Password. Required," src="/media/marklogic-for-java-developers_files/screenshot18.jpg" width="576" height="360"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+scroll down and check the checkbox next to the "rest-writer"
+role:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot19.jpg"><img alt="Machine generated alternative text: rest- reader rest- reader- internal wrfter rest-writer- internal search-internal" src="/media/marklogic-for-java-developers_files/screenshot19.jpg" width="188" height="171"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Click
+the "ok" button at the bottom of the screen to create the new
+user.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Repeat the same process (start by clicking the "Create" tab again)
+for the "rest-admin" user (also with password "x"). Only this time,
+check the "rest-admin" role instead:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot20.jpg"><img alt="Machine generated alternative text: qconsole- internal qconsole-user min rest-adrnin- internal rest. internal" src="/media/marklogic-for-java-developers_files/screenshot20.jpg" width="179" height="167"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+you click the "Summary" tab, you should now see both users, with
+their associated roles (including inherited roles).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot21.jpg"><img alt="Machine generated alternative text: ‘- j I User Summai7I j Summary User Create Help  DescriptIon Roles adrnin dIs-user, dIs-internai, infostudó- user, dIs adrnin, ... rest-reader, app-user rest- reader, manage-user, rest-admin, rest- writer rest- reader, rest-writer admin infostudio ad min nobody dmin rfter admin user Information Studio CPF pipeline and task runner nobody user REST adrnin user for Java tutorial REST writer user for Java tutorial" src="/media/marklogic-for-java-developers_files/screenshot21.jpg" width="576" height="207"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+we've got everything set up on the server side, so let's start
+interacting with MarkLogic via Java.</p></ml:page>
