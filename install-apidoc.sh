@@ -74,7 +74,7 @@ cd "${TMPDIR}/${PACKAGE}"
 SERVERS=`echo servers/Default/*.xml`
 echo processing $SERVERS
 # Set the doc roots. This means BASE must be an absolute path.
-sed -e '1,$s:RUNDMC_ROOT:'"${BASE}"':g' -i'.bak' $SERVERS
+sed -e '1,$s:RUNDMC_ROOT:'"${BASE}/src"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_MAIN:'"${PORT_MAIN}"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_RAW:'"${PORT_RAW}"':g' -i'.bak' $SERVERS
 # Changing these names? Also change package filename and XML element(name).
