@@ -182,7 +182,7 @@
       <database name="@ml.content-db"/>
       <modules name="@ml.app-modules-db"/>
       <root>@ml.modules-root</root>
-      <authentication>@ml.authentication-method</authentication>
+      <authentication>digest</authentication>
       <default-user name="@ml.default-user"/>
       <url-rewriter></url-rewriter>
       <error-handler></error-handler>
