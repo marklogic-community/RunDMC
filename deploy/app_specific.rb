@@ -4,8 +4,6 @@
 # This class has access to all of the stuff in deploy/lib/server_config.rb
 #
 require 'net/http'
-# TODO is there a roxy-level mechanism to require a gem?
-require 'net/http/digest_auth'
 
 class ServerConfig
   def my_custom_method()
@@ -13,6 +11,16 @@ class ServerConfig
   end
 
   def deploy_docs_request(data)
+
+    # TODO is there a roxy-level mechanism to require a gem?
+    begin
+    require 'net/http/digest_auth'
+    rescue LoadError
+      @logger.error "The net-http-digest_auth gem is required for this feature."
+      @logger.error "Run: $ gem install net-http-digest_auth"
+      exit!
+    end
+
     # Send the docs to MarkLogic
     uri = uri = URI.parse(
       sprintf('http://%s:%s/apidoc/setup/build.xqy',
@@ -70,6 +78,11 @@ class ServerConfig
     else
       print "Full path to zip file? "
       zip = gets.strip
+    end
+
+    if (!File.exist? zip)
+      @logger.error "No file found at #{zip}"
+      exit!
     end
 
     if @properties['ml.build-clean'] != ""
