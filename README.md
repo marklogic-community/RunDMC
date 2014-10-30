@@ -14,6 +14,10 @@ for your use via an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2
 
 Configuration and deployment are managed through [Roxy](https://github.com/marklogic/roxy).
 
+You have the option of installing just the Docs application (as seen at
+http://docs.markklogic.com) or the entire RunDMC application, including Docs (as
+seen at http://developer.marklogic.com).
+
 ### Configuration
 
 To set up the application, first check whether the default ports work for you. You can see the default ports by
@@ -44,18 +48,23 @@ Bootstrapping creates the app servers, databases, forests, users, and roles need
 
     $ ./ml local bootstrap
 
+You may append "dmc" or "docs" to the command; if you do not, it will prompt
+you to specify which application it should set up.
+
 ### Deploying
 
-Roxy-deployed applications typically use a modules database and deploy code using "./ml local deploy modules", but this
-application uses the file system. 
+Roxy-deployed applications typically use a modules database and deploy code using
+"./ml local deploy modules", but this application uses the file system.
 
-You do need to get some initial files into the content database. 
+To use the full RunDMC application, you do need to get some initial files into
+the content database. This step is not necessary if you are only setting up the
+Docs application.
 
     $ ./ml local deploy content
 
 ### Adding Documentation
 
-The docs app takes a .zip file containing all documentation for a MarkLogic release as input and puts the contents 
+The Docs app takes a .zip file containing all documentation for a MarkLogic release as input and puts the contents
 into the content database. 
 
     $ ./ml local deploy_docs
