@@ -10,6 +10,54 @@ class ServerConfig
     @logger.info(@properties["ml.content-db"])
   end
 
+  alias_method :original_bootstrap, :bootstrap
+  def bootstrap()
+    application = ARGV.shift
+
+    if (application == nil)
+      # prompt the user
+      print "Bootstrap docs or dmc? [docs, dmc] "
+      application = gets.strip
+    end
+
+    if (application == 'docs')
+      # nothing to do
+      puts "docs"
+    elsif (application == 'dmc')
+      # get the RunDMC configuration
+      rundmc_config = File.read("deploy/rundmc-appservers.xml")
+      @properties.sort {|x,y| y <=> x}.each do |k, v|
+        rundmc_config.gsub!("@#{k}", v)
+      end
+
+      # Put it into the main configuration
+      @config = get_config
+      @config.gsub!(/[[:blank:]]*@ml.rundmc-appservers/, rundmc_config)
+    else
+      # invalid. show correct options
+      @logger.error "#{application} is not a valid bootstrap option. Specify 'docs' or 'dmc'."
+      exit!
+    end
+
+    original_bootstrap
+  end
+
+  alias_method :original_wipe, :wipe
+  def wipe()
+    # get the RunDMC configuration
+    rundmc_config = File.read("deploy/rundmc-appservers.xml")
+    @properties.sort {|x,y| y <=> x}.each do |k, v|
+      rundmc_config.gsub!("@#{k}", v)
+    end
+
+    # Put it into the main configuration
+    @config = get_config
+    @config.gsub!(/[[:blank:]]*@ml.rundmc-appservers/, rundmc_config)
+
+    original_wipe
+  end
+
+
   def deploy_docs_request(data)
 
     # TODO is there a roxy-level mechanism to require a gem?
