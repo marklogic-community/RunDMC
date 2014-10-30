@@ -23,13 +23,20 @@ viewing deploy/build.properties or by asking Roxy:
 
 The info command shows you the properties as Roxy sees them.
 
-If you want to change the ports, the admin password, or other properties for your laptop, do so by creating a
-deploy/local.properties file. Copy any properties you wish to change into deploy/local.properties and set the values
-as you'd like. Do not check this file in; this file is used for localized configuration changes. 
+If you want to change the ports, the admin password, or other properties
+for your local environment, do so by creating a `deploy/local.properties` file.
+You can create this file directly, or by setting the login credentials:
+
+    $ ./ml local credentials
+
+Once you have a `deploy/local.properties` file you can edit it as needed.
+Copy any properties you wish to change from `deploy/build.properties`
+into `deploy/local.properties`, and set the values as needed.
+Do not check this file in: this file is used for local configuration changes only.
 
 If you change the ports, you will also need to create src/config/server-urls-local.xml. This file is also not to be 
 checked in. You can copy the host/@type="local" example from server-urls.xml. Both files will be loaded (if present), 
-and the -local version will take precedence if present. 
+and the -local version will take precedence if present.
 
 ### Bootstrapping
 
@@ -53,8 +60,27 @@ into the content database.
 
     $ ./ml local deploy_docs
 
-The user will be prompted for the location of the zip file (on the file system) and for the version of MarkLogic that 
-it describes. 
+Properties can also be supplied in an environment-specific file
+such as `local.properties`:
+
+    build-version=8.0
+    build-zip-path=/tmp/MarkLogic_8_pubs.zip
+    build-clean=1
+
+These properties can also be supplied as part of a command.
+
+    $ ./ml local deploy_docs --ml.build-zip-path=/tmp/MarkLogic_8_pubs.zip
+
+If the build version or zip path are not defined,
+you will be prompted to supply them.
+
+If you don't want to rebuild the entire doc set,
+specific actions can also be supplied via another property.
+For example this command will rebuild the TOC.
+
+    $ ./ml local deploy_docs --ml.build-actions=setup
+
+The available actions are implemented in `src/apidoc/setup.xqy`.
 
 ## Servers
 
