@@ -192,7 +192,7 @@ declare function m:transform(
 as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
-    'transform', ('source', $source-uri, 'path', $path)),
+    'rwa:transform', ('source', $source-uri, 'path', $path)),
   concat(
     "/apidoc/controller/transform.xqy?src=", $source-uri,
     "&amp;version=", $VERSION-SPECIFIED,
@@ -228,7 +228,7 @@ declare function m:redirect($path as xs:string)
     xdmp:url-encode($path))
 };
 
-declare function m:redirect-for-path($path as xs:string)
+declare function m:redirect-301($path as xs:string)
 as xs:string
 {
   (: This is a permanent redirect: 301 vs 302. :)
@@ -246,7 +246,7 @@ declare function m:redirect-for-guide-message(
 as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
-    'redirect-for-guide-message', ('path', $path, 'id', $id)),
+    'rwa:redirect-for-guide-message', ('path', $path, 'id', $id)),
   m:redirect(
     concat(
       substring-before($path, '/'||$id),
@@ -262,7 +262,7 @@ declare function m:redirect-for-message(
 as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
-    'redirect-for-message', ('path', $path, 'id', $id)),
+    'rwa:redirect-for-message', ('path', $path, 'id', $id)),
   m:redirect($path||(m:query-string()[.] ! ('?'||.)))
 };
 
@@ -277,14 +277,14 @@ as xs:string
   let $lib := substring-before($id, '-')
   let $path := replace($path, $id, $lib||'-en/'||$id)
   let $_ := if (not($DEBUG)) then () else m:debug(
-    'redirect-for-message', ('path', $path, 'lib', $lib, 'id', $id))
+    'rwa:redirect-for-message', ('path', $path, 'lib', $lib, 'id', $id))
   return m:redirect($path||(m:query-string()[.] ! ('?'||.)))
 };
 
 declare function m:redirect-for-version($version as xs:string)
 as xs:string
 {
-  m:redirect-for-path(substring-after($PATH, "/"||$version))
+  m:redirect-301(substring-after($PATH, "/"||$version))
 };
 
 (: TODO figure out a way to break this up. :)
@@ -292,7 +292,7 @@ declare function m:rewrite()
   as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
-    'rewrite',
+    'rwa:rewrite',
     ('path', $PATH, 'path-prefix', $PATH-PREFIX, 'path-tail', $PATH-TAIL,
       'version', $VERSION)),
 
@@ -429,6 +429,12 @@ declare function m:rewrite()
     concat(
       m:function-url($MATCHING-FUNCTIONS[1]),
       xdmp:url-encode("?show-alternatives=yes")))
+
+  (: #316 redirect legacy prefix.
+   : Handle this toward the end to avoid redirecting static resources.
+   :)
+  else if (starts-with($PATH, '/apidoc/')) then m:redirect-301(
+    substring-after($PATH, '/apidoc'))
 
   (: SCENARIO 4: Not found anywhere :)
   else (

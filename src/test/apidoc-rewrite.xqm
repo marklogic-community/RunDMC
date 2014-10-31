@@ -46,6 +46,42 @@ declare %t:case function t:guide-message-XDMP-BAD()
     ||'/guide/messages/XDMP-en%23XDMP-BAD')
 };
 
+declare %t:case function t:issue-304()
+{
+  xdmp:set($rwa:PATH-ORIG, '/guide/app-dev/aggregateUDFs/+%E8'),
+  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    $rw:NOTFOUND)
+};
+
+declare %t:case function t:issue-316()
+{
+  xdmp:set(
+    $rwa:PATH-ORIG, '/apidoc/7.0/fn:doc'),
+  xdmp:set(
+    $rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    '/controller/redirect.xqy?path=/7.0/fn%3adoc'),
+  (: We want a permanent redirect. :)
+  at:equal(xdmp:get-response-code(), (301, 'Moved Permanently')),
+  (: Override the reponse code for xray. :)
+  xdmp:set-response-code(200, "OK")
+};
+
+declare %t:case function t:issue-316-static()
+{
+  (: Make sure the fix for #316 does not break static resources. :)
+  xdmp:set(
+    $rwa:PATH-ORIG, '/apidoc/js/toc_filter.js'),
+  xdmp:set(
+    $rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    $rwa:PATH-ORIG)
+};
+
 declare %t:case function t:message-XDMP-en-XDMP-BAD()
 {
   xdmp:set($rwa:PATH-ORIG, '/messages/XDMP-en/XDMP-BAD'),
@@ -75,15 +111,6 @@ declare %t:case function t:root()
     '/apidoc/controller/transform.xqy?src=/apidoc/'
     ||$rw:API-VERSION
     ||'/index.xml&amp;version=&amp;')
-};
-
-declare %t:case function t:issue-304()
-{
-  xdmp:set($rwa:PATH-ORIG, '/guide/app-dev/aggregateUDFs/+%E8'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
-  at:equal(
-    rwa:rewrite(),
-    $rw:NOTFOUND)
 };
 
 (: test/apidoc-rewrite.xqm :)

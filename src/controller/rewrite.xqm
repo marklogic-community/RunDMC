@@ -28,6 +28,9 @@ import module namespace api="http://marklogic.com/rundmc/api"
 declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := $ml:default-version ;
 
+declare variable $DEBUG as xs:boolean? := xs:boolean(
+  xdmp:get-request-field('debug')) ;
+
 declare variable $NOTFOUND := "/controller/notfound.xqy" ;
 
 declare variable $VERSION := xdmp:get-request-field('version') ;
