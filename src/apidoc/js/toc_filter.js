@@ -242,22 +242,15 @@ function collapseAll(ul) {
     });
 }
 
-function filterConfigDetails(text, treeSelector) {
-
+function filterConfigDetails(filterText, treeSelector) {
+    LOGGER.debug("filterConfigDetails", filterText, treeSelector);
     var tocRoot = $(treeSelector);
+    if (filterText) loadAllSubSections(tocRoot);
 
-    // Make sure "All functions" container after each search (even if empty results)
-    // TODO: Figure out how to directly call the "toggler" method from the treeview code rather than using this
-    //       implementation-specific stuff
+    if (tocRoot.hasClass("fullyLoaded")) searchTOC(filterText, tocRoot);
+    else waitToSearch(filterText, tocRoot);
 
-    loadAllSubSections(tocRoot);
-
-    if (tocRoot.hasClass("fullyLoaded"))
-      searchTOC(text, tocRoot);
-    else
-      waitToSearch(text, tocRoot);
-
-    expandSubTree(tocRoot.children("li"));
+    if (filterText) expandSubTree(tocRoot.children("li"));
 }
 
 var waitToSearch = function(text, tocRoot) {
