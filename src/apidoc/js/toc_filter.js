@@ -188,28 +188,32 @@ function toc_init() {
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
+function toggleSubTree(li, oldState, newState, oldLastState, newLastState) {
+    if (!li.children().is("ul")) return;
+
+    li.removeClass(oldState).addClass(newState);
+    if (li.is("." + oldLastState)) li.removeClass(oldLastState)
+        .addClass(newLastState);
+
+    li.children("div").removeClass(oldState + "-hitarea")
+        .addClass(newState + "-hitarea");
+
+    if (li.is("." + oldLastState + "-hitarea")) li.children("div")
+        .removeClass(oldLastState + "-hitarea")
+        .addClass(newLastState + "-hitarea");
+
+    li.children("ul").css("display",
+                          (newState == "collapsible" ? "block" : "none"));
+}
+
 function expandSubTree(li) {
-  if (li.children().is("ul")) {
-    li.removeClass("expandable").addClass("collapsible");//.addClass("open");
-    if (li.is(".lastExpandable"))
-      li.removeClass("lastExpandable").addClass("lastCollapsible");
-    li.children("div").removeClass("expandable-hitarea").addClass("collapsible-hitarea");
-    if (li.is(".lastExpandable-hitarea"))
-      li.children("div").removeClass("lastExpandable-hitarea").addClass("lastCollapsible-hitarea");
-    li.children("ul").css("display","block");
-  }
+    toggleSubTree(li, "expandable", "collapsible",
+                  "lastExpandable", "lastCollapsible");
 }
 
 function collapseSubTree(li) {
-  if (li.children().is("ul")) {
-    li.removeClass("collapsable").addClass("expandable");//.addClass("open");
-    if (li.is(".lastCollapsable"))
-      li.removeClass("lastCollapsable").addClass("lastExpandable");
-    li.children("div").removeClass("collapsable-hitarea").addClass("expandable-hitarea");
-    if (li.is(".lastCollapsable-hitarea"))
-      li.children("div").removeClass("lastCollapsable-hitarea").addClass("lastExpandable-hitarea");
-    li.children("ul").css("display","none");
-  }
+    toggleSubTree(li, "collapsible", "expandable",
+                  "lastCollapsible", "lastExpandable");
 }
 
 /* These functions implement the expand/collapse buttons */
