@@ -245,6 +245,23 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Make search stick to the current API version -->
+  <xsl:template match="xhtml:input[@name eq $ss:INPUT-NAME-API-VERSION]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of
+          select="ml:version-select(
+                  xdmp:get-request-field($ss:INPUT-NAME-API-VERSION))"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- Make search stick to the current API state. -->
+  <xsl:template match="xhtml:input[@name eq $ss:INPUT-NAME-API]/@ml:value">
+    <xsl:attribute name="value">
+      <xsl:value-of
+          select="xdmp:get-request-field($ss:INPUT-NAME-API)"/>
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="comment-section" name="comment-section">
     <xsl:apply-templates mode="comment-section" select="$content/*"/>
   </xsl:template>
@@ -533,22 +550,5 @@
                                       ml:display-time($dateTime))
                           else $dateTime"/>
   </xsl:function>
-
-  <!-- Make search stick to the current API version -->
-  <xsl:template match="input[@name eq $ss:INPUT-NAME-API-VERSION]/@ml:value">
-    <xsl:attribute name="value">
-      <xsl:value-of
-          select="xdmp:get-request-field($ss:INPUT-NAME-API-VERSION)"/>
-    </xsl:attribute>
-  </xsl:template>
-
-  <!-- Make search stick to the current API state. -->
-  <xsl:template match="input[@name eq $ss:INPUT-NAME-API]/@ml:value">
-    <xsl:attribute name="value">
-      <xsl:value-of
-          select="ml:version-select(
-                  xdmp:get-request-field($ss:INPUT-NAME-API))"/>
-    </xsl:attribute>
-  </xsl:template>
 
 </xsl:stylesheet>
