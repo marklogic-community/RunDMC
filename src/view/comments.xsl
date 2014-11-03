@@ -123,12 +123,17 @@
       <ul>
         <li>
           <!-- This will get replaced by the actual comment count from Disqus, as described here: http://docs.disqus.com/developers/universal/#comment-count -->
-          <a href="{ml:external-uri(.)}#disqus_thread" data-disqus-identifier="{ml:disqus-identifier(ml:uri-for-commenting-purposes(.))}">
-            <xsl:value-of select="count(ml:comments-for-doc-uri(ml:uri-for-commenting-purposes(.))//dq:reply)"/> comments<xsl:text/>
+          <a href="#disqus_thread"
+             data-disqus-identifier="{ml:disqus-identifier(
+                                     ml:uri-for-commenting-purposes(.))}">
+            <xsl:value-of select="count(
+                                  ml:comments-for-doc-uri(
+                                  ml:uri-for-commenting-purposes(.))//dq:reply)"/>
+            comments<xsl:text/>
           </a>
         </li>
         <li>
-          <a rel="nofollow" href="{ml:external-uri(.)}#post_comment">Post a comment</a>
+          <a rel="nofollow" href="#post_comment">Post a comment</a>
         </li>
       </ul>
     </div>
