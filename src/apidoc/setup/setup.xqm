@@ -1343,7 +1343,9 @@ as node()*
    : Also refactor any element text.
    :)
   case element(apidoc:param) return (
-    element api:param-description { $e/string() },
+    (: Preserve any markup in the description. :)
+    element api:param-description {
+      stp:fixup($version, $e/node(), $context) },
     element api:param-name { $e/@name/string() },
     element api:param-type { api:type($mode, (), $e/@type) })
   (: Convert type name as needed.

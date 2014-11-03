@@ -687,7 +687,8 @@
         <xsl:value-of select="$anchor"/>
       </td>
       <td>
-        <xsl:apply-templates/>
+        <xsl:apply-templates select="if (self::api:header) then node()
+                                     else api:param-description/node()"/>
       </td>
     </tr>
   </xsl:template>
