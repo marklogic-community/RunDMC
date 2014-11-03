@@ -582,38 +582,33 @@
       </xsl:if>
       <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
       <xsl:text>) as </xsl:text>
-      <xsl:if test="api:return">
-        <!-- Guard against bad content. -->
-        <xsl:variable name="mode" as="xs:string"
-                      select="(@mode, 'xquery')[1]"/>
-        <xsl:value-of select="api:type(
-                              $mode,
-                              'return',
-                              (api:return[not(@class)
-                              or xs:NMTOKENS(@class) = $mode])[1])"/>
-      </xsl:if>
+      <xsl:value-of select="api:return/string()"/>
     </xsl:element>
   </xsl:template>
 
   <xsl:template mode="syntax" match="api:param">
     <xsl:text>   </xsl:text>
     <xsl:if test="@optional eq 'true'">[</xsl:if>
-    <xsl:variable name="anchor">
+    <xsl:variable name="anchor" as="xs:string">
       <xsl:apply-templates mode="param-anchor-id" select="."/>
     </xsl:variable>
     <a href="#{$anchor}" class="paramLink">
       <xsl:text>$</xsl:text>
-      <xsl:value-of select="@name"/>
+      <xsl:value-of select="api:param-name/string()"/>
     </a>
     <xsl:text> as </xsl:text>
-    <xsl:value-of select="api:type(../../@mode, (), @type)"/>
+    <xsl:value-of select="api:param-type/string()"/>
     <xsl:if test="@optional eq 'true'">]</xsl:if>
     <xsl:if test="position() ne last()">,</xsl:if>
     <xsl:text>&#xA;</xsl:text>
   </xsl:template>
 
-  <xsl:template mode="param-anchor-id" match="api:param | api:header">
-    <xsl:value-of select="@name"/>
+  <xsl:template mode="param-anchor-id" match="api:header">
+    <xsl:value-of select="@name/string()"/>
+  </xsl:template>
+
+  <xsl:template mode="param-anchor-id" match="api:param">
+    <xsl:value-of select="api:param-name/string()"/>
   </xsl:template>
 
   <!--
@@ -682,14 +677,14 @@
   <xsl:template match="api:param | api:header">
     <tr>
       <td>
-        <xsl:variable name="anchor">
+        <xsl:variable name="anchor" as="xs:string">
           <xsl:apply-templates mode="param-anchor-id" select="."/>
         </xsl:variable>
         <a name="{$anchor}"/>
         <xsl:if test="not(../../@lib eq $api:MODE-REST)">
           <xsl:text>$</xsl:text>
         </xsl:if>
-        <xsl:value-of select="@name"/>
+        <xsl:value-of select="$anchor"/>
       </td>
       <td>
         <xsl:apply-templates/>

@@ -1336,7 +1336,22 @@ declare function stp:fixup-children(
   $context as xs:string*)
 as node()*
 {
-  typeswitch($e)
+  let $mode as xs:string := $context[. = $api:MODES] treat as item()
+  return typeswitch($e)
+  (: Copy some attributes to elements, for word search.
+   : Convert any type names as needed.
+   : Also refactor any element text.
+   :)
+  case element(apidoc:param) return (
+    element api:param-description { $e/string() },
+    element api:param-name { $e/@name/string() },
+    element api:param-type { api:type($mode, (), $e/@type) })
+  (: Convert type name as needed.
+   : Ignore return types specific to a different mode.
+   :)
+  case element(apidoc:return) return (
+    $e[not(@class) or xs:NMTOKENS(@class) = $mode]
+    ! api:type($mode, 'return', .))
   case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
     $version, $e, $context)
   default return stp:fixup($version, $e/node(), $context)
