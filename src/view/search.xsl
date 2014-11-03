@@ -397,7 +397,7 @@
              href="{
                    ss:href(
                    $PREFERRED-VERSION, $QUERY, $IS-API-SEARCH,
-                   1 + $page-number) }">«</a>
+                   1 + $page-number) }">»</a>
         </xsl:if>
       </div>
     </form>
