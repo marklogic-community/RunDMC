@@ -246,4 +246,15 @@ declare %t:case function t:function-guide-link()
     '/guide/search-dev/search-api#id_41745')
 };
 
+declare %t:case function t:fixup-href-issue-324()
+{
+  at:equal(
+    stp:fixup-attribute-href(
+      $VERSION,
+      element a {
+        attribute href { '#xdmp:spawn#spawnresultex' } }/@href,
+      'xquery'),
+    attribute href { './xdmp:spawn#spawnresultex' })
+};
+
 (: test/apidoc-setup.xqm :)
