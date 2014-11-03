@@ -24,6 +24,8 @@ declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $DEBUG := false() ;
 
+declare variable $FIXUP-HREF-PAT := '^#([\w-]+[:\.]\w.+)$' ;
+
 declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
   "/apidoc/config/server-versions.xml")/*/version/@number ;
 
@@ -1143,8 +1145,8 @@ as attribute()?
     (: If a fragment id contains a colon, it is a link to a function page.
      : #xdmp:tidy => /xdmp:tidy or /xdmp.tidy
      :)
-    else if (matches($a, '^#([\w-]+)[:\.]([\w-]+)$')) then translate(
-      $a, '#', '/')
+    else if (matches($a, $FIXUP-HREF-PAT)) then replace(
+      $a, $FIXUP-HREF-PAT, './$1')
 
     (: A fragment link sometimes points elsewhere in the same apidoc:module,
      : or sometimes elsewhere within the same function.
