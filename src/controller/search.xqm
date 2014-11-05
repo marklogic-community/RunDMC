@@ -13,6 +13,9 @@ import module namespace ml="http://developer.marklogic.com/site/internal"
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
   at "/controller/server-urls.xqy" ;
 
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
+
 declare variable $INPUT-NAME-API := 'api' ;
 
 declare variable $INPUT-NAME-API-VERSION := 'v' ;
@@ -42,6 +45,18 @@ as element(search:options)
 
     <search:constraint name="cat">
       <search:collection prefix="category/"/>
+    </search:constraint>
+    ,
+    <search:constraint name="param">
+      <search:value>
+        <search:element ns="{ $api:NAMESPACE }" name="param-type"/>
+      </search:value>
+    </search:constraint>
+    ,
+    <search:constraint name="return">
+      <search:value>
+        <search:element ns="{ $api:NAMESPACE }" name="return"/>
+      </search:value>
     </search:constraint>
     ,
 
