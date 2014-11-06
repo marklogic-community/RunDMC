@@ -6,7 +6,8 @@ $(function() {
     if (!versionSelect) versionSelect = $("#version_list");
 
     if (!versionSelect.length) {
-        console.log("No version_list!");
+        // This is ok - many pages do not have the version selector.
+        //console.log("No version_list!");
         return;
     }
 

@@ -144,7 +144,9 @@ function toc_init() {
 
         // TODO what about a confirmation alert?
         if (e.which == 13) // Enter key pressed
-            window.location = "/do-do-search?q=" + $(this).val();
+            window.location = "/do-do-search?api=1"
+            + "&v=" + $("input[name = 'v']").val()
+            + "&q=" + $(this).val();
 
         var closeButton = $("#config-filter-close-button");
         if ($(this).val() === "") closeButton.hide();
