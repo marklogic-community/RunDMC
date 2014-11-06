@@ -83,19 +83,6 @@
                 select="doc-available('/apidoc/DEBUG.xml')
                         and doc('/apidoc/DEBUG.xml') eq 'yes'"/>
 
-  <xsl:variable name="DOCS-PAGE" as="element(api:docs-page)"
-                select="doc(api:internal-uri($VERSION-FINAL, '/'))/*"/>
-
-  <xsl:variable name="AUTO-LINKS" as="element(auto-link)+"
-                select="$DOCS-PAGE/auto-link"/>
-
-  <xsl:variable name="OTHER-GUIDE-LISTINGS" as="element(api:user-guide)+">
-    <xsl:variable name="content-uri-external" as="xs:string"
-                  select="api:external-uri($content)"/>
-    <xsl:copy-of select="$DOCS-PAGE/api:user-guide[
-                         not(@href eq $content-uri-external) ]"/>
-  </xsl:variable>
-
   <!--
       Redefines the function in ../../view/comments.xsl
 
@@ -917,9 +904,12 @@
   -->
   <xsl:template name="guide-reference-create">
     <xsl:param name="ignore-in-the" as="xs:boolean" select="false()"/>
-    <xsl:variable name="config-for-title"
-                  select="v:config-for-title(
-                          string(), $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
+    <xsl:variable name="_"
+                  select="api:maybe-init-guides-map(
+                          $VERSION-FINAL,
+                          api:external-uri($content))"/>
+    <xsl:variable name="config-for-title" as="xs:string?"
+                  select="api:config-for-title(string())"/>
     <xsl:choose>
       <xsl:when test="$config-for-title
                       and (
@@ -927,7 +917,7 @@
                       or not(
                       preceding-sibling::node()[1][ self::text() ][
                       normalize-space(.) eq 'in the']))">
-        <a href="{ $VERSION-PREFIX }{ $config-for-title/@href }">
+        <a href="{ $VERSION-PREFIX }{ $config-for-title }">
           <xsl:next-match/>
         </a>
       </xsl:when>

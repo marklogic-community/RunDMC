@@ -38,30 +38,6 @@ as xs:string
     $version-prefix, $guide-doc/*/@guide-uri)
 };
 
-declare function v:string-normalize($str as xs:string)
-as xs:string
-{
-  lower-case(
-    normalize-space(
-      translate($str, '&#160;', ' ')))
-};
-
-declare function v:config-for-title(
-  $link as xs:string,
-  $auto-links as element()*,
-  $other-guide-listings as element()*)
-as element()?
-{
-  (: TODO This looks pretty inefficient.
-   : Maybe compare using a collation that ignores case and all whitespace?
-   :)
-  let $title := v:string-normalize($link)
-  return $other-guide-listings[
-    (@display|alias)/v:string-normalize(.) = $title]
-  |$auto-links[
-    alias/v:string-normalize(.) = $title]
-};
-
 declare function v:guide-anchor-attribute(
   $version-prefix as xs:string,
   $a as attribute())

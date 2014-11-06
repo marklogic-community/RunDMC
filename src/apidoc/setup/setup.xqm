@@ -774,7 +774,7 @@ as element(api:list-entry)
       ($toc-node/@list-page-display,
         $toc-node/@display)[1]/string() treat as xs:string },
     element api:description {
-      (: Extracting the first line from the summary :)
+      (: Extract the first sentence from the summary. :)
       concat(
         substring-before($function/api:summary, '.'),
         '.') } }
@@ -1020,8 +1020,12 @@ as element()+
         ../alias/normalize-space(lower-case(.)) = $display] },
 
     comment { 'copied from /apidoc/config/title-aliases.xml:' },
-    (: TODO The auto-link elements are in the empty namespace. Change that? :)
-    $title-aliases/auto-link }
+    (: Save auto-link data as a map, for efficient lookups. :)
+    element auto-links {
+      map:new(
+        $title-aliases/auto-link[alias]/map:entry(
+          alias/u:string-normalize(.),
+          @href/string())) } }
 };
 
 (: Generate and insert a list page for each TOC container.

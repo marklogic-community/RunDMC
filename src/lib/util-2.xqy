@@ -106,3 +106,12 @@ declare function u:send-email($email, $name, $from-email, $from-name, $subject, 
 
 };
 
+declare function u:string-normalize($str as xs:string)
+as xs:string
+{
+  lower-case(
+    normalize-space(
+      translate($str, '&#160;', ' ')))
+};
+
+(: util-2.xqy :)

@@ -25,6 +25,8 @@ declare variable $DEFAULT-VERSION as xs:string  := $ml:default-version ;
 
 declare private variable $DOCUMENT-LIST-CACHED := () ;
 
+declare private variable $GUIDES-MAP := () ;
+
 (: Used by page.xsl to write ajax URL for toc_filter.js :)
 declare variable $TOC-URI-DEFAULT := "/apidoc/private/toc-uri.xml" ;
 
@@ -296,6 +298,34 @@ as element()?
       '[api:guide-info]', xdmp:describe($content), $url-name/string() }),
   let $suffix := concat('/', $url-name)
   return $content/*/api:user-guide[ends-with(@href, $suffix)]
+};
+
+declare function api:maybe-init-guides-map(
+  $version as xs:string,
+  $content-uri-external as xs:string)
+as empty-sequence()
+{
+  if (exists($GUIDES-MAP)) then () else xdmp:set(
+    $GUIDES-MAP,
+    let $docs-page as element(api:docs-page) := doc(
+      api:internal-uri($version, '/'))/*
+    return map:new(
+      (map:map($docs-page/auto-links/map:map),
+        (: TODO build map during setup, without breaking api:guide-info. :)
+        let $other-guide-listings as element(api:user-guide)+ := (
+          $docs-page/api:user-guide[
+            not(@href eq $content-uri-external) ][
+            @display|alias ])
+        for $n in $other-guide-listings
+        return $n/(@display|alias)/map:entry(
+          u:string-normalize(.), $n/@href/string()))))
+};
+
+declare function api:config-for-title(
+  $link as xs:string)
+as xs:string?
+{
+  map:get($GUIDES-MAP, u:string-normalize($link))
 };
 
 declare function api:translate-REST-resource-name(
