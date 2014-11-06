@@ -62,7 +62,7 @@
 
   <group>
     <entry title="ZIP File of All MarkLogic Product Documentation"
-           href="/MarkLogic_7_pubs.zip"
+           href="/MarkLogic_6_pubs.zip"
            type="download">
       <description>
         A zip file containing this documentation.

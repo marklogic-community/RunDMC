@@ -88,7 +88,7 @@ declare function local:build-event(
 
 try {
   let $uri := $MLU-URI || "api/course-sessions?future=true&amp;pageLength="
-      || $EVENT-COUNT || "&amp;start=1&amp;status=Open"
+      || $EVENT-COUNT || "&amp;start=1&amp;status=Open&amp;type=course"
   let $response :=
     xdmp:http-get(
       $uri,
