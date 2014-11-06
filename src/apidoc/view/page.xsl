@@ -910,11 +910,12 @@
   </xsl:template>
 
   <!--
-      Automatically convert italicized guide references to links,
-      unless they are immediately preceded by "in the".
-      Then we assume a more specific section link was already provided.
+      Automatically create guide references from italicized text
+      in guides and function pages.
+      Ignore reference immediately preceded by "in the",
+      where we assume a more specific section link was already provided.
   -->
-  <xsl:template mode="guide" match="x:em">
+  <xsl:template name="guide-reference-create">
     <xsl:variable name="config-for-title"
                   select="v:config-for-title(
                           string(), $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
@@ -930,6 +931,14 @@
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template mode="guide" match="x:em">
+    <xsl:call-template name="guide-reference-create"/>
+  </xsl:template>
+
+  <xsl:template match="x:em[ancestor::api:function]">
+    <xsl:call-template name="guide-reference-create"/>
   </xsl:template>
 
   <!-- Elements that need attribute rewrites. -->
