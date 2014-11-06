@@ -912,18 +912,22 @@
   <!--
       Automatically create guide references from italicized text
       in guides and function pages.
-      Ignore reference immediately preceded by "in the",
+      Optionally ignore reference immediately preceded by "in the",
       where we assume a more specific section link was already provided.
   -->
   <xsl:template name="guide-reference-create">
+    <xsl:param name="ignore-in-the" as="xs:boolean" select="false()"/>
     <xsl:variable name="config-for-title"
                   select="v:config-for-title(
                           string(), $AUTO-LINKS, $OTHER-GUIDE-LISTINGS)"/>
     <xsl:choose>
-      <xsl:when test="$config-for-title and not(
-                      preceding-sibling::node()[1][self::text() ][
-                      normalize-space(.) eq 'in the'])">
-        <a href="{$VERSION-PREFIX}{ $config-for-title/@href }">
+      <xsl:when test="$config-for-title
+                      and (
+                      $ignore-in-the
+                      or not(
+                      preceding-sibling::node()[1][ self::text() ][
+                      normalize-space(.) eq 'in the']))">
+        <a href="{ $VERSION-PREFIX }{ $config-for-title/@href }">
           <xsl:next-match/>
         </a>
       </xsl:when>
@@ -938,7 +942,9 @@
   </xsl:template>
 
   <xsl:template match="x:em[ancestor::api:function]">
-    <xsl:call-template name="guide-reference-create"/>
+    <xsl:call-template name="guide-reference-create">
+      <xsl:with-param name="ignore-in-the" select="true()"/>
+    </xsl:call-template>
   </xsl:template>
 
   <!-- Elements that need attribute rewrites. -->
