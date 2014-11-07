@@ -114,4 +114,14 @@ as xs:string
       translate($str, '&#160;', ' ')))
 };
 
+declare function u:string-extract-first-sentence($str as xs:string)
+  as xs:string
+{
+  let $pat := '^(.*?\.)\s.*$'
+  let $str := normalize-space($str)
+  return (
+    if (not(matches($str, $pat, 's'))) then $str
+    else replace($str, $pat, '$1', 's'))
+};
+
 (: util-2.xqy :)

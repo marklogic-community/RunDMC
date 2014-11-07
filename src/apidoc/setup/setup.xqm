@@ -775,9 +775,7 @@ as element(api:list-entry)
         $toc-node/@display)[1]/string() treat as xs:string },
     element api:description {
       (: Extract the first sentence from the summary. :)
-      concat(
-        substring-before($function/api:summary, '.'),
-        '.') } }
+      u:string-extract-first-sentence($function/api:summary) } }
 };
 
 declare function stp:list-page-functions(
