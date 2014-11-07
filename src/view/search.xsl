@@ -34,7 +34,9 @@
 
   <xsl:variable name="IS-API-SEARCH" as="xs:boolean"
                 select="xs:boolean(
-                        ($params[@name eq $ss:INPUT-NAME-API], 0)[1])"/>
+                        ($params[@name eq $ss:INPUT-NAME-API][
+                        . castable as xs:boolean],
+                        0)[1])"/>
 
   <xsl:variable name="API-VERSION-PREFIX"
                 select="if ($PREFERRED-VERSION eq $ml:default-version) then ''
