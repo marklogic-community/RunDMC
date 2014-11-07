@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+<h1>Blog</h1>
+
+  <p class="intro">
+    <ul>
+      <li>Do your thing. </li>
+      <li>Write, write, write.</li>
+      <li>Remove stuff.</li>
+      <li>Use <a href="http://gist.github.com/">gists</a> for code samples and embed them.</li>
+      <li>Leave as draft and ask Eric to publish.</li>
+    </ul>
+  </p>
+
+  <form class="add_post" action="/blog/edit" method="get" enctype="application/x-www-form-urlencoded">
+    <div>
+      <input type="submit" value="Add New"/>
+    </div>
+  </form>
+
+  <ml:admin-post-list/>
+
+  <ml:admin-comment-list/>
+
+</ml:page>

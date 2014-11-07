@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>REST API basics</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+REST API exposes a number of endpoints. This tutorial focuses on
+the following five endpoints:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>
+Endpoint</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>What
+you can do with it</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p><code>/documents</code></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+manage document content and metadata</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p><code>/search</code></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+search using a string-based or structured query</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p><code>/keyvalue</code></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+search using a key/value query</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p><code>/values</code></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+retrieve values and aggregates of values</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p><code>/config/query</code></p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>configure options for <code>/search</code>, <code>/keyvalue</code>, and <code>/values</code></p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+the full list of endpoints, see the <a href="//docs.marklogic.com/REST/client">Client API
+reference</a>.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The version of the API (<code>v1</code>) appears as a prefix to the endpoint. For
+example, to search for "apple" across all documents, you'd make a
+GET request to:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/search?q=apple" target="_blank">http://localhost:8011/v1/search?q=apple</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Since
+you haven't loaded any documents yet, this search will yield empty
+results. If you click the link, you'll see the (empty) results are
+in XML format. You also have the option of getting the results in
+JSON format instead:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/search?q=apple&amp;format=json" target="_blank">http://localhost:8011/v1/search?q=apple&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This is true for all five of the above
+endpoints. You can use the <strong>format</strong>
+parameter to indicate which
+format you want the results in—<code>json</code> or <code>xml</code> (the default).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+could also make the above request using <a href="http://curl.haxx.se/" target="_blank">cURL</a> (or <a href="http://www.gnu.org/software/wget/" target="_blank">wget</a>), specifying the user
+and password on the command line. Copy and paste the following
+command and run it on the command line:</p><script src="https://gist.github.com/3555546.js?file=ex01.sh" xml:space="preserve"> </script><noscript id="ex01.sh">
+    <pre class="sh" xml:space="preserve">curl -X GET \
+  --anyauth --user rest-writer:x \
+  'http://localhost:8011/v1/search?q=chicken&amp;format=json'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+That's exactly how we'll be making PUT, POST, and DELETE requests
+in this tutorial. But for GET requests, we'll often just show the
+link itself, since it's so convenient to use the browser for
+these.</p></ml:page>

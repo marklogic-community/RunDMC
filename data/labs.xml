@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>MarkLogic Labs</h1>
+  <p>
+    <img alt="Labs" height="75" src="/images/labs-flask-75-icon-100x85.png" style="float:right;" width="56"/>Labs is
+    the home for experimental MarkLogic and MarkLogic-related work. We make these projects available in the hopes that
+    you may find them useful.  In turn, we hope you will share your thoughts, opinions, and ideas on these projects
+    with us.
+  </p>
+  <section id="featured" style="margin-top: 0px; padding-top: 0px;">
+    <div>
+      <section>
+        <h4>
+          <a href="/labs/mljs">
+            <img height="48" src="/media/ml-js-48.png" width="48"/>
+          </a>MLJS</h4>
+        <div>MLJS is a Javascript library for connecting to MarkLogic from both Browser JS and Node.JS</div>
+        <ul>
+          <li>Sensible defaults so you can get started quickly</li>
+          <li>Minimum prior MarkLogic knowledge required</li>
+          <li>Browser widgets so you can quickly get an application running</li>
+          <li>Built on top of the
+            <a href="/learn/rest">REST API</a></li>
+        </ul>
+        <a href="http://github.com/adamfowleruk/mljs">Browse Git Repository »</a>
+        <br/>
+        <br/>
+      </section>
+      <section>
+        <h4>
+          <a href="/labs/mongo2marklogic">
+            <img height="40" src="/media/mongo2marklogic.png" width="40"/>MarkLogic Converter for MongoDB
+            <sup>®</sup></a>
+        </h4>
+        <div/>
+        <div>This Java-based tool reads JSON data from the
+          <a href="http://docs.mongodb.org/manual/reference/mongodump/">mongodump</a>
+          tool and loads it into MarkLogic.
+            You can: </div>
+        <ul>
+          <li>Import collections from
+            <a href="http://docs.mongodb.org/manual/reference/mongodump/">mongodump</a></li>
+          <li>Load them directly into MarkLogic</li>
+          <li>Take advantage of MarkLogic features, like full-text search</li>
+        </ul>
+        <a href="https://github.com/marklogic/mongo2marklogic">Check it out »</a>
+        <a href="https://github.com/marklogic/mongo2marklogic">Download »</a>
+        <br/>
+        <br/>
+      </section>
+      <!--
+      <section><h4><a href="/labs/hdfs-preview"><img src="/media/elephant_rgb-TRANS_sm.png" width="50" height="36"/>MarkLogic Server – Technology Preview: HDFS Storage</a></h4><div></div><div>This preview version of MarkLogic can store, search, and analyze content directly on the Hadoop Distributed File System (HDFS). You can: </div><ul><li>Take advantage of massive storage via HDFS </li><li>Run real-time analysis and full-text search</li><li>Maintain secure, transactional access to your data</li></ul><a href="/labs/hdfs-preview">Read More »</a><a href="/labs/hdfs-preview">Download »</a><br/></section>-->
+    </div>
+    <div>
+      <section>
+        <h4>
+          <a href="/labs/mlphp">
+            <img alt="speaker" height="40" src="/media/MLPHP-logo.png" style="padding-left: 5px" width="40"/>MLPHP</a>
+        </h4>
+        <div/>
+        <div>PHP developers can now build powerful MarkLogic applications using familiar PHP idioms.  MLPHP includes:</div>
+        <ul>
+          <li>
+            <a href="https://github.com/marklogic/mlphp">PHP classes</a>(and
+            <a href="https://github.com/marklogic/mlphp/blob/master/INSTALL.txt">setup instructions</a>
+            )</li>
+          <li>
+            <a href="https://github.com/marklogic/mlphp/tree/master/examples">Code examples</a>
+          </li>
+          <li>
+            <a href="http://marklogic.github.com/mlphp">API reference docs</a>
+          </li>
+        </ul>
+        <br/>
+        <a href="https://github.com/marklogic/mlphp">Browse Git Repository »</a>
+        <br/>
+        <br/>
+      </section>
+      <section/>
+    </div>
+  </section>
+</ml:page>

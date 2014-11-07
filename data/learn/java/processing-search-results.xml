@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Processing search results</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+all of the search examples so far, we haven't looked too closely at
+how the search results are extracted (and printed to the console).
+In each case, we've been using the tailor-made <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/SearchHandle.html">
+SearchHandle</a>, which encapsulates search results as a POJO.
+Before we look more closely at that object structure, let's take a
+peek at the raw data it encapsulates. We already saw how use of
+DocumentMetadataHandle is optional; so too the case with
+SearchHandle.</p><h3 id="get-search-results-as-raw-xml"><a href="#get-search-results-as-raw-xml">
+Get search results as raw
+XML</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_21_SearchResultsAsXML.java</em>.
+This example performs the same search as the previous example,
+except that instead of using a SearchHandle, here we're using a
+StringHandle to receive the raw XML search results (from the
+server) as a string:</p><script src="https://gist.github.com/3290041.js?file=ex52.java" xml:space="preserve"> </script><noscript id="ex52.java">
+    <pre class="java" xml:space="preserve">// create a handle for the search results to be received as raw XML
+StringHandle resultsHandle = new StringHandle();
+ 
+// run the search
+queryMgr.search(query, resultsHandle);
+ 
+// dump the XML results to the console
+System.out.println(resultsHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program and examine the console to see how MarkLogic represents
+its search results in XML. This should give you an idea of the
+complexity of information we're dealing with here. Also, depending
+on your search options, the structure of these results can vary
+widely.</p><h3 id="get-search-results-as-raw-json"><a href="#get-search-results-as-raw-json">
+Get search results as raw
+JSON</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_22_SearchResultsAsJSON.java</em>.
+This example is identical to the previous one, except now we
+configure our StringHandle to receive JSON (instead of XML, the
+default):</p><script src="https://gist.github.com/3290041.js?file=ex53.java" xml:space="preserve"> </script><noscript id="ex53.java">
+    <pre class="java" xml:space="preserve">// create a handle for the search results to be received as raw JSON
+StringHandle resultsHandle = new StringHandle().withFormat(Format.JSON);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the raw JSON search results that were fetched
+from the server.</p><h3 id="get-search-results-as-a-pojo"><a href="#get-search-results-as-a-pojo">
+Get search results as a
+POJO</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">While
+you are certainly free to process search results as raw JSON or
+XML, the preferred way in Java is to use a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/SearchHandle.html">
+SearchHandle</a> instance, which models the results using a
+containment hierarchy that mirrors that of the raw data we saw:</p><ul>
+    <li>
+SearchHandle
+<ul>
+	<li>
+MatchDocumentSummary[]
+<ul>
+	    <li>
+MatchLocation[]
+<ul>
+		<li>
+MatchSnippet[]</li>
+	      </ul>
+</li>
+	  </ul>
+</li>
+      </ul>
+</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>TutorialUtil.java</em> in the
+tutorial project. This module contains a few different approaches
+to printing search results that have been used by the previous
+search examples. Let's focus on the last one—displayResults().
+The first step to extracting search results from a SearchHandle is
+to call its <strong>getMatchResults()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex54.java" xml:space="preserve"> </script><noscript id="ex54.java">
+    <pre class="java" xml:space="preserve">// Get the list of matching documents in this page of results
+MatchDocumentSummary[] results = resultsHandle.getMatchResults();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+yields an array of <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/MatchDocumentSummary.html">
+MatchDocumentSummary</a> objects. We can illustrate what this
+object represents by looking at a typical search results page, such
+as the one on this website:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot22.jpg"><img alt="Machine generated alternative text: Search Results jof 9» MatchDocumentSummary[] Results 1—10 of 87 for range Index Search Developer’s Guide Lexicon and Range Index-Based APIs...... no matter what the database size. As part of loading a document, full-text indexes are created making arbitrary searches fast. Searches automatically use the Administrator’s Guide Index configuration, as described in .. .Text Indexing.. Range indexes, as described in . ..Element and Attribute Range Indexes and Lexicons" src="/media/marklogic-for-java-developers_files/screenshot22.jpg" width="576" height="218"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Each
+matching document in the list would be represented by a
+MatchDocumentSummary instance. This suggests that SearchHandle
+could then be used, for example, as the model (or to drive the
+model) in an MVC-based web application. Our utility code is only
+concerned with printing text to the console, but the basic task is
+the same: iterate through each level of this hierarchy and do
+something useful at each level.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we drill down into each search result and call <strong>getMatchLocations()</strong>:</p><script src="https://gist.github.com/3290041.js?file=ex55.java" xml:space="preserve"> </script><noscript id="ex55.java">
+    <pre class="java" xml:space="preserve">// Iterate over the results
+for (MatchDocumentSummary result: results) {
+ 
+        // get the list of match locations for this result
+        MatchLocation[] locations = result.getMatchLocations();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">A
+<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/MatchLocation.html">
+MatchLocation</a> object represents a range of text in the document
+that includes a search "hit":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot23.jpg"><img alt="Machine generated alternative text: Search Results Page ‘of9 Results 1—10 of 87 for range Index MatchLocationfl ‘ ed APIs_....Jno mailer what the database size. As part of loading a I document, run-text indexes are created making arbitrary searches fast. Searches automatically use MatchLocation[j O Mministrators Guide 4.— Ii _______ I1neX confiuration as described in 1.IText IndexingI..ange indexes, as described infIement (ana Awl btx Rangé tridexes and Lebn5" src="/media/marklogic-for-java-developers_files/screenshot23.jpg" width="576" height="221"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+each MatchLocation, we call <strong>getSnippets()</strong>:</p><script src="https://gist.github.com/3290041.js?file=ex56.java" xml:space="preserve"> </script><noscript id="ex56.java">
+    <pre class="java" xml:space="preserve">        // iterate over the match locations
+        for (MatchLocation location: locations) {
+ 
+                // iterate over the snippets at a match location
+                for (MatchSnippet snippet : location.getSnippets()) {</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">A
+<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/MatchSnippet.html">
+MatchSnippet</a> object represents a range of text within a
+location that either is or isn't highlighted:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-for-java-developers_files/screenshot24.jpg"><img alt="Machine generated alternative text: Search Results  Results 1—lo of 87 for range Index Search Developer’s Guide ILexicon an Ranøe I e4.ased APIsL no matter what the database size. As part of loading a documen, ¡ created making arbitrary searches fast. Searches automatically use the MatchSnippetfl Mmlnlstrator’s Guide Index configuration, as described in ...Text Indexing.. .Range indexes, as described in ...Element and Attribute Range Indexes and Lexicons" src="/media/marklogic-for-java-developers_files/screenshot24.jpg" width="576" height="219"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition to <strong>getMatchResults()</strong>, the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/SearchHandle.html">
+SearchHandle</a> class provides other useful methods for building a
+search application, such as <strong>getFacets()</strong>, <strong>getMetrics()</strong>, and <strong>getTotalResults()</strong>.</p></ml:page>

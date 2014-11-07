@@ -11,16 +11,24 @@ if [ -z "$READLINK" ]; then
     READLINK=`type -P readlink`
 fi
 BASE=`$READLINK -f $0`
-BASE=`dirname $BASE`
 if [ -z "$BASE" ]; then
-    echo Error initializing environment from $READLINK
-    $READLINK --help
-    exit 1
+    BASE=`stat -f $0`
 fi
+BASE=`dirname $BASE`
 
 set -e
-cd $BASE
+if [ -d "$BASE" ]; then
+    cd $BASE
+else
+    echo There were problems initializing the environment!
+    echo Make sure you are running in the git clone directory.
+fi
+# In BSD stat -f returns a relative path.
+# For app-server config we need an absolute path.
+# We should now be in that directory.
+BASE=`pwd`
 
+echo
 echo This script should run on a host where MarkLogic is already running.
 echo
 HOSTNAME=localhost
@@ -46,7 +54,6 @@ if [ -z "$PORT_RAW" ]; then
     PORT_RAW=8412
 fi
 echo
-echo
 
 # local customization
 if [ -z "$TMPDIR" ]; then
@@ -58,11 +65,16 @@ echo building $ZIP
 mkdir -p "${TMPDIR}/${PACKAGE}"
 PACKAGE_LOG=${TMPDIR}/$PACKAGE.log
 echo logging to $PACKAGE_LOG
+TARGET="${TMPDIR}/${PACKAGE}/"
+echo fixing permissions
+find "$BASE" -type f -print0 | xargs -0 chmod a+r
+find "$BASE" -type d -print0 | xargs -0 chmod a+rx
+cp -r "${BASE}/apidoc/package/"* "${TARGET}"
 cd "${TMPDIR}/${PACKAGE}"
-cp -r "${BASE}/apidoc/package/"* .
 SERVERS=`echo servers/Default/*.xml`
 echo processing $SERVERS
-sed -e '1,$s:RUNDMC_ROOT:'"${BASE}"':g' -i'.bak' $SERVERS
+# Set the doc roots. This means BASE must be an absolute path.
+sed -e '1,$s:RUNDMC_ROOT:'"${BASE}/src"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_MAIN:'"${PORT_MAIN}"':g' -i'.bak' $SERVERS
 sed -e '1,$s:RUNDMC_PORT_RAW:'"${PORT_RAW}"':g' -i'.bak' $SERVERS
 # Changing these names? Also change package filename and XML element(name).
@@ -107,11 +119,7 @@ echo
 
 echo cleaning up
 rm "$ZIP"
-cd "${TMPDIR}" && rm -rf "${PACKAGE}"
-
-echo fixing permissions
-find "$BASE" -type f -print0 | xargs -0 chmod a+r
-find "$BASE" -type d -print0 | xargs -0 chmod a+rx
+(cd "${TMPDIR}" && rm -rf "${PACKAGE}")
 
 # download raw docs for processing
 cd ${TMPDIR}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>News</h1>
+  <p class="intro">
+    <p style="text-transform: uppercase; color: red; font-weight: bold">Don't use this doc type anymore for new announcements. Instead, create a
+      <a href="/blog/edit">blog post</a>
+      .</p>
+    <!--
+                <ul><li>Do your thing. </li><li>Write, write, write.</li><li>Remove stuff.</li><li>Leave as draft and ask Eric to publish.</li></ul>-->
+  </p>
+  <form action="/news/edit" class="add_post" enctype="application/x-www-form-urlencoded" method="get">
+    <div>
+      <input type="submit" value="Add New"/>
+    </div>
+  </form>
+  <ml:admin-announcement-list/>
+</ml:page>

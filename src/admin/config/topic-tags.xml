@@ -1,0 +1,8 @@
+<!-- Included in many of the form configs in ./forms -->
+<ml:topic-tag xmlns:ml="http://developer.marklogic.com/site/internal"
+              xmlns:form="http://developer.marklogic.com/site/internal/form"
+              form:label="Topic for Discovery"
+              form:values="_ etl ide search connectors deployment getting-started performance xquery"
+              />
+         <!-- form:repeating="yes"/>
+              TODO: Add support for repeating selection boxes. -->

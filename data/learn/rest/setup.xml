@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Setup</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+create a REST-based application using MarkLogic, you first need
+three things:</p><ul>
+    <li>
+a
+database,</li>
+    <li>
+a RESTful
+server (called a "REST API instance"), and</li>
+    <li>
+some users with
+the appropriate privileges.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+You'll create each of these in this section.</p><div class="note"><br/>If
+you've already worked through the entire <a href="/learn/java" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Java tutorial</a>, then
+you can skip this entire section and <a href="/learn/rest/rest-api-basics" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">move
+onto the next one</a>! Otherwise, keep reading.<p></p></div>
+<p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+tutorial assumes the following configuration. You can use different
+values than these; you'll just have to modify each example
+accordingly:</p><ul>
+    <li>
+REST
+host—<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">localhost</code></li>
+    <li>
+REST
+port—<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">8011</code></li>
+    <li>
+rest-writer
+user —<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">rest-writer</code></li>
+    <li>
+rest-writer
+password—<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">x</code></li>
+    <li>
+rest-admin
+user—<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">rest-admin</code></li>
+    <li>
+rest-admin
+password—<code xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">x</code></li>
+  </ul><h3 id="install-marklogic"><a href="#install-marklogic">
+Install MarkLogic</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Download and install the latest version of MarkLogic from this
+page: <a href="/products">http://developer.marklogic.com/products</a>.
+Once you've installed and started up MarkLogic, go to the
+browser-based administrative interface (at <a href="http://localhost:8001/" target="_blank">http://localhost:8001/</a>), where you'll
+be walked through the process of setting up the default admin user. (This tutorial assumes you'll be
+running MarkLogic on your local machine; if that's not the case,
+just substitute your server name whenever you see "localhost" in
+this tutorial.)</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+you need more detailed instructions on installing and running
+MarkLogic, see <a href="//docs.marklogic.com/guide/installation/procedures#id_28962">Installing
+MarkLogic Server</a>.</p><h3 id="create-a-database"><a href="#create-a-database">
+Create a database</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Navigate in your browser to <a href="http://localhost:8000/appservices/" target="_blank">http://localhost:8000/appservices/</a>
+and click the "New Database" button near the top of the screen:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot1.jpg"><img alt="Machine generated alternative text: F Database - All - t J Welcome, admln Help" src="/media/marklogic-rest-api_files/screenshot1.jpg" width="576" height="75"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+the dialog that pops up, type the new database name "TutorialDB"
+and click "Create Database":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot2.jpg"><img alt="Machine generated alternative text: New Database Database name(TutoI Cancel Create Database" src="/media/marklogic-rest-api_files/screenshot2.jpg" width="510" height="133"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+You've now created the "TutorialDB" database with the default
+configuration.</p><h4>
+Enable the collection
+lexicon</h4><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+collection lexicon is an indexing feature that we'll need for the
+tutorial. Back at the top of the window, make sure "TutorialDB" is
+selected and click the "Configure" button:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot3.jpg"><img alt="Machine generated alternative text: Welcome, admln F DatabaseID jJ gure Delete + New Database Help" src="/media/marklogic-rest-api_files/screenshot3.jpg" width="576" height="60"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+click the checkbox next to "Collection Lexicon":</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot4.jpg"><img alt="Machine generated alternative text: Database Settings Enable Indexes U Wildcards oI1onLeœn Fie a ue earches" src="/media/marklogic-rest-api_files/screenshot4.jpg" width="292" height="168"/></a></p><h3 id="create-a-rest-api-instance"><a href="#create-a-rest-api-instance">
+Create a REST API
+instance</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+you'll create the REST API instance for interacting with the
+database. On the same page, under "REST API Instances," click the
+"Add New" button:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot5.jpg"><img alt="Machine generated alternative text: REST API Instances Create a REST API instance for accessing a database with the Java API or another HTTP client. Server Name Port Group" src="/media/marklogic-rest-api_files/screenshot5.jpg" width="576" height="133"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Type
+"TutorialServer" as the server name and choose a port number. In
+this tutorial, we'll use port 8011:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot6.jpg"><img alt="Machine generated alternative text: New REST API Instance Server Name ialSee Po Group Default Cancel EST API Instan" src="/media/marklogic-rest-api_files/screenshot6.jpg" width="512" height="195"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+should now see "TutorialServer" in the list:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot7.jpg"><img alt="Machine generated alternative text: REST API Instances Create a REST API instance for accessing a database with the Java API or another HTTP client. Server Name Port Group aIr 8011 Default Delete" src="/media/marklogic-rest-api_files/screenshot7.jpg" width="576" height="126"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">By
+creating a REST API instance in this way, MarkLogic has
+automatically created and configured the underlying components for
+you (specifically, an HTTP app server and an associated modules
+database). To prove that the REST API instance is running, navigate
+in your browser to <a href="http://localhost:8011/" target="_blank">http://localhost:8011/</a>. You should see
+a page that looks something like this:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot8.jpg"><img alt="Machine generated alternative text: 0,IiiMarkLoglc REST Server (— - C Lb0ca1ho5t8Oh1 MarkLogic REST Server . Search and retrieve XML results - /vl/search?format=xml . Search and retrieve JSON results - /vl/search?format=json . Search example - /vl/search?g=.&amp;start=1O&amp;pagel.ength=5 . Query Config - /vl/conÍig/gucry . Transform Config - /vl/conÍig/transforms . Add document (HT!? PUT) o Add JSON document: curl -v --digest --user -H “Content-Type: applicationljson” -X PUT -d ‘{ “person” :{ “first”: “John”, “last”:” Doe” }}‘ “http://localhost:80031v 1/documents? un=/docs/person .json” o Add XML document: curl -v --digest --user admin:***** -H “Content-Type: application/xml” -X PUT -d ‘JohnDoe’ “http://localhost:8003/v 1/documents?un/docsIperson .xml” . View document (HT!? GET) o View JSON document: /vl/documents?uri=Idocs/personjson o View XML document: N1/documcnts?uñ=/docs/personxml . Remove document (HT!? DELETh) o Remove JSON document: curl -v --digest --user admin:***** -H “Content-Type: application/json” -X DELETh “http://localhost:8003/v 1/documents?uri=/docs/person .json” o Remove XML document: curl -v --digest --user admin:***** -H “Content-Type: application/xml” -X DELETh “http://localhost:8003/v 1/documents?uri=/docs/person .xml”" src="/media/marklogic-rest-api_files/screenshot8.jpg" width="580" height="392"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Try
+clicking some of the links to see the output returned. This is just
+a preview of what's to come.</p><div class="note"><br/>
+MarkLogic also provides a REST-based bootstrapping service whereby
+the database admin user can create a new REST API instance using
+the /rest-apis endpoint on port 8002. See <a href="//docs.marklogic.com/guide/rest-dev/service#id_12021" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Creating
+an Instance</a> for more details.</div><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+rest of this tutorial assumes that you'll be running MarkLogic on
+your local machine at port 8011. If that's not the case, you'll
+need to accordingly modify the host and/or port of each
+example.</p><h3 id="create-rest-users"><a href="#create-rest-users">
+Create REST users</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+MarkLogic has a powerful and flexible security system. Before you
+can run the tutorial examples, you'll first need to create a user
+with the appropriate execute privileges. You of course could use
+the "admin" user (which has no security restrictions), but as a
+best practice, we're going to create two users:</p><ul>
+    <li>
+one with the
+"rest-writer" role, and</li>
+    <li>
+one with the
+"rest-admin" role.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+(There is also a "rest-reader" role available, which provides
+read-only access to the REST API, but we won't be using that.)</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Back
+in your web browser, navigate to "Security"-&gt;"Users" in the
+admin UI at <a href="http://localhost:8001/" target="_blank">http://localhost:8001/</a>:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot9.jpg"><img alt="Machine generated alternative text: L] Configure Ø Groups Databases Hosts Forests Miirietypes Clusters S.curlty Robs Execute Prrvdeges URI Privileges EF Amps Collections Certificate Authorities El Certificate Templetes" src="/media/marklogic-rest-api_files/screenshot9.jpg" width="238" height="337"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">At
+the top of the User Summary screen, click the "Create" tab:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot10.jpg"><img alt="Machine generated alternative text: L J L I User Summary Summary Create Help _____________________" src="/media/marklogic-rest-api_files/screenshot10.jpg" width="576" height="54"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">On
+the New User screen, enter the username ("rest-writer"), password
+("x"), and optional description:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot11.jpg"><img alt="Machine generated alternative text: New User [ 0k ] carìcei user A database user. user name 7name(unique) Required. You must supply a value for user-name. description REST writer user for Java tutorial An objecrs description. password Encrypted Password. Required. confirm password Encrypted Password. Required," src="/media/marklogic-rest-api_files/screenshot11.jpg" width="576" height="360"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+scroll down and check the checkbox next to the "rest-writer"
+role:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot12.jpg"><img alt="Machine generated alternative text: rest- reader rest- reader- internal wrfter rest-writer- internal search-internal" src="/media/marklogic-rest-api_files/screenshot12.jpg" width="188" height="171"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Click
+the "ok" button at the bottom of the page to create the new
+user.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Repeat the same process (start by clicking the "Create" tab again)
+for the "rest-admin" user (also with password "x"). Only this time,
+check the "rest-admin" role instead:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot13.jpg"><img alt="Machine generated alternative text: qconsole- internal qconsole-user min rest-adrnin- internal rest. internal" src="/media/marklogic-rest-api_files/screenshot13.jpg" width="179" height="167"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+you click the "Summary" tab, you should now see both users, with
+their associated roles (including inherited roles).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot14.jpg"><img alt="Machine generated alternative text: ‘- j I User Summai7I j Summary User Create Help  DescriptIon Roles adrnin dIs-user, dIs-internai, infostudó- user, dIs adrnin, ... rest-reader, app-user rest- reader, manage-user, rest-admin, rest- writer rest- reader, rest-writer admin infostudio ad min nobody dmin rfter admin user Information Studio CPF pipeline and task runner nobody user REST adrnin user for Java tutorial REST writer user for Java tutorial" src="/media/marklogic-rest-api_files/screenshot14.jpg" width="576" height="207"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+we've got everything set up on the server side, so let's start
+interacting with MarkLogic via the REST API.</p></ml:page>

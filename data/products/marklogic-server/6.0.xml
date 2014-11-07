@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+
+    <x:ul class="info">
+    <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
+    <!--
+    <x:li><x:a href="/academic">Read about the Academic License  »</x:a></x:li>
+    <x:li><x:a href="/express">Read about the Express License  »</x:a></x:li>
+    -->
+    <x:li><x:a href="/products/marklogic-server/requirements-6.0">Review System Requirements  »</x:a></x:li>
+  </x:ul>
+
+  <product-info name="MarkLogic 6">
+    <platform name="Microsoft Windows (Server, Vista, and 7)">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-5.3-amd64.msi" size="125 MB" md5="d636c386f8b4b6f195b6f81d0ae52b37" date="2014-06-30">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
+    </platform>
+     <platform name="Mac OS X 10.6, 10.7">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-5.3-x86_64.dmg" size="94 MB" md5="3d54e1520b77d1a43f7700be666db8c2" date="2014-06-30">OS X disk image </download>
+    </platform>
+    <platform name="Red Hat Enterprise Linux, Versions 5 &amp; 6">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-5.3.x86_64.rpm" size="120 MB" md5="e4b9b27ef8a5e07fa441a071e01ee290" date="2014-06-30">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="CentOS 5 &amp; CentOS 6">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-5.3.x86_64.rpm" size="120 MB" md5="e4b9b27ef8a5e07fa441a071e01ee290" date="2014-06-30">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="SUSE Linux Enterprise Server 11">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-5.3.x86_64.rpm" size="120 MB" md5="e4b9b27ef8a5e07fa441a071e01ee290" date="2014-06-30">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="Sun Solaris 10">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MARKlogic-6.0-5.3-amd64.tar.Z" size="181 MB" md5="92378e9d9282b8f11e7bdb778a913018" date="2014-06-30">x64 (AMD64, Intel EM64T) pkgadd </download>
+    </platform>
+  </product-info>
+
+  <product-documentation>
+    <old-doc desc="Online 6.0 product documentation" path="//docs.marklogic.com/6.0/"/>
+    <new-doc source="/guide/installation" version="6.0"/>
+    <new-doc source="/guide/relnotes" version="6.0"/>
+    <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_6_pubs.zip"/>
+  </product-documentation>
+<x:br/>
+<x:hr/>
+    <x:h4>Older versions</x:h4>
+    <x:p>
+    You can find previous releases of MarkLogic Server here
+    <x:ul>
+      <x:li><x:a href="/products/marklogic-server/5.0">5.0</x:a> </x:li>
+    </x:ul>
+    </x:p>
+</page>

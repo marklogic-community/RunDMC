@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+  <h1>Content Management Home</h1>
+
+  <p class="intro">Here's our stuff!</p>
+
+  <ml:admin-page-listings/>
+  <!-- Not implemented:
+  <ml:admin-asset-listings/>
+  -->
+
+</ml:page>

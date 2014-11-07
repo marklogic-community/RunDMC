@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ml="http://developer.marklogic.com/site/internal"
+      xml:lang="en" lang="en">
+  <head>
+    <title><ml:page-title/></title>
+    <meta charset="utf-8" />
+    <meta name="description"
+          content="MarkLogic is the only Enterprise NoSQL Database" />
+    <meta name="keywords"
+          content="marklogic, enterprise nosql database, enterprise nosql, database, nosql, nosql database, nosql db, xml, xml database, json, enterprise, bigdata, big data, xquery, xslt, petabyte, java db, java database, content, content store, content database, content db, content management system, CMS, document, document-oriented databases, document database, document db, document store, DB, xml database, xml db, json db, nonrelational, nonrelational database, nonrelational db" />
+    <link href="/css/v-2/apidoc/jquery.treeview.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-1/apidoc/smoothness/jquery-ui-1.8.16.custom.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-1/foundation-icons/foundation-icons.css"
+          rel="stylesheet" type="text/css" media="print" />
+    <link href="/css/v-38/screen.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-33/apidoc.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-1/apidoc_print.css"
+          rel="stylesheet" type="text/css" media="print" />
+    <link href="/css/anythingslider.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/theme-metallic.css"
+          rel="stylesheet" type="text/css" media="screen" />
+    <!--[if lte IE 8]>
+        <link href="/css/v-2/screen_ie.css"
+          rel="stylesheet" type="text/css" media="screen" />
+        <![endif]-->
+
+    <ml:javascript-server-config/>
+    <script type="text/javascript" src="/js/modernizr.js"></script>
+
+    <!-- Un-minimize for debugging
+         <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+         -->
+    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
+    <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
+    <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
+    <script type="text/javascript" src="/js/rundmc_init.js"></script>
+    <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
+
+    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-autocomplete.js"></script>
+    <script type="text/javascript" src="/js/jquery.select-to-autocomplete.min.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
+    <script type="text/javascript" src="/js/functions.js"></script>
+    <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
+    <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MBC6N2"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script><![CDATA[if ( document.location.hostname == 'docs.marklogic.com') {
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MBC6N2'); } ]]> </script>
+    <!-- End Google Tag Manager -->
+
+    <div id="container">
+      <div id="header">
+        <header>
+          <h1>
+            <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript>
+            <a ml:class="" ml:href="/">MarkLogic&#174; Community</a>
+          </h1>
+          <div id="header-contents">
+
+            <div id="main-site">
+              <a href="http://www.marklogic.com">Main site &#9656;</a>
+            </div>
+            <div class="header-separator">|</div>
+            <div id="search-header">
+              <form ml:action="/search" method="get">
+                <fieldset>
+                  <legend>Search</legend>
+                  <input type="hidden" name="v" ml:value="" />
+                  <input type="hidden" name="api" ml:value="" />
+                  <label for="s_inp">Search with MarkLogic</label>
+                  <input id="s_inp" name="q" type="text"
+                         placeholder="Search with MarkLogic" ml:value=""/>
+                  <input type="submit" value="Search" />
+                </fieldset>
+              </form>
+            </div>
+            <div class="header-separator">|</div>
+            <div id="login-header">
+              <ml:login-menu/>
+            </div>
+          </div>
+
+          <nav>
+            <ul>
+              <ml:top-nav/>
+            </ul>
+          </nav>
+        </header>
+      </div>
+      <div id="header-bottom-bar"/>
+      <div id="header-below-bottom-bar">
+        <div id="breadcrumb">
+          <ml:breadcrumbs/>
+        </div>
+      </div>
+
+      <div id="content">
+        <div id="widgets">
+          <ml:versions/>
+        </div>
+
+        <section id="page_content">
+          <ml:toc-state/>
+          <ml:page-content/>
+          <ml:comment-section/>
+          <ml:apidoc-copyright/>
+        </section>
+
+        <div id="api_sub">
+          <ml:api-toc/>
+        </div>
+      </div>
+      <hr />
+
+    </div>
+
+    <!-- ml:elapsed-time/ -->
+
+  </body>
+</html>

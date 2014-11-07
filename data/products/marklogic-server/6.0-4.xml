@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page hide-from-search="yes" status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+
+    <x:ul class="info">
+    <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
+    <!--
+    <x:li><x:a href="/academic">Read about the Academic License  »</x:a></x:li>
+    <x:li><x:a href="/express">Read about the Express License  »</x:a></x:li>
+    -->
+    <x:li><x:a href="/products/marklogic-server/requirements-6.0">Review System Requirements  »</x:a></x:li>
+  </x:ul>
+
+  <product-info name="MarkLogic 6">
+    <platform name="Red Hat Enterprise Linux, Versions 5 &amp; 6">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-4.x86_64.rpm" size="120 MB" md5="8ea777eb60c6954ec19b30e8d5d186f7" date="2013-10-18">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="CentOS 5 &amp; CentOS 6">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-4.x86_64.rpm" size="120 MB" md5="8ea777eb60c6954ec19b30e8d5d186f7" date="2013-10-18">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="SUSE Linux Enterprise Server 11">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MarkLogic-6.0-4.x86_64.rpm" size="120 MB" md5="8ea777eb60c6954ec19b30e8d5d186f7" date="2013-10-18">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+    <platform name="Sun Solaris 10">
+      <download anchor-class="confirm-download" href="/download/binaries/6.0/MARKlogic-6.0-4-amd64.tar.Z" size="181 MB" md5="318f09f7c50a523dd6617ee146c4d7ca" date="2013-10-18">x64 (AMD64, Intel EM64T) pkgadd </download>
+    </platform>
+  </product-info>
+
+  <product-documentation>
+    <old-doc desc="Online 6.0 product documentation" path="//docs.marklogic.com/"/>
+    <new-doc source="/guide/installation"/>
+    <new-doc source="/guide/relnotes"/>
+    <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_6_pubs.zip"/>
+  </product-documentation>
+<x:br/>
+<x:hr/>
+    <x:h4>Older versions</x:h4>
+    <x:p>
+    You can find previous releases of MarkLogic Server here
+    <x:ul>
+      <x:li><x:a href="/products/marklogic-server/5.0">5.0</x:a> </x:li>
+      <x:li><x:a href="/products/marklogic-server/4.2">4.2</x:a> </x:li>
+    </x:ul>
+    </x:p>
+</page>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+  <ml:product-info name="XCC for MarkLogic - Release 5.0">
+    <ml:platform name="Java">
+      <ml:download anchor-class="track-download" href="/download/binaries/5.0/MarkXCC.Java-5.0-6.zip" size="2.1MB" date="2014-04-07">XCC Java distribution (includes javadoc)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/5.0/MarkXCC.Java-5.0-6-src.zip" size="256KB" date="2014-04-07">XCC Java source</ml:download>
+      <ml:download href="/maven2" size="" date="2011-01-01" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+    </ml:platform>
+    <ml:platform name=".NET">
+      <ml:download anchor-class="track-download" href="/download/binaries/5.0/MarkXCC.Net-5.0-6.zip" size="16MB" date="2014-04-07">XCC .NET distribution (includes API docs)</ml:download>
+    </ml:platform>
+  <ml:product-info>
+  <ml:product-documentation>
+    <ml:new-doc type="javadoc" title="XCC Javadoc" source="/5.0/javadoc/xcc"/>
+    <ml:new-doc type="dotnet" title="XCC .NET API" source="/5.0/dotnet/xcc"/>
+    <ml:new-doc source="/guide/xcc" version="5.0"/>
+  </ml:product-documentation>
+</ml:product-info></ml:product-info></ml:page>

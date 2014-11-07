@@ -1,0 +1,79 @@
+    <http-server>
+      <http-server-name>@ml.app-port-@ml.app-name</http-server-name>
+      <port>@ml.app-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>/controller/url_rewrite.xqy</url-rewriter>
+      <error-handler>/controller/error-handler.xqy</error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-draft</http-server-name>
+      <port>@ml.draft-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>@ml.url-rewriter</url-rewriter>
+      <error-handler>@ml.error-handler</error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-admin</http-server-name>
+      <port>@ml.admin-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>digest</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>/admin/controller/url_rewrite.xqy</url-rewriter>
+      <error-handler></error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-rapi</http-server-name>
+      <port>@ml.rapi-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>@ml.url-rewriter</url-rewriter>
+      <error-handler>@ml.error-handler</error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-try</http-server-name>
+      <port>@ml.try-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>@ml.modules-root</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>@ml.url-rewriter</url-rewriter>
+      <error-handler>@ml.error-handler</error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-webdav</http-server-name>
+      <webDAV>true</webDAV>
+      <port>@ml.webdav-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.app-modules-db"/>
+      <root>/</root>
+      <authentication>@ml.authentication-method</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>@ml.url-rewriter</url-rewriter>
+      <error-handler>@ml.error-handler</error-handler>
+      <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>
