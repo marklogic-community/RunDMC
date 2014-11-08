@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Understanding search results</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+you've seen, you have a choice between XML and JSON when it comes
+to search results. Whichever format you choose, the results provide
+the data needed to construct a search application. For example, you
+could use the following excerpted JSON data:</p><script src="https://gist.github.com/3555546.js?file=ex11.txt" xml:space="preserve"> </script><noscript id="ex11.txt">
+    <pre class="txt" xml:space="preserve">"total":95,"start":1,"page-length":10</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">to
+construct a search results pagination widget (as on this website's
+search results page):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot15.jpg"><img alt="Machine generated alternative text: Pagel llof9»" src="/media/marklogic-rest-api_files/screenshot15.jpg" width="130" height="35"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then,
+you would iterate through each of the objects in the <strong>results</strong> array:</p><script src="https://gist.github.com/3555546.js?file=ex12.json" xml:space="preserve"> </script><noscript id="ex12.json">
+    <pre class="json" xml:space="preserve">"results": [
+  {
+    "index": 1,
+    "uri": "/guide/search-dev.xml",
+    "path": "fn:doc(\"/guide/search-dev.xml\")",
+    "score": 92032,
+    "confidence": 0.672178,
+    "fitness": 0.877356,
+    "matches": [
+      {
+        "path": "fn:doc(\"/guide/search-dev.xml\")/*:guide/*:para[5]",
+        "match-text": [
+          "Lexicon and ",
+          {
+            "highlight": "Range Index"
+          },
+          "-Based APIs..."
+      },
+      {
+        "path": "fn:doc(\"/guide/search-dev.xml\")/*:guide/*:para[20]",
+        "match-text": [
+          "no matter what the database size. As part of loading a document, full-text ",
+          {
+            "highlight": "indexes"
+          },
+          "are created making arbitrary searches fast. Searches automatically use the"
+      }
+    ]
+  }
+]</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">to
+produce the contents of your search results page:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot16.jpg"><img alt="Machine generated alternative text: Search Results Jof  results array Results 1—10 of 87 for range Index Search Developer’s Guide Lexicon and Range Index-Based APIs...... no matter what the database size. As part of loading a document, full-text indexes are created making arbitrary searches fast. Searches automatically use the Administrator’s Guide Index configuration, as described in .. .Text Indexing.. Range indexes, as described in . ..Element and Attribute Range Indexes and Lexicons" src="/media/marklogic-rest-api_files/screenshot16.jpg" width="576" height="218"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition to the document's score, URI, etc., each result includes a
+<strong>matches</strong> array which contains
+one object for each matching area of text:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot17.jpg"><img alt="Machine generated alternative text: Search Results Pagep__1Iof9 Results 1—lo of 87 for range Index matches array ‘ ad APIs ._.Jno matter what the database size. As part of loading a I document, run-text indexes are created making arbitrary searches fast. Searches automatically use matches array O Mministrato?s Guide 4— “ I1nex confiuration as described in 1.IText IndexingI..ange indexes, as described iniIement (ana Awl btx Rdrryé indexes arid LeWins" src="/media/marklogic-rest-api_files/screenshot17.jpg" width="576" height="221"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">And
+within each match is a <strong>match-text</strong> array, which is a list of
+strings which may or may not be highlighted (highlighted when they
+contain the actual matching term or terms):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><a rel="detail" href="/media/marklogic-rest-api_files/screenshot18.jpg"><img alt="Machine generated alternative text: Search Results  Results 1—lo of 87 for range Index Search Developer’s Guide ILexicon an Ranøe I e4.ased APIsL no matter what the database size. As part of loading a documen, ¡ created making arbitrary searches fast. Searches automatically use the match-text array Mmlnlstrator’s Guide Index configuration, as described in ...Text Indexing.. .Range indexes, as described in ...Element and Attribute Range Indexes and Lexicons" src="/media/marklogic-rest-api_files/screenshot18.jpg" width="576" height="219"/></a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+XML version of the results is generally isomorphic to the JSON
+version. In place of the results, matches, and match-text arrays
+are the &lt;search:result&gt;,
+&lt;search:snippet&gt;/&lt;search:match&gt;, and
+&lt;search:highlight&gt; elements, respectively:</p><script src="https://gist.github.com/3555546.js?file=ex13.xml" xml:space="preserve"> </script><noscript id="ex13.xml">
+    <pre class="xml" xml:space="preserve">&lt;!--...--&gt;
+&lt;result index="1"
+        uri="/guide/search-dev.xml"
+        path="fn:doc(&amp;quot;/guide/search-dev.xml&amp;quot;)"
+        score="92032"
+        confidence="0.672178"
+        fitness="0.877356"&gt;
+  &lt;snippet&gt;
+    &lt;match path="fn:doc(&amp;quot;/guide/search-dev.xml&amp;quot;)/*:guide/*:para[5]"
+      &gt;Lexicon and &lt;highlight&gt;Range Index&lt;/highlight&gt;-Based APIs...&lt;/match&gt;
+    &lt;match path="fn:doc(&amp;quot;/guide/search-dev.xml&amp;quot;)/*:guide/*:para[20]"
+      &gt;no matter what the database size. As part of loading a document,
+       full-text &lt;highlight&gt;indexes&lt;/highlight&gt; are created making
+       arbitrary searches fast. Searches automatically use the&lt;/match&gt;
+  &lt;/snippet&gt;
+&lt;/result&gt;
+&lt;!--...--&gt;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above excerpt of XML results corresponds to the same data as the
+JSON results we saw.</p></ml:page>

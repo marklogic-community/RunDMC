@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <ml:short-description>MarkLogic User Groups</ml:short-description>
+  <h1>Meet</h1>
+  <script src="http://www.meetup.com/embed/map/marklogic/" type="text/javascript" xml:space="preserve"/>
+  <script type="text/javascript" xml:space="preserve">
+    $(function() {
+      $(document).ready(function()
+        { $(&quot;.topic-map&quot;).hide();
+      });
+    });
+  </script>
+  <p>MarkLogic User Groups are informal volunteer events for users to meet, discuss, and share best practices
+    regionally. This is an easy way to meet peers and learn how to get more out of MarkLogic Server.</p>
+  <!-- TODO: consider using a special element wrapper to abstract away from CSS class details -->
+  <h2 class="main_headline">Participate in a MarkLogic User Group</h2>
+  <p>User Group events are free and open to all users, regardless of company affiliation (i. e. expect that competitive
+    companies will be participating together and respecting each others’ confidentiality). If you want to participate
+    in a user group, you can use the map above or go directly to <a href="http://marklogic.meetup.com">meetup.com</a>.
+    If there are none in your region, join the
+    <a href="http://developer.marklogic.com/mailman/listinfo/general">general developer mailing list</a> or
+    <a href="mailto:community-requests@marklogic.com">contact us</a>.
+  </p>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+</ml:page>

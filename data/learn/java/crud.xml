@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>CRUD</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The Java API's <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/document/DocumentManager.html">
+DocumentManager</a>
+interface defines all the
+CRUD-related functionality for MarkLogic. Once you have a
+DocumentManager instance (represented as <code>docMgr</code> in the table below), you can use the
+following methods for creating, reading, updating, and deleting
+content:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>
+Task</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>
+Method</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Create</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+docMgr.<strong>write</strong>(docURI,
+handle)</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Read</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+docMgr.<strong>read</strong>(docURI,
+handle)</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Update (Patch)</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+docMgr.<strong>patch</strong>(docURI,
+handle)</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p>
+Delete</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>
+docMgr.<strong>delete</strong>(docURI)</p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Those
+four methods—<strong>read()</strong>,
+<strong>write()</strong>, <strong>patch()</strong> and <strong>delete()</strong>, along with their various
+overloaded versions—provide MarkLogic's core CRUD functionality.
+You use the same write() method whether you're first creating a
+document or later updating (replacing) it. In other words, there's
+no real distinction between Create and Updating an entire document. However, if you want
+to act differently based on whether a document already exists, you
+can first check for its existence by calling the <strong>exists()</strong> method. Likewise, if you only 
+want to update part of the document (aka, <em>patch</em>), use the patch() method.</p>
+
+<p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Notice the "handle" arguments in the above table. Handles provide a
+consistent way of wrapping many different kinds of content (and
+metadata) representations for use by MarkLogic. Example handle
+types include DOMHandle, FileHandle, InputStreamHandle,
+StringHandle, etc. Typically, you pass an "empty" handle to
+<strong>read()</strong>, which then populates
+the handle with content from the database for your subsequent use.
+Conversely, you pass a pre-populated handle to <strong>write()</strong>, which then inserts the
+encapsulated content into the database.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+you may recall, MarkLogic supports four primary document
+formats:</p><ul>
+    <li>
+XML</li>
+    <li>
+JSON</li>
+    <li>
+text</li>
+    <li>
+binary</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+Java API provides sub-interfaces for working with each type of
+document:</p><ul>
+    <li>
+DocumentManager
+<ul>
+	<li>
+XMLDocumentManager</li>
+	<li>
+JSONDocumentManager</li>
+	<li>
+TextDocumentManager</li>
+	<li>
+BinaryDocumentManager</li>
+	<li>
+GenericDocumentManager</li>
+      </ul>
+</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">When
+you're working with just one document format, such as JSON, you
+would use the corresponding format-specific class, such as
+JSONDocumentManager. However, you also have the option of using
+GenericDocumentManager if you are processing multiple documents
+with unknown formats.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+more details on all the classes in the MarkLogic Java API, see the
+<a href="//docs.marklogic.com/javadoc/client/index.html">online
+javadocs</a>.</p><h3 id="create-a-json-document"><a href="#create-a-json-document">
+Create a JSON document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Let's get started by loading a JSON
+document (<em>src/main/resources/data/flipper.json</em>)
+into the database. In Eclipse, take a look at <em>Example_01_CreateJSON.java</em>.
+Since we're loading a JSON document, we need an instance of
+JSONDocumentManager to start working with it. That's where our
+DatabaseClient instance (<code>client</code>) comes in:</p><script src="https://gist.github.com/3290041.js?file=ex05.java" xml:space="preserve"> </script><noscript id="ex05.java">
+    <pre class="java" xml:space="preserve">// create a manager for JSON documents
+JSONDocumentManager docMgr = client.newJSONDocumentManager();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Once
+we have a document manager, we can use it for any number of
+documents with that type (JSON in this case). In other words, you
+do <em>not</em> need to create a new
+document manager for each individual document you want to work
+with.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Before passing <code>docStream</code> (the InputStream encapsulating
+<em>flipper.json</em>)
+to our document manager, we need to wrap it with a handle object.
+In this case, we use the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/InputStreamHandle.html">
+InputStreamHandle</a>
+wrapper:</p><script src="https://gist.github.com/3290041.js?file=ex06.java" xml:space="preserve"> </script><noscript id="ex06.java">
+    <pre class="java" xml:space="preserve">// create a handle on the content
+InputStreamHandle handle = new InputStreamHandle(docStream);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Finally, we decide on a URI for our document (what URI it will be
+associated with in the database) and call our document manager's
+<strong>write()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex07.java" xml:space="preserve"> </script><noscript id="ex07.java">
+    <pre class="java" xml:space="preserve">// write the document content
+docMgr.write("/example/flipper.json", handle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This has the effect of writing the given
+content (encapsulated in <code>handle</code>) to the database, using the given URI
+(<code>"/example/flipper.json"</code>).</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Go
+ahead and run the program in Eclipse (Run-&gt;Run). The
+<em>flipper.json</em> document will
+be inserted into the database, assuming your REST server is up and
+running with the expected configuration. We can verify that the
+content has been loaded by viewing the following URL in the browser
+(making direct use of the REST API):</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/flipper.json&amp;format=json" target="_blank">
+http://localhost:8011/v1/documents?uri=/example/flipper.json&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">(You
+can log in as either the admin user or one of the REST users you
+configured during setup.)</p><h3 id="create-an-xml-document"><a href="#create-an-xml-document">
+Create an XML document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's load an XML document into the database. Take a look at
+<em>Example_02_CreateXML.java</em>.
+This is very similar to loading a JSON document, except that now we
+use an XMLDocumentManager:</p><script src="https://gist.github.com/3290041.js?file=ex08.java" xml:space="preserve"> </script><noscript id="ex08.java">
+    <pre class="java" xml:space="preserve">// create a manager for XML documents
+XMLDocumentManager docMgr = client.newXMLDocumentManager();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Given the variable <code>docStream</code> pointing to an InputStream for
+<em>src/main/resources/data/flipper.xml</em>,
+we can now create a handle for the content:</p><script src="https://gist.github.com/3290041.js?file=ex09.java" xml:space="preserve"> </script><noscript id="ex09.java">
+    <pre class="java" xml:space="preserve">// create a handle on the content
+InputStreamHandle handle = new InputStreamHandle(docStream);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Finally, to load the document to the database, we call the
+<strong>write()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex10.java" xml:space="preserve"> </script><noscript id="ex10.java">
+    <pre class="java" xml:space="preserve">// write the document content
+docMgr.write("/example/flipper.xml", handle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">After
+you run the program, you can verify the content has been loaded by
+accessing the REST API directly in your browser using this URL:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/flipper.xml" target="_blank">http://localhost:8011/v1/documents?uri=/example/flipper.xml</a></p><h3 id="create-a-text-document-(with-a-collection)"><a href="#create-a-text-document-(with-a-collection)">
+Create a text document (with a
+collection)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Creating a text document is quite similar, except now—you guessed
+it—we use a TextDocumentManager. See in <em>Example_03_CreateText.java</em>:</p><script src="https://gist.github.com/3290041.js?file=ex11.java" xml:space="preserve"> </script><noscript id="ex11.java">
+    <pre class="java" xml:space="preserve">// create a manager for text documents
+TextDocumentManager docMgr = client.newTextDocumentManager();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+time, rather than loading text from a file, let's just load it from
+a string:</p><script src="https://gist.github.com/3290041.js?file=ex12.java" xml:space="preserve"> </script><noscript id="ex12.java">
+    <pre class="java" xml:space="preserve">// create a handle on the document's content
+StringHandle content = new StringHandle("some text");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">And
+to spice things up a bit, let's associate this document with a
+collection. Recall that documents can be associated with
+collections and directories. Directories are an implicit part of
+the document's URI, but a collection is a tag that's independent of
+the URI. To add a collection tag to this document, we effectively
+need to send not only the document's content, but also some
+associated <em>metadata</em>. For
+that, we start by constructing a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DocumentMetadataHandle.html">
+DocumentMetadataHandle</a>:</p><script src="https://gist.github.com/3290041.js?file=ex13.java" xml:space="preserve"> </script><noscript id="ex13.java">
+    <pre class="java" xml:space="preserve">// create a handle for the document's associated metadata
+DocumentMetadataHandle metadata = new DocumentMetadataHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+we add a collection tag to the metadata:</p><script src="https://gist.github.com/3290041.js?file=ex14.java" xml:space="preserve"> </script><noscript id="ex14.java">
+    <pre class="java" xml:space="preserve">// add a collection tag
+metadata.getCollections().addAll("myCollection");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Finally, we use the version of <strong>write()</strong> that takes a metadata handle as
+its second argument:</p><script src="https://gist.github.com/3290041.js?file=ex15.java" xml:space="preserve"> </script><noscript id="ex15.java">
+    <pre class="java" xml:space="preserve">// write the document content &amp; metadata
+docMgr.write("/example/foo.txt", metadata, content);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">After
+you run the example, verify that the document was added to the
+"myCollection" collection by opening the following URL in your
+browser:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/search?collection=myCollection&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?collection=myCollection&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+should see a reference to "/example/foo.txt" in the result, which
+means that document is indeed tagged with "myCollection". Don't
+worry about understanding the format of these search results. The
+Java API provides its own way of performing these searches (as
+we'll see), so we're cheating a little here just for the purpose of
+some immediate gratification.</p><h3 id="create-a-binary-document-(with-properties)"><a href="#create-a-binary-document-(with-properties)">
+Create a binary document (with
+properties)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+only document format we haven't loaded yet is binary, so let's make
+this complete by loading an image into the database. In the last
+example, we associated the document with a collection. This time,
+let's associate the document with another kind of metadata:
+<em>properties</em>.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Documents can have several kinds of <em>metadata</em> associated with them:</p><ul>
+    <li>
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">collections</em>,</li>
+    <li>
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">permissions</em>,</li>
+    <li>
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">quality</em>,
+and</li>
+    <li>
+<em xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">properties</em>.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We've
+seen what <em>collections</em> are
+(essentially tags). <em>Permissions</em> associate roles (such as
+"rest-writer") with privileges (such as "update") for the document.
+<em>Quality</em> is a numeric value
+that can be used to boost a document's ranking in search results.
+<em>Properties</em> are arbitrary
+name/value pairs that you can associate with a document, outside of
+and in addition to its actual content. All of these are
+encapsulated in Java by the aforementioned <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DocumentMetadataHandle.html">
+DocumentMetadataHandle</a>.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this case, we're going to make use of MarkLogic's ability to
+automatically extract metadata from binary files and store it as a
+set of properties associated with the binary document. Since
+MarkLogic does this automatically on the server side, we don't even
+need to worry about encapsulating the metadata on our end. The only
+thing we have to do is enable this behavior (which is uniquely
+available for binary documents, via <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/document/BinaryDocumentManager.html">
+BinaryDocumentManager</a>). Take a look at the relevant lines in
+<em>Example_04_CreateBinary.java</em>:</p><script src="https://gist.github.com/3290041.js?file=ex16.java" xml:space="preserve"> </script><noscript id="ex16.java">
+    <pre class="java" xml:space="preserve">// create a manager for binary documents
+BinaryDocumentManager docMgr = client.newBinaryDocumentManager();
+ 
+// enable automatic metadata extraction into properties
+docMgr.setMetadataExtraction(MetadataExtraction.PROPERTIES);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Once
+we have that, we create our handle as usual and write it to the
+database, without having to mention anything about properties or
+metadata:</p><script src="https://gist.github.com/3290041.js?file=ex17.java" xml:space="preserve"> </script><noscript id="ex17.java">
+    <pre class="java" xml:space="preserve">// create a handle on the document's content
+InputStreamHandle content = new InputStreamHandle(pngStream);
+ 
+// write the document content
+docMgr.write("/example/mlfavicon.png", content);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Go
+ahead and run the program. We'll see how to read the properties
+back using Java, but, again, in the interest of immediate
+gratification, follow this URL in your browser:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/documents?uri=/example/mlfavicon.png&amp;category=properties&amp;format=json" target="_blank">
+http://localhost:8011/v1/documents?uri=/example/mlfavicon.png&amp;category=properties&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Although this particular example doesn't include a lot of
+interesting properties, MarkLogic can handle hundreds of different
+kinds of binary documents (images, videos, office documents, etc.),
+automatically extracting useful metadata.</p><h3 id="read-a-json-document"><a href="#read-a-json-document">
+Read a JSON document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+that we have a document of each format in the database, let's read
+them back, starting with the JSON document. Open <em>Example_05_ReadJSON.java</em>.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+first few steps (creating the DatabaseClient and getting the
+JSONDocumentManager) are identical to when we created a new JSON
+document. But this time, instead of calling the write() method, we
+call the <strong>read()</strong> method to
+read a database document having a specific URI. When we wrote
+content, we provided a handle already populated with an InputStream
+(for <em>flipper.json</em>). But
+when reading content, we instead supply an <em>empty</em> handle which will get populate
+when the method executes.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Broadly, there are two kinds of handles:</p><ul>
+    <li>
+Write handles,
+which define a representation for writing database content,
+and</li>
+    <li>
+Read handles,
+which define a representation for reading database
+content.</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Many
+handle types can function as both read and write handles. Take a
+look at the full list of handles in the javadoc: both the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/package-summary.html">
+built-in handle types</a> and the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/example/handle/package-summary.html">
+extra handle types</a>. What type of handle you use depends on how
+you prefer to locally interact with the data (JSON, in this case)
+in Java. A <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/StringHandle.html">
+StringHandle</a> will return the JSON as a string. A <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/example/handle/JacksonHandle.html">
+JacksonHandle</a> will return the JSON as a tree structure
+(JsonNode) which can optionally be mapped to a POJO (plain old Java
+object), based on a data binding configuration that you
+provide.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this case, we'll just use a StringHandle:</p><script src="https://gist.github.com/3290041.js?file=ex18.java" xml:space="preserve"> </script><noscript id="ex18.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document content
+StringHandle handle = new StringHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+we call <strong>read()</strong>, which
+populates (and returns, for that matter) the handle:</p><script src="https://gist.github.com/3290041.js?file=ex19.java" xml:space="preserve"> </script><noscript id="ex19.java">
+    <pre class="java" xml:space="preserve">// read the document content
+docMgr.read("/example/flipper.json", handle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+see that our StringHandle has in fact been populated with the
+document content, let's call the handle's <strong>get()</strong> method to retrieve the string, and
+then print it to the console:</p><script src="https://gist.github.com/3290041.js?file=ex20.java" xml:space="preserve"> </script><noscript id="ex20.java">
+    <pre class="java" xml:space="preserve">// print out the document content
+System.out.println(handle.get());</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program. You should see the JSON document printed to the
+console.</p><h3 id="read-an-xml-document"><a href="#read-an-xml-document">
+Read an XML document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's read our XML document from the database. Open up <em>Example_06_ReadXML.java</em>. This is very
+similar to reading a JSON document, except that we're back to using
+an XMLDocumentManager. Although a StringHandle will work here as
+well, let's pick a read handle that is specifically tailored to
+XML. Some of the XML-specific handle types available include:
+<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DOMHandle.html">
+DOMHandle</a>, <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/example/handle/JDOMHandle.html">
+JDOMHandle</a>, <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/example/handle/DOM4JHandle.html">
+DOM4JHandle</a>, <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/example/handle/XOMHandle.html">
+XOMHandle</a>, and <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/JAXBHandle.html">
+JAXBHandle</a>, the latter of which enables you to
+marshall/unmarshall from/to POJOs.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+this case, we'll use a DOMHandle, which represents the given
+document as a DOM tree (and can function as either a read or write
+handle).</p><script src="https://gist.github.com/3290041.js?file=ex21.java" xml:space="preserve"> </script><noscript id="ex21.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document content
+DOMHandle handle = new DOMHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+we call <strong>read()</strong>, which
+populates (and returns) the handle:</p><script src="https://gist.github.com/3290041.js?file=ex22.java" xml:space="preserve"> </script><noscript id="ex22.java">
+    <pre class="java" xml:space="preserve">// read the document content
+docMgr.read("/example/flipper.xml", handle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+see that our DOMHandle has in fact been populated with the document
+content, we call the handle's <strong>get()</strong> method to retrieve the
+encapsulated DOM object and print the outermost element's name to
+the console:</p><script src="https://gist.github.com/3290041.js?file=ex23.java" xml:space="preserve"> </script><noscript id="ex23.java">
+    <pre class="java" xml:space="preserve">// access the document content
+Document document = handle.get();
+ 
+String rootName = document.getDocumentElement().getTagName();
+System.out.println("Read /example/flipper.xml content with the &lt;"+rootName+"/&gt; root element");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+run the program. You should see the printed message, including the
+document element's name.</p><h3 id="read-a-text-document-(and-its-collections)"><a href="#read-a-text-document-(and-its-collections)">
+Read a text document (and its
+collections)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_07_ReadText.java</em>.
+Reading a text document works much the same way. This time,
+however, we're also going to fetch the document's metadata, in
+addition to its content. That means we need to create two handles:
+one for the content (we'll use StringHandle) and one for the
+metadata (<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DocumentMetadataHandle.html">DocumentMetadataHandle</a>):</p><script src="https://gist.github.com/3290041.js?file=ex24.java" xml:space="preserve"> </script><noscript id="ex24.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document content
+StringHandle content = new StringHandle();</pre>
+  </noscript><script src="https://gist.github.com/3290041.js?file=ex25.java" xml:space="preserve"> </script><noscript id="ex25.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document metadata
+DocumentMetadataHandle metadata = new DocumentMetadataHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we retrieve both the content and metadata in one call to a
+3-argument form of the <strong>read()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex26.java" xml:space="preserve"> </script><noscript id="ex26.java">
+    <pre class="java" xml:space="preserve">// read the document content
+docMgr.read("/example/foo.txt", metadata, content);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+verify we've got everything back, we'll print the content and its
+collections to the console:</p><script src="https://gist.github.com/3290041.js?file=ex27.java" xml:space="preserve"> </script><noscript id="ex27.java">
+    <pre class="java" xml:space="preserve">// print the document content
+System.out.println(content.get());
+ 
+// iterate over the collections and print each one
+for (String collection : metadata.getCollections()) {
+    System.out.println("Collection: " + collection);
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Note
+that the metadata handle's <strong>getCollections()</strong> method returns an
+object, which, for your convenience, implements the java.util.Set
+interface, making it easy to iterate over its members. Run the
+program to see the console output.</p><h3 id="read-a-binary-document-(and-its-properties)"><a href="#read-a-binary-document-(and-its-properties)">
+Read a binary document (and its
+properties)</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+read binary content from the database, we need to use a handle
+class that implements the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/marker/BinaryReadHandle.html">
+BinaryReadHandle</a> interface (we'll use <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/BytesHandle.html">
+BytesHandle</a>). Reading metadata works the same way as any other
+document format: use a</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DocumentMetadataHandle.html">
+DocumentMetadataHandle</a>. See in <em>Example_08_ReadBinary.java</em>:</p><script src="https://gist.github.com/3290041.js?file=ex28.java" xml:space="preserve"> </script><noscript id="ex28.java">
+    <pre class="java" xml:space="preserve">// get a manager for binary documents
+BinaryDocumentManager docMgr = client.newBinaryDocumentManager();
+ 
+// create a handle to receive the document content
+BytesHandle content = new BytesHandle();
+ 
+// create a handle to receive the document metadata
+DocumentMetadataHandle metadata = new DocumentMetadataHandle();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We
+saw how one unique feature of the binary document manager is
+enabling automatic metadata extraction when inserting binary
+documents. Another unique feature is the ability to do "range
+requests," which are useful for serving large data, such as video.
+The <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/document/BinaryDocumentManager.html">
+BinaryDocumentManager</a> interface provides overloaded versions of
+the <strong>read()</strong> method for
+retrieving parts of binaries (called sub-binaries), by specifying a
+range of bytes. In our case, we don't need to do that, since we're
+dealing with a small document; we'll just grab the entire thing in
+one request:</p><script src="https://gist.github.com/3290041.js?file=ex29.java" xml:space="preserve"> </script><noscript id="ex29.java">
+    <pre class="java" xml:space="preserve">// read the document content &amp; metadata
+docMgr.read("/example/mlfavicon.png", metadata, content);
+ 
+// get the document content as a byte array
+byte[] contentBytes = content.get();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Once
+we've read the content and metadata from the server, let's print
+some reasonable information to the console:</p><script src="https://gist.github.com/3290041.js?file=ex30.java" xml:space="preserve"> </script><noscript id="ex30.java">
+    <pre class="java" xml:space="preserve">// print the image size to the console
+System.out.println("Binary document size in bytes: " + contentBytes.length);
+ 
+// iterate over the properties and print each one
+for (Map.Entry&lt;QName,Object&gt; prop : metadata.getProperties().entrySet()) {
+    System.out.println(prop.getKey().getLocalPart() + ": " + prop.getValue());
+}</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">After
+printing the document's size in bytes, the above code iterates
+through the document's properties, making use of the fact that
+<strong>getProperties()</strong> returns an
+object that implements java.util.Map. Run the program to see each
+of the document's properties (key/value pairs) printed to the
+console.</p><h3 id="read-only-a-documents-metadata"><a href="#read-only-a-documents-metadata">
+Read only a document's
+metadata</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<em>Example_09_ReadMetadata.java</em> shows
+that, thanks to the <strong>readMetadata()</strong> method, you don't have to
+download a document's content if all you want to do is read its
+metadata:</p><script src="https://gist.github.com/3290041.js?file=ex31.java" xml:space="preserve"> </script><noscript id="ex31.java">
+    <pre class="java" xml:space="preserve">// read just the document's metadata
+docMgr.readMetadata("/example/mlfavicon.png", metadata);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the properties extracted from the metadata.</p><h3 id="read-a-documents-metadata-as-raw-xml"><a href="#read-a-documents-metadata-as-raw-xml">
+Read a document's metadata as raw
+XML</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+addition to the tailor-made <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/DocumentMetadataHandle.html">
+DocumentMetadataHandle</a> POJO, we can also use other kinds of
+handles to receive and work with metadata in its raw form (as
+served up by the REST API). Take a look at <em>Example_10_ReadMetadataAsXML.java</em>. For
+our metadata handle, this time we're using a regular
+StringHandle:</p><script src="https://gist.github.com/3290041.js?file=ex32.java" xml:space="preserve"> </script><noscript id="ex32.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document metadata as XML
+StringHandle metadata = new StringHandle();
+ 
+// read just the document's metadata
+docMgr.readMetadata("/example/mlfavicon.png", metadata);
+ 
+// dump the metadata as raw XML
+System.out.println(metadata);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the underlying XML representation of the
+document's metadata (collections, permissions, properties, and
+quality).</p><h3 id="read-a-documents-metadata-as-raw-json"><a href="#read-a-documents-metadata-as-raw-json">
+Read a document's metadata as raw
+JSON</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<em>Example_11_ReadMetadataAsJSON.java</em>
+shows how you can read a document's metadata as JSON (as served up
+by the REST API). This is just like the previous example, except
+that we specify JSON as the format when creating our
+StringHandle:</p><script src="https://gist.github.com/3290041.js?file=ex33.java" xml:space="preserve"> </script><noscript id="ex33.java">
+    <pre class="java" xml:space="preserve">// create a handle to receive the document metadata as JSON
+StringHandle metadata = new StringHandle().withFormat(Format.JSON);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the JSON representation of document
+metadata.</p><h3 id="update-a-document"><a href="#update-a-document">
+Update (patch) a document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+update (replace) an entire document, you use the <strong>write()</strong> method just as when creating a
+document for the first time. See any of the "Create …"
+sections above for examples. (It is, however, possible to update a
+document's metadata without changing its content; for that you'd
+use your document manager's <strong>writeMetadata()</strong> method.)</p>
+<p>
+If you'd like to update just a piece of the document, please see the documentation for <a href="//docs.marklogic.com/guide/java/document-operations#id_46664">Partial Updates(PATCH)</a>.
+</p>
+
+<h3 id="delete-a-document"><a href="#delete-a-document">
+
+Delete a document</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">No
+matter what kind of DocumentManager you use, deleting works the
+same. So in this case, let's just use a generic document manager to
+delete each of the documents that we've created so far. Open up
+<em>Example_12_DeleteDocuments.java</em>, and
+find the relevant lines of code:</p><script src="https://gist.github.com/3290041.js?file=ex34.java" xml:space="preserve"> </script><noscript id="ex34.java">
+    <pre class="java" xml:space="preserve">// create a generic manager for documents
+GenericDocumentManager docMgr = client.newDocumentManager();
+ 
+// delete the documents
+docMgr.delete("/example/flipper.json");
+docMgr.delete("/example/flipper.xml");
+docMgr.delete("/example/foo.txt");
+docMgr.delete("/example/mlfavicon.png");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can verify a document has been deleted if you subsequently try to
+run one of the "Read" examples from earlier; it will yield an error
+complaining that the document does not exist.</p><h3 id="perform-database-updates-in-the-same-transaction"><a href="#perform-database-updates-in-the-same-transaction">
+Perform database updates in the
+same transaction</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">As
+preparation for the search and query examples, let's populate the
+database with more data, including a bunch of JSON, XML, and image
+files from inside <em>src/main/resources/data</em>. The JSON
+documents describe talks given at the last MarkLogic World
+conference; the XML consists of a set of Shakespeare plays
+(associated with the "shakespeare" collection on load); and the
+images are photos with embedded metadata.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Take
+a look at <em>Example_13_LoadUsingTransaction.java</em>
+and run it. Besides calling <strong>write()</strong> a bunch of times, this program
+illustrates the ability to make a series of database updates either
+completely succeed or completely fail—all or nothing. In the
+previous examples, each update occurred in its own <em>transaction</em>, but in this example every
+call to <strong>write()</strong> is
+associated with the same transaction. First we create a
+transaction:</p><script src="https://gist.github.com/3290041.js?file=ex35.java" xml:space="preserve"> </script><noscript id="ex35.java">
+    <pre class="java" xml:space="preserve">// start the transaction
+Transaction transaction = client.openTransaction();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+we reference the same transaction in every <strong>write()</strong> call we make:</p><script src="https://gist.github.com/3290041.js?file=ex36.java" xml:space="preserve"> </script><noscript id="ex36.java">
+    <pre class="java" xml:space="preserve">// load each document in the same transaction
+mgr.write(uri, metadata, doc, transaction);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">None
+of the changes are committed (or globally visible) until we later
+call <strong>commit</strong>():</p><script src="https://gist.github.com/3290041.js?file=ex37.java" xml:space="preserve"> </script><noscript id="ex37.java">
+    <pre class="java" xml:space="preserve">// Commit the transaction
+transaction.commit();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Go
+ahead and populate the database by running the program. If for some
+reason the transaction gets stalled (for example, due to early
+program termination), see <a href="//docs.marklogic.com/guide/admin/hosts#id_26723">Rolling Back
+a Transaction</a> for instructions on how to remedy the
+problem.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">For
+loading larger amounts of data, I recommend checking out <a href="/learn/5-minute-infostudio-walkthrough">
+Information Studio</a>, which lets you efficiently load large
+numbers of documents asynchronously, automatically dividing them up
+into appropriately sized chunks for loading.</p></ml:page>

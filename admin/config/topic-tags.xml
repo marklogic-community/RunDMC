@@ -1,5 +1,0 @@
-<!-- Included in many of the form configs in ./forms -->
-<ml:topic-tag form:label="Topic for Discovery"
-              form:values="_ etl ide search connectors deployment getting-started performance xquery"/>
-         <!-- form:repeating="yes"/>
-              TODO: Add support for repeating selection boxes. -->

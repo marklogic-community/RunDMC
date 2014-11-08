@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+    <h1>Choose a new password</h1>
+
+    <form method="post" action="/set-password" id="signup-form" enctype="application/x-www-form-urlencoded">
+    <span style="clear: both" id="signup-error"></span>
+    <fieldset>
+        <ml:if-session>
+<!-- Enable when we can validate it?
+            <div class="signup-form-row">
+                <label class="signup-form-label" for="s_old_password">Current password</label>
+                <input class="password required" id="s_old_password" name="s_old_password" value="" type="password"/>
+            </div>
+-->
+        </ml:if-session>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="s_password">Password</label>
+            <input class="password required" id="s_password" name="s_password" value="" type="password"/>
+            <!--
+            <div class="password-meter" style="float: right">
+                <div class="password-meter-message">&#160;</div>
+                <div class="password-meter-bg">
+                    <div class="password-meter-bar"></div>
+                </div>
+            </div>
+            -->
+        </div>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="s_password_confirm">Confirm password</label>
+            <input id="s_password_confirm" name="s_password_confirm" value="" type="password"/>
+        </div>
+        <div class="signup-form-row">
+            <label class="signup-form-label" for="signup-submit"> </label>
+            <input class="button" href="#" value="Set password" id="signup-submit" type="submit"/>
+        </div>
+        <ml:reset-hidden-fields/>
+    </fieldset>
+  </form>
+    <script xml:space="preserve">
+        
+        $(document).ready(function() {
+
+            $('#signup-form').validate({
+
+                "errorClass": "signup-form-error",
+
+                "rules": {
+                    s_password: {
+                        minlength: 6
+                    },
+                    s_password_confirm: {
+                        equalTo: "#s_password"
+                    }
+                }
+            });
+        });
+        
+    </script>
+
+</ml:page>

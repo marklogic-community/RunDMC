@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+          <h1>Developer License</h1>
+
+          <h3 id="">Enterprise NoSQL Power for Developers!</h3>
+
+          <p>
+          <ul>
+      <li>Up to 1TB of data</li>
+      <li>As big a cluster as you need</li>
+      <li>For development and unit testing</li>
+    </ul>
+          </p>
+
+	<p>The Developer License is free to all who <a href="/people/signup">sign up and join</a> the MarkLogic developer community.
+        It provides all MarkLogic capabilities including the Universal index, ACID transactions, REST and Java APIs, ODBC connector, semantics, clustering, 
+        high-availability and disaster-recovery features. It may not be used for production. It has a 6 month time limit and new licenses may be requested on expiration. 
+	</p>
+	<button style="margin-left: 15px; float: right" class="green" data-url="/products">Download Now</button>
+          
+          <p><strong>How do you get a key?</strong>
+            After you <a href="/products">download</a>, install, and start up MarkLogic, browse to the <a href="http://localhost:8001/">admin interface</a> 
+             and <a href="http://localhost:8001/license.xqy">request a Developer License</a> directly from within the interface. (If you are running 
+            MarkLogic on a host other than localhost, replace the <i>localhost</i> name in these links accordingly.)</p>
+
+          For full details, see the <a href="/eula">click-through license agreement</a> when you request a Developer License.
+
+          <h3>Frequently Asked Questions about the Developer License</h3>
+          
+          <p><strong>Q.  What features are available in the Developer License?</strong></p>
+          <p>A.  The Developer License provides all MarkLogic features, including Search HA/DR/Replication, 
+                    Government-grade Security, Alerting, Location Services, Geospatial indexing and search, Semantics,
+                    Tiered Storage, and Transactions.</p>
+<!--
+including clustering, replication, 
+            failover, alerting, location services, geospatial indexing and search, and semantics.  You can build a cluster 
+            and then load, search, and analyze all of your data.</p>
+-->
+
+          <p><strong>Q.  Can the Developer License be used in a VM or cloud (like Amazon ec2)?</strong></p>
+          <p>A.  Yes!</p>
+
+          <p><strong>Q.  Can I store more than 1TB of data?</strong></p>
+	      <p>A.  Yes. If you need additional capacity, please contact <a href="mailto:more@marklogic.com">MarkLogic</a>.</p>
+
+          <p><strong>Q.  What do I do when my 6 months runs out?</strong></p>
+	      <p>A.  You may request a new license at that time.</p>
+
+          <p><strong>Q.  How do I get support for the Developer License?  </strong></p>
+          <p>A.  Free, community-based support can be found on the developer community website, in <a href="/qa">Q &amp; A</a>, as well as 
+            the <a href="/discuss">mailing list</a>. Beyond that, please also see the <a href="//www.marklogic.com/services/developer-training-and-support">Developer Support Program</a> we offer.</p>
+
+          <p><strong>Q.  Can I distribute copies of MarkLogic or the Developer License?</strong></p>
+          <p>A. Users should be directed to download their own copy of MarkLogic from our <a href="/products">download page</a> and they should 
+                acquire their own license.  (You may not distribute MarkLogic Server binary or any MarkLogic licenses without written permission from MarkLogic.)</p> 
+
+          <p><strong>Q. Can I build an application using the Developer License and sell that application?</strong></p>
+          <p>A. You can, but you can't distribute the MarkLogic Server binary (or any MarkLogic license) as part of that application without written permission from MarkLogic.</p>
+
+          <p><strong>Q.  Can I publish my work done with MarkLogic?</strong></p>
+          <p>A. We encourage you to share your work publicly, but note that you can not disclose, without MarkLogic prior written consent,
+                any performance or capacity statistics or the results of any benchmark test performed on MarkLogic.</p>
+
+          <p><strong>Q.  What happened to the Express and Academic Licenses?</strong></p>
+          <p>A.  MarkLogic no longer issues Express or Academic licenses. We encourage you to use the Free Developer license <!-- or hourly AMI --> as a replacement.
+                (See also the <a href="//www.marklogic.com/pricing">pricing</a> page for other choices).</p>
+
+          <p><strong>Q.  Where can I ask additional questions?</strong></p>
+          <p>A. You can use the comment form at the bottom of this page.</p>
+
+
+</ml:page>

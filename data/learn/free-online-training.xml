@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+          <h1>Training from MarkLogic University</h1>
+
+<p>MarkLogic University provides a variety of courses to enable developers, administrators, project managers and architects to take full advantage of the benefits of MarkLogic products. Courses are designed with a mix of 50% presentation and 50% hands-on so that participants walk away with a firm grasp and practical knowledge of the product.  See the current schedule on the left side of this page.</p>
+
+<p>MarkLogic also provides a <a href="//www.marklogic.com/services/developer-training-and-support">Developer Training &amp; Support package</a>.
+
+<p>Beyond these offerings, MarkLogic University also provides the following free on-demand introducutory classes</p>
+
+  <h3>Free Online Training Courses</h3>
+
+    <!-- <ml:document-list type="OnlineTraining"/> -->
+
+    <ml:document-table>
+        <ml:doc path="/learn/free-online-training/intro.xml"/>
+        <ml:doc path="/learn/free-online-training/java-api.xml"/>
+        <ml:doc path="/learn/free-online-training/content-pump.xml"/>
+        <ml:doc path="/learn/free-online-training/bi-tools-interface.xml"/>
+        <ml:doc path="/learn/free-online-training/data-viz-widgets.xml"/>
+        <ml:doc path="/learn/free-online-training/rest-api.xml"/>
+        <ml:doc path="/learn/free-online-training/get-to-know-semantics.xml"/>
+    </ml:document-table>
+
+</p></ml:page>

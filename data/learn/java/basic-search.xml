@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Basic Search</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+that we've populated our database, let's start taking advantage of
+MarkLogic's real power: search/query. The first step to creating
+and executing queries is to get your hands on a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/QueryManager.html">
+QueryManager</a> instance, which our DatabaseClient instance is
+happy to provide:</p><script src="https://gist.github.com/3290041.js?file=ex38.java" xml:space="preserve"> </script><noscript id="ex38.java">
+    <pre class="java" xml:space="preserve">// create a manager for searching
+QueryManager queryMgr = client.newQueryManager();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">All
+of the sample programs referred to in this section begin with the
+exact line of code above.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+What's the difference between search and query? For MarkLogic,
+there's no difference except in how we use the terms. A
+<em>query</em> is a search
+specification, and a <em>search</em>
+is the execution of a query.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+usage is reflected in how you perform a search:</p><script src="https://gist.github.com/3290041.js?file=ex39.java" xml:space="preserve"> </script><noscript id="ex39.java">
+    <pre class="java" xml:space="preserve">// run the search
+queryMgr.search(query, resultsHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The <strong>search()</strong>
+method executes the
+<code>query</code> that you give it, sending the results to
+the <code>resultsHandle</code> you provide.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">So
+how do we create a query? First we have to decide which of the
+three kinds of queries we want:</p><table><thead>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<th rowspan="1" colspan="1">
+<p>Kind of query</p>
+</th>
+	<th rowspan="1" colspan="1">
+<p>What it does</p>
+</th>
+      </tr>
+    </thead><tbody>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p> key/value</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>finds documents by JSON key/value, or by XML element or attribute value</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p> string</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>finds documents using a search string</p>
+</td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p> query by example <br/> (QBE)</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>finds 'documents that look like this' using criteria that resemble the structure of documents in your database.
+</p></td>
+      </tr>
+      <tr xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<td rowspan="1" colspan="1">
+<p> structured query</p>
+</td>
+	<td rowspan="1" colspan="1">
+<p>finds documents according to an explicit hierarchy of conditions</p>
+</td>
+      </tr>
+    </tbody></table><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Each
+of these is modeled by the <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/QueryDefinition.html">
+QueryDefinition</a> interface and its sub-interfaces:</p><ul>
+    <li>
+QueryDefinition
+<ul>
+	<li> KeyValueQueryDefinition</li>
+	<li> StringQueryDefinition</li>
+	<li> RawQueryByExampleDefinition</li>
+	<li> StructuredQueryDefinition</li>
+      </ul>
+</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+get one of these, you start by asking your query manager for a
+query instance. Let's start with a JSON key/value search.</p><h3 id="find-json-documents-by-key/value"><a href="#find-json-documents-by-key/value">
+Find JSON documents by
+key/value</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+up <em>Example_14_SearchJSONKeyValue.java</em>.
+Right after securing our QueryManager, we ask it for an initial
+instance of <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/KeyValueQueryDefinition.html">
+KeyValueQueryDefinition</a>:</p><script src="https://gist.github.com/3290041.js?file=ex40.java" xml:space="preserve"> </script><noscript id="ex40.java">
+    <pre class="java" xml:space="preserve">KeyValueQueryDefinition query = queryMgr.newKeyValueDefinition();</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Next,
+we make it our own by adding a specific key/value criterion. Let's
+find all the conference speakers who work for MarkLogic—in other
+words, all the JSON documents that have this key/value pair:
+{"afilliation": "MarkLogic"}.</p><script src="https://gist.github.com/3290041.js?file=ex41.java" xml:space="preserve"> </script><noscript id="ex41.java">
+    <pre class="java" xml:space="preserve">query.put(queryMgr.newKeyLocator("affiliation"),"MarkLogic");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Key/value query instances are instances of java.util.Map with a single
+name/value criterion.  To specify a JSON key, we use our query manager's
+<strong>newKeyLocator()</strong> method.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We're
+done constructing the query, but before we can run the search we
+need to specify a handle for receiving the search results (just
+like we needed to specify handles for receiving document content
+from the server). In this case, we'll use a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/io/SearchHandle.html">
+SearchHandle</a>, which is tailor-made for handling search
+results:</p><script src="https://gist.github.com/3290041.js?file=ex42.java" xml:space="preserve"> </script><noscript id="ex42.java">
+    <pre class="java" xml:space="preserve">// create a handle for the search results
+SearchHandle resultsHandle = new SearchHandle();
+ 
+// run the search
+queryMgr.search(query, resultsHandle);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+SearchHandle class encapsulates one page of search results. We'll
+look more deeply at SearchHandle and how to process search results
+later, but for now, let's offload the result-processing to some of
+our tutorial's utility code (in <em>TutorialUtil.java</em>):</p><script src="https://gist.github.com/3290041.js?file=ex43.java" xml:space="preserve"> </script><noscript id="ex43.java">
+    <pre class="java" xml:space="preserve">// Retrieve and display the documents in this result set
+TutorialUtil.displayJSONResultDocs(resultsHandle, client);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the first 10 matching JSON documents printed to
+the console. (In this example, the utility code processed the
+result set and went back to the server for each JSON document.)</p><h3 id="find-xml-documents-by-element-value"><a href="#find-xml-documents-by-element-value">
+Find XML documents by element
+value</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Take
+a look at <em>Example_15_SearchElementValue.java</em>.
+Here too we're using a key/value query, but this time, rather than
+using a JSON key, we're using an element name:</p><script src="https://gist.github.com/3290041.js?file=ex44.java" xml:space="preserve"> </script><noscript id="ex44.java">
+    <pre class="java" xml:space="preserve">// create a search definition
+KeyValueQueryDefinition query = queryMgr.newKeyValueDefinition();
+query.put(queryMgr.newElementLocator(new QName("PERSONA")),"KING OF FRANCE");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above query will find all Shakespeare plays in which the King of
+France plays a role. To specify the "PERSONA" element name, we use
+our query manager's <strong>newElementLocator()</strong> method.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Go
+ahead and run the program to see the list of matching document
+URIs.</p>
+
+<h3 id="find-xml-documents-using-query-by-example"><a href="#find-xml-documents-using-query-by-example">Find XML documents using a query by example</a></h3>
+<p>
+Open up <em>Example_15_SearchQBE.java</em>.  Here we're going to look for documents with a person in them who is described as
+a <em>brother</em>. We can draw up a simple XML example of what this would look like, noting that inside the PERSONA element, we
+look for the word <em>brother</em>.
+</p>
+<script src="https://gist.github.com/eedeebee/8746163.js" xml:space="preserve"></script>
+Query by example is a powerful, yes easy syntax to learn for expressing a wide variety of searches.  This 
+example is in XML, but there is JSON syntax as well as you will see next.
+
+<h3 id="find-json-documents-using-query-by-example"><a href="#find-json-documents-using-query-by-example">Find JSON documents using a query by example</a></h3>
+<p>
+Open up <em>Example_15_SearchQBE_JSON.java</em>.  Here we are looking for plenary talks.
+</p>
+<script src="https://gist.github.com/eedeebee/8748419.js" xml:space="preserve"></script>
+
+<h3 id="find-documents-using-a-search-string"><a href="#find-documents-using-a-search-string">Find documents using a search string</a></h3>
+<p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+up <em>Example_16_SearchString.java</em>. This time
+we're using a <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/StringQueryDefinition.html">
+StringQueryDefinition</a>:</p><script src="https://gist.github.com/3290041.js?file=ex45.java" xml:space="preserve"> </script><noscript id="ex45.java">
+    <pre class="java" xml:space="preserve">// create a search definition
+StringQueryDefinition query = queryMgr.newStringDefinition();
+query.setCriteria("index OR Cassel NEAR Hare");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">After grabbing an initial string query
+instance from our query manager, we specify the search text using
+its <strong>setCriteria</strong>()
+method. In a real-world search application, you'd often insert
+user-supplied text here (what the user types in the search box). In
+this case, our string query is "<code>index OR Cassel NEAR
+Hare</code>". This will find
+documents (regardless of format) that either contain the word
+"index" or have the word "Cassel" appearing near the word "Hare".
+What this illustrates is that even a "simple search" can be quite
+powerful using MarkLogic's default search configuration (which are
+called search <em>options</em>).
+Later on, we'll see a couple examples of how to customize search
+options.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the first 10 search results, each of which
+includes snippets of text that matched the query.</p>
+
+<h3 id="get-another-page-of-search-results"><a href="#get-another-page-of-search-results">
+Get another page of search
+results</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_17_SearchWithPageSize.java</em>.
+This program is identical to the previous one, except in this case
+we want to return a different subset of the results. All the
+previous examples returned the first 10 most-relevant results. Here
+we're asking for the <em>third
+5</em> most relevant results. In other words, we're using a
+smaller page size (5 results per page) and asking for the third
+page of results. First we store our desired page size in a
+variable:</p><script src="https://gist.github.com/3290041.js?file=ex46.java" xml:space="preserve"> </script><noscript id="ex46.java">
+    <pre class="java" xml:space="preserve">public static int PAGE_SIZE = 5;</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Then
+we set the page size on our query manager:</p><script src="https://gist.github.com/3290041.js?file=ex47.java" xml:space="preserve"> </script><noscript id="ex47.java">
+    <pre class="java" xml:space="preserve">// Set page size to 5 results
+queryMgr.setPageLength(PAGE_SIZE);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To specify which page of results we want,
+i.e. where we want the search results to begin, we use the
+<strong>search()</strong>
+method's third argument
+(<code>start</code>):</p><script src="https://gist.github.com/3290041.js?file=ex48.java" xml:space="preserve"> </script><noscript id="ex48.java">
+    <pre class="java" xml:space="preserve">// get the 3rd page of search results
+int pageNum = 3;
+int start = PAGE_SIZE * (pageNum - 1) + 1;
+ 
+// get search results starting with the nth result
+queryMgr.search(query, resultsHandle, start);</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to see the search results starting at the 11th
+result.</p><h3 id="find-documents-based-on-their-properties"><a href="#find-documents-based-on-their-properties">
+Find documents based on their
+properties</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Open
+<em>Example_18_SearchProperties.java</em>. Here
+we see our first example of a StructuredQueryDefinition. Most
+structured queries are only useful in conjunction with modified
+search options (see "Custom search" below). But using one is also
+necessary for a basic search against document properties:</p><script src="https://gist.github.com/3290041.js?file=ex49.java" xml:space="preserve"> </script><noscript id="ex49.java">
+    <pre class="java" xml:space="preserve">// get a structured query builder
+StructuredQueryBuilder qb = queryMgr.newStructuredQueryBuilder();
+ 
+// Find all documents that have a property value containing the word "fish"
+StructuredQueryDefinition query = qb.properties(qb.term("fish"));</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Run
+the program to get a list of all the matching documents (photos of
+fish).</p><h3 id="search-within-a-directory"><a href="#search-within-a-directory">
+Search within a
+directory</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Regardless of what kind of query it is, every query implements the
+following three methods specified by <a href="//docs.marklogic.com/javadoc/client/index.html?com/marklogic/client/query/QueryDefinition.html">
+QueryDefinition</a>:</p><ul>
+    <li>
+setDirectory(),</li>
+    <li>
+setCollections(),
+and</li>
+    <li>
+setOptionsName()</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">(as
+well as their get* counterparts). The first two—<strong>setDirectory()</strong> and <strong>setCollections()</strong>—allow you to restrict
+a query to a particular directory or set of collections. The last
+one, <strong>setOptionsName()</strong>, lets
+you associate a query with a named set of custom search options
+stored on the server. (See "Custom search" below.)</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<em>Example_19_SearchDirectory.java</em> shows
+an example of the first method:</p><script src="https://gist.github.com/3290041.js?file=ex50.java" xml:space="preserve"> </script><noscript id="ex50.java">
+    <pre class="java" xml:space="preserve">// Restrict the search to a specific directory
+query.setDirectory("/images/2012/02/14/");
+ 
+// empty search defaults to returning all results
+query.setCriteria("");</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">When you run the program, it will search
+only those documents in the "<code>/images/2012/02/14/</code>" directory.</p><h3 id="search-within-a-collection"><a href="#search-within-a-collection">
+Search within a
+collection</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Similarly, the query in <em>Example_20_SearchCollection.java</em>
+restricts a search to a collection, thanks to the <strong>setCollections()</strong> method:</p><script src="https://gist.github.com/3290041.js?file=ex51.java" xml:space="preserve"> </script><noscript id="ex51.java">
+    <pre class="java" xml:space="preserve">// Restrict the search to the "shakespeare" collection
+query.setCollections("shakespeare");
+ 
+// Search for the term "flower"
+query.setCriteria("flower");
+</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">When
+you run the program, the query will return only the matches that it
+finds in the "shakespeare" collection.</p></ml:page>

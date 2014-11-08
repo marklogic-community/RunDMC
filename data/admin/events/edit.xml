@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Event Edit</h1>
+  <p/>
+  <p>NOTE: Changing the status to &quot;Published&quot; will automatically make this the most recent post (by resetting the created date).</p>
+  <ml:auto-form template="Event.xml"/>
+</ml:page>

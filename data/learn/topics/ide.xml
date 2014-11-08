@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" disable-comments="no" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <ml:short-description>Topics</ml:short-description>
+  <h1>Debugging, editing, and profiling tools</h1>
+  <ml:guide-list>
+    <ml:doc path="/code/cq.xml"/>
+    <ml:doc path="/code/dq.xml"/>
+  </ml:guide-list>
+</ml:page>

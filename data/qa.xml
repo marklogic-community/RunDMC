@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <ml:short-description>Q &amp; A</ml:short-description>
+  <h1>Questions and Answers</h1>
+  <div class="intro">
+    <p>Below are recent MarkLogic-tagged questions on the popular Stack Overflow Q&amp;A site.  If you'd like to be
+      keep up with new questions, you can subscribe to this
+      <a href="http://stackoverflow.com/feeds/tag/marklogic" target="_blank">RSS feed
+        <img height="12" src="/images/i_rss.png" style="padding-left: 2px; padding-bottom: 4px" width="12"/></a>.
+      If you prefer to be notified by email, you can
+      <a href="http://stackoverflow.com/users/login">log in</a> and create a
+      <a href="http://stackexchange.com/filters/new">Stack Exchange filter</a>
+      based on the <a href="http://stackoverflow.com/questions/tagged/marklogic">marklogic tag</a>.  (NB: You must be
+      logged into Stack Exchange to create a filter.  If you are not, the link above will give you a 404.)
+    </p>
+    <a class="button" href="http://stackoverflow.com/questions/ask">Ask a Question</a>
+    <p/>
+    <p>MarkLogic also runs an active
+      <a href="/discuss">developer mailing list</a>.  You must <a href="/mailman/listinfo/general">subscribe</a> to ask
+      questions on that list.  You can browse and search the list at
+      <a href="http://marklogic.markmail.org">MarkMail</a>.
+    </p>
+  </div>
+  <ml:stackoverflow-reflector/>
+</ml:page>

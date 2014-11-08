@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  <h1>MarkLogic Server 4.2 System Requirements </h1>
+<p>This document lists the supported platforms, memory requirements, 
+and disk space requirements to install MarkLogic Server.</p>
+<h2>Supported Platforms</h2>
+<p>MarkLogic Server 4.2 is supported on the following platforms:</p>
+<ul>
+    <li>Microsoft Windows Server 2008 (x86), Microsoft Windows 2003 
+		Server (x86), Microsoft Windows XP SP2, Microsoft Windows 
+		Vista 32-bit Edition (x86)*</li>
+    <li>Microsoft Windows Server 2008 (x64), Windows 2003 
+		Server 64-bit Edition (x64), Windows Vista 64-bit 
+		Edition (x64)*</li>
+    <li>Sun Solaris 10 (64-bit SPARC)</li>
+    <li>Sun Solaris 10 (x64)</li>
+    <li>Red Hat Enterprise Linux 5 (x86)** ***</li>
+    <li>Red Hat Enterprise Linux 5 (x64)** *** ****</li>
+    <li>CentOS 5 (x64)** ***</li>
+    <li>SUSE Linux Enterprise Server 11 (x64)** ***</li>
+    <li>Mac OS X 10.6*****</li>
+  </ul>
+<p> </p>
+<p>* Microsoft Windows Vista is supported for development only. <br/>
+   If MarkLogic Server fails to start up on Windows with the error 'the application failed to initialize properly (0xc0150002)', then a dependency is missing from your environment and you need to download and install one of the following DLLs: <br/>
+32-bit versions of Windows require the DLL at the following link: <a href="http://www.microsoft.com/downloads/details.aspx?familyid=200B2FD9-AE1A-4A14-984D-389C36F85647&amp;displaylang=en">http://www.microsoft.com/downloads/details.aspx?familyid=200B2FD9-AE1A-4A14-984D-389C36F85647&amp;displaylang=en</a>. <br/>
+64-bit versions of Windows require the following DLL: <a href="http://www.microsoft.com/downloads/details.aspx?familyid=eb4ebe2d-33c0-4a47-9dd4-b9a6d7bd44da&amp;displaylang=en">http://www.microsoft.com/downloads/details.aspx?familyid=eb4ebe2d-33c0-4a47-9dd4-b9a6d7bd44da&amp;displaylang=en</a>.
+</p>
+<p>** The deadline I/O scheduler is required on Red Hat Linux platforms. The deadline scheduler is optimized to ensure efficient disk I/O for multi-threaded processes, and MarkLogic Server can have many simultaneous threads. For information on the deadline scheduler, see the Red Hat documentation (for example, 
+ <a href="http://www.redhat.com/magazine/008jun05/features/schedulers/" target="_blank">http://www.redhat.com/magazine/008jun05/features/schedulers/</a>).</p>
+<p>
+  *** The <code>redhat-lsb</code>, <code>glibc</code>, and <code>gdb</code> packages are 
+  required on Red Hat Linux. Additionally, on 64-bit Red Hat Linux, both 
+  the 32-bit and the 64-bit <code>glibc</code> packages are required.
+</p>
+<p>
+  ****Red Hat Linux 5 (x64) is also supported in a VMWare ESX 3.0.2, 
+  ESX 3.5.3, or ESX 4.0 (installed on bare metal) environment.
+  </p>
+<p>
+	  *****Mac OS X is supported for development only. 
+	  Conversion (Office and PDF) and entity enrichment are not 
+	  available on Mac OS X. Mac OS X 10.6 (Snow Leopard) on a 64-bit 
+          capable processor is required 
+          (<a href="http://support.apple.com/kb/HT3696" target="_blank">http://support.apple.com/kb/HT3696</a>).
+</p>
+<h2>Memory and Disk Space Requirements</h2>
+<p>Before installing the software, be sure that your system meets the 
+         following minimum requirements:</p>
+<ul>
+    <li>512 MB of system memory, minimum. 2 GB or more recommended, 
+         depending on database size.</li>
+    <p>The first time it runs, MarkLogic Server automatically configures 
+         itself to the amount of memory on the system, reserving as much as 
+         it can for its own use. If you need to change the default 
+         configuration, you can manually override these defaults at a later 
+         time using the Admin Interface.</p>
+    <li>Three times the disk space of the total forest size. 
+         Specifically, each forest on a filesystem requires its filesystem to 
+         have at least 3 times the forest size in disk space. This translates 
+         to three times the disk space of the source content after it is 
+         loaded.</li>
+    <p>For example, if you plan on loading 10 GB of content into the 
+             database, reserve at least 30 GB of disk space.</p>
+    <li>On UNIX systems, swap space at least equal to the amount of 
+         physical memory on the machine. Swap space equal to twice the 
+         amount of physical memory is highly recommended.</li>
+    <p>For example, if you have a UNIX machine with 10 GB of memory, you 
+         should ideally configure the swap space to be 20 GB (and at least 
+         10 GB). This is true on Windows systems also, but the system is 
+          normally set up to grow the swap (page) file as needed.</p>
+    <li>On Linux systems, MarkLogic recommends setting Linux Huge Pages 
+         to 3/8 the size of your physical memory. For details on setting up 
+         Huge Pages, see <a href="http://magazine.redhat.com/2007/05/29/how-do-i-set-up-hugepages-in-red-hat-enterprise-linux-4/" target="_blank">http://magazine.redhat.com/2007/05/29/how-do-i-set-up-hugepages-in-red-hat-enterprise-linux-4/</a>. 
+         </li>
+    <p>If you have Huge Pages set up on a Linux system, your swap space 
+         on that machine should be twice the size of your physical memory 
+         minus the size of your Huge Page (because Linux Huge Pages are not 
+         swapped). For example, if you have 64GB of physical memory, and if 
+         you have Huge Pages set to 24 GB, then you need swap space of 
+         80 GB ([64 - 24] x 2).
+         </p>
+    <p>At system startup on Linux machines, MarkLogic Server logs a 
+         message to the <code>ErrorLog.txt</code> file showing the 
+        Huge Page size, and the message indicates if the size is below the
+        recommended level.
+         </p>
+  </ul>
+</ml:page>

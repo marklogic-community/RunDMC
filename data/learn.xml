@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <h2>Tutorials</h2>
+  <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about <a href="/learn/free-online-training">Free Training</a> offerings. 
+  </p>
+    <p>The MarkLogic support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
+  
+  <!--
+  <ul>
+    <li><a href="#java">Java</a></li>
+    <li><a href="#xquery">XQuery</a></li>
+    <li><a href="#getting-started">Getting started</a></li>
+  </ul>
+  -->
+<a name="getting-started"></a>
+  <h3>Featured tutorials</h3>
+  <table style="width: 100%">
+    <thead>
+      <tr>
+	<th style="width: 50%" rowspan="1" colspan="1">Java</th>
+	<th style="width: 50%" rowspan="1" colspan="1">REST</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td rowspan="1" colspan="1">
+        <ul>
+	    <li><a href="/try/java/index">The Java API in 5 minutes</a>
+              <ul>
+		<li style="list-style-type: none">
+              Get a taste of what the code looks like.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/java">Learning the MarkLogic Java API</a>
+              <ul>
+		<li style="list-style-type: none">
+              Take a hands-on deep dive.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/java-pojos">Writing and Searching POJOs</a>
+              <ul>
+		<li style="list-style-type: none">
+              Learn how MarkLogic makes persisting &amp; searching POJOs a walk in the park.
+              </li>
+	      </ul>
+          </li>
+	  </ul>
+      </td>
+	<td rowspan="1" colspan="1">
+        <ul>
+	    <li><a href="/try/rest/index">The REST API in 5 minutes</a>
+            <ul></ul><ul>
+		<li style="list-style-type: none">
+              </li>
+		<li style="list-style-type:none;">
+              Get a taste of the REST API without getting your hands too dirty.
+              </li>
+	      </ul></li>
+	    <li><a href="/learn/rest">Learning the MarkLogic REST API</a>
+              <ul>
+		<li style="list-style-type: none">
+              This is a hands-on deep dive into managing, searching, and querying data via MarkLogic's REST API.
+              </li>
+	      </ul>
+          </li>
+	  </ul>
+      </td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+	<th rowspan="1" colspan="1">XQuery</th>
+	<th rowspan="1" colspan="1">Loading data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td rowspan="1" colspan="1">
+        <ul>
+	    <li><a href="/learn/get-started-apps">Developing XQuery Applications</a>
+              <ul>
+		<li style="list-style-type: none">
+              Construct your first simple XQuery application.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/try/ninja/index">Interactive XQuery playground</a>
+              <ul>
+		<li style="list-style-type: none">
+              Experiment with XQuery in MarkLogic from the comfort of your own browser.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/2009-07-search-api-walkthrough">5-minute guide to the Search API</a>
+              <ul>
+		<li style="list-style-type: none">
+              Learn hands-on all the building blocks of a powerful search application.
+              </li>
+	      </ul>
+          </li>
+	  </ul>
+      </td>
+	<td rowspan="1" colspan="1">
+        <ul>
+	    <li><a href="/products/mlcp">MarkLogic Content Pump</a>
+              <ul>
+		<li style="list-style-type: none">
+              Download and get started using this command-line tool for moving data into and out of MarkLogic.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/5-minute-infostudio-walkthrough">Information Studio walk-through</a>
+              <ul>
+		<li style="list-style-type: none">
+              Load and transform data using MarkLogic's extensible, browser-based Information Studio.
+              </li>
+	      </ul>
+          </li>
+	  </ul>
+      </td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+	<th rowspan="1" colspan="2">Semantics</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td rowspan="1" colspan="2">
+        <ul>
+	    <li><a href="/learn/semantics-exercises">Semantics Exercises</a>
+              <ul>
+		<li style="list-style-type: none">
+            Learn via a series of hands-on challenges.
+              </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/semantic-infopanel"> Building a Semantic Infopanel in App Builder </a>
+              <ul>
+		<li style="list-style-type: none"> How to display facts based on the current search result </li>
+	      </ul>
+          </li>
+	    <li><a href="/learn/semantic-constraint"> Improving Recall with a Semantic Constraint </a>
+              <ul>
+		<li style="list-style-type: none"> How to go beyond text-based search </li>
+	      </ul>
+          </li>
+	  </ul>
+      </td>
+      </tr>
+    </tbody>
+  </table>
+  <!--
+  <h4>Java</h4>
+  <ul>
+    <li><a href="/try/java/index">The Java API in 5 minutes</a></li>
+    <li><a href="/learn/java">Learning the MarkLogic Java API</a></li>
+  </ul>
+  <h4>REST</h4>
+  <ul>
+    <li><a href="/try/rest/index">The REST API in 5 minutes</a></li>
+    <li><a href="/learn/rest">Learning the MarkLogic REST API</a></li>
+  </ul>
+  <h4>XQuery</h4>
+  <ul>
+    <li><a href="/try/rest/index">The REST API in 5 minutes</a></li>
+    <li><a href="/learn/rest">Learning the MarkLogic REST API</a></li>
+  </ul>
+  <h4>Loading and processing data</h4>
+  <ul>
+    <li><a href="/try/rest/index">The REST API in 5 minutes</a></li>
+    <li><a href="/learn/rest">Learning the MarkLogic REST API</a></li>
+  </ul>
+  -->
+<!--
+<a name="java"></a>
+  <h3>Java</h3>
+<a name="xquery"></a>
+-->
+  <h3>Other tutorials</h3>
+  <ml:document-list type="Tutorial"/>
+  <h3>Videos</h3>
+  <ml:document-table type="Video">
+    <ml:doc path="/learn/video/enterprise-nosql.xml"/>
+    <ml:doc path="/learn/video/markmail.xml"/>
+    <ml:doc path="/learn/video/arch-overview.xml"/>
+    <ml:doc path="/learn/video/social-media-demo.xml"/>
+    <ml:doc path="/learn/video/getting-started-with-ec2.xml"/>
+    <ml:doc path="/learn/video/getting-started-with-cf.xml"/>
+    <ml:doc path="/learn/video/rest-api-setup.xml"/>
+    <ml:doc path="/learn/video/app-services.xml"/>
+    <ml:doc path="/learn/video/app-services-pt2.xml"/>
+    <ml:doc path="/learn/video/qconsole.xml"/>
+    <ml:doc path="/learn/video/qconsole-v7.xml"/>
+    <ml:doc path="/learn/video/nagios.xml"/>
+  </ml:document-table>
+</ml:page>

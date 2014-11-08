@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal"><ml:tutorial root="parent"/><h1>Basic Search</h1><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+that we've populated our database, let's start taking advantage of
+MarkLogic's real power: search/query. What's the difference between
+search and query? For MarkLogic, there's no difference except in
+how we use the terms. A <em>query</em> is a search specification, and a
+<em>search</em> is the execution of
+a query.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+String and structured queries are executed using the <strong>/search</strong> endpoint. Key/value queries are
+executed using the <strong>/keyvalue</strong>
+endpoint.</p><h3 id="find-json-documents-by-key/value"><a href="#find-json-documents-by-key/value">
+Find JSON documents by
+key/value</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Start
+by finding all the conference talks by speakers who work for
+MarkLogic—in other words, all the JSON documents that have this
+key/value pair: {"afilliation": "MarkLogic"}. To do that, you use
+the <strong>/keyvalue</strong> endpoint:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/keyvalue?key=affiliation&amp;value=marklogic&amp;format=json" target="_blank">
+http://localhost:8011/v1/keyvalue?key=affiliation&amp;value=marklogic&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can also get the results back in XML format:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/keyvalue?key=affiliation&amp;value=marklogic" target="_blank">
+http://localhost:8011/v1/keyvalue?key=affiliation&amp;value=marklogic</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Regardless of which format you choose, the results include
+references to, and snippets of, the first 10 matching JSON
+documents.</p><h3 id="find-xml-documents-by-element-value"><a href="#find-xml-documents-by-element-value">
+Find XML documents by element
+value</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can also search by element value using the <strong>/keyvalue</strong> endpoint, but this time
+instead of the <strong>key</strong>
+parameter, you use the <strong>element</strong> parameter. Here you're searching
+for all Shakespeare plays that feature the King of France:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/keyvalue?element=PERSONA&amp;value=KING+OF+FRANCE" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/keyvalue?element=PERSONA&amp;value=KING+OF+FRANCE</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/keyvalue?element=PERSONA&amp;value=KING+OF+FRANCE&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/keyvalue?element=PERSONA&amp;value=KING+OF+FRANCE&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">If
+your XML documents use namespaces (unlike our sample Shakespeare
+docs), then you'll first need to use the <a href="//docs.marklogic.com/REST/PUT/v1/config/namespaces/*">/config/namespaces
+endpoint</a> to configure a namespace prefix binding.</p><h3 id="find-documents-using-a-search-string"><a href="#find-documents-using-a-search-string">
+Find documents using a search
+string</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+let's use the <strong>/search</strong>
+endpoint to perform a string search using the <strong>q</strong> parameter:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In
+either format, the search returns the first 10 results, each of
+which includes snippets of text that matched the query.</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">In a real-world search application, you'd
+often insert user-supplied text here (what the user types in the
+search box). In this case, the string query is "<code>index OR Cassel NEAR
+Hare</code>". This will find
+documents (regardless of format) that either contain the word
+"index" or have the word "Cassel" appearing near the word "Hare".
+What this illustrates is that even a "simple search" can be quite
+powerful using MarkLogic's default search configuration (which are
+called search <em>options</em>).
+Later on, we'll see a couple examples of how to customize search
+options.</p><h3 id="get-another-page-of-search-results"><a href="#get-another-page-of-search-results">
+Get another page of search
+results</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">All
+the previous examples returned the first 10 most-relevant results.
+Now let's get the <em>third 5</em>
+most relevant results. In other words, let's use a smaller page
+size (5 results per page) and ask for the third page of results.
+Use the <strong>pageLength</strong> parameter
+to override the default size (10), and the <strong>start</strong> parameter to indicate the index of
+the first result to return:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;pageLength=5&amp;start=11" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;pageLength=5&amp;start=11</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;pageLength=5&amp;start=11&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=index+OR+Cassel+NEAR+Hare&amp;pageLength=5&amp;start=11&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">Now
+the search results yield a maximum page size of 5, starting at the
+11th result (effectively the third page).</p><h3 id="find-documents-based-on-their-properties"><a href="#find-documents-based-on-their-properties">
+Find documents based on their
+properties</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+You've now seen string-based queries and key/value queries. One
+example of a <em>structured
+query</em> (the third kind of query) is what you need for
+searching properties (at least without defining a constraint
+option, which we'll be doing in the next section). To use a
+structured query, you POST it using either JSON or XML format.
+Copy, paste, and execute the following command:</p><script src="https://gist.github.com/3555546.js?file=ex09.sh" xml:space="preserve"> </script><noscript id="ex09.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-writer:x \
+  -d'{"query":{"properties-query":{"term-query":{"text":"fish"}}}}' \
+  -H "Content-type: application/json" \
+  'http://localhost:8011/v1/search?format=json'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">The
+above command uses a JSON-based structured query to find all photos
+of fish (searching the extracted image metadata for "fish"). Here's
+the same query using the XML format:</p><script src="https://gist.github.com/3555546.js?file=ex10.sh" xml:space="preserve"> </script><noscript id="ex10.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-writer:x \
+  -d'&lt;query xmlns="http://marklogic.com/appservices/search"&gt;&lt;properties-query&gt;&lt;term-query&gt;&lt;text&gt;fish&lt;/text&gt;&lt;/term-query&gt;&lt;/properties-query&gt;&lt;/query&gt;' \
+  -H "Content-type: application/xml" \
+  'http://localhost:8011/v1/search'</pre>
+  </noscript><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">You
+can also do this with a GET request, using the <strong>structuredQuery</strong> parameter with the
+(URL-encoded) structured query in either XML or JSON:</p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<a href="http://localhost:8011/v1/search?structuredQuery=%7b%22query%22:%7b%22properties-query%22:%7b%22term-query%22:%7b%22text%22:%22fish%22%7d%7d%7d%7d&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?structuredQuery=%7b%22query%22:%7b%22properties-query%22:%7b%22term-query%22:%7b%22text%22:%22fish%22%7d%7d%7d%7d&amp;format=json</a></p><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">This
+example hints at the richness of the query language as well as the
+complexity that string queries hide for you, using the default
+search grammar. For more details, see <a href="//docs.marklogic.com/guide/search-dev/search-api#id_53458">Using
+Structured Search</a> in the Search Developer's Guide.</p><h3 id="search-within-a-directory"><a href="#search-within-a-directory">
+Search within a
+directory</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">To
+search within a directory, use the <strong>directory</strong> parameter. Since the
+<strong>q</strong> parameter is absent, the
+following search will find <em>all</em> documents in the given
+directory:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?directory=/images/2012/02/14/" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?directory=/images/2012/02/14/</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?directory=/images/2012/02/14/&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?directory=/images/2012/02/14/&amp;format=json</a>
+(JSON)</li>
+  </ul><h3 id="search-within-a-collection"><a href="#search-within-a-collection">
+Search within a
+collection</a></h3><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+Similarly, the <strong>collection</strong>
+parameter restricts a search to a particular collection. This query
+finds all mentions of "flower" in the "shakespeare" collection:</p><ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=flower&amp;collection=shakespeare" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=flower&amp;collection=shakespeare</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=flower&amp;collection=shakespeare&amp;format=json" target="_blank" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+http://localhost:8011/v1/search?q=flower&amp;collection=shakespeare&amp;format=json</a>
+(JSON)</li>
+  </ul><p xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">We've
+now seen how to perform some basic searches. Now let's look more
+closely at the results format.</p></ml:page>

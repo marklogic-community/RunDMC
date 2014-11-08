@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  <ml:tutorial root="parent"/>
+  <h1>Custom search</h1>
+  <p>All
+of the search examples so far in this tutorial have used
+MarkLogic's default <em>query
+options</em> (interchangeably called "search options"). This may
+suffice for some basic applications, but most of the time you will
+end up wanting to provide custom options. Custom options let you do
+things like:</p>
+  <ul>
+    <li>
+define
+named <em>constraints</em>
+which can be
+used in string queries, such as "tag" in "flower
+tag:shakespeare"</li>
+    <li>
+enable
+<em>analytics</em>
+and
+<em>faceting</em>
+by identifying
+lexicons and range indexes from which to retrieve
+values</li>
+    <li>
+extend or alter
+the default search grammar</li>
+    <li>
+customize the
+structure of the search results, including snippeting and default
+pagination</li>
+    <li>
+control search
+options such as case sensitivity and ordering</li>
+  </ul>
+  <p>
+Options are grouped into named <em>option sets</em> on your REST API server.
+You can customize these either by updating the default option set,
+or by creating a new named option set.</p>
+  <h3 id="get-a-list-of-the-servers-option-sets"><a href="#get-a-list-of-the-servers-option-sets">
+Get a list of the server's option
+sets</a></h3>
+  <p>To
+see a list of all your server's option sets, make a GET request to
+the <strong>/config/query</strong>
+endpoint:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/config/query" target="_blank">http://localhost:8011/v1/config/query</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/config/query?format=json" target="_blank">http://localhost:8011/v1/config/query?format=json</a>
+(JSON)</li>
+  </ul>
+  <p>If
+you haven't added any custom options yet, then you'll see just one
+option set—the "default" option set.</p>
+  <p>XML
+response:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex14.xml" xml:space="preserve"> </script>
+  <noscript id="ex14.xml">
+    <pre class="xml" xml:space="preserve">&lt;rapi:query-options xmlns:rapi="http://marklogic.com/rest-api"&gt;
+  &lt;rapi:options&gt;
+    &lt;rapi:name&gt;default&lt;/rapi:name&gt;
+    &lt;rapi:uri&gt;/v1/config/query/default&lt;/rapi:uri&gt;
+  &lt;/rapi:options&gt;
+&lt;/rapi:query-options&gt;</pre>
+  </noscript>
+  <p>JSON
+response:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex15.json" xml:space="preserve"> </script>
+  <noscript id="ex15.json">
+    <pre class="json" xml:space="preserve">[{"name":"default","uri":"/v1/config/query/default"}]</pre>
+  </noscript>
+  <p>
+Whenever you run a search without explicitly specifying an option
+set (using the <strong>options</strong>
+request parameter), this is the option set that will be in
+effect.</p>
+  <h3 id="upload-custom-search-options"><a href="#upload-custom-search-options">
+Upload custom search
+options</a></h3>
+  <p>Only
+users with the "rest-admin" role can update option sets. Until now,
+all the examples in this tutorial have used the "rest-writer" user
+to connect to MarkLogic. Now, whenever you need to update options,
+you'll connect with the "rest-admin" user instead.</p>
+  <p>Let's start by building a constraint
+option. <em>Constraint</em>
+means something very specific in
+MarkLogic. Whenever a user types a phrase of the form
+<em>name</em><code>:</code><em>text</em> in their search string, they're using a
+constraint (assuming one has been defined for them). For example,
+they might type "author:melville" to constrain their search to
+documents authored by Herman Melville. But for this to have the
+intended behavior, a constraint named "author" must first be
+defined in the server's query options. For this tutorial, you're
+going to define a constraint that enables users to type things like
+"tag:shakespeare" and "tag:mlw12".</p>
+  <p>To
+create or replace an entire option set, use the PUT method against
+/config/query/<em>yourOptionsName</em>:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex16.sh" xml:space="preserve"> </script>
+  <noscript id="ex16.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X PUT \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"tag","collection":{"prefix":""}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>The
+above command connects as the rest-admin user and uploads a
+JSON-based options configuration named "tutorial". The option set
+defines one constraint named "tag":</p>
+  <script src="https://gist.github.com/3555546.js?file=ex17.json" xml:space="preserve"> </script>
+  <noscript id="ex17.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "collection": {
+                    "prefix": ""
+                },
+                "name": "tag"
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>There
+are a number of different kinds of constraints. In this case,
+you're using a "collection constraint". The "prefix" field is an
+optional collection tag prefix, which would be handy if you wanted
+to power multiple constraints via collection tags such as
+"author/shakespeare" and "state/california" using the prefixes
+"author/" and "state/", respectively. In this case, you're not
+doing that; you just want to constrain by the whole collection tag,
+so you pass an empty prefix ("").</p>
+  <p>The
+XML formulation of this option set is similar:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex18.xml" xml:space="preserve"> </script>
+  <noscript id="ex18.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="tag"&gt;
+    &lt;collection prefix=""/&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>In
+fact, you can see what the XML format looks like by retrieving the
+newly-created option set without the <strong>format</strong> parameter: <a href="http://localhost:8011/v1/config/query/tutorial" target="_blank">http://localhost:8011/v1/config/query/tutorial</a></p>
+  <p>For
+complete details on what structures are allowed in both the XML and
+JSON representations of query options, see:</p>
+  <ul>
+    <li>
+<a href="//docs.marklogic.com/guide/rest-dev/appendixa#chapter">
+JSON Query Options Reference</a></li>
+    <li>
+<a href="//docs.marklogic.com/guide/rest-dev/appendixb#chapter">
+XML Query Options Reference</a></li>
+  </ul>
+  <p>
+Confirm that two option sets are now available by getting the list
+again:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/config/query" target="_blank">http://localhost:8011/v1/config/query</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/config/query?format=json" target="_blank">http://localhost:8011/v1/config/query?format=json</a>
+(JSON)</li>
+  </ul>
+  <p>You should now see two option sets:
+<code>default</code>
+and <code>tutorial</code>.</p>
+  <h3 id="search-using-a-collection-constraint"><a href="#search-using-a-collection-constraint">
+Search using a collection
+constraint</a></h3>
+  <p>Now
+you'll make use of the new configuration and run a search using the
+"tag" constraint. To do that, call <strong>/search</strong> with the <strong>options</strong> parameter:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=flower+tag:shakespeare&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=flower+tag:shakespeare&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=flower+tag:shakespeare&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=flower+tag:shakespeare&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <p>The
+above query searches for occurrences of "flower" in the
+"shakespeare" collection.</p>
+  <h3 id="search-using-a-json-key-value-constraint"><a href="#search-using-a-json-key-value-constraint">
+Search using a JSON key value
+constraint</a></h3>
+  <p>The
+rest of the examples in this section include two steps:</p>
+  <ol>
+    <li>
+Update the server configuration</li>
+    <li>
+Run a query
+making use of the updated configuration</li>
+  </ol>
+  <p>
+You're going to keep using the "tutorial" options set, but rather
+than replacing it anew each time using PUT, you're going to
+incrementally add to it, using POST, which will append to the
+server's options. Run the following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex19.sh" xml:space="preserve"> </script>
+  <noscript id="ex19.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"company","value":{"json-key":"affiliation"}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>View
+the options to confirm that you've appended to (rather than
+replaced) them:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/config/query/tutorial" target="_blank">http://localhost:8011/v1/config/query/tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/config/query/tutorial?format=json" target="_blank">
+http://localhost:8011/v1/config/query/tutorial?format=json</a>
+(JSON)</li>
+  </ul>
+  <p>The
+command you ran above defined a JSON key value constraint called
+"company", backed by the "affiliation" JSON key:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex20.json" xml:space="preserve"> </script>
+  <noscript id="ex20.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "name": "company",
+                "value": {
+                    "json-key": "affiliation"
+                }
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>Since
+this is a <em>value constraint</em>,
+the searched-for value must match the affiliation exactly.</p>
+  <p>
+Alternatively, you could define the options using XML format:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex21.xml" xml:space="preserve"> </script>
+  <noscript id="ex21.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="company"&gt;
+    &lt;value&gt;
+      &lt;json-key&gt;affiliation&lt;/json-key&gt;
+    &lt;/value&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>Run
+the following search to find all conference talks given by
+MarkLogic employees and mentioning the word "engineer", making use
+of our newly-defined "company" constraint:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=engineer+company:marklogic&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=engineer+company:marklogic&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=engineer+company:marklogic&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=engineer+company:marklogic&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-an-element-value-constraint"><a href="#search-using-an-element-value-constraint">
+Search using an element value
+constraint</a></h3>
+  <p>Run
+the following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex22.sh" xml:space="preserve"> </script>
+  <noscript id="ex22.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"person","value":{"element":{"name":"PERSONA","ns":""}}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>Here
+we're defining another value constraint but against an element this
+time (&lt;PERSONA&gt;) instead of a JSON key:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex23.json" xml:space="preserve"> </script>
+  <noscript id="ex23.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "name": "person",
+                "value": {
+                    "element": {
+                        "name": "PERSONA",
+                        "ns": ""
+                    }
+                }
+            }
+        ]
+    }
+}
+</pre>
+  </noscript>
+  <p>Below
+is the same value constraint alternatively defined in XML. For the
+rest of the examples, we'll show both the JSON and XML
+representations.</p>
+  <script src="https://gist.github.com/3555546.js?file=ex24.xml" xml:space="preserve"> </script>
+  <noscript id="ex24.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="person"&gt;
+    &lt;value&gt;
+      &lt;element ns="" name="PERSONA"/&gt;
+    &lt;/value&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>Now
+you can search for the King of France directly in your query text,
+using the new "person" constraint:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=person:%22king+of+france%22&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=person:%22king+of+france%22&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=person:%22king+of+france%22&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=person:%22king+of+france%22&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-a-json-key-word-constraint"><a href="#search-using-a-json-key-word-constraint">
+Search using a JSON key word
+constraint</a></h3>
+  <p>Run
+the following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex25.sh" xml:space="preserve"> </script>
+  <noscript id="ex25.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"bio","word":{"json-key":"bio"}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>Here,
+instead of a value constraint, we're using a <em>word constraint</em> scoped within all JSON
+"bio" keys:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex26.json" xml:space="preserve"> </script>
+  <noscript id="ex26.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "name": "bio",
+                "word": {
+                    "json-key": "bio"
+                }
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>JSON
+word constraint configured using XML:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex27.xml" xml:space="preserve"> </script>
+  <noscript id="ex27.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="bio"&gt;
+    &lt;word&gt;
+      &lt;json-key&gt;bio&lt;/json-key&gt;
+    &lt;/word&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>
+Unlike a value constraint (which tests for the value of the key or
+element), a word constraint uses normal search-engine semantics.
+The search will succeed if the word is found anywhere in the given
+context. Also, it uses <em>stemming</em>, which means that matching
+words will include equivalent forms: "strategies" and "strategy",
+"run" and "ran", etc.</p>
+  <p>Now
+let's use the "bio" constraint to find all bios mentioning
+"strategy":</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=bio:strategy&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=bio:strategy&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=bio:strategy&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=bio:strategy&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-an-element-word-constraint"><a href="#search-using-an-element-word-constraint">
+Search using an element word
+constraint</a></h3>
+  <p>Run
+the following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex28.sh" xml:space="preserve"> </script>
+  <noscript id="ex28.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"stagedir","word":{"element":{"name":"STAGEDIR","ns":""}}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>This
+time you're using a word constraint against the &lt;STAGEDIR&gt;
+element:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex29.json" xml:space="preserve"> </script>
+  <noscript id="ex29.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "name": "stagedir",
+                "word": {
+                    "element": {
+                        "name": "STAGEDIR",
+                        "ns": ""
+                    }
+                }
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>
+Element word constraint configured using XML:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex30.xml" xml:space="preserve"> </script>
+  <noscript id="ex30.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="stagedir"&gt;
+    &lt;word&gt;
+      &lt;element ns="" name="STAGEDIR"/&gt;
+    &lt;/word&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>Now
+we can find all the Shakespeare plays where, for example, swords
+are involved on stage:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=stagedir:sword&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=stagedir:sword&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=stagedir:sword&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=stagedir:sword&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-an-element-constraint"><a href="#search-using-an-element-constraint">
+Search using an element
+constraint</a></h3>
+  <p>Run
+the following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex31.sh" xml:space="preserve"> </script>
+  <noscript id="ex31.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"spoken","element-query":{"name":"SPEECH","ns":""}}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>Here
+we're defining an <em>element
+constraint</em>:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex32.json" xml:space="preserve"> </script>
+  <noscript id="ex32.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "element-query": {
+                    "name": "SPEECH",
+                    "ns": ""
+                },
+                "name": "spoken"
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>An
+element constraint is similar to a word constraint, except that it
+will match words in the element <em>and any of its descendants</em>. For
+example, it will match text in &lt;LINE&gt; element children of
+&lt;SPEECH&gt;. This is useful for searching documents that contain
+"mixed content" (i.e. text mixed with markup, such as &lt;em&gt;
+and &lt;strong&gt;).</p>
+  <p>
+Element constraint configured using XML:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex33.xml" xml:space="preserve"> </script>
+  <noscript id="ex33.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="spoken"&gt;
+    &lt;element-query ns="" name="SPEECH"/&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;</pre>
+  </noscript>
+  <p>Using
+this constraint will restrict the search to the spoken lines of
+text (excluding, for example, stage directions). This will search
+for mentions of "sword" in the script itself:</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=spoken:sword&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=spoken:sword&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=spoken:sword&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=spoken:sword&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-a-properties-constraint"><a href="#search-using-a-properties-constraint">
+Search using a properties
+constraint</a></h3>
+  <p>We
+can also create a constraint for searching properties. Run the
+following command:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex34.sh" xml:space="preserve"> </script>
+  <noscript id="ex34.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-admin:x \
+  -H "Content-type: application/json" \
+  -d'{"options":{"constraint":[{"name":"image","properties":null}]}}' \
+  'http://localhost:8011/v1/config/query/tutorial'</pre>
+  </noscript>
+  <p>The
+<em>properties constraint</em>
+enables us to search an image's metadata:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex35.json" xml:space="preserve"> </script>
+  <noscript id="ex35.json">
+    <pre class="json" xml:space="preserve">{
+    "options": {
+        "constraint": [
+            {
+                "name": "image",
+                "properties": null
+            }
+        ]
+    }
+}</pre>
+  </noscript>
+  <p>
+Properties constraint configured using XML:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex36.xml" xml:space="preserve"> </script>
+  <noscript id="ex36.xml">
+    <pre class="xml" xml:space="preserve">&lt;options xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;constraint name="image"&gt;
+    &lt;properties/&gt;
+  &lt;/constraint&gt;
+&lt;/options&gt;
+</pre>
+  </noscript>
+  <p>Now
+it's easy for a user to search for photos of fish (or anything
+else):</p>
+  <ul>
+    <li>
+<a href="http://localhost:8011/v1/search?q=image:fish&amp;options=tutorial" target="_blank">
+http://localhost:8011/v1/search?q=image:fish&amp;options=tutorial</a>
+(XML)</li>
+    <li>
+<a href="http://localhost:8011/v1/search?q=image:fish&amp;options=tutorial&amp;format=json" target="_blank">
+http://localhost:8011/v1/search?q=image:fish&amp;options=tutorial&amp;format=json</a>
+(JSON)</li>
+  </ul>
+  <h3 id="search-using-a-structured-query"><a href="#search-using-a-structured-query">
+Search using a structured
+query</a></h3>
+  <p>We've
+seen how the REST API supports three kinds of queries:</p>
+  <ul>
+    <li>
+key/value
+queries (using the /keyvalue endpoint)</li>
+    <li>
+string queries
+(using the /search endpoint)</li>
+    <li>
+structured
+queries (also using the /search endpoint)</li>
+  </ul>
+  <p>We
+briefly touched on a structured query for searching properties. Now
+we'll take a look at a richer use of it, utilizing the constraints
+we've defined in the "tutorial" options set.</p>
+  <p>Here
+we're going to build up a complex set of criteria. It will find
+documents:</p>
+  <ul>
+    <li>
+Matching
+<em>any</em>
+of (OR
+query):
+<ul>
+	<li>
+Matching
+<em>all</em>
+of (AND
+query):
+<ul>
+	    <li>
+bio:product</li>
+	    <li>
+company:MarkLogic</li>
+	  </ul>
+</li>
+	<li>
+Matching
+<em>all</em>
+of (AND
+query):
+<ul>
+	    <li>
+spoken:fie</li>
+	    <li>
+stagedir:fall</li>
+	    <li>
+person:GRUMIO</li>
+	  </ul>
+</li>
+	<li>
+Matching
+<em>all</em>
+of (AND
+query):
+<ul>
+	    <li>
+documents whose
+properties contain "fish"</li>
+	    <li>
+documents in
+the "/images/2012/02/27/" directory</li>
+	  </ul>
+</li>
+	<li>
+Matching
+<em>all</em>
+of (AND
+query):
+<ul>
+	    <li>
+documents in
+the "mlw2012" collection</li>
+	    <li>
+documents
+containing the term "fun"</li>
+	  </ul>
+</li>
+      </ul>
+</li>
+  </ul>
+  <p>
+Complex queries like this can be expressed as search strings, but
+to construct and manipulate them programmatically, it can more
+convenient to use a structured query. Here's the above structured
+query expressed in JSON format:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex37.json" xml:space="preserve"> </script>
+  <noscript id="ex37.json">
+    <pre class="json" xml:space="preserve">{"query":
+  {"or-query":
+    {"queries":[
+      {"and-query":
+        {"queries":[
+          {"word-constraint-query":
+            {"constraint-name":"bio",
+             "text":["product"]}},
+          {"value-constraint-query":
+            {"constraint-name":"company",
+             "text":["MarkLogic"]}}]}},
+      {"and-query":
+        {"queries":[
+          {"element-constraint-query":
+            {"constraint-name":"spoken",
+             "and-query":
+              {"queries":[
+                {"term-query":
+                  {"text":["fie"]}}]}}},
+          {"word-constraint-query":
+            {"constraint-name":"stagedir",
+             "text":["fall"]}},
+          {"value-constraint-query":
+            {"constraint-name":"person",
+             "text":["GRUMIO"]}}]}},
+      {"and-query":
+        {"queries":[
+          {"properties-query":
+            {"term-query":
+              {"text":["fish"]}}},
+          {"infinite":true,
+           "directory-query":
+            {"uri":["/images/2012/02/27/"]}}]}},
+      {"and-query":
+        {"queries":[
+          {"collection-query":
+            {"uri":["mlw2012"]}},
+          {"term-query":
+            {"text":["fun"]}}]}}]}}}</pre>
+  </noscript>
+  <p>And
+here's the same query expressed in XML:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex38.xml" xml:space="preserve"> </script>
+  <noscript id="ex38.xml">
+    <pre class="xml" xml:space="preserve">&lt;query xmlns="http://marklogic.com/appservices/search"&gt;
+  &lt;or-query&gt;
+    &lt;and-query&gt;
+      &lt;word-constraint-query&gt;
+        &lt;constraint-name&gt;bio&lt;/constraint-name&gt;
+        &lt;text&gt;product&lt;/text&gt;
+      &lt;/word-constraint-query&gt;
+      &lt;value-constraint-query&gt;
+        &lt;constraint-name&gt;company&lt;/constraint-name&gt;
+        &lt;text&gt;MarkLogic&lt;/text&gt;
+      &lt;/value-constraint-query&gt;
+    &lt;/and-query&gt;
+    &lt;and-query&gt;
+      &lt;element-constraint-query&gt;
+        &lt;constraint-name&gt;spoken&lt;/constraint-name&gt;
+        &lt;term-query&gt;
+          &lt;text&gt;fie&lt;/text&gt;
+        &lt;/term-query&gt;
+      &lt;/element-constraint-query&gt;
+      &lt;word-constraint-query&gt;
+        &lt;constraint-name&gt;stagedir&lt;/constraint-name&gt;
+        &lt;text&gt;fall&lt;/text&gt;
+      &lt;/word-constraint-query&gt;
+      &lt;value-constraint-query&gt;
+        &lt;constraint-name&gt;person&lt;/constraint-name&gt;
+        &lt;text&gt;GRUMIO&lt;/text&gt;
+      &lt;/value-constraint-query&gt;
+    &lt;/and-query&gt;
+    &lt;and-query&gt;
+      &lt;properties-query&gt;
+        &lt;term-query&gt;
+          &lt;text&gt;fish&lt;/text&gt;
+        &lt;/term-query&gt;
+      &lt;/properties-query&gt;
+      &lt;directory-query&gt;
+        &lt;uri&gt;/images/2012/02/27/&lt;/uri&gt;
+        &lt;infinite&gt;true&lt;/infinite&gt;
+      &lt;/directory-query&gt;
+    &lt;/and-query&gt;
+    &lt;and-query&gt;
+      &lt;collection-query&gt;
+        &lt;uri&gt;mlw2012&lt;/uri&gt;
+      &lt;/collection-query&gt;
+      &lt;term-query&gt;
+        &lt;text&gt;fun&lt;/text&gt;
+      &lt;/term-query&gt;
+    &lt;/and-query&gt;
+  &lt;/or-query&gt;
+&lt;/query&gt;</pre>
+  </noscript>
+  <p>An
+<strong>or-query</strong> will find documents
+matching <em>any</em> of its child
+queries (union). In contrast, an <strong>and-query</strong> restricts its results to those
+documents matching <em>all</em> of
+its child queries (intersection). To run the query, you can include
+it as POST data:</p>
+  <script src="https://gist.github.com/3555546.js?file=ex39.sh" xml:space="preserve"> </script>
+  <noscript id="ex39.sh">
+    <pre class="sh" xml:space="preserve">curl -v -X POST \
+  --digest --user rest-writer:x \
+  -H "Content-type: application/json" \  -d'{"query":{"or-query":{"queries":[{"and-query":{"queries":[ {"word-constraint-query":{"constraint-name":"bio","text":["product"]}}, {"value-constraint-query":{"constraint-name":"company","text":["MarkLogic"]}} ]}}, {"and-query":{"queries":[ {"element-constraint-query":{"constraint-name":"spoken","and-query": {"queries":[{"term-query":{"text":["fie"]}}]} }}, {"word-constraint-query":{"constraint-name":"stagedir","text":["fall"]}}, {"value-constraint-query":{"constraint-name":"person","text":["GRUMIO"]}} ]}}, {"and-query":{"queries":[ {"properties-query":{"term-query":{"text":["fish"]}}}, {"directory-query":{"uri":["/images/2012/02/27/"]},"infinite":true} ]}}, {"and-query":{"queries":[ {"collection-query":{"uri":["mlw2012"]}}, {"term-query":{"text":["fun"]}} ]}}]}}}' \
+  'http://localhost:8011/v1/search?options=tutorial'</pre>
+  </noscript>
+  <p>Or as
+the value of the (URL-encoded) <strong>structuredQuery</strong> parameter in a GET
+request: <a href="http://localhost:8011/v1/search?options=tutorial&amp;structuredQuery=%7B%22query%22%3A%7B%22or-query%22%3A%7B%22queries%22%3A%5B%7B%22and-query%22%3A%7B%22queries%22%3A%5B%7B%22word-constraint-query%22%3A%7B%22constraint-name%22%3A%22bio%22%2C%22text%22%3A%5B%22product%22%5D%7D%7D%2C%7B%22value-constraint-query%22%3A%7B%22constraint-name%22%3A%22company%22%2C%22text%22%3A%5B%22MarkLogic%22%5D%7D%7D%5D%7D%7D%2C%7B%22and-query%22%3A%7B%22queries%22%3A%5B%7B%22element-constraint-query%22%3A%7B%22constraint-name%22%3A%22spoken%22%2C%22and-query%22%3A%7B%22queries%22%3A%5B%7B%22term-query%22%3A%7B%22text%22%3A%5B%22fie%22%5D%7D%7D%5D%7D%20%7D%7D%2C%7B%22word-constraint-query%22%3A%7B%22constraint-name%22%3A%22stagedir%22%2C%22text%22%3A%5B%22fall%22%5D%7D%7D%2C%7B%22value-constraint-query%22%3A%7B%22constraint-name%22%3A%22person%22%2C%22text%22%3A%5B%22GRUMIO%22%5D%7D%7D%5D%7D%7D%2C%7B%22and-query%22%3A%7B%22queries%22%3A%5B%7B%22properties-query%22%3A%7B%22term-query%22%3A%7B%22text%22%3A%5B%22fish%22%5D%7D%7D%7D%2C%7B%22directory-query%22%3A%7B%22uri%22%3A%5B%22%2Fimages%2F2012%2F02%2F27%2F%22%5D%7D%2C%22infinite%22%3Atrue%7D%5D%7D%7D%2C%7B%22and-query%22%3A%7B%22queries%22%3A%5B%7B%22collection-query%22%3A%7B%22uri%22%3A%5B%22mlw2012%22%5D%7D%7D%2C%7B%22term-query%22%3A%7B%22text%22%3A%5B%22fun%22%5D%7D%7D%5D%7D%7D%5D%7D%7D%7D" target="_blank">
+http://localhost:8011/v1/search?options=tutorial&amp;structuredQuery=...</a></p>
+  <p>Note
+that the search will only give you the expected results if you've
+previously defined the "bio", "company", "spoken", "stagedir", and
+"person" constraints (see previous examples in this section).</p>
+  <p>For
+more details on what structures are allowed in both the XML and
+JSON representations of structured queries, see <a href="//docs.marklogic.com/guide/search-dev/search-api#id_91315">Structured
+Search XML Node and JSON Keys</a> in the Search Developer's
+Guide.</p>
+  <p>For
+more details on the kinds of constraints you can define, see
+<a href="//docs.marklogic.com/guide/search-dev/search-api#id_95820">"Constraint
+Options" in the Search Developer's Guide</a>.</p>
+</ml:page>

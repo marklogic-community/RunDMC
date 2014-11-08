@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page disable-comments="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Blog</h1>
+  <ml:paginated-list results-per-page="3" type="Post"/>
+  <!--
+  <ml:blog-posts posts-per-page="3"/>-->
+</ml:page>

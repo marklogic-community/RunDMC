@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Pages</h1>
+  <p class="intro">Nam in mauris leo. Aenean condimentum mauris ac dui egestas eu consectetur leo vulputate. Nunc mollis gravida risus quis imperdiet. Integer scelerisque vulputate tortor at laoreet. Aenean elementum nunc non diam facilisis tristique. Fusce fermentum metus a turpis euismod mattis eget eget nibh.</p>
+  <form action="/pages/edit" class="add_post" enctype="application/x-www-form-urlencoded" method="get">
+    <div>
+      <input type="submit" value="Add New"/>
+    </div>
+  </form>
+  <ml:admin-page-list/>
+</ml:page>
