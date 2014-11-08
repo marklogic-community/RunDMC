@@ -102,6 +102,26 @@ declare %t:case function t:message-XDMP-BAD()
     ||$rw:API-VERSION||'/messages/XDMP-en/XDMP-BAD')
 };
 
+declare %t:case function t:message-SVC-CANCELED()
+{
+  xdmp:set($rwa:PATH-ORIG, '/messages/SVC-CANCELED'),
+  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    '/controller/redirect.xqy?path=/'
+    ||$rw:API-VERSION||'/messages/SVC-en/SVC-CANCELED')
+};
+
+declare %t:case function t:message-SVC-CANCELED-with-version()
+{
+  xdmp:set($rwa:PATH-ORIG, '/'||$rw:API-VERSION||'/messages/SVC-CANCELED'),
+  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  at:equal(
+    rwa:rewrite(),
+    '/controller/redirect.xqy?path=/'
+    ||$rw:API-VERSION||'/messages/SVC-en/SVC-CANCELED')
+};
+
 declare %t:case function t:root()
 {
   xdmp:set($rwa:PATH-ORIG, '/'),

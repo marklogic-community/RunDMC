@@ -34,7 +34,9 @@
 
   <xsl:variable name="IS-API-SEARCH" as="xs:boolean"
                 select="xs:boolean(
-                        ($params[@name eq $ss:INPUT-NAME-API], 0)[1])"/>
+                        ($params[@name eq $ss:INPUT-NAME-API][
+                        . castable as xs:boolean],
+                        0)[1])"/>
 
   <xsl:variable name="API-VERSION-PREFIX"
                 select="if ($PREFERRED-VERSION eq $ml:default-version) then ''
@@ -162,11 +164,12 @@
     <xsl:variable name="matching-functions"
                   select="if ($skip-exact-matches) then ()
                           else ml:get-matching-functions($QUERY,$PREFERRED-VERSION)"/>
-    <xsl:variable name="matching-messages"
+    <xsl:variable name="matching-message-id" as="xs:string?"
                   select="if ($skip-exact-matches or $matching-functions) then ()
-                          else ml:get-matching-messages($QUERY, $PREFERRED-VERSION)"/>
+                          else ml:get-matching-messages(
+                          $QUERY, $PREFERRED-VERSION)[1]/*/@id"/>
     <xsl:variable name="redirect"
-                  select="if (not($matching-functions or $matching-messages))
+                  select="if (not($matching-functions or $matching-message-id))
                           then ()
                           else concat(
                           $srv:effective-api-server,
@@ -175,7 +178,10 @@
                           if ($matching-functions)
                           then $matching-functions[1]/*/api:function[1]/@fullname
                           else concat(
-                          'messages/XDMP-en/', $matching-messages/*/@id))"/>
+                          'messages/',
+                          replace($matching-message-id, '^(\w+)-(\w+)', '$1'),
+                          '-en/',
+                          $matching-message-id))"/>
     <xsl:choose>
       <xsl:when test="$redirect">
         <!-- Keep the query intact for an undo link. -->

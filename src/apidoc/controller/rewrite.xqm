@@ -107,7 +107,7 @@ declare variable $MESSAGE-PAT := (
   '^/messages/([A-Z])+\-[a-z][a-z]/([A-Z]+-[A-Z]+)$') ;
 
 declare variable $MESSAGE-SHORT-PAT := (
-  '^/messages/([A-Z]+-[A-Z]+)$') ;
+  '^/(\d+\.\d/)?messages/([A-Z]+-[A-Z]+)$') ;
 
 declare function m:log(
   $label as xs:string,
@@ -370,7 +370,7 @@ declare function m:rewrite()
    :)
   else if (matches($PATH, $MESSAGE-SHORT-PAT)) then m:redirect-for-short-message(
     $PATH-WITH-VERSION,
-    replace($PATH, $MESSAGE-SHORT-PAT, '$1'))
+    replace($PATH, $MESSAGE-SHORT-PAT, '$2'))
 
   (: Handle single-page messages.
    : This expects something like
