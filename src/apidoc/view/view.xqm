@@ -17,6 +17,14 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
  :)
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
+declare function v:error(
+  $code as xs:string,
+  $items as item()*)
+as empty-sequence()
+{
+  error((), 'VIEW-'||$code, $items)
+};
+
 declare function v:site-title($version as xs:string)
 as xs:string
 {
@@ -200,6 +208,23 @@ as xs:string
   $url||'?q='||$q||(
     if (not($version)) then ''
     else '&amp;v='||$version)
+};
+
+declare function v:anchor-id(
+  $e as element())
+  as xs:string*
+{
+  typeswitch($e)
+  case element(api:header) return $e/@name
+  case element(api:param) return concat(
+    $e/api:param-name,
+    (: For the *:polygon functions,
+     : which have more than one function element on the same page.
+     :)
+    if (not(xdmp:path($e/../..)
+        = '/api:function-page/api:function[2]')) then ()
+    else '2')
+  default return v:error('UNEXPECTED', xdmp:describe($e))
 };
 
 (: apidoc/view/view.xqm :)

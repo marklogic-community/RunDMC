@@ -576,9 +576,8 @@
   <xsl:template mode="syntax" match="api:param">
     <xsl:text>   </xsl:text>
     <xsl:if test="@optional eq 'true'">[</xsl:if>
-    <xsl:variable name="anchor" as="xs:string*">
-      <xsl:apply-templates mode="param-anchor-id" select="."/>
-    </xsl:variable>
+    <xsl:variable name="anchor" as="xs:string*"
+                  select="v:anchor-id(.)"/>
     <a href="#{$anchor}" class="paramLink">
       <xsl:text>$</xsl:text>
       <xsl:value-of select="api:param-name/string()"/>
@@ -588,25 +587,6 @@
     <xsl:if test="@optional eq 'true'">]</xsl:if>
     <xsl:if test="position() ne last()">,</xsl:if>
     <xsl:text>&#xA;</xsl:text>
-  </xsl:template>
-
-  <xsl:template mode="param-anchor-id" match="api:header">
-    <xsl:value-of select="@name/string()"/>
-  </xsl:template>
-
-  <xsl:template mode="param-anchor-id" match="api:param">
-    <xsl:value-of select="api:param-name/string()"/>
-  </xsl:template>
-
-  <!--
-      For the *:polygon functions,
-      which have more than one function element on the same page.
-  -->
-  <xsl:template
-      mode="param-anchor-id"
-      match="/api:function-page/api:function[2]/api:params/api:param">
-    <xsl:next-match/>
-    <xsl:text>2</xsl:text>
   </xsl:template>
 
   <xsl:template match="api:summary">
@@ -664,14 +644,13 @@
   <xsl:template match="api:param | api:header">
     <tr>
       <td>
-        <xsl:variable name="anchor" as="xs:string*">
-          <xsl:apply-templates mode="param-anchor-id" select="."/>
-        </xsl:variable>
+        <xsl:variable name="anchor" as="xs:string*"
+                      select="v:anchor-id(.)"/>
         <a name="{$anchor}"/>
         <xsl:if test="not(../../@lib eq $api:MODE-REST)">
           <xsl:text>$</xsl:text>
         </xsl:if>
-        <xsl:value-of select="$anchor"/>
+        <xsl:value-of select="(@name|api:param-name)[1]/string()"/>
       </td>
       <td>
         <xsl:apply-templates select="if (self::api:header) then node()
