@@ -664,7 +664,7 @@
   <xsl:template match="api:param | api:header">
     <tr>
       <td>
-        <xsl:variable name="anchor" as="xs:string">
+        <xsl:variable name="anchor" as="xs:string?">
           <xsl:apply-templates mode="param-anchor-id" select="."/>
         </xsl:variable>
         <a name="{$anchor}"/>
