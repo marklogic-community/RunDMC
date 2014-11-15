@@ -811,7 +811,7 @@ as xs:string
   case 'json:array' return 'Array'
 
   case 'json:object'
-  case 'map:map' return 'object'
+  case 'map:map' return 'Object'
 
   case 'xdmp:function' return 'function'
 
@@ -839,16 +839,14 @@ declare function api:type-expr-javascript(
   $quantifier as xs:string)
 as xs:string
 {
-  switch($quantifier)
-  case '*' return (
-    (: #317 for params with item()* :)
-    if ($context = 'return') then 'ValueIterator'
-    else if ($type = 'item()') then '(Object[] | ValueIterator)'
-    else 'String[]')
-  case '+' return (
-    if ($context = 'return') then 'ValueIterator'
-    else 'String[]')
-  default return concat(api:type-javascript($type), $quantifier)
+  if (not($quantifier = ('*', '+'))) then concat(
+    api:type-javascript($type), $quantifier)
+  (: #317 for params with item()* :)
+  else if ($context = 'return') then 'ValueIterator'
+  else switch($type)
+  case 'item()' return '(Object[] | ValueIterator)'
+  case 'cts:query' return concat(api:type-javascript($type), '[]')
+  default return 'String[]'
 };
 
 declare function api:type-expr-javascript(
