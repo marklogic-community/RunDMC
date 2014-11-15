@@ -407,17 +407,19 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
     LOGGER.debug('updateTocForUrlFragment', pathname, hash, isUserGuide);
-    // Only let fragment links update the TOC when this is a user guide.
-    // Or not! The back button should update the TOC for functions too.
-    //if (!isUserGuide) return;
+
+    // Only use the fragment part to user guide sections.
+    // Otherwise use the pathname alone, for functions etc.
+    var effective_hash;
+    if (!isUserGuide) effective_hash = "";
+    else if (hash == "") effective_hash = "#chapter";
+    else effective_hash = hash;
 
     // IE doesn't include the "/" at the beginning of the pathname...
-    //var fullLink = this.pathname + this.hash;
-    var effective_hash = (isUserGuide && hash == "") ? "#chapter" : hash;
     var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname)
         + effective_hash;
 
-    LOGGER.debug("Calling showInTOC from updateTocForUrlFragment", fullLink);
+    LOGGER.debug("updateTocForUrlFragment fullLink", fullLink);
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
 }
 
