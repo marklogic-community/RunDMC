@@ -120,7 +120,16 @@ $ git rebase upstream/dev
 
 #### Test your code
 
-TODO: testing instructions
+We use [xray](http://www.xqueryhacker.com/xray/) for unit testing.
+You can run the existing tests by visiting `/xray?dir=test`
+on your local app server with any web browser.
+You can also run xray tests from the command line:
+see the project page for details.
+
+The existing test cases are stored in XQuery library modules
+under `src/test`. You can edit those files to modify existing tests,
+add new tests to a library module,
+or add a new library module.
 
 #### Push your changes
 
