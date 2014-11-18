@@ -88,11 +88,11 @@ as element()
   <div xmlns="http://www.w3.org/1999/xhtml"
   id="copyright">Copyright &#169; 2014 MarkLogic Corporation. All rights reserved.
   | Powered by
-  <a href="http://developer.marklogic.com/products">
+  <a href="//developer.marklogic.com/products">
   MarkLogic Server
   <span class="server-version">{ xdmp:version() }</span>
   </a>
-  and <a href="http://developer.marklogic.com/code/rundmc">rundmc</a>.
+  and <a href="//developer.marklogic.com/code/rundmc">rundmc</a>.
   </div>
 };
 
