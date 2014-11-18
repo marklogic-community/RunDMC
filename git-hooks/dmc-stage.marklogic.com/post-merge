@@ -1,8 +1,8 @@
 #!/bin/sh
 export PATH=/usr/local/bin:$PATH
-cd /space/git/rundmc.git/setup
+cd /space/git/rundmc.git/src/setup
 ./optimize-js.sh
 
 # Enable the following once we merge the apidoc branch to master
-cd /space/git/rundmc.git/apidoc/setup
+cd /space/git/rundmc.git/src/apidoc/setup
 ./optimize-js.sh
