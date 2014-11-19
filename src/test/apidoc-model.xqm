@@ -11,13 +11,6 @@ import module namespace at="http://github.com/robwhitby/xray/assertions"
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
-declare %t:case function t:type-javascript-element-or-map()
-{
-  at:equal(
-    api:type($api:MODE-JAVASCRIPT, (), '(element()|map:map)?'),
-    'Object?')
-};
-
 declare %t:case function t:type-javascript-param-cts-query()
 {
   at:equal(
@@ -46,39 +39,53 @@ declare %t:case function t:type-javascript-param-cts-query-question()
     'cts.query?')
 };
 
-declare %t:case function t:type-javascript-sem-iri()
+declare %t:case function t:type-javascript-param-element-or-map()
+{
+  at:equal(
+    api:type($api:MODE-JAVASCRIPT, (), '(element()|map:map)?'),
+    'Object?')
+};
+
+declare %t:case function t:type-javascript-param-sem-iri()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'sem:iri'),
     'sem.iri')
 };
 
-declare %t:case function t:type-javascript-xs-unsignedLong()
+declare %t:case function t:type-javascript-param-xs-unsignedLong()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'xs:unsignedLong'),
     'String')
 };
 
-declare %t:case function t:type-javascript-xs-string-plus()
+declare %t:case function t:type-javascript-param-xs-string-plus()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'xs:string+'),
     'String[]')
 };
 
-declare %t:case function t:type-javascript-xs-string-question()
+declare %t:case function t:type-javascript-param-xs-string-question()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'xs:string?'),
     'String?')
 };
 
-declare %t:case function t:type-javascript-xs-string-star()
+declare %t:case function t:type-javascript-param-xs-string-star()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'xs:string*'),
     'String[]')
+};
+
+declare %t:case function t:type-javascript-param-xs-untypedAtomic-star()
+{
+  at:equal(
+    api:type($api:MODE-JAVASCRIPT, (), 'xs:untypedAtomic*'),
+    '[(String | Number | Boolean | null)]')
 };
 
 declare %t:case function t:type-javascript-return-cts-query-star()
