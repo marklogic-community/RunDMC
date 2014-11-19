@@ -81,10 +81,10 @@ declare %t:case function t:type-javascript-param-xs-string-star()
     'String[]')
 };
 
-declare %t:case function t:type-javascript-param-xs-untypedAtomic-star()
+declare %t:case function t:type-javascript-param-xs-anyAtomicType-star()
 {
   at:equal(
-    api:type($api:MODE-JAVASCRIPT, (), 'xs:untypedAtomic*'),
+    api:type($api:MODE-JAVASCRIPT, (), 'xs:anyAtomicType*'),
     '(String | Number | Boolean | null)[]')
 };
 
