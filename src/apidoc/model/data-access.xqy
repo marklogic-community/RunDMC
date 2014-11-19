@@ -847,7 +847,7 @@ as xs:string
   (: Overrides for specific parameter types. :)
   case 'cts:query' return concat(api:type-javascript($type), '[]')
   case 'item()' return '(Object[] | ValueIterator)'
-  case 'xs:untypedAtomic' return '[(String | Number | Boolean | null)]'
+  case 'xs:untypedAtomic' return '(String | Number | Boolean | null)[]'
   default return 'String[]'
 };
 

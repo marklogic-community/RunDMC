@@ -85,7 +85,7 @@ declare %t:case function t:type-javascript-param-xs-untypedAtomic-star()
 {
   at:equal(
     api:type($api:MODE-JAVASCRIPT, (), 'xs:untypedAtomic*'),
-    '[(String | Number | Boolean | null)]')
+    '(String | Number | Boolean | null)[]')
 };
 
 declare %t:case function t:type-javascript-return-cts-query-star()
