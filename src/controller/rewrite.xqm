@@ -29,7 +29,7 @@ declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := $ml:default-version ;
 
 declare variable $DEBUG as xs:boolean? := xs:boolean(
-  xdmp:get-request-field('debug')) ;
+  xdmp:get-request-field('debug')[. castable as xs:boolean]) ;
 
 declare variable $NOTFOUND := "/controller/notfound.xqy" ;
 

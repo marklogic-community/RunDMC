@@ -13,11 +13,21 @@ import module namespace rw="http://marklogic.com/rundmc/rewrite"
 import module namespace rwa="http://marklogic.com/rundmc/apidoc/rewrite"
   at "/apidoc/controller/rewrite.xqm";
 
+declare variable $URL-BASE := 'http://localhost:8011' ;
+
+declare function t:setup($path as xs:string)
+  as empty-sequence()
+{
+  xdmp:set($rwa:PATH-ORIG, $path),
+  xdmp:set($rwa:QUERY-STRING, ''),
+  xdmp:set($rwa:QUERY-STRING-FIELDS, ()),
+  xdmp:set($rwa:URL-ORIG, $URL-BASE||$path)
+};
+
 (: This test requires database content to succeed. :)
 declare %t:case function t:js-all()
 {
-  xdmp:set($rwa:PATH-ORIG, '/js/all'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/js/all'),
   at:equal(
     rwa:rewrite(),
     if ($rw:API-VERSION lt '8.0') then $rw:NOTFOUND
@@ -28,8 +38,7 @@ declare %t:case function t:js-all()
 
 declare %t:case function t:js-static()
 {
-  xdmp:set($rwa:PATH-ORIG, '/js/fubar.js'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/js/fubar.js'),
   at:equal(
     rwa:rewrite(),
     '/js/fubar.js')
@@ -37,8 +46,7 @@ declare %t:case function t:js-static()
 
 declare %t:case function t:guide-message-XDMP-BAD()
 {
-  xdmp:set($rwa:PATH-ORIG, '/guide/messages/XDMP-en/XDMP-BAD'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/guide/messages/XDMP-en/XDMP-BAD'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/'
@@ -48,8 +56,7 @@ declare %t:case function t:guide-message-XDMP-BAD()
 
 declare %t:case function t:issue-304()
 {
-  xdmp:set($rwa:PATH-ORIG, '/guide/app-dev/aggregateUDFs/+%E8'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/guide/app-dev/aggregateUDFs/+%E8'),
   at:equal(
     rwa:rewrite(),
     $rw:NOTFOUND)
@@ -57,10 +64,7 @@ declare %t:case function t:issue-304()
 
 declare %t:case function t:issue-316()
 {
-  xdmp:set(
-    $rwa:PATH-ORIG, '/apidoc/7.0/fn:doc'),
-  xdmp:set(
-    $rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/apidoc/7.0/fn:doc'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/7.0/fn%3adoc'),
@@ -73,10 +77,7 @@ declare %t:case function t:issue-316()
 declare %t:case function t:issue-316-static()
 {
   (: Make sure the fix for #316 does not break static resources. :)
-  xdmp:set(
-    $rwa:PATH-ORIG, '/apidoc/js/toc_filter.js'),
-  xdmp:set(
-    $rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/apidoc/js/toc_filter.js'),
   at:equal(
     rwa:rewrite(),
     $rwa:PATH-ORIG)
@@ -84,8 +85,7 @@ declare %t:case function t:issue-316-static()
 
 declare %t:case function t:message-XDMP-en-XDMP-BAD()
 {
-  xdmp:set($rwa:PATH-ORIG, '/messages/XDMP-en/XDMP-BAD'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/messages/XDMP-en/XDMP-BAD'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/'
@@ -94,8 +94,7 @@ declare %t:case function t:message-XDMP-en-XDMP-BAD()
 
 declare %t:case function t:message-XDMP-BAD()
 {
-  xdmp:set($rwa:PATH-ORIG, '/messages/XDMP-BAD'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/messages/XDMP-BAD'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/'
@@ -104,8 +103,7 @@ declare %t:case function t:message-XDMP-BAD()
 
 declare %t:case function t:message-SVC-CANCELED()
 {
-  xdmp:set($rwa:PATH-ORIG, '/messages/SVC-CANCELED'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/messages/SVC-CANCELED'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/'
@@ -114,8 +112,7 @@ declare %t:case function t:message-SVC-CANCELED()
 
 declare %t:case function t:message-SVC-CANCELED-with-version()
 {
-  xdmp:set($rwa:PATH-ORIG, '/'||$rw:API-VERSION||'/messages/SVC-CANCELED'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/'||$rw:API-VERSION||'/messages/SVC-CANCELED'),
   at:equal(
     rwa:rewrite(),
     '/controller/redirect.xqy?path=/'
@@ -124,8 +121,7 @@ declare %t:case function t:message-SVC-CANCELED-with-version()
 
 declare %t:case function t:root()
 {
-  xdmp:set($rwa:PATH-ORIG, '/'),
-  xdmp:set($rwa:URL-ORIG, 'http://localhost:8011'||$rwa:PATH-ORIG),
+  t:setup('/'),
   at:equal(
     rwa:rewrite(),
     '/apidoc/controller/transform.xqy?src=/apidoc/'
