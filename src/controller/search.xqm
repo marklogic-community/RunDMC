@@ -44,7 +44,7 @@ as element(search:options)
     },
 
     <search:constraint name="cat">
-      <search:collection prefix="category/"/>
+      <search:collection prefix="{ $ml:CATEGORY-PREFIX }"/>
     </search:constraint>
     ,
     <search:constraint name="param">

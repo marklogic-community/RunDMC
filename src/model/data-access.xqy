@@ -23,7 +23,9 @@ declare namespace x="http://www.w3.org/1999/xhtml";
 
 declare variable $ADMIN as xs:boolean := false() ;
 
-declare variable $questionmark-substitute := '@' ;
+declare variable $CATEGORY-PREFIX as xs:string := 'category/' ;
+
+declare variable $QUESTIONMARK-SUBSTITUTE := '@' ;
 
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
@@ -66,8 +68,6 @@ declare variable $server-versions-available as xs:string+ := cts:uris(
 ! replace(., '/apidoc/(\d+\.\d+)/index.xml', '$1') ;
 declare variable $server-version-nodes-available as element()+ := (
   $server-version-nodes[@number = $server-versions-available]) ;
-
-declare variable $all-category-tags as xs:string* := cts:collection-match("category/*");
 
 (: Used to discover Project docs in the Admin UI :)
 declare variable $projects-by-name := for $p in $Projects
@@ -318,65 +318,82 @@ declare function ml:topic-docs($tag as xs:string) as document-node()* {
   [cts:contains(., ml:search-corpus-query($default-version))]
 };
 
-
-(: For determining category facets :)
-declare function ml:reset-category-tags($doc-uri) {
-  ml:reset-category-tags($doc-uri, ())
-};
-
-declare function ml:reset-category-tags(
+declare function ml:category-for-doc(
   $doc-uri as xs:string,
   $new-doc as document-node()?)
+as xs:string
 {
-  (: Start by removing any existing category collection URIs :)
-  (: TODO skip this for binary nodes? :)
-  xdmp:document-remove-collections($doc-uri, $all-category-tags),
-
-  let $category-value := ml:category-for-doc($doc-uri, $new-doc)
-  let $category-tag   := concat("category/",$category-value)
-  return (
-    xdmp:log(
-      text { "Adding tag ", xdmp:describe($category-tag), 'to', $doc-uri },
-      'fine'),
-    xdmp:document-add-collections($doc-uri, $category-tag))
-};
-
-declare function ml:category-for-doc($doc-uri) as xs:string {
-  ml:category-for-doc($doc-uri, ())
-};
-
-declare function ml:category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string {
   (: Only look inside the doc if necessary :)
   if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
   else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
   else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
   else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else if (contains($doc-uri, "/cpp/"))            then "cpp"
-  else let $doc := if ($new-doc) then $new-doc else doc($doc-uri) return
-  if ($doc/api:function-page/api:function[1]/@lib eq 'REST')
-  then "rest-api"
-  else if ($doc/api:function-page  ) then "function"
-  else if ($doc/api:help-page      ) then "help"
-  else if ($doc/(*:guide|*:chapter)) then "guide"
-  else if ($doc/ml:Announcement    ) then "news"
-  else if ($doc/ml:Event           ) then "event"
-  else if ($doc/ml:Tutorial or
-    $doc/ml:page/tutorial or
-    $doc/ml:Article
-    (: these aren't really tutorials :)
-    [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
-          | /learn/tutorials/gh/
-          | /learn/dzone/
-          | /learn/readme/
-          | /learn/w3c-
-          | /docs/
-          )','x'))]
-    ) then "tutorial"
-  else if ($doc/ml:Post            ) then "blog"
-  else if ($doc/ml:Project         ) then "code"
-  else "other"
+  else (
+    let $doc := if ($new-doc) then $new-doc else doc($doc-uri)
+    return (
+      if ($doc/api:function-page/api:function[1]/@lib
+        eq 'REST') then "rest-api"
+      else if ($doc/api:function-page  ) then "function"
+      else if ($doc/api:help-page      ) then "help"
+      else if ($doc/(*:guide|*:chapter)) then "guide"
+      else if ($doc/ml:Announcement    ) then "news"
+      else if ($doc/ml:Event           ) then "event"
+      else if ($doc/ml:Tutorial or
+        $doc/ml:page/tutorial or
+        $doc/ml:Article
+        (: these are not really tutorials :)
+        [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
+              | /learn/tutorials/gh/
+              | /learn/dzone/
+              | /learn/readme/
+              | /learn/w3c-
+              | /docs/
+              )','x'))]) then "tutorial"
+      else if ($doc/ml:Post            ) then "blog"
+      else if ($doc/ml:Project         ) then "code"
+      else "other"))
 };
 
+declare function ml:category-for-doc(
+  $doc-uri as xs:string)
+as xs:string
+{
+  ml:category-for-doc($doc-uri, ())
+};
+
+(: For determining category facets :)
+declare function ml:reset-category-tags(
+  $doc-uri as xs:string,
+  $new-doc as document-node()?)
+as empty-sequence()
+{
+  let $category-value := ml:category-for-doc($doc-uri, $new-doc)
+  let $category-tag   := concat($CATEGORY-PREFIX, $category-value)
+  (: Leave any non-category collections alone. :)
+  let $categories-old := xdmp:document-get-collections($doc-uri)[
+    starts-with(., $CATEGORY-PREFIX)]
+  let $categories-to-remove := $categories-old[not(. = $category-tag)]
+  (: If there are no categories to remove, the function will not map. :)
+  let $_ := xdmp:document-remove-collections(
+    $doc-uri, $categories-to-remove)
+  let $update-needed := not($categories-old[. eq $category-tag])
+  let $_ := if (1) then () else xdmp:log(
+    if ($update-needed) then text {
+      "[ml:reset-category-tags] adding", xdmp:describe($category-tag),
+      'to', $doc-uri }
+    else text { "[ml:reset-category-tags] no update for", $doc-uri },
+    'fine')
+  where $update-needed
+  return xdmp:document-add-collections($doc-uri, $category-tag)
+};
+
+declare function ml:reset-category-tags(
+  $doc-uri as xs:string)
+as empty-sequence()
+{
+  ml:reset-category-tags($doc-uri, ())
+};
 
 declare function ml:latest-posts($how-many) { $posts-by-date[position() le $how-many] };
 
@@ -686,7 +703,7 @@ declare function ml:escape-uri(
 as xs:string
 {
   (: ?foo=bar   =>   @foo=bar :)
-  translate($external-uri, '?', $questionmark-substitute)
+  translate($external-uri, '?', $QUESTIONMARK-SUBSTITUTE)
 };
 
 declare function ml:unescape-uri(
@@ -694,7 +711,7 @@ declare function ml:unescape-uri(
 as xs:string
 {
   (: @foo=bar   =>   ?foo=bar :)
-  translate($doc-uri, $questionmark-substitute, '?')
+  translate($doc-uri, $QUESTIONMARK-SUBSTITUTE, '?')
 };
 
 (: Account for "/apidoc" prefix in internal/external URI mappings :)

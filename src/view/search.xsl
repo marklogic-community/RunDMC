@@ -293,7 +293,7 @@
     <tr>
       <th>
         <xsl:variable name="category">
-          <ml:category name="{ml:category-for-doc(@uri)}"/>
+          <ml:category name="{ ml:category-for-doc(@uri) }"/>
         </xsl:variable>
         <xsl:apply-templates mode="category-image" select="$category/*"/>
       </th>
