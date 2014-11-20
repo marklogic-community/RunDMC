@@ -108,6 +108,88 @@ declare private function ml:docs($qnames) as element()* {
     )/*
 };
 
+declare function ml:category-for-doc(
+  $doc-uri as xs:string,
+  $new-doc as document-node()?)
+as xs:string
+{
+  (: Only look inside the doc if necessary :)
+  if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
+  else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
+  else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
+  else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
+  else if (contains($doc-uri, "/cpp/"))            then "cpp"
+  else (
+    let $doc := if ($new-doc) then $new-doc else doc($doc-uri)
+    return (
+      if ($doc/api:function-page/api:function[1]/@lib
+        eq 'REST') then "rest-api"
+      else if ($doc/api:function-page  ) then "function"
+      else if ($doc/api:help-page      ) then "help"
+      else if ($doc/(*:guide|*:chapter)) then "guide"
+      else if ($doc/ml:Announcement    ) then "news"
+      else if ($doc/ml:Event           ) then "event"
+      else if ($doc/ml:Tutorial or
+        $doc/ml:page/tutorial or
+        $doc/ml:Article
+        (: these are not really tutorials :)
+        [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
+              | /learn/tutorials/gh/
+              | /learn/dzone/
+              | /learn/readme/
+              | /learn/w3c-
+              | /docs/
+              )','x'))]) then "tutorial"
+      else if ($doc/ml:Post            ) then "blog"
+      else if ($doc/ml:Project         ) then "code"
+      else "other"))
+};
+
+declare function ml:category-for-doc(
+  $doc-uri as xs:string)
+as xs:string
+{
+  ml:category-for-doc($doc-uri, ())
+};
+
+(: Wrapper for xdmp:document-insert
+ : that ensures correct permissions
+ : and category collections.
+ :)
+declare function ml:document-insert(
+  $uri as xs:string,
+  $new as node(),
+  $is-hidden as xs:boolean)
+as empty-sequence()
+{
+  xdmp:document-insert(
+    $uri,
+    $new,
+    (: If document exists, reset it to default permissions. :)
+    xdmp:default-permissions(),
+    (: Set collections, preserving existing non-category collections.
+     : Optionally exclude the document from the search corpus.
+     :)
+    (concat(
+        $CATEGORY-PREFIX,
+        ml:category-for-doc(
+          $uri,
+          if ($new instance of document-node()) then $new
+          else document { $new })),
+      xdmp:document-get-collections($uri)[
+        not(starts-with(., $CATEGORY-PREFIX))][
+        . ne 'hide-from-search'],
+      if (not($is-hidden)) then () else "hide-from-search"))
+};
+
+declare function ml:document-insert(
+  $uri as xs:string,
+  $new as node())
+as empty-sequence()
+{
+  ml:document-insert($uri, $new, false())
+};
+
 (: Used by URL rewriter to control access to DMC pages :)
 declare function ml:doc-matches-dmc-page-or-preview($doc as document-node())
   as xs:boolean
@@ -318,51 +400,11 @@ declare function ml:topic-docs($tag as xs:string) as document-node()* {
   [cts:contains(., ml:search-corpus-query($default-version))]
 };
 
-declare function ml:category-for-doc(
-  $doc-uri as xs:string,
-  $new-doc as document-node()?)
-as xs:string
-{
-  (: Only look inside the doc if necessary :)
-  if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
-  else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
-  else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
-  else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
-  else if (contains($doc-uri, "/cpp/"))            then "cpp"
-  else (
-    let $doc := if ($new-doc) then $new-doc else doc($doc-uri)
-    return (
-      if ($doc/api:function-page/api:function[1]/@lib
-        eq 'REST') then "rest-api"
-      else if ($doc/api:function-page  ) then "function"
-      else if ($doc/api:help-page      ) then "help"
-      else if ($doc/(*:guide|*:chapter)) then "guide"
-      else if ($doc/ml:Announcement    ) then "news"
-      else if ($doc/ml:Event           ) then "event"
-      else if ($doc/ml:Tutorial or
-        $doc/ml:page/tutorial or
-        $doc/ml:Article
-        (: these are not really tutorials :)
-        [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
-              | /learn/tutorials/gh/
-              | /learn/dzone/
-              | /learn/readme/
-              | /learn/w3c-
-              | /docs/
-              )','x'))]) then "tutorial"
-      else if ($doc/ml:Post            ) then "blog"
-      else if ($doc/ml:Project         ) then "code"
-      else "other"))
-};
-
-declare function ml:category-for-doc(
-  $doc-uri as xs:string)
-as xs:string
-{
-  ml:category-for-doc($doc-uri, ())
-};
-
-(: For determining category facets :)
+(: For determining category facets.
+ : This repeats work done by ml:document-insert,
+ : but because of this it usually runs very quickly.
+ : If it logs any URIs, try to change them to use ml:document-insert.
+ :)
 declare function ml:reset-category-tags(
   $doc-uri as xs:string,
   $new-doc as document-node()?)
@@ -378,12 +420,11 @@ as empty-sequence()
   let $_ := xdmp:document-remove-collections(
     $doc-uri, $categories-to-remove)
   let $update-needed := not($categories-old[. eq $category-tag])
-  let $_ := if (1) then () else xdmp:log(
-    if ($update-needed) then text {
+  let $_ := if (not($update-needed)) then () else xdmp:log(
+    text {
       "[ml:reset-category-tags] adding", xdmp:describe($category-tag),
-      'to', $doc-uri }
-    else text { "[ml:reset-category-tags] no update for", $doc-uri },
-    'fine')
+      'to', $doc-uri },
+    'info')
   where $update-needed
   return xdmp:document-add-collections($doc-uri, $category-tag)
 };
@@ -429,7 +470,7 @@ declare function ml:insert-comment-doc($doc-uri) {
   let $comment-doc-uri := ml:comment-doc-uri($doc-uri)
   (: Only insert a comments doc if there isn't one already present :)
   where not(doc-available($comment-doc-uri))
-  return xdmp:document-insert(
+  return ml:document-insert(
     $comment-doc-uri,
     <ml:Comments disqus_identifier="{ml:disqus-identifier($doc-uri)}"/>)
 };

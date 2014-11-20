@@ -5,6 +5,8 @@ module namespace stp="http://marklogic.com/rundmc/api/setup" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace ml="http://developer.marklogic.com/site/internal"
+  at "/model/data-access.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 
@@ -348,7 +350,7 @@ as empty-sequence()
   let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs",
     ("inserting", xdmp:describe($doc), 'at', $uri))
-  return xdmp:document-insert($uri, $func)
+  return ml:document-insert($uri, $func)
   ,
   stp:info("stp:function-docs", xdmp:elapsed-time())
 };
@@ -357,7 +359,7 @@ declare function stp:search-results-page-insert()
 as empty-sequence()
 {
   stp:info('stp:search-results-page-insert', 'starting'),
-  xdmp:document-insert(
+  ml:document-insert(
     "/apidoc/do-search.xml",
     <ml:page xmlns:ml="http://developer.marklogic.com/site/internal"
     disable-comments="yes" status="Published"
@@ -490,14 +492,10 @@ as empty-sequence()
   if (not($DEBUG)) then () else stp:debug(
     "stp:zip-static-file-insert",
     (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)),
-  xdmp:document-insert(
+  ml:document-insert(
     $uri,
     stp:static-add-scripts($doc),
-    xdmp:default-permissions(),
-    (: Exclude these HTML and javascript documents from the search corpus
-     : Instead search the XHTML after tidy - see below.
-     :)
-    "hide-from-search"[$is-hidden]),
+    $is-hidden),
 
   (: If the document is HTML, then store an additional copy,
    : converted to XHTML using Tidy.
@@ -526,7 +524,7 @@ as empty-sequence()
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
     let $_ := if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert', ('Tidying', $uri, 'to', $xhtml-uri))
-    return xdmp:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
+    return ml:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
 };
 
 declare function stp:zip-static-doc-insert(
@@ -627,7 +625,7 @@ as empty-sequence()
   let $_ := stp:info(
     "stp:zip-static-docs-insert",
     ("zip", $zip-path, "as", $zip-uri))
-  return xdmp:document-insert($zip-uri, $zip)
+  return ml:document-insert($zip-uri, $zip)
   ,
 
   stp:info(
@@ -1086,7 +1084,7 @@ as empty-sequence()
     else stp:error('EMPTY', ($uri, xdmp:quote($n))))
   let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:list-pages-render', ($uri))
-  return xdmp:document-insert($uri, $n)
+  return ml:document-insert($uri, $n)
 };
 
 (: Recursively load all files, retaining the subdir structure :)
@@ -1112,11 +1110,7 @@ as empty-sequence()
       let $opts := (
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
-      return xdmp:document-insert(
-        $uri,
-        xdmp:zip-get($zip, $e, $opts),
-        xdmp:default-permissions(),
-        $version)
+      return ml:document-insert($uri, xdmp:zip-get($zip, $e, $opts))
       ,
       xdmp:commit() },
     true())

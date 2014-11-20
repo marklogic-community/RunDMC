@@ -74,15 +74,15 @@
     </xsl:result-document>
     <xsl:if test="$DEBUG_GROUPING">
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/sections-captured',$OUTPUT-URI),
                   $sections-captured)"/>
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/lists-captured'   ,$OUTPUT-URI),
                   $lists-captured)"/>
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/code-merged'      ,$OUTPUT-URI),
                   $code-merged)"/>
     </xsl:if>

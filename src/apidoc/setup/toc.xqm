@@ -5,6 +5,8 @@ module namespace toc="http://marklogic.com/rundmc/api/toc" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace ml="http://developer.marklogic.com/site/internal"
+  at "/model/data-access.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 
@@ -502,7 +504,7 @@ declare function toc:uri-save(
 as empty-sequence()
 {
   stp:info('toc:uri-save', ($uri, '=>', $location)),
-  xdmp:document-insert($location, element api:toc-uri { $uri })
+  ml:document-insert($location, element api:toc-uri { $uri })
 };
 
 (: Given node state, return appropriate HTML classnames. :)
@@ -870,7 +872,7 @@ as empty-sequence()
       'toc:render', ('inserting', $uri-new)),
     if (map:get($m-seen, $uri-new)) then stp:error('CONFLICT', $uri-new)
     else map:put($m-seen, $uri-new, $uri-new),
-    xdmp:document-insert($uri-new, $n))
+    ml:document-insert($uri-new, $n))
 };
 
 declare function toc:render(
@@ -878,7 +880,7 @@ declare function toc:render(
 as empty-sequence()
 {
   (: Save the location of the new HTML TOC root to the database. :)
-  xdmp:document-insert(
+  ml:document-insert(
     api:toc-uri-location($version),
     text { toc:html-uri($version) }),
   (: Render and insert the new HTML TOC root. :)
@@ -890,7 +892,7 @@ as empty-sequence()
    : Similar to above, except that the URI uses 'default' not $version.
    :)
   if (not($version eq $api:DEFAULT-VERSION)) then () else (
-    xdmp:document-insert(
+    ml:document-insert(
       $api:TOC-URI-DEFAULT,
       text { toc:html-uri('default') }),
     toc:render($version, toc:html-uri('default'), true()))
@@ -1831,7 +1833,7 @@ declare function toc:toc(
 as empty-sequence()
 {
   stp:info('toc:toc', ("Creating new TOC at", $uri)),
-  xdmp:document-insert(
+  ml:document-insert(
     $uri,
     toc:create($version, toc:xsd-docs($xsd-path))),
   stp:info('toc:toc', xdmp:elapsed-time())

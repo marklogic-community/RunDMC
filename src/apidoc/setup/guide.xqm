@@ -499,7 +499,7 @@ as empty-sequence()
   for $c at $x in guide:render(
     $raw-docs, $fully-resolved-top-level-heading-references, $g)
   let $uri as xs:string := base-uri($c)
-  let $_ := xdmp:document-insert($uri, $c)
+  let $_ := ml:document-insert($uri, $c)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:render',
     (base-uri($g), '=>', $uri,
@@ -526,7 +526,7 @@ declare function guide:consolidate-insert(
     'guide:consolidate-insert',
     (xdmp:describe($doc), xdmp:describe($title),
       xdmp:describe($guide-title), $target-url)),
-  xdmp:document-insert(
+  ml:document-insert(
     $target-url,
     element { if ($chapter-list) then "guide" else "chapter" } {
       attribute original-dir { $orig-dir },
@@ -672,7 +672,7 @@ as empty-sequence()
   let $dest-uri := concat($img-dir, $img-path)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:images', ($source-uri, "to", $dest-uri))
-  return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
+  return ml:document-insert($dest-uri, raw:get-doc($source-uri))
 };
 
 (: This function copies all guide images into place. :)
