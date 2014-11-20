@@ -13,7 +13,7 @@ declare variable $ACTION as xs:string* := xdmp:get-request-field(
 
 declare variable $CLEAN as xs:boolean? := xdmp:get-request-field(
   "clean") ! xs:boolean(.) ;
-declare variable $HELP-XSD-DIR as xs:string := xdmp:get-request-field(
+declare variable $HELP-XSD-DIR as xs:string? := xdmp:get-request-field(
   'help-xsd-dir') ;
 declare variable $VERSION as xs:string := xdmp:get-request-field(
   'version') ;
@@ -44,7 +44,7 @@ declare variable $ACTIONS-NEEDING-ZIP := (
 
 declare variable $VARS := (
   if (not($ACTIONS = $ACTIONS-NEEDING-XSD)) then ()
-  else (xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR),
+  else (xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR treat as xs:string),
   xs:QName('VERSION'), $VERSION,
   if (not($ACTIONS = $ACTIONS-NEEDING-ZIP)) then ()
   else (xs:QName('ZIP'), $ZIP)) ;
@@ -56,6 +56,10 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
 
 (: This may take some time to run :)
 xdmp:set-request-time-limit(1800),
+stp:info(
+  'build.xqy',
+  ($VERSION, 'starting', 'clean', $CLEAN,
+    'actions', count($ACTIONS), xdmp:describe($ACTIONS))),
 
 (: If "clean" is specified, delete everything first. :)
 if (not($CLEAN)) then ()
