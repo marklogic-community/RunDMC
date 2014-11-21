@@ -40,7 +40,11 @@ declare variable $ACTIONS-NEEDING-XSD := (
 declare variable $ACTIONS-NEEDING-ZIP := (
   'load-static-docs',
   'load-raw-docs',
-  ());
+  ()) ;
+
+declare variable $ACTIONS-SPAWN-OK := (
+  "load-static-docs",
+  ()) ;
 
 declare variable $VARS := (
   if (not($ACTIONS = $ACTIONS-NEEDING-XSD)) then ()
@@ -69,11 +73,14 @@ else xdmp:invoke('clean.xqy', (xs:QName('VERSION'), $VERSION))
 (: as well as these params,
  : used in load-raw-docs.xqy and load-static-docs.xqy
  :)
-for $xqy at $x in $ACTIONS
+for $action at $x in $ACTIONS
 let $start := xdmp:elapsed-time()
-let $_ := stp:info('build.xqy', ($VERSION, 'starting', $xqy, $start))
-let $_ := xdmp:invoke($xqy||'.xqy', $VARS)
-return text { $xqy, $VERSION, xdmp:elapsed-time() - $start }
+let $xqy := $action||'.xqy'
+let $_ := stp:info('build.xqy', ($VERSION, 'starting', $action, $start))
+let $_ := (
+  if ($action = $ACTIONS-SPAWN-OK) then xdmp:spawn($xqy, $VARS)
+  else xdmp:invoke($xqy, $VARS))
+return text { $action, $VERSION, xdmp:elapsed-time() - $start }
 ,
 text { 'build', $VERSION, xdmp:elapsed-time() },
 text { '' }
