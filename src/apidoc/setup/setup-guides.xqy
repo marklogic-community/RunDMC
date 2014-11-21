@@ -13,6 +13,7 @@ declare variable $VARS := (xs:QName('VERSION'), $VERSION) ;
 
 (: Normalize the guide fragments and URLs,
  : and add a chapter list to the title doc.
+ : This is fast.
  :)
 xdmp:invoke("consolidate-guides.xqy", $VARS),
 
@@ -23,7 +24,9 @@ xdmp:invoke("consolidate-guides.xqy", $VARS),
  :)
 xdmp:spawn("copy-guide-images.xqy", $VARS),
 
-(: Convert each title and chapter doc into renderable XML. :)
+(: Convert each title and chapter doc into renderable XML.
+ : This is slow.
+ :)
 xdmp:invoke("convert-guides.xqy", $VARS)
 
 (: apidoc/setup-guides.xqy :)
