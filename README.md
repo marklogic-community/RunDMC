@@ -20,6 +20,8 @@ seen at http://developer.marklogic.com).
 
 ### Configuration
 
+#### Ports
+
 To set up the application, first check whether the default ports work for you. You can see the default ports by
 viewing deploy/build.properties or by asking Roxy:
 
@@ -41,6 +43,11 @@ Do not check this file in: this file is used for local configuration changes onl
 If you change the ports, you will also need to create src/config/server-urls-local.xml. This file is also not to be 
 checked in. You can copy the host/@type="local" example from server-urls.xml. Both files will be loaded (if present), 
 and the -local version will take precedence if present.
+
+#### Root path
+
+In deploy/build.properties, change the modules-root property to point to the 
+location of your project's src directory. Specify the absolute path. 
 
 ### Bootstrapping
 
