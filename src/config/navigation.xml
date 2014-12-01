@@ -93,6 +93,7 @@
     <group display="Tools &amp; Open Source Projects">
       <group display="Debugging, profiling, and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
+        <page display="XQDT for Eclipse and MarkLogic Fork" href="/code/xqdt"/>
         <page display="Oxygen" href="/code/oxygen"/>
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
