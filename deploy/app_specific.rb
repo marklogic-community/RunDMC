@@ -142,9 +142,9 @@ class ServerConfig
     end
 
     xsd_dir = ""
-    if (File.exist? "/var/opt/MarkLogic")
+    if (File.exist? "/opt/MarkLogic")
       # Linux
-      xsd_dir = "/var/opt/MarkLogic/Config"
+      xsd_dir = "/opt/MarkLogic/Config"
     elsif (File.exist? ENV['HOME'])
       # Mac
       xsd_dir = "#{ENV['HOME']}/Library/MarkLogic/Config"
