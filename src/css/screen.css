@@ -697,8 +697,6 @@ footer nav .current a {color: white;}
 	background: white;
 	border-radius: 5px;
 	margin-bottom: 30px;
-	float: left;
-	clear: left;
 	width: 97%;
 	padding-top: 0 !important;
 }
@@ -2660,8 +2658,4 @@ button.green {
 
 button.green:hover {
     border:2px solid #6ca054;
-}
-
-#content > section {
-  overflow: auto;
 }
