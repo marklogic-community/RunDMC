@@ -93,6 +93,7 @@
     <group display="Tools &amp; Open Source Projects">
       <group display="Debugging, profiling, and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
+        <page display="XQDT for Eclipse and MarkLogic Fork" href="/code/xqdt"/>
         <page display="Oxygen" href="/code/oxygen"/>
         <page display="CQ" href="/code/cq"/>
         <page display="DQ" href="/code/dq"/>
@@ -109,11 +110,13 @@
 
       </group>
       <group display="Loading and processing">
+        <page display="MarkLogic Content Pump" href="/products/mlcp"/>
         <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
         <page display="Corb" href="/code/corb"/>
+        <page display="Taskbot" href="/code/taskbot"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="Rebalancer" href="/code/task-rebalancer"/>
       </group>
@@ -138,7 +141,8 @@
         <page display="MLJAM" href="/code/mljam"/>
         <!-- <page display="XQRunner Java XQuery Executor" href="/code/xqrunner"/> -->
         <!-- <page display="XQuery JSP Tag Library" href="/code/jsp"/> -->
-        <page display="Scala Bindings for XCC" href="/code/xcc-scala"/> 
+        <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
+        <page display="Go Bindings" href="/code/go-marklogic"/>
         <!-- <page display="ActiveDocument (ruby)" href="/code/active-document"/> -->
       </group>
       <group display="Command-line interfaces">
@@ -149,6 +153,7 @@
       <group display="Libraries and Frameworks">
         <page display="Roxy" href="/code/roxy"/>
         <page display="REST Endpoint Library" href="/code/ml-rest-lib"/>
+        <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
         <page display="XQuery Commons" href="/code/commons"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="MLJSON - JSON conversion" href="/code/mljson"/>
@@ -157,7 +162,7 @@
         <!--<page display="Marker" href="/code/marker"/> -->
         <page display="OAuth" href="/code/oauth2"/>
         <!-- <page display="User Login/Logout/Register XQuery Library" href="/code/userlogin"/> -->
-        <page display="rxq" href="/labs/rxq"/> 
+        <page display="rxq" href="/labs/rxq"/>
         <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
         <!-- <page display="XQMVC" href="/code/xqmvc"/> -->
@@ -170,7 +175,10 @@
         <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Sample apps">
+        <page display="Samplestack" href="/code/samplestack"/>
         <page display="Top Songs" href="/code/top-songs"/>
+        <page display="SpringBoot Sample" href="/code/springboot-sample"/>
+        <page display="SpringBoot Security Sample" href="/code/springboot-security-sample"/>
         <page display="Boing Boing" href="/code/boing-boing"/>
         <page display="Document Discovery" href="/code/document-discovery"/>
         <page display="Tunage" href="/code/tunage"/>
@@ -251,7 +259,7 @@
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
   </page>
-  <page display="Labs" href="/labs" tooltip="Experimental work"> 
+  <page display="Labs" href="/labs" tooltip="Experimental work">
     <group display="">
         <group display="Labs">
             <page display="MLPHP" href="/labs/mlphp"/>

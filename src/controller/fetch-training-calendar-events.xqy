@@ -50,7 +50,7 @@ declare function local:build-event(
         {
           element xhtml:a {
             attribute href {
-              $MLU-URI || "session" || $session/jbasic:uri/fn:string()
+              $MLU-URI || "sessions" || $session/jbasic:uri/fn:string()
             },
             attribute target { "_blank" },
             $session/jbasic:courseType/jbasic:courseName/fn:string()
