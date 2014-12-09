@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Media</h1>
+  <p class="intro">
+    <ul>
+      <li>Upload binary files</li>
+      <li>Leave as draft and ask Dave Cassel to publish.</li>
+    </ul>
+  </p>
+  <form action="/admin/controller/upload.xqy" class="add_post" enctype="multipart/form-data" method="post">
+    <div>
+      <input type="file" name="content" value="Upload..."/>
+      <label>/media/</label><input type="text" name="uri"/>
+      <input type="submit" value="Upload Media"/>
+    </div>
+  </form>
+  <ml:admin-media-list/>
+</ml:page>

@@ -32,6 +32,7 @@
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
           <Pages         doc-type="page"         path="/pages"/>
+          <Media         doc-type="media"        path="/media"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -101,6 +102,24 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="admin-media-list">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">URL</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="uris" select="ml:uris-by-type('media')"/>
+        <xsl:apply-templates mode="admin-uri-listing" select="$uris">
+          <xsl:sort select="."/>
+          <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
+        </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
   <xsl:function name="ml:admin-doc-title" as="xs:string">
     <xsl:param name="e" as="element()"/>
     <xsl:sequence select="string(   if ($e/self::Project) then $e/name
@@ -124,6 +143,19 @@
                      else if ($doc-type eq 'page')         then $ml:pages
                      else ()"/>
   </xsl:function>
+
+  <xsl:function name="ml:uris-by-type" as="element()*">
+    <xsl:param name="doc-type"/>
+    <xsl:sequence select="if ($doc-type eq 'media')      then $ml:media-uris
+                     else ()"/>
+  </xsl:function>
+
+  <xsl:template mode="admin-uri-listing" match="*">
+    <xsl:variable name="uri" select="."/>
+    <tr>
+      <td><xsl:value-of select="$uri"/></td>
+    </tr>
+  </xsl:template>
 
   <xsl:template mode="admin-listing" match="*">
     <xsl:param name="current-page-url"/>
