@@ -107,7 +107,8 @@
                                        else if ($e/self::page) then ( $e//*:h1
                                                                     | $e//*:h2
                                                                     | $e//*:h3
-                                                                    | $e//product-info/@name
+                                                                    | $e//ml:product-info/@name
+                                                                    | ($e//ml:product-info/ml:name)[1]
                                                                     )[1]
                                        else $e/title
                                         )"/>
