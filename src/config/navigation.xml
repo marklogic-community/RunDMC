@@ -110,11 +110,13 @@
 
       </group>
       <group display="Loading and processing">
+        <page display="MarkLogic Content Pump" href="/products/mlcp"/>
         <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
         <page display="Corb" href="/code/corb"/>
+        <page display="Taskbot" href="/code/taskbot"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="Rebalancer" href="/code/task-rebalancer"/>
       </group>
