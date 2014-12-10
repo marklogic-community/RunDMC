@@ -169,8 +169,8 @@
     <tr>
       <td><xsl:value-of select="$uri"/></td>
       <td>
-        <form action="/media-remove.xqy">
-          <input type="hidden" name="uri" value="$uri"/>
+        <form action="/admin/controller/media-remove.xqy">
+          <input type="hidden" name="uri" value="{$uri}"/>
           <button type="submit" class="image-delete" title="Delete">Delete</button>
         </form>
       </td>

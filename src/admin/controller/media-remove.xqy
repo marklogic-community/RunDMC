@@ -1,15 +1,11 @@
 xquery version "1.0-ml";
 
-declare variable $uri := "/media/" || xdmp:get-request-field("uri");
+declare variable $uri := xdmp:get-request-field("uri");
 
-if (fn:doc-available($uri) and fn:not($overwrite)) then
-  fn:error(xs:QName("Conflict"), "Something already exists at URI " || $uri)
+if (fn:doc-available($uri)) then
+  xdmp:document-delete($uri)
 else (
-  xdmp:document-insert(
-    $uri,
-    $content,
-    xdmp:default-permissions(),
-    "media"
-  ),
-  xdmp:redirect-response("/media")
-)
+  fn:error(xs:QName("NotFound"), "Failed to delete; no document at " || $uri)
+),
+
+xdmp:redirect-response("/media")
