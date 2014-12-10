@@ -276,3 +276,14 @@ div.ce_description {padding-top: 1em;}
 	position: absolute;
 	left: -999em;
 }
+
+.image-delete {
+  background-image: url(/admin/images/image_delete.png);
+  background-repeat: no-repeat;
+  border: 0;
+  cursor: pointer;
+  height: 16px;
+  padding: 0;
+  text-indent: -2000px;
+  width: 16px;
+}
