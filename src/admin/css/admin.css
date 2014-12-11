@@ -287,3 +287,7 @@ div.ce_description {padding-top: 1em;}
   text-indent: -2000px;
   width: 16px;
 }
+
+.media-list tr:hover td {
+  background-color: #ddd;
+};

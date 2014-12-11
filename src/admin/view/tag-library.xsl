@@ -117,7 +117,7 @@
   </xsl:template>
 
   <xsl:template match="admin-media-list">
-    <table>
+    <table class="media-list">
       <thead>
         <tr>
           <th scope="col">URL</th>
