@@ -75,7 +75,7 @@ order by $p/name
 return $p;
 
 declare variable $media-uris :=
-  cts:uris((), (), cts:collection-query("media")) ! <uri>{.}</uri>;
+  cts:uri-match("/media/*") ! <uri>{.}</uri>;
 
 (: Blog posts :)
 declare variable $posts-by-date := for $p in $Posts
