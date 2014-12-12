@@ -22,7 +22,7 @@ import module namespace c="http://marklogic.com/rundmc/api/controller"
 declare namespace x="http://www.w3.org/1999/xhtml";
 
 declare variable $DEBUG as xs:boolean? := xs:boolean(
-  xdmp:get-request-field('debug')) ;
+  xdmp:get-request-field('debug')[. castable as xs:boolean]) ;
 
 (: $PATH is just the original path, unless this is a REST doc, in which
  case we also might have to look at the query string (translating
