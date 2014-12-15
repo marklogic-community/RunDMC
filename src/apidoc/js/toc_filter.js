@@ -138,28 +138,38 @@ function toc_init() {
     });
 
     // Set up the filter
+    var filterDelay = 750;
     $("#config-filter").keyup(function(e) {
-        var currentFilterText = $(this).val();
-        LOGGER.debug("config-filter current=", currentFilterText);
+        // clear any existing idle timer
+        clearTimeout($.data(this, 'timer'));
+        var filter = $(this);
+        var currentFilterText = filter.val();
+        LOGGER.debug("config-filter not idle",
+                     new Date(), currentFilterText);
+        // delay any work until idle
+        $.data(this, 'timer', setTimeout(function() {
+            LOGGER.debug("config-filter idle",
+                         new Date(), currentFilterText);
 
-        // TODO what about a confirmation alert?
-        if (e.which == 13) // Enter key pressed
-            window.location = "/do-do-search?api=1"
-            + "&v=" + $("input[name = 'v']").val()
-            + "&q=" + $(this).val();
+            // TODO what about a confirmation alert?
+            if (e.which == 13) // Enter key pressed
+                window.location = "/do-do-search?api=1"
+                + "&v=" + $("input[name = 'v']").val()
+                + "&q=" + currentFilterText;
 
-        var closeButton = $("#config-filter-close-button");
-        if ($(this).val() === "") closeButton.hide();
-        else closeButton.show();
+            var closeButton = $("#config-filter-close-button");
+            if (currentFilterText === "") closeButton.hide();
+            else closeButton.show();
 
-        setTimeout(function() {
-            if (previousFilterText !== currentFilterText) {
-                //LOGGER.debug("toc filter event", currentFilterText);
-                previousFilterText = currentFilterText;
-                // The current TOC tree root should be visible.
-                filterConfigDetails(currentFilterText,
-                                    ".apidoc_tree:visible"); } },
-                   350);
+            setTimeout(function() {
+                if (previousFilterText !== currentFilterText) {
+                    //LOGGER.debug("toc filter event", currentFilterText);
+                    previousFilterText = currentFilterText;
+                    // The current TOC tree root should be visible.
+                    filterConfigDetails(currentFilterText,
+                                        ".apidoc_tree:visible"); } },
+                       350); },
+                                         filterDelay));
     });
 
     $("#config-filter-close-button").click(function() {
@@ -260,45 +270,28 @@ function filterConfigDetails(filterText, treeSelector) {
 }
 
 var waitToSearch = function(text, tocRoot) {
-  // Repeatedly check for the absence of the "placeholder" class
-  // Once they're all gone, run the text search and cancel the timeout
-  var placeholders = tocRoot.find(".placeholder");
-  if (placeholders.size() == 0) {
-    tocRoot.addClass("fullyLoaded");
-    searchTOC(text, tocRoot);
-    clearTimeout(waitToSearch);
-  }
-  else
-    setTimeout(function(){ waitToSearch(text, tocRoot) }, 350);
+    // Repeatedly check for the absence of the "placeholder" class
+    // Once they're all gone, run the text search and cancel the timeout
+    var placeholders = tocRoot.find(".placeholder");
+    if (placeholders.size() == 0) {
+        tocRoot.addClass("fullyLoaded");
+        searchTOC(text, tocRoot);
+        clearTimeout(waitToSearch);
+    }
+    else setTimeout(function(){ waitToSearch(text, tocRoot) },
+                    350);
 }
     
 function searchTOC(filter, tocRoot) {
     tocRoot.find("li").each(function() {
         $(this).removeClass("hide-detail");
         $(this).find(">a >.function_count").show();
-        /*
-        if (filter == '') {
-            removeHighlightToText($(this));
-        } else {
-        */
         if (filter !== '') {
             if (hasText($(this),filter)) {
-                    /* Temporarily disable highlighting as it's too slow (particularly when removing the highlight).
-                     * Also, buggy in its interaction with the treeview control: branches may no longer respond to clicks
-                     * (presumably due to the added spans).
-                /*
-                if ($(this).find("ul").length == 0)
-                    "do nothing"
-                    addHighlightToText($(this),filter); // then this is a leaf node, so u can perform highlight
-                else {
-                    */
-                    // Expand the TOC sub-tree
-                    expandSubTree($(this));
-                    $(this).find(">a >.function_count").hide();
+                // Expand the TOC sub-tree
+                expandSubTree($(this));
+                $(this).find(">a >.function_count").hide();
             } else {
-                /*
-                removeHighlightToText($(this));
-                */
                 $(this).addClass("hide-detail");
             }
         }
