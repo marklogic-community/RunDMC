@@ -330,60 +330,10 @@ if(typeof jQuery != 'undefined') {
             }
         });
 
-/*
-        $('a.track-download').each(function() {
-            var u = $(this).attr("href");
-            // $(this).click(function() {
-               // _gaq.push(['_trackPageview', u],
-               //           ['_trackEvent', 'start-download', u]);
-                try {
-                    mktoMunchkinFunction('clickLink', { href: '/start-download' + u.replace(/\?., "") } );
-                } catch (err) {}
-    
-                download_iframe = document.getElementById("hiddenDownloader");
-                if (download_iframe === null) {
-                    download_iframe = document.createElement('iframe');  
-                    download_iframe.id = "hiddenDownloader";
-                    download_iframe.style.visibility = 'hidden';
-                    document.body.appendChild(download_iframe);
-                }
-                download_iframe.src = u + '?r=dmc';
-
-                return false;
-            });
-        });
-*/
-
-//		if(jQuery().fancybox) {
-//			$('a[rel=detail]',main).each(function() {
-//				var ref = $(this).attr('href');
-//				$(this).append(
-//					$('<span>',{'class':'caption',text: 'Enlarge image'})
-//				).fancybox({
-//					transitionIn: 'elastic',
-//					transitionOut: 'elastic'
-//				});
-//			});
-//		}
-//		var apiCaption = $('.api_table caption',main).text();
-//		$('.api_table',main).find('caption').remove().end().before(
-//			$('<div>', {
-//				'class': 'api_caption',
-//				text: apiCaption
-//			})
-//		);
-		if($('#page_content').length) {
+	    if ($('#page_content').length) {
 		$('body:not(.sticky) #page_content')
-			.append($('<div>', {'class': 'shadow'}))
-			.scroll(function() {
-				if($(this).scrollLeft() > 0) {
-					$(this).children('.shadow').fadeIn('fast');
-				}
-				else {
-					$(this).children('.shadow').fadeOut('fast');
-				}
-			});
-		}
+		    .append($('<div>', {'class': 'shadow'}));
+	    }
 
         $(document).ready(function() {
 
