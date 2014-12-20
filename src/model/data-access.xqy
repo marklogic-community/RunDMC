@@ -288,8 +288,10 @@ as cts:query
             'infinity'))),
       cts:not-query(
         cts:or-query(
-          (ml:has-attribute("hide-from-search", "yes"),
-            cts:collection-query("hide-from-search")))) ))
+          (cts:collection-query("hide-from-search"),
+            cts:element-attribute-value-query(
+              $doc-element-names,
+              QName("", "hide-from-search"), "yes"))))))
 };
 
 declare function ml:search-corpus-query(
@@ -297,13 +299,6 @@ declare function ml:search-corpus-query(
 as cts:query
 {
   ml:search-corpus-query($versions, false())
-};
-
-declare private function ml:has-attribute($att-name, $value) {
-  cts:or-query((
-      for $qname in $doc-element-names return
-      cts:element-attribute-value-query($qname,QName("",$att-name),$value)
-      ))
 };
 
 (: Match only the supplied server version(s). :)
