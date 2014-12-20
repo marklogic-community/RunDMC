@@ -10,6 +10,7 @@ as element(param)*
 {
   for $name  in xdmp:get-request-field-names()
   for $value in xdmp:get-request-field($name)
+  where $value instance of xs:anySimpleType
   return document {
     <params>
       <param name="{$name}">{ $value }</param>

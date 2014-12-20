@@ -74,6 +74,9 @@ declare variable $projects-by-name := for $p in $Projects
 order by $p/name
 return $p;
 
+declare variable $media-uris :=
+  cts:uri-match("/media/*") ! <uri>{.}</uri>;
+
 (: Blog posts :)
 declare variable $posts-by-date := for $p in $Posts
 order by $p/created descending
