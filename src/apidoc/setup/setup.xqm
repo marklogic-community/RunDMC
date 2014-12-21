@@ -505,7 +505,7 @@ as empty-sequence()
    : except that this is done synchronously. This XHTML copy is
    : used for search, snippeting, etc.
    :)
-  if ($is-hidden or not($is-jdoc)) then () else (
+  if (not($is-jdoc)) then () else (
     if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert',
       ($uri, "trying xdmp:tidy with xhtml:clean")),
