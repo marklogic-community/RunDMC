@@ -1,4 +1,4 @@
-.# RunDMC
+# RunDMC
 
 ## NOTES
 
