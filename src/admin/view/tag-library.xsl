@@ -5,6 +5,7 @@
   xmlns      ="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:srv="http://marklogic.com/rundmc/server-urls"
+  xmlns:authorize="http://marklogic.com/rundmc/authorize"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
   xpath-default-namespace="http://developer.marklogic.com/site/internal"
   exclude-result-prefixes="xs ml xdmp srv"
@@ -12,6 +13,7 @@
 
   <!-- Import the definition of $srv:draft-server and $srv:webdav-server -->
   <xdmp:import-module href="/controller/server-urls.xqy" namespace="http://marklogic.com/rundmc/server-urls"/>
+  <xdmp:import-module href="/admin/controller/modules/authorize.xqy" namespace="http://marklogic.com/rundmc/authorize"/>
 
   <xsl:template match="admin-page-listings">
     <table id="tbl_status">
@@ -167,12 +169,15 @@
                 <xsl:text>&#160;|&#160;</xsl:text>
                 <!-- TODO: make preview work -->
                 <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
-                <xsl:text>&#160;|&#160;</xsl:text>
+                <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
+                <xsl:if test="authorize:is-admin()">
+                  <xsl:text>&#160;|&#160;</xsl:text>
 
-                <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-                <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
-                  <xsl:value-of select="$action"/>
-                </a>
+                  <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+                    <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+                      <xsl:value-of select="$action"/>
+                    </a>
+                </xsl:if>
 
                 <!-- TODO: make remove work -->
                 <!-- Leave out "Remove" for v1.0
