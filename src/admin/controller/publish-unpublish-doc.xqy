@@ -1,6 +1,8 @@
 (: This script sets a document's status to either "Published" or "Draft". :)
 import module namespace param="http://marklogic.com/rundmc/params"
        at "../../controller/modules/params.xqy";
+import module namespace authorize="http://marklogic.com/rundmc/authorize"
+        at "modules/authorize.xqy";
 
 declare namespace map = "http://marklogic.com/xdmp/map";
 
@@ -13,6 +15,13 @@ let $redirect := string($params[@name eq 'redirect'])
 let $status   := if ($action eq "Publish")   then "Published"
             else if ($action eq "Unpublish") then "Draft"
             else error((), "Parameter 'action' must be either 'Publish' or 'Unpublish'")
+
+(: Ensure the user has the proper role in order to publish/unpublish :)
+let $authorized :=
+  if(authorize:is-admin()) then
+    ()
+  else
+    error((), fn:concat("User is not authorized to ", $action, " ", $params[@name eq 'path']))
 
 return
 (
