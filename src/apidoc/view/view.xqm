@@ -78,7 +78,7 @@ as element()
 {
   (: Use absolute links so they work uniformly on standalone docs app. :)
   <div xmlns="http://www.w3.org/1999/xhtml"
-  id="copyright">Copyright &#169; 2014 MarkLogic Corporation. All rights reserved.
+  id="copyright">Copyright &#169; 2015 MarkLogic Corporation. All rights reserved.
   | Powered by
   <a href="http://developer.marklogic.com/products">
   MarkLogic Server
