@@ -245,16 +245,20 @@
     <xsl:call-template name="did-you-mean">
       <xsl:with-param name="q" select="$QUERY"/>
     </xsl:call-template>
+    <xsl:variable name="total" as="xs:int"
+                  select="(@facet-total, @total)[1]"/>
     <xsl:variable name="last-in-full-page" select="@start + @page-length - 1"/>
-    <xsl:variable name="end-result-index"  select="if (@total lt @page-length or $last-in-full-page gt @total) then @total
-                                                   else $last-in-full-page"/>
+    <xsl:variable name="end-result-index"
+                  select="if ($total lt @page-length
+                          or $last-in-full-page gt $total) then $total
+                          else $last-in-full-page"/>
     <h3>
       <xsl:text>Results </xsl:text>
       <em>
         <xsl:value-of select="@start"/>–<xsl:value-of select="$end-result-index"/>
       </em>
       <xsl:text> of </xsl:text>
-      <xsl:value-of select="@total"/>
+      <xsl:value-of select="$total"/>
       <xsl:text> for </xsl:text>
       <em>
         <xsl:value-of select="search:qtext"/>
@@ -379,11 +383,13 @@
   </xsl:template>
 
   <xsl:template mode="prev-and-next" match="search:response">
+    <xsl:variable name="total" as="xs:int"
+                  select="(@facet-total, @total)[1]"/>
     <xsl:variable name="search-url" select="ml:external-uri(.)"/>
     <form class="pagination" action="/search" method="get">
       <div>
         <xsl:if test="$page-number gt 1">
-          <a class="prev"
+          <a class="prev" rel="prev"
              href="{
                    ss:href(
                    $PREFERRED-VERSION, $QUERY, $IS-API-SEARCH,
@@ -395,11 +401,11 @@
           <input name="p" type="text" value="{$page-number}" size="4"/>
           <input name="q" type="hidden" value="{$QUERY}"/>
           <xsl:text> of </xsl:text>
-          <xsl:value-of select="ceiling(@total div @page-length)"/>
+          <xsl:value-of select="ceiling($total div @page-length)"/>
         </label>
-        <xsl:if test="@total gt (@start + @page-length - 1)">
+        <xsl:if test="$total gt (@start + @page-length - 1)">
           <xsl:text> </xsl:text>
-          <a class="next"
+          <a class="next" rel="next"
              href="{
                    ss:href(
                    $PREFERRED-VERSION, $QUERY, $IS-API-SEARCH,
