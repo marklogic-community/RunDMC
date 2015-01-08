@@ -530,6 +530,7 @@
       <xsl:with-param name="site-name" select="'Docs'"/>
       <xsl:with-param name="version" select="$PREFERRED-VERSION"/>
     </xsl:apply-templates>
+    <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
 </xsl:stylesheet>
