@@ -42,11 +42,12 @@
                 select="if ($PREFERRED-VERSION eq $ml:default-version) then ''
                         else concat('/',$PREFERRED-VERSION)"/>
 
-  <!-- This is used for hit highlighting. Only available when the client sets it (on the search results page) -->
-  <xsl:variable name="latest-search-qtext" select="ck:get-cookie('search-qtext')[1]"/>
-
   <xsl:variable name="QUERY" as="xs:string"
                 select="string-join($params[@name eq 'q'], ' ')"/>
+
+  <!-- If set, use this value to highlight matches. -->
+  <xsl:variable name="HIGHLIGHT-QUERY" as="xs:string?"
+                select="string-join($params[@name eq 'hq'], ' ')"/>
 
   <xsl:variable name="SEARCH-RESPONSE" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
@@ -86,11 +87,6 @@
                         $srv:cookie-domain,
                         '/',
                         false())"/>
-
-  <!-- This must be evaluated for every page, to prevent continued (unwanted) highlighting (see page.xsl) -->
-  <xsl:variable name="_reset-search-cookie"
-                select="ck:delete-cookie('search-qtext', $srv:cookie-domain, '/')"/>
-
 
   <!-- Overriden by apidoc/view/page.xsl so this has to use XSL. -->
   <xsl:function name="ml:version-is-selected" as="xs:boolean">
@@ -269,31 +265,17 @@
       <xsl:apply-templates mode="#current" select="search:result"/>
     </table>
     <xsl:apply-templates mode="prev-and-next" select="."/>
-
-    <!-- We set the search qtext on click to a cookie to enable highlighting on the next page only. -->
-    <script type="text/javascript">
-      //<xsl:comment>
-      $("a.search_result").click(function(){
-      $.cookie("search-qtext",
-      "<xsl:value-of select="replace($QUERY-UNCONSTRAINED,'&quot;','\\&quot;')"/>", <!-- js-escape quotes -->
-      {"domain":"<xsl:value-of select="$srv:cookie-domain"/>", "path":"/"});
-      });
-      //</xsl:comment>
-    </script>
   </xsl:template>
 
   <!-- Render one result from a search:response. -->
   <xsl:template mode="search-results" match="search:result">
     <xsl:variable name="doc" select="doc(@uri)"/>
-    <xsl:variable name="is-api-doc" select="starts-with(@uri,'/apidoc/')"/>
-    <xsl:variable name="anchor"
-                  select="if ($doc/*:chapter) then '' else ''"/>
     <xsl:variable name="result-uri"
-                  select="if ($is-api-doc) then concat(
-                          $srv:effective-api-server, $API-VERSION-PREFIX,
-                          ml:external-uri-for-string(ss:rewrite-html-links(@uri)),
-                          $anchor)
-                          else ml:external-uri-main(@uri)"/>
+                  select="ss:result-uri(
+                          @uri,
+                          $QUERY-UNCONSTRAINED,
+                          starts-with(@uri, '/apidoc/'),
+                          $API-VERSION-PREFIX)"/>
     <tr>
       <th>
         <xsl:variable name="category">

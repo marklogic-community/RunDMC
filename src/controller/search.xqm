@@ -177,6 +177,14 @@ as xs:string
   concat($name, '=', encode-for-uri($value))
 };
 
+declare function ss:query-string(
+  $params as xs:string*)
+as xs:string
+{
+  if (empty($params)) then ''
+  else string-join($params, '&amp;')
+};
+
 declare function ss:href(
   $version as xs:string,
   $query as xs:string,
@@ -187,13 +195,12 @@ as xs:string
   concat(
     $srv:search-page-url,
     '?',
-    string-join(
+    ss:query-string(
       (ss:param('q', $query),
         if (not($is-api)) then ()
         else ss:param($ss:INPUT-NAME-API, xs:string($is-api)),
         ss:param($ss:INPUT-NAME-API-VERSION, $version),
-        ss:param('p', xs:string($page))),
-      '&amp;'))
+        ss:param('p', xs:string($page)))))
 };
 
 declare function ss:href(
@@ -203,6 +210,27 @@ declare function ss:href(
 as xs:string
 {
   ss:href($version, $query, $is-api, ())
+};
+
+declare function ss:result-uri(
+  $uri as xs:string,
+  $highlight-query as xs:string?,
+  $is-api-doc as xs:boolean,
+  $api-version-prefix as xs:string)
+as xs:string
+{
+  concat(
+    if (not($is-api-doc)) then ml:external-uri-main($uri)
+    else concat(
+      $srv:effective-api-server,
+      $api-version-prefix,
+      ml:external-uri-for-string(ss:rewrite-html-links($uri))),
+    (: Add the highlight param if needed.
+     : The external-uri-main function never adds a query string,
+     : so we have a free hand.
+     :)
+    if (not($highlight-query)) then ''
+    else concat('?', ss:query-string(ss:param('hq', $highlight-query))))
 };
 
 (: search.xqm :)
