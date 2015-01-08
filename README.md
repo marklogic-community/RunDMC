@@ -98,6 +98,16 @@ For example this command will rebuild the TOC.
 
 The available actions are implemented in `src/apidoc/setup.xqy`.
 
+#### Ruby gem Requirement
+
+You may receive an error if you do not have all required Ruby gems installed.  
+
+    ERROR: The net-http-digest_auth gem is required for this feature.
+
+net-http-digest_auth is required for deploy_docs.  To install this gem and proceed:
+    
+    $ sudo gem install net-http-digest_auth
+
 ## Servers
 
 This project is actually a family of applications. 
