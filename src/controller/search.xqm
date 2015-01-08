@@ -98,6 +98,7 @@ as xs:string
  : We want the constrained results,
  : but the facets should still be unconstrained.
  : To arrange this we search twice and merge the responses.
+ : Display uses both totals.
  :)
 declare function ss:search-response(
   $version as xs:string,
@@ -109,7 +110,7 @@ as element(search:response)
   element search:response {
     $response/@* ! (
       typeswitch(.)
-      case attribute(total) return ()
+      case attribute(total) return attribute facet-total { . }
       default return .),
     attribute query-unconstrained { $query },
     (: We also use the @total from the unconstrained facets,
