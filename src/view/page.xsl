@@ -92,20 +92,30 @@
   <!-- WORKAROUND for XSLTBUG 12857. These variable definitions really belong in navigation.xsl;
        they're only included here as a workaround. -->
 
-        <!-- For performance reasons, we no longer pre-process the navigation config on every request;
-             it is now an, er, PRE-process. -->
-        <!-- Pre-processing (to get the blog content) is unnecessary on the API server; so just grab the raw config file
-             in that case. -->
-        <xsl:variable name="navigation" select="if ($currently-on-api-server) then $ml:raw-navigation
-                                           else if ($navigation-cached)       then $navigation-cached
-                                                                              else ($populated-navigation,
-                                                                                     ml:save-cached-navigation($populated-navigation))"/>
+  <!-- For performance reasons, we no longer pre-process the navigation config on every request;
+       it is now an, er, PRE-process. -->
+  <!-- Pre-processing (to get the blog content) is unnecessary on the API server; so just grab the raw config file
+       in that case. -->
+  <xsl:variable name="navigation"
+                select="if ($currently-on-api-server) then $ml:raw-navigation
+                        else if ($navigation-cached) then $navigation-cached
+                        else (
+                        $populated-navigation,
+                        ml:save-cached-navigation($populated-navigation))"/>
 
-                <xsl:variable name="navigation-cached" select="ml:get-cached-navigation()"/>
+  <xsl:variable name="navigation-cached" select="ml:get-cached-navigation()"/>
 
-                <xsl:variable name="populated-navigation">
-                  <xsl:apply-templates mode="pre-process-navigation" select="$ml:raw-navigation"/>
-                </xsl:variable>
+  <!-- This is expensive, ca 100-ms. Avoid whenever possible. -->
+  <xsl:variable name="populated-navigation">
+    <xsl:value-of select="xdmp:log(concat('DEBUG ', xdmp:describe(.)))"/>
+    <xsl:choose>
+      <xsl:when test="ml:page/ml:search-results"/>
+      <xsl:otherwise>
+        <xsl:apply-templates mode="pre-process-navigation"
+                             select="$ml:raw-navigation"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
   <!-- END WORKAROUND -->
 
 
@@ -117,22 +127,22 @@
     <xsl:apply-templates select="$template/*"/>
   </xsl:template>
 
-          <!-- By default, copy everything unchanged -->
-          <xsl:template match="@* | comment() | text() | processing-instruction()">
-            <xsl:copy/>
-          </xsl:template>
+  <!-- By default, copy everything unchanged -->
+  <xsl:template match="@* | comment() | text() | processing-instruction()">
+    <xsl:copy/>
+  </xsl:template>
 
-          <!-- Strip out inline custom tags (such as <ml:teaser>) -->
-          <xsl:template match="ml:*">
-            <xsl:apply-templates/>
-          </xsl:template>
+  <!-- Strip out inline custom tags (such as <ml:teaser>) -->
+  <xsl:template match="ml:*">
+    <xsl:apply-templates/>
+  </xsl:template>
 
-          <!-- For elements, "replicate" rather than copy, to prevent unwanted namespace nodes in output -->
-          <xsl:template match="*">
-            <xsl:element name="{name()}" namespace="{namespace-uri()}">
-              <xsl:apply-templates select="@* | node()"/>
-            </xsl:element>
-          </xsl:template>
+  <!-- For elements, "replicate" rather than copy, to prevent unwanted namespace nodes in output -->
+  <xsl:template match="*">
+    <xsl:element name="{name()}" namespace="{namespace-uri()}">
+      <xsl:apply-templates select="@* | node()"/>
+    </xsl:element>
+  </xsl:template>
 
 
   <!-- Rewrite api.marklogic.com links (to docs.marklogic.com) until we have a chance to update the content. -->
@@ -489,64 +499,5 @@
                       </xsl:if>
                     </li>
                   </xsl:template>
-
-                          <xsl:function name="ml:file-from-path" as="xs:string">
-                            <xsl:param name="path" as="xs:string"/>
-                            <xsl:sequence select="if (contains($path, '/')) then ml:file-from-path(substring-after($path, '/'))
-                                                                            else $path"/>
-                          </xsl:function>
-
-
-  <xsl:function name="ml:month-name" as="xs:string">
-    <xsl:param name="month" as="xs:integer"/>
-    <xsl:sequence select="if ($month eq  1) then 'January'
-                     else if ($month eq  2) then 'February'
-                     else if ($month eq  3) then 'March'
-                     else if ($month eq  4) then 'April'
-                     else if ($month eq  5) then 'May'
-                     else if ($month eq  6) then 'June'
-                     else if ($month eq  7) then 'July'
-                     else if ($month eq  8) then 'August'
-                     else if ($month eq  9) then 'September'
-                     else if ($month eq 10) then 'October'
-                     else if ($month eq 11) then 'November'
-                     else if ($month eq 12) then 'December'
-                     else ()"/>
-  </xsl:function>
-
-
-  <xsl:function name="ml:display-date" as="xs:string">
-    <xsl:param name="date-or-dateTime" as="xs:string?"/>
-    <xsl:variable name="date-part" select="substring($date-or-dateTime, 1, 10)"/>
-    <xsl:variable name="castable" select="$date-part castable as xs:date"/>
-    <xsl:choose>
-      <xsl:when test="$castable">
-        <xsl:variable name="dateTime" select="xs:dateTime(concat($date-part,'T00:00:00'))"/>
-        <xsl:variable name="month"    select="month-from-dateTime($dateTime)"/>
-        <xsl:variable name="day"      select="  day-from-dateTime($dateTime)"/>
-        <xsl:variable name="year"     select=" year-from-dateTime($dateTime)"/>
-        <xsl:sequence select="concat(ml:month-name($month),' ',$day,', ',$year)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:sequence select="$date-or-dateTime"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:function>
-
-  <xsl:function name="ml:display-time" as="xs:string">
-    <xsl:param name="dateTime" as="xs:string?"/>
-    <xsl:sequence select="if ($dateTime castable as xs:dateTime) then format-dateTime(xs:dateTime($dateTime), '[h]:[m][P]')
-                                                                 else $dateTime"/>
-  </xsl:function>
-
-  <xsl:function name="ml:display-date-with-time" as="xs:string">
-    <xsl:param name="dateTimeGiven"/>
-    <xsl:variable name="dateTime" select="string($dateTimeGiven)"/>
-
-    <xsl:sequence select="if ($dateTime castable as xs:dateTime)
-                          then concat(ml:display-date($dateTime),'&#160;',
-                                      ml:display-time($dateTime))
-                          else $dateTime"/>
-  </xsl:function>
 
 </xsl:stylesheet>

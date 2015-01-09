@@ -279,7 +279,7 @@
     <tr>
       <th>
         <xsl:variable name="category">
-          <ml:category name="{ ml:category-for-doc(@uri) }"/>
+          <ml:category name="{ ml:category-for-doc(@uri)[1] }"/>
         </xsl:variable>
         <xsl:apply-templates mode="category-image" select="$category/*"/>
       </th>
@@ -287,7 +287,8 @@
         <h4>
           <a href="{ $result-uri }" class="search_result">
             <xsl:variable name="page-specific-title">
-              <xsl:apply-templates mode="page-specific-title" select="$doc/*"/>
+              <xsl:apply-templates mode="page-specific-title"
+                                   select="$doc/*"/>
             </xsl:variable>
             <xsl:value-of
                 select="if (string($page-specific-title)) then $page-specific-title
@@ -305,17 +306,17 @@
   <xsl:template mode="category-image" match="*">
     <xsl:variable name="img-src">
       <xsl:text>/images/</xsl:text>
-      <xsl:apply-templates mode="result-img-src" select="."/>
+      <xsl:value-of select="ss:result-img-src(@name)"/>
       <xsl:text>.png</xsl:text>
     </xsl:variable>
     <xsl:variable name="img-alt">
-      <xsl:apply-templates mode="facet-value-display" select="."/>
+      <xsl:value-of select="ss:facet-value-display(.)"/>
     </xsl:variable>
     <xsl:variable name="img-width">
-      <xsl:apply-templates mode="result-img-width" select="."/>
+      <xsl:value-of select="ss:result-img-width(@name)"/>
     </xsl:variable>
     <xsl:variable name="img-height">
-      <xsl:apply-templates mode="result-img-height" select="."/>
+      <xsl:value-of select="ss:result-img-height(@name)"/>
     </xsl:variable>
     <img src   ="{$img-src}"
          alt   ="{$img-alt}"
@@ -402,115 +403,105 @@
       <xsl:apply-templates mode="facet-name" select="@name"/>
     </h2>
     <ul class="categories">
-      <xsl:apply-templates mode="facet-value" select="parent::search:response | search:facet-value">
-        <xsl:sort select="@count | @total" order="descending" data-type="number"/>
+      <xsl:apply-templates mode="facet-value"
+                           select="parent::search:response"/>
+      <xsl:apply-templates mode="facet-value"
+                           select="search:facet-value[
+                                   not(contains(@name, '/'))]">
+        <xsl:sort
+            select="@count | @total" order="descending" data-type="number"/>
       </xsl:apply-templates>
     </ul>
   </xsl:template>
 
-  <xsl:template mode="facet-name" match="@name[. eq 'cat']">Categories</xsl:template>
+  <xsl:template mode="facet-name"
+                match="@name[. eq 'cat']">Categories</xsl:template>
 
-  <!-- Using <search:response> to represent "all categories" -->
-  <xsl:template mode="facet-value" match="search:facet-value | search:response">
-    <xsl:variable name="this-constraint" select="self::search:facet-value/concat(../@name,':',@name)"/>
+  <xsl:template name="facet-value-anchor">
+    <xsl:param name="is-api-search" as="xs:boolean"/>
+    <xsl:param name="preferred-version" as="xs:string"/>
+    <xsl:param name="query-unconstrained" as="xs:string"/>
+    <xsl:variable name="category">
+      <ml:category name="{
+                         if (empty(@name)) then 'all'
+                         else if (not(contains(@name, '/'))) then @name
+                         else substring-after(@name, '/') }"/>
+    </xsl:variable>
+    <xsl:variable name="this-constraint" as="xs:string?"
+                  select="self::search:facet-value/concat(../@name,':',@name)"/>
     <xsl:variable name="current-constraints" as="xs:string*"
                   select="$SEARCH-RESPONSE/search:query//@qtextconst"/>
-    <xsl:variable name="selected" select="$this-constraint  = $current-constraints
-                                          or not($this-constraint or $current-constraints)"/>
-
+    <xsl:variable name="selected"
+                  select="$this-constraint eq $current-constraints
+                          or not($this-constraint or $current-constraints)"/>
     <xsl:variable name="new-q"
-                  select="if (not($this-constraint)) then $QUERY-UNCONSTRAINED
-                          else if (not($QUERY-UNCONSTRAINED)) then $this-constraint
+                  select="if (not($this-constraint)) then $query-unconstrained
+                          else if (not($query-unconstrained)) then $this-constraint
                           else concat(
-                          $this-constraint, ' (', $QUERY-UNCONSTRAINED, ')')"/>
-    <li>
-      <xsl:if test="$selected">
-        <xsl:attribute name="class" select="'current'"/>
-      </xsl:if>
-      <!--
-          "All categories" link forces the search by including p=1
-          (preventing function page redirects).
-          This also resets to page 1.
-      -->
-      <a href="{
-               ss:href(
-               $PREFERRED-VERSION, $new-q, $IS-API-SEARCH,
-               if ($this-constraint) then () else 1) }">
-        <xsl:variable name="category">
-          <ml:category name="{(@name,'all')[1]}"/>
-        </xsl:variable>
+                          $this-constraint, ' (', $query-unconstrained, ')')"/>
+    <xsl:if test="$selected">
+      <xsl:attribute name="class" select="'current'"/>
+    </xsl:if>
+    <!--
+        "All categories" link forces the search by including p=1
+        (preventing function page redirects).
+        This also resets to page 1.
+    -->
+    <a href="{
+             ss:href(
+             $preferred-version, $new-q, $is-api-search,
+             if ($this-constraint) then () else 1) }">
+      <xsl:if test="not(contains(@name, '/'))">
         <xsl:apply-templates mode="category-image" select="$category/*"/>
         <xsl:text> </xsl:text>
-        <xsl:apply-templates mode="facet-value-display" select="."/>
-        <xsl:apply-templates mode="category-plural" select="."/>
-        <xsl:text> [</xsl:text>
-        <xsl:value-of select="@count | @total"/>
-        <xsl:text>]</xsl:text>
-      </a>
+      </xsl:if>
+      <xsl:value-of select="ss:facet-value-display(.)"/>
+      <xsl:text> [</xsl:text>
+      <xsl:value-of select="@count|@total"/>
+      <xsl:text>]</xsl:text>
+    </a>
+  </xsl:template>
+
+  <!-- Using <search:response> to represent "all categories" -->
+  <xsl:template mode="facet-value"
+                match="search:facet-value|search:response">
+    <xsl:variable name="this-prefix" as="xs:string?"
+                  select="self::search:facet-value/concat(@name, '/')"/>
+    <li>
+      <xsl:call-template name="facet-value-anchor">
+        <xsl:with-param name="is-api-search"
+                        select="$IS-API-SEARCH"/>
+        <xsl:with-param name="preferred-version"
+                        select="$PREFERRED-VERSION"/>
+        <xsl:with-param name="query-unconstrained"
+                        select="$QUERY-UNCONSTRAINED"/>
+      </xsl:call-template>
+      <xsl:if
+          test="$this-prefix
+                and self::search:facet-value/../search:facet-value[
+                starts-with(@name, $this-prefix)]">
+        <ul class="subcategories">
+          <xsl:for-each
+              select="self::search:facet-value/../search:facet-value[
+                      starts-with(@name, $this-prefix)]">
+            <xsl:sort
+                select="@count" order="descending" data-type="number"/>
+            <li>
+              <xsl:call-template name="facet-value-anchor">
+                <xsl:with-param name="is-api-search"
+                                select="$IS-API-SEARCH"/>
+                <xsl:with-param name="preferred-version"
+                                select="$PREFERRED-VERSION"/>
+                <xsl:with-param name="query-unconstrained"
+                                select="$QUERY-UNCONSTRAINED"/>
+              </xsl:call-template>
+            </li>
+          </xsl:for-each>
+        </ul>
+      </xsl:if>
     </li>
   </xsl:template>
 
-  <!-- "All categories" is already plural -->
-  <xsl:template mode="category-plural" match="search:response"/>
-  <xsl:template mode="category-plural" match="*">s</xsl:template>
-
-  <xsl:template mode="facet-value-display" match="search:response       ">All categories</xsl:template>
-
-  <xsl:template mode="facet-value-display" match="*[@name eq 'blog']    ">Blog post</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'code']    ">Open-source project</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'event']   ">Event</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'rest-api']">REST API doc</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'function']">Function page</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'help']    ">Admin help page</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'guide']   ">User guide</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'news']    ">News item</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'tutorial']">Tutorial</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'xcc']     ">XCC Connector API doc</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'java-api']">Java Client API doc</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'hadoop']  ">Hadoop Connector API doc</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'xccn']    ">XCC Connector .Net doc</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'other']   ">Miscellaneous page</xsl:template>
-  <xsl:template mode="facet-value-display" match="*[@name eq 'cpp']     ">C++ API doc</xsl:template>
-
-  <!-- Search result icon file names -->
-  <xsl:template mode="result-img-src" match="*[@name eq 'all']     ">i_mag_logo_small</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'blog']    ">i_rss_small</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'code']    ">i_opensource</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'event']   ">i_calendar</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'function']">i_function</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'help']    ">i_folder</xsl:template>   <!-- TODO: give this a different icon -->
-  <xsl:template mode="result-img-src" match="*[@name eq 'rest-api']">i_rest</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'guide']   ">i_documentation</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'news']    ">i_newspaper</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'tutorial']">i_monitor</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'xcc']     ">i_java</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'java-api']">i_java</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'hadoop']  ">i_java</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'xccn']    ">i_dotnet</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'other']   ">i_folder</xsl:template>
-  <xsl:template mode="result-img-src" match="*[@name eq 'cpp']     ">i_folder</xsl:template>  <!-- TODO: give this a different icon -->
-
-  <!-- All icons except the user guide icon are 30 pixels wide -->
-  <xsl:template mode="result-img-width" match="*[@name eq 'guide']">29</xsl:template>
-  <xsl:template mode="result-img-width" match="*[@name eq 'rest-api']">28</xsl:template>
-  <xsl:template mode="result-img-width" match="*"                  >30</xsl:template>
-
-  <!-- various image heights -->
-  <xsl:template mode="result-img-height" match="*[@name eq 'all']     ">23</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'blog']    ">23</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'code']    ">24</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'event']   ">24</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'function']">27</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'help']    ">19</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'rest-api']">28</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'guide']   ">25</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'news']    ">23</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'tutorial']">21</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'xcc']     "><!--31-->26</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'java-api']"><!--31-->26</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'hadoop']  "><!--31-->26</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'xccn']    ">24</xsl:template>
-  <xsl:template mode="result-img-height" match="*[@name eq 'other']   ">19</xsl:template>
 
   <xsl:template match="ml:breadcrumbs[ $IS-API-SEARCH ]">
     <xsl:apply-templates mode="breadcrumbs"

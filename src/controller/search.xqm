@@ -233,4 +233,131 @@ as xs:string
     else concat('?', ss:query-string(ss:param('hq', $highlight-query))))
 };
 
+declare function ss:facet-value-display($e as element())
+  as xs:string
+{
+  typeswitch($e)
+  case element(search:response) return 'All categories'
+  default return (
+    (: TODO move this into XML or JSON? :)
+    switch($e/@name)
+    case 'blog' return 'Blog posts'
+    case 'code' return 'Open-source projects'
+    case 'event' return 'Events'
+    case 'rest-api' return 'REST API docs'
+
+    case 'function' return 'Function pages'
+    case 'function/javascript' return 'JavaScript'
+    case 'function/xquery' return 'XQuery/XSLT'
+
+    case 'help' return 'Admin help pages'
+
+    case 'guide' return 'User guides'
+
+    case 'guide/admin' return 'Admin'
+    case 'guide/admin-api' return 'Admin API'
+    case 'guide/app-builder' return 'App Builder'
+    case 'guide/app-dev' return 'Application Development'
+    case 'guide/cluster' return 'Clusters'
+    case 'guide/concepts' return 'Concepts'
+    case 'guide/copyright' return 'Copyright'
+    case 'guide/cpf' return 'CPF'
+    case 'guide/database-replication' return 'Database Replication'
+    case 'guide/ec2' return 'EC2'
+    case 'guide/flexrep' return 'Flexible Replication'
+    case 'guide/getting-started' return 'Getting Started'
+    case 'guide/infostudio' return 'Info Studio'
+    case 'guide/ingestion' return 'Ingestion'
+    case 'guide/installation' return 'Installation'
+    case 'guide/java' return 'Java'
+    case 'guide/jsref' return 'JavaScript'
+    case 'guide/mapreduce' return 'Hadoop'
+    case 'guide/messages' return 'Messages'
+    case 'guide/monitoring' return 'Monitoring'
+    case 'guide/node-dev' return 'Node.js'
+    case 'guide/performance' return 'Performance'
+    case 'guide/qconsole' return 'Query Console'
+    case 'guide/ref-arch' return 'Reference Architecture'
+    case 'guide/relnotes' return 'Release Notes'
+    case 'guide/rest-dev' return 'REST Development'
+    case 'guide/search-dev' return 'Search Development'
+    case 'guide/security' return 'Security'
+    case 'guide/semantics' return 'Semantics'
+    case 'guide/sharepoint' return 'Sharepoint'
+    case 'guide/sql' return 'SQL'
+    case 'guide/temporal' return 'Temporal'
+    case 'guide/xcc' return 'XCC'
+    case 'guide/xquery' return 'XQuery'
+
+    case 'news' return 'News items'
+    case 'tutorial' return 'Tutorials'
+    case 'xcc' return 'XCC Connector API docs'
+    case 'java-api' return 'Java Client API docs'
+    case 'hadoop' return 'Hadoop Connector API docs'
+    case 'xccn' return 'XCC Connector .Net docs'
+    case 'other' return 'Miscellaneous pages'
+    case 'cpp' return 'C++ API docs'
+    default return $e/@name)
+};
+
+(: Search result icon file names. TODO move into XML file? :)
+declare function ss:result-img-src($name as xs:string)
+as xs:string
+{
+  switch($name)
+  case 'all' return 'i_mag_logo_small'
+  case 'blog' return 'i_rss_small'
+  case 'code' return 'i_opensource'
+  case 'event' return 'i_calendar'
+  case 'function' return 'i_function'
+  (: TODO give help a different icon :)
+  case 'help' return 'i_folder'
+  case 'rest-api' return 'i_rest'
+  case 'guide' return 'i_documentation'
+  case 'news' return 'i_newspaper'
+  case 'tutorial' return 'i_monitor'
+  case 'xcc' return 'i_java'
+  case 'java-api' return 'i_java'
+  case 'hadoop' return 'i_java'
+  case 'xccn' return 'i_dotnet'
+  case 'other' return 'i_folder'
+  (: TODO give cpp a different icon :)
+  case 'cpp' return 'i_folder'
+default return TODO
+};
+
+(: Search result icon file widths. TODO move into XML file? :)
+declare function ss:result-img-width($name as xs:string)
+  as xs:int
+{
+  switch($name)
+  case 'guide' return 29
+  case 'rest-api' return 28
+  (: All other icons are 30px wide. :)
+  default return 30
+};
+
+(: Search result icon file heights. TODO move into XML file? :)
+declare function ss:result-img-height($name as xs:string)
+  as xs:int
+{
+  switch($name)
+  case 'all' return 23
+  case 'blog' return 23
+  case 'code' return 24
+  case 'event' return 24
+  case 'function' return 27
+  case 'help' return 19
+  case 'rest-api' return 28
+  case 'guide' return 25
+  case 'news' return 23
+  case 'tutorial' return 21
+  case 'xcc' return 26
+  case 'java-api' return 26
+  case 'hadoop' return 26
+  case 'xccn' return 24
+  case 'other' return 19
+  default return 30
+};
+
 (: search.xqm :)

@@ -3,17 +3,18 @@ module namespace ml="http://developer.marklogic.com/site/internal";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
 import module namespace draft="http://developer.marklogic.com/site/internal/filter-drafts"
-at "filter-drafts.xqy";
+  at "filter-drafts.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
-  at "../../lib/util-2.xqy";
+  at "/lib/util-2.xqy";
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
 declare namespace prop="http://marklogic.com/xdmp/property";
 declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
-declare namespace api ="http://marklogic.com/rundmc/api";
 
 (: Some code treats the view HTML as a data model.
  : This is ugly, but needs a lot of fixing
@@ -26,6 +27,12 @@ declare variable $ADMIN as xs:boolean := false() ;
 declare variable $CATEGORY-PREFIX as xs:string := 'category/' ;
 
 declare variable $QUESTIONMARK-SUBSTITUTE := '@' ;
+
+declare variable $MONTHS := (
+  'January', 'February', 'March',
+  'April', 'May', 'June',
+  'July', 'August', 'September',
+  'October', 'November', 'December') ;
 
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
@@ -111,10 +118,68 @@ declare private function ml:docs($qnames) as element()* {
     )/*
 };
 
+declare function ml:month-name($month as xs:integer)
+  as xs:string
+{
+  $MONTHS[$month]
+};
+
+declare function ml:display-date($date-or-dateTime as xs:string?)
+  as xs:string
+{
+  let $date-part := substring($date-or-dateTime, 1, 10)
+  let $castable := $date-part castable as xs:date
+  return (
+    if (not($castable)) then $date-or-dateTime
+    else (
+      let $dateTime := xs:dateTime(concat($date-part,'T00:00:00'))
+      let $month := month-from-dateTime($dateTime)
+      let $day := day-from-dateTime($dateTime)
+      let $year := year-from-dateTime($dateTime)
+      return concat(ml:month-name($month),' ',$day,', ',$year)))
+};
+
+declare function ml:display-time($dateTime as xs:string?)
+as xs:string
+{
+  if (not($dateTime castable as xs:dateTime)) then $dateTime
+  else format-dateTime(xs:dateTime($dateTime), '[h]:[m][P]')
+};
+
+declare function ml:display-date-with-time($dateTimeGiven as xs:string?)
+as xs:string
+{
+  if (not($dateTimeGiven castable as xs:dateTime)) then $dateTimeGiven
+  else concat(
+    ml:display-date($dateTimeGiven), '&#160;',
+    ml:display-time($dateTimeGiven))
+};
+
+declare function ml:categories-for-doc(
+  $cat as xs:string,
+  $doc as element())
+as xs:string+
+{
+  $cat,
+  string-join(
+    ($cat,
+      (: Force an error if the result is inappropriate :)
+      (switch($cat)
+        case 'function' return ($doc/@mode, $api:MODE-XPATH)[1]
+        case 'guide' return replace(
+          $doc/@guide-uri treat as node(),
+          '^.+/(\w[\w\-]*\w)\.xml$', '$1')
+        default return error((), 'ML-UNEXPECTED', ($cat, xdmp:describe($doc))))
+      (: Assert that the category name is sane. :)
+      ! (if (matches(., '^\w[\w\-]*\w$')) then .
+        else error((), 'ML-BADCATEGORY', xdmp:describe(.)))),
+    '/')
+};
+
 declare function ml:category-for-doc(
   $doc-uri as xs:string,
   $new-doc as document-node()?)
-as xs:string
+as xs:string+
 {
   (: Only look inside the doc if necessary :)
   if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
@@ -123,13 +188,15 @@ as xs:string
   else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else if (contains($doc-uri, "/cpp/"))            then "cpp"
   else (
-    let $doc := if ($new-doc) then $new-doc else doc($doc-uri)
+    let $doc as node() := if ($new-doc) then $new-doc else doc($doc-uri)
     return (
       if ($doc/api:function-page/api:function[1]/@lib
         eq 'REST') then "rest-api"
-      else if ($doc/api:function-page  ) then "function"
+      else if ($doc/api:function-page) then ml:categories-for-doc(
+        'function', $doc/*)
+      else if ($doc/(*:guide|*:chapter)) then ml:categories-for-doc(
+        'guide', $doc/*)
       else if ($doc/api:help-page      ) then "help"
-      else if ($doc/(*:guide|*:chapter)) then "guide"
       else if ($doc/ml:Announcement    ) then "news"
       else if ($doc/ml:Event           ) then "event"
       else if ($doc/ml:Tutorial or
@@ -150,7 +217,7 @@ as xs:string
 
 declare function ml:category-for-doc(
   $doc-uri as xs:string)
-as xs:string
+as xs:string+
 {
   ml:category-for-doc($doc-uri, ())
 };
@@ -173,12 +240,11 @@ as empty-sequence()
     (: Set collections, preserving existing non-category collections.
      : Optionally exclude the document from the search corpus.
      :)
-    (concat(
-        $CATEGORY-PREFIX,
-        ml:category-for-doc(
-          $uri,
-          if ($new instance of document-node()) then $new
-          else document { $new })),
+    (ml:category-for-doc(
+        $uri,
+        if ($new instance of document-node()) then $new
+        else document { $new })
+      ! concat($CATEGORY-PREFIX, .),
       xdmp:document-get-collections($uri)[
         not(starts-with(., $CATEGORY-PREFIX))][
         . ne 'hide-from-search'],
@@ -259,6 +325,7 @@ declare private function ml:matches-dmc-page($qname, $allow-previews-on-draft as
       ))
 };
 
+(: TODO Really? :)
 declare private function ml:query-for-doc-element($qname) as cts:query? {
   let $plan := xdmp:value(concat("xdmp:plan(collection()/",$qname,")")),
   $term-query := $plan//*:term-query
@@ -408,8 +475,8 @@ declare function ml:reset-category-tags(
   $new-doc as document-node()?)
 as empty-sequence()
 {
-  let $category-value := ml:category-for-doc($doc-uri, $new-doc)
-  let $category-tag   := concat($CATEGORY-PREFIX, $category-value)
+  let $category-tag := ml:category-for-doc(
+    $doc-uri, $new-doc) ! concat($CATEGORY-PREFIX, .)
   (: Leave any non-category collections alone. :)
   let $categories-old := xdmp:document-get-collections($doc-uri)[
     starts-with(., $CATEGORY-PREFIX)]
@@ -642,9 +709,12 @@ declare function ml:get-cached-navigation()
 (: When first populating the navigation, cache it in the database :)
 declare function ml:save-cached-navigation($doc)
 {
+  if (empty($doc/node())) then ()
   (: Force the insert to occur in a separate transaction to prevent every request
    from being marked as an update :)
-  xdmp:invoke("document-insert.xqy", (QName("","uri"),      $pre-generated-location,
+  else xdmp:invoke(
+    "document-insert.xqy",
+    (QName("","uri"), $pre-generated-location,
       QName("","document"), $doc))
 };
 
@@ -865,6 +935,13 @@ as xs:string?
     where $v = $server-versions-available
     order by xs:double($v) descending
     return $v)[1]
+};
+
+declare function ml:file-from-path($path as xs:string)
+as xs:string
+{
+  if (not(contains($path, '/'))) then $path
+  else ml:file-from-path(substring-after($path, '/'))
 };
 
 (: model/data-access.xqy :)
