@@ -432,7 +432,7 @@
     <xsl:variable name="current-constraints" as="xs:string*"
                   select="$SEARCH-RESPONSE/search:query//@qtextconst"/>
     <xsl:variable name="selected"
-                  select="$this-constraint eq $current-constraints
+                  select="$this-constraint = $current-constraints
                           or not($this-constraint or $current-constraints)"/>
     <xsl:variable name="new-q"
                   select="if (not($this-constraint)) then $query-unconstrained
