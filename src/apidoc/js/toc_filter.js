@@ -1,4 +1,4 @@
-/* Copyright 2002-2014 MarkLogic Corporation.  All Rights Reserved. */
+/* Copyright 2002-2015 MarkLogic Corporation.  All Rights Reserved. */
 var breadcrumbNode = null;
 var functionPageBucketId = null;
 var isUserGuide = null;
@@ -8,14 +8,19 @@ var tocSelect = null;
 var DEBUG = false;
 var LOGGER = {};
 
+// account for hidden content when scolling
+var tocPageHeaderHeightPX = 71; // in CSS for #content
+var tocHiddenExtraPX = 120;
+var tocHeaderHeightPX = 165; // in CSS for .scrollable_section
+
 LOGGER.debug = function() {
     if (!DEBUG) return;
     console.log.apply(console, arguments);
-}
+};
 
 LOGGER.warn = function() {
     console.log.apply(console, arguments);
-}
+};
 
 $(function() {
     // When the DOM is ready, load the TOC into the TOC div.
@@ -25,8 +30,8 @@ $(function() {
     colorizeExamples();
 
     // Don't use pjax on pdf, zip files, and printer-friendly links
-    var selector = "#page_content .pjax_enabled"
-        + " a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])";
+    var selector = "#page_content .pjax_enabled" +
+        " a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])";
     $(selector).pjax({
         container: '#page_content',
         timeout: 4000,
@@ -58,6 +63,7 @@ $(function() {
     if (!breadcrumbNode.length) LOGGER.warn("No breadcrumb!");
 
     toc_init_globals();
+    toc_init_highlight();
 });
 
 function toc_init_globals() {
@@ -78,7 +84,25 @@ function toc_init_globals() {
     if (!tocSectionLinkSelector.length) LOGGER.warn(
         "No tocSectionLinkSelector!");
     tocSectionLinkSelector = tocSectionLinkSelector.val();
-};
+}
+
+function toc_init_highlight() {
+  LOGGER.debug("toc_init_highlight");
+  // anything to highlight?
+  var offset = $(".hit_highlight").offset();
+  LOGGER.debug("toc_init_highlight", offset);
+  if (!offset) {
+    LOGGER.debug("toc_init_highlight", "nothing to highlight");
+    return;
+  }
+
+  // Scroll the first match into view.
+  // This needs a shim to account for hidden content.
+  $('#page_content').animate({
+    scrollTop: offset.top - tocHeaderHeightPX,
+    scrollLeft: offset.left
+  });
+}
 
 function toc_init() {
     LOGGER.debug("toc_init");
@@ -119,10 +143,10 @@ function toc_init() {
     tocSelect.change(function(e) {
         LOGGER.debug('TOC select option changed');
         // Hide the old TOC tree.
-        $(".apidoc_tree:visible").hide()
+        $(".apidoc_tree:visible").hide();
         // Show the corresponding TOC tree.
         var n = tocSelect.children("option").filter(":selected");
-        if (n.length == 0) LOGGER.warn("tocSelect nothing selected!", n);
+        if (n.length === 0) LOGGER.warn("tocSelect nothing selected!", n);
         if (n.length != 1) {
             LOGGER.warn("tocSelect multiple selected!", n);
             // Continue with the first one.
@@ -153,9 +177,9 @@ function toc_init() {
 
             // TODO what about a confirmation alert?
             if (e.which == 13) // Enter key pressed
-                window.location = "/do-do-search?api=1"
-                + "&v=" + $("input[name = 'v']").val()
-                + "&q=" + currentFilterText;
+                window.location = "/do-do-search?api=1" +
+                  "&v=" + $("input[name = 'v']").val() +
+                  "&q=" + currentFilterText;
 
             var closeButton = $("#config-filter-close-button");
             if (currentFilterText === "") closeButton.hide();
@@ -273,14 +297,14 @@ var waitToSearch = function(text, tocRoot) {
     // Repeatedly check for the absence of the "placeholder" class
     // Once they're all gone, run the text search and cancel the timeout
     var placeholders = tocRoot.find(".placeholder");
-    if (placeholders.size() == 0) {
+    if (placeholders.size() === 0) {
         tocRoot.addClass("fullyLoaded");
         searchTOC(text, tocRoot);
         clearTimeout(waitToSearch);
     }
-    else setTimeout(function(){ waitToSearch(text, tocRoot) },
+    else setTimeout(function(){ waitToSearch(text, tocRoot); },
                     350);
-}
+};
     
 function searchTOC(filter, tocRoot) {
     tocRoot.find("li").each(function() {
@@ -296,7 +320,8 @@ function searchTOC(filter, tocRoot) {
             }
         }
     });
-    if (filter == '') scrollTOC(); // re-orient the TOC after done searching
+    // re-orient the TOC after done searching
+    if (filter === '') scrollTOC();
 }
 
 function loadAllSubSections(tocRoot) {
@@ -331,7 +356,8 @@ function waitToShowInTOC(tocSection, sleepMillis) {
         LOGGER.debug("waitToShowInTOC still waiting for",
                     tocSection[0].id, sleepMillis);
         // back off and retry
-        setTimeout(function(){ waitToShowInTOC(tocSection, 2 * sleepMillis) },
+        setTimeout(function(){
+            waitToShowInTOC(tocSection, 2 * sleepMillis); },
                    sleepMillis);
         return;
     }
@@ -341,8 +367,8 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     clearTimeout(waitToShowInTOC);
 
     // Do not include query string. Do not include fragment.
-    var locationHref = location.protocol
-        + '//' + location.host+location.pathname;
+    var locationHref = location.protocol +
+        '//' + location.host+location.pathname;
     locationHref = locationHref.toLowerCase();
     //LOGGER.debug("waitToShowInTOC", "locationHref=" + locationHref);
     var stripChapterFragment = isUserGuide && locationHref.indexOf("#") == -1;
@@ -369,12 +395,12 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     var current = tocSection.find("a").filter(function() {
         // TODO can we stop this after the first match?
         var thisHref = this.href.toLowerCase();
-        var hrefToCompare = stripChapterFragment
-            ? thisHref.replace(/#chapter/,"")
-            : thisHref;
-        var result = hrefToCompare == locationHref
-            || (locationHrefNoVersion
-                && hrefToCompare == locationHrefNoVersion);
+        var hrefToCompare = stripChapterFragment ?
+            thisHref.replace(/#chapter/,"") :
+            thisHref;
+        var result = hrefToCompare == locationHref ||
+            (locationHrefNoVersion &&
+             hrefToCompare == locationHrefNoVersion);
         //LOGGER.debug("filtering", thisHref, hrefToCompare, locationHref, result);
         return result;
     });
@@ -393,7 +419,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
     // Fallback in case a bad fragment ID was requested
     if ($("#api_sub a.selected").length === 0) {
         LOGGER.debug("waitToShowInTOC: no selection. Calling showInTOC as fallback.");
-        showInTOC($("#api_sub a.currentPage"))
+        showInTOC($("#api_sub a.currentPage"));
     }
 }
 
@@ -405,12 +431,12 @@ function updateTocForUrlFragment(pathname, hash) {
     // Otherwise use the pathname alone, for functions etc.
     var effective_hash;
     if (!isUserGuide) effective_hash = "";
-    else if (hash == "") effective_hash = "#chapter";
+    else if (hash === "") effective_hash = "#chapter";
     else effective_hash = hash;
 
     // IE doesn't include the "/" at the beginning of the pathname...
-    var fullLink = (pathname.indexOf("/") == 0 ? pathname : "/" + pathname)
-        + effective_hash;
+    var fullLink = (pathname.indexOf("/") === 0 ? pathname :
+                    "/" + pathname) + effective_hash;
 
     LOGGER.debug("updateTocForUrlFragment fullLink", fullLink);
     showInTOC($("#api_sub a[href='" + fullLink + "']"));
@@ -442,8 +468,8 @@ function showInTOC(a) {
     LOGGER.debug("showInTOC",
                 "visible", treeVisible.attr('id'),
                 "a", treeForA.attr('id'));
-    if (treeForA.length === 1
-        && treeForA.attr('id') != treeVisible.attr('id')) {
+    if (treeForA.length === 1 &&
+        treeForA.attr('id') != treeVisible.attr('id')) {
         treeVisible.hide();
         // Update the selector to match.
         var options = tocSelect.children("option");
@@ -543,7 +569,7 @@ function updateTocForSelection() {
                 tocSectionLinkSelector);
     var tocSectionLink = $(tocSectionLinkSelector);
     var tocSection = tocSectionLink.parent();
-    if (0 == tocSection.length) {
+    if (0 === tocSection.length) {
         LOGGER.warn("updateTocForSelection",
                     functionPageBucketId, tocSectionLinkSelector,
                     "nothing selected!");
@@ -596,8 +622,7 @@ function removeHighlightToText(element) {
 
 // called from hacked pjax script
 function scrollContent(container, target) {
-  var pageHeaderHeight = 71; // in CSS for #content
-  var scrollTo = target.offset().top - pageHeaderHeight;
+  var scrollTo = target.offset().top - tocPageHeaderHeightPX;
   container.scrollTop(scrollTo);
 }
 
@@ -609,15 +634,13 @@ function scrollTOC() {
         var scrollableContainer = $(this).parents('.scrollable_section');
         //LOGGER.debug("scrollTOC", scrollableContainer);
         var container = $(this).parents('.treeview'),
-        extra = 120,
         currentTop = container.scrollTop(),
-        headerHeight = 165, /* in CSS for .scrollable_section */
         scrollTarget = currentTop + $(this).offset().top,
-        scrollTargetAdjusted = scrollTarget - headerHeight - extra,
+        scrollTargetAdjusted = scrollTarget - tocHeaderHeightPX - tocHiddenExtraPX,
         minimumSpaceAtBottom = 10,
         minimumSpaceAtTop = 10;
 
-        var marginTop = currentTop + headerHeight + minimumSpaceAtTop;
+        var marginTop = currentTop + tocHeaderHeightPX + minimumSpaceAtTop;
         var marginBottom = currentTop + (
             container.height() - minimumSpaceAtBottom) ;
         container.animate({scrollTop: scrollTargetAdjusted}, 500);
@@ -653,7 +676,7 @@ function formatFilterBoxes(filterBoxes) {
   filterBoxes.focus(function() {$(this).removeClass("default");} );
   filterBoxes.blur(function() {
     if ($(this).val() == defaultFilterMsg ||
-        $(this).val() == "")
+        $(this).val() === "")
       $(this).addClass("default");
   });
 }
@@ -670,43 +693,47 @@ function splitterMouseUp(evt) {
 }
 
 function splitterMouseMove(evt) {
-    //LOGGER.debug("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
-    if ($('#splitter').data("moving")) {
-        var m = 0 - $('#splitter').data('start-page_content');
-        var d = Math.max(m, $('#splitter').data("start-x") - evt.pageX); 
-        var w = $('#splitter').data("start-toc_content") - d;
-        var init_w = 258; // TBD unhardcode
+  //LOGGER.debug("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
+  var splitter = $('#splitter');
+  if (splitter.data("moving")) {
+    var m = 0 - splitter.data('start-page_content');
+    var d = Math.max(m, splitter.data("start-x") - evt.pageX); 
+    var w = splitter.data("start-toc_content") - d;
+    var init_w = 258; // TBD unhardcode
 
-        if (w < init_w) {
-            d -= init_w - w;
-            w = init_w;
-        }
-
-        //LOGGER.debug("Splitter Mouse move: " + d);
-        $('#toc_content').css({'width': w + "px"});
-        $('#page_content').css({'padding-right':
-                                ($('#splitter').data("start-page_content") + d)
-                                + "px"});
-        $('#splitter').css({'left':
-                            ($('#splitter').data("start-splitter") - d)
-                            + "px"});
+    if (w < init_w) {
+      d -= init_w - w;
+      w = init_w;
     }
+
+    //LOGGER.debug("Splitter Mouse move: " + d);
+    $('#toc_content').css({'width': w + "px"});
+    $('#page_content').css({'padding-right':
+                            (splitter.data("start-page_content") + d) +
+                            "px"});
+    splitter.css({'left':
+                  (splitter.data("start-splitter") - d) +
+                  "px"});
+  }
 }
 
 function splitterMouseDown(evt) {
-    //LOGGER.debug("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
-    $('#splitter').data("start-x", evt.pageX);
-    $('#splitter').data("start-toc_content", parseInt($('#toc_content').css('width'), 10));
-    $('#splitter').data("start-page_content", parseInt($('#page_content').css('padding-right'), 10));
-    $('#splitter').data("start-splitter", parseInt($('#splitter').css('left'), 10));
-    $('#splitter').data("moving", true);
+  //LOGGER.debug("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
+  var splitter = $('#splitter');
+  splitter.data("start-x", evt.pageX);
+  splitter.data("start-toc_content", parseInt($('#toc_content').css('width'), 10));
+  splitter.data("start-page_content",
+                parseInt($('#page_content').css('padding-right'), 10));
+  splitter.data("start-splitter",
+                parseInt(splitter.css('left'), 10));
+  splitter.data("moving", true);
 
-    $(document).on('mouseup', null, splitterMouseUp);
-    $(document).on('mousemove', null, splitterMouseMove);
+  $(document).on('mouseup', null, splitterMouseUp);
+  $(document).on('mousemove', null, splitterMouseMove);
 
-    $('#toc_content').css("-webkit-user-select", "none");
-    $('#page_content').css("-webkit-user-select", "none");
-    $('#content').css("-webkit-user-select", "none");
+  $('#toc_content').css("-webkit-user-select", "none");
+  $('#page_content').css("-webkit-user-select", "none");
+  $('#content').css("-webkit-user-select", "none");
 }
 
 function tocFilterUpdate()
