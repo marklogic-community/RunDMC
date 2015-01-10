@@ -268,17 +268,6 @@ as element(namespace)?
   map:get($M-NAMESPACES, $lib)
 };
 
-(: Normally just use the lib name as the prefix,
- : unless specially configured to do otherwise.
- :)
-declare function api:prefix-for-lib(
-  $lib as xs:string)
-as xs:string?
-{
-  (api:namespace($lib)/@prefix,
-    $lib)[1]
-};
-
 (: E.g., store the images for /apidoc/4.2/guides/performance.xml
  : in /media/apidoc/4.2/guides/performance/
  :)
