@@ -260,7 +260,7 @@ declare function ss:facet-value-display($e as element())
     case 'guide/app-dev' return 'Application Development'
     case 'guide/cluster' return 'Clusters'
     case 'guide/concepts' return 'Concepts'
-    case 'guide/copyright' return 'Copyright'
+    case 'guide/copyright' return 'Glossary'
     case 'guide/cpf' return 'CPF'
     case 'guide/database-replication' return 'Database Replication'
     case 'guide/ec2' return 'EC2'
