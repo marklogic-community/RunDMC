@@ -360,4 +360,25 @@ declare function ss:result-img-height($name as xs:string)
   default return 30
 };
 
+declare function ss:highlight(
+  $n as node(),
+  $query as xs:string)
+as node()*
+{
+  cts:highlight(
+    $n,
+    cts:query(search:parse($query, search:get-default-options())),
+    <span class="hit_highlight" xmlns="http://www.w3.org/1999/xhtml">{
+      $cts:text
+    }</span>)
+};
+
+declare function ss:maybe-highlight(
+  $n as node(), $params as element()*)
+as node()*
+{
+  let $hq := string-join($params[@name eq 'hq'], ' ')
+  return if (not($hq)) then $n else ss:highlight($n, $hq)
+};
+
 (: search.xqm :)

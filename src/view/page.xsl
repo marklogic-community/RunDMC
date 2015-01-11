@@ -48,13 +48,12 @@
   <xsl:variable name="original-content" select="/"/>
 
   <xsl:variable name="content"
-                select="if ($HIGHLIGHT-QUERY) then $highlighted-content
+                select="if ($params[@name eq 'hq']) then $highlighted-content
                         else /"/>
 
   <xsl:variable name="highlighted-content">
     <xsl:apply-templates mode="preserve-base-uri"
-                         select="u:highlight-doc(
-                                 /, $HIGHLIGHT-QUERY, ml:external-uri(/))"/>
+                         select="ss:maybe-highlight(/, $params)"/>
   </xsl:variable>
 
                   <xsl:template mode="preserve-base-uri" match="@* | node()">

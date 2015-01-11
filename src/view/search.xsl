@@ -45,10 +45,6 @@
   <xsl:variable name="QUERY" as="xs:string"
                 select="string-join($params[@name eq 'q'], ' ')"/>
 
-  <!-- If set, use this value to highlight matches. -->
-  <xsl:variable name="HIGHLIGHT-QUERY" as="xs:string?"
-                select="string-join($params[@name eq 'hq'], ' ')"/>
-
   <xsl:variable name="SEARCH-RESPONSE" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
     <xsl:sequence

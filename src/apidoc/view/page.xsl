@@ -536,7 +536,10 @@
   </xsl:template>
 
   <xsl:template match="api:function">
-    <xsl:apply-templates mode="function-signature" select="."/>
+    <xsl:variable name="signature">
+      <xsl:apply-templates mode="function-signature" select="."/>
+    </xsl:variable>
+    <xsl:copy-of select="ss:maybe-highlight($signature, $params)"/>
     <xsl:apply-templates select="(api:summary, api:params)[normalize-space(.)]"/>
     <xsl:apply-templates select="api:headers[api:header/@type = 'request']"/>
     <xsl:apply-templates select="api:headers[api:header/@type = 'response']">

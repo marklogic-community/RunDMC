@@ -5,16 +5,21 @@ xquery version "1.0-ml";
 import module namespace param="http://marklogic.com/rundmc/params"
   at "/controller/modules/params.xqy" ;
 
-let $params := param:params()
-let $doc-url as xs:string := $params[@name eq 'src']
-let $xslt := (
-  (: Use the main site template for the search results page :)
-  if ($doc-url eq '/apidoc/do-search.xml') then "/view/page.xsl"
-  else "../view/page.xsl")
-return xdmp:xslt-invoke(
-  $xslt,
-  doc($doc-url) treat as node(),
-  map:new(
-    (map:entry("params", $params))))
+declare variable $PARAMS := param:params() ;
+
+declare variable $URI as xs:string := concat(
+  $PARAMS[@name eq 'src']) ;
+
+(: Use the main site template for the search results page,
+ : otherwise use the apidoc template.
+ :)
+declare variable $XSLT := (
+  if ($URI eq '/apidoc/do-search.xml') then "/view/page.xsl"
+  else "/apidoc/view/page.xsl") ;
+
+xdmp:xslt-invoke(
+  $XSLT,
+  doc($URI) treat as node(),
+  map:new((map:entry("params", $PARAMS))))
 
 (: transform.xqy :)
