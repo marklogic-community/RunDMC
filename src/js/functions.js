@@ -1,6 +1,6 @@
 if(typeof jQuery != 'undefined') {
 	$(function() {
-		// cache selectors 
+		// cache selectors
 		var body = $('body');
 		var main = $('#main');
 		body.addClass('jsenabled');
@@ -105,12 +105,12 @@ if(typeof jQuery != 'undefined') {
 					$(this).prev().addClass('active').find('input[type=text]').focus();
 				});
 		var inside = false;
-		root.find('form').hover(function(){ 
-		    inside=true; 
-			}, function(){ 
-		    inside=false; 
+		root.find('form').hover(function(){
+		    inside=true;
+			}, function(){
+		    inside=false;
 		});
-		body.mouseup(function(){ 
+		body.mouseup(function(){
 	    if(!inside) {
 	    	root.find('form.active').removeClass('active');
 	    }
@@ -124,7 +124,7 @@ if(typeof jQuery != 'undefined') {
 		}
 		// end utility form stuff
 		$('.post + .pagination',main).clone().insertBefore(main);
-		// comments tab position at right 
+		// comments tab position at right
 		var pos = parseInt($('#comments .action').css('top'), 10);
 		$('#comments .action').css('top', pos+$('#breadcrumb + section > h2').height()+'px');
 		// end comments tab position
@@ -161,7 +161,7 @@ if(typeof jQuery != 'undefined') {
 
         $("#iaccept").click(function() {
             var b = $(":button:contains('Download')");
-            if ($("#iaccept").is(":checked") && 
+            if ($("#iaccept").is(":checked") &&
                 ( $('#iemail').length == 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
                 b.button("enable");
                 $("#confirm-dialog").dialog.email = $("#iemail").val()
@@ -271,22 +271,22 @@ if(typeof jQuery != 'undefined') {
                     } else {
                         showDownloadURL(this, u);
                     }
-                }, 
+                },
                 Cancel: function() {
                     var u = $(this).dialog.href;
                    // _gaq.push(['_trackEvent', 'cancel-download', u]);
              /*       try {
                         var s = '/cancel-download' + u.replace(/\?., "");
                         mktoMunchkinFunction('clickLink', { href: s } );
-                    } catch (err) {}  
+                    } catch (err) {}
 		*/
                     $(this).dialog('close');
                 }
            	}
         	});
-            $(".ui-dialog-titlebar").hide()     
+            $(".ui-dialog-titlebar").hide()
             // $(".ui-dialog-buttonpane")
-            $(".ui-dialog").addClass("download-dialog");     
+            $(".ui-dialog").addClass("download-dialog");
        	}
 
         $('a.license-popup').click(function() {
@@ -306,7 +306,7 @@ if(typeof jQuery != 'undefined') {
                     }
                 }
             });
-            $(".ui-dialog-titlebar").hide()     
+            $(".ui-dialog-titlebar").hide()
         });
 
         $('a.confirm-download').each(function() {
@@ -340,7 +340,7 @@ if(typeof jQuery != 'undefined') {
   	        var container = document.getElementById("home-tabs");
 
             if (container != null) {
-            
+
                 // set current tab
                 var cname = 'rundmc-home-tab';
                 var ident = '1';
@@ -360,27 +360,27 @@ if(typeof jQuery != 'undefined') {
 
                 var navitem = document.getElementById("tabHeader_" + ident);
                 if (navitem) {
-    
+
                     //store which tab we are on
                     navitem.parentNode.setAttribute("data-current",ident);
                     //set current tab with class of activetabheader
                     navitem.setAttribute("class","tabActiveHeader");
-     
+
                     //hide two tab contents we don't need
                     $('.tabpage').hide();
-    
+
                     $('#tabpage_' + ident).show();
 
-    
+
                     var t = document.getElementById("tabHeader_" + ident);
-    
+
                     $('#tabsborder').position({
                         my: "left top",
                         at: "left bottom",
                         of: t
                     });
                     $('#tabsborder').css({marginTop: '-=3px'});
-     
+
                     //this adds click event to tabs
                     $('#tabContainer li').click(function() {
 
@@ -394,7 +394,7 @@ if(typeof jQuery != 'undefined') {
                         //remove class of activetabheader and hide old contents
                         document.getElementById("tabHeader_" + current).removeAttribute("class");
                         document.getElementById("tabpage_" + current).style.display="none";
-    
+
                         var ident = this.id.split("_")[1];
                         $.cookie(cname, ident);
                         //add class of activetabheader to new active tab and show contents
@@ -426,32 +426,32 @@ if(typeof jQuery != 'undefined') {
                 // $(this).css('border-color', $(this).data('old-border-color'));
             });
 
-            $('div.qtips[title]').qtip({ 
-                style: {
-                    width: 300,
-                    padding: 5,
-                    color: 'black',
-                    tip: {
-                        corner: 'bottomLeft'
-                    },
-                    border: {
-                        color: 'black',
-                        radius: 2,
-                        width: 1
-                    }
-                },
-                show: 'mouseover',
-                hide: { when: 'mouseout', fixed: true },
-                position: {
-                    corner: {
-                        target: 'center',
-                        tooltip: 'leftBottom'
-                    },
-                    adjust: {
-                        y: -20
-                    }
-                }
-            });
+            // $('div.qtips[title]').qtip({
+            //     style: {
+            //         width: 300,
+            //         padding: 5,
+            //         color: 'black',
+            //         tip: {
+            //             corner: 'bottomLeft'
+            //         },
+            //         border: {
+            //             color: 'black',
+            //             radius: 2,
+            //             width: 1
+            //         }
+            //     },
+            //     show: 'mouseover',
+            //     hide: { when: 'mouseout', fixed: true },
+            //     position: {
+            //         corner: {
+            //             target: 'center',
+            //             tooltip: 'leftBottom'
+            //         },
+            //         adjust: {
+            //             y: -20
+            //         }
+            //     }
+            // });
 
             $('input#email').focus();
 
@@ -467,7 +467,7 @@ if(typeof jQuery != 'undefined') {
                 $("#session-menu").toggle(0, function() {
                     if ($("#session-menu:visible")) {
                         $("#session-trigger").addClass("triggered");
-                    } 
+                    }
                 });
 
                 $( "#session-menu" ).position({
@@ -484,7 +484,7 @@ if(typeof jQuery != 'undefined') {
                 $("#login-menu").toggle(0, function() {
                     if ($("#login-menu:visible")) {
                         $("#login-trigger").addClass("triggered");
-                    } 
+                    }
                 });
 
                 $( "#login-menu" ).position({
@@ -513,8 +513,8 @@ if(typeof jQuery != 'undefined') {
 
             $(document).mouseup(function(e) {
                 // hide if the click is outside of a menu
-                if (  (! $(e.target).hasClass("drop-down-trigger")) && 
-                      (! $(e.target).parent().hasClass("drop-down-trigger")) ) { 
+                if (  (! $(e.target).hasClass("drop-down-trigger")) &&
+                      (! $(e.target).parent().hasClass("drop-down-trigger")) ) {
 
                     $('.drop-down-menu').each(function() {
                         $(this).hide();
@@ -522,8 +522,8 @@ if(typeof jQuery != 'undefined') {
                     $('.triggered').each(function() {
                         $(this).removeClass('triggered');
                     });
-                } 
-            });            
+                }
+            });
 
             $("#local-login").click(function(e) {
                 $("#local-login-form").toggle().appendTo('#login-menu');
@@ -543,7 +543,7 @@ if(typeof jQuery != 'undefined') {
                     data: {
                         'email': $('#local-login-form').find('#email').val(),
                         'password': $('#local-login-form').find('#password').val()
-                    }, 
+                    },
                     success: function( data ) {
                         if (data.status === 'ok') {
                             $('#login-error').text("");
@@ -587,7 +587,7 @@ if(typeof jQuery != 'undefined') {
                     return;
                 }
                 $('#signup-form').cleanDirty(); // could do in success I spose
-                $('#signup-form').submit(); 
+                $('#signup-form').submit();
             });
 
             $("#profile-save").click(function(e) {
@@ -623,14 +623,14 @@ if(typeof jQuery != 'undefined') {
                 });
             });
 
-	        $('#s_country').selectToAutocomplete();
-	        $('#country').selectToAutocomplete();
+	        // $('#s_country').selectToAutocomplete();
+	        // $('#country').selectToAutocomplete();
 
 	        $('#s_industry').val([]);
 	        $('#industry').val($('#industry').data('initvalue'));
 
 	        // $('#country').val($('#country').data('initvalue'));
-            var v = 
+            var v =
             $("#country option").filter(function() {
                 //may want to use $.trim in here
                 return $(this).val() == $('#country').data('initvalue');
@@ -638,9 +638,9 @@ if(typeof jQuery != 'undefined') {
             $("input.country").val(v);
 
             $(".ui-dialog-buttonset").append(
-                    '<div style="font-size: 80%">' + 
-                         '<a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a>' + 
-                         ' Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' + 
+                    '<div style="font-size: 80%">' +
+                         '<a style="color: #01639D;" target="_blank" href="/people/recovery">Forgot your password?</a>' +
+                         ' Or having <a style="color: #01639D;" href="mailto:community-requests@marklogic.com">other trouble</a>?' +
                     '</div>');
 
             if (getParameterByName('fs')) {
@@ -656,7 +656,7 @@ if(typeof jQuery != 'undefined') {
         }
         $('.yearpicker').append($('<option />').html('N/A'));
         $('.yearpicker').val(d);
-        
+
 
             $(".vidwrap").click(function(e) {
                 var rel = $(this).attr('rel');
@@ -686,9 +686,9 @@ if(typeof jQuery != 'undefined') {
                     theme: 'default',
                     startSlide: 1,
                     resizeContents: true,
-                    navigationFormatter : function(i, panel){ 
-                        return ['Line chart', 'Bar chart', 'Pie chart', 'Heat map', 'Point map'][i - 1]; 
-                    } 
+                    navigationFormatter : function(i, panel){
+                        return ['Line chart', 'Bar chart', 'Pie chart', 'Heat map', 'Point map'][i - 1];
+                    }
                 });
 		    });
 
@@ -724,7 +724,7 @@ function isValidEmailAddress(emailAddress) {
     return pattern.test(emailAddress);
 };
 
-                    
+
 function doDownload(u) {
 
   //  _gaq.push(['_trackPageview', u],
@@ -740,7 +740,7 @@ function doDownload(u) {
 
     download_iframe = document.getElementById("hiddenDownloader");
     if (download_iframe === null) {
-        download_iframe = document.createElement('iframe');  
+        download_iframe = document.createElement('iframe');
         download_iframe.id = "hiddenDownloader";
         download_iframe.style.visibility = 'hidden';
         document.body.appendChild(download_iframe);
@@ -762,15 +762,15 @@ function showDownloadURL(me, u) {
                 url: "/get-download-url",
                 data: {
                     download: u
-                }, 
+                },
                 context: $(me),
                 success: function(data) {
 
                   //  _gaq.push(['_trackPageview', u],
                   //      ['_trackEvent', 'show-url-for-download', u]
                   //  );
-               
-/*	
+
+/*
                     try {
                         mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?., "") } );
                     } catch (err) {
@@ -800,7 +800,7 @@ function showDownloadURL(me, u) {
             $('.download-url').focus(function() {
                 $(this).select();
             });
-        
+
             $('.download-url').mouseup(function(e) {
                 e.preventDefault();
             });
