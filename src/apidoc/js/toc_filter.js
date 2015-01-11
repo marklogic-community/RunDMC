@@ -95,6 +95,10 @@ function toc_init_highlight() {
     LOGGER.debug("toc_init_highlight", "nothing to highlight");
     return;
   }
+  if (offset.top < $(window).height()) {
+    LOGGER.debug("toc_init_highlight", "already in view");
+    return;
+  }
 
   // Scroll the first match into view.
   // This needs a shim to account for hidden content.
