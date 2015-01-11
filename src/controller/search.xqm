@@ -16,6 +16,8 @@ import module namespace srv="http://marklogic.com/rundmc/server-urls"
 import module namespace api="http://marklogic.com/rundmc/api"
   at "/apidoc/model/data-access.xqy";
 
+declare namespace xh="http://www.w3.org/1999/xhtml" ;
+
 declare variable $INPUT-NAME-API := 'api' ;
 
 declare variable $INPUT-NAME-API-VERSION := 'v' ;
@@ -30,42 +32,79 @@ as xs:string
   else replace($uri, '_html\.xhtml$', '.html')
 };
 
+(: Title text can appear in a number of places.
+ : It might be a good idea for setup to enrich all documents
+ : with a canonical title element.
+ :)
+declare function ss:title-query(
+  $constraint-qtext as xs:string,
+  $right as schema-element(cts:query))
+as schema-element(cts:query)
+{
+  cts:element-word-query(
+    xs:QName(
+      ('api:function-name', 'api:title', 'guide-title',
+        'title', 'xh:title')),
+    string($right//cts:text))
+  ! document{ . }/*
+  ! element { node-name(.) } {
+    attribute qtextconst {
+      concat($constraint-qtext, fn:string($right//cts:text)) },
+    @*,
+    node() }
+};
+
 declare function ss:options(
-  $version as xs:string,
+  $version as xs:string?,
   $is-api as xs:boolean,
   $facets as xs:boolean,
   $query as xs:boolean,
   $results as xs:boolean)
 as element(search:options)
 {
-  element search:options {
-    element search:additional-query {
+  <options xmlns="http://marklogic.com/appservices/search">
+  {
+    element return-facets { $facets },
+    element return-query { $query },
+    element return-results { $results },
+    element search-option { 'unfiltered' },
+    (: Allow empty version to make highlighting less cumbersome. :)
+    if (not($version)) then ()
+    else element additional-query {
       ml:search-corpus-query($version, $is-api)
-    },
-
-    <search:constraint name="cat">
-      <search:collection prefix="{ $ml:CATEGORY-PREFIX }"/>
-    </search:constraint>
-    ,
-    <search:constraint name="param">
-      <search:value>
-        <search:element ns="{ $api:NAMESPACE }" name="param-type"/>
-      </search:value>
-    </search:constraint>
-    ,
-    <search:constraint name="return">
-      <search:value>
-        <search:element ns="{ $api:NAMESPACE }" name="return"/>
-      </search:value>
-    </search:constraint>
-    ,
-
-    element search:return-facets { $facets },
-    element search:return-query { $query },
-    element search:return-results { $results },
-
-    element search:search-option { 'unfiltered' }
+    }
   }
+
+    <constraint name="cat">
+      <collection prefix="{ $ml:CATEGORY-PREFIX }"/>
+    </constraint>
+    <constraint name="param">
+      <value>
+        <element ns="{ $api:NAMESPACE }" name="param-type"/>
+      </value>
+    </constraint>
+    <constraint name="return">
+      <value>
+        <element ns="{ $api:NAMESPACE }" name="return"/>
+      </value>
+    </constraint>
+
+    <constraint name="title">
+      <custom facet="false">
+        <parse apply="title-query"
+  ns="http://developer.marklogic.com/site/search"
+  at="/controller/search.xqm"/>
+      </custom>
+    </constraint>
+
+  </options>
+};
+
+(: Convenience function for highlighting. :)
+declare function ss:highlight-options()
+as element(search:options)
+{
+  ss:options((), false(), false(), false(), false())
 };
 
 (: Remove constraints recursively. :)
@@ -83,13 +122,16 @@ as xs:string
     else ss:remove-constraints($new-q, $rest, $options))
 };
 
+(: Remove any faceted constraints. :)
 declare function ss:qtext-without-constraints(
   $response as element(search:response),
   $options as element(search:options))
 as xs:string
 {
   ss:remove-constraints(
-    $response/search:qtext, $response/search:query//@qtextconst, $options)
+    $response/search:qtext,
+    $response/search:query//@qtextconst[starts-with(., 'cat:')],
+    $options)
 };
 
 (: This does some surgery on the response.
@@ -233,13 +275,13 @@ as xs:string
     else concat('?', ss:query-string(ss:param('hq', $highlight-query))))
 };
 
+(: Search result values. TODO move into XML file? :)
 declare function ss:facet-value-display($e as element())
   as xs:string
 {
   typeswitch($e)
   case element(search:response) return 'All categories'
   default return (
-    (: TODO move this into XML or JSON? :)
     switch($e/@name)
     case 'blog' return 'Blog posts'
     case 'code' return 'Open-source projects'
@@ -323,7 +365,7 @@ as xs:string
   case 'other' return 'i_folder'
   (: TODO give cpp a different icon :)
   case 'cpp' return 'i_folder'
-default return TODO
+  default return 'i_folder'
 };
 
 (: Search result icon file widths. TODO move into XML file? :)
@@ -367,7 +409,7 @@ as node()*
 {
   cts:highlight(
     $n,
-    cts:query(search:parse($query, search:get-default-options())),
+    cts:query(search:parse($query, ss:highlight-options())),
     <span class="hit_highlight" xmlns="http://www.w3.org/1999/xhtml">{
       $cts:text
     }</span>)
