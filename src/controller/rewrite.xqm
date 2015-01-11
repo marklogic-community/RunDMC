@@ -372,6 +372,8 @@ as xs:string
       ("/products/marklogic-server",
         "/products/marklogic-server/")) then concat(
       "/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
+    else if (fn:matches($path, '/fonts')) then
+      $path
     (: remove version from the URL for versioned assets :)
     else if (matches(
         $path,

@@ -1,198 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="home">
-    <section id="home-search">
-      <form method="get" ml:action="/search">
-        <fieldset>
-          <div id="home-search-container">
-            <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text"/>
-            <button id="mag"/>
-          </div>
-        </fieldset>
-      </form>
-    </section>
-    <section id="home-tabs">
-      <div id="tabContainer">
-        <div id="tabs">
-          <ul>
-            <li id="tabHeader_1">
-              <div class="tab-title-box">
-                <h3>
-                  <a href="#">
-                    <img alt="Step 1" height="37" src="/images/step-1.png" title="Step 1" width="37"/>
-                  </a>What is Enterprise NoSQL?</h3>
-              </div>
-            </li>
-            <li id="tabHeader_2">
-              <div class="tab-title-box">
-                <h3>
-                  <a href="#">
-                    <img alt="Step 2" height="37" src="/images/step-2.png" title="Step 2" width="37"/>
-                  </a>Get Started in Minutes</h3>
-              </div>
-            </li>
-            <li id="tabHeader_3" style="display: block">
-              <div class="tab-title-box">
-                <h3>
-                  <a href="#">
-                    <img alt="Step 3" height="37" src="/images/step-3.png" title="Step 3" width="37"/>
-                  </a>Next Steps</h3>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div id="tabsborder"/>
-        <div id="tabscontent">
-          <div class="tabpage" id="tabpage_1">
-            <div class="vidwrap" rel="3mOCOrFQ_N0" style="float: left">
-              <div class="still" id="what-is-still">
-                <a href="http://www.youtube.com/embed/3mOCOrFQ_N0?autoplay=1&amp;rel=0&amp;vq=hd720">
-                  <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
-                </a>
-              </div>
-            </div>
-            <div style="float: left; margin-top: 45px; margin-left: 38px;">
-              <h2>MarkLogic 7</h2>
-              <h3 style="padding-top: 10px">The Enterprise NoSQL Database</h3>
-              <div style="width: 390px">
-                <p>If you need the performance and flexibility of <strong>NoSQL</strong>, along with trusted
-                Enterprise-grade features like <strong>ACID transactions</strong>, security, high-availability, and
-                disaster recovery, <a href="/products/marklogic-server/enterprise-nosql">MarkLogic</a> is
-                <strong>THE</strong> choice.</p>
-              </div>
-              <div style="padding-top: 10px; width: 500px">
-                <button class="uppercase green" data-url="/products" id="download-button" style="float: left; width: 141px;">Free Download
-                                </button>
-                <p style="float: left"/>
-                <button class="gray" data-url="//docs.marklogic.com/guide/relnotes/chap3" style="float: left; width: 141px;">What's New?
-                                </button>
-                <p style="float: left"/>
-                <!--
-                <button style="float: left; width: 141px;" class="uppercase gray" data-url="//docs.marklogic.com">Documentaton
-                </button>-->
-              </div>
-            </div>
-          </div>
-          <div class="tabpage" id="tabpage_2">
-            <div style="width: 462px; height:261px; float: left">
-              <div class="vidwrap" rel="fyHXhCMF_Uo" style="float: left; margin-bottom: 10px">
-                <div class="still" id="getting-started-still">
-                  <a href="http://www.youtube.com/embed/fyHXhCMF_Uo?autoplay=1&amp;rel=0&amp;vq=hd720">
-                    <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
-                  </a>
-                </div>
-              </div>
-              <p align="center" style="font-size: 12px; width: 460px">(Best watched in full-screen, 720p)</p>
-            </div>
-            <!--
-            <div class="vidwrap vidbox" rel="fyHXhCMF_Uo" style="float: left"><div class="still" id="getting-started-still"><img alt="play" width="202" height="152" src="/images/play-button-red.png"/></div></div>-->
-            <div style="float: left; margin-top: 45px; margin-left: 40px">
-              <h2>Get Started in Minutes</h2>
-              <h3 style="padding-top: 10px">Download, Install, or Launch an AMI</h3>
-              <div style="padding-top: 10px; width: 400px">
-                <p style="float: left">Enjoy the simplicity of a document database, along with the security of ACID
-                  transactional updates.
-                  <br/>
-                  <br/>
-                  <button class="green" data-url="/products" style="width: 120px;">Download</button>
-                  Or, learn more about
+    <section class="form-group search row">
+      <div class="col-md-8 col-md-offset-2">
+        <form method="get" ml:action="/search" class="input-group">
+          <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class="form-control"/>
 
-
-                  <button class="gray" data-url="/products/aws" style="width: 120px;">MarkLogic AMIs</button></p>
-              </div>
-              <div style="padding-top: 10px; width: 400px">
-                <!--
-                <button style="float: left; width: 141px;" class="gray" data-url="/products/aws">Test-drive an AMI
-                </button>-->
-              </div>
-              <!--
-              <button style="float: left; width: 141px;" class="gray" data-url="/try/rest/index">On my laptop
-              </button><p style="float: left"></p><button style="float: left; width: 141px;" class="gray" data-url="/try/java/index">In the cloud
-              </button></div><div style="padding-top: 10px; width: 400px"><p style="float: left" >Try out a <a href="/learn">tutorial</a>or learn more about <a href="/learn/arch/diagram-101">MarkLogic architecture</a>:</p><button style="float: left; width: 141px;" class="gray" data-url="//docs.marklogic.com">Load Your Data
-              </button></div>-->
-            </div>
-          </div>
-          <div class="tabpage" id="tabpage_3">
-            <div id="nsvp" style="display: none">
-              <div id="next-steps-video-player" style="width: 462px; height:261px; float: left; background-color: blue">
-                <div class="vidbox" style="float: left; margin-bottom: 10px">
-                  <div id="ns-vidplayer"/>
-                </div>
-                <p align="center" style="font-size: 12px; width: 460px">(Best watched in full-screen, 720p)</p>
-              </div>
-              <div style="float: left; margin-top: 45px; margin-left: 38px; xbackground-color: red;">
-                <h2>65 Million Emails</h2>
-                <h2/>
-                <h3 style="padding-top: 10px">Search and analysis in seconds</h3>
-                <div style="padding-top: 10px; width: 400px">
-                  <p style="float: left">MarkLogic powers this public service for the open source community.
-                    <br/>
-                    <br/>
-                    <button class="gray" data-url="http://markmail.org" style="width: 120px;">Visit MarkMail</button>
-                    See other <a href="#" id="nsb" onclick="return false">steps</a>.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div style="margin-top: 75px; width: 962px; float: left; xbackground-color: green;">
-              <ul style="margin-left: 20px">
-                <li class="steps next-steps">
-                  <h3>See how it works
-
-                    <i class="fi-eye hp-ns-icon"/></h3>
-                  <p>The core architectural features of a MarkLogic-based application
-                                will make sense to anyone with an RDBMS background...
-
-
-                    <a href="/learn/arch/diagram-101">Learn More</a></p>
-                </li>
-                <li class="steps next-steps">
-                  <h3>Try a tutorial
-
-                    <i class="fi-lightbulb hp-ns-icon"/></h3>
-                  <p>Continue learning REST or Java APIs, see how to load your own data, or dig into writing stored
-                    procedures in XQuery.
-
-                    <a href="/learn">See tutorials</a></p>
-                </li>
-                <li class="steps">
-                  <h3>Watch a demo
-
-                    <i class="fi-play-circle hp-ns-icon"/></h3>
-                  <p>Running on a small MarkLogic cluster,
-
-                    <a href="http://markmail.org">markmail.org</a>, provides search and analysis of over 65 million
-                    emails from nearly 9000 mailing lists...
-
-
-                    <a href="#" id="next-steps-video" onclick="return false;">Watch demo</a></p>
-                  <!--
-                  <li><h3>MarkLogic for Java Developers
-                      <img style="float: left; margin-top: -5px; padding-right: 16px;" width="16" height="31" src="/media/duke-java-mascot.png"/></h3><p>MarkLogic provides familiar, easy-to-learn, idiomatic Java interfaces to its database, search engine, and analytics...
-                  <a href="/trails/java">Learn More</a></p></li>-->
-                  <!--
-                  <li><h3>REST
-                      <img style="float: left; margin-top: -6px; margin-left: -5px; padding-right: 10px" width="32" height="32" src="/media/plug-rest.png"/></h3><p>MarkLogic provides a REST API for use in a variety of environments. If you're working
-                  in JavaScript, PHP, Python, or... <a href="/trails/rest">Learn More</a></p></li>-->
-                  <!--
-                  <li><h3>XQuery
-                      <span style="float: left; font-size: 22px">&lt;<b>/</b>&gt; </span></h3><p>MarkLogic is the king of XQuery. We rock the shit out of it. Fuck, we own it.
-                  Wanna know more?
-                  <a href="/trails/xquery">Read this</a></p></li>-->
-                  <!--
-                  <li><h3>What can you do with it?
-                  <img style="float: left; margin-top: -4px; margin-left: 0px; padding-right: 10px" width="24" src="/media/laptop.png"/></h3><p>MarkLogic is a NoSQL database, a search engine, a triple store, an application server, and...
-                  <a href="/trails/use-cases">Learn More</a>or <a href="/demos">See a demo</a></p></li><li><h3>The Semantics Trail
-                  <img style="float: left; margin-top: -4px; margin-left: -5px; padding-right: 10px" width="32" src="/media/whats-new-marklogic-7-semantics.png"/></h3><p>MarkLogic includes a SPARQL query language interpreter, tools and APIs for directly loading
-                  semantic data in a variety of RDF formats...
-                  <a href="/trails/semantics">Learn More</a></p></li>-->
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          <span id="mag" class="input-group-btn">
+            <button class="btn btn-default glyphicon glyphicon-search" type="button"></button>
+          </span>
+        </form>
       </div>
     </section>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="vidwrap col-md-5" rel="3mOCOrFQ_N0">
+        <div class="still" id="what-is-still">
+          <a href="http://www.youtube.com/embed/3mOCOrFQ_N0?autoplay=1&amp;rel=0&amp;vq=hd720">
+            <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <h2>MarkLogic 8</h2>
+        <h3>Enterprise NoSQL Database Platform</h3>
+        <div style="width: 390px">
+          <p>Natively store and manage JSON, XML, and RDF -- all in one unified platform. MarkLogic 8 has the NoSQL agility you need with all the right APIs, Server-side JavaScript query capability, and innovative features such as Semantics, Bitemporal, and Alerting. It also has ACID transactions, certified security, and other enterprise features you require to take mission-critical applications into production.</p>
+        </div>
+        <div style="padding-top: 10px; width: 500px">
+          <button class="btn btn-primary" data-url="/products" id="download-button">Free Download</button>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
     <style>
       .hp-promotion-wrapper {
         box-shadow: 0px 1px 3px 0px #878787;
@@ -260,45 +100,96 @@
       }
 
     </style>
-    <section id="home-ads" style="position: absolute; left: 60px; top: 720px;">
-      <div class="hp-promotion-wrapper">
-        <!--
-        <h2>Free Online Training</h2><div class="hp-promotion-inner"><div class="promotion-thumbnail"><a href="/learn/free-online-training"><img src="/media/home/promotion-training.png" border="0" alt=""/></a></div><div class="promotion-excerpt"><h3><a href="/learn/free-online-training">Marklogic Online Classes! Can’t travel?</a></h3><p>No problem…attend class from your office or home.</p></div></div>-->
-        <h2>Upcoming Events</h2>
-        <div class="hp-promotion-inner">
-          <div class="promotion-thumbnail">
-            <a href="//marklogic.com/events">
-              <img alt="" border="0" height="85" src="/media/home-page-ads/developer-reimagine-promo-24.png" width="113"/>
-            </a>
-          </div>
-          <div class="promotion-excerpt">
-            <h3>
-              <a href="//marklogic.com/events">MarkLogic Events</a>
-            </h3>
-            <p>Find out what MarkLogic events are coming up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="hp-promotion-wrapper">
-        <h2>Get Started with Semantics</h2>
-        <div class="hp-promotion-inner">
-          <div class="promotion-thumbnail">
-            <a href="/learn/semantics-exercises">
-              <img alt="" border="0" height="85" src="/media/home-page-ads/developer-sparql-marklogic-promo-24.png" width="113"/>
-            </a>
-          </div>
-          <div class="promotion-excerpt">
-            <h3>
-              <a href="/learn/semantics-exercises">Hands on Exercises</a>
-            </h3>
-            <p>Learn how to load RDF triples and
 
-              <br/>
-              write SPARQL queries against MarkLogic</p>
-          </div>
-        </div>
+    <div class="row new-features">
+      <h2 class="col-md-offset-1 col-md-4">New Features in MarkLogic 8</h2>
+      <a class="col-md-4 text-uppercase">Release Notes</a>
+    </div>
+
+    <div class="row features">
+      <div class="col-md-1 col-md-offset-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">JSON</p>
       </div>
-    </section>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Node.js Client API</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Server-side JavaScript</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Java API</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Semantics</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Management API</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Bitemporal</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Flexible Replication</p>
+      </div>
+      <div class="col-md-1">
+        <img src="/media/json.png"/>
+        <p class="text-uppercase text-center">Enhanced HTTP Server</p>
+      </div>
+      <div class="col-md-1">
+      </div>
+
+    </div>
+
+    <hr/>
+
+    <div class="row learn-more">
+      <div class="col-md-3">
+        <img src="/media/samplestack-screenshot.png"/>
+        <h3>Samplestack</h3>
+        <p>Build a three-tiered sample application that demostrates key
+          MarkLogic concepts using the latest features.</p>
+        <a class="btn btn-primary">Learn More</a>
+      </div>
+
+      <div class="col-md-3">
+        <img src="/media/samplestack-screenshot.png"/>
+        <h3>Free Training</h3>
+        <p>Hands-on, instructor-led training to teach everything from the
+          basics to advanced application development.</p>
+        <a class="btn btn-primary">Learn More</a>
+      </div>
+
+      <div class="col-md-3">
+        <img src="/media/samplestack-screenshot.png"/>
+        <h3>Semantics Tutorial</h3>
+        <p>Learn how to get more context to your data by using RDF triples
+          and querying them with SPARQL.</p>
+        <a class="btn btn-primary">Learn More</a>
+      </div>
+
+      <div class="col-md-3">
+        <img src="/media/samplestack-screenshot.png"/>
+        <h3>Deploy on AWS</h3>
+        <p>Get going in minutes with MarkLogic in the Amazon cloud using the
+          provided AMIs and Cloud Formation templates.</p>
+        <a class="btn btn-primary">Learn More</a>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <a href="" class="btn btn-default col-md-4 col-md-offset-4">Connect: Join the Developer List</a>
+    </div>
+
   </div>
   <script>
     var tag = document.createElement('script');
