@@ -107,44 +107,42 @@
     </div>
 
     <div class="row features">
-      <div class="col-md-1 col-md-offset-1">
+      <a href="/features/json" class="col-md-1 col-md-offset-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">JSON</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/node" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Node.js Client API</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/javascript" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Server-side JavaScript</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/java" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Java API</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/semantics" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Semantics</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/management-api" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Management API</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/bitemporal" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Bitemporal</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/flexrep" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Flexible Replication</p>
-      </div>
-      <div class="col-md-1">
+      </a>
+      <a href="/features/enhanced-http" class="col-md-1">
         <img src="/media/json.png"/>
         <p class="text-uppercase text-center">Enhanced HTTP Server</p>
-      </div>
-      <div class="col-md-1">
-      </div>
+      </a>
 
     </div>
 
