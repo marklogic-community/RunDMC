@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <div class="home">
+
     <section class="form-group search row">
       <div class="col-md-8 col-md-offset-2">
         <form method="get" ml:action="/search" class="input-group">
           <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class="form-control"/>
 
           <span id="mag" class="input-group-btn">
-            <button class="btn btn-default glyphicon glyphicon-search" type="button"></button>
+            <button class="btn btn-default glyphicon glyphicon-search"></button>
           </span>
         </form>
       </div>
