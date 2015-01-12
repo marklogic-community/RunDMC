@@ -104,6 +104,8 @@
 
 .home .new-features a {
   color: #0066bb;
+  line-height: 29px;
+  vertical-align: middle;
 }
 
 .home .learn-more {
