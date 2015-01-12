@@ -49,7 +49,7 @@
         </xsl:if>
         <ul>
             <li>
-                <button type="button" class="drop-down-trigger btn" id="signup-trigger"
+                <button type="button" class="drop-down-trigger btn btn-default" id="signup-trigger"
                         data-url="{$srv:primary-server}/people/signup">
                     <xsl:if test="users:getCurrentUserName()">
                         <xsl:attribute name="style">display:none</xsl:attribute>
@@ -58,7 +58,7 @@
                 </button>
             </li>
             <li>
-                <button type="button" class="drop-down-trigger btn" id="login-trigger">
+                <button type="button" class="drop-down-trigger btn btn-default" id="login-trigger">
                     <xsl:if test="users:getCurrentUserName()">
                         <xsl:attribute name="style">display:none</xsl:attribute>
                     </xsl:if>
@@ -66,7 +66,7 @@
                 </button>
             </li>
             <li>
-                <button type="button" class="drop-down-trigger btn" id="session-trigger">
+                <button type="button" class="drop-down-trigger btn btn-default" id="session-trigger">
                     <xsl:if test="empty(users:getCurrentUserName())">
                         <xsl:attribute name="style">display:none</xsl:attribute>
                     </xsl:if>
@@ -87,8 +87,8 @@
                 <input class="password required form-control" required="required" id="password" name="password" title="password" value="" type="password"/>
             </div>
             <div class="row">
-                <button onclick="return false;" class="btn btn-sm col-md-4" id="login_submit" type="button">Log in</button>
-                <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm col-md-4" id="recovery">Forgot password?</button>
+                <button onclick="return false;" class="btn btn-sm btn-default col-md-4" id="login_submit" type="button">Log in</button>
+                <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm btn-default col-md-5" id="recovery">Forgot password?</button>
             </div>
         </form>
     </fieldset>

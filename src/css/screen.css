@@ -2249,7 +2249,7 @@ div.header-separator {
     min-width: 70px;
     display: block;
     float: left;
-    margin-left: 75px;
+    margin-left: 15px;
 }
 
 #recovery {
@@ -2351,7 +2351,7 @@ div.header-separator {
 }
 
 .signup-form-label, .reset-form-label {
-    width: 140px;
+    width: 150px;
     float: left;
 	margin-bottom: 5px;
     text-align: right;
@@ -2388,13 +2388,6 @@ div.header-separator {
     margin-right: 25px;
     display: inline;
     vertical-align: baseline;
-}
-
-#signup-submit {
-    display: block;
-    margin-top: 20px;
-    padding: 8px;
-    color: #333;
 }
 
 .signup-form-error {
