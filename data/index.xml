@@ -185,7 +185,7 @@
     <hr/>
 
     <div class="row">
-      <a href="" class="btn btn-default col-md-4 col-md-offset-4">Connect: Join the Developer List</a>
+      <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4">Connect: Join the Developer List</a>
     </div>
 
   </div>
