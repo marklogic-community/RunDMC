@@ -46,6 +46,8 @@
 
 #what-is-still {
     background-image: url(/media/what-is-enterprise-nosql-still.jpg);
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 #getting-started-still {
