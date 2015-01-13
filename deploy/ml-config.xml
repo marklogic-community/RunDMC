@@ -707,6 +707,50 @@
         </privilege>
       </privileges>
     </role>
+    <role>
+      <role-name>dmc-author</role-name>
+      <description>An Author for RunDMC content</description>
+      <role-names>
+        <role-name>@ml.app-role</role-name>
+      </role-names>
+      <permissions>
+      </permissions>
+      <collections>
+      </collections>
+      <privileges>
+        <privilege>
+          <privilege-name>xdmp:xslt-invoke</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:filesystem-file-exists</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:document-get</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:plan</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>any-uri</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>unprotected-collections</privilege-name>
+        </privilege>
+      </privileges>
+    </role>
+    <role>
+      <role-name>dmc-admin</role-name>
+      <description>An Admin for RunDMC content</description>
+      <role-names>
+        <role-name>dmc-author</role-name>
+      </role-names>
+      <permissions>
+      </permissions>
+      <collections>
+      </collections>
+      <privileges>
+      </privileges>
+    </role>
   </roles>
   <users xmlns="http://marklogic.com/xdmp/security">
     <user>
@@ -715,6 +759,7 @@
       <password>@ml.appuser-password</password>
       <role-names>
         <role-name>@ml.app-role</role-name>
+        <role-name>dmc-author</role-name>
       </role-names>
       <permissions/>
       <collections/>
