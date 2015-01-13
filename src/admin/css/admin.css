@@ -87,6 +87,7 @@ td.pending, td.draft {color: #903;}
 	clear: none;
 }
 #content #tbl_assets {float: right;}
+#content #tbl_edit_uri {width: 47%;}
 #tbl_status caption, #tbl_assets caption {padding-top: 1.5em;}
 input[name=add] {float: right;}
 form .action {
