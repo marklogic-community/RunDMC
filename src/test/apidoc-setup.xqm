@@ -257,4 +257,69 @@ declare %t:case function t:fixup-href-issue-324()
     attribute href { './xdmp:spawn#spawnresultex' })
 };
 
+declare %t:case function t:schema-info-description()
+{
+  stp:schema-info(
+    <xs:schema>
+      <xs:element ref="forest-id"/>
+      <xs:element name="forest-id" type="forest-id">
+        <xs:annotation>
+          <xs:documentation>
+    The unique key of the forest.
+          </xs:documentation>
+          <xs:appinfo>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      </xs:schema>
+    ! document { . }/xs:schema/xs:element[@ref eq "forest-id"],
+    'test',
+    false())
+  ! at:equal(
+    api:element-description/normalize-space(.),
+    'The unique key of the forest.')
+};
+
+declare %t:case function t:schema-info-no-camel-case()
+{
+  stp:schema-info(
+    <xs:schema>
+      <xs:element ref="forest-id"/>
+      <xs:element name="forest-id" type="forest-id">
+        <xs:annotation>
+          <xs:documentation>
+    The unique key of the forest.
+          </xs:documentation>
+          <xs:appinfo>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      </xs:schema>
+    ! document { . }/xs:schema/xs:element[@ref eq "forest-id"],
+    'test',
+    false())
+  ! at:equal(api:element-name/string(), 'forest-id')
+};
+
+declare %t:case function t:schema-info-with-camel-case()
+{
+  stp:schema-info(
+    <xs:schema>
+      <xs:element ref="forest-id"/>
+      <xs:element name="forest-id" type="forest-id">
+        <xs:annotation>
+          <xs:documentation>
+    The unique key of the forest.
+          </xs:documentation>
+          <xs:appinfo>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      </xs:schema>
+    ! document { . }/xs:schema/xs:element[@ref eq "forest-id"],
+    'test',
+    true())
+  ! at:equal(api:element-name/string(), 'forestId')
+};
+
 (: test/apidoc-setup.xqm :)

@@ -1264,31 +1264,47 @@ as xs:anyAtomicType
 };
 
 declare function stp:schema-info(
-  $xse as element(xs:element))
-as element(api:element)
+  $xse as element(xs:element),
+  $source as xs:string,
+  $camel-case as xs:boolean?)
+as element(api:element)?
 {
-  (: ASSUMPTION: all the element declarations are global.
-   : ASSUMPTION: the schema default namespace is the same as
-   : the target namespace (@ref uses no prefix).
+  (: Both @ref and @type are natively xs:QName,
+   : but this code treats both as string.
+   : ASSUMPTION schema element declarations are global.
+   : ASSUMPTION schema default namespace is the same as target.
+   : These assumptions are not always true.
+   : For example host-status.xml has a reference to "xa:xid".
    :)
-  let $current-ref := $xse/@ref/string()
-  let $root := $xse/root()
-  let $element-decl := $root/xs:schema/xs:element[
+  let $current-ref as xs:string := $xse/@ref/string()
+  (: Expect a schema document. :)
+  let $schema as element(xs:schema) := $xse/root()/xs:schema
+  let $element-decl := $schema/xs:element[
     @name eq $current-ref]
-  (: This is natively a QName,
-   : but we assume we can ignore namespace prefixes.
-   :)
   let $element-decl-type := $element-decl/@type/string()
-  let $complexType := $root/xs:schema/xs:complexType[
+  let $complexType := $schema/xs:complexType[
     @name eq $element-decl-type]
+  let $description := $element-decl/xs:annotation/xs:documentation
   return element api:element {
-    element api:element-name { $current-ref },
+    element api:element-name {
+      if (not($camel-case)) then $current-ref
+      else api:javascript-name($current-ref, ()) },
     element api:element-description {
-      $element-decl/xs:annotation/xs:documentation },
+      if ($description) then $description
+      else if ($element-decl) then stp:warning(
+        'stp:schema-info',
+        ('No xs:documentation found for', $current-ref,
+          'in', xdmp:describe($xse), 'source', $source))
+      else stp:warning(
+        'stp:schema-info',
+        ('No xs:element found for', $current-ref,
+          'in', xdmp:describe($xse), 'source', $source))
+    },
     (: Recursion continues via function mapping.
      : TODO Could this get into a loop?
      :)
-    stp:schema-info($complexType//xs:element)
+    stp:schema-info(
+      $complexType//xs:element[@ref], $source, $camel-case)
   }
 };
 
@@ -1298,7 +1314,8 @@ declare function stp:fixup-children-apidoc-usage(
   $context as xs:string*)
 as node()*
 {
-  if (not($e/@schema)) then stp:fixup($version, $e/node(), $context) else (
+  stp:fixup($version, $e/node(), $context),
+  if (not($e/@schema)) then () else (
     let $current-dir := string-join(
       tokenize(base-uri($e), '/')[position() ne last()], '/')
     let $schema-uri := concat(
@@ -1314,18 +1331,19 @@ as node()*
       else $given-name)
     let $print-intro-value := (string($e/@print-intro), true())[1]
     where $complexType-name
-    return (
-      stp:fixup($version, $e/node(), $context),
-      element api:schema-info {
-        if (not($is-REST-resource)) then () else (
-          attribute REST-doc { true() },
-          attribute print-intro { $print-intro-value }),
-        let $schema := raw:get-doc($schema-uri)/xs:schema
-        let $complexType := $schema/xs:complexType[@name eq $complexType-name]
-        (: This presumes that all the element declarations are global,
-         : and complex type contains only element references.
-         :)
-        return stp:schema-info($complexType//xs:element) }))
+    return element api:schema-info {
+      if (not($is-REST-resource)) then () else (
+        attribute REST-doc { true() },
+        attribute print-intro { $print-intro-value }),
+      let $schema := raw:get-doc($schema-uri)/xs:schema
+      let $complexType := $schema/xs:complexType[@name eq $complexType-name]
+      (: This presumes that all the element declarations are global,
+       : and complex type contains only element references.
+       :)
+      return stp:schema-info(
+        $complexType//xs:element[@ref],
+        xdmp:describe($e),
+        $e/@camel-case/xs:boolean(.)) })
 };
 
 declare function stp:fixup-children(
