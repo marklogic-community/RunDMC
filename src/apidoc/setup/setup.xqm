@@ -1343,7 +1343,8 @@ as node()*
       return stp:schema-info(
         $complexType//xs:element[@ref],
         xdmp:describe($e),
-        $e/@camel-case/xs:boolean(.)) })
+        $context = $api:MODE-JAVASCRIPT
+        and $e/@camel-case/xs:boolean(.)) })
 };
 
 declare function stp:fixup-children(
