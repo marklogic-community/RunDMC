@@ -1368,9 +1368,9 @@ as node()*
   (: Convert type name as needed.
    : Ignore return types specific to a different mode.
    :)
-  case element(apidoc:return) return (
-    $e[not(@class) or xs:NMTOKENS(@class) = $mode]
-    ! api:type($mode, 'return', .))
+  case element(apidoc:return) return text {
+    ($e[xs:NMTOKENS(@class) = $mode],
+      $e[not(@class)][1] ! api:type($mode, 'return', .))[1] }
   case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
     $version, $e, $context)
   default return stp:fixup($version, $e/node(), $context)
