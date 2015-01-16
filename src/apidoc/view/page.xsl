@@ -720,8 +720,22 @@
       <p>
         <xsl:apply-templates select="api:element-description/node()"/>
       </p>
+      <xsl:variable name="mode" as="xs:string?"
+                    select="ancestor::api:function-page/@mode"/>
       <xsl:if test="api:element">
-        <p>This is a complex element with the following element children:</p>
+        <p>
+          <xsl:choose>
+            <xsl:when test="$mode eq $api:MODE-XPATH">
+              This is a complex element with the following element children:
+            </xsl:when>
+            <xsl:when test="$mode eq $api:MODE-JAVASCRIPT">
+              This is an object with the following properties:
+            </xsl:when>
+            <xsl:otherwise>
+              This is a complex structure with the following children:
+            </xsl:otherwise>
+          </xsl:choose>
+        </p>
         <dl>
           <xsl:apply-templates select="api:element"/>
         </dl>
