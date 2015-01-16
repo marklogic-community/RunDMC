@@ -476,7 +476,7 @@ nav ul {margin: 0;}
 	border-bottom: none;
 	margin: 0;
 }
-#sub li li, #sub li span, #sub .categories li {
+#sub > li, #sub li span, #sub .categories > li {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #FFF transparent #E4E4E4;
@@ -502,6 +502,11 @@ ul.subcategories {
   padding-left: 28px;
 }
 ul.subcategories > a {
+}
+ul.subcategories li {
+  border-style: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 #sub li li > a {
 	margin-left: 19px;
