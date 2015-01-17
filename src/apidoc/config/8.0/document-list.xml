@@ -158,6 +158,10 @@
         Provides information on developing applications using MarkLogic
         bi-temporal features.
       </guide>
+      <guide url-name="ref-arch" source-name="ref-arch">
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
+      </guide>
       <guide url-name="app-builder" source-name="appbuilder">
         Provides step-by-step information on using the Application Builder
         to build a search application, and also provides information on
@@ -194,10 +198,10 @@
     </entry>
 
     <entry title="Other Reference Guides">
-      <guide url-name="concepts" source-name="concepts">
+      <!-- <guide url-name="concepts" source-name="concepts">
         Provides an overview of MarkLogic and conceptual information about the
         server architecture.
-      </guide>
+      </guide> -->
       <guide url-name="jsref" source-name="jsref">A condensed overview
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
@@ -240,8 +244,8 @@
       <guide url-name="messages" source-name="messages">
         Error Messages and Codes Reference</guide>
       <guide url-name="copyright" source-name="shared">
-	Includes a glossary of terms as well as copyright and support 
-	information.
+  Includes a glossary of terms as well as copyright and support
+  information.
       </guide>
     </entry>
 
