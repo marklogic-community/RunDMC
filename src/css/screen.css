@@ -26,6 +26,11 @@ a[rel=detail] img {
 	max-width: 604px;
 	border: 8px solid white;
 }
+
+.page_content_widget {
+    margin: 1em;
+}
+
 #page_content blockquote {margin: 0;}
 caption {
 	font-weight: bold;
@@ -2054,6 +2059,22 @@ ul.multi-page-toc {list-style: square inside;}
 /* for search hit highlighting */
  .hit_highlight { background-color: yellow; }
 a.hit_highlight { text-decoration: none; color: #666; }
+.highlightWidget {
+  background-color: yellow;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+	-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+  padding: 1em;
+}
+.highlightQuery {
+  font-weight: bold;
+}
+.highlightWidget a {
+  font-weight: bold;
+}
 
 .tryml-warn {
     font-style: italic;
@@ -2092,7 +2113,7 @@ div.header-separator {
 }
 #main-triangle {
     font-size: 16px;
-    font-stye: bold;
+    font-weight: bold;
 }
 
 #main-site a {

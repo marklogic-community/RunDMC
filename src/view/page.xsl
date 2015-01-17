@@ -47,8 +47,9 @@
 
   <xsl:variable name="original-content" select="/"/>
 
+  <xsl:variable name="QUERY-HIGHLIGHT" select="$params[@name eq 'hq']"/>
   <xsl:variable name="content"
-                select="if ($params[@name eq 'hq']) then $highlighted-content
+                select="if ($QUERY-HIGHLIGHT) then $highlighted-content
                         else /"/>
 
   <xsl:variable name="highlighted-content">
@@ -317,12 +318,25 @@
       </xhtml:link>
   </xsl:template>
 
+  <xsl:template name="page-content-widgets">
+    <xsl:if test="$QUERY-HIGHLIGHT">
+      <div class="page_content_widget">
+        <span class="highlightWidget">
+          Matches for "<span class="highlightQuery">
+          <xsl:value-of select="$QUERY-HIGHLIGHT/string()"/>
+          </span>" have been highlighted.
+          <a id="highlightWidget" href="">Remove highlighting</a>
+        </span>
+      </div>
+    </xsl:if>
+  </xsl:template>
 
   <!-- Process page content when we hit the <ml:page-content> element -->
   <xsl:template match="page-content" name="page-content">
     <xsl:if test="$DEBUG">
       <xsl:copy-of select="$params"/>
     </xsl:if>
+    <xsl:call-template name="page-content-widgets"/>
     <xsl:apply-templates mode="page-content"    select="$content/*"/>
   </xsl:template>
 
