@@ -176,9 +176,11 @@
                           $matching-message-id))"/>
     <xsl:choose>
       <xsl:when test="$redirect">
-        <!-- Keep the query intact for an undo link. -->
+        <!-- Keep the params intact for an undo link. -->
         <xsl:value-of
-            select="xdmp:redirect-response(concat($redirect, '?q=', $QUERY))"/>
+            select="xdmp:redirect-response(
+                    ss:search-path(
+                    $redirect, $QUERY, $PREFERRED-VERSION, $IS-API-SEARCH))"/>
       </xsl:when>
       <xsl:otherwise>
         <!-- Pass the unconstrained query for the facet UI. -->

@@ -305,7 +305,8 @@
     <xsl:if test="$q">
       <xsl:text>Did you mean to search for the term </xsl:text>
       <!-- Force the search with p=1. -->
-      <a href="{v:search-path($srv:search-page-url, $q, $VERSION)
+      <a href="{ss:search-path(
+               $srv:search-page-url, $q, $VERSION, $IS-API-SEARCH)
                }&amp;p=1">
         <xsl:value-of select="$q"/>
       </a>

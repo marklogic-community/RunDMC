@@ -422,4 +422,18 @@ as node()*
   return if (not($hq)) then $n else ss:highlight($n, $hq)
 };
 
+declare function ss:search-path(
+  $url as xs:string,
+  $q as xs:string,
+  $version as xs:string?,
+  $is-api as xs:boolean?)
+as xs:string
+{
+  $url||'?q='||$q||(
+    if (not($version)) then ''
+    else '&amp;v='||$version)||(
+    if (not($is-api)) then ''
+    else '&amp;api='||$is-api)
+};
+
 (: search.xqm :)

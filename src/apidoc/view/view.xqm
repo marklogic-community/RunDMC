@@ -199,17 +199,6 @@ as node()*
   v:input-hidden('toc_url', api:toc-uri($version, $version-specified))
 };
 
-declare function v:search-path(
-  $url as xs:string,
-  $q as xs:string,
-  $version as xs:string?)
-as xs:string
-{
-  $url||'?q='||$q||(
-    if (not($version)) then ''
-    else '&amp;v='||$version)
-};
-
 declare function v:anchor-id(
   $e as element())
   as xs:string*
