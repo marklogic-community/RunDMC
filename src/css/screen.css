@@ -351,7 +351,6 @@ hr {
 #container {
     position: relative;
     height: 100%;
-    width: 92%;
     margin: auto;
     min-width: 1100px;
     overflow: hidden;
@@ -359,10 +358,9 @@ hr {
 
 #header {
     background: black;
-    color: #FFF;
+    color: #white;
     font-size: 14px;
     position: relative;
-    z-index: 2;
 }
 #header header,
 #breadcrumb > div {
@@ -2675,17 +2673,6 @@ div.header-separator {
     border-bottom: 1px solid gray;
     border-right: 1px solid gray;
 
-    background: -moz-linear-gradient(top, #FFFFFF 0%, #d4d5d6 99%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(99%, #e4e5e6)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #FFFFFF 0%, #d4d5d6 99%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #FFFFFF 0%, #d4d5d6 99%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #FFFFFF 0%, #d4d5d6 99%); /* IE10+ */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #d4d5d6 99%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#D4D5D6', GradientType=0 ); /* IE6-9 */
-
-    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     text-align: left;
 
     padding: 14px;
@@ -2700,6 +2687,7 @@ div.header-separator {
 }
 
 #login-menu {
+  background-color: black;
     right: 192px;
     width: 300px;
 }
@@ -2802,7 +2790,7 @@ div.header-separator {
     min-width: 70px;
     display: block;
     float: left;
-    margin-left: 75px;
+    margin-left: 15px;
 }
 
 #recovery {
@@ -2916,7 +2904,7 @@ div.header-separator {
 
 .signup-form-label,
 .reset-form-label {
-    width: 140px;
+    width: 150px;
     float: left;
     margin-bottom: 5px;
     text-align: right;
@@ -2953,13 +2941,6 @@ div.header-separator {
     margin-right: 25px;
     display: inline;
     vertical-align: baseline;
-}
-
-#signup-submit {
-    display: block;
-    margin-top: 20px;
-    padding: 8px;
-    color: #333;
 }
 
 .signup-form-error {
@@ -3155,28 +3136,6 @@ div.ui-widget-content {
 }
 
 /* New Buttons */
-
-button {
-    margin: 0;
-    font-family: Tahoma, Arial, Helvetica, Sans-serif;
-    padding: 8px 12px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 5px;
-    border: 2px solid #565656;
-    color: #565656;
-    cursor: pointer;
-    font-weight: 600;
-    text-shadow: 1px 1px #FFF;
-    background: #1C6ACD; /* Old browsers */
-    background: -moz-linear-gradient(top, #ffffff 0%, #e4e5e6 99%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(99%, #e4e5e6)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e4e5e6 99%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #ffffff 0%, #e4e5e6 99%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #ffffff 0%, #e4e5e6 99%); /* IE10+ */
-    background: linear-gradient(to bottom, #ffffff 0%, #e4e5e6 99%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e4e5e6', GradientType=0 ); /* IE6-9 */
-}
 
 button.uppercase {
     text-transform: uppercase;

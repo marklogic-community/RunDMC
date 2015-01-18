@@ -159,8 +159,8 @@
         bi-temporal features.
       </guide>
       <guide url-name="ref-arch" source-name="ref-arch">
-  Provides an overview of reference application architectures for
-  multi-tiered applications build using MarkLogic as the database.
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
       </guide>
       <guide url-name="app-builder" source-name="appbuilder">
         Provides step-by-step information on using the Application Builder
