@@ -3,11 +3,11 @@
 
 // some API urls
 var google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&callback={callback}&rsz=large&q={query}",
-    questions = "http://api.stackoverflow.com/1.0/questions/{id}?key={key}&jsonp={callback}",
-    questionsTagged = "http://api.stackoverflow.com/1.0/questions/?key={key}&tagged={tagged}&body={body}&jsonp={callback}&pagesize={pagesize}",
-    search = "http://api.stackoverflow.com/1.0/search/?key={key}&intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}",
-    unansweredQuestionsTagged = "http://api.stackoverflow.com/1.0/questions/unanswered/?key={key}&tagged={tagged}&jsonp={callback}",
-    questionsByUser = "http://api.stackoverflow.com/1.0/users/{id}/questions?key={key}&jsonp={callback}",
+    questions = "http://api.stackexchange.com/2.2/questions/{id}?jsonp={callback}&site=stackoverflow",
+    questionsTagged = "http://api.stackexchange.com/2.2/questions?tagged={tagged}&jsonp={callback}&pagesize={pagesize}&order=desc&site=stackoverflow",
+    search = "http://api.stackexchange.com/2.2/search?intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}&site=stackoverflow",
+    unansweredQuestionsTagged = "http://api.stackexchange.com/2.2/questions/unanswered?tagged={tagged}&jsonp={callback}&site=stackoverflow",
+    questionsByUser = "http://api.stackexchange.com/2.2/users/{id}/questions?jsonp={callback}&site=stackoverflow",
     // prevent loading more than once
     isLoaded,
     // each call creates a unique jsonp callback
@@ -54,7 +54,7 @@ function domLoaded() {
         document.addEventListener("DOMContentLoaded", loaded, false);
     }
 }
-            
+
 function loaded() {
     // called when the DOM is ready
     if (!isLoaded) {
@@ -104,7 +104,7 @@ function getUniqueQuestions(searchResults) {
             match = regexQuestion.exec(url);
         if ( match && match[1] ) {
             var questionId = parseInt(match[1]);
-            if (!index[questionId]) { 
+            if (!index[questionId]) {
                 questions.push(questionId);
                 index[questionId] = 1;
             }
@@ -222,7 +222,7 @@ var su = window.stackunderflow = {
     },
     searchQuestions: function(intitle, tagged, notTagged, complete) {
         return execQuestions(search, { tagged: tagged, nottagged: notTagged, intitle: intitle }, complete);
-    },    
+    },
     getQuestionsWithTags: function(tags, onlyUnanswered, complete) {
         return execQuestions(onlyUnanswered ? unansweredQuestionsTagged : questionsTagged,
             { tagged: tags, body: false }, complete);
@@ -233,7 +233,7 @@ var su = window.stackunderflow = {
     },
     getQuestionsByUser: function(userIds, complete) {
         return execQuestions(questionsByUser, { id: userIds instanceof Array ? userIds.join(';') : userIds }, complete);
-    },    
+    },
     render: {
         questions: function(questions, target, template, complete) {
             template = template || "question";
@@ -242,7 +242,7 @@ var su = window.stackunderflow = {
                 target = document.getElementById(target);
             }
             var html = "";
-            questions = questions.questions;
+            questions = questions.items;
             if (questions) {
                 for (var i = 0, l = questions.length; i < l; i++) {
                     html += applyTemplate(su.templates[template], questions[i]);
@@ -255,12 +255,8 @@ var su = window.stackunderflow = {
     templates: {
         tag: '<a href="{site}/questions/tagged/{=}" class="se-post-tag" title="show questions tagged \'{=}\'" rel="tag">{=}</a> ',
         question: '<div class="se-question-summary" id="question-summary-{question_id}"> \
-    <div onclick="window.location.href=\'{site}{question_answers_url}\'" class="se-cp"> \
-        <div style="float: left; width: 38px; padding: 0px 20px 0px 0px"> \
-            <div class="se-votes"> \
-                <div class="se-mini-counts">{up_vote_count}</div> \
-                <div>votes</div> \
-            </div> \
+    <div onclick="window.location.href=\'{link}\'" class="se-cp"> \
+        <div style="float: left; width: 50px; padding: 0px 20px 0px 0px"> \
             <div class="se-status {acceptedclass:=}"> \
                 <div class="se-mini-counts">{answer_count}</div>\
                 <div>answer</div> \
@@ -269,10 +265,7 @@ var su = window.stackunderflow = {
         </div> \
     </div> \
     <div class="se-summary"> \
-        <h3><a href="{site}{question_answers_url}" class="se-question-hyperlink" title="{title}">{title}</a></h3> \
-        <div class="se-body"> \
-            {body}\
-        </div>\
+        <h4><a href="{link}" class="se-question-hyperlink" title="{title}">{title}</a></h4> \
         <div class="se-tags"> \
             {template-tag:tags}\
         </div> \
