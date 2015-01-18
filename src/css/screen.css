@@ -50,7 +50,6 @@ a[rel="detail"] img {
 }
 
 .page_content_widget {
-    margin: 1em;
 }
 
 #page_content blockquote {
@@ -2563,7 +2562,9 @@ a.hit_highlight {
     text-decoration: none; color: #666;
 }
 
-.highlightWidget {
+div.highlightWidget {
+}
+span.highlightWidget {
     background-color: yellow;
     border-radius: 8px;
     -moz-border-radius: 8px;
@@ -2572,10 +2573,16 @@ a.hit_highlight {
     -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     padding: 1em;
+    /* Make the widget follow the user around,
+     * so it's still visible after scrolling to the first highlight.
+     */
+    position: fixed;
+    margin-top: -32px;
 }
 
 .highlightQuery {
     font-weight: bold;
+    font-style: italic;
 }
 
 .highlightWidget a {

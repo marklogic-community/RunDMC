@@ -321,12 +321,15 @@
   <xsl:template name="page-content-widgets">
     <xsl:if test="$QUERY-HIGHLIGHT">
       <div class="page_content_widget">
-        <span class="highlightWidget">
-          Matches for "<span class="highlightQuery">
-          <xsl:value-of select="$QUERY-HIGHLIGHT/string()"/>
-          </span>" have been highlighted.
-          <a id="highlightWidget" href="">Remove highlighting</a>
-        </span>
+        <div class="highlightWidget">
+          <span class="highlightWidget">
+            Matches for <span class="highlightQuery">
+            <xsl:value-of select="$QUERY-HIGHLIGHT/string()"/>
+            </span> have been highlighted.
+            <a id="highlightWidget" href=""><img src="/images/b_close.png"
+            title="Remove highlighting" alt="remove"/></a>
+          </span>
+        </div>
       </div>
     </xsl:if>
   </xsl:template>

@@ -1,15 +1,19 @@
 /* Copyright 2002-2015 MarkLogic Corporation.  All Rights Reserved. */
 
-var DEBUG = false;
-var LOG = {};
-LOG.debug = function() {
-    if (!DEBUG) return;
-    console.log.apply(console, arguments);
-};
+/*jslint node: true */
+/* global $ */
+/* global React */
+/* global document */
+/* global window */
+'use strict';
 
-LOG.warn = function() {
-    console.log.apply(console, arguments);
-};
+var LOG = {
+  DEBUG: false,
+  debug: function() {
+    if (!this.DEBUG) return;
+    console.log.apply(console, arguments); },
+  warn: function() {
+    console.log.apply(console, arguments); }};
 
 $(function() {
   var versionSelect = null;
@@ -73,7 +77,7 @@ $(function() {
 
   // If this seems to be a highlight page,
   // erase that param for a clean URL.
-  params = paramsMap(window.location.search);
+  var params = paramsMap(window.location.search);
   if (params.hq) {
     // Requires modern browser.
     if (window.history.replaceState) {
@@ -282,12 +286,52 @@ function paramsMap(loc) {
   return h;
 }
 
+function scrollIntoView(selector, containerSelector) {
+  LOG.debug("scrollIntoView", selector, containerSelector);
+  var $n = $(selector).first();
+  // was anything highlighted?
+  if (!$n.length) {
+    LOG.warn("scrollIntoView", "nothing to scroll", $n);
+    return;
+  }
+
+  var $container = $(containerSelector).first();
+  if (!$container.length) {
+    LOG.warn("scrollIntoView no container", containerSelector);
+    return;
+  }
+
+  // Scroll the first match into view.
+  LOG.debug("scrollIntoView", $n, $container);
+  // The DOM offsetTop is relative to the offsetParent,
+  // while the jQuery .offset().top is relative to document.
+  // Neither one is entirely suitable.
+  var offsetTop = Math.ceil($n.offset().top - $container.offset().top);
+  var margin = 3 * $n.height();
+  var containerTop = $container.scrollTop();
+  var containerHeight = $container.height();
+  var minVisible = containerTop + margin;
+  var maxVisible = containerTop + containerHeight - margin;
+  var willScroll = offsetTop < minVisible || offsetTop > maxVisible;
+  var scrollTop = offsetTop - minVisible;
+  LOG.debug("scrollIntoView",
+            "n", offsetTop, margin,
+            "container", containerTop, containerHeight,
+            "visible", minVisible, maxVisible,
+            "scroll", willScroll, scrollTop);
+  if (!willScroll) {
+    LOG.debug("scrollIntoView noop");
+    return;
+  }
+  $container.animate({scrollTop:scrollTop});
+}
+
 function highlightInit() {
   LOG.debug("highlight_init");
 
   var className = "hit_highlight";
   var selector = "." + className;
-  var $widget = $('.highlightWidget');
+  var $widget = $('#highlightWidget');
   if (!$widget.length) { return; }
   $widget.on('click', function(evt) {
     $(selector).removeClass(className);
@@ -295,24 +339,8 @@ function highlightInit() {
     $(".highlightWidget").remove();
     return false; });
 
-  // was anything highlighted?
-  var offset = $(selector).offset();
-  LOG.debug("highlight_init", offset);
-  if (!offset) {
-    LOG.debug("highlight_init", "nothing to highlight");
-    return;
-  }
-  if (offset.top < $(window).height()) {
-    LOG.debug("highlight_init", "already in view");
-    return;
-  }
-
   // Scroll the first match into view.
-  // This needs a shim to account for hidden content.
-  $('#page_content').animate({
-    scrollTop: offset.top - tocHeaderHeightPX,
-    scrollLeft: offset.left
-  });
+  scrollIntoView(selector, '#page_content');
 }
 
 // rundmc_init.js
