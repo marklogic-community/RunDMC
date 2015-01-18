@@ -432,7 +432,8 @@
     <xsl:variable name="this-constraint" as="xs:string?"
                   select="self::search:facet-value/concat(../@name,':',@name)"/>
     <xsl:variable name="current-constraints" as="xs:string*"
-                  select="$SEARCH-RESPONSE/search:query//@qtextconst"/>
+                  select="$SEARCH-RESPONSE/search:query//@qtextconst[
+                          starts-with(., 'cat:')]"/>
     <xsl:variable name="selected"
                   select="$this-constraint = $current-constraints
                           or not($this-constraint or $current-constraints)"/>
