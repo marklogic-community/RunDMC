@@ -1703,6 +1703,7 @@ form.pagination {
     font-size: 13px;
     color: #999;
     text-align: right;
+    width: 100%;
 }
 form.pagination input[type="text"] {
     border: 1px solid #CCC;
