@@ -108,30 +108,6 @@ if(typeof jQuery != 'undefined') {
 			});
 		});
 		// end “add link” functionality
-    // begin "edit by uri" functionality
-    $('#edit_uri_btn').click(function() {
-      editByUri();
-    });
-    // Support the enter key
-    $('#edit_uri').keypress(function (e) {
-      if (e.which == 13) {
-        e.preventDefault();
-        editByUri();
-        return false;
-      }
-    });
-    function editByUri() {
-      var uri = $('#edit_uri').val();
-      var doc_type = uri.split('/')[1];
-      var url = '/' + doc_type + '/edit?~doc_path=' + uri;
-      var jqxhr = $.get(url, function() {
-          location.href = url;
-        })
-        .fail(function() {
-          alert( "A document with that URI does not exist." );
-        });
-    }
-    // end "edit by uri" functionality
 		// new functions should be added here
 	});
 }
