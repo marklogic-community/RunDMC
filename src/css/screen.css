@@ -1713,12 +1713,6 @@ form.pagination input[type="text"] {
     padding: 1px 5px;
     width: 30px;
 }
-#results h3 + .pagination,
-#main > form.pagination:first-child {
-    position: absolute;
-    top: 50px;
-    right: 80px;
-}
 
 #results table + .pagination,
 table.people + .pagination {
