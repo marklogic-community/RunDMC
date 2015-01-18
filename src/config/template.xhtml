@@ -48,6 +48,7 @@
 
     <script type="text/javascript" src="/js/printThis.js"></script>
     <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
 
   </head>
   <body ml:class="" ml:id="">
@@ -76,7 +77,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
             <div class="header-separator">|</div>
             <div id="search-header">
-              <form ml:action="/search" method="get">
+              <form class="search-form" ml:action="/search" method="get">
                 <input type="hidden" name="v" ml:value="" />
                 <input type="hidden" name="api" ml:value="" />
                 <label for="s_inp">Search with MarkLogic</label>

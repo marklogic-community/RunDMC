@@ -235,7 +235,6 @@ declare function ss:href(
 as xs:string
 {
   concat(
-    $srv:search-page-url,
     '?',
     ss:query-string(
       (ss:param('q', $query),

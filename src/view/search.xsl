@@ -53,7 +53,7 @@
                 ml:start-index($results-per-page), $results-per-page)"/>
   </xsl:variable>
 
-  <!-- qtext without the constraints -->
+  <!-- qtext without constraints -->
   <xsl:variable name="QUERY-UNCONSTRAINED" as="xs:string"
                 select="($SEARCH-RESPONSE/@query-unconstrained, $QUERY)[1]"/>
 
@@ -181,6 +181,11 @@
             select="xdmp:redirect-response(concat($redirect, '?q=', $QUERY))"/>
       </xsl:when>
       <xsl:otherwise>
+        <!-- Pass the unconstrained query for the facet UI. -->
+        <div class="hidden" id="queryUnconstrained">
+          <xsl:value-of select="$QUERY-UNCONSTRAINED"/>
+        </div>
+        <!-- Render search results. -->
         <xsl:apply-templates mode="search-results" select="$SEARCH-RESPONSE"/>
       </xsl:otherwise>
     </xsl:choose>
@@ -397,6 +402,7 @@
   <xsl:template mode="facet" match="search:facet">
     <h2>
       <xsl:apply-templates mode="facet-name" select="@name"/>
+      <span id="facetSelectionWidget"/>
     </h2>
     <ul class="categories">
       <xsl:apply-templates mode="facet-value"
@@ -443,7 +449,8 @@
         (preventing function page redirects).
         This also resets to page 1.
     -->
-    <a href="{
+    <a data-constraint="{ $this-constraint }"
+       href="{
              ss:href(
              $preferred-version, $new-q, $is-api-search,
              if ($this-constraint) then () else 1) }">
