@@ -3,11 +3,11 @@
 
 // some API urls
 var google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&callback={callback}&rsz=large&q={query}",
-    questions = "http://api.stackexchange.com/2.2/questions/{id}?jsonp={callback}&site=stackoverflow",
-    questionsTagged = "http://api.stackexchange.com/2.2/questions?tagged={tagged}&jsonp={callback}&pagesize={pagesize}&order=desc&site=stackoverflow",
-    search = "http://api.stackexchange.com/2.2/search?intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}&site=stackoverflow",
-    unansweredQuestionsTagged = "http://api.stackexchange.com/2.2/questions/unanswered?tagged={tagged}&jsonp={callback}&site=stackoverflow",
-    questionsByUser = "http://api.stackexchange.com/2.2/users/{id}/questions?jsonp={callback}&site=stackoverflow",
+    questions = "http://api.stackexchange.com/2.2/questions/{id}?jsonp={callback}&key={key}&site=stackoverflow",
+    questionsTagged = "http://api.stackexchange.com/2.2/questions?tagged={tagged}&jsonp={callback}&pagesize={pagesize}&key={key}&order=desc&site=stackoverflow",
+    search = "http://api.stackexchange.com/2.2/search?intitle={intitle}&nottagged={nottagged}&tagged={tagged}&jsonp={callback}&key={key}&site=stackoverflow",
+    unansweredQuestionsTagged = "http://api.stackexchange.com/2.2/questions/unanswered?tagged={tagged}&jsonp={callback}&key={key}&site=stackoverflow",
+    questionsByUser = "http://api.stackexchange.com/2.2/users/{id}/questions?jsonp={callback}&key={key}&site=stackoverflow",
     // prevent loading more than once
     isLoaded,
     // each call creates a unique jsonp callback
@@ -184,7 +184,7 @@ function execQuestions(url, params, complete) {
 }
 
 var su = window.stackunderflow = {
-    appId: "oxXcnoD51kKE-crj7TadaA",
+    appId: "",
     site: "http://stackoverflow.com",
     loaded: function(callback) {
         if (isLoaded) {
