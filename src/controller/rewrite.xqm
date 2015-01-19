@@ -416,6 +416,8 @@ as xs:string
     else if ($path eq "/save-profile") then "/controller/save-profile.xqy"
     else if ($path eq "/enable-corn") then "/controller/enable-corn.xqy?q=on"
     else if ($path eq "/disable-corn") then "/controller/enable-corn.xqy"
+    else if ($path eq '/service/suggest') then concat(
+      '/controller/suggest.xqy?', $query-string)
     else if (starts-with($path, "/rex/")) then concat(
       "/controller/rex.xqy?path-and-query=",
       xdmp:url-encode(

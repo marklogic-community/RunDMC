@@ -97,14 +97,28 @@ as element(search:options)
       </custom>
     </constraint>
 
+    <default-suggestion-source>
+      <range
+  collation="http://marklogic.com/collation/codepoint"
+  type="xs:string" facet="true">
+        <element ns="http://marklogic.com/rundmc/api" name="suggest"/>
+      </range>
+    </default-suggestion-source>
+
   </options>
 };
 
-(: Convenience function for highlighting. :)
-declare function ss:highlight-options()
+(: Convenience function for highlighting and suggest. :)
+declare function ss:options()
 as element(search:options)
 {
   ss:options((), false(), false(), false(), false())
+};
+
+declare function ss:options-check()
+as element(search:report)*
+{
+  search:check-options(ss:options(), true())
 };
 
 (: Remove constraints recursively. :)
@@ -408,7 +422,7 @@ as node()*
 {
   cts:highlight(
     $n,
-    cts:query(search:parse($query, ss:highlight-options())),
+    cts:query(search:parse($query, ss:options())),
     <span class="hit_highlight" xmlns="http://www.w3.org/1999/xhtml">{
       $cts:text
     }</span>)
@@ -438,17 +452,13 @@ as xs:string
 
 (: Given a substring, suggest $count values. :)
 declare function ss:suggest(
-  $substr as xs:string,
-  $count as xs:integer)
+  $q as xs:string,
+  $count as xs:integer,
+  $pos as xs:integer)
 as xs:string*
 {
-  if (string-length($substr) lt 3) then ()
-  else cts:value-match(
-    cts:element-reference(
-      xs:QName('api:suggest'),
-      'collation=http://marklogic.com/collation/codepoint'),
-    '*'||lower-case($substr)||'*',
-    ('limit='||$count))
+  if (string-length($q) lt 3) then ()
+  else search:suggest($q, ss:options(), $count, max((1, $pos)))
 };
 
 (: search.xqm :)

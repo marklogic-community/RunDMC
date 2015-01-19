@@ -343,6 +343,9 @@ declare function m:rewrite()
 
   (: SCENARIO 2: Internal rewrite :)
 
+  else if ($PATH eq '/service/suggest') then concat(
+    '/controller/suggest.xqy?', $QUERY-STRING)
+
   (: SCENARIO 2A: Serve up the JavaScript-based docapp redirector :)
   else if (ends-with($PATH, "docapp.xqy"))
   then "/apidoc/controller/docapp-redirector.xqy"

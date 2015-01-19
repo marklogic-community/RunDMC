@@ -390,15 +390,6 @@ as element(a)?
     guide:link-content($e) }
 };
 
-declare function guide:suggest(
-  $value as item()+)
-as element(api:suggest)*
-{
-  $value
-  ! lower-case(.)
-  ! element api:suggest { . }
-};
-
 (: Extract one document per message. :)
 declare function guide:convert-messages(
   $uri as xs:string,
@@ -425,7 +416,7 @@ as node()+
       attribute xml:base { . },
       attribute id { $id },
       attribute guide-uri { $guide-uri },
-      guide:suggest($id),
+      stp:suggest($id),
       $message })
 };
 
