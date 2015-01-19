@@ -271,6 +271,23 @@
     </group>
   </page>
 
+  <page display="Features" href="/features" hide="yes">
+    <group display="">
+      <group display="Features">
+        <page display="Native JSON" href="/features/json"/>
+        <page display="JavaScript" href="/features/javascript"/>
+        <page display="Semantics" href="/features/semantics"/>
+        <page display="Management API" href="/features/management-api"/>
+        <page display="Bitemporal" href="/features/bitemporal"/>
+        <page display="Flexible Replication" href="/features/flexrep"/>
+        <page display="Enhanced HTTP Server" href="/features/enhanced-http"/>
+        <page display="Samplestack" href="/features/samplestack"/>
+        <page display="Incremental Backup" href="/features/inc-backup"/>
+        <page display="Prescriptiving Sizing" href="/features/prescriptive-sizing"/>
+      </group>
+    </group>
+  </page>
+
   <page display="Questions and Answers from StackOverflow" href="/qa"  hide="yes" narrow-sidebar="yes"/>
 
   <page display="Home" href="/" hide="yes"/>

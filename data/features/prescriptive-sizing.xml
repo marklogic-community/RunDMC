@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Prescriptive Sizing</h1>
+
+<p>We’re taking sizing beyond the rule of “thumbs” and giving you some direct recommendations for sizing your MarkLogic environment.</p>
+
+The following public presentations provide a good overview of what we are documenting and prescribing in MarkLogic 8:
+
+<ul><li><a href="http://www.marklogic.com/resources/reference-topologies-and-sizing/">Reference Topologies and Sizing</a></li><li><a href="http://www.marklogic.com/resources/technologies-amp-up-marklogic/">The Technologies that Really Amp Up MarkLogic</a></li></ul>
+</ml:page>
