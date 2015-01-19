@@ -27,7 +27,6 @@ $(function() {
   }
 
   versionSelect.change(function(e) {
-    LOG.DEBUG = true; // TODO
     var defaultVersion = versionSelect.attr('data-default');
     var version = versionSelect.children("option")
         .filter(":selected").val();
