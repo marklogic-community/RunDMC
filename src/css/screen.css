@@ -2565,7 +2565,9 @@ span.highlightWidget {
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-    padding: 1em;
+    font-size: 12px;
+    padding: 0.5em;
+    padding-left: 1em;
     /* Make the widget follow the user around,
      * so it's still visible after scrolling to the first highlight.
      */
@@ -2578,8 +2580,8 @@ span.highlightWidget {
     font-style: italic;
 }
 
-.highlightWidget a {
-    font-weight: bold;
+.highlightWidget img {
+    padding: 0.25em;
 }
 
 .tryml-warn {
