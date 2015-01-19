@@ -9,5 +9,19 @@
   <!-- Not implemented:
   <ml:admin-asset-listings/>
   -->
+  <table id="tbl_edit_uri">
+    <caption>Edit by URI</caption>
+    <tbody>
+    <tr>
+        <td>
+            <form class="uri_form" action="/admin/controller/edit-by-uri.xqy" method="post" enctype="application/x-www-form-urlencoded">
+              <label>URI</label>
+              <input type="edit" id="edit_uri" name="edit_uri"/>
+              <input type="submit" value="Edit" id="edit_uri_btn"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+  </table>
 
 </ml:page>
