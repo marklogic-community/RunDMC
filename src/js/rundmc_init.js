@@ -27,11 +27,11 @@ $(function() {
   }
 
   versionSelect.change(function(e) {
+    LOG.DEBUG = true; // TODO
     var defaultVersion = versionSelect.attr('data-default');
     var version = versionSelect.children("option")
         .filter(":selected").val();
-    //LOG.debug('version select option changed',
-    //            defaultVersion, version);
+    LOG.debug('version select option changed', defaultVersion, version);
     // Redirect to an appropriate page.
     var oldPath = window.location.pathname;
     // Search pages are different, and use q=fubar&v=8.0 etc. in query string.
@@ -49,24 +49,20 @@ $(function() {
         newQuery + window.location.hash;
       return;
     }
-    //LOG.debug('old', oldPath, 'new', newPath);
-    // Do not set query string, because it might set the version too.
-    window.location = window.location.protocol + "//" +
-      window.location.host + newPath + window.location.hash;
 
     var newPath = oldPath;
     if (version == defaultVersion) {
-      //LOG.debug("using default", defaultVersion);
+      LOG.debug("using default", defaultVersion);
       newPath = oldPath.replace(/^\/\d+\.\d+/, "");
     } else if (oldPath.match(/^\/\d+\.\d+/)) {
-      //LOG.debug("replacing old with", version);
+      LOG.debug("replacing old with", version);
       newPath = oldPath.replace(
           /^\/\d+\.\d+/, "/" + version);
     } else {
-      //LOG.debug("prepending", version);
+      LOG.debug("prepending", version);
       newPath = '/' + version + oldPath;
     }
-    //LOG.debug('old', oldPath, 'new', newPath);
+    LOG.debug('old', oldPath, 'new', newPath);
     // Do not set query string, because it might set the version too.
     // Any old hash may be invalid, but set in anyway.
     window.location = window.location.origin +
@@ -327,7 +323,7 @@ function scrollIntoView(selector, containerSelector) {
 }
 
 function highlightInit() {
-  LOG.debug("highlight_init");
+  LOG.debug("highlightInit");
 
   var className = "hit_highlight";
   var selector = "." + className;
