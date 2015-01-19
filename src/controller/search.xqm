@@ -436,4 +436,19 @@ as xs:string
     else '&amp;api='||$is-api)
 };
 
+(: Given a substring, suggest $count values. :)
+declare function ss:suggest(
+  $substr as xs:string,
+  $count as xs:integer)
+as xs:string*
+{
+  if (string-length($substr) lt 3) then ()
+  else cts:value-match(
+    cts:element-reference(
+      xs:QName('api:suggest'),
+      'collation=http://marklogic.com/collation/codepoint'),
+    '*'||lower-case($substr)||'*',
+    ('limit='||$count))
+};
+
 (: search.xqm :)

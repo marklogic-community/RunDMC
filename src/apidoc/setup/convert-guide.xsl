@@ -64,7 +64,8 @@
       <xsl:for-each select="/guide | /chapter">
         <xsl:copy>
           <xsl:copy-of select="@*"/>
-          <xsl:copy-of select="guide-title | title"/>
+          <xsl:copy-of select="guide-title|title"/>
+          <xsl:copy-of select="guide:suggest(guide-title|title)"/>
           <xsl:copy-of select="guide:metadata(.)"/>
           <xsl:copy-of select="chapter-list"/>
           <!-- Last step: add the XHTML namespace -->

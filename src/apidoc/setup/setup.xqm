@@ -308,7 +308,9 @@ as element(api:function-page)*
     attribute mode { $mode },
     map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
-    element api:function-name { api:fixup-fullname($function, $mode) },
+    api:fixup-fullname($function, $mode) ! (
+      element api:function-name { . },
+      element api:suggest { lower-case(.) }),
     stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };
