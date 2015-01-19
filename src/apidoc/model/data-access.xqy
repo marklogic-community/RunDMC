@@ -720,7 +720,7 @@ as xs:string
       'api:toc-section-link-selector', $version, $version-prefix,
       xdmp:describe($e), 'guide-uri', xdmp:describe($e/@guide-uri/string()) }),
   typeswitch($e)
-  (: function lib page link :)
+  (: function lib page link, eg '/8.0/js/xdmp' :)
   case element(api:function-page) return (
     ".scrollable_section a[href='"
     ||$version-prefix

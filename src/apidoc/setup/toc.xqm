@@ -1113,13 +1113,14 @@ as xs:string
       switch($mode)
       case $api:MODE-JAVASCRIPT return 'js'
       default return (),
-      if ($is-exhaustive) then $one-subcategory-lib
+      if ($is-exhaustive) then ($one-subcategory-lib treat as item())
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
-        $one-subcategory-lib,
+        $one-subcategory-lib treat as item(),
         toc:path-for-category($category),
         toc:path-for-category($subcategory))
       else (
+        (: This may be empty. :)
         $main-subcategory-lib,
         toc:path-for-category($subcategory))),
     '/')
@@ -1335,8 +1336,8 @@ as element(toc:node)+
     else toc:category-href(
       $cat, $cat, $is-exhaustive,
       false(), $mode,
-      if ($is-exhaustive) then $single-lib-for-category else '',
-      if ($is-exhaustive) then '' else $single-lib-for-category))
+      if ($is-exhaustive) then $single-lib-for-category else (),
+      if ($is-exhaustive) then () else $single-lib-for-category))
   return toc:node(
     $bucket-id||'_'||translate($cat, ' ' , ''),
     toc:display-category($cat)
