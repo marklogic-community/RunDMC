@@ -84,6 +84,8 @@ as xs:string
     else if (starts-with($path, "/pubs/5.0/hadoop/javadoc/")) then
         m:redirect-java-url($orig-url,"/javadoc/hadoop/")
 
+    else if ($path = ("/download/8.0", "/download/8.0/")) then
+        "/products/marklogic-server/8.0"
     else if ($path = ("/download/7.0", "/download/7.0/")) then
         "/products/marklogic-server/7.0"
     else if ($path = ("/download/6.0", "/download/6.0/")) then
