@@ -332,8 +332,7 @@ declare function m:rewrite()
       "javadoc/client",
       "javadoc/xcc",
       "dotnet/xcc",
-      "cpp/udf")) then m:redirect(
-    concat($PATH, '/index.html'))
+      "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
 
   (: Redirect requests for older versions 301 and go to latest :)
   else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
@@ -440,7 +439,7 @@ declare function m:rewrite()
   else if ($MATCHING-FUNCTION-COUNT gt 1) then m:redirect(
     concat(
       m:function-url($MATCHING-FUNCTIONS[1]),
-      xdmp:url-encode("?show-alternatives=yes")))
+      "?show-alternatives=yes"))
 
   (: #316 redirect legacy prefix.
    : Handle this toward the end to avoid redirecting static resources.
