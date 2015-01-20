@@ -372,6 +372,8 @@ as xs:string
       ("/products/marklogic-server",
         "/products/marklogic-server/")) then concat(
       "/controller/transform.xqy?src=", $latest-prod-uri, "&amp;", $query-string)
+    else if (fn:matches($path, '/fonts')) then
+      $path
     (: remove version from the URL for versioned assets :)
     else if (matches(
         $path,
@@ -381,9 +383,10 @@ as xs:string
     else if (starts-with($path,'/private/')) then $orig-url
     (: Respond with DB contents for /media and /pubs :)
     else if (starts-with($path, '/media/')) then
-    concat("/controller/get-db-file.xqy?uri=", $path)
+      concat("/controller/get-db-file.xqy?uri=", $path)
     else if (starts-with($path, '/pubs/')) then
-    concat("/controller/get-db-file.xqy?uri=", $path)
+      concat("/controller/get-db-file.xqy?uri=", $path)
+    else if ($path eq "/signup") then "/controller/signup.xqy"
     (: Respond with DB contents for XML files that exist :)
     else if (doc-available($doc-url)
       and ml:doc-matches-dmc-page-or-preview(doc($doc-url))) then concat(
@@ -397,12 +400,11 @@ as xs:string
     else if ($path eq "/validate") then concat(
       "/controller/validate.xqy?", $query-string)
     else if ($path eq "/process-license-request") then concat(
-      "/controller/process-license-request.xqy?", $query-string)
+      "/controller/process-lrequest.xqy?", $query-string)
     else if ($path eq "/process-license-request-2") then concat(
       "/controller/process-license-request-2.xqy?", $query-string)
     else if ($path eq "/license-record") then concat(
       "/controller/license-record.xqy?", $query-string)
-    else if ($path eq "/signup") then "/controller/signup.xqy"
     else if ($path eq "/get-download-url") then concat(
       "/controller/get-download-url.xqy?", $query-string)
     else if ($path eq "/login") then "/controller/login.xqy"

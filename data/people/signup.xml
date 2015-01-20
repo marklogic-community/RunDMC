@@ -331,7 +331,7 @@
 	  <option value="Telecommunications">Telecommunications</option>
 	  <option value="Travel/Entertainment">Travel/Entertainment</option>
 	</select>
-	        
+
         </div>
 
         <div class="signup-form-row">
@@ -347,11 +347,11 @@
         </div>
         <div class="signup-form-row">
             <label class="signup-form-label" for="signup-submit"> </label>
-            <button id="signup-submit" type="submit">Sign up</button>
+            <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
         </div>
             <label class="signup-form-label" for="signup-submit"> </label>
             We value your <a target="_blank" href="http://www.marklogic.com/privacy-policy">privacy</a>.
-        
+
         <ml:signup-form-hidden-fields/>
     </fieldset>
   </form>
@@ -360,11 +360,11 @@
   <a id="fb-signup-link" href="/people/fb-signup"><div>Sign up via Facebook</div></a>
   -->
     <script xml:space="preserve">
-        
+
         $(document).ready(function() {
 
             var e = getParameterByName("e");
-            if (e != "") alert(e); 
+            if (e != "") alert(e);
 
             $('#signup-form').validate({
 
@@ -387,7 +387,7 @@
                 $("#signup-submit").text("Sign up and Download");
             }
         });
-        
+
     </script>
 
 </ml:page>

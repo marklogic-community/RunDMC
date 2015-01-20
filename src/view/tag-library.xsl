@@ -431,11 +431,9 @@
   <xsl:template match="stackoverflow-reflector">
     <div id="stackunderflow"/>
     <script type="text/javascript">
-      // DMC -- the existing script uses an outdated version of the Stack
-      // Exchange API. Disabling until I can get around to updating it.
-      //$(function() {
-      //  stackunderflow.getQuestionsWithBodyWithTags("marklogic", 7).render("#stackunderflow");
-      //});
+      $(function() {
+        stackunderflow.getQuestionsWithBodyWithTags("marklogic", 7).render("#stackunderflow");
+      });
     </script>
   </xsl:template>
 

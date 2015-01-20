@@ -28,8 +28,8 @@ if(typeof jQuery != 'undefined') {
 				expose: 'black',
 				left: 'center',
 				closeOnClick: false,
-				onBeforeLoad: function() { 
-	        var wrap = this.getContent().find(".overlayContent"); 
+				onBeforeLoad: function() {
+	        var wrap = this.getContent().find(".overlayContent");
 	      	wrap.load(this.getTrigger().attr("href") + ' .popup');
 	      },
 	      onLoad: function() {
@@ -56,8 +56,8 @@ if(typeof jQuery != 'undefined') {
 				expose: 'black',
 				left: 'center',
 				closeOnClick: false,
-				onBeforeLoad: function() { 
-	        var wrap = this.getContent().find(".overlayContent"); 
+				onBeforeLoad: function() {
+	        var wrap = this.getContent().find(".overlayContent");
 	      	wrap.load(this.getTrigger().attr("href") + ' #addmedia');
 	      },
 	      onLoad: function() {
