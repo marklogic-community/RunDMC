@@ -114,7 +114,7 @@
               <xsl:variable name="href">
                 <xsl:apply-templates mode="top-nav-href" select="."/>
               </xsl:variable>
-              <a href="{$server-prefix}{$href}" class="stip" title="{@tooltip}">
+              <a href="{$server-prefix}{$href}" data-toggle="tooltip" data-placement="bottom" title="{@tooltip}">
                 <xsl:apply-templates mode="nav-text" select="@display"/>
               </a>
             </li>
