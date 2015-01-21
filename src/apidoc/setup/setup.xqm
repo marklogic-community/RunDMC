@@ -272,13 +272,21 @@ as element(api:function-link)*
 };
 
 declare function stp:suggest(
+  $value as item()+,
+  $short as xs:boolean)
+as element(api:suggest)*
+{
+  (if ($short) then $value else (),
+    cts:tokenize($value)[. instance of cts:word])
+  ! lower-case(.)[not(. = $STOP-WORDS-EN)]
+  ! element api:suggest { . }
+};
+
+declare function stp:suggest(
   $value as item()+)
 as element(api:suggest)*
 {
-  $value
-  ! cts:tokenize(.)[. instance of cts:word]
-  ! lower-case(.)[not(. = $STOP-WORDS-EN)]
-  ! element api:suggest { . }
+  stp:suggest($value, false())
 };
 
 declare function stp:function-extract(
@@ -336,7 +344,7 @@ as element(api:function-page)*
     (: For word search purposes. :)
     api:fixup-fullname($function, $mode) ! (
       element api:function-name { . },
-      stp:suggest(.)),
+      stp:suggest(., true())),
     stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };

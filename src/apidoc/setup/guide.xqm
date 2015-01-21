@@ -416,7 +416,7 @@ as node()+
       attribute xml:base { . },
       attribute id { $id },
       attribute guide-uri { $guide-uri },
-      stp:suggest($id),
+      stp:suggest($id, true()),
       $message })
 };
 

@@ -8,9 +8,10 @@ declare variable $COUNT as xs:integer := (
   xs:integer(
     xdmp:get-request-field('count')[. castable as xs:integer]),
   5)[1] ;
-(: Throw an error if there is no pos. :)
-declare variable $POS as xs:integer := xs:integer(
-  xdmp:get-request-field('pos')[. castable as xs:integer]) ;
+declare variable $POS as xs:integer := (
+  xs:integer(
+    xdmp:get-request-field('pos')[. castable as xs:integer]),
+  string-length($SUBSTR))[1];
 
 xdmp:set-response-content-type('application/json; charset=UTF-8'),
 xdmp:to-json(
