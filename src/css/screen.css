@@ -3200,7 +3200,7 @@ button.green:hover {
     cursor: pointer;
     position: absolute;
     width: 245px;
-    z-index: 1;
+    z-index: 9;
 }
 
 #search_suggest {
