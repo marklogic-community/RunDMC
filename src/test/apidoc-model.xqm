@@ -46,6 +46,13 @@ declare %t:case function t:type-javascript-param-element-or-map()
     'Object?')
 };
 
+declare %t:case function t:type-javascript-param-map-star()
+{
+  at:equal(
+    api:type($api:MODE-JAVASCRIPT, (), 'map:map*'),
+    'Object[]')
+};
+
 declare %t:case function t:type-javascript-param-sem-iri()
 {
   at:equal(

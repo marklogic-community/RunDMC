@@ -837,7 +837,7 @@ as xs:string
   case 'cts:query' return concat(api:type-javascript($type), '[]')
   case 'item()' return '(Object[] | ValueIterator)'
   case 'xs:anyAtomicType' return '(String | Number | Boolean | null)[]'
-  default return 'String[]'
+  default return (api:type-javascript($type)||'[]')
 };
 
 declare function api:type-expr-javascript(
