@@ -2,6 +2,7 @@
 
 /*jslint node: true */
 /* global $ */
+/* global jQuery */
 /* global React */
 /* global document */
 /* global window */
@@ -14,6 +15,21 @@ var LOG = {
     console.log.apply(console, arguments); },
   warn: function() {
     console.log.apply(console, arguments); }};
+
+// From http://stackoverflow.com/a/12239830/908390
+(function($) {
+  $.fn.getCursorPosition = function() {
+    var input = this.get(0);
+    if (!input) return; // No (input) element found
+    if (document.selection) {
+      // IE
+      input.focus();
+    }
+    return 'selectionStart' in input ? input.selectionStart:'' ||
+      Math.abs(document.selection.createRange()
+               .moveStart('character', -input.value.length));
+  };
+})(jQuery);
 
 $(function() {
   var versionSelect = null;
@@ -69,6 +85,7 @@ $(function() {
   });
 
   highlightInit();
+  searchSuggestInit();
 
   // If this seems to be a highlight page,
   // erase that param for a clean URL.
@@ -90,7 +107,7 @@ $(function() {
   // reactjs multiselect component for search facets
   var facetSelectionWidgetContainer = document.getElementById(
     'facetSelectionWidget');
-  LOG.debug(facetSelectionWidgetContainer);
+  LOG.debug('FacetSelection', facetSelectionWidgetContainer);
   if (facetSelectionWidgetContainer) {
     var FacetSelectionWidget = React.createClass(
       {displayName: "FacetSelectionWidget",
@@ -100,7 +117,7 @@ $(function() {
          return {active:constraints.length < 2 ? "single" : "multi",
                  constraints:constraints}; },
        render: function() {
-         LOG.debug("render", this.state);
+         LOG.debug("FacetSelection render", this.state);
          var className = "facetSelectionButton";
          var multi = this.state.active === "multi";
          var size = 16;
@@ -131,7 +148,7 @@ $(function() {
 
        // After init or any update, push component state to the DOM facets.
        componentDidMount: function() {
-         LOG.debug("componentDidMount");
+         LOG.debug("FacetSelection componentDidMount");
          // First time: install click handlers to intercept href links.
          var fn = this.handleFacetClick;
          $('ul.categories li a').each(
@@ -143,11 +160,11 @@ $(function() {
          this.propagateState(prevState.active); },
 
        handleClickCancel: function() {
-         LOG.debug("handleClickCancel");
+         LOG.debug("FacetSelection handleClickCancel");
          // Restore initial state.
          this.setState(this.getInitialState()); },
        handleClickSearch: function() {
-         LOG.debug("handleClickSearch");
+         LOG.debug("FacetSelection handleClickSearch");
          // Update search form and submit.
          var $form = $(".search-form").first();
          var $qInput = $form.find('input[name="q"]');
@@ -157,22 +174,24 @@ $(function() {
              this.state.constraints[0] !== "") {
            qc = "(" + this.state.constraints.join(" OR ") + ") ";
          }
-         LOG.debug("handleClickSearch", this.state.constraints, qu, qc);
+         LOG.debug("FacetSelection handleClickSearch",
+                   this.state.constraints, qu, qc);
          var nextQ = qc + qu;
          var prevQ = $qInput.val().trim();
          if (nextQ === prevQ) {
-           LOG.warn("handleClickSearch noop", prevQ, nextQ);
+           LOG.warn("FacetSelection handleClickSearch noop", prevQ, nextQ);
            return;
          }
          $qInput.val(qc + qu);
          // No need to setState because we are fetching a new page.
          $form.submit(); },
        handleClickSingle: function() {
-         LOG.debug("handleClickSingle");
+         LOG.debug("FacetSelection handleClickSingle");
          this.setState({active:"multi"}); },
 
        handleFacetClick: function(evt) {
-         LOG.debug("handleFacetClick", evt, this.state.active);
+         LOG.debug("FacetSelection handleFacetClick",
+                   evt, this.state.active);
          // Defer to href and reload page.
          if (this.state.active == "single") { return true; }
          // multi
@@ -180,7 +199,8 @@ $(function() {
          var isChild = c.indexOf("/") >= 0;
          var nextConstraints = this.state.constraints.concat();
          var index = nextConstraints.indexOf(c);
-         LOG.debug("handleFacetClick", c, isChild, nextConstraints, index);
+         LOG.debug("FacetSelection handleFacetClick",
+                   c, isChild, nextConstraints, index);
          if (index < 0) {
            // Add new constraint, or do something else that makes sense.
            // "":All trumps everything else.
@@ -219,7 +239,8 @@ $(function() {
              !nextConstraints.length) {
            nextConstraints = [""];
          }
-         LOG.debug("handleFacetClick final", c, index, nextConstraints);
+         LOG.debug("FacetSelection handleFacetClick final",
+                   c, index, nextConstraints);
          // Updating the state will re-render, then update the DOM facets.
          this.setState({constraints:nextConstraints});
          // Never follow href.
@@ -228,8 +249,8 @@ $(function() {
        // DOM facets are not part of this component,
        // but we update their state on every component state change.
        propagateState: function(prevActive) {
-         LOG.debug("propagateState", this.state.constraints,
-                   typeof this.state.constraints);
+         LOG.debug("FacetSelection propagateState",
+                   this.state.constraints, typeof this.state.constraints);
          var className = this.activeClassName;
          var constraints = this.state.constraints;
          $('ul.categories li').each(
@@ -240,7 +261,8 @@ $(function() {
              var has = $n.hasClass(className);
              if (index < 0 && !has) { return; }
              if (index >= 0 && has) { return; }
-             LOG.debug("propagateState", i, n, c, index, has);
+             LOG.debug("FacetSelection propagateState",
+                       i, n, c, index, has);
              $n.toggleClass(className); }); }});
 
     // Initial constraints are supplied from DOM state.
@@ -336,6 +358,99 @@ function highlightInit() {
 
   // Scroll the first match into view.
   scrollIntoView(selector, '#page_content');
+}
+
+function searchSuggestInit() {
+  var $q = $('form.search-form input[name="q"]');
+  if (!$q.length) {
+    LOG.debug("searchSuggestInit no search form", $q);
+    return;
+  }
+
+  LOG.debug("searchSuggestInit", $q);
+
+  // TODO arrow keys to select suggestions
+
+  var SearchSuggest = React.createClass(
+      {displayName: "SearchSuggest",
+       getInitialState: function() {
+         var text = this.props.inputNode.val();
+         return {text:text, suggestions:[]}; },
+       shouldComponentUpdate: function(nextProps, nextState) {
+         LOG.debug("SearchSuggest shouldComponentUpdate",
+                   this.state, nextState,
+                   0 !== nextState.suggestions.length,
+                   this.state.text !== nextState.text,
+                   0 !== nextState.suggestions.length ||
+                   this.state.text !== nextState.text);
+         // Render only if suggestions have changed
+         // or if the user just selected something.
+         return 0 !== nextState.suggestions.length ||
+           this.state.text !== nextState.text ;
+       },
+       render: function() {
+         LOG.debug("SearchSuggest render", this.state);
+         var rThis = this;
+         return React.DOM.ul(
+           {id:"search_suggest",
+            className:(this.state.suggestions.length ? "" : "hidden")},
+           $.map(
+             this.state.suggestions,
+             function(n,i) {
+               return React.DOM.li(
+                 {className:"search_suggest",
+                  onClick:rThis.handleClickSuggestion}, n); }) ); },
+
+       handleClickSuggestion: function(evt) {
+         var text = $(evt.target).text();
+         LOG.debug("SearchSuggest click suggestion", this.state.text, text);
+         this.props.inputNode.val(text);
+         this.props.inputNode.focus();
+         this.setState({text:text, suggestions:[]});
+         return false;
+       },
+       setText: function(nextText, pos) {
+         // Clear any existing idle timer.
+         clearTimeout($.data(this, 'timer'));
+         LOG.debug("SearchSuggest input active", new Date(), nextText);
+         // Debounce input until idle.
+         var rThis = this;
+         $.data(
+           this, 'timer',
+           setTimeout(
+             function() {
+               LOG.debug("SearchSuggest input idle", new Date(), nextText);
+               setTimeout(
+                 function() {
+                   // If nothing has changed, wait.
+                   if (rThis.state.text === nextText) { return; }
+                   LOG.debug("SearchSuggest ready", nextText);
+                   // Check with the server.
+                   $.getJSON(
+                     '/service/suggest',
+                     {substr:nextText, pos:pos},
+                     function(data, status, xhr) {
+                       LOG.debug('SearchSuggest', data, status, xhr);
+                       rThis.setState({text:nextText, suggestions:data});
+                     }); },
+                 rThis.props.inputDelay); },
+             rThis.props.inputDelay));
+       }});
+
+  var $container = $('<div id="search_suggest_container">');
+  var inputDelay = 750;
+  var widget = React.render(
+    React.createElement(SearchSuggest,
+                        {inputDelay:inputDelay, inputNode:$q}),
+    $container[0]);
+
+  // Set up event handler
+  var prevText = null;
+  $q.keyup(function(e) {
+    widget.setText($q.val(), $q.getCursorPosition()); });
+
+  $q.attr('autocomplete', 'off');
+  $q.parent().append($container);
 }
 
 // rundmc_init.js

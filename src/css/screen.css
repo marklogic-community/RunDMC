@@ -3188,4 +3188,31 @@ button.green:hover {
     display: none;
 }
 
+#search_suggest_container {
+    background: none repeat scroll 0% 0% #fff;
+    border: 1px solid #666;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    cursor: pointer;
+    position: absolute;
+    width: 245px;
+    z-index: 1;
+}
+
+#search_suggest {
+    margin: 0;
+    padding: 0;
+}
+
+li.search_suggest {
+    color: #666;
+    line-height: 1.5em;
+    padding-top: 0.25em;
+    padding-left: 6px;
+}
+
 /* screen.css */
