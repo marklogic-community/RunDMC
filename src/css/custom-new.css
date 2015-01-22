@@ -95,8 +95,8 @@
   color: #0066bb;
 }
 
-.home .features a p {
-  width: 85px;
+.home .features a img {
+  max-width: 140px;
 }
 
 .home .new-features {
