@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+<h1>Native JSON</h1>
+
+<p>Native JSON brings all of MarkLogic’s production-proven indexing, data management, and security capabilities to the predominant data format of the web. Using native JSON you can build rich applications that span JSON, RDF, XML, binary, and text documents within a single environment without slow and brittle conversion between formats. Native JSON complements the upcoming server-side JavaScript environment by providing seamless access to JSON managed in a MarkLogic cluster. Because native JSON uses the same foundation that MarkLogic has developed and tuned over the last decade it is fast, stable, secure, and composable with existing data and code.</p>
+
+<h3>Important Concepts</h3>
+
+<h4>Nodes</h4>
+
+<p>JSON documents are represented as hierarchies of nodes. Each node has a type and a value. For example, the following document is illustrated as a tree of nodes below.</p>
+
+<pre xml:space="preserve">{
+ "name": "Oliver",
+ "scores": [88, 67, 73],
+ "isActive": true,
+ "affiliation": null
+}
+</pre>
+
+<img src="/media/json-node.svg"/>
+
+<p>The JSON data model defines six data types. Each is represented as a node type in MarkLogic. Additionally, MarkLogic wraps JSON nodes in a <code>Document</code> node into and out of the database.</p>
+<ul><li><strong>Object:</strong> Key-value pairs</li><li><strong>Array:</strong> Ordered collections</li><li><strong>Text:</strong> Character data</li><li><strong>Number:</strong> Integer or decimal values</li><li><strong>Boolean:</strong> <code>true</code> or <code>false</code></li><li><strong>Null:</strong> Absence of another type, but still defined</li><li><strong>Document:</strong> Top-level wrapper for documents in the database.</li></ul>
+
+<p>JSON nodes share the same data model as XML in MarkLogic. This provides a unified way to manage and index documents of both types. For example a range index on an XML element, <code>&lt;name/&gt;</code> (no namespace), will also cover the JSON property <code>name</code>.</p>
+
+<p>The following Server-Side JavaScript illustrates working with Nodes through strongly typed JavaScript or XPath.</p>
+
+<pre class="sjs" xml:space="preserve">var json = xdmp.unquote('{
+  "name": "Oliver",
+  "scores": [88, 67, 73],
+  "isActive": true,
+  "affiliation": null
+}').next().value; // Returns a ValueIterator
+json.root.name;                      // "Oliver" [text() in XQuery, CharData in JavaScript]
+json.root.name == "Oliver";          // true
+json.root.name === "Oliver";         // false
+json.root.name instanceof CharData;  // true
+// next returns "Oliver" [text()/CharData]
+json.xpath("/self::document-node()/child::object-node()/child::text('name')");
+json.root.xpath("/name");            // "Oliver" [text()/CharData]
+json.root.xpath("/name/data(.)");    // "Oliver" [String]
+json.root.name.valueOf();            // "Oliver" [String]
+json.root.scores[1] instanceof Node; // true
+json.root.scores[1].valueOf();       // 67 [Number]
+json.toObject() instanceof Node;     // false
+xdmp.toJSON(json.toObject());        // Round-trip in JavaScript with full fidelity</pre>
+<p>Compare and contrast that with a similar document represented in XML.</p>
+
+<pre xml:space="preserve">var xml = xdmp.unquote('&lt;person&gt;&lt;name&gt;Oliver&lt;/name&gt;&lt;/person&gt;').next().value;
+xml.root.xpath("./name");  </pre>
+
+<p>Note that the equivalent of the &lt;person&gt; root element doesn't exist in the JSON representation</p>
+
+<h5>Nodes vs. Objects in JavaScript</h5>
+<p>All nodes in MarkLogic are immutable. In XQuery you can use the family of node update built-ins to, for example <a href="http://docs.marklogic.com/xdmp:node-replace"><code>xdmp:node-replace()</code></a>. These built-ins will work on JSON nodes as well. However, in JavaScript it is more natural to update an object in-place, for example  <code>person.name = "Peter";</code>. You can use the <code>.</code> and <code>[]</code> operators to read child properties of a JSON node, but if you try to update a node you’ll get an error. In order to update a JSON node in JavaScript, first convert the node to an Object with the <code>.toObject()</code> function on the <code>Node.prototype</code>. Make your changes on the Object instance. You can go the other way and convert an Object to a Node with <code>xdmp.toJSON()</code>. However, most built-ins that expect JSON nodes will do this conversion for you automatically.</p>
+
+<pre class="sjs" xml:space="preserve">declareUpdate();
+var person = cts.doc("/person1.json");
+//person.name = "Peter";     // Error: You can't update a JSON Node in-place
+var obj = person.toObject(); // Convert the Node to a plain old JavaScript Object
+obj.name = "Peter";          // Update as you would any other Object instance
+xdmp.documentInsert("/person1.json", obj);  // xdmp.documentInsert() automatically converts Objects to Nodes</pre>
+
+<h5>Indexing</h5>
+
+<p>JSON indexing shares much of the same foundation with the existing XML indexes. A JSON property is roughly equivalent to an XML element from the indexer’s perspective. JSON strings share the same text indexing characteristics (tokenization, stemming, decompounding, etc.) as XML <code>text()</code> nodes. Path, range and field indexes all work on JSON documents.</p>
+
+<ul><li>Numbers, booleans and null nodes are indexed in their own type-specific indexes, not as text. For example, a <code>cts.jsonPropertyValueQuery("show_number", 1286.00)</code> will match a document containing <code>{ "show_number": 1286 }</code>, unlike a <code>cts.elementValueQuery()</code>.</li><li>For a property that is an array, each member in the array is considered a value of the property. For example, with {“a”: [1, 2]}, both json-property-value-query(“a”,1) and json-property-value-query(“a”,2) will match.</li><li>JSON documents do <em>not</em> support fragmentation.</li><li>Because JSON doesn’t allow you to express mixed content, indexing for JSON does not support phrase-throughs or phrase-arounds.</li><li>Also, because there’s no standard way to express the natural language of some text in JSON, there is not support for switching languages within a document. All JSON documents are indexed using the language by the database’s default setting.</li></ul>
+
+<h3>1. JSON as a Document Format</h3>
+
+<p>JSON is now a document format, just like XML, TXT and BINARY. JSON documents support permissions, collections, and quality in the same way that is possible with other document formats. You can ingest JSON documents through <a href="http://developer.marklogic.com/products/mlcp">mlcp</a> or the XQuery APIs described in the next section (“2. CRUD with XQuery”). Here is a command line example to ingest JSON documents with mlcp:</p>
+
+<pre xml:space="preserve">./mlcp import -host localhost -port 8011 -username admin -password ******** -input_file_path /space2/jsondata/</pre>
+
+<p>Compressed archives are also supported, for example,</p>
+
+<pre xml:space="preserve">./mlcp import -host localhost -port 8011 -username admin -password admin -input_file_path /space2/jsondata-zipped/ -input_compressed true -input_compression_codec zip</pre>
+
+<hr noshade="none"/>
+
+<h4>1.1 New Node Types</h4>
+
+<p>Inside the server, similar to an XML document, a JSON document is stored as a “tree”. The following new node types are added to support JSON documents:</p>
+
+<ul><li>object node</li><li>array node</li><li>number node</li><li>boolean node</li><li>null node</li></ul>
+<p>(A JSON document can have “text nodes” as well.)</p>
+<p>Suppose a JSON property with the name “foo” is an object and the object contains a property named “bar”. For all purposes of search, indexing and XPath, it will behave like an element “foo” with a child element “bar”.</p>
+<hr noshade="none"/>
+
+<h4>1.2 New Node Constructor</h4>
+<p>MarkLogic 8 extends the XQuery/XPath data model to include new node constructors to support JSON data types. JSON strings are <code>text()</code> nodes, just like in XML.</p>
+<ul><li><code>object-node { }</code></li><li><code>array-node { }</code></li><li><code>null-node {}</code></li><li><code>number-node {}</code></li><li><code>boolean-node {}</code></li></ul>
+<p>Here is an example on how to construct a JSON object node with those constructors:</p>
+<pre xml:space="preserve"><code class="json">object-node { "p1" : "v1", "p2" :  array-node {1,2,3} , "p3" : fn:true(), "p4" : null-node {}  } =&gt;
+{ "p1" : "v1", "p2" :  [1, 2, 3] , "p3" : true, "p4" : null }.</code></pre>
+<hr noshade="none"/>
+
+<h3>2. CRUD with XQuery</h3>
+<h4>2.1 Create</h4>
+<p>As discussed in Section 1, JSON documents can be ingested through mlcp. <a href="http://docs.marklogic.com/xdmp:document-load">xdmp:document-load</a> and <a href="http://docs.marklogic.com/xdmp:document-insert">xdmp:document-insert</a> work with JSON documents too. Here are some examples:</p>
+<h5>Example 1:</h5>
+<pre xml:space="preserve"><code class="xquery">xdmp:document-load("/tmp/foo.json")</code></pre>
+<h5>Example 2:</h5>
+<pre xml:space="preserve"><code class="xquery">let $node := object-node {"foo":"bar"}
+return xdmp:document-insert("foo.json", $node)</code></pre>
+<h5>Example 3:</h5>
+<pre xml:space="preserve"><code class="xquery">let $node := xdmp:unquote('{"foo":"bar"}')
+return xdmp:document-insert("foo.json", $node)</code></pre>
+<h5>Example 4:</h5>
+<pre xml:space="preserve"><code class="xquery">let $node := fn:doc("foo.json")
+return xdmp:document-insert("bar.json", $node)</code></pre>
+<hr noshade="none"/>
+<h4>2.2 Update</h4>
+<p><a href="http://docs.marklogic.com/xdmp:node-replace">xdmp:node-replace</a>, <a href="http://docs.marklogic.com/xdmp:node-insert-child">xdmp:node-insert-child</a>, <a href="http://docs.marklogic.com/xdmp:node-insert-before">xdmp:node-insert-before</a> and <a href="http://docs.marklogic.com/xdmp:node-insert-after">xdmp:node-insert-after</a> all work with JSON documents. Here are some examples:<br clear="none"/>
+</p>
+<h5>Example 1:</h5>
+<p>The following script updates “foo.json” from <code>{"a":{"b":"foo"}} to {"a":{"b":"bar"}}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $oldnode := fn:doc("foo.json")/a/b
+let $newnode := text { "bar" }
+return xdmp:node-replace($oldnode, $newnode)</code></pre>
+<h5>Example 2:</h5>
+<p>The following script updates “foo.json” from <code>{"foo":["v1", "v2", "v3"], "bar":"v4"} to {"foo":["v1", "v5", "v3"], "bar":"v4"}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $oldnode := fn:doc("foo.json")/foo[2]
+let $newnode := text { "v5" }
+return xdmp:node-replace($oldnode,$newnode)</code></pre>
+<h5>Example 3: <code>xdmp:node-insert-child</code></h5>
+<p>The following script updates “foo.json” from <code>{"a": {"b": "foo"}} to {"a": {"b": "foo", "c": "bar"}}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $parentnode := fn:doc("foo.json")/a
+let $obj := object-node {"c":"bar"}
+return xdmp:node-insert-child($parentnode, $obj/c)</code></pre>
+<h5>Example 4:</h5>
+<p>The following script updates “foo.json” from <code>{"foo": ["v1", "v2", "v3"], "bar": "v4"} to {"foo": ["v1", "v2", "v3", "v5"], "bar":"v4"}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $parentnode := fn:doc("foo.json")/array-node("foo")
+let $node := text  {"v5" }
+return xdmp:node-insert-child($parentnode, $node)</code></pre>
+<h5>Example 5: <code>xdmp:node-insert-before</code></h5>
+<p>The following script updates “foo.json” from <code>{"a": {"b": "foo"}} to {"a": {"c": "bar", "b":"foo"}}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $siblingnode := fn:doc("foo.json")/a/b
+let $obj := object-node {"c":"bar"}
+return xdmp:node-insert-before($siblingnode, $obj/c)</code></pre>
+<h5>Example 6:</h5>
+<p>The following script updates “foo.json” from <code>{"foo": ["v1", "v2", "v3"], "bar": "v4"} to {"foo": ["v1", "v5", "v2", "v3"], "bar": "v4"}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $siblingnode := fn:doc("foo.json")/foo[2]
+let $node := text {"v5" }
+return xdmp:node-insert-before($siblingnode, $node)</code></pre>
+<h5>Example 7: <code>xdmp:node-insert-after</code></h5>
+<p>The following script updates “foo.json” from {"a": {"b": "foo"}} to {"a": {"b":"foo", "c": "bar"}}.</p>
+<pre xml:space="preserve"><code class="xquery">let $siblingnode := fn:doc("foo.json")/a/b
+let $obj := object-node {"c":"bar"}
+return xdmp:node-insert-after($siblingnode, $obj/c)</code></pre>
+<h5>Example 8:</h5>
+<p>The following script updates “foo.json” from <code>{"foo":["v1", "v2", "v3"], "bar":"v4"} to {"foo":["v1", "v2", "v5", "v3"], "bar":"v4"}</code>.</p>
+<pre xml:space="preserve"><code class="xquery">let $siblingnode := fn:doc("foo.json")/foo[2]
+let $node := text { "v5" }
+return xdmp:node-insert-after($siblingnode, $node)</code></pre>
+<p>These two built-ins are still available as helper functions but their signatures have changed (please see “7. Changes to Existing APIs” for more information).</p>
+<h5>Example 9: <code>xdmp:to-json</code> and <code>xdmp:from-json</code></h5>
+<pre xml:space="preserve"><code class="xquery">let $node := object-node {"a":"foo"}
+let $jsonobj := xdmp:from-json($node)
+let $_ := map:put($jsonobj, "b", "bar")
+return xdmp:to-json($jsonobj) =&gt; {"a": "foo", "b": "bar"}</code></pre>
+<hr noshade="none"/>
+<h4>2.3 Delete</h4>
+<p>Both <a href="http://docs.marklogic.com/xdmp:document-delete">xdmp:document-delete</a> and <a href="http://docs.marklogic.com/xdmp:node-delete">xdmp:node-delete</a> work with JSON documents. Here are some examples:</p>
+<h5>Example 1:</h5>
+<pre xml:space="preserve"><code class="xquery">xdmp:document-delete("foo.json")
+Example 2:
+let $node := object-node { "p1":"v1", "p2": array-node { "v2", "v3" } }
+return xdmp:document-insert("bar.json",$node);
+let $node := fn:doc("bar.json")/array-node("p2")
+return xdmp:node-delete($node)(: "bar.json" is now {"p1":"v1"}  : )</code></pre>
+<hr noshade="none"/>
+<h3>3. Indexing</h3>
+<p>There is much similarity between how a JSON document is indexed and how an XML document is indexed. A JSON property is roughly equivalent to an XML element. Also, for text nodes, the same indexing is done for a JSON document and an XML document.</p>
+<p>But there are also some major differences:</p>
+<ol compact="none"><li>Numbers, booleans and nulls are indexed separately (not as text).</li><li>For a property that is an array, each element in the array is considered a value of the property. For example, with <code>{"a": [ 1, 2 ]}</code>, both cts:json-property-value-query("a", 1) and cts:json-property-value-query("a", 2) will match.</li><li>No fragmentation.</li><li>No phrase-through or phrase-around.</li><li>No switching languages within a document.</li></ol>
+<hr noshade="none"/>
+<h3>4. XPath over JSON</h3>
+<p>XPath works on JSON documents. Again, a JSON property is roughly equivalent to an XML element.</p>
+<h4>4.1 An Example</h4>
+<pre xml:space="preserve"><code class="xquery">{
+  "a":   {
+     "b" : "v1",
+     "c1" : 1,
+     "c2" : 2,
+     "d" : null,
+      "e":  {
+        "f" : true,
+        "g" : [ "s1", "s2", "s3" ]
+      }
+  }
+}
+/a/b =&gt;  "v1"
+/a/c1 =&gt; 1
+/a/d =&gt; null
+/a/e/f =&gt; true
+/a/e/g =&gt; ("s1", "s2", "s3")
+/a/e/g[2] =&gt; "s2"
+/a[c1=1] =&gt; {"b":"v1", "c1":1, "c2":2, "d":null, "e":{"f":true, "g":["s1", "s2", "s3"]}}
+/a[c1=3] =&gt; ()</code></pre>
+<hr noshade="none"/>
+<h4>4.2 Node Tests</h4>
+<p>The following node tests work with JSON documents:</p>
+<ul><li>object-node()</li><li>array-node()</li><li>number-node()</li><li>boolean-node()</li><li>null-node()</li><li>text()</li></ul>
+<p>With the $node in 4.1, here are some examples on how those node tests can be used:</p>
+<pre xml:space="preserve"><code class="xquery">$node//number-node()  =&gt;  (1, 2)
+$node/a/number-node()  =&gt;  (1, 2)
+$node//text()  =&gt; ("v1", "s1", "s2", "s3")
+$node//object-node()  =&gt; (
+{"a":{"b":"v1", "c1":1, "c2":2, "d":null, "e":{"f":true, "g":["s1", "s2", "s3"]}}}
+{"b":"v1", "c1":1, "c2":2, "d":null, "e":{"f":true, "g":["s1", "s2", "s3"]}}
+{"f":true, "g":["s1", "s2", "s3"]}
+)</code></pre>
+<p>When accessed through XPath, an array is returned as a sequence by default. To return it as an array, use array-node(). Compare the following two examples:</p>
+<pre xml:space="preserve"><code class="xquery">$node/a/e/g =&gt; ("s1", "s2", "s3")   (:  the return here is a sequence : )
+$node/a/e/array-node() =&gt; ["s1", "s2", "s3"]   (: the return here is an array : )</code></pre>
+<p>Also note that all the node tests above (including text()) can take an optional parameter (as xs:string) that specifies a property name. For example,</p>
+<pre xml:space="preserve">$node/a/number-node("c1") =&gt; 1</pre>
+<p>This feature is especially useful when there are spaces in a property name. For example:</p>
+<pre xml:space="preserve"><code class="xquery">let $node := object-node {"fo o" : "v1", "bar" : "v2"}
+return $node/text("fo o") =&gt; "v1"
+let $node := object-node {"fo o" : "v1", "bar" : "v2"}
+return $node/text("foo") =&gt; ()</code></pre>
+<hr noshade="none"/>
+<h4>4.3 Unnamed Nodes</h4>
+<p>The name of a node in a JSON document is the name of the innermost enclosing property. For example,</p>
+<pre xml:space="preserve"><code class="xquery">let $node := object-node {"foo" : "v1", "bar" : array-node {1, 2} }
+return fn:node-name($node/foo) =&gt; "foo"
+let $node := object-node {"foo" : "v1", "bar" : array-node {1, 2} }
+return fn:node-name($node/bar[2]) =&gt; "bar"
+In some cases, a node in a JSON document might not have an enclosing property. Such a node is unnamed.  For example,
+let $node := array  { 1, 2,  object-node { "foo" : 3 } }
+return fn:node-name($node//number-node()[. eq 1]) =&gt; ()
+let $node := xdmp:unquote('{"foo" : "v1"}')
+return fn:node-name($node/object-node()) =&gt; ()</code></pre>
+<hr noshade="none"/>
+<h4>4.4 More on Arrays</h4>
+<p>Here are a couple of more advanced examples on accessing arrays with XPath.</p>
+<h5>Example 1:</h5>
+<p>In this example, one of the values in the array “bar” is an object, which has a property named “test”. To access “test”, the XPath doesn’t have to specify the “index” (into the array).</p>
+<pre xml:space="preserve"><code class="xquery">let $node := xdmp:unquote('{ "foo" : "v1", "bar" : [ "v2", {"test" : "v3"}, "v4" ] }')
+return $node/bar/test
+=&gt; "v3"</code></pre>
+<h5>Example 2:</h5>
+<p>In this example, the property “test” is enclosed in two levels of arrays but the XPath to access it is the same as that in Example 1.</p>
+<pre xml:space="preserve"><code class="xquery">let $node := xdmp:unquote('{ "foo" : "v1", "bar" : [ "v2", [true, {"test": "v3"}], "v4" ] }')
+return $node/bar/test =&gt; "v3"</code></pre>
+<hr noshade="none"/>
+<h3>5. Queries</h3>
+<p>This section gives the list of queries that work for JSON. Queries in bold are new to MarkLogic 8. All examples in this section use the dataset below:</p>
+<pre xml:space="preserve"><code class="json">"1.json" -&gt;  {"p1-1": "s1", "p1-2": 1, "p1-3": 2, "p1-4": null, "p1-5": {"p1-6": true, "p1-7": ["s2", "s3", "s4"]}, "": "none"}
+"2.json" -&gt;  {"p2-1": "s1", "p2-2": ["s2", "s3 s4 s5", "s6"], "p2-3": "s7"}
+"3.json" -&gt;  {"p3-1": "s1", "p3-2": {"p3-3": "s2 s3", "p3-4": ["s4", "s5", "s6"], "p3-5": "s7"}, "p3-6": "s8"}
+"range-1.json" -&gt; {"range1": 1, "range2": "2014-04-07T08:00:00", "foo": {"bar": "bar1", "pathrange1": "abc"}}
+"range-2.json" -&gt; {"range1": 2, "range2": "2014-04-07T09:00:00", "foo": {"bar": "bar2", "pathrange1": "def"}}
+"range-3.json" -&gt; {"range1": 3, "range2": "2014-04-07T10:00:00", "foo": {"bar": "bar3", "pathrange1": "ghi"}}
+"range-4.json" -&gt; {"range1": 4, "range2": "2014-04-07T11:00:00", "foo": {"bar": "bar4", "pathrange1": "jkl"}}
+"range-5.json" -&gt; {"range1": 5, "range2": "2014-04-07T12:00:00", "foo": {"bar": "bar5", "pathrange1": "mno"}}</code></pre>
+<p>And suppose the following range indexes are created:</p>
+<ol compact="none"><li>An element range index with type = double on “range1″</li><li>An element range index with type = dateTime on “range2″</li><li>A path range index with type = string on “/foo/pathrange1″</li></ol>
+<p>Note that you can use the same Admin GUIs that create element range indexes to set up range indexes for JSON properties. You need to leave the namespaces as empty (since JSON doesn’t use namespaces).<br clear="none"/>
+</p>
+<h5>Example:</h5>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(),cts:word-query("s2")) -&gt; this returns 1.json, 2.json and 3.json.
+
+cts:json-property-word-query (similar to element-word-query)  and its accessors:
+cts:json-property-word-query-property-name
+cts:json-property-word-query-text
+cts:json-property-word-query-options
+cts:json-property-word-query-weight</code></pre>
+<h5>Example:</h5>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(), cts:json-property-word-query("p1-7", "s4")) -&gt; this returns 1.json.
+cts:json-property-value-query (similar to element-value-query) and its accessors:
+cts:json-property-value-query-property-name
+cts:json-property-value-query-value
+cts:json-property-value-query-options
+cts:json-property-value-query-weight</code></pre>
+<p>Note that you can use this query for text, numbers, booleans or null. To query null, pass in the empty sequence as “value”.</p>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(),cts:json-property-value-query("p1-1","s1")) -&gt; this returns 1.json.
+cts:search(fn:collection(), cts:json-property-value-query("p1-2", 1)) -&gt; this returns 1.json.
+cts:search(fn:collection(), cts:json-property-value-query("p1-4", ())) -&gt; this queries null and returns 1.json.
+cts:search(fn:collection(), cts:json-property-value-query("p1-6", fn:true())) -&gt; this return 1.json.
+cts:search(fn:collection(), cts:json-property-value-query("p2-2", "s3 s4 s5")) -&gt; this returns 2.json.</code></pre>
+<pre xml:space="preserve"><code class="xquery">cts:json-property-range-query (similar to element-range-query) and its accessors:
+cts:json-property-range-query-property-name
+cts:json-property-range-query-operator
+cts:json-property-range-query-value
+cts:json-property-range-query-options
+cts:json-property-range-query-weight</code></pre>
+<h5>Examples:</h5>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(),cts:json-property-range-query("range1","&gt;=", 3)) -&gt;this returns range-3.json, range-4.json and range-5.json
+cts:search(fn:collection(),cts:json-property-range-query("range2","&gt;", xs:dateTime("2014-04-07T10:00:00"))) -&gt;  this returns range-4.json and range-5.json.
+
+cts: path-range-query</code></pre>
+<h5>Example:</h5>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(), cts:path-range-query("/foo/pathrange1", "&gt;=", "ghi")-&gt; this returns range-3.json, range-4.json and range-5.json
+
+cts:json-property-scope-query (similar to element-query) and its accessors:
+cts:json-property-scope-query-property-name
+cts:json-property-scope-query-query</code></pre>
+<p>The name “element-query” has been confusing for many developers; hence the word “scope” is added into the JSON query name.</p>
+<h5>Example:</h5>
+<pre xml:space="preserve"><code class="xquery">cts:search(fn:collection(), cts:json-property-scope-query("p3-2", cts:near-query(("s2","s7"),5))) -&gt; this returns 3.json.
+cts:directory-query
+cts:collection-query
+cts:document-query
+cts:and-query
+cts:or-query
+cts:not-query
+cts:and-not-query
+cts:not-in-query
+cts:near-query
+cts:document-fragment-query
+cts:locks-query
+cts:similar-query
+cts:distinctive-terms</code></pre>
+<hr noshade="none"/>
+<h3>6. Lexicon Functions</h3>
+<p>The following lexicon functions work for JSON in EA1:</p>
+<pre xml:space="preserve"><code class="xquery">cts:words
+cts:word-match
+cts:collections
+cts:collection-match
+cts:uris
+cts:uri-match
+cts:values
+cts:value-match</code></pre>
+<p>There are two new lexicon functions added just for JSON:</p>
+<pre xml:space="preserve"><code class="xquery">cts:json-property-words(
+   $property-names as string*,
+   [$start as xs:string?],
+   [$options as xs:string*],
+   [$query as cts:query?],
+   [$quality-weight as xs:double?],
+   [$forest-ids as xs:unsignedLong*]
+) as xs:string*</code></pre>
+<p>It is very similar to cts:element-words, but it takes a list of json property names instead of element QNames.</p>
+<pre xml:space="preserve"><code class="xquery">cts:json-property-word-match(
+   $property-names as string*,
+   $pattern as xs:string,
+   [$options as xs:string*],
+   [$query as cts:query?],
+   [$quality-weight as xs:double?],
+   [$forest-ids as xs:unsignedLong*]
+) as xs:string*</code></pre>
+<p>It is very similar to cts:element-word-match, but it takes a list of JSON property names instead of element QNames.</p>
+
+<hr noshade="none"/>
+<h2>Incompatible API Changes</h2>
+<ul><li><code>xdmp:from-json</code>, <code>xdmp:to-json()</code>, <code>json:transform-from-json()</code>, and <code>json:transform-to-json()</code> use JSON nodes rather than strings.</li></ul>
+</ml:page>

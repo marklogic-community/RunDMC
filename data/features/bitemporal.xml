@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Bitemporal</h1>
+
+<p>Bitemporal Data Management handles historical data along two different timelines, making it possible to rewind the information "as it actually was" in combination with "as it was recorded" at some point in time. It facilitates the creation of complete audit trail of data.</p>
+<ul><li><strong>temporal </strong>- commonly used for handling data involving time "as it was recorded"
+    <ul><li>Where did John Thomas live on August 20th?</li><li>Where was the Blue Van on October 12th?</li></ul>
+  </li></ul>
+  <ul><li><b>bitemporal</b> – handles data along two different timelines, making it possible to rewind the information "as it actually was" in combination with "as it was recorded" at a chosen point in time
+    <ul><li>Where did John Thomas live on August 20th as we knew it on September 1st?</li><li>Where was the Blue Van on October 12th as we knew it on October 23rd?</li></ul>
+  </li></ul>
+
+<p>In MarkLogic 8, the following Bitemporal capabilities are available:</p>
+<ul><li>All operations are supported both in XQuery and Javascript, and in XML and JSON formats</li><li>set-up a temporal collection</li><li>CRUD: insert/update/delete temporal documents into temporal collection</li><li>Query: query against temporal collections: period-range-query (Allen operator with a period value) and period-compare-query (join like query) on temporal collection.</li><li>Ingest bitemporal documents through MarkLogic Content Pump (MLCP)</li><li>Set up configuration with REST API</li><li>Ingest and query with Java and Node API</li><li>Support for security roles and permissions</li></ul>
+
+<h3>Next Steps</h3>
+<p>For more information see: <a title="Early Access Bitemporal Documentation" href="http://docs-ea.marklogic.com/guide/temporal" target="_blank">http://docs-ea.marklogic.com/guide/temporal</a></p>
+</ml:page>

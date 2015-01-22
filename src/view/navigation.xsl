@@ -105,58 +105,58 @@
         <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
   </xsl:template>
 
-          <xsl:template mode="top-nav" match="page">
-            <li>
-              <xsl:apply-templates mode="top-nav-current-att" select="."/>
-              <xsl:variable name="server-prefix">
-                <xsl:apply-templates mode="top-nav-server-prefix" select="."/>
-              </xsl:variable>
-              <xsl:variable name="href">
-                <xsl:apply-templates mode="top-nav-href" select="."/>
-              </xsl:variable>
-              <a href="{$server-prefix}{$href}" class="stip" title="{@tooltip}">
-                <xsl:apply-templates mode="nav-text" select="@display"/>
-              </a>
-            </li>
-          </xsl:template>
+  <xsl:template mode="top-nav" match="page">
+    <li>
+      <xsl:apply-templates mode="top-nav-current-att" select="."/>
+      <xsl:variable name="server-prefix">
+        <xsl:apply-templates mode="top-nav-server-prefix" select="."/>
+      </xsl:variable>
+      <xsl:variable name="href">
+        <xsl:apply-templates mode="top-nav-href" select="."/>
+      </xsl:variable>
+      <a href="{$server-prefix}{$href}" data-toggle="tooltip" data-placement="bottom" title="{@tooltip}">
+        <xsl:apply-templates mode="nav-text" select="@display"/>
+      </a>
+    </li>
+  </xsl:template>
 
-                  <!-- overridden by admin code -->
-                  <xsl:template mode="top-nav-server-prefix" match="page" as="xs:string">
-                    <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
-                                                                           then $srv:api-server
-                                                                           else $srv:primary-server
-                                                                      else ''"/>
-                  </xsl:template>
+  <!-- overridden by admin code -->
+  <xsl:template mode="top-nav-server-prefix" match="page" as="xs:string">
+    <xsl:sequence select="if (starts-with(@href,'/')) then if (@api-server)
+                                                           then $srv:api-server
+                                                           else $srv:primary-server
+                                                      else ''"/>
+  </xsl:template>
 
-                  <!-- In the standalone version, top nav links point to the Community site... -->
-                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api]">
-                    <xsl:sequence select="if (starts-with(@href,'/')) then 'http://developer.marklogic.com' else ''"/>
-                 </xsl:template>
+  <!-- In the standalone version, top nav links point to the Community site... -->
+  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api]">
+    <xsl:sequence select="if (starts-with(@href,'/')) then 'http://developer.marklogic.com' else ''"/>
+ </xsl:template>
 
-                  <!-- ...except for "Documentation," which points to the root of the current server -->
-                  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api][@href eq '/']" priority="1"/>
-
-
-                  <xsl:template mode="top-nav-href" match="page">
-                    <xsl:value-of select="@href"/>
-                    <xsl:apply-templates mode="top-nav-href-suffix" select="."/>
-                  </xsl:template>
-
-                          <xsl:template mode="top-nav-href-suffix" match="page"/>
-                          <xsl:template mode="top-nav-href-suffix" match="page[@use-preferred-version-href][not($PREFERRED-VERSION eq $ml:default-version)]">
-                            <xsl:value-of select="$PREFERRED-VERSION"/>
-                          </xsl:template>
+  <!-- ...except for "Documentation," which points to the root of the current server -->
+  <xsl:template mode="top-nav-server-prefix" match="page[$srv:viewing-standalone-api][@href eq '/']" priority="1"/>
 
 
-                  <xsl:template mode="top-nav-current-att" match="page"/>
+  <xsl:template mode="top-nav-href" match="page">
+    <xsl:value-of select="@href"/>
+    <xsl:apply-templates mode="top-nav-href-suffix" select="."/>
+  </xsl:template>
 
-                  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation][not(@api-server)]
-                                                                | page[@api-server and $currently-on-api-server]">
-                    <xsl:attribute name="class">current</xsl:attribute>
-                  </xsl:template>
+  <xsl:template mode="top-nav-href-suffix" match="page"/>
+  <xsl:template mode="top-nav-href-suffix" match="page[@use-preferred-version-href][not($PREFERRED-VERSION eq $ml:default-version)]">
+    <xsl:value-of select="$PREFERRED-VERSION"/>
+  </xsl:template>
 
-                          <!-- overridden in apidoc/view/page.xsl -->
-                          <xsl:variable name="currently-on-api-server" select="false()"/>
+
+  <xsl:template mode="top-nav-current-att" match="page"/>
+
+  <xsl:template mode="top-nav-current-att" match="page[descendant-or-self::* intersect $page-in-navigation][not(@api-server)]
+                                                | page[@api-server and $currently-on-api-server]">
+    <xsl:attribute name="class">current</xsl:attribute>
+  </xsl:template>
+
+  <!-- overridden in apidoc/view/page.xsl -->
+  <xsl:variable name="currently-on-api-server" select="false()"/>
 
 
   <xsl:template mode="nav-text" match="@display">

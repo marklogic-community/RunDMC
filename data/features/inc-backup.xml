@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Incremental Backup</h1>
+
+<p>Incremental Backup builds on and enhances the current backup capability by saving only the changes since the previous incremental or full backup.</p>
+
+<p>Incremental backups consume less storage and can be completed more quickly than full backups. A smaller backup window can also enable more frequent backups.</p>
+
+<p>Log Archiving, an existing feature, works in conjunction with backups to enable fine-grained point-in-time recovery. However, archives of logs take up quite a bit of storage. Now, with incremental backup, logs can automatically be purged in conjunction with incremental backups allowing for point-in-time recovery at a much lower cost. For example, when using daily incremental backups in conjunction with 24-hour log archive retention, a restore can be made to any point in the previous 24 hours.</p>
+
+For more information, go to: <a href="http://docs-ea.marklogic.com/guide/admin/backup_restore#id_33714">Early Access Incremental Backup documentation</a>.</ml:page>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Flexible Replication</h1>
+
+<p>Flexible Replication provides a solution to maintain copies of data on multiple MarkLogic Servers. It enables companies with geographically dispersed clusters and mobile users to collaborate while providing local continuous fast access to data, even in the event of disconnection between sites.</p>
+
+<p>Flexible Replication differs from Database Replication because it allows data to be filtered and manipulated before replication. These capabilities allow end-users to get the information that they need faster, as less data is replicated, and admins to control access to information, as they control what documents and what parts of the documents are replicated within a domain. Flexible Replication is best for collaboration use cases while Database Replication is aimed at disaster recovery.</p>
+
+<p>New to MarkLogic 8 is the ability to filter data based on queries. Queries make replication fast, flexible and dynamic. First, it allows data synchronization consuming the least amount of bandwidth as users narrow the scope of the replication to what they need. Second, it supports the entire scope of MarkLogic’s query capabilities allowing any type of search to filter content. Third, simple updates to the query will dynamically update which data is replicated. All while maintaining consistent security across all databases ensuring reliable data access control.</p>
+
+<p>In the third Early Access release (EA3), you can use the expanded Flexible Replication for the following new operations:</p>
+<ul><li>Replicate documents based on queries</li><li>Filter documents on input and output to modify metadata or content</li><li>Use REST API to manage Flex Replication</li></ul>
+
+<p>For more information, go to the documentation: <a title="Flexible Replication Guide" href="http://docs-ea.marklogic.com/guide/flexrep">http://docs-ea.marklogic.com/guide/flexrep</a>. To Learn how to replicate documents based on queries see: <a title="Query Based Flexible Replication" href="http://docs-ea.marklogic.com/guide/flexrep/configuring#id_18050">http://docs-ea.marklogic.com/guide/flexrep/configuring#id_18050</a></p></ml:page>

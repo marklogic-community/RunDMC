@@ -6,7 +6,8 @@
   <page display="Downloads" href="/products" tooltip="This is the stuff!">
     <group display="DOWNLOADS">
       <group display="Server">
-        <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
+        <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
+        <page display="7.0" href="/products/marklogic-server/7.0" hide="yes" />
         <page display="6.0" href="/products/marklogic-server/6.0" hide="yes" />
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
       </group>
@@ -268,6 +269,23 @@
             <page display="rxq" href="/labs/rxq"/>
             <page display="MLDotNet" href="/labs/mldotnet"/>
         </group>
+    </group>
+  </page>
+
+  <page display="Features" href="/features" hide="yes">
+    <group display="">
+      <group display="Features">
+        <page display="Native JSON" href="/features/json"/>
+        <page display="JavaScript" href="/features/javascript"/>
+        <page display="Semantics" href="/features/semantics"/>
+        <page display="Management API" href="/features/management-api"/>
+        <page display="Bitemporal" href="/features/bitemporal"/>
+        <page display="Flexible Replication" href="/features/flexrep"/>
+        <page display="Enhanced HTTP Server" href="/features/enhanced-http"/>
+        <page display="Samplestack" href="/features/samplestack"/>
+        <page display="Incremental Backup" href="/features/inc-backup"/>
+        <page display="Prescriptiving Sizing" href="/features/prescriptive-sizing"/>
+      </group>
     </group>
   </page>
 

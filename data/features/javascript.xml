@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Server-side JavaScript</h1>
+
+<p>Server-Side JavaScript allows developers to access the powerful query and data manipulation capabilities of MarkLogic in a language and with tools that they’re already familiar with. Combined with JSON as a native data format, MarkLogic provides an ideal platform for building JSON-based services with JavaScript.</p>
+
+<p>The following provides some examples of Server-Side JavaScript. You can also <a href="file:///C:/Users/tsmirnov/AppData/Local/Microsoft/Windows/Temporary%20Internet%20Files/Content.Outlook/O4LTOSJQ/javascript-workspace.xml">download a Query Console workspace</a> to prepopulate these into your own MarkLogic environment.</p>
+<h4>Important concepts</h4>
+<h5>JSON Nodes vs. JavaScript Objects</h5>
+<p>When working with Server-Side JavaScript, it’s important to distinguish between instances of <strong>JSON nodes</strong>, <code>Node</code> and its derived types, and <strong>JavaScript objects</strong>, plain old <code>Object</code>s. JSON nodes are what are persisted in the database. They map one-to-one with the JSON data model and are immutable. When you get a document out the database it’s an instance of a node, literally <code>instanceof Node</code> in JavaScript. You can also create a JSON node from a JavaScript object using <code>xdmp.toJSON(obj)</code> or from a string using <code>xdmp.unquote(str)</code>. You can read properties of nodes, but you cannot update nodes in-place, like you would a plain JavaScript object. This is a performance optimization. See “Declare Updates” below for best practices around updating JSON nodes in JavaScript.</p>
+<p>JavaScript objects, on the other hand, exist only in memory in an E-node. They are mutable and represent the JavaScript data model, including things like functions, references to other objects, <code>undefined</code>, and <code>NaN</code>, that can’t be represented in JSON. Functions like <code>xdmp.documentInsert()</code> automatically convert JavaScript objects to nodes, similar to the result of calling <code>xdmp.toJSON(obj)</code>. To get an object from a node, use the <code>Node</code> instance’s <code>.toObject()</code> function.</p>
+<pre xml:space="preserve">// cts.doc() returns a Document node or null, given a unique id (URI)
+var user = cts.doc("/34a23649-ec61-478f-90ab-5f01a55120ce.json") 
+  .root        // The root Node instance of the Document container. For a JSON document, likely an ObjectNode
+  .toObject(); // Turn any Node intance into JavaScript object. 
+
+// Update the "name" property to upper-case.  Again, you don't need the preceding .toObject() 
+// if you just want to read the value. However, to update it you need to first convert it 
+// to a plain old JavaScript object with .toObject().
+user.name = user.name.toUpperCase(); 
+
+// Convert the plain old Object instance back into a Document node.
+var node = xdmp.toJSON(user);
+
+// You can read properties on Node instances, but you must convert to an object to update any aspect.
+// Remember, xdmp.toJSON() creates a Document node, so you have to use .root to get the root ObjectNode.
+node.root.name;
+
+// …but you don't have to convert an object to a Node to persist it.
+// Functions like xdmp.documentInsert() will automatically do the equivalent of xdmp.toJSON(user), above.
+
+xdmp.documentInsert("/" + user.guid + ".json", user, xdmp.defaultPermissions(), ["fake data"]);
+
+// (If you run the above update, don't forget to add a declareUpdate() call at the top.)</pre>
+<p>To summarize, the typical pattern for updating a document in the database is:</p>
+<ol compact="none"><li>Call <code>declareUpdate()</code> at the top of your module.</li><li>Get a <code>Document</code> from something like <code>cts:doc()</code> or looping over <code>cts:search()</code> (see <a href="file:///C:/Users/tsmirnov/AppData/Local/Microsoft/Windows/Temporary%20Internet%20Files/Content.Outlook/O4LTOSJQ/_javascript.html#iterators">“Iterators”</a> below).</li><li>Convert the <code>Document</code> to a plain old JavaScript object using the document’s <code>.toObject()</code> function.</li><li>Change the object instance like you would any other object, e.g. <code>obj.prop = "new"</code> or <code>obj.list.push("new")</code>.</li><li>Write the updated object back to the database using <code>xdmp.documentInsert()</code>. It handles the conversion of the object instance to a <code>Node</code> just as if you’d explicitly called <code>xdmp.toJSON()</code> on the object.</li></ol>
+<h5 id="iterators">Iterators</h5>
+<p>Most functions that read data from the database return an instance of a <code>ValueIterator</code>, rather than a full instantiation of the data. This allows the evaluation environment to lazily and ansychronously load data as it’s required, rather than up-front. Use the <code>.toArray()</code> function on a <code>ValueIterator</code> instance to eagerly load the entire contents into a new array.</p>
+<p>The <code>ValueIterator</code> interface implements the <a href="http://people.mozilla.org/%7Ejorendorff/es6-draft.html#sec-operations-on-iterator-objects">ECMAScript 6 <code>Iterators</code> interface</a>. Like any iterator, you can loop through a <code>ValueIterator</code> using a <code>for…of</code> loop. Note that the <code>for…of</code> loop is <em>not</em> at all the same as a <code>for…in</code> loop, which loops over an object’s properties.</p>
+<pre xml:space="preserve">// fn.collection(), and most things that interact with the database, returns a ValueIterator
+// The ES6 for…of loop automatically iterates.
+for(var doc of fn.collection()) {
+  var user = doc.toObject();
+  // Do something with the object…
+}</pre>
+<h5>That’s a shorter way of explicitly using the <code>Iterator</code> interface:</h5>
+<pre xml:space="preserve">var itr = fn.collection();
+while(true) {           // Loop until break
+ var item = itr.next(); // Advance the iterator
+ if(item.done) break;   // If we're at the end, exit the loop
+ var user = item.value.toObject();
+ // Do something with the object…
+}</pre>
+<h5>Generators are closely related to Iterators and are also part of ECMAScript 6. Generators are a special kind of function, which may be paused in the middle, once or many times, and resumed later, allowing other code to run during these paused periods. This is an incredibly powerful concept, especially paired with iterators, allowing you to lazily work with sequences of indeterminate length, such as the return from <code>cts.search()</code>.</h5>
+<pre xml:space="preserve">function* asObjects(itr) {
+  for(var doc of itr) {
+    yield doc.toObject(); 
+  }
+}
+
+var a = [];
+for(var obj of asObjects(fn.collection())) {
+  // Assumes you have JSON documents in the database with .name properties, as in the examples below.
+  a.push(obj.name = "Generated: " + obj.name);
+}
+a;
+
+For more details on generators, take a look at <a href="http://davidwalsh.name/es6-generators">“The Basics Of ES6 Generators”</a>.</pre>
+<h5 id="declareUpdates">Declare Updates</h5>
+<p>When a JavaScript module makes changes to the database, for example calling <code>xdmp.documentInsert()</code>, those changes are executed immediately. Rather, the changes are recorded over the life of the request and applied atomically at the end. In XQuery, the fact that a module was writing to the database can be determined with static analysis of the code. In JavaScript any module that needs to update the database needs to state its intentions using the global <code>declareUpdate()</code> function. This function must be called before the first update. In general, putting <code>declareUpdate</code> as the first statement is best practice, making it clear the reader that this module will make updates.</p>
+
+<h5 id="modules">Modules</h5>
+<p>Server-Side JavaScript main modules can import library modules using a syntax based on <a href="http://wiki.commonjs.org/wiki/Modules/1.0">CommonJS</a>, similar to <a href="http://nodejs.org/docs/latest/api/modules.html">Node.js</a>. At its core, a library module declares the variables and functions that it exports. A main module or another library module can import those into its scope using the <code>require()</code> function and assigning the exports to module-level global variables, which behave like namespaces.</p>
+<p>A main module imports a library module into a variable.</p>
+<pre xml:space="preserve">// Main module
+var util = require("utilities.sjs");
+util.doSomething();
+
+</pre>
+<p>The library module declares the functions and variables that it exports.</p>
+<pre xml:space="preserve">// utilities.sjs
+
+// Library modules can require other library modules.
+var o = require("../other.sjs");
+
+module.exports {
+  // Maps the internal implementation to a public name.
+  doSomething: internalSomething
+}
+
+// "Protected" function not accessible outside of the current module.
+function internalSomething() {
+  // Do something…
+}
+
+</pre>
+<p>The syntax of MarkLogic’s JavaScript modules will be familiar to Node.js users. However, the implementation is different in several important ways.</p>
+<ol compact="none"><li><strong>Import paths and precedence:</strong> The global <code>require()</code> function looks up module paths <a href="http://docs.marklogic.com/guide/app-dev/import_modules#id_29407">according to a well defined set of rules</a>, coincidently shared by the XQuery engine. When a module starts with a slash (<code>/</code> or <code>C:\</code> on Windows), MarkLogic will look for a file on the specified path relative to the <code>Modules</code> file-system directory of the MarkLogic installation. If the module is not found there, it will look relative to the app server root for both file-system- and modules database-backed configurations. If the import path <em>does not</em> start with a slash, the path is resolved relative to the location of the module calling the <code>require()</code>. Again, this is the same logic as module imports in XQuery.</li><li><strong>XQuery imports:</strong> Server-Side JavaScript modules can import XQuery library modules. The importing JavaScript can access public functions and variables from the XQuery module as if they were JavaScript. (See <a href="file:///C:/Users/tsmirnov/AppData/Local/Microsoft/Windows/Temporary%20Internet%20Files/Content.Outlook/O4LTOSJQ/_javascript.html#example3">Example 3</a> below.) If an imported module—Server-Side JavaScript or XQuery—does not end with a file extension, <code>require()</code> will first look for the module with the user- specified name appended with the configured extensions for JavaScript module, and then appended with the configured extensions for XQuery module. The file extensions are defined in the <a href="http://docs.marklogic.com/admin-help/mimetype">mimetype configuration</a>. Server-Side JavaScript (<code>application/vnd.marklogic-javascript</code>) defaults to <code>.sjs</code> and XQuery (<code>application/vnd.marklogic-xdmp</code>) defaults to any one of <code>.xqy</code>, <code>.xqe</code>, <code>.xq</code>, or <code>.xquery</code>.</li><li><strong>Export scope:</strong> It is possible to change the state of an exported variable in MarkLogic. However, that change only persists for the request in which it was made. Thus subsequent requests and other hosts won’t have access to modified exports. Imported modules are cached, but their state does not persist beyond the scope of an individual request. In general, changing exports at runtime is not a best practice because it makes code more difficult to reason and to be reflected globally would have to happen in every importing module. This is different than how exports work in Node.js. In Node.js, export state is global and changes are reflected in subsequent requests to the same Node process.</li></ol>
+<h4>1. Load Data</h4>
+<p>Load some JSON documents using the built-in <code>xdmp.documentInsert()</code>. <code>declareUpdate()</code> tells the transaction manager that the current statement intends to change the database. Transactions are scoped to the entire statement.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Insert some JSON generated from http://www.json-generator.com and http://hipsum.co, natch.
+ */
+
+// Tell the transaction manager that we intend to update the database.
+declareUpdate();
+  
+var data = [
+  {
+    "id": 0,
+    "guid": "6e1c7304-09a1-4436-ba77-ae1e3b8856f7",
+    "isActive": true,
+    "balance": "$2,774.31",
+    "picture": "http://placehold.it/32x32",
+    "age": 29,
+    "eyeColor": "blue",
+    "name": "Shauna Weber",
+    "gender": "female",
+    "company": "IPLAX",
+    "email": "shaunaweber@iplax.com",
+    "phone": "+1 (950) 427-2202",
+    "address": "760 Forest Place, Glenshaw, Michigan, 1175",
+    "about": "Kitsch fingerstache XOXO, Carles chambray 90's meh cray disrupt Tumblr. Biodiesel craft beer sartorial meh put a bird on it, literally keytar blog vegan paleo. Chambray messenger bag +1 hoodie, try-hard actually banjo bespoke distillery pour-over Godard Thundercats organic. Kitsch wayfarers Pinterest American Apparel. Hella Shoreditch blog, shabby chic iPhone tousled paleo before they sold out keffiyeh Portland Marfa twee dreamcatcher. 8-bit Vice post-ironic plaid. Cornhole Schlitz blog direct trade lomo Pinterest.",
+    "registered": "2014-01-31T19:57:33+08:00",
+    "location": {
+      "type": "Point",
+      "coordinates": [140.543694, 15.561833]
+    },
+    "tags": [],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Trevino Torres"
+      },
+      {
+        "id": 1,
+        "name": "Kellie Holden"
+      },
+      {
+        "id": 2,
+        "name": "Hubbard Hopkins"
+      }
+    ],
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "id": 1,
+    "guid": "34a23649-ec61-478f-90ab-5f01a55120ce",
+    "isActive": false,
+    "balance": "$1,787.45",
+    "picture": "http://placehold.it/32x32",
+    "age": 38,
+    "eyeColor": "green",
+    "name": "Peters Barnett",
+    "gender": "male",
+    "company": "ENDICIL",
+    "email": "petersbarnett@endicil.com",
+    "phone": "",
+    "address": "749 Green Street, Tyro, Illinois, 2856",
+    "about": "Letterpress Echo Park fashion axe occupy whatever before they sold out, Pinterest pickled cliche. Ethnic stumptown food truck wolf, ethical Helvetica Marfa hashtag. Echo Park photo booth banh mi ennui, organic VHS 8-bit fixie. Skateboard irony dreamcatcher mlkshk iPhone cliche. Flannel ennui YOLO artisan tofu. Hashtag irony Shoreditch letterpress, selvage scenester YOLO. Locavore fap bicycle rights, drinking vinegar Tonx bespoke paleo 3 wolf moon readymade direct trade ugh wolf asymmetrical beard plaid.",
+    "registered": "2014-06-13T23:15:33+07:00",
+    "location": {
+      "type": "Point",
+      "coordinates": [15.27027, -107.313581]
+    },
+    "tags": [
+      "ex",
+      "ex",
+      "ut",
+      "exercitation",
+      "Lorem",
+      "magna",
+      "non",
+      "aute",
+      "nisi"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Mcmahon Navarro"
+      },
+      {
+        "id": 1,
+        "name": "Milagros Simpson"
+      },
+      {
+        "id": 2,
+        "name": "Terri Gallegos"
+      }
+    ],
+    "favoriteFruit": "apple"
+  },
+  {
+    "id": 2,
+    "guid": "978c3f49-92fa-4f52-b8bd-76159a2c15b4",
+    "isActive": false,
+    "balance": "$3,416.58",
+    "picture": "http://placehold.it/32x32",
+    "age": 22,
+    "eyeColor": "brown",
+    "name": "Mosley Nunez",
+    "gender": "male",
+    "company": "VIRVA",
+    "email": "mosleynunez@virva.com",
+    "phone": "",
+    "address": "760 Beverly Road, Elliston, New York, 4057",
+    "about": "Kale chips raw denim ethical selfies kitsch drinking vinegar. Before they sold out wayfarers High Life, fingerstache photo booth slow-carb iPhone pork belly keffiyeh actually fashion axe kale chips pug PBR&amp;B. Banjo sriracha ugh post-ironic stumptown Etsy. Locavore gastropub Etsy banjo food truck, skateboard artisan Truffaut you probably haven't heard of them cray roof party slow-carb quinoa vegan. Drinking vinegar lo-fi jean shorts, tofu stumptown butcher cardigan Shoreditch flexitarian cliche biodiesel irony trust fund skateboard salvia. Helvetica Cosby sweater stumptown, pug cray tousled ennui Godard lo-fi Carles. Keffiyeh letterpress Wes Anderson ethical, umami post-ironic sustainable Tumblr Tonx pour-over.",
+    "registered": "2014-02-16T09:24:18+08:00",
+    "location": {
+      "type": "Point",
+      "coordinates": [-119.347983, 22.386006]
+    },
+    "tags": [
+      "eiusmod",
+      "ullamco"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Kidd Alvarez"
+      },
+      {
+        "id": 1,
+        "name": "Harrell Fisher"
+      },
+      {
+        "id": 2,
+        "name": "Chan Richard"
+      }
+    ],
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "id": 3,
+    "guid": "986af6e1-e0f1-450f-b1f0-2eff54357840",
+    "isActive": true,
+    "balance": "$2,061.82",
+    "picture": "http://placehold.it/32x32",
+    "age": 38,
+    "eyeColor": "blue",
+    "name": "Rosalind Christian",
+    "gender": "female",
+    "company": "UPDAT",
+    "email": "rosalindchristian@updat.com",
+    "phone": "",
+    "address": "901 Etna Street, Weeksville, Florida, 5402",
+    "about": "Skateboard pop-up kogi, ethnic Vice disrupt Truffaut twee fashion axe forage occupy biodiesel. Bespoke umami yr, flannel kogi XOXO bitters butcher ugh DIY lomo. Flexitarian distillery flannel, mustache butcher raw denim crucifix sartorial PBR&amp;B. Ennui beard freegan, Blue Bottle cornhole gluten-free yr sriracha 90's tofu stumptown crucifix Williamsburg keytar fingerstache. Odd Future selfies Shoreditch Echo Park deep v, lo-fi put a bird on it cray master cleanse Intelligentsia drinking vinegar. Ethical flannel craft beer meggings forage, paleo High Life viral Blue Bottle food truck fashion axe twee fingerstache Bushwick. Scenester Thundercats lo-fi Odd Future, wolf kale chips fashion axe mixtape slow-carb quinoa.",
+    "registered": "2014-04-16T07:14:06+07:00",
+    "location": {
+      "type": "Point",
+      "coordinates": [156.240181, 75.484745]
+    },
+    "tags": [
+      "eu",
+      "labore",
+      "duis",
+      "velit"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Bridgette Wade"
+      },
+      {
+        "id": 1,
+        "name": "Margo Rodriquez"
+      },
+      {
+        "id": 2,
+        "name": "Wilson Cooper"
+      }
+    ],
+    "favoriteFruit": "apple"
+  },
+  {
+    "id": 4,
+    "guid": "dd95907c-3b29-4e2c-9a4c-baf61bd96c9d",
+    "isActive": false,
+    "balance": "$3,385.27",
+    "picture": "http://placehold.it/32x32",
+    "age": 38,
+    "eyeColor": "blue",
+    "name": "Adrian Dodson",
+    "gender": "female",
+    "company": "ZENSUS",
+    "email": "adriandodson@zensus.com",
+    "phone": "",
+    "address": "289 Grant Avenue, Courtland, Alaska, 8847",
+    "about": "Tote bag pug whatever trust fund, yr fashion axe American Apparel selfies flannel Portland gentrify synth twee. Tousled tofu biodiesel tattooed polaroid. Chia direct trade drinking vinegar, Helvetica ethical bitters banjo polaroid quinoa. Wes Anderson ugh 3 wolf moon +1 single-origin coffee, authentic plaid Tonx you probably haven't heard of them quinoa dreamcatcher fingerstache literally meggings. Vice aesthetic authentic, fashion axe stumptown Carles selfies organic you probably haven't heard of them street art Thundercats. Before they sold out Vice yr post-ironic Marfa cliche. Blue Bottle Portland bespoke slow-carb cliche.",
+    "registered": "2014-06-16T16:13:14+07:00",
+    "location": {
+      "type": "Point",
+      "coordinates": [-97.042726, -19.360066]
+    },
+    "tags": [
+      "aliquip"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Tate Hopper"
+      },
+      {
+        "id": 1,
+        "name": "Berger Ayala"
+      },
+      {
+        "id": 2,
+        "name": "Nola Erickson"
+      }
+    ],
+    "favoriteFruit": "strawberry"
+  }
+];
+    
+insertData(data);
+
+// Wrapper for xdmp.documentInsert built-in to construct the URI from the guid field and
+function insertData(data) { 
+  if(!data) return;
+  for(var i = 0; i &lt; data.length; i++) {
+    xdmp.documentInsert(
+      "/" + data[i].guid + ".json", 
+      data[i], 
+      xdmp.defaultPermissions(), 
+      ["fake data"]
+    );
+  } 
+}</pre>
+
+<h4>2. Search</h4>
+<p>Build a query, run a search, and iterate through the results.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Find the active users who mention "sell out" in their profile. Of the three most recent registrants, order by most number of tags.
+ */
+
+var query = cts.andQuery([
+  cts.orQuery([
+    cts.jsonPropertyValueQuery("isActive", true),
+    cts.jsonPropertyWordQuery("about", "sell out") // The text "sell out" or its stems
+  ]),
+  cts.collectionQuery("fake data")
+]);
+
+// Order by registration date, newest to oldest. Note that the jsonPropertyReference requires a range index on the
+// "registered" property (see "Import XQuery"). If that index doesn't exist, disregard the ordering. Checking for
+// indexes at runtime is not a best practice for production code, but is illustrative here.
+var order = null;
+try {
+  order = cts.indexOrder(cts.jsonPropertyReference("registered"), ["descending"]);
+} catch(err) {
+  if("XDMP-ELEMRIDXNOTFOUND" !== err.name) { throw err; }
+}
+
+// Create an empty Array to accumulate the results.
+var results = [];
+for(
+  var item of fn.subsequence( // Use subsequence for efficient pagination (limit/skip)
+    cts.search(query, ["unfiltered", order]), // Run the search out of the indexes, using the order specification above
+    1, 3 // Just get the top 3.
+  )
+) {
+  // Synthetic wrapper to hold projected fields and metadata from the search results.
+  var obj = { 
+    relevanceScore: item.score // The Node instance reports the relevance score of each search result.
+  };
+  item = item.toObject(); // Search retruns a document node. Turn this into a JavaScript object.
+  ["guid", "name", "isActive", "about"].forEach(function(prop) {
+    obj[prop] = item[prop];
+  });
+  // Get the count of the tags rather than the list.
+  obj.tagCount = item.tags.length; // Count the tags in the Array.
+  results.push(obj);
+}
+results;
+
+</pre>
+
+<h4>3. Update</h4>
+<p>Update complete JSON documents by reading them from the database, converting them to JavaScript objects (Using <code>.toObject()</code>), and re-inserting them at their same URIs. It’s important to note that JSON nodes are <em>immutable</em>. That is, you cannot directly change a JSON node.</p>
+<pre class="sjs" xml:space="preserve">/* 
+ * Update the string balance amount to reflect the 
+ */
+
+// Tell the transaction manager that we're about to make an update
+declareUpdate();    
+
+// For each item in the collection, update the balance field from a string
+//   balance: "$1,234.56" 
+// to a Number representing the value and a unit of measure 
+//   balance: { value: 1234.56, unit: "USD" }    
+for(var item of fn.collection("fake data")) {
+  // Turn the JSON node from the database into a JavaScript object so we can update it.
+  // JSON nodes are immutable.
+  var obj = item.toObject();
+  if(obj.balance &amp;&amp; !obj.balance.value) {
+    obj.balance = { 
+      value: parseFloat(obj.balance.replace(/[$,]/g, "")),
+      unit: "USD"
+    };
+    
+    // Get the existing metadata on the document 
+    var uri = xdmp.nodeUri(item);
+    var collections = xdmp.documentGetCollections(uri);
+    // Re-insert with the same URI
+    xdmp.documentInsert(uri, obj, xdmp.defaultPermissions(), collections);
+  }
+}</pre>
+
+<h4>4. JavaScript Modules</h4>
+<p>Import external modules using the <code>require()</code> function. Library modules declare their exports using the global <code>module.exports</code> variable.</p>
+<p>The importing module:</p>
+<pre class="sjs" xml:space="preserve">/ Import the declared exports from the util module under the util "namespace".
+// Because the path does not start with a / (or C:\ on Windows), resolve 
+// the module path relative to the current module.
+// Because there is no file extension, first try .sjs then .xqy.
+// In this case, it resolves to ./util.sjs.
+var util = require("util");
+
+// Call the imported function
+util.parseCurrency("$44,3829.01");</pre>
+<p>The <em>imported</em> library module, <code>util.sjs</code>:</p>
+<pre class="sjs" xml:space="preserve">module.exports = {
+  // Export the "private" function with a public name
+  parseCurrency: dollarToObject
+}
+
+// "Private" function local to the module
+function dollarToObject(str) {
+  if(str &amp;&amp; str.match(/^\s*\$/)) {
+    return {
+      "value": parseFloat(str.replace(/[$,]/g, "")),
+      "unit": "USD"
+    }
+  } else {
+    throw new Error("Can't parse '" + str + "'");
+  }
+}</pre>
+
+<h4>5. Import XQuery</h4>
+<p>JavaScript modules can import XQuery modules and access public functions and variables, just as an importing XQuery file could. XQuery names are automatically converted to <code>lowerCamelCase</code> in JavaScript.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Import an XQuery library module into JavaScript and call its functions. 
+ * This particular example uses the Admin API to create a dateTime range index on the "registered" property.
+ * Any XQuery library will work, though.
+ */
+
+// Using CommonJS syntax, import an XQuery library module. Imported functions are available in 
+// their lowerCamelCase form. For example, my:do-something(…) in XQuery would be called as 
+//   var my = require("path/to/my.xqy")
+//   my.doSomething(…) 
+// in JavaScript.
+var admin = require("/MarkLogic/admin");
+
+// Use the (XQuery) Admin APIs to create some indexes.
+var config = admin.getConfiguration();
+try {
+  // Create a dateTime index on the registered property. For the purposes of creating range indexes a JSON property is
+  // the same as an XML element (i.e. this will also add XML elements named "registered" in no namespace to this index.)
+  // Since JSON lacks a native Date type (though JavaScript has one), the indexer automatically parses strings that are formatted
+  // as ISO8601 dates, e.g. {"registered": "2014-01-31T19:57:33+08:00"}
+  config = admin.databaseAddRangeElementIndex(config, xdmp.database(), 
+    admin.databaseRangeElementIndex("dateTime", null, "registered", null, true, "ignore")
+  );
+} catch(err) { 
+  if(err.name != "ADMIN-DUPLICATECONFIGITEM") { throw err; } // Ignore the error if we've already got this index
+}
+try {
+  // JSON nodes support full XPath evaluation. Similarly, you can use XPath to specify path indexes on JSON documents.
+  config = admin.databaseAddRangePathIndex(config, xdmp.database(), 
+    admin.databaseRangePathIndex(xdmp.database(), "double", "balance/value", null, false, "ignore")
+  );
+} catch(err) { 
+  if(err.name != "ADMIN-DUPLICATECONFIGITEM") { throw err; } 
+}
+
+admin.saveConfiguration(config);</pre>
+
+<h4>6. Amps</h4>
+<p>An amp, or privilege <em>amp</em>lification, allows code to temporarily elevate privileges within a specific context. In JavaScript, an amp requires the combination of configuration and wrapping the exported function you wish to amp in the <code>module.amp()</code> function. For example, <code>xdmp.eval()</code> requires a privilege (<code>http://marklogic.com/xdmp/privileges/xdmp-eval</code>). Evaluating code from a string could open an application to <a href="http://en.wikipedia.org/wiki/Code_injection">injection attacks</a>. However, it’s useful for an application to be able to do a one-off eval in a specific context without having to grant users blanket privileges to eval anywhere.</p>
+<pre class="sjs" xml:space="preserve">var amp = require("amp");
+
+// The calling module does not need to know that an 
+// imported function is amped. This is controlled by 
+// the combination of configuration and the library 
+// module's export declaration.
+amp.evalVersion();</pre>
+<p><code>amp.sjs</code> is a library module that exports an amped function, <code>version</code> as <code>evalVersion</code>. Importing modules do not need to be aware that a function is amped, just the name as exported by the library module.</p>
+<pre class="sjs" xml:space="preserve">// module.amp takes a function as input and returns a function
+// that has the same signature as the original function.
+module.exports.evalVersion = module.amp(version);
+
+// The local function that is wrapped by the amp.
+// This is the function that is set in the amp's 
+// "localname" configuration.
+function version() {
+  // This is a very contrived example to illustrate amps. 
+  // xdmp.version() does not require special privilege. 
+  // Calling it (or anything) via xdmp.eval does.
+  return xdmp.eval("xdmp.version()");
+}</pre>
+<p>Amps require wrapping amped functions with <code>module.amp</code> as well as configuration. Library modules that amp functions must be executed from a modules database, not on the filesystem.</p>
+<ol compact="none"><li>Create a new role <code>caneval-internal</code>. No user will actually have this role. It’s used only for the specific amp.</li><li>Add the <code>caneval-internal</code> role to the <code>xdmp:eval</code> execute privilege. This allows anyone with the <code>caneval-internal</code> role to call <code>xdmp.eval</code> in JavaScript (or <code>xdmp:eval</code> in XQuery).</li><li>Create a new amp with the local name <code>version</code> and document URI <code>/amp.js</code> using the <code>Modules</code> database. The amp must reference the <em>internal</em> name of the function in the library module, not the publicly exported name, <code>version</code>, in this example.</li><li>Create a new <code>noeval-user</code> user without any roles, thus no blanket <code>eval</code> privileges.</li><li>Load the main and library modules to the <code>Modules</code> database. (Note: For security reasons, functions run from filesystem modules cannot be amped, only library modules served out of a modules database.)</li><li>Outside of this script, you’ll need to create a new HTTP app server the gets its modules from the modules database and get the URL, <code>http://host:port/06%20Amp.sjs</code>. Login as <code>noeval-user</code> to verify that the amp works.</li></ol>
+<p>The following scripts the amp configuration and loads the library and main modules to a modules database. You’ll need to create or configure an HTTP app server externally and run this script as an administrator.</p>
+<pre class="sjs" xml:space="preserve">var sec = require("/MarkLogic/security");
+
+// Create roles
+tx(function() { 
+  // Notice that the sec variable comes from a closure. See tx() below.
+  sec.createRole("noeval", "Cannot eval (or anything else)", null, null, null); 
+  sec.createRole("caneval-internal", "Able to eval", null, null, null);
+}, "Security");
+
+// Create users, privileges, and amps
+tx(function() {
+  sec.createUser("noeval-user", "", "********", ["noeval"], null, null);
+  sec.privilegeAddRoles("http://marklogic.com/xdmp/privileges/xdmp-eval", "execute", ["caneval-internal"]);
+  sec.createAmp("", "version", "/amp.sjs", xdmp.database("Modules"), ["caneval-internal"]); 
+}, "Security");
+
+
+// Inserts .sjs modules into a modules database, making them
+// executable by the noeval role created above.
+tx(function() {
+  var perms = [xdmp.permission("noeval", "execute")];  
+  var modules = {
+    "/06 Amp.sjs": 'var amp = require("amp"); amp.evalVersion();',
+    "/amp.sjs"   : 'module.exports.evalVersion = module.amp(version); function version() { return xdmp.eval("xdmp.version()"); }'
+  }
+  for(var module in modules) { // Note the use of for…in here versus for…of
+    xdmp.documentInsert(module, xdmp.toJSON(modules[module]), perms);
+  }
+}, "Modules");
+
+// Run a function in a different transaction against a specific database.
+function tx(f, database) {
+  return xdmp.invokeFunction(
+    f, 
+    { 
+      "database": xdmp.database(database), 
+      "transactionMode": "update-auto-commit", 
+      "isolation": "different-transaction" 
+    }
+  );
+}</pre>
+<p><em>Exercise for the reader: The expanded REST Management API provides an even better way to script this type of configuration.</em></p>
+
+<h4 id="XML">6. Working with XML</h4>
+<p>Everything’s a <em>node</em> in the database: JSON, XML, binary, and text. JavaScript provides syntax for working with JSON nodes, mapping them to plain old JavaScript objects. No such equivalent is built into the language for XML. The <code>NodeBuilder</code> API provides a lightweight interface for constructing XML nodes from JavaScript. (<code>xdmp.unquote()</code> can parse a string into an <code>XMLNode</code>.) Like a JSON node, an XML node can be saved in the database or manipulated in XQuery. XML nodes support a read-only W3C DOM interface for reading and traversing node structures. Additionally, any XDM function that takes a node as its first parameter in XQuery can also be called as property of an <code>XMLNode</code>.</p>
+<pre class="sjs" xml:space="preserve">var nb = new NodeBuilder();
+nb.startDocument()
+  .startElement("ex:article", "http://example.com")
+    .addAttribute("is-draft","true");
+    for(var i = 0; i &lt; 17; i++) {
+      nb.startElement("ex:p", "http://example.com")
+        .addText("This is paragraph ") + 
+          nb.startElement("em", "") // No namespace
+            .addText((i + 1).toString())
+            .endElement()
+        .addText(".")
+      .endElement();
+    }
+  nb.endElement()
+    .endDocument();
+var xml = nb.toNode();
+
+// An XMLNode is how XML is represented in Server-Side JavaScript. Like JSON ObjectNodes, 
+// XMLNodes are immutable. Use NodeBuilder to construct XML or literal JavaScript
+// objects to build JSON nodes in JavaScript. 
+xml instanceof XMLNode &amp;&amp; xml instanceof Node &amp;&amp; xml instanceof Value; // true
+
+for(var element of xml.xpath("//ex:p", {"ex": "http://example.com"})) {
+  // All XMLNode instances support a read-only w3c DOM interface
+  var text = element.textContent; // typeof text === "string"
+  var children = element.childNodes; // children instanceof NodeList &amp;&amp; children.length === 3
+  // …as well as any node function, i.e. any XDM function that takes a node as the first argument
+  // For example, to validate against a schema:
+  //   element.validate();
+}</pre>
+
+<h4 id="specialforms">7. Special Forms</h4>
+<p><code>cts.highlight</code> is a powerful function—actually “special form” in the LISP sense—that allows you to traverse a document and mark-up matches based on a query. The query can be anything from a simple word query to a sophisticated Boolean query with geospatial, range, and word terms. Highlighting over XML, you can build snippets and highlights, for example, to report as search results.</p>
+<pre class="sjs" xml:space="preserve">function highlight(node, query) {
+  var match = 0;
+  var threshold = 2;
+  var builder = new NodeBuilder(); // Used to "inject" highliguts into the flow of the matched nodes.
+  function callback(builder, text, node, queries, start) {
+    match++; // Keep track of the number of matches
+    builder.startElement("b") // Inject a new element in context to highlight the match
+      .addText(text)
+      .endElement();
+    if (match &gt;= threshold) { return "break"; } // Stop matching after the threshold is reached
+    return "continue";
+  }
+  cts.highlight(node, query, callback, builder);
+  return builder.toNode(); 
+}
+var node = xdmp.unquote("&lt;root&gt;&lt;p&gt;This are 1, including stemming and capitalization.&lt;/p&gt;&lt;p&gt;this is 2&lt;/p&gt;&lt;p&gt;this is 3&lt;/p&gt;&lt;p&gt;this is 4&lt;/p&gt;&lt;p&gt;this is 5.&lt;/p&gt;&lt;/root&gt;");
+var query = "this is"; // Implicitly converted to a word query
+highlight(node, query);</pre>
+<p>Highlighting also supports JSON nodes too. While JSON doesn’t lend itself to inline markup, like XML, <code>cts.highlight()</code> does the hard work of splitting nodes and interleaving highlights.</p>
+<pre class="sjs" xml:space="preserve">var query = "flannel"; // This could be any query. Here we've simplified thins with a single word query.
+
+var results = []; // Accumulator for result snippets
+for(var doc of cts.search(query)) {
+  var builder = new NodeBuilder();
+  // The callback is the function that's executed when highlight finds a match to the query
+  function callback(builder, text, node, queries, start){
+    builder.addNode({"match": text});
+  };
+  cts.highlight(
+    // Project some of the fields of the matched documents into new JavaScript object
+    // and continue highlighting.
+    { 
+      "guid": doc.root.guid, 
+      "about": doc.root.about,
+    }, query, callback, builder
+  );
+  results.push(builder.toNode());
+}
+results;</pre>
+<p>The resulting matches are interspersed within what used to be a single string property.</p>
+<pre class="sjs" xml:space="preserve">[
+  {
+    "guid": "986af6e1-e0f1-450f-b1f0-2eff54357840",
+    "about": [
+      "Skateboard pop-up kogi, ethnic Vice disrupt Truffaut twee fashion axe forage occupy biodiesel. Bespoke umami yr, ",
+      {
+        "match": "flannel"
+      },
+      " kogi XOXO bitters butcher ugh DIY lomo. Flexitarian distillery ",
+      {
+        "match": "flannel"
+      },
+      ", mustache butcher raw denim crucifix sartorial PBR&amp;B. Ennui beard freegan, Blue Bottle cornhole gluten-free yr sriracha 90's tofu stumptown crucifix Williamsburg keytar fingerstache. Odd Future selfies Shoreditch Echo Park deep v, lo-fi put a bird on it cray master cleanse Intelligentsia drinking vinegar. Ethical ",
+      {
+        "match": "flannel"
+      },
+      " craft beer meggings forage, paleo High Life viral Blue Bottle food truck fashion axe twee fingerstache Bushwick. Scenester Thundercats lo-fi Odd Future, wolf kale chips fashion axe mixtape slow-carb quinoa."
+    ]
+  },
+  {
+    "guid": "dd95907c-3b29-4e2c-9a4c-baf61bd96c9d",
+    "about": [
+      "Tote bag pug whatever trust fund, yr fashion axe American Apparel selfies ",
+      {
+        "match": "flannel"
+      },
+      " Portland gentrify synth twee. Tousled tofu biodiesel tattooed polaroid. Chia direct trade drinking vinegar, Helvetica ethical bitters banjo polaroid quinoa. Wes Anderson ugh 3 wolf moon +1 single-origin coffee, authentic plaid Tonx you probably haven't heard of them quinoa dreamcatcher fingerstache literally meggings. Vice aesthetic authentic, fashion axe stumptown Carles selfies organic you probably haven't heard of them street art Thundercats. Before they sold out Vice yr post-ironic Marfa cliche. Blue Bottle Portland bespoke slow-carb cliche."
+    ]
+  },
+  {
+    "guid": "34a23649-ec61-478f-90ab-5f01a55120ce",
+    "about": [
+      "Letterpress Echo Park fashion axe occupy whatever before they sold out, Pinterest pickled cliche. Ethnic stumptown food truck wolf, ethical Helvetica Marfa hashtag. Echo Park photo booth banh mi ennui, organic VHS 8-bit fixie. Skateboard irony dreamcatcher mlkshk iPhone cliche. ",
+      {
+        "match": "Flannel"
+      },
+      " ennui YOLO artisan tofu. Hashtag irony Shoreditch letterpress, selvage scenester YOLO. Locavore fap bicycle rights, drinking vinegar Tonx bespoke paleo 3 wolf moon readymade direct trade ugh wolf asymmetrical beard plaid."
+    ]
+  }
+]</pre>
+
+<h4>8. XPath</h4>
+<p>Because JSON nodes in the database are nodes, in the XML Document Model (XDM) sense, you can access them with XPath.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Evaluate standard XPath against JSON (or XML or both). JSON properties operate similar to unnamespaced
+ * XML elements.
+ */
+var total = 0, count = 0;
+xdmp.xqueryEval('/node()[some $name in friends/name satisfies starts-with(upper-case($name), "N") or eyeColor = "blue"]') // XPath is a subset of XQuery. Evaluate it.
+  .toArray() // Turn the iterator into an Array. Don't do this for very large result sets.
+  .forEach(function(item) { // Standard JavaScript Array.prototype.forEach
+    total += item.age;
+    count++;
+  })
+"Average age of people who have blue eyes or are friends with others whose names start with \"N\": " + (total/count);</pre>
+<p>From XPath, JSON properties look like un-namespaced XML elements. MarkLogic also extends the XDM with <code>object-node()</code> and <code>array-node()</code> types.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Use node() to match any XML or JSON node, including unnamed object nodes at the "root" of a JSON document. 
+ * The new object-node() and array-node() match only their JSON namesakes.
+ * (Note: Don't run this code on a large database. It brings back every document and its properties multiple times.)
+ */
+[
+  "All nodes ===============================================================================================",
+  xdmp.xqueryEval("//node()"),
+  "All \"root\" nodes. These are unnamed for JSON documents ================================================",
+  xdmp.xqueryEval("/node()"),
+  "All nodes types =========================================================================================",
+  xdmp.xqueryEval("//node()/xdmp:node-kind(.)"),
+  "All object nodes ========================================================================================",
+  xdmp.xqueryEval("//object-node()"),
+  "All array nodes =========================================================================================",
+  xdmp.xqueryEval("//array-node()"),
+]</pre>
+
+<h4>9. OOP</h4>
+<p>JavaScript supports functional, prototypical, and object-oriented programming styles. Any of these can be used as appropriate in MarkLogic.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Demonstrate an object-oriented style of programming. Declare a Person type and instantiate an instance.
+ * Convert that instance into a JSON node, for example to persist it to the database, and convert it back.
+ */
+
+// The Person constructor, e.g. var p = new Person(…)
+Person = function(fname, lname) {
+  if(fname) this.fname = fname
+  if(lname) this.lname = lname
+}
+Person.prototype = {
+  greet: function() { return "Hi, I'm " + this.fname + " " + this.lname + "." },
+  toJSON: function() {
+    return { fname: this.fname, lname: this.lname }
+  }
+}
+// A static method that instantiates a new Person from JSON
+Person.fromJSON = function(json) {
+  var obj = json.valueOf ? json.valueOf() : json
+  var p = new Person(obj.fname, obj.lname)
+  return p
+}
+
+// Instantiate a new Person object
+var sam = new Person("Sam", "Simon")
+// Convert that object into a JSON node
+var samNode = xdmp.toJson(sam.toJSON())
+
+// This is where you'd likely persist the sam document to the database
+// xmdp.documentInsert("/sam.json", samNode, xdmp.defaultPermissions())
+// (Don't forget to put a declareUpdate() at the top if you're doing this.)
+
+// Re-hydrate a new Person person instance from the JSON node. Note
+// the use of root to get the root node from the document node.
+var s = Person.fromJSON(samNode.root)
+// Verify that we indeed have a person and the fields have beeen properly instantiated.
+s instanceof Person
+// Note that the === only evaluates to true on nodes that have been converted to
+// JavaScript objects (i.e. with node.valueOf()). == will do the expected casting to a
+// JavaScript object.
+  &amp;&amp; s.fname == "Sam"
+// Make sure we've got our methods as well.
+  &amp;&amp; s.greet() === "Hi, I'm Sam Simon."</pre>
+
+<h4>10. Values</h4>
+<p>MarkLogic supports the ability to create range indexes on JSON nodes. Server-Side JavaScript (or XQuery) can access these using the built-in lexicon functions.</p>
+<pre class="sjs" xml:space="preserve">/*
+ * Access the values from a range index.
+ * (Note: This assumes you've created the path range index on the balance.value field in "Import XQuery")
+ */
+cts.values(
+  // Any reference to a range index
+  cts.pathReference("balance/value")
+)</pre>
+
+<h4>11. JavaScript Eval</h4>
+<p>XQuery modules can evaluate JavaScript (and SQL and SPARQL). <code>xdmp:javascript-eval()</code> allows access to external variables and does all of the mapping between XQuery and JavaScript data types.</p>
+<pre class="xqy" xml:space="preserve">(:
+ : Evaluate JavaScript from XQuery, passing in external variables and returning 
+ : results as XQuery types.
+ :)
+xdmp:javascript-eval("var result = []; for(var p in param) {result.push(p); result.push(param[p]);} result;",
+  (xs:QName("param"), object-node { "a": "A", "b": "B"})
+)
+12. HTTP Module</pre>
+<p>Use JavaScript to build HTTP services in an HTTP app server. Save the following into an .<code>sjs</code> file at the root of an HTTP app server. Use your favorite HTTP client to issue a <code>GET</code> request to <code>http://yourhost:9999/search.sjs?q=American</code>, substituting the hostname, port number, file name, and query string value. If you have data in your database from the earlier examples you should see two results with the result count in the <code>X-Result-Count</code> HTTP response header.</p>
+<pre class="sjs" xml:space="preserve">xdmp.setResponseContentType("application/json");
+switch(xdmp.getRequestMethod()) {
+  case "GET":
+    var q = cts.wordQuery(xdmp.getRequestField("q")); // Get the criterion out of the URL query string 
+    var results = cts.search(q).toArray(); // Unwind the iterator into an Array
+    xdmp.addResponseHeader("X-Result-Count", results.length + "");
+    xdmp.toJSON(results); // Serialize the JavaScript results object as JSON
+    break;
+  default:
+    xdmp.setResponseCode(405, "Method not allowed");
+    { message: "Only GET requests are allowed" }
+}</pre>
+
+</ml:page>
