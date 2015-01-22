@@ -129,7 +129,19 @@
 }
 
 .home .learn-more {
+  display: table;
   margin: 10px 10px;
+}
+
+.home .learn-more > div {
+  display: table-cell;
+  float: none;
+  padding-bottom: 30px;
+}
+
+.home .learn-more > div a {
+  bottom: 0;
+  position: absolute;
 }
 
 .home .learn-more img {
