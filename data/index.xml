@@ -114,39 +114,39 @@
 
     <div class="row features">
       <a href="/features/json" class="col-md-1 col-md-offset-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/json.svg"/>
         <p class="text-uppercase text-center">JSON</p>
       </a>
       <a href="/features/node-client-api" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/node.svg"/>
         <p class="text-uppercase text-center">Node.js Client API</p>
       </a>
       <a href="/features/javascript" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/javascript.svg"/>
         <p class="text-uppercase text-center">Server-side JavaScript</p>
       </a>
       <a href="/features/java-client-api" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/java-api.svg"/>
         <p class="text-uppercase text-center">Java API</p>
       </a>
       <a href="/features/semantics" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/semantics.svg"/>
         <p class="text-uppercase text-center">Semantics</p>
       </a>
       <a href="/features/management-api" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/management-api.svg"/>
         <p class="text-uppercase text-center">Management API</p>
       </a>
       <a href="/features/bitemporal" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/bitemporal.svg"/>
         <p class="text-uppercase text-center">Bitemporal</p>
       </a>
       <a href="/features/flexrep" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/flexrep.svg"/>
         <p class="text-uppercase text-center">Flexible Replication</p>
       </a>
       <a href="/features/enhanced-http" class="col-md-1">
-        <img src="/media/features/json.png"/>
+        <img src="/media/features/enhanced-http.svg"/>
         <p class="text-uppercase text-center">Enhanced HTTP Server</p>
       </a>
 
@@ -155,31 +155,31 @@
     <hr/>
 
     <div class="row learn-more">
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
+      <div class="col-md-offset-1 col-md-2">
+        <img src="/media/samplestack-and-icon.png"/>
         <h3>Samplestack</h3>
         <p>Build a three-tiered sample application that demostrates key
           MarkLogic concepts using the latest features.</p>
         <a href="/features/samplestack" class="btn btn-primary">Learn More</a>
       </div>
 
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
+      <div class="col-md-2">
+        <img src="/media/qconsole-notebook.png"/>
         <h3>Free Training</h3>
         <p>Hands-on, instructor-led training to teach everything from the
           basics to advanced application development.</p>
         <a href="https://mlu.marklogic.com/registration/" class="btn btn-primary">Learn More</a>
       </div>
 
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
+      <div class="col-md-2">
+        <img src="/media/qconsole-semantics.png"/>
         <h3>Semantics Tutorial</h3>
         <p>Learn how to get more context to your data by using RDF triples
           and querying them with SPARQL.</p>
         <a href="/learn/semantics-exercises" class="btn btn-primary">Learn More</a>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-2">
         <img src="/media/samplestack-screenshot.png"/>
         <h3>Deploy on AWS</h3>
         <p>Get going in minutes with MarkLogic in the Amazon cloud using the
