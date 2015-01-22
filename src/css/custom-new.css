@@ -95,13 +95,31 @@
   color: #0066bb;
 }
 
+.home .features a p {
+  width: 94px;
+}
+
 .home .new-features {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
+.home .new-features > div {
+  display: flex;
+}
+
+.home .new-features > div div {
+  display: inline-block;
+  line-height: 29px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
 .home .new-features h2 {
   border-right: 1px solid;
+  display: inline-block;
+  margin-right: 10px;
+  padding-right: 10px;
 }
 
 .home .new-features a {

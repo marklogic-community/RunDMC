@@ -103,45 +103,50 @@
     </style>
 
     <div class="row new-features">
-      <h2 class="col-md-offset-1 col-md-4">New Features in MarkLogic 8</h2>
-      <a class="col-md-4 text-uppercase">Release Notes</a>
+      <div class="col-md-offset-1 col-md-7">
+        <div>
+          <span class="label label-warning">New</span>
+        </div>
+        <h2 class="">Features in MarkLogic 8</h2>
+        <a class="text-uppercase">Release Notes</a>
+      </div>
     </div>
 
     <div class="row features">
       <a href="/features/json" class="col-md-1 col-md-offset-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">JSON</p>
       </a>
       <a href="/features/node-client-api" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Node.js Client API</p>
       </a>
       <a href="/features/javascript" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Server-side JavaScript</p>
       </a>
       <a href="/features/java-client-api" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Java API</p>
       </a>
       <a href="/features/semantics" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Semantics</p>
       </a>
       <a href="/features/management-api" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Management API</p>
       </a>
       <a href="/features/bitemporal" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Bitemporal</p>
       </a>
       <a href="/features/flexrep" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Flexible Replication</p>
       </a>
       <a href="/features/enhanced-http" class="col-md-1">
-        <img src="/media/json.png"/>
+        <img src="/media/features/json.png"/>
         <p class="text-uppercase text-center">Enhanced HTTP Server</p>
       </a>
 
