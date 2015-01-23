@@ -123,7 +123,7 @@
               </a>
             </li>
             <li>
-              <a href="/features/node-client-api" class="col-md-1 col-sm-1 col-xs-4">
+              <a href="/marklogic-for-node" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/node.svg"/>
                 <p class="text-uppercase text-center">Node.js Client API</p>
               </a>
