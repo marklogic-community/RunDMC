@@ -162,39 +162,37 @@ a:hover {
   border: 1px solid #3071a9;
 }
 
-/* Home Page: Main Fetures Section ---------- */
-.main {
-  background: #f9f9f9;
-  background: #ccc;
-  border-bottom: 1px solid #ccc;
+/* Home Page: Main Features Section ---------- */
+.main-wrapper {
   display: table;
   width: 100%;
+  background: #ccc;
   padding-top: 3rem;
   padding-bottom: 3rem;
+  background: #f9f9f9;
+  border-bottom: 1px solid #ccc;
 }
-.main .row {
+.main-wrapper .row {
   display: table-cell;
   vertical-align: middle;
 }
-.main .row .col {
+.main-wrapper .row .col {
   text-align: left;
 }
-.main .row .col h1 {
-  line-height: 1rem;
+.main-wrapper .row .col h1 {
   margin-bottom: 1.5rem;
 }
-.main .row .col p.lead {
+.main-wrapper .row .col p.lead {
   margin-bottom: 1rem;
   line-height: 2.5rem;
 }
-.main .row .col p {
+.main-wrapper .row .col p {
   margin-bottom: 2rem;
 }
-.main .row .col img {
-  border: 1px solid #ccc;
+.main-wrapper .row .col img {
 }
 
-/* Home Page: New Fetures Section ---------- */
+/* Home Page: New Features Section ---------- */
 .new-features {
   margin: 0;
   list-style: none;
