@@ -32,9 +32,7 @@ var LOG = {
 })(jQuery);
 
 $(function() {
-  var versionSelect = null;
-
-  if (!versionSelect) versionSelect = $("#version_list");
+  var versionSelect = $("#version_list");
 
   if (!versionSelect.length) {
     // This is ok - many pages do not have the version selector.
@@ -369,23 +367,23 @@ function searchSuggestInit() {
 
   LOG.debug("searchSuggestInit", $q);
 
-  // TODO arrow keys to select suggestions
-
   var SearchSuggest = React.createClass(
       {displayName: "SearchSuggest",
        getInitialState: function() {
-         var text = this.props.inputNode.val();
-         return {text:text, suggestions:[]}; },
+         var text = this.props.$inputNode.val();
+         return {focus:-1, suggestions:[], text:text}; },
        shouldComponentUpdate: function(nextProps, nextState) {
-         LOG.debug("SearchSuggest shouldComponentUpdate",
+         LOG.debug("SearchSuggest shouldUpdate",
                    this.state, nextState,
                    0 !== nextState.suggestions.length,
                    this.state.text !== nextState.text,
+                   nextState.cancel ||
                    0 !== nextState.suggestions.length ||
                    this.state.text !== nextState.text);
          // Render only if suggestions have changed
          // or if the user just selected something.
-         return 0 !== nextState.suggestions.length ||
+         return nextState.cancel ||
+           0 !== nextState.suggestions.length ||
            this.state.text !== nextState.text ;
        },
        render: function() {
@@ -397,57 +395,144 @@ function searchSuggestInit() {
            $.map(
              this.state.suggestions,
              function(n,i) {
+               var className = (i === rThis.state.focus) ?
+                   "search_suggest search_suggest_selected" :
+                   "search_suggest";
                return React.DOM.li(
-                 {className:"search_suggest",
+                 {className:className,
                   onClick:rThis.handleClickSuggestion}, n); }) ); },
+       componentDidUpdate: function(prevProps, prevState) {
+         LOG.debug("SearchSuggest didUpdate", this.state);
+         if (this.state.cancel) { this.setState({cancel:false}); }
+       },
 
+       cancel: function() {
+         LOG.debug("SearchSuggest cancel", this.state);
+         // Clear any timers.
+         clearTimeout($.data(this, 'timer'));
+         this.setState({cancel:true, focus:-1, suggestions:[],
+                        text:this.props.$inputNode.val()}); },
        handleClickSuggestion: function(evt) {
          var text = $(evt.target).text();
          LOG.debug("SearchSuggest click suggestion", this.state.text, text);
-         this.props.inputNode.val(text);
-         this.props.inputNode.focus();
-         this.setState({text:text, suggestions:[]});
-         return false;
+         this.props.$inputNode.val(text);
+         this.props.$inputNode.focus();
+         this.cancel();
        },
-       setText: function(nextText, pos) {
+       handleKeydown: function(evt) {
+         var focus = this.state.focus;
+         switch(evt.which) {
+
+         case 13: // enter or return
+           if (focus < 0) { return true; }
+           LOG.debug("SearchSuggest keydown select",
+                     this.state.suggestions, focus);
+           this.props.$inputNode.val(this.state.suggestions[focus]);
+           this.cancel();
+           // After we return the form will submit.
+           return true;
+           //break;
+
+         case 27: // escape
+           evt.preventDefault();
+           return this.cancel();
+           //break;
+
+         case 38: // up
+           if (!this.state.suggestions.length) { return true; }
+           if (this.state.focus < 0) { return true; }
+           // Virtual focus on suggestion DOM node.
+           LOG.debug("SearchSuggest keydown prev", focus);
+           focus--;
+           LOG.debug("SearchSuggest keydown prev", focus);
+           evt.preventDefault();
+           this.setState({focus:focus});
+           return false;
+           //break;
+
+         case 40: // down
+           // Force suggestions.
+           if (!this.state.suggestions.length) { return this.suggest(true); }
+           // Virtual focus on suggestion DOM node.
+           LOG.debug("SearchSuggest keydown next", focus);
+           focus = Math.min(this.state.suggestions.length - 1, 1 + focus);
+           LOG.debug("SearchSuggest keydown next", focus);
+           evt.preventDefault();
+           this.setState({focus:focus});
+           return false;
+           //break;
+
+         default:
+           return true; } },
+       handleKeyPress: function(evt) {
+         LOG.debug("SearchSuggest keypress", evt, evt.which);
+         switch(evt.which) {
+         case  0: // meta keys
+         case 13: // enter or return
+         case 27: // escape
+         case 38: // up
+         case 40: // down
+           return true;
+           //break;
+         default:
+           return this.suggest(); } },
+       handlePaste: function(evt) { this.suggest(); },
+
+       suggest: function(force) {
          // Clear any existing idle timer.
          clearTimeout($.data(this, 'timer'));
-         LOG.debug("SearchSuggest input active", new Date(), nextText);
+         var nextText = this.props.$inputNode.val();
+         var pos = this.props.$inputNode.getCursorPosition();
+         LOG.debug("SearchSuggest input active",
+                   new Date(), nextText, nextText.length, force);
          // Debounce input until idle.
+         var delay = force ? 1 : this.props.inputDelay;
          var rThis = this;
          $.data(
            this, 'timer',
            setTimeout(
              function() {
-               LOG.debug("SearchSuggest input idle", new Date(), nextText);
+               LOG.debug("SearchSuggest input idle",
+                         new Date(), delay, rThis.state.text, nextText,
+                         rThis.state.cancel, force);
                setTimeout(
                  function() {
-                   // If nothing has changed, wait.
-                   if (rThis.state.text === nextText) { return; }
-                   LOG.debug("SearchSuggest ready", nextText);
+                   // Skip if cancelled, or no change, or input is too short.
+                   if (rThis.state.cancel ||
+                       nextText.length < 3 ||
+                       (!force && rThis.state.text === nextText &&
+                        rThis.state.suggestions.length)) { return; }
+                   LOG.debug("SearchSuggest ready",
+                             new Date(), delay, nextText, force);
                    // Check with the server.
                    $.getJSON(
                      '/service/suggest',
-                     {substr:nextText, pos:pos},
+                     {pos:pos, substr:nextText,
+                      version:rThis.props.version},
                      function(data, status, xhr) {
-                       LOG.debug('SearchSuggest', data, status, xhr);
+                       LOG.debug('SearchSuggest',
+                                 new Date(), data, status, xhr);
                        rThis.setState({text:nextText, suggestions:data});
                      }); },
-                 rThis.props.inputDelay); },
-             rThis.props.inputDelay));
+                 delay); },
+             delay));
        }});
 
   var $container = $('<div id="search_suggest_container">');
   var inputDelay = 750;
+  var version = $("#version_list").children("option")
+      .filter(":selected").val();
   var widget = React.render(
     React.createElement(SearchSuggest,
-                        {inputDelay:inputDelay, inputNode:$q}),
+                        {inputDelay:inputDelay, $inputNode:$q,
+                         version:version}),
     $container[0]);
 
   // Set up event handler
   var prevText = null;
-  $q.keyup(function(e) {
-    widget.setText($q.val(), $q.getCursorPosition()); });
+  $q.keydown(widget.handleKeydown);
+  $q.keypress(widget.handleKeyPress);
+  $q.on('paste', widget.handlePaste);
 
   $q.attr('autocomplete', 'off');
   $q.parent().append($container);

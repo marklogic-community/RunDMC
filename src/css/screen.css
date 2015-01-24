@@ -3189,7 +3189,7 @@ button.green:hover {
 }
 
 #search_suggest_container {
-    background: none repeat scroll 0% 0% #fff;
+    background: none repeat scroll 0% 0% #FFF;
     border: 1px solid #666;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -3213,6 +3213,10 @@ li.search_suggest {
     line-height: 1.5em;
     padding-top: 0.25em;
     padding-left: 6px;
+}
+
+li.search_suggest_selected {
+    background: none repeat scroll 0% 0% #FF0;
 }
 
 /* screen.css */

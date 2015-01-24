@@ -22,6 +22,8 @@ declare variable $INPUT-NAME-API := 'api' ;
 
 declare variable $INPUT-NAME-API-VERSION := 'v' ;
 
+declare variable $VERSION-DEFAULT := $ml:default-version ;
+
 (: If applicable, translate URIs for XHTML-Tidy'd docs
  : back to the original HTML URI.
  :)
@@ -108,11 +110,17 @@ as element(search:options)
   </options>
 };
 
-(: Convenience function for highlighting and suggest. :)
+(: Convenience functions for highlighting and suggest. :)
+declare function ss:options($version as xs:string?)
+as element(search:options)
+{
+  ss:options($version, false(), false(), false(), false())
+};
+
 declare function ss:options()
 as element(search:options)
 {
-  ss:options((), false(), false(), false(), false())
+  ss:options(())
 };
 
 declare function ss:options-check()
@@ -452,13 +460,15 @@ as xs:string
 
 (: Given a substring, suggest $count values. :)
 declare function ss:suggest(
+  $version as xs:string,
   $q as xs:string,
   $count as xs:integer,
   $pos as xs:integer)
 as xs:string*
 {
   if (string-length($q) lt 3) then ()
-  else search:suggest($q, ss:options(), $count, max((1, $pos)))
+  else search:suggest(
+    $q, ss:options($version), $count, max((1, $pos)))
 };
 
 (: search.xqm :)

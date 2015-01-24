@@ -326,6 +326,9 @@
     <xsl:apply-templates select="*"/>
   </xsl:template>
 
+  <!-- Do not display api:suggest elements. -->
+  <xsl:template match="api:suggest"/>
+
   <xsl:template mode="page-content"
                 match="api:docs-page">
     <div>
