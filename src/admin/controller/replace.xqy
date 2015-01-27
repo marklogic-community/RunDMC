@@ -7,6 +7,9 @@ import module namespace param="http://marklogic.com/rundmc/params"
 import module namespace ml="http://developer.marklogic.com/site/internal"
        at "../../model/data-access.xqy";
 
+import module namespace admin-ops = "http://marklogic.com/rundmc/admin-ops"
+       at "modules/admin-ops.xqy";
+
 let $params  := param:params()
 let $map     := map:map()
 
@@ -20,7 +23,7 @@ return
     if (normalize-space($existing-doc-path) and doc-available($existing-doc-path))
     then (
            (: Replace the existing document :)
-           xdmp:document-insert($existing-doc-path, $new-doc),
+           admin-ops:document-insert($existing-doc-path, $new-doc),
 
            ml:reset-category-tags($existing-doc-path, $new-doc),
 
