@@ -184,7 +184,7 @@ function execQuestions(url, params, complete) {
 }
 
 var su = window.stackunderflow = {
-    appId: "",
+    appId: "tLFdXCh*Rz*A2zKe17*few((",
     site: "http://stackoverflow.com",
     loaded: function(callback) {
         if (isLoaded) {
