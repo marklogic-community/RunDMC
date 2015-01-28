@@ -2,11 +2,12 @@
      including breadcrumb hierarchy.
 -->
 <navigation xmlns="http://developer.marklogic.com/site/internal">
-  <page display="Documentation" href="/" tooltip="MarkLogic API reference and user guides" api-server="yes" use-preferred-version-href="yes"/>
-  <page display="Downloads" href="/products" tooltip="This is the stuff!">
+  <page display="Documentation" href="/" api-server="yes" use-preferred-version-href="yes"/>
+  <page display="Downloads" href="/products">
     <group display="DOWNLOADS">
       <group display="Server">
-        <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
+        <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
+        <page display="7.0" href="/products/marklogic-server/7.0" hide="yes" />
         <page display="6.0" href="/products/marklogic-server/6.0" hide="yes" />
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
       </group>
@@ -40,7 +41,7 @@
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-6.0"/>
     <generic-page display="Requirements" href="/products/marklogic-server/requirements-7.0"/>
   </page>
-  <page display="Tutorials" href="/learn" tooltip="Learn by doing">
+  <page display="Tutorials" href="/learn">
     <Article type="Tutorial"/>
     <!-- TBD: automate this stuff below -->
     <generic-page display="Learning the MarkLogic Java API" href="/learn/java" tutorial="yes" hide="yes"/>
@@ -89,7 +90,7 @@
     <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/next-steps" hide="yes"/>
 
   </page>
-  <page display="Tools" href="/code" tooltip="MarkLogic-related projects, tools, sample apps, and open-source code" closed="yes">
+  <page display="Tools" href="/code" closed="yes">
     <group display="Tools &amp; Open Source Projects">
       <group display="Debugging, profiling, and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
@@ -216,7 +217,7 @@
     </group>
   </page>
   -->
-  <page display="Blog" href="/blog" closed="yes" tooltip="News, events, technical blog posts, etc.">
+  <page display="Blog" href="/blog" closed="yes">
     <group display="">
       <group display="All Posts">
         <blog-posts-grouped-by-date/>
@@ -229,7 +230,7 @@
       </group>
     </group>
   </page>
-  <page display="Q&amp;A" href="/qa" tooltip="Stack Overflow and mailing lists">
+  <page display="Q&amp;A" href="/qa">
     <group display="">
       <group display="Q&amp;A">
         <page display="Stack Overflow" href="/qa"/>
@@ -240,7 +241,7 @@
       </group>
     </group>
   </page>
-  <page display="People" href="/meet" tooltip="Who's who and meetups">
+  <page display="People" href="/meet">
     <group display="">
       <group display="People">
         <page display="Supernodes" href="/people/supernodes"/>
@@ -259,7 +260,7 @@
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
   </page>
-  <page display="Labs" href="/labs" tooltip="Experimental work">
+  <page display="Labs" href="/labs">
     <group display="">
         <group display="Labs">
             <page display="MLPHP" href="/labs/mlphp"/>
@@ -268,6 +269,25 @@
             <page display="rxq" href="/labs/rxq"/>
             <page display="MLDotNet" href="/labs/mldotnet"/>
         </group>
+    </group>
+  </page>
+
+  <page display="Features" href="/features" hide="yes">
+    <group display="">
+      <group display="Features">
+        <page display="Native JSON" href="/features/json"/>
+        <page display="Node.js Client API" href="/features/node-client-api"/>
+        <page display="JavaScript" href="/features/javascript"/>
+        <page display="Java Client API" href="/features/java-client-api"/>
+        <page display="Semantics" href="/features/semantics"/>
+        <page display="Management API" href="/features/management-api"/>
+        <page display="Bitemporal" href="/features/bitemporal"/>
+        <page display="Flexible Replication" href="/features/flexrep"/>
+        <page display="Enhanced HTTP Server" href="/features/enhanced-http"/>
+        <page display="Samplestack" href="/features/samplestack"/>
+        <page display="Incremental Backup" href="/features/inc-backup"/>
+        <page display="Prescriptiving Sizing" href="/features/prescriptive-sizing"/>
+      </group>
     </group>
   </page>
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Semantics</h1>
+
+<p>MarkLogic is the world’s only Enterprise Triple Store, managing documents, data, and triples together so you can discover, understand, and make decisions in context. MarkLogic 8 extends the use of standard SPARQL so you can do analytics (aggregates) over triples; explore semantics graphs using property paths; and update semantic triples; all using the standard SPARQL 1.1 language over standard protocols. In addition, MarkLogic 8 lets you discover new facts and relationships with Automatic Inference.</p>
+
+<h3>SPARQL 1.1 Query -- Property Paths</h3>
+<p>SPARQL 1.1's property paths let you traverse an RDF graph -- that is, you can follow a route across a graph.</p>
+<p>You can answer questions like:</p>
+<ul><li>"show me all the people who are connected to Y" by finding people that know Y, and people that know people that know Y, and so on. This is sometimes known as a transitive closure query.</li><li>"show me all the papers that were influenced by X" by finding all papers that cite X, and papers that cite papers that cite X, and so on</li><li>in a triple store that has "parent" relationships ( :John :hasParent :Joe , :Joe :hasParent :Martha), "show me all the ancestors of :John"</li><li>"show me the contents of containers that travelled on a ship that is owned by a member of the board of a company whose headquarters is in China"</li></ul>
+<p>See SPARQL 1.1 Query Language -- Property Paths (<a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#propertypaths">http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#propertypaths</a>).</p>
+<p>In MarkLogic 7 the following SPARQL 1.1 paths are supported:</p>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered margin-top-2">
+    <tbody><tr><th rowspan="1" colspan="1" nowrap="none">Syntax Form</th><th rowspan="1" colspan="1" nowrap="none">Property Path Expression Name</th><th rowspan="1" colspan="1" nowrap="none">Matches</th></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>iri</em></td><td rowspan="1" colspan="1" nowrap="none">PredicatePath</td><td rowspan="1" colspan="1" nowrap="none">An IRI. A path of length one.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>elt1 | elt2</em></td><td rowspan="1" colspan="1" nowrap="none">AlternativePath</td><td rowspan="1" colspan="1" nowrap="none">A alternative path of <em>elt1</em> or <em>elt2</em> (all possibilities are tried).</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>elt1 / elt2</em></td><td rowspan="1" colspan="1" nowrap="none">SequencePath</td><td rowspan="1" colspan="1" nowrap="none">A sequence path of <em>elt1</em> followed by <em>elt2</em>.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>^elt</em></td><td rowspan="1" colspan="1" nowrap="none">InversePath</td><td rowspan="1" colspan="1" nowrap="none">Inverse path (object to subject).</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>(elt)</em></td><td rowspan="1" colspan="1" nowrap="none"></td><td rowspan="1" colspan="1" nowrap="none">A group path elt, brackets control precedence.</td></tr></tbody>
+  </table>
+</div>
+
+<p>In MarkLogic 8.0-EA1 we added support for the following unenumerated paths:</p>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive margin-top-2">
+    <tbody><tr><td rowspan="1" colspan="1" nowrap="none"><em>elt?</em></td><td rowspan="1" colspan="1" nowrap="none">ZeroOrOnePath</td><td rowspan="1" colspan="1" nowrap="none">A path that connects the subject and object of the path by zero or one matches of elt.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>elt+</em></td><td rowspan="1" colspan="1" nowrap="none">OneOrMorePath</td><td rowspan="1" colspan="1" nowrap="none">A path that connects the subject and object of the path by one or more matches of elt.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none"><em>elt*</em></td><td rowspan="1" colspan="1" nowrap="none">ZeroOrMorePath</td><td rowspan="1" colspan="1" nowrap="none">A path that connects the subject and object of the path by zero or more matches of elt.</td></tr></tbody>
+  </table>
+</div>
+
+
+<p>In a current Early Access release (EA2), all SPARQL 1.1 paths are supported except negation (!).</p>
+<p>You should run SPARQL queries with property paths over your own triples data (both standalone triples and triples embedded in some XML documents), <em>and</em> use the property paths that are useful to you.</p>
+<p>You should try the following:</p>
+<ul><li>SPARQL queries with property paths over a large number of triples</li><li>SPARQL queries with property paths over a large number of triples in a cluster – at least 3 D-nodes</li><li>SPARQL queries with property paths as part of a complex SPARQL query</li><li>SPARQL queries with property paths plus a cts:query parameter to restrict results to only some documents (a combination query) – e.g. restrict to a collection or directory</li></ul>
+<p>We’re looking for feedback on:</p>
+<ul><li>performance – how is the performance over real-world data with real-world property paths?</li><li>functionality – what other graph traversal do you want to do in SPARQL?</li></ul>
+<h3>SPARQL 1.1 Query – Property Paths – Examples</h3>
+<p><a href="/wp-content/uploads/2014/08/SPARQL-paths-examplesEA2.pdf">SPARQL paths examplesEA2</a></p>
+<h3>SPARQL 1.1 Query – Aggregates</h3>
+<p>With aggregate SPARQL functions you can do simple analytic queries over triples.<br clear="none"/>
+MarkLogic 8 will support all the SPARQL 1.1 Aggregate functions – COUNT, SUM, MIN, MAX, and AVG – as well as the grouping operations GROUP BY, GROUP BY .. HAVING, GROUP_CONCAT and SAMPLE.<br clear="none"/>
+See the W3C recommendation at <a href="http://www.w3.org/TR/sparql11-query/#aggregates">http://www.w3.org/TR/sparql11-query/#aggregates</a>.</p>
+<p>Aggregate functionality includes:</p>
+<ul><li>GROUP BY</li><li>COUNT</li><li>SUM</li><li>MIN</li><li>MAX</li><li>SAMPLE</li><li>AVG</li><li>GROUP_CONCAT</li><li>GROUP BY .. HAVING &lt;some aggregate variable&gt;</li><li>ORDER BY &lt;some aggregate variable&gt;</li><li>GROUP BY &lt;more than one item&gt;</li></ul>
+<p>You should run SPARQL queries over your own triples data (both standalone triples and triples embedded in some XML documents), and use the aggregate functions that are useful to you.</p>
+<p>You should try the following:</p>
+<ul><li>SPARQL queries with aggregates over a large number of triples</li><li>SPARQL queries with aggregates over a large number of triples in a cluster – at least 3 D-nodes</li><li>SPARQL queries with aggregates as part of a complex SPARQL query</li><li>SPARQL queries with aggregates plus a cts:query parameter to restrict results to only some documents (a combination query) – e.g. restrict to a collection or directory</li></ul>
+<p>We’re looking for feedback on:</p>
+<ul><li>performance – how is the performance over real-world data with real-world aggregates?</li><li>functionality – what other aggregate functions do you want to use in SPARQL?</li></ul>
+<h3>SPARQL 1.1 Query – Aggregates – Examples</h3>
+<p>Formatted examples at: <a href="/wp-content/uploads/2014/09/SPARQL-aggregates-examples-EA2.pdf">SPARQL aggregates examples-EA2</a> [Note: updated for EA2]</p>
+<h3>SPARQL 1.1 Query – Update – Graph Update</h3>
+<p>Delete, insert, and update (delete/insert) triples using the SPARQL 1.1 Update language. The following commands are supported in EA2:</p>
+<ul><li>INSERT DATA</li><li>DELETE DATA</li><li>DELETE .. INSERT WHERE</li><li>DELETE WHERE</li><li>INSERT WHERE</li><li>CLEAR</li></ul>
+<p>Note that there is no UPDATE command in SPARQL 1.1 Update! To change a triple or set of triples, use the DELETE .. INSERT WHERE command. This will delete and insert triples in the same transaction, but the things you delete aren’t necessarily the same as the things you insert – if you want that kind of update functionality, you need to write the DELETE .. INSERT WHERE appropriately.</p>
+<p>Per the SPARQL 1.1 Update spec there are two “shapes” of command here – INSERT DATA and DELETE DATA will insert and delete a specific triple, while DELETE .. INSERT WHERE lets you specify a pattern to match against. If you want to just delete triples, but you want to delete according to a pattern, use DELETE .. INSERT WHERE without the optional INSERT clause. Similarly, if you want to just insert triples, but you want to insert according to a pattern, use DELETE .. INSERT WHERE without the optional DELETE clause. See http://www.w3.org/TR/sparql11-update/#updateLanguage for details.</p>
+<p>The only SPARQL 1.1 Update – Graph Update command not supported in this release is LOAD. LOAD doesn’t add anything to the Graph Store HTTP Protocol commands that are supported in MarkLogic 7 – see “Addressing the Graph Store” at http://docs.marklogic.com/guide/semantics/loading#id_39864.</p>
+<p>Examples: see <a href="/wp-content/uploads/2014/08/SPARQL-update-examples-EA2.pdf">SPARQL update examples-EA2</a></p>
+<h3>SPARQL 1.1 Update – Graph Management</h3>
+<p>Manipulate RDF graphs using the SPARQL 1.1 Update language. The following commands are supported:</p>
+<ul><li>CREATE – create a graph</li><li>DROP – drop a graph and its contents</li><li>COPY – make the destination graph into a copy of the source graph; any content in the destination graph before this operation will be removed (think copy/paste)</li><li>MOVE – move the contents of the source graph into the destination graph, and remove them from the source graph; any content in the destination graph before this operation will be removed (think cut/paste)</li><li>ADD – add the contents of the source graph into the destination graph; keep the source graph intact; keep the initial contents of the destination graph intact</li></ul>
+<p>Graph-level security is enforced for SPARQL and XQuery/JavaScript operations. In EA2 graphs are created with the default permissions of the creating user – NEW IN EA3, you can specify/change permissions on a graph.</p>
+<p>Examples: see <a href="/wp-content/uploads/2014/08/SPARQL-update-examples-graph-EA2.pdf">SPARQL update examples-graph-EA2</a></p>
+<h3>Automatic Inference</h3>
+<p>Infer new triples automatically by specifying one or more rulesets. Rules are applied at query-time (for backward-chaining inference). Rulesets for RDFS, RDFS-Plus, OWL-Horst, and their subsets are supplied; and you can create your own.</p>
+<p>To see the available rulesets, go to your MarkLogic install directory, then go to the Config directory under that. You’ll see a set of files with a .rules extension. Each file here is a ruleset. If you open one in a text editor you’ll see the rulesets are componentized – that is, they are defined in small component rulesets, then built up into larger rulesets using import. Inferencing is quite expensive – this “building block” approach means you can enable only the rules you really need for each query.<br clear="none"/>
+This is an important consideration – for best performance, you should only apply the rules that you need to apply.</p>
+<p>You can set a default ruleset for a database, and supplement or override that default on a per-query basis.</p>
+<p>In this release (EA3), there are 3 “flavors” for each of the top-level rulesets.</p>
+<ul><li>xxx-full.rules – the full ruleset according the appropriate specification.<br clear="none"/>
+owl-horst-full.rules, rdfs-plus-full.rules, rdfs-full.rules.</li><li>xxx-opt.rules (in EA3 only) – the most highly-optimized ruleset that approximates the specification.<br clear="none"/>
+owl-horst-opt.rules, rdfs-plus-opt.rules, rdfs-opt.rules.</li><li>xxx.rules – a partially-optimized ruleset – closer to the specification than xxx-opt.rules, but more highly optimized than xxx-full.rules.<br clear="none"/>
+owl-horst.rules, rdfs-plus.rules, rdfs.rules.</li></ul>
+<p><strong>New built-ins for inference</strong></p>
+<p>In the worked examples we’ll use a couple of new built-ins – sem:store() and sem:ruleset-store() – to define the universe of triples over which we want to query. The store definition may include a ruleset, and it may contain other ways of restricting a query’s domain such as a cts:query.</p>
+<p>The signatures for the new functions are reproduced below, from the MarkLogic 8 docs.<br clear="none"/>
+The worked examples show how to use these built-ins to specify a ruleset for inference. The ruleset is specified with each query: in a future release you’ll be able to specify a default ruleset for all queries against a database.</p>
+<pre xml:space="preserve">sem:store(
+   [$options as xs:string*],
+   [$query as cts:query?]
+) as sem:store</pre>
+<p><strong>Summary</strong></p>
+<p>Returns a sem:store value that queries from the current database’s triple index restricted by the cts:query argument when passed to sem:sparql() or sem:sparql-update() as part of the options argument.</p>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive margin-top-2">
+    <tbody><tr><th colspan="2" rowspan="1" nowrap="none">Parameters</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">$options</td><td rowspan="1" colspan="1" nowrap="none">Options as a sequence of string values. Available options are:<br clear="none"/>
+      <strong>“any”</strong><br clear="none"/>
+      Values from any fragment should be included.<br clear="none"/>
+      <strong>“document”</strong><br clear="none"/>
+      Values from document fragments should be included.<br clear="none"/>
+      <strong>“properties”</strong><br clear="none"/>
+      Values from properties fragments should be included.<br clear="none"/>
+      <strong>“locks”</strong><br clear="none"/>
+      Values from locks fragments should be included.<br clear="none"/>
+      <strong>“checked”</strong><br clear="none"/>
+      Word positions should be checked when resolving the query.<br clear="none"/>
+      <strong>“unchecked”</strong><br clear="none"/>
+      Word positions should not be checked when resolving the query.<br clear="none"/>
+      <strong>“size=number of MB”</strong><br clear="none"/>
+      The maximum size of the memory used to cache inferred triples. This defaults to the default inference size set for the app-server. If the value provided is bigger than the maximum inference size set for the app-server, an error is raised [XDMP-INFSIZE].<br clear="none"/>
+      <strong>“no-default-rulesets”</strong><br clear="none"/>
+      Don't apply the database's default rulesets to the sem:store.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$query</td><td rowspan="1" colspan="1" nowrap="none">Only include triples in fragments selected by the cts:query. The triples do not need to match the query, but they must occur in fragments selected by the query. The fragments are not filtered to ensure they match the query, but instead selected in the same manner as “unfiltered” cts:search operations. If a string is entered, the string is treated as a cts:word-query of the specified string.</td></tr></tbody>
+  </table>
+</div>
+<p><strong>sem:ruleset-store</strong></p>
+<pre xml:space="preserve">sem:ruleset-store(
+   $locations as xs:string*,
+   [$store as sem:store*],
+   [$options as xs:string*]
+) as sem:store</pre>
+<p><strong>Summary</strong></p>
+<p>Returns a sem:store value that answers queries from the set of triples derived by applying the ruleset to the triples in the sem:store values provided in $store.</p>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-responsive margin-top-2">
+    <tbody><tr><th colspan="2" rowspan="1" nowrap="none">Parameters</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">$locations</td><td rowspan="1" colspan="1" nowrap="none">The locations of the rulesets.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$store</td><td rowspan="1" colspan="1" nowrap="none">The base store(s) to apply the ruleset over to get inferred triples.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$options</td><td rowspan="1" colspan="1" nowrap="none">Options as a sequence of string values. Available options are: <strong>“size=number of MB”</strong> The maximum size of the memory used to cache inferred triples. This defaults to the default inference size set for the app-server. If the value provided is bigger than the maximum inference size set for the app-server, an error is raised [XDMP-INFSIZE].</td></tr></tbody>
+  </table>
+</div>
+<p><strong>Required Privileges</strong></p>
+<p><span style="color: #666666;"> http://marklogic.com/xdmp/privileges/sem-sparql</span></p>
+<p><strong>New signature for sem:sparq() and sem:sparql-update()</strong></p>
+<p>Note that the signatures for sem:sparql() and sem:sparql-update() have been changed for this release.<br clear="none"/>
+For example, $cts:query is no longer a parameter – it’s defined as part of sem:store.<br clear="none"/>
+The new signature for sem:sparql() is:</p>
+<pre xml:space="preserve">sem:sparql(
+   $sparql as xs:string,
+   [$bindings as map:map?],
+   [$options as xs:string*],
+   [$store as sem:store*]
+) as item()*</pre>
+<p>The old (MarkLogic 7.x) signature for sem:sparql() has been retained for backwards-compatibility, but has been deprecated.</p>
+<p>For Inference examples: see <a title="SPARQL-inference-examples-EA3-2.pdf" href="http://ea.marklogic.com/wp-content/uploads/2014/12/SPARQL-inference-examples-EA3-2.pdf" target="_blank">SPARQL inference examples-EA3</a></p>
+</ml:page>

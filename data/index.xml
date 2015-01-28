@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <div class="home">
+  <div class="home container-fluid">
 
-    <section class="form-group search row">
-      <div class="col-md-8 col-md-offset-2">
-        <form method="get" ml:action="/search" class="input-group">
-          <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class="form-control"/>
+    <div class="section-row">
+      <div class="container">
+        <div class="row">
+          <div class="col col-xs-12">
+            <form method="get" ml:action="/search" class="search-wrapper">
+              <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class=""/>
 
-          <span id="mag" class="input-group-btn">
-            <button class="btn btn-default glyphicon glyphicon-search"></button>
-          </span>
-        </form>
-      </div>
-    </section>
-    <div class="row">
-      <div class="col-md-1"></div>
-      <div class="vidwrap col-md-5" rel="3mOCOrFQ_N0">
-        <div class="still" id="what-is-still">
-          <a href="http://www.youtube.com/embed/3mOCOrFQ_N0?autoplay=1&amp;rel=0&amp;vq=hd720">
-            <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
-          </a>
+              <span id="mag" class="input-group-btn">
+                <button class="btn btn-search glyphicon glyphicon-search"></button>
+              </span>
+            </form>
+          </div>
         </div>
       </div>
-      <div class="col-md-5">
-        <h2>MarkLogic 8</h2>
-        <h3>Enterprise NoSQL Database Platform</h3>
-        <div style="width: 390px">
-          <p>Natively store and manage JSON, XML, and RDF -- all in one unified platform. MarkLogic 8 has the NoSQL agility you need with all the right APIs, Server-side JavaScript query capability, and innovative features such as Semantics, Bitemporal, and Alerting. It also has ACID transactions, certified security, and other enterprise features you require to take mission-critical applications into production.</p>
-        </div>
-        <div style="padding-top: 10px; width: 500px">
-          <button class="btn btn-primary" data-url="/products" id="download-button">Free Download</button>
+    </div>
+    <div class="section-row main-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col col-xs-5" rel="3mOCOrFQ_N0">
+            <div class="still" id="what-is-still">
+              <a href="http://www.youtube.com/embed/3mOCOrFQ_N0?autoplay=1&amp;rel=0&amp;vq=hd720">
+                <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
+              </a>
+            </div>
+          </div>
+          <div class="col col-xs-offset-1 col-xs-5">
+            <h1>MarkLogic 8</h1>
+            <p class="lead">Enterprise NoSQL Database Platform</p>
+            <p>Natively store and manage JSON, XML, and RDF -- all in one unified platform. MarkLogic 8 has the NoSQL agility you need with all the right APIs, Server-side JavaScript query capability, and innovative features such as Semantics, Bitemporal, and Alerting. It also has ACID transactions, certified security, and other enterprise features you require to take mission-critical applications into production.</p>
+            <p>
+              <a class="btn btn-default btn-sm" href="/products" id="download-button">Free Download</a>
+            </p>
+          </div>
         </div>
       </div>
-      <div class="col-md-1"></div>
     </div>
     <style>
       .hp-promotion-wrapper {
@@ -102,91 +106,119 @@
 
     </style>
 
-    <div class="row new-features">
-      <h2 class="col-md-offset-1 col-md-4">New Features in MarkLogic 8</h2>
-      <a class="col-md-4 text-uppercase">Release Notes</a>
-    </div>
+    <div class="section-row">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="#" class="a-cta cta-sm middle">Release Notes</a></h2>
+          </div>
+        </div>
 
-    <div class="row features">
-      <a href="/features/json" class="col-md-1 col-md-offset-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">JSON</p>
-      </a>
-      <a href="/features/node" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Node.js Client API</p>
-      </a>
-      <a href="/features/javascript" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Server-side JavaScript</p>
-      </a>
-      <a href="/features/java" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Java API</p>
-      </a>
-      <a href="/features/semantics" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Semantics</p>
-      </a>
-      <a href="/features/management-api" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Management API</p>
-      </a>
-      <a href="/features/bitemporal" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Bitemporal</p>
-      </a>
-      <a href="/features/flexrep" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Flexible Replication</p>
-      </a>
-      <a href="/features/enhanced-http" class="col-md-1">
-        <img src="/media/json.png"/>
-        <p class="text-uppercase text-center">Enhanced HTTP Server</p>
-      </a>
+        <div class="row">
+          <ul class="new-features">
+            <li>
+              <a href="/features/json" class="col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/json.svg"/>
+                <p class="text-uppercase text-center">JSON</p>
+              </a>
+            </li>
+            <li>
+              <a href="/marklogic-for-node" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/node.svg"/>
+                <p class="text-uppercase text-center">Node.js Client API</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/javascript" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/javascript.svg"/>
+                <p class="text-uppercase text-center">Server-side JavaScript</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/java-client-api" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/java-api.svg"/>
+                <p class="text-uppercase text-center">Java API</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/semantics" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/semantics.svg"/>
+                <p class="text-uppercase text-center">Semantics</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/management-api" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/management-api.svg"/>
+                <p class="text-uppercase text-center">Management API</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/bitemporal" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/bitemporal.svg"/>
+                <p class="text-uppercase text-center">Bitemporal</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/flexrep" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/flexrep.svg"/>
+                <p class="text-uppercase text-center">Flexible Replication</p>
+              </a>
+            </li>
+            <li>
+              <a href="/features/enhanced-http" class="col-md-1 col-sm-1 col-xs-4">
+                <img class="feature-icon" src="/media/features/enhanced-http.svg"/>
+                <p class="text-uppercase text-center">Enhanced HTTP Server</p>
+              </a>
+            </li>
+          </ul>
+        </div>
 
-    </div>
 
-    <hr/>
 
-    <div class="row learn-more">
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
-        <h3>Samplestack</h3>
-        <p>Build a three-tiered sample application that demostrates key
-          MarkLogic concepts using the latest features.</p>
-        <a class="btn btn-primary">Learn More</a>
-      </div>
-
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
-        <h3>Free Training</h3>
-        <p>Hands-on, instructor-led training to teach everything from the
-          basics to advanced application development.</p>
-        <a class="btn btn-primary">Learn More</a>
-      </div>
-
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
-        <h3>Semantics Tutorial</h3>
-        <p>Learn how to get more context to your data by using RDF triples
-          and querying them with SPARQL.</p>
-        <a class="btn btn-primary">Learn More</a>
-      </div>
-
-      <div class="col-md-3">
-        <img src="/media/samplestack-screenshot.png"/>
-        <h3>Deploy on AWS</h3>
-        <p>Get going in minutes with MarkLogic in the Amazon cloud using the
-          provided AMIs and Cloud Formation templates.</p>
-        <a class="btn btn-primary">Learn More</a>
       </div>
     </div>
 
-    <hr/>
+    <div class="section-row">
+      <div class="container">
 
-    <div class="row">
-      <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4">Connect: Join the Developer List</a>
+        <div class="row learn-more">
+          <div class="col-xs-3">
+            <img src="/media/samplestack-and-icon.png"/>
+            <h4><a href="/features/samplestack">Samplestack</a></h4>
+            <p>Build a three-tiered sample application that demostrates key
+              MarkLogic concepts using the latest features.</p>
+            <p><a href="/features/samplestack" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+          </div>
+
+          <div class="col-xs-3">
+            <img src="/media/qconsole-notebook.png"/>
+            <h4><a href="https://mlu.marklogic.com/registration/">Free Training</a></h4>
+            <p>Hands-on, instructor-led training to teach everything from the
+              basics to advanced application development.</p>
+            <p><a href="https://mlu.marklogic.com/registration/" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+          </div>
+
+          <div class="col-xs-3">
+            <img src="/media/qconsole-semantics.png"/>
+            <h4><a href="/learn/semantics-exercises">Semantics Tutorial</a></h4>
+            <p>Learn how to get more context to your data by using RDF triples
+              and querying them with SPARQL.</p>
+            <p><a href="/learn/semantics-exercises" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+          </div>
+
+          <div class="col-xs-3">
+            <img src="/media/amazon.png"/>
+            <h4><a href="//docs.marklogic.com/guide/ec2/GettingStarted">Deploy on AWS</a></h4>
+            <p>Get going in minutes with MarkLogic in the Amazon cloud using the
+              provided AMIs and Cloud Formation templates.</p>
+            <p><a href="//docs.marklogic.com/guide/ec2/GettingStarted" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row page-cta-wrapper">
+      <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4 col-xs-12">Connect: Join the Developer List</a>
     </div>
 
   </div>

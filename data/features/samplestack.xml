@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Samplestack</h1>
+
+<p>Samplestack is a comprehensive sample application that is the best way to learn how to build a MarkLogic application effectively. It is intended as a tool for exploration, reference, and extension. Start by visiting the <a href="https://github.com/marklogic/marklogic-samplestack">GitHub site</a> where Samplestack is being developed publicly as an open-source project under the Apache 2.0 license. <a href="https://github.com/marklogic/marklogic-samplestack/blob/master/CONTRIBUTING.md">Contribute pull requests</a>, provide feedback and participate in the conversation through <a href="https://github.com/marklogic/marklogic-samplestack/issues">issue reports</a> in the GitHub repository. You can also track features and bug fixes that are on our roadmap.</p>
+
+<p>We built each application feature to demonstrate powerful and unique MarkLogic concepts. Even though it's a sample application, Samplestack has enterprise-grade features such as <a href="http://pubs.marklogic.com:8011/8.0/guide/app-dev/transactions?hq=transaction#chapter">transactional multi-document commits</a> and <a href="http://pubs.marklogic.com:8011/8.0/guide/security/role?hq=role-based%20security#chapter">role-based security</a>.</p>
+
+<p>In this release, the Java Samplestack is nearly complete, with the following features implemented from database server to browser. The Node.js Samplestack is in progress. Follow along on GitHub as active development continues.</p>
+
+
+<table class="table table-striped table-bordered table-responsive margin-top-2" style="height: 121px;">
+  <tbody><tr><td rowspan="1" colspan="1" nowrap="none"><strong>Samplestack Application Feature</strong></td><td rowspan="1" colspan="1" nowrap="none"><strong>MarkLogic Concept</strong></td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Full-text Search</td><td rowspan="1" colspan="1" nowrap="none">Indexes, query styles</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">User records and Q&amp;A documents</td><td rowspan="1" colspan="1" nowrap="none">Data Model for JSON and POJOs</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Users &amp; Roles (log in, log out)</td><td rowspan="1" colspan="1" nowrap="none">Security (authentication and authorization)</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Restricted Content</td><td rowspan="1" colspan="1" nowrap="none">Role-based Permissions</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Facets</td><td rowspan="1" colspan="1" nowrap="none">Search constraints, analytics</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Ask, Answer, Comment</td><td rowspan="1" colspan="1" nowrap="none">Document updates</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Voting</td><td rowspan="1" colspan="1" nowrap="none">Updates impact search relevance</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">Accepted Answers &amp; Reputation</td><td rowspan="1" colspan="1" nowrap="none">Transactional model, data integrity</td></tr></tbody>
+</table>
+
+<h3>Deeper Dive</h3>
+<p>Focus on the middleware and its use of MarkLogic's client APIs:</p>
+<ul><li>View the database configurations and the application code to see how Java/Spring middle tier consumes the data services provided by the MarkLogic database via the Java API.</li><li><em>Coming soon: </em>Browse the Node.js middle tier to get a feel for how the Node.js API provides access to MarkLogic's built-in search and security features.</li></ul>
+<p><span style="line-height: 1.4285715;">In order to make Samplestack relevant to your development environment, we’ve also included components for the last mile of application development for a richer, hands-on experience:</span></p>
+<ul><li>Build: Gradle is used for deployment and configuration automation of the Java middle tier. Gulp is the tool used to automate building the browser-side components as well as the Node.js middle tier.</li><li>Testing: The project includes unit tests and integration tests that automate orchestration of set-up and tear-down.
+    <ul><li>JUnit is the testing framework for the Java middle tier.</li><li>The Angular.js browser tests are run by <a class="external-link" href="http://nodejs.org/" rel="nofollow">Node.js</a>. Other technologies used for testing include mocha, chai, and sinon.</li></ul>
+  </li></ul>
+<p>Visit the <a class="external-link" href="https://github.com/marklogic/marklogic-samplestack" rel="nofollow">Samplestack repository</a> on GitHub.</p>
+</ml:page>

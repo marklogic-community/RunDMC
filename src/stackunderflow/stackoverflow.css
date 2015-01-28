@@ -12,7 +12,7 @@ within an element with the '.se-question-summary' class.
     overflow: hidden;
     padding: 10px 0px;
     width: 730px;
-    /* from .container */    
+    /* from .container */
     margin: 0 auto;
     text-align: left;
     zoom: 1;
@@ -99,8 +99,8 @@ within an element with the '.se-question-summary' class.
     padding: 5px;
     text-align: center;
     float: left;
-    width: 38px;
-    height: 38px;
+    width: 50px;
+    height: 50px;
     font-size: 80%;
 }
 .se-question-summary .se-status strong {
@@ -126,6 +126,7 @@ within an element with the '.se-question-summary' class.
 .se-question-summary .se-summary {
     float: left;
     width: 635px;
+    padding-left: 15px;
 }
 .se-question-summary .se-summary h3 {
     font-size: 130%;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Management API</h1>
+
+<p>In MarkLogic 6 and MarkLogic 7 we embarked down a path of allowing programmatic control of configuration and administration APIs through a powerful set of REST interfaces. In MarkLogic 8 we are taking another major step down that path with the addition of a large number of new RESTful APIs that cover almost all of MarkLogic’s configuration and administration capabilities.</p>
+
+<p>In MarkLogic 8, you can use the expanded REST interfaces for almost all MarkLogic configuration including:</p>
+<ul><li>Topologies : databases, forests, groups, application servers, clusters coupling and decoupling</li><li>Security : users, roles, amps, privileges, and external security</li><li>HA/DR : Local failover, database and flexible replication</li><li>Storage and Backup : Backup and restore, Tiered storage, CPF configuration</li><li>Configuration : SQL views, re/index, merge, bitemporal, inference operations</li><li>Deployment: Host bootstrap manipulation, restart and shutdown operations, packaging</li></ul>
+<p>The new REST interfaces in MarkLogic 8 include endpoints to manage bitemporal, inference, and security collections, to name a few. Almost all MarkLogic configuration is RESTfully scriptable in in version 8.</p>
+
+<p>For more information go to EA documentation: <a href="http://docs-ea.marklogic.com/REST/management">MarkLogic Management API EA3 reference documentation</a> <a href="http://docs-ea.marklogic.com/guide/monitoring/monitoringAPI#id_40621">. </a>or look into the examples in <a class="sectionLink" href="http://docs-ea.marklogic.com/guide/admin-api/cluster#chapter">Scripting Cluster Management</a>, <a href="http://docs-ea.marklogic.com/guide/admin/tiered-storage#id_89432">Overview of the Tiered Storage REST API</a>, and <a class="sectionLink" href="http://docs-ea.marklogic.com/guide/monitoring/monitoringAPI#chapter">Using the Management API</a></p></ml:page>

@@ -122,6 +122,11 @@ if(typeof jQuery != 'undefined') {
 				top: -8
 			});
 		}
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
 		// end utility form stuff
 		$('.post + .pagination',main).clone().insertBefore(main);
 		// comments tab position at right

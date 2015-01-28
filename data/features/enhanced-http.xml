@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<h1>Enhanced HTTP Server</h1>
+
+<p>The Enhanced HTTP server simplifies the out-of-the-box experience with MarkLogic and can improve the performance of client/server interactions. An instance of the Enhanced HTTP server will be running by default and will allow you to use the REST API, custom HTTP, XCC/XDBC (over HTTP) using a single interface.</p>
+
+<p>In MarkLogic 8 our core applications and REST library are configured to take advantage of these features. In addition you may create new HTTP servers and your own declarative rewriter.</p>
+<p>A significant feature is the ability for XCC clients to communicate on the same port as REST and HTTP clients. You can also execute requests with the same features as XCC but without needing to use the XCC library. This is enabled by rules in the rewriter as well as internal server enhancements.</p>
+<ul><li>Ease of use not having to create extra Ports</li><li>Performance Improvements and efficiency for apps (Custom Apps)</li></ul>
+
+<h3>Rewriter Features</h3>
+<p>The XML rewriter is a simple declarative XML format which can replace the need for an XQuery rewriter for many cases. The XML rewriter has many more options for affecting the request environment then the XQuery writer. On the other hand, because it is designed for efficiency it doesnt have the expressive power of XQuery or access to the system function calls, instead a select set of match and evaluation rules are available designed to support a large set of common cases.</p>
+
+<p>The XML rewriter is defined with a simple XML file that contains rules for matching request values and preparing an updated environment for the request. If all the requested updates are accepted then the request precedes with the updated environment, otherwise an error or warning is logged. The XQuery rewriter can only affect the request URI (Path and Query parameters). The XML rewriter can additional change the database, modules database, transaction ID, and other settings that would normally require an “eval-into” in an XQuery application. In some cases (such as requests for static content) the need for using XQuery code can be eliminate entirely for that request while still intercepting requests for dynamic content.</p>
+
+<p>A significant feature is the ability for XCC clients to communicate on the same port as REST and HTTP clients. You can also execute requests with the same features as XCC but without needing to use the XCC library. This is enabled by rules in the rewriter as well as internal server enhancements.</p>
+
+<p>In MarkLogic 8 our core applications and REST library will be shipped configured with an XML rewriter to take advantage of these features. In addition you may create new HTTP servers and your own rewriter.</p>
+
+<h4>Rewriter Overview</h4>
+
+<p>The XML Rewriter fills the same purpose and “slot” in the server as the XQuery rewriter. To use an XML rewriter simply use a “.xml” extension in the rewriter field for the server configuration of any HTTP server. The following diagram outlines the internal processing of a request. This is essentially unchanged from prior versions except that the rewriter can be either an XML or XQuery rewriter.</p>
+
+<p><a href="http://ea.marklogic.com/wp-content/uploads/2014/08/image0011.png"><img class="alignnone wp-image-752 size-medium" src="http://ea.marklogic.com/wp-content/uploads/2014/08/image0011-270x300.png" alt="REWRITER" width="270" height="300"/></a></p>
+
+<p>The evaluator performs an in order traversal of the tree evaluating every rule recursively. For Match rules a condition is evaluated and if true then node is descended and its children evaluated. Evaluation rules, on the other hand, can produce a rewriter modification request. The evaluation stops when either an error, a dispatch or the end of the tree is reached. A dispatch indicates a successful rewrite and all accumulated modifications are passed to the request handler for validation. An error causes a request error, and reaching the end of the tree with no dispatch causes the request to continue unchanged to the original URL.</p>
+
+<p>The following is a summary of rules available.</p>
+
+<p><a href="http://ea.marklogic.com/wp-content/uploads/2014/08/Rewriter-rules.png"><img class="alignnone size-medium wp-image-753" src="http://ea.marklogic.com/wp-content/uploads/2014/08/Rewriter-rules-300x190.png" alt="Rewriter-rules" width="300" height="190"/></a></p>
+
+<h3>Match Rules</h3>
+<table class="table table-striped table-bordered" width="100%">
+  <tbody><tr><th width="25%" rowspan="1" colspan="1" nowrap="none">Element</th><th rowspan="1" colspan="1" nowrap="none">Description</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">rewriter</td><td rowspan="1" colspan="1" nowrap="none">Root element of the rewriter rule tree.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-accept</td><td rowspan="1" colspan="1" nowrap="none">Matches on an HTTP Accept header</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-content-type</td><td rowspan="1" colspan="1" nowrap="none">Matches on an HTTP Content-Type header</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-cookie</td><td rowspan="1" colspan="1" nowrap="none">Match on a cookie</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-execute-privilege</td><td rowspan="1" colspan="1" nowrap="none">Match on the users execute privileges</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-header</td><td rowspan="1" colspan="1" nowrap="none">Match on an HTTP Header</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-method</td><td rowspan="1" colspan="1" nowrap="none">Match on the HTTP Method</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-path</td><td rowspan="1" colspan="1" nowrap="none">Match on the request path</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-role</td><td rowspan="1" colspan="1" nowrap="none">Match on the users assigned roles</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-string</td><td rowspan="1" colspan="1" nowrap="none">Matches a string value against a regular expression</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-query-param</td><td rowspan="1" colspan="1" nowrap="none">Match on a uri parameter (query parameter)</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">match-user</td><td rowspan="1" colspan="1" nowrap="none">Match on a user name, id or default user</td></tr></tbody>
+</table>
+
+<h3>Evaluation Rules</h3>
+<table class="table table-striped table-bordered" width="100%">
+  <tbody><tr><th width="25%" rowspan="1" colspan="1" nowrap="none">Element</th><th rowspan="1" colspan="1" nowrap="none">Description</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">add-query-param</td><td rowspan="1" colspan="1" nowrap="none">Adds a query parameter (name/value) to the query parameters</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">error</td><td rowspan="1" colspan="1" nowrap="none">Structured error generation</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-database</td><td rowspan="1" colspan="1" nowrap="none">Sets the Database</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-error-handler</td><td rowspan="1" colspan="1" nowrap="none">Sets the Error Handler</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-eval</td><td rowspan="1" colspan="1" nowrap="none">Sets the Evaluation mode (eval or direct)</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-modules-database</td><td rowspan="1" colspan="1" nowrap="none">Sets the Modules database</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-modules-root</td><td rowspan="1" colspan="1" nowrap="none">Sets the modules root path</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-path</td><td rowspan="1" colspan="1" nowrap="none">Sets the URI path</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-query-param</td><td rowspan="1" colspan="1" nowrap="none">Set/overwrite query param</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-transaction</td><td rowspan="1" colspan="1" nowrap="none">Sets the transaction</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-transaction-mode</td><td rowspan="1" colspan="1" nowrap="none">Sets the transaction mode</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">set-var</td><td rowspan="1" colspan="1" nowrap="none">Sets a variable in the local scope</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">etrace</td><td rowspan="1" colspan="1" nowrap="none">Trace Events</td></tr></tbody>
+</table>
+
+<h3>Termination Rules</h3>
+<table class="table table-striped table-bordered" width="100%">
+  <tbody><tr><th width="25%" rowspan="1" colspan="1" nowrap="none">Element</th><th rowspan="1" colspan="1" nowrap="none">Description</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">dispatch</td><td rowspan="1" colspan="1" nowrap="none">Stop evaluation and dispatch with all rewrite commands</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">error</td><td rowspan="1" colspan="1" nowrap="none">Terminates evaluation with an error</td></tr></tbody>
+</table>
+
+<h3>System (read only) variables.</h3>
+<table class="table table-striped table-bordered" width="100%">
+  <tbody><tr><th width="25%" rowspan="1" colspan="1" nowrap="none">Variable</th><th rowspan="1" colspan="1" nowrap="none">Type(s)</th><th rowspan="1" colspan="1" nowrap="none">Desc / Notes</th></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_cookie.</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">The value of the cookie 
+        <code>&lt;name&gt;</code>
+        . . Only the text value of the cookie is returned, not the extra metadata (path, domain, expires etc.).
+        <br clear="none"/>
+        If the cookie does not exist evaluates as “” Cookie names matched and compared case insensitive.
+        <em>Future: may expose substructure of the cookie header</em></td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_database[.name]</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">Document database nameuser”);</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_database.id</td><td rowspan="1" colspan="1" nowrap="none">Integer</td><td rowspan="1" colspan="1" nowrap="none">Document database ID</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_defaultuser</td><td rowspan="1" colspan="1" nowrap="none">Boolean</td><td rowspan="1" colspan="1" nowrap="none">True if the authenticated user is the default user</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_method</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">HTTP Method name</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_modules-database[.name]</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">Modules database name This is empty if using the file system for modules.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_modules-database.id</td><td rowspan="1" colspan="1" nowrap="none">Integer</td><td rowspan="1" colspan="1" nowrap="none">Modules database ID The ID is 0 when using the file system for modules.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_modules-root</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">Modules root path</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_path</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">The HTTP request path Not including the query string</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_query-param.</td><td rowspan="1" colspan="1" nowrap="none">List of String</td><td rowspan="1" colspan="1" nowrap="none">The query parameters matching the name as a List of string.</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_request-url</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">The original request URI including path and query parameters</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_user[.name]</td><td rowspan="1" colspan="1" nowrap="none">String</td><td rowspan="1" colspan="1" nowrap="none">User Name</td></tr><tr><td rowspan="1" colspan="1" nowrap="none">$_user.id</td><td rowspan="1" colspan="1" nowrap="none">Integer</td><td rowspan="1" colspan="1" nowrap="none">User ID</td></tr></tbody>
+</table>
+
+<div>
+  <p>Some examples of simple rewriters:
+    <br clear="none"/>
+    Redirect a request by removing an initial prefix(/dir)</p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter"&gt;
+  &lt;match-path matches="^/dir(/.+)&gt;
+    &lt;dispatch&gt;$1&lt;/dispatch&gt;
+  &lt;/match-path&gt;
+&lt;/rewriter&gt;</pre>
+  <p>For GET and PUT requests only, if the a query parameter named “path” is exactly “/admin” then redirect to “/private/admin.xqy” otherwise use the value of the parameter for the redirect.
+    <br clear="none"/>
+    If no “path” query parameter then do not change the request</p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter"&gt;
+  &lt;match-method any-of="GET PUT"&gt;
+    &lt;!-- match by name/value --&gt;
+    &lt;match-query-param name="path" value="/admin"&gt;
+      &lt;dispatch&gt;/private/admin.xqy&lt;/dispatch&gt;:
+    &lt;/match-query-param&gt;
+    &lt;!-- match by name use value --&gt;
+    &lt;match-query-param name="path"&gt;
+      &lt;dispatch&gt;$0&lt;/dispatch&gt;:
+    &lt;/match-query-param&gt;
+  &lt;/match-method&gt;
+&lt;/rewriter&gt;</pre>
+  <p>If a query parameter named <var>"data"</var> is present then set the database to <var>“UserData”</var>. If a query parameter <var>“module”</var> is present then set the modules database to <var>“UserModule”</var>. If the path starts /users/ and ends with /version(version id) then extract the next path component ($1), append it to /app and add a query parameter <var>“version”</var> with the version ID.</p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter"&gt;
+  &lt;match-query-param name="data"&gt; 
+    &lt;set-database&gt;UserData&lt;/set-database&gt;
+  &lt;/match-query-param&gt;
+  &lt;match-query-param name="module"&gt; 
+    &lt;set-modules-database&gt;UserModule&lt;/set-modules-database&gt;
+  &lt;/match-query-param&gt;
+  &lt;match-path match="^/users/([^/]+)/version(.+)%"&gt;
+    &lt;set-path&gt;/app/$1&lt;/set-path&gt;
+    &lt;add-query-param name="version"&gt;$2&lt;/add-query-param&gt;
+  &lt;/match-path&gt;
+  &lt;dispatch/&gt;
+&lt;/rewriter&gt;</pre>
+  <p>Matching users by name and default user and setting or overwriting a query parameter.</p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter"&gt;
+  &lt;set-query-param name="default"&gt;default-user no match&lt;/set-query-param&gt;
+  &lt;match-user name="admin"&gt;
+    &lt;add-query-param name="user"&gt;admin matched&lt;/add-query-param&gt;
+  &lt;/match-user&gt;
+  &lt;match-user name="infostudio-admin"&gt;
+    &lt;add-query-param name="user"&gt;infostudio-admin matced&lt;/add-query-param&gt;
+  &lt;/match-user&gt;
+    &lt;match-user default-user="true"&gt;
+    &lt;set-query-param name="default"&gt;default-user matched&lt;/set-query-param&gt;
+  &lt;/match-user&gt;
+  &lt;dispatch&gt;/myapp.xqy&lt;/dispatch&gt;
+&lt;/rewriter&gt;</pre>
+  <p>Matching cookies. This properly parses the cookie HTTP header structure so matches can be performed reliably. In this example, the SESSIONID cookie is used to conditionally set the current transaction.</p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter"&gt;
+  &lt;match-cookie name="SESSIONID"&gt;
+    &lt;set-transaction&gt;$0&lt;/set-transaction&gt;
+  &lt;/match-cookie&gt;
+&lt;/rewriter&gt;</pre>
+  <p>User defined variables with local scoping. Set an initial value to the user variable <var>“test”</var>. If the patch starts with <samp>/test/</samp> and contains atleast 2 more path components then reset the <var>“test”</var> variable to the first matching path, and add a query param <var>“var1″</var> to the second matching path. If the role of the user also contains either <var>“admin-builtins”</var> or <var>“app-builder”</var> then rewrite to the path <samp>‘/admin/secret.xqy’</samp>, otherwise add a query param <var>“var2″</var> with the value of the <var>“test”</var> user variable and rewrite to <samp>“/default.xqy”</samp></p>
+  <p>If you change the scoped attribute from true to false, (or remove it), then all the changes within that condition are discarded if the final dispatch to <samp>/admin/secret.xqy</samp> is not reached, leaving intact the initial value for the <var>“test”</var> variable, not adding the <var>“var1″</var> query parameter and dispatching to <samp>/default.xqy</samp></p>
+  <pre xml:space="preserve">&lt;rewriter xmlns="http://marklogic.com/xdmp/rewriter" &gt;
+  &lt;set-var name="test"&gt;initial&lt;/set-var&gt;
+  &lt;match-path matches="^/test/(\w+)/(\w+).*" scoped="true"&gt;
+    &lt;set-var name="test"&gt;$1&lt;/set-var&gt;
+    &lt;set-query-param name="var1"&gt;$2&lt;/set-query-param&gt;
+    &lt;match-role any-of="admin-builtins app-builder"&gt;
+      &lt;dispatch&gt;/admin/secret.xqy&lt;/dispatch&gt;
+    &lt;/match-role&gt;
+  &lt;/match-path&gt;
+  &lt;add-query-param name="var2"&gt;$test&lt;/add-query-param&gt;
+  &lt;dispatch&gt;/default.xqy&lt;/dispatch&gt;
+&lt;/rewriter&gt;</pre>
+</div>
+</ml:page>
