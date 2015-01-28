@@ -266,3 +266,8 @@ a:hover {
 .learn-more img {
   width: 100%;
 }
+
+.page-cta-wrapper {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}

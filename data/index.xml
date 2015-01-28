@@ -221,7 +221,7 @@
 
     <hr/>
 
-    <div class="row">
+    <div class="row page-cta-wrapper">
       <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4 col-xs-12">Connect: Join the Developer List</a>
     </div>
 
