@@ -1,3 +1,4 @@
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <h2>Tutorials</h2>
   <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about <a href="/learn/free-online-training">Free Training</a> offerings.
   </p>
@@ -42,7 +43,8 @@
         <td rowspan="1" colspan="1">
           <ul>
             <li><a href="/try/rest/index">The REST API in 5 minutes</a>
-              <ul></ul><ul>
+              <ul></ul>
+              <ul>
                 <li style="list-style-type: none">
                 </li>
                 <li style="list-style-type:none;">
@@ -178,3 +180,4 @@
     <ml:doc path="/learn/video/qconsole-v7.xml"/>
     <ml:doc path="/learn/video/nagios.xml"/>
   </ml:document-table>
+</ml:page>
