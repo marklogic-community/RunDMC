@@ -32,7 +32,7 @@
             <p class="lead">Enterprise NoSQL Database Platform</p>
             <p>Natively store and manage JSON, XML, and RDF -- all in one unified platform. MarkLogic 8 has the NoSQL agility you need with all the right APIs, Server-side JavaScript query capability, and innovative features such as Semantics, Bitemporal, and Alerting. It also has ACID transactions, certified security, and other enterprise features you require to take mission-critical applications into production.</p>
             <p>
-              <a class="btn btn-default btn-sm" data-url="/products" id="download-button">Free Download</a>
+              <a class="btn btn-default btn-sm" href="/products" id="download-button">Free Download</a>
             </p>
           </div>
         </div>
@@ -178,8 +178,6 @@
       </div>
     </div>
 
-    <hr/>
-
     <div class="section-row">
       <div class="container">
 
@@ -219,9 +217,7 @@
       </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
+    <div class="row page-cta-wrapper">
       <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4 col-xs-12">Connect: Join the Developer List</a>
     </div>
 

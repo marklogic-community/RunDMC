@@ -231,6 +231,13 @@ a:hover {
     background: white;
 }
 
+.home.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .vidbox {
     background: black;
     width: 460px;
@@ -265,4 +272,9 @@ a:hover {
 
 .learn-more img {
   width: 100%;
+}
+
+.page-cta-wrapper {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
