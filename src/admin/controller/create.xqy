@@ -10,6 +10,9 @@ import module namespace param="http://marklogic.com/rundmc/params"
 import module namespace ml="http://developer.marklogic.com/site/internal"
        at "../../model/data-access.xqy";
 
+import module namespace admin-ops = "http://marklogic.com/rundmc/admin-ops"
+       at "modules/admin-ops.xqy";
+
 let $params      := param:params()
 let $new-doc-url := $params[@name eq '~new_doc_url']
 let $map         := map:map()
@@ -22,7 +25,7 @@ let $new-doc     := xdmp:xslt-invoke("../model/form2xml.xsl",
 return
 (
   (: Insert the new document :)
-  xdmp:document-insert($new-doc-url, $new-doc),
+  admin-ops:document-insert($new-doc-url, $new-doc),
 
   ml:reset-category-tags($new-doc-url, $new-doc),
 
