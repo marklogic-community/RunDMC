@@ -207,7 +207,7 @@
           </div>
 
           <div class="col-xs-3">
-            <img src="/media/samplestack-screenshot.png"/>
+            <img src="/media/amazon.png"/>
             <h4><a href="//docs.marklogic.com/guide/ec2/GettingStarted">Deploy on AWS</a></h4>
             <p>Get going in minutes with MarkLogic in the Amazon cloud using the
               provided AMIs and Cloud Formation templates.</p>
