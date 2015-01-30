@@ -5,6 +5,8 @@ module namespace toc="http://marklogic.com/rundmc/api/toc" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace ml="http://developer.marklogic.com/site/internal"
+  at "/model/data-access.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 
@@ -61,6 +63,17 @@ as xs:string
     toc:directory-uri($version),
     "apiTOC_", current-dateTime(),
     ".html")
+};
+
+(: Normally just use the lib name as the prefix,
+ : unless specially configured to do otherwise.
+ :)
+declare function toc:prefix-for-lib(
+  $lib as xs:string)
+as xs:string?
+{
+  (api:namespace($lib)/@prefix,
+    $lib)[1]
 };
 
 declare function toc:functions-map(
@@ -151,13 +164,13 @@ as element()
      :)
     element a {
       attribute href { "/"||$lib },
-      api:prefix-for-lib($lib) },
+      toc:prefix-for-lib($lib) },
     ' functions ('||toc:display-category($cat)||')',
     if (not($secondary-lib)) then () else (
       'and',
       element a {
         attribute href { "/"||$secondary-lib },
-        api:prefix-for-lib($secondary-lib) },
+        toc:prefix-for-lib($secondary-lib) },
       'functions') }
 };
 
@@ -233,12 +246,17 @@ as xs:boolean
     return $num-functions-in-lib eq $num-functions-in-category)
 };
 
-declare function toc:display-suffix($lib as xs:string?)
-  as xs:string?
+declare function toc:display-suffix(
+  $lib as xs:string?,
+  $mode as xs:string)
+as xs:string?
 {
   (: Don't display a suffix for REST categories :)
   if (not($lib) or $lib eq $api:MODE-REST) then ()
-  else concat(' (', api:prefix-for-lib($lib), ':)')
+  else concat(
+    ' (', toc:prefix-for-lib($lib),
+    if ($mode eq $api:MODE-JAVASCRIPT) then '.' else ':',
+    ')')
 };
 
 (: TODO refactor to read directly from zip. :)
@@ -286,7 +304,7 @@ declare function toc:get-summary-for-category(
             case $api:MODE-JAVASCRIPT return 'js/'
             default return '',
             $lib)
-            }">{ api:prefix-for-lib($lib) } library page</a>.
+            }">{ toc:prefix-for-lib($lib) } library page</a>.
             </p> }
 
           (: ASSUMPTION Only REST sub-categories may need this fallback
@@ -312,7 +330,7 @@ declare function toc:get-summary-for-category(
             case $api:MODE-JAVASCRIPT return 'js/'
             default return '',
             $lib)
-            }">{ api:prefix-for-lib($lib) }
+            }">{ toc:prefix-for-lib($lib) }
             functions page</a>.
             </p> }))))
 };
@@ -333,7 +351,7 @@ as element()?
   let $summaries-by-module-cat := $raw-modules[
     @category eq $lib-cat]/apidoc:summary
   (: the most common case :)
-  let $lib-prefix := api:prefix-for-lib($lib)
+  let $lib-prefix := toc:prefix-for-lib($lib)
   let $summaries-by-module-lib := $raw-modules[
     @lib eq $lib-prefix]/apidoc:summary
   (: exceptional ("map") :)
@@ -502,7 +520,7 @@ declare function toc:uri-save(
 as empty-sequence()
 {
   stp:info('toc:uri-save', ($uri, '=>', $location)),
-  xdmp:document-insert($location, element api:toc-uri { $uri })
+  ml:document-insert($location, element api:toc-uri { $uri })
 };
 
 (: Given node state, return appropriate HTML classnames. :)
@@ -870,7 +888,7 @@ as empty-sequence()
       'toc:render', ('inserting', $uri-new)),
     if (map:get($m-seen, $uri-new)) then stp:error('CONFLICT', $uri-new)
     else map:put($m-seen, $uri-new, $uri-new),
-    xdmp:document-insert($uri-new, $n))
+    ml:document-insert($uri-new, $n))
 };
 
 declare function toc:render(
@@ -878,7 +896,7 @@ declare function toc:render(
 as empty-sequence()
 {
   (: Save the location of the new HTML TOC root to the database. :)
-  xdmp:document-insert(
+  ml:document-insert(
     api:toc-uri-location($version),
     text { toc:html-uri($version) }),
   (: Render and insert the new HTML TOC root. :)
@@ -890,7 +908,7 @@ as empty-sequence()
    : Similar to above, except that the URI uses 'default' not $version.
    :)
   if (not($version eq $api:DEFAULT-VERSION)) then () else (
-    xdmp:document-insert(
+    ml:document-insert(
       $api:TOC-URI-DEFAULT,
       text { toc:html-uri('default') }),
     toc:render($version, toc:html-uri('default'), true()))
@@ -1095,13 +1113,14 @@ as xs:string
       switch($mode)
       case $api:MODE-JAVASCRIPT return 'js'
       default return (),
-      if ($is-exhaustive) then $one-subcategory-lib
+      if ($is-exhaustive) then ($one-subcategory-lib treat as item())
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
-        $one-subcategory-lib,
+        $one-subcategory-lib treat as item(),
         toc:path-for-category($category),
         toc:path-for-category($subcategory))
       else (
+        (: This may be empty. :)
         $main-subcategory-lib,
         toc:path-for-category($subcategory))),
     '/')
@@ -1142,9 +1161,10 @@ as element(api:function-name)*
    : This is because these libraries include both built-in and library functions.
    : This affects semantics and temporal.
    :
-   : These are easily detected by looking for names that end with a colon.
+   : These are easily detected by looking for names
+   : that end with a function delimiter.
    :)
-  return $wrapper/api:function-name[not(ends-with(., ':'))]
+  return $wrapper/api:function-name[not(matches(., '[:\.]$'))]
 };
 
 declare function toc:function-node(
@@ -1237,7 +1257,7 @@ as element(toc:node)
      :)
     toc:display-category($subcat)||(
       if (not($one-subcategory-lib and not($single-lib-for-category))) then ()
-      else toc:display-suffix($one-subcategory-lib)),
+      else toc:display-suffix($one-subcategory-lib, $mode)),
     toc:category-href(
       $cat, $subcat,
       $is-exhaustive, $is-REST,
@@ -1316,11 +1336,12 @@ as element(toc:node)+
     else toc:category-href(
       $cat, $cat, $is-exhaustive,
       false(), $mode,
-      if ($is-exhaustive) then $single-lib-for-category else '',
-      if ($is-exhaustive) then '' else $single-lib-for-category))
+      if ($is-exhaustive) then $single-lib-for-category else (),
+      if ($is-exhaustive) then () else $single-lib-for-category))
   return toc:node(
     $bucket-id||'_'||translate($cat, ' ' , ''),
-    toc:display-category($cat)||toc:display-suffix($single-lib-for-category),
+    toc:display-category($cat)
+    ||toc:display-suffix($single-lib-for-category, $mode),
     $href,
     (), (), ('function-list-page'),
     (attribute mode { $mode },
@@ -1513,7 +1534,7 @@ as element(toc:node)
   toc:node(
     concat($lib, '_', toc:id($lib)),
     concat(
-      api:prefix-for-lib($lib),
+      toc:prefix-for-lib($lib),
       if ($mode eq $api:MODE-JAVASCRIPT) then '.' else ':'),
     concat(
       if ($mode eq $api:MODE-JAVASCRIPT) then '/js/' else '/',
@@ -1525,12 +1546,12 @@ as element(toc:node)
       attribute mode { $mode },
 
       element toc:title {
-        api:prefix-for-lib($lib), 'functions' },
+        toc:prefix-for-lib($lib), 'functions' },
       element toc:intro {
         <p xmlns="http://www.w3.org/1999/xhtml">
         The table below lists all the
         {
-          api:prefix-for-lib($lib),
+          toc:prefix-for-lib($lib),
           if ($lib/@built-in) then 'built-in' else 'XQuery library'
         }
         functions (in this namespace:
@@ -1831,7 +1852,7 @@ declare function toc:toc(
 as empty-sequence()
 {
   stp:info('toc:toc', ("Creating new TOC at", $uri)),
-  xdmp:document-insert(
+  ml:document-insert(
     $uri,
     toc:create($version, toc:xsd-docs($xsd-path))),
   stp:info('toc:toc', xdmp:elapsed-time())

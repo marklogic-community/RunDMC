@@ -58,7 +58,7 @@ xdmp:set-response-content-type("text/html"),
         if (queryMatch != null) {{
           query = queryMatch[1];
           //alert(query);
-          window.location.href = "http://developer.marklogic.com/search?q=" + query;
+          window.location.href = "//developer.marklogic.com/search?q=" + query;
         }}
         else window.location.href = "/"; // give up
       }}

@@ -5,6 +5,8 @@ module namespace stp="http://marklogic.com/rundmc/api/setup" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace ml="http://developer.marklogic.com/site/internal"
+  at "/model/data-access.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 
@@ -32,6 +34,22 @@ declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
 declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 
 declare variable $REST-LIBS := ('manage', 'rest-client') ;
+
+declare variable $STOP-WORDS-EN := (
+  'a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also',
+  'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be',
+  'because', 'been', 'but', 'by', 'can', 'cannot', 'could', 'dear',
+  'did', 'do', 'does', 'either', 'else', 'ever', 'every', 'for',
+  'from', 'get', 'got', 'had', 'has', 'have', 'he', 'her', 'hers',
+  'him', 'his', 'how', 'however', 'i', 'if', 'in', 'into', 'is', 'it',
+  'its', 'just', 'least', 'let', 'like', 'likely', 'may', 'me',
+  'might', 'most', 'must', 'my', 'neither', 'no', 'nor', 'not', 'of',
+  'off', 'often', 'on', 'only', 'or', 'other', 'our', 'own', 'rather',
+  'said', 'say', 'says', 'she', 'should', 'since', 'so', 'some',
+  'than', 'that', 'the', 'their', 'them', 'then', 'there', 'these',
+  'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was',
+  'we', 'were', 'what', 'when', 'where', 'which', 'while', 'who',
+  'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your') ;
 
 (: TODO skip for standalone?
  : Right now that works by looking at server-name,
@@ -253,6 +271,24 @@ as element(api:function-link)*
   default return stp:error('UNEXPECTED', $mode)
 };
 
+declare function stp:suggest(
+  $value as item()+,
+  $short as xs:boolean)
+as element(api:suggest)*
+{
+  (if ($short) then $value else (),
+    cts:tokenize($value)[. instance of cts:word])
+  ! lower-case(.)[not(. = $STOP-WORDS-EN)]
+  ! element api:suggest { . }
+};
+
+declare function stp:suggest(
+  $value as item()+)
+as element(api:suggest)*
+{
+  stp:suggest($value, false())
+};
+
 declare function stp:function-extract(
   $version as xs:string,
   $function as element(apidoc:function),
@@ -306,7 +342,9 @@ as element(api:function-page)*
     attribute mode { $mode },
     map:put($uris-seen, $internal-uri, $internal-uri),
     (: For word search purposes. :)
-    element api:function-name { api:fixup-fullname($function, $mode) },
+    api:fixup-fullname($function, $mode) ! (
+      element api:function-name { . },
+      stp:suggest(., true())),
     stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };
@@ -348,7 +386,7 @@ as empty-sequence()
   let $_ := if (not($DEBUG)) then () else stp:debug(
     "stp:function-docs",
     ("inserting", xdmp:describe($doc), 'at', $uri))
-  return xdmp:document-insert($uri, $func)
+  return ml:document-insert($uri, $func)
   ,
   stp:info("stp:function-docs", xdmp:elapsed-time())
 };
@@ -357,7 +395,7 @@ declare function stp:search-results-page-insert()
 as empty-sequence()
 {
   stp:info('stp:search-results-page-insert', 'starting'),
-  xdmp:document-insert(
+  ml:document-insert(
     "/apidoc/do-search.xml",
     <ml:page xmlns:ml="http://developer.marklogic.com/site/internal"
     disable-comments="yes" status="Published"
@@ -490,14 +528,10 @@ as empty-sequence()
   if (not($DEBUG)) then () else stp:debug(
     "stp:zip-static-file-insert",
     (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)),
-  xdmp:document-insert(
+  ml:document-insert(
     $uri,
     stp:static-add-scripts($doc),
-    xdmp:default-permissions(),
-    (: Exclude these HTML and javascript documents from the search corpus
-     : Instead search the XHTML after tidy - see below.
-     :)
-    "hide-from-search"[$is-hidden]),
+    $is-hidden),
 
   (: If the document is HTML, then store an additional copy,
    : converted to XHTML using Tidy.
@@ -526,7 +560,7 @@ as empty-sequence()
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
     let $_ := if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert', ('Tidying', $uri, 'to', $xhtml-uri))
-    return xdmp:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
+    return ml:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
 };
 
 declare function stp:zip-static-doc-insert(
@@ -627,7 +661,7 @@ as empty-sequence()
   let $_ := stp:info(
     "stp:zip-static-docs-insert",
     ("zip", $zip-path, "as", $zip-uri))
-  return xdmp:document-insert($zip-uri, $zip)
+  return ml:document-insert($zip-uri, $zip)
   ,
 
   stp:info(
@@ -1086,7 +1120,7 @@ as empty-sequence()
     else stp:error('EMPTY', ($uri, xdmp:quote($n))))
   let $_ := if (not($DEBUG)) then () else stp:debug(
     'stp:list-pages-render', ($uri))
-  return xdmp:document-insert($uri, $n)
+  return ml:document-insert($uri, $n)
 };
 
 (: Recursively load all files, retaining the subdir structure :)
@@ -1112,11 +1146,7 @@ as empty-sequence()
       let $opts := (
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
-      return xdmp:document-insert(
-        $uri,
-        xdmp:zip-get($zip, $e, $opts),
-        xdmp:default-permissions(),
-        $version)
+      return ml:document-insert($uri, xdmp:zip-get($zip, $e, $opts))
       ,
       xdmp:commit() },
     true())
@@ -1270,31 +1300,47 @@ as xs:anyAtomicType
 };
 
 declare function stp:schema-info(
-  $xse as element(xs:element))
-as element(api:element)
+  $xse as element(xs:element),
+  $source as xs:string,
+  $camel-case as xs:boolean?)
+as element(api:element)?
 {
-  (: ASSUMPTION: all the element declarations are global.
-   : ASSUMPTION: the schema default namespace is the same as
-   : the target namespace (@ref uses no prefix).
+  (: Both @ref and @type are natively xs:QName,
+   : but this code treats both as string.
+   : ASSUMPTION schema element declarations are global.
+   : ASSUMPTION schema default namespace is the same as target.
+   : These assumptions are not always true.
+   : For example host-status.xml has a reference to "xa:xid".
    :)
-  let $current-ref := $xse/@ref/string()
-  let $root := $xse/root()
-  let $element-decl := $root/xs:schema/xs:element[
+  let $current-ref as xs:string := $xse/@ref/string()
+  (: Expect a schema document. :)
+  let $schema as element(xs:schema) := $xse/root()/xs:schema
+  let $element-decl := $schema/xs:element[
     @name eq $current-ref]
-  (: This is natively a QName,
-   : but we assume we can ignore namespace prefixes.
-   :)
   let $element-decl-type := $element-decl/@type/string()
-  let $complexType := $root/xs:schema/xs:complexType[
+  let $complexType := $schema/xs:complexType[
     @name eq $element-decl-type]
+  let $description := $element-decl/xs:annotation/xs:documentation
   return element api:element {
-    element api:element-name { $current-ref },
+    element api:element-name {
+      if (not($camel-case)) then $current-ref
+      else api:javascript-name($current-ref, ()) },
     element api:element-description {
-      $element-decl/xs:annotation/xs:documentation },
+      if ($description) then $description
+      else if ($element-decl) then stp:warning(
+        'stp:schema-info',
+        ('No xs:documentation found for', $current-ref,
+          'in', xdmp:describe($xse), 'source', $source))
+      else stp:warning(
+        'stp:schema-info',
+        ('No xs:element found for', $current-ref,
+          'in', xdmp:describe($xse), 'source', $source))
+    },
     (: Recursion continues via function mapping.
      : TODO Could this get into a loop?
      :)
-    stp:schema-info($complexType//xs:element)
+    stp:schema-info(
+      $complexType//xs:element[@ref], $source, $camel-case)
   }
 };
 
@@ -1304,7 +1350,8 @@ declare function stp:fixup-children-apidoc-usage(
   $context as xs:string*)
 as node()*
 {
-  if (not($e/@schema)) then stp:fixup($version, $e/node(), $context) else (
+  stp:fixup($version, $e/node(), $context),
+  if (not($e/@schema)) then () else (
     let $current-dir := string-join(
       tokenize(base-uri($e), '/')[position() ne last()], '/')
     let $schema-uri := concat(
@@ -1320,18 +1367,20 @@ as node()*
       else $given-name)
     let $print-intro-value := (string($e/@print-intro), true())[1]
     where $complexType-name
-    return (
-      stp:fixup($version, $e/node(), $context),
-      element api:schema-info {
-        if (not($is-REST-resource)) then () else (
-          attribute REST-doc { true() },
-          attribute print-intro { $print-intro-value }),
-        let $schema := raw:get-doc($schema-uri)/xs:schema
-        let $complexType := $schema/xs:complexType[@name eq $complexType-name]
-        (: This presumes that all the element declarations are global,
-         : and complex type contains only element references.
-         :)
-        return stp:schema-info($complexType//xs:element) }))
+    return element api:schema-info {
+      if (not($is-REST-resource)) then () else (
+        attribute REST-doc { true() },
+        attribute print-intro { $print-intro-value }),
+      let $schema := raw:get-doc($schema-uri)/xs:schema
+      let $complexType := $schema/xs:complexType[@name eq $complexType-name]
+      (: This presumes that all the element declarations are global,
+       : and complex type contains only element references.
+       :)
+      return stp:schema-info(
+        $complexType//xs:element[@ref],
+        xdmp:describe($e),
+        $context = $api:MODE-JAVASCRIPT
+        and $e/@camel-case/xs:boolean(.)) })
 };
 
 declare function stp:fixup-children(
@@ -1355,9 +1404,9 @@ as node()*
   (: Convert type name as needed.
    : Ignore return types specific to a different mode.
    :)
-  case element(apidoc:return) return (
-    $e[not(@class) or xs:NMTOKENS(@class) = $mode]
-    ! api:type($mode, 'return', .))
+  case element(apidoc:return) return text {
+    ($e[xs:NMTOKENS(@class) = $mode],
+      $e[not(@class)][1] ! api:type($mode, 'return', .))[1] }
   case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
     $version, $e, $context)
   default return stp:fixup($version, $e/node(), $context)

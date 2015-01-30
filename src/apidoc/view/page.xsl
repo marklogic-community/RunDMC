@@ -305,7 +305,8 @@
     <xsl:if test="$q">
       <xsl:text>Did you mean to search for the term </xsl:text>
       <!-- Force the search with p=1. -->
-      <a href="{v:search-path($srv:search-page-url, $q, $VERSION)
+      <a href="{ss:search-path(
+               $srv:search-page-url, $q, $VERSION, $IS-API-SEARCH)
                }&amp;p=1">
         <xsl:value-of select="$q"/>
       </a>
@@ -324,6 +325,9 @@
     </xsl:if>
     <xsl:apply-templates select="*"/>
   </xsl:template>
+
+  <!-- Do not display api:suggest elements. -->
+  <xsl:template match="api:suggest"/>
 
   <xsl:template mode="page-content"
                 match="api:docs-page">
@@ -536,7 +540,10 @@
   </xsl:template>
 
   <xsl:template match="api:function">
-    <xsl:apply-templates mode="function-signature" select="."/>
+    <xsl:variable name="signature">
+      <xsl:apply-templates mode="function-signature" select="."/>
+    </xsl:variable>
+    <xsl:copy-of select="ss:maybe-highlight($signature, $params)"/>
     <xsl:apply-templates select="(api:summary, api:params)[normalize-space(.)]"/>
     <xsl:apply-templates select="api:headers[api:header/@type = 'request']"/>
     <xsl:apply-templates select="api:headers[api:header/@type = 'response']">
@@ -576,9 +583,8 @@
   <xsl:template mode="syntax" match="api:param">
     <xsl:text>   </xsl:text>
     <xsl:if test="@optional eq 'true'">[</xsl:if>
-    <xsl:variable name="anchor" as="xs:string*">
-      <xsl:apply-templates mode="param-anchor-id" select="."/>
-    </xsl:variable>
+    <xsl:variable name="anchor" as="xs:string*"
+                  select="v:anchor-id(.)"/>
     <a href="#{$anchor}" class="paramLink">
       <xsl:text>$</xsl:text>
       <xsl:value-of select="api:param-name/string()"/>
@@ -588,25 +594,6 @@
     <xsl:if test="@optional eq 'true'">]</xsl:if>
     <xsl:if test="position() ne last()">,</xsl:if>
     <xsl:text>&#xA;</xsl:text>
-  </xsl:template>
-
-  <xsl:template mode="param-anchor-id" match="api:header">
-    <xsl:value-of select="@name/string()"/>
-  </xsl:template>
-
-  <xsl:template mode="param-anchor-id" match="api:param">
-    <xsl:value-of select="api:param-name/string()"/>
-  </xsl:template>
-
-  <!--
-      For the *:polygon functions,
-      which have more than one function element on the same page.
-  -->
-  <xsl:template
-      mode="param-anchor-id"
-      match="/api:function-page/api:function[2]/api:params/api:param">
-    <xsl:next-match/>
-    <xsl:text>2</xsl:text>
   </xsl:template>
 
   <xsl:template match="api:summary">
@@ -664,14 +651,13 @@
   <xsl:template match="api:param | api:header">
     <tr>
       <td>
-        <xsl:variable name="anchor" as="xs:string*">
-          <xsl:apply-templates mode="param-anchor-id" select="."/>
-        </xsl:variable>
+        <xsl:variable name="anchor" as="xs:string*"
+                      select="v:anchor-id(.)"/>
         <a name="{$anchor}"/>
         <xsl:if test="not(../../@lib eq $api:MODE-REST)">
           <xsl:text>$</xsl:text>
         </xsl:if>
-        <xsl:value-of select="$anchor"/>
+        <xsl:value-of select="(@name|api:param-name)[1]/string()"/>
       </td>
       <td>
         <xsl:apply-templates select="if (self::api:header) then node()
@@ -738,8 +724,22 @@
       <p>
         <xsl:apply-templates select="api:element-description/node()"/>
       </p>
+      <xsl:variable name="mode" as="xs:string?"
+                    select="ancestor::api:function-page/@mode"/>
       <xsl:if test="api:element">
-        <p>This is a complex element with the following element children:</p>
+        <p>
+          <xsl:choose>
+            <xsl:when test="$mode eq $api:MODE-XPATH">
+              This is a complex element with the following element children:
+            </xsl:when>
+            <xsl:when test="$mode eq $api:MODE-JAVASCRIPT">
+              This is an object with the following properties:
+            </xsl:when>
+            <xsl:otherwise>
+              This is a complex structure with the following children:
+            </xsl:otherwise>
+          </xsl:choose>
+        </p>
         <dl>
           <xsl:apply-templates select="api:element"/>
         </dl>
@@ -951,6 +951,8 @@
       <xsl:apply-templates mode="#current"/>
     </xsl:copy>
   </xsl:template>
+
+  <xsl:template mode="guide" match="api:suggest"/>
 
   <!--
       Boilerplate copying code.

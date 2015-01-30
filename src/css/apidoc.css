@@ -1,3 +1,5 @@
+/* apidoc.css */
+
 html, body {
     height: 100%;
 }
@@ -356,7 +358,7 @@ a.sectionLink:hover { color: #235BAB; }
 #api_sub .ui-state-active,
 #api_sub .ui-widget-content .ui-state-active,
 #api_sub .ui-widget-header .ui-state-active
-{border-color: #CCC;}
+         {border-color: #CCC;}
 #api_sub .ui-widget-content .treeview .api-function-link a {
     color: #01639D;
 }
@@ -434,9 +436,9 @@ table.api_table {
 
 /* th properties */
 .api_generic_table th
-{ background-image: none;
-  background-color: #ECECEC;
-  border: 1px solid #CCC; }
+ { background-image: none;
+   background-color: #ECECEC;
+   border: 1px solid #CCC; }
 
 
 /* Use brute force to undo the background property on td (set in screen.css) */
@@ -448,15 +450,15 @@ table.api_table {
 
 /* td properties */
 .api_generic_table td
-{ background-image: none;
-  border: 1px solid #CCC; }
+ { background-image: none;
+   border: 1px solid #CCC; }
 
 /* more brute force to reset padding */
 .api_generic_table tbody td:first-child,
 .api_generic_table tbody th:first-child,
 .api_generic_table td,
 .api_generic_table th
-{ padding: 15px 10px; }
+ { padding: 15px 10px; }
 
 /* workaround for nowrap attributes that jquery is adding to the td tags */
 table.api_generic_table td { white-space: normal; }
@@ -492,7 +494,7 @@ a.function_prefix { text-decoration: underline; color: black; }
 
 /* An alternative attempt that doesn't disable them altogether
    .dsq-tooltip-outer { top: auto !important; bottom: 0px;}
-   */
+*/
 
 
 /* for admin help docs (actually, for all strongs) */

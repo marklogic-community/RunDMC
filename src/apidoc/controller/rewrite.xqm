@@ -49,6 +49,7 @@ declare variable $PATH-WITH-VERSION := concat(
 
 declare variable $URL-ORIG := xdmp:get-request-url();
 declare variable $QUERY-STRING := substring-after($URL-ORIG, '?');
+declare variable $QUERY-STRING-FIELDS := xdmp:get-request-field-names() ;
 
 declare variable $VERSION-SPECIFIED := (
   if (matches($PATH, '^/\d\.\d$')) then substring-after($PATH, '/')
@@ -172,8 +173,7 @@ as xs:string?
 declare function m:query-string()
 as xs:string?
 {
-  m:query-string(
-    xdmp:get-request-field-names())
+  m:query-string($QUERY-STRING-FIELDS)
 };
 
 (: ASSUMPTION: each REST doc will have at most one query parameter in its URI :)
@@ -287,14 +287,27 @@ as xs:string
   m:redirect-301(substring-after($PATH, "/"||$version))
 };
 
+declare function m:xray()
+as xs:string
+{
+  if (not($DEBUG)) then () else m:debug(
+    'rwa:xray', ('path', $PATH)),
+  concat(
+    if ($PATH = ('/xray', '/xray/')) then '/xray/index.xqy'
+    else $PATH-ORIG,
+    if ($QUERY-STRING) then '?' else '',
+    $QUERY-STRING)
+};
+
 (: TODO figure out a way to break this up. :)
 declare function m:rewrite()
   as xs:string
 {
   if (not($DEBUG)) then () else m:debug(
     'rwa:rewrite',
-    ('path', $PATH, 'path-prefix', $PATH-PREFIX, 'path-tail', $PATH-TAIL,
-      'version', $VERSION)),
+    ('version', $VERSION, 'path-orig', $PATH-ORIG,
+      'path', $PATH, 'query', $QUERY-STRING,
+      'path-prefix', $PATH-PREFIX, 'path-tail', $PATH-TAIL)),
 
   (: SCENARIO 1: External redirect :)
   (: When the user hits Enter in the TOC filter box :)
@@ -319,8 +332,7 @@ declare function m:rewrite()
       "javadoc/client",
       "javadoc/xcc",
       "dotnet/xcc",
-      "cpp/udf")) then m:redirect(
-    concat($PATH, '/index.html'))
+      "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
 
   (: Redirect requests for older versions 301 and go to latest :)
   else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
@@ -330,6 +342,9 @@ declare function m:rewrite()
   else if (starts-with($PATH, "/3.1")) then m:redirect-for-version('3.1')
 
   (: SCENARIO 2: Internal rewrite :)
+
+  else if ($PATH eq '/service/suggest') then concat(
+    '/controller/suggest.xqy?', $QUERY-STRING)
 
   (: SCENARIO 2A: Serve up the JavaScript-based docapp redirector :)
   else if (ends-with($PATH, "docapp.xqy"))
@@ -395,8 +410,7 @@ declare function m:rewrite()
   (: Ignore URLs starting with "/private/" :)
   else if (starts-with($PATH, '/private/')) then $rw:NOTFOUND
 
-  (: OK to expose xray like this? :)
-  else if (starts-with($PATH, '/xray')) then $PATH-ORIG||'/index.xqy'
+  else if (starts-with($PATH, '/xray')) then m:xray()
 
   (: Root request: "/" means "index.xml" inside the default version directory :)
   else if ($PATH eq '/') then m:transform($ROOT-DOC-URL)
@@ -428,7 +442,7 @@ declare function m:rewrite()
   else if ($MATCHING-FUNCTION-COUNT gt 1) then m:redirect(
     concat(
       m:function-url($MATCHING-FUNCTIONS[1]),
-      xdmp:url-encode("?show-alternatives=yes")))
+      "?show-alternatives=yes"))
 
   (: #316 redirect legacy prefix.
    : Handle this toward the end to avoid redirecting static resources.

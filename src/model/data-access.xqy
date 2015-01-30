@@ -3,17 +3,18 @@ module namespace ml="http://developer.marklogic.com/site/internal";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace api="http://marklogic.com/rundmc/api"
+  at "/apidoc/model/data-access.xqy";
 import module namespace draft="http://developer.marklogic.com/site/internal/filter-drafts"
-at "filter-drafts.xqy";
+  at "filter-drafts.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
-  at "../../lib/util-2.xqy";
+  at "/lib/util-2.xqy";
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
 declare namespace prop="http://marklogic.com/xdmp/property";
 declare namespace dir ="http://marklogic.com/xdmp/directory";
 declare namespace xdmp="http://marklogic.com/xdmp";
-declare namespace api ="http://marklogic.com/rundmc/api";
 
 (: Some code treats the view HTML as a data model.
  : This is ugly, but needs a lot of fixing
@@ -23,7 +24,15 @@ declare namespace x="http://www.w3.org/1999/xhtml";
 
 declare variable $ADMIN as xs:boolean := false() ;
 
-declare variable $questionmark-substitute := '@' ;
+declare variable $CATEGORY-PREFIX as xs:string := 'category/' ;
+
+declare variable $QUESTIONMARK-SUBSTITUTE := '@' ;
+
+declare variable $MONTHS := (
+  'January', 'February', 'March',
+  'April', 'May', 'June',
+  'July', 'August', 'September',
+  'October', 'November', 'December') ;
 
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
@@ -67,8 +76,6 @@ declare variable $server-versions-available as xs:string+ := cts:uris(
 declare variable $server-version-nodes-available as element()+ := (
   $server-version-nodes[@number = $server-versions-available]) ;
 
-declare variable $all-category-tags as xs:string* := cts:collection-match("category/*");
-
 (: Used to discover Project docs in the Admin UI :)
 declare variable $projects-by-name := for $p in $Projects
 order by $p/name
@@ -109,6 +116,147 @@ declare private function ml:docs($qnames) as element()* {
         for $qname in $qnames return ml:matches-dmc-page($qname)
         ))
     )/*
+};
+
+declare function ml:month-name($month as xs:integer)
+  as xs:string
+{
+  $MONTHS[$month]
+};
+
+declare function ml:display-date($date-or-dateTime as xs:string?)
+  as xs:string
+{
+  let $date-part := substring($date-or-dateTime, 1, 10)
+  let $castable := $date-part castable as xs:date
+  return (
+    if (not($castable)) then $date-or-dateTime
+    else (
+      let $dateTime := xs:dateTime(concat($date-part,'T00:00:00'))
+      let $month := month-from-dateTime($dateTime)
+      let $day := day-from-dateTime($dateTime)
+      let $year := year-from-dateTime($dateTime)
+      return concat(ml:month-name($month),' ',$day,', ',$year)))
+};
+
+declare function ml:display-time($dateTime as xs:string?)
+as xs:string
+{
+  if (not($dateTime castable as xs:dateTime)) then $dateTime
+  else format-dateTime(xs:dateTime($dateTime), '[h]:[m][P]')
+};
+
+declare function ml:display-date-with-time($dateTimeGiven as xs:string?)
+as xs:string
+{
+  if (not($dateTimeGiven castable as xs:dateTime)) then $dateTimeGiven
+  else concat(
+    ml:display-date($dateTimeGiven), '&#160;',
+    ml:display-time($dateTimeGiven))
+};
+
+declare function ml:categories-for-doc(
+  $cat as xs:string,
+  $doc as element())
+as xs:string+
+{
+  $cat,
+  string-join(
+    ($cat,
+      (: Force an error if the result is inappropriate :)
+      (switch($cat)
+        case 'function' return ($doc/@mode, $api:MODE-XPATH)[1]
+        case 'guide' return replace(
+          $doc/@guide-uri treat as node(),
+          '^.+/(\w[\w\-]*\w)\.xml$', '$1')
+        default return error((), 'ML-UNEXPECTED', ($cat, xdmp:describe($doc))))
+      (: Assert that the category name is sane. :)
+      ! (if (matches(., '^\w[\w\-]*\w$')) then .
+        else error((), 'ML-BADCATEGORY', xdmp:describe(.)))),
+    '/')
+};
+
+declare function ml:category-for-doc(
+  $doc-uri as xs:string,
+  $new-doc as document-node()?)
+as xs:string+
+{
+  (: Only look inside the doc if necessary :)
+  if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
+  else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
+  else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
+  else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
+  else if (contains($doc-uri, "/cpp/"))            then "cpp"
+  else (
+    let $doc as node() := if ($new-doc) then $new-doc else doc($doc-uri)
+    return (
+      if ($doc/api:function-page/api:function[1]/@lib
+        eq 'REST') then "rest-api"
+      else if ($doc/api:function-page) then ml:categories-for-doc(
+        'function', $doc/*)
+      else if ($doc/(*:guide|*:chapter)) then ml:categories-for-doc(
+        'guide', $doc/*)
+      else if ($doc/api:help-page      ) then "help"
+      else if ($doc/ml:Announcement    ) then "news"
+      else if ($doc/ml:Event           ) then "event"
+      else if ($doc/ml:Tutorial or
+        $doc/ml:page/tutorial or
+        $doc/ml:Article
+        (: these are not really tutorials :)
+        [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
+              | /learn/tutorials/gh/
+              | /learn/dzone/
+              | /learn/readme/
+              | /learn/w3c-
+              | /docs/
+              )','x'))]) then "tutorial"
+      else if ($doc/ml:Post            ) then "blog"
+      else if ($doc/ml:Project         ) then "code"
+      else "other"))
+};
+
+declare function ml:category-for-doc(
+  $doc-uri as xs:string)
+as xs:string+
+{
+  ml:category-for-doc($doc-uri, ())
+};
+
+(: Wrapper for xdmp:document-insert
+ : that ensures correct permissions
+ : and category collections.
+ :)
+declare function ml:document-insert(
+  $uri as xs:string,
+  $new as node(),
+  $is-hidden as xs:boolean)
+as empty-sequence()
+{
+  xdmp:document-insert(
+    $uri,
+    $new,
+    (: If document exists, reset it to default permissions. :)
+    xdmp:default-permissions(),
+    (: Set collections, preserving existing non-category collections.
+     : Optionally exclude the document from the search corpus.
+     :)
+    (ml:category-for-doc(
+        $uri,
+        if ($new instance of document-node()) then $new
+        else document { $new })
+      ! concat($CATEGORY-PREFIX, .),
+      xdmp:document-get-collections($uri)[
+        not(starts-with(., $CATEGORY-PREFIX))][
+        . ne 'hide-from-search'],
+      if (not($is-hidden)) then () else "hide-from-search"))
+};
+
+declare function ml:document-insert(
+  $uri as xs:string,
+  $new as node())
+as empty-sequence()
+{
+  ml:document-insert($uri, $new, false())
 };
 
 (: Used by URL rewriter to control access to DMC pages :)
@@ -177,6 +325,7 @@ declare private function ml:matches-dmc-page($qname, $allow-previews-on-draft as
       ))
 };
 
+(: TODO Really? :)
 declare private function ml:query-for-doc-element($qname) as cts:query? {
   let $plan := xdmp:value(concat("xdmp:plan(collection()/",$qname,")")),
   $term-query := $plan//*:term-query
@@ -206,8 +355,10 @@ as cts:query
             'infinity'))),
       cts:not-query(
         cts:or-query(
-          (ml:has-attribute("hide-from-search", "yes"),
-            cts:collection-query("hide-from-search")))) ))
+          (cts:collection-query("hide-from-search"),
+            cts:element-attribute-value-query(
+              $doc-element-names,
+              QName("", "hide-from-search"), "yes"))))))
 };
 
 declare function ml:search-corpus-query(
@@ -215,13 +366,6 @@ declare function ml:search-corpus-query(
 as cts:query
 {
   ml:search-corpus-query($versions, false())
-};
-
-declare private function ml:has-attribute($att-name, $value) {
-  cts:or-query((
-      for $qname in $doc-element-names return
-      cts:element-attribute-value-query($qname,QName("",$att-name),$value)
-      ))
 };
 
 (: Match only the supplied server version(s). :)
@@ -321,65 +465,41 @@ declare function ml:topic-docs($tag as xs:string) as document-node()* {
   [cts:contains(., ml:search-corpus-query($default-version))]
 };
 
-
-(: For determining category facets :)
-declare function ml:reset-category-tags($doc-uri) {
-  ml:reset-category-tags($doc-uri, ())
-};
-
+(: For determining category facets.
+ : This repeats work done by ml:document-insert,
+ : but because of this it usually runs very quickly.
+ : If it logs any URIs, try to change them to use ml:document-insert.
+ :)
 declare function ml:reset-category-tags(
   $doc-uri as xs:string,
   $new-doc as document-node()?)
+as empty-sequence()
 {
-  (: Start by removing any existing category collection URIs :)
-  (: TODO skip this for binary nodes? :)
-  xdmp:document-remove-collections($doc-uri, $all-category-tags),
-
-  let $category-value := ml:category-for-doc($doc-uri, $new-doc)
-  let $category-tag   := concat("category/",$category-value)
-  return (
-    xdmp:log(
-      text { "Adding tag ", xdmp:describe($category-tag), 'to', $doc-uri },
-      'fine'),
-    xdmp:document-add-collections($doc-uri, $category-tag))
+  let $category-tag := ml:category-for-doc(
+    $doc-uri, $new-doc) ! concat($CATEGORY-PREFIX, .)
+  (: Leave any non-category collections alone. :)
+  let $categories-old := xdmp:document-get-collections($doc-uri)[
+    starts-with(., $CATEGORY-PREFIX)]
+  let $categories-to-remove := $categories-old[not(. = $category-tag)]
+  (: If there are no categories to remove, the function will not map. :)
+  let $_ := xdmp:document-remove-collections(
+    $doc-uri, $categories-to-remove)
+  let $update-needed := not($categories-old[. eq $category-tag])
+  let $_ := if (not($update-needed)) then () else xdmp:log(
+    text {
+      "[ml:reset-category-tags] adding", xdmp:describe($category-tag),
+      'to', $doc-uri },
+    'info')
+  where $update-needed
+  return xdmp:document-add-collections($doc-uri, $category-tag)
 };
 
-declare function ml:category-for-doc($doc-uri) as xs:string {
-  ml:category-for-doc($doc-uri, ())
+declare function ml:reset-category-tags(
+  $doc-uri as xs:string)
+as empty-sequence()
+{
+  ml:reset-category-tags($doc-uri, ())
 };
-
-declare function ml:category-for-doc($doc-uri, $new-doc as document-node()?) as xs:string {
-  (: Only look inside the doc if necessary :)
-  if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
-  else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
-  else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
-  else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
-  else if (contains($doc-uri, "/cpp/"))            then "cpp"
-  else let $doc := if ($new-doc) then $new-doc else doc($doc-uri) return
-  if ($doc/api:function-page/api:function[1]/@lib eq 'REST')
-  then "rest-api"
-  else if ($doc/api:function-page  ) then "function"
-  else if ($doc/api:help-page      ) then "help"
-  else if ($doc/(*:guide|*:chapter)) then "guide"
-  else if ($doc/ml:Announcement    ) then "news"
-  else if ($doc/ml:Event           ) then "event"
-  else if ($doc/ml:Tutorial or
-    $doc/ml:page/tutorial or
-    $doc/ml:Article
-    (: these aren't really tutorials :)
-    [not(matches(base-uri($doc),'( /learn/[0-9].[0-9]/
-          | /learn/tutorials/gh/
-          | /learn/dzone/
-          | /learn/readme/
-          | /learn/w3c-
-          | /docs/
-          )','x'))]
-    ) then "tutorial"
-  else if ($doc/ml:Post            ) then "blog"
-  else if ($doc/ml:Project         ) then "code"
-  else "other"
-};
-
 
 declare function ml:latest-posts($how-many) { $posts-by-date[position() le $how-many] };
 
@@ -415,7 +535,7 @@ declare function ml:insert-comment-doc($doc-uri) {
   let $comment-doc-uri := ml:comment-doc-uri($doc-uri)
   (: Only insert a comments doc if there isn't one already present :)
   where not(doc-available($comment-doc-uri))
-  return xdmp:document-insert(
+  return ml:document-insert(
     $comment-doc-uri,
     <ml:Comments disqus_identifier="{ml:disqus-identifier($doc-uri)}"/>)
 };
@@ -589,9 +709,12 @@ declare function ml:get-cached-navigation()
 (: When first populating the navigation, cache it in the database :)
 declare function ml:save-cached-navigation($doc)
 {
+  if (empty($doc/node())) then ()
   (: Force the insert to occur in a separate transaction to prevent every request
    from being marked as an update :)
-  xdmp:invoke("document-insert.xqy", (QName("","uri"),      $pre-generated-location,
+  else xdmp:invoke(
+    "document-insert.xqy",
+    (QName("","uri"), $pre-generated-location,
       QName("","document"), $doc))
 };
 
@@ -689,7 +812,7 @@ declare function ml:escape-uri(
 as xs:string
 {
   (: ?foo=bar   =>   @foo=bar :)
-  translate($external-uri, '?', $questionmark-substitute)
+  translate($external-uri, '?', $QUESTIONMARK-SUBSTITUTE)
 };
 
 declare function ml:unescape-uri(
@@ -697,7 +820,7 @@ declare function ml:unescape-uri(
 as xs:string
 {
   (: @foo=bar   =>   ?foo=bar :)
-  translate($doc-uri, $questionmark-substitute, '?')
+  translate($doc-uri, $QUESTIONMARK-SUBSTITUTE, '?')
 };
 
 (: Account for "/apidoc" prefix in internal/external URI mappings :)
@@ -812,6 +935,13 @@ as xs:string?
     where $v = $server-versions-available
     order by xs:double($v) descending
     return $v)[1]
+};
+
+declare function ml:file-from-path($path as xs:string)
+as xs:string
+{
+  if (not(contains($path, '/'))) then $path
+  else ml:file-from-path(substring-after($path, '/'))
 };
 
 (: model/data-access.xqy :)

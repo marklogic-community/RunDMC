@@ -13,7 +13,7 @@ declare variable $ACTION as xs:string* := xdmp:get-request-field(
 
 declare variable $CLEAN as xs:boolean? := xdmp:get-request-field(
   "clean") ! xs:boolean(.) ;
-declare variable $HELP-XSD-DIR as xs:string := xdmp:get-request-field(
+declare variable $HELP-XSD-DIR as xs:string? := xdmp:get-request-field(
   'help-xsd-dir') ;
 declare variable $VERSION as xs:string := xdmp:get-request-field(
   'version') ;
@@ -40,11 +40,15 @@ declare variable $ACTIONS-NEEDING-XSD := (
 declare variable $ACTIONS-NEEDING-ZIP := (
   'load-static-docs',
   'load-raw-docs',
-  ());
+  ()) ;
+
+declare variable $ACTIONS-SPAWN-OK := (
+  "load-static-docs",
+  ()) ;
 
 declare variable $VARS := (
   if (not($ACTIONS = $ACTIONS-NEEDING-XSD)) then ()
-  else (xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR),
+  else (xs:QName('HELP-XSD-DIR'), $HELP-XSD-DIR treat as xs:string),
   xs:QName('VERSION'), $VERSION,
   if (not($ACTIONS = $ACTIONS-NEEDING-ZIP)) then ()
   else (xs:QName('ZIP'), $ZIP)) ;
@@ -56,6 +60,10 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
 
 (: This may take some time to run :)
 xdmp:set-request-time-limit(1800),
+stp:info(
+  'build.xqy',
+  ($VERSION, 'starting', 'clean', $CLEAN,
+    'actions', count($ACTIONS), xdmp:describe($ACTIONS))),
 
 (: If "clean" is specified, delete everything first. :)
 if (not($CLEAN)) then ()
@@ -65,11 +73,14 @@ else xdmp:invoke('clean.xqy', (xs:QName('VERSION'), $VERSION))
 (: as well as these params,
  : used in load-raw-docs.xqy and load-static-docs.xqy
  :)
-for $xqy at $x in $ACTIONS
+for $action at $x in $ACTIONS
 let $start := xdmp:elapsed-time()
-let $_ := stp:info('build.xqy', ($VERSION, 'starting', $xqy, $start))
-let $_ := xdmp:invoke($xqy||'.xqy', $VARS)
-return text { $xqy, $VERSION, xdmp:elapsed-time() - $start }
+let $xqy := $action||'.xqy'
+let $_ := stp:info('build.xqy', ($VERSION, 'starting', $action, $start))
+let $_ := (
+  if ($action = $ACTIONS-SPAWN-OK) then xdmp:spawn($xqy, $VARS)
+  else xdmp:invoke($xqy, $VARS))
+return text { $action, $VERSION, xdmp:elapsed-time() - $start }
 ,
 text { 'build', $VERSION, xdmp:elapsed-time() },
 text { '' }

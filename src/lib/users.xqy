@@ -50,17 +50,17 @@ declare function users:startSession($user as element(*)) as empty-sequence()
         <id>{$id}</id>
         <session-id>{$sessionID}</session-id>
     </session>
-    let $_ := xdmp:document-insert($uri, $doc) 
+    let $_ := xdmp:document-insert($uri, $doc)
 
-    return 
-        cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"), 
+    return
+        cookies:add-cookie("RUNDMC-SESSION", $sessionID, current-dateTime() + xs:dayTimeDuration("P60D"),
             $srv:cookie-domain, "/", false())
 };
 
 declare function users:endSession() as empty-sequence()
 {
 
-    (: todo remove session id from /person ? :) 
+    (: todo remove session id from /person ? :)
     cookies:delete-cookie("RUNDMC-SESSION", $srv:cookie-domain, "/")
 };
 
@@ -77,14 +77,14 @@ declare function users:authViaParams() as xs:boolean
     let $user := /person[email eq $email]
     let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $email)
     let $token := xdmp:get-request-field("t")
-    return 
+    return
         if (not(empty(xdmp:get-request-field("pass")))) then
             ($user and ($user/password/string() = $hash))
         else if (not(empty($token))) then
             (($token eq users:useDownloadToken($email)) and not($token eq ""))
         else
             false()
-    
+
 };
 
 declare function users:createOrUpdateUser($name, $email, $password, $others)
@@ -103,12 +103,12 @@ declare function users:createOrUpdateUser($name, $email, $password, $others)
 };
 
 declare function users:createUser($name, $email, $pass, $others)
-as element(*)? 
+as element(*)?
 {
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
-    let $doc := 
+    let $doc :=
         <person>
             <id>{$id}</id>
             <email>{$email}</email>
@@ -127,7 +127,7 @@ as element(*)?
 };
 
 declare function users:createUserAndRecordLicense($type, $name, $email, $pass, $list, $others, $meta)
-as element(*)? 
+as element(*)?
 {
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
@@ -135,7 +135,7 @@ as element(*)?
     let $now := fn:current-dateTime()
     let $co := $others/*:organization
 
-    let $doc := 
+    let $doc :=
         <person>
             <id>{$id}</id>
             <email>{$email}</email>
@@ -207,18 +207,18 @@ declare function users:recordAcademicLicense($email, $school, $yog, $license-met
 };
 
 
-declare function users:updateUserWithPassword($user, $name, $password, $others) 
-as element(*)? 
+declare function users:updateUserWithPassword($user, $name, $password, $others)
+as element(*)?
 {
     let $uri := base-uri($user)
     let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
     let $othernames := for $i in $others return local-name($i)
-    let $doc := 
+    let $doc :=
         <person>
         { for $field in $user/* where (
-            not($field/local-name() = ('name', 'password')) and 
-            not($field/local-name() = $othernames))  
+            not($field/local-name() = ('name', 'password')) and
+            not($field/local-name() = $othernames))
           return $field }
             <name>{$name}</name>
             <password>{$hash}</password>
@@ -229,15 +229,15 @@ as element(*)?
 
     let $list := $others[local-name() = 'list']
 
-    let $_ := if ($list eq "on") then 
+    let $_ := if ($list eq "on") then
         users:registerForMailingList($email, $password)
-    else    
+    else
         ()
 
     return  $doc
 };
 
-declare function users:registerForMailingList($email, $pass) 
+declare function users:registerForMailingList($email, $pass)
 {
     let $user := /person[email eq $email]
     let $uri := concat("http://developer.marklogic.com/mailman/subscribe/general", "")
@@ -257,11 +257,11 @@ declare function users:registerForMailingList($email, $pass)
             </headers>
             <data>{ $payload }</data>
         </options>)
-        
+
 
 };
 
-declare function users:logNewUser($user) 
+declare function users:logNewUser($user)
 {
     let $_ := xdmp:log(concat("Created user ", $user/id))
 
@@ -269,7 +269,7 @@ declare function users:logNewUser($user)
 
     let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
 
-    let $address := 
+    let $address :=
         if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
             "dmc-admin@marklogic.com"
         else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
@@ -287,7 +287,7 @@ declare function users:logNewUser($user)
             $address,
             "RunDMC Admin",
             $address,
-            concat($staging, "Signed up user ", $user/email/string()), 
+            concat($staging, "Signed up user ", $user/email/string()),
             <em:content>
             {concat("
 Username: ", $user/name/string(), "
@@ -308,13 +308,13 @@ Country: ", $user/country/string(), "
 
 declare function users:warn-denied-person($user, $country, $country-code)
 {
-    let $_ := xdmp:log(concat("DENIED NAME", $user/name/string(), " from ", $country, " (", $country-code, " )")) 
+    let $_ := xdmp:log(concat("DENIED NAME", $user/name/string(), " from ", $country, " (", $country-code, " )"))
 
     let $hostname := xdmp:hostname()
 
     let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
 
-    let $address := 
+    let $address :=
         if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
             "dmc-admin@marklogic.com"
         else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
@@ -332,7 +332,7 @@ declare function users:warn-denied-person($user, $country, $country-code)
             $address,
             "RunDMC Admin",
             $address,
-            concat($staging, "DENIED user ", $user/email/string()), 
+            concat($staging, "DENIED user ", $user/email/string()),
             <em:content>
             {concat("
 Username: ", $user/name/string(), "
@@ -376,7 +376,7 @@ declare function users:cornifyEnabled()
 declare function users:getCurrentUser() as element(*)?
 {
     let $session := cookies:get-cookie("RUNDMC-SESSION")[1]
-    let $id := /session[session-id eq $session]/id/string() 
+    let $id := /session[session-id eq $session]/id/string()
     return /person[id eq $id]
 };
 
@@ -386,7 +386,7 @@ declare function users:getDownloadToken($email as xs:string) as xs:string
     let $now := fn:string(fn:current-time())
     let $issued := fn:string(fn:current-dateTime())
     let $token := xdmp:crypt($email, $now)
-    let $doc := 
+    let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
             <download-token><token>{$token}</token><stamp>{$now}</stamp><issued>{$issued}</issued></download-token>
@@ -402,15 +402,15 @@ declare function users:useDownloadToken($email as xs:string) as xs:string
 {
     let $user := /person[email eq $email]
     let $token := $user/download-token/token
-    let $doc := 
+    let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
         </person>
     let $_ := xdmp:document-insert(base-uri($user), $doc)
-    
+
     return if (not(empty($token))) then
         $token/string()
-    else    
+    else
         ""
 };
 
@@ -420,7 +420,7 @@ declare function users:getResetToken($email as xs:string) as xs:string
     let $user := /person[email eq $email]
     let $now := fn:string(fn:current-time())
     let $token := xdmp:crypt($email, $now)
-    let $doc := 
+    let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('reset-token')) return $field }
             <reset-token>{$token}</reset-token>
@@ -435,7 +435,7 @@ declare function users:setPassword($user as element(*)?, $password as xs:string)
     let $email := $user/email/string()
     let $hash := xdmp:crypt($password, $email)
 
-    let $doc := 
+    let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('reset-token', 'password')) return $field }
             <password>{$hash}</password>
@@ -447,7 +447,7 @@ declare function users:setPassword($user as element(*)?, $password as xs:string)
 (: save params into the user, leaving along fields not specified in the params :)
 declare function users:saveProfile($user as element(*), $params as element(*)*) as element(*)
 {
-    (: todo: cheap secure by only storing first 10? :) 
+    (: todo: cheap secure by only storing first 10? :)
 
     (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
     let $fields := ('organization', 'name', 'url', 'picture', 'location', 'country', 'twitter', 'school', 'yog',
@@ -472,25 +472,25 @@ declare function users:validateParams($user as element(*), $params as element(*)
     "ok"
 };
 
-(: associate the given email (and current mkto_trk cookie) with a lead in marketo :) 
+(: associate the given email (and current mkto_trk cookie) with a lead in marketo :)
 declare function users:mkto-associate-lead($email as xs:string, $doc)
 {
     let $cookie := cookies:get-cookie('_mkto_trk')[1]
 
     return xdmp:spawn("marketo-associate-lead.xqy", (
-        xs:QName("email"), $email, 
+        xs:QName("email"), $email,
         xs:QName("cookie"), if ($cookie) then $cookie else "",
-        xs:QName("doc"), $doc 
+        xs:QName("doc"), $doc
     ) )
 };
 
-(: sync the given user with a lead in marketo :) 
+(: sync the given user with a lead in marketo :)
 declare function users:mkto-sync-lead($email as xs:string, $user, $source)
 {
     let $cookie := cookies:get-cookie('_mkto_trk')[1]
 
     return xdmp:spawn("marketo-sync-lead.xqy", (
-        xs:QName("email"), $email, 
+        xs:QName("email"), $email,
         xs:QName("user"), $user,
         xs:QName("cookie"), if ($cookie) then $cookie else "",
         xs:QName("source"), $source
@@ -501,7 +501,7 @@ declare function users:mkto-sync-lead($email as xs:string, $user, $source)
 declare function users:record-download-for-current-user($path as xs:string)
 {
     let $user := users:getCurrentUser()
-    
+
     let $parts := tokenize($path, "/")
     let $m := lower-case(substring($parts[5], 0, 10))
 
@@ -518,42 +518,42 @@ declare function users:record-download-for-current-user($path as xs:string)
             (: Only send email if they've not downloaded this specific path and we're downloading marklogic itself :)
             if (not($user/download[contains(path, $path)]) and ($m eq 'NOTREADYmarklogic')) then
                 users:send-email-about-download($user, $path)
-            else 
+            else
                 ()
         )
-    else 
+    else
         ()
 };
 
-declare function users:send-email-about-download($user, $path) 
+declare function users:send-email-about-download($user, $path)
 {
-    let $body := 
+    let $body :=
 
  "Thanks for downloading MarkLogic. If you have not done so already, once you install
-  and start MarkLogic, please remember to install a license key. You can accomplish 
-  this directly in the MarkLogic admin UI. If you are running MarkLogic on your own 
-  laptop or desktop, you can browse to 
+  and start MarkLogic, please remember to install a license key. You can accomplish
+  this directly in the MarkLogic admin UI. If you are running MarkLogic on your own
+  laptop or desktop, you can browse to
 
       http://localhost:8001/license.xqy
 
   and install your key or request a free developer key. (If you are running MarkLogic on
-  a server, you can replace localhost with the server hostname (or IP address) and port you 
-  are using to access MarkLogic's Admin UI. And, if you prefer, you can also install a license key via 
+  a server, you can replace localhost with the server hostname (or IP address) and port you
+  are using to access MarkLogic's Admin UI. And, if you prefer, you can also install a license key via
   a REST API as described in our Installation Guide [http://docs.marklogic.com/guide/installation] .)
 
   Thanks!
-  Eric Bloch 
+  Eric Bloch
   Director Community, MarkLogic
   "
 
     let $subject := "Thanks for downloading MarkLogic"
 
     return u:send-email(
-        $user/email/string(), 
-        $user/name/string(), 
+        $user/email/string(),
+        $user/name/string(),
         "community-requests@marklogic.com",
         "Eric Bloch",
-        $subject, 
+        $subject,
         $body
     )
 };
@@ -578,13 +578,13 @@ declare function users:denied() as xs:boolean
             )
         )
 
-        return if ($person) then 
+        return if ($person) then
             if ($country-code = $person/Country/string()) then
-                let $_ := users:warn-denied-person($user, $country, $country-code) 
+                let $_ := users:warn-denied-person($user, $country, $country-code)
                 return true()
             else
                 false()
-        else 
+        else
             false()
     else
         false()

@@ -222,20 +222,17 @@
         </field>
       </fields>
 -->
-      <range-element-indexes>
-        <!--
-        Sample for:
-          <name xmlns="http://marklogic.com/ns/sample">bob<name>
 
+      <range-element-indexes>
         <range-element-index>
           <scalar-type>string</scalar-type>
-          <namespace-uri>http://marklogic.com/ns/sample</namespace-uri>
-          <localname>name</localname>
+          <namespace-uri>http://marklogic.com/rundmc/api</namespace-uri>
+          <localname>suggest</localname>
           <collation>http://marklogic.com/collation/codepoint</collation>
           <range-value-positions>false</range-value-positions>
         </range-element-index>
--->
       </range-element-indexes>
+
       <range-element-attribute-indexes>
 <!--
         Sample for:

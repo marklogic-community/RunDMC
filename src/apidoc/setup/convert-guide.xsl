@@ -64,7 +64,8 @@
       <xsl:for-each select="/guide | /chapter">
         <xsl:copy>
           <xsl:copy-of select="@*"/>
-          <xsl:copy-of select="guide-title | title"/>
+          <xsl:copy-of select="guide-title|title"/>
+          <xsl:copy-of select="stp:suggest(guide-title|title)"/>
           <xsl:copy-of select="guide:metadata(.)"/>
           <xsl:copy-of select="chapter-list"/>
           <!-- Last step: add the XHTML namespace -->
@@ -74,15 +75,15 @@
     </xsl:result-document>
     <xsl:if test="$DEBUG_GROUPING">
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/sections-captured',$OUTPUT-URI),
                   $sections-captured)"/>
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/lists-captured'   ,$OUTPUT-URI),
                   $lists-captured)"/>
       <xsl:value-of
-          select="xdmp:document-insert(
+          select="ml:document-insert(
                   concat('/DEBUG/code-merged'      ,$OUTPUT-URI),
                   $code-merged)"/>
     </xsl:if>

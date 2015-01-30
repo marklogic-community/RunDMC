@@ -5,6 +5,8 @@ module namespace guide="http://marklogic.com/rundmc/api/guide" ;
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+import module namespace cprof="com.blakeley.cprof"
+  at "/lib/cprof.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
@@ -20,6 +22,8 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
+
+declare variable $ANCHOR-ID-FROM-HREF-SEEN := map:map() ;
 
 declare function guide:full-anchor-id($ID-att as xs:string)
 as xs:string
@@ -81,11 +85,9 @@ declare function guide:anchor-id-from-href(
   $target-doc as document-node())
 as xs:string?
 {
-  let $resolved-href := guide:fully-resolved-href($href)
-  let $is-top-level-section-link := (
-    $resolved-href = $fully-resolved-top-level-heading-references)
-  where not($is-top-level-section-link)
-  return (
+  if (guide:fully-resolved-href($href)
+    = $fully-resolved-top-level-heading-references) then ()
+  else (
     (: The section name of the guide :)
     (: Leave out the _12345 part if we are linking to a top-level section :)
     let $id := substring-before(substring-after($href, '#id('), ')')
@@ -94,8 +96,16 @@ as xs:string?
      : which also uses the last one present.
      : This is a hotspot, called for most A elements.
      :)
-    let $id := ($target-doc//A[@ID eq $id])[1]/../A[@ID][last()]/@ID
-    return concat('id_', $id))
+    let $seen-key := concat(
+      $target-doc/*/@guide-uri/string() treat as item(), '#', $id)
+    let $seen-id := map:get($ANCHOR-ID-FROM-HREF-SEEN, $seen-key)
+    return (
+      if ($seen-id) then $seen-id
+      else (
+        let $id := ($target-doc//A[@ID eq $id])[1]/../A[@ID][last()]/@ID
+        let $id := concat('id_', $id)
+        let $_ := map:put($ANCHOR-ID-FROM-HREF-SEEN, $seen-key, $id)
+        return $id)))
 };
 
 declare function guide:starts-list(
@@ -255,14 +265,16 @@ as node()?
 
 declare function guide:target-doc(
   $raw-docs as document-node()*,
-  $fully-resolved-href as xs:string)
-as document-node()*
+  $href as xs:string)
+as document-node()?
 {
+  let $clean := (
+    if (not(contains($href, '#'))) then $href
+    else substring-before($href, '#'))
   (: This is a hotspot.
    : In this form it is pretty well optimized.
    :)
-  $raw-docs/*/XML/@original-file[ starts-with($fully-resolved-href, .) ]
-  /root()
+  return ($raw-docs/*/XML/@original-file[. eq $clean])[1]/root()
 };
 
 declare function guide:anchor-href-missing(
@@ -404,6 +416,7 @@ as node()+
       attribute xml:base { . },
       attribute id { $id },
       attribute guide-uri { $guide-uri },
+      stp:suggest($id, true()),
       $message })
 };
 
@@ -414,25 +427,7 @@ declare function guide:convert-uri(
 as document-node()
 {
   let $guide-docs := raw:guide-docs($version)
-  return xdmp:xslt-invoke(
-    '/apidoc/setup/convert-guide.xsl',
-    $guide-docs[
-      raw:target-guide-doc-uri(.) eq $uri] treat as node(),
-    map:new(
-      (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $guide-docs),
-        map:entry(
-          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
-};
-
-(: This is for development work only, so efficiency is not paramount. :)
-declare function guide:convert-uri-profiled(
-  $version as xs:string,
-  $uri as xs:string)
-as node()+
-{
-  let $guide-docs := raw:guide-docs($version)
-  return prof:xslt-invoke(
+  return cprof:xslt-invoke(
     '/apidoc/setup/convert-guide.xsl',
     $guide-docs[
       raw:target-guide-doc-uri(.) eq $uri] treat as node(),
@@ -450,8 +445,9 @@ declare function guide:convert(
   $guide as document-node())
 as node()
 {
-  xdmp:xslt-invoke(
-    "convert-guide.xsl", $guide,
+  (: This XSLT is slow. :)
+  cprof:xslt-invoke(
+    "/apidoc/setup/convert-guide.xsl", $guide,
     map:new(
       (map:entry('OUTPUT-URI', $uri),
         map:entry('RAW-DOCS', $raw-docs),
@@ -499,7 +495,7 @@ as empty-sequence()
   for $c at $x in guide:render(
     $raw-docs, $fully-resolved-top-level-heading-references, $g)
   let $uri as xs:string := base-uri($c)
-  let $_ := xdmp:document-insert($uri, $c)
+  let $_ := ml:document-insert($uri, $c)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:render',
     (base-uri($g), '=>', $uri,
@@ -526,7 +522,7 @@ declare function guide:consolidate-insert(
     'guide:consolidate-insert',
     (xdmp:describe($doc), xdmp:describe($title),
       xdmp:describe($guide-title), $target-url)),
-  xdmp:document-insert(
+  ml:document-insert(
     $target-url,
     element { if ($chapter-list) then "guide" else "chapter" } {
       attribute original-dir { $orig-dir },
@@ -672,7 +668,7 @@ as empty-sequence()
   let $dest-uri := concat($img-dir, $img-path)
   let $_ := if (not($stp:DEBUG)) then () else stp:debug(
     'guide:images', ($source-uri, "to", $dest-uri))
-  return xdmp:document-insert($dest-uri, raw:get-doc($source-uri))
+  return ml:document-insert($dest-uri, raw:get-doc($source-uri))
 };
 
 (: This function copies all guide images into place. :)

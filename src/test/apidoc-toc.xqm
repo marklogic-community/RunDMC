@@ -66,6 +66,18 @@ declare %t:case function t:guide-toc-open()
     true())
 };
 
+declare %t:case function t:display-suffix-javascript()
+{
+  toc:display-suffix('xdmp', $api:MODE-JAVASCRIPT)
+  ! at:equal(., ' (xdmp.)')
+};
+
+declare %t:case function t:display-suffix-xpath()
+{
+  toc:display-suffix('xdmp', $api:MODE-XPATH)
+  ! at:equal(., ' (xdmp:)')
+};
+
 declare %t:case function t:render-0-empty()
 {
   <root display="All Documentation"

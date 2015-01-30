@@ -17,6 +17,14 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
  :)
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
+declare function v:error(
+  $code as xs:string,
+  $items as item()*)
+as empty-sequence()
+{
+  error((), 'VIEW-'||$code, $items)
+};
+
 declare function v:site-title($version as xs:string)
 as xs:string
 {
@@ -24,7 +32,7 @@ as xs:string
   case '5.0' return 'MarkLogic 5 Product Documentation'
   case '6.0' return 'MarkLogic 6 Product Documentation'
   case '7.0' return 'MarkLogic 7 Product Documentation'
-  case '8.0' return 'MarkLogic 8 Early Access Product Documentation'
+  case '8.0' return 'MarkLogic 8 Product Documentation'
   default return concat(
     'MarkLogic Server ', $version, ' Product Documentation')
 };
@@ -80,11 +88,11 @@ as element()
   <div xmlns="http://www.w3.org/1999/xhtml"
   id="copyright">Copyright &#169; 2015 MarkLogic Corporation. All rights reserved.
   | Powered by
-  <a href="http://developer.marklogic.com/products">
+  <a href="//developer.marklogic.com/products">
   MarkLogic Server
   <span class="server-version">{ xdmp:version() }</span>
   </a>
-  and <a href="http://developer.marklogic.com/code/rundmc">rundmc</a>.
+  and <a href="//developer.marklogic.com/code/rundmc">rundmc</a>.
   </div>
 };
 
@@ -191,15 +199,21 @@ as node()*
   v:input-hidden('toc_url', api:toc-uri($version, $version-specified))
 };
 
-declare function v:search-path(
-  $url as xs:string,
-  $q as xs:string,
-  $version as xs:string?)
-as xs:string
+declare function v:anchor-id(
+  $e as element())
+  as xs:string*
 {
-  $url||'?q='||$q||(
-    if (not($version)) then ''
-    else '&amp;v='||$version)
+  typeswitch($e)
+  case element(api:header) return $e/@name
+  case element(api:param) return concat(
+    $e/api:param-name,
+    (: For the *:polygon functions,
+     : which have more than one function element on the same page.
+     :)
+    if (not(xdmp:path($e/../..)
+        = '/api:function-page/api:function[2]')) then ()
+    else '2')
+  default return v:error('UNEXPECTED', xdmp:describe($e))
 };
 
 (: apidoc/view/view.xqm :)

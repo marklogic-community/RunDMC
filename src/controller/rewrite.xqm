@@ -29,7 +29,7 @@ declare variable $ACCESS-RULES := u:get-doc("/controller/access.xml")/rules ;
 declare variable $API-VERSION := $ml:default-version ;
 
 declare variable $DEBUG as xs:boolean? := xs:boolean(
-  xdmp:get-request-field('debug')) ;
+  xdmp:get-request-field('debug')[. castable as xs:boolean]) ;
 
 declare variable $NOTFOUND := "/controller/notfound.xqy" ;
 
@@ -418,6 +418,8 @@ as xs:string
     else if ($path eq "/save-profile") then "/controller/save-profile.xqy"
     else if ($path eq "/enable-corn") then "/controller/enable-corn.xqy?q=on"
     else if ($path eq "/disable-corn") then "/controller/enable-corn.xqy"
+    else if ($path eq '/service/suggest') then concat(
+      '/controller/suggest.xqy?', $query-string)
     else if (starts-with($path, "/rex/")) then concat(
       "/controller/rex.xqy?path-and-query=",
       xdmp:url-encode(

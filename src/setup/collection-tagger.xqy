@@ -11,7 +11,7 @@ xdmp:add-response-header("x-content-type-options","nosniff"),
 
 (: Add the category collection URI to all available documents. :)
 ml:reset-category-tags(
-  cts:uris("",(),
+  cts:uris((), (),
     (: The union of all version-specific search corpuses :)
     ml:search-corpus-query($ml:server-versions)))
 

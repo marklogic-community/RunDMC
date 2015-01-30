@@ -55,12 +55,6 @@ declare function u:is-directory($uri as xs:string) as xs:boolean {
     xdmp:exists(xdmp:directory($uri, 'infinity'))
 };
 
-declare function u:highlight-doc($doc, $highlight-search as xs:string, $external-uri) {
-  cts:highlight($doc, cts:query(search:parse($highlight-search, search:get-default-options())),
-                      <span class="hit_highlight"
-                            xmlns="http://www.w3.org/1999/xhtml">{$cts:text}</span>)
-};
-
 declare function u:strip-version-from-path($path as xs:string) {
   fn:replace($path,'/[0-9]+\.[0-9]+/','/')
 };

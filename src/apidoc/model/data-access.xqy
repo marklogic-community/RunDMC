@@ -268,17 +268,6 @@ as element(namespace)?
   map:get($M-NAMESPACES, $lib)
 };
 
-(: Normally just use the lib name as the prefix,
- : unless specially configured to do otherwise.
- :)
-declare function api:prefix-for-lib(
-  $lib as xs:string)
-as xs:string?
-{
-  (api:namespace($lib)/@prefix,
-    $lib)[1]
-};
-
 (: E.g., store the images for /apidoc/4.2/guides/performance.xml
  : in /media/apidoc/4.2/guides/performance/
  :)
@@ -731,7 +720,7 @@ as xs:string
       'api:toc-section-link-selector', $version, $version-prefix,
       xdmp:describe($e), 'guide-uri', xdmp:describe($e/@guide-uri/string()) }),
   typeswitch($e)
-  (: function lib page link :)
+  (: function lib page link, eg '/8.0/js/xdmp' :)
   case element(api:function-page) return (
     ".scrollable_section a[href='"
     ||$version-prefix
@@ -811,7 +800,7 @@ as xs:string
   case 'json:array' return 'Array'
 
   case 'json:object'
-  case 'map:map' return 'object'
+  case 'map:map' return 'Object'
 
   case 'xdmp:function' return 'function'
 
@@ -839,16 +828,16 @@ declare function api:type-expr-javascript(
   $quantifier as xs:string)
 as xs:string
 {
-  switch($quantifier)
-  case '*' return (
-    (: #317 for params with item()* :)
-    if ($context = 'return') then 'ValueIterator'
-    else if ($type = 'item()') then '(Object[] | ValueIterator)'
-    else 'String[]')
-  case '+' return (
-    if ($context = 'return') then 'ValueIterator'
-    else 'String[]')
-  default return concat(api:type-javascript($type), $quantifier)
+  if (not($quantifier = ('*', '+'))) then concat(
+    api:type-javascript($type), $quantifier)
+  (: #317 for params with item()* :)
+  else if ($context = 'return') then 'ValueIterator'
+  else switch($type)
+  (: Overrides for specific parameter types. :)
+  case 'cts:query' return concat(api:type-javascript($type), '[]')
+  case 'item()' return '(Object[] | ValueIterator)'
+  case 'xs:anyAtomicType' return '(String | Number | Boolean | null)[]'
+  default return (api:type-javascript($type)||'[]')
 };
 
 declare function api:type-expr-javascript(

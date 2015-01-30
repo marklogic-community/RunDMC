@@ -173,4 +173,24 @@ class ServerConfig
     deploy_docs_request(data)
   end
 
+  def test()
+    # Run xray unit tests
+    print Dir.pwd + "\n"
+
+    cmd = sprintf(
+      "./src/xray/test-runner.sh -d %s -u http://%s:%s/xray",
+      "test",
+      @properties['ml.server'],
+      @properties['ml.app-port'])
+    @logger.info(sprintf("Trying %s", cmd))
+    cmd += sprintf(" -c %s:%s",
+                   @properties['ml.user'],
+                   @properties['ml.password'])
+    system(cmd)
+  end
+
+  def xray()
+    test()
+  end
+
 end
