@@ -381,12 +381,14 @@
             <xsl:if test="$content/page/@page/number() gt 1">
             <p class="pagination_prev"><button
                 data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}"
+                accesskey="p" rel="prev"
                 class="blue">&#171; Previous</button><span>
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
             </xsl:if>
             <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
             <p class="pagination_next"><button
                 data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}"
+                accesskey="n" rel="next"
                 class="blue">Next &#187;</button><span>
                 <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
             </xsl:if>
