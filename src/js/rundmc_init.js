@@ -482,6 +482,10 @@ function searchSuggestInit() {
          // Clear any existing idle timer.
          clearTimeout($.data(this, 'timer'));
          var nextText = this.props.$inputNode.val();
+         // Tempting to trim too, but that will throw off the position data.
+         if (nextText) {
+             nextText = nextText.toLowerCase();
+         }
          var pos = this.props.$inputNode.getCursorPosition();
          LOG.debug("SearchSuggest input active",
                    new Date(), nextText, nextText.length, force);
