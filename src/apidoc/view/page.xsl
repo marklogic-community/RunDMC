@@ -954,6 +954,7 @@
 
   <xsl:template mode="guide" match="api:suggest"/>
 
+  <xsl:template mode="guide" match="title"/>
   <!--
       Boilerplate copying code.
       This is a hotspot for large guides, eg /guide/messages/XDMP-en.xml
