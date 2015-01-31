@@ -21,7 +21,7 @@ body {
     left: 0;
     right: 70%;
     margin: 155px 0 0 0;
-    overflow: auto;
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
     z-index: 0;
@@ -34,7 +34,7 @@ body {
     left: 30%;
     right: 0;
     margin: 155px 0 0 0;
-    overflow: auto;
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
     z-index: 0;
@@ -230,14 +230,20 @@ ol ol {
     padding: 16px 0 16px 0;
 }
 
+/* This needs some non-standard properties,
+ * or else the user will accidentally select adjoining text.
+ */
 #splitter {
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
-    z-index: 100;
+    cursor: col-resize;
+    -moz-user-select: none;
+    -webkit-user-select: none;
     background: #eee;
     width: 8px;
+    z-index: 100;
 }
 
 .tab_link {
@@ -272,7 +278,7 @@ ol ol {
 .config-filter-close-button {
     display: none;
     cursor: pointer;
-    left: 59%;
+    margin: 8px 0 0 -18px;
 }
 
 .function_name {
