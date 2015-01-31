@@ -13,6 +13,8 @@ var LOG = {
   debug: function() {
     if (!this.DEBUG) return;
     console.log.apply(console, arguments); },
+  info: function() {
+    console.log.apply(console, arguments); },
   warn: function() {
     console.log.apply(console, arguments); }};
 

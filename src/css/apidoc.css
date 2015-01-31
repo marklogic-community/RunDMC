@@ -1,20 +1,64 @@
 /* apidoc.css */
 
-html, body {
-    height: 100%;
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFF;
 }
-blockquote {margin-left: 0;}
-dd {margin-left: 40px;}
-pre, .userguide img {
+
+/* header + two columns */
+
+#header {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+#api_sub {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 70%;
+    margin: 155px 0 0 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    /* android may need this so touch-scrolling works. */
+    z-index: 0;
+}
+
+#page_content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 30%;
+    right: 0;
+    margin: 155px 0 0 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    /* android may need this so touch-scrolling works. */
+    z-index: 0;
+}
+
+blockquote {
+    margin-left: 0;
+}
+dd {
+    margin-left: 40px;
+}
+
+pre,
+.userguide img {
     max-width: 100%;
     overflow: auto;
 }
 /* Exclude function signatures */
-.userguide pre, .example pre  {
+.userguide pre,
+.example pre  {
     border-style: solid;
     border-width: 1px;
-    border-color: #CCC;
-    background-color: white;
+    border-color: #ccc;
+    background-color: #fff;
     padding: 15px;
 }
 
@@ -33,21 +77,22 @@ ol ol {
     list-style-type: lower-alpha;
 }
 
-#header nav .current:after {border-color: #1479B2 transparent;}
+#header nav .current:after {
+    border-color: #1479B2 transparent;
+}
 
 #header-below-bottom-bar {
-    background: white;
+    background: #fff;
 }
 
 #content {
-    position: absolute;
-    top: 112px;
-    bottom: 0;
     width: 100%;
-    background: white;
+    background: #fff;
 }
 
-#container > footer {padding-bottom: 0;}
+#container > footer {
+    padding-bottom: 0;
+}
 
 #copyright {
     clear: both;
@@ -56,33 +101,41 @@ ol ol {
     padding: 20px;
 }
 
-#breadcrumb, #container #breadcrumb + section > h2 {
+#breadcrumb,
+#container #breadcrumb + section > h2 {
     background: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 #breadcrumb {
-    padding-left: 16px;
+    padding: 8px 0 8px 16px;
 }
-#breadcrumb > div {
-    margin-left: 0 !important;
-    position: static !important;
+
+#breadcrumb div {
+    margin: 0;
 }
-#breadcrumb > div:first-child {margin-bottom: 30px;}
-#page_content {
-    height: 100%;
-    overflow: auto;
-    width: 62%;
-    float: right;
-    padding-right: 3%;
-    position: relative;
+
+#breadcrumbDynamic {
+    color: #000;
 }
+
+.version {
+    position: inherit;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 0 8px 16px;
+}
+
+#page_content > div {
+    margin: 0 16px 0 16px;
+}
+
 #page_content h1 {
     padding: 0 !important;
     margin: 40px 0 40px;
     line-height: 110%;
-    color: black;
+    color: #000;
     font-size: 27px;
 }
 
@@ -101,22 +154,35 @@ ol ol {
     line-height: 110%;
 }
 
-.userguide h2 { font-size: 1.8em; }
-.userguide h3 { font-size: 1.5em; }
-.userguide h4 { font-size: 1.3em; }
-.userguide h5 { font-size: 1em; }
-.userguide h6 { font-size: .9em; }
+.userguide h2 {
+    font-size: 1.8em;
+}
+.userguide h3 {
+    font-size: 1.5em;
+}
+.userguide h4 {
+    font-size: 1.3em;
+}
+.userguide h5 {
+    font-size: 1em;
+}
+.userguide h6 {
+    font-size: .9em;
+}
 
-.userguide h4 { font-weight: normal; }
+.userguide h4 {
+    font-weight: normal;
+}
 
 
 /* same as h2 in screen.css */
 .userguide h1 {
-    color: black;
+    color: #000;
     font-size: 27px;
 }
 
-.underline { text-decoration: underline }
+.underline {
+    text-decoration: underline }
 
 #page_content ul {
     padding-left: 20px;
@@ -132,11 +198,13 @@ ol ol {
     background: url(/images/bg_shadow_vert.png) top left repeat-y;
     display: none;
 }
-#page_content.scroll {border-left: 1px solid #CCC;}
+#page_content.scroll {
+    border-left: 1px solid #ccc;
+}
 #page_content table pre {
 }
 #page_content dd pre {
-    background-color: white;
+    background-color: #fff;
     padding-top: 5px;
     border-radius: 4px;
 }
@@ -145,43 +213,31 @@ ol ol {
     padding: 0;
 }
 #api_sub {
-    width: 30%;
     color: #333333;
     font-size: 0.9em;
-    position: absolute;
-    left: 16px;
-    top: 48px;
-    bottom: 0;
-    margin: 0;
-    padding: 0;
 }
 
 #apidoc_toc,
 #all_tocs,
 .toc {
-    top: auto;
-    bottom: auto;
-    height: 100%;
+    margin: 0;
     padding: 0;
 }
 #toc_content {
-    position: absolute;
-    top: 1em;
-    bottom: 0;
-    width: 97%;
-    background: white;
-    border: 1px solid #CCC;
-    padding-top: 5em;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    padding: 16px 0 16px 0;
 }
 
 #splitter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
     background: #eee;
     width: 8px;
-    position: absolute;
-    bottom: 0px;
-    top: 13px;
-    left: 97.9%;
-    z-index: 100;
 }
 
 .tab_link {
@@ -198,27 +254,19 @@ ol ol {
 }
 
 .toc_select {
-    position: absolute;
-    top: 8px;
-    left: 8px;
+    position: inherit;
+    margin-left: 16px;
 }
 
 .scrollable_section {
-    min-height: 100%;
-    height: 100%;
-    position: relative;
+    position: inherit;
 }
 
-.scrollable_section > input,
-.config-filter-close-button {
-    position: absolute;
-    top: -24px;
-}
 .scrollable_section > input {
-    border: 1px solid #CCC;
+    border: 1px solid #ccc;
     left: 8px;
     font-size: 11px;
-    padding: 1px 5px;
+    margin: 8px 0 0 16px;
     width: 60%;
 }
 .config-filter-close-button {
@@ -237,40 +285,33 @@ ol ol {
     padding: 1em;
 }
 
-.currentPage, .footnote_marker, a.footnote_marker:hover, .currentVersion, h1 a, .toc_highlight {color: #F86D07;}
+.currentPage,
+.footnote_marker,
+a.footnote_marker:hover,
+.currentVersion,
+h1 a,
+.toc_highlight {
+    color: #F86D07;
+}
 
 .treecontrol.top_control {
+    float: right;
+    margin: 8px 16px 0 0;
     cursor: pointer;
-    position: absolute;
-    font-size: .9em !important;
-}
-.treecontrol.top_control.local_control {
-    margin-top: -42px;
-    margin-left: -10px;
+    font-size: .9em;
 }
 .treecontrol.top_control.global_control {
-    margin-top: -25px;
-    margin-left: 67%;
 }
 .treecontrol.top_control > span {
     display: inline-block;
-    color: white;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-right: 3px;
-    padding-left: 3px;
-    margin-bottom: 8px;
-    margin-left: 3px;
+    color: #fff;
+    padding: 3px 3px 3px 3px;
+    margin: 0 0 4px 2px;
     border: 1px solid #003959;
     font-weight: bold;
     text-decoration: none !important;
     text-align: center;
     background: #2a7bab; /* Old browsers */
-    background: -moz-linear-gradient(top, #2a7bab 0%, #014b7a 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a7bab), color-stop(100%,#014b7a)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE10+ */
     -pie-background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* IE (through CSS3 PIE) */
     background: linear-gradient(top, #2a7bab 0%,#014b7a 100%); /* W3C */
     overflow: hidden;
@@ -283,7 +324,7 @@ ol ol {
 
 .treecontrol.top_control > span img {
     vertical-align: baseline;
-    background: white;
+    background: #fff;
 }
 .treecontrol.top_control > span span {
     vertical-align: baseline;
@@ -292,27 +333,53 @@ ol ol {
 
 /* override treeview CSS */
 .treeview {
-    overflow: auto;
-    border-top: 1px solid #CCC;
     position: absolute;
-    top: 0;
+    top: 78px;
     bottom: 0;
     width: 100%;
+    overflow: auto;
+    border-top: 1px solid #ccc;
 }
-.treeview a.toc_root {font-weight: bold;}
-.treeview a.toc_top {font-weight: bold;}
-.treeview ul {line-height: 110%;}
-.treeview li {padding-left: 18px;}
+.treeview a.toc_root {
+    font-weight: bold;
+}
+.treeview a.toc_top {
+    font-weight: bold;
+}
+.treeview ul {
+    line-height: 110%;
+}
+.treeview li {
+    padding-left: 18px;
+}
 
-.treeview             li {white-space:nowrap;} /* allow no wrapping in the TOC... */
-.treeview .wrapTitles li,                      /* ...except where specifically elected */
-.treeview li.wrapTitles {white-space:normal;}
+/* allow no wrapping in the TOC... */
+.treeview li {
+    white-space:nowrap;
+}
+/* ...except where specifically elected */
+.treeview .wrapTitles li,
+.treeview li.wrapTitles {
+    white-space: normal;
+}
 
-.treeview a.selected {background-color: transparent;}
-.treeview .hitarea {margin-left: -18px;}
+.treeview a.selected {
+    background-color: transparent;
+}
+.treeview .hitarea {
+    margin-left: -18px;
+}
 
-.footnote_marker, .collapse, .expand, .shallowCollapse, .shallowExpand {cursor: pointer;}
-a.footnote_marker:hover {text-decoration: none;}
+.footnote_marker,
+.collapse,
+.expand,
+.shallowCollapse,
+.shallowExpand {
+    cursor: pointer;
+}
+a.footnote_marker:hover {
+    text-decoration: none;
+}
 
 .footnote {
     font-size: 9px;
@@ -328,68 +395,75 @@ code.syntax {
 }
 
 /* overrides padding-left in screen.css */
-tbody td:first-child.indented_function  {padding-left: 40px;}
+tbody td:first-child.indented_function  {
+    padding-left: 40px;
+}
 
-h1 a { text-decoration: underline; color: black; }
+h1 a {
+    text-decoration: underline;
+    color: #000;
+}
 
-.hide-detail { display: none; }
+.hide-detail {
+    display: none;
+}
 
-input.default {color: #CBCBCB; font-style: italic;}
-li.expandable .treecontrol { display: none; }
+input.default {
+    color: #CBCBCB;
+    font-style: italic;
+}
+li.expandable .treecontrol {
+    display: none;
+}
 
 /* Disable (fixed-width) background image */
-#main .doclist h2 {background: #6E782F;/* url(/images/bg_header_doclist.gif) no-repeat;*/}
-.documentsTable a {text-decoration: underline;}
-.guide-pdf-link {float: right;}
+#main .doclist h2 {
+    background: #6E782F;
+}
+.documentsTable a {
+    text-decoration: underline;
+}
+.guide-pdf-link {
+    float: right;
+}
 
-.nextChapter {float: right;}
-.previousChapter {float: left;}
+.nextChapter {
+    float: right;
+}
+.previousChapter {
+    float: left;
+}
 
-.printerFriendly { float: right; padding-top: 8px; }
+.printerFriendly {
+    float: right;
+    padding-top: 8px;
+}
 
-a.sectionLink       { color: #666; }
-a.sectionLink:hover { color: #235BAB; }
+a.sectionLink {
+    color: #666;
+}
+a.sectionLink:hover {
+    color: #235BAB;
+}
 
 .note,
-.warning { min-height: 50px }
+.warning {
+    min-height: 50px
+}
 
-/* Override default CSS for tabs */
-#api_sub .ui-widget { font-family: Tahoma, Arial, Helvetica, sans-serif; }
-#api_sub .ui-state-active,
-#api_sub .ui-widget-content .ui-state-active,
-#api_sub .ui-widget-header .ui-state-active
-         {border-color: #CCC;}
-#api_sub .ui-widget-content .treeview .api-function-link a {
-    color: #01639D;
-}
-#api_sub .ui-widget-content .treeview .selected {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: default;
-}
 .selected {
-    color: black;
+    color: #000;
     font-weight: bold;
     text-decoration: none;
     cursor: default;
 }
-#api_sub .ui-widget {font-size: 1em;}
-#api_sub .ui-tabs .ui-tabs-panel {
-    padding: 0;
-    height: 100%;
-}
-.toc, #api_sub .ui-tabs .ui-tabs-nav {
-    border-radius: 0;
-    border: none;
-    background: none;
-    padding: 0;
+
+.toc,
+#api_sub {
     line-height: 100%;
 }
-/* end override */
 
 .toc_section {
-    height: 100%
 }
 
 .api_caption {
@@ -420,7 +494,9 @@ table.api_table {
     padding-bottom: 5px;
     vertical-align: middle;
 }
-.api_table tbody td:first-child {font-size: 12px;}
+.api_table tbody td:first-child {
+    font-size: 12px;
+}
 
 
 
@@ -435,11 +511,11 @@ table.api_table {
 .api_generic_table tbody:last-child tr:last-child th:first-child,
 
 /* th properties */
-.api_generic_table th
- { background-image: none;
-   background-color: #ECECEC;
-   border: 1px solid #CCC; }
-
+.api_generic_table th {
+    background-image: none;
+    background-color: #ECECEC;
+    border: 1px solid #ccc;
+}
 
 /* Use brute force to undo the background property on td (set in screen.css) */
 .api_generic_table tbody:last-child tr:last-child td:first-child,
@@ -447,57 +523,75 @@ table.api_table {
 .api_generic_table tbody:last-child tr:last-child td,
 .api_generic_table tbody:last-child tr:last-child td:last-child,
 .api_generic_table tbody td:first-child,
-
-/* td properties */
-.api_generic_table td
- { background-image: none;
-   border: 1px solid #CCC; }
+.api_generic_table td {
+    background-image: none;
+    border: 1px solid #ccc;
+}
 
 /* more brute force to reset padding */
 .api_generic_table tbody td:first-child,
 .api_generic_table tbody th:first-child,
 .api_generic_table td,
-.api_generic_table th
- { padding: 15px 10px; }
+.api_generic_table th {
+    padding: 15px 10px;
+}
 
 /* workaround for nowrap attributes that jquery is adding to the td tags */
-table.api_generic_table td { white-space: normal; }
+table.api_generic_table td {
+    white-space: normal;
+}
 
 /* prevent 1st para in multi-para table cells from having extra padding */
-.api_generic_table p:first-child { margin-top: 0px; }
+.api_generic_table p:first-child {
+    margin-top: 0;
+}
 
-table.api_generic_table.guide_info { width: 100%; }
+table.api_generic_table.guide_info {
+    width: 100%;
+}
 table.api_generic_table.guide_info td,
-table.api_generic_table.guide_info th { padding: 8px; font-size: .9em; }
+table.api_generic_table.guide_info th {
+    padding: 8px;
+    font-size: .9em;
+}
 
 /* Make code font size match normal text size in table cells */
-table.api_generic_table code { font-size: 100%; }
+table.api_generic_table code {
+    font-size: 100%;
+}
 
 table.parameters {
     table-layout: fixed;
     width: 100%;
 }
-table.parameters, table.parameters code {
+table.parameters,
+table.parameters code {
     font-size: 14px;
     line-height: 143%;
 }
-table.parameters .col1 {width: 25%;}
-table.parameters .col2 {width: 75%;}
+table.parameters .col1 {
+    width: 25%;
+}
+table.parameters .col2 {
+    width: 75%;
+}
 
 /* another brute-force fix to override screen.css */
-table.parameters tbody td:last-child {background: url(/images/bg_cacaca.gif) top right repeat-y;}
+table.parameters tbody td:last-child {
+    background: url(/images/bg_cacaca.gif) top right repeat-y;
+}
 
-a.function_prefix { text-decoration: underline; color: black; }
+a.function_prefix {
+    text-decoration: underline;
+    color: #000;
+}
 
 /* Disqus tooltips don't interact well with our layout */
-.dsq-tooltip-outer { display: none !important; }
+.dsq-tooltip-outer {
+    display: none !important;
+}
 
-/* An alternative attempt that doesn't disable them altogether
-   .dsq-tooltip-outer { top: auto !important; bottom: 0px;}
-*/
-
-
-/* for admin help docs (actually, for all strongs) */
+/* for admin help docs (actually for all strongs) */
 strong {
     color: #2C2C2C;
 }
@@ -515,7 +609,7 @@ a.external {
     font-size: .8em;
     margin-top: -30px;
     margin-left: 170px;
-    position: fixed
+    position: fixed;
 }
 
 /* decrease radio button size in FF/IE */
@@ -524,13 +618,64 @@ input.function_view {
     height: 10px;
 }
 
-#widgets {
-    width: 25%;
+/* Override screen.css to fit in with local rules. */
+span.highlightWidget {
+    margin: 0;
+    right: 16px;
 }
 
-.version {
-    position: relative;
-    font-weight: bold;
+/* On small screens, hide TOC and make other adjustments. */
+
+@media (max-width: 784px) {
+    #header {
+    }
+    #header h1 {
+        margin-bottom: 4px;
+    }
+    #header h1 a {
+        background: url(/images/logo-community-white-89x22.png) no-repeat;
+        width: 89px;
+        height: 22px;
+    }
+    div.header-separator {
+        margin-right: 4px;
+    }
+    #header nav {
+        display: none;
+    }
+    #search-header form {
+        margin-right: 4px;
+    }
+    #header-below-bottom-bar {
+        padding-bottom: 8px;
+    }
+    #breadcrumb {
+        padding: 4px;
+    }
+    #breadcrumb > div:first-child {
+        margin-bottom: 4px;
+    }
+    .version {
+        padding: 4px 0 4px 4px;
+    }
+    #api_sub {
+        display: none;
+    }
+    #page_content {
+        left: 0;
+        width: auto;
+        margin: 144px 0 0 0;
+        border-top: 1px solid #000;
+    }
+    #page_content > div {
+        margin: 0 4px 0 4px;
+    }
+    #page_content h1 {
+        margin: 24px 0 24px 0;
+    }
+    #copyright {
+        padding: 4px;
+    }
 }
 
 /* apidoc.css */

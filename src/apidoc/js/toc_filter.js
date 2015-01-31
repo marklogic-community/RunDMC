@@ -22,9 +22,22 @@ var tocHiddenExtraPX = 120;
 var tocHeaderHeightPX = 165; // in CSS for .scrollable_section
 
 $(function() {
-  // When the DOM is ready, load the TOC into the TOC div.
-  // Then finish with toc_init.
-  $('#apidoc_toc').load($("#toc_url").val(), null, toc_init);
+  // Lazy init TOC - helpful for small screens.
+  var fn = function(evt) {
+    LOG.debug("resize event", evt);
+    if (!$("#apidoc_toc:visible").length) {
+      LOG.debug("apidoc_toc not visible");
+      return;
+    }
+    LOG.debug("apidoc_toc is visible");
+    // Stop listening to events
+    $(window).off('resize', fn);
+    // Load the TOC into the TOC div and then finish with toc_init.
+    $('#apidoc_toc').load($("#toc_url").val(), null, toc_init);
+  };
+  $(window).on('resize', fn);
+  // In case we are *not* on a small screen, init the TOC.
+  fn();
 
   colorizeExamples();
 
@@ -60,6 +73,9 @@ $(function() {
 
   breadcrumbNode = $("#breadcrumbDynamic");
   if (!breadcrumbNode.length) LOG.warn("No breadcrumb!");
+
+  // Dummy breadcrumb, in case we have no TOC
+  updateBreadcrumb();
 
   toc_init_globals();
 });
@@ -312,7 +328,7 @@ function loadAllSubSections(tocRoot) {
   tocRoot.addClass("startedLoading");
 }
 
-// We may ignore index, but it's necessary as part of the signature expected by .each()
+// We ignore index, but it's part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
   var $tocSection = $(tocSection);
   LOG.debug("loadTocSection", index, $tocSection.length,
@@ -426,6 +442,11 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever TOC selection changes.
 function showInTOC(a) {
+  if (!tocSelect) {
+    LOG.debug("no tocSelect");
+    return;
+  }
+
   LOG.debug("showInTOC", 'link', a.length, 'parent', a.parent().length);
   $("#api_sub a.selected").removeClass("selected");
   // e.g., arriving via back button
@@ -526,10 +547,43 @@ function breadcrumbBuilder(results, n) {
 
 function updateBreadcrumb(n)
 {
-  //LOG.debug('updating breadcrumb', n.length ? n[0] : null);
+  LOG.debug('updateBreadcrumb', n);
+  if (!breadcrumbNode) {
+    LOG.warn('updateBreadcrumb null breadcrumbNode');
+    return;
+  }
+  var breadcrumb;
+  if (!n) {
+    // Do the best we can without the TOC.
+    breadcrumbNode.empty();
+    // Display only, not linkable.
+    breadcrumb = $('<span>');
+    var text = "";
+    var fnBucket = $('#functionPageBucketId').val();
+    var isGuide = $('#isUserGuide').val() === "true";
+    var isHelp = window.location.pathname.indexOf('/admin-help') > -1;
+    if (isHelp) {
+        text += " > Admin Help";
+    } else if (isGuide) {
+        text += " > Guides";
+    } else if (fnBucket) {
+      if (fnBucket.indexOf('REST') > -1) {
+        // Use the bucket name by itself.
+      } else if (window.location.pathname.indexOf(':') < 0) {
+        text += " > Server-Side JavaScript APIs";
+      } else {
+        text += " > Server-Side XQuery APIs";
+      }
+      text += " > " + fnBucket;
+    }
+    breadcrumb.text(text);
+    breadcrumbNode.append(breadcrumb);
+    return;
+  }
+  LOG.debug('updating breadcrumb', n.length ? n[0] : null);
   breadcrumbNode.empty();
-  var breadcrumb = breadcrumbBuilder([], n).reverse();
-  //LOG.debug('updating breadcrumb', breadcrumb);
+  breadcrumb = breadcrumbBuilder([], n).reverse();
+  LOG.debug('updating breadcrumb', breadcrumb);
   if (!breadcrumb || !breadcrumb.length) return;
   breadcrumbNode.append(breadcrumb);
 }
@@ -539,6 +593,13 @@ function updateTocForSelection() {
   LOG.debug("updateTocForSelection",
             "functionPageBucketId", functionPageBucketId,
             "tocSectionLinkSelector", tocSectionLinkSelector);
+
+  if (!tocSelect) {
+    LOG.debug("no tocSelect");
+    // Best-effort update.
+    updateBreadcrumb();
+    return;
+  }
 
   if (!tocSectionLinkSelector) {
     LOG.debug('no tocSectionLinkSelector!');
