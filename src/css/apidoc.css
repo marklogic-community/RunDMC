@@ -239,8 +239,9 @@ ol ol {
     cursor: col-resize;
     -moz-user-select: none;
     -webkit-user-select: none;
+    -webkit-touch-callout: none;
     background: #ddd;
-    width: 8px;
+    width: 12px;
     overflow: visible;
     z-index: 100;
 }
@@ -343,7 +344,7 @@ h1 a,
     bottom: 0;
     width: 98%;
     /* For browsers that support calc. */
-    width: calc(100% - 8px);
+    width: calc(100% - 12px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */

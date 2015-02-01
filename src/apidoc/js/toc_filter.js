@@ -739,22 +739,34 @@ function tocInitSplitter($splitter) {
   var $content = $('#page_content');
 
   var splitterMousedown = function(evt) {
-    LOG.debug("splitterMousedown", $splitter, evt, evt.pageX, evt.pageY);
+    LOG.debug("splitterMousedown", $splitter, evt, evt.type,
+              $splitter.data("moving"));
+    evt.preventDefault();
     $splitter.data("moving", true);
-    $document.on('mouseup', null, splitterMouseup);
     $document.on('mousemove', null, splitterMousemove);
-    // webkit hack to avoid accidental text selection
+    $document.on('touchmove', null, splitterMousemove);
+    $document.on('mouseup', null, splitterMouseup);
+    $document.on('touchcancel', null, splitterMouseup);
+    $document.on('touchend', null, splitterMouseup);
+    // webkit hacks to avoid accidental text selection
     $toc.css("-webkit-user-select", "none");
     $content.css("-webkit-user-select", "none");
+    $toc.css("-webkit-touch-callout", "none");
+    $content.css("-webkit-touch-callout", "none");
   };
 
   var lastX = null;
   var splitterMousemove = function(evt) {
-    LOG.debug("splitterMousemove", $splitter, evt);
+    LOG.debug("splitterMousemove", $splitter, evt, evt.type,
+              $splitter.data("moving"),
+              evt.pageX, evt.originalEvent.touches);
     if (!$splitter.data("moving")) { return; }
-    var x = evt.pageX;
+    evt.preventDefault();
+    var touches = evt.originalEvent.touches;
+    var x = touches ? touches[0].pageX : evt.pageX;
     // debounce just a little
-    if (x === lastX) { return; }
+    if (!x || x === lastX) { return; }
+    LOG.debug("splitterMousemove from", lastX, "to", x);
     lastX = x;
     var width = document.body.clientWidth;
     var right = width - x;
@@ -765,17 +777,38 @@ function tocInitSplitter($splitter) {
   };
 
   var splitterMouseup = function(evt) {
-    LOG.debug("splitterMouseup", $splitter, evt, evt.pageX, evt.pageY);
+    LOG.debug("splitterMouseup", $splitter, evt, evt.type,
+              $splitter.data("moving"));
+    if (!$splitter.data("moving")) { return; }
+    evt.preventDefault();
     $splitter.data("moving", false);
-    $document.off('mouseup', null, splitterMouseup);
     $document.off('mousemove', null, splitterMousemove);
-    // reset webkit hack
+    $document.off('touchmove', null, splitterMousemove);
+    $document.off('mouseup', null, splitterMouseup);
+    $document.off('touchcancel', null, splitterMouseup);
+    $document.off('touchend', null, splitterMouseup);
+    // reset webkit hacks
     $toc.css("-webkit-user-select", "text");
     $content.css("-webkit-user-select", "text");
+    $toc.css("-webkit-touch-callout", "default");
+    $content.css("-webkit-touch-callout", "default");
   };
 
-  $splitter.mousedown(splitterMousedown)
-    .attr({'unselectable': 'on'});
+  /* This event handling is not perfect.
+   * Apple iOS tries to emulate mouseup and mousedown
+   * but we never seem to see mousemove.
+   * In theory the touch events should come first,
+   * but not always in practice.
+   * If the user gestures just right, we get touchstart etc.
+   * This makes the splitter feel very fiddly.
+   * But there's no perfect way to detect touchscreen-only,
+   * and some devices may have both mouse and touchscreen.
+   * So we have to register the mouse events for all devices,
+   * and live with a fiddly touch UI until something better comes along.
+   */
+  $splitter.attr({'unselectable': 'on'})
+    .on('mousedown', splitterMousedown)
+    .on('touchstart', splitterMousedown);
 }
 
 // toc_filter.js
