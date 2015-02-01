@@ -11,6 +11,9 @@ import module namespace param="http://marklogic.com/rundmc/params"
 import module namespace srv="http://marklogic.com/rundmc/server-urls"
        at "../../controller/server-urls.xqy";
 
+import module namespace admin-ops = "http://marklogic.com/rundmc/admin-ops"
+       at "modules/admin-ops.xqy";
+
 let $params  := param:params()
 let $map     := map:map()
 
@@ -28,7 +31,7 @@ return
     return
     (
       (: Insert the document, after marking it as "preview-only" :)
-      xdmp:document-insert($doc-url, xdmp:xslt-invoke("../model/set-doc-attribute.xsl", $new-doc, (map:put($map, "att-name", "preview-only"),
+      admin-ops:document-insert($doc-url, xdmp:xslt-invoke("../model/set-doc-attribute.xsl", $new-doc, (map:put($map, "att-name", "preview-only"),
                                                                                                    map:put($map, "att-value", "yes"),
                                                                                                    $map))),
 
