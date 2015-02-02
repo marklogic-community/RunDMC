@@ -110,7 +110,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
-            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="#" class="a-cta cta-sm middle">Release Notes</a></h2>
+            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="//docs.marklogic.com/guide/relnotes" class="a-cta cta-sm middle">Release Notes</a></h2>
           </div>
         </div>
 
@@ -123,7 +123,7 @@
               </a>
             </li>
             <li>
-              <a href="/marklogic-for-node" class="col-md-1 col-sm-1 col-xs-4">
+              <a href="/features/node-client-api" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/node.svg"/>
                 <p class="text-uppercase text-center">Node.js Client API</p>
               </a>

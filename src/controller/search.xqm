@@ -287,7 +287,8 @@ as xs:string
     else concat(
       $srv:effective-api-server,
       $api-version-prefix,
-      ml:external-uri-for-string(ss:rewrite-html-links($uri))),
+      ml:escape-uri(
+        ml:external-uri-for-string(ss:rewrite-html-links($uri)))),
     (: Add the highlight param if needed.
      : The external-uri-main function never adds a query string,
      : so we have a free hand.

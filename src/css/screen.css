@@ -256,7 +256,7 @@ tbody:last-child tr:last-child td:last-child {
 
 th:last-child,
 td:last-child {
-    padding-right: 15px; !important;
+    padding-right: 15px !important;
 }
 
 th.last,
@@ -357,7 +357,7 @@ hr {
 
 #header {
     background: black;
-    color: #white;
+    color: white;
     font-size: 14px;
     position: relative;
 }

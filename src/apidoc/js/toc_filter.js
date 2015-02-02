@@ -22,9 +22,22 @@ var tocHiddenExtraPX = 120;
 var tocHeaderHeightPX = 165; // in CSS for .scrollable_section
 
 $(function() {
-  // When the DOM is ready, load the TOC into the TOC div.
-  // Then finish with toc_init.
-  $('#apidoc_toc').load($("#toc_url").val(), null, toc_init);
+  // Lazy init TOC - helpful for small screens.
+  var fn = function(evt) {
+    LOG.debug("resize event", evt);
+    if (!$("#apidoc_toc:visible").length) {
+      LOG.debug("apidoc_toc not visible");
+      return;
+    }
+    LOG.debug("apidoc_toc is visible");
+    // Stop listening to events
+    $(window).off('resize', fn);
+    // Load the TOC into the TOC div and then finish with tocInit.
+    $('#apidoc_toc').load($("#toc_url").val(), null, tocInit);
+  };
+  $(window).on('resize', fn);
+  // In case we are *not* on a small screen, init the TOC.
+  fn();
 
   colorizeExamples();
 
@@ -38,7 +51,7 @@ $(function() {
       // Update view when the pjax call originated from a link in the body
       LOG.debug("pjax_enabled A fired ok", this);
       // The tocSectionLinkSelector may have changed.
-      toc_init_globals();
+      tocInitGlobals();
       // The TOC filter may need updating.
       tocFilterUpdate();
       updateTocForSelection(); } });
@@ -61,11 +74,14 @@ $(function() {
   breadcrumbNode = $("#breadcrumbDynamic");
   if (!breadcrumbNode.length) LOG.warn("No breadcrumb!");
 
-  toc_init_globals();
+  // Dummy breadcrumb, in case we have no TOC
+  updateBreadcrumb();
+
+  tocInitGlobals();
 });
 
-function toc_init_globals() {
-  LOG.debug("toc_init_globals");
+function tocInitGlobals() {
+  LOG.debug("tocInitGlobals");
 
   // Initialize values from page.xsl content.
   functionPageBucketId = $("#functionPageBucketId");
@@ -84,15 +100,15 @@ function toc_init_globals() {
   tocSectionLinkSelector = tocSectionLinkSelector.val();
 }
 
-function toc_init() {
-  LOG.debug("toc_init");
+function tocInit() {
+  LOG.debug("tocInit");
 
   // This widget comes with the toc root via ajax, so init it here.
-  var treeGlobal = $('#treeglobal');
-  if (!treeGlobal.length) LOG.warn("No treeglobal!");
-  treeGlobal.show();
-  treeGlobal.click(function(e) {
-    var n = treeGlobal.children("span");
+  var $treeGlobal = $('#treeglobal');
+  if (!$treeGlobal.length) LOG.warn("No treeglobal!");
+  $treeGlobal.show();
+  $treeGlobal.click(function(e) {
+    var n = $treeGlobal.children("span");
     var label = n.children("span");
     var isExpand = label.text().trim() === "expand";
     // expand or collaps all
@@ -142,62 +158,12 @@ function toc_init() {
   });
 
   // Set up the filter
-  var filterDelay = 750;
-  $("#config-filter").keyup(function(e) {
-    // clear any existing idle timer
-    clearTimeout($.data(this, 'timer'));
-    var filter = $(this);
-    var currentFilterText = filter.val();
-    LOG.debug("config-filter not idle",
-              new Date(), currentFilterText);
-    // delay any work until idle
-    $.data(this, 'timer', setTimeout(function() {
-      LOG.debug("config-filter idle",
-                new Date(), currentFilterText);
+  tocInitFilter($("#config-filter"),
+                  $("input[name = 'v']"),
+                  $("#config-filter-close-button"),
+                  750);
 
-      // TODO what about a confirmation alert?
-      if (e.which == 13) // Enter key pressed
-        window.location = "/do-do-search?api=1" +
-        "&v=" + $("input[name = 'v']").val() +
-        "&q=" + currentFilterText;
-
-      var closeButton = $("#config-filter-close-button");
-      if (currentFilterText === "") closeButton.hide();
-      else closeButton.show();
-
-      setTimeout(function() {
-        if (previousFilterText !== currentFilterText) {
-          //LOG.debug("toc filter event", currentFilterText);
-          previousFilterText = currentFilterText;
-          // The current TOC tree root should be visible.
-          filterConfigDetails(currentFilterText,
-                              ".apidoc_tree:visible"); } },
-                 350); },
-                                     filterDelay));
-  });
-
-  $("#config-filter-close-button").click(function() {
-    LOG.debug("config-filter-close-button");
-    $(this).hide();
-    // simulate keyup
-    $("#config-filter").val("").trigger('keyup').blur();
-  });
-
-  // default text, style, etc.
-  formatFilterBoxes($(".config-filter"));
-
-  $('#splitter')
-    .attr({'unselectable': 'on'})
-    .css({
-      "z-index": 100,
-      cursor: "e-resize",
-      position: "absolute",
-      "user-select": "none",
-      "-webkit-user-select": "none",
-      "-khtml-user-select": "none",
-      "-moz-user-select": "none"
-    })
-    .mousedown(splitterMouseDown);
+  tocInitSplitter($('#splitter'));
 
   // If this was a deep link, load and scroll.
   updateTocForSelection();
@@ -312,7 +278,7 @@ function loadAllSubSections(tocRoot) {
   tocRoot.addClass("startedLoading");
 }
 
-// We may ignore index, but it's necessary as part of the signature expected by .each()
+// We ignore index, but it's part of the signature expected by .each()
 function loadTocSection(index, tocSection) {
   var $tocSection = $(tocSection);
   LOG.debug("loadTocSection", index, $tocSection.length,
@@ -409,14 +375,14 @@ function updateTocForUrlFragment(pathname, hash) {
 
   // Only use the fragment part to user guide sections.
   // Otherwise use the pathname alone, for functions etc.
-  var effective_hash;
-  if (!isUserGuide) effective_hash = "";
-  else if (hash === "") effective_hash = "#chapter";
-  else effective_hash = hash;
+  var effectiveHash;
+  if (!isUserGuide) effectiveHash = "";
+  else if (hash === "") effectiveHash = "#chapter";
+  else effectiveHash = hash;
 
   // IE doesn't include the "/" at the beginning of the pathname...
   var fullLink = (pathname.indexOf("/") === 0 ? pathname :
-                  "/" + pathname) + effective_hash;
+                  "/" + pathname) + effectiveHash;
 
   LOG.debug("updateTocForUrlFragment fullLink", fullLink);
   showInTOC($("#api_sub a[href='" + fullLink + "']"));
@@ -426,6 +392,11 @@ function updateTocForUrlFragment(pathname, hash) {
 // Also highlights the given link
 // Called whenever TOC selection changes.
 function showInTOC(a) {
+  if (!tocSelect) {
+    LOG.debug("no tocSelect");
+    return;
+  }
+
   LOG.debug("showInTOC", 'link', a.length, 'parent', a.parent().length);
   $("#api_sub a.selected").removeClass("selected");
   // e.g., arriving via back button
@@ -526,10 +497,43 @@ function breadcrumbBuilder(results, n) {
 
 function updateBreadcrumb(n)
 {
-  //LOG.debug('updating breadcrumb', n.length ? n[0] : null);
+  LOG.debug('updateBreadcrumb', n);
+  if (!breadcrumbNode) {
+    LOG.warn('updateBreadcrumb null breadcrumbNode');
+    return;
+  }
+  var breadcrumb;
+  if (!n) {
+    // Do the best we can without the TOC.
+    breadcrumbNode.empty();
+    // Display only, not linkable.
+    breadcrumb = $('<span>');
+    var text = "";
+    var fnBucket = $('#functionPageBucketId').val();
+    var isGuide = $('#isUserGuide').val() === "true";
+    var isHelp = window.location.pathname.indexOf('/admin-help') > -1;
+    if (isHelp) {
+        text += " > Admin Help";
+    } else if (isGuide) {
+        text += " > Guides";
+    } else if (fnBucket) {
+      if (fnBucket.indexOf('REST') > -1) {
+        // Use the bucket name by itself.
+      } else if (window.location.pathname.indexOf(':') < 0) {
+        text += " > Server-Side JavaScript APIs";
+      } else {
+        text += " > Server-Side XQuery APIs";
+      }
+      text += " > " + fnBucket;
+    }
+    breadcrumb.text(text);
+    breadcrumbNode.append(breadcrumb);
+    return;
+  }
+  LOG.debug('updating breadcrumb', n.length ? n[0] : null);
   breadcrumbNode.empty();
-  var breadcrumb = breadcrumbBuilder([], n).reverse();
-  //LOG.debug('updating breadcrumb', breadcrumb);
+  breadcrumb = breadcrumbBuilder([], n).reverse();
+  LOG.debug('updating breadcrumb', breadcrumb);
   if (!breadcrumb || !breadcrumb.length) return;
   breadcrumbNode.append(breadcrumb);
 }
@@ -539,6 +543,13 @@ function updateTocForSelection() {
   LOG.debug("updateTocForSelection",
             "functionPageBucketId", functionPageBucketId,
             "tocSectionLinkSelector", tocSectionLinkSelector);
+
+  if (!tocSelect) {
+    LOG.debug("no tocSelect");
+    // Best-effort update.
+    updateBreadcrumb();
+    return;
+  }
 
   if (!tocSectionLinkSelector) {
     LOG.debug('no tocSectionLinkSelector!');
@@ -643,79 +654,6 @@ function colorizeExamples() {
   });
 }
 
-function formatFilterBoxes(filterBoxes) {
-  var defaultFilterMsg = "Type to filter TOC...";
-  filterBoxes.each(function() {
-    // set the default message
-    $(this).defaultvalue(defaultFilterMsg);
-    // set the style
-    if ($(this).val() == defaultFilterMsg) { $(this).addClass("default"); }
-  });
-
-  // set and remove the style based on user interaction
-  filterBoxes.focus(function() {$(this).removeClass("default");} );
-  filterBoxes.blur(function() {
-    if ($(this).val() == defaultFilterMsg ||
-        $(this).val() === "")
-      $(this).addClass("default");
-  });
-}
-
-function splitterMouseUp(evt) {
-  //LOG.debug("Splitter Mouse up: " + evt.pageX + " " + evt.pageY);
-  $('#splitter').data("moving", false);
-  $(document).off('mouseup', null, splitterMouseUp);
-  $(document).off('mousemove', null, splitterMouseMove);
-
-  $('#page_content').css("-webkit-user-select", "text");
-  $('#toc_content').css("-webkit-user-select", "text");
-  $('#content').css("-webkit-user-select", "text");
-}
-
-function splitterMouseMove(evt) {
-  //LOG.debug("Splitter Mouse move: " + evt.pageX + " " + evt.pageY);
-  var splitter = $('#splitter');
-  if (splitter.data("moving")) {
-    var m = 0 - splitter.data('start-page_content');
-    var d = Math.max(m, splitter.data("start-x") - evt.pageX);
-    var w = splitter.data("start-toc_content") - d;
-    var init_w = 258; // TBD unhardcode
-
-    if (w < init_w) {
-      d -= init_w - w;
-      w = init_w;
-    }
-
-    //LOG.debug("Splitter Mouse move: " + d);
-    $('#toc_content').css({'width': w + "px"});
-    $('#page_content').css({'padding-right':
-                            (splitter.data("start-page_content") + d) +
-                            "px"});
-    splitter.css({'left':
-                  (splitter.data("start-splitter") - d) +
-                  "px"});
-  }
-}
-
-function splitterMouseDown(evt) {
-  //LOG.debug("Splitter Mouse down: " + evt.pageX + " " + evt.pageY);
-  var splitter = $('#splitter');
-  splitter.data("start-x", evt.pageX);
-  splitter.data("start-toc_content", parseInt($('#toc_content').css('width'), 10));
-  splitter.data("start-page_content",
-                parseInt($('#page_content').css('padding-right'), 10));
-  splitter.data("start-splitter",
-                parseInt(splitter.css('left'), 10));
-  splitter.data("moving", true);
-
-  $(document).on('mouseup', null, splitterMouseUp);
-  $(document).on('mousemove', null, splitterMouseMove);
-
-  $('#toc_content').css("-webkit-user-select", "none");
-  $('#page_content').css("-webkit-user-select", "none");
-  $('#content').css("-webkit-user-select", "none");
-}
-
 function tocFilterUpdate()
 {
   //LOG.debug("tocFilterUpdate", previousFilterText);
@@ -732,6 +670,145 @@ function tocFilterUpdate()
   // forcing the filter to update.
   previousFilterText = null;
   $("#config-filter-close-button").trigger('click');
+}
+
+function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
+{
+  $configFilter.keyup(function(e) {
+    // clear any existing idle timer
+    clearTimeout($.data(this, 'timer'));
+    var currentFilterText = $(this).val();
+    LOG.debug("filter not idle",
+              new Date(), currentFilterText);
+    // delay any work until idle
+    $.data(this, 'timer', setTimeout(function() {
+      LOG.debug("filter idle",
+                new Date(), currentFilterText);
+
+      // TODO what about a confirmation alert?
+      if (e.which == 13) // Enter key pressed
+        window.location = "/do-do-search?api=1" +
+        "&v=" + $input.val() +
+        "&q=" + currentFilterText;
+
+      if (currentFilterText === "") $closeButton.hide();
+      else $closeButton.show();
+
+      setTimeout(function() {
+        if (previousFilterText !== currentFilterText) {
+          //LOG.debug("toc filter event", currentFilterText);
+          previousFilterText = currentFilterText;
+          // The current TOC tree root should be visible.
+          filterConfigDetails(currentFilterText,
+                              ".apidoc_tree:visible"); } },
+                 350); }, filterDelay)); });
+
+  $closeButton.click(function(evt) {
+    LOG.debug("filter-close-button click", evt);
+    $(this).hide();
+    // simulate keyup
+    $configFilter.val("").trigger('keyup').blur();
+  });
+
+  // default text and style
+  var defaultFilterMsg = "Type to filter TOC...";
+  var defaultClass = "default";
+  $configFilter.defaultvalue(defaultFilterMsg).addClass(defaultClass);
+
+  // set and remove the style based on user interaction
+  $configFilter.focus(function() {
+    $configFilter.removeClass(defaultClass);} );
+  $configFilter.blur(function() {
+    if ($configFilter.val() === "") {
+      $configFilter.val(defaultFilterMsg);
+    }
+    if ($configFilter.val() == defaultFilterMsg) {
+      $configFilter.addClass(defaultClass);
+    } });
+}
+
+function tocInitSplitter($splitter) {
+  LOG.debug("tocInitSplitter", $splitter);
+  if (!$splitter.length) {
+    LOG.warn("tocInitSplitter: no splitter");
+    return;
+  }
+
+  var $document = $(document);
+  var $toc = $('#api_sub');
+  var $content = $('#page_content');
+
+  var splitterMousedown = function(evt) {
+    LOG.debug("splitterMousedown", $splitter, evt, evt.type,
+              $splitter.data("moving"));
+    evt.preventDefault();
+    $splitter.data("moving", true);
+    $document.on('mousemove', null, splitterMousemove);
+    $document.on('touchmove', null, splitterMousemove);
+    $document.on('mouseup', null, splitterMouseup);
+    $document.on('touchcancel', null, splitterMouseup);
+    $document.on('touchend', null, splitterMouseup);
+    // webkit hacks to avoid accidental text selection
+    $toc.css("-webkit-user-select", "none");
+    $content.css("-webkit-user-select", "none");
+    $toc.css("-webkit-touch-callout", "none");
+    $content.css("-webkit-touch-callout", "none");
+  };
+
+  var lastX = null;
+  var splitterMousemove = function(evt) {
+    LOG.debug("splitterMousemove", $splitter, evt, evt.type,
+              $splitter.data("moving"),
+              evt.pageX, evt.originalEvent.touches);
+    if (!$splitter.data("moving")) { return; }
+    evt.preventDefault();
+    var touches = evt.originalEvent.touches;
+    var x = touches ? touches[0].pageX : evt.pageX;
+    // debounce just a little
+    if (!x || x === lastX) { return; }
+    LOG.debug("splitterMousemove from", lastX, "to", x);
+    lastX = x;
+    var width = document.body.clientWidth;
+    var right = width - x;
+    var left = width - right;
+    LOG.debug("splitterMousemove", width, x, right, left);
+    $toc.css({'right': right + "px"});
+    $content.css({'left': left + 'px'});
+  };
+
+  var splitterMouseup = function(evt) {
+    LOG.debug("splitterMouseup", $splitter, evt, evt.type,
+              $splitter.data("moving"));
+    if (!$splitter.data("moving")) { return; }
+    evt.preventDefault();
+    $splitter.data("moving", false);
+    $document.off('mousemove', null, splitterMousemove);
+    $document.off('touchmove', null, splitterMousemove);
+    $document.off('mouseup', null, splitterMouseup);
+    $document.off('touchcancel', null, splitterMouseup);
+    $document.off('touchend', null, splitterMouseup);
+    // reset webkit hacks
+    $toc.css("-webkit-user-select", "text");
+    $content.css("-webkit-user-select", "text");
+    $toc.css("-webkit-touch-callout", "default");
+    $content.css("-webkit-touch-callout", "default");
+  };
+
+  /* This event handling is not perfect.
+   * Apple iOS tries to emulate mouseup and mousedown
+   * but we never seem to see mousemove.
+   * In theory the touch events should come first,
+   * but not always in practice.
+   * If the user gestures just right, we get touchstart etc.
+   * This makes the splitter feel very fiddly.
+   * But there's no perfect way to detect touchscreen-only,
+   * and some devices may have both mouse and touchscreen.
+   * So we have to register the mouse events for all devices,
+   * and live with a fiddly touch UI until something better comes along.
+   */
+  $splitter.attr({'unselectable': 'on'})
+    .on('mousedown', splitterMousedown)
+    .on('touchstart', splitterMousedown);
 }
 
 // toc_filter.js

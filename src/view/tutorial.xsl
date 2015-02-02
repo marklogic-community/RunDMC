@@ -33,7 +33,8 @@
                   <xsl:variable name="prev-href">
                     <xsl:apply-templates mode="tutorial-page-href" select="$previous-page"/>
                   </xsl:variable>
-                  <button data-url="{$prev-href}" class="blue">
+                  <button data-url="{$prev-href}" class="blue"
+                          accesskey="p" rel="prev">
                     <xsl:text>&#171; Previous</xsl:text>
                   </button>
                   <span>
@@ -46,7 +47,8 @@
                   <xsl:variable name="next-href">
                     <xsl:apply-templates mode="tutorial-page-href" select="$next-page"/>
                   </xsl:variable>
-                  <button data-url="{$next-href}" class="blue">
+                  <button data-url="{$next-href}" class="blue"
+                          accesskey="n" rel="next">
                     <xsl:text>Next &#187;</xsl:text>
                   </button>
                   <span>
