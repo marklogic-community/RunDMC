@@ -265,6 +265,12 @@ a:hover {
     background-image: url(/images/getting-started-still.png);
 }
 
+#what-is-still a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 .still img {
     margin-top: 50px;
     margin-left: 130px;
