@@ -271,9 +271,11 @@ a:hover {
   width: 100%;
 }
 
-.still img {
-    margin-top: 50px;
-    margin-left: 130px;
+.still img, .still i {
+  color: #fff;
+  font-size: 60px;
+  margin-top: 97px;
+  margin-left: 197px;
 }
 
 .learn-more img {
