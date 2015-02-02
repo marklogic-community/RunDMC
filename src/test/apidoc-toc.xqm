@@ -92,8 +92,7 @@ declare %t:case function t:render-0-empty()
     ,
 
 <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
-      Select section:
-      <select id="toc_select"></select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
+      Section: <select id="toc_select"></select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
 
   )
 };
@@ -115,8 +114,7 @@ declare %t:case function t:render-1-simple()
     ,
 
 <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
-      Select section:
-      <select id="toc_select">
+      Section: <select id="toc_select">
             <option class="toc_select_option" value="n1" selected="true">node 1</option>
             <option class="toc_select_option" value="n2">node 2</option>
             <option class="toc_select_option" value="n3">node 3</option>
