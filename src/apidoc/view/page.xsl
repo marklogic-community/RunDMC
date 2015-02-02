@@ -224,6 +224,7 @@
   <xsl:template match="ml:api-toc">
     <div id="apidoc_toc">
       <xsl:comment>TOC goes here</xsl:comment>
+      <xsl:text>Loading TOC...</xsl:text>
     </div>
   </xsl:template>
 

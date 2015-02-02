@@ -785,8 +785,7 @@ as element()
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
     <div class="toc_select">
-      Select section:
-      <select id="toc_select">
+      Section: <select id="toc_select">
   {
     (: To preserve node order, use SMO rather than XPath. :)
     $toc/toc:node
