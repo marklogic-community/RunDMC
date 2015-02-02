@@ -159,7 +159,10 @@
       <uri-lexicon>true</uri-lexicon>
       <collection-lexicon>true</collection-lexicon>
       <directory-creation>manual</directory-creation>
-      <maintain-last-modified>false</maintain-last-modified>
+      <!-- This is used by get-db-file.xqy to set Last-Modified headers,
+           which are used for browser caching.
+      -->
+      <maintain-last-modified>true</maintain-last-modified>
 <!--
       <fragment-roots>
         <fragment-root>
