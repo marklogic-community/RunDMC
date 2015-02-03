@@ -277,7 +277,7 @@
       <group display="Features">
         <page display="Native JSON" href="/features/json"/>
         <page display="Node.js Client API" href="/features/node-client-api"/>
-        <page display="JavaScript" href="/features/javascript"/>
+        <page display="Server-Side JavaScript" href="/features/javascript"/>
         <page display="Java Client API" href="/features/java-client-api"/>
         <page display="Semantics" href="/features/semantics"/>
         <page display="Management API" href="/features/management-api"/>
