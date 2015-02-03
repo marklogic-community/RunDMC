@@ -3220,4 +3220,8 @@ li.search_suggest_selected {
     background: none repeat scroll 0% 0% #FF0;
 }
 
+#events_listing .event {
+  padding-bottom: 10px;
+}
+
 /* screen.css */
