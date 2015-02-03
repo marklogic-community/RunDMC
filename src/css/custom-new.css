@@ -196,6 +196,10 @@ a:hover {
 .main-wrapper .row .col img {
 }
 
+.main-wrapper p, .learn-more p {
+  line-height: 2rem;
+}
+
 /* Home Page: New Features Section ---------- */
 ul.new-features p {
   font-size: 12px;
