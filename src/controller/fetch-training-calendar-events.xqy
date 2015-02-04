@@ -43,21 +43,19 @@ declare function local:build-event(
   $index as xs:int)
 {
   <xhtml:div id="event_{$index}" class="event">
-    <xhtml:h4
+    <xhtml:div
       id="event_{$index}_title"
       style="margin-bottom: 2px; margin-top: 8px;">
-      <xhtml:strong>
-        {
-          element xhtml:a {
-            attribute href {
-              $MLU-URI || "sessions" || $session/jbasic:uri/fn:string()
-            },
-            attribute target { "_blank" },
-            $session/jbasic:courseType/jbasic:courseName/fn:string()
-          }
+      {
+        element xhtml:a {
+          attribute href {
+            $MLU-URI || "sessions" || $session/jbasic:uri/fn:string()
+          },
+          attribute target { "_blank" },
+          $session/jbasic:courseType/jbasic:courseName/fn:string()
         }
-      </xhtml:strong>
-    </xhtml:h4>
+      }
+    </xhtml:div>
     <xhtml:div class="when" id="event_{$index}_when">
       {
         let $start as xs:date? := $session/jbasic:startDate
