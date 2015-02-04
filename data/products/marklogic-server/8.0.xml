@@ -10,16 +10,16 @@
     <platform name="Amazon Web Services">
         <download anchor-class="" href="/products/aws" size="" md5="" date="2014-09-12">AMIs and Cloud Formation Templates</download>
     </platform>
-    <platform name="Microsoft Windows (7, 8, and Server 2008)">
+    <platform name="Microsoft Windows (7, 8, Server 2008, and Server 2012)">
       <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-1-amd64.msi" size="145 MB" md5="9dbe103252f6360192f0feed26c47465" date="2014-09-12">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
     </platform>
-     <platform name="Mac OS X 10.6, 10.7">
+     <platform name="Mac OS X 10.8, 10.9">
       <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-1-x86_64.dmg" size="124 MB" md5="Pa8238ec1c39bb5e589198a16931bc7ea4" date="2014-09-12">OS X disk image </download>
     </platform>
-    <platform name="Red Hat Enterprise Linux, Versions 5 &amp; 6">
+    <platform name="Red Hat Enterprise Linux, Version 6">
       <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-1.x86_64.rpm" size="171 MB" md5="ckbd17a927f00c621ae45bc6460efa8f60" date="2014-09-12">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
     </platform>
-    <platform name="CentOS 5 &amp; CentOS 6">
+    <platform name="CentOS 6">
       <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-1.x86_64.rpm" size="171 MB" md5="ckbd17a927f00c621ae45bc6460efa8f60" date="2014-09-12">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
     </platform>
     <platform name="SUSE Linux Enterprise Server 11">
