@@ -197,6 +197,13 @@ a:hover {
 }
 
 /* Home Page: New Features Section ---------- */
+ul.new-features p {
+  font-size: 12px;
+  line-height: 15px;
+  margin-top: 7px;
+  text-align: center;
+}
+
 .new-features {
   margin: 0;
   list-style: none;
