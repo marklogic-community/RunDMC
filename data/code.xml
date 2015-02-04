@@ -1,117 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <ml:short-description>MarkLogic-related projects, tools, sample apps, and open-source code</ml:short-description>
   <h1>Tools</h1>
-  <p>This is the home for MarkLogic and MarkLogic-related tools and samples, including collaborative open-source projects and 3rd party offerings. You'll see a
-curated index of them over on the left-hand side of this page.  Many of the projects have repositories hosted at
-    <a href="http://github.com/">GitHub</a>
-    , the well known social-coding site.  While we will promote and point to repositories elsewhere (like
-    <a href="http://sourceforge.net/">SourceForge</a>
-    ,
-    <a href="http://codeplex.com">Codeplex</a>
-    or
-    <a href="http://code.google.com/">Google code</a>
-    ), we prefer working with GitHub.</p>
-  <p>There is a wealth of help on
-    <a href="http://git-scm.com/">git</a>
-    and
-    <a href="http://help.github.com/">GitHub</a>
-    available.
-In particular, if you'd like to contribute to one of these projects, please take a look at
-    <a href="http://help.github.com/fork-a-repo/">how to fork a repo</a>
-    and
-    <a href="http://help.github.com/send-pull-requests/">send a pull request</a>
-    .
-If you have questions about contributing, you can reach us at:
-    <br/>
-    <blockquote>
-      <a href="mailto:community-requests@marklogic.com">
-        <i>community-requests AT marklogic.com</i></a>
-    </blockquote>
-  </p>
-  <p>You can also find tools and connectors that are official parts of MarkLogic on the
-    <a href="/download">download page</a>
-    .</p>
+
+  <p>MarkLogic has dozens of tools available here, many of which are open source projects that have benefitted from the contributions of the MarkLogic developer community. Many projects have repositories hosted at GitHub, MarkLogic’s preferred site for sharing code. If you’re new to GitHub, there is a wealth of <a href="http://help.github.com">help</a> available. We encourage contributions from the developer community, so please take a look at <a href="http://help.github.com/fork-a-repo/">how to fork a repo</a> and <a href="http://help.github.com/send-pull-requests/">send a pull request</a> on GitHub. Also, look for the CONTRIBUTING.md file in a project; maintainers often use this file to give you guidelines for contributions.</p>
+
+  <p>Questions? Email us directly at <a href="community-requests@marklogic.com">community-requests@marklogic.com</a>.</p>
+
   <section id="featured">
     <h3>Featured</h3>
     <div>
-      <section>
-        <h4>
-          <a href="/labs/mljs">
-            <img height="48" src="/media/ml-js-48.png" width="48"/>
-          </a>MLJS</h4>
-        <div>MLJS is a Javascript library for connecting to MarkLogic from both Browser JS and Node.JS</div>
-        <ul>
-          <li>Sensible defaults so you can get started quickly</li>
-          <li>Minimum prior MarkLogic knowledge required</li>
-          <li>Browser widgets so you can quickly get an application running</li>
-          <li>Built on top of the
-            <a href="/learn/rest">REST API</a></li>
-        </ul>
-        <a href="http://github.com/adamfowleruk/mljs">Browse Git Repository »</a>
-        <br/>
-        <br/>
-      </section>
-      <section>
-        <h4>
-          <a href="/code/tunage">
-            <img alt="speaker" src="/images/i_speaker.png"/>Tunage</a>
-        </h4>
-        <div>Search your iTunes library with MarkLogic</div>
-        <ul>
-          <li>Sample Application</li>
-          <li>Built with Information Studio and Application Builder</li>
-          <li>Includes an example Information Studio Collector</li>
-        </ul>
-        <ul class="links">
-          <li>
-            <a href="http://github.com/marklogic/tunage">Browse Git Repository »</a>
-          </li>
-          <li>
-            <a href="/blog/information-studio-intro-video">Watch Demo »</a>
-          </li>
-        </ul>
-      </section>
-    </div>
-    <div>
-      <section>
-        <h4>
-          <a href="/code/roxy">
-            <img alt="roxy" height="49" src="/media/curtain.jpg" width="46"/>Roxy </a>
-        </h4>
-        <div>Roxy is a lightweight XQuery application development framework.  It includes:
+      <div class="row">
+        <div class="col-md-1">
+          <a href="https://github.com/marklogic/node-client-api">
+            <img height="48" width="48" src="/media/node-js.png"/>
+          </a>
         </div>
-        <ul>
-          <li>Application configuration management</li>
-          <li>A lightweight mVC framework</li>
-          <li>A unit testing framework</li>
-        </ul>
-        <ul class="links">
-          <li>
-            <a href="http://github.com/marklogic/roxy">Browse Git Repository »</a>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h4>
-          <a href="/code/top-songs">
-            <img height="48" src="/media/music-blue-note.png" width="48"/>
-          </a>Top Songs</h4>
-        <div>Top Songs is a sample app used in
-          <a href="http://www.marklogic.com/products-and-services/training/">MarkLogic University</a>
-          training courses.</div>
-        <ul>
-          <li>Search, faceting, and auto-complete</li>
-          <li>User login/logout</li>
-          <li>Built using the
-            <a href="/learn/java">Java API</a></li>
-        </ul>
-        <a href="http://github.com/marklogic/top-songs">Browse Git Repository »</a>
-        <br/>
-        <br/>
-      </section>
+        <div class="col-md-11">
+          <h4>Node.js Client API</h4>
+          <div>The Node.js Client API allows developers to quickly and easily integrate MarkLogic into their Node applications. The client API provides a fluent JavaScript interface for key MarkLogic capabilities, such as search, document management, batched loading, transactions, aggregates, and alerting. </div>
+          <p style="padding-bottom:10px;"><a class="btn btn-default btn-sm" href="https://github.com/marklogic/node-client-api">Node.js Client API on GitHub ›</a></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          <a href="/code/samplestack">
+            <img src="/media/samplestack.png" width="48" height="48"/>
+          </a>
+        </div>
+        <div class="col-md-11">
+          <h4>Samplestack</h4>
+          <div>Samplestack is an end-to-end three tiered sample application that shows developers how to implement a reference architecture using key MarkLogic concepts and sample code. There is a Java/Spring version with Gradle automation and a JavaScript/Node.js version with Gulp automation.</div>
+          <p style="padding-bottom:10px"><a class="btn btn-default btn-sm" href="https://github.com/marklogic/marklogic-samplestack">Samplestack on GitHub ›</a></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          <a href="/code/roxy">
+            <img src="/media/roxy.png" width="48" height="48"/>
+          </a>
+        </div>
+        <div class="col-md-11">
+          <h4>Roxy</h4>
+          <div>Roxy is a cross-platform, multiple-environment utility for configuring and deploying MarkLogic applications. Using Roxy you can define your app servers, databases, forests, groups, tasks, etc. in local configuration files. Roxy can then remotely create, update, and remove those settings from the command line. Roxy also provides scaffolding to help you build REST API extensions.</div>
+          <p style="padding-bottom:10px"><a class="btn btn-default btn-sm" href="https://github.com/marklogic/roxy">Roxy on GitHub ›</a></p>
+        </div>
+      </div>
     </div>
+
   </section>
-  <!--
-<p>Below is a list of the repositories underneath the <a href="http://github.com/marklogic">MarkLogic GitHub Organization</a><div id="github-repos"></div></p></div>-->
+
 </ml:page>
