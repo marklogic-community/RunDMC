@@ -281,6 +281,7 @@
         <page display="Node.js Client API" href="/features/node-client-api"/>
         <page display="Server-Side JavaScript" href="/features/javascript"/>
         <page display="Java Client API" href="/features/java-client-api"/>
+        <page display="Java Client API" href="/features/java-client-api-2" hide="yes"/>
         <page display="Semantics" href="/features/semantics"/>
         <page display="Management API" href="/features/management-api"/>
         <page display="Bitemporal" href="/features/bitemporal"/>
