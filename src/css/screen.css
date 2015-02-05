@@ -596,6 +596,11 @@ nav ul {
     border-bottom: 1px solid #FFF;
     line-height: 110%;
 }
+
+#sub ul li {
+  margin-bottom: 3px;
+}
+
 #sub li span {
     display: block;
     font-weight: bold;
@@ -621,6 +626,7 @@ nav ul {
 #sub ul ul {
     border-bottom: none;
     margin: 0;
+    margin-top: 2px;
 }
 #sub > li,
 #sub li span,

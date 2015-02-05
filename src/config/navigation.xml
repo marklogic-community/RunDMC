@@ -12,8 +12,9 @@
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
       </group>
       <group display="Connectors">
-        <page display="MarkLogic Java API"   href="/products/java"/>
-        <page display="XCC Java/.NET "   href="/products/xcc"/>
+        <page display="Java API"   href="/products/java"/>
+        <page display="Node Client API" href="/features/node-client-api"/>
+        <page display="XCC Java/.NET"   href="/products/xcc"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
@@ -28,6 +29,7 @@
         <page display="MarkLogic Content Pump (mlcp) for Hadoop 1.0"   href="/products/mlcp-for-hadoop-1.0" hide="yes"/>
         <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
         <page display="Plug-in for Nagios" href="/products/nagios"/>
+        <page display="Samplestack" href="/features/samplestack"/>
       </group>
     </group>
     <generic-page display="MarkLogic and Amazon Web Services" href="/products/aws"/>
