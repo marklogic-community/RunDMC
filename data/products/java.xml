@@ -15,10 +15,23 @@ enabling them to re-use existing knowledge, skills, libraries, tools, and develo
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
       -->
     </ml:platform>
+    <!--
     <ml:maven>
       <ml:artifact id="client-api-java" version="3.0-1" dep-only="true"/>
     </ml:maven>
+  -->
   </ml:product-info>
+
+  <section class="download">
+    <h3>Maven</h3>
+    <h4>Dependencies</h4>
+    <textarea readonly="readonly" class="maven-frag"
+>&lt;dependency&gt;
+    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+    &lt;artifactId&gt;client-api-java&lt;/artifactId&gt;
+    &lt;version&gt;3.0-1&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+  </section>
 
 <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
 <h3>Features</h3>
