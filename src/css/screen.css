@@ -399,6 +399,7 @@ hr {
 }
 
 #search-header form input[type="text"] {
+    color: #333;
     width: 216px;
     padding: 0 0 3px 6px;
     height: 22px;
