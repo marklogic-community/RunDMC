@@ -15,6 +15,7 @@
         <page display="Java API"   href="/products/java"/>
         <page display="Node Client API" href="/features/node-client-api"/>
         <page display="XCC Java/.NET"   href="/products/xcc"/>
+        <page display="XCC Java/.NET Connectors for 8"   href="/products/xcc/8.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
