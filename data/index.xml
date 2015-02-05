@@ -23,14 +23,14 @@
           <div class="col col-xs-5" rel="3mOCOrFQ_N0">
             <div class="still" id="what-is-still">
               <a href="http://www.youtube.com/embed/3mOCOrFQ_N0?autoplay=1&amp;rel=0&amp;vq=hd720">
-                <img alt="play" height="152" src="/images/play-button-red.png" width="202"/>
+                <i class="glyphicon glyphicon-play-circle"></i>
               </a>
             </div>
           </div>
           <div class="col col-xs-offset-1 col-xs-5">
             <h1>MarkLogic 8</h1>
             <p class="lead">Enterprise NoSQL Database Platform</p>
-            <p>Natively store and manage JSON, XML, and RDF -- all in one unified platform. MarkLogic 8 has the NoSQL agility you need with all the right APIs, Server-side JavaScript query capability, and innovative features such as Semantics, Bitemporal, and Alerting. It also has ACID transactions, certified security, and other enterprise features you require to take mission-critical applications into production.</p>
+            <p>MarkLogic 8 is a new generation database built with a flexible data model to store, manage, and search JSON, XML, RDF, and more &#8212; without sacrificing any of the data resiliency and consistency features of last-generation relational databases.</p>
             <p>
               <a class="btn btn-default btn-sm" href="/products" id="download-button">Free Download</a>
             </p>
@@ -110,7 +110,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
-            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="//docs.marklogic.com/guide/relnotes" class="a-cta cta-sm middle">Release Notes</a></h2>
+            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="//docs.marklogic.com/guide/relnotes" class="a-cta cta-sm middle">MarkLogic 8 Release Notes</a></h2>
           </div>
         </div>
 
@@ -137,7 +137,7 @@
             <li>
               <a href="/features/java-client-api" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/java-api.svg"/>
-                <p class="text-uppercase text-center">Java API</p>
+                <p class="text-uppercase text-center">Java Client API</p>
               </a>
             </li>
             <li>
@@ -208,10 +208,10 @@
 
           <div class="col-xs-3">
             <img src="/media/amazon.png"/>
-            <h4><a href="//docs.marklogic.com/guide/ec2/GettingStarted">Deploy on AWS</a></h4>
+            <h4><a href="/products/aws">Deploy on AWS</a></h4>
             <p>Get going in minutes with MarkLogic in the Amazon cloud using the
               provided AMIs and Cloud Formation templates.</p>
-            <p><a href="//docs.marklogic.com/guide/ec2/GettingStarted" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
           </div>
         </div>
       </div>

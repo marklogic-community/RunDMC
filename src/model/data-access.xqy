@@ -147,7 +147,7 @@ as xs:string
 };
 
 declare function ml:display-date-with-time($dateTimeGiven as xs:string?)
-as xs:string
+as xs:string?
 {
   if (not($dateTimeGiven castable as xs:dateTime)) then $dateTimeGiven
   else concat(

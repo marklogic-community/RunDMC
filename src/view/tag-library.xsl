@@ -196,74 +196,74 @@
     <xsl:apply-templates mode="maven" select="maven"/>
   </xsl:template>
 
-          <xsl:template mode="product-platform" match="platform">
-            <section class="download">
-              <h3><xsl:value-of select="@name"/></h3>
-              <table>
-                <tbody>
-                  <xsl:apply-templates mode="product-download" select="download"/>
-                </tbody>
-              </table>
-            </section>
-          </xsl:template>
+  <xsl:template mode="product-platform" match="platform">
+    <section class="download">
+      <h3><xsl:value-of select="@name"/></h3>
+      <table>
+        <tbody>
+          <xsl:apply-templates mode="product-download" select="download"/>
+        </tbody>
+      </table>
+    </section>
+  </xsl:template>
 
-              <xsl:template mode="maven" match="maven">
-                <section class="download">
-                    <h3>Maven</h3>
-                    <h4>Repository</h4>
-                        <textarea autofocus="autofocus" readonly="readonly" class="maven-frag"
->&lt;repository&gt;
-    &lt;id&gt;MarkLogic-releases&lt;/id&gt;
-    &lt;name&gt;MarkLogic Releases&lt;/name&gt;
-    &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
-&lt;/repository&gt;</textarea>
-                    <h4>Dependencies</h4>
-                    <xsl:apply-templates mode="maven" select="artifact"/>
-                </section>
-              </xsl:template>
+  <xsl:template mode="maven" match="maven">
+    <section class="download">
+        <h3>Maven</h3>
+        <h4>Repository</h4>
+        <textarea autofocus="autofocus" readonly="readonly" class="maven-frag"
+  >&lt;repository&gt;
+      &lt;id&gt;MarkLogic-releases&lt;/id&gt;
+      &lt;name&gt;MarkLogic Releases&lt;/name&gt;
+      &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
+  &lt;/repository&gt;</textarea>
+        <h4>Dependencies</h4>
+        <xsl:apply-templates mode="maven" select="artifact"/>
+    </section>
+  </xsl:template>
 
-            <xsl:template mode="maven" match="artifact">
-                <textarea readonly="readonly" class="maven-frag"
+  <xsl:template mode="maven" match="artifact">
+      <textarea readonly="readonly" class="maven-frag"
 >&lt;dependency&gt;
     &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
     &lt;artifactId&gt;<xsl:value-of select="@id"/>&lt;/artifactId&gt;
     &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
-            </xsl:template>
+  </xsl:template>
 
-                  <xsl:template mode="product-download" match="download">
-                    <!--
-                    <xsl:variable name="onclick" select="@md5"/>
-                    -->
-                    <xsl:variable name="num-cols" select="if (architecture and installer) then 3
-                                                     else if (not(string(@size)))         then 1
-                                                                                          else 2"/>
-                    <tr>
-                      <th colspan="{(3,2,1)[$num-cols]}"
-                          class="{('extraWideDownloadColumn',
-                                        'wideDownloadColumn',
-                                                          '')[$num-cols]}">
-                        <a href="{@href}" class="{@anchor-class}">
-                          <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
-                        </a>
-                      </th>
-                      <xsl:if test="$num-cols eq 3">
-                        <td>
-                          <xsl:apply-templates select="installer"/>
-                        </td>
-                      </xsl:if>
-                      <xsl:if test="$num-cols gt 1">
-                        <td>
-                          <xsl:value-of select="@size"/>&#160;&#160;
+  <xsl:template mode="product-download" match="download">
+    <!--
+    <xsl:variable name="onclick" select="@md5"/>
+    -->
+    <xsl:variable name="num-cols" select="if (architecture and installer) then 3
+                                     else if (not(string(@size)))         then 1
+                                                                          else 2"/>
+    <tr>
+      <th colspan="{(3,2,1)[$num-cols]}"
+          class="{('extraWideDownloadColumn',
+                        'wideDownloadColumn',
+                                          '')[$num-cols]}">
+        <a href="{@href}" class="{@anchor-class}">
+          <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
+        </a>
+      </th>
+      <xsl:if test="$num-cols eq 3">
+        <td>
+          <xsl:apply-templates select="installer"/>
+        </td>
+      </xsl:if>
+      <xsl:if test="$num-cols gt 1">
+        <td>
+          <xsl:value-of select="@size"/>&#160;&#160;
 <!--
-                          <xsl:if test="@md5">
-                              <a href="#" onclick="alert('$md5'); return true;"> (MD5) </a>
-                          </xsl:if>
+          <xsl:if test="@md5">
+              <a href="#" onclick="alert('$md5'); return true;"> (MD5) </a>
+          </xsl:if>
 -->
-                        </td>
-                      </xsl:if>
-                    </tr>
-                  </xsl:template>
+        </td>
+      </xsl:if>
+    </tr>
+  </xsl:template>
 
 
   <xsl:template match="documentation-section">

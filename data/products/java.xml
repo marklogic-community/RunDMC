@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
 <p>
-<img src="/media/duke-java-mascot.png" width="38" height="67" alt="Duke" style="float:right; padding: 2px"/> 
-The MarkLogic Java API provides access to core MarkLogic database and search functionality.  It allows Java developers to get going quickly, 
+<img src="/media/duke-java-mascot.png" width="38" height="67" alt="Duke" style="float:right; padding: 2px"/>
+The MarkLogic Java API provides access to core MarkLogic database and search functionality.  It allows Java developers to get going quickly,
 enabling them to re-use existing knowledge, skills, libraries, tools, and development environments.  </p>
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.1.zip" size="7.7MB" date="2014-09-12">Release 3.0-1 zip package (compatible with Version 8 server)</ml:download>
       <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.4.zip" size="7.7MB" date="2014-09-12">Release 2.0-4 zip package (compatible with Version 7 server)</ml:download>
       <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-1.0-5.zip" size="6.3MB" date="2013-09-12">Release 1.0-5 zip package (compatible with Version 6 server)</ml:download>
       <!--
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
       -->
     </ml:platform>
-     <ml:maven>
-        <ml:artifact id="client-api-java" version="2.0-1"/>
-     </ml:maven>
+    <!--
+    <ml:maven>
+      <ml:artifact id="client-api-java" version="3.0-1" dep-only="true"/>
+    </ml:maven>
+  -->
   </ml:product-info>
+
+  <section class="download">
+    <h3>Maven</h3>
+    <h4>Dependencies</h4>
+    <textarea readonly="readonly" class="maven-frag"
+>&lt;dependency&gt;
+    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+    &lt;artifactId&gt;client-api-java&lt;/artifactId&gt;
+    &lt;version&gt;3.0-1&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+  </section>
 
 <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
 <h3>Features</h3>
 <p>The API provides interfaces for </p>
 <ul>
-    <li>Document <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> and management, including support for 
+    <li>Document <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> and management, including support for
     <ul>
 	<li>JSON, XML, Binary, and text documents</li>
 	<li>Organization via <a href="//docs.marklogic.com/guide/app-dev/properties#id_91048">Collections and Directories</a></li>
@@ -31,11 +45,11 @@ enabling them to re-use existing knowledge, skills, libraries, tools, and develo
       </ul>
 </li>
     <li>Query by Example</li>
-    <li>Full-text search, including 
+    <li>Full-text search, including
     <ul>
 	<li>Result snippeting, paging, and facets</li>
 	<li>Configurable search input string parsing</li>
-	<li>Advanced search specification and configuration, including support for 
+	<li>Advanced search specification and configuration, including support for
             <ul>
 	    <li>Keyword, phrase, value, near, and boolean searches</li>
 	    <li>Control of stemming, case-sensitivity, collation, and decompounding</li>
@@ -57,7 +71,7 @@ enabling them to re-use existing knowledge, skills, libraries, tools, and develo
   </ul>
 
 <p>
-It is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>. 
+It is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>.
 </p>
 
 <!--
@@ -82,7 +96,7 @@ The MarkLogic Java API runs on Java 6 and later and requires MarkLogic 6 or late
 
 <h3>See Also</h3>
 <p>
-MarkLogic also provides a separate API for those familiar with XQuery that would like to either embed or invoke 
+MarkLogic also provides a separate API for those familiar with XQuery that would like to either embed or invoke
 XQuery code from with in Java.   See <a href="//docs.marklogic.com/guide/xcc">XCC</a> for details and <a href="/products/xcc">XCC downloads</a>.
 </p>
 

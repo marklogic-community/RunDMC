@@ -196,7 +196,18 @@ a:hover {
 .main-wrapper .row .col img {
 }
 
+.main-wrapper p, .learn-more p {
+  line-height: 2rem;
+}
+
 /* Home Page: New Features Section ---------- */
+ul.new-features p {
+  font-size: 12px;
+  line-height: 15px;
+  margin-top: 7px;
+  text-align: center;
+}
+
 .new-features {
   margin: 0;
   list-style: none;
@@ -265,13 +276,22 @@ a:hover {
     background-image: url(/images/getting-started-still.png);
 }
 
-.still img {
-    margin-top: 50px;
-    margin-left: 130px;
+#what-is-still a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.still img, .still i {
+  color: #fff;
+  font-size: 60px;
+  margin-top: 97px;
+  margin-left: 197px;
 }
 
 .learn-more img {
   height: 148px;
+  margin-bottom: 1rem;
   width: 233px;
 }
 

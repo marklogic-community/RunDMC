@@ -399,6 +399,7 @@ hr {
 }
 
 #search-header form input[type="text"] {
+    color: #333;
     width: 216px;
     padding: 0 0 3px 6px;
     height: 22px;
@@ -510,10 +511,10 @@ nav ul {
 }
 
 #content #main_container {
-    width: 97%;
-    margin: auto;
-    background: url(/images/separator_vert.gif) 271px 0 repeat-y;
+  width: 97%;
+  margin: auto;
 }
+
 #breadcrumb {
     background: #FFF;
     padding: 10px 0 20px 0;
@@ -580,8 +581,9 @@ nav ul {
     margin: .5em 0;
 }
 #sub {
-    width: 25%;
-    padding-right: 20px;
+  border-right: 1px solid #e4e4e4;
+  margin-right: 20px;
+  width: 25%;
 }
 #sub h2 {
     font-size: 14px;
@@ -594,6 +596,11 @@ nav ul {
     border-bottom: 1px solid #FFF;
     line-height: 110%;
 }
+
+#sub ul li {
+  margin-bottom: 3px;
+}
+
 #sub li span {
     display: block;
     font-weight: bold;
@@ -619,6 +626,7 @@ nav ul {
 #sub ul ul {
     border-bottom: none;
     margin: 0;
+    margin-top: 2px;
 }
 #sub > li,
 #sub li span,
@@ -3217,6 +3225,10 @@ li.search_suggest {
 
 li.search_suggest_selected {
     background: none repeat scroll 0% 0% #FF0;
+}
+
+#events_listing .event {
+  padding-bottom: 10px;
 }
 
 /* screen.css */
