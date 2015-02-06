@@ -210,15 +210,13 @@
   <xsl:template mode="maven" match="maven">
     <section class="download">
         <h3>Maven</h3>
-        <xsl:if test="dep-only">
-          <h4>Repository</h4>
-            <textarea autofocus="autofocus" readonly="readonly" class="maven-frag"
+        <h4>Repository</h4>
+        <textarea autofocus="autofocus" readonly="readonly" class="maven-frag"
   >&lt;repository&gt;
       &lt;id&gt;MarkLogic-releases&lt;/id&gt;
       &lt;name&gt;MarkLogic Releases&lt;/name&gt;
       &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
   &lt;/repository&gt;</textarea>
-        </xsl:if>
         <h4>Dependencies</h4>
         <xsl:apply-templates mode="maven" select="artifact"/>
     </section>
