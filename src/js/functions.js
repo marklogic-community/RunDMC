@@ -156,11 +156,11 @@ if(typeof jQuery != 'undefined') {
             var email = $("#iemail").val();
             var pass = $("#ipass").val();
             if ($("#iaccept").is(":checked") && isValidEmailAddress(email)) {
-                b.button("enable");
+                b.prop("disabled", false);
                 $("#confirm-dialog").dialog.email = email;
                 $("#confirm-dialog").dialog.pw = pass;
             } else {
-                b.button("disable");
+                b.prop("disabled", true);
             }
         });
 
@@ -168,11 +168,11 @@ if(typeof jQuery != 'undefined') {
             var b = $(":button:contains('Download')");
             if ($("#iaccept").is(":checked") &&
                 ( $('#iemail').length == 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
-                b.button("enable");
+                b.prop("disabled", false);
                 $("#confirm-dialog").dialog.email = $("#iemail").val()
                 $("#confirm-dialog").dialog.pw = $("#ipass").val();
             } else {
-                b.button("disable");
+                b.prop("disabled", true);
             }
         });
 
@@ -317,7 +317,7 @@ if(typeof jQuery != 'undefined') {
         $('a.confirm-download').each(function() {
             var href = $(this).attr("href");
             $(this).click(function() {
-                $(":button:contains('Download')").button('disable');
+                $(":button:contains('Download')").prop("disabled", true);
                 $("#iaccept").removeAttr('checked');
                 $("#confirm-dialog").dialog.href = href;
                 $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
