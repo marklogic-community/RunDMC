@@ -208,10 +208,10 @@
 
           <div class="col-xs-3">
             <img src="/media/amazon.png"/>
-            <h4><a href="//docs.marklogic.com/guide/ec2/GettingStarted">Deploy on AWS</a></h4>
+            <h4><a href="/products/aws">Deploy on AWS</a></h4>
             <p>Get going in minutes with MarkLogic in the Amazon cloud using the
               provided AMIs and Cloud Formation templates.</p>
-            <p><a href="//docs.marklogic.com/guide/ec2/GettingStarted" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
           </div>
         </div>
       </div>
