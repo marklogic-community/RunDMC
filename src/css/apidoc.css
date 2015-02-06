@@ -642,6 +642,11 @@ span.highlightWidget {
     right: 16px;
 }
 
+#page_content #comments .action {
+    right: 48px;
+    top: 16px !important;
+}
+
 /* On small screens, hide TOC and make other adjustments.
  */
 @media (max-width: 764px) {
