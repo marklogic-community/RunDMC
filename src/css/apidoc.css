@@ -264,16 +264,23 @@ ol ol {
     margin-left: 16px;
 }
 
+select#toc_select {
+    width: 98%;
+    /* For browsers that support calc. */
+    width: calc(100% - 96px);
+}
+
 .scrollable_section {
     position: inherit;
 }
 
 .scrollable_section > input {
     border: 1px solid #ccc;
-    left: 8px;
     font-size: 11px;
     margin: 8px 0 0 16px;
-    width: 60%;
+    width: 50%;
+    /* For browsers that support calc. */
+    width: calc(100% - 112px);
 }
 .config-filter-close-button {
     display: none;
@@ -302,7 +309,7 @@ h1 a,
 
 .treecontrol.top_control {
     float: right;
-    margin: 8px 16px 0 0;
+    margin: 8px 24px 0 0;
     cursor: pointer;
     font-size: .9em;
 }
@@ -635,11 +642,55 @@ span.highlightWidget {
     right: 16px;
 }
 
-/* On small screens, hide TOC and make other adjustments. */
-
-@media (max-width: 784px) {
-    #header {
+/* On small screens, hide TOC and make other adjustments.
+ */
+@media (max-width: 764px) {
+    #header h1 {
+        margin-bottom: 4px;
     }
+    #header h1 a {
+        background: url(/images/logo-community-white-89x22.png) no-repeat;
+        width: 89px;
+        height: 22px;
+        margin-bottom: 20px;
+    }
+    #header nav li {
+        margin-left: 16px;
+    }
+    #breadcrumb {
+        padding: 4px;
+    }
+    #breadcrumb > div:first-child {
+        margin-bottom: 4px;
+    }
+    .version {
+        padding: 4px 0 4px 4px;
+    }
+    .toc_select {
+        margin-left: 4px;
+    }
+    .scrollable_section > input {
+        margin-left: 4px;
+    }
+    #api_sub {
+        right: 60%;
+    }
+	  #page_content {
+        left: 40%;
+	  }
+    #page_content > div {
+        margin: 0 4px 0 4px;
+    }
+    #page_content h1 {
+        margin: 24px 0 24px 0;
+    }
+    #copyright {
+        padding: 4px;
+    }
+}
+
+/* Anything smaller than an iphone 5 landscape. */
+@media (max-width: 567px) {
     #header h1 {
         margin-bottom: 4px;
     }
@@ -649,7 +700,16 @@ span.highlightWidget {
         height: 22px;
     }
     div.header-separator {
-        margin-right: 4px;
+        display: none;
+    }
+    #search-header form input[type="text"] {
+        width: 144px;
+    }
+    #search-header form input[type="text"]:focus {
+        width: 144px;
+    }
+    #search_suggest_container {
+        width: 144px;
     }
     #header nav {
         display: none;
@@ -675,7 +735,7 @@ span.highlightWidget {
     #page_content {
         left: 0;
         width: auto;
-        margin: 144px 0 0 0;
+        margin: 152px 0 0 0;
     }
     #page_content > div {
         margin: 0 4px 0 4px;

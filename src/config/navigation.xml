@@ -12,8 +12,8 @@
         <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
       </group>
       <group display="Connectors">
-        <page display="Java API"   href="/products/java"/>
-        <page display="Node Client API" href="/features/node-client-api"/>
+        <page display="Java Client API"   href="/products/java"/>
+        <page display="Node.js Client API" href="/features/node-client-api"/>
         <page display="XCC Java/.NET"   href="/products/xcc"/>
         <page display="XCC Java/.NET Connectors for 8"   href="/products/xcc/8.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
