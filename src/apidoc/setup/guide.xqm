@@ -115,23 +115,11 @@ as xs:boolean
   (: Use instance of element as much as possible: faster than self axis. :)
   (: For when a note contains a list :)
   $e instance of element(Number)
+  or $e instance of element(Number1)
+  or $e instance of element(NumberA)
   or $e instance of element(Body-bullet)
-  (: Very expensive so try it last. :)
-  or ($e instance of element(Note)
-    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
-};
-
-declare function guide:starts-or-ends-list(
-  $e as element())
-as xs:boolean
-{
-  (: Use instance of element as much as possible: faster than self axis. :)
-  $e instance of element(Body-bullet)
-  or $e instance of element(Number)
-  or $e instance of element(EndList-root)
-  (: For when a note contains a list :)
-  or ($e instance of element(Body) and not($e/IMAGE))
-  (: Very expensive so try it last. :)
+  or $e instance of element(Body-bullet-2)
+  (: Expensive, so try it last. :)
   or ($e instance of element(Note)
     and $e/following-sibling::*[1] instance of element(Body-bullet-2))
 };
@@ -143,6 +131,24 @@ as xs:boolean
   (: Use instance of element as much as possible: faster than self axis. :)
   $e instance of element(EndList-root)
   or ($e instance of element(Body) and not($e/IMAGE))
+};
+
+declare function guide:starts-or-ends-list(
+  $e as element())
+as xs:boolean
+{
+  (: Use instance of element as much as possible: faster than self axis. :)
+  $e instance of element(Body-bullet)
+  or $e instance of element(Body-bullet-2)
+  or $e instance of element(Number)
+  or $e instance of element(Number1)
+  or $e instance of element(NumberA)
+  or $e instance of element(EndList-root)
+  (: For when a note contains a list :)
+  or ($e instance of element(Body) and not($e/IMAGE))
+  (: Very expensive so try it last. :)
+  or ($e instance of element(Note)
+    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
 };
 
 declare function guide:is-before-end-of-list(
@@ -793,6 +799,284 @@ as element()
         @*,
         guide:sections(1, *) }
       default return .) }
+};
+
+declare function guide:list-item-p($n as node())
+as xs:boolean
+{
+  $n instance of element() and (
+    $n instance of element(Number)
+    or $n instance of element(Number1)
+    or $n instance of element(NumberA)
+    or $n instance of element(Body-bullet)
+    or $n instance of element(Body-bullet-2))
+};
+
+(: Before declaring the end of the list,
+ : check for notes interleaved with list items.
+ :)
+declare function guide:list-end-p(
+  $n as node(),
+  $qname as xs:QName)
+as xs:boolean
+{
+  not(guide:list-item-p($n)) and not(
+    $n instance of element(Body-indent)
+    and node-name($n/following-sibling::*[1]) = $qname)
+};
+
+declare function guide:list-body(
+  $list as node()+,
+  $context as xs:string)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-body',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context))),
+    (: We know that $list starts with a $context element,
+     : and that is an item name. We know that the list goes to the end.
+     : But the item name may change, representing a nested list,
+     : and the list may continue after the nested content.
+     :)
+  let $first := $list[1]
+  let $qname := node-name($first)
+  let $next := (subsequence($list, 2)[node-name(.) = $qname])[1]
+  let $body := if (not($next)) then $list else $list[. << $next]
+  let $rest := (
+    if (not($next)) then ()
+    else subsequence($list, 1 + count($body)))
+  return (
+    if (not($stp:DEBUG)) then () else stp:debug(
+      'guide:list-body',
+      ('first', xdmp:describe($first),
+        'next', xdmp:describe($next),
+        'body', xdmp:describe($body),
+        'rest', xdmp:describe($rest))),
+    guide:list-through($first, $context, subsequence($body, 2)),
+    if (not($rest)) then ()
+    else guide:list-body($rest, $context))
+};
+
+declare function guide:list-wrap(
+  $list as node()+,
+  $context as xs:string)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-wrap',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context))),
+  if (empty($list)) then () else element {
+    switch($context)
+    case 'Number'
+    case 'Number1'
+    case 'NumberA' return 'ol'
+    default return "ul" }
+  {
+    guide:list-body($list, $context)
+  }
+};
+
+declare function guide:list-through(
+  $n as node(),
+  $context as xs:string?,
+  $body as node()*)
+as node()
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-through',
+    ('n', xdmp:describe($n),
+      'context', xdmp:describe($context))),
+  typeswitch($n)
+  case element() return element {
+    typeswitch($n)
+    case element(Body-bullet) return 'li'
+    case element(Body-bullet-2) return 'li'
+    case element(Number) return 'li'
+    case element(Number1) return 'li'
+    case element(NumberA) return 'li'
+    default return node-name($n) }
+  {
+    $n/@*,
+    guide:lists(($n/node(), $body), $context) }
+  default return $n
+};
+
+declare function guide:lists(
+  $list as node()*,
+  $context as xs:string?)
+as node()*
+{
+  if (empty($list)) then ()
+  else if (not($list[*])) then $list else
+  let $first := ($list[guide:list-item-p(.)])[1]
+  let $pre := if (not($first)) then $list else $list[. << $first]
+  let $body := (
+    if (not($first)) then () else subsequence($list, 1 + count($pre)))
+  let $first-qname := node-name($first)
+  let $first-not := (
+    if (not($body)) then ()
+    else $body[guide:list-end-p(., $first-qname)])[1]
+  let $post := (
+    if (not($first-not)) then ()
+    else ($first-not, $body[. >> $first-not]))
+  let $count-body := count($body)
+  let $count-post := count($post)
+  let $body := (
+    if (not($post)) then $body
+    else subsequence($body, 1, $count-body - $count-post))
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:lists#2',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context),
+      'first', xdmp:describe($first),
+      'first-not', xdmp:describe($first-not),
+      'pre', xdmp:describe($pre),
+      'body', xdmp:describe($body),
+      'post', xdmp:describe($post),
+      'count-body', $count-body, 'count-post', $count-post))
+  return (
+    (: We know the pre has no list content, and body does.
+     : But post might too.
+     :)
+    guide:list-through($pre, $context, ()),
+    if (not($body)) then ()
+    else guide:list-wrap($body, local-name($first)),
+    guide:lists($post, $context))
+};
+
+(: Capture flat and nested lists in nested structure.
+ : This replaces the old XSL capture-lists code.
+ : Input will be something like a guide chapter in consolidated raw form,
+ : with its sections already captured.
+ :)
+declare function guide:lists(
+  $root as element())
+as element()
+{
+  element { node-name($root) } {
+    $root/namespace::*,
+    (: Preserve input URI. :)
+    base-uri($root) ! attribute xml:base { . },
+    $root/@*,
+    $root/node() ! (
+      typeswitch(.)
+      case element(XML) return element XML {
+        namespace::*,
+        (: Preserve input URI. :)
+        base-uri($root) ! attribute xml:base { . },
+        @*,
+        guide:lists(*, ()) }
+      default return . ) }
+};
+
+declare function guide:code-p($n as node())
+as xs:boolean
+{
+  $n instance of element(Code)
+};
+
+declare function guide:code-wrap(
+  $list as node()+,
+  $context as xs:string)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:code-wrap',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context))),
+  if (empty($list)) then () else
+  element Code {
+    (: Everything in $list is a Code element.
+     : Code will never be nested.
+     : There never seem to be any attributes.
+     : Follow each code block with a newline.
+     :)
+    $list/text() }
+};
+
+declare function guide:code-through(
+  $n as node(),
+  $context as xs:string?)
+as node()
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:code-through',
+    ('n', xdmp:describe($n),
+      'context', xdmp:describe($context))),
+  typeswitch($n)
+  case element() return element { node-name($n) } {
+    $n/@*,
+    guide:code($n/node(), $context) }
+  default return $n
+};
+
+declare function guide:code(
+  $list as node()*,
+  $context as xs:string?)
+as node()*
+{
+  if (empty($list)) then () else
+  let $first := ($list[guide:code-p(.)])[1]
+  let $pre := if (not($first)) then $list else $list[. << $first]
+  let $body := (
+    if (not($first)) then () else subsequence($list, 1 + count($pre)))
+  let $first-not := (
+    if (not($body)) then ()
+    else ($body[not(guide:code-p(.))])[1])
+  let $post := (
+    if (not($first-not)) then ()
+    else ($first-not, $body[. >> $first-not]))
+  let $count-body := count($body)
+  let $count-post := count($post)
+  let $body := (
+    if (not($post)) then $body
+    else subsequence($body, 1, $count-body - $count-post))
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:code#2',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context),
+      'first', xdmp:describe($first),
+      'first-not', xdmp:describe($first-not),
+      'pre', xdmp:describe($pre),
+      'body', xdmp:describe($body),
+      'post', xdmp:describe($post),
+      'count-body', $count-body, 'count-post', $count-post))
+  return (
+    (: We know the pre has no code content, and body does.
+     : But post might too.
+     :)
+    guide:code-through($pre, $context),
+    if (not($body)) then ()
+    else guide:code-wrap($body, local-name($first)),
+    guide:code($post, $context))
+};
+
+(: Join sequences of code examples.
+ : This replaces the old XSL merge-code-examples code.
+ : Input will be something like a guide chapter in consolidated raw form,
+ : with its sections and lists already captured.
+ :)
+declare function guide:code(
+  $root as element())
+as document-node()
+{
+  element { node-name($root) } {
+    $root/namespace::*,
+    (: Preserve input URI. :)
+    base-uri($root) ! attribute xml:base { . },
+    $root/@*,
+    $root/node() ! (
+      typeswitch(.)
+      case element(XML) return element XML {
+        namespace::*,
+        (: Preserve input URI. :)
+        base-uri($root) ! attribute xml:base { . },
+        @*,
+        guide:code(*, ()) }
+      default return . ) }
+  ! document { . }
 };
 
 (: apidoc/setup/guide.xqm :)

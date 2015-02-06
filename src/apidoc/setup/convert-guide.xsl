@@ -39,15 +39,11 @@
         name="sections-captured"
         select="guide:sections(*)"/>
     <!-- Capture list hierarchy -->
-    <xsl:variable name="lists-captured">
-      <xsl:apply-templates mode="capture-lists"
-                           select="$sections-captured"/>
-    </xsl:variable>
+    <xsl:variable name="lists-captured"
+                  select="guide:lists($sections-captured)"/>
     <!-- Merge adjacent Code samples -->
-    <xsl:variable name="code-merged">
-      <xsl:apply-templates mode="merge-code-examples"
-                           select="$lists-captured"/>
-    </xsl:variable>
+    <xsl:variable name="code-merged" as="document-node()"
+                  select="guide:code($lists-captured)"/>
     <!-- Main conversion of source elements to XHTML elements -->
     <xsl:variable name="converted-content">
       <!--
@@ -262,153 +258,6 @@
 
   <xsl:template match="Hyperlink">
     <xsl:apply-templates/>
-  </xsl:template>
-
-  <xsl:template mode="capture-lists" match="@* | node()">
-    <xsl:copy>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates mode="capture-lists-content" select="."/>
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template mode="capture-lists-content" match="*">
-    <xsl:apply-templates mode="capture-lists"/>
-  </xsl:template>
-
-  <xsl:template mode="capture-lists-content"
-                match="div | CELL">
-    <xsl:for-each-group select="*"
-                        group-adjacent="guide:is-part-of-list(.)
-                                        and not(self::div or self::CELL)">
-      <xsl:apply-templates mode="outer-list" select="."/>
-    </xsl:for-each-group>
-  </xsl:template>
-
-  <xsl:template mode="outer-list" match="Number">
-    <ol>
-      <xsl:for-each-group select="current-group()"
-                          group-starting-with="Number">
-        <li>
-          <xsl:variable name="nested-bullets-captured" as="element()*">
-            <xsl:call-template name="capture-nested-bullets"/>
-          </xsl:variable>
-          <!--
-              ASSUMPTION: If there's a nested NumberA list,
-              then it comprises the rest of this list item.
-          -->
-          <xsl:variable name="first-sub-item"
-                        select="$nested-bullets-captured[self::NumberA][1]"/>
-          <xsl:for-each-group select="$nested-bullets-captured"
-                              group-starting-with="NumberA[. is $first-sub-item]">
-            <xsl:apply-templates mode="inner-numbered-list" select="."/>
-          </xsl:for-each-group>
-        </li>
-      </xsl:for-each-group>
-    </ol>
-  </xsl:template>
-
-  <xsl:template mode="inner-numbered-list" match="NumberA">
-    <ol>
-      <xsl:for-each-group select="current-group()"
-                          group-starting-with="NumberA">
-        <li>
-          <xsl:apply-templates mode="capture-lists" select="current-group()"/>
-        </li>
-      </xsl:for-each-group>
-    </ol>
-  </xsl:template>
-
-  <xsl:template mode="outer-list" match="Body-bullet">
-    <ul>
-      <xsl:for-each-group select="current-group()"
-                          group-starting-with="Body-bullet">
-        <li>
-          <xsl:call-template name="capture-nested-bullets"/>
-        </li>
-      </xsl:for-each-group>
-    </ul>
-  </xsl:template>
-
-  <xsl:template name="capture-nested-bullets">
-    <!--
-        ASSUMPTION: each second-level bulleted list item consists of
-        just one element (Body-bullet-2);
-        they don't have subsequent paragraphs.
-    -->
-    <xsl:for-each-group select="current-group()"
-                        group-adjacent="exists(self::Body-bullet-2)">
-      <xsl:apply-templates mode="inner-list" select="."/>
-    </xsl:for-each-group>
-  </xsl:template>
-
-  <xsl:template mode="inner-list" match="Body-bullet-2">
-    <ul>
-      <xsl:for-each select="current-group()">
-        <li>
-          <xsl:apply-templates mode="capture-lists" select="."/>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
-
-  <xsl:template mode="outer-list" match="Note[guide:starts-list(.)]">
-    <NoteWithList>
-      <xsl:call-template name="capture-nested-bullets"/>
-    </NoteWithList>
-  </xsl:template>
-
-  <!-- If not part of a list, just copy the group through -->
-  <xsl:template mode="outer-list
-                      inner-list
-                      inner-numbered-list" match="*">
-    <xsl:apply-templates mode="capture-lists" select="current-group()"/>
-  </xsl:template>
-
-  <xsl:template mode="merge-code-examples" match="node()">
-    <xsl:copy>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates mode="merge-code-examples-content" select="."/>
-    </xsl:copy>
-    <xsl:apply-templates mode="merge-code-examples-after" select="."/>
-  </xsl:template>
-
-  <xsl:template mode="merge-code-examples-content" match="*">
-    <xsl:apply-templates mode="merge-code-examples"/>
-  </xsl:template>
-
-  <xsl:template mode="merge-code-examples-content" match="li | div | CELL">
-    <!-- Merge adjacent Code elements -->
-    <xsl:for-each-group select="*"
-                        group-adjacent="exists(self::Code)">
-      <xsl:apply-templates mode="code-or-not" select="."/>
-    </xsl:for-each-group>
-  </xsl:template>
-
-  <xsl:template mode="code-or-not" match="Code">
-    <Code>
-      <!-- Process the content of the adjacent Code elements -->
-      <xsl:apply-templates mode="merge-code-examples"
-                           select="current-group()/node()"/>
-    </Code>
-  </xsl:template>
-
-  <xsl:template mode="code-or-not" match="*">
-    <xsl:apply-templates mode="merge-code-examples"
-                         select="current-group()"/>
-  </xsl:template>
-
-  <!-- By default, don't add anything after -->
-  <xsl:template mode="merge-code-examples-after"
-                match="node()"/>
-
-  <!--
-       Add a marker signifying we want to preserve the whitespace
-       at the beginning of this Code element
-       (as it's a subsequent adjacent one, which will be merged into the previous).
-  -->
-  <xsl:template mode="merge-code-examples-after"
-                match="Code[preceding-sibling::*[1][self::Code]]/A[1]">
-    <PRESERVE_FOLLOWING_WHITESPACE/>
   </xsl:template>
 
 </xsl:stylesheet>
