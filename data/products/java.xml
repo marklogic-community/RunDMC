@@ -1,110 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-<p>
-<img src="/media/duke-java-mascot.png" width="38" height="67" alt="Duke" style="float:right; padding: 2px"/>
-The MarkLogic Java API provides access to core MarkLogic database and search functionality.  It allows Java developers to get going quickly,
-enabling them to re-use existing knowledge, skills, libraries, tools, and development environments.  </p>
+  <p>
+  <img src="/media/duke-java-mascot.png" width="38" height="67" alt="Duke" style="float:right; padding: 2px"/>
+  The MarkLogic Java Client API provides access to core MarkLogic database and search functionality.  It allows Java developers to get going quickly,
+  enabling them to re-use existing knowledge, skills, libraries, tools, and development environments.  </p>
+
+  <p>The Java API is developed in the open on GitHub. Submit tickets and pull requests there to contribute.</p>
+
+  <p style="padding-bottom:10px;">
+    <a class="btn btn-default btn-sm" href="https://github.com/marklogic/java-client-api">Java Client API on GitHub ›</a>
+  </p>
+
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.1.zip" size="7.7MB" date="2014-09-12">Release 3.0-1 zip package (compatible with Version 8 server)</ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.4.zip" size="7.7MB" date="2014-09-12">Release 2.0-4 zip package (compatible with Version 7 server)</ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-1.0-5.zip" size="6.3MB" date="2013-09-12">Release 1.0-5 zip package (compatible with Version 6 server)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.1.zip" size="6.4MB" date="2015-02-06">Release 3.0.1 zip package (compatible with MarkLogic 8)</ml:download>
       <!--
+
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+
       -->
     </ml:platform>
     <!--
+
     <ml:maven>
-      <ml:artifact id="client-api-java" version="3.0-1" dep-only="true"/>
+
+      <ml:artifact id="java-client-api" version="2.0-1"/>
+
     </ml:maven>
-  -->
+
+    -->
   </ml:product-info>
 
   <section class="download">
     <h3>Maven</h3>
     <h4>Dependencies</h4>
-    <textarea readonly="readonly" class="maven-frag"
->&lt;dependency&gt;
+    <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
     &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;client-api-java&lt;/artifactId&gt;
-    &lt;version&gt;3.0-1&lt;/version&gt;
+    &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
+    &lt;version&gt;3.0.1&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
   </section>
 
-<p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
-<h3>Features</h3>
-<p>The API provides interfaces for </p>
-<ul>
+  <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
+  <h3>Features</h3>
+  <p>The API provides interfaces for </p>
+  <ul>
     <li>Document <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> and management, including support for
-    <ul>
-	<li>JSON, XML, Binary, and text documents</li>
-	<li>Organization via <a href="//docs.marklogic.com/guide/app-dev/properties#id_91048">Collections and Directories</a></li>
-	<li>Metadata (<a href="//docs.marklogic.com/guide/app-dev/properties">properties</a>, <a href="//docs.marklogic.com/guide/security/permissions#id_85471">permissions</a>, <a href="//docs.marklogic.com/guide/search-dev/relevance#id_68032">quality</a>, and last-modified time)</li>
+      <ul>
+        <li>JSON, XML, Binary, and text documents</li>
+        <li>Organization via <a href="//docs.marklogic.com/guide/app-dev/properties#id_91048">Collections and Directories</a></li>
+        <li>Metadata (<a href="//docs.marklogic.com/guide/app-dev/properties">properties</a>, <a href="//docs.marklogic.com/guide/security/permissions#id_85471">permissions</a>, <a href="//docs.marklogic.com/guide/search-dev/relevance#id_68032">quality</a>, and last-modified time)</li>
       </ul>
-</li>
+    </li>
     <li>Query by Example</li>
     <li>Full-text search, including
-    <ul>
-	<li>Result snippeting, paging, and facets</li>
-	<li>Configurable search input string parsing</li>
-	<li>Advanced search specification and configuration, including support for
-            <ul>
-	    <li>Keyword, phrase, value, near, and boolean searches</li>
-	    <li>Control of stemming, case-sensitivity, collation, and decompounding</li>
-	    <li>Control of diacritics and punctuation handling</li>
-	  </ul>
+      <ul>
+        <li>Result snippeting, paging, and facets</li>
+        <li>Configurable search input string parsing</li>
+        <li>Advanced search specification and configuration, including support for
+          <ul>
+            <li>Keyword, phrase, value, near, and boolean searches</li>
+            <li>Control of stemming, case-sensitivity, collation, and decompounding</li>
+            <li>Control of diacritics and punctuation handling</li>
+          </ul>
         </li>
-	<li>Tokenization and stemming for 13 languages</li>
-	<li>Spelling dictionaries and thesauri</li>
+        <li>Tokenization and stemming for 13 languages</li>
+        <li>Spelling dictionaries and thesauri</li>
       </ul>
-</li>
+    </li>
     <li>Multi-statement (and multi-document) transaction management</li>
     <li>Analytics, including values and aggregates</li>
     <li>Security, including
-    <ul>
-	<li>API-level security via seperate read, write, and administrative access control</li>
-	<li>Management of document-level (and collection/directory?) privileges</li>
+      <ul>
+        <li>API-level security via seperate read, write, and administrative access control</li>
+        <li>Management of document-level (and collection/directory?) privileges</li>
       </ul>
-</li>
+    </li>
   </ul>
 
-<p>
-It is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>.
-</p>
+  <p>It is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>.</p>
 
 <!--
+
 <p>Perhaps a copy of an arch. diagram with Java client, rest api, ML app servers, dbs, etc.  </p>
+
 -->
 
-<h3> Tutorials and Samples </h3>
-<p>
-<ul>
+  <h3> Tutorials and Samples </h3>
+  <p>
+    <ul>
       <li><a href="/try/java/index">The Java API in 5 Minutes</a></li>
       <li><a href="/learn/java">Learning the MarkLogic Java API</a></li>
       <li><a href="/learn/java-pojos">Writing and Searching POJOs</a></li>
       <li><a href="/code/top-songs">Sample MarkLogic Java API Application</a></li>
     </ul>
-<p>
+  </p>
 
-<h3>Requirements</h3>
-<p>
-The MarkLogic Java API runs on Java 6 and later and requires MarkLogic 6 or later as well.
-</p>
+  <h3>Requirements</h3>
+  <p>The MarkLogic Java API runs on Java 6 and later and requires MarkLogic 6 or later as well.</p>
 
 
-<h3>See Also</h3>
-<p>
-MarkLogic also provides a separate API for those familiar with XQuery that would like to either embed or invoke
-XQuery code from with in Java.   See <a href="//docs.marklogic.com/guide/xcc">XCC</a> for details and <a href="/products/xcc">XCC downloads</a>.
-</p>
+  <h3>See Also</h3>
+  <p>MarkLogic also provides a separate API for those familiar with XQuery that would like to either embed or invoke
+XQuery code from with in Java. See <a href="//docs.marklogic.com/guide/xcc">XCC</a> for details and <a href="/products/xcc">XCC downloads</a>.
+  </p>
 
-<p>
-  <ml:product-documentation>
-    <ml:new-doc type="javadoc" title="MarkLogic Java Client API - Javadoc" source="/javadoc/client"/>
-    <ml:new-doc source="/guide/java"/>
-  </ml:product-documentation>
-</p>
+  <p>
+    <ml:product-documentation>
+      <ml:new-doc type="javadoc" title="MarkLogic Java Client API - Javadoc" source="/javadoc/client"/>
+      <ml:new-doc source="/guide/java"/>
+    </ml:product-documentation>
+  </p>
 
-</p></p></ml:page>
+  <h2>Older Versions</h2>
+  <ml:product-info name="MarkLogic Java API" license-page="">
+    <ml:platform name="MarkLogic 7">
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.4.zip" size="7.7MB" date="2014-09-12">Release 2.0.4 zip package (compatible with MarkLogic 7)</ml:download>
+    </ml:platform>
+    <ml:maven>
+      <ml:artifact id="client-api-java" version="2.0.4"/>
+    </ml:maven>
+  </ml:product-info>
+
+  <ml:product-info name="MarkLogic Java API" license-page="">
+    <ml:platform name="MarkLogic 6">
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-1.0-5.zip" size="6.3MB" date="2013-09-12">Release 1.0.5 zip package (compatible with MarkLogic 6)</ml:download>
+    </ml:platform>
+    <ml:maven>
+      <ml:artifact id="client-api-java" version="1.0.5"/>
+    </ml:maven>
+  </ml:product-info>
+
+</ml:page>
