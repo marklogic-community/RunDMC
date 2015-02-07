@@ -128,9 +128,11 @@ class ServerConfig
       zip = gets.strip
     end
 
-    if (!File.exist? zip)
-      @logger.error "No file found at #{zip}"
-      exit!
+    if @properties['ml.server'] == "localhost"
+      if !File.exist? zip
+        @logger.error "No file found at #{zip}"
+        exit!
+      end
     end
 
     if @properties['ml.build-clean'] != ""
