@@ -14,13 +14,15 @@ import module namespace rw="http://marklogic.com/rundmc/rewrite"
 declare variable $NOTFOUND := (
   '/controller/301redirect.xqy?path=/controller/notfound.xqy') ;
 
+declare variable $BASE := 'http://developer.marklogic.com' ;
+
 declare %t:case function t:guide-296()
 {
   at:equal(
     rw:rewrite(
       'GET',
       '/pubs/3.2/books/install.pdf',
-      'http://developer.marklogic.com/pubs/3.2/books/install.pdf',
+      $BASE||'/pubs/3.2/books/install.pdf',
       ''),
     '/controller/301redirect.xqy?path=//localhost:8809/guide/installation.pdf')
 };
@@ -31,9 +33,21 @@ declare %t:case function t:guide-299()
     rw:rewrite(
       'GET',
       '/pubs/2.2/books/dev',
-      'http://developer.marklogic.com/pubs/2.2/books/dev',
+      $BASE||'/pubs/2.2/books/dev',
       ''),
     $NOTFOUND)
+};
+
+declare %t:case function t:license()
+{
+  ('/process-license-request'
+    ||'?r=http%3a//mint.marklogic.com/5X/demo-keygen-5.X.xqy')
+  ! rw:rewrite(
+    'GET', substring-before(., '?'), $BASE||., substring-after(., '?'))
+  ! at:equal(
+    .,
+    '/controller/process-license-request.xqy'
+    ||'?r=http%3a//mint.marklogic.com/5X/demo-keygen-5.X.xqy')
 };
 
 (: test/apidoc-rewrite.xqm :)
