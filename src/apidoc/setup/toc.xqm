@@ -25,7 +25,7 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
  : found in the MarkLogic admin UI code.
  :)
 import module namespace af="http://www.w3.org/2003/05/xpath-functions"
-  at "/MarkLogic/Admin/lib/admin-forms.xqy" ;
+  at "/MarkLogic/admin/admin-forms.xqy" ;
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 
