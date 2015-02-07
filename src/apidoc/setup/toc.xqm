@@ -24,7 +24,7 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 (: The help page code relies on undocumented and unsupported functions
  : found in the MarkLogic admin UI code.
  :)
-import module namespace af="marklogic.com/xdmp/admin/admin-forms"
+import module namespace af="http://marklogic.com/xdmp/admin/admin-forms"
   at "/MarkLogic/admin/admin-forms.xqy" ;
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
