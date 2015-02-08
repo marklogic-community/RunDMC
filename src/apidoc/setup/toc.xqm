@@ -21,25 +21,12 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "/apidoc/setup/raw-docs-access.xqy" ;
 
+declare namespace admin="http://marklogic.com/xdmp/admin" ;
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
 
 declare variable $ML-VERSION := xs:integer(
   substring-before(xdmp:version(), '.')) ;
-
-(: #436
- : The help page code relies on undocumented and unsupported functions
- : found in the MarkLogic admin UI code.
- : The location of this library module differs from ML7 to ML8,
- : so an import will not work.
- :)
-declare variable $FN-DISPLAY-HELP := xdmp:function(
-  QName(
-    if ($ML-VERSION ge 8) then 'http://www.w3.org/2003/05/xpath-functions'
-    else 'http://marklogic.com/xdmp/admin/admin-forms',
-    'displayHelp'),
-  if ($ML-VERSION ge 8) then "/MarkLogic/Admin/lib/admin-forms.xqy"
-  else '/MarkLogic/admin/admin-forms.xqy') ;
 
 (: This is for specifying exceptions to the automated mappings
  : of categories to URIs.
@@ -1464,7 +1451,7 @@ as node()+
       $version-number, $xsd-docs, $e)
     else ())
   let $help-content := element api:help-node {
-    $FN-DISPLAY-HELP(
+    toc:help-render(
       toc:help-element-decl($xsd-docs, $e)/root()/*, (: $schemaroot :)
       local-name($e),
       if ($e/@help-position eq 2) then 2 else 1, (: $multiple-uses :)
@@ -1873,6 +1860,121 @@ declare function toc:toc(
 as empty-sequence()
 {
   toc:toc($version, $xsd-path, toc:root-uri($version))
+};
+
+(: #436
+ : The help page code relies on undocumented and unsupported functions
+ : found in the MarkLogic admin UI code at admin-forms.xqy.
+ : The location of this library module differs from ML7 to ML8,
+ : so an import will not work.
+ :)
+
+(: Display Help Text on Help Pages
+::
+:: $schemaroot is the root element of the schema file to pass in
+:: $name is the element name in the schema that contains admin:help nodes
+:: $multiple-uses specifies which admin:help element has the info you need
+::                for this help page (in document order)
+:: $excluded specifies a list of the complex element fields to exclude
+:: $line-after specifies element fields to palce an hr line after.  This is
+::             not really needed anymore as there is now code to look for the
+::             admin:hr, but it is still there in case you want to add a line
+::             somewhere where there is no admin:hr.
+:: $print-buttons specifies whether to print out the buttons and tabs
+::                section--pass in fn:true() for yes, fn:false() for no.
+::
+:)
+
+declare function toc:help-render(
+  $schemaroot as node(),
+  $name as xs:string,
+  $multiple-uses as xs:integer,
+  $excluded as xs:string*,
+  $line-after as xs:string*,
+  $print-buttons as xs:boolean)
+as node()*
+{
+  let $decl    := $schemaroot/xs:element[@name eq $name],
+      $typ     := local-name-from-QName($decl/@type),
+      $complex := $schemaroot/xs:complexType[@name eq $typ]
+  return (
+    $schemaroot/xs:element[@name eq $name]/xs:annotation/xs:appinfo/
+                          admin:help[$multiple-uses]/node()
+    ,
+    <ul>
+      {
+        for $elname in $complex/(xs:all | xs:sequence)//xs:element
+        (: Filter out anything that is hidden or has no help element.
+         : The value of @ref is a QName, but we can only do string comparison.
+         :)
+        let $ref as xs:string := $elname/@ref/string()
+        let $n := ($schemaroot/xs:element[@name eq $ref])[1]
+        where (fn:not($n/xs:annotation/xs:appinfo/admin:hidden)
+          and $n/xs:annotation/xs:appinfo/admin:help
+          and fn:not($n/@name = $excluded))
+        return
+          (: special cases for role-ids and uri (collections page) :)
+          if ( fn:string($elname/@ref) = ("role-ids", "uri" ) )
+            then (
+              if ( $name = ("role", "collection") )
+              (: special case for role because it used diferently in user and role :)
+                  then ( for $helpnode in $schemaroot/xs:element[@name eq
+                                    fn:string($elname/@ref)]/xs:annotation/xs:appinfo
+                                                            /admin:help
+                        return
+                        <li>{ $helpnode/node()}</li> )
+                  else ( <li>{ $schemaroot/xs:element[@name eq
+                                  fn:string($elname/@ref)]/xs:annotation/xs:appinfo
+                                                          /admin:help[1]/node() }</li> )
+                  )
+          else if ( fn:string($elname/@ref) eq "root")
+            then
+              <li>
+                {
+                  if ($name eq "xdbc-server" or $name eq "odbc-server") then
+                    $schemaroot/xs:element[@name eq fn:string($elname/@ref)]
+                          /xs:annotation/xs:appinfo
+                          /admin:help[2]/node()
+                  else
+                    $schemaroot/xs:element[@name eq fn:string($elname/@ref)]
+                          /xs:annotation/xs:appinfo
+                          /admin:help[1]/node()
+                }
+              </li>
+          else (
+            <li>
+              {
+                if ($n/xs:annotation/xs:appinfo/admin:help[$multiple-uses]/node())
+                   then $n/xs:annotation/xs:appinfo/admin:help[$multiple-uses]/node()
+                (: take the first node if there are not multiple ones :)
+                else $n/xs:annotation/xs:appinfo/admin:help[1]/node()
+              }
+            </li>
+            ,
+            if ( ( fn:local-name-from-QName($elname/@ref) = $line-after ) or
+                   $n/xs:annotation/xs:appinfo/admin:hr )
+            then ( <hr class="control-line" size="1"/>, <br /> )
+            else ( )
+          )
+      }
+    </ul>
+    ,
+    (: only print the buttons and tabs section if $print-buttons is true :)
+    if ( $print-buttons )
+      then (
+      (: if there is more then one help element, assume the last one describes the
+        buttons and tabs and put it on the end.  If there are multiple-uses,
+        put the buttons and tabs at the position last() - (multiple-uses -1),
+        which is the reverse of the position for the opening content.  :)
+        if ( fn:count( $schemaroot/xs:element[@name eq $name]/xs:annotation/xs:appinfo
+                            /admin:help ) > 1 )
+          then (
+          $schemaroot/xs:element[@name eq $name]/xs:annotation/xs:appinfo/
+                        admin:help[last() - ($multiple-uses - 1) ]/node() )
+        else ()
+      )
+    else ()
+  )
 };
 
 (: apidoc/setup/toc.xqm :)
