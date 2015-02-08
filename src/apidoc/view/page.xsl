@@ -786,23 +786,7 @@
 
   <xsl:template mode="page-content" match="/guide | /chapter">
     <div class="userguide pjax_enabled">
-      <xsl:choose>
-        <!-- The normal case: the guide is already converted (at "build time", i.e. the setup phase). -->
-        <xsl:when test="not($convert-at-render-time)">
-          <xsl:apply-templates mode="guide"/>
-        </xsl:when>
-        <!-- For development purposes only. Normally, assume that the guide is already converted (in the setup phase). -->
-        <xsl:otherwise>
-          <p style="position:fixed; color: red"><br/><br/>WARNING: This was converted directly from the raw docs database for convenience in development.
-             Set the $convert-at-render-time flag to false in production (and this warning will go away).</p>
-          <!-- Convert and render the guide directly, for development.  -->
-          <xsl:apply-templates
-              mode="guide"
-              select="guide:convert-uri(
-                      $VERSION-FINAL,
-                      base-uri(current()))/*/node()"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates mode="guide"/>
     </div>
     <xsl:apply-templates mode="chapter-next-prev" select="@previous,@next"/>
     <!-- "Next" link on Table of Contents (guide) page -->
