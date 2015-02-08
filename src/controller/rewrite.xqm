@@ -402,7 +402,7 @@ as xs:string
     else if ($path eq "/validate") then concat(
       "/controller/validate.xqy?", $query-string)
     else if ($path eq "/process-license-request") then concat(
-      "/controller/process-lrequest.xqy?", $query-string)
+      "/controller/process-license-request.xqy?", $query-string)
     else if ($path eq "/process-license-request-2") then concat(
       "/controller/process-license-request-2.xqy?", $query-string)
     else if ($path eq "/license-record") then concat(
