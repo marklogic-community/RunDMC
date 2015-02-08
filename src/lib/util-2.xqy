@@ -2,6 +2,8 @@ xquery version "1.0-ml";
 
 module namespace u="http://marklogic.com/rundmc/util";
 
+declare default function namespace "http://www.w3.org/2005/xpath-functions";
+
 import module namespace search = "http://marklogic.com/appservices/search"
        at "/MarkLogic/appservices/search/search.xqy";
 
@@ -14,7 +16,10 @@ declare namespace rf =    "URN:ietf:params:rfc822:";
  : @date 21 April 2010
  :)
 
-declare default function namespace "http://www.w3.org/2005/xpath-functions";
+declare variable $OPTS-MODULES-DB := (
+  <options xmlns="xdmp:eval">
+    <database>{ xdmp:modules-database() }</database>
+  </options>) ;
 
 (:
  : @param $path /-prefixed string that is path to the file
@@ -27,10 +32,19 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare function u:get-doc($path as xs:string)
   as node()?
 {
-  let $root := xdmp:modules-root()
-  let $apath := fn:concat($root, $path)
-  where xdmp:filesystem-file-exists($apath)
-  return xdmp:document-get($apath)
+  if (xdmp:modules-database() gt 0) then xdmp:invoke-function(
+    function() {
+      doc(
+        replace(
+          xdmp:modules-root()
+          ||(if (ends-with($path, '/')) then '' else '/')
+          ||$path,
+          '//+', '/')) },
+      $OPTS-MODULES-DB)
+  else (
+    let $apath := concat(xdmp:modules-root(), $path)
+    where xdmp:filesystem-file-exists($apath)
+    return xdmp:document-get($apath))
 };
 
 (:
@@ -39,10 +53,16 @@ declare function u:get-doc($path as xs:string)
  :
  : @return length of file
  :)
-declare function u:get-doc-length($path as xs:string)
-  as xs:unsignedLong
+declare function u:get-doc-length($path as xs:string, $doc as node()?)
+  as xs:unsignedLong?
 {
-  xdmp:filesystem-file-length(fn:concat(xdmp:modules-root(), $path))
+  if (xdmp:modules-database() eq 0) then xdmp:filesystem-file-length(
+    concat(xdmp:modules-root(), $path))
+  else (
+    typeswitch($doc)
+    case binary() return xdmp:binary-size($doc)
+    case text() return string-length($doc)
+    default return string-length(xdmp:quote($doc)))
 };
 
 (:
@@ -56,7 +76,7 @@ declare function u:is-directory($uri as xs:string) as xs:boolean {
 };
 
 declare function u:strip-version-from-path($path as xs:string) {
-  fn:replace($path,'/[0-9]+\.[0-9]+/','/')
+  replace($path,'/[0-9]+\.[0-9]+/','/')
 };
 
 (:

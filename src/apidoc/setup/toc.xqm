@@ -21,15 +21,25 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
 import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
   at "/apidoc/setup/raw-docs-access.xqy" ;
 
-(: The help page code relies on undocumented and unsupported functions
- : found in the MarkLogic admin UI code.
- :)
-import module namespace af="http://www.w3.org/2003/05/xpath-functions"
-  at "/MarkLogic/Admin/lib/admin-forms.xqy" ;
-
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
-
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
+
+declare variable $ML-VERSION := xs:integer(
+  substring-before(xdmp:version(), '.')) ;
+
+(: #436
+ : The help page code relies on undocumented and unsupported functions
+ : found in the MarkLogic admin UI code.
+ : The location of this library module differs from ML7 to ML8,
+ : so an import will not work.
+ :)
+declare variable $FN-DISPLAY-HELP := xdmp:function(
+  QName(
+    if ($ML-VERSION ge 8) then 'http://www.w3.org/2003/05/xpath-functions'
+    else 'http://marklogic.com/xdmp/admin/admin-forms',
+    'displayHelp'),
+  if ($ML-VERSION ge 8) then "/MarkLogic/Admin/lib/admin-forms.xqy"
+  else '/MarkLogic/admin/admin-forms.xqy') ;
 
 (: This is for specifying exceptions to the automated mappings
  : of categories to URIs.
@@ -1454,7 +1464,7 @@ as node()+
       $version-number, $xsd-docs, $e)
     else ())
   let $help-content := element api:help-node {
-    af:displayHelp(
+    $FN-DISPLAY-HELP(
       toc:help-element-decl($xsd-docs, $e)/root()/*, (: $schemaroot :)
       local-name($e),
       if ($e/@help-position eq 2) then 2 else 1, (: $multiple-uses :)

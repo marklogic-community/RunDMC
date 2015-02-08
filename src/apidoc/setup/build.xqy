@@ -14,7 +14,9 @@ declare variable $ACTION as xs:string* := xdmp:get-request-field(
 declare variable $CLEAN as xs:boolean? := xdmp:get-request-field(
   "clean") ! xs:boolean(.) ;
 declare variable $HELP-XSD-DIR as xs:string? := xdmp:get-request-field(
-  'help-xsd-dir') ;
+  'help-xsd-dir',
+  (: NB - Undocumented function. :)
+  xdmp:install-directory()||'/Config') ;
 declare variable $VERSION as xs:string := xdmp:get-request-field(
   'version') ;
 declare variable $ZIP as xs:string := xdmp:get-request-field(
@@ -57,6 +59,10 @@ if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
   "ERROR",
   ("You must specify a 'version' param with one of these values:",
     string-join($stp:LEGAL-VERSIONS,", "))),
+
+if (xdmp:filesystem-file-exists($HELP-XSD-DIR)) then () else stp:error(
+  "ERROR",
+  ('help-xsd-dir does not exist', xdmp:describe($HELP-XSD-DIR))),
 
 (: This may take some time to run :)
 xdmp:set-request-time-limit(1800),

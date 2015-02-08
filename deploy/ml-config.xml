@@ -804,14 +804,14 @@
     </privilege>
 -->
   </privileges>
+
   <mimetypes xmlns="http://marklogic.com/xdmp/mimetypes">
-<!--
-    Sample mimetype.
+    <!-- Used for XQuery library modules. -->
     <mimetype>
-      <name>application/crazy</name>
-      <extension>crazy stuff</extension>
+      <name>application/vnd.marklogic-xqm</name>
+      <extension>xqm</extension>
       <format>text</format>
     </mimetype>
--->
   </mimetypes>
+
 </configuration>

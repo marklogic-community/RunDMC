@@ -15,9 +15,9 @@ declare %t:case function t:main-controller-300()
 {
   at:equal(
     ml:version-select(
-      (<param name="v">7.0</param>,
+      (<param name="v">{ $ml:default-version }</param>,
         <param name="v"/>)),
-    '7.0')
+    $ml:default-version)
 };
 
 (: test/search.xqm :)
