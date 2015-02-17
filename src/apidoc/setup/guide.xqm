@@ -435,10 +435,9 @@ declare function guide:convert(
 as element()
 {
   (: This tends to be slow. :)
-  let $is-messages := contains($uri, '/guide/messages/')
   let $content := (
     if ($guide/guide) then () else guide:transform(
-      guide:normalize($guide, $is-messages)/*/XML,
+      guide:normalize($guide, contains($uri, '/guide/messages/'))/*/XML,
       $uri, $raw-docs, $references))
   return (
     $guide/(guide|chapter)
@@ -1093,7 +1092,7 @@ as node()*
   case element(Body) return (
     if (count($n/parent::CELL/Body, 2) eq 1) then guide:transform(
       $n/node(), $uri, $raw, $references)
-    else guide:transform-through($n, $uri, $raw, $references))
+    else guide:transform-element($n, $uri, $raw, $references))
   case element(CellBody) return (
     if (count($n/parent::CELL/CellBody, 2) eq 1) then guide:transform(
       $n/node(), $uri, $raw, $references)
