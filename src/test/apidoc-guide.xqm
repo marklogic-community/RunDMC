@@ -67,4 +67,30 @@ declare %t:case function t:Body-not-in-output()
   ! at:empty(descendant-or-self::*:Body)
 };
 
+declare %t:case function t:code-output-with-em()
+{
+  <chapter>
+    <XML>
+      <Heading-4>
+        <A ID="pgfId-1146448"></A>
+        <A ID="65730"></A>
+  insert</Heading-4>
+  <Body>
+    <A ID="pgfId-1146449"></A>
+  Lorem ipsum <code>
+  insert</code>
+  operation structure:</Body>
+  <Code>
+    <A ID="pgfId-1146450"></A>
+  "insert":
+  "context": <Emphasis>
+  path-expr</Emphasis>
+  </Code>
+  </XML></chapter>
+  ! document { . }
+  ! guide:normalize(., false())
+  ! at:not-empty(
+    guide:transform(*/XML, 'fubar', ., 'baz')/em)
+};
+
 (: test/apidoc-guide.xqm :)

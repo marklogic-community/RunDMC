@@ -921,6 +921,14 @@ as node()*
     guide:lists($post, $context))
 };
 
+declare function guide:lists($list as node()*)
+as node()*
+{
+  if (empty($list)) then ()
+  (: For stable XPath ordering we need to wrap the output. :)
+  else element guide { guide:lists($list, ()) }/node()
+};
+
 declare function guide:code-p($n as node())
 as xs:boolean
 {
@@ -940,8 +948,9 @@ as node()*
      : Code will never be nested.
      : There never seem to be any attributes.
      : Follow each code block with a newline.
+     : #449 may include formatting structure.
      :)
-    $list/text() }
+    guide:code-through($list/node()) }
 };
 
 declare function guide:code-through(
@@ -987,12 +996,12 @@ as node()*
       else subsequence($body, 1, $count-body - $count-post))
     let $_ := if (not($stp:DEBUG)) then () else stp:debug(
       'guide:code#2',
-      ('list', xdmp:describe($list),
+      ('list', count($list), xdmp:describe($list),
         'first', xdmp:describe($first),
         'first-not', xdmp:describe($first-not),
-        'pre', xdmp:describe($pre),
-        'body', xdmp:describe($body),
-        'post', xdmp:describe($post),
+        'pre', count($pre), xdmp:describe($pre),
+        'body', count($body), xdmp:describe($body),
+        'post', count($post), xdmp:describe($post),
         'count-body', $count-body, 'count-post', $count-post))
     return (
       (: We know the pre has no code content, and body does.
@@ -1023,8 +1032,7 @@ as document-node()
         if ($is-messages) then guide:sections(1, guide:flatten(.)/*)
         else guide:code(
           guide:lists(
-            guide:sections(1, guide:flatten(.)/*),
-            ())) } } }
+            guide:sections(1, guide:flatten(.)/*))) } } }
 };
 
 declare function guide:transform-heading-2message(
