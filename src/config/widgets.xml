@@ -157,7 +157,7 @@
     <page href="/learn/references"/>
   </widget>
 
-  <widget xquery="online-training.xml">
+  <widget href="online-training.xml">
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page-tree root="/news-and-events"/>
