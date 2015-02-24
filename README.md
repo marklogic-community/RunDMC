@@ -20,6 +20,11 @@ seen at http://developer.marklogic.com).
 
 ### Configuration
 
+#### Prerequisites
+
+- MarkLogic 7.0-4.1 or later
+- Ruby 1.9.3+ (for Roxy)
+
 #### Ports
 
 To set up the application, first check whether the default ports work for you. You can see the default ports by

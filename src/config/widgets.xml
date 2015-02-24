@@ -14,7 +14,7 @@
 
   <!--
   <widget href="/widgets/getting-started.xml">
-    <page href="/"/> 
+    <page href="/"/>
   </widget>
   -->
 
@@ -88,6 +88,10 @@
     <page href="/meet/mugl"/>
   </widget>
 
+  <widget href="/widgets/subscribe-to-benelux.xml">
+    <page href="/meet/benelux"/>
+  </widget>
+
   <widget href="/widgets/subscribe-to-bmug.xml">
     <page href="/meet/bmug"/>
   </widget>
@@ -153,7 +157,7 @@
     <page href="/learn/references"/>
   </widget>
 
-  <widget xquery="online-training.xml"> 
+  <widget xquery="online-training.xml">
     <page href="/learn"/>
     <page href="/learn/guides"/>
     <page-tree root="/news-and-events"/>
@@ -161,7 +165,7 @@
     <page-tree root="/events"/>
   </widget>
 
-  <widget xquery="training-calendar.xqy"> 
+  <widget xquery="training-calendar.xqy">
     <!-- <page href="/code/top-songs"/> -->
     <page href="/learn/free-online-training"/>
     <page href="/learn"/>
