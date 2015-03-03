@@ -263,11 +263,11 @@ ul.new-features p {
     background-repeat: no-repeat;
     cursor: pointer;
     width: 460px;
-    height: 259px;
+    height: 245px;
 }
 
 #what-is-still {
-    background-image: url(/media/what-is-enterprise-nosql-still.jpg);
+    background-image: url(/media/home/pasqua-intro.png);
   border: 1px solid #ccc;
   border-radius: 4px;
 }
