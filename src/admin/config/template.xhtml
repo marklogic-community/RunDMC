@@ -25,6 +25,57 @@
            }
        }
 
+       function checkValidXhtml(action, target) {
+          // Event has more than one TEXTAREA, so we need to loop.
+          var textAreas = document.getElementsByTagName("TEXTAREA");
+          var textAreasLength = textAreas.length;
+          var isValid = false;
+          $.each(textAreas, function(index, value)
+            {
+            $.ajax({
+              url: '/admin/controller/validate.xqy',
+              type: "POST",
+              data: {
+                xhtml: value.value
+              },
+              cache: false,
+              dataType: "text",
+              success:
+                function(response)
+                {
+                  // If we get a null response (empty sequence), the textarea validates.  Allow form to continue.
+                  if(!response)  {
+                    console.log('XHTML is good!');
+                    // Clear any existing errors
+                    // Allow form submission to continue
+                    var adminform = document.getElementsByClassName('adminform')[0];
+                    adminform.action = action;
+                    adminform.target = target;
+                    adminform.submit();
+                    isValid = true;
+                  }
+                  else {
+                    // Bad XHTML or another problem.  Display this error:error node back to the user.
+                    var errorDiv = document.getElementById('textarea-error');
+                    errorDiv.innerHTML +=  "There was a problem with your content. Error from the Server: " + response;
+                    errorDiv.style.display = 'block';
+                    console.log(response);
+                    isValid = false;
+                  }
+
+                },
+              error:
+                function(xml) {
+                  var errorDiv = document.getElementById('textarea-error');
+                  errorDiv.innerHTML += "There was unexpected problem in the Server: " + xml;
+                  errorDiv.style.display = 'block';
+                  isValid = false;
+                }
+            });
+          });
+          return isValid;
+       }
+
        $(document).ready(function() {
 
            tinyMCE.init({
@@ -34,7 +85,7 @@
             editor_selector : "richtext",
             theme : "advanced",
             plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
-             
+
             // Theme options
             theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect",
             theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
@@ -44,7 +95,7 @@
             theme_advanced_toolbar_align : "left",
             theme_advanced_statusbar_location : "bottom",
             theme_advanced_resizing : true,
-             
+
             entity_encoding : "numeric",
             extended_valid_elements : 'ml:teaser,ml:tabbed-features,ml:feature[href],ml:short-description,ml:product-info[name|license-page|requirements-page],ml:platform[name],ml:download[href|size|date],ml:product-documentation,ml:old-doc[desc|path],ml:doc[source],product-info[name|license-page|requirements-page],platform[name],download[href|size|date],product-documentation,old-doc[desc|path],doc[source],figure[id]',
             custom_elements:          'ml:teaser,ml:tabbed-features,~ml:feature,ml:short-description,ml:platform,ml:download,ml:product-documentation,ml:old-doc,ml:doc,ml:product-info,platform,download,product-documentation,old-doc,doc,product-info',
