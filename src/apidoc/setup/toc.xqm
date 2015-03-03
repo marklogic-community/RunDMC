@@ -648,7 +648,10 @@ declare function toc:render-children-or-async(
   $children as element(toc:node)*)
 {
   (: Placeholder for nodes to be loaded asynchronously. :)
-  if ($is-async) then <li><span class="placeholder">&#160;</span></li>
+  if ($is-async) then
+    <li xmlns="http://www.w3.org/1999/xhtml">
+      <span class="placeholder">&#160;</span>
+    </li>
   else toc:render-node($uri, $prefix-for-hrefs, $children)
 };
 
@@ -718,8 +721,7 @@ as element()
       'display:',
       if ($selected) then 'block;' else 'none;' },
     attribute class { 'treeview', 'apidoc_tree' },
-    toc:render-children-or-async(
-      $uri, $prefix-for-hrefs, $n/@async/xs:boolean(.), $n/toc:node)
+    toc:render-node($uri, $prefix-for-hrefs, $n/toc:node)
   }
   </ul>
 };
