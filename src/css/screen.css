@@ -2581,6 +2581,8 @@ span.highlightWidget {
      */
     position: fixed;
     margin-top: -32px;
+    /* Keep it on top of other content. */
+    z-index: 999;
 }
 
 .highlightQuery {
