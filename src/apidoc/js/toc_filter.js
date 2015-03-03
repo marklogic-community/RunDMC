@@ -86,18 +86,20 @@ function tocInitGlobals() {
   // Initialize values from page.xsl content.
   functionPageBucketId = $("#functionPageBucketId");
   if (!functionPageBucketId.length) LOG.warn(
-    "No functionPageBucketId!");
+    "[tocInitGlobals] No functionPageBucketId!");
   functionPageBucketId = functionPageBucketId.val();
 
   isUserGuide = $("#isUserGuide");
   if (!isUserGuide.length) LOG.warn(
-    "No isUserGuide!");
+    "[tocInitGlobals] No isUserGuide!");
   isUserGuide = isUserGuide.val() === "true";
 
   tocSectionLinkSelector = $("#tocSectionLinkSelector");
   if (!tocSectionLinkSelector.length) LOG.warn(
-    "No tocSectionLinkSelector!");
+    "[tocInitGlobals] No tocSectionLinkSelector node!");
   tocSectionLinkSelector = tocSectionLinkSelector.val();
+  if (!tocSectionLinkSelector.length) LOG.warn(
+    "[tocInitGlobals] No tocSectionLinkSelector!");
 }
 
 function tocInit() {

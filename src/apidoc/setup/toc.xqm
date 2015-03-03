@@ -641,6 +641,17 @@ as element()?
   </div>
 };
 
+declare function toc:render-children-or-async(
+  $uri as xs:string,
+  $prefix-for-hrefs as xs:string?,
+  $is-async as xs:boolean?,
+  $children as element(toc:node)*)
+{
+  (: Placeholder for nodes to be loaded asynchronously. :)
+  if ($is-async) then <li><span class="placeholder">&#160;</span></li>
+  else toc:render-node($uri, $prefix-for-hrefs, $children)
+};
+
 (: Given a node, render the children inline or as new documents. :)
 declare function toc:render-node-children(
   $uri as xs:string,
@@ -661,9 +672,8 @@ as element()?
     attribute style {
       'display:',
       if ($is-open) then 'block;' else 'none;' },
-    (: Placeholder for nodes to be loaded asynchronously. :)
-    if ($is-async) then <li><span class="placeholder">&#160;</span></li>
-    else toc:render-node($uri, $prefix-for-hrefs, $children)
+    toc:render-children-or-async(
+      $uri, $prefix-for-hrefs, $is-async, $children)
   }
   </ul>
 };
@@ -708,7 +718,8 @@ as element()
       'display:',
       if ($selected) then 'block;' else 'none;' },
     attribute class { 'treeview', 'apidoc_tree' },
-    toc:render-node($uri, $prefix-for-hrefs, $n/toc:node)
+    toc:render-children-or-async(
+      $uri, $prefix-for-hrefs, $n/@async/xs:boolean(.), $n/toc:node)
   }
   </ul>
 };
@@ -1774,9 +1785,10 @@ as element(toc:node)
     if ($group/@id) then $group/@id else toc:id($group),
     ($group/@toc-title, $group/@title)[1],
     $group/@href,
-    (),
+    (: Group nodes are always open, so they can never be async. :)
+    false(),
     $group/@type,
-    ('open',
+    ('group',
       (: Transform any of these attributes to toc:node attributes.
        : Extend as needed.
        :)
