@@ -205,7 +205,7 @@
                   <input type="submit" name="submitBtn" value="Submit document" onclick="return checkValidXhtml('/admin/controller/create.xqy', '_self');"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <input type="submit" name="submitPreview" value="Preview changes" onclick="teturn checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
+              <input type="submit" name="submitPreview" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
             </form>
           </xsl:template>
 

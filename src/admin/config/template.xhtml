@@ -29,7 +29,7 @@
           // Event has more than one TEXTAREA, so we need to loop.
           var textAreas = document.getElementsByTagName("TEXTAREA");
           var textAreasLength = textAreas.length;
-          var isValid = false;
+          var isValid = true;
           $.each(textAreas, function(index, value)
             {
             $.ajax({
@@ -40,26 +40,16 @@
               },
               cache: false,
               dataType: "text",
+              async: false,
               success:
                 function(response)
                 {
-                  // If we get a null response (empty sequence), the textarea validates.  Allow form to continue.
-                  if(!response)  {
-                    console.log('XHTML is good!');
-                    // Clear any existing errors
-                    // Allow form submission to continue
-                    var adminform = document.getElementsByClassName('adminform')[0];
-                    adminform.action = action;
-                    adminform.target = target;
-                    adminform.submit();
-                    isValid = true;
-                  }
-                  else {
+                  // If we get a response, something is wrong with the content
+                  if(response)  {
                     // Bad XHTML or another problem.  Display this error:error node back to the user.
                     var errorDiv = document.getElementById('textarea-error');
                     errorDiv.innerHTML +=  "There was a problem with your content. Error from the Server: " + response;
                     errorDiv.style.display = 'block';
-                    console.log(response);
                     isValid = false;
                   }
 
@@ -73,6 +63,15 @@
                 }
             });
           });
+
+          // No problem in the textareas, allow form submission to continue
+          if(isValid) {
+            var adminform = document.getElementsByClassName('adminform')[0];
+            adminform.action = action;
+            adminform.target = target;
+            adminform.submit();
+          }
+
           return isValid;
        }
 
