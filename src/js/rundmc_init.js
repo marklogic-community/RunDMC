@@ -136,6 +136,10 @@ function highlightInit() {
     // Also remove the widget container
     $(".highlightWidget").remove();
     return false; });
+  // Simulate click on escape key.
+  $(document).keyup(function(e) {
+    if (e.keyCode != 27) { return; }
+    $widget.click(); });
 
   // Scroll the first match into view.
   scrollIntoView(selector, '#page_content');
