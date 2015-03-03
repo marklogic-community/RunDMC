@@ -376,25 +376,31 @@ as xs:string
 };
 
 declare function guide:anchor(
-  $raw-docs as document-node()*,
-  $fully-resolved-top-level-heading-references as xs:string*,
-  $e as element(A))
-as element(a)?
+  $a as element(A),
+  $uri as xs:string,
+  $raw as document-node()+,
+  $references as xs:string+)
+as element(a)*
 {
   (: Since we rewrite all links to point to the last anchor,
    : it is safe to drop any anchors that is not last.
    :)
-  if ($e[@ID]/following-sibling::A) then ()
+  if ($a[@ID]/following-sibling::A) then ()
   (: Default :)
   else element a {
     (: Anchors may have @ID or @href or both. :)
-    $e/@ID/attribute id { guide:full-anchor-id(.) },
-    $e/@href/attribute href {
-      guide:anchor-href(
-        $raw-docs,
-        $fully-resolved-top-level-heading-references,
-        .) },
-    guide:link-content($e) }
+    $a/@ID/attribute id { guide:full-anchor-id(.) },
+    $a/@href/attribute href {
+      guide:anchor-href($raw, $references, .) },
+    guide:link-content($a) }
+  ,
+  (: #446 Return an extra link for glossary entries,
+   : so we can link by glossary term.
+   :)
+  if (not(ends-with($uri, '/glossary.xml'))) then () else (
+    let $term := $a/following-sibling::*[1]/self::Bold/normalize-space(.)
+    where $term
+    return element a { attribute id { $term } })
 };
 
 (: Extract one document per message. :)
@@ -1094,7 +1100,7 @@ as node()*
   typeswitch($n)
   case document-node() return document {
     guide:transform($n/node(), $uri, $raw, $references) }
-  case element(A) return guide:anchor($raw, $references, $n)
+  case element(A) return guide:anchor($n, $uri, $raw, $references)
   (: Do not convert a single Body or CellBody child inside a CELL to a p.
    :)
   case element(Body) return (
