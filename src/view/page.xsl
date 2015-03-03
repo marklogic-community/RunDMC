@@ -466,29 +466,31 @@
 
   <xsl:template mode="page-content" match="Project">
     <!-- Note from Adam: "if images are supposed to be above the sidebar place them here, otherwise after the “widget” section" -->
-    <section class="widget">
-      <h1><img src="/images/i_database_arrow_down.png" alt="down arrow" /> Code &amp; Downloads</h1>
-      <ul class="code">
-        <xsl:if test="versions/@get-involved-href">
-          <xsl:choose>
-            <xsl:when test="versions/@repo eq 'github'">
-              <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
-            </xsl:when>
-            <xsl:when test="versions/@repo eq 'Google Code'">
-              <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
-            </xsl:when>
-            <xsl:otherwise>
-              <li><a href="{versions/@get-involved-href}">Browse <xsl:value-of select="versions/@repo"/> Repository&#160;»</a></li>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:if>
-      </ul>
-      <xsl:if test="versions/version/@href">
-        <ul class="download">
-          <xsl:apply-templates mode="project-version" select="versions/version"/>
+    <xsl:if test="versions/@repo != ''">
+      <section class="widget">
+        <h1><img src="/images/i_database_arrow_down.png" alt="down arrow" /> Code &amp; Downloads</h1>
+        <ul class="code">
+          <xsl:if test="versions/@get-involved-href">
+            <xsl:choose>
+              <xsl:when test="versions/@repo eq 'github'">
+                <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
+              </xsl:when>
+              <xsl:when test="versions/@repo eq 'Google Code'">
+                <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li><a href="{versions/@get-involved-href}">Browse <xsl:value-of select="versions/@repo"/> Repository&#160;»</a></li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
         </ul>
-      </xsl:if>
-    </section>
+        <xsl:if test="versions/version/@href">
+          <ul class="download">
+            <xsl:apply-templates mode="project-version" select="versions/version"/>
+          </ul>
+        </xsl:if>
+      </section>
+    </xsl:if>
     <xsl:apply-templates select="description/node()"/>
     <!--
     <div class="action">
