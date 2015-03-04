@@ -797,7 +797,8 @@ declare function guide:list-end-p(
 as xs:boolean
 {
   not(guide:list-item-p($n)) and not(
-    $n instance of element(Body-indent)
+    ($n instance of element(Body-indent)
+      or $n instance of element(Code))
     and node-name($n/following-sibling::*[1]) = $qname)
 };
 
