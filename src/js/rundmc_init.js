@@ -67,34 +67,35 @@ function paramsMap(loc) {
 }
 
 function scrollIntoView(selector, containerSelector) {
-  LOG.debug("scrollIntoView", selector, containerSelector);
-  var $n = $(selector).first();
-  // was anything highlighted?
+  LOG.debug("[scrollIntoView]", selector, containerSelector);
+  var $n = $(selector);
   if (!$n.length) {
-    LOG.warn("scrollIntoView", "nothing to scroll", $n);
+    LOG.warn("[scrollIntoView]", "nothing to scroll", $n);
     return;
   }
+  $n = $n.first();
 
   var $container = $(containerSelector).first();
   if (!$container.length) {
-    LOG.warn("scrollIntoView no container", containerSelector);
+    LOG.warn("[scrollIntoView]", "no container", containerSelector);
     return;
   }
 
   // Scroll the first match into view.
-  LOG.debug("scrollIntoView", $n, $container);
+  LOG.debug("[scrollIntoView]", $n, $container);
   // The DOM offsetTop is relative to the offsetParent,
   // while the jQuery .offset().top is relative to document.
   // Neither one is entirely suitable.
   var offsetTop = Math.ceil($n.offset().top - $container.offset().top);
-  var margin = 3 * $n.height();
+  var margin = 2 + 2 * $n.height();
   var containerTop = $container.scrollTop();
   var containerHeight = $container.height();
-  var minVisible = containerTop + margin;
-  var maxVisible = containerTop + containerHeight - margin;
-  var willScroll = offsetTop < minVisible || offsetTop > maxVisible;
-  var scrollTop = offsetTop - minVisible;
-  LOG.debug("scrollIntoView",
+  var minVisible = containerTop;
+  var maxVisible = containerTop + containerHeight;
+  var scrollTop = offsetTop + containerTop - margin;
+  var willScroll = scrollTop < minVisible
+      || (scrollTop > maxVisible);
+  LOG.debug("[scrollIntoView]",
             "n", offsetTop, margin,
             "container", containerTop, containerHeight,
             "visible", minVisible, maxVisible,
@@ -103,7 +104,7 @@ function scrollIntoView(selector, containerSelector) {
     LOG.debug("scrollIntoView noop");
     return;
   }
-  $container.animate({scrollTop:scrollTop});
+  $container.animate({scrollTop: scrollTop});
 }
 
 function highlightInit() {

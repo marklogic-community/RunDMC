@@ -3,10 +3,11 @@
 /*jslint node: true */
 /* global $ */
 /* global CodeMirror */
+/* global LOG */
 /* global React */
 /* global document */
+/* global scrollIntoView */
 /* global window */
-/* global LOG */
 'use strict';
 
 var breadcrumbNode = null;
@@ -373,7 +374,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-  LOG.debug('updateTocForUrlFragment', pathname, hash, isUserGuide);
+  LOG.debug('[updateTocForUrlFragment]', pathname, hash, isUserGuide);
 
   // Only use the fragment part to user guide sections.
   // Otherwise use the pathname alone, for functions etc.
@@ -386,8 +387,21 @@ function updateTocForUrlFragment(pathname, hash) {
   var fullLink = (pathname.indexOf("/") === 0 ? pathname :
                   "/" + pathname) + effectiveHash;
 
-  LOG.debug("updateTocForUrlFragment fullLink", fullLink);
+  LOG.debug("[updateTocForUrlFragment] fullLink", fullLink);
   showInTOC($("#api_sub a[href='" + fullLink + "']"));
+
+  // #379 also scroll body. When popstate fires the DOM may not be ready.
+  if (hash && hash !== "") {
+    // Defer scrolling until the end of the current event loop,
+    // so the previous page is ready.
+    setTimeout(function() {
+      LOG.DEBUG = true;
+      var selector = 'a[id="' + hash.substring(1) + '"]';
+      LOG.debug("[updateTocForUrlFragment]", "scrolling body to",
+                hash, selector);
+      scrollIntoView(selector, '#page_content'); }, 0);
+      LOG.DEBUG = false;
+  }
 }
 
 // Expands and loads (if necessary) the part of the TOC containing the given link
