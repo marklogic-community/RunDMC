@@ -275,7 +275,7 @@
     <entry toc-title="Hadoop Connector"
            title="Hadoop Connector API Reference">
       <entry toc-title="Hadoop Connector API Reference"
-             title="javadoc for MarkLogic Connector for Hadoop"
+             title="Javadoc for MarkLogic Connector for Hadoop"
              href="/javadoc/hadoop/index.html"
              type="external">
         API documentation for the MarkLogic Connector for Hadoop.
