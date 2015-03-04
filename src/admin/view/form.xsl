@@ -149,7 +149,7 @@
                   <strong>OOPS:</strong>
                   <xsl:choose>
                     <xsl:when test="$error-code eq 'no-slug'">
-                      You must specify a URI path. 
+                      You must specify a URI path.
                     </xsl:when>
                     <xsl:when test="$error-code eq 'doc-exists'">
                       A document at this URI already exists.<br />
@@ -199,13 +199,13 @@
               <xsl:apply-templates mode="labeled-controls" select="."/>
               <xsl:choose>
                 <xsl:when test="string($doc-path)">
-                  <input type="submit" name="submit" value="Save changes"  onclick="this.form.action = '/admin/controller/replace.xqy'; this.form.target = '_self';"/>
+                  <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="submit" name="submit" value="Submit document" onclick="this.form.action = '/admin/controller/create.xqy'; this.form.target = '_self';"/>
+                  <input type="submit" name="submitBtn" value="Submit document" onclick="return checkValidXhtml('/admin/controller/create.xqy', '_self');"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <input type="submit" name="submit" value="Preview changes" onclick="this.form.action = '/admin/controller/preview.xqy'; this.form.target = '_blank';"/>
+              <input type="submit" name="submitPreview" value="Preview changes" onclick="teturn checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
             </form>
           </xsl:template>
 
@@ -343,6 +343,7 @@
                                       <br/>
                                       -->
                                       <div id="control-container" style="margin-left: 112px;">
+                                      <div id="textarea-error" class="error" style="display: none;"/>
                                       <textarea id="{form:field-name(.)}_{$textarea-id}"
                                                 name="{form:field-name(.)}"
                                                 style="width: 100%"

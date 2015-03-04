@@ -29,14 +29,14 @@
   <host type="development"
         default-host="true"
         cookie-domain="127.0.0.1">
-    <main-server port="8003"/>
-    <draft-server port="8004"/>
-    <webdav-server port="8005"/>
-    <admin-server port="8006"/>
-    <api-server port="8809"/>
+    <main-server port="8012"/>
+    <draft-server port="8014"/>
+    <webdav-server port="8018"/>
+    <admin-server port="8015"/>
+    <api-server port="8011"/>
     <standalone-api-server/>
-    <rapi-server port="4446"/>
-    <try-server url="//localhost:8540"/>
+    <rapi-server port="8016"/>
+    <try-server url="//localhost:8017"/>
   </host>
 
 <!--
