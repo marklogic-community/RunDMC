@@ -135,4 +135,61 @@ Referencing Your Schema</Heading-2>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
+declare %t:case function t:sequence-does-not-interrupt-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-2>
+<A ID="pgfId-1043455"></A>
+<A ID="17666"></A>
+Working With Your Schema</Heading-2>
+<Body>
+<A ID="pgfId-1043456"></A>
+It is sometimes useful to be able to explicitly read a schema from the database, either to return it to the outside world or to drive certain schema-driven query processing activities.</Body>
+<Body>
+<A ID="pgfId-1043457"></A>
+Schemas are treated just like any other document by the system.  They can be inserted, read, updated and deleted just like any other document.  The difference is that schemas are usually stored in a secondary schema database, not in the document database itself.</Body>
+<Body>
+<A ID="pgfId-1043458"></A>
+The most common activity developers want to carry out with schema is to read them.  There are two approaches to fetching a schema from the server explicitly:</Body>
+<Number1>
+<A ID="pgfId-1043459"></A>
+You can create an XQuery that uses <Hyperlink>
+<A href="#display.xqy?function=xdmp:eval" xml:link="simple" show="replace" actuate="user" CLASS="URL">xdmp:eval</A></Hyperlink>
+ with the <code>
+&lt;database&gt;</code>
+ option to read a schema directly from the current database's schema database.  For example, the following expression will return the schema document loaded in the code example given above:</Number1>
+<Code>
+<A ID="pgfId-1043460"></A>
+xdmp:eval('doc(&quot;sample.xsd&quot;)', (),
+&#160;&#160;&lt;options xmlns=&quot;xdmp:eval&quot;&gt;
+&#160;&#160;&#160;&#160;&lt;database&gt;{xdmp:schema-database()}&lt;/database&gt;
+&#160;&#160;&lt;/options&gt;)</Code>
+<Body-indent>
+<A ID="pgfId-1043461"></A>
+The use of the <code>
+xdmp:schema-database</code>
+ built-in function ensures that the <code>
+sample.xsd</code>
+ document is read from the current database's schema database.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1043462"></A>
+You can create an XDBC or HTTP Server that directly references the schema database in question as its document database, and then submit any XQuery as appropriate to read, analyze, update or otherwise work with the schemas stored in that schema database.  This approach should not be necessary in most instances.</Number>
+</NumberList>
+<EndList-root>
+<A ID="pgfId-1043463"></A>
+Other tasks that involve working with schema can be accomplished similarly.  For example, if you need to delete a schema, an approach modeled on either of the above (using <code>
+xdmp:document-delete(&quot;sample.xsd&quot;)</code>
+) will work as expected.  </EndList-root>
+<Heading-2>
+<A ID="pgfId-1051548"></A>
+<A ID="42480"></A>
+Validating XML Against a Schema</Heading-2>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+
 (: test/apidoc-guide.xqm :)

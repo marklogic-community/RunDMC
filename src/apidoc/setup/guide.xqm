@@ -780,12 +780,11 @@ as element()*
 declare function guide:list-item-p($n as node())
 as xs:boolean
 {
-  $n instance of element() and (
-    $n instance of element(Number)
-    or $n instance of element(Number1)
-    or $n instance of element(NumberA)
-    or $n instance of element(Body-bullet)
-    or $n instance of element(Body-bullet-2))
+  $n instance of element(Number)
+  or $n instance of element(Number1)
+  or $n instance of element(NumberA)
+  or $n instance of element(Body-bullet)
+  or $n instance of element(Body-bullet-2)
 };
 
 (: Before declaring the end of the list,
@@ -796,10 +795,10 @@ declare function guide:list-end-p(
   $qname as xs:QName)
 as xs:boolean
 {
-  not(guide:list-item-p($n)) and not(
-    ($n instance of element(Body-indent)
-      or $n instance of element(Code))
-    and node-name($n/following-sibling::*[1]) = $qname)
+  $n instance of element(EndList-root)
+  or (not(guide:list-item-p($n)) and not(
+      ($n instance of element(Body-indent)
+        or $n instance of element(Code))))
 };
 
 declare function guide:list-body(
