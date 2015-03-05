@@ -798,7 +798,9 @@ as xs:boolean
   $n instance of element(EndList-root)
   or (not(guide:list-item-p($n)) and not(
       ($n instance of element(Body-indent)
-        or $n instance of element(Code))))
+        or $n instance of element(Code)
+        or $n instance of element(Note)
+        or $n instance of element(Warning))))
 };
 
 declare function guide:list-body(

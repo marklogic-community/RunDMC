@@ -191,5 +191,155 @@ Validating XML Against a Schema</Heading-2>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
+declare %t:case function t:note-does-not-interrupt-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1038082"></A>
+<A ID="24432"></A>
+Configuring Text Indexes</Heading-3>
+<Body>
+<A ID="pgfId-1038083"></A>
+To configure text indexes for a particular database, complete the following procedure:</Body>
+<Number1>
+<A ID="pgfId-1038084"></A>
+Click on the Databases icon on the left tree menu.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1048377"></A>
+Locate the database for which you want to view text index configuration settings, either in the tree menu or in the Database Summary table.</Number>
+<Number>
+<A ID="pgfId-1048378"></A>
+Click the name of the database for which you want to view the settings. </Number>
+<Number>
+<A ID="pgfId-1038088"></A>
+Scroll down until the text indexing controls are visible.</Number>
+<Number>
+<A ID="pgfId-1038089"></A>
+Configure the text indexes for this database by selecting the appropriate radio buttons for each index type.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1038090"></A>
+Click on the <code>
+true</code>
+ radio button for a particular text index type if you want that index to be maintained. Click on the <code>
+false</code>
+ radio button for a particular text index type if you do not want that index to be maintained.</Body-indent>
+<Note>
+<A ID="pgfId-1038091"></A>
+If word searches and stemmed searches are disabled (that is, the <code>
+false</code>
+ radio button is selected for <code>
+word searches</code>
+ and off is selected for <code>
+stemmed searches</code>
+), the settings for the other text indexes are ignored, as explained above.</Note>
+<NumberList>
+<Number>
+<A ID="pgfId-1038092"></A>
+Leave the rest of the parameters unchanged.</Number>
+<Number>
+<A ID="pgfId-1038093"></A>
+Scroll to the top or bottom of the right frame and click OK.</Number>
+</NumberList>
+<Body>
+<A ID="pgfId-1038094"></A>
+The database now has the new text indexing configurations.</Body>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:warning-does-not-interrupt-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1061677"></A>
+<A ID="72532"></A>
+Modifying the Password Plugin</Heading-3>
+<Body>
+<A ID="pgfId-1061688"></A>
+The following example shows how to use the sample plugins to check for a minimum password length and to ensure that it contains at least on numeric character. </Body>
+<WarningList>
+<Warning>
+<A ID="pgfId-1062771"></A>
+Any errors in a plugin module will cause all requests to hit the error. It is therefore extremely important to test your plugins before deploying them in a production environment.</Warning>
+</WarningList>
+<Body>
+<A ID="pgfId-1062776"></A>
+To use and modify the sample password plugins, perform the following steps:</Body>
+<Number1>
+<A ID="pgfId-1062777"></A>
+Copy the <code>
+&lt;marklogic-dir&gt;Samples/Plugins/password-check-*.xqy</code>
+ files to the <code>
+Plugins</code>
+ directory. For example:</Number1>
+<Code>
+<A ID="pgfId-1061842"></A>
+cd /opt/MarkLogic/Plugins
+cp ../Samples/Plugins/password-check-*.xqy .</Code>
+<Body-indent>
+<A ID="pgfId-1061849"></A>
+If desired, rename the files when you copy them.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1063030"></A>
+If you want to modify any of the files (for example, <code>
+password-check-minimum-length</code>
+), open them in a text editor.</Number>
+<Number>
+<A ID="pgfId-1061902"></A>
+Make any changes you desire. For example, to change the minimum length, find the <code>
+pwd:minimum-length</code>
+ function and change the 4 to a 6 (or to whatever you prefer). When you are done, the body of the function looks as follows:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1062049"></A>
+if (fn:string-length($password) &lt; 6)
+then &quot;password too short&quot;
+else ()</Code>
+<Body-indent>
+<A ID="pgfId-1062105"></A>
+This checks that the password contains at least 6 characters.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1063016"></A>
+Optionally, if you have renamed the files, change the second parameter to <Hyperlink>
+<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
+ to the name you called the plugin files in the first step. For example, if you named the plugin file <code>
+my-password-plugin.xqy</code>
+, change the <Hyperlink>
+<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
+ call as follows:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1063062"></A>
+plugin:register($map, &quot;my-password-plugin.xqy&quot;)</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1062028"></A>
+Save your changes to the file.</Number>
+<Warning>
+<A ID="pgfId-1063103"></A>
+If you made a typo or some other mistake that causes a syntax error in the plugin, any request you make to any App Server will throw an exception. If that happens, edit the file to correct any errors.</Warning>
+<Number>
+<A ID="pgfId-1063108"></A>
+If you are using a cluster, copy your plugin to the <code>
+Plugins</code>
+ directory on each host in your cluster.</Number>
+<Number>
+<A ID="pgfId-1063138"></A>
+Test your code to make sure it works the way you intend.</Number>
+</NumberList>
+<Body>
+<A ID="pgfId-1062377"></A>
+The next time you try and change a password, your new checks will be run. For example, if you try to make a single-character password, it will be rejected.</Body>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
 
 (: test/apidoc-guide.xqm :)
