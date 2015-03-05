@@ -343,177 +343,179 @@
     <xsl:apply-templates mode="page-content"    select="$content/*"/>
   </xsl:template>
 
-          <xsl:template mode="page-content" match="page">
-            <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2, topic-tag)"/>
-          </xsl:template>
+  <xsl:template mode="page-content" match="page">
+    <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2, topic-tag)"/>
+  </xsl:template>
 
 
-          <xsl:template mode="page-content" match="Post | Announcement | Event">
-            <xsl:apply-templates mode="blog-post" select="."/>
-          </xsl:template>
+  <xsl:template mode="page-content" match="Post | Announcement | Event">
+    <xsl:apply-templates mode="blog-post" select="."/>
+  </xsl:template>
 
-                  <xsl:template mode="blog-post paginated-list-item" match="Post | Announcement | Event">
+  <xsl:template mode="blog-post paginated-list-item" match="Post | Announcement | Event">
 
-                    <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item") -->
-                    <xsl:param name="in-paginated-list" select="false()" tunnel="yes"/>
+    <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item") -->
+    <xsl:param name="in-paginated-list" select="false()" tunnel="yes"/>
 
-                    <article class="post">
-                      <header>
-                        <h3>
-                          <!-- If we're just displaying one post on this page, then hide this (repeated) post title -->
-                          <xsl:if test="not($in-paginated-list)">
-                            <xsl:attribute name="style">display: none</xsl:attribute>
-                          </xsl:if>
-                          <a href="{ml:external-uri(.)}">
-                            <xsl:apply-templates select="title/node()"/>
-                          </a>
-                        </h3>
-                        <div class="date_author">
-                          <xsl:apply-templates mode="post-date" select="."/>
-                          <xsl:text> </xsl:text>
-                          <!-- Only display the byline if an author is present -->
-                          <xsl:apply-templates mode="post-author" select="author[1]"/>
-                        </div>
+    <article class="post">
+      <header>
+        <h3>
+          <!-- If we're just displaying one post on this page, then hide this (repeated) post title -->
+          <xsl:if test="not($in-paginated-list)">
+            <xsl:attribute name="style">display: none</xsl:attribute>
+          </xsl:if>
+          <a href="{ml:external-uri(.)}">
+            <xsl:apply-templates select="title/node()"/>
+          </a>
+        </h3>
+        <div class="date_author">
+          <xsl:apply-templates mode="post-date" select="."/>
+          <xsl:text> </xsl:text>
+          <!-- Only display the byline if an author is present -->
+          <xsl:apply-templates mode="post-author" select="author[1]"/>
+        </div>
 
-                        <!-- Display the comment count widget only if we're on a list of more than one post;
-                             disabled when we're just displaying one blog post, because the comment count
-                             automatically appears above the comment submit form section. Suppressing it here
-                             ensures we don't display it twice. -->
-                        <xsl:if test="$in-paginated-list">
-                          <xsl:apply-templates mode="comment-count" select="."/>
-                        </xsl:if>
-                      </header>
+        <!-- Display the comment count widget only if we're on a list of more than one post;
+             disabled when we're just displaying one blog post, because the comment count
+             automatically appears above the comment submit form section. Suppressing it here
+             ensures we don't display it twice. -->
+        <xsl:if test="$in-paginated-list">
+          <xsl:apply-templates mode="comment-count" select="."/>
+        </xsl:if>
+      </header>
 
-                      <div class="body">
-                        <xsl:apply-templates mode="post-content" select="."/>
-                      </div>
+      <div class="body">
+        <xsl:apply-templates mode="post-content" select="."/>
+      </div>
 
-                    </article>
-                  </xsl:template>
+    </article>
+  </xsl:template>
 
-                          <!-- Don't display the "created" date on event pages -->
-                          <xsl:template mode="post-date" match="Event"/>
-                          <xsl:template mode="post-date" match="Post | Announcement">
-                            <time pubdate="true" datetime="{created}">
-                              <xsl:value-of select="ml:display-date(created)"/>
-                            </time>
-                          </xsl:template>
+  <!-- Don't display the "created" date on event pages -->
+  <xsl:template mode="post-date" match="Event"/>
+  <xsl:template mode="post-date" match="Post | Announcement">
+    <time pubdate="true" datetime="{created}">
+      <xsl:value-of select="ml:display-date(created)"/>
+    </time>
+  </xsl:template>
 
-                          <xsl:template mode="post-author" match="author">
-                            <xsl:text>by </xsl:text>
-                            <span class="author">
-                              <xsl:apply-templates mode="author-listing" select="../author"/>
-                            </span>
-                          </xsl:template>
+  <xsl:template mode="post-author" match="author">
+    <xsl:text>by </xsl:text>
+    <span class="author">
+      <xsl:apply-templates mode="author-listing" select="../author"/>
+    </span>
+  </xsl:template>
 
-                          <xsl:template mode="post-content" match="Post | Announcement">
-                            <xsl:apply-templates select="body/node()"/>
-                          </xsl:template>
+  <xsl:template mode="post-content" match="Post | Announcement">
+    <xsl:apply-templates select="body/node()"/>
+  </xsl:template>
 
-                          <xsl:template mode="post-content" match="Event">
-                            <div class="info">
-                              <table>
-                                <xsl:apply-templates mode="event-details" select="details/*"/>
-                              </table>
-                            </div>
-                            <xsl:apply-templates select="description/node()"/>
-                          </xsl:template>
-
-
-          <xsl:template mode="page-content" match="Article">
-            <!-- placeholder for form to get CSS to display background -->
-            <div id="doc_search"/>
-
-            <xsl:apply-templates mode="author-date-etc" select="."/>
-
-            <xsl:apply-templates select="body/node()">
-              <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
-            </xsl:apply-templates>
-          </xsl:template>
-
-                  <xsl:template mode="author-date-etc" match="Article | Tutorial">
-                    <xsl:if test="last-updated|author">
-                        <xsl:if test="last-updated">
-                        <div class="author">
-                          <xsl:apply-templates mode="author-listing" select="author"/>
-                        </div>
-                       </xsl:if>
-                        <xsl:if test="last-updated">
-                        <div class="date">
-                            <xsl:text>Last updated </xsl:text>
-                            <xsl:value-of select="last-updated"/>
-                        </div>
-                       </xsl:if>
-                    <br/>
-                   </xsl:if>
-                  </xsl:template>
+  <xsl:template mode="post-content" match="Event">
+    <div class="info">
+      <table>
+        <xsl:apply-templates mode="event-details" select="details/*"/>
+      </table>
+    </div>
+    <xsl:apply-templates select="description/node()"/>
+  </xsl:template>
 
 
-                  <xsl:template mode="author-listing" match="author[1]" priority="1">
-                    <xsl:apply-templates/>
-                  </xsl:template>
+  <xsl:template mode="page-content" match="Article">
+    <!-- placeholder for form to get CSS to display background -->
+    <div id="doc_search"/>
 
-                  <xsl:template mode="author-listing" match="author">
-                    <xsl:text>, </xsl:text>
-                    <xsl:apply-templates/>
-                  </xsl:template>
+    <xsl:apply-templates mode="author-date-etc" select="."/>
 
-                  <xsl:template mode="author-listing" match="author[last()]">
-                    <xsl:text> and </xsl:text>
-                    <xsl:apply-templates/>
-                  </xsl:template>
+    <xsl:apply-templates select="body/node()">
+      <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template mode="author-date-etc" match="Article | Tutorial">
+    <xsl:if test="last-updated|author">
+      <xsl:if test="last-updated">
+        <div class="author">
+          <xsl:apply-templates mode="author-listing" select="author"/>
+        </div>
+      </xsl:if>
+      <xsl:if test="last-updated">
+        <div class="date">
+          <xsl:text>Last updated </xsl:text>
+          <xsl:value-of select="last-updated"/>
+        </div>
+      </xsl:if>
+      <br/>
+    </xsl:if>
+  </xsl:template>
 
 
-          <xsl:template mode="page-content" match="Project">
-            <!-- Note from Adam: "if images are supposed to be above the sidebar place them here, otherwise after the “widget” section" -->
-            <section class="widget">
-              <h1><img src="/images/i_database_arrow_down.png" alt="down arrow" /> Code &amp; Downloads</h1>
-              <ul class="code">
-                <xsl:if test="versions/@get-involved-href">
-                  <xsl:choose>
-                    <xsl:when test="versions/@repo eq 'github'">
-                      <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
-                    </xsl:when>
-                    <xsl:when test="versions/@repo eq 'Google Code'">
-                      <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <li><a href="{versions/@get-involved-href}">Browse <xsl:value-of select="versions/@repo"/> Repository&#160;»</a></li>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:if>
-              </ul>
-              <xsl:if test="versions/version/@href">
-                <ul class="download">
-                  <xsl:apply-templates mode="project-version" select="versions/version"/>
-                </ul>
-              </xsl:if>
-            </section>
-            <xsl:apply-templates select="description/node()"/>
-            <!--
-            <div class="action">
-              <a href="{contributors/@href}">Contributors</a>
-            </div>
-            -->
-            <xsl:apply-templates select="top-threads"/>
-          </xsl:template>
+  <xsl:template mode="author-listing" match="author[1]" priority="1">
+    <xsl:apply-templates/>
+  </xsl:template>
 
-                  <xsl:template mode="project-version" match="version">
-                    <li>
-                      <a href="{@href}">
-                        <xsl:choose>
-                          <xsl:when test="@name">
-                              <xsl:value-of select="@name"/>
-                          </xsl:when>
-                          <xsl:otherwise>
-                              <xsl:value-of select="ml:file-from-path(@href)"/>
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </a>
-                      <xsl:if test="normalize-space(@server-version)">
-                        <div>You will need:<br /> MarkLogic Server <xsl:value-of select="@server-version"/> or later</div>
-                      </xsl:if>
-                    </li>
-                  </xsl:template>
+  <xsl:template mode="author-listing" match="author">
+    <xsl:text>, </xsl:text>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template mode="author-listing" match="author[last()]">
+    <xsl:text> and </xsl:text>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+
+  <xsl:template mode="page-content" match="Project">
+    <!-- Note from Adam: "if images are supposed to be above the sidebar place them here, otherwise after the “widget” section" -->
+    <xsl:if test="versions/@repo != ''">
+      <section class="widget">
+        <h1><img src="/images/i_database_arrow_down.png" alt="down arrow" /> Code &amp; Downloads</h1>
+        <ul class="code">
+          <xsl:if test="versions/@get-involved-href">
+            <xsl:choose>
+              <xsl:when test="versions/@repo eq 'github'">
+                <li><a href="{versions/@get-involved-href}"><img src="/images/i_github.png" alt="GitHub" /> GitHub Repository&#160;»</a></li>
+              </xsl:when>
+              <xsl:when test="versions/@repo eq 'Google Code'">
+                <li><a href="{versions/@get-involved-href}"><img src="/images/i_googlecode.png" alt="Google code" /> Repository&#160;»</a></li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li><a href="{versions/@get-involved-href}">Browse <xsl:value-of select="versions/@repo"/> Repository&#160;»</a></li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </ul>
+        <xsl:if test="versions/version/@href">
+          <ul class="download">
+            <xsl:apply-templates mode="project-version" select="versions/version"/>
+          </ul>
+        </xsl:if>
+      </section>
+    </xsl:if>
+    <xsl:apply-templates select="description/node()"/>
+    <!--
+    <div class="action">
+      <a href="{contributors/@href}">Contributors</a>
+    </div>
+    -->
+    <xsl:apply-templates select="top-threads"/>
+  </xsl:template>
+
+  <xsl:template mode="project-version" match="version">
+    <li>
+      <a href="{@href}">
+        <xsl:choose>
+          <xsl:when test="@name">
+            <xsl:value-of select="@name"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="ml:file-from-path(@href)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </a>
+      <xsl:if test="normalize-space(@server-version)">
+        <div>You will need:<br /> MarkLogic Server <xsl:value-of select="@server-version"/> or later</div>
+      </xsl:if>
+    </li>
+  </xsl:template>
 
 </xsl:stylesheet>
