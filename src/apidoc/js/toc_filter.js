@@ -274,7 +274,7 @@ function searchTOC(filter, tocRoot) {
 }
 
 function loadAllSubSections(tocRoot) {
-  //LOG.debug('loadAllSubSections', tocRoot);
+  LOG.debug('loadAllSubSections', tocRoot);
   if (tocRoot.hasClass("startedLoading")) return;
 
   tocRoot.find(".hasChildren").each(loadTocSection);
@@ -295,23 +295,23 @@ function loadTocSection(index, tocSection) {
 }
 
 // Called only from updateTocForSelection
-function waitToShowInTOC(tocSection, sleepMillis) {
-  LOG.debug("waitToShowInTOC", tocSection[0].id, sleepMillis);
+function waitToShowInTOC($tocSection, sleepMillis) {
+  LOG.debug("waitToShowInTOC", $tocSection[0].id, sleepMillis);
   if (!sleepMillis) sleepMillis = 125;
 
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
-  if (! tocSection.hasClass("loaded")) {
+  if (! $tocSection.hasClass("loaded")) {
     LOG.debug("waitToShowInTOC still waiting for",
-              tocSection[0].id, sleepMillis);
+              $tocSection[0].id, sleepMillis);
     // back off and retry
     setTimeout(function(){
-      waitToShowInTOC(tocSection, 2 * sleepMillis); },
+      waitToShowInTOC($tocSection, 2 * sleepMillis); },
                sleepMillis);
     return;
   }
 
-  LOG.debug("waitToShowInTOC loaded", tocSection);
+  LOG.debug("waitToShowInTOC loaded", $tocSection);
 
   clearTimeout(waitToShowInTOC);
 
@@ -341,7 +341,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
   LOG.debug("waitToShowInTOC filtering for",
             locationHref, locationHrefNoVersion);
-  var current = tocSection.find("a").filter(function() {
+  var current = $tocSection.find("a").filter(function() {
     // TODO can we stop this after the first match?
     var thisHref = this.href.toLowerCase();
     var hrefToCompare = stripChapterFragment ?
@@ -693,6 +693,14 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
   $configFilter.keyup(function(e) {
     // clear any existing idle timer
     clearTimeout($.data(this, 'timer'));
+    // TODO Is the TOC fully loaded?
+    var loading = $(".apidoc_tree:visible .startedLoading");
+    if (loading.length) {
+      LOG.warn("[tocInitFilter]", "keyup",
+               "tocSection not loaded - will retry", loading);
+      setTimeout(function() { $configFilter.trigger('keyup') }, 0);
+      return;
+    }
     var currentFilterText = $(this).val();
     LOG.debug("filter not idle",
               new Date(), currentFilterText);
