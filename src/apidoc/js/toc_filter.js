@@ -395,12 +395,10 @@ function updateTocForUrlFragment(pathname, hash) {
     // Defer scrolling until the end of the current event loop,
     // so the previous page is ready.
     setTimeout(function() {
-      LOG.DEBUG = true;
       var selector = 'a[id="' + hash.substring(1) + '"]';
       LOG.debug("[updateTocForUrlFragment]", "scrolling body to",
                 hash, selector);
       scrollIntoView(selector, '#page_content'); }, 0);
-      LOG.DEBUG = false;
   }
 }
 
