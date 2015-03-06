@@ -788,4 +788,119 @@ Creating the Sample XQuery Application</Heading-3>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
+declare %t:case function t:breaks-before-heading()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1058315"></A>
+<A ID="70912"></A>
+Creating a New App Server</Heading-3>
+<Body>
+<A ID="pgfId-1059368"></A>
+In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
+<Body>
+<A ID="pgfId-1059375"></A>
+To create a new App Server, complete the following steps:</Body>
+<Number1>
+<A ID="pgfId-1059376"></A>
+Open a new browser window or tab.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1059377"></A>
+Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059379"></A>
+<Hyperlink>
+<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
+</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059380"></A>
+Log in with your admin username and password.</Number>
+<Number>
+<A ID="pgfId-1059381"></A>
+Click the Groups icon on the left.</Number>
+<Number>
+<A ID="pgfId-1059382"></A>
+Click on the Default icon within the Groups branch.</Number>
+<Number>
+<A ID="pgfId-1059383"></A>
+Click on the App Servers icon within the Default group.</Number>
+<Number>
+<A ID="pgfId-1059384"></A>
+Click the Create HTTP tab.</Number>
+<Number>
+<A ID="pgfId-1059385"></A>
+Go to the HTTP Server Name field and enter TestServer.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059386"></A>
+This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059387"></A>
+Go to the Root directory field and enter Test.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059391"></A>
+By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
+Installation Guide</Emphasis>
+. You can also specify an absolute path (such as <code>
+C:\MarkLogicFiles\Test</code>
+ on a Windows platform or <code>
+/space/test</code>
+ on a Linux platform).</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059395"></A>
+Go to the Port field and enter 8005.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059396"></A>
+The following screen shows an HTTP server with these values:</Body-indent>
+<Graphic>
+<A ID="pgfId-1059400"></A>
+<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
+</Graphic>
+<NumberList>
+<Number>
+<A ID="pgfId-1059401"></A>
+Scroll down to Authentication and select <code>
+application-level</code>
+.</Number>
+<Number>
+<A ID="pgfId-1059402"></A>
+Choose an admin user (it has the word <code>
+admin</code>
+ in parenthesis) as the Default User.</Number>
+<Number>
+<A ID="pgfId-1059403"></A>
+Leave the privilege field blank.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059404"></A>
+The following screen shows an HTTP server with these values</Body-indent>
+<GraphicIndent>
+<A ID="pgfId-1059408"></A>
+<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
+</GraphicIndent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059409"></A>
+Scroll to the top or bottom and click OK.</Number>
+<Number>
+<A ID="pgfId-1059410"></A>
+See that TestServer is added to the HTTP Server branch.</Number>
+</NumberList>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//Heading-3), 2)
+};
+
 (: test/apidoc-guide.xqm :)
