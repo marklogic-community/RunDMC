@@ -93,8 +93,7 @@ function scrollIntoView(selector, containerSelector) {
   var minVisible = containerTop;
   var maxVisible = containerTop + containerHeight;
   var scrollTop = offsetTop + containerTop - margin;
-  var willScroll = scrollTop < minVisible
-      || (scrollTop > maxVisible);
+  var willScroll = scrollTop < minVisible || (scrollTop > maxVisible);
   LOG.debug("[scrollIntoView]",
             "n", offsetTop, margin,
             "container", containerTop, containerHeight,

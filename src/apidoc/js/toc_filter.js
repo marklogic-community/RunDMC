@@ -698,7 +698,7 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
     if (loading.length) {
       LOG.warn("[tocInitFilter]", "keyup",
                "tocSection not loaded - will retry", loading);
-      setTimeout(function() { $configFilter.trigger('keyup') }, 0);
+      setTimeout(function() { $configFilter.trigger('keyup'); }, 0);
       return;
     }
     var currentFilterText = $(this).val();
