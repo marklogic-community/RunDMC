@@ -67,33 +67,7 @@ declare %t:case function t:Body-not-in-output()
   ! at:empty(descendant-or-self::*:Body)
 };
 
-declare %t:case function t:code-output-with-em()
-{
-  <chapter>
-    <XML>
-      <Heading-4>
-        <A ID="pgfId-1146448"></A>
-        <A ID="65730"></A>
-  insert</Heading-4>
-  <Body>
-    <A ID="pgfId-1146449"></A>
-  Lorem ipsum <code>
-  insert</code>
-  operation structure:</Body>
-  <Code>
-    <A ID="pgfId-1146450"></A>
-  "insert":
-  "context": <Emphasis>
-  path-expr</Emphasis>
-  </Code>
-  </XML></chapter>
-  ! document { . }
-  ! guide:normalize(., false())
-  ! at:not-empty(
-    guide:transform(*/XML, 'fubar', ., 'baz')/em)
-};
-
-declare %t:case function t:code-does-not-interrupt-ordered-list()
+declare %t:case function t:code-continues-ordered-list()
 {
   <chapter>
     <XML>
@@ -135,63 +109,263 @@ Referencing Your Schema</Heading-2>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:sequence-does-not-interrupt-ordered-list()
+declare %t:case function t:code-output-with-em()
 {
   <chapter>
     <XML>
-<Heading-2>
-<A ID="pgfId-1043455"></A>
-<A ID="17666"></A>
-Working With Your Schema</Heading-2>
+      <Heading-4>
+        <A ID="pgfId-1146448"></A>
+        <A ID="65730"></A>
+  insert</Heading-4>
+  <Body>
+    <A ID="pgfId-1146449"></A>
+  Lorem ipsum <code>
+  insert</code>
+  operation structure:</Body>
+  <Code>
+    <A ID="pgfId-1146450"></A>
+  "insert":
+  "context": <Emphasis>
+  path-expr</Emphasis>
+  </Code>
+  </XML></chapter>
+  ! document { . }
+  ! guide:normalize(., false())
+  ! at:not-empty(
+    guide:transform(*/XML, 'fubar', ., 'baz')/em)
+};
+
+declare %t:case function t:graphic-continues-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1058315"></A>
+<A ID="70912"></A>
+Creating a New App Server</Heading-3>
 <Body>
-<A ID="pgfId-1043456"></A>
-It is sometimes useful to be able to explicitly read a schema from the database, either to return it to the outside world or to drive certain schema-driven query processing activities.</Body>
+<A ID="pgfId-1059368"></A>
+In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
 <Body>
-<A ID="pgfId-1043457"></A>
-Schemas are treated just like any other document by the system.  They can be inserted, read, updated and deleted just like any other document.  The difference is that schemas are usually stored in a secondary schema database, not in the document database itself.</Body>
-<Body>
-<A ID="pgfId-1043458"></A>
-The most common activity developers want to carry out with schema is to read them.  There are two approaches to fetching a schema from the server explicitly:</Body>
+<A ID="pgfId-1059375"></A>
+To create a new App Server, complete the following steps:</Body>
 <Number1>
-<A ID="pgfId-1043459"></A>
-You can create an XQuery that uses <Hyperlink>
-<A href="#display.xqy?function=xdmp:eval" xml:link="simple" show="replace" actuate="user" CLASS="URL">xdmp:eval</A></Hyperlink>
- with the <code>
-&lt;database&gt;</code>
- option to read a schema directly from the current database's schema database.  For example, the following expression will return the schema document loaded in the code example given above:</Number1>
-<Code>
-<A ID="pgfId-1043460"></A>
-xdmp:eval('doc(&quot;sample.xsd&quot;)', (),
-&#160;&#160;&lt;options xmlns=&quot;xdmp:eval&quot;&gt;
-&#160;&#160;&#160;&#160;&lt;database&gt;{xdmp:schema-database()}&lt;/database&gt;
-&#160;&#160;&lt;/options&gt;)</Code>
-<Body-indent>
-<A ID="pgfId-1043461"></A>
-The use of the <code>
-xdmp:schema-database</code>
- built-in function ensures that the <code>
-sample.xsd</code>
- document is read from the current database's schema database.</Body-indent>
+<A ID="pgfId-1059376"></A>
+Open a new browser window or tab.</Number1>
 <NumberList>
 <Number>
-<A ID="pgfId-1043462"></A>
-You can create an XDBC or HTTP Server that directly references the schema database in question as its document database, and then submit any XQuery as appropriate to read, analyze, update or otherwise work with the schemas stored in that schema database.  This approach should not be necessary in most instances.</Number>
+<A ID="pgfId-1059377"></A>
+Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
 </NumberList>
-<EndList-root>
-<A ID="pgfId-1043463"></A>
-Other tasks that involve working with schema can be accomplished similarly.  For example, if you need to delete a schema, an approach modeled on either of the above (using <code>
-xdmp:document-delete(&quot;sample.xsd&quot;)</code>
-) will work as expected.  </EndList-root>
-<Heading-2>
-<A ID="pgfId-1051548"></A>
-<A ID="42480"></A>
-Validating XML Against a Schema</Heading-2>
+<Body-indent>
+<A ID="pgfId-1059379"></A>
+<Hyperlink>
+<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
+</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059380"></A>
+Log in with your admin username and password.</Number>
+<Number>
+<A ID="pgfId-1059381"></A>
+Click the Groups icon on the left.</Number>
+<Number>
+<A ID="pgfId-1059382"></A>
+Click on the Default icon within the Groups branch.</Number>
+<Number>
+<A ID="pgfId-1059383"></A>
+Click on the App Servers icon within the Default group.</Number>
+<Number>
+<A ID="pgfId-1059384"></A>
+Click the Create HTTP tab.</Number>
+<Number>
+<A ID="pgfId-1059385"></A>
+Go to the HTTP Server Name field and enter TestServer.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059386"></A>
+This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059387"></A>
+Go to the Root directory field and enter Test.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059391"></A>
+By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
+Installation Guide</Emphasis>
+. You can also specify an absolute path (such as <code>
+C:\MarkLogicFiles\Test</code>
+ on a Windows platform or <code>
+/space/test</code>
+ on a Linux platform).</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059395"></A>
+Go to the Port field and enter 8005.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059396"></A>
+The following screen shows an HTTP server with these values:</Body-indent>
+<Graphic>
+<A ID="pgfId-1059400"></A>
+<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
+</Graphic>
+<NumberList>
+<Number>
+<A ID="pgfId-1059401"></A>
+Scroll down to Authentication and select <code>
+application-level</code>
+.</Number>
+<Number>
+<A ID="pgfId-1059402"></A>
+Choose an admin user (it has the word <code>
+admin</code>
+ in parenthesis) as the Default User.</Number>
+<Number>
+<A ID="pgfId-1059403"></A>
+Leave the privilege field blank.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059404"></A>
+The following screen shows an HTTP server with these values</Body-indent>
+<GraphicIndent>
+<A ID="pgfId-1059408"></A>
+<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
+</GraphicIndent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059409"></A>
+Scroll to the top or bottom and click OK.</Number>
+<Number>
+<A ID="pgfId-1059410"></A>
+See that TestServer is added to the HTTP Server branch.</Number>
+</NumberList>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
   </XML></chapter>
   ! document { . }
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:note-does-not-interrupt-ordered-list()
+declare %t:case function t:list-breaks-before-heading()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1058315"></A>
+<A ID="70912"></A>
+Creating a New App Server</Heading-3>
+<Body>
+<A ID="pgfId-1059368"></A>
+In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
+<Body>
+<A ID="pgfId-1059375"></A>
+To create a new App Server, complete the following steps:</Body>
+<Number1>
+<A ID="pgfId-1059376"></A>
+Open a new browser window or tab.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1059377"></A>
+Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059379"></A>
+<Hyperlink>
+<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
+</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059380"></A>
+Log in with your admin username and password.</Number>
+<Number>
+<A ID="pgfId-1059381"></A>
+Click the Groups icon on the left.</Number>
+<Number>
+<A ID="pgfId-1059382"></A>
+Click on the Default icon within the Groups branch.</Number>
+<Number>
+<A ID="pgfId-1059383"></A>
+Click on the App Servers icon within the Default group.</Number>
+<Number>
+<A ID="pgfId-1059384"></A>
+Click the Create HTTP tab.</Number>
+<Number>
+<A ID="pgfId-1059385"></A>
+Go to the HTTP Server Name field and enter TestServer.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059386"></A>
+This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059387"></A>
+Go to the Root directory field and enter Test.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059391"></A>
+By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
+Installation Guide</Emphasis>
+. You can also specify an absolute path (such as <code>
+C:\MarkLogicFiles\Test</code>
+ on a Windows platform or <code>
+/space/test</code>
+ on a Linux platform).</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059395"></A>
+Go to the Port field and enter 8005.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059396"></A>
+The following screen shows an HTTP server with these values:</Body-indent>
+<Graphic>
+<A ID="pgfId-1059400"></A>
+<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
+</Graphic>
+<NumberList>
+<Number>
+<A ID="pgfId-1059401"></A>
+Scroll down to Authentication and select <code>
+application-level</code>
+.</Number>
+<Number>
+<A ID="pgfId-1059402"></A>
+Choose an admin user (it has the word <code>
+admin</code>
+ in parenthesis) as the Default User.</Number>
+<Number>
+<A ID="pgfId-1059403"></A>
+Leave the privilege field blank.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059404"></A>
+The following screen shows an HTTP server with these values</Body-indent>
+<GraphicIndent>
+<A ID="pgfId-1059408"></A>
+<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
+</GraphicIndent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059409"></A>
+Scroll to the top or bottom and click OK.</Number>
+<Number>
+<A ID="pgfId-1059410"></A>
+See that TestServer is added to the HTTP Server branch.</Number>
+</NumberList>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//Heading-3), 2)
+};
+
+declare %t:case function t:note-continues-ordered-list()
 {
   <chapter>
     <XML>
@@ -251,98 +425,63 @@ The database now has the new text indexing configurations.</Body>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:warning-does-not-interrupt-ordered-list()
+declare %t:case function t:sequence-continues-ordered-list()
 {
   <chapter>
     <XML>
-<Heading-3>
-<A ID="pgfId-1061677"></A>
-<A ID="72532"></A>
-Modifying the Password Plugin</Heading-3>
+<Heading-2>
+<A ID="pgfId-1043455"></A>
+<A ID="17666"></A>
+Working With Your Schema</Heading-2>
 <Body>
-<A ID="pgfId-1061688"></A>
-The following example shows how to use the sample plugins to check for a minimum password length and to ensure that it contains at least on numeric character. </Body>
-<WarningList>
-<Warning>
-<A ID="pgfId-1062771"></A>
-Any errors in a plugin module will cause all requests to hit the error. It is therefore extremely important to test your plugins before deploying them in a production environment.</Warning>
-</WarningList>
+<A ID="pgfId-1043456"></A>
+It is sometimes useful to be able to explicitly read a schema from the database, either to return it to the outside world or to drive certain schema-driven query processing activities.</Body>
 <Body>
-<A ID="pgfId-1062776"></A>
-To use and modify the sample password plugins, perform the following steps:</Body>
+<A ID="pgfId-1043457"></A>
+Schemas are treated just like any other document by the system.  They can be inserted, read, updated and deleted just like any other document.  The difference is that schemas are usually stored in a secondary schema database, not in the document database itself.</Body>
+<Body>
+<A ID="pgfId-1043458"></A>
+The most common activity developers want to carry out with schema is to read them.  There are two approaches to fetching a schema from the server explicitly:</Body>
 <Number1>
-<A ID="pgfId-1062777"></A>
-Copy the <code>
-&lt;marklogic-dir&gt;Samples/Plugins/password-check-*.xqy</code>
- files to the <code>
-Plugins</code>
- directory. For example:</Number1>
+<A ID="pgfId-1043459"></A>
+You can create an XQuery that uses <Hyperlink>
+<A href="#display.xqy?function=xdmp:eval" xml:link="simple" show="replace" actuate="user" CLASS="URL">xdmp:eval</A></Hyperlink>
+ with the <code>
+&lt;database&gt;</code>
+ option to read a schema directly from the current database's schema database.  For example, the following expression will return the schema document loaded in the code example given above:</Number1>
 <Code>
-<A ID="pgfId-1061842"></A>
-cd /opt/MarkLogic/Plugins
-cp ../Samples/Plugins/password-check-*.xqy .</Code>
+<A ID="pgfId-1043460"></A>
+xdmp:eval('doc(&quot;sample.xsd&quot;)', (),
+&#160;&#160;&lt;options xmlns=&quot;xdmp:eval&quot;&gt;
+&#160;&#160;&#160;&#160;&lt;database&gt;{xdmp:schema-database()}&lt;/database&gt;
+&#160;&#160;&lt;/options&gt;)</Code>
 <Body-indent>
-<A ID="pgfId-1061849"></A>
-If desired, rename the files when you copy them.</Body-indent>
+<A ID="pgfId-1043461"></A>
+The use of the <code>
+xdmp:schema-database</code>
+ built-in function ensures that the <code>
+sample.xsd</code>
+ document is read from the current database's schema database.</Body-indent>
 <NumberList>
 <Number>
-<A ID="pgfId-1063030"></A>
-If you want to modify any of the files (for example, <code>
-password-check-minimum-length</code>
-), open them in a text editor.</Number>
-<Number>
-<A ID="pgfId-1061902"></A>
-Make any changes you desire. For example, to change the minimum length, find the <code>
-pwd:minimum-length</code>
- function and change the 4 to a 6 (or to whatever you prefer). When you are done, the body of the function looks as follows:</Number>
+<A ID="pgfId-1043462"></A>
+You can create an XDBC or HTTP Server that directly references the schema database in question as its document database, and then submit any XQuery as appropriate to read, analyze, update or otherwise work with the schemas stored in that schema database.  This approach should not be necessary in most instances.</Number>
 </NumberList>
-<Code>
-<A ID="pgfId-1062049"></A>
-if (fn:string-length($password) &lt; 6)
-then &quot;password too short&quot;
-else ()</Code>
-<Body-indent>
-<A ID="pgfId-1062105"></A>
-This checks that the password contains at least 6 characters.</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1063016"></A>
-Optionally, if you have renamed the files, change the second parameter to <Hyperlink>
-<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
- to the name you called the plugin files in the first step. For example, if you named the plugin file <code>
-my-password-plugin.xqy</code>
-, change the <Hyperlink>
-<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
- call as follows:</Number>
-</NumberList>
-<Code>
-<A ID="pgfId-1063062"></A>
-plugin:register($map, &quot;my-password-plugin.xqy&quot;)</Code>
-<NumberList>
-<Number>
-<A ID="pgfId-1062028"></A>
-Save your changes to the file.</Number>
-<Warning>
-<A ID="pgfId-1063103"></A>
-If you made a typo or some other mistake that causes a syntax error in the plugin, any request you make to any App Server will throw an exception. If that happens, edit the file to correct any errors.</Warning>
-<Number>
-<A ID="pgfId-1063108"></A>
-If you are using a cluster, copy your plugin to the <code>
-Plugins</code>
- directory on each host in your cluster.</Number>
-<Number>
-<A ID="pgfId-1063138"></A>
-Test your code to make sure it works the way you intend.</Number>
-</NumberList>
-<Body>
-<A ID="pgfId-1062377"></A>
-The next time you try and change a password, your new checks will be run. For example, if you try to make a single-character password, it will be rejected.</Body>
+<EndList-root>
+<A ID="pgfId-1043463"></A>
+Other tasks that involve working with schema can be accomplished similarly.  For example, if you need to delete a schema, an approach modeled on either of the above (using <code>
+xdmp:document-delete(&quot;sample.xsd&quot;)</code>
+) will work as expected.  </EndList-root>
+<Heading-2>
+<A ID="pgfId-1051548"></A>
+<A ID="42480"></A>
+Validating XML Against a Schema</Heading-2>
   </XML></chapter>
   ! document { . }
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:table-does-not-interrupt-ordered-list()
+declare %t:case function t:table-continues-ordered-list()
 {
   <chapter>
     <XML>
@@ -673,234 +812,95 @@ Loading the Source XML</Heading-4>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:graphic-does-not-interrupt-ordered-list()
+declare %t:case function t:warning-continues-ordered-list()
 {
   <chapter>
     <XML>
 <Heading-3>
-<A ID="pgfId-1058315"></A>
-<A ID="70912"></A>
-Creating a New App Server</Heading-3>
+<A ID="pgfId-1061677"></A>
+<A ID="72532"></A>
+Modifying the Password Plugin</Heading-3>
 <Body>
-<A ID="pgfId-1059368"></A>
-In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
+<A ID="pgfId-1061688"></A>
+The following example shows how to use the sample plugins to check for a minimum password length and to ensure that it contains at least on numeric character. </Body>
+<WarningList>
+<Warning>
+<A ID="pgfId-1062771"></A>
+Any errors in a plugin module will cause all requests to hit the error. It is therefore extremely important to test your plugins before deploying them in a production environment.</Warning>
+</WarningList>
 <Body>
-<A ID="pgfId-1059375"></A>
-To create a new App Server, complete the following steps:</Body>
+<A ID="pgfId-1062776"></A>
+To use and modify the sample password plugins, perform the following steps:</Body>
 <Number1>
-<A ID="pgfId-1059376"></A>
-Open a new browser window or tab.</Number1>
-<NumberList>
-<Number>
-<A ID="pgfId-1059377"></A>
-Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
-</NumberList>
+<A ID="pgfId-1062777"></A>
+Copy the <code>
+&lt;marklogic-dir&gt;Samples/Plugins/password-check-*.xqy</code>
+ files to the <code>
+Plugins</code>
+ directory. For example:</Number1>
+<Code>
+<A ID="pgfId-1061842"></A>
+cd /opt/MarkLogic/Plugins
+cp ../Samples/Plugins/password-check-*.xqy .</Code>
 <Body-indent>
-<A ID="pgfId-1059379"></A>
-<Hyperlink>
-<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
-</Body-indent>
+<A ID="pgfId-1061849"></A>
+If desired, rename the files when you copy them.</Body-indent>
 <NumberList>
 <Number>
-<A ID="pgfId-1059380"></A>
-Log in with your admin username and password.</Number>
+<A ID="pgfId-1063030"></A>
+If you want to modify any of the files (for example, <code>
+password-check-minimum-length</code>
+), open them in a text editor.</Number>
 <Number>
-<A ID="pgfId-1059381"></A>
-Click the Groups icon on the left.</Number>
-<Number>
-<A ID="pgfId-1059382"></A>
-Click on the Default icon within the Groups branch.</Number>
-<Number>
-<A ID="pgfId-1059383"></A>
-Click on the App Servers icon within the Default group.</Number>
-<Number>
-<A ID="pgfId-1059384"></A>
-Click the Create HTTP tab.</Number>
-<Number>
-<A ID="pgfId-1059385"></A>
-Go to the HTTP Server Name field and enter TestServer.</Number>
+<A ID="pgfId-1061902"></A>
+Make any changes you desire. For example, to change the minimum length, find the <code>
+pwd:minimum-length</code>
+ function and change the 4 to a 6 (or to whatever you prefer). When you are done, the body of the function looks as follows:</Number>
 </NumberList>
+<Code>
+<A ID="pgfId-1062049"></A>
+if (fn:string-length($password) &lt; 6)
+then &quot;password too short&quot;
+else ()</Code>
 <Body-indent>
-<A ID="pgfId-1059386"></A>
-This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<A ID="pgfId-1062105"></A>
+This checks that the password contains at least 6 characters.</Body-indent>
 <NumberList>
 <Number>
-<A ID="pgfId-1059387"></A>
-Go to the Root directory field and enter Test.</Number>
+<A ID="pgfId-1063016"></A>
+Optionally, if you have renamed the files, change the second parameter to <Hyperlink>
+<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
+ to the name you called the plugin files in the first step. For example, if you named the plugin file <code>
+my-password-plugin.xqy</code>
+, change the <Hyperlink>
+<A href="#display.xqy?function=plugin:register" xml:link="simple" show="replace" actuate="user" CLASS="URL">plugin:register</A></Hyperlink>
+ call as follows:</Number>
 </NumberList>
-<Body-indent>
-<A ID="pgfId-1059391"></A>
-By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
-Installation Guide</Emphasis>
-. You can also specify an absolute path (such as <code>
-C:\MarkLogicFiles\Test</code>
- on a Windows platform or <code>
-/space/test</code>
- on a Linux platform).</Body-indent>
+<Code>
+<A ID="pgfId-1063062"></A>
+plugin:register($map, &quot;my-password-plugin.xqy&quot;)</Code>
 <NumberList>
 <Number>
-<A ID="pgfId-1059395"></A>
-Go to the Port field and enter 8005.</Number>
+<A ID="pgfId-1062028"></A>
+Save your changes to the file.</Number>
+<Warning>
+<A ID="pgfId-1063103"></A>
+If you made a typo or some other mistake that causes a syntax error in the plugin, any request you make to any App Server will throw an exception. If that happens, edit the file to correct any errors.</Warning>
+<Number>
+<A ID="pgfId-1063108"></A>
+If you are using a cluster, copy your plugin to the <code>
+Plugins</code>
+ directory on each host in your cluster.</Number>
+<Number>
+<A ID="pgfId-1063138"></A>
+Test your code to make sure it works the way you intend.</Number>
 </NumberList>
-<Body-indent>
-<A ID="pgfId-1059396"></A>
-The following screen shows an HTTP server with these values:</Body-indent>
-<Graphic>
-<A ID="pgfId-1059400"></A>
-<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
-</Graphic>
-<NumberList>
-<Number>
-<A ID="pgfId-1059401"></A>
-Scroll down to Authentication and select <code>
-application-level</code>
-.</Number>
-<Number>
-<A ID="pgfId-1059402"></A>
-Choose an admin user (it has the word <code>
-admin</code>
- in parenthesis) as the Default User.</Number>
-<Number>
-<A ID="pgfId-1059403"></A>
-Leave the privilege field blank.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059404"></A>
-The following screen shows an HTTP server with these values</Body-indent>
-<GraphicIndent>
-<A ID="pgfId-1059408"></A>
-<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
-</GraphicIndent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059409"></A>
-Scroll to the top or bottom and click OK.</Number>
-<Number>
-<A ID="pgfId-1059410"></A>
-See that TestServer is added to the HTTP Server branch.</Number>
-</NumberList>
-<Heading-3>
-<A ID="pgfId-1059350"></A>
-<A ID="72236"></A>
-Creating the Sample XQuery Application</Heading-3>
+<Body>
+<A ID="pgfId-1062377"></A>
+The next time you try and change a password, your new checks will be run. For example, if you try to make a single-character password, it will be rejected.</Body>
   </XML></chapter>
   ! document { . }
   ! at:equal(count(guide:normalize(., false())//ol), 1)
-};
-
-declare %t:case function t:breaks-before-heading()
-{
-  <chapter>
-    <XML>
-<Heading-3>
-<A ID="pgfId-1058315"></A>
-<A ID="70912"></A>
-Creating a New App Server</Heading-3>
-<Body>
-<A ID="pgfId-1059368"></A>
-In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
-<Body>
-<A ID="pgfId-1059375"></A>
-To create a new App Server, complete the following steps:</Body>
-<Number1>
-<A ID="pgfId-1059376"></A>
-Open a new browser window or tab.</Number1>
-<NumberList>
-<Number>
-<A ID="pgfId-1059377"></A>
-Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059379"></A>
-<Hyperlink>
-<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
-</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059380"></A>
-Log in with your admin username and password.</Number>
-<Number>
-<A ID="pgfId-1059381"></A>
-Click the Groups icon on the left.</Number>
-<Number>
-<A ID="pgfId-1059382"></A>
-Click on the Default icon within the Groups branch.</Number>
-<Number>
-<A ID="pgfId-1059383"></A>
-Click on the App Servers icon within the Default group.</Number>
-<Number>
-<A ID="pgfId-1059384"></A>
-Click the Create HTTP tab.</Number>
-<Number>
-<A ID="pgfId-1059385"></A>
-Go to the HTTP Server Name field and enter TestServer.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059386"></A>
-This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059387"></A>
-Go to the Root directory field and enter Test.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059391"></A>
-By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
-Installation Guide</Emphasis>
-. You can also specify an absolute path (such as <code>
-C:\MarkLogicFiles\Test</code>
- on a Windows platform or <code>
-/space/test</code>
- on a Linux platform).</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059395"></A>
-Go to the Port field and enter 8005.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059396"></A>
-The following screen shows an HTTP server with these values:</Body-indent>
-<Graphic>
-<A ID="pgfId-1059400"></A>
-<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
-</Graphic>
-<NumberList>
-<Number>
-<A ID="pgfId-1059401"></A>
-Scroll down to Authentication and select <code>
-application-level</code>
-.</Number>
-<Number>
-<A ID="pgfId-1059402"></A>
-Choose an admin user (it has the word <code>
-admin</code>
- in parenthesis) as the Default User.</Number>
-<Number>
-<A ID="pgfId-1059403"></A>
-Leave the privilege field blank.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059404"></A>
-The following screen shows an HTTP server with these values</Body-indent>
-<GraphicIndent>
-<A ID="pgfId-1059408"></A>
-<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
-</GraphicIndent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059409"></A>
-Scroll to the top or bottom and click OK.</Number>
-<Number>
-<A ID="pgfId-1059410"></A>
-See that TestServer is added to the HTTP Server branch.</Number>
-</NumberList>
-<Heading-3>
-<A ID="pgfId-1059350"></A>
-<A ID="72236"></A>
-Creating the Sample XQuery Application</Heading-3>
-  </XML></chapter>
-  ! document { . }
-  ! at:equal(count(guide:normalize(., false())//Heading-3), 2)
 };
 
 (: test/apidoc-guide.xqm :)
