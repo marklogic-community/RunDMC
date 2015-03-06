@@ -342,4 +342,450 @@ The next time you try and change a password, your new checks will be run. For ex
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
+declare %t:case function t:table-does-not-interrupt-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
+<Body>
+<A ID="pgfId-1059437"></A>
+To create and run the sample XQuery application, complete the following steps:</Body>
+<Number1>
+<A ID="pgfId-1057605"></A>
+Use the following table to locate your MarkLogic Server <code>
+Apps</code>
+ directory (<Emphasis>
+&lt;marklogic-dir&gt;/Apps</Emphasis>
+):</Number1>
+<TableAnchor>
+<A ID="pgfId-1040803"></A>
+</TableAnchor>
+<TABLE>
+<ROW>
+<TH ROWSPAN="1" COLSPAN="1">
+<CellHeading>
+<A ID="pgfId-1050062"></A>
+Platform</CellHeading>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<CellHeading>
+<A ID="pgfId-1050064"></A>
+Installation Directory</CellHeading>
+</TH>
+</ROW>
+<ROW>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1040792"></A>
+Microsoft Windows</CellBody>
+</CELL>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CodeLeft>
+<A ID="pgfId-1040794"></A>
+C:\Program Files\MarkLogic\Apps</CodeLeft>
+</CELL>
+</ROW>
+<ROW>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1040796"></A>
+Red Hat Linux</CellBody>
+</CELL>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CodeLeft>
+<A ID="pgfId-1040798"></A>
+/opt/MarkLogic/Apps</CodeLeft>
+</CELL>
+</ROW>
+<ROW>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1040800"></A>
+Sun Solaris</CellBody>
+</CELL>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CodeLeft>
+<A ID="pgfId-1040802"></A>
+/opt/MARKlogic/Apps</CodeLeft>
+</CELL>
+</ROW>
+<ROW>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1058281"></A>
+Mac OS X</CellBody>
+</CELL>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CodeLeft>
+<A ID="pgfId-1058283"></A>
+~/Library/MarkLogic/Apps</CodeLeft>
+</CELL>
+</ROW>
+</TABLE>
+<NumberList>
+<Number>
+<A ID="pgfId-1040805"></A>
+Go to the <code>
+Apps</code>
+ directory (<Emphasis>
+&lt;marklogic-dir&gt;/Apps</Emphasis>
+) and create a new directory called <code>
+Test</code>
+.</Number>
+<Number>
+<A ID="pgfId-1040807"></A>
+Open a text editor and create a new file called <code>
+load.xqy</code>
+ in the <code>
+Test</code>
+ directory. </Number>
+<Number>
+<A ID="pgfId-1049701"></A>
+Copy and save the following code into this <code>
+.xqy</code>
+ file:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1058538"></A>
+xquery version &quot;1.0-ml&quot;;
+(: load.xqy :)
+xdmp:document-insert(&quot;books.xml&quot;,
+&lt;books xmlns=&quot;http://www.marklogic.com/ns/gs-books&quot;&gt;
+&lt;book bookid=&quot;1&quot;&gt;
+&lt;title&gt;A Quick Path to an Application&lt;/title&gt;
+&lt;author&gt;
+&lt;last&gt;Smith&lt;/last&gt;
+&lt;first&gt;Jim&lt;/first&gt;
+&lt;/author&gt;
+&lt;publisher&gt;Scribblers Press&lt;/publisher&gt;
+&lt;isbn&gt;1494-3930392-3&lt;/isbn&gt;
+&lt;abstract&gt;This book describes in detail the power of how to use XQuery to build powerful web applications that are built on the MarkLogic Server platform.&lt;/abstract&gt;
+&lt;/book&gt;
+&lt;/books&gt;
+),
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Database loaded&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;b&gt;Source XML Loaded&lt;/b&gt;
+&lt;p&gt;The source XML has been successfully loaded into the database&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1040810"></A>
+Create another file called <code>
+dump.xqy</code>
+ in the <code>
+Test</code>
+ directory.</Number>
+<Number>
+<A ID="pgfId-1040811"></A>
+Copy and save the following code into this <code>
+.xqy</code>
+ file:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1058569"></A>
+xquery version &quot;1.0-ml&quot;;
+(: dump.xqy :)
+declare namespace bk = &quot;http://www.marklogic.com/ns/gs-books&quot;;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Database dump&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;b&gt;XML Content&lt;/b&gt;
+{{
+for $book in doc('books.xml')/bk:books/bk:book
+return
+&lt;pre&gt;
+Title: {{ $book/bk:title/text() }}
+Author: {{ ($book/bk:author/bk:first/text(), ' ',
+$book/bk:author/bk:last/text()) }}
+Publisher: {{ $book/bk:publisher/text() }}
+&lt;/pre&gt;
+}}
+&lt;a href='update-form.xqy'&gt;Update Publisher&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1040813"></A>
+Create another file called <code>
+update-form.xqy</code>
+ in the <code>
+Test</code>
+ directory.</Number>
+<Number>
+<A ID="pgfId-1040814"></A>
+Copy and save the following code into this <code>
+.xqy</code>
+ file:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1058467"></A>
+xquery version '1.0-ml';
+(: update-form.xqy :)
+declare namespace bk='http://www.marklogic.com/ns/gs-books';</Code>
+<Code>
+<A ID="pgfId-1058468"></A>
+&lt;html xmlns='http://www.w3.org/1999/xhtml'&gt;
+&lt;head&gt;
+&lt;title&gt;Change Publisher&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+{{
+let $book := doc('books.xml')/bk:books/bk:book[1]
+return
+&lt;form action='update-write.xqy'&gt;
+&lt;input type='hidden' name='bookid' value='{{ $book/@bookid }}'/&gt;
+&lt;p&gt;&lt;b&gt;
+Change publisher for book &lt;i&gt;{{ $book/bk:title/text() }}&lt;/i&gt;:
+&lt;/b&gt;&lt;/p&gt;
+&lt;input type='text' name='publisher'
+value='{{ $book/bk:publisher/text() }}'/&gt;
+&lt;input type='submit' value='Update publisher'/&gt;
+&lt;/form&gt;
+}}
+&lt;/body&gt;
+&lt;/html&gt;</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1040816"></A>
+Create another file called <code>
+update-write.xqy</code>
+ in the <code>
+Test</code>
+ directory.</Number>
+<Number>
+<A ID="pgfId-1040817"></A>
+Copy and save the following code into this <code>
+.xqy</code>
+ file:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1058505"></A>
+xquery version '1.0-ml';
+(: update-write.xqy :)
+declare namespace bk='http://www.marklogic.com/ns/gs-books';
+declare function local:updatePublisher()
+{{
+if (doc('books.xml')) then
+let $bookid := xdmp:get-request-field('bookid')
+let $publisher := xdmp:get-request-field('publisher')
+let $b := doc('books.xml')/bk:books/bk:book[@bookid = $bookid]
+return
+if ($b) then
+(
+xdmp:node-replace($b/bk:publisher,
+&lt;bk:publisher&gt;{{ $publisher }}&lt;/bk:publisher&gt;)
+,
+xdmp:redirect-response('dump.xqy')
+)
+else
+&lt;span&gt;Could not locate book with bookid {{ $bookid }}.&lt;/span&gt;
+else
+&lt;span&gt;Unable to access parent XML document.&lt;/span&gt;
+}};
+&lt;html xmlns='http://www.w3.org/1999/xhtml'&gt;
+&lt;head&gt;
+&lt;title&gt;Update In Process&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+Attempting to complete update and redirect browser to detail page.
+&lt;p&gt;
+If you are seeing this page, either the redirect has failed
+or the update has failed.  The update has failed if there is
+a reason provided below:
+&lt;br/&gt;
+{{ local:updatePublisher() }}
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1040819"></A>
+Confirm that you have the following new files in your <code>
+Test</code>
+ directory:</Number>
+</NumberList>
+<Body-bullet-2>
+<A ID="pgfId-1040820"></A>
+<code>
+load.xqy</code>
+</Body-bullet-2>
+<Body-bullet-2>
+<A ID="pgfId-1040821"></A>
+<code>
+dump.xqy</code>
+</Body-bullet-2>
+<Body-bullet-2>
+<A ID="pgfId-1040822"></A>
+<code>
+update-form.xqy</code>
+</Body-bullet-2>
+<Body-bullet-2>
+<A ID="pgfId-1040823"></A>
+<code>
+update-write.xqy</code>
+</Body-bullet-2>
+<NumberList>
+<Number>
+<A ID="pgfId-1040824"></A>
+Confirm that all files end with the <code>
+.xqy</code>
+ extension, not the <code>
+.txt</code>
+ extension.</Number>
+<Number>
+<A ID="pgfId-1040825"></A>
+Using these files, continue to the following procedures:</Number>
+</NumberList>
+<Body-bullet-2>
+<A ID="pgfId-1040829"></A>
+<A href="xquery.xml#id(31370)" xml:link="simple" show="replace" actuate="user" CLASS="XRef"><Hyperlink>
+Loading the Source XML</Hyperlink>
+</A></Body-bullet-2>
+<Body-bullet-2>
+<A ID="pgfId-1040833"></A>
+<A href="xquery.xml#id(26869)" xml:link="simple" show="replace" actuate="user" CLASS="XRef"><Hyperlink>
+Generating a Simple Report</Hyperlink>
+</A></Body-bullet-2>
+<Body-bullet-2>
+<A ID="pgfId-1040837"></A>
+<A href="xquery.xml#id(49941)" xml:link="simple" show="replace" actuate="user" CLASS="XRef"><Hyperlink>
+Submitting New Information</Hyperlink>
+</A></Body-bullet-2>
+<Body-indent>
+<A ID="pgfId-1040838"></A>
+Be sure to complete these procedures in order.</Body-indent>
+<Heading-4>
+<A ID="pgfId-1040839"></A>
+<A ID="31370"></A>
+Loading the Source XML</Heading-4>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:graphic-does-not-interrupt-ordered-list()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1058315"></A>
+<A ID="70912"></A>
+Creating a New App Server</Heading-3>
+<Body>
+<A ID="pgfId-1059368"></A>
+In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
+<Body>
+<A ID="pgfId-1059375"></A>
+To create a new App Server, complete the following steps:</Body>
+<Number1>
+<A ID="pgfId-1059376"></A>
+Open a new browser window or tab.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1059377"></A>
+Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059379"></A>
+<Hyperlink>
+<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
+</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059380"></A>
+Log in with your admin username and password.</Number>
+<Number>
+<A ID="pgfId-1059381"></A>
+Click the Groups icon on the left.</Number>
+<Number>
+<A ID="pgfId-1059382"></A>
+Click on the Default icon within the Groups branch.</Number>
+<Number>
+<A ID="pgfId-1059383"></A>
+Click on the App Servers icon within the Default group.</Number>
+<Number>
+<A ID="pgfId-1059384"></A>
+Click the Create HTTP tab.</Number>
+<Number>
+<A ID="pgfId-1059385"></A>
+Go to the HTTP Server Name field and enter TestServer.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059386"></A>
+This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059387"></A>
+Go to the Root directory field and enter Test.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059391"></A>
+By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
+Installation Guide</Emphasis>
+. You can also specify an absolute path (such as <code>
+C:\MarkLogicFiles\Test</code>
+ on a Windows platform or <code>
+/space/test</code>
+ on a Linux platform).</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059395"></A>
+Go to the Port field and enter 8005.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059396"></A>
+The following screen shows an HTTP server with these values:</Body-indent>
+<Graphic>
+<A ID="pgfId-1059400"></A>
+<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
+</Graphic>
+<NumberList>
+<Number>
+<A ID="pgfId-1059401"></A>
+Scroll down to Authentication and select <code>
+application-level</code>
+.</Number>
+<Number>
+<A ID="pgfId-1059402"></A>
+Choose an admin user (it has the word <code>
+admin</code>
+ in parenthesis) as the Default User.</Number>
+<Number>
+<A ID="pgfId-1059403"></A>
+Leave the privilege field blank.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059404"></A>
+The following screen shows an HTTP server with these values</Body-indent>
+<GraphicIndent>
+<A ID="pgfId-1059408"></A>
+<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
+</GraphicIndent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059409"></A>
+Scroll to the top or bottom and click OK.</Number>
+<Number>
+<A ID="pgfId-1059410"></A>
+See that TestServer is added to the HTTP Server branch.</Number>
+</NumberList>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
 (: test/apidoc-guide.xqm :)

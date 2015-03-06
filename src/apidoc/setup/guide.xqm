@@ -795,12 +795,9 @@ declare function guide:list-end-p(
   $qname as xs:QName)
 as xs:boolean
 {
-  $n instance of element(EndList-root)
-  or (not(guide:list-item-p($n)) and not(
-      ($n instance of element(Body-indent)
-        or $n instance of element(Code)
-        or $n instance of element(Note)
-        or $n instance of element(Warning))))
+  $n instance of element(Body)
+  or $n instance of element(EndList-root)
+  or $n instance of element(Heading)
 };
 
 declare function guide:list-body(
