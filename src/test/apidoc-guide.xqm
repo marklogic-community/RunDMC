@@ -101,6 +101,20 @@ JavaScript</Bold>
     and child::a[@href eq '#JavaScript'])
 };
 
+declare %t:case function t:glossary-term-produces-valid-id()
+{
+<Body>
+<A ID="pgfId-929578"></A>
+<Bold>
+Distinguished Name (DN)</Bold>
+<A ID="78892"></A>
+</Body>
+  ! at:empty(
+    guide:transform-element(
+      ., '/fubar/baz/glossary.xml', document { () }, 'fubar')
+    /a/@id[not(. castable as xs:ID)])
+};
+
 declare %t:case function t:ordered-list-stops-at-heading()
 {
   <chapter>
