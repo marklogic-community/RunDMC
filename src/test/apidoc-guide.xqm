@@ -40,24 +40,18 @@ declare %t:case function t:body-not-in-output()
   var admin = require("/MarkLogic/admin.xqy");
   var config = admin.getConfiguration();
   var dbid = xdmp.database("Documents");
-
   var validStart = admin.databaseRangeElementIndex(
     "dateTime", "", "validStart", "", fn.false() );
-
   var validEnd = admin.databaseRangeElementIndex(
     "dateTime", "", "validEnd", "", fn.false() );
-
   var systemStart = admin.databaseRangeElementIndex(
     "dateTime", "", "systemStart", "", fn.false() );
-
   var systemEnd = admin.databaseRangeElementIndex(
     "dateTime", "", "systemEnd", "", fn.false() );
-
   config = admin.databaseAddRangeElementIndex(config, dbid, validStart);
   config = admin.databaseAddRangeElementIndex(config, dbid, validEnd);
   config = admin.databaseAddRangeElementIndex(config, dbid, systemStart);
   config = admin.databaseAddRangeElementIndex(config, dbid, systemEnd);
-
   admin.saveConfiguration(config);
       </pre>
   </XML></chapter>
@@ -65,48 +59,6 @@ declare %t:case function t:body-not-in-output()
   ! guide:normalize(., false())
   ! guide:transform(*/XML, 'fubar', ., 'baz')
   ! at:empty(descendant-or-self::*:Body)
-};
-
-declare %t:case function t:code-continues-ordered-list()
-{
-  <chapter>
-    <XML>
-<Body>
-<A ID="pgfId-1043441"></A>
-There are several ways to accomplish this:</Body>
-<Number1>
-<A ID="pgfId-1043442"></A>
-You can use the Admin Interface's load utility to load schema documents directly into a schema database. Go to the Database screen for the schema database into which you want to load documents. Select the load tab at top-right and proceed to load your schema as you would load any other document.</Number1>
-<NumberList>
-<Number>
-<A ID="pgfId-1043443"></A>
-You can create an XQuery program that uses the <Hyperlink>
-<A href="#display.xqy?function=xdmp:eval" xml:link="simple" show="replace" actuate="user" CLASS="URL">xdmp:eval</A></Hyperlink>
- built-in function, specifying the <code>
-&lt;database&gt;</code>
- option to load a schema directly into the current database's schema database:</Number>
-</NumberList>
-<Code>
-<A ID="pgfId-1047363"></A>
-xdmp:eval('xdmp:document-load(&quot;sample.xsd&quot;)', (),
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;options xmlns=&quot;xdmp:eval&quot;&gt;
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;database&gt;{xdmp:schema-database()}&lt;/database&gt;
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;/options&gt;)</Code>
-<NumberList>
-<Number>
-<A ID="pgfId-1047364"></A>
-You can create an XDBC or HTTP Server that directly references the schema database in question as its document database, and then use any document insertion function to load one or more schemas into that schema database.  This approach should not be necessary.</Number>
-<Number>
-<A ID="pgfId-1051705"></A>
-You can create a WebDAV Server that references the Schemas database and then drag-and-drop schema documents in using a WebDAV client.</Number>
-</NumberList>
-<Heading-2>
-<A ID="pgfId-1043446"></A>
-<A ID="70282"></A>
-Referencing Your Schema</Heading-2>
-  </XML></chapter>
-  ! document { . }
-  ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
 declare %t:case function t:code-output-with-em()
@@ -135,121 +87,6 @@ declare %t:case function t:code-output-with-em()
     guide:transform(*/XML, 'fubar', ., 'baz')/em)
 };
 
-declare %t:case function t:graphic-continues-ordered-list()
-{
-  <chapter>
-    <XML>
-<Heading-3>
-<A ID="pgfId-1058315"></A>
-<A ID="70912"></A>
-Creating a New App Server</Heading-3>
-<Body>
-<A ID="pgfId-1059368"></A>
-In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
-<Body>
-<A ID="pgfId-1059375"></A>
-To create a new App Server, complete the following steps:</Body>
-<Number1>
-<A ID="pgfId-1059376"></A>
-Open a new browser window or tab.</Number1>
-<NumberList>
-<Number>
-<A ID="pgfId-1059377"></A>
-Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059379"></A>
-<Hyperlink>
-<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
-</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059380"></A>
-Log in with your admin username and password.</Number>
-<Number>
-<A ID="pgfId-1059381"></A>
-Click the Groups icon on the left.</Number>
-<Number>
-<A ID="pgfId-1059382"></A>
-Click on the Default icon within the Groups branch.</Number>
-<Number>
-<A ID="pgfId-1059383"></A>
-Click on the App Servers icon within the Default group.</Number>
-<Number>
-<A ID="pgfId-1059384"></A>
-Click the Create HTTP tab.</Number>
-<Number>
-<A ID="pgfId-1059385"></A>
-Go to the HTTP Server Name field and enter TestServer.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059386"></A>
-This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059387"></A>
-Go to the Root directory field and enter Test.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059391"></A>
-By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
-Installation Guide</Emphasis>
-. You can also specify an absolute path (such as <code>
-C:\MarkLogicFiles\Test</code>
- on a Windows platform or <code>
-/space/test</code>
- on a Linux platform).</Body-indent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059395"></A>
-Go to the Port field and enter 8005.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059396"></A>
-The following screen shows an HTTP server with these values:</Body-indent>
-<Graphic>
-<A ID="pgfId-1059400"></A>
-<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
-</Graphic>
-<NumberList>
-<Number>
-<A ID="pgfId-1059401"></A>
-Scroll down to Authentication and select <code>
-application-level</code>
-.</Number>
-<Number>
-<A ID="pgfId-1059402"></A>
-Choose an admin user (it has the word <code>
-admin</code>
- in parenthesis) as the Default User.</Number>
-<Number>
-<A ID="pgfId-1059403"></A>
-Leave the privilege field blank.</Number>
-</NumberList>
-<Body-indent>
-<A ID="pgfId-1059404"></A>
-The following screen shows an HTTP server with these values</Body-indent>
-<GraphicIndent>
-<A ID="pgfId-1059408"></A>
-<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
-</GraphicIndent>
-<NumberList>
-<Number>
-<A ID="pgfId-1059409"></A>
-Scroll to the top or bottom and click OK.</Number>
-<Number>
-<A ID="pgfId-1059410"></A>
-See that TestServer is added to the HTTP Server branch.</Number>
-</NumberList>
-<Heading-3>
-<A ID="pgfId-1059350"></A>
-<A ID="72236"></A>
-Creating the Sample XQuery Application</Heading-3>
-  </XML></chapter>
-  ! document { . }
-  ! at:equal(count(guide:normalize(., false())//ol), 1)
-};
-
 declare %t:case function t:glossary-term-links-to-self()
 {
 <Body>
@@ -264,7 +101,7 @@ JavaScript</Bold>
     and child::a[@href eq '#JavaScript'])
 };
 
-declare %t:case function t:list-breaks-before-heading()
+declare %t:case function t:ordered-list-stops-at-heading()
 {
   <chapter>
     <XML>
@@ -379,7 +216,164 @@ Creating the Sample XQuery Application</Heading-3>
   ! at:equal(count(guide:normalize(., false())//Heading-3), 2)
 };
 
-declare %t:case function t:note-continues-ordered-list()
+declare %t:case function t:ordered-list-through-code()
+{
+  <chapter>
+    <XML>
+<Body>
+<A ID="pgfId-1043441"></A>
+There are several ways to accomplish this:</Body>
+<Number1>
+<A ID="pgfId-1043442"></A>
+You can use the Admin Interface's load utility to load schema documents directly into a schema database. Go to the Database screen for the schema database into which you want to load documents. Select the load tab at top-right and proceed to load your schema as you would load any other document.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1043443"></A>
+You can create an XQuery program that uses the <Hyperlink>
+<A href="#display.xqy?function=xdmp:eval" xml:link="simple" show="replace" actuate="user" CLASS="URL">xdmp:eval</A></Hyperlink>
+ built-in function, specifying the <code>
+&lt;database&gt;</code>
+ option to load a schema directly into the current database's schema database:</Number>
+</NumberList>
+<Code>
+<A ID="pgfId-1047363"></A>
+xdmp:eval('xdmp:document-load(&quot;sample.xsd&quot;)', (),
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;options xmlns=&quot;xdmp:eval&quot;&gt;
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;database&gt;{xdmp:schema-database()}&lt;/database&gt;
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;/options&gt;)</Code>
+<NumberList>
+<Number>
+<A ID="pgfId-1047364"></A>
+You can create an XDBC or HTTP Server that directly references the schema database in question as its document database, and then use any document insertion function to load one or more schemas into that schema database.  This approach should not be necessary.</Number>
+<Number>
+<A ID="pgfId-1051705"></A>
+You can create a WebDAV Server that references the Schemas database and then drag-and-drop schema documents in using a WebDAV client.</Number>
+</NumberList>
+<Heading-2>
+<A ID="pgfId-1043446"></A>
+<A ID="70282"></A>
+Referencing Your Schema</Heading-2>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:ordered-list-through-graphic()
+{
+  <chapter>
+    <XML>
+<Heading-3>
+<A ID="pgfId-1058315"></A>
+<A ID="70912"></A>
+Creating a New App Server</Heading-3>
+<Body>
+<A ID="pgfId-1059368"></A>
+In this section, you create a new HTTP App Server. An App Server is used to evaluate XQuery code against a MarkLogic database and return the results to a browser. This App Server uses the Documents database, which is installed as part of the MarkLogic Serverinstallation process. In <A href="xquery.xml#id(15787)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Sample XQuery Application that Runs Directly Against an App Server' on page&#160;17</A>, you use this App Server to run a sample XQuery application. </Body>
+<Body>
+<A ID="pgfId-1059375"></A>
+To create a new App Server, complete the following steps:</Body>
+<Number1>
+<A ID="pgfId-1059376"></A>
+Open a new browser window or tab.</Number1>
+<NumberList>
+<Number>
+<A ID="pgfId-1059377"></A>
+Open the Admin Interface by navigating to the following URL (substitute your hostname if MarkLogic is not running on your local machine):</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059379"></A>
+<Hyperlink>
+<A href="http://localhost:8001" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://localhost:8001/</A></Hyperlink>
+</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059380"></A>
+Log in with your admin username and password.</Number>
+<Number>
+<A ID="pgfId-1059381"></A>
+Click the Groups icon on the left.</Number>
+<Number>
+<A ID="pgfId-1059382"></A>
+Click on the Default icon within the Groups branch.</Number>
+<Number>
+<A ID="pgfId-1059383"></A>
+Click on the App Servers icon within the Default group.</Number>
+<Number>
+<A ID="pgfId-1059384"></A>
+Click the Create HTTP tab.</Number>
+<Number>
+<A ID="pgfId-1059385"></A>
+Go to the HTTP Server Name field and enter TestServer.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059386"></A>
+This is the name that the Admin Interface uses to reference your server on display screens and in user interface controls.</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059387"></A>
+Go to the Root directory field and enter Test.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059391"></A>
+By default, the software looks for this directory in your MarkLogic Server program directory, as specified in the <Emphasis>
+Installation Guide</Emphasis>
+. You can also specify an absolute path (such as <code>
+C:\MarkLogicFiles\Test</code>
+ on a Windows platform or <code>
+/space/test</code>
+ on a Linux platform).</Body-indent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059395"></A>
+Go to the Port field and enter 8005.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059396"></A>
+The following screen shows an HTTP server with these values:</Body-indent>
+<Graphic>
+<A ID="pgfId-1059400"></A>
+<IMAGE xml:link="simple" href="images/httpAdd.gif" show="embed" actuate="auto"/>
+</Graphic>
+<NumberList>
+<Number>
+<A ID="pgfId-1059401"></A>
+Scroll down to Authentication and select <code>
+application-level</code>
+.</Number>
+<Number>
+<A ID="pgfId-1059402"></A>
+Choose an admin user (it has the word <code>
+admin</code>
+ in parenthesis) as the Default User.</Number>
+<Number>
+<A ID="pgfId-1059403"></A>
+Leave the privilege field blank.</Number>
+</NumberList>
+<Body-indent>
+<A ID="pgfId-1059404"></A>
+The following screen shows an HTTP server with these values</Body-indent>
+<GraphicIndent>
+<A ID="pgfId-1059408"></A>
+<IMAGE xml:link="simple" href="images/authentication.gif" show="embed" actuate="auto"/>
+</GraphicIndent>
+<NumberList>
+<Number>
+<A ID="pgfId-1059409"></A>
+Scroll to the top or bottom and click OK.</Number>
+<Number>
+<A ID="pgfId-1059410"></A>
+See that TestServer is added to the HTTP Server branch.</Number>
+</NumberList>
+<Heading-3>
+<A ID="pgfId-1059350"></A>
+<A ID="72236"></A>
+Creating the Sample XQuery Application</Heading-3>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:order-list-through-note()
 {
   <chapter>
     <XML>
@@ -439,7 +433,7 @@ The database now has the new text indexing configurations.</Body>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:sequence-continues-ordered-list()
+declare %t:case function t:ordered-list-through-sequence()
 {
   <chapter>
     <XML>
@@ -495,7 +489,7 @@ Validating XML Against a Schema</Heading-2>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:table-continues-ordered-list()
+declare %t:case function t:ordered-list-through-table()
 {
   <chapter>
     <XML>
@@ -826,7 +820,89 @@ Loading the Source XML</Heading-4>
   ! at:equal(count(guide:normalize(., false())//ol), 1)
 };
 
-declare %t:case function t:warning-continues-ordered-list()
+declare %t:case function t:order-list-through-text-node()
+{
+  <chapter>
+    <XML>
+<Heading-2>
+<A ID="pgfId-1119613"></A>
+<A ID="28962"></A>
+Installing MarkLogic Server</Heading-2>
+<Body>
+<A ID="pgfId-1119620"></A>
+This section describes the procedure for installing MarkLogic Server on each platform. Perform the procedure corresponding to the platform to which you are installing. </Body>
+<Body>
+<A ID="pgfId-1134459"></A>
+If you are upgrading a cluster to a new release, see <A href="../cluster/config_cluster.xml#id(21237)" xml:link="simple" show="replace" actuate="user" CLASS="XRef"><Hyperlink>
+Upgrading a Cluster to a New Maintenance Release of MarkLogic Server</Hyperlink>
+</A> in the <Emphasis>
+Scalability, Availability, and Failover Guide</Emphasis>
+. The security database and the schemas database must be on the same host, and that host should be the first host you upgrade when upgrading a cluster.</Body>
+<TableAnchor>
+<A ID="pgfId-1120817"></A>
+</TableAnchor>
+<TABLE>
+<ROW>
+<TH ROWSPAN="1" COLSPAN="1">
+<CellHeading>
+<A ID="pgfId-1120800"></A>
+Platform</CellHeading>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<CellHeading>
+<A ID="pgfId-1120802"></A>
+Perform the following:</CellHeading>
+</TH>
+</ROW>
+<ROW>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1120804"></A>
+Windows x64</CellBody>
+</CELL>
+<CELL ROWSPAN="1" COLSPAN="1">
+<Number1>
+<A ID="pgfId-1120821"></A>
+Shut down and uninstall the previous release of MarkLogic Server (if you are upgrading from 6.0, 5.0, or 4.2, see <A href="procedures.xml#id(49978)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Upgrading from Release 6.0, 5.0,or 4.2' on page&#160;11</A>, if you are upgrading from 7.0-1 or later, see <A href="procedures.xml#id(53295)" xml:link="simple" show="replace" actuate="user" CLASS="XRef">'Removing MarkLogic Server' on page&#160;26</A>).</Number1>
+fubar
+<NumberList>
+<Number>
+<A ID="pgfId-1121081"></A>
+Download the MarkLogic Server installation package to your desktop. The latest installation packages are available from <Hyperlink>
+<A href="http://developer.marklogic.com" xml:link="simple" show="replace" actuate="user" CLASS="URL">http://developer.marklogic.com</A></Hyperlink>
+.</Number>
+<Number>
+<A ID="pgfId-1120822"></A>
+Double click the <code>
+MarkLogic-7.0-1-amd64.msi</code>
+ icon to start the installer.</Number>
+</NumberList>
+<Note>
+<A ID="pgfId-1120823"></A>
+If you are installing a release other than 7.0-1, double-click on the appropriately named installer icon.</Note>
+<NumberList>
+<Number>
+<A ID="pgfId-1120824"></A>
+The Welcome page displays. Click Next.</Number>
+<Number>
+<A ID="pgfId-1120826"></A>
+Select Typical.</Number>
+<Number>
+<A ID="pgfId-1120827"></A>
+Click Install.</Number>
+<Number>
+<A ID="pgfId-1120828"></A>
+Click Finish.</Number>
+</NumberList>
+</CELL>
+</ROW>
+</TABLE>
+  </XML></chapter>
+  ! document { . }
+  ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:ordered-list-through-warning()
 {
   <chapter>
     <XML>
