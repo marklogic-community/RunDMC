@@ -380,7 +380,7 @@ function updateTocForUrlFragment(pathname, hash) {
   // Otherwise use the pathname alone, for functions etc.
   var effectiveHash;
   if (!isUserGuide) effectiveHash = "";
-  else if (hash === "") effectiveHash = "#chapter";
+  else if (hash === "") effectiveHash = "";
   else effectiveHash = hash;
 
   // IE doesn't include the "/" at the beginning of the pathname...

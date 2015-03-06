@@ -832,7 +832,7 @@
   </xsl:template>
   <xsl:template mode="chapter-next-prev" name="guide-next"
                 match="chapter/@next | chapter/@previous">
-    <div class="{local-name(.)}Chapter">
+    <div class="{local-name(.)}Chapter pjax_enabled">
       <a href="{api:external-uri-with-prefix($VERSION-PREFIX, .)}"
          accesskey="{if (local-name(.) eq 'previous') then 'p' else 'n'}">
         <xsl:apply-templates mode="next-or-prev" select="."/>
