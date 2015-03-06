@@ -393,14 +393,6 @@ as element(a)*
     $a/@href/attribute href {
       guide:anchor-href($raw, $references, .) },
     guide:link-content($a) }
-  ,
-  (: #446 Return an extra link for glossary entries,
-   : so we can link by glossary term.
-   :)
-  if (not(ends-with($uri, '/glossary.xml'))) then () else (
-    let $term := $a/following-sibling::*[1]/self::Bold/normalize-space(.)
-    where $term
-    return element a { attribute id { $term } })
 };
 
 (: Extract one document per message. :)
@@ -1062,6 +1054,22 @@ as element()+
     <h3><a href="{ $href }" class="sectionLink">{ $id }</a></h3>)
 };
 
+declare function guide:glossary-heading(
+  $new-name as xs:string,
+  $term as xs:string)
+as element()+
+{
+  (: #446 Wrap glossary headings in an extra link,
+   : so we can link by glossary term.
+   :)
+  element a {
+    (: Enforce non-empty string. :)
+    attribute id { $term[.] treat as xs:string } },
+  element a {
+    attribute href { '#'||$term },
+    element { $new-name } { $term } }
+};
+
 declare function guide:transform-element(
   $e as element(),
   $uri as xs:string,
@@ -1075,6 +1083,10 @@ as node()*
   return (
     (: Heading-* but not a MESSAGE :)
     if ($is-heading) then guide:heading-anchor($e, $local-name)
+    else if ($e instance of element(Bold)
+      and ends-with($uri, '/glossary.xml')
+      and not($e/*)) then guide:glossary-heading(
+      $new-name, normalize-space($e))
     (: Convert elements that should be converted :)
     else if ($new-name) then element { $new-name } {
       guide:attributes($e/@*),

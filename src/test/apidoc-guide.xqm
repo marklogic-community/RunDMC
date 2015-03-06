@@ -13,7 +13,7 @@ import module namespace api="http://marklogic.com/rundmc/api"
 import module namespace guide="http://marklogic.com/rundmc/api/guide"
   at "/apidoc/setup/guide.xqm";
 
-declare %t:case function t:Body-not-in-output()
+declare %t:case function t:body-not-in-output()
 {
   <chapter>
     <XML>
@@ -248,6 +248,20 @@ Creating the Sample XQuery Application</Heading-3>
   </XML></chapter>
   ! document { . }
   ! at:equal(count(guide:normalize(., false())//ol), 1)
+};
+
+declare %t:case function t:glossary-term-links-to-self()
+{
+<Body>
+<A ID="pgfId-929578"></A>
+<Bold>
+JavaScript</Bold>
+<A ID="78892"></A>
+</Body>
+  ! guide:transform-element(
+    ., '/fubar/baz/glossary.xml', document { () }, 'fubar')
+  ! at:true(child::a[@id eq 'JavaScript']
+    and child::a[@href eq '#JavaScript'])
 };
 
 declare %t:case function t:list-breaks-before-heading()
