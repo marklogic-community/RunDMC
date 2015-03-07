@@ -61,6 +61,28 @@ declare %t:case function t:body-not-in-output()
   ! at:empty(descendant-or-self::*:Body)
 };
 
+declare %t:case function t:bulleted-output-as-li()
+{
+  <chapter>
+    <XML>
+<Body>
+<A ID="pgfId-1074855"></A>
+Transactions have either update or query type.</Body>
+<BulletedList>
+<Bulleted>
+<A ID="pgfId-1074856"></A>
+Query transactions use a system timestamp instead of locks.</Bulleted>
+<Bulleted>
+<A ID="pgfId-1074857"></A>
+Update transactions acquire locks.</Bulleted>
+</BulletedList>
+  </XML></chapter>
+  ! document { . }
+  ! at:true(
+    guide:transform(guide:normalize(., false())/*/XML,
+      'fubar', document { () }, 'baz')/self::ul/cts:contains(., 'locks'))
+};
+
 declare %t:case function t:code-output-with-em()
 {
   <chapter>

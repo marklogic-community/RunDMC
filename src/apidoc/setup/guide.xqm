@@ -1151,7 +1151,7 @@ as node()*
   case element(TITLE) return ()
   (: These lists are already well-structured. :)
   case element(Bulleted) return element li {
-    guide:transform($n/Bulleted, $uri, $raw, $references) }
+    guide:transform($n/node(), $uri, $raw, $references) }
   case element(BulletedList) return element ul {
     guide:transform($n/Bulleted, $uri, $raw, $references) }
   case element(Hyperlink) return guide:transform($n/*, $uri, $raw, $references)
