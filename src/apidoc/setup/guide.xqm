@@ -787,16 +787,18 @@ declare function guide:list-end-p(
   $qname as xs:QName)
 as xs:boolean
 {
-  $n instance of element(EndList-root)
-  or (not(guide:list-item-p($n)) and not(
-      ($n instance of element(Body-indent)
-        or $n instance of element(Code)
-        or $n instance of element(Graphic)
-        or $n instance of element(GraphicIndent)
-        or $n instance of element(Note)
-        or $n instance of element(TABLE)
-        or $n instance of element(TableAnchor)
-        or $n instance of element(Warning))))
+  (: Non-element nodes do not break the run. :)
+  $n instance of element() and (
+    $n instance of element(EndList-root)
+    or (not(guide:list-item-p($n)) and not(
+        ($n instance of element(Body-indent)
+          or $n instance of element(Code)
+          or $n instance of element(Graphic)
+          or $n instance of element(GraphicIndent)
+          or $n instance of element(Note)
+          or $n instance of element(TABLE)
+          or $n instance of element(TableAnchor)
+          or $n instance of element(Warning)))))
 };
 
 declare function guide:list-body(
@@ -1056,18 +1058,33 @@ as element()+
 
 declare function guide:glossary-heading(
   $new-name as xs:string,
-  $term as xs:string)
+  $term as xs:string,
+  $id as xs:ID)
 as element()+
 {
   (: #446 Wrap glossary headings in an extra link,
    : so we can link by glossary term.
    :)
+  element a { attribute id { $id } },
   element a {
-    (: Enforce non-empty string. :)
-    attribute id { $term[.] treat as xs:string } },
-  element a {
-    attribute href { '#'||$term },
+    attribute href { '#'||$id },
     element { $new-name } { $term } }
+};
+
+declare function guide:glossary-heading(
+  $new-name as xs:string,
+  $term as xs:string)
+as element()+
+{
+  guide:glossary-heading(
+    $new-name, $term,
+   (: Must be a valid xs:ID,
+    : handling for terms like "Distinguished Name (DN)".
+    : So we replace any non-ID characters with underscore.
+    : This may risk creating duplicates, but that should not happen
+    : with normal glossary terms.
+    :)
+    xs:ID(replace(normalize-space($term), '[^\w\-]', '_')))
 };
 
 declare function guide:transform-element(
@@ -1085,8 +1102,7 @@ as node()*
     if ($is-heading) then guide:heading-anchor($e, $local-name)
     else if ($e instance of element(Bold)
       and ends-with($uri, '/glossary.xml')
-      and not($e/*)) then guide:glossary-heading(
-      $new-name, normalize-space($e))
+      and not($e/*)) then guide:glossary-heading($new-name, $e)
     (: Convert elements that should be converted :)
     else if ($new-name) then element { $new-name } {
       guide:attributes($e/@*),
