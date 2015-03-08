@@ -24,7 +24,7 @@ declare %t:case function t:guide-296()
       '/pubs/3.2/books/install.pdf',
       $BASE||'/pubs/3.2/books/install.pdf',
       ''),
-    '/controller/301redirect.xqy?path=//localhost:8809/guide/installation.pdf')
+    '/controller/301redirect.xqy?path=//localhost:8011/guide/installation.pdf')
 };
 
 declare %t:case function t:guide-299()

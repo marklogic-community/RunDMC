@@ -19,10 +19,11 @@ return
    else ()
    ,
    let $doc := u:get-doc($path)
-   return if ($doc) 
-    then 
-        let $_ := xdmp:add-response-header("Content-Length", string(u:get-doc-length($path)))
-        return $doc 
-    else 
+   let $size := u:get-doc-length($path, $doc)
+   return if ($doc)
+    then
+        let $_ := xdmp:add-response-header("Content-Length", string($size))
+        return $doc
+    else
         (xdmp:set-response-code(404, "Not found"), "404 Not Found")
 )

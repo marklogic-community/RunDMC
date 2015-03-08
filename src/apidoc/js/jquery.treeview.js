@@ -27,14 +27,6 @@
 		replaceClass: function(c1, c2) {
 			return this.filter('.' + c1).removeClass(c1).addClass(c2).end();
 		},
-		hoverClass: function(className) {
-			className = className || "hover";
-			return this.hover(function() {
-				$(this).addClass(className);
-			}, function() {
-				$(this).removeClass(className);
-			});
-		},
 		heightToggle: function(animated, callback) {
 			animated ?
 				this.animate({ height: "toggle" }, animated, callback) :
@@ -65,18 +57,16 @@
 			// return all items with sublists
 			return this.filter(":has(>ul)");
 		},
+
 		applyClasses: function(settings, toggler) {
 			// TODO use event delegation
-     // EDL: Breaking into two steps to solve problem with IE
-     var items =
-			this.filter(":has(>ul):not(:has(>a))").find(">span").unbind("click.treeview").bind("click.treeview", function(event) {
+      var items = this.filter(":has(>ul):not(:has(>a))").find(">span");
+
+      items.unbind("click.treeview").bind("click.treeview", function(event) {
 				// don't handle click events on children, eg. checkboxes
 				if ( this == event.target )
 					toggler.apply($(this).next());
-			})/*.add( $("a", this) ).hoverClass()*/; // EDL: Disabled for IE
-
-     // EDL: only apply this last function if we're *not* in IE
-     if (!$.browser.msie) { items.add( $("a", this) ).hoverClass(); }
+			});
 
 			if (!settings.prerendered) {
 				// handle closed ones first
@@ -105,6 +95,7 @@
 			// apply event to hitarea
 			this.find("div." + CLASSES.hitarea).click( toggler );
 		},
+
 		treeview: function(settings) {
 			
 			settings = $.extend({
@@ -173,64 +164,29 @@
 			}
 			this.data("toggler", toggler);
 			
-			function serialize() {
-				function binary(arg) {
-					return arg ? 1 : 0;
-				}
-				var data = [];
-				branches.each(function(i, e) {
-					data[i] = $(e).is(":has(>ul:visible)") ? 1 : 0;
-				});
-				$.cookie(settings.cookieId, data.join(""), settings.cookieOptions );
-			}
-			
-			function deserialize() {
-				var stored = $.cookie(settings.cookieId);
-				if ( stored ) {
-					var data = stored.split("");
-					branches.each(function(i, e) {
-						$(e).find(">ul")[ parseInt(data[i]) ? "show" : "hide" ]();
-					});
-				}
-			}
-			
 			// add treeview class to activate styles
 			this.addClass("treeview");
 			
 			// prepare branches and find all tree items with child lists
 			var branches = this.find("li").prepareBranches(settings);
 			
-			switch(settings.persist) {
-			case "cookie":
-				var toggleCallback = settings.toggle;
-				settings.toggle = function() {
-					serialize();
-					if (toggleCallback) {
-						toggleCallback.apply(this, arguments);
-					}
-				};
-				deserialize();
-				break;
-			case "location":
-				var current = this.find("a").filter(function() {
-					return this.href.toLowerCase() == location.href.toLowerCase();
-				});
-				if ( current.length ) {
-					// TODO update the open/closed classes
-          // EDL: make sure we show the <ul>, not my custom expand/collapse buttons
-					//var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
-					  var items = current.addClass("selected").parents("ul, li").add( current.nextAll("ul") ).show();
-					if (settings.prerendered) {
-						// if prerendered is on, replicate the basic class swapping
-						items.filter("li")
-							.swapClass( CLASSES.collapsible, CLASSES.expandable )
-							.swapClass( CLASSES.lastCollapsible, CLASSES.lastExpandable )
-							.find(">.hitarea")
-								.swapClass( CLASSES.collapsibleHitarea, CLASSES.expandableHitarea )
-								.swapClass( CLASSES.lastCollapsibleHitarea, CLASSES.lastExpandableHitarea );
-					}
+			var current = this.find("a").filter(function() {
+				return this.href.toLowerCase() == location.href.toLowerCase();
+			});
+			if ( current.length ) {
+				// TODO update the open/closed classes
+        // EDL: make sure we show the <ul>, not my custom expand/collapse buttons
+				//var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
+				var items = current.addClass("selected").parents("ul, li").add( current.nextAll("ul") ).show();
+				if (settings.prerendered) {
+					// if prerendered is on, replicate the basic class swapping
+					items.filter("li")
+						.swapClass( CLASSES.collapsible, CLASSES.expandable )
+						.swapClass( CLASSES.lastCollapsible, CLASSES.lastExpandable )
+						.find(">.hitarea")
+						.swapClass( CLASSES.collapsibleHitarea, CLASSES.expandableHitarea )
+						.swapClass( CLASSES.lastCollapsibleHitarea, CLASSES.lastExpandableHitarea );
 				}
-				break;
 			}
 			
 			branches.applyClasses(settings, toggler);
@@ -242,7 +198,7 @@
 			}
 			
 			return this;
-		}
+		} // treeview
 	});
 	
 	// classes used by the plugin

@@ -20,8 +20,9 @@ import module namespace stp="http://marklogic.com/rundmc/api/setup"
   at "/apidoc/setup/setup.xqm";
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc" ;
-
 declare namespace xhtml="http://www.w3.org/1999/xhtml" ;
+
+declare option xdmp:output "indent = no";
 
 declare variable $ANCHOR-ID-FROM-HREF-SEEN := map:map() ;
 
@@ -115,23 +116,11 @@ as xs:boolean
   (: Use instance of element as much as possible: faster than self axis. :)
   (: For when a note contains a list :)
   $e instance of element(Number)
+  or $e instance of element(Number1)
+  or $e instance of element(NumberA)
   or $e instance of element(Body-bullet)
-  (: Very expensive so try it last. :)
-  or ($e instance of element(Note)
-    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
-};
-
-declare function guide:starts-or-ends-list(
-  $e as element())
-as xs:boolean
-{
-  (: Use instance of element as much as possible: faster than self axis. :)
-  $e instance of element(Body-bullet)
-  or $e instance of element(Number)
-  or $e instance of element(EndList-root)
-  (: For when a note contains a list :)
-  or ($e instance of element(Body) and not($e/IMAGE))
-  (: Very expensive so try it last. :)
+  or $e instance of element(Body-bullet-2)
+  (: Expensive, so try it last. :)
   or ($e instance of element(Note)
     and $e/following-sibling::*[1] instance of element(Body-bullet-2))
 };
@@ -143,6 +132,24 @@ as xs:boolean
   (: Use instance of element as much as possible: faster than self axis. :)
   $e instance of element(EndList-root)
   or ($e instance of element(Body) and not($e/IMAGE))
+};
+
+declare function guide:starts-or-ends-list(
+  $e as element())
+as xs:boolean
+{
+  (: Use instance of element as much as possible: faster than self axis. :)
+  $e instance of element(Body-bullet)
+  or $e instance of element(Body-bullet-2)
+  or $e instance of element(Number)
+  or $e instance of element(Number1)
+  or $e instance of element(NumberA)
+  or $e instance of element(EndList-root)
+  (: For when a note contains a list :)
+  or ($e instance of element(Body) and not($e/IMAGE))
+  (: Very expensive so try it last. :)
+  or ($e instance of element(Note)
+    and $e/following-sibling::*[1] instance of element(Body-bullet-2))
 };
 
 declare function guide:is-before-end-of-list(
@@ -240,7 +247,7 @@ as element()?
 
 (: This flattens the structure of the raw XML. :)
 declare function guide:flatten($n as node())
-as node()?
+as node()*
 {
   typeswitch($n)
   (: These container elements apparently add no value for list detection.
@@ -369,32 +376,30 @@ as xs:string
 };
 
 declare function guide:anchor(
-  $raw-docs as document-node()*,
-  $fully-resolved-top-level-heading-references as xs:string*,
-  $e as element(A))
-as element(a)?
+  $a as element(A),
+  $uri as xs:string,
+  $raw as document-node()+,
+  $references as xs:string+)
+as element(a)*
 {
   (: Since we rewrite all links to point to the last anchor,
    : it is safe to drop any anchors that is not last.
    :)
-  if ($e[@ID]/following-sibling::A) then ()
+  if ($a[@ID]/following-sibling::A) then ()
   (: Default :)
   else element a {
     (: Anchors may have @ID or @href or both. :)
-    $e/@ID/attribute id { guide:full-anchor-id(.) },
-    $e/@href/attribute href {
-      guide:anchor-href(
-        $raw-docs,
-        $fully-resolved-top-level-heading-references,
-        .) },
-    guide:link-content($e) }
+    $a/@ID/attribute id { guide:full-anchor-id(.) },
+    $a/@href/attribute href {
+      guide:anchor-href($raw, $references, .) },
+    guide:link-content($a) }
 };
 
 (: Extract one document per message. :)
 declare function guide:convert-messages(
   $uri as xs:string,
   $guide as element(chapter))
-as node()+
+as element()+
 {
   if (not($stp:DEBUG)) then () else stp:debug('guide:convert-messages', ($uri)),
   let $base-uri := replace(
@@ -420,40 +425,30 @@ as node()+
       $message })
 };
 
-(: This is for development work only, so efficiency is not paramount. :)
-declare function guide:convert-uri(
-  $version as xs:string,
-  $uri as xs:string)
-as document-node()
-{
-  let $guide-docs := raw:guide-docs($version)
-  return cprof:xslt-invoke(
-    '/apidoc/setup/convert-guide.xsl',
-    $guide-docs[
-      raw:target-guide-doc-uri(.) eq $uri] treat as node(),
-    map:new(
-      (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $guide-docs),
-        map:entry(
-          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES', 'DUMMY'))))
-};
-
 declare function guide:convert(
-  $raw-docs as node()+,
-  $fully-resolved-top-level-heading-references as xs:string+,
+  $raw-docs as document-node()+,
+  $references as xs:string+,
   $uri as xs:string,
   $guide as document-node())
-as node()
+as element()
 {
-  (: This XSLT is slow. :)
-  cprof:xslt-invoke(
-    "/apidoc/setup/convert-guide.xsl", $guide,
-    map:new(
-      (map:entry('OUTPUT-URI', $uri),
-        map:entry('RAW-DOCS', $raw-docs),
-        map:entry(
-          'FULLY-RESOLVED-TOP-LEVEL-HEADING-REFERENCES',
-          $fully-resolved-top-level-heading-references))))
+  (: This tends to be slow. :)
+  let $content := (
+    if ($guide/guide) then () else guide:transform(
+      guide:normalize($guide, contains($uri, '/guide/messages/'))/*/XML,
+      $uri, $raw-docs, $references))
+  return (
+    $guide/(guide|chapter)
+    ! element { node-name(.) } {
+      namespace::*,
+      attribute xml:base { $uri },
+      @*,
+      (guide-title|title) ! (
+        .,
+        stp:suggest(.)),
+      guide:metadata(.),
+      chapter-list,
+      stp:node-to-xhtml($content) })
 };
 
 (: The input documents are consolidated raw guides,
@@ -725,6 +720,9 @@ as element()*
 };
 
 (: Capture flat sections in nested structure.
+ : This replaces the old XSL capture-sections code.
+ : Input will be something like a guide chapter in consolidated raw form.
+ :
  : Turn something like this
  : <Heading-1>...
  : Into something like this:
@@ -771,28 +769,406 @@ as element()*
       guide:sections($level, $list, $heading-positions)))
 };
 
-(: Capture flat sections in nested structure.
- : This replaces the old XSL capture-sections code.
- : Input will be something like a guide chapter in consolidated raw form.
+declare function guide:list-item-p($n as node())
+as xs:boolean
+{
+  $n instance of element(Number)
+  or $n instance of element(Number1)
+  or $n instance of element(NumberA)
+  or $n instance of element(Body-bullet)
+  or $n instance of element(Body-bullet-2)
+};
+
+(: Before declaring the end of the list,
+ : check for notes interleaved with list items.
  :)
-declare function guide:sections(
-  $raw as element())
+declare function guide:list-end-p(
+  $n as node(),
+  $qname as xs:QName)
+as xs:boolean
+{
+  $n instance of element(EndList-root)
+  or (not(guide:list-item-p($n)) and not(
+      ($n instance of element(Body-indent)
+        or $n instance of element(Code)
+        or $n instance of element(Graphic)
+        or $n instance of element(GraphicIndent)
+        or $n instance of element(Note)
+        or $n instance of element(TABLE)
+        or $n instance of element(TableAnchor)
+        or $n instance of element(Warning))))
+};
+
+declare function guide:list-body(
+  $list as node()+,
+  $context as xs:string)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-body',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context))),
+    (: We know that $list starts with a $context element,
+     : and that is an item name. We know that the list goes to the end.
+     : But the item name may change, representing a nested list,
+     : and the list may continue after the nested content.
+     :)
+  let $first := $list[1]
+  let $qname := node-name($first)
+  let $next := (subsequence($list, 2)[node-name(.) = $qname])[1]
+  let $body := if (not($next)) then $list else $list[. << $next]
+  let $rest := (
+    if (not($next)) then ()
+    else subsequence($list, 1 + count($body)))
+  return (
+    if (not($stp:DEBUG)) then () else stp:debug(
+      'guide:list-body',
+      ('first', xdmp:describe($first),
+        'next', xdmp:describe($next),
+        'body', xdmp:describe($body),
+        'rest', xdmp:describe($rest))),
+    guide:list-through($first, $context, subsequence($body, 2)),
+    if (not($rest)) then ()
+    else guide:list-body($rest, $context))
+};
+
+declare function guide:list-wrap(
+  $list as node()+,
+  $context as xs:string)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-wrap',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context))),
+  if (empty($list)) then () else element {
+    switch($context)
+    case 'Number'
+    case 'Number1'
+    case 'NumberA' return 'ol'
+    default return "ul" }
+  {
+    guide:list-body($list, $context)
+  }
+};
+
+declare function guide:list-through(
+  $n as node(),
+  $context as xs:string?,
+  $body as node()*)
+as node()
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:list-through',
+    ('n', xdmp:describe($n),
+      'context', xdmp:describe($context))),
+  typeswitch($n)
+  case element() return element {
+    typeswitch($n)
+    case element(Body-bullet) return 'li'
+    case element(Body-bullet-2) return 'li'
+    case element(Number) return 'li'
+    case element(Number1) return 'li'
+    case element(NumberA) return 'li'
+    default return node-name($n) }
+  {
+    $n/@*,
+    guide:lists(($n/node(), $body), $context) }
+  default return $n
+};
+
+(: Capture flat and nested lists in nested structure.
+ : This replaces the old XSL capture-lists code.
+ : Input will be something like a guide chapter in consolidated raw form,
+ : with its sections already captured.
+ :)
+declare function guide:lists(
+  $list as node()*,
+  $context as xs:string?)
+as node()*
+{
+  if (empty($list)) then ()
+  else if (not($list[*])) then $list else
+  let $first := ($list[guide:list-item-p(.)])[1]
+  let $pre := if (not($first)) then $list else $list[. << $first]
+  let $body := (
+    if (not($first)) then () else subsequence($list, 1 + count($pre)))
+  let $first-qname := node-name($first)
+  let $first-not := (
+    if (not($body)) then ()
+    else $body[guide:list-end-p(., $first-qname)])[1]
+  let $post := (
+    if (not($first-not)) then ()
+    else ($first-not, $body[. >> $first-not]))
+  let $count-body := count($body)
+  let $count-post := count($post)
+  let $body := (
+    if (not($post)) then $body
+    else subsequence($body, 1, $count-body - $count-post))
+  let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:lists#2',
+    ('list', xdmp:describe($list),
+      'context', xdmp:describe($context),
+      'first', xdmp:describe($first),
+      'first-not', xdmp:describe($first-not),
+      'pre', xdmp:describe($pre),
+      'body', xdmp:describe($body),
+      'post', xdmp:describe($post),
+      'count-body', $count-body, 'count-post', $count-post))
+  return (
+    (: We know the pre has no list content, and body does.
+     : But post might too.
+     :)
+    guide:list-through($pre, $context, ()),
+    if (not($body)) then ()
+    else guide:list-wrap($body, local-name($first)),
+    guide:lists($post, $context))
+};
+
+declare function guide:lists($list as node()*)
+as node()*
+{
+  if (empty($list)) then ()
+  (: For stable XPath ordering we need to wrap the output. :)
+  else element guide { guide:lists($list, ()) }/node()
+};
+
+declare function guide:code-p($n as node())
+as xs:boolean
+{
+  $n instance of element(Code)
+};
+
+declare function guide:code-wrap(
+  $list as node()+)
+as node()*
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:code-wrap',
+    ('list', xdmp:describe($list))),
+  if (empty($list)) then () else
+  element Code {
+    (: Everything in $list is a Code element.
+     : Code will never be nested.
+     : There never seem to be any attributes.
+     : Follow each code block with a newline.
+     : #449 may include formatting structure.
+     :)
+    guide:code-through($list/node()) }
+};
+
+declare function guide:code-through(
+  $n as node())
+as node()
+{
+  if (not($stp:DEBUG)) then () else stp:debug(
+    'guide:code-through',
+    ('n', xdmp:describe($n))),
+  typeswitch($n)
+  case element() return element { node-name($n) } {
+    $n/@*,
+    guide:code($n/node()) }
+  default return $n
+};
+
+(: Join sequences of code examples.
+ : This replaces the old XSL merge-code-examples code.
+ : Input will be something like a guide chapter in consolidated raw form,
+ : with its sections and lists already captured.
+ :)
+declare function guide:code(
+  $list as node()*)
+as node()*
+{
+  if (empty($list)) then () else
+  let $first := ($list[guide:code-p(.)])[1]
+  return (
+    if (not($first)) then guide:code-through($list) else
+    let $pre := if (not($first)) then $list else $list[. << $first]
+    let $body := (
+      if (not($first)) then () else subsequence($list, 1 + count($pre)))
+    let $first-not := (
+      if (not($body)) then ()
+      else ($body[not(guide:code-p(.))])[1])
+    let $post := (
+      if (not($first-not)) then ()
+      else ($first-not, $body[. >> $first-not]))
+    let $count-body := count($body)
+    let $count-post := count($post)
+    let $body := (
+      if (not($post)) then $body
+      else subsequence($body, 1, $count-body - $count-post))
+    let $_ := if (not($stp:DEBUG)) then () else stp:debug(
+      'guide:code#2',
+      ('list', count($list), xdmp:describe($list),
+        'first', xdmp:describe($first),
+        'first-not', xdmp:describe($first-not),
+        'pre', count($pre), xdmp:describe($pre),
+        'body', count($body), xdmp:describe($body),
+        'post', count($post), xdmp:describe($post),
+        'count-body', $count-body, 'count-post', $count-post))
+    return (
+      (: We know the pre has no code content, and body does.
+       : But post might too.
+       :)
+      guide:code-through($pre),
+      if (not($body)) then ()
+      else guide:code-wrap($body),
+      guide:code($post)))
+};
+
+(: Perform various normalizations on guide XML. :)
+declare function guide:normalize(
+  $root as document-node(),
+  $is-messages as xs:boolean)
+as document-node()
+{
+  document {
+    $root/* ! element { node-name(.) } {
+      @*,
+      (: Preserve input URI. :)
+      base-uri(.) ! attribute xml:base { . },
+      XML ! element XML {
+        @*,
+        (: Messages tend not to have code samples or lists,
+         : which saves some work.
+         :)
+        if ($is-messages) then guide:sections(1, guide:flatten(.)/*)
+        else guide:code(
+          guide:lists(
+            guide:sections(1, guide:flatten(.)/*))) } } }
+};
+
+declare function guide:transform-heading-2message(
+  $e as element(Heading-2MESSAGE),
+  $uri as xs:string)
+as element()+
+{
+  let $id := normalize-space($e)
+  let $href := guide:heading-2message-href($uri, $id)
+  (: Beware of changing this structure without updating
+   : the toc.xqm toc:guide-* functions, which depend on it.
+   :)
+  return (
+    <a id="{ $id }"/>,
+    <h3><a href="{ $href }" class="sectionLink">{ $id }</a></h3>)
+};
+
+declare function guide:glossary-heading(
+  $new-name as xs:string,
+  $term as xs:string)
+as element()+
+{
+  (: #446 Wrap glossary headings in an extra link,
+   : so we can link by glossary term.
+   :)
+  element a {
+    (: Enforce non-empty string. :)
+    attribute id { $term[.] treat as xs:string } },
+  element a {
+    attribute href { '#'||$term },
+    element { $new-name } { $term } }
+};
+
+declare function guide:transform-element(
+  $e as element(),
+  $uri as xs:string,
+  $raw as document-node()+,
+  $references as xs:string+)
+as node()*
+{
+  let $local-name := local-name($e)
+  let $is-heading := starts-with($local-name, 'Heading-')
+  let $new-name := if ($is-heading) then () else guide:new-name($e)
+  return (
+    (: Heading-* but not a MESSAGE :)
+    if ($is-heading) then guide:heading-anchor($e, $local-name)
+    else if ($e instance of element(Bold)
+      and ends-with($uri, '/glossary.xml')
+      and not($e/*)) then guide:glossary-heading(
+      $new-name, normalize-space($e))
+    (: Convert elements that should be converted :)
+    else if ($new-name) then element { $new-name } {
+      guide:attributes($e/@*),
+      guide:transform($e/node(), $uri, $raw, $references) }
+    (: No name means do not copy. But keep processing. :)
+    else guide:transform($e/node(), $uri, $raw, $references))
+};
+
+declare function guide:transform-through(
+  $e as element(),
+  $uri as xs:string,
+  $raw as document-node()+,
+  $references as xs:string+)
 as element()
 {
-  (: First we strip out some unhelpful hierarchy. :)
-  let $flat as element() := guide:flatten($raw)
-  return element { node-name($flat) } {
-    $flat/namespace::*,
-    $flat/@*,
-    $flat/node() ! (
-      typeswitch(.)
-      case element(XML) return element XML {
-        namespace::*,
-        (: Preserve input URI. :)
-        base-uri($raw) ! attribute xml:base { . },
-        @*,
-        guide:sections(1, *) }
-      default return .) }
+  element { node-name($e) } {
+    $e/@*,
+    guide:transform($e/node(), $uri, $raw, $references)
+  }
+};
+
+declare function guide:transform(
+  $n as node(),
+  $uri as xs:string,
+  $raw as document-node()+,
+  $references as xs:string+)
+as node()*
+{
+  typeswitch($n)
+  case document-node() return document {
+    guide:transform($n/node(), $uri, $raw, $references) }
+  case element(A) return guide:anchor($n, $uri, $raw, $references)
+  (: Do not convert a single Body or CellBody child inside a CELL to a p.
+   :)
+  case element(Body) return (
+    if (count($n/parent::CELL/Body, 2) eq 1) then guide:transform(
+      $n/node(), $uri, $raw, $references)
+    else guide:transform-element($n, $uri, $raw, $references))
+  case element(CellBody) return (
+    if (count($n/parent::CELL/CellBody, 2) eq 1) then guide:transform(
+      $n/node(), $uri, $raw, $references)
+    else guide:transform-through($n, $uri, $raw, $references))
+  case element(Heading-2MESSAGE) return guide:transform-heading-2message(
+    $n, $uri)
+  case element(IMAGE) return element img { attribute src { $n/@href } }
+  case element(TITLE) return ()
+  (: These lists are already well-structured. :)
+  case element(Bulleted) return element li {
+    guide:transform($n/Bulleted, $uri, $raw, $references) }
+  case element(BulletedList) return element ul {
+    guide:transform($n/Bulleted, $uri, $raw, $references) }
+  case element(Hyperlink) return guide:transform($n/*, $uri, $raw, $references)
+  case element(Note) return element p {
+    attribute class { "note" },
+    guide:transform($n/node(), $uri, $raw, $references) }
+  case element(Warning) return element p {
+    attribute class { "warning" },
+    guide:transform($n/node(), $uri, $raw, $references) }
+  case element(Simple-Heading-3) return element h4 {
+    (: Cause and Response headings for messages guide :)
+    normalize-space($n) }
+  case element(code) return guide:transform-through(
+    $n, $uri, $raw, $references)
+  case element(div) return guide:transform-through(
+    $n, $uri, $raw, $references)
+  case element(li) return guide:transform-through(
+    $n, $uri, $raw, $references)
+  case element(ol) return guide:transform-through(
+    $n, $uri, $raw, $references)
+  case element(ul) return guide:transform-through(
+    $n, $uri, $raw, $references)
+  case element(underline) return element span {
+    attribute class { 'underline' },
+    guide:transform-through($n, $uri, $raw, $references) }
+  case element(pagenum) return ()
+  case element() return guide:transform-element(
+    $n, $uri, $raw, $references)
+  (: The docapp code strips leading line breaks (and any preceding space)
+   : from each text node. Let's try that...
+   :)
+  case text() return text { replace($n, '^\s*\n', '') }
+  default return $n
 };
 
 (: apidoc/setup/guide.xqm :)

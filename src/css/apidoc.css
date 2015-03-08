@@ -280,7 +280,7 @@ select#toc_select {
     margin: 8px 0 0 16px;
     width: 50%;
     /* For browsers that support calc. */
-    width: calc(100% - 112px);
+    width: calc(100% - 124px);
 }
 .config-filter-close-button {
     display: none;
@@ -640,6 +640,11 @@ input.function_view {
 span.highlightWidget {
     margin: 0;
     right: 16px;
+}
+
+#page_content #comments .action {
+    right: 48px;
+    top: 16px !important;
 }
 
 /* On small screens, hide TOC and make other adjustments.

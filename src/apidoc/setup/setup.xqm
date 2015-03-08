@@ -28,8 +28,9 @@ declare variable $DEBUG := false() ;
 
 declare variable $FIXUP-HREF-PAT := '^#([\w-]+[:\.]\w.+)$' ;
 
-declare variable $LEGAL-VERSIONS as xs:string+ := u:get-doc(
-  "/apidoc/config/server-versions.xml")/*/version/@number ;
+declare variable $LEGAL-VERSIONS as xs:string+ := (
+  (u:get-doc("/apidoc/config/server-versions.xml") treat as node())
+  /*/version/@number) ;
 
 declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
 

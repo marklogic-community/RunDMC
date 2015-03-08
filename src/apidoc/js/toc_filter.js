@@ -3,10 +3,11 @@
 /*jslint node: true */
 /* global $ */
 /* global CodeMirror */
+/* global LOG */
 /* global React */
 /* global document */
+/* global scrollIntoView */
 /* global window */
-/* global LOG */
 'use strict';
 
 var breadcrumbNode = null;
@@ -86,18 +87,20 @@ function tocInitGlobals() {
   // Initialize values from page.xsl content.
   functionPageBucketId = $("#functionPageBucketId");
   if (!functionPageBucketId.length) LOG.warn(
-    "No functionPageBucketId!");
+    "[tocInitGlobals] No functionPageBucketId!");
   functionPageBucketId = functionPageBucketId.val();
 
   isUserGuide = $("#isUserGuide");
   if (!isUserGuide.length) LOG.warn(
-    "No isUserGuide!");
+    "[tocInitGlobals] No isUserGuide!");
   isUserGuide = isUserGuide.val() === "true";
 
   tocSectionLinkSelector = $("#tocSectionLinkSelector");
   if (!tocSectionLinkSelector.length) LOG.warn(
-    "No tocSectionLinkSelector!");
+    "[tocInitGlobals] No tocSectionLinkSelector node!");
   tocSectionLinkSelector = tocSectionLinkSelector.val();
+  if (!tocSectionLinkSelector.length) LOG.warn(
+    "[tocInitGlobals] No tocSectionLinkSelector!");
 }
 
 function tocInit() {
@@ -271,7 +274,7 @@ function searchTOC(filter, tocRoot) {
 }
 
 function loadAllSubSections(tocRoot) {
-  //LOG.debug('loadAllSubSections', tocRoot);
+  LOG.debug('loadAllSubSections', tocRoot);
   if (tocRoot.hasClass("startedLoading")) return;
 
   tocRoot.find(".hasChildren").each(loadTocSection);
@@ -292,23 +295,23 @@ function loadTocSection(index, tocSection) {
 }
 
 // Called only from updateTocForSelection
-function waitToShowInTOC(tocSection, sleepMillis) {
-  LOG.debug("waitToShowInTOC", tocSection[0].id, sleepMillis);
+function waitToShowInTOC($tocSection, sleepMillis) {
+  LOG.debug("waitToShowInTOC", $tocSection[0].id, sleepMillis);
   if (!sleepMillis) sleepMillis = 125;
 
   // Repeatedly check to see if the TOC section has finished loading
   // Once it has, highlight the current page
-  if (! tocSection.hasClass("loaded")) {
+  if (! $tocSection.hasClass("loaded")) {
     LOG.debug("waitToShowInTOC still waiting for",
-              tocSection[0].id, sleepMillis);
+              $tocSection[0].id, sleepMillis);
     // back off and retry
     setTimeout(function(){
-      waitToShowInTOC(tocSection, 2 * sleepMillis); },
+      waitToShowInTOC($tocSection, 2 * sleepMillis); },
                sleepMillis);
     return;
   }
 
-  LOG.debug("waitToShowInTOC loaded", tocSection);
+  LOG.debug("waitToShowInTOC loaded", $tocSection);
 
   clearTimeout(waitToShowInTOC);
 
@@ -338,7 +341,7 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
   LOG.debug("waitToShowInTOC filtering for",
             locationHref, locationHrefNoVersion);
-  var current = tocSection.find("a").filter(function() {
+  var current = $tocSection.find("a").filter(function() {
     // TODO can we stop this after the first match?
     var thisHref = this.href.toLowerCase();
     var hrefToCompare = stripChapterFragment ?
@@ -371,21 +374,32 @@ function waitToShowInTOC(tocSection, sleepMillis) {
 
 // Called via (edited) pjax module on popstate
 function updateTocForUrlFragment(pathname, hash) {
-  LOG.debug('updateTocForUrlFragment', pathname, hash, isUserGuide);
+  LOG.debug('[updateTocForUrlFragment]', pathname, hash, isUserGuide);
 
   // Only use the fragment part to user guide sections.
   // Otherwise use the pathname alone, for functions etc.
   var effectiveHash;
   if (!isUserGuide) effectiveHash = "";
-  else if (hash === "") effectiveHash = "#chapter";
+  else if (hash === "") effectiveHash = "";
   else effectiveHash = hash;
 
   // IE doesn't include the "/" at the beginning of the pathname...
   var fullLink = (pathname.indexOf("/") === 0 ? pathname :
                   "/" + pathname) + effectiveHash;
 
-  LOG.debug("updateTocForUrlFragment fullLink", fullLink);
+  LOG.debug("[updateTocForUrlFragment] fullLink", fullLink);
   showInTOC($("#api_sub a[href='" + fullLink + "']"));
+
+  // #379 also scroll body. When popstate fires the DOM may not be ready.
+  if (hash && hash !== "") {
+    // Defer scrolling until the end of the current event loop,
+    // so the previous page is ready.
+    setTimeout(function() {
+      var selector = 'a[id="' + hash.substring(1) + '"]';
+      LOG.debug("[updateTocForUrlFragment]", "scrolling body to",
+                hash, selector);
+      scrollIntoView(selector, '#page_content'); }, 0);
+  }
 }
 
 // Expands and loads (if necessary) the part of the TOC containing the given link
@@ -677,6 +691,14 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
   $configFilter.keyup(function(e) {
     // clear any existing idle timer
     clearTimeout($.data(this, 'timer'));
+    // TODO Is the TOC fully loaded?
+    var loading = $(".apidoc_tree:visible .startedLoading");
+    if (loading.length) {
+      LOG.warn("[tocInitFilter]", "keyup",
+               "tocSection not loaded - will retry", loading);
+      setTimeout(function() { $configFilter.trigger('keyup'); }, 0);
+      return;
+    }
     var currentFilterText = $(this).val();
     LOG.debug("filter not idle",
               new Date(), currentFilterText);

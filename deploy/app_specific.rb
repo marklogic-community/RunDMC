@@ -128,9 +128,11 @@ class ServerConfig
       zip = gets.strip
     end
 
-    if (!File.exist? zip)
-      @logger.error "No file found at #{zip}"
-      exit!
+    if @properties['ml.server'] == "localhost"
+      if !File.exist? zip
+        @logger.error "No file found at #{zip}"
+        exit!
+      end
     end
 
     if @properties['ml.build-clean'] != ""
@@ -141,25 +143,9 @@ class ServerConfig
       clean = gets.strip.match(/(true|t|yes|y|1)$/i) != nil
     end
 
-    xsd_dir = ""
-    if (File.exist? "/opt/MarkLogic")
-      # Linux
-      xsd_dir = "/opt/MarkLogic/Config"
-    elsif (File.exist? ENV['HOME'])
-      # Mac
-      xsd_dir = "#{ENV['HOME']}/Library/MarkLogic/Config"
-    elsif (File.exist?)
-      # Windows
-      xsd_dir = "MarkLogic/Config"
-    else
-      abort("Cannot find the directory with XSDs")
-    end
-    @logger.info("XSD directory is #{xsd_dir}")
-
     data = {
       "version" => version,
       "zip" => zip,
-      "help-xsd-dir" => xsd_dir,
       "clean" => clean }
 
     actions = nil
