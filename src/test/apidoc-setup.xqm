@@ -253,8 +253,71 @@ declare %t:case function t:fixup-href-issue-324()
       $VERSION,
       element a {
         attribute href { '#xdmp:spawn#spawnresultex' } }/@href,
-      'xquery'),
+      $api:MODE-XPATH),
     attribute href { './xdmp:spawn#spawnresultex' })
+};
+
+declare %t:case function t:fixup-href-xpath-fragment()
+{
+  document {
+    element apidoc:module {
+      (: Target function. :)
+      element apidoc:function {
+        attribute name { 'eval' },
+        attribute lib { "xdmp" } },
+      (: Link from somewhere else in the same module. :)
+      element a {
+        attribute href {
+          '#xdmp:eval#eval-ex4' } } } }
+  ! at:equal(
+    stp:fixup-attribute-href(
+      $VERSION,
+      apidoc:module/a/@href treat as node(),
+      $api:MODE-REST),
+    attribute href { './xdmp:eval#eval-ex4' })
+};
+
+declare %t:case function t:fixup-href-REST-fragment-only-issue-466()
+{
+  document {
+    element apidoc:module {
+      (: Target function. :)
+      element apidoc:function {
+        attribute http-verb { 'POST' },
+        attribute name { '/manage/v2/databases/{id|name}' },
+        attribute lib { "manage" },
+        (: Link within the same page. :)
+        element a {
+          attribute href {
+            '#ValidateBackup' } } } } }
+  ! at:equal(
+    stp:fixup-attribute-href(
+      $VERSION,
+      apidoc:module/apidoc:function/a/@href treat as node(),
+      $api:MODE-REST),
+    attribute href { '#ValidateBackup' })
+};
+
+declare %t:case function t:fixup-href-REST-with-fragment-issue-466()
+{
+  document {
+    element apidoc:module {
+      (: Target function. :)
+      element apidoc:function {
+        attribute http-verb { 'POST' },
+        attribute name { '/manage/v2/databases/{id|name}' },
+        attribute lib { "manage" } },
+      (: Link from somewhere else in the same module. :)
+      element a {
+        attribute href {
+          '#POST:/manage/v2/databases/{id|name}#ValidateBackup' } } } }
+  ! at:equal(
+    stp:fixup-attribute-href(
+      $VERSION,
+      apidoc:module/a/@href treat as node(),
+      $api:MODE-REST),
+    attribute href {
+      './REST/POST/manage/v2/databases/[id-or-name]#ValidateBackup' })
 };
 
 declare %t:case function t:schema-info-description()
