@@ -7,7 +7,7 @@ All class names prefixed with 'se' and only apply
 within an element with the '.se-question-summary' class.
 */
 .se-question-summary {
-    font-family: Arial, Helvetica, Sans-serif;
+    font-family: 'HelveticaNeueW01-55Roma', Arial, Helvetica, Sans-serif;
     border-bottom: 1px dotted #999;
     overflow: hidden;
     padding: 10px 0px;
@@ -30,19 +30,19 @@ within an element with the '.se-question-summary' class.
 }
 
 .se-question-summary h1 {
-    font-family: Arial, Helvetica, Sans-serif;
+    font-family: 'HelveticaNeueW01-55Roma', Arial, Helvetica, Sans-serif;
     font-weight: bold;
     font-size: 170%;
     margin-bottom: 7px;
 }
 .se-question-summary h2 {
-    font-family: Arial, Helvetica, Sans-serif;
+    font-family: 'HelveticaNeueW01-55Roma', Arial, Helvetica, Sans-serif;
     font-size: 140%;
     font-weight: bold;
     margin-bottom: 7px;
 }
 .se-question-summary h3 {
-    font-family: Arial, Helvetica, Sans-serif;
+    font-family: 'HelveticaNeueW01-55Roma', Arial, Helvetica, Sans-serif;
     font-size: 110%;
     font-weight: bold;
     margin-bottom: 5px;
