@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /media/apiTOC/
 Disallow: /search
 Allow: /search/
 Allow: /search:*
