@@ -17,6 +17,7 @@
   <namespace lib="flexrep" uri="http://marklogic.com/xdmp/flexible-replication"/>
   <namespace lib="fn" uri="http://www.w3.org/2005/xpath-functions"/>
   <namespace lib="geo" uri="http://marklogic.com/geospatial"/>
+  <namespace lib="geojson" uri="http://marklogic.com/geospatial/geojson"/>
   <namespace lib="georss" uri="http://www.georss.org/georss"/>
   <namespace lib="gml" uri="http://www.opengis.net/gml"/>
   <namespace lib="hadoop" uri="http://marklogic.com/hadoop"/>
