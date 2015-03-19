@@ -626,6 +626,7 @@
 -->
       </element-attribute-word-lexicons>
     </database>
+
     <!--Create Application Modules Database-->
     <database>
       <database-name>@ml.modules-db</database-name>
@@ -655,9 +656,21 @@
       <one-character-searches>false</one-character-searches>
       <uri-lexicon>true</uri-lexicon>
       <collection-lexicon>false</collection-lexicon>
+      <!-- For src/model/data-access.xqy ml:get-cached-navigation -->
       <directory-creation>automatic</directory-creation>
-      <maintain-last-modified>false</maintain-last-modified>
+      <maintain-last-modified>true</maintain-last-modified>
+      <maintain-directory-last-modified>true</maintain-directory-last-modified>
+      <range-element-indexes>
+        <range-element-index>
+          <namespace-uri>http://marklogic.com/xdmp/property</namespace-uri>
+          <localname>last-modified</localname>
+          <scalar-type>dateTime</scalar-type>
+          <collation/>
+          <range-value-positions>false</range-value-positions>
+        </range-element-index>
+      </range-element-indexes>
     </database>
+
     <!--Create Test Modules Database-->
     @ml.test-modules-db-xml
     <!--Create a Triggers Database-->
