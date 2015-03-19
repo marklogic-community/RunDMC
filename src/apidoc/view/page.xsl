@@ -534,7 +534,10 @@
       <xsl:apply-templates mode="print-friendly-link" select="."/>
       <xsl:apply-templates mode="function-links" select="."/>
       <h1>
-        <xsl:apply-templates mode="api-page-heading" select="."/>
+        <xsl:variable name="heading">
+          <xsl:apply-templates mode="api-page-heading" select="."/>
+        </xsl:variable>
+        <xsl:copy-of select="ss:maybe-highlight($heading, $params)"/>
       </h1>
       <xsl:apply-templates select="api:function"/>
     </div>
