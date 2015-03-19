@@ -317,7 +317,8 @@ declare %t:case function t:fixup-href-REST-with-fragment-issue-466()
       apidoc:module/a/@href treat as node(),
       $api:MODE-REST),
     attribute href {
-      './REST/POST/manage/v2/databases/[id-or-name]#ValidateBackup' })
+      '/../../../../../../..'
+      ||'/REST/POST/manage/v2/databases/[id-or-name]#ValidateBackup' })
 };
 
 declare %t:case function t:schema-info-description()

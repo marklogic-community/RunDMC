@@ -1166,11 +1166,15 @@ as xs:string
   (: Different page? Insert a link to the target page.
    : REST URLs are written differently than function URLs.
    :)
-  (: Path to resource page? :)
-  else if ($target/@lib = $REST-LIBS)
-  then '.'||api:REST-fullname-to-external-uri(
-    api:fixup-fullname($target, $api:MODE-REST))
-  (: Path to regular function page. :)
+  (: Path to resource page, TODO must handle optional version prefix. :)
+  else if ($target/@lib = $REST-LIBS) then (
+    api:REST-fullname-to-external-uri(
+      api:fixup-fullname($target, $api:MODE-REST))
+    ! string-join(
+      ((1 to count(tokenize(., '/'))) ! '/..',
+        .),
+      ''))
+  (: Path to regular function page, relative for optional version prefix. :)
   else './'||api:fixup-fullname(
     $target, $context[. = $api:MODES])
 };
