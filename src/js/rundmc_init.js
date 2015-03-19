@@ -380,6 +380,20 @@ function versionSelectInit() {
     window.location = window.location.origin +
       newPath + window.location.hash;
   });
+
+  // For #461 back button should update selected version.
+  $(window).on('pageshow', function(evt) {
+    LOG.debug("[versionSelect pageshow]", evt);
+    var versionPrev = versionSelect.children("option")
+        .filter(":selected")
+        .val();
+    var versionNext = versionSelect.children("option")
+        .filter(function(i, e) { return $(e).prop("defaultSelected"); })
+        .val();
+    LOG.debug("[versionSelect pageshow]", versionPrev, versionNext);
+    if (versionPrev === versionNext) { return; }
+    versionSelect.val(versionNext);
+  });
 }
 
 function facetSelectInit() {
