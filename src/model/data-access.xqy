@@ -101,7 +101,7 @@ return $e;
 declare variable $code-dir       := xdmp:modules-root();
 declare variable $config-file    := "navigation.xml";
 declare variable $config-dir     := concat($code-dir,'config/');
-declare variable $raw-navigation := xdmp:document-get(concat($config-dir,$config-file));
+declare variable $raw-navigation := u:get-doc(concat($config-dir,$config-file)) ;
 declare variable $public-nav-location := "/private/public-navigation.xml";
 declare variable $draft-nav-location  := "/private/draft-navigation.xml";
 declare variable $pre-generated-location := if ($draft:public-docs-only)
