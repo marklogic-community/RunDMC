@@ -107,7 +107,6 @@
 
   <!-- This is expensive, ca 100-ms. Avoid whenever possible. -->
   <xsl:variable name="populated-navigation">
-    <xsl:value-of select="xdmp:log(concat('DEBUG ', xdmp:describe(.)))"/>
     <xsl:choose>
       <xsl:when test="ml:page/ml:search-results"/>
       <xsl:otherwise>
@@ -246,10 +245,10 @@
      </xsl:if>
   </xsl:template>
 
-  <!-- Pre-populate the search box, if applicable -->
+  <!-- Pre-populate the search box using search.xsl for $QUERY. -->
   <xsl:template match="xhtml:input[@name eq 'q']/@ml:value">
     <xsl:attribute name="value">
-      <xsl:value-of select="$params[@name eq 'q']"/>
+      <xsl:value-of select="$QUERY"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -516,6 +515,19 @@
         <div>You will need:<br /> MarkLogic Server <xsl:value-of select="@server-version"/> or later</div>
       </xsl:if>
     </li>
+  </xsl:template>
+
+  <!-- Copy existing query parameters into advanced search link. -->
+  <xsl:template match="ml:advanced-search">
+    <a href="{
+             ss:search-path(
+             $srv:search-page-url,
+             $QUERY,
+             $params[@name eq 'version'],
+             $params[@name eq 'is-api'],
+             true())
+             }">Advanced search&#160;<span id="main-triangle">&#9656;</span>
+    </a>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -18,9 +18,16 @@ import module namespace api="http://marklogic.com/rundmc/api"
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
+declare variable $INPUT-NAME-ADVANCED := 'advanced' ;
+
 declare variable $INPUT-NAME-API := 'api' ;
 
 declare variable $INPUT-NAME-API-VERSION := 'v' ;
+
+declare variable $INPUT-NAME-QUERY := 'q' ;
+
+declare variable $ML-VERSION := xs:integer(
+  substring-before(xdmp:version(), '.')) ;
 
 declare variable $VERSION-DEFAULT := $ml:default-version ;
 
@@ -235,10 +242,10 @@ as element(search:response)
 
 declare function ss:param(
   $name as xs:string,
-  $value as xs:string)
+  $value as xs:anySimpleType)
 as xs:string
 {
-  concat($name, '=', encode-for-uri($value))
+  concat($name, '=', encode-for-uri(string($value)))
 };
 
 declare function ss:query-string(
@@ -259,7 +266,7 @@ as xs:string
   concat(
     '?',
     ss:query-string(
-      (ss:param('q', $query),
+      (ss:param($INPUT-NAME-QUERY, $query),
         if (not($is-api)) then ()
         else ss:param($ss:INPUT-NAME-API, xs:string($is-api)),
         ss:param($ss:INPUT-NAME-API-VERSION, $version),
@@ -295,6 +302,33 @@ as xs:string
      :)
     if (not($highlight-query)) then ''
     else concat('?', ss:query-string(ss:param('hq', $highlight-query))))
+};
+
+declare function ss:search-path(
+  $url as xs:string,
+  $q as xs:string,
+  $version as xs:string?,
+  $is-api as xs:boolean?,
+  $is-advanced as xs:boolean?)
+as xs:string
+{
+  $url
+  ||'?'
+  ||ss:query-string(
+    (ss:param('advanced', 1)[$is-advanced],
+      ss:param($INPUT-NAME-API, 1)[$is-api],
+      ss:param($INPUT-NAME-QUERY, $q)[$q],
+      ss:param($INPUT-NAME-API-VERSION, $version)[$version]))
+};
+
+declare function ss:search-path(
+  $url as xs:string,
+  $q as xs:string,
+  $version as xs:string?,
+  $is-api as xs:boolean?)
+as xs:string
+{
+  ss:search-path($url, $q, $version, $is-api, ())
 };
 
 (: Search result values. TODO move into XML file? :)
@@ -445,20 +479,6 @@ as node()*
   return if (not($hq)) then $n else ss:highlight($n, $hq)
 };
 
-declare function ss:search-path(
-  $url as xs:string,
-  $q as xs:string,
-  $version as xs:string?,
-  $is-api as xs:boolean?)
-as xs:string
-{
-  $url||'?q='||$q||(
-    if (not($version)) then ''
-    else '&amp;v='||$version)||(
-    if (not($is-api)) then ''
-    else '&amp;api='||$is-api)
-};
-
 (: Given a substring, suggest $count values. :)
 declare function ss:suggest(
   $version as xs:string,
@@ -470,6 +490,47 @@ as xs:string*
   if (string-length($q) lt 3) then ()
   else search:suggest(
     $q, ss:options($version), $count, max((1, $pos)))
+};
+
+(: Build query from raw params. :)
+declare function ss:query(
+  $q as xs:string*,
+  $word as xs:string*,
+  $category as xs:string*,
+  $title as xs:string*)
+as xs:string?
+{
+  string-join(
+    ($q[.],
+      $category[.] ! ('cat:'||xdmp:quote(.)),
+      $title[.] ! ('title:'||xdmp:quote(.)),
+      $word[.]),
+    ' ')
+};
+
+declare function ss:qtextconst-map-entry(
+  $toks as xs:string*)
+as map:map
+{
+  map:entry($toks[1], string-join(subsequence($toks, 2), ':'))
+};
+
+(: Deconstruct a query for the advanced search form.
+ : This is not very sophisticated, and does not handle booleans.
+ :)
+declare function ss:query-parts(
+  $q as xs:string)
+as map:map
+{
+  if (not($q)) then map:map()
+  else (
+    search:parse(
+      $q, ss:options(),
+      if ($ML-VERSION lt 8) then 'cts:query'
+      else 'cts:annotated-query')
+    ! map:new(
+      (map:entry("", .//@qtextref[. eq "cts:text"]/string(..)),
+        .//@qtextconst ! ss:qtextconst-map-entry(tokenize(., ':')))))
 };
 
 (: search.xqm :)

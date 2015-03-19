@@ -3233,4 +3233,8 @@ li.search_suggest_selected {
   padding-bottom: 10px;
 }
 
+input.advanced-search-term {
+    width: 30em;
+}
+
 /* screen.css */

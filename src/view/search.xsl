@@ -3,6 +3,7 @@
   xmlns:api="http://marklogic.com/rundmc/api"
   xmlns:ck="http://parthcomp.com/cookies"
   xmlns:cts="http://marklogic.com/cts"
+  xmlns:map="http://marklogic.com/xdmp/map"
   xmlns:ml="http://developer.marklogic.com/site/internal"
   xmlns:qp="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:search="http://marklogic.com/appservices/search"
@@ -38,12 +39,25 @@
                         . castable as xs:boolean],
                         0)[1])"/>
 
+  <xsl:variable name="IS-ADVANCED-SEARCH" as="xs:boolean"
+                select="xs:boolean(
+                        ($params[@name eq $ss:INPUT-NAME-ADVANCED][
+                        . castable as xs:boolean],
+                        0)[1])"/>
+
   <xsl:variable name="API-VERSION-PREFIX"
                 select="if ($PREFERRED-VERSION eq $ml:default-version) then ''
                         else concat('/',$PREFERRED-VERSION)"/>
 
   <xsl:variable name="QUERY" as="xs:string"
-                select="string-join($params[@name eq 'q'], ' ')"/>
+                select="ss:query(
+                        $params[@name eq 'q'],
+                        $params[@name eq 'q_none'],
+                        $params[@name eq 'q_cat'],
+                        $params[@name eq 'q_title'])"/>
+
+  <xsl:variable name="QUERY-PARTS" as="map:map"
+                select="ss:query-parts($QUERY)"/>
 
   <xsl:variable name="SEARCH-RESPONSE" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
@@ -152,7 +166,9 @@
     </xsl:if>
     <!-- Skip any shortcuts if there is a category constraint or page number. -->
     <xsl:variable name="skip-exact-matches"
-                  select="$page-number-supplied or contains($QUERY,'cat:')"/>
+                  select="$IS-ADVANCED-SEARCH
+                          or $page-number-supplied
+                          or contains($QUERY, 'cat:')"/>
     <xsl:variable name="matching-functions"
                   select="if ($skip-exact-matches) then ()
                           else ml:get-matching-functions($QUERY,$PREFERRED-VERSION)"/>
@@ -183,12 +199,16 @@
                     $redirect, $QUERY, $PREFERRED-VERSION, $IS-API-SEARCH))"/>
       </xsl:when>
       <xsl:otherwise>
+        <xsl:if test="$IS-ADVANCED-SEARCH">
+          <xsl:call-template name="advanced-search-form"/>
+        </xsl:if>
         <!-- Pass the unconstrained query for the facet UI. -->
         <div class="hidden" id="queryUnconstrained">
           <xsl:value-of select="$QUERY-UNCONSTRAINED"/>
         </div>
         <!-- Render search results. -->
-        <xsl:apply-templates mode="search-results" select="$SEARCH-RESPONSE"/>
+        <xsl:apply-templates mode="search-results"
+                             select="$SEARCH-RESPONSE"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -516,6 +536,43 @@
       <xsl:with-param name="version" select="$PREFERRED-VERSION"/>
     </xsl:apply-templates>
     <xsl:apply-templates mode="version-list" select="."/>
+  </xsl:template>
+
+  <xsl:template name="advanced-search-form">
+    <div class="advanced-search-container">
+      <form id="advanced-search">
+        <input type="hidden" name="{ $ss:INPUT-NAME-API }"
+               value="{ $IS-API-SEARCH }"/>
+        <input type="hidden" name="{ $ss:INPUT-NAME-API-VERSION }"
+               value="{ $PREFERRED-VERSION[. ne $ml:default-version] }"/>
+        <input type="hidden" name="{ $ss:INPUT-NAME-ADVANCED }"
+               value="1"/>
+        <input type="hidden" name="{ $ss:INPUT-NAME-QUERY }"/>
+        <div id="advanced-search-none" class="advanced-search-term">
+          <label>
+            Words in text:
+            <input type="text" name="q_none"
+                   value="{ map:get($QUERY-PARTS, '') }"/>
+          </label>
+        </div>
+        <div id="advanced-search-cat" class="advanced-search-term">
+          <label>
+            Categories:
+            <input type="text" name="q_cat"
+                   value="{ map:get($QUERY-PARTS, 'cat') }"/>
+          </label>
+        </div>
+        <div id="advanced-search-title" class="advanced-search-term">
+          <label>
+            Titles:
+            <input type="text" name="q_title"
+                   value="{ map:get($QUERY-PARTS, 'title') }"/>
+          </label>
+        </div>
+        <button type="reset">reset</button>
+        <button type="submit">search</button>
+      </form>
+    </div>
   </xsl:template>
 
 </xsl:stylesheet>
