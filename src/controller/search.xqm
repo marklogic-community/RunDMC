@@ -31,6 +31,60 @@ declare variable $ML-VERSION := xs:integer(
 
 declare variable $VERSION-DEFAULT := $ml:default-version ;
 
+(: TODO Load from file or database document? :)
+declare variable $CATEGORIES as map:map := map:new(
+  (map:entry('blog', 'Blog posts'),
+    map:entry('code', 'Open-source projects'),
+    map:entry('event', 'Events'),
+    map:entry('rest-api', 'REST API docs'),
+    map:entry('function', 'Function pages'),
+    map:entry('function/javascript', 'JavaScript'),
+    map:entry('function/xquery', 'XQuery/XSLT'),
+    map:entry('help', 'Admin help pages'),
+    map:entry('guide', 'User guides'),
+    map:entry('guide/admin', 'Admin'),
+    map:entry('guide/admin-api', 'Admin API'),
+    map:entry('guide/app-builder', 'App Builder'),
+    map:entry('guide/app-dev', 'Application Development'),
+    map:entry('guide/cluster', 'Clusters'),
+    map:entry('guide/concepts', 'Concepts'),
+    map:entry('guide/copyright', 'Glossary'),
+    map:entry('guide/cpf', 'CPF'),
+    map:entry('guide/database-replication', 'Database Replication'),
+    map:entry('guide/ec2', 'EC2'),
+    map:entry('guide/flexrep', 'Flexible Replication'),
+    map:entry('guide/getting-started', 'Getting Started'),
+    map:entry('guide/infostudio', 'Info Studio'),
+    map:entry('guide/ingestion', 'Ingestion'),
+    map:entry('guide/installation', 'Installation'),
+    map:entry('guide/java', 'Java'),
+    map:entry('guide/jsref', 'JavaScript'),
+    map:entry('guide/mapreduce', 'Hadoop'),
+    map:entry('guide/messages', 'Messages'),
+    map:entry('guide/monitoring', 'Monitoring'),
+    map:entry('guide/node-dev', 'Node.js'),
+    map:entry('guide/performance', 'Performance'),
+    map:entry('guide/qconsole', 'Query Console'),
+    map:entry('guide/ref-arch', 'Reference Architecture'),
+    map:entry('guide/relnotes', 'Release Notes'),
+    map:entry('guide/rest-dev', 'REST Development'),
+    map:entry('guide/search-dev', 'Search Development'),
+    map:entry('guide/security', 'Security'),
+    map:entry('guide/semantics', 'Semantics'),
+    map:entry('guide/sharepoint', 'Sharepoint'),
+    map:entry('guide/sql', 'SQL'),
+    map:entry('guide/temporal', 'Temporal'),
+    map:entry('guide/xcc', 'XCC'),
+    map:entry('guide/xquery', 'XQuery'),
+    map:entry('news', 'News items'),
+    map:entry('tutorial', 'Tutorials'),
+    map:entry('xcc', 'XCC Connector API docs'),
+    map:entry('java-api', 'Java Client API docs'),
+    map:entry('hadoop', 'Hadoop Connector API docs'),
+    map:entry('xccn', 'XCC Connector .Net docs'),
+    map:entry('other', 'Miscellaneous pages'),
+    map:entry('cpp', 'C++ API docs'))) ;
+
 (: If applicable, translate URIs for XHTML-Tidy'd docs
  : back to the original HTML URI.
  :)
@@ -331,71 +385,13 @@ as xs:string
   ss:search-path($url, $q, $version, $is-api, ())
 };
 
-(: Search result values. TODO move into XML file? :)
+(: Map category keys to human-readable values. :)
 declare function ss:facet-value-display($e as element())
   as xs:string
 {
   typeswitch($e)
   case element(search:response) return 'All categories'
-  default return (
-    switch($e/@name)
-    case 'blog' return 'Blog posts'
-    case 'code' return 'Open-source projects'
-    case 'event' return 'Events'
-    case 'rest-api' return 'REST API docs'
-
-    case 'function' return 'Function pages'
-    case 'function/javascript' return 'JavaScript'
-    case 'function/xquery' return 'XQuery/XSLT'
-
-    case 'help' return 'Admin help pages'
-
-    case 'guide' return 'User guides'
-
-    case 'guide/admin' return 'Admin'
-    case 'guide/admin-api' return 'Admin API'
-    case 'guide/app-builder' return 'App Builder'
-    case 'guide/app-dev' return 'Application Development'
-    case 'guide/cluster' return 'Clusters'
-    case 'guide/concepts' return 'Concepts'
-    case 'guide/copyright' return 'Glossary'
-    case 'guide/cpf' return 'CPF'
-    case 'guide/database-replication' return 'Database Replication'
-    case 'guide/ec2' return 'EC2'
-    case 'guide/flexrep' return 'Flexible Replication'
-    case 'guide/getting-started' return 'Getting Started'
-    case 'guide/infostudio' return 'Info Studio'
-    case 'guide/ingestion' return 'Ingestion'
-    case 'guide/installation' return 'Installation'
-    case 'guide/java' return 'Java'
-    case 'guide/jsref' return 'JavaScript'
-    case 'guide/mapreduce' return 'Hadoop'
-    case 'guide/messages' return 'Messages'
-    case 'guide/monitoring' return 'Monitoring'
-    case 'guide/node-dev' return 'Node.js'
-    case 'guide/performance' return 'Performance'
-    case 'guide/qconsole' return 'Query Console'
-    case 'guide/ref-arch' return 'Reference Architecture'
-    case 'guide/relnotes' return 'Release Notes'
-    case 'guide/rest-dev' return 'REST Development'
-    case 'guide/search-dev' return 'Search Development'
-    case 'guide/security' return 'Security'
-    case 'guide/semantics' return 'Semantics'
-    case 'guide/sharepoint' return 'Sharepoint'
-    case 'guide/sql' return 'SQL'
-    case 'guide/temporal' return 'Temporal'
-    case 'guide/xcc' return 'XCC'
-    case 'guide/xquery' return 'XQuery'
-
-    case 'news' return 'News items'
-    case 'tutorial' return 'Tutorials'
-    case 'xcc' return 'XCC Connector API docs'
-    case 'java-api' return 'Java Client API docs'
-    case 'hadoop' return 'Hadoop Connector API docs'
-    case 'xccn' return 'XCC Connector .Net docs'
-    case 'other' return 'Miscellaneous pages'
-    case 'cpp' return 'C++ API docs'
-    default return $e/@name)
+  default return (map:get($CATEGORIES, $e/@name), $e/@name)[1]
 };
 
 (: Search result icon file names. TODO move into XML file? :)
@@ -508,29 +504,62 @@ as xs:string?
     ' ')
 };
 
-declare function ss:qtextconst-map-entry(
-  $toks as xs:string*)
-as map:map
+declare function ss:format(
+  $m as map:map,
+  $format as xs:string?)
+as item()
 {
-  map:entry($toks[1], string-join(subsequence($toks, 2), ':'))
+  switch($format)
+  case 'json' return (
+    if ($ML-VERSION lt 8) then xdmp:to-json($m)
+    else xdmp:quote($m))
+  default return $m
+};
+
+declare function ss:query-part(
+  $q as element()?,
+  $key as xs:string)
+as xs:string*
+{
+  $q//@qtextconst[starts-with(., $key)]
+  ! substring-after(., $key)
 };
 
 (: Deconstruct a query for the advanced search form.
  : This is not very sophisticated, and does not handle booleans.
  :)
 declare function ss:query-parts(
-  $q as xs:string)
+  $q as element()?)
 as map:map
 {
-  if (not($q)) then map:map()
-  else (
-    search:parse(
-      $q, ss:options(),
-      if ($ML-VERSION lt 8) then 'cts:query'
-      else 'cts:annotated-query')
-    ! map:new(
-      (map:entry("", .//@qtextref[. eq "cts:text"]/string(..)),
-        .//@qtextconst ! ss:qtextconst-map-entry(tokenize(., ':')))))
+  map:new(
+    (("cat", "title") ! map:entry(., ss:query-part($q, .||':')),
+      map:entry("word", $q//@qtextref[. eq "cts:text"]/string(..))))
+};
+
+declare function ss:query-parts(
+  $q as xs:string,
+  $format as xs:string?)
+as item()
+{
+  ss:format(
+    ss:query-parts(
+      search:parse(
+        $q, ss:options(),
+        if ($ML-VERSION lt 8) then 'cts:query'
+        else 'cts:annotated-query')),
+    $format)
+};
+
+declare function ss:constraints($format as xs:string?)
+as item()
+{
+  ss:format(
+    map:new(
+      (map:entry('cat', $CATEGORIES),
+        map:entry('title', '_text'),
+        map:entry('word', '_text'))),
+    $format)
 };
 
 (: search.xqm :)

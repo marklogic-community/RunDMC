@@ -52,12 +52,9 @@
   <xsl:variable name="QUERY" as="xs:string"
                 select="ss:query(
                         $params[@name eq 'q'],
-                        $params[@name eq 'q_none'],
+                        $params[@name eq 'q_word'],
                         $params[@name eq 'q_cat'],
                         $params[@name eq 'q_title'])"/>
-
-  <xsl:variable name="QUERY-PARTS" as="map:map"
-                select="ss:query-parts($QUERY)"/>
 
   <xsl:variable name="SEARCH-RESPONSE" as="element(search:response)">
     <xsl:variable name="results-per-page" select="10"/>
@@ -199,9 +196,8 @@
                     $redirect, $QUERY, $PREFERRED-VERSION, $IS-API-SEARCH))"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="$IS-ADVANCED-SEARCH">
-          <xsl:call-template name="advanced-search-form"/>
-        </xsl:if>
+        <!-- Advanced search form is always present but user can hide-show. -->
+        <xsl:call-template name="advanced-search-form"/>
         <!-- Pass the unconstrained query for the facet UI. -->
         <div class="hidden" id="queryUnconstrained">
           <xsl:value-of select="$QUERY-UNCONSTRAINED"/>
@@ -538,9 +534,27 @@
     <xsl:apply-templates mode="version-list" select="."/>
   </xsl:template>
 
+  <!--
+      Advanced search form is always present but user can hide-show.
+      Controls via http://jrgraphix.net/r/Unicode/25A0-25FF
+      * collapsed 25ba
+      * expanded 25bc
+
+      Supplies various JSON dictionaries for JavaScript display.
+  -->
   <xsl:template name="advanced-search-form">
     <div class="advanced-search-container">
-      <form id="advanced-search">
+      <div id="advanced-search-container-control"
+           data-collapsed="►"
+           data-expanded="▼">
+        <xsl:choose>
+          <xsl:when test="$IS-ADVANCED-SEARCH">▼</xsl:when>
+          <xsl:otherwise>►</xsl:otherwise>
+        </xsl:choose>
+      </div>
+      <form id="advanced-search"
+            style="{ if ($IS-ADVANCED-SEARCH) then () else 'display:none' }">
+        <h3>Advanced Search</h3>
         <input type="hidden" name="{ $ss:INPUT-NAME-API }"
                value="{ $IS-API-SEARCH }"/>
         <input type="hidden" name="{ $ss:INPUT-NAME-API-VERSION }"
@@ -548,28 +562,18 @@
         <input type="hidden" name="{ $ss:INPUT-NAME-ADVANCED }"
                value="1"/>
         <input type="hidden" name="{ $ss:INPUT-NAME-QUERY }"/>
-        <div id="advanced-search-none" class="advanced-search-term">
-          <label>
-            Words in text:
-            <input type="text" name="q_none"
-                   value="{ map:get($QUERY-PARTS, '') }"/>
-          </label>
+        <noscript>Sorry, this feature requires JavaScript.</noscript>
+        <button type="button" id="advanced-search-add">add</button>
+        <div id="advanced-search-labels" class="hidden">
+          {"cat": "category", "title": "title", "word": "word"}
         </div>
-        <div id="advanced-search-cat" class="advanced-search-term">
-          <label>
-            Categories:
-            <input type="text" name="q_cat"
-                   value="{ map:get($QUERY-PARTS, 'cat') }"/>
-          </label>
+        <div id="advanced-search-constraints" class="hidden">
+          <xsl:copy-of select="ss:constraints('json')"/>
         </div>
-        <div id="advanced-search-title" class="advanced-search-term">
-          <label>
-            Titles:
-            <input type="text" name="q_title"
-                   value="{ map:get($QUERY-PARTS, 'title') }"/>
-          </label>
+        <div id="advanced-search-terms" class="hidden">
+          <xsl:copy-of select="ss:query-parts($QUERY, 'json')"/>
         </div>
-        <button type="reset">reset</button>
+        <div id="advanced-search-inputs"></div>
         <button type="submit">search</button>
       </form>
     </div>

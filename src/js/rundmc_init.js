@@ -35,6 +35,7 @@ var LOG = {
 
 $(function() {
   highlightInit();
+  searchAdvancedInit();
   searchSuggestInit();
   versionSelectInit();
   facetSelectInit();
@@ -62,6 +63,7 @@ function paramsMap(loc) {
       var k = p[0];
       // handle repeated params
       if (typeof h[k] === 'undefined') { h[k] = p[1]; }
+      else if (typeof h[k] === 'string') { h[k] = [h[k], p[1]] }
       else { h[k].push(p[1]); } });
   return h;
 }
@@ -143,6 +145,108 @@ function highlightInit() {
 
   // Scroll the first match into view.
   scrollIntoView(selector, '#page_content');
+}
+
+function searchAdvancedInit() {
+  LOG.debug("[searchAdvancedInit]");
+  var $control = $("#advanced-search-container-control");
+  if (!$control.length) {
+    LOG.debug("[searchAdvancedInit] no control element");
+    return;
+  }
+  var $form = $("#advanced-search");
+  if (!$form.length) {
+    LOG.debug("[searchAdvancedInit] no form element");
+    return;
+  }
+  var strCollapsed = $control.data("collapsed");
+  var strExpanded = $control.data("expanded");
+
+  $control.on("click", function(evt) {
+    var prev = $control.text();
+    LOG.debug("[searchAdvancedInit] click", evt, prev);
+    if (strCollapsed == prev) {
+      // Expand
+      $control.text(strExpanded);
+      $form.show();
+      return;
+    }
+    // Collapse
+    $control.text(strCollapsed);
+    $form.hide(); });
+
+  // Rely on XSL to handle initial expand-collapse state.
+
+  // Set up any existing terms as form inputs
+  // Prebuild the necessary UI elements, then clone as needed.
+  var $typeElement = $("<select>");
+  var labels = jQuery.parseJSON($("#advanced-search-labels").text());
+  var constraints = jQuery.parseJSON($("#advanced-search-constraints").text());
+  var $constraintElements = {};
+  jQuery.map(constraints, function(cValues,cKey) {
+    $typeElement.append($("<option>", {value: cKey, text: labels[cKey]}));
+    var $e;
+    if (cValues === "_text") {
+      $e = $("<input>");
+    } else {
+      // Expect dict
+      $e = $("<select>");
+      // Sort by value and do some other reprocessing.
+      var tuples = [];
+      jQuery.map(cValues, function(v,k) {
+        if (k.indexOf('/') > -1) {
+          var toks = k.split('/');
+          v = cValues[toks[0]] + " > " + v;
+        }
+        tuples.push([k, v]); });
+      tuples.sort(function(a, b) {
+        var a1 = a[1];
+        var b1 = b[1];
+        return a1 < b1 ? -1 : (a1 > b1 ? 1 : 0); });
+      jQuery.map(tuples, function(t) {
+        $e.append($("<option>", {value: t[0], text: t[1]})); });
+    }
+    $e.attr("name", "q_" + cKey);
+    $constraintElements[cKey] = $e;
+  });
+
+  var typeChangeFn = function(evt) {
+    LOG.debug("[searchAdvancedInit] change", evt.target);
+    var $target = $(evt.target);
+    var typeNext = $target.val();
+    var $next = termFn(typeNext);
+    var $previous = $target.parent();
+    // Copy old value if possible.
+    if (constraints[typeNext] === "_text") {
+      var constraintPrevious = $previous.children("input").first().val();
+      $next.children("input").first().val(constraintPrevious);
+    }
+    $previous.replaceWith($next);
+  };
+
+  var terms = jQuery.parseJSON($("#advanced-search-terms").text());
+  var $container = $("#advanced-search-inputs");
+  LOG.debug("[searchAdvancedInit]", "terms", terms, "container", $container);
+  var termFn = function(type, value) {
+    LOG.debug("[searchAdvancedInit.termFn]", "type", type, "value", value);
+    var $n = $("<div>");
+    $n.addClass("advanced-search-term");
+    // The typeElement also needs an onchange handler.
+    $n.append($typeElement.clone().on("change", typeChangeFn).val(type))
+      .append($constraintElements[type].clone().val(value));
+    return $n;
+  };
+  // Add each term to the DOM.
+  jQuery.map(terms, function(v,k) {
+    LOG.debug("[searchAdvancedInit] adding", k, v);
+    $container.append(termFn(k, v));
+  });
+  // Add a blank term at the end.
+  $container.append(termFn("word"));
+  // Button handler.
+  $("#advanced-search-add").on("click", function(evt) {
+    LOG.debug("[searchAdvancedInit] add button", evt);
+    $container.append(termFn("word")); });
 }
 
 function searchSuggestInit() {
