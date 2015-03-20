@@ -83,6 +83,30 @@ Update transactions acquire locks.</Bulleted>
       'fubar', document { () }, 'baz')/self::ul/cts:contains(., 'locks'))
 };
 
+declare %t:case function t:cellbody-to-p()
+{
+  <chapter>
+    <XML>
+<CELL ROWSPAN="1" COLSPAN="1">
+<CellBody>
+<A ID="pgfId-1173779"></A>
+<code>
+GROUP BY ?industry</code>
+</CellBody>
+<CellBody>
+<A ID="pgfId-1173561"></A>
+<code>
+HAVING (?sum_sales &gt; 3000000000 )</code>
+</CellBody>
+</CELL>
+  </XML></chapter>
+  ! document { . }
+  ! guide:normalize(., false())
+  ! at:equal(
+    count(guide:transform(*/XML, 'fubar', ., 'baz')//p),
+    2)
+};
+
 declare %t:case function t:code-output-with-em()
 {
   <chapter>
