@@ -20,6 +20,7 @@ import module namespace raw="http://marklogic.com/rundmc/raw-docs-access"
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare variable $VERSION := '8.0' ;
+declare variable $VERSION-PREV := '7.0' ;
 
 declare %t:case function t:function-hide-javascript-specific()
 {
@@ -317,8 +318,29 @@ declare %t:case function t:fixup-href-REST-with-fragment-issue-466()
       apidoc:module/a/@href treat as node(),
       $api:MODE-REST),
     attribute href {
-      '/../../../../../../..'
-      ||'/REST/POST/manage/v2/databases/[id-or-name]#ValidateBackup' })
+      '/REST/POST/manage/v2/databases/[id-or-name]#ValidateBackup' })
+};
+
+declare %t:case function t:fixup-href-REST-with-fragment-vprev-issue-466()
+{
+  document {
+    element apidoc:module {
+      (: Target function. :)
+      element apidoc:function {
+        attribute http-verb { 'POST' },
+        attribute name { '/v1/search' },
+        attribute lib { "rest-client" } },
+      (: Link from somewhere else in the same module. :)
+      element a {
+        attribute href {
+          '#POST:/v1/search#combined-query' } } } }
+  ! at:equal(
+    stp:fixup-attribute-href(
+      $VERSION-PREV,
+      apidoc:module/a/@href treat as node(),
+      $api:MODE-REST),
+    attribute href {
+      '/REST/POST/v1/search#combined-query' })
 };
 
 declare %t:case function t:schema-info-description()
