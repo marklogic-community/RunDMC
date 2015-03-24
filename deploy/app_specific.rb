@@ -167,7 +167,7 @@ class ServerConfig
       "./src/xray/test-runner.sh -d %s -u http://%s:%s/xray",
       "test",
       @properties['ml.server'],
-      @properties['ml.app-port'])
+      @properties['ml.api-port'])
     @logger.info(sprintf("Trying %s", cmd))
     cmd += sprintf(" -c %s:%s",
                    @properties['ml.user'],
