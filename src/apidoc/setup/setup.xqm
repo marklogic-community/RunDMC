@@ -1153,6 +1153,69 @@ as empty-sequence()
     true())
 };
 
+declare function stp:fixup-attribute-href-fragment-result(
+  $version as xs:string,
+  $a as attribute(href),
+  $target as element(apidoc:function)?,
+  $context as xs:string*)
+as xs:string
+{
+  (: Link within same page. :)
+  if (empty($target)) then ''
+  else if ($a/ancestor::apidoc:function[1] is $target) then '.'
+  (: Different page? Insert a link to the target page.
+   : REST URLs are written differently than function URLs.
+   :)
+  (: Path to resource page, TODO must handle optional version prefix. :)
+  else if ($target/@lib = $REST-LIBS) then (
+    api:REST-fullname-to-external-uri(
+      api:fixup-fullname($target, $api:MODE-REST))
+    ! string-join(
+      ((1 to count(tokenize(., '/'))) ! '/..',
+        .),
+      ''))
+  (: Path to regular function page, relative for optional version prefix. :)
+  else './'||api:fixup-fullname(
+    $target, $context[. = $api:MODES])
+};
+
+(: A fragment link can point to an anchor within the same function page,
+ : or anywhere in the same apidoc:module. Finding the right location
+ : is a little different for REST vs other types.
+ :)
+declare function stp:fixup-attribute-href-fragment(
+  $version as xs:string,
+  $a as attribute(href),
+  $module as element(apidoc:module),
+  $context as xs:string*)
+as xs:string?
+{
+  switch($context)
+  case $api:MODE-REST return (
+    (: Format should be #VERB:PATH or #VERB:PATH#FRAGMENT,
+     : but this code allows any mix of colon and hash.
+     :)
+    let $toks := tokenize($a, '[:#]')[.]
+    let $fragment as xs:string := $toks[last()]
+    let $toks-count := count($toks)
+    let $target as element()? := if ($toks-count lt 3) then () else (
+      let $verb as xs:string := $toks[1]
+      let $name as xs:string := $toks[2]
+      return $module/apidoc:function[
+        @name eq $name][@http-verb eq $verb])
+    let $result as xs:string := stp:fixup-attribute-href-fragment-result(
+      $version, $a, $target, $context)
+    return $result||'#'||$fragment)
+
+  (: XPath or JavaScript :)
+  default return (
+    let $fragment as xs:string := substring-after($a, '#')
+    let $target as element()? := $module/apidoc:function[@name eq $fragment]
+    let $result as xs:string := stp:fixup-attribute-href-fragment-result(
+      $version, $a, $target, $context)
+    return $result||'#'||$fragment)
+};
+
 declare function stp:fixup-attribute-href(
   $version as xs:string,
   $a as attribute(href),
@@ -1175,50 +1238,34 @@ as attribute()?
             substring-after($a, 'doc/xml'), '.xml'),
           $anchor)))
 
-    (: If a fragment id contains a colon, it is a link to a function page.
+    (: If a fragment id matches the pattern,
+     : it is a link to a function page root.
      : #xdmp:tidy => /xdmp:tidy or /xdmp.tidy
      :)
     else if (matches($a, $FIXUP-HREF-PAT)) then replace(
       $a, $FIXUP-HREF-PAT, './$1')
 
-    (: A fragment link sometimes points elsewhere in the same apidoc:module,
-     : or sometimes elsewhere within the same function.
-     :)
-    else if (starts-with($a, '#')) then (
-      let $fid := substring-after($a, '#')
-      let $relevant-function := $a/root()/apidoc:module/apidoc:function[
-        @id eq $fid]
-      let $result as xs:string := (
-        (: Link within same page. :)
-        if (empty($relevant-function)) then ''
-        else if ($a/ancestor::apidoc:function[1] is $relevant-function) then '.'
-        (: If we are on a different page, insert a link to the target page. :)
-        else (
-          (: REST URLs are written differently than function URLs :)
-          (: path to resource page :)
-          if ($relevant-function/@lib
-            = $REST-LIBS) then api:REST-fullname-to-external-uri(
-            api:fixup-fullname($relevant-function, $api:MODE-REST))
-          (: path to regular function page :)
-          else '/'||api:fixup-fullname(
-            $relevant-function, $context[. = $api:MODES])))
-      return $result||'#'||$fid)
+    (: Otherwise it may be a fragment link. :)
+    else if (starts-with($a, '#')) then stp:fixup-attribute-href-fragment(
+      $version, $a, $a/root()/apidoc:module treat as node(), $context)
 
-    (: For an absolute path like http://w3.org leave the value alone. :)
+    (: Leave absolute links alone, eg http://w3.org :)
     else if (contains($a, '://')) then $a
 
     (: Handle some odd corner-cases. TODO maybe dead code? :)
-    else if ($a
-      eq 'apidocs.xqy?fname=UpdateBuiltins#xdmp:document-delete') then '/xdmp:document-delete'
-    (: as we configured in config/category-mappings.xml :)
-    else if ($a =
-      ('apidocs.xqy?fname=cts:query Constructors',
-        'SearchBuiltins&amp;sub=cts:query Constructors')) then '/cts/constructors'
+    else (
+      switch($a)
+      case 'apidocs.xqy?fname=UpdateBuiltins#xdmp:document-delete'
+      return '/xdmp:document-delete'
+      (: As we configured in config/category-mappings.xml :)
+      case 'apidocs.xqy?fname=cts:query Constructors'
+      case 'SearchBuiltins&amp;sub=cts:query Constructors'
+      return '/cts/constructors'
 
-    (: Otherwise, assume a function page with an optional fragment id,
-     : so we need only prepend a slash.
-     :)
-    else concat('/', $a) }
+      (: Otherwise, assume a function page with an optional fragment id,
+       : so we need only prepend a slash.
+       :)
+      default return concat('/', $a)) }
 };
 
 declare function stp:fixup-attribute-lib(
