@@ -180,26 +180,26 @@
       <tr>
         <td>Single-instance Developer (Free, BYOL)</td>
         <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer</a></td>
-        <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-BYOL.template">SingleNode-BYOL.template</a></td>
-        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+        <td><a href="https://s3.amazonaws.com/marklogic-releases/8.0-1.1/SingleNode-BYOL.template">SingleNode-BYOL.template</a></td>
+        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/8.0-1.1/SingleNode-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Cluster Developer (Free, BYOL)</td>
         <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer</a></td>
-        <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-BYOL.template">ThreePlusCluster-BYOL.template</a></td>
-        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+        <td><a href="https://s3.amazonaws.com/marklogic-releases/8.0-1.1/ThreePlusCluster-BYOL.template">ThreePlusCluster-BYOL.template</a></td>
+        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/8.0-1.1/ThreePlusCluster-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Single-instance Essential Enterprise </td>
         <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">Essential Enterprise</a></td>
-        <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-Enterprise.template">SingleNode-Enterprise.template</a></td>
-        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+        <td><a href="https://s3.amazonaws.com/marklogic-releases/8.0-1.1/SingleNode-Enterprise.template">SingleNode-Enterprise.template</a></td>
+        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/8.0-1.1/SingleNode-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Cluster Essential Enterprise </td>
         <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">Essential Enterprise</a></td>
-        <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-Enterprise.template">ThreePlusCluster-Enterprise.template</a></td>
-        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
+        <td><a href="https://s3.amazonaws.com/marklogic-releases/8.0-1.1/ThreePlusCluster-Enterprise.template">ThreePlusCluster-Enterprise.template</a></td>
+        <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/8.0-1.1/ThreePlusCluster-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
     </tbody>
 
