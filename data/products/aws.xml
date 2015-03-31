@@ -160,12 +160,7 @@
     Agreement for the underlying AMI. Please visit the corresponding AWS
     Marketplace AMI page to accept the License Agreement <strong>before</strong>
     attempting to launch a stack from any of the templates. For details see the
-    Getting Started video below. Also, if you plan to launch one of the larger
-    instance types (hi1.4xlarge, cc1.4xlarge, cc2.8xlarge, cr1.8xlarge) with the
-    Developer AMI, please accept terms on the
-    <a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">HVM</a> page.
-    The Essential Enterprise AMI (and Cloud Formation template) can not be
-    launched on these instance types.
+    Getting Started video below.
   </div>
 
   <table>
