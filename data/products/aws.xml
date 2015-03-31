@@ -13,16 +13,17 @@
 
   <h3>MarkLogic AMIs</h3>
   <p>
-      MarkLogic provides two AMI series, <strong><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a></strong> and
-      <strong><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></strong>.
+      MarkLogic provides two AMI series, <strong><a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer</a></strong> and
+      <strong><a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">Essential Enterprise</a></strong>.
   </p>
 
   <a name="developer"></a>
   <p>
-    The free Developer AMI is suited for a variety of purposes, from
-    development to proof-of-concept work. You can also bring your own license
-    (BYOL) to this AMI (and use it for those purposes allowed by the terms of
-    your license). After you start up this AMI, you must request and install a
+    The free <a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer
+    AMI</a> is suited for a variety of purposes, from development to
+    proof-of-concept work. You can also bring your own license (BYOL) to this
+    AMI (and use it for those purposes allowed by the terms of your license).
+    After you start up this AMI, you must request and install a
     <a href="/free-developer">free developer license key</a>
     <strong>OR</strong> <a href="//docs.marklogic.com/guide/installation/procedures#id_18057">install</a>
     your own pre-paid license key.
@@ -30,7 +31,7 @@
 
   <a name="ee"></a>
   <p>
-    Available for purchase hourly, the <a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">
+    Available for purchase hourly, the <a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">
     Essential Enterprise AMI</a> comes with a pre-packaged MarkLogic
     <a href="//www.marklogic.com/pricing">Essential Enterprise</a> license key
     and the following features:
@@ -101,13 +102,6 @@
       </li>
     </ol>
   </p>
-  <p>
-    <strong>NB</strong>: If you want to use one of the larger instance types
-    (hi1.4xlarge, cc1.4xlarge, cc2.8xlarge, cr1.8xlarge), you will need to use
-    the <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">Developer
-    (HVM) AMI</a>. The Essential Enterprise AMI does not support those
-    instance types.
-  </p>
 
   <!--
   <h4>MarkLogic Amazon Machine Images (AMIs)</h4>
@@ -169,7 +163,7 @@
     Getting Started video below. Also, if you plan to launch one of the larger
     instance types (hi1.4xlarge, cc1.4xlarge, cc2.8xlarge, cr1.8xlarge) with the
     Developer AMI, please accept terms on the
-    <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a> page.
+    <a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">HVM</a> page.
     The Essential Enterprise AMI (and Cloud Formation template) can not be
     launched on these instance types.
   </div>
@@ -185,27 +179,25 @@
       </tr>
       <tr>
         <td>Single-instance Developer (Free, BYOL)</td>
-        <td><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a>
-          (and <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a>)</td>
+        <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer</a></td>
         <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-BYOL.template">SingleNode-BYOL.template</a></td>
         <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Cluster Developer (Free, BYOL)</td>
-        <td><a href="https://aws.amazon.com/marketplace/pp/B00FX856LW">Developer</a>
-          (and <a href="https://aws.amazon.com/marketplace/pp/B00FX85NWE">HVM</a>)</td>
+        <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DS6Y">Developer</a></td>
         <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-BYOL.template">ThreePlusCluster-BYOL.template</a></td>
         <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-BYOL.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Single-instance Essential Enterprise </td>
-        <td><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></td>
+        <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">Essential Enterprise</a></td>
         <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-Enterprise.template">SingleNode-Enterprise.template</a></td>
         <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-Single%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/SingleNode-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
       <tr>
         <td>Cluster Essential Enterprise </td>
-        <td><a href="https://aws.amazon.com/marketplace/pp/B00FX8CM2I">Essential Enterprise</a></td>
+        <td><a href="https://aws.amazon.com/marketplace/pp/B00U36DTL8">Essential Enterprise</a></td>
         <td><a href="https://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-Enterprise.template">ThreePlusCluster-Enterprise.template</a></td>
         <td><a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7EMarkLogic-3-Zone-Cluster%7Cturl%7Ehttps://s3.amazonaws.com/marklogic-releases/7.0-4.1/ThreePlusCluster-Enterprise.template"><img src="/images/cloudformation-launch-stack.png" title="Launch" alt="Launch" width="144" height="27"/></a></td>
       </tr>
