@@ -46,6 +46,13 @@ declare %t:case function t:type-javascript-param-element-or-map()
     'Object?')
 };
 
+declare %t:case function t:type-javascript-param-item-star()
+{
+  at:equal(
+    api:type($api:MODE-JAVASCRIPT, (), 'item()*'),
+    'ValueIterator')
+};
+
 declare %t:case function t:type-javascript-param-map-star()
 {
   at:equal(
