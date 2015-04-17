@@ -2951,6 +2951,10 @@ div.header-separator {
     margin-right: 25px;
 }
 
+.signup-form-row.state-row {
+  display: none;
+}
+
 .login-form-label {
     width: 66px;
     float: left;
