@@ -22,8 +22,10 @@ declare namespace SOAP-ENV = "http://schemas.xmlsoap.org/soap/envelope/";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
-import module namespace functx = "http://www.functx.com" at 
+import module namespace functx = "http://www.functx.com" at
     "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
+
+import module namespace users = "users" at "/lib/users.xqy";
 
 (: Store /private/marketo-config.xml in the database with actuals for these configs :)
 declare variable $mkto:endpoint := (doc("/private/marketo-config.xml")/marketo-config/endpoint/string(), "https://na-n.marketo.com/soap/mktows/1_7")[1];
@@ -31,12 +33,12 @@ declare variable $mkto:client-id := (doc("/private/marketo-config.xml")/marketo-
 declare variable $mkto:secret := (doc("/private/marketo-config.xml")/marketo-config/secret/string(), "SECRET")[1];
 declare variable $mkto:munchkin-private-key := (doc("/private/marketo-config.xml")/marketo-config/munchkin-private-key/string(), "Secret")[1];
 
-declare function mkto:hash($string as xs:string) 
+declare function mkto:hash($string as xs:string)
 {
     xdmp:sha1(fn:concat($mkto:munchkin-private-key, $string), 'hex')
 };
 
-declare function mkto:auth() 
+declare function mkto:auth()
 {
 
     let $now := string(fn:current-dateTime())
@@ -78,11 +80,18 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
     let $company := $user/organization/string()
     let $industry := $user/industry/string()
     let $country := $user/country/string()
+    let $state :=
+      if ($country = $users:COUNTRY-REQUIRES-STATE) then
+        <attribute>
+            <attrName>State</attrName>
+            <attrValue>{$user/state/string()}</attrValue>
+        </attribute>
+      else ()
     let $phone := $user/phone/string()
     let $contact-me := if ($user/contact-me/string () ne "on") then 0 else 1
-    let $cook := if ($cookie ne "") then 
+    let $cook := if ($cookie ne "") then
         <marketoCookie>{$cookie}</marketoCookie>
-    else 
+    else
         ()
 
     (: First check to see if lead exists :)
@@ -114,14 +123,14 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                 <attrValue>{$source}</attrValue>
             </attribute>
             )
-    
+
     let $body :=
       <SOAP-ENV:Envelope>
        <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
        <SOAP-ENV:Body>
         <ns1:paramsSyncLead>
           <leadRecord>
-              <Email>{$email}</Email> 
+              <Email>{$email}</Email>
               <leadAttributeList>
                   <attribute>
                       <attrName>FirstName</attrName>
@@ -143,6 +152,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                       <attrName>Country</attrName>
                       <attrValue>{$country}</attrValue>
                   </attribute>
+                  { $state }
                   <attribute>
                       <attrName>Company</attrName>
                       <attrValue>{$company}</attrValue>
@@ -169,44 +179,44 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
 
     let $soap := mkto:soap($body)
     let $resp := $soap[1]
-    return 
+    return
         if ($resp/*:code/string() eq '200') then
             let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
-            return 
+            return
                 if ($ok) then
                     ()
                 else
                     mkto:alert(concat("mkto: syncLead failed.
-Error: 
+Error:
 
 ",
 xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
 
-Body: 
+Body:
 
 ",
 xdmp:quote($body)))
         else
-                    mkto:alert(concat("mkto: soap error: 
+                    mkto:alert(concat("mkto: soap error:
 ",
 xdmp:quote($soap), "
 
-Body: 
+Body:
 
 ",
 xdmp:quote($body)))
 };
 
-declare function mkto:associate-lead($email, $cookie, $meta) 
+declare function mkto:associate-lead($email, $cookie, $meta)
 {
     let $name := $meta/name/string()
     let $names := fn:tokenize($name, " ")
     let $first-name := mkto:first-name($names)
     let $last-name := mkto:last-name($names)
     let $company := $meta/organization/string()
-    let $cook := if ($cookie ne "") then 
+    let $cook := if ($cookie ne "") then
         <marketoCookie>{$cookie}</marketoCookie>
-    else 
+    else
         ()
 
     (: First check to see if lead exists :)
@@ -263,14 +273,14 @@ declare function mkto:associate-lead($email, $cookie, $meta)
                 <attrValue>License Request</attrValue>
             </attribute>
             )
-    
+
     let $body :=
       <SOAP-ENV:Envelope>
        <SOAP-ENV:Header>{mkto:auth()}</SOAP-ENV:Header>
        <SOAP-ENV:Body>
         <ns1:paramsSyncLead>
           <leadRecord>
-              <Email>{$email}</Email> 
+              <Email>{$email}</Email>
               <leadAttributeList>
                   <attribute>
                       <attrName>FirstName</attrName>
@@ -299,29 +309,29 @@ declare function mkto:associate-lead($email, $cookie, $meta)
 
     let $soap := mkto:soap($body)
     let $resp := $soap[1]
-    return 
+    return
         if ($resp/*:code/string() eq '200') then
             let $ok := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successSyncLead
-            return 
+            return
                 if ($ok) then
                     ()
                 else
                     mkto:alert(concat("mkto: syncLead failed.
-Error: 
+Error:
 
 ",
 xdmp:quote($soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body), "
 
-Body: 
+Body:
 
 ",
 xdmp:quote($body)))
         else
-                    mkto:alert(concat("mkto: soap error: 
+                    mkto:alert(concat("mkto: soap error:
 ",
 xdmp:quote($soap), "
 
-Body: 
+Body:
 
 ",
 xdmp:quote($body)))
@@ -351,7 +361,7 @@ declare function mkto:alert ($e as xs:string) {
    )
 };
 
-declare function mkto:soap($body) 
+declare function mkto:soap($body)
 {
     xdmp:http-post($mkto:endpoint,
         <options xmlns="xdmp:http">

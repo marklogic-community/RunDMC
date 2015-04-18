@@ -294,6 +294,12 @@
 	  <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
 	</select>
         </div>
+        <div class="signup-form-row state-row">
+            <label class="signup-form-label" for="s_state">State</label>
+
+            <select name="s_state" id="s_state" class="statepicker" autocorrect="off" autocomplete="off">
+            </select>
+        </div>
         <div class="signup-form-row">
             <div id="signup-form-separator"></div>
         </div>
@@ -381,11 +387,51 @@
                     s_password_confirm: {
                         equalTo: "#s_password"
                     }
+
                 }
             });
             if (/[?&amp;]d=/.test(location.href)) {
                 $("#signup-submit").text("Sign up and Download");
             }
+
+            function setStates(states) {
+              var sel = $('#s_state')[0];
+              $(sel).empty();
+
+              states.forEach(function(item) {
+                $(sel).append($('<option/>').attr('value', item).text(item));
+              });
+
+              $('.state-row').show();
+            }
+
+            $('#s_country').change(function() {
+              var country = $(this).find('option:selected').text();
+              if (country === 'United States') {
+                var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas',
+                  'California', 'Colorado', 'Connecticut', 'Delaware',
+                  'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois',
+                  'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+                  'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+                  'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+                  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+                  'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+                  'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+                  'South Carolina', 'South Dakota', 'Tennessee', 'Texas',
+                  'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+                  'Wisconsin', 'Wyoming'];
+                setStates(states);
+              } else if (country === 'Canada') {
+                var prov = ['Alberta', 'British Columbia', 'Manitoba',
+                  'New Brunswick', 'Newfoundland and Labrador',
+                  'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario',
+                  'Prince Edward Island', 'Quebec', 'Saskatchewan', 'Yukon' ];
+                setStates(prov);
+              } else {
+                setStates([]);
+                $('.state-row').hide();
+              }
+            });
         });
 
     </script>
