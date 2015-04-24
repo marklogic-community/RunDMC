@@ -729,7 +729,13 @@
           <privilege-name>xdmp:xslt-invoke</privilege-name>
         </privilege>
         <privilege>
+          <privilege-name>xdmp:hostname</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:filesystem-file-exists</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:filesystem-file-directory</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:document-get</privilege-name>
