@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-        <h1>SuperNodes</h1>
+  <h1>SuperNodes</h1>
 
-        <p>As a means to better serve and understand its developer community, MarkLogic formed
-        the SuperNodes group in summer 2011.  Members of this select group are among the most experienced and knowledgable 
-        developers in our community.  The purposes of the program are
+  <p>As a means to better serve and understand its developer community,
+    MarkLogic formed the SuperNodes group in summer 2011.  Members of this
+    select group are among the most experienced and knowledgable developers in
+    our community.  The purposes of the program are
 
-        <ul>
+    <ul>
       <li>To provide a direct connection between MarkLogic and power-users in our community.</li>
       <li>To provide recognition and status to strong, active community members.</li>
     </ul>
 
-        MarkLogic maintains a exclusive mailing list for SuperNode discussions.  On occasion, MarkLogic shares early preview "NDA-style" information with
-            SuperNodes via this list.  Additional, benefits of membership include occasional discounts to MarkLogic events.
-        </p>
+    MarkLogic maintains a exclusive mailing list for SuperNode discussions. On
+    occasion, MarkLogic shares early preview "NDA-style" information with
+    SuperNodes via this list.  Additional, benefits of membership include
+    occasional discounts to MarkLogic events.
+  </p>
 
-<p>
-        The initial list of developers includes:
+  <p>
+    The current list of developers includes:
 
-<pre xml:space="preserve">
+    <pre xml:space="preserve">
   Betty Harvey              Michael Fagan
   Darin McBeath             Rob Whitby
   David Lee (Honorary)      Ron Hitchens
@@ -27,16 +30,11 @@
   Florent Georges           Ryan Semerau (Honorary)
   Geert Josten              Sam Mefford
   Michael Blakeley          Shannon Shiflett
-  Telly Stroumbis
-</pre>
-
-<p>As of fall 2013, we have also added the following new members:</p>
-<pre xml:spacve="preserve">
-  Jakob Fix
+  Telly Stroumbis           Jakob Fix
   Craig Schlegelmilch
-</pre>
+    </pre>
 
-          <img src="/media/supernodes_logo_1.png" alt="SuperNodes" width="514" height="197"/>
+    <img src="/media/supernodes_logo_1.png" alt="SuperNodes" width="514" height="197"/>
 
-
-</p></ml:page>
+  </p>
+</ml:page>
