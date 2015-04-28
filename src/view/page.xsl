@@ -429,7 +429,8 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="stringList" select="tokenize(body, ' ')" />
-         <xsl:value-of select="substring(body/string(), 1, 999 + string-length(substring-before(substring(body/string(), 1000),' ')))" />
+         <xsl:value-of select="substring(string-join(body/node()[node-name(.) != xs:QName('xhtml:style')]/string(), codepoints-to-string(10)), 1, 999 + string-length(substring-before(substring(body/string(), 1000),' ')))" />
+        <a href="{ml:external-uri(.)}" />
         <a href="{ml:external-uri(.)}"> ...</a>
       </xsl:otherwise>
     </xsl:choose>
