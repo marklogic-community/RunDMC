@@ -141,6 +141,7 @@
         <page display="MLPHP" href="/labs/mlphp"/>
         <page display="MLJS" href="/labs/mljs"/>
         <page display="MLDotNet" href="/labs/mldotnet"/>
+        <page display="Mark Mapper" href="/code/markmapper"/>
         <page display="MLSAM" href="/code/mlsam"/>
         <page display="MLJAM" href="/code/mljam"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
