@@ -8,8 +8,8 @@ declare variable $xhtml := xdmp:get-request-field("xhtml");
     This will generate meaningful errors of the XHTML is invalid :)
 let $test-xhtml :=
   try {
-    let $quoted-doc := fn:concat('&lt;docWrapper>', $xhtml, '&lt;/docWrapper>')
-    return xdmp:unquote($quoted-doc, 'http://www.w3.org/1999/xhtml')
+    let $quoted-doc := fn:concat("&lt;ml:docWrapper xmlns:ml='http://developer.marklogic.com/site/internal'>", $xhtml, "&lt;/ml:docWrapper>")
+    return xdmp:unquote($quoted-doc, "http://www.w3.org/1999/xhtml")
   }
   catch($exception) {
     $exception
