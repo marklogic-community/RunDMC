@@ -2,7 +2,7 @@
 
   <host type="staging"
         default-host="false"
-        name="stage-developer.marklogic.com"
+        name="dmc-stage.marklogic.com"
         cookie-domain="marklogic.com">
     <main-server url="//dmc-stage.marklogic.com"/>
     <draft-server url="//dmc-stage-draft.marklogic.com"/>
