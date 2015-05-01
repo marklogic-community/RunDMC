@@ -118,7 +118,7 @@
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
-        <page display="Corb" href="/code/corb"/>
+        <page display="Corb2" href="/code/corb"/>
         <page display="Taskbot" href="/code/taskbot"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="Rebalancer" href="/code/task-rebalancer"/>
