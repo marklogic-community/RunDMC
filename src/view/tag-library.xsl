@@ -1146,50 +1146,51 @@
     </div>
   </xsl:template>
 
-   <xsl:template match="reset-hidden-fields">
-       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
-            <xsl:attribute name="value">
-               <xsl:copy-of select="$params[@name eq  'token']"/>
-            </xsl:attribute>
-       </input>
-       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
-            <xsl:attribute name="value">
-               <xsl:copy-of select="$params[@name eq  'id']"/>
-            </xsl:attribute>
-       </input>
-   </xsl:template>
-   <xsl:template match="cornify">
+  <xsl:template match="reset-hidden-fields">
+    <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
+      <xsl:attribute name="value">
+        <xsl:copy-of select="$params[@name eq  'token']"/>
+      </xsl:attribute>
+    </input>
+    <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
+      <xsl:attribute name="value">
+        <xsl:copy-of select="$params[@name eq  'id']"/>
+      </xsl:attribute>
+    </input>
+  </xsl:template>
+
+  <xsl:template match="cornify">
     <xsl:if test="users:cornifyEnabled()">
-        &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
+      &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
     </xsl:if>
-   </xsl:template>
+  </xsl:template>
 
-   <xsl:template match="signup-form-hidden-fields">
-      <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
+  <xsl:template match="signup-form-hidden-fields">
+    <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
-         <xsl:attribute name="value">
-            <xsl:value-of select="xdmp:get-request-field('d')"/>
-         </xsl:attribute>
+        <xsl:attribute name="value">
+          <xsl:value-of select="xdmp:get-request-field('d')"/>
+        </xsl:attribute>
       </input>
-      </xsl:if>
-      <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
+    </xsl:if>
+    <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
       <input type="hidden" name="s_page" id="s_page">
-         <xsl:attribute name="value">
-            <xsl:value-of select="xdmp:get-request-field('p')"/>
-         </xsl:attribute>
+        <xsl:attribute name="value">
+          <xsl:value-of select="xdmp:get-request-field('p')"/>
+        </xsl:attribute>
       </input>
-      </xsl:if>
-   </xsl:template>
+    </xsl:if>
+  </xsl:template>
 
-   <xsl:template match="countries">
-       <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
-   </xsl:template>
+  <xsl:template match="countries">
+    <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
+  </xsl:template>
 
-   <xsl:template match="entypo-attribution">
-        <xsl:if test="base-uri($content) eq '/index.xml'">
-            <span class="entypo-attribution">(Entypo pictograms by <a target="_blank" href="http://www.entypo.com">Daniel Bruce</a>)</span>
-        </xsl:if>
-   </xsl:template>
+  <xsl:template match="entypo-attribution">
+    <xsl:if test="base-uri($content) eq '/index.xml'">
+      <span class="entypo-attribution">(Entypo pictograms by <a target="_blank" href="http://www.entypo.com">Daniel Bruce</a>)</span>
+    </xsl:if>
+  </xsl:template>
 
 
 </xsl:stylesheet>
