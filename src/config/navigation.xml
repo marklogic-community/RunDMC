@@ -157,6 +157,7 @@
         <!-- <page display="XQuerrail2" href="/code/xquerrail2"/> -->
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
         <page display="XQuery Commons" href="/code/commons"/>
+        <page display="MarkLogic Workflow" href="/code/workflow"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Feed" href="/code/feed"/>
         <page display="OAuth" href="/code/oauth2"/>
