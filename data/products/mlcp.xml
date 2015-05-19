@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
-
-<p>
-MarkLogic Content Pump is an open-source, Java-based command-line tool (mlcp).  mlcp provides the fastest way to import, export, and copy data to or from MarkLogic 
-databases. It is designed for integration and automation in existing workflows and scripts.  
-</p>
-
-<a name="download"></a>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <p>
+MarkLogic Content Pump is an open-source, Java-based command-line tool (mlcp). mlcp provides the fastest way to import, export, and copy data to or from MarkLogic
+databases. It is designed for integration and automation in existing workflows and scripts.
+  </p>
+  <a name="download"></a>
   <ml:product-info name="MarkLogic Content Pump (mlcp)" license-page="">
     <ml:platform name="Download">
-      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.2-3-bin.zip" size="29 MB" date="2014-09-12">Release 1.2-3 binaries zip package</ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.2-3-src.zip" size="160 KB" date="2014-09-12">Release 1.2-3 source zip package</ml:download> 
+      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.3-2-bin.zip" size="29 MB" date="2015-04-07">Release 1.3-2 binaries zip package</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.3-2-src.zip" size="160 KB" date="2015-04-07">Release 1.3-2 source zip package</ml:download>
       <download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</download>
     </ml:platform>
-     <ml:maven>
-        <ml:artifact id="mlcp-Hadoop1" version="1.1-1"/>
-     </ml:maven>
+    <ml:maven>
+      <ml:artifact id="mlcp-Hadoop2" version="1.3-2"/>
+    </ml:maven>
   </ml:product-info>
-
-<p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
-<h3>Features</h3>
-<p>
-Content Pump can:
-<ul>
+  <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"></p>
+  <h3>Features</h3>
+  <p>Content Pump can:
+    <ul>
       <li>Bulk load billions of local files</li>
       <li>Split and load large, <a href="//docs.marklogic.com/guide/ingestion/content-pump#id_41615">aggregate</a> XML files or delimited text</li>
       <li>Bulk load billions of triples or quads from RDF files</li>
@@ -30,22 +26,20 @@ Content Pump can:
       <li>Copy subsets of data between databases</li>
       <li>Load documents from <a href="http://hadoop.apache.org/hdfs/">HDFS</a>, including <a href="http://wiki.apache.org/hadoop/SequenceFile">Hadoop SequenceFiles</a></li>
     </ul>
-</p>
-
-<h3>Data sources and destinations</h3>
-<p>
-Content Pump supports moving data between a MarkLogic database and any of the following:
-<ul>
+  </p>
+  <h3>Data sources and destinations</h3>
+  <p>Content Pump supports moving data between a MarkLogic database and any of
+    the following:
+    <ul>
       <li>Local filesystem</li>
       <li><a href="http://hadoop.apache.org/hdfs/">HDFS</a></li>
       <li>MarkLogic <a href="//docs.marklogic.com/guide/ingestion/content-pump#id_93332">archive</a></li>
       <li>Another MarkLogic database</li>
-    </ul></p>
-
-<h3>Formats</h3>
-<p>
-Content Pump supports
-<ul>
+    </ul>
+  </p>
+  <h3>Formats</h3>
+  <p>Content Pump supports
+    <ul>
       <li>XML, text, binary files </li>
       <li>RDF encoded in RDF/XML, Turtle, RDF/JSON, N3, N-Triples, N-Quads, or TriG serialization formats</li>
       <li>Compressed files and archives (ZIP, GZIP) </li>
@@ -54,79 +48,61 @@ Content Pump supports
       <li><a href="http://wiki.apache.org/hadoop/SequenceFile">Hadoop SequenceFiles</a></li>
     </ul>
 
-The popular <a href="/code/recordloader">RecordLoader</a> and <a href="/code/xqsync">XQSync</a> projects have served as inspirations for 
-Content Pump. However, mlcp is not designed for compatibility with either of those tools.
+    The popular <a href="/code/recordloader">RecordLoader</a> and
+    <a href="/code/xqsync">XQSync</a> projects have served as inspirations for
+    Content Pump. However, mlcp is not designed for compatibility with either
+    of those tools.
+  </p>
 
-<h3>Getting Started with MLCP</h3>
-<p>
-You may find this free <a href="/learn/free-online-training/content-pump">online training course</a> helpful.
-</p>
-<p>
-To get started moving data with mlcp, <a href="#download">download and unpack the binaries</a>. For those interested in hacking or look at the internals, 
-you can also download the <a href="#download">Apache 2.0 licensed source</a>.
-</p>
+  <h3>Getting Started with MLCP</h3>
+  <p>You may find this free <a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML6NFD_Content_Pump.xml&amp;course=MarkLogic%20Content%20Pump">online training course</a> helpful.
+  </p>
+  <p>To get started moving data with mlcp, <a href="#download">download and
+    unpack the binaries</a>. For those interested in hacking or look at the
+    internals, you can also download the <a href="#download">Apache 2.0
+    licensed source</a>.
+  </p>
+  <p>To create your first import script make sure you have an
+    <a href="//docs.marklogic.com/guide/admin/xdbc#chapter">XDBC server</a>
+    attached to your database (running on port 8006, for example, below). From
+    the command line, run the following, substituting your particulars.
+  </p>
+  <script src="https://gist.github.com/3494150.js?file=mlcp-example-1.sh" xml:space="preserve"></script>`
 
-<p>
-To create your first import script make sure you have an <a href="//docs.marklogic.com/guide/admin/xdbc#chapter">XDBC server</a> attached to your 
-database (running on port 8006, for example, below). From the command line, run the following, substituting your particulars. 
-</p>
+  <p>To export a subset of that same database into a platform-independent archive:</p>
+  <script src="https://gist.github.com/3494150.js?file=mlcp-example-2.sh" xml:space="preserve"></script>
+  <p>To import all triples from an N-Triples formated file named
+    <code>example.nt</code>:
+  </p>
+  <script src="https://gist.github.com/3494150.js?file=mlcp-example-rdf.sh" xml:space="preserve"></script>
 
-<script src="https://gist.github.com/3494150.js?file=mlcp-example-1.sh" xml:space="preserve"></script>`
+  This is a small sampling of the rich set of capabilities that mlcp provides.
+  For much more information, sample code, and examples in the
+  <a href="//docs.marklogic.com/guide/ingestion/content-pump#chapter">documentation</a>.
 
-<p>
-To export a subset of that same database into a platform-independent archive:
-</p>
-
-<script src="https://gist.github.com/3494150.js?file=mlcp-example-2.sh" xml:space="preserve"></script>
-
-<p>
-To import all triples from an N-Triples formated file named <code>example.nt</code>:
-</p>
-
-<script src="https://gist.github.com/3494150.js?file=mlcp-example-rdf.sh" xml:space="preserve"></script>
-
-This is a small sampling of the rich set of capabilities that mlcp provides. For much more information, sample code, and examples in the 
-<a href="//docs.marklogic.com/guide/ingestion/content-pump#chapter">documentation</a>.
-
-<a name="cdh4.3"></a>
-<h3>MLCP for the Hortonworks Distribution of Hadoop</h3>
-<p>
-Under the covers, mlcp uses Hadoop to efficiently distribute work. When running in the default local mode 
-(<code>-mode local</code>), mlcp transparently splits work among multiple threads on a single machine. However, if you have 
-a Hadoop cluster, you can take advantage of mlcp’s ability to distribute work across a cluster of machines, using Hadoop's MapReduce. The default 
-mlcp download above is certified for use with the Hortonworks Data Platform version 1.3. In order to run distributed mlcp jobs against a 
-Hortonworks Distribution of Hadoop instance you’ll need a separate download.  
-</p>
-
-  <ml:product-info name="MarkLogic Content Pump (mlcp) for Hortonworks Distribution of Hadoop" license-page="">
-    <ml:platform name="Download for Hortonworks Distribution of Hadoop">
-      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop1-1.2-1-bin.zip" size="12 MB" date="2014-02-04">Release 1.2-1 zip for Hortonworks Distribution of Hadoop
-      </ml:download>
+  <p>
+    <ml:product-documentation>
+      <ml:new-doc source="/guide/ingestion/content-pump"/>
+    </ml:product-documentation>
+  </p>
+  <hr noshade="none"/>
+  <h3>Older versions</h3>
+  <ml:product-info name="MarkLogic Content Pump (mlcp)" license-page="">
+    <ml:platform name="MarkLogic 7">
+      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.2-4-bin.zip" size="29 MB" date="2015-03-06">Release 1.2-4 binaries zip package</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.2-4-src.zip" size="160 KB" date="2015-03-06">Release 1.2-4 source zip package</ml:download>
+      <download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</download>
     </ml:platform>
-     <ml:maven>
-        <ml:artifact id="mlcp-Hadoop2" version="1.1-1"/>
-     </ml:maven>
+    <ml:maven>
+      <ml:artifact id="mlcp-Hadoop2" version="1.2-4"/>
+    </ml:maven>
   </ml:product-info>
 
-    <p>
-    <ml:product-documentation>
-        <ml:new-doc source="/guide/ingestion/content-pump"/>
-    </ml:product-documentation>
-    </p>
-  <hr/>
-  <p> </p>
-  <h3>Older versions</h3>
-
   <ml:product-info>
-<!-- No longer supporting hortonworks
-    <ml:platform name="MarkLogic 6">
-      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/marklogic-contentpump-1.0.3-bin.zip" size="4 MB" date="2012-04-22">Release 1.0.3 binaries zip package</ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/mlcp/marklogic-contentpump-1.0.3-src.zip" size="116 KB" date="2013-04-22">Release 1.0.3 source zip package</ml:download>
-    </ml:platform>
---> 	
     <ml:platform name="MarkLogic 6 with Cloudera Distribution of Hadoop">
       <ml:download anchor-class="track-download" href="/download/binaries/mlcp/mlcp-Hadoop2-1.0-5-bin.zip" size="12 MB" date="2014-03-21">Release 1.0.5 zip for Cloudera Distribution of Hadoop
       </ml:download>
     </ml:platform>
   </ml:product-info>
-</p></ml:page>
+
+</ml:page>
