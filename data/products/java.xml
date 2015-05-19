@@ -93,6 +93,7 @@
       <li><a href="/try/java/index">The Java API in 5 Minutes</a></li>
       <li><a href="/learn/java">Learning the MarkLogic Java API</a></li>
       <li><a href="/learn/java-pojos">Writing and Searching POJOs</a></li>
+      <li><a href="/code/samplestack">SampleStack -- MarkLogic Java API Application</a></li>
       <li><a href="/code/top-songs">Sample MarkLogic Java API Application</a></li>
     </ul>
   </p>
