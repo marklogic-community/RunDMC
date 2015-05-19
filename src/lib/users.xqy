@@ -25,7 +25,7 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare namespace em="URN:ietf:params:email-xml:";
 
 (: If the end user selects this country, require them to select a state. :)
-declare variable $COUNTRY-REQUIRES-STATE := ("United States", "Canada");
+declare variable $COUNTRY-REQUIRES-STATE := ("United States of America", "Canada");
 
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
