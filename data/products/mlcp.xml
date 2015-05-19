@@ -40,11 +40,12 @@ databases. It is designed for integration and automation in existing workflows a
   <h3>Formats</h3>
   <p>Content Pump supports
     <ul>
-      <li>XML, text, binary files </li>
-      <li>RDF encoded in RDF/XML, Turtle, RDF/JSON, N3, N-Triples, N-Quads, or TriG serialization formats</li>
-      <li>Compressed files and archives (ZIP, GZIP) </li>
+      <li>XML, JSON, text, binary files </li>
+      <li><a href="http://docs.marklogic.com/guide/ingestion/content-pump#id_32771">RDF encoded in RDF/XML, Turtle, RDF/JSON, N3, N-Triples, N-Quads, or TriG serialization formats</a></li>
+      <li><a href="http://docs.marklogic.com/guide/ingestion/content-pump#id_13251">Compressed files and archives</a> (ZIP, GZIP) </li>
       <li>MarkLogic <a href="//docs.marklogic.com/guide/ingestion/content-pump#id_93332">archive</a>, which includes both content and metadata (e.g., permissions and properties) </li>
-      <li>Delimited text (e.g., CSV) (<i>import only<i>)</i></i></li>
+      <li><a href="http://docs.marklogic.com/guide/ingestion/content-pump#id_70366">Delimited text</a> (e.g., CSV) (<i>import only<i>)</i></i></li>
+      <li><a href="http://docs.marklogic.com/guide/temporal/managing#id_98025">Temporal Documents</a></li>
       <li><a href="http://wiki.apache.org/hadoop/SequenceFile">Hadoop SequenceFiles</a></li>
     </ul>
 
@@ -55,7 +56,7 @@ databases. It is designed for integration and automation in existing workflows a
   </p>
 
   <h3>Getting Started with MLCP</h3>
-  <p>You may find this free <a href="http://mlu.marklogic.com/ondemand/redirect.xqy?uri=/manifests/ML6NFD_Content_Pump.xml&amp;course=MarkLogic%20Content%20Pump">online training course</a> helpful.
+  <p>You may find this free <a href="http://mlu.marklogic.com/ondemand/82764289">online training course</a> helpful.
   </p>
   <p>To get started moving data with mlcp, <a href="#download">download and
     unpack the binaries</a>. For those interested in hacking or look at the
