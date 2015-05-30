@@ -128,11 +128,6 @@
                 </li>
               </ul>
             </li>
-            <li><a href="/learn/semantic-infopanel"> Building a Semantic Infopanel in App Builder </a>
-              <ul>
-                <li style="list-style-type: none"> How to display facts based on the current search result </li>
-              </ul>
-            </li>
             <li><a href="/learn/semantic-constraint"> Improving Recall with a Semantic Constraint </a>
               <ul>
                 <li style="list-style-type: none"> How to go beyond text-based search </li>
