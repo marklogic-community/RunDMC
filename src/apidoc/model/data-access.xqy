@@ -816,7 +816,7 @@ as xs:string
   case 'xs:positiveInteger'
   case 'xs:unsignedInt' return 'Number'
 
-  case 'xs:integer' return 'Integer'
+  case 'xs:integer' return 'Number'
 
   (: #318 Translate any namespaced type names too. :)
   default return api:javascript-name($type, ())
