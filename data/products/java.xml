@@ -15,7 +15,7 @@
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.1.zip" size="6.4MB" date="2015-02-06">Release 3.0.1 zip package (compatible with MarkLogic 8)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.2.zip" size="6.4MB" date="2015-04-07">Release 3.0.2 zip package (compatible with MarkLogic 8)</ml:download>
       <!--
 
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
@@ -39,10 +39,9 @@
     <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
     &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
     &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
-    &lt;version&gt;3.0.1&lt;/version&gt;
+    &lt;version&gt;3.0.2&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
   </section>
-
   <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
   <h3>Features</h3>
   <p>The API provides interfaces for </p>
@@ -94,36 +93,28 @@
       <li><a href="/try/java/index">The Java API in 5 Minutes</a></li>
       <li><a href="/learn/java">Learning the MarkLogic Java API</a></li>
       <li><a href="/learn/java-pojos">Writing and Searching POJOs</a></li>
+      <li><a href="/code/samplestack">SampleStack -- MarkLogic Java API Application</a></li>
       <li><a href="/code/top-songs">Sample MarkLogic Java API Application</a></li>
     </ul>
   </p>
 
   <h3>Requirements</h3>
-  <p>The MarkLogic Java API runs on Java 6 and later and requires MarkLogic 6 or later as well.</p>
-
-
-  <h3>See Also</h3>
-  <p>MarkLogic also provides a separate API for those familiar with XQuery that would like to either embed or invoke
-XQuery code from with in Java. See <a href="//docs.marklogic.com/guide/xcc">XCC</a> for details and <a href="/products/xcc">XCC downloads</a>.
-  </p>
-
+  <p>The MarkLogic Java Client API 3.0.x runs on Java 6 and later and requires MarkLogic 8.</p>
   <p>
     <ml:product-documentation>
       <ml:new-doc type="javadoc" title="MarkLogic Java Client API - Javadoc" source="/javadoc/client"/>
       <ml:new-doc source="/guide/java"/>
     </ml:product-documentation>
   </p>
-
   <h2>Older Versions</h2>
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="MarkLogic 7">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.4.zip" size="7.7MB" date="2014-09-12">Release 2.0.4 zip package (compatible with MarkLogic 7)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.5.zip" size="4.9MB" date="2015-03-06">Release 2.0.5 zip package (compatible with MarkLogic 7)</ml:download>
     </ml:platform>
     <ml:maven>
-      <ml:artifact id="client-api-java" version="2.0.4"/>
+      <ml:artifact id="client-api-java" version="2.0.5"/>
     </ml:maven>
   </ml:product-info>
-
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="MarkLogic 6">
       <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-1.0-5.zip" size="6.3MB" date="2013-09-12">Release 1.0.5 zip package (compatible with MarkLogic 6)</ml:download>
@@ -132,5 +123,4 @@ XQuery code from with in Java. See <a href="//docs.marklogic.com/guide/xcc">XCC<
       <ml:artifact id="client-api-java" version="1.0.5"/>
     </ml:maven>
   </ml:product-info>
-
 </ml:page>

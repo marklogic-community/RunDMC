@@ -3,48 +3,23 @@
   <div>
     <ul>
       <li>
-        <a href="http://blog.msbbc.co.uk/" target="_blank">Alex Bleasdale</a>
+        <a href="http://adamfowlerml.wordpress.com/" target="_blank">Adam Fowler</a>
       </li>
 
       <li>
-        <a href="http://adamfowlerml.wordpress.com/" target="_blank">Adam Fowler</a>
-      </li>
-      
-      
-      <li>
-        <a href="http://blogs.avalonconsult.com/" target="_blank">Avalon Consulting LLC</a>
+        <a href="http://blogs.avalonconsult.com/blog/tag/marklogic/" target="_blank">Avalon Consulting LLC</a>
       </li>
 
       <li>
         <a href="http://blog.davidcassel.net/" target="_blank">David Cassel</a>
       </li>
-      
-      <li>
-        <a href="http://blog.xmlsh.org/" target="_blank">David Lee</a>
-      </li>
-      
+
       <li>
         <a href="http://garyrusso.wordpress.com/" target="_blank">Gary Russo</a>
       </li>
-      
-      <li>
-        <a href="http://www.jenitennison.com/blog/" target="_blank">Jeni Tennison</a>
-      </li>
 
       <li>
-        <a href="http://john.snelson.org.uk/" target="_blank">John Snelson</a>
-      </li>
-      
-      <li>
-        <a href="http://xquery.typepad.com/" target="_blank">Matt Turner</a>
-      </li>  
-
-      <li>
-        <a href="http://maxdewpoint.blogspot.com/" target="_blank">Ryan Dew</a>
-      </li>
-
-      <li>
-        <a href="http://dubinko.info/blog/" target="_blank">Micah Dubinko</a>
+        <a href="http://grtjn.blogspot.nl/" target="_blank">Geert Josten</a>
       </li>
 
       <li>
@@ -52,15 +27,7 @@
       </li>
 
       <li>
-        <a href="http://norman.walsh.name/">Norman Walsh</a>
-      </li>
-
-      <li>
-        <a href="http://robotbeerbash.wordpress.com/" target="_blank">Pete Aven</a>
-      </li>
-
-      <li>
-        <a href="http://broadcast.oreilly.com/philip-fennell/" target="_blank">Philip Fennell</a>
+        <a href="http://norman.walsh.name/" target="_blank">Norman Walsh</a>
       </li>
 
       <li>
@@ -68,9 +35,13 @@
       </li>
 
       <li>
-        <a href="http://xquerywebappdev.wordpress.com/" target="_blank">Ryan Semerau</a>
+        <a href="http://maxdewpoint.blogspot.com/" target="_blank">Ryan Dew</a>
+      </li>
+
+      <li>
+        <a href="http://tamas.io/" target="_blank">Tamas Piros</a>
       </li>
     </ul>
   </div>
-  
+
 </ml:widget>

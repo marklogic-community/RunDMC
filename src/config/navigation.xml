@@ -118,7 +118,7 @@
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
-        <page display="Corb" href="/code/corb"/>
+        <page display="Corb2" href="/code/corb"/>
         <page display="Taskbot" href="/code/taskbot"/>
         <page display="AutoLoader" href="/code/AutoLoader"/>
         <page display="Rebalancer" href="/code/task-rebalancer"/>
@@ -141,6 +141,7 @@
         <page display="MLPHP" href="/labs/mlphp"/>
         <page display="MLJS" href="/labs/mljs"/>
         <page display="MLDotNet" href="/labs/mldotnet"/>
+        <page display="MarkMapper" href="/code/markmapper"/>
         <page display="MLSAM" href="/code/mlsam"/>
         <page display="MLJAM" href="/code/mljam"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
@@ -156,6 +157,7 @@
         <!-- <page display="XQuerrail2" href="/code/xquerrail2"/> -->
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
         <page display="XQuery Commons" href="/code/commons"/>
+        <page display="MarkLogic Workflow" href="/code/workflow"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Feed" href="/code/feed"/>
         <page display="OAuth" href="/code/oauth2"/>

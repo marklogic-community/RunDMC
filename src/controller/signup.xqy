@@ -18,33 +18,36 @@ let $company := functx:trim(xdmp:get-request-field("s_company"))
 let $industry := functx:trim(xdmp:get-request-field("s_industry"))
 let $phone := functx:trim(xdmp:get-request-field("s_phone"))
 let $country := functx:trim(xdmp:get-request-field("s_country"))
+let $state := functx:trim(xdmp:get-request-field("s_state"))
 let $contactme := xdmp:get-request-field("s_contactme", "off")
 
 (: TODO validate industry picklists :)
 
 (: validate email addy, passwords, etc :)
-let $valid := util:validateEmail($email) and 
+let $valid := util:validateEmail($email) and
     (fn:string-length($email) le 255) and
     (fn:string-length($password) le 255) and
-    ($password and not($password eq "")) and 
-    ($password eq $confirm-password) and 
+    ($password and not($password eq "")) and
+    ($password eq $confirm-password) and
     ($name and not($name eq "")) and
     (fn:string-length($name) gt 0 and fn:string-length($name) le 255) and
     (fn:string-length($company) gt 0 and fn:string-length($company) le 255) and
     (fn:string-length($phone) gt 0 and fn:string-length($phone) le 255) and
     (fn:string-length($country) gt 0 and fn:string-length($country) le 255) and
+    ($country ne $users:COUNTRY-REQUIRES-STATE or fn:string-length($state) gt 0 and fn:string-length($state) le 255) and
     (fn:string-length($industry) gt 0 and fn:string-length($industry) le 255) and
     true()
 
 let $_ :=
     xdmp:log(fn:concat(
-        "email: ", $email, " ", 
-        "name: ", $name, " ", 
-        "company: ", $company, " ", 
-        "phone: ", $phone, " ", 
-        "country: ", $country, " ", 
-        "contactme: ", $contactme, " ", 
-        "industry: ", $industry, " ", 
+        "email: ", $email, " ",
+        "name: ", $name, " ",
+        "company: ", $company, " ",
+        "phone: ", $phone, " ",
+        "country: ", $country, " ",
+        "state: ", $state, " ",
+        "contactme: ", $contactme, " ",
+        "industry: ", $industry, " ",
         ""
     ))
 
@@ -53,6 +56,9 @@ let $others := (
     <industry>{$industry}</industry>,
     <phone>{$phone}</phone>,
     <country>{$country}</country>,
+    if (fn:string-length($state) > 0) then
+      <state>{$state}</state>
+    else (),
     <list>{$signup}</list>,
     <contact-me>{$contactme}</contact-me>,
     ()

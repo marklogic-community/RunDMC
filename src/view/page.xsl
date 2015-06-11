@@ -385,7 +385,17 @@
       </header>
 
       <div class="body">
-        <xsl:apply-templates mode="post-content" select="."/>
+        <!-- Display an abridged version of a post if we're on a list with more than one;
+             otherwise, show the entire post.
+        -->
+        <xsl:choose>
+          <xsl:when test="$in-paginated-list">
+            <xsl:apply-templates mode="post-content-abridged" select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates mode="post-content" select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
       </div>
 
     </article>
@@ -408,6 +418,22 @@
 
   <xsl:template mode="post-content" match="Post | Announcement">
     <xsl:apply-templates select="body/node()"/>
+  </xsl:template>
+
+  <xsl:template mode="post-content-abridged" match="Post | Announcement">
+    <xsl:choose>
+      <!-- Show the short-description if it exists, otherwise show the first 1000 characters but
+            make sure you don't chop off a word -->
+      <xsl:when test="short-description ne ''">
+        <xsl:apply-templates select="short-description/node()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="stringList" select="tokenize(body, ' ')" />
+         <xsl:value-of select="substring(string-join(body/node()[node-name(.) != xs:QName('xhtml:style')]/string(), codepoints-to-string(10)), 1, 999 + string-length(substring-before(substring(body/string(), 1000),' ')))" />
+        <a href="{ml:external-uri(.)}" />
+        <a href="{ml:external-uri(.)}"> ...</a>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template mode="post-content" match="Event">

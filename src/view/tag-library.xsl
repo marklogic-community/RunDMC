@@ -1146,50 +1146,87 @@
     </div>
   </xsl:template>
 
-   <xsl:template match="reset-hidden-fields">
-       <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
-            <xsl:attribute name="value">
-               <xsl:copy-of select="$params[@name eq  'token']"/>
-            </xsl:attribute>
-       </input>
-       <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
-            <xsl:attribute name="value">
-               <xsl:copy-of select="$params[@name eq  'id']"/>
-            </xsl:attribute>
-       </input>
-   </xsl:template>
-   <xsl:template match="cornify">
+  <xsl:template match="reset-hidden-fields">
+    <input id="token" name="token" value="$params[@name eq 'token']" type="hidden">
+      <xsl:attribute name="value">
+        <xsl:copy-of select="$params[@name eq  'token']"/>
+      </xsl:attribute>
+    </input>
+    <input id="id" name="id" value="$params[@name eq 'id']" type="hidden">
+      <xsl:attribute name="value">
+        <xsl:copy-of select="$params[@name eq  'id']"/>
+      </xsl:attribute>
+    </input>
+  </xsl:template>
+
+  <xsl:template match="cornify">
     <xsl:if test="users:cornifyEnabled()">
-        &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
+      &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
     </xsl:if>
-   </xsl:template>
+  </xsl:template>
 
-   <xsl:template match="signup-form-hidden-fields">
-      <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
+  <xsl:template match="signup-form-hidden-fields">
+    <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
-         <xsl:attribute name="value">
-            <xsl:value-of select="xdmp:get-request-field('d')"/>
-         </xsl:attribute>
+        <xsl:attribute name="value">
+          <xsl:value-of select="xdmp:get-request-field('d')"/>
+        </xsl:attribute>
       </input>
-      </xsl:if>
-      <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
+    </xsl:if>
+    <xsl:if test="xdmp:get-request-field('p') and not(xdmp:get-request-field('p') eq '')">
       <input type="hidden" name="s_page" id="s_page">
-         <xsl:attribute name="value">
-            <xsl:value-of select="xdmp:get-request-field('p')"/>
-         </xsl:attribute>
+        <xsl:attribute name="value">
+          <xsl:value-of select="xdmp:get-request-field('p')"/>
+        </xsl:attribute>
       </input>
-      </xsl:if>
-   </xsl:template>
+    </xsl:if>
+    <input type="hidden" class="demandbase-hidden" name="dba_Company_Name__c" id="dba_Company_Name__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="TickerSymbol__c" id="TickerSymbol__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Sub_Industry__c" id="Sub_Industry__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Primary_SIC__c" id="Primary_SIC__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Revenue_Range__c" id="Revenue_Range__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="AnnualRevenue" id="AnnualRevenue" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Employee_Range__c" id="Employee_Range__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="NumberOfEmployees" id="NumberOfEmployees" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Address" id="Address" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="City" id="City" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="PostalCode" id="PostalCode" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="ISO2__c" id="ISO2__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Latitude" id="Latitude" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Longitude" id="Longitude" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Website" id="Website" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="traffic__c" id="traffic__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="b2b__c" id="b2b__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="b2c__c" id="b2c__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Fortune_1000__c" id="Fortune_1000__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Forbes_2000__c" id="Forbes_2000__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="demandbase_sid__c" id="demandbase_sid__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="demandbase_data_source__c" id="demandbase_data_source__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="Audience__c" id="Audience__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="audience_segment__c" id="audience_segment__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="demandbase_ip__c" id="demandbase_ip__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_company_name__c" id="registry_company_name__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_city__c" id="registry_city__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_state__c" id="registry_state__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_zip_code__c" id="registry_zip_code__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_area_code__c" id="registry_area_code__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_dma_code__c" id="registry_dma_code__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_country__c" id="registry_country__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_country_code__c" id="registry_country_code__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_country_code3__c" id="registry_country_code3__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_latitude__c" id="registry_latitude__c" value=""  />
+    <input type="hidden" class="demandbase-hidden" name="registry_longitude__c" id="registry_longitude__c" value=""  />
+  </xsl:template>
 
-   <xsl:template match="countries">
-       <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
-   </xsl:template>
+  <xsl:template match="countries">
+    <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
+  </xsl:template>
 
-   <xsl:template match="entypo-attribution">
-        <xsl:if test="base-uri($content) eq '/index.xml'">
-            <span class="entypo-attribution">(Entypo pictograms by <a target="_blank" href="http://www.entypo.com">Daniel Bruce</a>)</span>
-        </xsl:if>
-   </xsl:template>
+  <xsl:template match="entypo-attribution">
+    <xsl:if test="base-uri($content) eq '/index.xml'">
+      <span class="entypo-attribution">(Entypo pictograms by <a target="_blank" href="http://www.entypo.com">Daniel Bruce</a>)</span>
+    </xsl:if>
+  </xsl:template>
 
 
 </xsl:stylesheet>
