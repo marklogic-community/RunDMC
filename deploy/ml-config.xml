@@ -735,7 +735,7 @@
           <privilege-name>xdmp:filesystem-file-exists</privilege-name>
         </privilege>
         <privilege>
-          <privilege-name>xdmp:filesystem-file-directory</privilege-name>
+          <privilege-name>xdmp:filesystem-directory</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:document-get</privilege-name>
