@@ -1305,6 +1305,12 @@ as attribute()?
     $version, $a, $context)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
+  case attribute(bucket) return 
+    if ($context eq 'javascript')
+    then if ($a eq 'XQuery Library Modules')
+         then attribute bucket {"JavaScript Library Modules"}
+         else $a
+    else $a
   (: By default, return the input. :)
   default return $a
 };
