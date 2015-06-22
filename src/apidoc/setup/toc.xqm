@@ -84,11 +84,19 @@ as empty-sequence()
   let $f1 := $fp/api:function[1]
   let $mode as xs:string := $fp/@mode
   let $m-mode := map:get($m, $mode)
-  let $bucket as xs:string := $f1/@bucket
+  let $bucket as xs:string := if ($f1/@bucket) 
+                              then ($f1/@bucket) 
+                              else ('MarkLogic Built-In Functions')
   let $cat as xs:string := $f1/@category
   let $subcat as xs:string? := $f1/@subcategory
   let $catsubcat as xs:string := $cat||'#'||$subcat
-  let $lib as xs:string := $f1/@lib
+  let $lib := $f1/@lib/fn:string()
+  let $object := $f1/@object/fn:string()
+  (: 
+     either $lib or $object (used with apidoc:method) should be the 
+     empty string, but we are treating them both like lib 
+  :)
+  let $lib-or-object := fn:concat($lib, $object)
   let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
   let $m-catsubcat := map:get($m-mode, $MAP-KEY-CATSUBCAT)
   let $m-lib := map:get($m-mode, $MAP-KEY-LIB)
@@ -101,7 +109,7 @@ as empty-sequence()
   let $_ := map:put(
     $m-catsubcat, $catsubcat, (map:get($m-catsubcat, $catsubcat), $f1))
   let $_ := map:put(
-    $m-lib, $lib, (map:get($m-lib, $lib), $f1))
+    $m-lib, $lib-or-object, (map:get($m-lib, $lib-or-object), $f1))
   return ()
 };
 
@@ -192,7 +200,7 @@ declare function toc:lib-for-all(
   $functions as element()*)
 as xs:string?
 {
-  let $libs := distinct-values($functions/@lib)
+  let $libs := distinct-values(($functions/@lib, $functions/@object))
   (: This is a hack to make the semantics library work.
    : It has multiple namespace.
    :)
@@ -218,7 +226,7 @@ declare function toc:primary-lib($functions as element()*)
 declare function toc:lib-for-most($functions as element()*)
   as xs:string
 {
-  (for $name in distinct-values($functions/@lib)
+  (for $name in distinct-values(($functions/@lib, $functions/@object))
     let $count := count($functions[@lib eq $name])
     order by $count descending
     return $name)[1]
@@ -1095,8 +1103,14 @@ as xs:integer
             xs:QName('mode'),
             $mode),
           if (not($lib)) then ()
-          else cts:element-attribute-value-query(
-            xs:QName('api:function'), xs:QName('lib'), $lib)))))
+          else cts:or-query((
+            cts:element-attribute-value-query(
+               xs:QName('api:function'), xs:QName('lib'), $lib),
+            cts:element-attribute-value-query(
+               xs:QName('api:function'), xs:QName('object'), $lib))))
+      )
+     )
+   )
 };
 
 declare function toc:category-href(
@@ -1596,7 +1610,7 @@ declare function toc:libs-for-mode(
 as element(api:lib)*
 {
   switch($mode)
-  case $api:MODE-JAVASCRIPT return api:libs-builtin($version, $mode)
+  case $api:MODE-JAVASCRIPT return api:libs-all($version, $mode)
   case $api:MODE-XPATH return api:libs-all($version, $mode)
   case $api:MODE-REST return ()
   default return stp:error('UNEXPECTED', $mode)

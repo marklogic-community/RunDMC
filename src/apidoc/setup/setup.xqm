@@ -225,16 +225,17 @@ as xs:string
 };
 
 declare function stp:function-children(
-  $function as element(apidoc:function))
-as element(apidoc:function)*
+  $function as element())
+as element()*
 {
-  let $lib as xs:string := $function/@lib
-  let $name as xs:string := $function/@name
+  let $lib := $function/@lib/fn:string()
+  let $object := $function/@object/fn:string()
+  let $name := $function/@name/fn:string()
   let $verb as xs:string? := $function/@http-verb
-  return $function/../apidoc:function[
-    @name eq $name][
-    @lib eq $lib][
-    not($verb) or @http-verb eq $verb]
+  return $function/../(apidoc:function | apidoc:method)
+    [@name eq $name]
+    [@lib eq $lib or @object eq $object]
+    [not($verb) or @http-verb eq $verb]
 };
 
 (: If a function has an equivalent in another mode,
@@ -243,7 +244,7 @@ as element(apidoc:function)*
 declare function stp:function-link(
   $version as xs:string,
   $mode as xs:string,
-  $function as element(apidoc:function))
+  $function as element())
 as element(api:function-link)?
 {
   if (($mode eq $api:MODE-JAVASCRIPT and number($version) lt 8.0)
@@ -257,7 +258,7 @@ as element(api:function-link)?
 declare function stp:function-links(
   $version as xs:string,
   $mode as xs:string,
-  $function as element(apidoc:function))
+  $function as element())
 as element(api:function-link)*
 {
   switch($mode)
@@ -292,7 +293,7 @@ as element(api:suggest)*
 
 declare function stp:function-extract(
   $version as xs:string,
-  $function as element(apidoc:function),
+  $function as element(),
   $uris-seen as map:map)
 as element(api:function-page)*
 {
@@ -1329,6 +1330,21 @@ as attribute()*
        : but missing from non-fake raw function XML.
        :)
       attribute fullname { api:fixup-fullname($e, .) }))
+  case element(apidoc:method) return (
+    (($e/@mode, $context)[1] treat as item()) ! (
+      (: Add the prefix and namespace URI of the function. :)
+      attribute prefix { $e/@object },
+      attribute namespace { api:namespace($e/@object)/@uri },
+      (: Watch for duplicates!
+       : Any existing attributes will be copies by the caller.
+       :)
+      if ($e/@mode) then () else attribute mode { . },
+      (: Add the @fullname attribute, which we depend on later.
+       : This depends on the @mode attribute,
+       : which is faked in api:function-fake-javascript
+       : but missing from non-fake raw function XML.
+       :)
+      attribute fullname { api:fixup-fullname($e, .) }))
   default return ()
 };
 
@@ -1493,7 +1509,7 @@ as node()*
 };
 
 declare function stp:function-modes(
-  $f as element(apidoc:function))
+  $f as element())
 as xs:string+
 {
   $api:MODES[
@@ -1501,7 +1517,7 @@ as xs:string+
 };
 
 declare function stp:function-names(
-  $f as element(apidoc:function))
+  $f as element())
 as xs:string+
 {
   api:fixup-fullname($f, stp:function-modes($f), true())
@@ -1515,7 +1531,7 @@ as xs:string*
   stp:function-names(
     xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
     /xdmp:zip-get($zip, .)
-    /apidoc:module/apidoc:function[@name/string()])
+    /apidoc:module/(apidoc:function | apidoc:method)[@name/string()])
 };
 
 declare function stp:zipfile-function-names(

@@ -192,9 +192,12 @@ declare function api:get-bucket-for-lib(
   $lib as xs:string)
 as xs:string
 {
+let $bucket :=
   cts:search(
     collection(), api:query-for-lib-functions($version, $mode, $lib))[1]
   /api:function-page/api:function[1]/@bucket
+return
+if (fn:empty($bucket)) then 'MarkLogic Built-In Functions' else $bucket
 };
 
 (: TODO this seems convoluted and expensive. Really a group-by? :)
@@ -209,7 +212,7 @@ as element(api:lib)*
   else
   let $q := api:query-for-functions($version, $mode, $extra)
   let $list := cts:element-attribute-values(
-    xs:QName("api:function"), xs:QName("lib"),
+    xs:QName("api:function"), (xs:QName("lib"), xs:QName("object")),
     (), "ascending", $q)
   for $lib in $list
   return element api:lib {
@@ -393,9 +396,17 @@ as xs:string
 };
 
 declare function api:javascript-name(
-  $function as element(apidoc:function))
+  $function as element())
 as xs:string
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
   api:javascript-name(
     $function/@name,
     $function/apidoc:name[@class eq 'javascript'])
@@ -405,10 +416,18 @@ as xs:string
  : Example output: "/v1/rest-apis/[name] (GET)"
  :)
 declare function api:REST-fullname(
-  $e as element(apidoc:function),
+  $e as element(),
   $prefix as xs:boolean)
 as xs:string
 {
+(: add test because loosened the $e signature :)
+if ($e instance of  element(apidoc:function)) 
+then () 
+else if ($e instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
   if ($prefix) then concat(
     ($e/@http-verb, 'GET')[1],
     ':',
@@ -421,36 +440,64 @@ as xs:string
 };
 
 declare function api:REST-fullname(
-  $e as element(apidoc:function))
+  $e as element())
 as xs:string
 {
+(: add test because loosened the $e signature :)
+if ($e instance of element(apidoc:function)) 
+then () 
+else if ($e instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
+
   api:REST-fullname($e, false())
 };
 
 (: The fullname is a derived value :)
 declare function api:fixup-fullname(
-  $function as element(apidoc:function),
+  $function as element(),
   $mode as xs:string,
   $prefix as xs:boolean)
 as xs:string
 {
+(: add test because loosened the $function signature :)
+if ($function  instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
+
   (: REST docs (lib="manage" in the raw source)
    : should not have a namespace prefix in the full name.
    :)
   switch($mode)
   case $MODE-REST return api:REST-fullname($function, $prefix)
   case $MODE-JAVASCRIPT return concat(
-    $function/@lib, '.', api:javascript-name($function))
+    (: should have exactly one of @lib or @object :)
+    $function/@lib, $function/@object,  '.', api:javascript-name($function))
   (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
     $function/@lib, ':', $function/@name)
 };
 
 declare function api:fixup-fullname(
-  $function as element(apidoc:function),
+  $function as element(),
   $mode as xs:string)
 as xs:string
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
+
   api:fixup-fullname($function, $mode, false())
 };
 
@@ -458,18 +505,36 @@ as xs:string
  : we can detect the mode of the function element.
  :)
 declare function api:function-detect-mode(
-  $function as element(apidoc:function))
+  $function as element())
 as xs:string
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
+
   $function/parent::apidoc:function-page/@mode
 };
 
 (: Determine the document URI for a function page. :)
 declare function api:external-uri(
-  $function as element(apidoc:function),
+  $function as element(),
   $mode as xs:string?)
 as xs:string
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
+
   (: This is sensitive to a bug in 7.0-2.3 (SUPPORT-13991),
    : so leave the expression alone until the bug is fixed.
    :)
@@ -485,6 +550,7 @@ declare function api:external-uri($n as node())
 {
   typeswitch($n)
   case element(apidoc:function) return error((), 'UNEXPECTED', $n)
+  case element(apidoc:method) return error((), 'UNEXPECTED', $n)
   default return ml:external-uri-api($n)
 };
 
@@ -639,15 +705,24 @@ as xs:boolean
 };
 
 declare function api:function-appears-in-mode(
-  $function as element(apidoc:function),
+  $function as element(),
   $mode as xs:string)
 as xs:boolean
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
   (switch($mode)
-    case $MODE-JAVASCRIPT return (
-      $function/@bucket = (
+    case $MODE-JAVASCRIPT return ( fn:true()
+      (:  Not Sure why this used to restrict these, but removing :) (: 
+       $function/@bucket = (
         'MarkLogic Built-In Functions',
-        'W3C-Standard Functions'))
+        'W3C-Standard Functions') :) )
     case $MODE-REST return starts-with($function/@name, '/')
     case $MODE-XPATH return not(starts-with($function/@name, '/'))
     default return error((), 'UNEXPECTED', ($mode)))
@@ -655,13 +730,21 @@ as xs:boolean
   and api:has-mode-class($function, $mode)
 };
 
-(: Used by extract-functions.xsl
+(: Used by setup.xqm
  : This fakes mode=javascript so we can test for it later on.
  :)
 declare function api:function-fake-javascript(
-  $function as element(apidoc:function))
+  $function as element())
 as element(apidoc:function)?
 {
+(: add test because loosened the $function signature :)
+if ($function instance of element(apidoc:function)) 
+then () 
+else if ($function instance of element(apidoc:method))
+     then ()
+     else (fn:error((), "APIDOC-UNKNOWNELEMENT", "Element must be either 
+          element(apidoc:function) or element(apidoc:method)")) ,
+
   element apidoc:function {
     attribute mode { $MODE-JAVASCRIPT },
     $function/@*,
@@ -672,8 +755,12 @@ as element(apidoc:function)?
 declare function api:module-extractable-functions(
   $module as element(apidoc:module),
   $mode as xs:string)
-as element(apidoc:function)*
+as element()*
 {
+(: 
+   the return type is actually a combination of apidoc:function and 
+   apidoc:method element, so I loosened up the return type 
+:)
   if (not(api:has-mode-class($module, $mode))) then () else
   switch($mode)
   (: Fake a raw module doc, creating all the necessary context.
@@ -684,18 +771,19 @@ as element(apidoc:function)*
       attribute xml:base { base-uri($module) },
       attribute mode { $MODE-JAVASCRIPT },
       api:function-fake-javascript(
-        $module/apidoc:function[
+        $module/(apidoc:function | apidoc:method)[
           not(@name eq '') ][
           not(api:fixup-fullname(., ()) =
-            preceding-sibling::apidoc:function/api:fixup-fullname(., ())) ][
-          api:function-appears-in-mode(., $mode) ])
-      } }/apidoc:module/apidoc:function
+            (preceding-sibling::apidoc:function/api:fixup-fullname(., ()),
+             preceding-sibling::apidoc:method/api:fixup-fullname(., ()) ) ) ]
+          [api:function-appears-in-mode(., $mode) ])
+      } }/apidoc:module/(apidoc:function | apidoc:method)
   case $MODE-REST
   case $MODE-XPATH return $module/apidoc:function[
     not(@name eq '') ][
     not(api:fixup-fullname(., ()) =
-      preceding-sibling::apidoc:function/api:fixup-fullname(., ())) ][
-    api:function-appears-in-mode(., $mode) ]
+      preceding-sibling::apidoc:function/api:fixup-fullname(., ()) ) ]
+    [api:function-appears-in-mode(., $mode) ]
   default return error((), 'UNEXPECTED', ('Unexpected mode', $mode))
 };
 
