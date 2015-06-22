@@ -60,48 +60,59 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 
     <div id="container">
-      <div id="banner">
-        <span>FREE FOR DEVELOPERS</span> |
-        <span>MARKLOGIC WORLD</span> |
-        <span>COMING TO A CITY NEAR YOU</span>
-        <a href="http://world.marklogic.com/locations" class="btn">REGISTER TODAY</a>
-      </div>
-      <div id="header">
-        <header>
-          <h1>
-            <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript>
-            <a ml:class="" ml:href="/">MarkLogic&#174; Community</a>
-          </h1>
-          <div id="header-contents">
-
-            <div id="main-site">
-              <a href="//www.marklogic.com">Main site&#160;<span id="main-triangle">&#9656;</span></a>
-            </div>
-            <div class="header-separator">|</div>
-            <div id="search-header">
-              <form class="search-form" ml:action="/search" method="get">
-                <input type="hidden" name="v" ml:value="" />
-                <input type="hidden" name="api" ml:value="" />
-                <label for="s_inp">Search with MarkLogic</label>
-                <input id="s_inp" name="q" type="text"
-                       autocapitalize="off"
-                       placeholder="Search with MarkLogic" ml:value=""/>
-                <input type="submit" value="Search" />
-              </form>
-            </div>
-            <div class="header-separator">|</div>
-            <div id="login-header">
-              <ml:login-menu/>
-            </div>
-          </div>
-
-          <nav>
-            <ul>
-              <ml:top-nav/>
+      <header>
+        <nav class="navbar-top row">
+          <div class="col-xs-6">
+            <ul class="nav-web-properties">
+              <li><a href="http://www.marklogic.com" target="_blank"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm">Marklogic.com</span></a></li>
+              <li><a href="http://developer.marklogic.com" target="_blank"><span class="glyphicon glyphicon-console"></span><span class="hidden-xs hidden-sm">Developers</span></a></li>
+              <li><a href="http://world.marklogic.com" target="_blank"><span class="glyphicon glyphicon-globe"></span><span class="hidden-xs hidden-sm">MarkLogic World</span></a></li>
+              <li><a href="http://www.marklogic.com/services/training/" target="_blank"><span class="glyphicon glyphicon-apple"></span><span class="hidden-xs hidden-sm">University</span></a></li>
             </ul>
-          </nav>
-        </header>
-      </div>
+          </div>
+          <div class="col-xs-6">
+            <ul class="nav-resources pull-right">
+              <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="">Ask a Question</span></a></li>
+            </ul>
+          </div>
+        </nav>
+        <div id="header">
+          <header>
+            <h1>
+              <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript>
+              <a ml:class="" ml:href="/">MarkLogic&#174; Community</a>
+            </h1>
+            <div id="header-contents">
+
+              <div id="main-site">
+                <a href="//www.marklogic.com">Main site&#160;<span id="main-triangle">&#9656;</span></a>
+              </div>
+              <div class="header-separator">|</div>
+              <div id="search-header">
+                <form class="search-form" ml:action="/search" method="get">
+                  <input type="hidden" name="v" ml:value="" />
+                  <input type="hidden" name="api" ml:value="" />
+                  <label for="s_inp">Search with MarkLogic</label>
+                  <input id="s_inp" name="q" type="text"
+                         autocapitalize="off"
+                         placeholder="Search with MarkLogic" ml:value=""/>
+                  <input type="submit" value="Search" />
+                </form>
+              </div>
+              <div class="header-separator">|</div>
+              <div id="login-header">
+                <ml:login-menu/>
+              </div>
+            </div>
+
+            <nav>
+              <ul>
+                <ml:top-nav/>
+              </ul>
+            </nav>
+          </header>
+        </div>
+      </header>
       <div id="content">
         <ml:choose>
           <!-- Don't include the regular page divs on the home page -->
