@@ -330,35 +330,46 @@ hr {
     position: static;
 }
 
-#banner {
+header nav.navbar-top{
   background: #44499c;
-  color: #fff;
-  font-size: 11px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: 0;
-  padding: 8px;
-  text-align: center;
+  font-size: 1rem;
+  height: 34px;
+  line-height: 14px;
+  margin: 0
 }
 
-#banner span {
-  color: #fff;
-  font-size: 11px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+header nav.navbar-top ul{
   margin: 0;
-  padding: 8px;
+  padding: 0 5px;
+  overflow: auto;
+  list-style: none
 }
 
-#banner .btn {
-  background: #fff;
-  background: #fff url('/css/images/glyphicons_223_chevron-right-purple.png') no-repeat 95% 50%;
-  background-size: 6px;
-  border-radius: 3px;
-  color: #43499f;
-  display: inline-block;
-  font-size: 11px;
-  line-height: 1.5;
-  padding: 1px 18px 1px 8px;
-  text-decoration: none;
+header nav.navbar-top ul li{
+  float: left;
+  padding: 0;
+  margin: 0
+}
+
+header nav.navbar-top ul li a{
+  color: #fff;
+  float: left;
+  padding: 10px 7px;
+  margin: 0;
+  text-transform: uppercase
+}
+
+header nav.navbar-top ul li a:hover{
+  text-decoration: none
+}
+
+header nav.navbar-top ul li:first-child a{
+  padding-left: 0
+}
+
+header nav.navbar-top span.glyphicon{
+  margin-right: 4px
 }
 
 #header header:after,
