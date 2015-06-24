@@ -718,11 +718,12 @@ else if ($function instance of element(apidoc:method))
           element(apidoc:function) or element(apidoc:method)")) ,
 
   (switch($mode)
-    case $MODE-JAVASCRIPT return ( fn:true()
-      (:  Not Sure why this used to restrict these, but removing :) (: 
+    case $MODE-JAVASCRIPT return ( 
        $function/@bucket = (
         'MarkLogic Built-In Functions',
-        'W3C-Standard Functions') :) )
+        'W3C-Standard Functions',
+        'XQuery Library Modules',
+        'JavaScript Library Modules')  )
     case $MODE-REST return starts-with($function/@name, '/')
     case $MODE-XPATH return not(starts-with($function/@name, '/'))
     default return error((), 'UNEXPECTED', ($mode)))
