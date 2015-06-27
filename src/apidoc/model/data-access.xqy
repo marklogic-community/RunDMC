@@ -35,7 +35,7 @@ declare variable $M-NAMESPACES as map:map := (
   let $_ := (
     for $ns in u:get-doc(
       "/apidoc/config/namespace-mappings.xml")/namespaces/namespace
-    let $_ := map:put($m, $ns/@lib, $ns)
+    let $_ := map:put($m, $ns/(@lib | @object), $ns)
     return ())
   return $m) ;
 

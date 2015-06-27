@@ -205,7 +205,7 @@ as xs:string?
    : It has multiple namespace.
    :)
   return (
-    if (count($libs) eq 1) then ($functions/@lib)[1]
+    if (count($libs) eq 1) then ($functions/(@lib | @object))[1]
     else if (($functions/@category)[1] eq 'Semantics') then 'sem'
     else ())
 };
@@ -1269,7 +1269,8 @@ as element(toc:node)
   let $main-subcategory-lib := toc:primary-lib($in-this-subcategory)
   let $secondary-lib := (
     if ($one-subcategory-lib) then ()
-    else ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1])
+    else ($in-this-subcategory/(@lib | @object)
+        [not(. eq $main-subcategory-lib)])[1])
   let $is-exhaustive := toc:category-is-exhaustive(
     $m-mode-functions, $cat, $subcat, $one-subcategory-lib)
   return toc:node(
