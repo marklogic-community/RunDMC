@@ -170,13 +170,14 @@ as element()
     element a {
       attribute href { "/"||$lib },
       toc:prefix-for-lib($lib) },
-    ' functions ('||toc:display-category($cat)||')',
-    if (not($secondary-lib)) then () else (
-      'and',
+    if (not($secondary-lib)) then (
+    ' functions ('||toc:display-category($cat)||')'
+    ) else (
+      ' and ',
       element a {
         attribute href { "/"||$secondary-lib },
         toc:prefix-for-lib($secondary-lib) },
-      'functions') }
+      ' functions ('||toc:display-category($cat)||')') } 
 };
 
 declare function toc:REST-page-title(
