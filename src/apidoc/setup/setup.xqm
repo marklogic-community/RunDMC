@@ -827,6 +827,9 @@ as element(api:list-page)
     attribute container-toc-section-id {
       stp:container-toc-section-id($toc-node) },
     $toc-node/@*,
+    if ($toc-node/@namespace = $api:M-OBJECTS)
+    then attribute object {$toc-node/@namespace}
+    else (),
 
     $toc-node/toc:title ! element api:title {
       @*,
@@ -1341,6 +1344,8 @@ as attribute()*
       (: Add the prefix and namespace URI of the function. :)
       attribute prefix { $e/@object },
       attribute namespace { api:namespace($e/@object)/@uri },
+     (: put this as @object too, so we can know it came from an object :)
+      attribute object { api:namespace($e/@object)/@uri },
       (: Watch for duplicates!
        : Any existing attributes will be copies by the caller.
        :)

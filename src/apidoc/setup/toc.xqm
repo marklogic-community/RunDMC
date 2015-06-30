@@ -366,12 +366,35 @@ as element()?
   (: exceptional ("dls") :)
   let $summaries-by-module-lib-no-subcat := $summaries-by-module-lib[
     not(@subcategory)]
+  let $summaries-by-object :=
+    element apidoc:summary {
+       let $obj := $raw-modules/apidoc:object[@name eq $lib]
+       return (
+       if ($obj/@subtype-of) 
+       then element xhtml:p { element xhtml:code {$lib},
+         " is a subtype of ",
+         element xhtml:a { 
+          attribute href { (: taking the first one is a hack -- need to figure
+                              how to do that properly :) (/api:list-page
+            [@object eq  $obj/@subtype-of/fn:string()])[1]/@href/fn:string() },
+            $obj/@subtype-of/fn:string() }, "." }
+       else () ,
+       stp:node-to-xhtml($obj/apidoc:summary/node())
+       )}
   return (
-    if (count($summaries-by-summary-subcat) eq 1) then $summaries-by-summary-subcat
-    else if (count($summaries-by-module-lib) eq 1) then $summaries-by-module-lib
-    else if (count($summaries-by-summary-lib) eq 1) then $summaries-by-summary-lib
-    else if (count($summaries-by-module-lib-no-subcat) eq 1) then $summaries-by-module-lib-no-subcat
-    else ())
+   if ($lib = $api:M-OBJECTS)
+   then $summaries-by-object
+    else if (count($summaries-by-summary-subcat) eq 1) 
+    then $summaries-by-summary-subcat
+    else if (count($summaries-by-module-lib) eq 1) 
+         then $summaries-by-module-lib
+         else if (count($summaries-by-summary-lib) eq 1) 
+              then $summaries-by-summary-lib
+              else if (count($summaries-by-module-lib-no-subcat) eq 1) 
+                   then $summaries-by-module-lib-no-subcat
+                   else ())
+
+
 };
 
 declare function toc:guides-in-group(

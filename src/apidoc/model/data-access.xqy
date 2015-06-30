@@ -39,6 +39,12 @@ declare variable $M-NAMESPACES as map:map := (
     return ())
   return $m) ;
 
+declare variable $M-OBJECTS := (
+  u:get-doc(
+      "/apidoc/config/namespace-mappings.xml")/namespaces/namespace/@object )
+;
+
+
 declare private variable $REST-COMPLEXTYPE-MAPPINGS := () ;
 
 (: Replace "?" in the names of REST resources
