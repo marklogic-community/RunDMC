@@ -8,11 +8,14 @@ import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
 import module namespace ml="http://developer.marklogic.com/site/internal"
   at "/model/data-access.xqy";
+import module namespace toc="http://marklogic.com/rundmc/api/toc"
+  at "/apidoc/setup/toc.xqm";
 
 import module namespace c="http://marklogic.com/rundmc/api/controller"
   at "/apidoc/controller/controller.xqm";
 
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
+declare namespace xhtml = "http://www.w3.org/1999/xhtml";
 
 declare variable $MODE-JAVASCRIPT := 'javascript' ;
 declare variable $MODE-REST := 'REST' ;
@@ -829,7 +832,27 @@ as element()*
     element subtype { attribute object { $object/@name }, 
         attribute subtype { $subtype },
         attribute category { $object/@category },
-        $module//(apidoc:method | apidoc:function)[@object eq $subtype]},
+   (: add a sentence to the apidoc:summary saying this comes from a subtype :)
+  let $funcs := $module//(apidoc:method | apidoc:function)[@object eq $subtype]
+  for $node in $funcs
+  return
+  element {fn:node-name($node)} {$node/@*, 
+    for $child in $node/node() return
+    typeswitch($child)
+      case text() return $child
+      case element(apidoc:summary) return 
+        element apidoc:summary { $child/@*, 
+           element xhtml:p {"This is inherited from the ", 
+                 element xhtml:a {
+                   attribute href {
+                         toc:category-href(
+                               $subtype, "", 
+                               fn:true(), fn:true(), "javascript", 
+                               $subtype, "") }, $subtype, " object." }, 
+           $child/node()} }
+      default return $child
+      } 
+    },
     $object/@name/fn:string(), $object/@category/fn:string())
 };
 

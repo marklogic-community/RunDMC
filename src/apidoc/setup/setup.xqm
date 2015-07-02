@@ -1256,6 +1256,9 @@ as attribute()?
     (: Leave absolute links alone, eg http://w3.org :)
     else if (contains($a, '://')) then $a
 
+  (: if we are left with something starting with a / like /js/Node, leave it :)
+    else if  (fn:starts-with($a, "/")) then $a
+
     (: Handle some odd corner-cases. TODO maybe dead code? :)
     else (
       switch($a)

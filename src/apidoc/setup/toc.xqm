@@ -371,17 +371,35 @@ as element()?
        let $obj := $raw-modules/apidoc:object[@name eq $lib]
        return (
        if ($obj/@subtype-of) 
-       then element xhtml:p { element xhtml:code {$lib},
+       then (
+       element xhtml:p { element xhtml:code {$lib},
          " is a subtype of ",
+         let $count := fn:count(fn:tokenize(fn:normalize-space(
+                     $obj/@subtype-of/fn:string()), " "))
+         return
+         (: is there more than one subtype? :)
+         if ($count eq 1)
+         then (
          element xhtml:a { 
           attribute href { 
-     (: this is currently putting an extra leading / and I don't know why :)
                            toc:category-href(
                                $obj/@subtype-of/fn:string(), "", 
                                fn:true(), fn:true(), "javascript", 
                                $obj/@subtype-of/fn:string(), "") },
-            $obj/@subtype-of/fn:string() }, "." }
-       else () ,
+            $obj/@subtype-of/fn:string() || "." } ) 
+         else
+         for $subtype at $i in fn:tokenize(fn:normalize-space(
+                     $obj/@subtype-of/fn:string()), " ")
+         return
+         (  element xhtml:a { 
+          attribute href { 
+                           toc:category-href(
+                               $subtype, "", 
+                               fn:true(), fn:true(), "javascript", 
+                               $subtype, "") },
+            $subtype }, if ($i eq $count) then "." else " and "   
+         ) } ) 
+       else ()    ,
        stp:node-to-xhtml($obj/apidoc:summary/node())
        )}
   return (
