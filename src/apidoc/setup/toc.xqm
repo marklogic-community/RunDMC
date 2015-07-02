@@ -374,9 +374,12 @@ as element()?
        then element xhtml:p { element xhtml:code {$lib},
          " is a subtype of ",
          element xhtml:a { 
-          attribute href { (: taking the first one is a hack -- need to figure
-                              how to do that properly :) (/api:list-page
-            [@object eq  $obj/@subtype-of/fn:string()])[1]/@href/fn:string() },
+          attribute href { 
+     (: this is currently putting an extra leading / and I don't know why :)
+                           toc:category-href(
+                               $obj/@subtype-of/fn:string(), "", 
+                               fn:true(), fn:true(), "javascript", 
+                               $obj/@subtype-of/fn:string(), "") },
             $obj/@subtype-of/fn:string() }, "." }
        else () ,
        stp:node-to-xhtml($obj/apidoc:summary/node())

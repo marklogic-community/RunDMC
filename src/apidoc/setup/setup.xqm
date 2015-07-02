@@ -364,7 +364,12 @@ as element(api:function-page)*
       (: create JavaScript function pages :)
       if (number($version) lt 8) then ()
       else api:module-extractable-functions(
-        $doc/apidoc:module, $api:MODE-JAVASCRIPT)),
+        $doc/apidoc:module, $api:MODE-JAVASCRIPT),
+      (: create JavaScript methods/functions for subclassed objects :)
+      api:module-extractable-functions(
+        element apidoc:module {
+          api:module-extractable-inherited-functions($doc/apidoc:module)},
+          $api:MODE-JAVASCRIPT)),
     map:map())
 };
 

@@ -794,6 +794,45 @@ as element()*
   default return error((), 'UNEXPECTED', ('Unexpected mode', $mode))
 };
 
+(: transformation used in api:module-extactable-inherited-functions :)
+declare function api:transform-attr-values(
+  $nodes as node()*, $object, $category ) as node()*
+{
+for $n in $nodes return
+typeswitch($n)
+  case text() return $n
+  case element (subtype) return 
+     api:transform-attr-values($n/node(), $object, $category)
+  case element (apidoc:method) return 
+     element apidoc:method {$n/(@* except (@object|@category)), 
+      attribute object {$object} ,
+      attribute category {$category}, 
+      api:transform-attr-values($n/node(), $object, $category)}
+  default return element {fn:node-name($n)} {$n/@*, 
+     api:transform-attr-values($n/node(), $object, $category)}
+};
+
+(: 
+   Used by stp:function-docs to generate the inherited functions based on
+   object subtype-of attribute (to show the inherited methods/functions).
+:)
+declare function api:module-extractable-inherited-functions(
+  $module as element(apidoc:module))
+as element()*
+{
+  for $object in $module//apidoc:object[@subtype-of]
+  (: there can be more than one subtype :)
+  for $subtype in fn:tokenize(fn:normalize-space(
+                     $object/@subtype-of/fn:string()), " ")
+  return
+  api:transform-attr-values(
+    element subtype { attribute object { $object/@name }, 
+        attribute subtype { $subtype },
+        attribute category { $object/@category },
+        $module//(apidoc:method | apidoc:function)[@object eq $subtype]},
+    $object/@name/fn:string(), $object/@category/fn:string())
+};
+
 declare function api:external-uri-with-prefix(
   $version-prefix as xs:string,
   $internal-uri as xs:string)
