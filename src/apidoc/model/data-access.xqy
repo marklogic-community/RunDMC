@@ -848,8 +848,8 @@ as element()*
                          toc:category-href(
                                $subtype, "", 
                                fn:true(), fn:true(), "javascript", 
-                               $subtype, "") }, $subtype, " object." }, 
-           $child/node()} }
+                               $subtype, "") }, $subtype }, " object." }, 
+           $child/node()} 
       default return $child
       } 
     },
