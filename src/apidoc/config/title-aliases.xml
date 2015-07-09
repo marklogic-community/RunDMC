@@ -33,6 +33,11 @@
     <alias>Loading Content Into MarkLogic Server</alias>
     <alias>Loading Content Into MarkLogic Server Guide</alias>
   </guide>
+  <guide>
+    <alias>Connector for SharePoint® Administrator's Guide</alias>
+    <alias>MarkLogic Connector for SharePoint® Administrator's Guide</alias>
+  </guide>
+  	  
   <!-- This is used to help automatically convert italicized references
        to the XQuery/XSLT reference to actual links. -->
   <auto-link href="/all">
