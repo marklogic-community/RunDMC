@@ -35,14 +35,36 @@
   </guide>
   <!-- This is used to help automatically convert italicized references
        to the XQuery/XSLT reference to actual links. -->
-  <auto-link href="/">
+  <auto-link href="/all">
     <alias>MarkLogic Built-In and Module Functions Reference</alias>
     <alias>MarkLogic Built-In and Module Function Reference</alias>
     <alias>MarkLogic XQuery and XSLT Function Reference</alias>
-    <alias>MarkLogic REST API Reference</alias>
-    <alias>XCC Javadoc and .Net C# API Documentation</alias>
     <alias>XQuery &amp; XSLT API Reference</alias>
     <alias>XQuery API Reference</alias>
     <alias>XQuery Built-In and Module API Documentation</alias>
+  </auto-link>
+  <auto-link href="/REST">
+    <alias>MarkLogic REST API Reference</alias>
+  </auto-link>
+  <auto-link href="/js/all">
+    <alias>MarkLogic Server-Side JavaScript Function Reference</alias>
+  </auto-link>
+  <auto-link href="/javadoc/hadoop/index.html">
+    <alias>MarkLogic Hadoop MapReduce Connector API</alias>
+  </auto-link>
+  <auto-link href="/cpp/udf/index.html">
+    <alias>C++ UDF API Reference</alias>
+  </auto-link>
+  <auto-link href="/jsdoc/index.html">
+    <alias>Node.js Client API Documentation</alias>
+  </auto-link>
+  <auto-link href="/javadoc/client/index.html">
+    <alias>Java Client API Documentation</alias>
+  </auto-link>
+  <auto-link href="/javadoc/xcc/index.html">
+    <alias>XCC Javadoc API Documentation</alias>
+  </auto-link>
+  <auto-link href="/dotnet/xcc/index.html">
+    <alias>XCC .Net C# API Documentation</alias>
   </auto-link>
 </aliases>
