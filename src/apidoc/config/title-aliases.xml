@@ -62,6 +62,7 @@
   </auto-link>
   <auto-link href="/jsdoc/index.html">
     <alias>Node.js Client API Documentation</alias>
+    <alias>Node.js Client API Reference</alias>
   </auto-link>
   <auto-link href="/javadoc/client/index.html">
     <alias>Java Client API Documentation</alias>
