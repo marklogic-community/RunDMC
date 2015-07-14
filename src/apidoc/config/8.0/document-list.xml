@@ -122,6 +122,10 @@
         Contains a summary of new features, upgrade compatibility information,
         and other information about this release.
       </guide>
+      <guide url-name="concepts" source-name="concepts">
+        Provides an overview of MarkLogic and conceptual information about the
+        server architecture.
+      </guide> 
     </entry>
 
     <entry title="Developer's Guides">
@@ -198,10 +202,6 @@
     </entry>
 
     <entry title="Other Reference Guides">
-      <guide url-name="concepts" source-name="concepts">
-        Provides an overview of MarkLogic and conceptual information about the
-        server architecture.
-      </guide> 
       <guide url-name="jsref" source-name="jsref">A condensed overview
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
