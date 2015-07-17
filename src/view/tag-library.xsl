@@ -255,12 +255,20 @@
       <xsl:if test="$num-cols gt 1">
         <td>
           <xsl:value-of select="@size"/>&#160;&#160;
-          <xsl:if test="@md5">
-            <input type="hidden" value="{@href}"/>
-            <a href="data:text/plain;charset=US-ASCII,{@md5}"
-              onClick="$(this).attr('download', $(this).prev().attr('value').replace(/\/.*\//, '') + '.md5');"
-              title="Download MD5"> (MD5) </a>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="@sha1">
+              <input type="hidden" value="{@href}"/>
+              <a href="data:text/plain;charset=US-ASCII,{@sha1}"
+                onClick="$(this).attr('download', $(this).prev().attr('value').replace(/\/.*\//, '') + '.sha1');"
+                title="Download SHA1"> (SHA1) </a>
+            </xsl:when>
+            <xsl:when test="@md5">
+              <input type="hidden" value="{@href}"/>
+              <a href="data:text/plain;charset=US-ASCII,{@md5}"
+                onClick="$(this).attr('download', $(this).prev().attr('value').replace(/\/.*\//, '') + '.md5');"
+                title="Download MD5"> (MD5) </a>
+            </xsl:when>
+          </xsl:choose>
         </td>
       </xsl:if>
     </tr>
