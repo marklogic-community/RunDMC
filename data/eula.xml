@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <style>
+    ul li {
+      list-style-type: none;
+    }
+  </style>
   <h1>Developer License Agreement</h1>
   <div class="license-header" id="main" style="padding: 40px; width: auto">
     <p align="center">
@@ -23,319 +28,309 @@
       </strong>
     </p>
     <ol compact="none" start="1" type="1">
-      <li>DEVELOPER LICENSE</li>
-    </ol>
-    <p>(a)
-      <u>Grant.</u>
-      Subject to the terms and conditions of this Agreement,
-      MarkLogic grants to You a limited, non-transferable, non-exclusive,
-      internal use license in the United States of America to install, access,
-      start and use MarkLogic software in binary executable form (&quot;Software&quot;) and
-      related documentation (collectively, the &quot;Product&quot;) solely for the
-      permitted use as described herein (&quot;Developer License&quot;) and as used in
-      conjunction with the license key or keys provided to You by MarkLogic
-      (&quot;Keys&quot;). Other than the uses permitted in this Agreement, this Developer
-      License does not grant to You any title, right, interest or license in and
-      to the Product or any modifications, enhancements, new releases or updates
-      to it.</p>
-    <p>(b) Scope of Use. The Developer License may be used solely to provide
-      databases of content (&quot;Databases”) that You select for query only by You or
-      Your authorized employees and contractors, or Your Students (as hereinafter
-      defined) in the event you are a Faculty Member (as hereinafter defined),
-      and is limited to only those lawful and internal activities:
-    </p>
-    <p>(i) to evaluate the Product and demonstrate the Software in order to
-      determine whether to purchase and license the Product from MarkLogic;
-    </p>
-    <p>(ii) to use the Product for the purpose of (a) authoring and preparing
-      tests and (b) prototyping and developing applications that interact and
-      operate with the Software (as developed in accordance with the
-      documentation for such Software) (&quot;Applications&quot;) (c) demonstrating your
-      Applications and (d) learning how to use the Product as part of a class at
-      a degree-granting or certificate-granting educational institution, and not
-      for any other purpose;
-    </p>
-    <p>(iii) to use the Product for Databases with an aggregate storage size of up
-      to 1TB in capacity (&quot;Capacity&quot;), unless otherwise set forth in a separate
-      written agreement between You and MarkLogic; and
-    </p>
-    <p>(iv) within the License Term as set forth in Section 4 below.
-    </p>
-    <p>Any copies of the Product that you are permitted to make pursuant to this
-      Agreement must contain the same copyright and other proprietary notices that
-      appear on or in the Software.
-    </p>
-    <p>&quot;Faculty Member&quot; means an employee at any degree-granting or certificate-
-      granting educational institution or any learning, teaching or training
-      facility.
-    </p>
-    <p>&quot;Student&quot; means an individual enrolled at a recognized degree-granting or
-      certificate-granting educational institution for 3 or more credit hours in
-      a degree-granting or certificate-granting education program or in a 9
-      months or longer certificate program.
-    </p>
-    <p>(c)
-      <u>Restrictions.</u>
-      Except as expressly permitted herein, You must
-      not, by Yourself, or through any of Your affiliates, agents or other third
-      parties:</p>
-    <p>(i) use this Developer License for purposes other than for internal use or
-      beyond the scope of use permitted in Sections 1(b) above;
-    </p>
-    <p>(ii) disclose, without MarkLogic's prior written consent, performance or
-      capacity statistics or the results of any benchmark test performed on
-      Software, if any;
-    </p>
-    <p>(iii) sell, distribute, lease, rent, assign, license, sublicense, or
-      otherwise transfer the Product, in whole or in part;
-    </p>
-    <p>(iv) decipher, decompile, disassemble, reverse engineer or otherwise
-      attempt to discover the source code, algorithm, tags, specifications,
-      architecture, structure or other elements of the Software, the Keys, or any
-      part thereof;
-    </p>
-    <p>(v) modify, copy, adapt, translate or otherwise make any changes to the
-      Product, the Keys or any part thereof;
-    </p>
-    <p>(vi) create license keys or other programs or functionality that enable
-      access to the Software, distribute Keys to third parties or cause such
-      third parties to create, use or distribute the Keys, knowingly or
-      otherwise;
-    </p>
-    <p>(vii) use the Product to load content on any other public Web servers for
-      use by the public or provide Databases created and/or maintained by You
-      located on a public Web server operated by You for query by the public;
-    </p>
-    <p>(viii) allow access to the Product by any user other than Your authorized
-      employees and contractors who have a need to such access and who must be
-      bound by a nondisclosure or confidentiality agreement;
-    </p>
-    <p>(ix) use the Product for production activity, including, but not limited to
-      production content processing activity, production testing activity or any
-      such activity that results in production deployment or in any production
-      environment;
-    </p>
-    <p>(x) use the Product to provide processing services to third parties, or
-      otherwise use the Product on a service bureau basis; or
-    </p>
-    <p>(xi) provide, disclose, divulge or make available to, or permit use of the
-      Product by any third party other than You and Your authorized employees
-      and contractors.
-    </p>
-    <p>(d)
-      <u>Verification.</u>
-      For license verification purposes, You acknowledge
-      that the Software may electronically transmit to MarkLogic summary data
-      relating to use of the Software including, but not limited to, the host
-      IDs, Keys and the Capacity of the Databases. Such transmittals will not
-      contain any information regarding the content of the Databases and will be
-      used solely for the purposes of license verification as described in this
-      Section 1(d).</p>
-    <ol compact="none" start="2" type="1">
-      <li>INTELLECTUAL PROPERTY AND CONFIDENTIALITY</li>
-    </ol>
-    <p>(a)
-      <u>Products.</u>
-      All rights, title and interests (including, but not
-      limited to, copyright, patent, trade secret and rights protected by
-      intellectual property and trade secrets laws) in and to the Product,
-      including the structure, organization, and code of the Software and the
-      Keys, must remain in MarkLogic and/or its licensors, if any.</p>
-    <p>(b)
-      <u>Content.</u>
-      All rights, title and interests (including, but not
-      limited to, copyright, trade secret and other intellectual property right)
-      in and to the content accessed through the Product are the property of the
-      applicable content owner and may be protected by applicable copyright or
-      other law. This Agreement grants no rights to such content, and MarkLogic
-      disclaims any responsibility arising out of or related to Your access and
-      use of the content and intellectual property thereto furthered by use of
-      the Product.</p>
-    <p>(c)
-      <u>Confidentiality</u>
-      . You agree to take adequate steps to protect the
-      Product from unauthorized disclosure and/or use, including, without
-      limitation, causing Your authorized employees and contractors to be bound
-      by a nondisclosure or confidentiality agreement. You acknowledge that the
-      Product remains a confidential trade secret and the intellectual property
-      of MarkLogic and/or its licensors and agree not to disclose, divulge,
-      publicize or otherwise disseminate the Product.</p>
-    <ol compact="none" start="3" type="1">
-      <li>CONSIDERATION</li>
-    </ol>
-    <p>In consideration for the rights granted to You in this Agreement, You must
-      abide by all of the terms and conditions contained in this Agreement and
-      register as a member of the MarkLogic Developer community.  If You use the
-      Product or any of the Applications You develop under this license for any
-      internal data processing or for any commercial or production purposes, or
-      You want to use the Product for any purpose other than as permitted under
-      this Agreement, You must obtain a production release version of the Product
-      by contacting MarkLogic to obtain the appropriate license and pay MarkLogic
-      any and all fees associated with such license.
-    </p>
-    <ol compact="none" start="4" type="1">
-      <li>TERM</li>
-    </ol>
-    <p>The term of the license granted herein is limited to the fixed period
-      specified in the administrative interface of the Software, or such other
-      period as approved by MarkLogic in writing (&quot;License Term&quot;). For the
-      avoidance of doubt, if a license term is not otherwise specified or agreed
-      upon by MarkLogic, the term of the license shall be limited to six (6)
-      months. Under no circumstances shall the license be granted for a perpetual
-      term. This Agreement will automatically terminate upon expiration of the
-      License Term, unless earlier terminated or extended. This Agreement may be
-      terminated (a) by You at any time or (b) by MarkLogic at any time. Unless
-      this Agreement is subsequently renewed or extended, upon termination or
-      expiration of this Agreement, You must immediately destroy all complete and
-      partial copies of the Product, including all backup copies, and provide
-      MarkLogic with a certificate, signed by You or Your authorized officer (if
-      applicable), certifying that You have destroyed the Product and all copies
-      thereof in compliance with this Agreement.
-    </p>
-    <ol compact="none" start="5" type="1">
-      <li>DISCLAIMERS</li>
-    </ol>
-    <p>THE PRODUCT IS PROVIDED &quot;AS IS,&quot; AND MARKLOGIC HEREBY DISCLAIMS ALL
-      WARRANTIES AND CONDITIONS, WHETHER EXPRESS, IMPLIED OR STATUTORY,
-      INCLUDING, BUT NOT LIMITED TO, WARRANTIES RELATED TO THE PERFORMANCE OR
-      RESULTS YOU MAY OBTAIN BY USING THE PRODUCT OR ANY CONTENT OR INFORMATION
-      MADE ACCESSIBLE BY THE SOFTWARE, WARRANTIES OF MERCHANTABILITY, FITNESS FOR
-      A PARTICULAR PURPOSE, NONINFRINGEMENT, TITLE, QUIET ENJOYMENT AND
-      POSSESSION, OR OTHERWISE. NEITHER MARKLOGIC NOR ITS LICENSORS WARRANT THAT
-      THE OPERATION OF THE PRODUCT WILL BE UNINTERRUPTED, ERROR-FREE OR VIRUS-FREE.
-      MARKLOGIC ASSUMES NO RESPONSIBILITY FOR THE PRODUCT TO ACHIEVE ANY
-      INTENDED PURPOSES, FOR PROPER INSTALLATION AND USE OF THE PRODUCT OR FOR
-      VERIFYING THE RESULTS OBTAINED FROM USE OF THIS PRODUCT.
-    </p>
-    <ol compact="none" start="6" type="1">
-      <li>LIABILITY LIMITATION</li>
-    </ol>
-    <p>REGARDLESS OF WHETHER ANY REMEDY SET FORTH IN THIS AGREEMENT FAILS OF ITS
-      ESSENTIAL PURPOSE, IN NO EVENT WILL MARKLOGIC OR ITS LICENSORS BE LIABLE
-      (i) FOR ANY DIRECT, INDIRECT, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
-      INCLUDING, BUT NOT LIMITED TO, LOSS OF PROFITS, INTERRUPTION, LOSS OF
-      PROGRAMS, CONTENT, OR INFORMATION, PERSONAL INJURY, NEGLIGENCE, FAILURE TO
-      MEET ANY DUTY OF CARE, OR FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER
-      ARISING OUT OF OR RELATED TO THIS AGREEMENT AND THE PRODUCTS, WHETHER OR
-      NOT MARKLOGIC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, AND
-      REGARDLESS OF THE FORM OF ACTION, WHETHER IN CONTRACT, TORT, OR OTHERWISE;
-      OR (ii) FOR ANY CLAIM ATTRIBUTABLE TO ERRORS, OMISSIONS OR OTHER FEATURES
-      OF THE PRODUCT.
-    </p>
-    <ol compact="none" start="7" type="1">
-      <li>MISCELLANEOUS</li>
-    </ol>
-    <p>(a)
-      <u>Export Restrictions.</u>
-      You agree that You will not transfer,
-      export or re-export the Product to any country, person or entity subject
-      to U.S. export restrictions. You specifically agree not to transfer, export
-      or re-export the Product (i) to any country to which the U.S. has embargoes
-      or restricted the export of goods or services which currently include but
-      are not necessarily limited to Cuba, Iran, North Korea, Sudan and Syria, or
-      to any national of any such country, wherever located, who intends to
-      transmit or transport the Product back to such country; (ii) to any person
-      or entity who You know or have reason to know will utilize the Product in
-      the design, development or production of nuclear, chemical or biological
-      weapons; or (iii) to any person or entity who has been prohibited from
-      participating in U.S. export transactions by any agency or instrumentality
-      of the U.S. government. Under §764.3 of the Export Administration
-      Regulations (EAR), You can be subject to fine, imprisonment, or other
-      administrative sanction for willful violation of any provision of the
-      Export Administration Act (EAA), the EAR, or any order, license, or
-      authorization issued thereunder.</p>
-    <p>(b)
-      <u>Government Regulations.</u>
-      If You are an agency or instrumentality
-      of the U.S. federal government procuring the Product on behalf of such
-      government agency or instrumentality, You hereby agree that the Product
-      qualifies as commercial computer software and computer software
-      documentation within the meaning of the acquisition regulation(s)
-      applicable to the procurement of the Product, and the terms and conditions
-      of this Agreement pertain to the U.S. government's use and disclosure of
-      the Product and will supersede any conflicting contractual terms or
-      conditions. The following additional statement applies only to procurements
-      governed by DFARS Subpart 227.4 (October 1988): Restricted Rights -- Use,
-      duplication, and disclosure by the Government is subject to restrictions as
-      set forth in subparagraph (c)(1) (ii) of the Rights in Technical Data and
-      Computer Software clause at DFARS 252.227- 7013 (OCT. 1988). Contractor is
-      MarkLogic Corporation, 999 Skyway Road, Suite 200, San Carlos, CA
-      94070-2722 USA.</p>
-    <p>(c) Not Fault Tolerant. The Software is not fault-tolerant and is not
-      designed, manufactured, or intended for use in hazardous environments or
-      resale as on-line control equipment or otherwise requiring fail-safe
-      performance, such as in the operation of nuclear facilities, aircraft
-      navigation or communication systems, air traffic control, direct life
-      support machines, or weapons systems, in which the failure of the Product
-      could lead directly to death, personal injury, or severe physical or
-      environmental damage (&quot;High Risk Activities&quot;). Mark Logic specifically
-      disclaims any express or implied warranty of fitness of the Product for
-      High Risk Activities. You will not knowingly use the Product for High Risk
-      Activities.
-    </p>
-    <p>(d)
-      <u>Assignment.</u>
-      The license granted hereunder does not include the
-      right to sublicense and may not be assigned, by operation of law or
-      otherwise, or transferred to any third party (including Your affiliates
-      and other entities, organizations or departments related to You) without
-      the prior written consent of MarkLogic. Any attempted assignment in
-      derogation hereof will be null and void.</p>
-    <p>(e)
-      <u>Survival</u>
-      . The respective rights and obligations of MarkLogic and
-      You under Sections 2, 3, 4, 5, 6, 7 and 8 will survive any termination or
-      expiration of this Agreement.</p>
-    <p>(f)
-      <u>Governing Law and Forum.</u>
-      This Agreement will be governed by and
-      construed in accordance with the laws of the State of California, without
-      regard to conflicts of laws provisions thereto, and You and MarkLogic agree
-      to submit to the personal and exclusive jurisdiction of the courts located
-      within the county of San Mateo, California.</p>
-    <p>(g)
-      <u>Severability.</u>
-      If any part of this Agreement is found void and
-      unenforceable, it will not affect the validity of the balance of the
-      Agreement, which will remain valid and enforceable according to its terms.</p>
-    <p>(h)
-      <u>Entire Agreement.</u>
-      This is the complete and exclusive statement
-      of the agreement between You and MarkLogic relating to the use of the
-      Product as set forth herein and supersedes all prior oral or written
-      understandings and agreements with respect to the subject matter herein.</p>
-    <ol compact="none" start="8" type="1">
-      <li>YOU ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT, UNDERSTAND IT, AND
-        AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS. IF APPLICABLE, &quot;YOU&quot; OR
-        &quot;YOUR&quot; AS REFERRED TO ABOVE MEANS THE ENTITY, COMPANY, ORGANIZATION OR
-        DEPARTMENT (&quot;ENTITY&quot;) AT WHICH THE SOFTWARE IS ACCESSED, USED AND
-        INSTALLED PURSUANT TO THIS AGREEMENT. YOU REPRESENT THAT AS THE
-        INDIVIDUAL CLICKING ON THE &quot;ACCEPT&quot; BUTTON AND ENTERING INTO THIS
-        AGREEMENT YOU ARE AUTHORIZED TO ENTER INTO THIS AGREEMENT ON BEHALF OF
-        SUCH ENTITY.
+      <li value="1">DEVELOPER LICENSE</li>
+      <ul>
+        <li>(a)
+          <u>Grant.</u>
+          Subject to the terms and conditions of this Agreement, MarkLogic
+          grants to You a limited, non-transferable, non-exclusive, internal
+          use license to install, access, start and use MarkLogic software in
+          binary executable form ("Software") and related documentation
+          (collectively, the "Product") solely for the permitted use as
+          described herein ("Developer License") and as used in conjunction
+          with the license key or keys provided to You by MarkLogic ("Keys").
+          Other than the uses permitted in this Agreement, this Developer
+          License does not grant to You any title, right, interest or license
+          in and to the Product or any modifications, enhancements, new
+          releases or updates to it.</li>
+        <li>(b)
+          <u>Scope of Use.</u>
+          The Developer License may be used solely to provide databases of
+          content ("Databases”) that You select for query only by You or Your
+          authorized employees and contractors, or Your Students (as
+          hereinafter defined) in the event you are a Faculty Member (as
+          hereinafter defined), and is limited to only those lawful and
+          internal activities:
+          <ul>
+            <li>(i) to evaluate the Product and demonstrate the Software in
+              order to determine whether to purchase and license the Product
+              from MarkLogic;</li>
+            <li>(ii) to use the Product for the purpose of (a) authoring and
+              preparing tests and (b) prototyping and developing applications
+              that interact and operate with the Software (as developed in
+              accordance with the documentation for such Software)
+              ("Applications") (c) demonstrating your Applications and (d)
+              learning how to use the Product as part of a class at a
+              degree-granting or certificate-granting educational institution,
+              and not for any other purpose;</li>
+            <li>(iii) to use the Product for Databases with an aggregate
+              storage size of up to 1TB in capacity ("Capacity"), unless
+              otherwise set forth in a separate written agreement between You
+              and MarkLogic; and</li>
+            <li>(iv) within the License Term as set forth in Section 4 below.</li>
+          </ul>
+          <p>Any copies of the Product that you are permitted to make pursuant
+            to this Agreement must contain the same copyright and other
+            proprietary notices that appear on or in the Software.</p>
+          <p>"Faculty Member" means an employee at any degree-granting or
+            certificate-granting educational institution or any learning,
+            teaching or training facility.</p>
+          <p>"Student" means an individual enrolled at a recognized
+            degree-granting or certificate-granting educational institution for
+            3 or more credit hours in a degree-granting or certificate-granting
+            education program or in a 9 months or longer certificate program.</p>
+        </li>
+        <li>(c)
+          <u>Restrictions.</u>
+          Except as expressly permitted herein, You must not, by Yourself, or
+          through any of Your affiliates, agents or other third parties:
+          <ul>
+            <li>(i) use this Developer License for purposes other than for
+              internal use or beyond the scope of use permitted in Sections
+              1(b) above;</li>
+            <li>(ii) disclose, without MarkLogic's prior written consent,
+              performance or capacity statistics or the results of any
+              benchmark test performed on Software, if any;</li>
+            <li>(iii) sell, distribute, lease, rent, assign, license,
+              sublicense, or otherwise transfer the Product, in whole or in
+              part;</li>
+            <li>(iv) decipher, decompile, disassemble, reverse engineer or
+              otherwise attempt to discover the source code, algorithm, tags,
+              specifications, architecture, structure or other elements of the
+              Software, the Keys, or any part thereof;</li>
+            <li>(v) modify, copy, adapt, translate or otherwise make any
+              changes to the Product, the Keys or any part thereof;</li>
+            <li>(vi) create license keys or other programs or functionality
+              that enable access to the Software, distribute Keys to third
+              parties or cause such third parties to create, use or distribute
+              the Keys, knowingly or otherwise;</li>
+            <li>(vii) use the Product to load content on any other public Web
+              servers for use by the public or provide Databases created and/or
+              maintained by You located on a public Web server operated by You
+              for query by the public;</li>
+            <li>(viii) allow access to the Product by any user other than Your
+              authorized employees and contractors who have a need to such
+              access and who must be bound by a nondisclosure or
+              confidentiality agreement;</li>
+            <li>(ix) use the Product for production activity, including, but
+              not limited to production content processing activity, production
+              testing activity or any such activity that results in production
+              deployment or in any production environment;</li>
+            <li>(x) use the Product to provide processing services to third
+              parties, or otherwise use the Product on a service bureau basis;
+              or</li>
+            <li>(xi) provide, disclose, divulge or make available to, or permit
+              use of the Product by any third party other than You and Your
+              authorized employees and contractors.</li>
+          </ul>
+        </li>
+        <li>(d)
+          <u>Verification.</u>
+          For license verification purposes, You acknowledge that the Software
+          may electronically transmit to MarkLogic summary data relating to use
+          of the Software including, but not limited to, the host IDs, Keys and
+          the Capacity of the Databases. Such transmittals will not contain any
+          information regarding the content of the Databases and will be used
+          solely for the purposes of license verification as described in this
+          Section 1(d).</li>
+      </ul>
+      <li value="2">INTELLECTUAL PROPERTY AND CONFIDENTIALITY</li>
+      <ul>
+        <li>(a)
+          <u>Products.</u>
+          All rights, title and interests (including, but not limited to,
+          copyright, patent, trade secret and rights protected by intellectual
+          property and trade secrets laws) in and to the Product, including the
+          structure, organization, and code of the Software and the Keys, must
+          remain in MarkLogic and/or its licensors, if any.</li>
+        <li>(b)
+          <u>Content.</u>
+          All rights, title and interests (including, but not limited to,
+          copyright, trade secret and other intellectual property right) in and
+          to the content accessed through the Product are the property of the
+          applicable content owner and may be protected by applicable copyright
+          or other law. This Agreement grants no rights to such content, and
+          MarkLogic disclaims any responsibility arising out of or related to
+          Your access and use of the content and intellectual property thereto
+          furthered by use of the Product.</li>
+        <li>(c)
+          <u>Confidentiality.</u>
+          You agree to take adequate steps to protect the Product from
+          unauthorized disclosure and/or use, including, without limitation,
+          causing Your authorized employees and contractors to be bound by a
+          nondisclosure or confidentiality agreement. You acknowledge that the
+          Product remains a confidential trade secret and the intellectual
+          property of MarkLogic and/or its licensors and agree not to disclose,
+          divulge, publicize or otherwise disseminate the Product.</li>
+      </ul>
+      <li value="3">CONSIDERATION
+        <p>In consideration for the rights granted to You in this Agreement,
+          You must abide by all of the terms and conditions contained in this
+          Agreement and register as a member of the MarkLogic Developer
+          community. If You use the Product or any of the Applications You
+          develop under this license for any internal data processing or for
+          any commercial or production purposes, or You want to use the Product
+          for any purpose other than as permitted under this Agreement, You
+          must obtain a production release version of the Product by contacting
+          MarkLogic to obtain the appropriate license and pay MarkLogic any and
+          all fees associated with such license.</p>
       </li>
+      <li value="4">TERM
+        <p>The term of the license granted herein is limited to the fixed
+          period specified in the administrative interface of the Software, or
+          such other period as approved by MarkLogic in writing ("License
+          Term"). For the avoidance of doubt, if a license term is not
+          otherwise specified or agreed upon by MarkLogic, the term of the
+          license shall be limited to six (6) months.  Under no circumstances
+          shall the license be granted for a perpetual term.  This Agreement
+          will automatically terminate upon expiration of the License Term,
+          unless earlier terminated or extended. This Agreement may be
+          terminated (a) by You at any time or (b) by MarkLogic at any time.
+          Unless this Agreement is subsequently renewed or extended, upon
+          termination or expiration of this Agreement, You must immediately
+          destroy all complete and partial copies of the Product, including all
+          backup copies, and provide MarkLogic with a certificate, signed by
+          You or Your authorized officer (if applicable), certifying that You
+          have destroyed the Product and all copies thereof in compliance with
+          this Agreement.</p>
+      </li>
+      <li value="5">DISCLAIMERS
+        <p>THE PRODUCT IS PROVIDED "AS IS," AND MARKLOGIC HEREBY DISCLAIMS ALL
+          WARRANTIES AND CONDITIONS, WHETHER EXPRESS, IMPLIED OR STATUTORY,
+          INCLUDING, BUT NOT LIMITED TO, WARRANTIES RELATED TO THE PERFORMANCE
+          OR RESULTS YOU MAY OBTAIN BY USING THE PRODUCT OR ANY CONTENT OR
+          INFORMATION MADE ACCESSIBLE BY THE SOFTWARE, WARRANTIES OF
+          MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NONINFRINGEMENT,
+          TITLE, QUIET ENJOYMENT AND POSSESSION, OR OTHERWISE. NEITHER
+          MARKLOGIC NOR ITS LICENSORS WARRANT THAT THE OPERATION OF THE PRODUCT
+          WILL BE UNINTERRUPTED, ERROR-FREE OR VIRUS-FREE. MARKLOGIC ASSUMES NO
+          RESPONSIBILITY FOR THE PRODUCT TO ACHIEVE ANY INTENDED PURPOSES, FOR
+          PROPER INSTALLATION AND USE OF THE PRODUCT OR FOR VERIFYING THE
+          RESULTS OBTAINED FROM USE OF THIS PRODUCT.</p>
+      </li>
+      <li value="6">LIABILITY LIMITATION
+        <p>REGARDLESS OF WHETHER ANY REMEDY SET FORTH IN THIS AGREEMENT FAILS
+          OF ITS ESSENTIAL PURPOSE, IN NO EVENT WILL MARKLOGIC OR ITS LICENSORS
+          BE LIABLE (i) FOR ANY DIRECT, INDIRECT, SPECIAL, PUNITIVE, OR
+          CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOSS OF
+          PROFITS, INTERRUPTION, LOSS OF PROGRAMS, CONTENT, OR INFORMATION,
+          PERSONAL INJURY, NEGLIGENCE, FAILURE TO MEET ANY DUTY OF CARE, OR FOR
+          ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER ARISING OUT OF OR
+          RELATED TO THIS AGREEMENT AND THE PRODUCTS, WHETHER OR NOT MARKLOGIC
+          HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, AND REGARDLESS
+          OF THE FORM OF ACTION, WHETHER IN CONTRACT, TORT, OR OTHERWISE; OR
+          (ii) FOR ANY CLAIM ATTRIBUTABLE TO ERRORS, OMISSIONS OR OTHER
+          FEATURES OF THE PRODUCT.</p>
+      </li>
+      <li value="7">MISCELLANEOUS</li>
+      <ul>
+        <li>(a)
+          <u>Export Restrictions.</u>
+          You agree that You are not a citizen, national, or resident of, and
+          are not under control of, the government of Cuba, Iran, Sudan, Libya,
+          North Korea, Syria, nor any country to which the United States has
+          prohibited export.  You agree that You will not transfer, export or
+          re-export the Product to any country, person or entity subject to
+          U.S. export restrictions. You specifically agree not to transfer,
+          export or re-export the Product (i) to any country to which the U.S.
+          has embargoes or restricted the export of goods or services which
+          currently include but are not necessarily limited to Cuba, Iran,
+          Sudan, Libya, North Korea or Syria, or to any national of any such
+          country, wherever located, who intends to transmit or transport the
+          Product back to such country; (ii) to any person or entity who You
+          know or have reason to know will utilize the Product in the design,
+          development or production of nuclear, chemical or biological weapons;
+          or (iii) to any person or entity who has been prohibited from
+          participating in U.S. export transactions by any agency or
+          instrumentality of the U.S. government. Under §764.3 of the Export
+          Administration Regulations (EAR), You can be subject to fine,
+          imprisonment, or other administrative sanction for willful violation
+          of any provision of the Export Administration Act (EAA), the EAR, or
+          any order, license, or authorization issued thereunder.</li>
+        <li>(b)
+          <u>Government Regulations.</u>
+          If You are an agency or instrumentality of the U.S. federal
+          government procuring the Product on behalf of such government agency
+          or instrumentality, You hereby agree that the Product qualifies as
+          commercial computer software and computer software documentation
+          within the meaning of the acquisition regulation(s) applicable to the
+          procurement of the Product, and the terms and conditions of this
+          Agreement pertain to the U.S. government's use and disclosure of the
+          Product and will supersede any conflicting contractual terms or
+          conditions. The following additional statement applies only to
+          procurements governed by DFARS Subpart 227.4 (October 1988):
+          Restricted Rights -- Use, duplication, and disclosure by the
+          Government is subject to restrictions as set forth in subparagraph
+          (c)(1) (ii) of the Rights in Technical Data and Computer Software
+          clause at DFARS 252.227- 7013 (OCT. 1988). Contractor is MarkLogic
+          Corporation, 999 Skyway Road, Suite 200, San Carlos, CA 94070-2722
+          USA.</li>
+        <li>(c)
+          <u>Assignment.</u>
+          The license granted hereunder does not include the right to
+          sublicense and may not be assigned, by operation of law or otherwise,
+          or transferred to any third party (including Your affiliates and
+          other entities, organizations or departments related to You) without
+          the prior written consent of MarkLogic. Any attempted assignment in
+          derogation hereof will be null and void.</li>
+        <li>(d)
+          <u>Survival.</u>
+          The respective rights and obligations of MarkLogic and You under
+          Sections 2, 3, 4, 5, 6, 7 and 8 will survive any termination or
+          expiration of this Agreement.</li>
+        <li>(e)
+          <u>Governing Law and Forum.</u>
+          This Agreement will be governed by and construed in accordance with
+          the laws of the State of California, United States of America,
+          without regard to conflicts of laws provisions thereto, and You and
+          MarkLogic agree to submit to the personal and exclusive jurisdiction
+          of the courts located within the county of San Mateo, California,
+          United States of America.</li>
+        <li>(f)
+          <u>Severability.</u>
+          If any part of this Agreement is found void and unenforceable, it
+          will not affect the validity of the balance of the Agreement, which
+          will remain valid and enforceable according to its terms.</li>
+        <li>(g)
+          <u>Entire Agreement.</u>
+          This is the complete and exclusive statement of the agreement between
+          You and MarkLogic relating to the use of the Product as set forth
+          herein and supersedes all prior oral or written understandings and
+          agreements with respect to the subject matter herein.</li>
+      </ul>
+      <li value="8">YOU ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT,
+        UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS. IF
+        APPLICABLE, "YOU" OR "YOUR" AS REFERRED TO ABOVE MEANS THE ENTITY,
+        COMPANY, ORGANIZATION OR DEPARTMENT ("ENTITY") AT WHICH THE SOFTWARE IS
+        ACCESSED, USED AND INSTALLED PURSUANT TO THIS AGREEMENT. YOU REPRESENT
+        THAT AS THE INDIVIDUAL CLICKING ON THE "ACCEPT" BUTTON AND ENTERING
+        INTO THIS AGREEMENT YOU ARE AUTHORIZED TO ENTER INTO THIS AGREEMENT ON
+        BEHALF OF SUCH ENTITY.</li>
     </ol>
-    <p>You may contact MarkLogic at: MarkLogic Corporation, 999 Skyway Road, Suite 200, San Carlos, CA 94070-2722 USA, Telephone: (650) 655-2300, Fax: (650) 655-2310, Email: sales@marklogic.com.
+    <p>You may contact MarkLogic at: MarkLogic Corporation, 999 Skyway Road,
+      Suite 200, San Carlos, CA 94070-2722 USA, Telephone: (650) 655-2300, Fax:
+      (650) 655-2310, Email: sales@marklogic.com.
     </p>
-    <p>Copyright 2002-2013 MarkLogic Corporation. All rights reserved.
+    <p>Copyright 2002-2015 MarkLogic Corporation. All rights reserved.
     </p>
     <p>This technology is protected by U.S. Patent No. 7,127,469B2, U.S. Patent
-      No. 7,171,404B2, U.S. Patent No. 7,756,858 B2, and U.S. Patent
-      No. 7,962,474 B2.
+      No. 7,171,404B2, U.S. Patent No. 7,756,858 B2, and U.S. Patent No
+      7,962,474 B2.
     </p>
     <p>All MarkLogic software products are protected by United States and
       international copyright, patent and other intellectual property laws, and
-      incorporate certain third party libraries and components which are subject
-      to the attributions, terms, conditions and disclaimers set forth below.
+      incorporate certain third party libraries and components which are
+      subject to the attributions, terms, conditions and disclaimers set forth
+      below.
     </p>
     <p>TRADEMARK NOTICE
     </p>
     <p>The MarkLogic name and logo are registered trademarks of MarkLogic
-      Corporation in the United States and/or other countries.  Any other names
+      Corporation in the United States and/or other countries. Any other names
       or logos included in the Software, this notice or the documentation are
       property of the respective trademark owners.
     </p>
-    <p>Updated: April 29, 2015.
+    <p>Updated:  July 21, 2015.
     </p>
   </div>
 </ml:page>
