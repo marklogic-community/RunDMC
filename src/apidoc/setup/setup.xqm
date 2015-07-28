@@ -360,7 +360,8 @@ as element(api:function-page)*
   stp:function-extract(
     $version,
     (api:module-extractable-functions(
-      $doc/apidoc:module, ($api:MODE-REST, $api:MODE-XPATH)),
+      stp:add-class-attr-if-needed($doc/apidoc:module), 
+      ($api:MODE-REST, $api:MODE-XPATH)),
       (: create JavaScript function pages :)
       if (number($version) lt 8) then ()
       else api:module-extractable-functions(
@@ -396,6 +397,37 @@ as empty-sequence()
   return ml:document-insert($uri, $func)
   ,
   stp:info("stp:function-docs", xdmp:elapsed-time())
+};
+
+(: Transform to inherit class attr from apidoc:module for xquery-only
+   and javascript-only libraries. :)
+declare function stp:add-class-attr-if-needed(
+  $doc as element(apidoc:module))
+as element(apidoc:module)*
+{
+let $class := $doc/@class 
+return
+if ( fn:empty($class) ) then $doc 
+else element apidoc:module {$doc/@*, 
+        stp:add-class-transform($doc/node(), $class)} 
+};
+
+declare function stp:add-class-transform(
+  $nodes as node()*,
+  $class as attribute())
+as node()*
+{
+for $n in $nodes return
+typeswitch($n)
+  case element(apidoc:function) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element(apidoc:method) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element(apidoc:object) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element() return
+     element {fn:node-name($n)} {$n/@*, $n/node()}
+  default return $n
 };
 
 declare function stp:search-results-page-insert()

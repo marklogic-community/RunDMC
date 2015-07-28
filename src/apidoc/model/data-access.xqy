@@ -734,7 +734,10 @@ else if ($function instance of element(apidoc:method))
         'XQuery Library Modules',
         'JavaScript Library Modules')  )
     case $MODE-REST return starts-with($function/@name, '/')
-    case $MODE-XPATH return not(starts-with($function/@name, '/'))
+    (: needs to return false for js-only libraries and for REST :)
+    case $MODE-XPATH return 
+         not(starts-with($function/@name, '/')) and
+         not($function/@bucket eq 'JavaScript Library Modules')
     default return error((), 'UNEXPECTED', ($mode)))
   (: Also apply class exclusion rules. :)
   and api:has-mode-class($function, $mode)
