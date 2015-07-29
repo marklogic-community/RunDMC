@@ -422,7 +422,7 @@ as document-node()*
   let $results := $query ! cts:search(collection(), $query, 'unfiltered')
   let $preferred := ("fn","xdmp")
   for $f in $results
-  for $lib in $f/*/api:function[1]/@lib/string()
+  for $lib in $f/*/api:function[1]/(@lib|@object)/string()
   let $index := index-of($preferred, $lib)
   for $name in $f/*/api:function[1]/@name/string()[.]
   order by $index, $lib, $name
