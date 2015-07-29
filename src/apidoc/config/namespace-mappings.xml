@@ -100,4 +100,7 @@
   <namespace object="xs.gYearMonth" uri="xs.gYearMonth"/>
   <namespace object="xs.time" uri="xs.time"/>
   <namespace object="xs.yearMonthDuration" uri="xs.yearMonthDuration"/>
+  <namespace object="documents" uri="documents"/>
+  <namespace object="console" uri="console"/>
+  <namespace object="jsearch" uri="jsearch"/>
 </namespaces>
