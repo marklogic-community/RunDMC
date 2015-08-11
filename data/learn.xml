@@ -1,21 +1,21 @@
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <h2>Tutorials</h2>
-  <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about <a href="/learn/free-online-training">Free Training</a> offerings.
+  <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about Free <a href="http://mlu.marklogic.com/ondemand/">On Demand</a> and <a href="https://mlu.marklogic.com/registration/">Instructor-Led Training</a> offerings.
   </p>
-  <p>The MarkLogic support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
+  <p>The MarkLogic Support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
 
   <a name="getting-started"></a>
   <h3>Featured tutorials</h3>
   <table style="width: 100%">
     <thead>
       <tr>
-        <th style="width: 50%" rowspan="1" colspan="1">Java</th>
-        <th style="width: 50%" rowspan="1" colspan="1">REST</th>
+        <th style="width: 50%" rowspan="1" colspan="1" nowrap="none">Java</th>
+        <th style="width: 50%" rowspan="1" colspan="1" nowrap="none">REST</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
             <li><a href="/try/java/index">The Java API in 5 minutes</a>
               <ul>
@@ -40,7 +40,7 @@
             </li>
           </ul>
         </td>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
             <li><a href="/try/rest/index">The REST API in 5 minutes</a>
               <ul></ul>
@@ -65,13 +65,13 @@
     </tbody>
     <thead>
       <tr>
-        <th rowspan="1" colspan="1">XQuery</th>
-        <th rowspan="1" colspan="1">JavaScript</th>
+        <th rowspan="1" colspan="1" nowrap="none">XQuery</th>
+        <th rowspan="1" colspan="1" nowrap="none">JavaScript</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
             <li><a href="/learn/get-started-apps">Developing XQuery Applications</a>
               <ul>
@@ -98,7 +98,7 @@
             </li>
           </ul>
         </td>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
             <li><a href="/learn/node-client-api">Node.js Client API Getting Started</a>
               <ul>
@@ -113,13 +113,13 @@
     </tbody>
     <thead>
       <tr>
-        <th rowspan="1" colspan="1">Semantics</th>
-        <th rowspan="1" colspan="1">Loading data</th>
+        <th rowspan="1" colspan="1" nowrap="none">Semantics</th>
+        <th rowspan="1" colspan="1" nowrap="none">Modeling and Loading Data</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
             <li><a href="/learn/semantics-exercises">Semantics Exercises</a>
               <ul>
@@ -135,8 +135,16 @@
             </li>
           </ul>
         </td>
-        <td rowspan="1" colspan="1">
+        <td rowspan="1" colspan="1" nowrap="none">
           <ul>
+            <li>
+              <a href="/learn/data-modeling">Data Modeling Guidelines</a>
+              <ul>
+                <li style="list-style-type: none">
+                  General data modeling guidelines for XML and JSON documents in MarkLogic.
+                </li>
+              </ul>
+            </li>
             <li>
               <a href="/products/mlcp">MarkLogic Content Pump</a>
               <ul>

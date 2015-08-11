@@ -52,7 +52,7 @@ as xs:string
     if ($path = ("/events", "/news", "/news-and-events",
                  "/blog/smallchanges", "/blog/smallchanges/", "/columns/smallchanges", "/columns/smallchanges/")) then
         "/blog"
-    else if ($path eq "/learn/tutorials") then
+    else if ($path = ("/learn/tutorials", "/learn/free-online-training")) then
         "/learn"
     else if ($path = ("/pubs", "/pubs/", "/docs")) then
         $srv:api-server
