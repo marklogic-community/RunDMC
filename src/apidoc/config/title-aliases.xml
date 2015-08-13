@@ -54,7 +54,7 @@
   <auto-link href="/js/all">
     <alias>MarkLogic Server-Side JavaScript Function Reference</alias>
   </auto-link>
-  <auto-link href="/js/jsearch">
+  <auto-link href="/js/javascript-search">
     <alias>jsearch API Documentation</alias>
   </auto-link>
   <auto-link href="/javadoc/hadoop/index.html">
