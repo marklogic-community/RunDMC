@@ -3281,4 +3281,37 @@ li.search_suggest_selected {
   padding-bottom: 10px;
 }
 
+.share-post {
+  background: #fafafa;
+  border: 1px solid #ccc;
+  height: 50px;
+  margin-top: 25px;
+}
+
+.share-post .message {
+  background: #e0e0e0;
+  float: left;
+  font-weight: bold;
+  height: 100%;
+  line-height: 50px;
+  padding: 0 2em;
+  vertical-align: middle;
+}
+
+.share-post .social-buttons {
+  float: left;
+  height: 100%;
+  padding: 10px 0 0 60px;
+  position: relative;
+}
+
+.share-post .social-buttons .social-btn {
+  float: left;
+  margin: 0 2em 0 0;
+}
+
+.share-post .social-buttons .social-btn.linkedin {
+  padding-top: 5px;
+}
+
 /* screen.css */
