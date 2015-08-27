@@ -414,10 +414,16 @@
                 <div class="g-plusone"></div>
               </div>
               -->
+              <!--
+                TODO: not working right
               <div class="linkedin social-btn">
                 <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-                <script type="IN/Share" data-counter="right"></script>
+                <script type="IN/Share" data-url="" data-counter="right"></script>
+                <script>
+                  $('.linkedin script[data-url]').attr('data-url', window.location.href);
+                </script>
               </div>
+              -->
             </div>
           </div>
         </xsl:if>
