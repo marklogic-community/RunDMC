@@ -398,6 +398,24 @@
         </xsl:choose>
       </div>
 
+      <div class="share">
+        <xsl:if test="not($in-paginated-list)">
+          <div class="share-post">
+            <div class="message">Share This Post!</div>
+            <div class="social-buttons">
+              <div class="twt social-btn">
+                <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="MarkLogic">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+              </div>
+              <div class="linkedin social-btn">
+                <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                <script type="IN/Share" data-counter="right"></script>
+              </div>
+            </div>
+          </div>
+        </xsl:if>
+      </div>
+
     </article>
   </xsl:template>
 
