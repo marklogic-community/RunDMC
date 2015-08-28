@@ -214,11 +214,11 @@
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/@name]">
-                    <xsl:value-of select="product-info/@name"/>
+                    <xsl:value-of select="(product-info/@name)[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/name]">
-                    <xsl:apply-templates select="product-info/name"/>
+                    <xsl:apply-templates select="product-info/name[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Project">
@@ -403,27 +403,14 @@
           <div class="share-post">
             <div class="message">Share This Post!</div>
             <div class="social-buttons">
-              <div class="twt social-btn">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="MarkLogic">Tweet</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-              </div>
-              <!--
-                TODO: not working right
-              <div class="gplus social-btn">
-                <script src="https://apis.google.com/js/platform.js" async="" defer=""></script>
-                <div class="g-plusone"></div>
-              </div>
-              -->
-              <!--
-                TODO: not working right
-              <div class="linkedin social-btn">
-                <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-                <script type="IN/Share" data-url="" data-counter="right"></script>
-                <script>
-                  $('.linkedin script[data-url]').attr('data-url', window.location.href);
-                </script>
-              </div>
-              -->
+              <!-- From http://www.sharethis.com/ -->
+              <span class="st_fblike_vcount social-btn" displayText="Facebook Like"></span>
+              <span class="st_twitter_vcount social-btn" displayText="Tweet"></span>
+              <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
+              <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
+
+              <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+              <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
             </div>
           </div>
         </xsl:if>

@@ -3284,7 +3284,7 @@ li.search_suggest_selected {
 .share-post {
   background: #fafafa;
   border: 1px solid #ccc;
-  height: 50px;
+  height: 80px;
   margin-top: 25px;
 }
 
@@ -3293,7 +3293,7 @@ li.search_suggest_selected {
   float: left;
   font-weight: bold;
   height: 100%;
-  line-height: 50px;
+  line-height: 80px;
   padding: 0 2em;
   vertical-align: middle;
 }
@@ -3301,7 +3301,7 @@ li.search_suggest_selected {
 .share-post .social-buttons {
   float: left;
   height: 100%;
-  padding: 10px 0 0 60px;
+  padding: 8px 0 0 60px;
   position: relative;
 }
 
@@ -3310,13 +3310,24 @@ li.search_suggest_selected {
   margin: 0 2em 0 0;
 }
 
-.share-post .social-buttons .social-btn.linkedin {
-  padding-top: 5px;
+/* The share buttons didn't look quite right, so a few minor adjustments follow */
+.share-post .social-buttons .social-btn .stMainServices {
+  height: 20px;
 }
 
-.share-post .social-buttons .social-btn.gplus {
-  margin-right: 0;
-  padding-top: 3px;
+.share-post .social-buttons .social-btn .stBubble {
+  background-position-y: 37px;
+  margin-top: 0;
+  margin-bottom: -1px;
+}
+
+.share-post .social-buttons .social-btn .stBubble_count {
+  background-image: none;
+  height: 38px;
+}
+
+.share-post .social-buttons .social-btn.st_plusone_vcount div {
+  margin-top: 2px;
 }
 
 /* screen.css */
