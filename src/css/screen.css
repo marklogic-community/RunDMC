@@ -3314,4 +3314,9 @@ li.search_suggest_selected {
   padding-top: 5px;
 }
 
+.share-post .social-buttons .social-btn.gplus {
+  margin-right: 0;
+  padding-top: 3px;
+}
+
 /* screen.css */
