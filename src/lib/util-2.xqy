@@ -146,7 +146,7 @@ declare function u:string-extract-first-sentence($str as xs:string)
 declare function u:get-full-url()
   as xs:string
 {
-  xdmp:get-request-protocol() || "://" ||
+  xdmp:get-request-protocol() || ":" ||
     $s:main-server ||
     xdmp:get-original-url()
 };
