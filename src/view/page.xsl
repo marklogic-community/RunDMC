@@ -214,11 +214,11 @@
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/@name]">
-                    <xsl:value-of select="product-info/@name"/>
+                    <xsl:value-of select="(product-info/@name)[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/name]">
-                    <xsl:apply-templates select="product-info/name"/>
+                    <xsl:apply-templates select="product-info/name[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Project">
