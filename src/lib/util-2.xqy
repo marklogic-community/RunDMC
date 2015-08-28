@@ -9,6 +9,8 @@ import module namespace search = "http://marklogic.com/appservices/search"
 
 import module namespace prop = "http://xqdev.com/prop" at "/lib/properties.xqy";
 
+import module namespace s = "http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
+
 declare namespace xhtml = "http://www.w3.org/1999/xhtml";
 declare namespace em =    "URN:ietf:params:email-xml:";
 declare namespace ml =    "http://developer.marklogic.com/site/internal";
@@ -145,7 +147,7 @@ declare function u:get-full-url()
   as xs:string
 {
   xdmp:get-request-protocol() || "://" ||
-    xdmp:get-request-header("Host") ||
+    $s:main-server ||
     xdmp:get-original-url()
 };
 
