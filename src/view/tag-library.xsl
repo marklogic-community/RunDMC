@@ -1237,5 +1237,16 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="open-graph">
+    <meta property="og:title">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-page-title($content)"/></xsl:attribute>
+    </meta>
+    <meta property="og:description">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-page-description($content)"/></xsl:attribute>
+    </meta>
+    <meta property="og:url">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-full-url()"/></xsl:attribute>
+    </meta>
+  </xsl:template>
 
 </xsl:stylesheet>
