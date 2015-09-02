@@ -127,6 +127,7 @@
         <page display="Roxy" href="/code/roxy"/>
         <page display="Docker" href="/code/docker"/>
         <page display="ML-Gradle" href="/code/ml-gradle"/>
+        <page display="mlsound" href="/code/mlsound"/>
         <page display="Booster" href="/code/booster"/>
       </group>
       <group display="Microsoft Office® Integration">
