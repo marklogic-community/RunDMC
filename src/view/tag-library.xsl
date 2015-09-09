@@ -165,7 +165,7 @@
         <p>Sign in with your MarkLogic Community credentials or <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
         </xsl:if>
 
-        <div style="margin-left: 12px; display: block" id="download-confirm-email">
+        <div style="display: block" id="download-confirm-email">
             <xsl:if test="empty(users:getCurrentUser())">
                 <div class="download-form-row">
                     <p id="ifail"/>
