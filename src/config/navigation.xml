@@ -93,6 +93,10 @@
     <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/triple-index" hide="yes"/>
     <generic-page display="Semantics Exercises" href="/learn/semantics-exercises/next-steps" hide="yes"/>
 
+    <generic-page display="Server-side JavaScript" href="/learn/sjs/concepts" hide="yes"/>
+    <generic-page display="Server-side JavaScript" href="/learn/sjs/load-data" hide="yes"/>
+
+
   </page>
   <page display="Tools" href="/code" closed="yes">
     <group display="Tools &amp; Open Source Projects">
@@ -140,15 +144,19 @@
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Connectors">
-        <page display="MLPHP" href="/labs/mlphp"/>
-        <page display="MLJS" href="/labs/mljs"/>
-        <page display="MLDotNet" href="/labs/mldotnet"/>
-        <page display="MarkMapper" href="/code/markmapper"/>
-        <page display="MLSAM" href="/code/mlsam"/>
-        <page display="MLJAM" href="/code/mljam"/>
-        <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
         <page display="Go Bindings" href="/code/go-marklogic"/>
+        <page display="MarkMapper" href="/code/markmapper"/>
+        <page display="MLDotNet" href="/labs/mldotnet"/>
+        <page display="MLJAM" href="/code/mljam"/>
+        <page display="MLJS" href="/labs/mljs"/>
+        <page display="MLPHP" href="/labs/mlphp"/>
+        <page display="MLSAM" href="/code/mlsam"/>
         <page display="Python" href="/code/marklogic-python"/>
+        <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
+      </group>
+      <group display="Visualization">
+        <page display="ml-lodlive" href="/code/ml-lodlive"/>
+        <page display="ml-lodlive-ng" href="/code/ml-lodlive-ng"/>
       </group>
       <group display="Command-line interfaces">
         <page display="Ant tasks" href="/code/ant-tasks"/>
