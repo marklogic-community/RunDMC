@@ -80,6 +80,11 @@ as element(search:options)
     <constraint name="cat">
       <collection prefix="{ $ml:CATEGORY-PREFIX }"/>
     </constraint>
+    <constraint name="tag">
+      <range type="xs:string" collation="http://marklogic.com/collation/en/S1">
+        <element ns="http://developer.marklogic.com/site/internal" name="tag"/>
+      </range>
+    </constraint>
     <constraint name="param">
       <value>
         <element ns="{ $api:NAMESPACE }" name="param-type"/>
