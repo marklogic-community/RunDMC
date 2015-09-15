@@ -144,7 +144,6 @@
     </xsl:element>
   </xsl:template>
 
-
   <!-- Rewrite api.marklogic.com links (to docs.marklogic.com) until we have a chance to update the content. -->
   <xsl:template match="xhtml:a/@href[starts-with(.,'http://api.marklogic.com')]">
     <xsl:attribute name="href">
@@ -382,6 +381,12 @@
         <xsl:if test="$in-paginated-list">
           <xsl:apply-templates mode="comment-count" select="."/>
         </xsl:if>
+
+        <div class="tags">
+          <xsl:for-each select="tags/tag">
+            <button class="tag btn btn-info btn-xs"><xsl:value-of select="."/></button>
+          </xsl:for-each>
+        </div>
       </header>
 
       <div class="body">
@@ -417,6 +422,10 @@
       </div>
 
     </article>
+  </xsl:template>
+
+  <xsl:template match="tag">
+    <div>I'm a tag</div>
   </xsl:template>
 
   <!-- Don't display the "created" date on event pages -->
@@ -462,7 +471,6 @@
     </div>
     <xsl:apply-templates select="description/node()"/>
   </xsl:template>
-
 
   <xsl:template mode="page-content" match="Article">
     <!-- placeholder for form to get CSS to display background -->

@@ -96,6 +96,7 @@
               <th scope="col">Last&#160;Updated</th>
             </xsl:if>
           </xsl:if>
+          <th scope="col">URI</th>
           <th scope="col">Status</th>
           <th class="last">&#160;</th>
         </tr>
@@ -212,6 +213,9 @@
         </xsl:if>
       </xsl:if>
       <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+      <td>
+        <xsl:value-of select="base-uri(.)"/>
+      </td>
       <td class="status {lower-case($effective-status)}">
         <xsl:value-of select="$effective-status"/>
       </td>

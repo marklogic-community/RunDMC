@@ -1191,7 +1191,6 @@ section#documentation:before {
 .post .date_author {
     float: left;
     font-size: 12px;
-    margin-bottom: 15px;
 }
 .post .author {
     font-style: italic;
@@ -3328,6 +3327,16 @@ li.search_suggest_selected {
 
 .share-post .social-buttons .social-btn.st_plusone_vcount div {
   margin-top: 2px;
+}
+
+.post .tags {
+  clear: left;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.post .tags .tag {
+  margin-right: 5px;
 }
 
 /* screen.css */
