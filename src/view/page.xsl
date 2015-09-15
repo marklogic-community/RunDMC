@@ -384,7 +384,9 @@
 
         <div class="tags">
           <xsl:for-each select="tags/tag">
-            <button class="tag btn btn-info btn-xs"><xsl:value-of select="."/></button>
+            <a class="tag btn btn-info btn-xs">
+               <xsl:attribute name="href">/search?q=tag%3A<xsl:value-of select="."/></xsl:attribute>
+              <xsl:value-of select="."/></a>
           </xsl:for-each>
         </div>
       </header>
