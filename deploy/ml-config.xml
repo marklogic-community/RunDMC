@@ -234,6 +234,13 @@
           <collation>http://marklogic.com/collation/codepoint</collation>
           <range-value-positions>false</range-value-positions>
         </range-element-index>
+        <range-element-index>
+          <scalar-type>string</scalar-type>
+          <namespace-uri>http://developer.marklogic.com/site/internal</namespace-uri>
+          <localname>tag</localname>
+          <collation>http://marklogic.com/collation/en/S1</collation>
+          <range-value-positions>false</range-value-positions>
+        </range-element-index>
       </range-element-indexes>
 
       <range-element-attribute-indexes>

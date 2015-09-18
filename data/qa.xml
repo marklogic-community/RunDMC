@@ -13,7 +13,7 @@
       based on the <a href="http://stackoverflow.com/questions/tagged/marklogic">marklogic tag</a>.  (NB: You must be
       logged into Stack Exchange to create a filter.  If you are not, the link above will give you a 404.)
     </p>
-    <a class="button" href="http://stackoverflow.com/questions/ask">Ask a Question</a>
+    <a class="button" href="http://stackoverflow.com/questions/ask?tags=marklogic">Ask a Question</a>
     <p/>
     <p>MarkLogic also runs an active
       <a href="/discuss">developer mailing list</a>.  You must <a href="/mailman/listinfo/general">subscribe</a> to ask

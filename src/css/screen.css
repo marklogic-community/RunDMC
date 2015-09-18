@@ -1191,7 +1191,6 @@ section#documentation:before {
 .post .date_author {
     float: left;
     font-size: 12px;
-    margin-bottom: 15px;
 }
 .post .author {
     font-style: italic;
@@ -3279,6 +3278,65 @@ li.search_suggest_selected {
 
 #events_listing .event {
   padding-bottom: 10px;
+}
+
+.share-post {
+  background: #fafafa;
+  border: 1px solid #ccc;
+  height: 80px;
+  margin-top: 25px;
+}
+
+.share-post .message {
+  background: #e0e0e0;
+  float: left;
+  font-weight: bold;
+  height: 100%;
+  line-height: 80px;
+  padding: 0 2em;
+  vertical-align: middle;
+}
+
+.share-post .social-buttons {
+  float: left;
+  height: 100%;
+  padding: 8px 0 0 60px;
+  position: relative;
+}
+
+.share-post .social-buttons .social-btn {
+  float: left;
+  margin: 0 2em 0 0;
+}
+
+/* The share buttons didn't look quite right, so a few minor adjustments follow */
+.share-post .social-buttons .social-btn .stMainServices {
+  height: 20px;
+}
+
+.share-post .social-buttons .social-btn .stBubble {
+  background-position-y: 37px;
+  margin-top: 0;
+  margin-bottom: -1px;
+}
+
+.share-post .social-buttons .social-btn .stBubble_count {
+  background-image: none;
+  height: 38px;
+}
+
+.share-post .social-buttons .social-btn.st_plusone_vcount div {
+  margin-top: 2px;
+}
+
+.post .tags {
+  clear: left;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.post .tags .tag {
+  margin-right: 5px;
 }
 
 /* screen.css */

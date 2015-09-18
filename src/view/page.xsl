@@ -144,7 +144,6 @@
     </xsl:element>
   </xsl:template>
 
-
   <!-- Rewrite api.marklogic.com links (to docs.marklogic.com) until we have a chance to update the content. -->
   <xsl:template match="xhtml:a/@href[starts-with(.,'http://api.marklogic.com')]">
     <xsl:attribute name="href">
@@ -214,11 +213,11 @@
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/@name]">
-                    <xsl:value-of select="product-info/@name"/>
+                    <xsl:value-of select="(product-info/@name)[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="page[product-info/name]">
-                    <xsl:apply-templates select="product-info/name"/>
+                    <xsl:apply-templates select="product-info/name[1]"/>
                   </xsl:template>
 
                   <xsl:template mode="page-specific-title" match="Project">
@@ -382,6 +381,14 @@
         <xsl:if test="$in-paginated-list">
           <xsl:apply-templates mode="comment-count" select="."/>
         </xsl:if>
+
+        <div class="tags">
+          <xsl:for-each select="tags/tag">
+            <a class="tag btn btn-info btn-xs">
+               <xsl:attribute name="href">/search?q=tag%3A<xsl:value-of select="."/></xsl:attribute>
+              <xsl:value-of select="."/></a>
+          </xsl:for-each>
+        </div>
       </header>
 
       <div class="body">
@@ -398,7 +405,29 @@
         </xsl:choose>
       </div>
 
+      <div class="share">
+        <xsl:if test="not($in-paginated-list)">
+          <div class="share-post">
+            <div class="message">Share This Post!</div>
+            <div class="social-buttons">
+              <!-- From http://www.sharethis.com/ -->
+              <span class="st_fblike_vcount social-btn" displayText="Facebook Like"></span>
+              <span class="st_twitter_vcount social-btn" displayText="Tweet"></span>
+              <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
+              <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
+
+              <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+              <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+            </div>
+          </div>
+        </xsl:if>
+      </div>
+
     </article>
+  </xsl:template>
+
+  <xsl:template match="tag">
+    <div>I'm a tag</div>
   </xsl:template>
 
   <!-- Don't display the "created" date on event pages -->
@@ -444,7 +473,6 @@
     </div>
     <xsl:apply-templates select="description/node()"/>
   </xsl:template>
-
 
   <xsl:template mode="page-content" match="Article">
     <!-- placeholder for form to get CSS to display background -->

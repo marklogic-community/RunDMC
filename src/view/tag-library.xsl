@@ -165,7 +165,7 @@
         <p>Sign in with your MarkLogic Community credentials or <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
         </xsl:if>
 
-        <div style="margin-left: 12px; display: block" id="download-confirm-email">
+        <div style="display: block" id="download-confirm-email">
             <xsl:if test="empty(users:getCurrentUser())">
                 <div class="download-form-row">
                     <p id="ifail"/>
@@ -1237,5 +1237,16 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="open-graph">
+    <meta property="og:title">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-page-title($content)"/></xsl:attribute>
+    </meta>
+    <meta property="og:description">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-page-description($content)"/></xsl:attribute>
+    </meta>
+    <meta property="og:url">
+      <xsl:attribute name="content"><xsl:value-of select="u:get-full-url()"/></xsl:attribute>
+    </meta>
+  </xsl:template>
 
 </xsl:stylesheet>
