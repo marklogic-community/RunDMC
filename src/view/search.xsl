@@ -451,8 +451,9 @@
         "All categories" link forces the search by including p=1
         (preventing function page redirects).
         This also resets to page 1.
+        data-constraint="{ $this-constraint }"
     -->
-    <a data-constraint="{ $this-constraint }"
+    <a
        href="{
              ss:href(
              $preferred-version, $new-q, $is-api-search,
