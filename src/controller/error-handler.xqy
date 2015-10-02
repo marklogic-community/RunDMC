@@ -8,18 +8,20 @@ declare namespace em="URN:ietf:params:email-xml:";
 
 declare variable $error:errors as node()* external;
 
-declare function local:renderErrors()
+declare function local:renderErrors($summary)
 {
     let $newline := '
 '
 
     for $e in $error:errors
-    return
-        (
+    return (
         concat($newline, string($e/error:format-string), $newline),
-        for $f in $e/error:stack/error:frame
+        if ($summary) then
+            for $f in $e/error:stack/error:frame
             return concat("in ", string($f/error:uri), ", on line: ", string($f/error:line), $newline)
-        )
+        else
+            "error: " || xdmp:quote($e)
+    )
 };
 
 let $error := xdmp:get-response-code()[1]
@@ -42,7 +44,7 @@ let $hostname := xdmp:hostname()
 
 let $staging := if ($hostname = "stage-developer.marklogic.com") then "Staging " else ""
 
-let $address := 
+let $address :=
     if ($hostname = ("community.marklogic.com", "developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
         "dmc-admin@marklogic.com"
     else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
@@ -74,8 +76,8 @@ let $_ := if ($sendError and $address)
         User Agent = { $userAgent }
         Referrer = { $referer }
         Location = { $location }
-        Details = 
-                   { local:renderErrors() }
+        Details =
+                   { local:renderErrors(fn:false()) }
         </em:content>
         )
     else
@@ -107,7 +109,7 @@ return
             </map:entry>
             <map:entry>
               <map:key>errorDetail</map:key>
-              <map:value>{ local:renderErrors() }</map:value>
+              <map:value>{ local:renderErrors(fn:true()) }</map:value>
             </map:entry>
           </map:map>
         ))
