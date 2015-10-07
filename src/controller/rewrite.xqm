@@ -301,7 +301,8 @@ declare function m:forbidden($path as xs:string)
 declare function m:notfound($path as xs:string)
   as xs:boolean
 {
-  ends-with($path, ".php")
+  ends-with($path, ".php") or
+    ends-with($path, "trackback/")
 };
 
 (: record all binaries :)
