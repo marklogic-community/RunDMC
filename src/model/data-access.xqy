@@ -43,7 +43,8 @@ declare private variable $doc-element-names := (xs:QName("Announcement"),
   xs:QName("Tutorial"),
   xs:QName("Project"),
   xs:QName("Post"),
-  xs:QName("page")
+  xs:QName("page"),
+  xs:QName("Author")
 );
 
 declare variable $Announcements := ml:docs( xs:QName("Announcement"));
@@ -51,6 +52,7 @@ declare variable $Events        := ml:docs( xs:QName("Event"));
 declare variable $Articles      := ml:docs((xs:QName("Article"), xs:QName("Tutorial")));
 declare variable $Projects      := ml:docs( xs:QName("Project"));
 declare variable $pages         := ml:docs( xs:QName("page"));
+declare variable $Authors       := ml:docs( xs:QName("Author"));
 declare variable $Posts         := ml:docs((xs:QName("Post"), xs:QName("Announcement"), xs:QName("Event")));
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
@@ -80,6 +82,11 @@ declare variable $server-version-nodes-available as element()+ := (
 declare variable $projects-by-name := for $p in $Projects
 order by $p/name
 return $p;
+
+declare variable $authors-by-name :=
+  for $author in $Authors
+  order by $author/name
+  return $author;
 
 declare variable $media-uris :=
   cts:uri-match("/media/*") ! <uri>{.}</uri>;
