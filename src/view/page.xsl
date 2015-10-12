@@ -416,7 +416,7 @@
               <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
               <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
 
-              <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+              <script type="text/javascript" src="https//ws.sharethis.com/button/buttons.js"></script>
               <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
             </div>
           </div>
