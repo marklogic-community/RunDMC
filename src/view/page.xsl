@@ -522,17 +522,13 @@
     <span><xsl:value-of select="."/></span>
     <xsl:if test="$author-info/twitter">
       <a>
-        <xsl:attribute name="href">
-          <xsl:value-of select="$author-info/twitter"/>
-        </xsl:attribute>
+        <xsl:attribute name="href">http://twitter.com/<xsl:value-of select="$author-info/twitter"/></xsl:attribute>
         <span class="social twitter">@<xsl:value-of select="$author-info/twitter"/></span>
       </a>
     </xsl:if>
     <xsl:if test="$author-info/github">
       <a>
-        <xsl:attribute name="href">
-          <xsl:value-of select="$author-info/github"/>
-        </xsl:attribute>
+        <xsl:attribute name="href">http://github.com/<xsl:value-of select="$author-info/github"/></xsl:attribute>
         <span class="social github"><xsl:value-of select="$author-info/github"/></span>
       </a>
     </xsl:if>
