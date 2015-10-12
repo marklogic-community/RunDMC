@@ -951,4 +951,9 @@ as xs:string
   else ml:file-from-path(substring-after($path, '/'))
 };
 
+declare function ml:get-author-info($author-name as xs:string)
+{
+  /ml:Author[ml:name = $author-name]
+};
+
 (: model/data-access.xqy :)
