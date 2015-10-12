@@ -1,0 +1,25 @@
+<!DOCTYPE ml:Author [
+]>
+<ml:Author xmlns:ml="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
+      status="Draft" label:status="Status"      values:status="Draft Published"
+      type=""        label:type="Author Type" values:type="Employee Partner Customer"
+      form:uri-prefix-for-new-docs="/author/">
+    <ml:name form:label="Full Name"
+              form:wide="yes"/>
+    <ml:created/>
+    <ml:twitter form:label="Twitter (no @)"
+                    form:wide="yes"/>
+    <ml:github form:label="GitHub Account"
+                    form:wide="yes"/>
+    <ml:linkedin form:label="LinkedIn URL"
+                    form:wide="yes"/>
+    <ml:web form:label="Web Site"
+            form:repeating="yes"
+            form:wide="yes"/>
+    <ml:body form:label="Bio (2-3 sentences)"
+             form:type="textarea" form:class="optional-richtext"/>
+</ml:Author>

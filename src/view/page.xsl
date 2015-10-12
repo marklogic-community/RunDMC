@@ -504,7 +504,7 @@
 
 
   <xsl:template mode="author-listing" match="author[1]" priority="1">
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="individual-author" select="."/>
   </xsl:template>
 
   <xsl:template mode="author-listing" match="author">
@@ -515,6 +515,27 @@
   <xsl:template mode="author-listing" match="author[last()]">
     <xsl:text> and </xsl:text>
     <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template mode="individual-author" match="author">
+    <xsl:variable name="author-info" select="ml:get-author-info(.)"/>
+    <span><xsl:value-of select="."/></span>
+    <xsl:if test="$author-info/twitter">
+      <a>
+        <xsl:attribute name="href">
+          <xsl:value-of select="$author-info/twitter"/>
+        </xsl:attribute>
+        <span class="social twitter">@<xsl:value-of select="$author-info/twitter"/></span>
+      </a>
+    </xsl:if>
+    <xsl:if test="$author-info/github">
+      <a>
+        <xsl:attribute name="href">
+          <xsl:value-of select="$author-info/github"/>
+        </xsl:attribute>
+        <span class="social github"><xsl:value-of select="$author-info/github"/></span>
+      </a>
+    </xsl:if>
   </xsl:template>
 
 

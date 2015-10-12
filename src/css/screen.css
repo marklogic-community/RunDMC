@@ -1195,6 +1195,26 @@ section#documentation:before {
 .post .author {
     font-style: italic;
 }
+
+.post .author .social {
+  background-repeat: no-repeat;
+  background-size: 20px;
+  display: inline-block;
+  overflow-x: hidden;
+  text-indent: -100px;
+  width: 20px;
+  vertical-align: bottom;
+}
+
+.post .author .social.twitter {
+  background-image: url(/images/twitter-logo-55ac33.png);
+}
+
+.post .author .social.github {
+  background-image: url(/images/GitHub-Mark-32px.png);
+  background-size: 16px;
+}
+
 .post .body {
     margin: 20px 0 0;
     clear: both;
