@@ -1196,21 +1196,22 @@ section#documentation:before {
     font-style: italic;
 }
 
-.post .author .social {
+.post .author .social, .article .author .social {
   background-repeat: no-repeat;
   background-size: 20px;
   display: inline-block;
+  margin-left: 3px;
   overflow-x: hidden;
   text-indent: -100px;
   width: 20px;
   vertical-align: bottom;
 }
 
-.post .author .social.twitter {
+.post .author .social.twitter, .article .author .social.twitter {
   background-image: url(/images/twitter-logo-55ac33.png);
 }
 
-.post .author .social.github {
+.post .author .social.github, .article .author .social.github {
   background-image: url(/images/GitHub-Mark-32px.png);
   background-size: 16px;
 }

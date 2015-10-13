@@ -475,14 +475,16 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="Article">
-    <!-- placeholder for form to get CSS to display background -->
-    <div id="doc_search"/>
+    <article class="article">
+      <!-- placeholder for form to get CSS to display background -->
+      <div id="doc_search"/>
 
-    <xsl:apply-templates mode="author-date-etc" select="."/>
+      <xsl:apply-templates mode="author-date-etc" select="."/>
 
-    <xsl:apply-templates select="body/node()">
-      <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
-    </xsl:apply-templates>
+      <xsl:apply-templates select="body/node()">
+        <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
+      </xsl:apply-templates>
+    </article>
   </xsl:template>
 
   <xsl:template mode="author-date-etc" match="Article | Tutorial">
@@ -520,13 +522,13 @@
   <xsl:template mode="individual-author" match="author">
     <xsl:variable name="author-info" select="ml:get-author-info(.)"/>
     <span><xsl:value-of select="."/></span>
-    <xsl:if test="$author-info/twitter">
+    <xsl:if test="$author-info/twitter != ''">
       <a>
         <xsl:attribute name="href">http://twitter.com/<xsl:value-of select="$author-info/twitter"/></xsl:attribute>
         <span class="social twitter">@<xsl:value-of select="$author-info/twitter"/></span>
       </a>
     </xsl:if>
-    <xsl:if test="$author-info/github">
+    <xsl:if test="$author-info/github != ''">
       <a>
         <xsl:attribute name="href">http://github.com/<xsl:value-of select="$author-info/github"/></xsl:attribute>
         <span class="social github"><xsl:value-of select="$author-info/github"/></span>
