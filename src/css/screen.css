@@ -3360,4 +3360,19 @@ li.search_suggest_selected {
   margin-right: 5px;
 }
 
+#content .section-row.recent {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#updated-carousel .carousel-inner {
+  margin-right: auto;
+  margin-left: auto;
+  width: 80%;
+}
+
+#updated-carousel .item .list-group-item {
+  border: none;
+}
+
 /* screen.css */

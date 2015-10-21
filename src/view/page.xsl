@@ -57,6 +57,37 @@
                          select="ss:maybe-highlight(/, $params)"/>
   </xsl:variable>
 
+  <xsl:template match="recent-carousel">
+    <xsl:variable name="recent" select="ss:get-recently-updated()"/>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <xsl:for-each select="$recent/ml:content">
+        <div>
+          <xsl:attribute name="class">
+            item
+            <xsl:if test="position()=1">
+              active
+            </xsl:if>
+          </xsl:attribute>
+          <a class="list-group-item">
+            <xsl:attribute name="href" select="ml:uri"/>
+            <xsl:value-of select="ml:title"/>
+          </a>
+        </div>
+      </xsl:for-each>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#updated-carousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#updated-carousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </xsl:template>
+
                   <xsl:template mode="preserve-base-uri" match="@* | node()">
                     <xsl:copy>
                       <xsl:apply-templates mode="#current" select="@* | node()"/>
