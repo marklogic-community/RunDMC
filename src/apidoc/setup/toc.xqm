@@ -1409,7 +1409,7 @@ as element(toc:node)+
       if ($is-exhaustive) then () else $single-lib-for-category))
   return toc:node(
     $bucket-id||'_'||translate(
-        translate(translate($cat, ' ' , ''), '(', ''), ')', '')
+        translate(translate($cat, ' ' , ''), '(', ''), ')', ''),
     toc:display-category($cat)
     ||toc:display-suffix($single-lib-for-category, $mode),
     $href,
