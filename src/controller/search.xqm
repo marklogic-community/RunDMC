@@ -477,4 +477,22 @@ as xs:string*
     $q, ss:options($version), $count, max((1, $pos)))
 };
 
+declare function ss:get-recently-updated()
+{
+  <recent xmlns="http://developer.marklogic.com/site/internal">
+    {
+      (
+        let $collections := ('category/blog', 'category/code', 'category/tutorial')
+        for $doc in cts:search(fn:doc(), cts:collection-query($collections))
+        order by $doc/node()/ml:last-updated descending
+        return
+          <content>
+            <uri>{fn:base-uri($doc)}</uri>
+            <title>{$doc/node()/ml:title}</title>
+          </content>
+      )[1 to 5]
+    }
+  </recent>
+};
+
 (: search.xqm :)
