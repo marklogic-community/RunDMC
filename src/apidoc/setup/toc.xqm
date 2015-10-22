@@ -1408,7 +1408,8 @@ as element(toc:node)+
       if ($is-exhaustive) then $single-lib-for-category else (),
       if ($is-exhaustive) then () else $single-lib-for-category))
   return toc:node(
-    $bucket-id||'_'||translate($cat, ' ' , ''),
+    $bucket-id||'_'||translate(
+        translate(translate($cat, ' ' , ''), '(', ''), ')', '')
     toc:display-category($cat)
     ||toc:display-suffix($single-lib-for-category, $mode),
     $href,
@@ -1474,7 +1475,8 @@ as element(toc:node)+
    :)
   let $bucket-id := (
     if ($mode eq $api:MODE-JAVASCRIPT) then 'js_'
-    else '')||translate($b, ' ', '')
+    else '')||translate(
+      translate(translate($b, ' ', ''), '(', ''), ')', '')
   let $is-REST := $mode eq $api:MODE-REST
   order by index-of($forced-order, $b) ascending, $b
   return toc:node(
