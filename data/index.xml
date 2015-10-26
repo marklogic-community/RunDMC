@@ -2,18 +2,27 @@
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
 
   <div class="home container-fluid">
-    <div class="section-row recent">
-      <div id="updated-carousel" class="carousel slide" data-ride="carousel">
-        <ml:recent-carousel/>
+
+    <div class="section-row">
+      <div class="container">
+        <div class="row">
+          <div class="col col-xs-12">
+            <form method="get" ml:action="/search" class="search-wrapper" enctype="application/x-www-form-urlencoded">
+        <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class=""/>
+        <span id="mag" class="input-group-btn">
+                <button class="btn btn-search glyphicon glyphicon-search"></button>
+              </span>
+      </form>
+          </div>
+        </div>
       </div>
     </div>
-
     <div class="section-row main-wrapper">
       <div class="container">
         <div class="row">
           <div class="col col-xs-5" rel="3mOCOrFQ_N0">
             <div class="still" id="what-is-still">
-              <a href="http://www.youtube.com/embed/CP06VhGSk1Y?autoplay=1&amp;rel=0&amp;vq=hd720">
+              <a href="http://www.youtube.com/embed/ZM9Z5agNE0k?autoplay=1&amp;rel=0&amp;vq=hd720">
                 <i class="glyphicon glyphicon-play-circle"></i>
               </a>
             </div>
@@ -21,7 +30,7 @@
           <div class="col col-xs-offset-1 col-xs-5">
             <h1>MarkLogic 8</h1>
             <p class="lead">Enterprise NoSQL Database Platform</p>
-            <p>MarkLogic 8 is a new generation database built with a flexible data model to store, manage, and search JSON, XML, RDF, and more &#8212; without sacrificing any of the data resiliency and consistency features of last-generation relational databases.</p>
+            <p>MarkLogic 8 is a new generation database built with a flexible data model to store, manage, and search JSON, XML, RDF, and more — without sacrificing any of the data resiliency and consistency features of last-generation relational databases.</p>
             <p>
               <a class="btn btn-default btn-sm" href="/products" id="download-button">Free Download</a>
             </p>
@@ -29,8 +38,7 @@
         </div>
       </div>
     </div>
-
-    <style>
+    <style xml:space="preserve">
       .hp-promotion-wrapper {
         box-shadow: 0px 1px 3px 0px #878787;
         -moz-box-shadow: 0px 1px 3px 0px #878787;
@@ -108,61 +116,61 @@
 
         <div class="row">
           <ul class="new-features">
-            <li>
+      <li>
               <a href="/features/json" class="col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/json.svg"/>
                 <p class="text-uppercase text-center">JSON</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/node-client-api" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/node.svg"/>
                 <p class="text-uppercase text-center">Node.js Client API</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/javascript" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/javascript.svg"/>
                 <p class="text-uppercase text-center">Server-side JavaScript</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/java-client-api" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/java-api.svg"/>
                 <p class="text-uppercase text-center">Java Client API</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/semantics" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/semantics.svg"/>
                 <p class="text-uppercase text-center">Semantics</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/management-api" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/management-api.svg"/>
                 <p class="text-uppercase text-center">Management API</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/bitemporal" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/bitemporal.svg"/>
                 <p class="text-uppercase text-center">Bitemporal</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/flexrep" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/flexrep.svg"/>
                 <p class="text-uppercase text-center">Flexible Replication</p>
               </a>
             </li>
-            <li>
+      <li>
               <a href="/features/enhanced-http" class="col-md-1 col-sm-1 col-xs-4">
                 <img class="feature-icon" src="/media/features/enhanced-http.svg"/>
                 <p class="text-uppercase text-center">Enhanced HTTP Server</p>
               </a>
             </li>
-          </ul>
+    </ul>
         </div>
 
 
@@ -179,7 +187,7 @@
             <h4><a href="/features/samplestack">Samplestack</a></h4>
             <p>Build a three-tiered sample application that demostrates key
               MarkLogic concepts using the latest features.</p>
-            <p><a href="/features/samplestack" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="/features/samplestack" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
           <div class="col-xs-3">
@@ -187,7 +195,7 @@
             <h4><a href="https://mlu.marklogic.com/registration/">Free Training</a></h4>
             <p>Hands-on, instructor-led training to teach everything from the
               basics to advanced application development.</p>
-            <p><a href="https://mlu.marklogic.com/registration/" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="https://mlu.marklogic.com/registration/" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
           <div class="col-xs-3">
@@ -195,7 +203,7 @@
             <h4><a href="/learn/semantics-exercises">Semantics Tutorial</a></h4>
             <p>Learn how to get more context to your data by using RDF triples
               and querying them with SPARQL.</p>
-            <p><a href="/learn/semantics-exercises" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="/learn/semantics-exercises" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
           <div class="col-xs-3">
@@ -203,7 +211,7 @@
             <h4><a href="/products/aws">Deploy on AWS</a></h4>
             <p>Get going in minutes with MarkLogic in the Amazon cloud using the
               provided AMIs and Cloud Formation templates.</p>
-            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More &#8250;</a></p>
+            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
         </div>
       </div>
@@ -214,15 +222,15 @@
     </div>
 
   </div>
-  <script>
+  <script xml:space="preserve">
     var tag = document.createElement('script');
-    tag.src = &quot;https://www.youtube.com/player_api&quot;;
+    tag.src = "https://www.youtube.com/player_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     function f(ap) {
-      $(&quot;.steps&quot;).fadeOut('slow', function() {
-        $(&quot;#nsvp&quot;).fadeIn('slow', function() {
+      $(".steps").fadeOut('slow', function() {
+        $("#nsvp").fadeIn('slow', function() {
           var player = new YT.Player('ns-vidplayer', {
               width: 460,
               height: 259,
@@ -237,15 +245,16 @@
       f(0);
     }
 
-    $(&quot;#next-steps-video&quot;).click(function(e) {
+    $("#next-steps-video").click(function(e) {
       f(1)
     });
 
-    $(&quot;#nsb&quot;).click(function() {
-      $(&quot;#nsvp&quot;).fadeOut('slow', function() {
-         $(&quot;.steps&quot;).fadeIn('slow');
+    $("#nsb").click(function() {
+      $("#nsvp").fadeOut('slow', function() {
+         $(".steps").fadeIn('slow');
       });
     });
 
   </script>
+
 </ml:page>
