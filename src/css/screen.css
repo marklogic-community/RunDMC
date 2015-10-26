@@ -2766,12 +2766,12 @@ div.header-separator {
 #session-menu {
     right: 316px;
     width: 102px;
+    background-color: black;
 }
 
 .drop-down-menu a,
 #session-menu a {
-    color: #565656;
-    text-shadow: 1px 1px #FFF;
+    color: white;
     text-decoration: none;
 }
 
