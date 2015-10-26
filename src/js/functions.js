@@ -14,7 +14,7 @@ if(typeof jQuery != 'undefined') {
       var input = document.createElement('input');
       return ('placeholder' in input);
     }
-    if(hasPlaceholderSupport() == false) {
+    if(hasPlaceholderSupport() === false) {
       var searchField = $('#s_inp','#header');
       var labelText = searchField.prev().text();
       searchField
@@ -26,7 +26,7 @@ if(typeof jQuery != 'undefined') {
           }
         })
         .blur(function() {
-          if($(this).val() == '') {$(this).val(labelText).addClass('default')}
+          if($(this).val() === '') {$(this).val(labelText).addClass('default');}
         })
         .prev()
           .hide();
@@ -41,7 +41,7 @@ if(typeof jQuery != 'undefined') {
         }
       })
       .blur(function() {
-        if($(this).val() == '') {$(this).val(valText).addClass('default');}
+        if($(this).val() === '') {$(this).val(valText).addClass('default');}
       });
     // end search field default value
 
@@ -132,8 +132,8 @@ if(typeof jQuery != 'undefined') {
     }
 
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+      $('[data-toggle="tooltip"]').tooltip();
+    });
 
     // end utility form stuff
     $('.post + .pagination',main).clone().insertBefore(main);
@@ -152,7 +152,7 @@ if(typeof jQuery != 'undefined') {
     //end blog heading change
 
     $('.hide-if-href-empty').each(function() {
-      if ( $(this).attr('href') == "" ) {
+      if ( $(this).attr('href') === "" ) {
         $(this).hide();
       }
     });
@@ -175,9 +175,9 @@ if(typeof jQuery != 'undefined') {
     $("#iaccept").click(function() {
       var b = $(":button:contains('Download')");
       if ($("#iaccept").is(":checked") &&
-        ( $('#iemail').length == 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
+        ( $('#iemail').length === 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
         b.prop("disabled", false);
-        $("#confirm-dialog").dialog.email = $("#iemail").val()
+        $("#confirm-dialog").dialog.email = $("#iemail").val();
         $("#confirm-dialog").dialog.pw = $("#ipass").val();
       } else {
         b.prop("disabled", true);
@@ -296,7 +296,7 @@ if(typeof jQuery != 'undefined') {
           }
         }
       });
-      $(".ui-dialog-titlebar").hide()
+      $(".ui-dialog-titlebar").hide();
       // $(".ui-dialog-buttonpane")
       $(".ui-dialog").addClass("download-dialog");
     }
@@ -318,7 +318,7 @@ if(typeof jQuery != 'undefined') {
           }
         }
       });
-      $(".ui-dialog-titlebar").hide()
+      $(".ui-dialog-titlebar").hide();
     });
 
     $('a.confirm-download').each(function() {
@@ -351,7 +351,7 @@ if(typeof jQuery != 'undefined') {
 
       var container = document.getElementById("home-tabs");
 
-      if (container != null) {
+      if (container !== null) {
 
         // set current tab
         var cname = 'rundmc-home-tab';
@@ -359,7 +359,7 @@ if(typeof jQuery != 'undefined') {
         if ($.cookie(cname)) {
           ident = $.cookie(cname);
         }
-        if (window.location.hash != "") {
+        if (window.location.hash !== "") {
           if (window.location.hash.substring(1) == 'mm-demo') {
             ident = 3;
           } else {
@@ -682,7 +682,7 @@ if(typeof jQuery != 'undefined') {
       if (vid) {
         e.preventDefault();
         var player = $('#vidplayer');
-        if (player.length == 0) {
+        if (player.length === 0) {
           $('#demowrapper').children('div').replaceWith('<iframe id="vidplayer" width="460" height="259" src="http://www.youtube.com/embed/'+ vid +'?autoplay=1&rel=0&vq=hd720" frameborder="0" allowfullscreen=""></iframe>');
         } else {
           $('#vidplayer').attr('src','http://www.youtube.com/embed/'+vid+'?autoplay=1&rel=0&vq=hd720');
@@ -715,7 +715,7 @@ if(typeof jQuery != 'undefined') {
 
     // add new functions before this comment
   });
-};
+}
 
 function getParameterByName(name)
 {
@@ -723,7 +723,7 @@ function getParameterByName(name)
   var regexS = "[\\?&]" + name + "=([^&#]*)";
   var regex = new RegExp(regexS);
   var results = regex.exec(window.location.search);
-  if(results == null)
+  if(results === null)
     return "";
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
@@ -733,7 +733,7 @@ function getParameterByName(name)
 function isValidEmailAddress(emailAddress) {
   var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
   return pattern.test(emailAddress);
-};
+}
 
 
 function doDownload(u) {
@@ -757,7 +757,7 @@ function doDownload(u) {
     document.body.appendChild(download_iframe);
   }
   download_iframe.src = u;
-};
+}
 
 function showDownloadURL(me, u) {
 
@@ -788,9 +788,9 @@ function showDownloadURL(me, u) {
             }
 */
 
-          var port = (window.location.port == "") ? "" : ":" + window.location.port;
+          var port = (window.location.port === "") ? "" : ":" + window.location.port;
           var host = window.location.hostname + port;
-          var sechost = (window.location.port == "") ? host : window.location.hostname;
+          var sechost = (window.location.port === "") ? host : window.location.hostname;
           $('#curl-url').text(window.location.protocol + '//' + host + data.path);
           $('#secure-curl-url').text('https:' + '//' + sechost + data.path);
 
@@ -834,4 +834,4 @@ function showDownloadURL(me, u) {
 
   new ZeroClipboard($("#copy-url-button"));
   new ZeroClipboard($("#copy-secure-url-button"));
-};
+}
