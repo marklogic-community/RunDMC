@@ -2368,6 +2368,11 @@ ul.multi-page-toc {
     overflow: hidden;
 }
 
+div.CodeMirror {
+  height: auto;
+  vertical-align: top;
+}
+
 .features section {
     display: inline-block;
     width: 299px;

@@ -347,6 +347,25 @@ if(typeof jQuery != 'undefined') {
         .append($('<div>', {'class': 'shadow'}));
     }
 
+    // Give your textarea two classes: 'codemirror' and a mode. For instance,
+    // <textarea class="codemirror xml">...</textarea>
+    // Then call codeMirror.apply('xml');, adding any desired options.
+    function buildCodeMirror(className, options) {
+      var elements = document.getElementsByClassName('codemirror ' + className);
+      var codeOptions = {
+        lineNumbers: true,
+        mode: className,
+        readOnly: true,
+        theme: 'default'
+      };
+      if (elements.length > 0) {
+        $.extend(codeOptions, options);
+        Array.prototype.forEach.call(elements, function(item) {
+          CodeMirror.fromTextArea(item, codeOptions);
+        });
+      }
+    }
+
     $(document).ready(function() {
 
       var container = document.getElementById("home-tabs");
@@ -657,6 +676,10 @@ if(typeof jQuery != 'undefined') {
       if (getParameterByName('fs')) {
           $(document).fartscroll(800);
       }
+
+      buildCodeMirror('xml');
+      buildCodeMirror('javascript');
+      buildCodeMirror('xquery');
     });
 
     var d = $('.yearpicker').attr('data-value');
