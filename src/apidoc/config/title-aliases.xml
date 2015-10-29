@@ -76,4 +76,7 @@
   <auto-link href="/dotnet/xcc/index.html">
     <alias>XCC .Net C# API Documentation</alias>
   </auto-link>
+  <auto-link href="/js/Value">
+    <alias>Value Object</alias>
+  </auto-link>
 </aliases>
