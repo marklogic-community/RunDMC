@@ -680,6 +680,7 @@ if(typeof jQuery != 'undefined') {
       buildCodeMirror('xml');
       buildCodeMirror('javascript');
       buildCodeMirror('xquery');
+      buildCodeMirror('shell');
     });
 
     var d = $('.yearpicker').attr('data-value');
