@@ -57,6 +57,37 @@
                          select="ss:maybe-highlight(/, $params)"/>
   </xsl:variable>
 
+  <xsl:template match="recent-carousel">
+    <xsl:variable name="recent" select="ss:get-recently-updated()"/>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <xsl:for-each select="$recent/ml:content">
+        <div>
+          <xsl:attribute name="class">
+            item
+            <xsl:if test="position()=1">
+              active
+            </xsl:if>
+          </xsl:attribute>
+          <a class="list-group-item">
+            <xsl:attribute name="href" select="ml:uri"/>
+            <xsl:value-of select="ml:title"/>
+          </a>
+        </div>
+      </xsl:for-each>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#updated-carousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#updated-carousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </xsl:template>
+
                   <xsl:template mode="preserve-base-uri" match="@* | node()">
                     <xsl:copy>
                       <xsl:apply-templates mode="#current" select="@* | node()"/>
@@ -416,7 +447,7 @@
               <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
               <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
 
-              <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+              <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
               <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
             </div>
           </div>
@@ -475,14 +506,16 @@
   </xsl:template>
 
   <xsl:template mode="page-content" match="Article">
-    <!-- placeholder for form to get CSS to display background -->
-    <div id="doc_search"/>
+    <article class="article">
+      <!-- placeholder for form to get CSS to display background -->
+      <div id="doc_search"/>
 
-    <xsl:apply-templates mode="author-date-etc" select="."/>
+      <xsl:apply-templates mode="author-date-etc" select="."/>
 
-    <xsl:apply-templates select="body/node()">
-      <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
-    </xsl:apply-templates>
+      <xsl:apply-templates select="body/node()">
+        <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
+      </xsl:apply-templates>
+    </article>
   </xsl:template>
 
   <xsl:template mode="author-date-etc" match="Article | Tutorial">
@@ -504,7 +537,7 @@
 
 
   <xsl:template mode="author-listing" match="author[1]" priority="1">
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="individual-author" select="."/>
   </xsl:template>
 
   <xsl:template mode="author-listing" match="author">
@@ -515,6 +548,23 @@
   <xsl:template mode="author-listing" match="author[last()]">
     <xsl:text> and </xsl:text>
     <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template mode="individual-author" match="author">
+    <xsl:variable name="author-info" select="ml:get-author-info(.)"/>
+    <span><xsl:value-of select="."/></span>
+    <xsl:if test="$author-info/twitter != ''">
+      <a>
+        <xsl:attribute name="href">http://twitter.com/<xsl:value-of select="$author-info/twitter"/></xsl:attribute>
+        <span class="social twitter">@<xsl:value-of select="$author-info/twitter"/></span>
+      </a>
+    </xsl:if>
+    <xsl:if test="$author-info/github != ''">
+      <a>
+        <xsl:attribute name="href">http://github.com/<xsl:value-of select="$author-info/github"/></xsl:attribute>
+        <span class="social github"><xsl:value-of select="$author-info/github"/></span>
+      </a>
+    </xsl:if>
   </xsl:template>
 
 

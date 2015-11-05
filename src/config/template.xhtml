@@ -13,6 +13,7 @@
     <link rel="SHORTCUT ICON" href="/images/v-2/favicon.ico"/>
     <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.css"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/v-39/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="/css/overcast/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
@@ -30,6 +31,11 @@
 
     <ml:javascript-server-config/>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xquery/xquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/shell/shell.min.js"></script>
     <script type="text/javascript" src="/js/modernizr.js"></script>
     <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
@@ -46,6 +52,36 @@
     <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
     <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+<script xml:space="preserve">
+    Array.prototype.forEach.call(document.getElementsByClassName('codemirror js-limitheight'), function(item) {
+      var cm = CodeMirror.fromTextArea(item, {
+        lineNumbers: true,
+        mode: 'javascript',
+        readOnly: true,
+        theme: 'default'
+      });
+      cm.setSize(null, 300);
+    });
+    Array.prototype.forEach.call(document.getElementsByClassName('codemirror js'), function(item) {
+      CodeMirror.fromTextArea(item, {
+        lineNumbers: true,
+        mode: 'javascript',
+        readOnly: true,
+        theme: 'default'
+      });
+    });
+    Array.prototype.forEach.call(document.getElementsByClassName('codemirror xml'), function(item) {
+      CodeMirror.fromTextArea(item, {
+        lineNumbers: true,
+        mode: 'xml',
+        readOnly: true,
+        theme: 'default'
+      });
+    });
+</script>
+
+
   </head>
   <body ml:class="" ml:id="">
     <!-- Google Tag Manager -->

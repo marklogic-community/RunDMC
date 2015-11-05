@@ -1195,6 +1195,27 @@ section#documentation:before {
 .post .author {
     font-style: italic;
 }
+
+.post .author .social, .article .author .social {
+  background-repeat: no-repeat;
+  background-size: 20px;
+  display: inline-block;
+  margin-left: 3px;
+  overflow-x: hidden;
+  text-indent: -100px;
+  width: 20px;
+  vertical-align: bottom;
+}
+
+.post .author .social.twitter, .article .author .social.twitter {
+  background-image: url(/images/twitter-logo-55ac33.png);
+}
+
+.post .author .social.github, .article .author .social.github {
+  background-image: url(/images/GitHub-Mark-32px.png);
+  background-size: 16px;
+}
+
 .post .body {
     margin: 20px 0 0;
     clear: both;
@@ -2347,6 +2368,11 @@ ul.multi-page-toc {
     overflow: hidden;
 }
 
+div.CodeMirror {
+  height: auto;
+  vertical-align: top;
+}
+
 .features section {
     display: inline-block;
     width: 299px;
@@ -2745,12 +2771,12 @@ div.header-separator {
 #session-menu {
     right: 316px;
     width: 102px;
+    background-color: black;
 }
 
 .drop-down-menu a,
 #session-menu a {
-    color: #565656;
-    text-shadow: 1px 1px #FFF;
+    color: white;
     text-decoration: none;
 }
 
@@ -3337,6 +3363,21 @@ li.search_suggest_selected {
 
 .post .tags .tag {
   margin-right: 5px;
+}
+
+#content .section-row.recent {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#updated-carousel .carousel-inner {
+  margin-right: auto;
+  margin-left: auto;
+  width: 80%;
+}
+
+#updated-carousel .item .list-group-item {
+  border: none;
 }
 
 /* screen.css */

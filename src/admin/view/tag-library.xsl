@@ -35,6 +35,7 @@
           <Events        doc-type="Event"        path="/events"/>
           <Pages         doc-type="page"         path="/pages"/>
           <Media         doc-type="media"        path="/media"/>
+          <Author        doc-type="author"       path="/author"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -119,6 +120,73 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="admin-author-list">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">URI</th>
+          <th scope="col">Created</th>
+          <th scope="col">Status</th>
+          <th class="last">&#160;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="docs" select="ml:docs-by-type('author')"/>
+        <xsl:apply-templates mode="admin-author-listing" select="$docs">
+          <!-- Only sort if we're listing "page" docs; otherwise, don't change the order. -->
+          <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
+          <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
+        </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template mode="admin-author-listing" match="*">
+    <xsl:param name="current-page-url"/>
+    <xsl:variable name="edit-path">
+      <xsl:apply-templates mode="edit-path" select="."/>
+    </xsl:variable>
+    <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
+    <tr>
+      <xsl:if test="position() mod 2 eq 0">
+        <xsl:attribute name="class">alt</xsl:attribute>
+      </xsl:if>
+      <th>
+        <a href="{$edit-link}">
+          <xsl:value-of select="name"/>
+        </a>
+      </th>
+      <td>
+        <xsl:value-of select="base-uri(.)"/>
+      </td>
+      <td>
+        <xsl:value-of select="ml:display-date-with-time(created)"/>
+      </td>
+
+      <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+      <td class="status {lower-case($effective-status)}">
+        <xsl:value-of select="$effective-status"/>
+      </td>
+      <td>
+        <a href="{$edit-link}">Edit</a>
+        <xsl:text>&#160;|&#160;</xsl:text>
+        <!-- TODO: make preview work -->
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+        <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
+        <xsl:if test="authorize:is-admin()">
+          <xsl:text>&#160;|&#160;</xsl:text>
+
+          <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+            <xsl:value-of select="$action"/>
+          </a>
+        </xsl:if>
+      </td>
+    </tr>
+  </xsl:template>
+
+
   <xsl:template match="admin-media-list">
     <table class="media-list">
       <thead>
@@ -158,6 +226,7 @@
                      else if ($doc-type eq 'Announcement') then $ml:announcements-by-date
                      else if ($doc-type eq 'Event')        then $ml:events-by-date
                      else if ($doc-type eq 'page')         then $ml:pages
+                     else if ($doc-type eq 'author')       then $ml:authors-by-name
                      else ()"/>
   </xsl:function>
 
@@ -250,5 +319,6 @@
   <xsl:template mode="edit-path" match="Announcement">/news/edit</xsl:template>
   <xsl:template mode="edit-path" match="Event"       >/events/edit</xsl:template>
   <xsl:template mode="edit-path" match="page"        >/pages/edit</xsl:template>
+  <xsl:template mode="edit-path" match="Author"      >/author/edit</xsl:template>
 
 </xsl:stylesheet>
