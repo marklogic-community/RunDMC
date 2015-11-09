@@ -741,6 +741,38 @@ if(typeof jQuery != 'undefined') {
   });
 }
 
+function loadRecentContent() {
+  console.log('loading recent content');
+  $.ajax({
+    url: '/recent',
+    success: function(data) {
+      console.log('I got ' + data.length + ' items');
+      var recent = $('#recent');
+      data.forEach(function(item) {
+        recent.append(
+          $('<a/>')
+            .addClass('list-group-item')
+            .attr('href', item.uri)
+            .append(
+              $('<span/>')
+                .addClass('glyphicon')
+                .addClass('glyphicon-bullhorn')
+                .addClass('pull-left')
+            )
+            .append(
+              $('<h3 class="panel-title"/>')
+                .text(item.title)
+            )
+            .append(
+              $('<p/>')
+                .text(item.short)
+            )
+        );
+      });
+    }
+  });
+}
+
 function getParameterByName(name)
 {
   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
