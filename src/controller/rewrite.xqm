@@ -459,7 +459,6 @@ as xs:string
 declare function m:rewrite()
 as xs:string
 {
-  xdmp:log("request-url: " || xdmp:get-request-path()),
   let $orig-url := xdmp:get-request-url()
   return m:rewrite(
     upper-case(xdmp:get-request-method()),
