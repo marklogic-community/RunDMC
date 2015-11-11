@@ -4,7 +4,7 @@ declare namespace ml = "http://developer.marklogic.com/site/internal";
 
 declare variable $POST := xs:QName("xs:Post");
 
-declare variable $PAGE-SIZE := 10;
+declare variable $PAGE-SIZE := 5;
 
 declare variable $BLOG-COLL := 'category/blog';
 
