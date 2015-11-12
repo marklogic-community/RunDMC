@@ -91,14 +91,26 @@
   </xsl:function>
 
 
-  <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document or changing it from Draft to Published -->
-  <xsl:template mode="populate-content" match="last-updated
-                                             | created[not($doc-path)]
-                                             | created[$params[@name eq 'status'] eq 'Published'
-                                                     and not($base-doc/*/*:status eq 'Published')]"> <!-- See also publish-unpublish.xsl -->
-    <xsl:value-of select="current-dateTime()"/>
+  <!-- If <last-updated> is given a value, take that, otherwise use the current dateTime -->
+  <xsl:template mode="populate" match="last-updated">
+    <ml:last-updated>
+      <xsl:choose>
+        <xsl:when test="normalize-space($params[@name eq 'last_updated'])=''">
+          <xsl:value-of select="current-dateTime()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$params[@name eq 'last_updated']"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </ml:last-updated>
   </xsl:template>
 
+  <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document or changing it from Draft to Published -->
+  <xsl:template mode="populate-content" match="created[not($doc-path)]
+                                             | created[$params[@name eq 'status'] eq 'Published'
+                                                     and not($base-doc/*/*:status eq 'Published')]">
+    <xsl:value-of select="current-dateTime()"/>
+  </xsl:template>
 
   <!-- For repeating elements (not repeating groups) -->
   <xsl:template mode="populate" match="*[@form:name and (@form:repeating eq 'yes')]">
