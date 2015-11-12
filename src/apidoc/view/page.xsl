@@ -140,6 +140,7 @@
         <title>
           <xsl:apply-templates mode="page-specific-title" select="."/>
         </title>
+        <meta name="robots" content="noindex,nofollow"/> 
         <link href="/css/v-1/apidoc_print.css" rel="stylesheet"
               type="text/css" media="screen, print"/>
       </head>
