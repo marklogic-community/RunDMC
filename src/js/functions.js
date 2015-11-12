@@ -742,6 +742,10 @@ if(typeof jQuery != 'undefined') {
 }
 
 function loadRecentContent() {
+  var icons = {
+    'blog': 'bullhorn',
+    'tutorial': 'education'
+  };
   console.log('loading recent content');
   $.ajax({
     url: '/recent',
@@ -756,7 +760,7 @@ function loadRecentContent() {
             .append(
               $('<span/>')
                 .addClass('glyphicon')
-                .addClass('glyphicon-bullhorn')
+                .addClass('glyphicon-' + icons[item.type])
                 .addClass('pull-left')
             )
             .append(

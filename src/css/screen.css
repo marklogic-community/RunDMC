@@ -3380,7 +3380,7 @@ li.search_suggest_selected {
   border: none;
 }
 
-#recent .glyphicon-bullhorn {
+#recent .list-group-item .glyphicon {
   font-size: 24px;
   margin-right: 8px;
   top: 0;
