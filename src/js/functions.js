@@ -701,7 +701,6 @@ if(typeof jQuery != 'undefined') {
     });
 
     $('div.thumb img').click(function(e){
-      console.log('click');
       var vid = $(this).parent().data('vid');
       if (vid) {
         e.preventDefault();
@@ -746,11 +745,9 @@ function loadRecentContent() {
     'blog': 'bullhorn',
     'tutorial': 'education'
   };
-  console.log('loading recent content');
   $.ajax({
     url: '/recent',
     success: function(data) {
-      console.log('I got ' + data.length + ' items');
       var recent = $('#recent');
       data.forEach(function(item) {
         recent.append(
