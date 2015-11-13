@@ -747,6 +747,7 @@ function loadRecentContent() {
   };
   $.ajax({
     url: '/recent',
+    dataType: 'json',
     success: function(data) {
       var recent = $('#recent');
       data.forEach(function(item) {
