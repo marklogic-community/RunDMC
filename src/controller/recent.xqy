@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 
-declare namespace ml = "http://developer.marklogic.com/site/internal";
+import module namespace ml="http://developer.marklogic.com/site/internal" at "/model/data-access.xqy" ;
 
 declare variable $POST := xs:QName("xs:Post");
 
@@ -12,7 +12,12 @@ declare variable $CONTENT-COLLS := ($BLOG-COLL, $TUTORIAL-COLL);
 
 xdmp:to-json(
   (
-    for $doc in cts:search(fn:doc(), cts:collection-query($CONTENT-COLLS))
+    let $query :=
+      cts:and-query((
+        cts:collection-query($CONTENT-COLLS),
+        cts:element-attribute-value-query($ml:doc-element-names, QName("","status"), "Published")
+      ))
+    for $doc in cts:search(fn:doc(), $query)
     let $uri := fn:base-uri($doc)
     let $collections := xdmp:document-get-collections($uri)
     order by $doc/node()/ml:last-updated descending
