@@ -37,7 +37,7 @@ declare variable $MONTHS := (
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
 
-declare private variable $doc-element-names := (xs:QName("Announcement"),
+declare variable $doc-element-names := (xs:QName("Announcement"),
   xs:QName("Event"),
   xs:QName("Article"),
   xs:QName("Tutorial"),

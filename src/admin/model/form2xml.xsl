@@ -50,55 +50,67 @@
     </xsl:copy>
   </xsl:template>
 
-          <!-- By default, just process children -->
-          <xsl:template mode="populate-content" match="*">
-            <xsl:apply-templates mode="populate"/>
-          </xsl:template>
+  <!-- By default, just process children -->
+  <xsl:template mode="populate-content" match="*">
+    <xsl:apply-templates mode="populate"/>
+  </xsl:template>
 
-          <!-- But for fields with names, insert value from the corresponding request parameter -->
-          <xsl:template mode="populate-content" match="*[@form:name]">
-            <!-- First, process attribute-cum-element fields -->
-            <xsl:apply-templates mode="populate" select="*"/>
+  <!-- But for fields with names, insert value from the corresponding request parameter -->
+  <xsl:template mode="populate-content" match="*[@form:name]">
+    <!-- First, process attribute-cum-element fields -->
+    <xsl:apply-templates mode="populate" select="*"/>
 
-            <!-- Then get the value of this element -->
-            <xsl:copy-of select="form:get-value(., string($params[@name eq current()/@form:name]))"/>
-          </xsl:template>
+    <!-- Then get the value of this element -->
+    <xsl:copy-of select="form:get-value(., string($params[@name eq current()/@form:name]))"/>
+  </xsl:template>
 
-          <!-- For elements that are children of (part of) a repeating group -->
-          <xsl:template mode="populate-content" match="*[@form:group-label]/*[@form:name]" priority="1">
-            <xsl:param name="position" tunnel="yes"/>
-            <!-- First, process attribute-cum-element fields -->
-            <xsl:apply-templates mode="populate" select="*"/>
+  <!-- For elements that are children of (part of) a repeating group -->
+  <xsl:template mode="populate-content" match="*[@form:group-label]/*[@form:name]" priority="1">
+    <xsl:param name="position" tunnel="yes"/>
+    <!-- First, process attribute-cum-element fields -->
+    <xsl:apply-templates mode="populate" select="*"/>
 
-            <!-- Then get the value of this element -->
-            <xsl:copy-of select="form:get-value(., string($params[@name eq concat(current()/@form:name,'[',$position,']')]))"/>
-          </xsl:template>
+    <!-- Then get the value of this element -->
+    <xsl:copy-of select="form:get-value(., string($params[@name eq concat(current()/@form:name,'[',$position,']')]))"/>
+  </xsl:template>
 
-                  <!-- For <textarea> values, re-ify the markup -->
-                  <xsl:function name="form:get-value">
-                    <xsl:param name="config-node"/>
-                    <xsl:param name="param-value"/>
-                    <xsl:variable name="is-xml-valued" select="$config-node/@form:type eq 'textarea'"/>
-                    <!-- XSLTBUG: xdmp:unquote() apparently strips out whitespace-only text nodes, at least at the top level :-( -->
-                    <xsl:variable name="unquoted-doc">
-                      <xsl:variable name="quoted-doc" select="concat('&lt;docWrapper xmlns:ml=&quot;&mlns;&quot;>', $param-value, '&lt;/docWrapper>')"/>
-                      <xsl:if test="$is-xml-valued">
-                        <xsl:copy-of select="xdmp:unquote($quoted-doc, 'http://www.w3.org/1999/xhtml')"/>
-                      </xsl:if>
-                    </xsl:variable>
-                    <xsl:sequence select="if ($is-xml-valued) then $unquoted-doc/*/node()
-                                                              else $param-value"/>
-                  </xsl:function>
+  <!-- For <textarea> values, re-ify the markup -->
+  <xsl:function name="form:get-value">
+    <xsl:param name="config-node"/>
+    <xsl:param name="param-value"/>
+    <xsl:variable name="is-xml-valued" select="$config-node/@form:type eq 'textarea'"/>
+    <!-- XSLTBUG: xdmp:unquote() apparently strips out whitespace-only text nodes, at least at the top level :-( -->
+    <xsl:variable name="unquoted-doc">
+      <xsl:variable name="quoted-doc" select="concat('&lt;docWrapper xmlns:ml=&quot;&mlns;&quot;>', $param-value, '&lt;/docWrapper>')"/>
+      <xsl:if test="$is-xml-valued">
+        <xsl:copy-of select="xdmp:unquote($quoted-doc, 'http://www.w3.org/1999/xhtml')"/>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:sequence select="if ($is-xml-valued) then $unquoted-doc/*/node()
+                                              else $param-value"/>
+  </xsl:function>
 
 
-          <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document or changing it from Draft to Published -->
-          <xsl:template mode="populate-content" match="last-updated
-                                                     | created[not($doc-path)]
-                                                     | created[$params[@name eq 'status'] eq 'Published'
-                                                             and not($base-doc/*/*:status eq 'Published')]"> <!-- See also publish-unpublish.xsl -->
-            <xsl:value-of select="current-dateTime()"/>
-          </xsl:template>
+  <!-- If <last-updated> is given a value, take that, otherwise use the current dateTime -->
+  <xsl:template mode="populate" match="last-updated">
+    <ml:last-updated>
+      <xsl:choose>
+        <xsl:when test="normalize-space($params[@name eq 'last_updated'])=''">
+          <xsl:value-of select="current-dateTime()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$params[@name eq 'last_updated']"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </ml:last-updated>
+  </xsl:template>
 
+  <!-- Special timestamp rule for non-annotated fields; always update <last-updated> and only update <created> if we're creating a new document or changing it from Draft to Published -->
+  <xsl:template mode="populate-content" match="created[not($doc-path)]
+                                             | created[$params[@name eq 'status'] eq 'Published'
+                                                     and not($base-doc/*/*:status eq 'Published')]">
+    <xsl:value-of select="current-dateTime()"/>
+  </xsl:template>
 
   <!-- For repeating elements (not repeating groups) -->
   <xsl:template mode="populate" match="*[@form:name and (@form:repeating eq 'yes')]">
@@ -149,10 +161,10 @@
     </xsl:for-each>
   </xsl:template>
 
-          <xsl:function name="form:extract-position">
-            <xsl:param name="string"/>
-            <xsl:sequence select="number(substring-before(substring-after($string, '['), ']'))"/>
-          </xsl:function>
+  <xsl:function name="form:extract-position">
+    <xsl:param name="string"/>
+    <xsl:sequence select="number(substring-before(substring-after($string, '['), ']'))"/>
+  </xsl:function>
 
   <!-- Strip out the repeated items; we're replacing them all with values from the parameters -->
   <xsl:template mode="populate" match="*[@form:subsequent-item]"/>

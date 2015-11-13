@@ -701,7 +701,6 @@ if(typeof jQuery != 'undefined') {
     });
 
     $('div.thumb img').click(function(e){
-      console.log('click');
       var vid = $(this).parent().data('vid');
       if (vid) {
         e.preventDefault();
@@ -738,6 +737,40 @@ if(typeof jQuery != 'undefined') {
 
 
     // add new functions before this comment
+  });
+}
+
+function loadRecentContent() {
+  var icons = {
+    'blog': 'bullhorn',
+    'tutorial': 'education'
+  };
+  $.ajax({
+    url: '/recent',
+    success: function(data) {
+      var recent = $('#recent');
+      data.forEach(function(item) {
+        recent.append(
+          $('<a/>')
+            .addClass('list-group-item')
+            .attr('href', item.uri)
+            .append(
+              $('<span/>')
+                .addClass('glyphicon')
+                .addClass('glyphicon-' + icons[item.type])
+                .addClass('pull-left')
+            )
+            .append(
+              $('<h3 class="panel-title"/>')
+                .text(item.title)
+            )
+            .append(
+              $('<p/>')
+                .text(item.short)
+            )
+        );
+      });
+    }
   });
 }
 

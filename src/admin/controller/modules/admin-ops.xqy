@@ -9,11 +9,19 @@ declare function admin-ops:document-insert(
 )
 as empty-sequence()
 {
-  xdmp:document-insert(
-    $uri,
-    $doc,
-    xdmp:default-permissions()
-  )
+  if (fn:doc-available($uri)) then
+    xdmp:document-insert(
+      $uri,
+      $doc,
+      xdmp:document-get-permissions($uri),
+      xdmp:document-get-collections($uri)
+    )
+  else
+    xdmp:document-insert(
+      $uri,
+      $doc,
+      xdmp:default-permissions()
+    )
 };
 
 declare function admin-ops:document-insert(
