@@ -217,6 +217,13 @@
       </div>
     </div>
 
+    <div class="section-row row">
+      <div class="container">
+        <h2 class="center-block">New and Updated Content</h2>
+        <div id="recent" class="list-group"/>
+      </div>
+    </div>
+
     <div class="row page-cta-wrapper">
       <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4 col-xs-12">Connect: Join the Developer List</a>
     </div>
@@ -254,6 +261,8 @@
          $(".steps").fadeIn('slow');
       });
     });
+
+    loadRecentContent();
 
   </script>
 
