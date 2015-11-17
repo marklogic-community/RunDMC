@@ -164,7 +164,7 @@ function tocInit() {
   tocInitFilter($("#config-filter"),
                   $("input[name = 'v']"),
                   $("#config-filter-close-button"),
-                  750);
+                  50);
 
   tocInitSplitter($('#splitter'));
 
@@ -252,23 +252,33 @@ var waitToSearch = function(text, tocRoot) {
     clearTimeout(waitToSearch);
   }
   else setTimeout(function(){ waitToSearch(text, tocRoot); },
-                  350);
+                  150);
 };
 
 function searchTOC(filter, tocRoot) {
-  tocRoot.find("li").each(function() {
-    $(this).removeClass("hide-detail");
-    $(this).find(">a >.function_count").show();
+  var items = tocRoot.find("li");
+
+  if (filter === '') {
+    items.removeClass("hide-detail");
+    self.find(">a >.function_count").show();
+    return;
+  }
+
+  items.addClass('hide-detail')
+    .find(">a >.function_count")
+    .css('display', 'none');
+
+  for (var i = 0, len = items.length; i < len; i++) {
+    var self = $(items[i]);
+
     if (filter !== '') {
-      if (hasText($(this),filter)) {
+      if (hasText(self, filter)) {
         // Expand the TOC sub-tree
-        expandSubTree($(this));
-        $(this).find(">a >.function_count").hide();
-      } else {
-        $(this).addClass("hide-detail");
+        expandSubTree(self);
+        self.removeClass("hide-detail");
       }
     }
-  });
+  }
   // re-orient the TOC after done searching
   if (filter === '') scrollTOC();
 }
@@ -603,7 +613,7 @@ function tocUpdateFromPageContent() {
 
 function hasText(item,text) {
   var fieldTxt = item.text().toLowerCase();
-  return (fieldTxt.indexOf(text.toLowerCase()) !== -1);
+  return (fieldTxt.indexOf(text) !== -1);
 }
 
 function addHighlightToText(element,filter) {
@@ -699,7 +709,7 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
       setTimeout(function() { $configFilter.trigger('keyup'); }, 0);
       return;
     }
-    var currentFilterText = $(this).val();
+    var currentFilterText = $(this).val().toLowerCase();
     LOG.debug("filter not idle",
               new Date(), currentFilterText);
     // delay any work until idle
@@ -722,8 +732,11 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
           previousFilterText = currentFilterText;
           // The current TOC tree root should be visible.
           filterConfigDetails(currentFilterText,
-                              ".apidoc_tree:visible"); } },
-                 350); }, filterDelay)); });
+                              ".apidoc_tree:visible");
+        }
+      }, 50);
+    }, filterDelay));
+  });
 
   $closeButton.click(function(evt) {
     LOG.debug("filter-close-button click", evt);
