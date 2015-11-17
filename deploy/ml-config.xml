@@ -247,6 +247,7 @@
           <localname>last-updated</localname>
           <collation></collation>
           <range-value-positions>false</range-value-positions>
+          <invalid-values>ignore</invalid-values>
         </range-element-index>
       </range-element-indexes>
 

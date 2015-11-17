@@ -15,4 +15,5 @@
   <starts-with>/stackunderflow/</starts-with>
   <starts-with>/test</starts-with>
   <starts-with>/try</starts-with>
+  <ends-with>/recent.xqy</ends-with>
 </rules>
