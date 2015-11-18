@@ -427,6 +427,8 @@ as xs:string
       "/controller/rex.xqy?path-and-query=",
       xdmp:url-encode(
         concat(replace($path, "/rex", ""), "?", $query-string)))
+    else if (starts-with($path, "/try/")) then
+      "/controller/try-proxy.xqy?path=" || fn:replace($path, "/try/", "/") || "&amp;" || $query-string
     (: Control the visibility of files in the code base :)
     else if (not(m:static-file-path($path))) then $NOTFOUND
     else (
