@@ -29,12 +29,12 @@ declare variable $COUNTRY-REQUIRES-STATE := ("United States of America", "Canada
 
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
-    exists(/person[email eq $email])
+    exists(users:getUserByEmail($email))
 };
 
 declare function users:getUserByEmail($email as xs:string) as element(*)?
 {
-    /person[email eq $email]
+    cts:search(/person, cts:element-value-query(xs:QName("email"), lower-case($email), "case-insensitive"))
 };
 
 declare function users:getUserByID($id as xs:string) as element(*)?
@@ -77,8 +77,8 @@ declare function users:getCurrentUserName()
 declare function users:authViaParams() as xs:boolean
 {
     let $email := xdmp:get-request-field("email")
-    let $user := /person[email eq $email]
-    let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $email)
+    let $user := users:getUserByEmail($email)
+    let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $user/email)
     let $token := xdmp:get-request-field("t")
     return
         if (not(empty(xdmp:get-request-field("pass")))) then
@@ -92,8 +92,8 @@ declare function users:authViaParams() as xs:boolean
 
 declare function users:createOrUpdateUser($name, $email, $password, $others)
 {
-    let $user := /person[email eq $email]
-    let $hash := xdmp:crypt($password, $email)
+    let $user := users:getUserByEmail($email)
+    let $hash := xdmp:crypt($password, $user/email)
 
     return
     if ($user) then
@@ -108,6 +108,7 @@ declare function users:createOrUpdateUser($name, $email, $password, $others)
 declare function users:createUser($name, $email, $pass, $others)
 as element(*)?
 {
+    let $email := lower-case($email)
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
@@ -132,6 +133,7 @@ as element(*)?
 declare function users:createUserAndRecordLicense($type, $name, $email, $pass, $list, $others, $meta)
 as element(*)?
 {
+    let $user := lower-case($email)
     let $id := xdmp:random()
     let $uri := concat("/private/people/", $id, ".xml")
     let $hash := xdmp:crypt($pass, $email)
@@ -242,7 +244,7 @@ as element(*)?
 
 declare function users:registerForMailingList($email, $pass)
 {
-    let $user := /person[email eq $email]
+    let $user := users:getUserByEmail($email)
     let $uri := concat("http://developer.marklogic.com/mailman/subscribe/general", "")
 
     let $payload :=
@@ -356,9 +358,9 @@ Country: ", $user/country/string(), "
 
 declare function users:checkCreds($email as xs:string, $password as xs:string) as element(*)?
 {
-    let $user := /person[email eq $email]
+    let $user := users:getUserByEmail($email)
     return
-    if ($user/password eq xdmp:crypt($password, $email)) then
+    if ($user/password eq xdmp:crypt($password, $user/email)) then
         $user
     else
         ()
@@ -380,12 +382,12 @@ declare function users:getCurrentUser() as element(*)?
 {
     let $session := cookies:get-cookie("RUNDMC-SESSION")[1]
     let $id := /session[session-id eq $session]/id/string()
-    return /person[id eq $id]
+    return users:getUserByID($id)
 };
 
 declare function users:getDownloadToken($email as xs:string) as xs:string
 {
-    let $user := /person[email eq $email]
+    let $user := users:getUserByEmail($email)
     let $now := fn:string(fn:current-time())
     let $issued := fn:string(fn:current-dateTime())
     let $token := xdmp:crypt($email, $now)
@@ -403,7 +405,7 @@ declare function users:getDownloadToken($email as xs:string) as xs:string
 
 declare function users:useDownloadToken($email as xs:string) as xs:string
 {
-    let $user := /person[email eq $email]
+    let $user := users:getUserByEmail($email)
     let $token := $user/download-token/token
     let $doc :=
         <person>
@@ -420,7 +422,7 @@ declare function users:useDownloadToken($email as xs:string) as xs:string
 
 declare function users:getResetToken($email as xs:string) as xs:string
 {
-    let $user := /person[email eq $email]
+    let $user := users:getUserByEmail($email)
     let $now := fn:string(fn:current-time())
     let $token := xdmp:crypt($email, $now)
     let $doc :=
