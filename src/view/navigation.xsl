@@ -225,7 +225,6 @@
 
   <xsl:template match="sub-nav[$content/Article]">
     <xsl:if test="$content//(xhtml:h3 | xhtml:figure)">
-      <h2>Contents</h2>
       <ul class="tutorial_toc">
         <!-- If the article doesn't have any <h3> headings, then display the list of figures instead. -->
         <xsl:apply-templates mode="article-toc" select="if ($content//xhtml:h3)
@@ -417,35 +416,30 @@
 
 
   <xsl:template match="sub-nav[$content/Tutorial or $content/page/tutorial]">
-    <section class="subnav">
-      <h2>Contents</h2>
-      <ul class="tutorial_toc">
+    <section>
+      <div class="tutorial_toc list-group">
         <xsl:apply-templates mode="tutorial-toc" select="ml:parent-tutorial($original-content/*)/Body/(pages|pages/page)"/>
-      </ul>
+      </div>
     </section>
   </xsl:template>
 
           <xsl:template mode="tutorial-toc" match="pages | page">
             <xsl:variable name="is-current-page" select="self::pages[$original-content/Tutorial]
                                                       or @url-name eq ml:tutorial-page-url-name($original-content)"/>
-            <li>
-              <xsl:if test="$is-current-page">
-                 <xsl:attribute name="class" select="'current'"/>
-              </xsl:if>
-              <xsl:variable name="href">
-                <xsl:apply-templates mode="tutorial-page-href" select="."/>
-              </xsl:variable>
-              <span>
-                <a href="{$href}" class="stip">
-                  <xsl:apply-templates mode="tutorial-page-title" select="."/>
-                </a>
-              </span>
-              <xsl:if test="$is-current-page">
-                <ul>
-                  <xsl:apply-templates mode="tutorial-toc-section" select="$content//xhtml:h3"/>
-                </ul>
-              </xsl:if>
-            </li>
+            <xsl:variable name="href">
+              <xsl:apply-templates mode="tutorial-page-href" select="."/>
+            </xsl:variable>
+            <a href="{$href}" >
+              <xsl:choose>
+                <xsl:when test="$is-current-page">
+                 <xsl:attribute name="class" select="'active list-group-item'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:attribute name="class" select="'list-group-item'"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:apply-templates mode="tutorial-page-title" select="."/>
+            </a>
           </xsl:template>
 
                   <xsl:template mode="tutorial-toc-section" match="xhtml:h3">

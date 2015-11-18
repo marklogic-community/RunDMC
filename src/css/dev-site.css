@@ -1,0 +1,141 @@
+@media (max-width: 764px) {
+  .subnav {
+    display: none;
+  }
+  #container > #comments > div {
+    width: auto;
+  }
+  .new-features {
+    display: block;
+  }
+  .new-features li {
+    display: inline-block;
+  }
+  footer nav .current:before {
+    display: none;
+  }
+  #header h1 {
+    margin-bottom: 4px;
+  }
+  #header h1 a {
+    background: url(/images/logo-community-white-89x22.png) no-repeat;
+    width: 89px;
+    height: 22px;
+    margin-bottom: 20px;
+  }
+  #header nav li {
+    margin-left: 16px;
+  }
+  #header nav {
+    display: none;
+  }
+  #breadcrumb {
+    padding: 4px;
+  }
+  #breadcrumb > div:first-child {
+    margin-bottom: 4px;
+  }
+  .version {
+    padding: 4px 0 4px 4px;
+  }
+  .toc_select {
+    margin-left: 4px;
+  }
+  .scrollable_section > input {
+    margin-left: 4px;
+  }
+  #api_sub {
+    right: 60%;
+  }
+  #page_content {
+    left: 40%;
+  }
+  #page_content > div {
+    margin: 0 4px 0 4px;
+  }
+  #page_content h1 {
+    margin: 24px 0 24px 0;
+  }
+  #copyright {
+    padding: 4px;
+  }
+  .container {
+    min-width: 0px;
+  }
+
+}
+
+/* Anything smaller than an iphone 5 landscape. */
+@media (max-width: 567px) {
+  .subnav {
+    display: none;
+  }
+  #container > #comments > div {
+    width: auto;
+  }
+
+  .new-features {
+    display: block;
+  }
+  .new-features li {
+    display: inline-block;
+  }
+  #header h1 {
+    margin-bottom: 4px;
+  }
+  #header h1 a {
+    background: url(/images/logo-community-white-89x22.png) no-repeat;
+    width: 89px;
+    height: 22px;
+  }
+  div.header-separator {
+    display: none;
+  }
+  #search-header form input[type="text"] {
+    width: 144px;
+  }
+  #search-header form input[type="text"]:focus {
+    width: 144px;
+  }
+  #search_suggest_container {
+    width: 144px;
+  }
+  #header nav {
+    display: none;
+  }
+  #search-header form {
+    margin-right: 4px;
+  }
+  #header-below-bottom-bar {
+    padding-bottom: 8px;
+  }
+  #breadcrumb {
+    padding: 4px;
+  }
+  #breadcrumb > div:first-child {
+    margin-bottom: 4px;
+  }
+  .version {
+    padding: 4px 0 4px 4px;
+  }
+  #api_sub {
+    display: none;
+  }
+  #page_content {
+    left: 0;
+    width: auto;
+    margin: 152px 0 0 0;
+  }
+  #page_content > div {
+    margin: 0 4px 0 4px;
+  }
+  #page_content h1 {
+    margin: 24px 0 24px 0;
+  }
+  #copyright {
+    padding: 4px;
+  }
+  .container {
+    min-width: 0px;
+  }
+}

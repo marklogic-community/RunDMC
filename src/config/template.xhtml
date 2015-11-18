@@ -28,6 +28,7 @@
     <ml:if href="/">
       <link href="/css/v-7/custom-new.css" rel="stylesheet" type="text/css" media="screen" />
     </ml:if>
+    <link href="/css/dev-site.css" rel="stylesheet" type="text/css" media="screen" />
 
     <ml:javascript-server-config/>
 
@@ -159,20 +160,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="breadcrumb">
               <ml:breadcrumbs/>
             </div>
-            <section>
-              <ml:page-heading/>
-              <div id="main_container">
-                <div id="main">
-                  <ml:page-content/>
-                </div>
-                <!-- end main -->
+            <div class="row" id="main">
+              <div class="col-md-3 subnav">
                 <div id="sub">
                   <ml:sub-nav/>
                   <ml:widgets/>
                 </div>
-                <!-- end sub -->
               </div>
-            </section>
+              <div class="col-md-9">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12 page-heading">
+                      <ml:page-heading/>
+                    </div>
+                  </div>
+
+                  <ml:page-content/>
+                </div>
+              </div>
+            </div>
           </ml:otherwise>
         </ml:choose>
       </div>
@@ -184,7 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <ml:top-nav/>
             <li><a href="//www.marklogic.com/privacy-policy">Privacy</a></li>
             <li><a href="http://www.marklogic.com/terms-of-use">Terms of Use</a></li>
-            <li style="float: right">Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</li>
+            <li class="visible-md-inline" style="float: right">Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</li>
           </ul>
         </nav>
         <p align="center" id="copyright">Copyright © 2015 MarkLogic Corporation. All rights reserved<ml:cornify/>. <ml:edit-link/></p>

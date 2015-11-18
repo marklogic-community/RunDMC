@@ -9,7 +9,10 @@
   <!-- Content of tutorial page #1 -->
   <xsl:template mode="page-content" match="Tutorial">
     <xsl:apply-templates mode="author-date-etc" select="."/>
-    <xsl:apply-templates select="Body/node()"/>
+
+    <xhtml:div class="entry">
+      <xsl:apply-templates select="Body/node()"/>
+    </xhtml:div>
     <!-- Append the next/prev buttons to the tutorial page #1 -->
     <xsl:apply-templates mode="tutorial-page-nav" select="Body/pages"/>
   </xsl:template>

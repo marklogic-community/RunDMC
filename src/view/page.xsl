@@ -512,26 +512,29 @@
 
       <xsl:apply-templates mode="author-date-etc" select="."/>
 
-      <xsl:apply-templates select="body/node()">
-        <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
-      </xsl:apply-templates>
+      <div class="entry">
+        <xsl:apply-templates select="body/node()">
+          <xsl:with-param name="annotate-headings" select="true()" tunnel="yes"/>
+        </xsl:apply-templates>
+      </div>
     </article>
   </xsl:template>
 
   <xsl:template mode="author-date-etc" match="Article | Tutorial">
     <xsl:if test="last-updated|author">
-      <xsl:if test="last-updated">
-        <div class="author">
-          <xsl:apply-templates mode="author-listing" select="author"/>
-        </div>
-      </xsl:if>
-      <xsl:if test="last-updated">
-        <div class="date">
-          <xsl:text>Last updated </xsl:text>
-          <xsl:value-of select="last-updated"/>
-        </div>
-      </xsl:if>
-      <br/>
+      <div class="post-byline">
+        <xsl:if test="last-updated">
+          <span class="author">
+            by <xsl:apply-templates mode="author-listing" select="author"/>
+          </span>
+        </xsl:if>
+        <xsl:if test="last-updated">
+          <span class="date">
+            <xsl:text>Last updated </xsl:text>
+            <xsl:value-of select="last-updated"/>
+          </span>
+        </xsl:if>
+      </div>
     </xsl:if>
   </xsl:template>
 
