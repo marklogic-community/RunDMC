@@ -1168,16 +1168,43 @@ section#documentation:before {
 #main .download th.wideDownloadColumn      {
     width: 590px;
 }
+
+#main .download th.wideDownloadColumn .glyphicon {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+#main .download th.wideDownloadColumn .arch {
+  vertical-align: top;
+}
+
 #main .download th.extraWideDownloadColumn {
     width: 635px;
 }
+
+#main .download th.extraWideDownloadColumn .glyphicon {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+#main .download th.extraWideDownloadColumn .arch {
+  vertical-align: top;
+}
+
 #main .download th + td {
     width: 145px;
 }
+
+#main .download table .size {
+  margin-right: 5px;
+}
+
+#main .download table .hash {
+  margin-left: 5px;
+}
+
 #main .download table a {
     font-weight: normal;
-    padding: 5px 0 5px 30px;
-    background: url(/images/i_arrow_down.png) left center no-repeat;
 }
 
 .post h3 {
