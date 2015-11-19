@@ -1116,10 +1116,19 @@ footer nav .current a {
 #main .info > li a {
     font-size: 13px;
     font-weight: bold;
-    background: url(/images/i_info.png) left center no-repeat;
-    padding: 5px 0 5px 33px;
+    padding: 5px 0;
     line-height: 23px;
 }
+
+#main .info > li a .glyphicon {
+  font-size: 18px;
+  padding-top: 1px;
+}
+
+#main .info > li a span {
+  vertical-align: top;
+}
+
 .post,
 .post + .pagination,
 section#documentation {
