@@ -225,16 +225,17 @@ as xs:string
 };
 
 declare function stp:function-children(
-  $function as element(apidoc:function))
-as element(apidoc:function)*
+  $function as element())
+as element()*
 {
-  let $lib as xs:string := $function/@lib
-  let $name as xs:string := $function/@name
+  let $lib := $function/@lib/fn:string()
+  let $object := $function/@object/fn:string()
+  let $name := $function/@name/fn:string()
   let $verb as xs:string? := $function/@http-verb
-  return $function/../apidoc:function[
-    @name eq $name][
-    @lib eq $lib][
-    not($verb) or @http-verb eq $verb]
+  return $function/../(apidoc:function | apidoc:method)
+    [@name eq $name]
+    [@lib eq $lib or @object eq $object]
+    [not($verb) or @http-verb eq $verb]
 };
 
 (: If a function has an equivalent in another mode,
@@ -243,7 +244,7 @@ as element(apidoc:function)*
 declare function stp:function-link(
   $version as xs:string,
   $mode as xs:string,
-  $function as element(apidoc:function))
+  $function as element())
 as element(api:function-link)?
 {
   if (($mode eq $api:MODE-JAVASCRIPT and number($version) lt 8.0)
@@ -257,7 +258,7 @@ as element(api:function-link)?
 declare function stp:function-links(
   $version as xs:string,
   $mode as xs:string,
-  $function as element(apidoc:function))
+  $function as element())
 as element(api:function-link)*
 {
   switch($mode)
@@ -292,7 +293,7 @@ as element(api:suggest)*
 
 declare function stp:function-extract(
   $version as xs:string,
-  $function as element(apidoc:function),
+  $function as element(),
   $uris-seen as map:map)
 as element(api:function-page)*
 {
@@ -359,11 +360,17 @@ as element(api:function-page)*
   stp:function-extract(
     $version,
     (api:module-extractable-functions(
-      $doc/apidoc:module, ($api:MODE-REST, $api:MODE-XPATH)),
+      stp:add-class-attr-if-needed($doc/apidoc:module), 
+      ($api:MODE-REST, $api:MODE-XPATH)),
       (: create JavaScript function pages :)
       if (number($version) lt 8) then ()
       else api:module-extractable-functions(
-        $doc/apidoc:module, $api:MODE-JAVASCRIPT)),
+        $doc/apidoc:module, $api:MODE-JAVASCRIPT),
+      (: create JavaScript methods/functions for subclassed objects :)
+      api:module-extractable-functions(
+        element apidoc:module {
+          api:module-extractable-inherited-functions($doc/apidoc:module)},
+          $api:MODE-JAVASCRIPT)),
     map:map())
 };
 
@@ -390,6 +397,37 @@ as empty-sequence()
   return ml:document-insert($uri, $func)
   ,
   stp:info("stp:function-docs", xdmp:elapsed-time())
+};
+
+(: Transform to inherit class attr from apidoc:module for xquery-only
+   and javascript-only libraries. :)
+declare function stp:add-class-attr-if-needed(
+  $doc as element(apidoc:module))
+as element(apidoc:module)*
+{
+let $class := $doc/@class 
+return
+if ( fn:empty($class) ) then $doc 
+else element apidoc:module {$doc/@*, 
+        stp:add-class-transform($doc/node(), $class)} 
+};
+
+declare function stp:add-class-transform(
+  $nodes as node()*,
+  $class as attribute())
+as node()*
+{
+for $n in $nodes return
+typeswitch($n)
+  case element(apidoc:function) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element(apidoc:method) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element(apidoc:object) return 
+     element {fn:node-name($n)} {$n/@*, $class, $n/node()}
+  case element() return
+     element {fn:node-name($n)} {$n/@*, $n/node()}
+  default return $n
 };
 
 declare function stp:search-results-page-insert()
@@ -826,6 +864,9 @@ as element(api:list-page)
     attribute container-toc-section-id {
       stp:container-toc-section-id($toc-node) },
     $toc-node/@*,
+    if ($toc-node/@namespace = $api:M-OBJECTS)
+    then attribute object {$toc-node/@namespace}
+    else (),
 
     $toc-node/toc:title ! element api:title {
       @*,
@@ -1247,6 +1288,9 @@ as attribute()?
     (: Leave absolute links alone, eg http://w3.org :)
     else if (contains($a, '://')) then $a
 
+  (: if we are left with something starting with a / like /js/Node, leave it :)
+    else if  (fn:starts-with($a, "/")) then $a
+
     (: Handle some odd corner-cases. TODO maybe dead code? :)
     else (
       switch($a)
@@ -1304,6 +1348,12 @@ as attribute()?
     $version, $a, $context)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
+  case attribute(bucket) return 
+    if ($context eq 'javascript')
+    then if ($a eq 'XQuery Library Modules')
+         then attribute bucket {"JavaScript Library Modules"}
+         else $a
+    else $a
   (: By default, return the input. :)
   default return $a
 };
@@ -1319,6 +1369,23 @@ as attribute()*
       (: Add the prefix and namespace URI of the function. :)
       attribute prefix { $e/@lib },
       attribute namespace { api:namespace($e/@lib)/@uri },
+      (: Watch for duplicates!
+       : Any existing attributes will be copies by the caller.
+       :)
+      if ($e/@mode) then () else attribute mode { . },
+      (: Add the @fullname attribute, which we depend on later.
+       : This depends on the @mode attribute,
+       : which is faked in api:function-fake-javascript
+       : but missing from non-fake raw function XML.
+       :)
+      attribute fullname { api:fixup-fullname($e, .) }))
+  case element(apidoc:method) return (
+    (($e/@mode, $context)[1] treat as item()) ! (
+      (: Add the prefix and namespace URI of the function. :)
+      attribute prefix { $e/@object },
+      attribute namespace { api:namespace($e/@object)/@uri },
+     (: put this as @object too, so we can know it came from an object :)
+      attribute object { api:namespace($e/@object)/@uri },
       (: Watch for duplicates!
        : Any existing attributes will be copies by the caller.
        :)
@@ -1493,7 +1560,7 @@ as node()*
 };
 
 declare function stp:function-modes(
-  $f as element(apidoc:function))
+  $f as element())
 as xs:string+
 {
   $api:MODES[
@@ -1501,7 +1568,7 @@ as xs:string+
 };
 
 declare function stp:function-names(
-  $f as element(apidoc:function))
+  $f as element())
 as xs:string+
 {
   api:fixup-fullname($f, stp:function-modes($f), true())
@@ -1515,7 +1582,7 @@ as xs:string*
   stp:function-names(
     xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
     /xdmp:zip-get($zip, .)
-    /apidoc:module/apidoc:function[@name/string()])
+    /apidoc:module/(apidoc:function | apidoc:method)[@name/string()])
 };
 
 declare function stp:zipfile-function-names(

@@ -247,6 +247,7 @@
           <localname>last-updated</localname>
           <collation></collation>
           <range-value-positions>false</range-value-positions>
+          <invalid-values>ignore</invalid-values>
         </range-element-index>
       </range-element-indexes>
 
@@ -275,6 +276,18 @@
           <range-value-positions>false</range-value-positions>
           <invalid-values>reject</invalid-values>
         </range-element-attribute-index>
+
+        <range-element-attribute-index>
+          <scalar-type>string</scalar-type>
+          <parent-namespace-uri>http://marklogic.com/rundmc/api</parent-namespace-uri>
+          <parent-localname>function</parent-localname>
+          <namespace-uri/>
+          <localname>object</localname>
+          <collation>http://marklogic.com/collation/</collation>
+          <range-value-positions>false</range-value-positions>
+          <invalid-values>reject</invalid-values>
+        </range-element-attribute-index>
+
         <range-element-attribute-index>
           <scalar-type>string</scalar-type>
           <parent-namespace-uri>http://marklogic.com/rundmc/api</parent-namespace-uri>

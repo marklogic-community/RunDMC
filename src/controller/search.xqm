@@ -337,6 +337,7 @@ declare function ss:facet-value-display($e as element())
     case 'guide/getting-started' return 'Getting Started'
     case 'guide/infostudio' return 'Info Studio'
     case 'guide/ingestion' return 'Ingestion'
+    case 'guide/mlcp' return 'mlcp'
     case 'guide/installation' return 'Installation'
     case 'guide/java' return 'Java'
     case 'guide/jsref' return 'JavaScript'

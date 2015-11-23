@@ -1111,6 +1111,7 @@ as node()*
     else guide:transform($e/node(), $uri, $raw, $references))
 };
 
+(: Copy without name change. Use only for elements that are already HTML. :)
 declare function guide:transform-through(
   $e as element(),
   $uri as xs:string,
@@ -1144,7 +1145,7 @@ as node()*
   case element(CellBody) return (
     if (count($n/parent::CELL/CellBody, 2) eq 1) then guide:transform(
       $n/node(), $uri, $raw, $references)
-    else guide:transform-through($n, $uri, $raw, $references))
+    else guide:transform-element($n, $uri, $raw, $references))
   case element(Heading-2MESSAGE) return guide:transform-heading-2message(
     $n, $uri)
   case element(IMAGE) return element img { attribute src { $n/@href } }
@@ -1176,7 +1177,7 @@ as node()*
     $n, $uri, $raw, $references)
   case element(underline) return element span {
     attribute class { 'underline' },
-    guide:transform-through($n, $uri, $raw, $references) }
+    guide:transform($n/node(), $uri, $raw, $references) }
   case element(pagenum) return ()
   case element() return guide:transform-element(
     $n, $uri, $raw, $references)

@@ -84,11 +84,19 @@ as empty-sequence()
   let $f1 := $fp/api:function[1]
   let $mode as xs:string := $fp/@mode
   let $m-mode := map:get($m, $mode)
-  let $bucket as xs:string := $f1/@bucket
+  let $bucket as xs:string := if ($f1/@bucket) 
+                              then ($f1/@bucket) 
+                              else ('MarkLogic Built-In Functions')
   let $cat as xs:string := $f1/@category
   let $subcat as xs:string? := $f1/@subcategory
   let $catsubcat as xs:string := $cat||'#'||$subcat
-  let $lib as xs:string := $f1/@lib
+  let $lib := $f1/@lib/fn:string()
+  let $object := $f1/@object/fn:string()
+  (: 
+     either $lib or $object (used with apidoc:method) should be the 
+     empty string, but we are treating them both like lib 
+  :)
+  let $lib-or-object := fn:concat($lib, $object)
   let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
   let $m-catsubcat := map:get($m-mode, $MAP-KEY-CATSUBCAT)
   let $m-lib := map:get($m-mode, $MAP-KEY-LIB)
@@ -101,7 +109,7 @@ as empty-sequence()
   let $_ := map:put(
     $m-catsubcat, $catsubcat, (map:get($m-catsubcat, $catsubcat), $f1))
   let $_ := map:put(
-    $m-lib, $lib, (map:get($m-lib, $lib), $f1))
+    $m-lib, $lib-or-object, (map:get($m-lib, $lib-or-object), $f1))
   return ()
 };
 
@@ -162,13 +170,14 @@ as element()
     element a {
       attribute href { "/"||$lib },
       toc:prefix-for-lib($lib) },
-    ' functions ('||toc:display-category($cat)||')',
-    if (not($secondary-lib)) then () else (
-      'and',
+    if (not($secondary-lib)) then (
+    ' functions ('||toc:display-category($cat)||')'
+    ) else (
+      ' and ',
       element a {
         attribute href { "/"||$secondary-lib },
         toc:prefix-for-lib($secondary-lib) },
-      'functions') }
+      ' functions ('||toc:display-category($cat)||')') } 
 };
 
 declare function toc:REST-page-title(
@@ -192,12 +201,12 @@ declare function toc:lib-for-all(
   $functions as element()*)
 as xs:string?
 {
-  let $libs := distinct-values($functions/@lib)
+  let $libs := distinct-values(($functions/@lib, $functions/@object))
   (: This is a hack to make the semantics library work.
    : It has multiple namespace.
    :)
   return (
-    if (count($libs) eq 1) then ($functions/@lib)[1]
+    if (count($libs) eq 1) then ($functions/(@lib | @object))[1]
     else if (($functions/@category)[1] eq 'Semantics') then 'sem'
     else ())
 };
@@ -218,7 +227,7 @@ declare function toc:primary-lib($functions as element()*)
 declare function toc:lib-for-most($functions as element()*)
   as xs:string
 {
-  (for $name in distinct-values($functions/@lib)
+  (for $name in distinct-values(($functions/@lib, $functions/@object))
     let $count := count($functions[@lib eq $name])
     order by $count descending
     return $name)[1]
@@ -357,12 +366,56 @@ as element()?
   (: exceptional ("dls") :)
   let $summaries-by-module-lib-no-subcat := $summaries-by-module-lib[
     not(@subcategory)]
+  let $summaries-by-object :=
+    element apidoc:summary {
+       let $obj := $raw-modules/apidoc:object[@name eq $lib]
+       return (
+       if ($obj/@subtype-of) 
+       then (
+       element xhtml:p { element xhtml:code {$lib},
+         " is a subtype of ",
+         let $count := fn:count(fn:tokenize(fn:normalize-space(
+                     $obj/@subtype-of/fn:string()), " "))
+         return
+         (: is there more than one subtype? :)
+         if ($count eq 1)
+         then (
+         element xhtml:a { 
+          attribute href { 
+                           toc:category-href(
+                               $obj/@subtype-of/fn:string(), "", 
+                               fn:true(), fn:true(), "javascript", 
+                               $obj/@subtype-of/fn:string(), "") },
+            $obj/@subtype-of/fn:string() || "." } ) 
+         else
+         for $subtype at $i in fn:tokenize(fn:normalize-space(
+                     $obj/@subtype-of/fn:string()), " ")
+         return
+         (  element xhtml:a { 
+          attribute href { 
+                           toc:category-href(
+                               $subtype, "", 
+                               fn:true(), fn:true(), "javascript", 
+                               $subtype, "") },
+            $subtype }, if ($i eq $count) then "." else " and "   
+         ) } ) 
+       else ()    ,
+       stp:node-to-xhtml($obj/apidoc:summary/node())
+       )}
   return (
-    if (count($summaries-by-summary-subcat) eq 1) then $summaries-by-summary-subcat
-    else if (count($summaries-by-module-lib) eq 1) then $summaries-by-module-lib
-    else if (count($summaries-by-summary-lib) eq 1) then $summaries-by-summary-lib
-    else if (count($summaries-by-module-lib-no-subcat) eq 1) then $summaries-by-module-lib-no-subcat
-    else ())
+   if ($lib = $api:M-OBJECTS)
+   then $summaries-by-object
+    else if (count($summaries-by-summary-subcat) eq 1) 
+    then $summaries-by-summary-subcat
+    else if (count($summaries-by-module-lib) eq 1) 
+         then $summaries-by-module-lib
+         else if (count($summaries-by-summary-lib) eq 1) 
+              then $summaries-by-summary-lib
+              else if (count($summaries-by-module-lib-no-subcat) eq 1) 
+                   then $summaries-by-module-lib-no-subcat
+                   else ())
+
+
 };
 
 declare function toc:guides-in-group(
@@ -1095,8 +1148,14 @@ as xs:integer
             xs:QName('mode'),
             $mode),
           if (not($lib)) then ()
-          else cts:element-attribute-value-query(
-            xs:QName('api:function'), xs:QName('lib'), $lib)))))
+          else cts:or-query((
+            cts:element-attribute-value-query(
+               xs:QName('api:function'), xs:QName('lib'), $lib),
+            cts:element-attribute-value-query(
+               xs:QName('api:function'), xs:QName('object'), $lib))))
+      )
+     )
+   )
 };
 
 declare function toc:category-href(
@@ -1255,7 +1314,8 @@ as element(toc:node)
   let $main-subcategory-lib := toc:primary-lib($in-this-subcategory)
   let $secondary-lib := (
     if ($one-subcategory-lib) then ()
-    else ($in-this-subcategory/@lib[not(. eq $main-subcategory-lib)])[1])
+    else ($in-this-subcategory/(@lib | @object)
+        [not(. eq $main-subcategory-lib)])[1])
   let $is-exhaustive := toc:category-is-exhaustive(
     $m-mode-functions, $cat, $subcat, $one-subcategory-lib)
   return toc:node(
@@ -1348,7 +1408,8 @@ as element(toc:node)+
       if ($is-exhaustive) then $single-lib-for-category else (),
       if ($is-exhaustive) then () else $single-lib-for-category))
   return toc:node(
-    $bucket-id||'_'||translate($cat, ' ' , ''),
+    $bucket-id||'_'||translate(
+        translate(translate($cat, ' ' , ''), '(', ''), ')', ''),
     toc:display-category($cat)
     ||toc:display-suffix($single-lib-for-category, $mode),
     $href,
@@ -1414,7 +1475,8 @@ as element(toc:node)+
    :)
   let $bucket-id := (
     if ($mode eq $api:MODE-JAVASCRIPT) then 'js_'
-    else '')||translate($b, ' ', '')
+    else '')||translate(
+      translate(translate($b, ' ', ''), '(', ''), ')', '')
   let $is-REST := $mode eq $api:MODE-REST
   order by index-of($forced-order, $b) ascending, $b
   return toc:node(
@@ -1596,7 +1658,7 @@ declare function toc:libs-for-mode(
 as element(api:lib)*
 {
   switch($mode)
-  case $api:MODE-JAVASCRIPT return api:libs-builtin($version, $mode)
+  case $api:MODE-JAVASCRIPT return api:libs-all($version, $mode)
   case $api:MODE-XPATH return api:libs-all($version, $mode)
   case $api:MODE-REST return ()
   default return stp:error('UNEXPECTED', $mode)

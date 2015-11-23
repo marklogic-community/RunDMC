@@ -122,6 +122,10 @@
         Contains a summary of new features, upgrade compatibility information,
         and other information about this release.
       </guide>
+      <guide url-name="concepts" source-name="concepts">
+        Provides an overview of MarkLogic and conceptual information about the
+        server architecture.
+      </guide> 
     </entry>
 
     <entry title="Developer's Guides">
@@ -198,10 +202,6 @@
     </entry>
 
     <entry title="Other Reference Guides">
-      <!-- <guide url-name="concepts" source-name="concepts">
-        Provides an overview of MarkLogic and conceptual information about the
-        server architecture.
-      </guide> -->
       <guide url-name="jsref" source-name="jsref">A condensed overview
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
@@ -213,6 +213,11 @@
         syntax information, although it is primarily intended as an
         introduction and quick-reference to the languages, not as a
         comprehensive reference.</guide>
+      <guide url-name="mlcp" source-name="mlcp">
+	A procedural guide that explains how to use MarkLogic Content 
+	Pump (mlcp) command line tool to load content into MarkLogic, 
+	extract content from MarkLogic, or copy content between 
+	databases. </guide>
       <guide url-name="cpf" source-name="cpf">
         Provides an introduction to the Content Processing Framework and
         procedures for installing the default content processing

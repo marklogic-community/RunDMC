@@ -140,6 +140,7 @@
         <title>
           <xsl:apply-templates mode="page-specific-title" select="."/>
         </title>
+        <meta name="robots" content="noindex,nofollow"/> 
         <link href="/css/v-1/apidoc_print.css" rel="stylesheet"
               type="text/css" media="screen, print"/>
       </head>
@@ -887,11 +888,8 @@
   <!--
       Automatically create guide references from italicized text
       in guides and function pages.
-      Optionally ignore reference immediately preceded by "in the",
-      where we assume a more specific section link was already provided.
   -->
   <xsl:template name="guide-reference-create">
-    <xsl:param name="ignore-in-the" as="xs:boolean" select="false()"/>
     <xsl:variable name="_"
                   select="api:maybe-init-guides-map(
                           $VERSION-FINAL,
@@ -899,12 +897,7 @@
     <xsl:variable name="config-for-title" as="xs:string?"
                   select="api:config-for-title(string())"/>
     <xsl:choose>
-      <xsl:when test="$config-for-title
-                      and (
-                      $ignore-in-the
-                      or not(
-                      preceding-sibling::node()[1][ self::text() ][
-                      normalize-space(.) eq 'in the']))">
+      <xsl:when test="$config-for-title">
         <a href="{ $VERSION-PREFIX }{ $config-for-title }">
           <xsl:next-match/>
         </a>
@@ -917,12 +910,6 @@
 
   <xsl:template mode="guide" match="x:em">
     <xsl:call-template name="guide-reference-create"/>
-  </xsl:template>
-
-  <xsl:template match="x:em[ancestor::api:function]">
-    <xsl:call-template name="guide-reference-create">
-      <xsl:with-param name="ignore-in-the" select="true()"/>
-    </xsl:call-template>
   </xsl:template>
 
   <!-- Elements that need attribute rewrites. -->

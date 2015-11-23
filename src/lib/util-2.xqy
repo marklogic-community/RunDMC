@@ -138,8 +138,11 @@ declare function u:string-extract-first-sentence($str as xs:string)
 {
   let $pat := '^(.*?\.)\s.*$'
   let $str := normalize-space($str)
+  let $tok := fn:tokenize($str, "\.")[1 to 2]
   return (
-    if (not(matches($str, $pat, 's'))) then $str
+    if (fn:starts-with($str, "This is inherited from the"))
+    then (fn:string-join($tok, ". ") || ".")
+    else if (not(matches($str, $pat, 's'))) then $str
     else replace($str, $pat, '$1', 's'))
 };
 

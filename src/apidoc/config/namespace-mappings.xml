@@ -58,7 +58,7 @@
   <namespace lib="sec" uri="http://marklogic.com/xdmp/security"/>
   <namespace lib="sem" uri="http://marklogic.com/semantics"/>
 
-                                                                   <!-- for summary lookup purposes, since this is exceptional -->
+ <!-- for summary lookup purposes, since this is exceptional -->
   <namespace lib="spell"     uri="http://marklogic.com/xdmp/spell" category="SpellBuiltins"/>
 
   <namespace lib="spell-lib" uri="http://marklogic.com/xdmp/spell" prefix="spell"/>
@@ -73,4 +73,34 @@
   <namespace lib="xhtml" uri="http://marklogic.com/cpf/xhtml"/>
   <namespace lib="xinc" uri="http://marklogic.com/xinclude"/>
   <namespace lib="xp" uri="http://marklogic.com/xinclude/xpointer"/>
+
+ <!-- javascript objects (uri the same as object name) -->
+  <namespace object="Attr" uri="Attr"/>
+  <namespace object="CharacterData" uri="CharacterData"/>
+  <namespace object="CharData" uri="CharData"/>
+  <namespace object="Document" uri="Document"/>
+  <namespace object="Element" uri="Element"/>
+  <namespace object="Error" uri="Error"/>
+  <namespace object="NamedNodeMap" uri="NamedNodeMap"/>
+  <namespace object="Node" uri="Node"/>
+  <namespace object="NodeBuilder" uri="NodeBuilder"/>
+  <namespace object="NodeList" uri="NodeList"/>
+  <namespace object="TypeInfo" uri="TypeInfo"/>
+  <namespace object="Value" uri="Value"/>
+  <namespace object="ValueIterator" uri="ValueIterator"/>
+  <namespace object="XMLDocument" uri="XMLDocument"/>
+  <namespace object="XMLNode" uri="XMLNode"/>
+  <namespace object="xs.date" uri="xs.date"/>
+  <namespace object="xs.dateTime" uri="xs.dateTime"/>
+  <namespace object="xs.dayTimeDuration" uri="xs.dayTimeDuration"/>
+  <namespace object="xs.gDay" uri="xs.gDay"/>
+  <namespace object="xs.gMonth" uri="xs.gMonth"/>
+  <namespace object="xs.gMonthDay" uri="xs.gMonthDay"/>
+  <namespace object="xs.gYear" uri="xs.gYear"/>
+  <namespace object="xs.gYearMonth" uri="xs.gYearMonth"/>
+  <namespace object="xs.time" uri="xs.time"/>
+  <namespace object="xs.yearMonthDuration" uri="xs.yearMonthDuration"/>
+  <namespace object="documents" uri="documents"/>
+  <namespace object="console" uri="console"/>
+  <namespace object="jsearch" uri="jsearch"/>
 </namespaces>

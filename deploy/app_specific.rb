@@ -59,56 +59,10 @@ class ServerConfig
 
 
   def deploy_docs_request(data)
-
-    # TODO is there a roxy-level mechanism to require a gem?
-    begin
-    require 'net/http/digest_auth'
-    rescue LoadError
-      @logger.error "The net-http-digest_auth gem is required for this feature."
-      @logger.error "Run: $ gem install net-http-digest_auth"
-      exit!
-    end
-
     # Send the docs to MarkLogic
-    uri = uri = URI.parse(
-      sprintf('http://%s:%s/apidoc/setup/build.xqy',
-              @properties['ml.server'],
-              @properties['ml.maintenance-port']))
-    uri.user = @properties['ml.user']
-    uri.password = @properties['ml.password']
-    @logger.info(
-      sprintf("Trying %s@%s:%s",
-              uri.user, uri.host, uri.port))
-
-    http = Net::HTTP.new(uri.host, uri.port)
-    # This process takes time. Make sure we wait for the answer.
-    http.read_timeout = 900
-
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.set_form_data(data)
-
-    response = http.request(request)
+    url = %Q{http://#{@properties['ml.server']}:#{@properties['ml.maintenance-port']}/apidoc/setup/build.xqy}
+    response = go(url, "post", {}, data)
     @logger.debug("response: #{response} #{response.code}")
-    if response.code == "401"
-      if response['www-authenticate']
-        # Server wants digest auth.
-        @logger.info("Trying digest auth")
-        digest_auth = Net::HTTP::DigestAuth.new
-        auth = digest_auth.auth_header(uri, response['www-authenticate'], 'POST')
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request.set_form_data(data)
-        request.add_field 'Authorization', auth
-        response = http.request(request)
-      else
-        # Server wants basic auth.
-        @logger.info("Trying basic auth")
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request.set_form_data(data)
-        request.basic_auth(uri.user, uri.password)
-        response = http.request(request)
-      end
-    end
-
     @logger.info("response: #{response}")
     @logger.info("response: #{response.body}")
   end
