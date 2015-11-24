@@ -65,6 +65,10 @@ caption {
 }
 code {
     font: 14px "Courier New", Courier, monospace;
+    color: #666;
+    padding: initial;
+    background-color: initial;
+    background-radius: initial;
 }
 
 dd {
