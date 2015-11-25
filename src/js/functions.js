@@ -522,10 +522,17 @@ if(typeof jQuery != 'undefined') {
         return false;
       });
 
+      // fixes issue 507
+      var _startedClickInMenu = false;
+      $('#login-menu').mousedown(function(e) {
+        _startedClickInMenu = true;
+      });
+
       $(document).mouseup(function(e) {
         // hide if the click is outside of a menu
         if (  (! $(e.target).hasClass("drop-down-trigger")) &&
-              (! $(e.target).parent().hasClass("drop-down-trigger")) ) {
+              (! $(e.target).parent().hasClass("drop-down-trigger")) &&
+              !_startedClickInMenu) {
 
           $('.drop-down-menu').each(function() {
             $(this).hide();
@@ -534,6 +541,8 @@ if(typeof jQuery != 'undefined') {
             $(this).removeClass('triggered');
           });
         }
+
+        _startedClickInMenu = false;
       });
 
       $("#local-login").click(function(e) {
