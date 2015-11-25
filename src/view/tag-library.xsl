@@ -244,7 +244,8 @@
                         'wideDownloadColumn',
                                           '')[$num-cols]}">
         <a href="{@href}" class="{@anchor-class}">
-          <xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/>
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+          <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
         </a>
       </th>
       <xsl:if test="$num-cols eq 3">
@@ -254,19 +255,25 @@
       </xsl:if>
       <xsl:if test="$num-cols gt 1">
         <td>
-          <xsl:value-of select="@size"/>&#160;&#160;
+          <span class="size"><xsl:value-of select="@size"/></span>
           <xsl:choose>
             <xsl:when test="@sha1">
               <input type="hidden" value="{@href}"/>
               <a href="data:text/plain;charset=US-ASCII,{@sha1}"
                 onClick="$(this).attr('download', $(this).prev().attr('value').replace(/\/.*\//, '') + '.sha1');"
-                title="Download SHA1"> (SHA1) </a>
+                title="Download SHA1">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                <span class="hash">(SHA1)</span>
+              </a>
             </xsl:when>
             <xsl:when test="@md5">
               <input type="hidden" value="{@href}"/>
               <a href="data:text/plain;charset=US-ASCII,{@md5}"
                 onClick="$(this).attr('download', $(this).prev().attr('value').replace(/\/.*\//, '') + '.md5');"
-                title="Download MD5"> (MD5) </a>
+                title="Download MD5">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                <span class="hash">(MD5)</span>
+              </a>
             </xsl:when>
           </xsl:choose>
         </td>
