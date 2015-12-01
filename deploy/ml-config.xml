@@ -112,9 +112,7 @@
     </http-server>
     @ml.rundmc-appservers
 
-
     @ml.test-appserver
-    @ml.rest-appserver
   </http-servers>
   <xdbc-servers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://marklogic.com/xdmp/group" xsi:schemaLocation="http://marklogic.com/xdmp/group group.xsd">
     @ml.xdbc-server
