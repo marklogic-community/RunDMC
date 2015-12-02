@@ -146,12 +146,11 @@ class ServerConfig
         if !File.directory?(full_path)
           options = open(full_path, "rb").read
           options_name = File.basename(entry, '.xml')
-          @logger.info("loading #{options}")
 
           url = "http://#{@hostname}:#{@properties['ml.rest-port']}/v1/config/query/#{options_name}"
 
           @logger.debug "url: #{url}"
-          r = go url, "post", headers, nil, options
+          r = go url, "put", headers, nil, options
           if (r.code.to_i < 200 && r.code.to_i > 206)
             @logger.error("code: #{r.code.to_i} body:#{r.body}")
           end
