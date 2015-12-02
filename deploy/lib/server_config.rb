@@ -1165,10 +1165,7 @@ private
         if (File.exist?(prop_path))
           mlRest.install_properties(ServerConfig.expand_path(prop_path))
         end
-        load_data "#{@properties['ml.rest-options.dir']}/options",
-            :add_prefix => "/#{@properties['ml.group']}/#{@properties['ml.app-name']}/rest-api",
-            :remove_prefix => @properties['ml.rest-options.dir'],
-            :db => rest_modules_db
+        deploy_rest_options(rest_modules_db)
       else
         logger.info "\nNo REST API options found in: #{@properties['ml.rest-options.dir']}";
       end
@@ -1176,6 +1173,13 @@ private
       deploy_ext()
       deploy_transform()
     end
+  end
+
+  def deploy_rest_options(rest_modules_db)
+    load_data "#{@properties['ml.rest-options.dir']}/options",
+        :add_prefix => "/#{@properties['ml.group']}/#{@properties['ml.app-name']}/rest-api",
+        :remove_prefix => @properties['ml.rest-options.dir'],
+        :db => rest_modules_db
   end
 
   def deploy_ext
