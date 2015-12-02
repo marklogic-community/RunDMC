@@ -115,6 +115,17 @@ declare variable $pre-generated-location := if ($draft:public-docs-only)
 then $public-nav-location
 else $draft-nav-location;
 
+(: Content from www.marklogic.com is in this collection :)
+declare variable $WWW-COLLECTION := "mlprodlocal";
+
+(: Content that will be searched FROM www.marklogic.com will be in these collections :)
+declare variable $WWW-TYPE-MAPPINGS :=
+  <type-mappings>
+    <type label="blog">mlprodlocal/post</type>
+    <type label="page">mlprodlocal/page</type>
+    <type label="tutorial">category/tutorial</type>
+  </type-mappings>;
+
 
 (: Get a listing of all live, listed DMC documents for the given page type(s) :)
 declare private function ml:docs($qnames) as element()* {
@@ -393,15 +404,23 @@ declare private function ml:matches-api-page($versions as xs:string+)
         cts:and-query(()))))
 };
 
-(: Query for all live DMC and AMC documents :)
+declare private function ml:matches-www-page()
+{
+  cts:collection-query($WWW-COLLECTION)
+};
+
+(: Query for all live DMC, docs, and www documents :)
 declare private function ml:live-document-query(
   $versions as xs:string+)
 {
-  cts:or-query(
+  cts:or-query((
     (: Pages on developer.marklogic.com :)
-    (ml:matches-dmc-page(),
-      (: Pages on docs.marklogic.com, specific to the given docs version :)
-      ml:matches-api-page($versions)))
+    ml:matches-dmc-page(),
+    (: Pages on docs.marklogic.com, specific to the given docs version :)
+    ml:matches-api-page($versions),
+    (: Pages on www.marklogic.com :)
+    ml:matches-www-page()
+  ))
 };
 
 declare function ml:get-matching-functions(
