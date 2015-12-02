@@ -3426,4 +3426,7 @@ li.search_suggest_selected {
   top: 0;
 }
 
+#page_content .parameters blockquote { font-size: inherit; } 
+#page_content .parameters pre { font-size: inherit; } 
+
 /* screen.css */
