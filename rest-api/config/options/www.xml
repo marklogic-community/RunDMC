@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <search:options xmlns:search="http://marklogic.com/appservices/search">
   <search:search-option>unfiltered</search:search-option>
+  <search:additional-query>
+    <cts:collection-query xmlns:cts="http://marklogic.com/cts">
+      <cts:uri>mlprodlocal/post</cts:uri>
+      <cts:uri>mlprodlocal/page</cts:uri>
+      <cts:uri>category/tutorial</cts:uri>
+    </cts:collection-query>
+  </search:additional-query>
   <search:page-length>10</search:page-length>
   <search:term apply="term">
     <search:empty apply="all-results"/>
