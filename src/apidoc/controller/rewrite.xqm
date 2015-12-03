@@ -334,6 +334,12 @@ declare function m:rewrite()
       "dotnet/xcc",
       "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
 
+  (: These two entries are a bit of a hack :)
+  else if ($PATH-TAIL = "static/xquery")
+       then "/apidoc/static/xquery.xqy?" || $QUERY-STRING
+  else if ($PATH-TAIL = "static/javascript")
+       then "/apidoc/static/javascript.xqy?" || $QUERY-STRING
+
   (: Redirect requests for older versions 301 and go to latest :)
   else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
   else if (starts-with($PATH, "/4.1")) then m:redirect-for-version('4.1')
