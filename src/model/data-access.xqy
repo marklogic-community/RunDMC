@@ -116,14 +116,23 @@ then $public-nav-location
 else $draft-nav-location;
 
 (: Content from www.marklogic.com is in this collection :)
-declare variable $WWW-COLLECTION := "mlprodlocal";
+declare variable $WWW-COLLECTION := "www.marklogic.com";
 
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
-    <type label="blog">mlprodlocal/post</type>
-    <type label="page">mlprodlocal/page</type>
+    <type label="blog">{$WWW-COLLECTION}/post</type>
+    <type label="page">{$WWW-COLLECTION}/page</type>
+    <type label="page">{$WWW-COLLECTION}/ml_customer</type>
+    <type label="page">{$WWW-COLLECTION}/ml_resource</type>
+    <type label="page">{$WWW-COLLECTION}/ml_press_release</type>
+    <type label="page">{$WWW-COLLECTION}/ml_news</type>
+    <type label="page">{$WWW-COLLECTION}/ml_solution</type>
+    <type label="page">{$WWW-COLLECTION}/ml_training_course</type>
+    <type label="page">{$WWW-COLLECTION}/ml_webinars</type>
+    <type label="page">{$WWW-COLLECTION}/pmg_event</type>
     <type label="tutorial">category/tutorial</type>
+    <type label="tutorial">category/post</type>
   </type-mappings>;
 
 
