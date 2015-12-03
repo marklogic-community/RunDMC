@@ -347,25 +347,6 @@ if(typeof jQuery != 'undefined') {
         .append($('<div>', {'class': 'shadow'}));
     }
 
-    // Give your textarea two classes: 'codemirror' and a mode. For instance,
-    // <textarea class="codemirror xml">...</textarea>
-    // Then call codeMirror.apply('xml');, adding any desired options.
-    function buildCodeMirror(className, options) {
-      var elements = document.getElementsByClassName('codemirror ' + className);
-      var codeOptions = {
-        lineNumbers: true,
-        mode: className,
-        readOnly: true,
-        theme: 'default'
-      };
-      if (elements.length > 0) {
-        $.extend(codeOptions, options);
-        Array.prototype.forEach.call(elements, function(item) {
-          CodeMirror.fromTextArea(item, codeOptions);
-        });
-      }
-    }
-
     $(document).ready(function() {
 
       var container = document.getElementById("home-tabs");
@@ -541,10 +522,17 @@ if(typeof jQuery != 'undefined') {
         return false;
       });
 
+      // fixes issue 507
+      var _startedClickInMenu = false;
+      $('#login-menu').mousedown(function(e) {
+        _startedClickInMenu = true;
+      });
+
       $(document).mouseup(function(e) {
         // hide if the click is outside of a menu
         if (  (! $(e.target).hasClass("drop-down-trigger")) &&
-              (! $(e.target).parent().hasClass("drop-down-trigger")) ) {
+              (! $(e.target).parent().hasClass("drop-down-trigger")) &&
+              !_startedClickInMenu) {
 
           $('.drop-down-menu').each(function() {
             $(this).hide();
@@ -553,6 +541,8 @@ if(typeof jQuery != 'undefined') {
             $(this).removeClass('triggered');
           });
         }
+
+        _startedClickInMenu = false;
       });
 
       $("#local-login").click(function(e) {
@@ -739,6 +729,26 @@ if(typeof jQuery != 'undefined') {
     // add new functions before this comment
   });
 }
+
+// Give your textarea two classes: 'codemirror' and a mode. For instance,
+// <textarea class="codemirror xml">...</textarea>
+// Then call codeMirror.apply('xml');, adding any desired options.
+function buildCodeMirror(className, options) {
+  var elements = document.getElementsByClassName('codemirror ' + className);
+  var codeOptions = {
+    lineNumbers: true,
+    mode: className,
+    readOnly: true,
+    theme: 'default'
+  };
+  if (elements.length > 0) {
+    $.extend(codeOptions, options);
+    Array.prototype.forEach.call(elements, function(item) {
+      CodeMirror.fromTextArea(item, codeOptions);
+    });
+  }
+}
+
 
 function loadRecentContent() {
   var icons = {

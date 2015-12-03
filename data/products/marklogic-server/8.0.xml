@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
     <x:ul class="info">
-    <x:li><x:a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</x:a></x:li>
-    <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
-    <x:li><x:a href="/products/marklogic-server/requirements-8.0">Review System Requirements  »</x:a></x:li>
+    <x:li>
+      <x:a href="//docs.marklogic.com/guide/relnotes/chap3">
+        <x:span class="glyphicon glyphicon-info-sign" aria-hidden="true"></x:span>
+        <x:span class="">What's New? »</x:span>
+      </x:a>
+    </x:li>
+    <x:li>
+      <x:a href="/free-developer">
+        <x:span class="glyphicon glyphicon-info-sign" aria-hidden="true"></x:span>
+        <x:span>Read about the Free Developer License  »</x:span>
+      </x:a>
+    </x:li>
+    <x:li>
+      <x:a href="/products/marklogic-server/requirements-8.0">
+        <x:span class="glyphicon glyphicon-info-sign" aria-hidden="true"></x:span>
+        <x:span>Review System Requirements  »</x:span>
+      </x:a>
+    </x:li>
   </x:ul>
 
   <product-info name="MarkLogic 8">
