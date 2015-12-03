@@ -1,5 +1,9 @@
 xquery version "1.0-ml";
-module namespace trns = "http://marklogic.com/rest-api/transform/url";
+module namespace trns = "http://marklogic.com/rest-api/transform/www";
+
+declare namespace html = "http://www.w3.org/1999/xhtml";
+
+declare namespace ml = "http://developer.marklogic.com/site/internal";
 
 declare namespace roxy = "http://marklogic.com/roxy";
 
@@ -31,14 +35,18 @@ declare function trns:change($node)
     element search:result {
       $node/@*,
       attribute url {
-        let $uri := $node/@uri
+        let $uri := fn:replace($node/@uri, '.xml', '')
         return
           if (fn:starts-with($uri, '/www.marklogic.com')) then
-            fn:replace(fn:replace($uri, '/www.marklogic.com', '//www.marklogic.com'), '.xml', '/')
+            fn:replace($uri, '/www.marklogic.com', '//www.marklogic.com')
           else if (fn:starts-with($uri, '/apidoc/')) then
             "//docs.marklogic.com" || $uri
           else
             "//developer.marklogic.com" || $uri
+      },
+      element search:title {
+        let $doc := fn:doc($node/@uri)/node()
+        return ($doc/ml:title, $doc/html:h1, $doc/html:h2)[1]/fn:string()
       },
       $node/*
     }
