@@ -54,6 +54,7 @@ a[rel="detail"] img {
 
 #page_content blockquote {
     margin: 0;
+    font-size: inherit;
 }
 
 caption {
