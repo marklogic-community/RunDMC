@@ -11,11 +11,15 @@ declare option xdmp:mapping "false";
 
 declare function s:static(
   $class as xs:string,
+  $version as xs:string,
   $limitpfx as xs:string*
 ) as element(h:html)
 {
-  let $functions := /api:function-page[api:function/@class = $class
-                                       or api:function/@mode = $class]
+  (: This is horribly inefficient. :)
+  let $path      := "/apidoc/" || $version || "/"
+  let $functions := (/api:function-page[api:function/@class = $class
+                                       or api:function/@mode = $class])
+                     [starts-with(xdmp:node-uri(.), $path)]
 
   (: for debugging, rename to $functions :)
   let $xfunctions := $functions[api:function-name =
