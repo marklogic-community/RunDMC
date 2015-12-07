@@ -539,7 +539,7 @@ as element(search:facet)
 
   element search:facet {
     attribute name { $constraint/@name },
-    for $type in $ml:WWW-TYPE-MAPPINGS/type
+    for $type in $ml:WWW-TYPE-MAPPINGS/ml:type
     let $count := xdmp:estimate(cts:search(fn:collection($type/fn:string()), $query))
     where $count > 0
     return
