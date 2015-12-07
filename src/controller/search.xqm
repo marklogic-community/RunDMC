@@ -508,7 +508,7 @@ as schema-element(cts:query)
 {
   <query>{
     let $type := $right/cts:text/fn:string()
-    let $collections := $ml:WWW-TYPE-MAPPINGS/type[@label=$type]/fn:string()
+    let $collections := $ml:WWW-TYPE-MAPPINGS/ml:type[@label=$type]/fn:string()
     return
       if ($collections) then
         cts:collection-query($collections)
