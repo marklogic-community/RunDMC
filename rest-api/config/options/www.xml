@@ -15,6 +15,7 @@
       <cts:uri>www.marklogic.com/pmg_event</cts:uri>
       <cts:uri>category/tutorial</cts:uri>
       <cts:uri>category/post</cts:uri>
+      <cts:uri>category/code</cts:uri>
     </cts:collection-query>
   </search:additional-query>
   <search:page-length>10</search:page-length>
