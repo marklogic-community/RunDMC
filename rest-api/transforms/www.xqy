@@ -46,7 +46,7 @@ declare function trns:change($node)
       },
       element search:title {
         let $doc := fn:doc($node/@uri)/node()
-        return ($doc/ml:title, $doc/html:h1, $doc/html:h2)[1]/fn:string()
+        return ($doc/ml:title, $doc/ml:name, $doc/html:h1, $doc/html:h2)[1]/fn:string()
       },
       $node/*
     }
