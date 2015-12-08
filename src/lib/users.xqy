@@ -34,7 +34,7 @@ declare function users:emailInUse($email as xs:string) as xs:boolean
 
 declare function users:getUserByEmail($email as xs:string) as element(*)?
 {
-    cts:search(/person, cts:element-value-query(xs:QName("email"), lower-case($email), "case-insensitive"))
+    (cts:search(/person, cts:element-value-query(xs:QName("email"), lower-case($email), "case-insensitive")))[1]
 };
 
 declare function users:getUserByID($id as xs:string) as element(*)?
