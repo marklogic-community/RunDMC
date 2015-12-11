@@ -133,7 +133,6 @@ class ServerConfig
     test()
   end
 
-  alias_method :original_wipe, :wipe
   def deploy_rest_options(rest_modules_db)
     headers = {
       'Content-Type' => 'application/xml'
