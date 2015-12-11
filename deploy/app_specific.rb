@@ -133,4 +133,34 @@ class ServerConfig
     test()
   end
 
+  def deploy_rest_options(rest_modules_db)
+    headers = {
+      'Content-Type' => 'application/xml'
+    }
+
+    path = "#{@properties['ml.rest-options.dir']}/options"
+    if File.directory?(path)
+      Dir.foreach(path) do |entry|
+        full_path = File.join(path, entry)
+        if !File.directory?(full_path)
+          options = open(full_path, "rb").read
+          options_name = File.basename(entry, '.xml')
+
+          url = "http://#{@hostname}:#{@properties['ml.rest-port']}/v1/config/query/#{options_name}"
+
+          @logger.debug "url: #{url}"
+          r = go url, "put", headers, nil, options
+          if (r.code.to_i < 200 && r.code.to_i > 206)
+            @logger.error("code: #{r.code.to_i} body:#{r.body}")
+          end
+
+        end
+      end
+
+
+    end
+
+  end
+
+
 end
