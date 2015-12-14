@@ -199,11 +199,10 @@
           </div>
 
           <div class="col-xs-3">
-            <img src="/media/qconsole-semantics.png"/>
-            <h4><a href="/learn/semantics-exercises">Semantics Tutorial</a></h4>
-            <p>Learn how to get more context to your data by using RDF triples
-              and querying them with SPARQL.</p>
-            <p><a href="/learn/semantics-exercises" class="btn btn-default btn-xs">Learn More ›</a></p>
+            <img src="/media/paper/resource-consumption.png"/>
+            <h4><a href="/learn/understanding-system-resources">Understanding Resource Consumption</a></h4>
+            <p>Learn details about MarkLogic core functions and operations and configure MarkLogic for optimal success.</p>
+            <p><a href="/learn/understanding-system-resources" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
           <div class="col-xs-3">
@@ -220,7 +219,7 @@
     <div class="section-row row">
       <div class="container">
         <h2 class="center-block">New and Updated Content</h2>
-        <div id="recent" class="list-group"/>
+        <div id="recent" class="list-group"></div>
       </div>
     </div>
 
