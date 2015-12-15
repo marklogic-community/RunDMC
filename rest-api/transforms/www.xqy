@@ -1,9 +1,9 @@
 xquery version "1.0-ml";
 module namespace trns = "http://marklogic.com/rest-api/transform/www";
 
-declare namespace html = "http://www.w3.org/1999/xhtml";
+import module namespace ml="http://developer.marklogic.com/site/internal" at "/model/data-access.xqy" ;
 
-declare namespace ml = "http://developer.marklogic.com/site/internal";
+declare namespace html = "http://www.w3.org/1999/xhtml";
 
 declare namespace roxy = "http://marklogic.com/roxy";
 
@@ -34,21 +34,26 @@ declare function trns:change($node)
   case element(search:result) return
     element search:result {
       $node/@*,
-      attribute url {
-        let $uri := fn:replace($node/@uri, '.xml', '')
-        return
-          if (fn:starts-with($uri, '/www.marklogic.com')) then
-            fn:replace($uri, '/www.marklogic.com', '//www.marklogic.com')
-          else if (fn:starts-with($uri, '/apidoc/')) then
-            "//docs.marklogic.com" || $uri
-          else
-            "//developer.marklogic.com" || $uri
-      },
-      element search:title {
-        let $doc := fn:doc($node/@uri)/node()
-        return ($doc/ml:title, $doc/ml:name, $doc/html:h1, $doc/html:h2)[1]/fn:string()
-      },
-      $node/*
+      $node/* except $node/search:metadata,
+      element search:metadata {
+        $node/search:metadata/@*,
+        $node/search:metadata/*,
+        element ml:url {
+          let $uri := fn:replace($node/@uri, '.xml', '')
+          return
+            if (xdmp:document-get-collections($uri) = $ml:WWW-COLLECTION) then
+              (: www docs specify their URL :)
+              fn:doc($uri)/node()/@url
+            else if (fn:starts-with($uri, '/apidoc/')) then
+              "//docs.marklogic.com" || $uri
+            else
+              "//developer.marklogic.com" || $uri
+        },
+        element ml:title {
+          let $doc := fn:doc($node/@uri)/node()
+          return ($doc/ml:title, $doc/ml:name, $doc/html:h1, $doc/html:h2)[1]/fn:string()
+        }
+      }
     }
   case element() return
     element { fn:node-name($node) } {
