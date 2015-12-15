@@ -288,8 +288,9 @@ declare function ss:result-uri(
 as xs:string
 {
   concat(
-    if (fn:starts-with($uri, '/www.marklogic.com')) then
-      fn:replace(fn:replace($uri, '/www.marklogic.com', '//www.marklogic.com'), '.xml', '/')
+    if (xdmp:document-get-collections($uri) = $ml:WWW-COLLECTION) then
+      (: www docs specify their URL :)
+      fn:doc($uri)/node()/@url
     else if (not($is-api-doc)) then ml:external-uri-main($uri)
     else concat(
       $srv:effective-api-server,
