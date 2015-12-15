@@ -43,7 +43,7 @@ declare function trns:change($node)
           return
             if (xdmp:document-get-collections($node/@uri) = $ml:WWW-COLLECTION) then
               (: www docs specify their URL :)
-              fn:doc($node/@uri)/node()/@url
+              fn:doc($node/@uri)/node()/@url/fn:string()
             else if (fn:starts-with($uri, '/apidoc/')) then
               "//docs.marklogic.com" || $uri
             else
