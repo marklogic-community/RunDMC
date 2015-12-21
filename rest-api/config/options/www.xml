@@ -14,7 +14,7 @@
       <cts:uri>www.marklogic.com/ml_webinars</cts:uri>
       <cts:uri>www.marklogic.com/pmg_event</cts:uri>
       <cts:uri>category/tutorial</cts:uri>
-      <cts:uri>category/post</cts:uri>
+      <cts:uri>category/blog</cts:uri>
       <cts:uri>category/code</cts:uri>
     </cts:collection-query>
   </search:additional-query>
