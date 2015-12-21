@@ -121,18 +121,18 @@ declare variable $WWW-COLLECTION := "www.marklogic.com";
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
-<type label="Blog">{$WWW-COLLECTION}/post</type>
-    <type label="Page">{$WWW-COLLECTION}/page</type>
-    <type label="Customer">{$WWW-COLLECTION}/ml_customer</type>
-    <type label="Resource">{$WWW-COLLECTION}/ml_resource</type>
-    <type label="Press Release">{$WWW-COLLECTION}/ml_press_release</type>
+<type label="Blogs">{$WWW-COLLECTION}/post</type>
+    <type label="Pages">{$WWW-COLLECTION}/page</type>
+    <type label="Customers">{$WWW-COLLECTION}/ml_customer</type>
+    <type label="Resources">{$WWW-COLLECTION}/ml_resource</type>
+    <type label="Press Releases">{$WWW-COLLECTION}/ml_press_release</type>
     <type label="News">{$WWW-COLLECTION}/ml_news</type>
-    <type label="Solution">{$WWW-COLLECTION}/ml_solution</type>
-    <type label="Training Course">{$WWW-COLLECTION}/ml_training_course</type>
-    <type label="Webinar">{$WWW-COLLECTION}/ml_webinars</type>
-    <type label="Event">{$WWW-COLLECTION}/pmg_event</type>
-    <type label="Tutorial">category/tutorial</type>
-    <type label="Technical Blog">category/blog</type>
+    <type label="Solutions">{$WWW-COLLECTION}/ml_solution</type>
+    <type label="Training Courses">{$WWW-COLLECTION}/ml_training_course</type>
+    <type label="Webinars">{$WWW-COLLECTION}/ml_webinars</type>
+    <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
+    <type label="Tutorials">category/tutorial</type>
+    <type label="Technical Blogs">category/blog</type>
     <type label="Projects">category/code</type>
   </type-mappings>;
 
