@@ -706,7 +706,11 @@ What is the version number of the target MarkLogic server? [4, 5, 6, or 7]'
       prop_string << %Q{-D#{k}="#{v}" }
     end
 
-    runme = %Q{java -Xmx2048m -cp #{ServerConfig.expand_path("../java/xqsync.jar")}#{path_separator}#{ServerConfig.expand_path("../java/marklogic-xcc-5.0.2.jar")}#{path_separator}#{ServerConfig.expand_path("../java/xstream-1.4.2.jar")}#{path_separator}#{ServerConfig.expand_path("../java/xpp3-1.1.4c.jar")} -Dfile.encoding=UTF-8 #{prop_string} com.marklogic.ps.xqsync.XQSync}
+    matches = Dir.glob(ServerConfig.expand_path("../java/*xcc*.jar"))
+    raise "Missing XCC Jar." if matches.length == 0
+    xcc_file = matches[0]
+
+    runme = %Q{java -Xmx2048m -cp #{ServerConfig.expand_path("../java/xqsync.jar")}#{path_separator}#{xcc_file}#{path_separator}#{ServerConfig.expand_path("../java/xstream-1.4.2.jar")}#{path_separator}#{ServerConfig.expand_path("../java/xpp3-1.1.4c.jar")} -Dfile.encoding=UTF-8 #{prop_string} com.marklogic.ps.xqsync.XQSync}
     logger.info runme
     `#{runme}`
   end
@@ -1084,12 +1088,14 @@ private
     load_html_as_xml = @properties['ml.load-html-as-xml']
     load_js_as_binary = @properties['ml.load-js-as-binary']
     load_css_as_binary = @properties['ml.load-css-as-binary']
+    download_dir = File.join(xquery_dir, "download")
 
     modules_databases.each do |dest_db|
       ignore_us = []
       ignore_us << "^#{test_dir}.*$" unless test_dir.blank? || deploy_tests?(dest_db)
       ignore_us << "^#{app_config_file}$"
       ignore_us << "^#{test_config_file}$"
+      ignore_us << "^#{download_dir}.*$"
 
       total_count = load_data xquery_dir,
                               :add_prefix => "/",
