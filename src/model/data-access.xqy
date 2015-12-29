@@ -122,7 +122,7 @@ declare variable $WWW-COLLECTION := "www.marklogic.com";
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
 <type label="Blogs">{$WWW-COLLECTION}/post</type>
-    <type label="Pages">{$WWW-COLLECTION}/page</type>
+    <type label="MarkLogic Overview">{$WWW-COLLECTION}/page</type>
     <type label="Customers">{$WWW-COLLECTION}/ml_customer</type>
     <type label="Resources">{$WWW-COLLECTION}/ml_resource</type>
     <type label="Press Releases">{$WWW-COLLECTION}/ml_press_release</type>
