@@ -121,7 +121,7 @@ declare variable $WWW-COLLECTION := "www.marklogic.com";
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
-<type label="Blog">{$WWW-COLLECTION}/post</type>
+    <type label="Blog">{$WWW-COLLECTION}/post</type>
     <type label="Page">{$WWW-COLLECTION}/page</type>
     <type label="Customer">{$WWW-COLLECTION}/ml_customer</type>
     <type label="Resource">{$WWW-COLLECTION}/ml_resource</type>
@@ -136,6 +136,9 @@ declare variable $WWW-TYPE-MAPPINGS :=
     <type label="Projects">category/code</type>
   </type-mappings>;
 
+declare variable $USER-ROLE := "RunDMC-role";
+declare variable $AUTHOR-ROLE := "RunDMC-author";
+declare variable $ADMIN-ROLE := "RunDMC-admin";
 
 (: Get a listing of all live, listed DMC documents for the given page type(s) :)
 declare private function ml:docs($qnames) as element()* {
