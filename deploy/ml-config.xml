@@ -725,6 +725,9 @@
       </collections>
       <privileges>
         <privilege>
+          <privilege-name>xdmp:filesystem-file-exists</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:value</privilege-name>
         </privilege>
         <privilege>
@@ -736,10 +739,13 @@
         <privilege>
           <privilege-name>xdmp:with-namespaces</privilege-name>
         </privilege>
+        <privilege>
+          <privilege-name>xdmp:xslt-invoke</privilege-name>
+        </privilege>
       </privileges>
     </role>
     <role>
-      <role-name>dmc-author</role-name>
+      <role-name>@ml.app-name-author</role-name>
       <description>An Author for RunDMC content</description>
       <role-names>
         <role-name>@ml.app-role</role-name>
@@ -754,9 +760,6 @@
         </privilege>
         <privilege>
           <privilege-name>xdmp:hostname</privilege-name>
-        </privilege>
-        <privilege>
-          <privilege-name>xdmp:filesystem-file-exists</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:filesystem-directory</privilege-name>
@@ -776,10 +779,10 @@
       </privileges>
     </role>
     <role>
-      <role-name>dmc-admin</role-name>
+      <role-name>@ml.app-name-admin</role-name>
       <description>An Admin for RunDMC content</description>
       <role-names>
-        <role-name>dmc-author</role-name>
+        <role-name>@ml.app-name-author</role-name>
       </role-names>
       <permissions>
       </permissions>
@@ -796,7 +799,16 @@
       <password>@ml.appuser-password</password>
       <role-names>
         <role-name>@ml.app-role</role-name>
-        <role-name>dmc-author</role-name>
+      </role-names>
+      <permissions/>
+      <collections/>
+    </user>
+    <user>
+      <user-name>reviewer</user-name>
+      <description>Content reviewer</description>
+      <password>@ml.reviewer-password</password>
+      <role-names>
+        <role-name>@ml.app-role</role-name>
       </role-names>
       <permissions/>
       <collections/>
