@@ -121,7 +121,8 @@ declare variable $WWW-COLLECTION := "www.marklogic.com";
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
-<type label="Blogs">{$WWW-COLLECTION}/post</type>
+    <type label="Business Blogs">{$WWW-COLLECTION}/post</type>
+    <type label="Technical Blogs">category/blog</type>
     <type label="MarkLogic Overview">{$WWW-COLLECTION}/page</type>
     <type label="Customers">{$WWW-COLLECTION}/ml_customer</type>
     <type label="Resources">{$WWW-COLLECTION}/ml_resource</type>
@@ -132,7 +133,6 @@ declare variable $WWW-TYPE-MAPPINGS :=
     <type label="Webinars">{$WWW-COLLECTION}/ml_webinars</type>
     <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
     <type label="Tutorials">category/tutorial</type>
-    <type label="Technical Blogs">category/blog</type>
     <type label="Projects">category/code</type>
   </type-mappings>;
 
