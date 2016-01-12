@@ -136,6 +136,9 @@ declare variable $WWW-TYPE-MAPPINGS :=
     <type label="Projects">category/code</type>
   </type-mappings>;
 
+declare variable $USER-ROLE := "RunDMC-role";
+declare variable $AUTHOR-ROLE := "RunDMC-author";
+declare variable $ADMIN-ROLE := "RunDMC-admin";
 
 (: Get a listing of all live, listed DMC documents for the given page type(s) :)
 declare private function ml:docs($qnames) as element()* {
