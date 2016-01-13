@@ -115,6 +115,30 @@ declare variable $pre-generated-location := if ($draft:public-docs-only)
 then $public-nav-location
 else $draft-nav-location;
 
+(: Content from www.marklogic.com is in this collection :)
+declare variable $WWW-COLLECTION := "www.marklogic.com";
+
+(: Content that will be searched FROM www.marklogic.com will be in these collections :)
+declare variable $WWW-TYPE-MAPPINGS :=
+  <type-mappings>
+    <type label="Business Blogs">{$WWW-COLLECTION}/post</type>
+    <type label="Technical Blogs">category/blog</type>
+    <type label="MarkLogic Overview">{$WWW-COLLECTION}/page</type>
+    <type label="Customers">{$WWW-COLLECTION}/ml_customer</type>
+    <type label="Resources">{$WWW-COLLECTION}/ml_resource</type>
+    <type label="Press Releases">{$WWW-COLLECTION}/ml_press_release</type>
+    <type label="News">{$WWW-COLLECTION}/ml_news</type>
+    <type label="Solutions">{$WWW-COLLECTION}/ml_solution</type>
+    <type label="Training Courses">{$WWW-COLLECTION}/ml_training_course</type>
+    <type label="Webinars">{$WWW-COLLECTION}/ml_webinars</type>
+    <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
+    <type label="Tutorials">category/tutorial</type>
+    <type label="Projects">category/code</type>
+  </type-mappings>;
+
+declare variable $USER-ROLE := "RunDMC-role";
+declare variable $AUTHOR-ROLE := "RunDMC-author";
+declare variable $ADMIN-ROLE := "RunDMC-admin";
 
 (: Get a listing of all live, listed DMC documents for the given page type(s) :)
 declare private function ml:docs($qnames) as element()* {
@@ -393,15 +417,23 @@ declare private function ml:matches-api-page($versions as xs:string+)
         cts:and-query(()))))
 };
 
-(: Query for all live DMC and AMC documents :)
+declare private function ml:matches-www-page()
+{
+  cts:collection-query($WWW-COLLECTION)
+};
+
+(: Query for all live DMC, docs, and www documents :)
 declare private function ml:live-document-query(
   $versions as xs:string+)
 {
-  cts:or-query(
+  cts:or-query((
     (: Pages on developer.marklogic.com :)
-    (ml:matches-dmc-page(),
-      (: Pages on docs.marklogic.com, specific to the given docs version :)
-      ml:matches-api-page($versions)))
+    ml:matches-dmc-page(),
+    (: Pages on docs.marklogic.com, specific to the given docs version :)
+    ml:matches-api-page($versions),
+    (: Pages on www.marklogic.com :)
+    ml:matches-www-page()
+  ))
 };
 
 declare function ml:get-matching-functions(

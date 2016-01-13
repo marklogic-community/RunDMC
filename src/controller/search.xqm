@@ -288,7 +288,10 @@ declare function ss:result-uri(
 as xs:string
 {
   concat(
-    if (not($is-api-doc)) then ml:external-uri-main($uri)
+    if (xdmp:document-get-collections($uri) = $ml:WWW-COLLECTION) then
+      (: www docs specify their URL :)
+      fn:doc($uri)/node()/@url
+    else if (not($is-api-doc)) then ml:external-uri-main($uri)
     else concat(
       $srv:effective-api-server,
       $api-version-prefix,
@@ -495,5 +498,59 @@ declare function ss:get-recently-updated()
     }
   </recent>
 };
+
+(: parse-www, start-www, and finish-www are for a type constraint used when
+ : searching from wwww.marklogic.com. :)
+
+declare function ss:parse-www(
+  $constraint-qtext as xs:string,
+  $right as schema-element(cts:query))
+as schema-element(cts:query)
+{
+  <query>{
+    let $type := $right/cts:text/fn:string()
+    let $collections := $ml:WWW-TYPE-MAPPINGS/ml:type[@label=$type]/fn:string()
+    return
+      if ($collections) then
+        cts:collection-query($collections)
+      else ()
+  }</query>/*
+};
+
+declare function ss:start-www(
+  $constraint as element(search:constraint),
+  $query as cts:query?,
+  $facet-options as xs:string*,
+  $quality-weight as xs:double?,
+  $forests as xs:unsignedLong*)
+as item()*
+{
+  ()
+};
+
+declare function ss:finish-www(
+  $start as item()*,
+  $constraint as element(search:constraint),
+  $query as cts:query?,
+  $facet-options as xs:string*,
+  $quality-weight as xs:double?,
+  $forests as xs:unsignedLong*)
+as element(search:facet)
+{
+
+  element search:facet {
+    attribute name { $constraint/@name },
+    for $type in $ml:WWW-TYPE-MAPPINGS/ml:type
+    let $count := xdmp:estimate(cts:search(fn:collection($type/fn:string()), $query))
+    where $count > 0
+    return
+      element search:facet-value {
+        attribute name { $type/@label },
+        attribute count { $count }
+      }
+  }
+};
+
+(: end custom facet :)
 
 (: search.xqm :)

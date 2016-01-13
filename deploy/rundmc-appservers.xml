@@ -77,3 +77,16 @@
       <rewrite-resolves-globally>@ml.rewrite-resolves-globally</rewrite-resolves-globally>
       <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
     </http-server>
+    <http-server>
+      <http-server-name>@ml.app-name-rest</http-server-name>
+      <port>@ml.rest-port</port>
+      <database name="@ml.content-db"/>
+      <modules name="@ml.modules-db"/>
+      <root>/</root>
+      <authentication>digest</authentication>
+      <default-user name="@ml.default-user"/>
+      <url-rewriter>@ml.rest-rewriter</url-rewriter>
+      <error-handler>@ml.rest-error-handler</error-handler>
+      <rewrite-resolves-globally>@ml.rest-rewrite-resolves-globally</rewrite-resolves-globally>
+      <!-- <ssl-certificate-template>@ml.ssl-certificate-template</ssl-certificate-template> -->
+    </http-server>

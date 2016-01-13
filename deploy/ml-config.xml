@@ -112,9 +112,7 @@
     </http-server>
     @ml.rundmc-appservers
 
-
     @ml.test-appserver
-    @ml.rest-appserver
   </http-servers>
   <xdbc-servers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://marklogic.com/xdmp/group" xsi:schemaLocation="http://marklogic.com/xdmp/group group.xsd">
     @ml.xdbc-server
@@ -146,7 +144,6 @@
   <databases xmlns="http://marklogic.com/xdmp/database" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://marklogic.com/xdmp/database database.xsd">
     <!--Application Database Configuration-->
     @ml.test-content-db-xml
-    @ml.rest-modules-db-xml
     <database>
       <database-name>@ml.content-db</database-name>
       <forests-per-host>@ml.content-forests-per-host</forests-per-host>
@@ -728,6 +725,9 @@
       </collections>
       <privileges>
         <privilege>
+          <privilege-name>xdmp:filesystem-file-exists</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:value</privilege-name>
         </privilege>
         <privilege>
@@ -739,10 +739,13 @@
         <privilege>
           <privilege-name>xdmp:with-namespaces</privilege-name>
         </privilege>
+        <privilege>
+          <privilege-name>xdmp:xslt-invoke</privilege-name>
+        </privilege>
       </privileges>
     </role>
     <role>
-      <role-name>dmc-author</role-name>
+      <role-name>@ml.app-name-author</role-name>
       <description>An Author for RunDMC content</description>
       <role-names>
         <role-name>@ml.app-role</role-name>
@@ -757,9 +760,6 @@
         </privilege>
         <privilege>
           <privilege-name>xdmp:hostname</privilege-name>
-        </privilege>
-        <privilege>
-          <privilege-name>xdmp:filesystem-file-exists</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:filesystem-directory</privilege-name>
@@ -779,10 +779,10 @@
       </privileges>
     </role>
     <role>
-      <role-name>dmc-admin</role-name>
+      <role-name>@ml.app-name-admin</role-name>
       <description>An Admin for RunDMC content</description>
       <role-names>
-        <role-name>dmc-author</role-name>
+        <role-name>@ml.app-name-author</role-name>
       </role-names>
       <permissions>
       </permissions>
@@ -799,7 +799,16 @@
       <password>@ml.appuser-password</password>
       <role-names>
         <role-name>@ml.app-role</role-name>
-        <role-name>dmc-author</role-name>
+      </role-names>
+      <permissions/>
+      <collections/>
+    </user>
+    <user>
+      <user-name>reviewer</user-name>
+      <description>Content reviewer</description>
+      <password>@ml.reviewer-password</password>
+      <role-names>
+        <role-name>@ml.app-role</role-name>
       </role-names>
       <permissions/>
       <collections/>
