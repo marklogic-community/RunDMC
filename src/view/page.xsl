@@ -88,19 +88,19 @@
     </a>
   </xsl:template>
 
-                  <xsl:template mode="preserve-base-uri" match="@* | node()">
-                    <xsl:copy>
-                      <xsl:apply-templates mode="#current" select="@* | node()"/>
-                    </xsl:copy>
-                  </xsl:template>
+  <xsl:template mode="preserve-base-uri" match="@* | node()">
+    <xsl:copy>
+      <xsl:apply-templates mode="#current" select="@* | node()"/>
+    </xsl:copy>
+  </xsl:template>
 
-                  <!-- Add an xml:base attribute to the document element so the base URI is preserved, even in the highlighted document -->
-                  <xsl:template mode="preserve-base-uri" match="/*">
-                    <xsl:copy>
-                      <xsl:attribute name="xml:base" select="base-uri($original-content)"/>
-                      <xsl:apply-templates mode="#current" select="@* | node()"/>
-                    </xsl:copy>
-                  </xsl:template>
+  <!-- Add an xml:base attribute to the document element so the base URI is preserved, even in the highlighted document -->
+  <xsl:template mode="preserve-base-uri" match="/*">
+    <xsl:copy>
+      <xsl:attribute name="xml:base" select="base-uri($original-content)"/>
+      <xsl:apply-templates mode="#current" select="@* | node()"/>
+    </xsl:copy>
+  </xsl:template>
 
 
   <xsl:variable name="template-dir" select="'/config'"/>
@@ -219,61 +219,61 @@
     </xsl:value-of>
   </xsl:template>
 
-          <xsl:template mode="page-title" match="page[$external-uri eq '/']">
-            <xsl:value-of select="$site-title"/>
-          </xsl:template>
+  <xsl:template mode="page-title" match="page[$external-uri eq '/']">
+    <xsl:value-of select="$site-title"/>
+  </xsl:template>
 
-          <xsl:template mode="page-title" match="*">
-            <xsl:apply-templates mode="page-specific-title" select="."/>
-            <xsl:text> &#8212; </xsl:text>
-            <xsl:value-of select="$site-title"/>
-          </xsl:template>
+  <xsl:template mode="page-title" match="*">
+    <xsl:apply-templates mode="page-specific-title" select="."/>
+    <xsl:text> &#8212; </xsl:text>
+    <xsl:value-of select="$site-title"/>
+  </xsl:template>
 
-          <xsl:template mode="page-specific-title" match="page">
-            <xsl:apply-templates select="( xhtml:h1
-                                         | xhtml:div/xhtml:h1
-                                         | xhtml:h2
-                                         | xhtml:div/xhtml:h2
-                                         )[1]
-                                         /node()"/>
-          </xsl:template>
+  <xsl:template mode="page-specific-title" match="page">
+    <xsl:apply-templates select="( xhtml:h1
+                                 | xhtml:div/xhtml:h1
+                                 | xhtml:h2
+                                 | xhtml:div/xhtml:h2
+                                 )[1]
+                                 /node()"/>
+  </xsl:template>
 
-                  <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
-                  <xsl:template mode="page-specific-title" match="page[@title]">
-                    <xsl:value-of select="@*:title"/>
-                  </xsl:template>
+  <!-- TODO: We should stop using <page> for product pages. It should change to <Product> -->
+  <xsl:template mode="page-specific-title" match="page[@title]">
+    <xsl:value-of select="@*:title"/>
+  </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[product-info/@name]">
-                    <xsl:value-of select="(product-info/@name)[1]"/>
-                  </xsl:template>
+  <xsl:template mode="page-specific-title" match="page[product-info/@name]">
+    <xsl:value-of select="(product-info/@name)[1]"/>
+  </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="page[product-info/name]">
-                    <xsl:apply-templates select="product-info/name[1]"/>
-                  </xsl:template>
+  <xsl:template mode="page-specific-title" match="page[product-info/name]">
+    <xsl:apply-templates select="product-info/name[1]"/>
+  </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="Project">
-                    <xsl:apply-templates select="name/node()"/>
-                  </xsl:template>
+  <xsl:template mode="page-specific-title" match="Project">
+    <xsl:apply-templates select="name/node()"/>
+  </xsl:template>
 
-                  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial">
-                    <xsl:apply-templates select="title/node()"/>
-                  </xsl:template>
+  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial">
+    <xsl:apply-templates select="title/node()"/>
+  </xsl:template>
 
   <!-- Handle errors -->
   <xsl:template match="errors">
-     <script type="text/javascript">
-         <xsl:text>_gaq.push(["_trackEvent", "</xsl:text><xsl:value-of select="$error"/><xsl:text>", location.pathname + location.search, document.referrer, 0, true]);</xsl:text>
-     </script>
-     <h2>
-         <xsl:value-of select="$error"/>
-         <xsl:text> &#8212; </xsl:text>
-         <xsl:value-of select="$errorMessage"/>
-     </h2>
-     <xsl:if test="not(xdmp:host-name(xdmp:host()) = ('community.marklogic.com', 'developer.marklogic.com'))">
-         <pre style="overflow: auto">
-            <xsl:value-of select="$errorDetail"/>
-         </pre>
-     </xsl:if>
+    <script type="text/javascript">
+      <xsl:text>_gaq.push(["_trackEvent", "</xsl:text><xsl:value-of select="$error"/><xsl:text>", location.pathname + location.search, document.referrer, 0, true]);</xsl:text>
+    </script>
+    <h2>
+      <xsl:value-of select="$error"/>
+      <xsl:text> &#8212; </xsl:text>
+      <xsl:value-of select="$errorMessage"/>
+    </h2>
+    <xsl:if test="not(xdmp:host-name(xdmp:host()) = ('community.marklogic.com', 'developer.marklogic.com'))">
+      <pre style="overflow: auto">
+        <xsl:value-of select="$errorDetail"/>
+      </pre>
+    </xsl:if>
   </xsl:template>
 
   <!-- Pre-populate the search box, if applicable -->
@@ -310,18 +310,18 @@
     </h2>
   </xsl:template>
 
-          <xsl:template mode="page-heading" match="*">
-            <xsl:apply-templates mode="page-specific-title" select="."/>
-            <xsl:apply-templates mode="page-heading-suffix" select="."/>
-          </xsl:template>
+  <xsl:template mode="page-heading" match="*">
+    <xsl:apply-templates mode="page-specific-title" select="."/>
+    <xsl:apply-templates mode="page-heading-suffix" select="."/>
+  </xsl:template>
 
-                  <xsl:template mode="page-heading-suffix" match="*"/>
-                  <!-- Append Atom feed link to Blog page heading -->
-                  <xsl:template mode="page-heading-suffix" match="page[$external-uri eq '/blog']">
-                    <a href="/blog/atom.xml?feed=blog">
-                      <img src="/images/i_rss.png" alt="(RSS)" width="24" height="23"/>
-                    </a>
-                  </xsl:template>
+  <xsl:template mode="page-heading-suffix" match="*"/>
+  <!-- Append Atom feed link to Blog page heading -->
+  <xsl:template mode="page-heading-suffix" match="page[$external-uri eq '/blog']">
+    <a href="/blog/atom.xml?feed=blog">
+      <img src="/images/i_rss.png" alt="(RSS)" width="24" height="23"/>
+    </a>
+  </xsl:template>
 
   <!-- Conditional template support: process the first child that matches -->
   <xsl:template match="choose">
@@ -416,7 +416,7 @@
         <div class="tags">
           <xsl:for-each select="tags/tag">
             <a class="tag btn btn-info btn-xs">
-               <xsl:attribute name="href">/search?q=tag%3A<xsl:value-of select="."/></xsl:attribute>
+              <xsl:attribute name="href">/search?q=tag%3A<xsl:value-of select="."/></xsl:attribute>
               <xsl:value-of select="."/></a>
           </xsl:for-each>
         </div>

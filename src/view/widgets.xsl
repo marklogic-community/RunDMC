@@ -32,64 +32,64 @@
     <xsl:apply-templates mode="widget" select="$widget-config/widgets/widget[*[ml:matches-current-page(.)]]"/>
   </xsl:template>
 
-          <xsl:template mode="widget" match="widget[@feature]">
-            <div class="section special">
-              <div class="head">
-                <h2>
-                  <xsl:apply-templates select="u:get-doc(@feature)/feature/title/node()"/>
-                </h2>
-              </div>
-              <div class="body">
-                <xsl:apply-templates mode="feature-content" select="u:get-doc(@feature)/feature/(* except title)">
-                  <xsl:with-param name="is-widget" select="true()" tunnel="yes"/>
-                </xsl:apply-templates>
-              </div>
-            </div>
-          </xsl:template>
+  <xsl:template mode="widget" match="widget[@feature]">
+    <div class="section special">
+      <div class="head">
+        <h2>
+          <xsl:apply-templates select="u:get-doc(@feature)/feature/title/node()"/>
+        </h2>
+      </div>
+      <div class="body">
+        <xsl:apply-templates mode="feature-content" select="u:get-doc(@feature)/feature/(* except title)">
+          <xsl:with-param name="is-widget" select="true()" tunnel="yes"/>
+        </xsl:apply-templates>
+      </div>
+    </div>
+  </xsl:template>
 
-          <xsl:template mode="widget" match="widget">
-            <section class="widget" id="{@id}">
-              <xsl:if test="not(empty(@href)) and exists(u:get-doc(@href)/widget/@class)">
-                  <xsl:attribute name="class"> 
-                      <xsl:value-of select="concat('section ', u:get-doc(@href)/widget/@class)"/>
-                  </xsl:attribute>
-              </xsl:if>
-              <xsl:apply-templates mode="widget-content" select="."/>
-            </section>
-          </xsl:template>
+  <xsl:template mode="widget" match="widget">
+    <section class="widget" id="{@id}">
+      <xsl:if test="not(empty(@href)) and exists(u:get-doc(@href)/widget/@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="concat('section ', u:get-doc(@href)/widget/@class)"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates mode="widget-content" select="."/>
+    </section>
+  </xsl:template>
 
-                  <xsl:template mode="widget-content" match="widget">
-                    <xsl:apply-templates select="u:get-doc(@href)/widget/node()"/>
-                  </xsl:template>
+  <xsl:template mode="widget-content" match="widget">
+    <xsl:apply-templates select="u:get-doc(@href)/widget/node()"/>
+  </xsl:template>
 
-                  <xsl:template mode="widget-content" match="widget[@xquery]">
-                    <xsl:copy-of select="ml:xquery-widget(@xquery)"/>
-                  </xsl:template>
+  <xsl:template mode="widget-content" match="widget[@xquery]">
+    <xsl:copy-of select="ml:xquery-widget(@xquery)"/>
+  </xsl:template>
 
-                  <xsl:template mode="widget-content" match="widget[@xslt]">
-                    <xsl:copy-of select="ml:xslt-widget(@xslt)"/>
-                  </xsl:template>
+  <xsl:template mode="widget-content" match="widget[@xslt]">
+    <xsl:copy-of select="ml:xslt-widget(@xslt)"/>
+  </xsl:template>
 
 
-          <xsl:function name="ml:matches-current-page" as="xs:boolean">
-            <xsl:param name="element" as="element()"/>
-            <xsl:apply-templates mode="matches-current-page" select="$element"/>
-          </xsl:function>
+  <xsl:function name="ml:matches-current-page" as="xs:boolean">
+    <xsl:param name="element" as="element()"/>
+    <xsl:apply-templates mode="matches-current-page" select="$element"/>
+  </xsl:function>
 
-                  <xsl:template mode="matches-current-page" match="page[@href]">
-                    <xsl:sequence select="@href eq $external-uri"/>
-                  </xsl:template>
+  <xsl:template mode="matches-current-page" match="page[@href]">
+    <xsl:sequence select="@href eq $external-uri"/>
+  </xsl:template>
 
-                  <xsl:template mode="matches-current-page" match="page-tree">
-                    <xsl:sequence select="@root = $current-page/ancestor-or-self::page/@href"/>
-                  </xsl:template>
+  <xsl:template mode="matches-current-page" match="page-tree">
+    <xsl:sequence select="@root = $current-page/ancestor-or-self::page/@href"/>
+  </xsl:template>
 
-                  <xsl:template mode="matches-current-page" match="page-children">
-                    <xsl:sequence select="@parent = $current-page/ancestor::page/@href"/>
-                  </xsl:template>
+  <xsl:template mode="matches-current-page" match="page-children">
+    <xsl:sequence select="@parent = $current-page/ancestor::page/@href"/>
+  </xsl:template>
 
-                  <xsl:template mode="matches-current-page" match="*">
-                    <xsl:sequence select="node-name($content/*) eq node-name(.)"/>
-                  </xsl:template>
+  <xsl:template mode="matches-current-page" match="*">
+    <xsl:sequence select="node-name($content/*) eq node-name(.)"/>
+  </xsl:template>
 
 </xsl:stylesheet>
