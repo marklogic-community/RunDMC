@@ -44,65 +44,65 @@
 
   <xsl:template match="login-menu">
     <nav id="login-menu-nav">
-        <xsl:if test="not(users:signupsEnabled())">
-            <xsl:attribute name="style">display:none</xsl:attribute>
-        </xsl:if>
-        <ul>
-            <li>
-                <button type="button" class="drop-down-trigger btn btn-default" id="signup-trigger"
-                        data-url="{$srv:primary-server}/people/signup">
-                    <xsl:if test="users:getCurrentUserName()">
-                        <xsl:attribute name="style">display:none</xsl:attribute>
-                    </xsl:if>
-                    Sign up
-                </button>
-            </li>
-            <li>
-                <button type="button" class="drop-down-trigger btn btn-default" id="login-trigger">
-                    <xsl:if test="users:getCurrentUserName()">
-                        <xsl:attribute name="style">display:none</xsl:attribute>
-                    </xsl:if>
-                    Log in
-                </button>
-            </li>
-            <li>
-                <button type="button" class="drop-down-trigger btn btn-default" id="session-trigger">
-                    <xsl:if test="empty(users:getCurrentUserName())">
-                        <xsl:attribute name="style">display:none</xsl:attribute>
-                    </xsl:if>
-                    <xsl:value-of select="users:getCurrentUserName()"/>
-                </button>
-            </li>
-        </ul>
+      <xsl:if test="not(users:signupsEnabled())">
+        <xsl:attribute name="style">display:none</xsl:attribute>
+      </xsl:if>
+      <ul>
+        <li>
+          <button type="button" class="drop-down-trigger btn btn-default" id="signup-trigger"
+                  data-url="{$srv:primary-server}/people/signup">
+            <xsl:if test="users:getCurrentUserName()">
+              <xsl:attribute name="style">display:none</xsl:attribute>
+            </xsl:if>
+            Sign up
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drop-down-trigger btn btn-default" id="login-trigger">
+            <xsl:if test="users:getCurrentUserName()">
+              <xsl:attribute name="style">display:none</xsl:attribute>
+            </xsl:if>
+            Log in
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drop-down-trigger btn btn-default" id="session-trigger">
+            <xsl:if test="empty(users:getCurrentUserName())">
+              <xsl:attribute name="style">display:none</xsl:attribute>
+            </xsl:if>
+            <xsl:value-of select="users:getCurrentUserName()"/>
+          </button>
+        </li>
+      </ul>
     </nav>
     <fieldset id="login-menu" class="drop-down-menu">
-        <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
-            <div style="clear: both" id="login-error"/>
-            <div class="form-group">
-                <label class="control-label" for="email">Email:</label>
-                <input class="required email form-control" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="password">Password:</label>
-                <input class="password required form-control" required="required" id="password" name="password" title="password" value="" type="password"/>
-            </div>
-            <div class="row">
-                <button onclick="return false;" class="btn btn-sm btn-default col-md-4" id="login_submit" type="button">Log in</button>
-                <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm btn-default col-md-5" id="recovery">Forgot password?</button>
-            </div>
-        </form>
+      <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
+        <div style="clear: both" id="login-error"/>
+        <div class="form-group">
+          <label class="control-label" for="email">Email:</label>
+          <input class="required email form-control" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="password">Password:</label>
+          <input class="password required form-control" required="required" id="password" name="password" title="password" value="" type="password"/>
+        </div>
+        <div class="row">
+          <button onclick="return false;" class="btn btn-sm btn-default col-md-4" id="login_submit" type="button">Log in</button>
+          <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm btn-default col-md-5" id="recovery">Forgot password?</button>
+        </div>
+      </form>
     </fieldset>
     <fieldset id="session-menu" class="drop-down-menu">
-        <p> <a id="profile" href="{$srv:primary-server}/people/profile"><span>Edit Profile</span></a> </p>
-        <p id="separator"/>
-        <p class="last">
-            <a id="logout" href="#"><span>Log out</span></a>
-        </p>
+      <p> <a id="profile" href="{$srv:primary-server}/people/profile"><span>Edit Profile</span></a> </p>
+      <p id="separator"/>
+      <p class="last">
+        <a id="logout" href="#"><span>Log out</span></a>
+      </p>
     </fieldset>
   </xsl:template>
 
   <xsl:template match="top-nav">
-        <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
+    <xsl:apply-templates mode="top-nav" select="$navigation/*/page[not(@hide eq 'yes')]"/>
   </xsl:template>
 
   <xsl:template mode="top-nav" match="page">
@@ -235,41 +235,41 @@
     </xsl:if>
   </xsl:template>
 
-          <xsl:template mode="article-toc" match="xhtml:h3 | xhtml:figure">
-            <li>
-              <span>
-                <xsl:apply-templates mode="article-toc-link" select="."/>
-              </span>
-            </li>
-          </xsl:template>
+  <xsl:template mode="article-toc" match="xhtml:h3 | xhtml:figure">
+    <li>
+      <span>
+        <xsl:apply-templates mode="article-toc-link" select="."/>
+      </span>
+    </li>
+  </xsl:template>
 
-                  <xsl:template mode="article-toc-link" match="xhtml:h3">
-                    <a href="#{generate-id(.)}">
-                      <xsl:value-of select="."/>
-                    </a>
-                  </xsl:template>
+  <xsl:template mode="article-toc-link" match="xhtml:h3">
+    <a href="#{generate-id(.)}">
+      <xsl:value-of select="."/>
+    </a>
+  </xsl:template>
 
-                  <xsl:template mode="article-toc-link" match="xhtml:figure">
-                    <a href="#{@id}">
-                      <xsl:value-of select="."/>
-                    </a>
-                  </xsl:template>
+  <xsl:template mode="article-toc-link" match="xhtml:figure">
+    <a href="#{@id}">
+      <xsl:value-of select="."/>
+    </a>
+  </xsl:template>
 
-          <xsl:template match="xhtml:h3" priority="1">
-            <xsl:param name="annotate-headings" tunnel="yes" select="false()"/>
-            <xsl:choose>
-              <xsl:when test="$annotate-headings">
-                <h3>
-                  <xsl:apply-templates select="@*"/>
-                  <a name="{generate-id(.)}"/>
-                  <xsl:apply-templates/>
-                </h3>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:next-match/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:template>
+  <xsl:template match="xhtml:h3" priority="1">
+    <xsl:param name="annotate-headings" tunnel="yes" select="false()"/>
+    <xsl:choose>
+      <xsl:when test="$annotate-headings">
+        <h3>
+          <xsl:apply-templates select="@*"/>
+          <a name="{generate-id(.)}"/>
+          <xsl:apply-templates/>
+        </h3>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 
   <xsl:template match="sub-nav">
@@ -292,64 +292,64 @@
     </xsl:if>
   </xsl:template>
 
-          <xsl:template mode="sub-nav" match="group">
-            <h2>
-              <xsl:apply-templates mode="nav-text" select="@display"/>
-            </h2>
-            <ul>
-              <xsl:apply-templates mode="sub-nav" select="page | group"/>
-            </ul>
-          </xsl:template>
+  <xsl:template mode="sub-nav" match="group">
+    <h2>
+      <xsl:apply-templates mode="nav-text" select="@display"/>
+    </h2>
+    <ul>
+      <xsl:apply-templates mode="sub-nav" select="page | group"/>
+    </ul>
+  </xsl:template>
 
-                  <xsl:template mode="sub-nav" match="group/group">
-                    <li>
-                      <xsl:apply-templates mode="sub-nav-current-att" select="."/>
-                      <span>
-                        <xsl:apply-templates mode="nav-text" select="@display"/>
-                      </span>
-                      <ul>
-                        <xsl:apply-templates mode="sub-nav" select="page | group"/>
-                      </ul>
-                    </li>
-                  </xsl:template>
-
-
-                  <!-- TODO: Find out whether nested lists should be supported. The JavaScript appears to be broken currently. -->
-                  <xsl:template mode="sub-nav" match="page[ not(exists(./@hide)) ] ">
-                    <li>
-                        <xsl:apply-templates mode="sub-nav-current-att" select="."/>
-                            <a href="{@href}">
-                               <xsl:variable name="short-description"
-                                             select="document(concat(@href, '.xml'))//ml:short-description"/>
-                               <xsl:if test="$short-description">
-                                    <xsl:attribute name="class">stip</xsl:attribute>
-                                    <xsl:attribute name="title">
-                                        <xsl:value-of select="$short-description"/>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:apply-templates mode="nav-text" select="@display"/>
-                            </a>
-                    </li>
-                  </xsl:template>
-
-                          <xsl:template mode="sub-nav-current-att" match="*"/>
-
-                          <xsl:template mode="sub-nav-current-att" match="*[. intersect $page-in-navigation/ancestor-or-self::*]
-                                                                        | *[@href eq ancestor::page/@href
-                                                                                 and ancestor::page intersect $page-in-navigation]">
-                            <xsl:attribute name="class">current</xsl:attribute>
-                          </xsl:template>
-
-                          <!-- Exception: don't expand when initial expansion is explicitly disabled. This is useful
-                               for the "Blog" navigation in particular, where a post may appear in multiple places in the sub-navigation.
-                          -->
-                          <xsl:template mode="sub-nav-current-att" match="group[@disable-initial-expansion eq 'yes']//page" priority="1"/>
+  <xsl:template mode="sub-nav" match="group/group">
+    <li>
+      <xsl:apply-templates mode="sub-nav-current-att" select="."/>
+      <span>
+        <xsl:apply-templates mode="nav-text" select="@display"/>
+      </span>
+      <ul>
+        <xsl:apply-templates mode="sub-nav" select="page | group"/>
+      </ul>
+    </li>
+  </xsl:template>
 
 
-          <xsl:template mode="sub-nav" match="blog-posts-grouped-by-date">
-            <xsl:variable name="tree">
-            </xsl:variable>
-          </xsl:template>
+  <!-- TODO: Find out whether nested lists should be supported. The JavaScript appears to be broken currently. -->
+  <xsl:template mode="sub-nav" match="page[ not(exists(./@hide)) ] ">
+    <li>
+      <xsl:apply-templates mode="sub-nav-current-att" select="."/>
+      <a href="{@href}">
+        <xsl:variable name="short-description"
+                      select="document(concat(@href, '.xml'))//ml:short-description"/>
+        <xsl:if test="$short-description">
+          <xsl:attribute name="class">stip</xsl:attribute>
+          <xsl:attribute name="title">
+            <xsl:value-of select="$short-description"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:apply-templates mode="nav-text" select="@display"/>
+      </a>
+    </li>
+  </xsl:template>
+
+  <xsl:template mode="sub-nav-current-att" match="*"/>
+
+  <xsl:template mode="sub-nav-current-att" match="*[. intersect $page-in-navigation/ancestor-or-self::*]
+                                                | *[@href eq ancestor::page/@href
+                                                         and ancestor::page intersect $page-in-navigation]">
+    <xsl:attribute name="class">current</xsl:attribute>
+  </xsl:template>
+
+  <!-- Exception: don't expand when initial expansion is explicitly disabled. This is useful
+       for the "Blog" navigation in particular, where a post may appear in multiple places in the sub-navigation.
+  -->
+  <xsl:template mode="sub-nav-current-att" match="group[@disable-initial-expansion eq 'yes']//page" priority="1"/>
+
+
+  <xsl:template mode="sub-nav" match="blog-posts-grouped-by-date">
+    <xsl:variable name="tree">
+    </xsl:variable>
+  </xsl:template>
 
 
   <!-- We use an id on certain pages (search results) -->
@@ -368,52 +368,52 @@
     </xsl:attribute>
   </xsl:template>
 
-          <!-- "blog" is a misnomer, but it means: collapse the sub-nav by default -->
-          <xsl:template mode="body-class" match="page[@closed eq 'yes']
-                                               | *   [@closed eq 'yes']//page">blog</xsl:template>
-          <xsl:template mode="body-class" match="*"/>
+  <!-- "blog" is a misnomer, but it means: collapse the sub-nav by default -->
+  <xsl:template mode="body-class" match="page[@closed eq 'yes']
+                                       | *   [@closed eq 'yes']//page">blog</xsl:template>
+  <xsl:template mode="body-class" match="*"/>
 
-          <xsl:template mode="body-class-extra" match="*[@disable-comments eq 'yes']"> nocomments</xsl:template>
-          <xsl:template mode="body-class-extra" match="*"/>
+  <xsl:template mode="body-class-extra" match="*[@disable-comments eq 'yes']"> nocomments</xsl:template>
+  <xsl:template mode="body-class-extra" match="*"/>
 
   <xsl:template match="page-nav">
-        <div class="pagination_nav">
-            <xsl:if test="$content/page/@page/number() gt 1">
-            <p class="pagination_prev"><button
-                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}"
-                accesskey="p" rel="prev"
-                class="blue">&#171; Previous</button><span>
-                <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
-            </xsl:if>
-            <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
-            <p class="pagination_next"><button
-                data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}"
-                accesskey="n" rel="next"
-                class="blue">Next &#187;</button><span>
-                <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
-            </xsl:if>
-        </div>
+    <div class="pagination_nav">
+      <xsl:if test="$content/page/@page/number() gt 1">
+        <p class="pagination_prev"><button
+            data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/@href/string()}"
+            accesskey="p" rel="prev"
+            class="blue">&#171; Previous</button><span>
+            <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() - 1)]/string()"/></span></p>
+      </xsl:if>
+      <xsl:if test="$content/page/@page/number() lt count(doc($content/page/@nav)/nav/page/number())">
+        <p class="pagination_next"><button
+            data-url="{doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/@href/string()}"
+            accesskey="n" rel="next"
+            class="blue">Next &#187;</button><span>
+            <xsl:value-of select="doc($content/page/@nav)/nav/page[position() = ($content/page/@page/number() + 1)]/string()"/></span></p>
+      </xsl:if>
+    </div>
   </xsl:template>
 
   <xsl:template match="sub-nav[$content/page/@multi]">
-      <section class="subnav">
+    <section class="subnav">
       <h2>Contents</h2>
       <ul class="categories multi-page-toc">
-          <xsl:apply-templates mode="multi-page-toc" select="doc($content/page/@nav)/nav/page"/>
+        <xsl:apply-templates mode="multi-page-toc" select="doc($content/page/@nav)/nav/page"/>
       </ul>
-      </section>
+    </section>
   </xsl:template>
 
-          <xsl:template mode="multi-page-toc" match="page">
-            <li>
-              <xsl:if test="position() = $content/ml:page/@page/number()">
-                 <xsl:attribute name="class">current</xsl:attribute>
-              </xsl:if>
-              <a href="{@href}" class="stip">
-                 <xsl:value-of select="string()"/>
-              </a>
-            </li>
-          </xsl:template>
+  <xsl:template mode="multi-page-toc" match="page">
+    <li>
+      <xsl:if test="position() = $content/ml:page/@page/number()">
+        <xsl:attribute name="class">current</xsl:attribute>
+      </xsl:if>
+      <a href="{@href}" class="stip">
+        <xsl:value-of select="string()"/>
+      </a>
+    </li>
+  </xsl:template>
 
 
   <xsl:template match="sub-nav[$content/Tutorial or $content/page/tutorial]">
@@ -425,35 +425,35 @@
     </section>
   </xsl:template>
 
-          <xsl:template mode="tutorial-toc" match="pages | page">
-            <xsl:variable name="is-current-page" select="self::pages[$original-content/Tutorial]
-                                                      or @url-name eq ml:tutorial-page-url-name($original-content)"/>
-            <li>
-              <xsl:if test="$is-current-page">
-                 <xsl:attribute name="class" select="'current'"/>
-              </xsl:if>
-              <xsl:variable name="href">
-                <xsl:apply-templates mode="tutorial-page-href" select="."/>
-              </xsl:variable>
-              <span>
-                <a href="{$href}" class="stip">
-                  <xsl:apply-templates mode="tutorial-page-title" select="."/>
-                </a>
-              </span>
-              <xsl:if test="$is-current-page">
-                <ul>
-                  <xsl:apply-templates mode="tutorial-toc-section" select="$content//xhtml:h3"/>
-                </ul>
-              </xsl:if>
-            </li>
-          </xsl:template>
+  <xsl:template mode="tutorial-toc" match="pages | page">
+    <xsl:variable name="is-current-page" select="self::pages[$original-content/Tutorial]
+                                              or @url-name eq ml:tutorial-page-url-name($original-content)"/>
+    <li>
+      <xsl:if test="$is-current-page">
+        <xsl:attribute name="class" select="'current'"/>
+      </xsl:if>
+      <xsl:variable name="href">
+        <xsl:apply-templates mode="tutorial-page-href" select="."/>
+      </xsl:variable>
+      <span>
+        <a href="{$href}" class="stip">
+          <xsl:apply-templates mode="tutorial-page-title" select="."/>
+        </a>
+      </span>
+      <xsl:if test="$is-current-page">
+        <ul>
+          <xsl:apply-templates mode="tutorial-toc-section" select="$content//xhtml:h3"/>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
 
-                  <xsl:template mode="tutorial-toc-section" match="xhtml:h3">
-                    <li>
-                      <a href="#{@id}">
-                        <xsl:value-of select="."/>
-                      </a>
-                    </li>
-                  </xsl:template>
+  <xsl:template mode="tutorial-toc-section" match="xhtml:h3">
+    <li>
+      <a href="#{@id}">
+        <xsl:value-of select="."/>
+      </a>
+    </li>
+  </xsl:template>
 
 </xsl:stylesheet>
