@@ -36,6 +36,7 @@
           <Pages         doc-type="page"         path="/pages"/>
           <Media         doc-type="media"        path="/media"/>
           <Author        doc-type="author"       path="/author"/>
+          <OnDemand      doc-type="ondemand"     path="/ondemand"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -320,5 +321,6 @@
   <xsl:template mode="edit-path" match="Event"       >/events/edit</xsl:template>
   <xsl:template mode="edit-path" match="page"        >/pages/edit</xsl:template>
   <xsl:template mode="edit-path" match="Author"      >/author/edit</xsl:template>
+  <xsl:template mode="edit-path" match="OnDemand"    >/ondemand/edit</xsl:template>
 
 </xsl:stylesheet>

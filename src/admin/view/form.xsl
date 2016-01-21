@@ -304,10 +304,20 @@
       <xsl:value-of select="form:field-name(.)"/>
       <xsl:apply-templates mode="field-name-suffix" select="."/>
     </xsl:variable>
+    <xsl:variable name="input-type">
+      <xsl:choose>
+        <xsl:when test="./@type">
+          <xsl:value-of select="./@type"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>text</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <div class="control-container">
       <input id ="{form:field-name(.)}_{generate-id()}"
              name="{$field-name}"
-             type="text"
+             type="{$input-type}"
              value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
         <xsl:apply-templates mode="class-att" select="."/>
       </input>
