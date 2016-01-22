@@ -136,6 +136,7 @@ declare variable $WWW-TYPE-MAPPINGS :=
     <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
     <type label="Tutorials">category/tutorial</type>
     <type label="Projects">category/code</type>
+    <type label="On Demand">category/mlu</type>
   </type-mappings>;
 
 declare variable $USER-ROLE := "RunDMC-role";
