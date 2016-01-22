@@ -5,12 +5,15 @@
       xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
       xmlns:values="http://developer.marklogic.com/site/internal/form/values"
       xmlns="http://www.w3.org/1999/xhtml"
+      form:enctype="multipart/form-data"
+      form:create-target="/admin/controller/ondemand.xqy"
+      form:replace-target="/admin/controller/ondemand.xqy"
       status="Draft" label:status="Status"      values:status="Draft Published"
       form:uri-prefix-for-new-docs="/ondemand/">
   <ml:name form:label="Title"
             form:wide="yes"/>
   <ml:created/>
-  <ml:href form:label="URL" form:wide="yes"/>
+  <ml:url form:label="URL" form:wide="yes"/>
 
   <ml:tags form:optional="yes">
     <ml:tag form:label="Tag"
@@ -18,12 +21,5 @@
   </ml:tags>
 
   <ml:upload form:label="Document" type="file"/>
-
-  <div>
-    <label>Document</label>
-    <div class="control-container">
-      <input type="file" name="document"/>
-    </div>
-  </div>
 
 </ml:OnDemand>
