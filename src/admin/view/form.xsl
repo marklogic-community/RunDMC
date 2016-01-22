@@ -209,7 +209,16 @@
       <xsl:apply-templates mode="labeled-controls" select="."/>
       <xsl:choose>
         <xsl:when test="string($doc-path)">
-          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');"/>
+          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
+            <xsl:choose>
+              <xsl:when test="./@form:replace-target">
+                <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:replace-target"/>', '_self');</xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="onclick">return checkValidXhtml('/admin/controller/replace.xqy', '_self');</xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          </input>
         </xsl:when>
         <xsl:otherwise>
           <input type="submit" name="submitBtn" value="Submit document">
