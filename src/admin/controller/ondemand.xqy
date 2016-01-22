@@ -23,8 +23,8 @@ let $params      := param:params()
 let $new-doc-url := $params[@name eq '~uri_prefix'] || $params[@name eq '~new_doc_slug'] || '.xml'
 let $map         := map:map()
 let $tags := $params[fn:matches(@name, "tag")]/fn:string()
-let $title := $params[@name eq "name"]/fn:string()
-let $url := $params[@name eq "url"]
+let $name := $params[@name eq "name"]/fn:string()
+let $url := $params[@name eq "url"]/fn:string()
 let $ppt := xdmp:get-request-field("upload")
 let $filtered := xdmp:document-filter($ppt)
 let $body := $filtered/html:html/html:body
@@ -32,9 +32,10 @@ let $body := $filtered/html:html/html:body
 let $new-doc :=
   document {
     <ml:OnDemand status="Draft" url="{$url}">
-      <ml:title>{$title}</ml:title>
+      <ml:name>{$name}</ml:name>
       <ml:created>{fn:current-dateTime()}</ml:created>
       <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
+      <ml:url>{$url}</ml:url>
       <ml:tags>
         {
           for $tag in $tags
