@@ -47,7 +47,7 @@ let $created as xs:dateTime :=
     fn:current-dateTime()
 let $new-doc :=
   document {
-    <ml:OnDemand status="Draft" url="{$url}">
+    <ml:OnDemand status="{$params[fn:matches(@name, "status")]}" url="{$url}">
       <ml:name>{$params[@name eq "name"]/fn:string()}</ml:name>
       <ml:created>{$created}</ml:created>
       <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
