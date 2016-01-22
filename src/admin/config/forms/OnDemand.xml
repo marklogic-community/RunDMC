@@ -10,7 +10,7 @@
       form:replace-target="/admin/controller/ondemand.xqy"
       status="Draft" label:status="Status"      values:status="Draft Published"
       form:uri-prefix-for-new-docs="/ondemand/">
-  <ml:name form:label="Title"
+  <ml:title form:label="Title"
             form:wide="yes"/>
   <ml:created/>
   <ml:url form:label="URL" form:wide="yes"/>

@@ -352,6 +352,10 @@
     <xsl:value-of select="api:function[1]/@fullname"/>
   </xsl:template>
 
+  <xsl:template mode="page-specific-title" match="/ml:OnDemand">
+    <xsl:value-of select="ml:title"/>
+  </xsl:template>
+
   <!-- TODO should not refer directly to the apidoc code. -->
   <xsl:template mode="page-specific-title" match="api:function-page[api:function[1]/@lib eq $api:MODE-REST]">
     <xsl:value-of select="api:REST-resource-heading(api:function[1]/@fullname)"/>
