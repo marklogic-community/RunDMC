@@ -287,22 +287,24 @@ declare function ss:result-uri(
   $api-version-prefix as xs:string)
 as xs:string
 {
-  concat(
-    if (xdmp:document-get-collections($uri) = $ml:WWW-COLLECTION) then
-      (: www docs specify their URL :)
-      fn:doc($uri)/node()/@url
-    else if (not($is-api-doc)) then ml:external-uri-main($uri)
-    else concat(
-      $srv:effective-api-server,
-      $api-version-prefix,
-      ml:escape-uri(
-        ml:external-uri-for-string(ss:rewrite-html-links($uri)))),
-    (: Add the highlight param if needed.
-     : The external-uri-main function never adds a query string,
-     : so we have a free hand.
-     :)
-    if (not($highlight-query)) then ''
-    else concat('?', ss:query-string(ss:param('hq', $highlight-query))))
+  if (xdmp:document-get-collections($uri) = ($ml:WWW-COLLECTION, $ml:CATEGORY-PREFIX || "mlu")) then
+    (: www, mlu docs specify their URL and don't need the ?hq= addition :)
+    fn:doc($uri)/node()/@url
+  else
+    concat(
+      if (not($is-api-doc)) then ml:external-uri-main($uri)
+      else concat(
+        $srv:effective-api-server,
+        $api-version-prefix,
+        ml:escape-uri(
+          ml:external-uri-for-string(ss:rewrite-html-links($uri)))),
+      (: Add the highlight param if needed.
+       : The external-uri-main function never adds a query string,
+       : so we have a free hand.
+       :)
+      if (not($highlight-query)) then ''
+      else concat('?', ss:query-string(ss:param('hq', $highlight-query)))
+    )
 };
 
 (: Search result values. TODO move into XML file? :)
