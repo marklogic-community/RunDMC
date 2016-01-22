@@ -7,5 +7,5 @@
       <input type="submit" value="Add New"/>
     </div>
   </form>
-  <ml:admin-author-list/>
+  <ml:admin-ondemand-list/>
 </ml:page>

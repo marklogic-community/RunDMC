@@ -90,6 +90,13 @@ declare variable $authors-by-name :=
   order by $author/name
   return $author;
 
+(: MLU OnDemand content :)
+declare variable $ondemand :=
+  for $ondemand in $OnDemand
+  order by $ondemand/ml:last-updated
+  return $ondemand;
+
+
 declare variable $media-uris :=
   cts:uri-match("/media/*") ! <uri>{.}</uri>;
 

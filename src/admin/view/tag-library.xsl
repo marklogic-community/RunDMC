@@ -187,6 +187,69 @@
     </tr>
   </xsl:template>
 
+  <xsl:template match="admin-ondemand-list">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">URI</th>
+          <th scope="col">Created</th>
+          <th scope="col">Status</th>
+          <th class="last">&#160;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="docs" select="ml:docs-by-type('OnDemand')"/>
+        <xsl:apply-templates mode="admin-ondemand-listing" select="$docs">
+        </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template mode="admin-ondemand-listing" match="*">
+    <xsl:param name="current-page-url"/>
+    <xsl:variable name="edit-path">
+      <xsl:apply-templates mode="edit-path" select="."/>
+    </xsl:variable>
+    <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
+    <tr>
+      <xsl:if test="position() mod 2 eq 0">
+        <xsl:attribute name="class">alt</xsl:attribute>
+      </xsl:if>
+      <th>
+        <a href="{$edit-link}">
+          <xsl:value-of select="title"/>
+        </a>
+      </th>
+      <td>
+        <xsl:value-of select="base-uri(.)"/>
+      </td>
+      <td>
+        <xsl:value-of select="ml:display-date-with-time(created)"/>
+      </td>
+
+      <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+      <td class="status {lower-case($effective-status)}">
+        <xsl:value-of select="$effective-status"/>
+      </td>
+      <td>
+        <a href="{$edit-link}">Edit</a>
+        <xsl:text>&#160;|&#160;</xsl:text>
+        <!-- TODO: make preview work -->
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+        <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
+        <xsl:if test="authorize:is-admin()">
+          <xsl:text>&#160;|&#160;</xsl:text>
+
+          <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+            <xsl:value-of select="$action"/>
+          </a>
+        </xsl:if>
+      </td>
+    </tr>
+  </xsl:template>
+
 
   <xsl:template match="admin-media-list">
     <table class="media-list">
@@ -228,6 +291,7 @@
                      else if ($doc-type eq 'Event')        then $ml:events-by-date
                      else if ($doc-type eq 'page')         then $ml:pages
                      else if ($doc-type eq 'author')       then $ml:authors-by-name
+                     else if ($doc-type eq 'OnDemand')     then $ml:ondemand
                      else ()"/>
   </xsl:function>
 
