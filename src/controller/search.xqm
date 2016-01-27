@@ -287,7 +287,7 @@ declare function ss:result-uri(
   $api-version-prefix as xs:string)
 as xs:string
 {
-  if (xdmp:document-get-collections($uri) = ($ml:WWW-COLLECTION, $ml:CATEGORY-PREFIX || "mlu")) then
+  if (xdmp:document-get-collections($uri) = $ml:EXTERNAL-CONTENT-COLLECTIONS) then
     (: www, mlu docs specify their URL and don't need the ?hq= addition :)
     fn:doc($uri)/node()/@url
   else

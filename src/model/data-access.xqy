@@ -127,6 +127,11 @@ else $draft-nav-location;
 (: Content from www.marklogic.com is in this collection :)
 declare variable $WWW-COLLECTION := "www.marklogic.com";
 
+declare variable $EXTERNAL-CONTENT-COLLECTIONS := (
+  $WWW-COLLECTION,
+  $ml:CATEGORY-PREFIX || "mlu"
+);
+
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
