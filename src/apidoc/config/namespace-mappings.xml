@@ -2,6 +2,7 @@
   <namespace lib="admin" uri="http://marklogic.com/xdmp/admin"/>
   <namespace lib="alert" uri="http://marklogic.com/xdmp/alert"/>
   <namespace lib="cdict" uri="http://marklogic.com/xdmp/custom-dictionary"/>
+  <namespace lib="clang" uri="http://marklogic.com/xdmp/custom-language"/>
   <namespace lib="cpf" uri="http://marklogic.com/cpf"/>
   <namespace lib="css" uri="http://marklogic.com/cpf/css"/>
   <namespace lib="cts" uri="http://marklogic.com/cts"/>
