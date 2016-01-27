@@ -1175,12 +1175,6 @@
     </input>
   </xsl:template>
 
-  <xsl:template match="cornify">
-    <xsl:if test="users:cornifyEnabled()">
-      &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
-    </xsl:if>
-  </xsl:template>
-
   <xsl:template match="signup-form-hidden-fields">
     <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
