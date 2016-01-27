@@ -1250,4 +1250,11 @@
     </meta>
   </xsl:template>
 
+  <xsl:template match="copyright">
+    <p align="center" id="copyright">Copyright © 2004 -
+      <xsl:value-of select="fn:year-from-date(fn:current-date())"/>
+      MarkLogic Corporation. All rights reserved.
+    </p>
+  </xsl:template>
+
 </xsl:stylesheet>
