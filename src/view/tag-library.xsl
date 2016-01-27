@@ -1251,7 +1251,7 @@
   </xsl:template>
 
   <xsl:template match="copyright">
-    <p align="center" id="copyright">Copyright © 2004 -
+    <p align="center" id="copyright">Copyright ©
       <xsl:value-of select="fn:year-from-date(fn:current-date())"/>
       MarkLogic Corporation. All rights reserved.
     </p>
