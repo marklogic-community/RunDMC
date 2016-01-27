@@ -44,7 +44,8 @@ declare variable $doc-element-names := (xs:QName("Announcement"),
   xs:QName("Project"),
   xs:QName("Post"),
   xs:QName("page"),
-  xs:QName("Author")
+  xs:QName("Author"),
+  xs:QName("OnDemand")
 );
 
 declare variable $Announcements := ml:docs( xs:QName("Announcement"));
@@ -53,6 +54,7 @@ declare variable $Articles      := ml:docs((xs:QName("Article"), xs:QName("Tutor
 declare variable $Projects      := ml:docs( xs:QName("Project"));
 declare variable $pages         := ml:docs( xs:QName("page"));
 declare variable $Authors       := ml:docs( xs:QName("Author"));
+declare variable $OnDemand      := ml:docs( xs:QName("OnDemand"));
 declare variable $Posts         := ml:docs((xs:QName("Post"), xs:QName("Announcement"), xs:QName("Event")));
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
@@ -88,6 +90,13 @@ declare variable $authors-by-name :=
   order by $author/name
   return $author;
 
+(: MLU OnDemand content :)
+declare variable $ondemand :=
+  for $ondemand in $OnDemand
+  order by $ondemand/ml:last-updated
+  return $ondemand;
+
+
 declare variable $media-uris :=
   cts:uri-match("/media/*") ! <uri>{.}</uri>;
 
@@ -118,6 +127,11 @@ else $draft-nav-location;
 (: Content from www.marklogic.com is in this collection :)
 declare variable $WWW-COLLECTION := "www.marklogic.com";
 
+declare variable $EXTERNAL-CONTENT-COLLECTIONS := (
+  $WWW-COLLECTION,
+  $ml:CATEGORY-PREFIX || "mlu"
+);
+
 (: Content that will be searched FROM www.marklogic.com will be in these collections :)
 declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
@@ -134,6 +148,7 @@ declare variable $WWW-TYPE-MAPPINGS :=
     <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
     <type label="Tutorials">category/tutorial</type>
     <type label="Projects">category/code</type>
+    <type label="On Demand">category/mlu</type>
   </type-mappings>;
 
 declare variable $USER-ROLE := "RunDMC-role";
@@ -218,6 +233,7 @@ as xs:string+
   else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
   else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else if (contains($doc-uri, "/cpp/"))            then "cpp"
+  else if (starts-with($doc-uri, "/ondemand/"))    then "mlu"
   else (
     let $doc as node() := if ($new-doc) then $new-doc else doc($doc-uri)
     return (
