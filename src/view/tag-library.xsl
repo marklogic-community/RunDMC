@@ -1175,12 +1175,6 @@
     </input>
   </xsl:template>
 
-  <xsl:template match="cornify">
-    <xsl:if test="users:cornifyEnabled()">
-      &#160;<a href="http://www.cornify.com" onclick="cornify_add();return false;">(cornify)</a>
-    </xsl:if>
-  </xsl:template>
-
   <xsl:template match="signup-form-hidden-fields">
     <xsl:if test="xdmp:get-request-field('d') and not(xdmp:get-request-field('d') eq '')">
       <input type="hidden" name="s_download" id="s_download">
@@ -1254,6 +1248,13 @@
     <meta property="og:url">
       <xsl:attribute name="content"><xsl:value-of select="u:get-full-url()"/></xsl:attribute>
     </meta>
+  </xsl:template>
+
+  <xsl:template match="copyright">
+    <p align="center" id="copyright">Copyright ©
+      <xsl:value-of select="fn:year-from-date(fn:current-date())"/>
+      MarkLogic Corporation. All rights reserved.
+    </p>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>Pages</h1>
+  <p class="intro">This is the On Demand page</p>
+  <form action="/ondemand/edit" class="add_ondemand" enctype="application/x-www-form-urlencoded" method="get">
+    <div>
+      <input type="submit" value="Add New"/>
+    </div>
+  </form>
+  <ml:admin-ondemand-list/>
+</ml:page>
