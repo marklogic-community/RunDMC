@@ -129,7 +129,17 @@
   </xsl:template>
 
   <xsl:template mode="generate-form" match="*">
-    <form class="adminform" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="adminform" method="post">
+      <xsl:attribute name="enctype">
+        <xsl:choose>
+          <xsl:when test="./@form:enctype">
+            <xsl:value-of select="./@form:enctype"/>
+          </xsl:when>
+          <xsl:otherwise>
+            application/x-www-form-urlencoded
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
       <input type="hidden" name="~edit_form_url" value="{$orig-path}"/>
 
       <xsl:if test="$params[@name eq '~updated']">
@@ -199,10 +209,28 @@
       <xsl:apply-templates mode="labeled-controls" select="."/>
       <xsl:choose>
         <xsl:when test="string($doc-path)">
-          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');"/>
+          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
+            <xsl:choose>
+              <xsl:when test="./@form:replace-target">
+                <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:replace-target"/>', '_self');</xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="onclick">return checkValidXhtml('/admin/controller/replace.xqy', '_self');</xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          </input>
         </xsl:when>
         <xsl:otherwise>
-          <input type="submit" name="submitBtn" value="Submit document" onclick="return checkValidXhtml('/admin/controller/create.xqy', '_self');"/>
+          <input type="submit" name="submitBtn" value="Submit document">
+            <xsl:choose>
+              <xsl:when test="./@form:create-target">
+                <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:create-target"/>', '_self');</xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="onclick">return checkValidXhtml('/admin/controller/create.xqy', '_self');</xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          </input>
         </xsl:otherwise>
       </xsl:choose>
       <input type="submit" name="submitPreview" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
@@ -304,10 +332,20 @@
       <xsl:value-of select="form:field-name(.)"/>
       <xsl:apply-templates mode="field-name-suffix" select="."/>
     </xsl:variable>
+    <xsl:variable name="input-type">
+      <xsl:choose>
+        <xsl:when test="./@type">
+          <xsl:value-of select="./@type"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>text</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <div class="control-container">
       <input id ="{form:field-name(.)}_{generate-id()}"
              name="{$field-name}"
-             type="text"
+             type="{$input-type}"
              value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
         <xsl:apply-templates mode="class-att" select="."/>
       </input>

@@ -1,0 +1,25 @@
+<!DOCTYPE ml:Author [
+]>
+<ml:OnDemand xmlns:ml="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
+      form:enctype="multipart/form-data"
+      form:create-target="/admin/controller/ondemand.xqy"
+      form:replace-target="/admin/controller/ondemand.xqy"
+      status="Draft" label:status="Status"      values:status="Draft Published"
+      form:uri-prefix-for-new-docs="/ondemand/">
+  <ml:title form:label="Title"
+            form:wide="yes"/>
+  <ml:created/>
+  <ml:url form:label="URL" form:wide="yes"/>
+
+  <ml:tags form:optional="yes">
+    <ml:tag form:label="Tag"
+            form:repeating="yes"/>
+  </ml:tags>
+
+  <ml:upload form:label="Document" type="file"/>
+
+</ml:OnDemand>
