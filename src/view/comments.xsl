@@ -81,36 +81,36 @@
     </div>
   </xsl:template>
 
-          <!-- This format is a hybrid of Wordpress and Disqus's own dynamic embed code; whatever :-) -->
-          <xsl:template match="dq:reply">
-            <li id="dsq-comment-{dq:id}">
-              <div id="dsq-comment-body-{dq:id}" class="dsq-comment-body">
-                <div class="dsq-comment-header">
-                  <div class="dsq-cite-{dq:id}">
-                    <span class="dsq-commenter-name">
-                      <a id="dsq-author-user-{dq:id}" href="{(dq:author|dq:anonymous_author)/dq:url}" target="_blank" rel="nofollow">
-                        <!-- Pick the first one from among these different possible sources for the author name -->
-                        <xsl:value-of select="( dq:author/( dq:display_name[normalize-space(.)]
-                                                          , dq:username
-                                                          )
-                                              , dq:anonymous_author/dq:name
-                                              )[1]"/>
-                      </a>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div id="dsq-comment-message-{dq:id}" class="dsq-comment-message">
-                <xsl:value-of select="dq:message"/>
-              </div>
-              <!-- Nested replies -->
-              <xsl:if test="dq:reply">
-                <ul>
-                  <xsl:apply-templates select="dq:reply"/>
-                </ul>
-              </xsl:if>
-            </li>
-          </xsl:template>
+  <!-- This format is a hybrid of Wordpress and Disqus's own dynamic embed code; whatever :-) -->
+  <xsl:template match="dq:reply">
+    <li id="dsq-comment-{dq:id}">
+      <div id="dsq-comment-body-{dq:id}" class="dsq-comment-body">
+        <div class="dsq-comment-header">
+          <div class="dsq-cite-{dq:id}">
+            <span class="dsq-commenter-name">
+              <a id="dsq-author-user-{dq:id}" href="{(dq:author|dq:anonymous_author)/dq:url}" target="_blank" rel="nofollow">
+                <!-- Pick the first one from among these different possible sources for the author name -->
+                <xsl:value-of select="( dq:author/( dq:display_name[normalize-space(.)]
+                                                  , dq:username
+                                                  )
+                                      , dq:anonymous_author/dq:name
+                                      )[1]"/>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="dsq-comment-message-{dq:id}" class="dsq-comment-message">
+        <xsl:value-of select="dq:message"/>
+      </div>
+      <!-- Nested replies -->
+      <xsl:if test="dq:reply">
+        <ul>
+          <xsl:apply-templates select="dq:reply"/>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
 
 
   <!-- This rule renders the "Post a comment" link and comment count we see at the bottom

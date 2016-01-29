@@ -372,12 +372,6 @@ declare function users:signupsEnabled()
     true() (: not(empty(cookies:get-cookie("RUNDMC-SIGNUPS"))) :)
 };
 
-declare function users:cornifyEnabled()
-    as xs:boolean
-{
-    not(empty(cookies:get-cookie("RUNDMC-CORN")))
-};
-
 declare function users:getCurrentUser() as element(*)?
 {
     let $session := cookies:get-cookie("RUNDMC-SESSION")[1]

@@ -23,14 +23,14 @@
     </ml:Comments>
   </xsl:template>
 
-          <xsl:function name="my:convert-comments">
-            <xsl:param name="comments"/>
-            <!-- Sort comments so newest ones are listed first -->
-            <xsl:apply-templates mode="process-comments" select="$comments">
-              <xsl:sort select="map:map/map:entry[@key eq 'created_at']/map:value"
-                        order="descending"/>
-            </xsl:apply-templates>
-          </xsl:function>
+  <xsl:function name="my:convert-comments">
+    <xsl:param name="comments"/>
+    <!-- Sort comments so newest ones are listed first -->
+    <xsl:apply-templates mode="process-comments" select="$comments">
+      <xsl:sort select="map:map/map:entry[@key eq 'created_at']/map:value"
+                order="descending"/>
+    </xsl:apply-templates>
+  </xsl:function>
 
   <!-- Create a <reply> element for each comment -->
   <xsl:template mode="process-comments" match="map:value">
@@ -45,25 +45,25 @@
     </reply>
   </xsl:template>
 
-          <!-- Default conversion for entries -->
-          <xsl:template mode="convert-entries" match="map:entry">
-            <xsl:element name="{@key}">
-              <xsl:apply-templates mode="convert-values" select="map:value"/>
-            </xsl:element>
-          </xsl:template>
+  <!-- Default conversion for entries -->
+  <xsl:template mode="convert-entries" match="map:entry">
+    <xsl:element name="{@key}">
+      <xsl:apply-templates mode="convert-values" select="map:value"/>
+    </xsl:element>
+  </xsl:template>
 
-                  <!-- Default conversion for values (not graceful with multi-valued entries, of which I don't see any yet) -->
-                  <xsl:template mode="convert-values" match="map:value">
-                    <xsl:value-of select="."/>
-                  </xsl:template>
+  <!-- Default conversion for values (not graceful with multi-valued entries, of which I don't see any yet) -->
+  <xsl:template mode="convert-values" match="map:value">
+    <xsl:value-of select="."/>
+  </xsl:template>
 
-                  <!-- Map values -->
-                  <xsl:template mode="convert-values" match="map:value[@xsi:type eq xs:QName('map:map')]">
-                    <xsl:apply-templates mode="convert-entries" select="map:map/map:entry"/>
-                  </xsl:template>
+  <!-- Map values -->
+  <xsl:template mode="convert-values" match="map:value[@xsi:type eq xs:QName('map:map')]">
+    <xsl:apply-templates mode="convert-entries" select="map:map/map:entry"/>
+  </xsl:template>
 
-          <!-- No need (at least currently) to dump all the thread and forum info; so strip these out -->
-          <xsl:template mode="convert-entries" match="map:entry[@key eq 'thread'
-                                                             or @key eq 'forum']"/>
+  <!-- No need (at least currently) to dump all the thread and forum info; so strip these out -->
+  <xsl:template mode="convert-entries" match="map:entry[@key eq 'thread'
+                                                     or @key eq 'forum']"/>
 
 </xsl:stylesheet>
