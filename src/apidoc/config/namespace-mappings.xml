@@ -46,6 +46,7 @@
   <namespace lib="pkg" uri="http://marklogic.com/manage/package"/>
   <namespace lib="pdf" uri="http://marklogic.com/cpf/pdf"/>
   <namespace lib="pki" uri="http://marklogic.com/xdmp/pki"/>
+  <namespace lib="plan" uri="http://marklogic.com/plan"/>
   <namespace lib="plugin" uri="http://marklogic.com/extension/plugin"/>
   <namespace lib="ppt" uri="http://marklogic.com/cpf/powerpoint"/>
   <namespace lib="prof" uri="http://marklogic.com/xdmp/profile"/>
