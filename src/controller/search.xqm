@@ -396,6 +396,7 @@ as xs:string
   case 'hadoop' return 'i_java'
   case 'xccn' return 'i_dotnet'
   case 'other' return 'i_folder'
+  case 'mlu' return 'i_ondemand'
   (: TODO give cpp a different icon :)
   case 'cpp' return 'i_folder'
   default return 'i_folder'
