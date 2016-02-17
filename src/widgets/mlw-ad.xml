@@ -1,0 +1,5 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <a href="http://world.marklogic.com/?type=WWW&amp;publisher=MLU">
+    <img style="width:100%" src="/media/promo/mlw-2016.jpg"/>
+  </a>
+</ml:widget>
