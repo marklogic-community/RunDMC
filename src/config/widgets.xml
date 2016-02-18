@@ -124,7 +124,7 @@
 
   <widget href="/widgets/mlw-ad.xml">
     <page-tree root="/products"/>
-    <page href="/blog"/>
+    <page-tree root="/blog"/>
   </widget>
 
   <widget href="/widgets/mark-logic-bloggers.xml">
