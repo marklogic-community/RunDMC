@@ -301,7 +301,7 @@
              $VERSION-PREFIX,
              if ($is-javascript) then '/js/'
              else '/',
-             if ($is-javascript) then $object
+             if ($is-javascript) then if ($object) then $object else $lib
              else 
              $lib) }">
       <xsl:value-of select="$prefix"/>
