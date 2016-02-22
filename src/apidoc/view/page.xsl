@@ -275,6 +275,9 @@
         name="lib"
         select="api:function[1]/@lib"/>
     <xsl:variable
+        name="object"
+        select="api:function[1]/@object"/>
+    <xsl:variable
         name="is-javascript"
         select="@mode eq $api:MODE-JAVASCRIPT"/>
     <!-- Expect this to change. -->
@@ -283,18 +286,23 @@
                           else ':'"/>
     <!--
         usually the same as $lib,
-        except "spell" vs. "spell-lib" and "json" vs. "json-lib"
+	except "spell" vs. "spell-lib" and "json" vs. "json-lib".
+	Also, need to parse the string because some JavaScript objects have
+	multiple delimiters (ie, xs.time.eq).
     -->
-    <xsl:variable name="prefix"
-                  select="substring-before($name, $delimiter)"/>
+    <xsl:variable name="prefix" select="if ($is-javascript) then 
+      string-join(tokenize($name, '\.')[position() = (1 to last()-1)], '.')
+      else substring-before($name, $delimiter)"/>
     <xsl:variable name="local"
-                  select="substring-after ($name, $delimiter)"/>
+               select="substring-after ($name, concat($prefix, $delimiter))"/>
 
     <a href="{
              concat(
              $VERSION-PREFIX,
              if ($is-javascript) then '/js/'
              else '/',
+             if ($is-javascript) then $object
+             else 
              $lib) }">
       <xsl:value-of select="$prefix"/>
     </a>
