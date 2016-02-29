@@ -1582,7 +1582,7 @@ as xs:string*
   stp:function-names(
     xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
     /xdmp:zip-get($zip, .)
-    /apidoc:module/(apidoc:function | apidoc:method)[@name/string()])
+    /apidoc:module/(apidoc:function | apidoc:method)[(@name|@object)/string()])
 };
 
 declare function stp:zipfile-function-names(
