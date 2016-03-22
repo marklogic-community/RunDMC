@@ -409,8 +409,6 @@ header nav.navbar-top span.glyphicon{
 }
 #header header,
 #breadcrumb > div {
-    width: 97%;
-    margin: auto;
 }
 #header header {
     padding: 15px 0 12px;
@@ -563,11 +561,13 @@ nav ul {
 }
 
 #breadcrumb {
-    background: #FFF;
-    padding: 10px 0 20px 0;
-    font-size: 10px;
-    line-height: 100%;
-    position: relative;
+  background: #FFF;
+  padding: 10px 0 20px 0;
+  font-size: 10px;
+  line-height: 100%;
+  margin: 0 auto;
+  position: relative;
+  width: 97%
 }
 #breadcrumb a {
     color: #666;
@@ -615,7 +615,6 @@ nav ul {
     margin-top: 0;
 }
 #main h3 {
-    margin-top: 34px;
 }
 #main ul {
     padding-left: 20px;
@@ -628,6 +627,12 @@ nav ul {
 #sub {
   border-right: 1px solid #e4e4e4;
 }
+
+#sub.in,
+#sub.collapsing {
+  display: block!important;
+}
+
 #sub h2 {
     font-size: 14px;
     text-transform: uppercase;
@@ -1947,7 +1952,6 @@ div.intro p + img {
 #main > article {
     clear: both;
     border-top: 1px solid #E3E3E3;
-    margin: 20px 0;
     padding: 20px 0 0;
     position: relative;
 }
