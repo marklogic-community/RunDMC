@@ -98,13 +98,11 @@ h3 {
     margin: 0;
 }
 
-h2 {
+h1, h2 {
     color: black;
-    font-size: 27px;
 }
 
 h3 {
-    font-size: 20px;
 }
 
 /* don't color heading/links blue */
@@ -561,6 +559,7 @@ nav ul {
 #content #main_container {
   width: 97%;
   margin: auto;
+  overflow: auto;
 }
 
 #breadcrumb {
@@ -611,8 +610,6 @@ nav ul {
 }
 
 #main {
-    float: right;
-    width: 72%;
 }
 #main > :first-child {
     margin-top: 0;
@@ -630,8 +627,6 @@ nav ul {
 }
 #sub {
   border-right: 1px solid #e4e4e4;
-  margin-right: 20px;
-  width: 25%;
 }
 #sub h2 {
     font-size: 14px;
@@ -3427,7 +3422,7 @@ li.search_suggest_selected {
   top: 0;
 }
 
-#page_content .parameters blockquote { font-size: inherit; } 
-#page_content .parameters pre { font-size: inherit; } 
+#page_content .parameters blockquote { font-size: inherit; }
+#page_content .parameters pre { font-size: inherit; }
 
 /* screen.css */

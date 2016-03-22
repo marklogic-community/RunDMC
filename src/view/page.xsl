@@ -305,9 +305,9 @@
   </xsl:template>
 
   <xsl:template match="page-heading">
-    <h2>
+    <h1>
       <xsl:apply-templates mode="page-heading" select="$content/*"/>
-    </h2>
+    </h1>
   </xsl:template>
 
   <xsl:template mode="page-heading" match="*">
