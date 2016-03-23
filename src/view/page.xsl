@@ -305,9 +305,9 @@
   </xsl:template>
 
   <xsl:template match="page-heading">
-    <h2>
+    <h1>
       <xsl:apply-templates mode="page-heading" select="$content/*"/>
-    </h2>
+    </h1>
   </xsl:template>
 
   <xsl:template mode="page-heading" match="*">
@@ -389,15 +389,15 @@
 
     <article class="post">
       <header>
-        <h3>
-          <!-- If we're just displaying one post on this page, then hide this (repeated) post title -->
-          <xsl:if test="not($in-paginated-list)">
-            <xsl:attribute name="style">display: none</xsl:attribute>
-          </xsl:if>
-          <a href="{ml:external-uri(.)}">
-            <xsl:apply-templates select="title/node()"/>
-          </a>
-        </h3>
+        <!-- If we're showing the paginated list, show title as an h3. On the post detail page,
+             title will be shown elsewhere as an h1 -->
+        <xsl:if test="$in-paginated-list">
+          <h3>
+            <a href="{ml:external-uri(.)}">
+              <xsl:apply-templates select="title/node()"/>
+            </a>
+          </h3>
+        </xsl:if>
         <div class="date_author">
           <xsl:apply-templates mode="post-date" select="."/>
           <xsl:text> </xsl:text>
