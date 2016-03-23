@@ -196,7 +196,7 @@
   <xsl:template mode="breadcrumbs" match="*" name="breadcrumbs-impl">
     <xsl:param name="site-name" select="'Developer Community'"/>
     <xsl:param name="version"/>
-    <div>
+    <div class="col-xs-9">
       <a href="{ concat('/', if ($version) then $version else '') }">
         <xsl:value-of select="$site-name"/>
       </a>
