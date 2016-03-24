@@ -1,4 +1,5 @@
 (: Processes the server URL configuration in server-urls.xml :)
+xquery version "1.0-ml";
 
 module namespace s = "http://marklogic.com/rundmc/server-urls";
 
@@ -61,3 +62,4 @@ declare function s:server-url($type as xs:string)
 };
 
 (: server-urls.xqy :)
+

@@ -33,6 +33,7 @@ as xs:string
   case '6.0' return 'MarkLogic 6 Product Documentation'
   case '7.0' return 'MarkLogic 7 Product Documentation'
   case '8.0' return 'MarkLogic 8 Product Documentation'
+  case '9.0' return 'MarkLogic 9 Early Access Product Documentation'
   default return concat(
     'MarkLogic Server ', $version, ' Product Documentation')
 };
