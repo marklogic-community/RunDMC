@@ -89,6 +89,7 @@
   <namespace object="Node" uri="Node"/>
   <namespace object="NodeBuilder" uri="NodeBuilder"/>
   <namespace object="NodeList" uri="NodeList"/>
+  <namespace object="Sequence" uri="Sequence"/>
   <namespace object="TypeInfo" uri="TypeInfo"/>
   <namespace object="Value" uri="Value"/>
   <namespace object="ValueIterator" uri="ValueIterator"/>
