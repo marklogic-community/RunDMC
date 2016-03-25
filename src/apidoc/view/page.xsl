@@ -590,9 +590,9 @@
           <xsl:text>&#xA;</xsl:text>
         </xsl:if>
         <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
-        <xsl:text>) as</xsl:text>
+        <xsl:text>)</xsl:text>
       </xsl:if>
-      <xsl:text> </xsl:text>
+      <xsl:text> as </xsl:text>
       <xsl:value-of select="api:return/string()"/>
     </xsl:element>
   </xsl:template>
