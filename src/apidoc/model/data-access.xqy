@@ -988,17 +988,20 @@ as xs:string
 declare function api:type-expr-javascript(
   $context as xs:string?,
   $type as xs:string,
-  $quantifier as xs:string)
+  $quantifier as xs:string,
+  $version as xs:string)
 as xs:string
 {
   if (not($quantifier = ('*', '+'))) then concat(
     api:type-javascript($type), $quantifier)
   (: #317 for params with item()* :)
-  else if ($context = 'return') then 'ValueIterator'
+  else if ($context = 'return') then 
+    if ($version eq "8.0") then 'ValueIterator' else 'Sequence'
   else switch($type)
   (: Overrides for specific parameter types. :)
   case 'cts:query' return concat(api:type-javascript($type), '[]')
-  case 'item()' return 'ValueIterator'
+  case 'item()' return 
+    if ($version eq "8.0") then 'ValueIterator' else 'Sequence'
   case 'xs:anyAtomicType' return 
      '(String | Number | Boolean | null | Array | Object)[]'
   default return (api:type-javascript($type)||'[]')
@@ -1006,7 +1009,8 @@ as xs:string
 
 declare function api:type-expr-javascript(
   $context as xs:string?,
-  $expr as xs:string)
+  $expr as xs:string,
+  $version as xs:string)
 as xs:string
 {
   switch($expr)
@@ -1020,7 +1024,8 @@ as xs:string
     if (matches($expr, $TYPE-JS-PAT)) then api:type-expr-javascript(
       $context,
       replace($expr, $TYPE-JS-PAT, '$1'),
-      replace($expr, $TYPE-JS-PAT, '$2'))
+      replace($expr, $TYPE-JS-PAT, '$2'),
+      $version)
     (: No quantifier. :)
     else api:type-javascript($expr))
 };
@@ -1029,13 +1034,15 @@ as xs:string
 declare function api:type(
   $mode as xs:string,
   $context as xs:string?,
-  $expr as xs:string)
+  $expr as xs:string, 
+  $version as xs:string)
 as xs:string
 {
   switch($mode)
   case $MODE-JAVASCRIPT return api:type-expr-javascript(
     $context,
-    normalize-space($expr))
+    normalize-space($expr),
+    $version)
   default return normalize-space($expr)
 };
 
