@@ -583,12 +583,16 @@
     -->
     <xsl:element name="pre">
       <xsl:value-of select="@fullname"/>
-      <xsl:text>(</xsl:text>
-      <xsl:if test="api:params/api:param">
-        <xsl:text>&#xA;</xsl:text>
+      <!-- Don't do this for properties (issue #559) -->
+      <xsl:if test="not(@is-property)">
+        <xsl:text>(</xsl:text>
+        <xsl:if test="api:params/api:param">
+          <xsl:text>&#xA;</xsl:text>
+        </xsl:if>
+        <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
+        <xsl:text>)</xsl:text>
       </xsl:if>
-      <xsl:apply-templates mode="syntax" select="api:params/api:param"/>
-      <xsl:text>) as </xsl:text>
+      <xsl:text> as </xsl:text>
       <xsl:value-of select="api:return/string()"/>
     </xsl:element>
   </xsl:template>
