@@ -1510,13 +1510,13 @@ as node()*
     element api:param-description {
       stp:fixup($version, $e/node(), $context) },
     element api:param-name { $e/@name/string() },
-    element api:param-type { api:type($mode, (), $e/@type) })
+    element api:param-type { api:type($mode, (), $e/@type, $version) })
   (: Convert type name as needed.
    : Ignore return types specific to a different mode.
    :)
   case element(apidoc:return) return text {
     ($e[xs:NMTOKENS(@class) = $mode],
-      $e[not(@class)][1] ! api:type($mode, 'return', .))[1] }
+      $e[not(@class)][1] ! api:type($mode, 'return', ., $version))[1] }
   case element(apidoc:usage) return stp:fixup-children-apidoc-usage(
     $version, $e, $context)
   default return stp:fixup($version, $e/node(), $context)
@@ -1582,7 +1582,7 @@ as xs:string*
   stp:function-names(
     xdmp:zip-manifest($zip)/*[ends-with(., 'xml')]
     /xdmp:zip-get($zip, .)
-    /apidoc:module/(apidoc:function | apidoc:method)[@name/string()])
+    /apidoc:module/(apidoc:function | apidoc:method)[(@name|@object)/string()])
 };
 
 declare function stp:zipfile-function-names(
