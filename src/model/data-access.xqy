@@ -55,7 +55,7 @@ declare variable $Projects      := ml:docs( xs:QName("Project"));
 declare variable $pages         := ml:docs( xs:QName("page"));
 declare variable $Authors       := ml:docs( xs:QName("Author"));
 declare variable $OnDemand      := ml:docs( xs:QName("OnDemand"));
-declare variable $Posts         := ml:docs((xs:QName("Post"), xs:QName("Announcement"), xs:QName("Event")));
+declare variable $Posts         := ml:docs-in-dir('/blog/');
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
 (: Get a complete listing of all live documents on DMC (used by retroactive comment script) :)
@@ -95,7 +95,6 @@ declare variable $ondemand :=
   for $ondemand in $OnDemand
   order by $ondemand/ml:last-updated
   return $ondemand;
-
 
 declare variable $media-uris :=
   cts:uri-match("/media/*") ! <uri>{.}</uri>;
@@ -162,6 +161,12 @@ declare private function ml:docs($qnames) as element()* {
         for $qname in $qnames return ml:matches-dmc-page($qname)
         ))
     )/*
+};
+
+declare private function ml:docs-in-dir($directory) as element()* {
+  cts:search(fn:collection(),
+    cts:directory-query($directory, "infinity")
+  )/*
 };
 
 declare function ml:month-name($month as xs:integer)
