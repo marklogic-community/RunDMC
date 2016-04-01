@@ -153,6 +153,7 @@
         <page display="MLPHP" href="/labs/mlphp"/>
         <page display="MLSAM" href="/code/mlsam"/>
         <page display="Python" href="/code/marklogic-python"/>
+        <page display="rfml" href="/code/rfml"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
       </group>
       <group display="Visualization">
@@ -169,11 +170,11 @@
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
         <page display="XQuery Commons" href="/code/commons"/>
         <page display="MarkLogic Workflow" href="/code/workflow"/>
+        <page display="Slush generator" href="/code/slush-marklogic-node"/>
         <page display="mustache.xq" href="/code/mustache.xq"/>
         <page display="Feed" href="/code/feed"/>
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rxq" href="/labs/rxq"/>
-        <page display="Semantic" href="/code/semantic"/>
         <page display="SOAP Router" href="/code/soaprouter"/>
       </group>
       <group display="Miscellany">
@@ -184,6 +185,7 @@
       </group>
       <group display="Sample apps">
         <page display="Samplestack" href="/code/samplestack"/>
+        <page display="Geophoto" href="/code/geophoto"/>
         <page display="Top Songs" href="/code/top-songs"/>
         <page display="SpringBoot Sample" href="/code/springboot-sample"/>
         <page display="SpringBoot Security Sample" href="/code/springboot-security-sample"/>
