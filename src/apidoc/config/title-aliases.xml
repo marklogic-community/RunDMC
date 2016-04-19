@@ -79,4 +79,7 @@
   <auto-link href="/js/Value">
     <alias>Value Object</alias>
   </auto-link>
+  <auto-link href="/js/Sequence">
+    <alias>Sequence Object</alias>
+  </auto-link>
 </aliases>
