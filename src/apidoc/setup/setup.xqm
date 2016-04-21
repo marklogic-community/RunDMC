@@ -1190,7 +1190,7 @@ as empty-sequence()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
       return ml:document-insert($uri, 
            (: only transform for apidoc :)
-           if (contains($uri, "/raw/apidoc")) then
+           if (contains($e, "/raw/apidoc")) then
               stp:copy-content-from-method(xdmp:zip-get($zip, $e, $opts))
            else
               xdmp:zip-get($zip, $e, $opts))
@@ -1208,6 +1208,7 @@ typeswitch ($n)
   case document-node() return 
       document{stp:copy-content-from-method($n/node())}
   case text() return $n
+  case binary() return $n
   case comment() return $n
   case processing-instruction() return $n
   case element (apidoc:method) return 
@@ -1217,8 +1218,10 @@ typeswitch ($n)
            element apidoc:method {$n/@*, 
                     $n/../apidoc:method[@name eq $s[2]][@object eq $s[1]]/node()}
       else $n
-  default return 
-      element {name($n)} {stp:copy-content-from-method($n/node())}
+  default return
+      if ($n instance of element() ) then 
+        element {name($n)} {stp:copy-content-from-method($n/node())}
+      else $n
 };
 
 declare function stp:fixup-attribute-href-fragment-result(
