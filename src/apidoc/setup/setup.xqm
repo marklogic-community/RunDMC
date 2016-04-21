@@ -1189,8 +1189,8 @@ as empty-sequence()
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
       return ml:document-insert($uri, 
-           (: only transform for apidoc :)
-           if (contains($e, "/raw/apidoc")) then
+           (: only transform for optic apidoc :)
+           if (contains($e, "/raw/apidoc/optic")) then
               stp:copy-content-from-method(xdmp:zip-get($zip, $e, $opts))
            else
               xdmp:zip-get($zip, $e, $opts))
