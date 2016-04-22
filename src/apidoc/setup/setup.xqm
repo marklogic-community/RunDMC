@@ -1214,9 +1214,13 @@ typeswitch ($n)
   case element (apidoc:method) return 
       if (exists($n/@copy-content-from)) 
       then let $s := tokenize($n/@copy-content-from/string(), "\.")
+          (: the name can have dots in it :)
+           let $object := $s[1]
+           let $name := 
+               string-join($s[2 to last()], ".")
            return
            element apidoc:method {$n/@*, 
-                    $n/../apidoc:method[@name eq $s[2]][@object eq $s[1]]/node()}
+               $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
       else $n
   default return
       if ($n instance of element() ) then 
