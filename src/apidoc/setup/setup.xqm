@@ -1224,7 +1224,7 @@ typeswitch ($n)
       else $n
   default return
       if ($n instance of element() ) then 
-        element {name($n)} {stp:copy-content-from-method($n/node())}
+        element {name($n)} {$n/@*, stp:copy-content-from-method($n/node())}
       else $n
 };
 
