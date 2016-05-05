@@ -584,7 +584,7 @@
     <xsl:element name="pre">
       <xsl:value-of select="@fullname"/>
       <!-- Don't do this for properties (issue #559) -->
-      <xsl:if test="not(@is-property)">
+      <xsl:if test="not(@is-property eq 'true')">
         <xsl:text>(</xsl:text>
         <xsl:if test="api:params/api:param">
           <xsl:text>&#xA;</xsl:text>

@@ -1188,10 +1188,44 @@ as empty-sequence()
       let $opts := (
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
-      return ml:document-insert($uri, xdmp:zip-get($zip, $e, $opts))
+      return ml:document-insert($uri, 
+           (: only transform for optic apidoc :)
+           if (contains($e, "/raw/apidoc/optic")) then
+              stp:copy-content-from-method(xdmp:zip-get($zip, $e, $opts))
+           else
+              xdmp:zip-get($zip, $e, $opts))
       ,
       xdmp:commit() },
     true())
+};
+
+(: copy-content-from where attribute exists, designed to be used against 
+   raw apidoc with @copy-content-from on apidoc:method  :)
+declare function stp:copy-content-from-method($nodes as node()*) as node()*
+{
+for $n in $nodes return
+typeswitch ($n)
+  case document-node() return 
+      document{stp:copy-content-from-method($n/node())}
+  case text() return $n
+  case binary() return $n
+  case comment() return $n
+  case processing-instruction() return $n
+  case element (apidoc:method) return 
+      if (exists($n/@copy-content-from)) 
+      then let $s := tokenize($n/@copy-content-from/string(), "\.")
+          (: the name can have dots in it :)
+           let $object := $s[1]
+           let $name := 
+               string-join($s[2 to last()], ".")
+           return
+           element apidoc:method {$n/@*, 
+               $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
+      else $n
+  default return
+      if ($n instance of element() ) then 
+        element {name($n)} {$n/@*, stp:copy-content-from-method($n/node())}
+      else $n
 };
 
 declare function stp:fixup-attribute-href-fragment-result(

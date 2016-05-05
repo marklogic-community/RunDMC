@@ -108,4 +108,10 @@
   <namespace object="documents" uri="documents"/>
   <namespace object="console" uri="console"/>
   <namespace object="jsearch" uri="jsearch"/>
+  <namespace object="optic" uri="optic"/>
+  <namespace object="AccessPlan" uri="AccessPlan"/>
+  <namespace object="ModifyPlan" uri="ModifyPlan"/>
+  <namespace object="DocumentJoinPlan" uri="DocumentJoinPlan"/>
+  <namespace object="PreparePlan" uri="PreparePlan"/>
+  <namespace object="IteratePlan" uri="IteratePlan"/>
 </namespaces>
