@@ -69,7 +69,7 @@ as xs:string
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then $srv:api-server
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then $srv:api-server
     else if ($path eq "/tools") then "/code"
-    else if (matches($path, "^/[0-9]\.[0-9]")) 
+    else if (matches($path, "^/[0-9]\.[0-9]$")) 
          then concat($srv:api-server, $path)
 
     else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
