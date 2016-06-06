@@ -487,31 +487,20 @@ header nav.navbar-top span.glyphicon{
     color: #CCC;
     line-height: 17px;
 }
-nav {
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    font-weight: normal;
+
+header .dmc-nav {
+  margin-bottom: 0;
+}
+
+header .dmc-nav a.navbar-brand {
+  padding-top: 0;
 }
 
 nav a {
     color: #CCC;
 }
-#header nav {
-    position: absolute;
-    right: 0;
-    bottom: -1px;
-}
 nav ul {
     margin: 0;
-}
-#header nav li {
-    float: left;
-    margin-left: 39px;
-    padding-bottom: 8px;
-}
-#header nav li a {
-    display: block;
-    margin-bottom: 3px; /* ok to remove? */
 }
 #header nav .current {
     padding-bottom: 0;
@@ -2724,28 +2713,6 @@ span.highlightWidget {
 
 .warning {
     background-image: url(/images/ml_icons_warning.png);
-}
-
-div.header-separator {
-    float: right;
-    margin-right: 10px;
-    color: gray;
-    font-size: 20px;
-}
-
-/* main site button */
-#main-site {
-    float: right;
-    font-size: 12px;
-    margin-top: 2px;
-}
-#main-triangle {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#main-site a {
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* login, signin, profile */
