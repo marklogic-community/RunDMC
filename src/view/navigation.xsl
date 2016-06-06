@@ -47,31 +47,31 @@
       <xsl:if test="not(users:signupsEnabled())">
         <xsl:attribute name="style">display:none</xsl:attribute>
       </xsl:if>
-      <ul>
+      <ul class="pull-right">
         <li>
-          <button type="button" class="drop-down-trigger btn btn-default" id="signup-trigger"
+          <a href="/people/signup" class="drop-down-trigger navbar-top" id="signup-trigger"
                   data-url="{$srv:primary-server}/people/signup">
             <xsl:if test="users:getCurrentUserName()">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             Sign up
-          </button>
+          </a>
         </li>
         <li>
-          <button type="button" class="drop-down-trigger btn btn-default" id="login-trigger">
+          <a href="#" class="drop-down-trigger navbar-top" id="login-trigger">
             <xsl:if test="users:getCurrentUserName()">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             Log in
-          </button>
+          </a>
         </li>
         <li>
-          <button type="button" class="drop-down-trigger btn btn-default" id="session-trigger">
+          <a href="#" class="drop-down-trigger" id="session-trigger">
             <xsl:if test="empty(users:getCurrentUserName())">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             <xsl:value-of select="users:getCurrentUserName()"/>
-          </button>
+          </a>
         </li>
       </ul>
     </nav>
