@@ -341,11 +341,19 @@ header nav.navbar-top{
   margin: 0
 }
 
-header nav.navbar-top ul{
-  margin: 0;
-  padding: 0 5px;
-  overflow: auto;
-  list-style: none
+header nav.navbar-top #login-menu-nav ul.dropdown-menu {
+  background-color: #44499c;
+  border-top: none;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 0;
+  min-width: auto;
+  padding-top: 0;
+}
+
+header nav.navbar-top #login-menu-nav ul.dropdown-menu a:hover {
+  background-color: #44499c;
+  color: #ccc;
 }
 
 header nav.navbar-top ul li{
@@ -364,10 +372,6 @@ header nav.navbar-top ul li a{
 
 header nav.navbar-top ul li a:hover{
   text-decoration: none
-}
-
-header nav.navbar-top ul li:first-child a{
-  padding-left: 0
 }
 
 header nav.navbar-top span.glyphicon{

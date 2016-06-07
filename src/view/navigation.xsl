@@ -65,13 +65,18 @@
             Log in
           </a>
         </li>
-        <li>
-          <a href="#" class="drop-down-trigger" id="session-trigger">
+        <li class="btn-group">
+          <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown">
             <xsl:if test="empty(users:getCurrentUserName())">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             <xsl:value-of select="users:getCurrentUserName()"/>
+            <span class="caret"></span>
           </a>
+          <ul class="dropdown-menu">
+            <li><a href="/people/profile">Edit Profile</a></li>
+            <li><a href="#" id="logout">Log out</a></li>
+          </ul>
         </li>
       </ul>
     </nav>
@@ -91,13 +96,6 @@
           <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm btn-default col-md-5" id="recovery">Forgot password?</button>
         </div>
       </form>
-    </fieldset>
-    <fieldset id="session-menu" class="drop-down-menu">
-      <p> <a id="profile" href="{$srv:primary-server}/people/profile"><span>Edit Profile</span></a> </p>
-      <p id="separator"/>
-      <p class="last">
-        <a id="logout" href="#"><span>Log out</span></a>
-      </p>
     </fieldset>
   </xsl:template>
 
