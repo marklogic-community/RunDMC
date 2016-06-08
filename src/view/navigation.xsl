@@ -48,6 +48,31 @@
         <xsl:attribute name="style">display:none</xsl:attribute>
       </xsl:if>
       <ul class="pull-right">
+        <li class="btn-group">
+          <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown">
+            <xsl:if test="users:getCurrentUserName()">
+              <xsl:attribute name="style">display:none</xsl:attribute>
+            </xsl:if>
+            Log in
+          </a>
+          <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login">
+            <div style="clear: both" id="login-error"/>
+            <div class="form-group">
+              <label class="control-label" for="email">Email:</label>
+              <input class="required email form-control input-sm" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="password">Password:</label>
+              <input class="password required form-control input-sm" required="required" id="password" name="password" title="password" value="" type="password"/>
+            </div>
+            <div class="form-group">
+              <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
+            </div>
+            <div class="form-group">
+              <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-xs btn-default" id="recovery">Forgot password?</button>
+            </div>
+          </form>
+        </li>
         <li>
           <a href="/people/signup" class="drop-down-trigger navbar-top" id="signup-trigger"
                   data-url="{$srv:primary-server}/people/signup">
@@ -55,14 +80,6 @@
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             Sign up
-          </a>
-        </li>
-        <li>
-          <a href="#" class="drop-down-trigger navbar-top" id="login-trigger">
-            <xsl:if test="users:getCurrentUserName()">
-              <xsl:attribute name="style">display:none</xsl:attribute>
-            </xsl:if>
-            Log in
           </a>
         </li>
         <li class="btn-group">
@@ -80,23 +97,6 @@
         </li>
       </ul>
     </nav>
-    <fieldset id="login-menu" class="drop-down-menu">
-      <form id="local-login-form" style="display: block" method="post" action="{$srv:primary-server}/login">
-        <div style="clear: both" id="login-error"/>
-        <div class="form-group">
-          <label class="control-label" for="email">Email:</label>
-          <input class="required email form-control" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="password">Password:</label>
-          <input class="password required form-control" required="required" id="password" name="password" title="password" value="" type="password"/>
-        </div>
-        <div class="row">
-          <button onclick="return false;" class="btn btn-sm btn-default col-md-4" id="login_submit" type="button">Log in</button>
-          <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-sm btn-default col-md-5" id="recovery">Forgot password?</button>
-        </div>
-      </form>
-    </fieldset>
   </xsl:template>
 
   <xsl:template match="top-nav">

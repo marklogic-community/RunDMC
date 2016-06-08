@@ -342,12 +342,19 @@ header nav.navbar-top{
 }
 
 header nav.navbar-top #login-menu-nav ul.dropdown-menu {
+  min-width: auto;
+}
+
+header nav.navbar-top #login-menu-nav form.dropdown-menu {
+  padding: 5px;
+}
+
+header nav.navbar-top #login-menu-nav .dropdown-menu {
   background-color: #44499c;
   border-top: none;
   color: #fff;
   font-size: 1rem;
   margin-top: 0;
-  min-width: auto;
   padding-top: 0;
 }
 
@@ -2773,26 +2780,9 @@ span.highlightWidget {
     border-radius: 0 0 3px 3px;
 }
 
-#login-menu {
-  background-color: black;
-    right: 192px;
-    width: 300px;
-}
-
-#session-menu {
-    right: 316px;
-    width: 102px;
-    background-color: black;
-}
-
-.drop-down-menu a,
-#session-menu a {
+.drop-down-menu a {
     color: white;
     text-decoration: none;
-}
-
-#session-menu a:hover {
-    color: #1C6ACD;
 }
 
 .drop-down-menu a:hover {
@@ -2801,10 +2791,6 @@ span.highlightWidget {
 
 .drop-down-menu form {
     margin-right: 0;
-}
-
-#session-menu p.last {
-    margin-bottom: 0;
 }
 
 .drop-down-menu form fieldset {
@@ -2873,16 +2859,8 @@ span.highlightWidget {
     float: left;
 }
 
-#login_submit {
-    min-width: 70px;
-    display: block;
-    float: left;
-    margin-left: 15px;
-}
-
-#recovery {
-    float: left;
-    margin-left: 10px;
+#local-login-form button {
+  width: 100%;
 }
 
 #login-error {
