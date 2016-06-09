@@ -352,7 +352,7 @@ declare function m:rewrite()
 
   (: SCENARIO 2B: Serve content from file system :)
   (: Remove version from the URL for versioned assets :)
-  else if (matches($PATH, '^/(css|images)/v-\d*/.*')) then replace(
+  else if (matches($PATH, '^/(css|images|fonts)(/v-\d*)?/.*')) then replace(
     $PATH, '/v-\d*', '')
 
   (: If the path starts with one of the designated paths in the code base,
