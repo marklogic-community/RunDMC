@@ -77,6 +77,11 @@ ol ol {
     background: #fff;
 }
 
+#dmc-navbar-collapse li {
+  background-color: #222;
+  z-index: 10;
+}
+
 #content {
     width: 100%;
     background: #fff;
