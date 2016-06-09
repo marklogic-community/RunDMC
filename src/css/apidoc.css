@@ -8,12 +8,6 @@ body {
 
 /* header + two columns */
 
-#header {
-    position: absolute;
-    left: 0;
-    right: 0;
-}
-
 #api_sub {
     position: absolute;
     top: 0;
@@ -107,6 +101,7 @@ ol ol {
     box-shadow: none;
 }
 #breadcrumb {
+    overflow-y: auto;
     padding: 8px 0 8px 16px;
 }
 
@@ -658,9 +653,6 @@ span.highlightWidget {
         height: 22px;
         margin-bottom: 20px;
     }
-    #header nav li {
-        margin-left: 16px;
-    }
     #breadcrumb {
         padding: 4px;
     }
@@ -714,9 +706,6 @@ span.highlightWidget {
     }
     #search_suggest_container {
         width: 144px;
-    }
-    #header nav {
-        display: none;
     }
     #search-header form {
         margin-right: 4px;

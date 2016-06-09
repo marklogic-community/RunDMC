@@ -492,23 +492,6 @@ if(typeof jQuery != 'undefined') {
         e.preventDefault();
       });
 
-      $("#login-trigger").click(function(e) {
-        $("#login-menu").toggle(0, function() {
-          if ($("#login-menu:visible")) {
-            $("#login-trigger").addClass("triggered");
-          }
-        });
-
-        $( "#login-menu" ).position({
-            my: "left top",
-            at: "left bottom",
-            of: "#login-trigger",
-            offset: "0 -4"
-        });
-
-        e.preventDefault();
-      });
-
       $(document).bind('keydown.drop-down-menu', function(event) {
         if (event.keyCode && event.keyCode === $.ui.keyCode.ESCAPE) {
           $('.drop-down-menu').each(function() {
