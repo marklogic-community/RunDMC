@@ -115,6 +115,7 @@
               select="v:toc-references(
                       $VERSION-FINAL, $VERSION, $VERSION-PREFIX, .)"/>
           <xsl:call-template name="page-content"/>
+          <xsl:call-template name="comment-section"/>
           <xsl:call-template name="apidoc-copyright"/>
         </div>
       </xsl:when>
@@ -140,7 +141,7 @@
         <title>
           <xsl:apply-templates mode="page-specific-title" select="."/>
         </title>
-        <meta name="robots" content="noindex,nofollow"/> 
+        <meta name="robots" content="noindex,nofollow"/>
         <link href="/css/v-1/apidoc_print.css" rel="stylesheet"
               type="text/css" media="screen, print"/>
       </head>
@@ -290,7 +291,7 @@
 	Also, need to parse the string because some JavaScript objects have
 	multiple delimiters (ie, xs.time.eq).
     -->
-    <xsl:variable name="prefix" select="if ($is-javascript) then 
+    <xsl:variable name="prefix" select="if ($is-javascript) then
       string-join(tokenize($name, '\.')[position() = (1 to last()-1)], '.')
       else substring-before($name, $delimiter)"/>
     <xsl:variable name="local"
@@ -302,7 +303,7 @@
              if ($is-javascript) then '/js/'
              else '/',
              if ($is-javascript) then if ($object) then $object else $lib
-             else 
+             else
              $lib) }">
       <xsl:value-of select="$prefix"/>
     </a>
