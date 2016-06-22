@@ -3429,4 +3429,8 @@ li.search_suggest_selected {
 #page_content .parameters blockquote { font-size: inherit; }
 #page_content .parameters pre { font-size: inherit; }
 
+.wrapper.thumbnail > img {
+  max-height: 128px;
+}
+
 /* screen.css */
