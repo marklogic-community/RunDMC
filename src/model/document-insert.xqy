@@ -12,4 +12,9 @@ if (fn:doc-available($uri)) then
     xdmp:document-get-permissions($uri),
     xdmp:document-get-collections($uri))
 else
-  xdmp:document-insert($uri, $document)
+  xdmp:document-insert(
+    $uri,
+    $document,
+    (xdmp:permission("RunDMC-role", "read"),
+     xdmp:permission("RunDMC-role", "update"))
+  )
