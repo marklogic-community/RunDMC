@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false">
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
+  <div class="section-row long-page">
+    <div class="container">
+      <div class="row adventure-header">
+        <div class="col-xs-2">
+          <img src="/media/adventure/windows-logo.png" class="install-icon"/>
+        </div>
+        <div class="col-xs-10">
+          <h1>Install MarkLogic on Windows</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-4 col-md-offset-1">
+          <a class="hero-box install row" href="http://docs.marklogic.com/guide/installation" style="margin: 0;">
+            <span class="glyphicon glyphicon-book hero-box-glyph" aria-hidden="true"></span>
+            <div class="hero-box-content">
+              <h3 class="margin-top-0-5">Installation Guide</h3>
+              <p class="margin-bottom-1">RTFM FTW!</p>
+              <p class="link text-uppercase">Read Now</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <a class="hero-box install row" href="" style="margin: 0;">
+            <span class="glyphicon glyphicon-film hero-box-glyph" aria-hidden="true"></span>
+            <div class="hero-box-content">
+              <h3 class="margin-top-0-5">Video Tutorial</h3>
+              <p class="margin-bottom-1">Watch it happen</p>
+              <p class="link text-uppercase">Watch Now</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ml:page>

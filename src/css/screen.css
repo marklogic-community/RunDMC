@@ -401,7 +401,8 @@ header nav.navbar-top span.glyphicon{
 }
 
 #header {
-    background: black;
+    background: #222;
+    border: 1px solid #090909;
     color: white;
     font-size: 14px;
     position: relative;
@@ -429,6 +430,7 @@ header nav.navbar-top span.glyphicon{
     text-indent: -999em;
     width: 178px;
     height: 44px;
+    margin-left: 10px;
 }
 
 #search-header form {
@@ -773,7 +775,7 @@ ul.subcategories li {
     font-size: 11px;
     xtext-align: center;
     padding: 0 0 15px;
-    background: black;
+    background: #333;
     color: #999;
 }
 #container > footer a {

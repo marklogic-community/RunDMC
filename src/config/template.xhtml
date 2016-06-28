@@ -17,6 +17,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/v-39/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="/css/overcast/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lte IE 8]>
     <link href="/css/v-2/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
     <![endif]-->
@@ -151,7 +152,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div id="content">
         <ml:choose>
           <!-- Don't include the regular page divs on the home page -->
-          <ml:condition href="/ /eula /index-new"> <!-- @href takes a list of external page URIs -->
+          <ml:condition href="/ /eula /index-new" href-starts-with="/adventure">
             <ml:page-content/>
           </ml:condition>
           <ml:otherwise>
@@ -176,7 +177,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </ml:otherwise>
         </ml:choose>
       </div>
-      <ml:comment-section/>
+      <ml:show-comments>
+        <ml:comment-section/>
+      </ml:show-comments>
       <hr />
       <footer>
         <nav>

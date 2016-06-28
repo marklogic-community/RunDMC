@@ -201,6 +201,8 @@ as xs:string
         "/discuss"
     else if ($path = ("/express", "/academic")) then
         "/free-developer"
+    else if ($path = ("/adventure")) then
+        "/"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
         if ($path = ("/people/signup", "/people/reset", "/people/recovery", "/people/profile")) then (: except for these :)
             $path

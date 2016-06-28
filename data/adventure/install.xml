@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false">
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
+  <h1>Install MarkLogic</h1>
+  <div class="section-row long-page">
+    <div class="container">
+      <div class="row adventure-title">
+        <div class="col-xs-12">
+          <h2 class="text-center">Choose</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-12 margin-bottom-2">
+          <a class="hero-box row" href="/adventure/install/windows" style="margin: 0;">
+            <img src="/media/adventure/windows-logo.png" class="hero-box-image"/>
+            <div class="hero-box-content">
+              <h3 class="margin-top-0-5">Windows</h3>
+              <p class="margin-bottom-1">Learn to install MarkLogic on Windows.</p>
+              <p class="link text-uppercase">Get Started</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <a href="/adventure/install/mac" class="hero-box row" style="margin: 0;">
+            <img src="/media/adventure/mac-logo.png" class="hero-box-image"/>
+            <div class="hero-box-content">
+              <h3 class="margin-top-0-5">Mac</h3>
+              <p class="margin-bottom-1">Learn to instal MarkLogic on Mac.</p>
+              <p class="link text-uppercase">Get Started</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <a href="/adventure/install/linux" class="hero-box row" style="margin: 0;">
+            <img src="/media/adventure/linux-logo.jpg" class="hero-box-image"/>
+            <div class="hero-box-content">
+              <h3 class="margin-top-0-5">Linux</h3>
+              <p class="margin-bottom-1">Learn to install MarkLogic on Linux.</p>
+              <p class="link text-uppercase">Get Started</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ml:page>

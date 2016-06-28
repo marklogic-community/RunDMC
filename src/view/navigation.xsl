@@ -351,6 +351,35 @@
     </xsl:variable>
   </xsl:template>
 
+  <xsl:template match="main-container">
+    <div id="main_container" class="row">
+      <xsl:variable name="sub-nav-root" select="$page-in-navigation/ancestor-or-self::page[group | page]"/>
+      <xsl:variable name="children" select="$sub-nav-root/(group | page)"/>
+      <xsl:value-of select="xdmp:log('main-container')"/>
+      <xsl:choose>
+        <xsl:when test="$children">
+          <xsl:value-of select="xdmp:log('has-kids')"/>
+          <div id="sub" class="col-md-3 hidden-xs col-xs-12">
+            <ml:sub-nav/>
+            <ml:widgets/>
+          </div>
+          <!-- end sub -->
+          <div id="main" class="col-md-9 col-xs-12">
+            <ml:page-heading/>
+            <ml:page-content/>
+          </div>
+          <!-- end main -->
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="xdmp:log('no-kids')"/>
+          <div id="main" class="col-md-12 col-xs-12">
+            <ml:page-heading/>
+            <ml:page-content/>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
+  </xsl:template>
 
   <!-- We use an id on certain pages (search results) -->
   <xsl:template match="xhtml:body/@ml:id[$external-uri = ('/search','/apidoc/do-search')]" priority="1">

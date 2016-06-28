@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
   <div class="home container-fluid">
-
-    <div class="section-row">
+    <div class="section-row adventure">
       <div class="container">
+        <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center">Choose Your Adventure</h2>
+          </div>
+        </div>
         <div class="row">
-          <div class="col col-xs-12">
-            <form method="get" ml:action="/search" class="search-wrapper" enctype="application/x-www-form-urlencoded">
-        <input id="s_inp" ml:value="" name="q" placeholder="Search the Developer Site" type="text" class=""/>
-        <span id="mag" class="input-group-btn">
-                <button class="btn btn-search glyphicon glyphicon-search"></button>
-              </span>
-      </form>
+          <div class="col-md-5 col-sm-12 col-md-offset-1 margin-bottom-2">
+            <a class="hero-box row" href="/adventure/developer" style="margin: 0;">
+              <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Developer</h3>
+                <p class="margin-bottom-1">Need to build an app? Quickly become a MarkLogic Pro.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-5 col-sm-12">
+            <a href="/training/marklogic-administrator-track/" class="hero-box row" style="margin: 0;">
+              <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/administrator-badge.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Administrator</h3>
+                <p class="margin-bottom-1">Need to manage your environment? Quickly learn how to monitor, deploy, and maintain.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>
     </div>
+
     <div class="section-row main-wrapper">
       <div class="container">
         <div class="row">
