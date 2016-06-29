@@ -115,12 +115,4 @@
       <ml:artifact id="client-api-java" version="2.0.5"/>
     </ml:maven>
   </ml:product-info>
-  <ml:product-info name="MarkLogic Java API" license-page="">
-    <ml:platform name="MarkLogic 6">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-1.0-5.zip" size="6.3MB" date="2013-09-12">Release 1.0.5 zip package (compatible with MarkLogic 6)</ml:download>
-    </ml:platform>
-    <ml:maven>
-      <ml:artifact id="client-api-java" version="1.0.5"/>
-    </ml:maven>
-  </ml:product-info>
 </ml:page>
