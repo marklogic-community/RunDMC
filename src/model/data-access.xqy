@@ -167,7 +167,7 @@ declare private function ml:docs-in-dir($directory) as element()* {
   cts:search(fn:collection(),
     cts:and-query((
       cts:directory-query($directory, "infinity"),
-      cts:element-attribute-value-query(xs:QName("ml:Post"), xs:QName("status"), "Published")
+      cts:element-attribute-value-query(xs:QName("ml:Post"), fn:QName("", "status"), "Published")
     ))
   )/*
 };
