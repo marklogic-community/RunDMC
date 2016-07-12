@@ -96,7 +96,7 @@
   <group>
     <entry title="Zip File of All Documentation">
     <entry title="ZIP File of All MarkLogic Product Documentation"
-           href="/MarkLogic_9ea_pubs.zip"
+           href="/MarkLogic_9_pubs.zip"
            type="download">
       <description>
         A zip file containing this documentation.
@@ -191,6 +191,9 @@
       <guide url-name="flexrep" source-name="replication">
         Provides step-by-step information on replicating MarkLogic Server
         content using Flexible Replication.</guide>
+      <guide url-name="opsdir" source-name="OpsDirector">
+        Provides procedures for setting up and using Ops Director
+        on MarkLogic Server.</guide>
       <guide url-name="monitoring" source-name="monitoring">
         Provides procedures for setting up and using monitoring applications
         on MarkLogic Server.</guide>

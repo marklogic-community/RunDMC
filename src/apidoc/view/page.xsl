@@ -192,7 +192,8 @@
   <xsl:template match="x:a[@class eq 'guide-link']">
     <xsl:next-match/>
     <xsl:text> | </xsl:text>
-    <xsl:copy-of select="v:pdf-anchor(., @href, false(), false())"/>
+    <xsl:copy-of select="v:pdf-anchor(., concat($VERSION-PREFIX, @href), 
+	    false(), false())"/>
   </xsl:template>
 
   <!-- Add "apidoc" class to tables in content, so we can adjust the CSS without disrupting the rest of DMC -->
