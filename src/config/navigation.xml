@@ -145,7 +145,7 @@
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Connectors" href="/code/connectors">
-        <page display="New Relice" href="/code/new-relic"/>
+        <page display="New Relic" href="/code/new-relic"/>
         <page display="Go Bindings" href="/code/go-marklogic"/>
         <page display="MarkMapper" href="/code/markmapper"/>
         <page display="MLDotNet" href="/labs/mldotnet"/>
