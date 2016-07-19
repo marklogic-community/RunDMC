@@ -3,16 +3,15 @@
   <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
   <div class="choose-page">
     <div class="section-row">
-      <div class="container text-center">
+      <div class="container text-center header">
         <div class="row adventure-title">
           <div class="col-xs-12">
+            <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" width="80"/>
             <h2 class="text-center jones">A Developer's Adventure</h2>
-            <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" width="100"/>
+            <p class="margin-bottom-1">
+              You like to tickle the bits. Let us help you.
+            </p>
           </div>
-        </div>
-        <div class="row subheader">
-          <p class="margin-bottom-1">You like to tickle the bits. Let us help you.</p>
-          <h3>Choose</h3>
         </div>
       </div>
     </div>
