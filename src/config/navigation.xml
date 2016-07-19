@@ -311,7 +311,7 @@
         </group>
         <group display="Developer" href="/adventure/developer">
           <page display="Java" href="/adventure/developer/java/start"/>
-          <page display="Node Js" href="/adventure/developer/nodejs/start"/>
+          <page display="Node.js" href="/adventure/developer/nodejs/start"/>
           <page display="REST" href="/adventure/developer/rest/start"/>
         </group>
         <group display="Administrator" href="/adventure/administrator">

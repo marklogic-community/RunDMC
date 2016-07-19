@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row adventure-title">
           <div class="col-xs-12">
-            <h2 class="text-center">Choose Your Adventure</h2>
+            <h2 class="text-center jones">Choose Your Adventure</h2>
           </div>
         </div>
         <div class="row">
@@ -21,7 +21,7 @@
             </a>
           </div>
           <div class="col-md-5 col-sm-12">
-            <a href="/training/marklogic-administrator-track/" class="hero-box row" style="margin: 0;">
+            <a href="/adventure/administrator" class="hero-box row" style="margin: 0">
               <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/administrator-badge.svg" class="hero-box-image"/>
               <div class="hero-box-content">
                 <h3 class="margin-top-0-5">Administrator</h3>
@@ -122,78 +122,6 @@
       }
 
     </style>
-
-    <div class="section-row">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            <h2><span class="label label-warning">New</span> Features <span class="pipe"> | </span><a href="//docs.marklogic.com/guide/relnotes" class="a-cta cta-sm middle">MarkLogic 8 Release Notes</a></h2>
-          </div>
-        </div>
-
-        <div class="row">
-          <ul class="new-features">
-      <li>
-              <a href="/features/json" class="col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/json.svg"/>
-                <p class="text-uppercase text-center">JSON</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/node-client-api" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/node.svg"/>
-                <p class="text-uppercase text-center">Node.js Client API</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/javascript" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/javascript.svg"/>
-                <p class="text-uppercase text-center">Server-side JavaScript</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/java-client-api" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/java-api.svg"/>
-                <p class="text-uppercase text-center">Java Client API</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/semantics" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/semantics.svg"/>
-                <p class="text-uppercase text-center">Semantics</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/management-api" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/management-api.svg"/>
-                <p class="text-uppercase text-center">Management API</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/bitemporal" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/bitemporal.svg"/>
-                <p class="text-uppercase text-center">Bitemporal</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/flexrep" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/flexrep.svg"/>
-                <p class="text-uppercase text-center">Flexible Replication</p>
-              </a>
-            </li>
-      <li>
-              <a href="/features/enhanced-http" class="col-md-1 col-sm-1 col-xs-4">
-                <img class="feature-icon" src="/media/features/enhanced-http.svg"/>
-                <p class="text-uppercase text-center">Enhanced HTTP Server</p>
-              </a>
-            </li>
-    </ul>
-        </div>
-
-
-
-      </div>
-    </div>
 
     <div class="section-row">
       <div class="container">

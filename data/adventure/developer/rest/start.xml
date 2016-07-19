@@ -64,29 +64,29 @@
           <div class="module-list">
             <div class="module-list-header">
               <div class="module-icon pull-left">
-                <span class="fa fa-coffee"></span>
+                <span class="fa fa-graduation-cap"></span>
               </div>
-              <h3 class="module-title">Learn the Java Client API</h3>
-              <div class="module-description">Learn the ins and outs of the Java Client API.</div>
+              <h3 class="module-title">Learn the REST API</h3>
+              <div class="module-description">Learn the ins and outs of the REST API.</div>
             </div>
             <div class="module-list-content">
               <ul>
                 <li>
-                  <a href="https://developer.marklogic.com/try/java/index">
-                    <h3 class="margin-top-0-5">The Java API in Five Minutes</h3>
-                    <p class="margin-bottom-1">A basic tutorial for using the Java Client API.</p>
+                  <a href="https://developer.marklogic.com/try/rest/index">
+                    <h3 class="margin-top-0-5">The REST API in Five Minutes</h3>
+                    <p class="margin-bottom-1">A basic tutorial for using the REST API.</p>
                   </a>
                 </li>
                 <li>
-                  <a href="https://developer.marklogic.com/learn/java">
-                    <h3 class="margin-top-0-5">Learning the MarkLogic Java API</h3>
-                    <p class="margin-bottom-1">Another tutorial for using the Java Client API.</p>
+                  <a href="https://developer.marklogic.com/learn/rest">
+                    <h3 class="margin-top-0-5">Learning the MarkLogic REST API</h3>
+                    <p class="margin-bottom-1">Another tutorial for using the REST API.</p>
                   </a>
                 </li>
                 <li>
-                  <a href="https://jaxenter.com/writing-and-searching-for-pojos-in-marklogic-104939.html">
-                    <h3 class="margin-top-0-5">Writing and Searching POJOs</h3>
-                    <p class="margin-bottom-1">A tutorial for how to store and search POJOs in MarkLogic.</p>
+                  <a href="http://docs.marklogic.com/guide/rest-dev">
+                    <h3 class="margin-top-0-5">REST Application Developer's Guide</h3>
+                    <p class="margin-bottom-1">The official user's guide for the REST API.</p>
                   </a>
                 </li>
               </ul>
@@ -102,51 +102,15 @@
               <div class="module-icon pull-left">
                 <span class="fa fa-code"></span>
               </div>
-              <h3 class="module-title">Code Samples</h3>
-              <div class="module-description">See the Java Client API in action.</div>
+              <h3 class="module-title">Blog Posts</h3>
+              <div class="module-description">Read about how others are using the REST API.</div>
             </div>
             <div class="module-list-content">
               <ul>
                 <li>
-                  <a href="https://github.com/marklogic/marklogic-samplestack">
-                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Samplestack</h3>
-                    <p class="margin-bottom-1">Samplestack is a demo "Question and Answer" web application that shows you how to integrate MarkLogic into a three-tier application architecture (browser, application server, and database).</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="https://github.com/marklogic/top-songs">
-                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Top Songs</h3>
-                    <p class="margin-bottom-1">Top Songs is a sample application build on the MarkLogic Java Client API.</p>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="module-list">
-            <div class="module-list-header">
-              <div class="module-icon pull-left">
-                <span class="fa fa-wrench"></span>
-              </div>
-              <h3 class="module-title">Deep Dive</h3>
-              <div class="module-description">Get knee deep in it.</div>
-            </div>
-            <div class="module-list-content">
-              <ul>
-                <li>
-                  <a href="http://developer.marklogic.com/learn/inside-marklogic-server">
-                    <h3 class="margin-top-0-5">Inside MarkLogic Server</h3>
-                    <p class="margin-bottom-1">This paper describes the MarkLogic Server internals: its data model, indexing system, update model, and operational behaviors. It's intended for a technical audience — either someone new to MarkLogic wanting to understand its capabilities, or someone already familiar with MarkLogic who wants to understand what's going on under the hood.</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="http://developer.marklogic.com/learn/understanding-system-resources">
-                    <h3 class="margin-top-0-5">Performance: Understanding System Resources</h3>
-                    <p class="margin-bottom-1">This guide views MarkLogic through the lens of resource consumption and infrastructure planning.</p>
+                  <a href="http://developer.marklogic.com/blog/rest-partial-document-updates">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Partial Document Updates with the REST API</h3>
+                    <p class="margin-bottom-1">How to update parts of a document with the REST API.</p>
                   </a>
                 </li>
               </ul>

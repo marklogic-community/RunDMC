@@ -1,65 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false">
   <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
-  <div class="module-page-header">
-    <div class="container">
-      <div class="row">
-        <div class="col col-md-9">
-          <div class="media">
-            <a class="module-icon pull-left">
-              <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" width="140"/>
-              <i class="icon-completed"></i>
-            </a>
-            <div class="media-body">
-              <h4 class="media-heading">A Developer's Adventure</h4>
-              <p>
-                You like to tickle the bits. Let us help you.
-              </p>
-            </div>
+  <div class="choose-page">
+    <div class="section-row">
+      <div class="container text-center">
+        <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center jones">A Developer's Adventure</h2>
+            <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" width="100"/>
           </div>
+        </div>
+        <div class="row subheader">
+          <p class="margin-bottom-1">You like to tickle the bits. Let us help you.</p>
+          <h3>Choose</h3>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="section-row long-page">
-    <div class="container">
-      <div class="row adventure-title">
-        <div class="col-xs-12">
-          <h2 class="text-center">Choose</h2>
+    <div class="section-row long-page">
+      <div class="container">
+<!--         <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center">Choose</h2>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 col-sm-12 margin-bottom-2">
-          <a class="hero-box row" href="/adventure/developer/java/start" style="margin: 0;">
-            <img src="/media/adventure/java-api.png" class="hero-box-image"/>
-            <div class="hero-box-content">
-              <h3 class="margin-top-0-5">Java</h3>
-              <p class="margin-bottom-1">Mmm. Coffee..</p>
-              <p class="link text-uppercase">Get Started</p>
-            </div>
-          </a>
+ -->        <div class="row">
+          <div class="col-md-4 col-sm-12 margin-bottom-2">
+            <a class="hero-box row" href="/adventure/developer/java/start" style="margin: 0;">
+              <img src="/media/adventure/java-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Java</h3>
+                <p class="margin-bottom-1">Mmm. Coffee..</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <a href="/adventure/developer/nodejs/start" class="hero-box row" style="margin: 0;">
+              <img src="/media/adventure/node-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Node.js</h3>
+                <p class="margin-bottom-1">Do you work with Node.js? This path is for you.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <a href="/adventure/developer/rest/start" class="hero-box row" style="margin: 0;">
+              <img src="/media/adventure/rest-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">REST</h3>
+                <p class="margin-bottom-1">Using something different? Talk to MarkLogic via our REST AP.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="col-md-4 col-sm-12">
-          <a href="/adventure/developer/nodejs/start" class="hero-box row" style="margin: 0;">
-            <img src="/media/adventure/node-api.png" class="hero-box-image"/>
-            <div class="hero-box-content">
-              <h3 class="margin-top-0-5">Node Js</h3>
-              <p class="margin-bottom-1">Do you work with Node JS? This path is for you.</p>
-              <p class="link text-uppercase">Get Started</p>
-            </div>
-          </a>
+  <!--
+        <div class="row">
+          <div class="col-md-offset-1 col-md-4 col-sm-12 margin-bottom-2">
+            <a class="hero-box row" href="/adventure/developer/javascript/start" style="margin: 0;">
+              <img src="/media/adventure/javascript.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Javascript</h3>
+                <p class="margin-bottom-1">Serverside Javascript</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-offset-2 col-md-4 col-sm-12">
+            <a href="/adventure/developer/xquery/start" class="hero-box row" style="margin: 0;">
+              <img src="/media/adventure/xquery.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">XQuery</h3>
+                <p class="margin-bottom-1">The lingua franca of XML</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="col-md-4 col-sm-12">
-          <a href="/adventure/developer/rest/start" class="hero-box row" style="margin: 0;">
-            <img src="/media/adventure/rest-api.png" class="hero-box-image"/>
-            <div class="hero-box-content">
-              <h3 class="margin-top-0-5">REST</h3>
-              <p class="margin-bottom-1">Using something different? Talk to MarkLogic via our REST AP.</p>
-              <p class="link text-uppercase">Get Started</p>
-            </div>
-          </a>
-        </div>
+   -->
+
       </div>
     </div>
   </div>

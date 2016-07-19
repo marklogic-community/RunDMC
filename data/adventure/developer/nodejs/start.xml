@@ -11,9 +11,9 @@
               <i class="icon-completed"></i>
             </a>
             <div class="media-body">
-              <h4 class="media-heading">Node Js Developer</h4>
+              <h4 class="media-heading">Node.js Developer</h4>
               <p>
-                Get productive quickly by using your existing Node Js knowledge to interface with MarkLogic.
+                Get productive quickly by using your existing Node.js knowledge to interface with MarkLogic.
               </p>
             </div>
           </div>
@@ -64,29 +64,29 @@
           <div class="module-list">
             <div class="module-list-header">
               <div class="module-icon pull-left">
-                <span class="fa fa-coffee"></span>
+                <span class="fa fa-graduation-cap"></span>
               </div>
-              <h3 class="module-title">Learn the Java Client API</h3>
-              <div class="module-description">Learn the ins and outs of the Java Client API.</div>
+              <h3 class="module-title">Learn the Node.js Client API</h3>
+              <div class="module-description">Learn the ins and outs of the Node.js Client API.</div>
             </div>
             <div class="module-list-content">
               <ul>
                 <li>
-                  <a href="https://developer.marklogic.com/try/java/index">
-                    <h3 class="margin-top-0-5">The Java API in Five Minutes</h3>
-                    <p class="margin-bottom-1">A basic tutorial for using the Java Client API.</p>
+                  <a href="https://developer.marklogic.com/learn/node-in-5-minutes">
+                    <h3 class="margin-top-0-5">The Node.js Client API in 5 Minutes</h3>
+                    <p class="margin-bottom-1">A basic tutorial for using the Node.js Client API.</p>
                   </a>
                 </li>
                 <li>
-                  <a href="https://developer.marklogic.com/learn/java">
-                    <h3 class="margin-top-0-5">Learning the MarkLogic Java API</h3>
-                    <p class="margin-bottom-1">Another tutorial for using the Java Client API.</p>
+                  <a href="https://docs.marklogic.com/8.0/guide/node-dev">
+                    <h3 class="margin-top-0-5">The Node.js Application Developer's Guide</h3>
+                    <p class="margin-bottom-1">The official user's guide for the Node.js Client API.</p>
                   </a>
                 </li>
                 <li>
-                  <a href="https://jaxenter.com/writing-and-searching-for-pojos-in-marklogic-104939.html">
-                    <h3 class="margin-top-0-5">Writing and Searching POJOs</h3>
-                    <p class="margin-bottom-1">A tutorial for how to store and search POJOs in MarkLogic.</p>
+                  <a href="https://developer.marklogic.com/learn/jsearch-in-5-minutes">
+                    <h3 class="margin-top-0-5">JSearch in 5 Minutes</h3>
+                    <p class="margin-bottom-1">JSearch is a Server-side and high-level Javascript API that makes common search tasks (search, facets, and aggregates) easy.</p>
                   </a>
                 </li>
               </ul>
@@ -103,7 +103,7 @@
                 <span class="fa fa-code"></span>
               </div>
               <h3 class="module-title">Code Samples</h3>
-              <div class="module-description">See the Java Client API in action.</div>
+              <div class="module-description">See the Node.js Client API in action.</div>
             </div>
             <div class="module-list-content">
               <ul>
@@ -114,39 +114,9 @@
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/marklogic/top-songs">
-                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Top Songs</h3>
-                    <p class="margin-bottom-1">Top Songs is a sample application build on the MarkLogic Java Client API.</p>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="module-list">
-            <div class="module-list-header">
-              <div class="module-icon pull-left">
-                <span class="fa fa-wrench"></span>
-              </div>
-              <h3 class="module-title">Deep Dive</h3>
-              <div class="module-description">Get knee deep in it.</div>
-            </div>
-            <div class="module-list-content">
-              <ul>
-                <li>
-                  <a href="http://developer.marklogic.com/learn/inside-marklogic-server">
-                    <h3 class="margin-top-0-5">Inside MarkLogic Server</h3>
-                    <p class="margin-bottom-1">This paper describes the MarkLogic Server internals: its data model, indexing system, update model, and operational behaviors. It's intended for a technical audience — either someone new to MarkLogic wanting to understand its capabilities, or someone already familiar with MarkLogic who wants to understand what's going on under the hood.</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="http://developer.marklogic.com/learn/understanding-system-resources">
-                    <h3 class="margin-top-0-5">Performance: Understanding System Resources</h3>
-                    <p class="margin-bottom-1">This guide views MarkLogic through the lens of resource consumption and infrastructure planning.</p>
+                  <a href="https://github.com/marklogic/geophoto">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Geophoto</h3>
+                    <p class="margin-bottom-1">The project showcases how to store a variety of data structures in a MarkLogic (NoSQL Document Management) database. The application uses JSON documents with geospatial data, binary documents (JPEG image files) as well as RDF Triple data.</p>
                   </a>
                 </li>
               </ul>

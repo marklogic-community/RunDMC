@@ -760,27 +760,29 @@ function loadRecentContent() {
     dataType: 'json',
     success: function(data) {
       var recent = $('#recent');
-      data.forEach(function(item) {
-        recent.append(
-          $('<a/>')
-            .addClass('list-group-item')
-            .attr('href', item.uri)
-            .append(
-              $('<span/>')
-                .addClass('glyphicon')
-                .addClass('glyphicon-' + icons[item.type])
-                .addClass('pull-left')
-            )
-            .append(
-              $('<h3 class="panel-title"/>')
-                .text(item.title)
-            )
-            .append(
-              $('<p/>')
-                .text(item.short)
-            )
-        );
-      });
+      if (data) {
+        data.forEach(function(item) {
+          recent.append(
+            $('<a/>')
+              .addClass('list-group-item')
+              .attr('href', item.uri)
+              .append(
+                $('<span/>')
+                  .addClass('glyphicon')
+                  .addClass('glyphicon-' + icons[item.type])
+                  .addClass('pull-left')
+              )
+              .append(
+                $('<h3 class="panel-title"/>')
+                  .text(item.title)
+              )
+              .append(
+                $('<p/>')
+                  .text(item.short)
+              )
+          );
+        });
+      }
     }
   });
 }
