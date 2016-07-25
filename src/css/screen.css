@@ -91,6 +91,10 @@ img {
     padding: 0;
 }
 
+figure img {
+  max-width: 100%;
+}
+
 h1,
 h2,
 h3 {
