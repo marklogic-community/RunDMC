@@ -341,11 +341,26 @@ header nav.navbar-top{
   margin: 0
 }
 
-header nav.navbar-top ul{
-  margin: 0;
-  padding: 0 5px;
-  overflow: auto;
-  list-style: none
+header nav.navbar-top #login-menu-nav ul.dropdown-menu {
+  min-width: auto;
+}
+
+header nav.navbar-top #login-menu-nav form.dropdown-menu {
+  padding: 5px;
+}
+
+header nav.navbar-top #login-menu-nav .dropdown-menu {
+  background-color: #44499c;
+  border-top: none;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+header nav.navbar-top #login-menu-nav ul.dropdown-menu a:hover {
+  background-color: #44499c;
+  color: #ccc;
 }
 
 header nav.navbar-top ul li{
@@ -364,10 +379,6 @@ header nav.navbar-top ul li a{
 
 header nav.navbar-top ul li a:hover{
   text-decoration: none
-}
-
-header nav.navbar-top ul li:first-child a{
-  padding-left: 0
 }
 
 header nav.navbar-top span.glyphicon{
@@ -410,7 +421,6 @@ header nav.navbar-top span.glyphicon{
 #breadcrumb > div {
 }
 #header header {
-    padding: 15px 0 12px;
     position: relative;
 }
 #header a {
@@ -487,31 +497,20 @@ header nav.navbar-top span.glyphicon{
     color: #CCC;
     line-height: 17px;
 }
-nav {
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    font-weight: normal;
+
+header .dmc-nav {
+  margin-bottom: 0;
+}
+
+header .dmc-nav a.navbar-brand {
+  padding-top: 0;
 }
 
 nav a {
     color: #CCC;
 }
-#header nav {
-    position: absolute;
-    right: 0;
-    bottom: -1px;
-}
 nav ul {
     margin: 0;
-}
-#header nav li {
-    float: left;
-    margin-left: 39px;
-    padding-bottom: 8px;
-}
-#header nav li a {
-    display: block;
-    margin-bottom: 3px; /* ok to remove? */
 }
 #header nav .current {
     padding-bottom: 0;
@@ -2726,28 +2725,6 @@ span.highlightWidget {
     background-image: url(/images/ml_icons_warning.png);
 }
 
-div.header-separator {
-    float: right;
-    margin-right: 10px;
-    color: gray;
-    font-size: 20px;
-}
-
-/* main site button */
-#main-site {
-    float: right;
-    font-size: 12px;
-    margin-top: 2px;
-}
-#main-triangle {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#main-site a {
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-}
-
 /* login, signin, profile */
 #login-header nav {
     float: right;
@@ -2757,7 +2734,7 @@ div.header-separator {
 }
 
 .drop-down-trigger {
-    margin-top: 15px;
+    margin-top: 5px;
     min-width: 70px;
     border-width: 1px;
 }
@@ -2802,26 +2779,9 @@ div.header-separator {
     border-radius: 0 0 3px 3px;
 }
 
-#login-menu {
-  background-color: black;
-    right: 192px;
-    width: 300px;
-}
-
-#session-menu {
-    right: 316px;
-    width: 102px;
-    background-color: black;
-}
-
-.drop-down-menu a,
-#session-menu a {
+.drop-down-menu a {
     color: white;
     text-decoration: none;
-}
-
-#session-menu a:hover {
-    color: #1C6ACD;
 }
 
 .drop-down-menu a:hover {
@@ -2830,10 +2790,6 @@ div.header-separator {
 
 .drop-down-menu form {
     margin-right: 0;
-}
-
-#session-menu p.last {
-    margin-bottom: 0;
 }
 
 .drop-down-menu form fieldset {
@@ -2902,16 +2858,8 @@ div.header-separator {
     float: left;
 }
 
-#login_submit {
-    min-width: 70px;
-    display: block;
-    float: left;
-    margin-left: 15px;
-}
-
-#recovery {
-    float: left;
-    margin-left: 10px;
+#local-login-form button {
+  width: 100%;
 }
 
 #login-error {
