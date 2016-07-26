@@ -652,6 +652,58 @@ span.highlightWidget {
     #header h1 {
         margin-bottom: 4px;
     }
+
+    #header {
+      position: fixed;
+      width: 100%;
+      top: 0px;
+    }
+    #breadcrumb {
+      display: none;
+    }
+
+    .navbar-header {
+      padding: 10px 0px;
+    }
+
+    .navbar-top.ml-nav {
+      display: none;
+    }
+
+    #header nav .current:after {
+        content: none;
+    }
+
+    #dmc-navbar-collapse {
+      position: absolute;
+      background-color: #222;
+      left: 0px;
+      right: 0px;
+      padding: 0px 15px;
+      margin: 0px -1px;
+    }
+
+    #dmc-navbar-collapse .navbar-nav {
+      margin-bottom: 0px;
+    }
+
+    #dmc-navbar-collapse li {
+      padding: 2px 0px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+    }
+
+    #dmc-navbar-collapse li:hover {
+      background-color: #333;
+    }
+
+    #header nav .current {
+      padding-bottom: 2px;
+    }
+
+    #version_list option {
+      font-size: initial;
+    }
+
     #header h1 a {
         background: url(/images/logo-community-white-89x22.png) no-repeat;
         width: 89px;
@@ -675,12 +727,6 @@ span.highlightWidget {
     }
     #api_sub {
         right: 60%;
-    }
-	  #page_content {
-        left: 40%;
-	  }
-    #page_content > div {
-        margin: 0 4px 0 4px;
     }
     #page_content h1 {
         margin: 24px 0 24px 0;
@@ -731,9 +777,9 @@ span.highlightWidget {
         display: none;
     }
     #page_content {
-        left: 0;
-        width: auto;
-        margin: 152px 0 0 0;
+        position: initial;
+        margin: 108px 0px 0px 0px;
+        padding: 0px 5px;
     }
     #page_content > div {
         margin: 0 4px 0 4px;
