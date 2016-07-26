@@ -3379,4 +3379,9 @@ li.search_suggest_selected {
 #page_content .parameters blockquote { font-size: inherit; }
 #page_content .parameters pre { font-size: inherit; }
 
+.navbar-brand > img {
+  display: block;
+  width: 150px;
+  margin: 5px;
+}
 /* screen.css */

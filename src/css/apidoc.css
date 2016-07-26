@@ -657,6 +657,7 @@ span.highlightWidget {
       position: fixed;
       width: 100%;
       top: 0px;
+      border: 0px;
     }
     #breadcrumb {
       display: none;

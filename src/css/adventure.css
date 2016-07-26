@@ -188,8 +188,13 @@ a.hero-box {
   .module-page-header img {
     width: 140px;
   }
+
 }
 @media (max-width: 767px) {
+
+  #header {
+    border: 0px;
+  }
 
   .hero-box .hero-box-image {
     width: 50px;
