@@ -116,6 +116,8 @@ a.hero-box {
 
   .hero-box .hero-box-image {
     width: 75px;
+    min-width: 75px;
+    height: auto;
   }
 
   .hero-box .hero-box-content {
@@ -152,7 +154,7 @@ a.hero-box {
   }
 
   .hero-box {
-    min-height: 200px;
+    min-height: 220px;
   }
 
   .module-page-header {
@@ -187,6 +189,7 @@ a.hero-box {
 
   .module-page-header img {
     width: 140px;
+    height: 140px;
   }
 
 }
@@ -198,6 +201,8 @@ a.hero-box {
 
   .hero-box .hero-box-image {
     width: 50px;
+    min-width: 50px;
+    height: auto;
   }
 
   .hero-box .hero-box-content {
