@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false">
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false" title="Administrators">
   <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
   <div class="module-page-header">
     <div class="container">
@@ -7,7 +7,7 @@
         <div class="col col-md-9">
           <div class="media">
             <a class="module-icon pull-left">
-              <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/administrator-badge.svg" width="80"/>
+              <img class="media-object" src="/media/adventure/administrator-badge.svg" width="80"/>
               <i class="icon-completed"></i>
             </a>
             <div class="media-body">

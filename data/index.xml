@@ -12,7 +12,7 @@
         <div class="row">
           <div class="col-md-5 col-sm-12 col-md-offset-1 margin-bottom-2">
             <a class="hero-box row" href="/adventure/developer">
-              <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" class="hero-box-image"/>
+              <img src="/media/adventure/developer-badge.svg" class="hero-box-image"/>
               <div class="hero-box-content">
                 <h3 class="margin-top-0-5">Developer</h3>
                 <p class="margin-bottom-1">Need to build an app? Quickly become a MarkLogic Pro.</p>
@@ -22,7 +22,7 @@
           </div>
           <div class="col-md-5 col-sm-12">
             <a href="/adventure/administrator" class="hero-box row">
-              <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/administrator-badge.svg" class="hero-box-image"/>
+              <img src="/media/adventure/administrator-badge.svg" class="hero-box-image"/>
               <div class="hero-box-content">
                 <h3 class="margin-top-0-5">Administrator</h3>
                 <p class="margin-bottom-1">Need to manage your environment? Quickly learn how to monitor, deploy, and maintain.</p>

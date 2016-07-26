@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false">
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false" title="REST Developer">
   <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
   <div class="module-page-header">
     <div class="container">
@@ -7,7 +7,7 @@
         <div class="col col-md-9">
           <div class="media">
             <a class="module-icon pull-left">
-              <img class="media-object" src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg"/>
+              <img class="media-object" src="/media/adventure/developer-badge.svg"/>
             </a>
             <div class="media-body">
               <h4 class="media-heading">REST Developer</h4>
@@ -93,7 +93,7 @@
                 <li>
                   <a href="https://developer.marklogic.com/try/rest/index">
                     <h3 class="margin-top-0-5"><i class="fa fa-support"></i> The REST API in Five Minutes</h3>
-                    <p class="margin-bottom-1">A basic tutorial for using the REST API.</p>
+                    <p class="margin-bottom-1">A quick introduction to the REST API.</p>
                   </a>
                 </li>
                 <li>
@@ -137,6 +137,97 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-lightbulb-o"></span>
+              </div>
+              <h3 class="module-title">Next Steps</h3>
+              <div class="module-description">Additional Resources to feed your hungry mind.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/rest-dev/extensions">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Extending the REST API</h3>
+                    <p class="margin-bottom-1">Documentation on how to extend the REST API using XQuery or Javascript.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/semantics">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Semantics Developer's Guide</h3>
+                    <p class="margin-bottom-1">This document describes how to load, query, and work with semantic data in MarkLogic Server.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/security">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Understanding and Using Security Guide</h3>
+                    <p class="margin-bottom-1">The official guide to MarkLogic Security.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/temporal">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Temporal Developer's Guide</h3>
+                    <p class="margin-bottom-1">The official guide to MarkLogic BiTemporal feature.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-github"></span>
+              </div>
+              <h3 class="module-title">Community Connectors</h3>
+              <div class="module-description">MarkLogic Connectors written by Community members like you.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://github.com/marklogic/python_api">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Python</h3>
+                    <p class="margin-bottom-1">This project is a Community-driven MarkLogic REST API wrapper for Python developers. See the CONTRIBUTING.md file to see how you can help advance this project.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/adamfowleruk/mldotnet">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> MLDotNet</h3>
+                    <p class="margin-bottom-1">MLDotNet provides a convenient C# wrapper for common uses of the MarkLogic REST API. It abstracts authentication and common search settings to make it intuitive for new MarkLogic developers to get going quickly.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/marklogic/mlphp">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> MLPHP</h3>
+                    <p class="margin-bottom-1">MLPHP is a set of PHP classes that provide connectivity to MarkLogic via PHP.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ryanjdew/go-marklogic-go">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Go MarkLogic Go</h3>
+                    <p class="margin-bottom-1">Go MarkLogic Go is a Go library for interacting with MarkLogic's REST APIs.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/paxtonhare/markmapper">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> MarkMapper</h3>
+                    <p class="margin-bottom-1">MarkMapper is a community-driven Ruby Object Mapper for MarkLogic.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </ml:page>

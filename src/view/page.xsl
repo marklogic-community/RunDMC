@@ -234,6 +234,7 @@
                                  | xhtml:div/xhtml:h1
                                  | xhtml:h2
                                  | xhtml:div/xhtml:h2
+                                 | @title
                                  )[1]
                                  /node()"/>
   </xsl:template>
