@@ -1,7 +1,6 @@
 .hero-box .hero-box-image {
   display: block;
   float: left;
-  width: 75px;
   height: auto;
 }
 
@@ -53,7 +52,6 @@ a.hero-box {
 }
 
 .hero-box .hero-box-content {
-  padding-left: 20px;
   position: relative;
 }
 
@@ -115,6 +113,14 @@ a.hero-box {
 }
 
 @media (min-width: 768px) {
+
+  .hero-box .hero-box-image {
+    width: 75px;
+  }
+
+  .hero-box .hero-box-content {
+    padding-left: 20px;
+  }
 
   .module-page-header .media {
     margin: 10px;
@@ -184,6 +190,14 @@ a.hero-box {
   }
 }
 @media (max-width: 767px) {
+
+  .hero-box .hero-box-image {
+    width: 50px;
+  }
+
+  .hero-box .hero-box-content {
+    padding-left: 5px;
+  }
 
   .container-main, .section-row {
     background-color: #f0f0f0;
