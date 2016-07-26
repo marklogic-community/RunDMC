@@ -53,33 +53,33 @@
     <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
-<script xml:space="preserve">
-    Array.prototype.forEach.call(document.getElementsByClassName('codemirror js-limitheight'), function(item) {
-      var cm = CodeMirror.fromTextArea(item, {
-        lineNumbers: true,
-        mode: 'javascript',
-        readOnly: true,
-        theme: 'default'
+    <script xml:space="preserve">
+      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js-limitheight'), function(item) {
+        var cm = CodeMirror.fromTextArea(item, {
+          lineNumbers: true,
+          mode: 'javascript',
+          readOnly: true,
+          theme: 'default'
+        });
+        cm.setSize(null, 300);
       });
-      cm.setSize(null, 300);
-    });
-    Array.prototype.forEach.call(document.getElementsByClassName('codemirror js'), function(item) {
-      CodeMirror.fromTextArea(item, {
-        lineNumbers: true,
-        mode: 'javascript',
-        readOnly: true,
-        theme: 'default'
+      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js'), function(item) {
+        CodeMirror.fromTextArea(item, {
+          lineNumbers: true,
+          mode: 'javascript',
+          readOnly: true,
+          theme: 'default'
+        });
       });
-    });
-    Array.prototype.forEach.call(document.getElementsByClassName('codemirror xml'), function(item) {
-      CodeMirror.fromTextArea(item, {
-        lineNumbers: true,
-        mode: 'xml',
-        readOnly: true,
-        theme: 'default'
+      Array.prototype.forEach.call(document.getElementsByClassName('codemirror xml'), function(item) {
+        CodeMirror.fromTextArea(item, {
+          lineNumbers: true,
+          mode: 'xml',
+          readOnly: true,
+          theme: 'default'
+        });
       });
-    });
-</script>
+    </script>
 
 
   </head>
@@ -95,59 +95,64 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TT9JVW'); } ]]> </script>
 <!-- End Google Tag Manager -->
 
+
     <div id="container">
       <header>
-        <nav class="navbar-top row">
-          <div class="col-xs-6">
+        <nav class="navbar-top row ml-nav">
+          <div class="col-xs-5">
             <ul class="nav-web-properties">
-              <li><a href="http://www.marklogic.com" target="_blank"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm">Marklogic.com</span></a></li>
-              <li><a href="http://developer.marklogic.com" target="_blank"><span class="glyphicon glyphicon-console"></span><span class="hidden-xs hidden-sm">Developers</span></a></li>
-              <li><a href="http://world.marklogic.com" target="_blank"><span class="glyphicon glyphicon-globe"></span><span class="hidden-xs hidden-sm">MarkLogic World</span></a></li>
-              <li><a href="http://www.marklogic.com/services/training/" target="_blank"><span class="glyphicon glyphicon-apple"></span><span class="hidden-xs hidden-sm">University</span></a></li>
+              <li><a href="http://www.marklogic.com" target="_blank"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm hidden-md">Marklogic.com</span></a></li>
+              <li><a href="http://developer.marklogic.com" target="_blank"><span class="glyphicon glyphicon-console"></span><span class="hidden-xs hidden-sm hidden-md">Developers</span></a></li>
+              <li><a href="http://world.marklogic.com" target="_blank"><span class="glyphicon glyphicon-globe"></span><span class="hidden-xs hidden-sm hidden-md">MarkLogic World</span></a></li>
+              <li><a href="http://www.marklogic.com/services/training/" target="_blank"><span class="glyphicon glyphicon-apple"></span><span class="hidden-xs hidden-sm hidden-md">University</span></a></li>
             </ul>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-7">
             <ul class="nav-resources pull-right">
-              <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="">Ask a Question</span></a></li>
+              <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
             </ul>
+            <ml:login-menu/>
           </div>
         </nav>
-        <div id="header">
-          <header>
-            <h1>
-              <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript>
-              <a ml:class="" ml:href="/">MarkLogic&#174; Community</a>
-            </h1>
-            <div id="header-contents">
 
-              <div id="main-site">
-                <a href="//www.marklogic.com">Main site&#160;<span id="main-triangle">&#9656;</span></a>
-              </div>
-              <div class="header-separator">|</div>
-              <div id="search-header">
-                <form class="search-form" ml:action="/search" method="get">
+
+
+        <nav class="navbar navbar-inverse dmc-nav">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dmc-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" ml:class="" ml:href="/">
+                <img src="/images/logo-community-white-178x44.png" alt="MarkLogic&#174; Community"/>
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="dmc-navbar-collapse">
+              <form class="navbar-form navbar-right" ml:action="/search" method="get">
+                <div class="form-group">
                   <input type="hidden" name="v" ml:value="" />
                   <input type="hidden" name="api" ml:value="" />
-                  <label for="s_inp">Search with MarkLogic</label>
-                  <input id="s_inp" name="q" type="text"
-                         autocapitalize="off"
-                         placeholder="Search with MarkLogic" ml:value=""/>
-                  <input type="submit" value="Search" />
-                </form>
-              </div>
-              <div class="header-separator">|</div>
-              <div id="login-header">
-                <ml:login-menu/>
-              </div>
-            </div>
-
-            <nav>
-              <ul>
+                  <div class="input-group">
+                    <input id="s_inp" name="q" type="text"
+                           class="form-control"
+                           autocapitalize="off"
+                           placeholder="Search with MarkLogic" ml:value=""/>
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-search"/>
+                    </span>
+                  </div>
+                </div>
+              </form>
+              <ul class="nav navbar-nav navbar-right">
                 <ml:top-nav/>
               </ul>
-            </nav>
-          </header>
-        </div>
+            </div>
+          </div>
+        </nav>
       </header>
       <div id="content">
         <ml:choose>

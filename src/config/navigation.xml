@@ -269,17 +269,6 @@
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
   </page>
-  <page display="Labs" href="/labs">
-    <group display="">
-        <group display="Labs">
-            <page display="MLPHP" href="/labs/mlphp"/>
-            <page display="MLJS" href="/labs/mljs"/>
-            <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
-            <page display="rxq" href="/labs/rxq"/>
-            <page display="MLDotNet" href="/labs/mldotnet"/>
-        </group>
-    </group>
-  </page>
 
   <page display="Features" href="/features" hide="yes">
     <group display="">
