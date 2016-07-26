@@ -96,8 +96,10 @@ a:hover {
   color: #b3b3b3;
 }
 
-.container {
-  min-width: 1020px;
+@media (min-width: 1020px) {
+  .container {
+    min-width: 1020px;
+  }
 }
 
 .container-main,

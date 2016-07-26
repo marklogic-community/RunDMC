@@ -6,12 +6,12 @@
       <div class="container">
         <div class="row adventure-title">
           <div class="col-xs-12">
-            <h2 class="text-center jones">Choose Your Adventure</h2>
+            <h2 class="text-center jones">Start your Journey</h2>
           </div>
         </div>
         <div class="row">
           <div class="col-md-5 col-sm-12 col-md-offset-1 margin-bottom-2">
-            <a class="hero-box row" href="/adventure/developer" style="margin: 0;">
+            <a class="hero-box row" href="/adventure/developer">
               <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/developer-badge.svg" class="hero-box-image"/>
               <div class="hero-box-content">
                 <h3 class="margin-top-0-5">Developer</h3>
@@ -21,7 +21,7 @@
             </a>
           </div>
           <div class="col-md-5 col-sm-12">
-            <a href="/adventure/administrator" class="hero-box row" style="margin: 0">
+            <a href="/adventure/administrator" class="hero-box row">
               <img src="http://cdn.marklogic.com/wp-content/uploads/2016/02/administrator-badge.svg" class="hero-box-image"/>
               <div class="hero-box-content">
                 <h3 class="margin-top-0-5">Administrator</h3>
