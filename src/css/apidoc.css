@@ -10,22 +10,19 @@ body {
 
 #api_sub {
     position: absolute;
-    top: 0;
+    top: 158px;
     bottom: 0;
     left: 0;
     right: 70%;
-    margin: 155px 0 0 0;
     overflow-y: hidden;
 }
 
 #page_content {
     position: absolute;
-    top: 0;
+    top: 158px;
     bottom: 0;
     left: 30%;
     right: 0;
-    border-top: 1px solid #ccc;
-    margin: 155px 0 0 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
@@ -67,6 +64,12 @@ pre,
 
 ol ol {
     list-style-type: lower-alpha;
+}
+
+#header {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  z-index: 100;
 }
 
 #header nav .current:after {
@@ -224,7 +227,6 @@ ol ol {
 #toc_content {
     width: 100%;
     background: #fff;
-    border-top: 1px solid #ccc;
     padding: 16px 0 16px 0;
 }
 
@@ -649,15 +651,18 @@ span.highlightWidget {
 /* On small screens, hide TOC and make other adjustments.
  */
 @media (max-width: 764px) {
+    .pjax_enabled > .api_caption {
+      display: none;
+    }
+
     #header h1 {
         margin-bottom: 4px;
     }
 
     #header {
-      position: fixed;
       width: 100%;
       top: 0px;
-      border: 0px;
+      // border: 0px;
     }
     #breadcrumb {
       display: none;
@@ -718,7 +723,7 @@ span.highlightWidget {
         margin-bottom: 4px;
     }
     .version {
-        padding: 4px 0 4px 4px;
+        padding: 12px 0px 12px 12px;
     }
     .toc_select {
         margin-left: 4px;
@@ -727,7 +732,11 @@ span.highlightWidget {
         margin-left: 4px;
     }
     #api_sub {
-        right: 60%;
+        display: none;
+    }
+    #page_content {
+        left: 0px;
+        padding: 0px 5px;
     }
     #page_content h1 {
         margin: 24px 0 24px 0;
@@ -772,14 +781,15 @@ span.highlightWidget {
         margin-bottom: 4px;
     }
     .version {
-        padding: 4px 0 4px 4px;
+        padding: 12px 0px 12px 12px;
     }
     #api_sub {
         display: none;
     }
     #page_content {
         position: initial;
-        margin: 108px 0px 0px 0px;
+        // margin: 108px 0px 0px 0px;
+        overflow: auto;
         padding: 0px 5px;
     }
     #page_content > div {
@@ -793,4 +803,8 @@ span.highlightWidget {
     }
 }
 
+.navbar-form {
+  border-top: none;
+  margin-top: 0px;
+}
 /* apidoc.css */
