@@ -133,9 +133,15 @@
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/marklogic/top-songs">
-                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Top Songs</h3>
-                    <p class="margin-bottom-1">Top Songs is a sample application build on the MarkLogic Java Client API.</p>
+                  <a href="https://github.com/rjrudin/ml-gradle">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> ml-gradle</h3>
+                    <p class="margin-bottom-1">A Gradle plugin that supports a number of tasks pertaining to deploying an application to MarkLogic and interacting with other features of MarkLogic via a Gradle build file.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://marklogic.github.io/marklogic-data-hub">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> MarkLogic Data Hub Framework</h3>
+                    <p class="margin-bottom-1">A framework to speed you through building Data Hubs.</p>
                   </a>
                 </li>
               </ul>

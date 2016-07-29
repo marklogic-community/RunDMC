@@ -3384,4 +3384,11 @@ li.search_suggest_selected {
   width: 150px;
   margin: 5px;
 }
+
+@media (max-width: 764px) {
+  .navbar-form {
+    border-top: none;
+    margin-top: 0px;
+  }
+}
 /* screen.css */
