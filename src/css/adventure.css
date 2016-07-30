@@ -193,10 +193,28 @@ a.hero-box {
   }
 
 }
+
 @media (max-width: 767px) {
 
+  .ml-nav .col-xs-5,
+  .ml-nav .col-xs-7 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
   #header {
     border: 0px;
+  }
+
+  .main-wrapper {
+    padding-bottom: 0px;
+  }
+
+  .adventure {
+    padding-bottom: 0px;
+  }
+
+  .start-journey.row {
+    margin-bottom: 0px;
   }
 
   .hero-box .hero-box-image {
