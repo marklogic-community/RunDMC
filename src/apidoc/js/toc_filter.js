@@ -45,10 +45,10 @@ $(function() {
   // Don't use pjax on pdf, zip files, and printer-friendly links
   var selector = "#page_content .pjax_enabled" +
       " a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])";
-  $(selector).pjax({
+  $(document).pjax(selector, '#page_content', {
     container: '#page_content',
     timeout: 4000,
-    success: function() {
+    success: function clickedBodyLink() {
       // Update view when the pjax call originated from a link in the body
       LOG.debug("pjax_enabled A fired ok", this);
       // The tocSectionLinkSelector may have changed.
@@ -57,10 +57,11 @@ $(function() {
       tocFilterUpdate();
       updateTocForSelection(); } });
 
-  $("#api_sub .pjax_enabled a:not(.external)").pjax({
+  selector = "#api_sub .pjax_enabled a:not(.external)";
+  $(document).pjax(selector, '#page_content', {
     container: '#page_content',
     timeout: 4000,
-    success: function() {
+    success: function clickedTocLink() {
       // Update view when a TOC link was clicked
       LOG.debug("pjax_enabled B fired ok"); } });
 
