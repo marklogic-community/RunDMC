@@ -3391,4 +3391,9 @@ li.search_suggest_selected {
     margin-top: 0px;
   }
 }
+
+.wrapper.thumbnail > img {
+  max-height: 128px;
+}
+
 /* screen.css */

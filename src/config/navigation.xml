@@ -144,12 +144,11 @@
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
-      <group display="Connectors">
+      <group display="Connectors" href="/code/connectors">
         <page display="Go Bindings" href="/code/go-marklogic"/>
         <page display="MarkMapper" href="/code/markmapper"/>
         <page display="MLDotNet" href="/labs/mldotnet"/>
         <page display="MLJAM" href="/code/mljam"/>
-        <page display="MLJS" href="/labs/mljs"/>
         <page display="MLPHP" href="/labs/mlphp"/>
         <page display="MLSAM" href="/code/mlsam"/>
         <page display="Python" href="/code/marklogic-python"/>
