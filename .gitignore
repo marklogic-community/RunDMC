@@ -8,3 +8,4 @@ src/config/disqus-info.xml
 src/config/server-urls-local.xml
 node_modules
 .DS_Store
+bower_components

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false" title="Administrators">
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
+  <div class="module-page-header">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-9">
+          <div class="media">
+            <a class="module-icon pull-left">
+              <img class="media-object" src="/media/adventure/administrator-badge.svg" width="80"/>
+              <i class="icon-completed"></i>
+            </a>
+            <div class="media-body">
+              <h4 class="media-heading">Administrators</h4>
+              <p>
+                Learn the ins and outs of administrating MarkLogic.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row long-page list-page">
+    <div class="container">
+      <div class="row adventure-title">
+        <div class="col-xs-12">
+          <h3>Modules</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-database"></span>
+              </div>
+              <h3 class="module-title">Basic Intro</h3>
+              <div class="module-description">Get a basic introduction to MarkLogic.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://mlu.marklogic.com/ondemand/f3224d7f">
+                    <h3 class="margin-top-0-5"><i class="fa fa-film"></i> Introduction to MarkLogic</h3>
+                    <p>This MarkLogic University On Demand Course gives a high level overview of some of MarkLogic's key features.</p>
+                    <p class="margin-bottom-1 duration">Duration: 24 mins</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.marklogic.com/training-courses/marklogic-fundamentals/">
+                    <h3 class="margin-top-0-5"><i class="fa fa-film"></i> MarkLogic Fundamentals</h3>
+                    <p class="margin-bottom-1">Jump-start your technical team’s broad understanding of MarkLogic; how to setup, ingest and get developing!</p>
+                    <p class="margin-bottom-1 duration">Duration: 1-8 hours</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://mlu.marklogic.com/ondemand/index.xqy?q=Series%3A%22Data%20Modeling%22">
+                    <h3 class="margin-top-0-5"><i class="fa fa-list"></i> Data Modeling Basics</h3>
+                    <p class="margin-bottom-1">An on demand series from MarkLogic University covering the basics of data modeling.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://developer.marklogic.com/learn/arch/concepts-and-terms">
+                    <h3 class="margin-top-0-5"><i class="fa fa-book"></i> Concepts and Terms</h3>
+                    <p class="margin-bottom-1">Some basic concepts and terms.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/installation">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Install MarkLogic</h3>
+                    <p class="margin-bottom-1">Before you can use it you have to install it.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-coffee"></span>
+              </div>
+              <h3 class="module-title">Administering MarkLogic for Developers</h3>
+              <div class="module-description">Learn how to keep those pesky developers happy.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/rest-dev/service">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Administering MarkLogic REST API Instances</h3>
+                    <p class="margin-bottom-1">How to administer the REST API.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.marklogic.com/guide/admin">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> Administrator's Guide</h3>
+                    <p class="margin-bottom-1">The official administer's guide for MarkLogic.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://developer.marklogic.com/products/aws">
+                    <h3 class="margin-top-0-5"><i class="fa fa-support"></i> MarkLogic and Amazon Web Services</h3>
+                    <p class="margin-bottom-1">Deploying on Amazon.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-code"></span>
+              </div>
+              <h3 class="module-title">Code Samples</h3>
+              <div class="module-description">See the Java Client API in action.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://github.com/marklogic/marklogic-samplestack">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Samplestack</h3>
+                    <p class="margin-bottom-1">Samplestack is a demo "Question and Answer" web application that shows you how to integrate MarkLogic into a three-tier application architecture (browser, application server, and database).</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/marklogic/top-songs">
+                    <h3 class="margin-top-0-5"><i class="fa fa-github"></i> Top Songs</h3>
+                    <p class="margin-bottom-1">Top Songs is a sample application build on the MarkLogic Java Client API.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="module-list">
+            <div class="module-list-header">
+              <div class="module-icon pull-left">
+                <span class="fa fa-wrench"></span>
+              </div>
+              <h3 class="module-title">Deep Dive</h3>
+              <div class="module-description">Get knee deep in it.</div>
+            </div>
+            <div class="module-list-content">
+              <ul>
+                <li>
+                  <a href="https://developer.marklogic.com/learn/inside-marklogic-server">
+                    <h3 class="margin-top-0-5"><i class="fa fa-magic"></i> Inside MarkLogic Server</h3>
+                    <p class="margin-bottom-1">This paper describes the MarkLogic Server internals: its data model, indexing system, update model, and operational behaviors. It's intended for a technical audience — either someone new to MarkLogic wanting to understand its capabilities, or someone already familiar with MarkLogic who wants to understand what's going on under the hood.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://developer.marklogic.com/learn/understanding-system-resources">
+                    <h3 class="margin-top-0-5"><i class="fa fa-magic"></i> Performance: Understanding System Resources</h3>
+                    <p class="margin-bottom-1">This guide views MarkLogic through the lens of resource consumption and infrastructure planning.</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://developer.marklogic.com/media/white-paper/hardware-reference-arch-das.pdf">
+                    <h3 class="margin-top-0-5"><i class="fa fa-magic"></i> Hardware Reference Architecture: Direct Attached Storage</h3>
+                    <p class="margin-bottom-1">This guide provides details about our recommended hardware for Direct Attached Storage (DAS)..</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ml:page>

@@ -492,23 +492,6 @@ if(typeof jQuery != 'undefined') {
         e.preventDefault();
       });
 
-      $("#login-trigger").click(function(e) {
-        $("#login-menu").toggle(0, function() {
-          if ($("#login-menu:visible")) {
-            $("#login-trigger").addClass("triggered");
-          }
-        });
-
-        $( "#login-menu" ).position({
-            my: "left top",
-            at: "left bottom",
-            of: "#login-trigger",
-            offset: "0 -4"
-        });
-
-        e.preventDefault();
-      });
-
       $(document).bind('keydown.drop-down-menu', function(event) {
         if (event.keyCode && event.keyCode === $.ui.keyCode.ESCAPE) {
           $('.drop-down-menu').each(function() {
@@ -760,27 +743,29 @@ function loadRecentContent() {
     dataType: 'json',
     success: function(data) {
       var recent = $('#recent');
-      data.forEach(function(item) {
-        recent.append(
-          $('<a/>')
-            .addClass('list-group-item')
-            .attr('href', item.uri)
-            .append(
-              $('<span/>')
-                .addClass('glyphicon')
-                .addClass('glyphicon-' + icons[item.type])
-                .addClass('pull-left')
-            )
-            .append(
-              $('<h3 class="panel-title"/>')
-                .text(item.title)
-            )
-            .append(
-              $('<p/>')
-                .text(item.short)
-            )
-        );
-      });
+      if (data) {
+        data.forEach(function(item) {
+          recent.append(
+            $('<a/>')
+              .addClass('list-group-item')
+              .attr('href', item.uri)
+              .append(
+                $('<span/>')
+                  .addClass('glyphicon')
+                  .addClass('glyphicon-' + icons[item.type])
+                  .addClass('pull-left')
+              )
+              .append(
+                $('<h3 class="panel-title"/>')
+                  .text(item.title)
+              )
+              .append(
+                $('<p/>')
+                  .text(item.short)
+              )
+          );
+        });
+      }
     }
   });
 }
