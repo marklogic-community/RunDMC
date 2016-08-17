@@ -167,7 +167,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                   </attribute>
                   <attribute>
                       <attrName>Role__c</attrName>
-                      <attrValue>Technical Evaluator</attrValue>
+                      <attrValue></attrValue>
                   </attribute>
                   {$leadSourceAttrs}
               </leadAttributeList>
