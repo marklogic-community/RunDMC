@@ -21,22 +21,23 @@ return
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
   return
     if (normalize-space($existing-doc-path) and doc-available($existing-doc-path))
-    then (
-           (: Replace the existing document :)
-           admin-ops:document-insert($existing-doc-path, $new-doc),
+    then
+      (
+        (: Replace the existing document :)
+        admin-ops:document-insert($existing-doc-path, $new-doc),
 
-           ml:reset-category-tags($existing-doc-path, $new-doc),
+        ml:reset-category-tags($existing-doc-path, $new-doc),
 
-           (: Invalidate the navigation cache :)
-           ml:invalidate-cached-navigation(),
+        (: Invalidate the navigation cache :)
+        ml:invalidate-cached-navigation(),
 
-           (: Redirect right back to the Edit page for the newly replaced document :)
-           xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
-                                         "?~doc_path=",
-                                         $existing-doc-path,
-                                         "&amp;~updated=",
-                                         current-dateTime())
-                                 )
-         )
+        (: Redirect right back to the Edit page for the newly replaced document :)
+        xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
+                                      "?~doc_path=",
+                                      $existing-doc-path,
+                                      "&amp;~updated=",
+                                      current-dateTime())
+                              )
+      )
     else error((),"You're trying to overwrite a document that doesn't exist...")
 )
