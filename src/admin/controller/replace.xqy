@@ -19,10 +19,16 @@ return
   let $new-doc := xdmp:xslt-invoke("../model/form2xml.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
 
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
+
+  let $last-updated := $params[@name eq '~updated']
+
   return
     if (normalize-space($existing-doc-path) and doc-available($existing-doc-path))
-    then
-      (
+    then (
+      if ($last-updated != fn:doc($existing-doc-path)/node()/ml:last-updated/fn:string()) then (
+        xdmp:set-response-code(409, "Conflict")
+      )
+      else (
         (: Replace the existing document :)
         admin-ops:document-insert($existing-doc-path, $new-doc),
 
@@ -38,6 +44,7 @@ return
                                       "&amp;~updated=",
                                       current-dateTime())
                               )
-      )
+        )
+    )
     else error((),"You're trying to overwrite a document that doesn't exist...")
 )
