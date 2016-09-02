@@ -37,7 +37,7 @@ if(typeof jQuery != 'undefined') {
     			$('.popup input.cancel').click(function() {
     				$('#utilnav .signup a[rel]').overlay().close();
     			});
-}
+        }
       });
       // generic function to prevent form submission for certain submit buttons
       function preventSubmit(form,trigger) {
@@ -108,6 +108,72 @@ if(typeof jQuery != 'undefined') {
 			});
 		});
 		// end “add link” functionality
+
 		// new functions should be added here
 	});
+}
+
+function toggleEditor(id) {
+  if (!tinyMCE.get(id)) {
+    tinyMCE.execCommand('mceAddControl', false, id);
+  } else {
+    tinyMCE.execCommand('mceRemoveControl', false, id);
+  }
+}
+
+function checkValidXhtml(action, target) {
+  // Event has more than one TEXTAREA, so we need to loop.
+  var textAreas = document.getElementsByTagName("TEXTAREA");
+  var textAreasLength = textAreas.length;
+  var isValid = true;
+  var updatedDOM = document.querySelectorAll('input[name="~updated"]');
+  var lastUpdated = updatedDOM.length > 0 ? updatedDOM[0].getAttribute('value') : '';
+  var uriDOM = document.querySelectorAll('input[name="~existing_doc_uri"]');
+  var uri = uriDOM.length > 0 ? uriDOM[0].getAttribute('value') : '';
+  $.each(textAreas, function(index, value)
+    {
+    $.ajax({
+      url: '/admin/controller/validate.xqy',
+      type: "POST",
+      data: {
+        xhtml: value.value,
+        updated: lastUpdated,
+        uri: uri
+      },
+      cache: false,
+      dataType: "text",
+      async: false,
+      success:
+
+        function(response)
+        {
+          // If we get a response, something is wrong with the content
+          if(response)  {
+            // Bad XHTML or another problem.  Display this error:error node back to the user.
+            var errorDiv = document.getElementById('textarea-error');
+            errorDiv.innerHTML =  "There was a problem with your content. Error from the Server: " + response;
+            errorDiv.style.display = 'block';
+            isValid = false;
+          }
+
+        },
+      error:
+        function(xml) {
+          var errorDiv = document.getElementById('textarea-error');
+          errorDiv.innerHTML = "There was unexpected problem in the Server: " + xml.responseText;
+          errorDiv.style.display = 'block';
+          isValid = false;
+        }
+    });
+  });
+
+  // No problem in the textareas, allow form submission to continue
+  if(isValid) {
+    var adminform = document.getElementsByClassName('adminform')[0];
+    adminform.action = action;
+    adminform.target = target;
+    adminform.submit();
+  }
+
+  return isValid;
 }
