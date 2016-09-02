@@ -19,24 +19,32 @@ return
   let $new-doc := xdmp:xslt-invoke("../model/form2xml.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
 
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
+
+  let $last-updated := $params[@name eq '~updated']
+
   return
     if (normalize-space($existing-doc-path) and doc-available($existing-doc-path))
     then (
-           (: Replace the existing document :)
-           admin-ops:document-insert($existing-doc-path, $new-doc),
+      if ($last-updated != fn:doc($existing-doc-path)/node()/ml:last-updated/fn:string()) then (
+        xdmp:set-response-code(409, "Conflict")
+      )
+      else (
+        (: Replace the existing document :)
+        admin-ops:document-insert($existing-doc-path, $new-doc),
 
-           ml:reset-category-tags($existing-doc-path, $new-doc),
+        ml:reset-category-tags($existing-doc-path, $new-doc),
 
-           (: Invalidate the navigation cache :)
-           ml:invalidate-cached-navigation(),
+        (: Invalidate the navigation cache :)
+        ml:invalidate-cached-navigation(),
 
-           (: Redirect right back to the Edit page for the newly replaced document :)
-           xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
-                                         "?~doc_path=",
-                                         $existing-doc-path,
-                                         "&amp;~updated=",
-                                         current-dateTime())
-                                 )
-         )
+        (: Redirect right back to the Edit page for the newly replaced document :)
+        xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
+                                      "?~doc_path=",
+                                      $existing-doc-path,
+                                      "&amp;~updated=",
+                                      current-dateTime())
+                              )
+        )
+    )
     else error((),"You're trying to overwrite a document that doesn't exist...")
 )
