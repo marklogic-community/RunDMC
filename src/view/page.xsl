@@ -558,7 +558,7 @@
 
   <xsl:template mode="author-listing" match="author">
     <xsl:text>, </xsl:text>
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="individual-author" select="."/>
   </xsl:template>
 
   <xsl:template mode="author-listing" match="author[last()]">
