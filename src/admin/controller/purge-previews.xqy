@@ -8,16 +8,21 @@ ASSUMPTION: Each preview doc is stored in /preview, and its file name starts wit
 
 let $today := current-date()
 let $preview-docs := collection()/*[@preview-only eq 'yes']
-let $deleted-docs := for $p in $preview-docs
-                     return
-                       let $uri      := base-uri($p)
-                       let $filename := substring-after($uri,"/preview/")
-                       let $date     := xs:date(substring($filename,1,10))
-                       return
-                         if ($date lt $today)
-                         then ( xdmp:document-delete($uri), concat("Deleted: ",$uri, "&#x20;") )
-                         else ()
+let $deleted-docs :=
+  for $p in $preview-docs
+  let $uri      := base-uri($p)
+  let $filename := substring-after($uri,"/preview/")
+  let $date     := xs:date(substring($filename,1,10))
   return
+    if ($date lt $today) then (
+      xdmp:document-delete($uri),
+      xdmp:log(concat("Deleted: ",$uri, "&#x20;"))
+    )
+    else ()
+return
   (
-    if ($deleted-docs) then $deleted-docs else "All preview docs before today have already been purged."
+    if ($deleted-docs) then
+      $deleted-docs
+    else
+      xdmp:log("All preview docs before today have already been purged.")
   )
