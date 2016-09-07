@@ -16,13 +16,13 @@ let $deleted-docs :=
   return
     if ($date lt $today) then (
       xdmp:document-delete($uri),
-      xdmp:log(concat("Deleted: ",$uri, "&#x20;"))
+      concat("Deleted: ",$uri, "&#x20;")
     )
     else ()
 return
   (
     if ($deleted-docs) then
-      $deleted-docs
+      xdmp:log($deleted-docs)
     else
       xdmp:log("All preview docs before today have already been purged.")
   )
