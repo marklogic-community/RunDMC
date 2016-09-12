@@ -249,6 +249,10 @@
       <guide url-name="sql" source-name="sql">
         Provides information on how to use MarkLogic's SQL interface,
         including the creation of relational schemas and views.</guide>
+      <guide url-name="entity-services" source-name="entity-services">
+        Provides information on how to use MarkLogic's Entity Services
+        to model and integrate data from disparate sources into your
+        application.</guide>
       <guide url-name="messages" source-name="messages">
         Error Messages and Codes Reference</guide>
       <guide url-name="copyright" source-name="shared">
