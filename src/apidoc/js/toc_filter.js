@@ -261,7 +261,7 @@ function searchTOC(filter, tocRoot) {
 
   if (filter === '') {
     items.removeClass("hide-detail");
-    self.find(">a >.function_count").show();
+    $(">a >.function_count").show();
     return;
   }
 
