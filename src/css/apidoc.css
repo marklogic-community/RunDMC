@@ -8,30 +8,21 @@ body {
 
 /* header + two columns */
 
-#header {
-    position: absolute;
-    left: 0;
-    right: 0;
-}
-
 #api_sub {
     position: absolute;
-    top: 0;
+    top: 158px;
     bottom: 0;
     left: 0;
     right: 70%;
-    margin: 155px 0 0 0;
     overflow-y: hidden;
 }
 
 #page_content {
     position: absolute;
-    top: 0;
+    top: 158px;
     bottom: 0;
     left: 30%;
     right: 0;
-    border-top: 1px solid #ccc;
-    margin: 155px 0 0 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
@@ -75,12 +66,23 @@ ol ol {
     list-style-type: lower-alpha;
 }
 
+#header {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  z-index: 100;
+}
+
 #header nav .current:after {
     border-color: #1479B2 transparent;
 }
 
 #header-below-bottom-bar {
     background: #fff;
+}
+
+#dmc-navbar-collapse li {
+  background-color: #222;
+  z-index: 10;
 }
 
 #content {
@@ -107,6 +109,7 @@ ol ol {
     box-shadow: none;
 }
 #breadcrumb {
+    overflow-y: auto;
     padding: 8px 0 8px 16px;
 }
 
@@ -224,7 +227,6 @@ ol ol {
 #toc_content {
     width: 100%;
     background: #fff;
-    border-top: 1px solid #ccc;
     padding: 16px 0 16px 0;
 }
 
@@ -649,17 +651,70 @@ span.highlightWidget {
 /* On small screens, hide TOC and make other adjustments.
  */
 @media (max-width: 764px) {
+    .pjax_enabled > .api_caption {
+      display: none;
+    }
+
     #header h1 {
         margin-bottom: 4px;
     }
+
+    #header {
+      width: 100%;
+      top: 0px;
+      // border: 0px;
+    }
+    #breadcrumb {
+      display: none;
+    }
+
+    .navbar-header {
+      padding: 10px 0px;
+    }
+
+    .navbar-top.ml-nav {
+      display: none;
+    }
+
+    #header nav .current:after {
+        content: none;
+    }
+
+    #dmc-navbar-collapse {
+      position: absolute;
+      background-color: #222;
+      left: 0px;
+      right: 0px;
+      padding: 0px 15px;
+      margin: 0px -1px;
+    }
+
+    #dmc-navbar-collapse .navbar-nav {
+      margin-bottom: 0px;
+    }
+
+    #dmc-navbar-collapse li {
+      padding: 2px 0px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+    }
+
+    #dmc-navbar-collapse li:hover {
+      background-color: #333;
+    }
+
+    #header nav .current {
+      padding-bottom: 2px;
+    }
+
+    #version_list option {
+      font-size: initial;
+    }
+
     #header h1 a {
         background: url(/images/logo-community-white-89x22.png) no-repeat;
         width: 89px;
         height: 22px;
         margin-bottom: 20px;
-    }
-    #header nav li {
-        margin-left: 16px;
     }
     #breadcrumb {
         padding: 4px;
@@ -668,7 +723,7 @@ span.highlightWidget {
         margin-bottom: 4px;
     }
     .version {
-        padding: 4px 0 4px 4px;
+        padding: 12px 0px 12px 12px;
     }
     .toc_select {
         margin-left: 4px;
@@ -677,13 +732,11 @@ span.highlightWidget {
         margin-left: 4px;
     }
     #api_sub {
-        right: 60%;
+        display: none;
     }
-	  #page_content {
-        left: 40%;
-	  }
-    #page_content > div {
-        margin: 0 4px 0 4px;
+    #page_content {
+        left: 0px;
+        padding: 0px 5px;
     }
     #page_content h1 {
         margin: 24px 0 24px 0;
@@ -715,9 +768,6 @@ span.highlightWidget {
     #search_suggest_container {
         width: 144px;
     }
-    #header nav {
-        display: none;
-    }
     #search-header form {
         margin-right: 4px;
     }
@@ -731,15 +781,16 @@ span.highlightWidget {
         margin-bottom: 4px;
     }
     .version {
-        padding: 4px 0 4px 4px;
+        padding: 12px 0px 12px 12px;
     }
     #api_sub {
         display: none;
     }
     #page_content {
-        left: 0;
-        width: auto;
-        margin: 152px 0 0 0;
+        position: initial;
+        // margin: 108px 0px 0px 0px;
+        overflow: auto;
+        padding: 0px 5px;
     }
     #page_content > div {
         margin: 0 4px 0 4px;
@@ -751,5 +802,4 @@ span.highlightWidget {
         padding: 4px;
     }
 }
-
 /* apidoc.css */

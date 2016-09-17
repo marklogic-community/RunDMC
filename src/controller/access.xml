@@ -3,7 +3,7 @@
 -->
 <rules>
   <matches>^/(apidoc/)?js/.+\.js$</matches>
-  <matches>^/(apidoc/)?images/.+\.(gif|ico|jpg|png|swf)$</matches>
+  <matches>^/(apidoc/)?images/.+\.(gif|ico|jpg|png|swf|svg)$</matches>
   <starts-with>/controller/tracker.xqy</starts-with>
   <starts-with>/css/</starts-with>
   <starts-with>/download</starts-with>

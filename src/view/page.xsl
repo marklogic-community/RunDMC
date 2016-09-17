@@ -234,6 +234,7 @@
                                  | xhtml:div/xhtml:h1
                                  | xhtml:h2
                                  | xhtml:div/xhtml:h2
+                                 | @title
                                  )[1]
                                  /node()"/>
   </xsl:template>
@@ -325,13 +326,26 @@
 
   <!-- Conditional template support: process the first child that matches -->
   <xsl:template match="choose">
-    <xsl:apply-templates select="*[tokenize(normalize-space(@href),' ') = $external-uri or not(@href)][1]/node()"/>
+    <xsl:apply-templates select="*[tokenize(normalize-space(@href),' ') = $external-uri or not(@href) or ($original-content/ml:page/@show-sidebar = 'false')][1]/node()"/>
   </xsl:template>
 
   <!-- Strip out conditional content that doesn't apply to the current URI prefix -->
   <!-- Example: <ml:if href-starts-with="/try/">...</ml:if> -->
   <xsl:template match="if[not((some $prefix in tokenize(normalize-space(@href-starts-with),' ')
                               satisfies starts-with($external-uri, $prefix)) or (@href eq $external-uri) )]"/>
+<!--
+  <xsl:template match="show-sidebar">
+    <xsl:if test="not($original-content/ml:page/@show-sidebar = 'false')">
+      <xsl:apply-templates select="node()"/>
+    </xsl:if>
+  </xsl:template>
+-->
+
+  <xsl:template match="show-comments">
+    <xsl:if test="not($original-content/ml:page/@show-comments = 'false')">
+      <xsl:apply-templates select="node()"/>
+    </xsl:if>
+  </xsl:template>
 
   <xsl:template match="if-session[users:getCurrentUser()]"/>
 
@@ -410,7 +424,9 @@
              automatically appears above the comment submit form section. Suppressing it here
              ensures we don't display it twice. -->
         <xsl:if test="$in-paginated-list">
-          <xsl:apply-templates mode="comment-count" select="."/>
+          <ml:show-comments>
+            <xsl:apply-templates mode="comment-count" select="."/>
+          </ml:show-comments>
         </xsl:if>
 
         <div class="tags">
@@ -542,12 +558,12 @@
 
   <xsl:template mode="author-listing" match="author">
     <xsl:text>, </xsl:text>
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="individual-author" select="."/>
   </xsl:template>
 
   <xsl:template mode="author-listing" match="author[last()]">
     <xsl:text> and </xsl:text>
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="individual-author" select="."/>
   </xsl:template>
 
   <xsl:template mode="individual-author" match="author">

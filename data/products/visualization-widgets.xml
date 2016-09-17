@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">  
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
 <p>
-The MarkLogic Visualization Widgets are a suite of drop-in HTML5 components that simplify adding rich data visualizations to your applications. They 
-combine JavaScript, HTML, and CSS into interactive charts and maps that can easily be woven into any MarkLogic web application.  
+The MarkLogic Visualization Widgets are a suite of drop-in HTML5 components that simplify adding rich data visualizations to your applications. They
+combine JavaScript, HTML, and CSS into interactive charts and maps that can easily be woven into any MarkLogic web application.
 </p>
 
   <ml:product-info name="MarkLogic Visualization Widgets" license-page="">
 
     <ml:platform name="Download">
       <ml:download anchor-class="track-download" href="/download/binaries/visualization-widgets/MarkLogic-Visualization-Widgets-2.0-4.zip" size="648 KB" date="2014-09-12">Release 2.0-4 zip package (for MarkLogic 7)
-      </ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/visualization-widgets/MarkLogic-Visualization-Widgets-1.0-5.zip" size="648 KB" date="2014-03-2">Release 1.0-5 zip package (for MarkLogic 6)
       </ml:download>
     </ml:platform>
   </ml:product-info>
@@ -30,13 +28,13 @@ combine JavaScript, HTML, and CSS into interactive charts and maps that can easi
 <br/>
 
 <p>
-Each widget is its own JavaScript class. All of the widgets share a common API for things like bootstrapping into the DOM, styling, 
-publishing events (e.g. “Something was clicked”), and receiving and updating data. 
-There are several ways to take advantage of visualization widgets in your applications. 
+Each widget is its own JavaScript class. All of the widgets share a common API for things like bootstrapping into the DOM, styling,
+publishing events (e.g. “Something was clicked”), and receiving and updating data.
+There are several ways to take advantage of visualization widgets in your applications.
 </p>
 
 <p>
-To use them in an existing web application, use the HTML below to include the JavaScript and CSS libraries in your HTML page. 
+To use them in an existing web application, use the HTML below to include the JavaScript and CSS libraries in your HTML page.
 </p>
 
 <p>
@@ -44,7 +42,7 @@ To use them in an existing web application, use the HTML below to include the Ja
 </p>
 
 <p>
-Then, add some JavaScript to initialize the included controller (“C” in the “MVC” sense), specify one or more widget instances, and bind 
+Then, add some JavaScript to initialize the included controller (“C” in the “MVC” sense), specify one or more widget instances, and bind
 them to a container element in your page.
 </p>
 
@@ -53,10 +51,10 @@ them to a container element in your page.
 </p>
 
 <p>
-You can also use <a href="//docs.marklogic.com/guide/app-builder"></a>Application Builder to generate an application that 
-includes visualization widgets without writing any code. For more information on Application Builder 
-see the <a href="//docs.marklogic.com/guide/app-builder">docs</a>. 
-The <a href="//docs.marklogic.com/guide/search-dev/visualwidgets#id_60041">widget APIs</a> and configuration options along with examples can 
+You can also use <a href="//docs.marklogic.com/guide/app-builder"></a>Application Builder to generate an application that
+includes visualization widgets without writing any code. For more information on Application Builder
+see the <a href="//docs.marklogic.com/guide/app-builder">docs</a>.
+The <a href="//docs.marklogic.com/guide/search-dev/visualwidgets#id_60041">widget APIs</a> and configuration options along with examples can
 be found in the <a href="//docs.marklogic.com/guide/search-dev/visualwidgets#chapter">official documentation</a> as well.
 </p>
 
