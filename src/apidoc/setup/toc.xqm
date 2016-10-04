@@ -305,8 +305,12 @@ declare function toc:get-summary-for-category(
   (: Just grab the first summary. If we have a category with subcategories,
    : the following line of code can return multiple summaries.
    :)
-  let $summaries-with-category := ($raw-modules/apidoc:summary[
-    @category eq $cat][not($subcat) or @subcategory eq $subcat])[1]
+  let $summaries-with-category :=
+    ($raw-modules/apidoc:summary
+      [@category eq $cat]
+      [not($subcat) or @subcategory eq $subcat]
+      [not(@class) or @class eq $mode]
+    )[1]
   return (
     if ($summaries-with-category) then $summaries-with-category
     else (
