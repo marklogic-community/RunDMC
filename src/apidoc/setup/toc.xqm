@@ -84,17 +84,17 @@ as empty-sequence()
   let $f1 := $fp/api:function[1]
   let $mode as xs:string := $fp/@mode
   let $m-mode := map:get($m, $mode)
-  let $bucket as xs:string := if ($f1/@bucket) 
-                              then ($f1/@bucket) 
+  let $bucket as xs:string := if ($f1/@bucket)
+                              then ($f1/@bucket)
                               else ('MarkLogic Built-In Functions')
   let $cat as xs:string := $f1/@category
   let $subcat as xs:string? := $f1/@subcategory
   let $catsubcat as xs:string := $cat||'#'||$subcat
   let $lib := $f1/@lib/fn:string()
   let $object := $f1/@object/fn:string()
-  (: 
-     either $lib or $object (used with apidoc:method) should be the 
-     empty string, but we are treating them both like lib 
+  (:
+     either $lib or $object (used with apidoc:method) should be the
+     empty string, but we are treating them both like lib
   :)
   let $lib-or-object := fn:concat($lib, $object)
   let $m-bucket := map:get($m-mode, $MAP-KEY-BUCKET)
@@ -177,7 +177,7 @@ as element()
       element a {
         attribute href { "/"||$secondary-lib },
         toc:prefix-for-lib($secondary-lib) },
-      ' functions ('||toc:display-category($cat)||')') } 
+      ' functions ('||toc:display-category($cat)||')') }
 };
 
 declare function toc:REST-page-title(
@@ -189,9 +189,17 @@ as element()
     (: Children will be in the default element namespace,
      : which is empty.
      :)
-    $category,
-    if (not($subcategory)) then () else (
-      ' ('||$subcategory||')') }
+    fn:string-join(
+      (
+        $category,
+        if (not($subcategory)) then ()
+        else (
+          '('||$subcategory||')'
+        )
+      ),
+      ' '
+    )
+  }
 };
 
 (: Returns the one library string if all the functions are in the same library.
@@ -370,7 +378,7 @@ as element()?
     element apidoc:summary {
        let $obj := $raw-modules/apidoc:object[@name eq $lib]
        return (
-       if ($obj/@subtype-of) 
+       if ($obj/@subtype-of)
        then (
        element xhtml:p { element xhtml:code {$lib},
          " is a subtype of ",
@@ -380,38 +388,38 @@ as element()?
          (: is there more than one subtype? :)
          if ($count eq 1)
          then (
-         element xhtml:a { 
-          attribute href { 
+         element xhtml:a {
+          attribute href {
                            toc:category-href(
-                               $obj/@subtype-of/fn:string(), "", 
-                               fn:true(), fn:true(), "javascript", 
+                               $obj/@subtype-of/fn:string(), "",
+                               fn:true(), fn:true(), "javascript",
                                $obj/@subtype-of/fn:string(), "") },
-            $obj/@subtype-of/fn:string() || "." } ) 
+            $obj/@subtype-of/fn:string() || "." } )
          else
          for $subtype at $i in fn:tokenize(fn:normalize-space(
                      $obj/@subtype-of/fn:string()), " ")
          return
-         (  element xhtml:a { 
-          attribute href { 
+         (  element xhtml:a {
+          attribute href {
                            toc:category-href(
-                               $subtype, "", 
-                               fn:true(), fn:true(), "javascript", 
+                               $subtype, "",
+                               fn:true(), fn:true(), "javascript",
                                $subtype, "") },
-            $subtype }, if ($i eq $count) then "." else " and "   
-         ) } ) 
+            $subtype }, if ($i eq $count) then "." else " and "
+         ) } )
        else ()    ,
        stp:node-to-xhtml($obj/apidoc:summary/node())
        )}
   return (
    if ($lib = $api:M-OBJECTS)
    then $summaries-by-object
-    else if (count($summaries-by-summary-subcat) eq 1) 
+    else if (count($summaries-by-summary-subcat) eq 1)
     then $summaries-by-summary-subcat
-    else if (count($summaries-by-module-lib) eq 1) 
+    else if (count($summaries-by-module-lib) eq 1)
          then $summaries-by-module-lib
-         else if (count($summaries-by-summary-lib) eq 1) 
+         else if (count($summaries-by-summary-lib) eq 1)
               then $summaries-by-summary-lib
-              else if (count($summaries-by-module-lib-no-subcat) eq 1) 
+              else if (count($summaries-by-module-lib-no-subcat) eq 1)
                    then $summaries-by-module-lib-no-subcat
                    else ())
 
