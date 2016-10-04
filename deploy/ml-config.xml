@@ -743,7 +743,16 @@
           <privilege-name>xdmp:add-response-header</privilege-name>
         </privilege>
         <privilege>
+          <privilege-name>xdmp:document-get</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:filesystem-directory</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:invoke</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:plan</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:with-namespaces</privilege-name>
