@@ -246,4 +246,10 @@ declare %t:case function t:render-2-async-xdmp()
   )
 };
 
+declare %t:case function t:REST-page-title()
+{
+  at:equal(toc:REST-page-title('cat', ()), <toc:title>cat</toc:title>),
+  at:equal(toc:REST-page-title('cat', 'subcat'), <toc:title>cat (subcat)</toc:title>)
+};
+
 (: test/apidoc-toc.xqm :)
