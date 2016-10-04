@@ -246,4 +246,69 @@ declare %t:case function t:render-2-async-xdmp()
   )
 };
 
+declare %t:case function t:REST-page-title()
+{
+  at:equal(toc:REST-page-title('cat', ()), <toc:title>cat</toc:title>),
+  at:equal(toc:REST-page-title('cat', 'subcat'), <toc:title>cat (subcat)</toc:title>)
+};
+
+(: XQuery functions in the same library
+ : TODO: can't find an example where the lib attrs aren't the same
+ :)
+declare %t:case function t:lib-for-all-xquery-same()
+{
+  let $functions := (
+    <apidoc:function name="point" type="geo" lib="geo" subcategory="GEO"
+      bucket="XQuery Library Modules"
+      category="Geospatial Supporting Functions"/>,
+    <apidoc:function name="box" type="geo" lib="geo" subcategory="GEO"
+      bucket="XQuery Library Modules"
+      category="Geospatial Supporting Functions"/>
+  )
+  return
+    at:equal(toc:lib-for-all($functions), 'geo')
+};
+
+(: sem functions in different libraries :)
+declare %t:case function t:lib-for-all-sem()
+{
+  let $functions := (
+    <apidoc:function name="datatype" type="builtin" lib="sem"
+      category="Semantics"/>,
+    <apidoc:function name="langString" type="builtin" lib="rdf"
+      category="Semantics"/>
+  )
+  return
+    at:equal(toc:lib-for-all($functions), 'sem')
+};
+
+declare %t:case function t:lib-for-all-sjs-same()
+{
+  let $functions := (
+    <apidoc:method name="documents" object="jsearch"
+      bucket="JavaScript Library Modules"
+      category="JavaScript Search (jsearch)" subcategory="jsearch"/>,
+    <apidoc:method name="values" object="jsearch"
+      bucket="JavaScript Library Modules"
+      category="JavaScript Search (jsearch)" subcategory="jsearch"/>
+  )
+  return
+    at:equal(toc:lib-for-all($functions), 'jsearch')
+};
+
+declare %t:case function t:lib-for-all-sjs-diff()
+{
+  let $functions := (
+    <apidoc:method name="documents" object="jsearch"
+      bucket="JavaScript Library Modules"
+      category="JavaScript Search (jsearch)" subcategory="jsearch"/>,
+    <apidoc:method name="where" object="DocumentsSearch"
+      bucket="JavaScript Library Modules"
+      category="JavaScript Search (jsearch)" subcategory="DocumentsSearch"/>
+  )
+  return
+    at:equal(toc:lib-for-all($functions), ())
+};
+
+
 (: test/apidoc-toc.xqm :)

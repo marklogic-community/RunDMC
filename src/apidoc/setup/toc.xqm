@@ -208,9 +208,17 @@ as element()
     (: Children will be in the default element namespace,
      : which is empty.
      :)
-    $category,
-    if (not($subcategory)) then () else (
-      ' ('||$subcategory||')') }
+    fn:string-join(
+      (
+        $category,
+        if (not($subcategory)) then ()
+        else (
+          '('||$subcategory||')'
+        )
+      ),
+      ' '
+    )
+  }
 };
 
 (: Returns the one library string if all the functions are in the same library.
@@ -451,6 +459,7 @@ as element()?
       $summaries-by-module-lib-no-subcat
     else ()
   )
+
 
 
 };
