@@ -143,6 +143,9 @@
     </assignment>
     @ml.schemas-assignment
     @ml.triggers-assignment
+    <assignment>
+      <forest-name>@ml.app-name-api-rawdocs</forest-name>
+    </assignment>
   </assignments>
   <!--
     =========================================================
