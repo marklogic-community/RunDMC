@@ -234,7 +234,6 @@ as xs:string?
    :)
   return (
     if (count($libs) eq 1) then ($functions/(@lib | @object))[1]
-    else if (($functions/@category)[1] eq 'Semantics') then 'sem'
     else ())
 };
 
