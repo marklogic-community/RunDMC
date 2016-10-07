@@ -26,11 +26,111 @@ declare variable $VERSION := '8.0' ;
 
 declare %t:case function t:category-href-xquery()
 {
-  toc:category-href(
-    'Library Services', 'Library Services',
-    true(), false(),
-    $api:MODE-XPATH, 'dls', '')
-  ! at:equal(., '/dls')
+  at:equal(
+    toc:category-href(
+      'Library Services',
+      'Library Services',
+      true(),
+      false(),
+      $api:MODE-XPATH,
+      'dls',
+      ''),
+    '/dls'
+  )
+};
+
+declare %t:case function t:category-href-dls-lib()
+{
+  at:equal(
+    toc:category-href(
+      'Library Services',
+      'Library Services',
+      false(),
+      false(),
+      $api:MODE-XPATH,
+      (),
+      'dls'),
+    '/dls/library-services'
+  )
+};
+
+(:
+ : The href for a built-in should be different from a library of the same name.
+ : For example: search has both built-ins and a search library.
+ :)
+declare %t:case function t:category-href()
+{
+  at:equal(
+    toc:category-href(
+      'SearchBuiltins',
+      'SearchBuiltins',
+      fn:false(),
+      fn:false(),
+      $api:MODE-XPATH,
+      (),
+      ()),
+    '/search'
+  )
+};
+
+declare %t:case function t:category-href-lib()
+{
+  at:equal(
+    toc:category-href(
+      'Search',
+      '',
+      fn:true(),
+      fn:false(),
+      $api:MODE-XPATH,
+      'search',
+      ()),
+    '/search-library'
+  )
+};
+
+declare %t:case function t:category-href-js()
+{
+  at:equal(
+    toc:category-href(
+      'JavaScript Search (jsearch)',
+      'DocumentsSearch',
+      fn:true(),
+      fn:false(),
+      $api:MODE-JAVASCRIPT,
+      'DocumentsSearch',
+      'DocumentsSearch'),
+    '/js/DocumentsSearch'
+  )
+};
+
+declare %t:case function t:category-href-subcat()
+{
+  at:equal(
+    toc:category-href(
+      'SearchBuiltins',
+      'Geospatial Lexicon',
+      fn:false(),
+      fn:false(),
+      $api:MODE-XPATH,
+      'cts',
+      'cts'),
+    '/cts/geospatial-lexicon'
+  )
+};
+
+declare %t:case function t:category-href-use-cat()
+{
+  at:equal(
+    toc:category-href(
+      'Client API',
+      'Transaction Management',
+      fn:false(),
+      fn:true(),
+      $api:MODE-REST,
+      'REST',
+      'REST'),
+    '/REST/client/transaction-management'
+  )
 };
 
 declare %t:case function t:guide-toc-closed()

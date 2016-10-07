@@ -259,6 +259,12 @@ declare function toc:lib-for-most($functions as element()*)
     return $name)[1]
 };
 
+(:
+ : Exhaustive means that all the category functions are in one lib
+ : (ie, XQuery namespace or SJS object). For instance (as of writing this),
+ : all the MathBuiltins are in math: and all functions in math: are in
+ : MathBuiltins.
+ :)
 declare function toc:category-is-exhaustive(
   $m-mode-functions as map:map,
   $category as xs:string,
@@ -1213,20 +1219,37 @@ declare function toc:category-href(
   $main-subcategory-lib as xs:string?)
 as xs:string
 {
-  if (not($stp:DEBUG)) then () else stp:fine(
-    'toc:category-href',
-    ('category', $category, 'subcat', $subcategory,
-      'is-exhaustive', $is-exhaustive, 'use-category', $use-category,
-      'mode', $mode,
-      'one-subcat', xdmp:describe($one-subcategory-lib),
-      'main-subcat', xdmp:describe($main-subcategory-lib))),
+  if (not($stp:DEBUG)) then ()
+  else
+    stp:fine(
+      'toc:category-href:',
+      (
+        'category', $category,
+        'subcat', $subcategory,
+        'is-exhaustive', $is-exhaustive,
+        'use-category', $use-category,
+        'mode', $mode,
+        'one-subcat', xdmp:describe($one-subcategory-lib),
+        'main-subcat', xdmp:describe($main-subcategory-lib)
+      )
+    ),
   (: The initial empty string ensures a leading '/'. :)
   string-join(
     ('',
       switch($mode)
       case $api:MODE-JAVASCRIPT return 'js'
       default return (),
-      if ($is-exhaustive) then ($one-subcategory-lib treat as item())
+      (:
+       : On the one hand, I hate myself for writing a special case for the
+       : Search library. On the other hand, I've spent enough time trying to
+       : coax a non-duplicating URL out of this code. The problem is that the
+       : word "search" just shows up in too many parts of our API. This
+       : function was generating the URL "/search" for both the Search Builtins
+       : and the Search API Library. I'm moving on. -- Dave Cassel.
+       :)
+      if ($category eq "Search") then
+        $one-subcategory-lib || "-library"
+      else if ($is-exhaustive) then ($one-subcategory-lib treat as item())
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
         $one-subcategory-lib treat as item(),
