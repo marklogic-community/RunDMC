@@ -256,15 +256,27 @@
         <page display="Supernodes" href="/people/supernodes"/>
       </group>
       <group display="MarkLogic User Groups">
-        <page display="LAxML - Los Angeles" href="/meet/laxml"/>
-        <page display="Mark-UPS - Maryland" href="/meet/markups"/>
-        <page display="MUGL - London" href="/meet/mugl"/>
-        <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
-        <page display="NYMUG - New York" href="/meet/nymug"/>
-        <page display="SOHMUG - Southern Ohio" href="/meet/sohmug"/>
-        <page display="BMLUG - Boston" href="/meet/bmug"/>
-        <page display="Benelux - Amsterdam" href="/meet/benelux"/>
-        <page display="BAYMUG - San Francisco Bay Area" href="/meet/baymug"/>
+        <page display="Amsterdam" href="/meet/benelux"/>
+        <page display="Baltimore" href="/meet/baltimore"/>
+        <page display="Boston" href="/meet/bmug"/>
+        <page display="Chicago" href="/meet/chicago"/>
+        <page display="Delhi" href="/meet/delhi"/>
+        <page display="Denver" href="/meet/denver"/>
+        <page display="France" href="/meet/france"/>
+        <page display="Germany" href="/meet/germany"/>
+        <page display="London" href="/meet/mugl"/>
+        <page display="London Financial Services" href="/meet/london-finserv"/>
+        <page display="Los Angeles" href="/meet/laxml"/>
+        <page display="Maryland" href="/meet/markups"/>
+        <page display="New York" href="/meet/nymug"/>
+        <page display="Northern Virginia" href="/meet/novamug"/>
+        <page display="San Francisco Bay Area" href="/meet/baymug"/>
+        <page display="Southern Ohio" href="/meet/sohmug"/>
+        <page display="Stockholm" href="/meet/stockholm"/>
+        <page display="Switzerland" href="/meet/switzerland"/>
+        <page display="Sydney" href="/meet/sydney"/>
+        <page display="Tampa Bay" href="/meet/tampa-bay"/>
+        <page display="United Kingdom" href="/meet/uk"/>
       </group>
       <generic-page display="Organize" href="/meet/organize"/>
     </group>
