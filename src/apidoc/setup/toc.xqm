@@ -313,7 +313,7 @@ declare function toc:find-primary-summary(
   $cat as xs:string,
   $subcat as xs:string?,
   $mode as xs:string)
-  as element(apidoc:summary)?
+  as element(apidoc:summary)*
 {
   let $summary :=
     ($raw-modules/apidoc:summary
@@ -438,7 +438,7 @@ as element()?
                   attribute href {
                     toc:category-href(
                       $obj/@subtype-of/fn:string(), "",
-                      fn:true(), fn:true(), "javascript",
+                      fn:true(), fn:true(), $api:MODE-JAVASCRIPT,
                       $obj/@subtype-of/fn:string(), ""
                     )
                   },
@@ -453,7 +453,7 @@ as element()?
                     attribute href {
                       toc:category-href(
                         $subtype, "",
-                        fn:true(), fn:true(), "javascript",
+                        fn:true(), fn:true(), $api:MODE-JAVASCRIPT,
                         $subtype, ""
                       )
                     },
