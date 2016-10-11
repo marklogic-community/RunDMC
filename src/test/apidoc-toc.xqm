@@ -24,6 +24,27 @@ declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $VERSION := '8.0' ;
 
+declare variable $RAW-MODULES := (
+  <apidoc:module name="SearchBuiltins" category="SearchBuiltins" lib="cts">
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Search" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="cts:query Constructors" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Lexicon" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Geospatial Lexicon" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Math Lexicon" lib="cts"/>
+  </apidoc:module>,
+  <apidoc:module name="AdminModule" category="Admin Library" lib="admin"
+    bucket="XQuery Library Modules" class="xquery">
+    <apidoc:summary/>
+  </apidoc:module>,
+  <apidoc:module name="jsearch" category="JavaScript Search (jsearch)"
+    lib="jsearch" bucket="JavaScript Library Modules" class="javascript">
+    <apidoc:summary category="JavaScript Search (jsearch)"
+      bucket="JavaScript Library Modules"/>
+    <apidoc:summary category="JavaScript Search (jsearch)"
+      bucket="JavaScript Library Modules" subcategory="jsearch"/>
+  </apidoc:module>
+);
+
 declare %t:case function t:category-href-xquery()
 {
   at:equal(
@@ -130,6 +151,54 @@ declare %t:case function t:category-href-use-cat()
       'REST',
       'REST'),
     '/REST/client/transaction-management'
+  )
+};
+
+declare %t:case function t:find-primary-summary-1()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      "Search",
+      $api:MODE-XPATH),
+    $RAW-MODULES[1]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-2()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      "Geospatial Lexicon",
+      $api:MODE-XPATH),
+    $RAW-MODULES[1]/apidoc:summary[4]
+  )
+};
+
+declare %t:case function t:find-primary-summary-3()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "Admin Library",
+      (),
+      $api:MODE-XPATH),
+    $RAW-MODULES[2]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-4()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "JavaScript Search (jsearch)",
+      (),
+      $api:MODE-XPATH),
+    $RAW-MODULES[3]/apidoc:summary[1]
   )
 };
 

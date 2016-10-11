@@ -305,6 +305,30 @@ as element(apidoc:module)+
   raw:api-docs($version)/apidoc:module
 };
 
+(: Just grab the first summary. If we have a category with subcategories,
+ : the following line of code can return multiple summaries.
+ :)
+declare function toc:find-primary-summary(
+  $raw-modules as element()+,
+  $cat as xs:string,
+  $subcat as xs:string?,
+  $mode as xs:string)
+  as element(apidoc:summary)?
+{
+  let $summary :=
+    ($raw-modules/apidoc:summary
+      [@category eq $cat]
+      [not($subcat) and not(@subcategory) or @subcategory eq $subcat]
+      [not(@class) or @class eq $mode]
+    )[1]
+  return
+    if ($summary) then $summary
+    else
+      $raw-modules
+        [@category eq $cat]
+        [not($subcat) or @subcategory eq $subcat]/apidoc:summary
+};
+
 declare function toc:get-summary-for-category(
   $version as xs:string,
   $mode as xs:string,
@@ -315,69 +339,61 @@ declare function toc:get-summary-for-category(
   as element(apidoc:summary)*
 {
   let $raw-modules as element()+ := toc:modules-raw($version)
-  (: Just grab the first summary. If we have a category with subcategories,
-   : the following line of code can return multiple summaries.
-   :)
   let $summaries-with-category :=
-    ($raw-modules/apidoc:summary
-      [@category eq $cat]
-      [not($subcat) or @subcategory eq $subcat]
-      [not(@class) or @class eq $mode]
-    )[1]
+    toc:find-primary-summary($raw-modules, $cat, $subcat, $mode)
   return (
     if ($summaries-with-category) then $summaries-with-category
     else (
-      let $modules-with-category := $raw-modules[
-        @category eq $cat][not($subcat) or @subcategory eq $subcat]
-      return (
-        if ($modules-with-category/apidoc:summary)
-        then $modules-with-category/apidoc:summary
-        else (
-          (: Fallback boilerplate is different for library modules
-           : than for built-ins.
-           :
-           : The admin library sub-pages don't have their own descriptions.
-           : So use this boilerplate instead
-           :)
-          if ($lib = $prefixes-not-builtin) then element apidoc:summary {
-            <p>
-            For information on how to import the functions in this module,
-            refer to the main
-            <a href="{
-            concat(
-            switch($mode)
-            case $api:MODE-JAVASCRIPT return 'js/'
-            default return '',
-            $lib)
-            }">{ toc:prefix-for-lib($lib) } library page</a>.
-            </p> }
+      (: Fallback boilerplate is different for library modules
+       : than for built-ins.
+       :
+       : The admin library sub-pages don't have their own descriptions.
+       : So use this boilerplate instead
+       :)
+      if ($lib = $prefixes-not-builtin) then element apidoc:summary {
+        <p>
+        For information on how to import the functions in this module,
+        refer to the main
+        <a href="{
+        concat(
+        switch($mode)
+        case $api:MODE-JAVASCRIPT return 'js/'
+        default return '',
+        $lib)
+        }">{ toc:prefix-for-lib($lib) } library page</a>.
+        </p>
+      }
 
-          (: ASSUMPTION Only REST sub-categories may need this fallback
-           : all main categories (e.g., Client API and Management API)
-           : already have summaries written
-           :)
-          else if ($lib eq $api:MODE-REST) then element apidoc:summary {
-            <p>
-            For the complete list of REST resources in this category,
-            refer to the main <a href="/REST/{toc:path-for-category($cat)}">{
-              toc:display-category($cat) } page</a>.
-            </p> }
+      (: ASSUMPTION Only REST sub-categories may need this fallback
+       : all main categories (e.g., Client API and Management API)
+       : already have summaries written
+       :)
+      else if ($lib eq $api:MODE-REST) then element apidoc:summary {
+        <p>
+        For the complete list of REST resources in this category,
+        refer to the main <a href="/REST/{toc:path-for-category($cat)}">{
+          toc:display-category($cat) } page</a>.
+        </p>
+      }
 
-          (: Some of the xdmp sub-pages don't have descriptions either,
-           : so use this.
-           :)
-          else element apidoc:summary {
-            <p>
-            For the complete list of functions and categories in this namespace,
-            refer to the main <a href="{
-            concat(
-            switch($mode)
-            case $api:MODE-JAVASCRIPT return 'js/'
-            default return '',
-            $lib)
-            }">{ toc:prefix-for-lib($lib) }
-            functions page</a>.
-            </p> }))))
+      (: Some of the xdmp sub-pages don't have descriptions either,
+       : so use this.
+       :)
+      else element apidoc:summary {
+        <p>
+        For the complete list of functions and categories in this namespace,
+        refer to the main <a href="{
+        concat(
+        switch($mode)
+        case $api:MODE-JAVASCRIPT return 'js/'
+        default return '',
+        $lib)
+        }">{ toc:prefix-for-lib($lib) }
+        functions page</a>.
+        </p>
+      }
+    )
+  )
 };
 
 (: We only want to see one summary :)
