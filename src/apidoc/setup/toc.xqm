@@ -1507,6 +1507,8 @@ as element(toc:node)+
        : only pertains to one library
        : (sub-categories can have more than one; see below).
        :)
+      if ($is-exhaustive or ($sub-categories and not($is-REST))) then ()
+      else (
         attribute category-name { toc:display-category($cat) },
         if ($is-REST) then toc:REST-page-title($cat, ())
         else toc:category-page-title($cat, $single-lib-for-category, ()),
@@ -1516,7 +1518,8 @@ as element(toc:node)+
             toc:get-summary-for-category(
               $version, $mode, $prefixes-not-builtin,
               $cat, (), $single-lib-for-category))
-        },
+        }
+      ),
 
       (: ASSUMPTION
        : A category has either functions as children or sub-categories,
