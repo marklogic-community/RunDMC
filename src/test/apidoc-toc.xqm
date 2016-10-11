@@ -38,10 +38,13 @@ declare variable $RAW-MODULES := (
   </apidoc:module>,
   <apidoc:module name="jsearch" category="JavaScript Search (jsearch)"
     lib="jsearch" bucket="JavaScript Library Modules" class="javascript">
-    <apidoc:summary category="JavaScript Search (jsearch)"
-      bucket="JavaScript Library Modules"/>
-    <apidoc:summary category="JavaScript Search (jsearch)"
-      bucket="JavaScript Library Modules" subcategory="jsearch"/>
+    <apidoc:summary category="JavaScript Search (jsearch)" bucket="JavaScript Library Modules"/>
+    <apidoc:summary category="JavaScript Search (jsearch)" bucket="JavaScript Library Modules" subcategory="jsearch"/>
+  </apidoc:module>,
+  <apidoc:module name="JavaScriptBuiltins" category="JavaScript Global Object">
+    <apidoc:summary access="public" bucket="MarkLogic Built-In Functions" category="JavaScript Global Object">
+      Summary text for the JS global object
+    </apidoc:summary>
   </apidoc:module>
 );
 
@@ -199,6 +202,21 @@ declare %t:case function t:find-primary-summary-4()
       (),
       $api:MODE-XPATH),
     $RAW-MODULES[3]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-5()
+{
+  (:
+   : This one returns multiple summaries. Is that the right thing to do?
+   :)
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      (),
+      $api:MODE-JAVASCRIPT),
+    $RAW-MODULES[1]/apidoc:summary
   )
 };
 
@@ -444,7 +462,7 @@ declare %t:case function t:lib-for-all-sem()
   let $functions := (
     <apidoc:function name="datatype" type="builtin" lib="sem"
       category="Semantics"/>,
-    <apidoc:function name="langString" type="builtin" lib="rdf"
+    <apidoc:function name="langString" type="builtin" lib="sem"
       category="Semantics"/>
   )
   return
