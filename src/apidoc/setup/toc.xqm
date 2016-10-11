@@ -229,9 +229,6 @@ declare function toc:lib-for-all(
 as xs:string?
 {
   let $libs := distinct-values(($functions/@lib, $functions/@object))
-  (: This is a hack to make the semantics library work.
-   : It has multiple namespace.
-   :)
   return (
     if (count($libs) eq 1) then ($functions/(@lib | @object))[1]
     else ())
