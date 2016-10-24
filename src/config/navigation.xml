@@ -102,7 +102,6 @@
     <group display="Tools &amp; Open Source Projects">
       <group display="Editing and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
-        <page display="XQDT for Eclipse and MarkLogic Fork" href="/code/xqdt"/>
         <page display="Oxygen" href="/code/oxygen"/>
         <page display="Vim-XQMarkLogic" href="/code/vim-xqmarklogic"/>
         <page display="XQDebug" href="/code/xqdebug"/>
