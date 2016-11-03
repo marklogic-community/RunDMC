@@ -61,45 +61,69 @@
     <xsl:variable name="index" select="count(./preceding::ml:code-tabs)"/>
 
     <div class="code-tabs">
-      <xsl:variable name="js-id" select="concat('javascript-', $index)"/>
-      <xsl:variable name="xquery-id" select="concat('xquery-', $index)"/>
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-          <a aria-controls="javascript" role="tab">
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat('#', $js-id)"/>
+        <xsl:for-each select="./ml:code-tab">
+          <xsl:variable name="language" select="@lang/string()"/>
+          <xsl:variable name="id" select="concat($language, '-', $index)"/>
+          <li role="presentation">
+            <xsl:attribute name="class">
+              <xsl:if test="position() = 1">
+                <xsl:text>active</xsl:text>
+              </xsl:if>
             </xsl:attribute>
-            <xsl:text>JavaScript</xsl:text>
-          </a>
-        </li>
-        <li role="presentation">
-          <a aria-controls="xquery" role="tab">
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat('#', $xquery-id)"/>
-            </xsl:attribute>
-            <xsl:text>XQuery</xsl:text>
-          </a>
-        </li>
+            <a role="tab">
+              <xsl:attribute name="aria-controls">
+                <xsl:value-of select="$language"/>
+              </xsl:attribute>
+              <xsl:attribute name="href">
+                <xsl:value-of select="concat('#', $id)"/>
+              </xsl:attribute>
+              <xsl:choose>
+                <xsl:when test="$language = 'javascript'">
+                  <xsl:text>JavaScript</xsl:text>
+                </xsl:when>
+                <xsl:when test="$language = 'xquery'">
+                  <xsl:text>XQuery</xsl:text>
+                </xsl:when>
+                <xsl:when test="$language = 'json'">
+                  <xsl:text>JSON</xsl:text>
+                </xsl:when>
+                <xsl:when test="$language = 'xml'">
+                  <xsl:text>XML</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$language"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </li>
+        </xsl:for-each>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active">
-          <xsl:attribute name="id">
-            <xsl:value-of select="$js-id"/>
-          </xsl:attribute>
-          <textarea class="code-tab javascript">
-            <xsl:value-of select="./ml:code-tab[@lang='javascript']"/>
-          </textarea>
-        </div>
-        <div role="tabpanel" class="tab-pane">
-          <xsl:attribute name="id">
-            <xsl:value-of select="$xquery-id"/>
-          </xsl:attribute>
-          <textarea class="code-tab xquery">
-            <xsl:value-of select="./ml:code-tab[@lang='xquery']"/>
-          </textarea>
-        </div>
+        <xsl:for-each select="./ml:code-tab">
+          <xsl:variable name="language" select="@lang/string()"/>
+          <xsl:variable name="id" select="concat($language, '-', $index)"/>
+          <div role="tabpanel">
+            <xsl:attribute name="class">
+              <xsl:text>tab-pane </xsl:text>
+              <xsl:if test="position() = 1">
+                <xsl:text>active</xsl:text>
+              </xsl:if>
+            </xsl:attribute>
+            <xsl:attribute name="id">
+              <xsl:value-of select="$id"/>
+            </xsl:attribute>
+            <textarea>
+              <xsl:attribute name="class">
+                <xsl:text>code-tab </xsl:text>
+                <xsl:value-of select="$language"/>
+              </xsl:attribute>
+              <xsl:value-of select="text()"/>
+            </textarea>
+          </div>
+        </xsl:for-each>
       </div>
     </div>
   </xsl:template>
