@@ -654,6 +654,11 @@ if(typeof jQuery != 'undefined') {
       buildCodeMirror('javascript');
       buildCodeMirror('xquery');
       buildCodeMirror('shell');
+
+      showLanguage('javascript');
+      document.querySelectorAll('.code-tabs a[role=tab]').forEach(function(tab) {
+        tab.addEventListener('click', codeTabClickHandler);
+      });
     });
 
     var d = $('.yearpicker').attr('data-value');
@@ -732,6 +737,28 @@ function buildCodeMirror(className, options) {
   }
 }
 
+// We can't just call CodeMirror.fromTextArea() up front for each tab, because
+// any tab not showing will get no height, therefore we won't see it when we do
+// switch to that tab. Instead, build the CodeMirror stuff the first time a tab
+// is revealed.
+function showLanguage(lang) {
+  $('.code-tabs a[aria-controls="' + lang + '"]').tab('show');
+
+  var codeOptions = { lineNumbers: true, mode: lang, readOnly: true, theme: 'default' };
+  var elements = document.getElementsByClassName('code-tab ' + lang);
+  for (var i = 0; i < elements.length; i++) {
+    if (!(elements[i].nextElementSibling &&
+          elements[i].nextElementSibling.classList.contains("CodeMirror"))) {
+      CodeMirror.fromTextArea(elements[i], codeOptions);
+    }
+  }
+}
+
+function codeTabClickHandler(event) {
+  showLanguage(event.currentTarget.getAttribute('aria-controls'));
+
+  event.preventDefault();
+}
 
 function loadRecentContent() {
   var icons = {

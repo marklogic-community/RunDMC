@@ -57,6 +57,53 @@
                          select="ss:maybe-highlight(/, $params)"/>
   </xsl:variable>
 
+  <xsl:template match="ml:code-tabs">
+    <xsl:variable name="index" select="count(./preceding::ml:code-tabs)"/>
+
+    <div class="code-tabs">
+      <xsl:variable name="js-id" select="concat('javascript-', $index)"/>
+      <xsl:variable name="xquery-id" select="concat('xquery-', $index)"/>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a aria-controls="javascript" role="tab">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('#', $js-id)"/>
+            </xsl:attribute>
+            <xsl:text>JavaScript</xsl:text>
+          </a>
+        </li>
+        <li role="presentation">
+          <a aria-controls="xquery" role="tab">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('#', $xquery-id)"/>
+            </xsl:attribute>
+            <xsl:text>XQuery</xsl:text>
+          </a>
+        </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active">
+          <xsl:attribute name="id">
+            <xsl:value-of select="$js-id"/>
+          </xsl:attribute>
+          <textarea class="code-tab javascript">
+            <xsl:value-of select="./ml:code-tab[@lang='javascript']"/>
+          </textarea>
+        </div>
+        <div role="tabpanel" class="tab-pane">
+          <xsl:attribute name="id">
+            <xsl:value-of select="$xquery-id"/>
+          </xsl:attribute>
+          <textarea class="code-tab xquery">
+            <xsl:value-of select="./ml:code-tab[@lang='xquery']"/>
+          </textarea>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template match="recent-carousel">
     <xsl:variable name="recent" select="ss:get-recently-updated()"/>
     <!-- Wrapper for slides -->
