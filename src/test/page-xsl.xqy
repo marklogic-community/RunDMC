@@ -8,7 +8,7 @@ declare namespace ml="http://developer.marklogic.com/site/internal";
 
 declare namespace xhtml = "http://www.w3.org/1999/xhtml";
 
-declare variable $actual :=
+declare variable $code-actual :=
   let $input :=
     <ml:code-tabs>
       <ml:code-tab lang="javascript">
@@ -48,43 +48,107 @@ declare variable $actual :=
   </div>
  :)
 
-declare %t:case function t:transform-happened()
+declare variable $data-actual :=
+  let $input :=
+    <ml:code-tabs>
+      <ml:code-tab lang="json">
+        &#123;
+          "foo"&#58; "bar"
+        &#125;
+      </ml:code-tab>
+      <ml:code-tab lang="xml">
+        &lt;root&gt;
+          &lt;foo&gt;bar&lt;/foo&gt;
+        &lt;/root&gt;
+      </ml:code-tab>
+    </ml:code-tabs>
+  return xdmp:xslt-invoke("/view/page.xsl", $input);
+
+
+declare %t:case function t:code-transform-happened()
 {
-  at:equal(fn:node-name($actual/node()), xs:QName("xhtml:div"))
+  at:equal(fn:node-name($code-actual/node()), xs:QName("xhtml:div"))
 };
 
-declare %t:case function t:both-tabs-made()
+declare %t:case function t:code-both-tabs-made()
 {
   at:equal(
-    fn:count($actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@role = "tab"]),
+    fn:count($code-actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@role = "tab"]),
     2
   )
 };
 
-declare %t:case function t:first-content()
+declare %t:case function t:code-first-content()
 {
   at:true(
     fn:matches(
-      $actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]/fn:string(),
+      $code-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]/fn:string(),
       "\s*var foo = 'bar';\s*"
     )
   )
 };
 
-declare %t:case function t:second-content()
+declare %t:case function t:code-second-content()
 {
   at:true(
     fn:matches(
-      $actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "xquery")]/fn:string(),
+      $code-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "xquery")]/fn:string(),
       "\s*let \$foo := 'bar'\s*return \$foo\s*"
     )
   )
 };
 
-declare %t:case function t:js-ids-match()
+declare %t:case function t:code-js-ids-match()
 {
   at:equal(
-    $actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@aria-controls="javascript"]/@href/fn:string(),
-    "#" || $actual//xhtml:div[@role="tabpanel"][./xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]]/@id/fn:string()
+    $code-actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@aria-controls="javascript"]/@href/fn:string(),
+    "#" || $code-actual//xhtml:div[@role="tabpanel"][./xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]]/@id/fn:string()
+  )
+};
+
+declare %t:case function t:data-transform-happened()
+{
+  at:equal(fn:node-name($data-actual/node()), xs:QName("xhtml:div"))
+};
+
+declare %t:case function t:data-both-tabs-made()
+{
+  at:equal(
+    fn:count($data-actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@role = "tab"]),
+    2
+  )
+};
+
+declare %t:case function t:data-first-content()
+{
+  let $actual := $data-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "json")]/fn:string()
+  return
+    at:true(
+      fn:matches(
+        $actual,
+        '\s*\{\s*"foo": "bar"\s*\}\s*'
+      ),
+      "Found: " || $actual
+    )
+};
+
+declare %t:case function t:data-second-content()
+{
+  let $actual := $data-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "xml")]/fn:string()
+  return
+    at:true(
+      fn:matches(
+        $actual,
+        "\s*<root>\s*<foo>bar</foo>\s*</root>\s*"
+      ),
+      "Found: " || $actual
+    )
+};
+
+declare %t:case function t:data-js-ids-match()
+{
+  at:equal(
+    $data-actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@aria-controls="json"]/@href/fn:string(),
+    "#" || $data-actual//xhtml:div[@role="tabpanel"][./xhtml:textarea[fn:matches(@class/fn:string(), "json")]]/@id/fn:string()
   )
 };

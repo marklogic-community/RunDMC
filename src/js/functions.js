@@ -655,7 +655,7 @@ if(typeof jQuery != 'undefined') {
       buildCodeMirror('xquery');
       buildCodeMirror('shell');
 
-      showLanguage('javascript');
+      displayFirstCodeTabs();
       document.querySelectorAll('.code-tabs a[role=tab]').forEach(function(tab) {
         tab.addEventListener('click', codeTabClickHandler);
       });
@@ -734,6 +734,20 @@ function buildCodeMirror(className, options) {
     Array.prototype.forEach.call(elements, function(item) {
       CodeMirror.fromTextArea(item, codeOptions);
     });
+  }
+}
+
+// Look through the code tabs on the page. For each one, do the CodeMirror
+// formatting for the first tab. See showLanguage() comment for why we don't do
+// this for all tabs up front.
+function displayFirstCodeTabs() {
+  var tabs = document.querySelectorAll('.code-tabs .tab-pane.active');
+  for (var i=0; i<tabs.length; i++) {
+    var textarea = tabs[i].getElementsByTagName('textarea')[0];
+    // The textarea has two classes: "code-tab" and the CodeMirror style
+    var lang = textarea.getAttribute('class').replace(/\s*code-tab\s*/, '');
+    var codeOptions = { lineNumbers: true, mode: lang, readOnly: true, theme: 'default' };
+    CodeMirror.fromTextArea(textarea, codeOptions);
   }
 }
 
