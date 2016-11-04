@@ -3,7 +3,9 @@ body {
 	padding: 0;
 	background: #ECEFDA;
 	color: #666;
-	font: normal 62.5% Verdana, Arial, Helvetica, Sans-serif;
+	font-style: normal;
+  font-size: 100%;
+  font-family: Verdana, Arial, Helvetica, Sans-serif;
 }
 a {
 	text-decoration: none;
@@ -76,7 +78,6 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 #content hr {position: static;}
 
 #container {
-	font-size: 1.2em;
 	margin: auto;
 	width: 900px;
 }
@@ -352,7 +353,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	position:relative;
 	}
 .special_img .top {
-	height:7px; 
+	height:7px;
 	background:#FFF url(../images/bg_special_img_top.png) no-repeat top left;
 	}
 .special_img .section a.enlarge {
@@ -481,7 +482,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 .table3 thead th:first-child {background-position: left top;}
 .table3 thead th:first-child, .table3 thead th:first-child + th {text-align: left;}
 .table3 thead th:last-child {background-position: right top;}
-.table3 thead th.last {background-position: right top;} /* extra rule for IE 7 and lower as they ignore rules that are combined with selectors it doesn’t understand (like in the rule before this one) */
+.table3 thead th.last {background-position: right top;} /* extra rule for IE 7 and lower as they ignore rules that are combined with selectors it doesnâ€™t understand (like in the rule before this one) */
 .table3 thead th span {font-size: 1.1em;}
 .table3 tbody td {
 	padding: 12px 7px;

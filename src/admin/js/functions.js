@@ -121,6 +121,42 @@ function toggleEditor(id) {
   }
 }
 
+function buildAttr(attrName, attrValue) {
+  var attr = document.createAttribute(attrName);
+  attr.value = attrValue;
+  return attr;
+}
+
+// Builds a Bootstrap dismissible alert.
+// See http://getbootstrap.com/components/#alerts
+function reportMsg(type, msg) {
+  var errorDiv = document.getElementById('textarea-msg');
+  errorDiv.innerHTML = '';
+
+  var alertDiv = document.createElement('div');
+  alertDiv.setAttributeNode(buildAttr('class', 'alert alert-dismissible alert-' + type));
+  alertDiv.setAttributeNode(buildAttr('role', 'alert'));
+
+  var dismissBtn = document.createElement('button');
+  dismissBtn.setAttributeNode(buildAttr('type', 'button'));
+  dismissBtn.setAttributeNode(buildAttr('class', 'close'));
+  dismissBtn.setAttributeNode(buildAttr('data-dismiss', 'alert'));
+  dismissBtn.setAttributeNode(buildAttr('aria-label', 'Close'));
+
+  var span = document.createElement('span');
+  span.setAttributeNode(buildAttr('aria-hidden', 'true'));
+  span.innerHTML = 'x';
+
+  dismissBtn.appendChild(span);
+  alertDiv.appendChild(dismissBtn);
+
+  var msgElement = document.createElement('p');
+  msgElement.innerHTML = msg;
+
+  alertDiv.appendChild(msgElement);
+  errorDiv.appendChild(alertDiv);
+}
+
 function checkValidXhtml(action, target) {
   // Event has more than one TEXTAREA, so we need to loop.
   var textAreas = document.getElementsByTagName("TEXTAREA");
@@ -141,7 +177,7 @@ function checkValidXhtml(action, target) {
         uri: uri
       },
       cache: false,
-      dataType: "text",
+      dataType: "xml",
       async: false,
       success:
 
@@ -150,18 +186,15 @@ function checkValidXhtml(action, target) {
           // If we get a response, something is wrong with the content
           if(response)  {
             // Bad XHTML or another problem.  Display this error:error node back to the user.
-            var errorDiv = document.getElementById('textarea-error');
-            errorDiv.innerHTML =  "There was a problem with your content. Error from the Server: " + response;
-            errorDiv.style.display = 'block';
+            reportMsg('danger', "There was a problem with your content. Error from the Server: " +
+              $(response).find('format-string').text());
             isValid = false;
           }
 
         },
       error:
         function(xml) {
-          var errorDiv = document.getElementById('textarea-error');
-          errorDiv.innerHTML = "There was unexpected problem in the Server: " + xml.responseText;
-          errorDiv.style.display = 'block';
+          reportMsg('danger', "There was unexpected problem in the Server: " + xml.responseText);
           isValid = false;
         }
     });
@@ -170,10 +203,46 @@ function checkValidXhtml(action, target) {
   // No problem in the textareas, allow form submission to continue
   if(isValid) {
     var adminform = document.getElementsByClassName('adminform')[0];
-    adminform.action = action;
-    adminform.target = target;
-    adminform.submit();
+    var formData = {};
+    adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
+      formData[input.name] = input.value;
+    });
+
+    if (action === '/admin/controller/preview.xqy') {
+      // We're going to get back a redirect. Let that take its course. The new
+      // content will be launched in a different tab.
+      adminform.action = action;
+      adminform.target = target;
+      adminform.submit();
+    } else {
+      // We're saving the content. Make an AJAX request and stay here.
+      $.ajax({
+        url: action,
+        type: 'POST',
+        data: formData,
+        dataType: 'xml',
+        success: function(response) {
+          var updated = $(response).find('updated').text();
+          var updatedStr = null;
+          var msg = 'Content updated';
+          if (updated !== '') {
+            updatedStr = new Date(updated).toString();
+            var lastUpdated = document.querySelector('#codeedit dd');
+            if (lastUpdated) {
+              lastUpdated.innerHTML = updatedStr;
+            }
+            document.querySelector('.adminform input[name="~updated"]').value = updated;
+            msg += ' at ' + updatedStr;
+          }
+          reportMsg('success', msg);
+        },
+        error: function(error) {
+          reportMsg('danger', 'There was a problem saving your update: ' + error.responseText);
+        }
+      });
+    }
+
   }
 
-  return isValid;
+  return false;
 }

@@ -382,7 +382,7 @@
     <br/>
     -->
     <div id="control-container" style="margin-left: 112px;">
-      <div id="textarea-error" class="error" style="display: none;"/>
+      <div id="textarea-msg"/>
       <textarea id="{form:field-name(.)}_{$textarea-id}"
                 name="{form:field-name(.)}"
                 style="width: 100%"
