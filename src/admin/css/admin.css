@@ -37,7 +37,6 @@ input[type=text], input[type=password], textarea {
 }
 input[type=text]:focus, textarea:focus {border-color: #903 !important;}
 
-#container {font-size: 1.1em;}
 #header {
 	background: #A6001D url(../images/bg_header_admin.png) no-repeat;
 	min-height: 70px;
@@ -101,7 +100,6 @@ form .action input {margin-left: 5px;}
 	clear: both;
 	padding: 1px 0;
 }
-#codeedit {margin-top: -3em;}
 #codeedit dl {
 	background: #EBEBEB;
 	text-align: right;

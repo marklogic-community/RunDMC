@@ -37,14 +37,10 @@ return
         (: Invalidate the navigation cache :)
         ml:invalidate-cached-navigation(),
 
-        (: Redirect right back to the Edit page for the newly replaced document :)
-        xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
-                                      "?~doc_path=",
-                                      $existing-doc-path,
-                                      "&amp;~updated=",
-                                      current-dateTime())
-                              )
-        )
+        <response>
+          <updated>{$new-doc/node()/ml:last-updated/fn:string()}</updated>
+        </response>
+      )
     )
     else error((),"You're trying to overwrite a document that doesn't exist...")
 )
