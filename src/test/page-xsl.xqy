@@ -119,9 +119,14 @@ declare %t:case function t:data-both-tabs-made()
   )
 };
 
+(:
+ : Even though the input type is <ml:code-tab lang="json">, we need to produce
+ : <textarea class="code-tab javascript"> for CodeMirror to apply color
+ : formatting to the JSON data.
+ :)
 declare %t:case function t:data-first-content()
 {
-  let $actual := $data-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "json")]/fn:string()
+  let $actual := $data-actual//xhtml:div[@role="tabpanel"]/xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]/fn:string()
   return
     at:true(
       fn:matches(
@@ -145,10 +150,14 @@ declare %t:case function t:data-second-content()
     )
 };
 
+(:
+ : The textarea's class needs to be "javascript", even though code-tab's lang
+ : is "json".
+ :)
 declare %t:case function t:data-js-ids-match()
 {
   at:equal(
     $data-actual/xhtml:div/xhtml:ul/xhtml:li/xhtml:a[@aria-controls="json"]/@href/fn:string(),
-    "#" || $data-actual//xhtml:div[@role="tabpanel"][./xhtml:textarea[fn:matches(@class/fn:string(), "json")]]/@id/fn:string()
+    "#" || $data-actual//xhtml:div[@role="tabpanel"][./xhtml:textarea[fn:matches(@class/fn:string(), "javascript")]]/@id/fn:string()
   )
 };

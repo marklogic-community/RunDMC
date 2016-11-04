@@ -118,7 +118,14 @@
             <textarea>
               <xsl:attribute name="class">
                 <xsl:text>code-tab </xsl:text>
-                <xsl:value-of select="$language"/>
+                <xsl:choose>
+                  <xsl:when test="$language = 'json'">
+                    <xsl:text>javascript</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="$language"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:attribute>
               <xsl:value-of select="text()"/>
             </textarea>
