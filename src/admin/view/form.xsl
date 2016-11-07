@@ -399,7 +399,7 @@
         <br/>
         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
       </xsl:if>
-      <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#media-modal">Launch demo modal</button>
+      <button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#media-modal">Insert Image</button>
     </div>
   </xsl:template>
 
@@ -430,6 +430,7 @@
                     <button class="btn btn-default btn-xs filter" onclick="getFilteredURIs(event, 'uri-prefix')">Filter</button>
                     <ul class="uris">
                     </ul>
+                    <img src="" class="preview"/>
                   </div>
                 </div>
               </div>
@@ -438,7 +439,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" disabled="disabled">Insert</button>
+            <button type="button" class="btn btn-primary insert" onclick="insertImage()" data-dismiss="modal" disabled="disabled">Insert</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->

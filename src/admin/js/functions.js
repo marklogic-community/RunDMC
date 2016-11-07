@@ -109,6 +109,15 @@ if(typeof jQuery != 'undefined') {
 		});
 		// end “add link” functionality
 
+    var uriPrefix = document.querySelector('#media-modal .uri-filter input[name=uri-prefix]');
+    if (uriPrefix) {
+      uriPrefix.onkeyup = function(e){
+        if(e.keyCode == 13){
+          getFilteredURIs(event, 'uri-prefix');
+        }
+      };
+    }
+
 		// new functions should be added here
 	});
 }
@@ -247,19 +256,63 @@ function checkValidXhtml(action, target) {
   return false;
 }
 
+/*
+ * Monkey-patch textarea to allow insertion at the current position.
+ * Source: http://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
+ */
+HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
+  text = text || '';
+  if (document.selection) {
+    // IE
+    this.focus();
+    var sel = document.selection.createRange();
+    sel.text = text;
+  } else if (this.selectionStart || this.selectionStart === 0) {
+    // Others
+    var startPos = this.selectionStart;
+    var endPos = this.selectionEnd;
+    this.value = this.value.substring(0, startPos) +
+      text +
+      this.value.substring(endPos, this.value.length);
+    this.selectionStart = startPos + text.length;
+    this.selectionEnd = startPos + text.length;
+  } else {
+    this.value += text;
+  }
+};
+
+function insertImage() {
+  console.log('insert');
+  var imgSrc = document.querySelector('#media-modal .uri-filter img.preview').getAttribute('src');
+
+  var body = document.querySelector('.adminform textarea');
+  var imgTag = '\n<img src="' + imgSrc + '" style="max-width:100%"/>\n';
+  body.insertAtCaret(imgTag);
+}
+
 function getFilteredURIs(event, textboxName) {
   var filterDiv = event.currentTarget.parentElement;
-  var uri = filterDiv.querySelector('input[name='+textboxName+']').value;
+  var uriInput = filterDiv.querySelector('input[name='+textboxName+']').value;
+  var insertBtn = document.querySelector('#media-modal button.insert');
+
+  function setPreview(event) {
+    var uri = event.currentTarget.parentElement.querySelector('.uri').innerHTML;
+    var preview = filterDiv.querySelector('img.preview');
+    preview.setAttribute('src', uri);
+    insertBtn.removeAttribute('disabled');
+  }
 
   function buildURILine(uri) {
     var li = document.createElement('li');
 
-    var preview = document.createElement('button');
-    preview.setAttributeNode(buildAttr('class', 'btn btn-default btn-xs'));
-    preview.innerHTML = 'Preview';
-    li.appendChild(preview);
+    var previewBtn = document.createElement('button');
+    previewBtn.setAttribute('class', 'btn btn-default btn-xs');
+    previewBtn.addEventListener('click', setPreview, false);
+    previewBtn.innerHTML = 'Preview';
+    li.appendChild(previewBtn);
+
     var span = document.createElement('span');
-    span.setAttributeNode(buildAttr('class', 'uri'));
+    span.setAttribute('class', 'uri');
     span.innerHTML = uri;
     li.appendChild(span);
 
@@ -270,10 +323,9 @@ function getFilteredURIs(event, textboxName) {
     url: '/admin/controller/list-media-by-uri.xqy',
     type: 'GET',
     data: {
-      uri: uri
+      uri: uriInput
     },
     success: function(response) {
-      console.log('I got a response');
       var uris = JSON.parse(response);
       var ul = filterDiv.querySelector('ul');
       ul.innerHTML = '';
