@@ -1003,7 +1003,7 @@ table.table4 + .action {border:0;}
 	cursor: pointer;
 }
 
-#media-modal ul {
+#media-modal .uri-filter .uris {
   max-height: 200px;
   overflow-y: scroll;
 }
