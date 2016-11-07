@@ -399,7 +399,7 @@
         <br/>
         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
       </xsl:if>
-      <button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#media-modal">Insert Image</button>
+      <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#media-modal">Insert Image</button>
     </div>
   </xsl:template>
 
