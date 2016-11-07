@@ -246,3 +246,45 @@ function checkValidXhtml(action, target) {
 
   return false;
 }
+
+function getFilteredURIs(event, textboxName) {
+  var filterDiv = event.currentTarget.parentElement;
+  var uri = filterDiv.querySelector('input[name='+textboxName+']').value;
+
+  function buildURILine(uri) {
+    var li = document.createElement('li');
+
+    var preview = document.createElement('button');
+    preview.setAttributeNode(buildAttr('class', 'btn btn-default btn-xs'));
+    preview.innerHTML = 'Preview';
+    li.appendChild(preview);
+    var span = document.createElement('span');
+    span.setAttributeNode(buildAttr('class', 'uri'));
+    span.innerHTML = uri;
+    li.appendChild(span);
+
+    return li;
+  }
+
+  $.ajax({
+    url: '/admin/controller/list-media-by-uri.xqy',
+    type: 'GET',
+    data: {
+      uri: uri
+    },
+    success: function(response) {
+      console.log('I got a response');
+      var uris = JSON.parse(response);
+      var ul = filterDiv.querySelector('ul');
+      ul.innerHTML = '';
+      for (var i in uris) {
+        ul.appendChild(buildURILine(uris[i]));
+      }
+    },
+    error: function(error) {
+      reportMsg('danger', 'Unable to retrieve URIs: ' + error.responseText);
+    }
+  });
+
+  return false;
+}

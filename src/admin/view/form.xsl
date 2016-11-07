@@ -399,9 +399,51 @@
         <br/>
         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
       </xsl:if>
+      <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#media-modal">Launch demo modal</button>
     </div>
   </xsl:template>
 
+  <xsl:template match="media-modal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="media-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+            </button>
+            <h4 class="modal-title">Insert Media</h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#media-upload" aria-controls="media-upload" role="tab" data-toggle="tab">Upload</a></li>
+                <li role="presentation"><a href="#media-library" aria-controls="media-library" role="tab" data-toggle="tab">Media Library</a></li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="media-upload">...</div>
+                <div role="tabpanel" class="tab-pane" id="media-library">
+                  <div class="uri-filter">
+                    <span>/media/</span>
+                    <input type="text" name="uri-prefix"/>
+                    <button class="btn btn-default btn-xs filter" onclick="getFilteredURIs(event, 'uri-prefix')">Filter</button>
+                    <ul class="uris">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" disabled="disabled">Insert</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </xsl:template>
 
   <xsl:function name="form:field-name">
     <xsl:param name="node"/>

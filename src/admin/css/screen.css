@@ -1002,3 +1002,16 @@ table.table4 + .action {border:0;}
 	height: 33px;
 	cursor: pointer;
 }
+
+#media-modal ul {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+#media-modal .uri-filter .filter {
+  margin-left: 10px;
+}
+
+#media-modal .uri-filter .uri {
+  margin-left: 5px;
+}
