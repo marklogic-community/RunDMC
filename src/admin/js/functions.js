@@ -123,10 +123,21 @@ if(typeof jQuery != 'undefined') {
 }
 
 function toggleEditor(id) {
+  var insertImgBtn;
+
   if (!tinyMCE.get(id)) {
     tinyMCE.execCommand('mceAddControl', false, id);
+    insertImgBtn = document.querySelector('.adminform button[data-target="#media-modal"]');
+    if (!insertImgBtn.getAttribute('disabled')) {
+      insertImgBtn.setAttribute('disabled', 'disabled');
+    }
   } else {
     tinyMCE.execCommand('mceRemoveControl', false, id);
+    // enable the Insert Image button
+    insertImgBtn = document.querySelector('.adminform button[data-target="#media-modal"]');
+    if (insertImgBtn.getAttribute('disabled')) {
+      insertImgBtn.removeAttribute('disabled', 'disabled');
+    }
   }
 }
 
@@ -282,7 +293,6 @@ HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
 };
 
 function insertImage() {
-  console.log('insert');
   var imgSrc = document.querySelector('#media-modal .uri-filter img.preview').getAttribute('src');
 
   var body = document.querySelector('.adminform textarea');
