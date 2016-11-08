@@ -177,6 +177,11 @@ function reportMsg(type, msg) {
   errorDiv.appendChild(alertDiv);
 }
 
+// Find the ID for the textbox that the tinyMCE editor is based on
+function getMCEId() {
+  return document.querySelector('.adminform textarea').getAttribute('id');
+}
+
 function checkValidXhtml(action, target) {
   // Event has more than one TEXTAREA, so we need to loop.
   var textAreas = document.getElementsByTagName("TEXTAREA");
@@ -222,12 +227,6 @@ function checkValidXhtml(action, target) {
 
   // No problem in the textareas, allow form submission to continue
   if(isValid) {
-    var adminform = document.getElementsByClassName('adminform')[0];
-    var formData = {};
-    adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
-      formData[input.name] = input.value;
-    });
-
     if (action === '/admin/controller/preview.xqy') {
       // We're going to get back a redirect. Let that take its course. The new
       // content will be launched in a different tab.
@@ -236,6 +235,16 @@ function checkValidXhtml(action, target) {
       adminform.submit();
     } else {
       // We're saving the content. Make an AJAX request and stay here.
+
+      var adminform = document.getElementsByClassName('adminform')[0];
+      var formData = {};
+      adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
+        formData[input.name] = input.value;
+      });
+      if (tinyMCE.get(getMCEId())) {
+        formData.body = tinyMCE.activeEditor.getContent();
+      }
+
       $.ajax({
         url: action,
         type: 'POST',
