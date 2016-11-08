@@ -440,7 +440,7 @@
                   <div class="uri-filter">
                     <span>/media/</span>
                     <input type="text" name="uri-prefix"/>
-                    <button class="btn btn-default btn-xs filter" onclick="getFilteredURIs(event, 'uri-prefix')">Filter</button>
+                    <button class="btn btn-default btn-xs filter" onclick="mediaLoader.getFilteredURIs(event, 'uri-prefix')">Filter</button>
                     <ul class="uris">
                     </ul>
                   </div>
@@ -452,7 +452,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary insert" onclick="insertImage()" data-dismiss="modal" disabled="disabled">Insert</button>
+            <button type="button" class="btn btn-primary insert" onclick="mediaLoader.insertImage()" data-dismiss="modal" disabled="disabled">Insert</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->

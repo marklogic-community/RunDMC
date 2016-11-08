@@ -227,6 +227,7 @@ function checkValidXhtml(action, target) {
 
   // No problem in the textareas, allow form submission to continue
   if(isValid) {
+    var adminform = document.getElementsByClassName('adminform')[0];
     if (action === '/admin/controller/preview.xqy') {
       // We're going to get back a redirect. Let that take its course. The new
       // content will be launched in a different tab.
@@ -236,7 +237,6 @@ function checkValidXhtml(action, target) {
     } else {
       // We're saving the content. Make an AJAX request and stay here.
 
-      var adminform = document.getElementsByClassName('adminform')[0];
       var formData = {};
       adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
         formData[input.name] = input.value;
@@ -301,61 +301,67 @@ HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
   }
 };
 
-function insertImage() {
-  var imgSrc = document.querySelector('#media-modal img.preview').getAttribute('src');
 
-  var body = document.querySelector('.adminform textarea');
-  var imgTag = '\n<img src="' + imgSrc + '" style="max-width:100%"/>\n';
-  body.insertAtCaret(imgTag);
-}
+var mediaLoader = {
 
-function getFilteredURIs(event, textboxName) {
-  var filterDiv = event.currentTarget.parentElement;
-  var uriInput = filterDiv.querySelector('input[name='+textboxName+']').value;
 
-  function setPreview(event) {
-    var insertBtn = document.querySelector('#media-modal button.insert');
-    var uri = event.currentTarget.parentElement.querySelector('.uri').innerHTML;
-    var preview = document.querySelector('#media-modal img.preview');
-    preview.setAttribute('src', uri);
-    insertBtn.removeAttribute('disabled');
-  }
 
-  function buildURILine(uri) {
-    var li = document.createElement('li');
+  insertImage: function() {
+    var imgSrc = document.querySelector('#media-modal img.preview').getAttribute('src');
 
-    var previewBtn = document.createElement('button');
-    previewBtn.setAttribute('class', 'btn btn-default btn-xs');
-    previewBtn.addEventListener('click', setPreview, false);
-    previewBtn.innerHTML = 'Preview';
-    li.appendChild(previewBtn);
+    var body = document.querySelector('.adminform textarea');
+    var imgTag = '\n<img src="' + imgSrc + '" style="max-width:100%"/>\n';
+    body.insertAtCaret(imgTag);
+  },
 
-    var span = document.createElement('span');
-    span.setAttribute('class', 'uri');
-    span.innerHTML = uri;
-    li.appendChild(span);
+  getFilteredURIs: function(event, textboxName) {
+    var filterDiv = event.currentTarget.parentElement;
+    var uriInput = filterDiv.querySelector('input[name='+textboxName+']').value;
 
-    return li;
-  }
-
-  $.ajax({
-    url: '/admin/controller/list-media-by-uri.xqy',
-    type: 'GET',
-    data: {
-      uri: uriInput
-    },
-    success: function(response) {
-      var uris = JSON.parse(response);
-      var ul = filterDiv.querySelector('ul');
-      ul.innerHTML = '';
-      for (var i in uris) {
-        ul.appendChild(buildURILine(uris[i]));
-      }
-    },
-    error: function(error) {
-      reportMsg('danger', 'Unable to retrieve URIs: ' + error.responseText);
+    function setPreview(event) {
+      var insertBtn = document.querySelector('#media-modal button.insert');
+      var uri = event.currentTarget.parentElement.querySelector('.uri').innerHTML;
+      var preview = document.querySelector('#media-modal img.preview');
+      preview.setAttribute('src', uri);
+      insertBtn.removeAttribute('disabled');
     }
-  });
 
-  return false;
-}
+    function buildURILine(uri) {
+      var li = document.createElement('li');
+
+      var previewBtn = document.createElement('button');
+      previewBtn.setAttribute('class', 'btn btn-default btn-xs');
+      previewBtn.addEventListener('click', setPreview, false);
+      previewBtn.innerHTML = 'Preview';
+      li.appendChild(previewBtn);
+
+      var span = document.createElement('span');
+      span.setAttribute('class', 'uri');
+      span.innerHTML = uri;
+      li.appendChild(span);
+
+      return li;
+    }
+
+    $.ajax({
+      url: '/admin/controller/list-media-by-uri.xqy',
+      type: 'GET',
+      data: {
+        uri: uriInput
+      },
+      success: function(response) {
+        var uris = JSON.parse(response);
+        var ul = filterDiv.querySelector('ul');
+        ul.innerHTML = '';
+        for (var i in uris) {
+          ul.appendChild(buildURILine(uris[i]));
+        }
+      },
+      error: function(error) {
+        reportMsg('danger', 'Unable to retrieve URIs: ' + error.responseText);
+      }
+    });
+
+    return false;
+  }
+};
