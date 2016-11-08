@@ -423,18 +423,21 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="media-upload">
-                  <form action="/admin/controller/upload.xqy" class="" enctype="multipart/form-data" method="post">
-                    <div>
-                      <input type="file" name="content" value="Upload..."/>
-                      <label>
-                        <xsl:text>/media</xsl:text>
-                        <xsl:variable name="external-uri" select="replace($doc-path,'.xml$','')"/>
-                        <xsl:value-of select="$external-uri"/>
-                        <xsl:text>/</xsl:text>
-                      </label><input type="text" name="uri"/>
-                      <button class="btn btn-default btn-xs upload-media">Upload Media</button>
-                    </div>
-                  </form>
+                  <div>
+                    <input type="file" name="content" value="Upload..."/>
+                    <label class="uri-prefix">
+                      <!--
+                        Prefix the URI with /media and the URI of the post. For
+                        instance, /media/blog/my-post/
+                      -->
+                      <xsl:text>/media</xsl:text>
+                      <xsl:variable name="external-uri" select="replace($doc-path,'.xml$','')"/>
+                      <xsl:value-of select="$external-uri"/>
+                      <xsl:text>/</xsl:text>
+                    </label>
+                    <input type="text" name="uri"/>
+                    <button class="btn btn-default btn-xs upload-image" onclick="mediaLoader.uploadImage(event);">Upload Image</button>
+                  </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="media-library">
                   <div class="uri-filter">

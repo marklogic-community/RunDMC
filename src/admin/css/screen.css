@@ -1029,6 +1029,10 @@ table.table4 + .action {border:0;}
   padding: 10px 5px;
 }
 
-#media-modal button.upload-media {
+#media-modal button.upload-image {
   margin-left: 5px;
+}
+
+#media-modal .preview {
+  max-width: 100%;
 }

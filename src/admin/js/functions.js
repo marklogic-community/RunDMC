@@ -304,8 +304,6 @@ HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
 
 var mediaLoader = {
 
-
-
   insertImage: function() {
     var imgSrc = document.querySelector('#media-modal img.preview').getAttribute('src');
 
@@ -363,5 +361,36 @@ var mediaLoader = {
     });
 
     return false;
+  },
+
+  // Select an image from the filesystem, upload it, and preview it
+  uploadImage: function(event) {
+    var mediaModal = document.getElementById('media-modal');
+    var uriPrefix = mediaModal.querySelector('.uri-prefix').innerText;
+    var uriSuffix = mediaModal.querySelector('input[name=uri]').value;
+    var uri = uriPrefix + uriSuffix;
+
+    var formData = new FormData();
+    formData.set('uri', uri);
+    formData.set('content', mediaModal.querySelector('input[name=content]').files[0]);
+    formData.set('redirect', false);
+
+    $.ajax({
+      url: '/admin/controller/upload.xqy',
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function() {
+        // The insert worked. Set the preview and enable the insert button.
+        var insertBtn = mediaModal.querySelector('button.insert');
+        var preview = mediaModal.querySelector('img.preview');
+        preview.setAttribute('src', uri);
+        insertBtn.removeAttribute('disabled');
+      },
+      error: function(error) {
+        reportMsg('danger', 'Unable to upload: ' + error.responseText);
+      }
+    });
   }
 };
