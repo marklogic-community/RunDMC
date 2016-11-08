@@ -1034,5 +1034,6 @@ table.table4 + .action {border:0;}
 }
 
 #media-modal .preview {
+  max-height: 500px;
   max-width: 100%;
 }
