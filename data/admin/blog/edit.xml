@@ -8,4 +8,6 @@
 
   <ml:auto-form template="Post.xml"/>
 
+  <ml:media-modal/>
+
 </ml:page>

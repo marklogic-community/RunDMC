@@ -1002,3 +1002,38 @@ table.table4 + .action {border:0;}
 	height: 33px;
 	cursor: pointer;
 }
+
+#media-modal .uri-filter {
+  padding: 10px 5px;
+}
+
+#media-modal .uri-filter .uris {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+#media-modal .uri-filter .filter {
+  margin-left: 10px;
+}
+
+#media-modal .uri-filter .uri {
+  margin-left: 5px;
+}
+
+#media-modal .uri-filter .preview {
+  max-height: 300px;
+  max-width: 100%;
+}
+
+#media-modal #media-upload {
+  padding: 10px 5px;
+}
+
+#media-modal button.upload-image {
+  margin-left: 5px;
+}
+
+#media-modal .preview {
+  max-height: 500px;
+  max-width: 100%;
+}

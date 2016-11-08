@@ -109,15 +109,35 @@ if(typeof jQuery != 'undefined') {
 		});
 		// end “add link” functionality
 
+    var uriPrefix = document.querySelector('#media-modal .uri-filter input[name=uri-prefix]');
+    if (uriPrefix) {
+      uriPrefix.onkeyup = function(e){
+        if(e.keyCode == 13){
+          getFilteredURIs(event, 'uri-prefix');
+        }
+      };
+    }
+
 		// new functions should be added here
 	});
 }
 
 function toggleEditor(id) {
+  var insertImgBtn;
+
   if (!tinyMCE.get(id)) {
     tinyMCE.execCommand('mceAddControl', false, id);
+    insertImgBtn = document.querySelector('.adminform button[data-target="#media-modal"]');
+    if (!insertImgBtn.getAttribute('disabled')) {
+      insertImgBtn.setAttribute('disabled', 'disabled');
+    }
   } else {
     tinyMCE.execCommand('mceRemoveControl', false, id);
+    // enable the Insert Image button
+    insertImgBtn = document.querySelector('.adminform button[data-target="#media-modal"]');
+    if (insertImgBtn.getAttribute('disabled')) {
+      insertImgBtn.removeAttribute('disabled', 'disabled');
+    }
   }
 }
 
@@ -155,6 +175,11 @@ function reportMsg(type, msg) {
 
   alertDiv.appendChild(msgElement);
   errorDiv.appendChild(alertDiv);
+}
+
+// Find the ID for the textbox that the tinyMCE editor is based on
+function getMCEId() {
+  return document.querySelector('.adminform textarea').getAttribute('id');
 }
 
 function checkValidXhtml(action, target) {
@@ -203,11 +228,6 @@ function checkValidXhtml(action, target) {
   // No problem in the textareas, allow form submission to continue
   if(isValid) {
     var adminform = document.getElementsByClassName('adminform')[0];
-    var formData = {};
-    adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
-      formData[input.name] = input.value;
-    });
-
     if (action === '/admin/controller/preview.xqy') {
       // We're going to get back a redirect. Let that take its course. The new
       // content will be launched in a different tab.
@@ -216,6 +236,15 @@ function checkValidXhtml(action, target) {
       adminform.submit();
     } else {
       // We're saving the content. Make an AJAX request and stay here.
+
+      var formData = {};
+      adminform.querySelectorAll('input:not([type=submit]), textarea, select').forEach(function(input) {
+        formData[input.name] = input.value;
+      });
+      if (tinyMCE.get(getMCEId())) {
+        formData.body = tinyMCE.activeEditor.getContent();
+      }
+
       $.ajax({
         url: action,
         type: 'POST',
@@ -246,3 +275,122 @@ function checkValidXhtml(action, target) {
 
   return false;
 }
+
+/*
+ * Monkey-patch textarea to allow insertion at the current position.
+ * Source: http://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
+ */
+HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
+  text = text || '';
+  if (document.selection) {
+    // IE
+    this.focus();
+    var sel = document.selection.createRange();
+    sel.text = text;
+  } else if (this.selectionStart || this.selectionStart === 0) {
+    // Others
+    var startPos = this.selectionStart;
+    var endPos = this.selectionEnd;
+    this.value = this.value.substring(0, startPos) +
+      text +
+      this.value.substring(endPos, this.value.length);
+    this.selectionStart = startPos + text.length;
+    this.selectionEnd = startPos + text.length;
+  } else {
+    this.value += text;
+  }
+};
+
+
+var mediaLoader = {
+
+  insertImage: function() {
+    var imgSrc = document.querySelector('#media-modal img.preview').getAttribute('src');
+
+    var body = document.querySelector('.adminform textarea');
+    var imgTag = '\n<img src="' + imgSrc + '" style="max-width:100%"/>\n';
+    body.insertAtCaret(imgTag);
+  },
+
+  getFilteredURIs: function(event, textboxName) {
+    var filterDiv = event.currentTarget.parentElement;
+    var uriInput = filterDiv.querySelector('input[name='+textboxName+']').value;
+
+    function setPreview(event) {
+      var insertBtn = document.querySelector('#media-modal button.insert');
+      var uri = event.currentTarget.parentElement.querySelector('.uri').innerHTML;
+      var preview = document.querySelector('#media-modal img.preview');
+      preview.setAttribute('src', uri);
+      insertBtn.removeAttribute('disabled');
+    }
+
+    function buildURILine(uri) {
+      var li = document.createElement('li');
+
+      var previewBtn = document.createElement('button');
+      previewBtn.setAttribute('class', 'btn btn-default btn-xs');
+      previewBtn.addEventListener('click', setPreview, false);
+      previewBtn.innerHTML = 'Preview';
+      li.appendChild(previewBtn);
+
+      var span = document.createElement('span');
+      span.setAttribute('class', 'uri');
+      span.innerHTML = uri;
+      li.appendChild(span);
+
+      return li;
+    }
+
+    $.ajax({
+      url: '/admin/controller/list-media-by-uri.xqy',
+      type: 'GET',
+      data: {
+        uri: uriInput
+      },
+      success: function(response) {
+        var uris = JSON.parse(response);
+        var ul = filterDiv.querySelector('ul');
+        ul.innerHTML = '';
+        for (var i in uris) {
+          ul.appendChild(buildURILine(uris[i]));
+        }
+      },
+      error: function(error) {
+        reportMsg('danger', 'Unable to retrieve URIs: ' + error.responseText);
+      }
+    });
+
+    return false;
+  },
+
+  // Select an image from the filesystem, upload it, and preview it
+  uploadImage: function(event) {
+    var mediaModal = document.getElementById('media-modal');
+    var uriPrefix = mediaModal.querySelector('.uri-prefix').innerText;
+    var uriSuffix = mediaModal.querySelector('input[name=uri]').value;
+    var uri = uriPrefix + uriSuffix;
+
+    var formData = new FormData();
+    formData.set('uri', uri);
+    formData.set('content', mediaModal.querySelector('input[name=content]').files[0]);
+    formData.set('redirect', false);
+
+    $.ajax({
+      url: '/admin/controller/upload.xqy',
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function() {
+        // The insert worked. Set the preview and enable the insert button.
+        var insertBtn = mediaModal.querySelector('button.insert');
+        var preview = mediaModal.querySelector('img.preview');
+        preview.setAttribute('src', uri);
+        insertBtn.removeAttribute('disabled');
+      },
+      error: function(error) {
+        reportMsg('danger', 'Unable to upload: ' + error.responseText);
+      }
+    });
+  }
+};
