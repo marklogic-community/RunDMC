@@ -422,7 +422,20 @@
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="media-upload">...</div>
+                <div role="tabpanel" class="tab-pane active" id="media-upload">
+                  <form action="/admin/controller/upload.xqy" class="" enctype="multipart/form-data" method="post">
+                    <div>
+                      <input type="file" name="content" value="Upload..."/>
+                      <label>
+                        <xsl:text>/media</xsl:text>
+                        <xsl:variable name="external-uri" select="replace($doc-path,'.xml$','')"/>
+                        <xsl:value-of select="$external-uri"/>
+                        <xsl:text>/</xsl:text>
+                      </label><input type="text" name="uri"/>
+                      <button class="btn btn-default btn-xs upload-media">Upload Media</button>
+                    </div>
+                  </form>
+                </div>
                 <div role="tabpanel" class="tab-pane" id="media-library">
                   <div class="uri-filter">
                     <span>/media/</span>
@@ -430,9 +443,9 @@
                     <button class="btn btn-default btn-xs filter" onclick="getFilteredURIs(event, 'uri-prefix')">Filter</button>
                     <ul class="uris">
                     </ul>
-                    <img src="" class="preview"/>
                   </div>
                 </div>
+                <img src="" class="preview"/>
               </div>
 
             </div>

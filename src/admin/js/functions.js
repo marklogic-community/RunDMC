@@ -302,7 +302,7 @@ HTMLTextAreaElement.prototype.insertAtCaret = function (text) {
 };
 
 function insertImage() {
-  var imgSrc = document.querySelector('#media-modal .uri-filter img.preview').getAttribute('src');
+  var imgSrc = document.querySelector('#media-modal img.preview').getAttribute('src');
 
   var body = document.querySelector('.adminform textarea');
   var imgTag = '\n<img src="' + imgSrc + '" style="max-width:100%"/>\n';
@@ -312,11 +312,11 @@ function insertImage() {
 function getFilteredURIs(event, textboxName) {
   var filterDiv = event.currentTarget.parentElement;
   var uriInput = filterDiv.querySelector('input[name='+textboxName+']').value;
-  var insertBtn = document.querySelector('#media-modal button.insert');
 
   function setPreview(event) {
+    var insertBtn = document.querySelector('#media-modal button.insert');
     var uri = event.currentTarget.parentElement.querySelector('.uri').innerHTML;
-    var preview = filterDiv.querySelector('img.preview');
+    var preview = document.querySelector('#media-modal img.preview');
     preview.setAttribute('src', uri);
     insertBtn.removeAttribute('disabled');
   }

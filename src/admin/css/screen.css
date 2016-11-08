@@ -1024,3 +1024,11 @@ table.table4 + .action {border:0;}
   max-height: 300px;
   max-width: 100%;
 }
+
+#media-modal #media-upload {
+  padding: 10px 5px;
+}
+
+#media-modal button.upload-media {
+  margin-left: 5px;
+}
