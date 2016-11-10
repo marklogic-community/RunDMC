@@ -2,4 +2,7 @@
 <ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <h1>Page Edit</h1>
   <ml:auto-form template="Page.xml"/>
+
+  <ml:media-modal/>
+
 </ml:page>
