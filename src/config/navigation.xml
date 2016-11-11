@@ -145,15 +145,15 @@
       </group>
       <group display="Connectors" href="/code/connectors">
         <page display="New Relic" href="/code/new-relic"/>
-        <page display="Go Bindings" href="/code/go-marklogic"/>
+        <page display="MarkLogic Connect: C++, C, C#" href="/code/marklogic-connect"/>
         <page display="MarkMapper" href="/code/markmapper"/>
-        <page display="MLDotNet" href="/labs/mldotnet"/>
-        <page display="MLJAM" href="/code/mljam"/>
         <page display="MLPHP" href="/labs/mlphp"/>
-        <page display="MLSAM" href="/code/mlsam"/>
         <page display="Python" href="/code/marklogic-python"/>
         <page display="rfml" href="/code/rfml"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
+        <page display="Go Bindings" href="/code/go-marklogic"/>
+        <page display="MLJAM" href="/code/mljam"/>
+        <page display="MLSAM" href="/code/mlsam"/>
       </group>
       <group display="Visualization">
         <page display="ml-lodlive" href="/code/ml-lodlive"/>
