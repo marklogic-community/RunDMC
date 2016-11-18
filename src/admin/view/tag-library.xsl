@@ -16,7 +16,7 @@
   <xdmp:import-module href="/admin/controller/modules/authorize.xqy" namespace="http://marklogic.com/rundmc/authorize"/>
 
   <xsl:template match="admin-page-listings">
-    <table id="tbl_status">
+    <table id="tbl_status" class="table table-striped table-bordered">
       <caption>Page Status</caption>
       <thead>
         <tr>
@@ -85,7 +85,7 @@
                      | admin-announcement-list
                      | admin-event-list
                      | admin-page-list">
-    <table>
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">Title</th>
@@ -122,7 +122,7 @@
   </xsl:template>
 
   <xsl:template match="admin-author-list">
-    <table>
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -188,7 +188,7 @@
   </xsl:template>
 
   <xsl:template match="admin-ondemand-list">
-    <table>
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th scope="col">Title</th>
@@ -252,7 +252,7 @@
 
 
   <xsl:template match="admin-media-list">
-    <table class="media-list">
+    <table class="media-list table table-bordered table-striped">
       <thead>
         <tr>
           <th scope="col">URL</th>
@@ -308,7 +308,8 @@
       <td>
         <form action="/admin/controller/media-remove.xqy">
           <input type="hidden" name="uri" value="{$uri}"/>
-          <button type="submit" class="image-delete" title="Delete">Delete</button>
+
+          <button type="submit" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>
         </form>
       </td>
     </tr>

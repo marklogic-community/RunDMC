@@ -4,7 +4,7 @@
   <p class="intro">This is the author page</p>
   <form action="/author/edit" class="add_author" enctype="application/x-www-form-urlencoded" method="get">
     <div>
-      <input type="submit" value="Add New"/>
+      <button type="submit" class="btn btn-default btn-xs">Add New</button>
     </div>
   </form>
   <ml:admin-author-list/>

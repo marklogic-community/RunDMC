@@ -210,7 +210,7 @@
       <xsl:apply-templates mode="labeled-controls" select="."/>
       <xsl:choose>
         <xsl:when test="string($doc-path)">
-          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
+          <input type="submit" name="submitSave" class="btn btn-default btn-sm" value="Save changes" onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
             <xsl:choose>
               <xsl:when test="./@form:replace-target">
                 <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:replace-target"/>', '_self');</xsl:attribute>
@@ -222,7 +222,7 @@
           </input>
         </xsl:when>
         <xsl:otherwise>
-          <input type="submit" name="submitBtn" value="Submit document">
+          <input type="submit" name="submitBtn" class="btn btn-default btn-sm" value="Submit document">
             <xsl:choose>
               <xsl:when test="./@form:create-target">
                 <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:create-target"/>', '_self');</xsl:attribute>
@@ -234,7 +234,7 @@
           </input>
         </xsl:otherwise>
       </xsl:choose>
-      <input type="submit" name="submitPreview" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
+      <input type="submit" name="submitPreview" class="btn btn-default btn-sm" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
     </form>
   </xsl:template>
 

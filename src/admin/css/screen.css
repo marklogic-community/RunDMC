@@ -27,12 +27,6 @@ input[type=text], input[type=password] {
 	border: 1px solid #999;
 	color: #999;
 }
-table {border-collapse: collapse;}
-table th {
-	text-align: left;
-	font-weight: bold;
-}
-table td {vertical-align: middle;}
 ul {
 	margin: 0;
 	padding: 0;
@@ -80,12 +74,6 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 #container {
 	margin: auto;
 	width: 900px;
-}
-#header {
-	background: #A4B243 url(../images/bg_header.png) no-repeat;
-	min-height: 80px;
-	position: relative;
-	padding: 15px 15px 5px 30px;
 }
 #header ul {
 	position: absolute;
@@ -176,6 +164,7 @@ legend,
 .generic #content h1,
 .generic #content h2
 {
+  clear: both;
 	font: normal 1.25em/120% Verdana, Arial, Helvetica, Sans-serif;
 	margin-bottom: 0;
 	text-align: left;
@@ -427,12 +416,6 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	font-size: 1em;
 	margin: 2em 0 1em;
 	font-style: italic;
-}
-#main table {
-	width: 100%;
-	border-bottom: 1px solid #CCC;
-	margin: 0 0;
-	clear: both;
 }
 #main table.table4 {margin-bottom:0;}
 #main p + table.table4 {margin-top: 30px;}
