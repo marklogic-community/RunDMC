@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h1>Pages</h1>
-  <p class="intro">This is the author page</p>
+  <h3>Authors</h3>
+
+  <div class="well">
+    <p>Create an author doc for each author. This lets us post social media links as part of each author's byline.</p>
+
+    <p>Authors are matched to their content based on the full-name field.</p>
+  </div>
+
   <form action="/author/edit" class="add_author" enctype="application/x-www-form-urlencoded" method="get">
     <div>
       <button type="submit" class="btn btn-default btn-xs">Add New</button>

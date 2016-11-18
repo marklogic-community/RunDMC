@@ -31,12 +31,20 @@ input[type=text]:focus, textarea:focus {border-color: #903 !important;}
   color: white;
 }
 
+#nav .nav a:hover {
+  color: #111;
+}
+
 /*
 #nav .menu li a {
   color: #9d9d9d;
   text-decoration: none;
 }
 */
+
+.uri_form {
+  color: white;
+}
 
 #header {
 	min-height: 70px;
@@ -59,7 +67,7 @@ input[type=text]:focus, textarea:focus {border-color: #903 !important;}
 }
 #content {
 	background-image: none;
-	padding-bottom: 2em;
+	padding: 10px;
 }
 #footer {font-size: .9em;}
 .breadcrumb {font-size: .9em;}
