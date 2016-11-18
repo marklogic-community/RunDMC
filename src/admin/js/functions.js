@@ -228,6 +228,12 @@ function checkValidXhtml(action, target) {
       adminform.action = action;
       adminform.target = target;
       adminform.submit();
+    } else if (action === '/admin/controller/create.xqy') {
+      // Create will give us a redirect and put us in edit mode. This includes
+      // some changes to the form.
+      adminform.action = action;
+      adminform.target = target;
+      adminform.submit();
     } else {
       // We're saving the content. Make an AJAX request and stay here.
 
