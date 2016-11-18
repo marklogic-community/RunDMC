@@ -32,11 +32,11 @@ if(typeof jQuery != 'undefined') {
 	        var wrap = this.getContent().find(".overlayContent");
 	      	wrap.load(this.getTrigger().attr("href") + ' .popup');
 	      },
-	      onLoad: function() {
-	   			$('.popup input[type=reset]').replaceWith('<input type="button" class="cancel" value="Cancel" />');
-    			$('.popup input.cancel').click(function() {
-    				$('#utilnav .signup a[rel]').overlay().close();
-    			});
+        onLoad: function() {
+          $('.popup input[type=reset]').replaceWith('<input type="button" class="cancel" value="Cancel" />');
+          $('.popup input.cancel').click(function() {
+            $('#utilnav .signup a[rel]').overlay().close();
+          });
         }
       });
       // generic function to prevent form submission for certain submit buttons
@@ -60,17 +60,17 @@ if(typeof jQuery != 'undefined') {
 	        var wrap = this.getContent().find(".overlayContent");
 	      	wrap.load(this.getTrigger().attr("href") + ' #addmedia');
 	      },
-	      onLoad: function() {
-		      $('#overlay #addmedia div ul li').click(function() {
-		      	$(this).children('input').attr('checked','checked');
-		      	$(this).siblings().removeClass('selected');
-		      	$(this).addClass('selected');
-		      });
-    			$('input[name=media_cancel]').replaceWith('<button type="button" class="close">Cancel</button>')
-    			$('button.close').click(function() {
-    				$('input[name=add_media]').parent('a[rel]').overlay().close();
-    			});
-	      }
+        onLoad: function() {
+          $('#overlay #addmedia div ul li').click(function() {
+            $(this).children('input').attr('checked','checked');
+            $(this).siblings().removeClass('selected');
+            $(this).addClass('selected');
+          });
+          $('input[name=media_cancel]').replaceWith('<button type="button" class="close">Cancel</button>');
+          $('button.close').click(function() {
+            $('input[name=add_media]').parent('a[rel]').overlay().close();
+          });
+        }
       });
       // end add media overlay
 		}// end “if jQuery overlay”
@@ -141,12 +141,6 @@ function toggleEditor(id) {
   }
 }
 
-function buildAttr(attrName, attrValue) {
-  var attr = document.createAttribute(attrName);
-  attr.value = attrValue;
-  return attr;
-}
-
 // Builds a Bootstrap dismissible alert.
 // See http://getbootstrap.com/components/#alerts
 function reportMsg(type, msg) {
@@ -154,17 +148,17 @@ function reportMsg(type, msg) {
   errorDiv.innerHTML = '';
 
   var alertDiv = document.createElement('div');
-  alertDiv.setAttributeNode(buildAttr('class', 'alert alert-dismissible alert-' + type));
-  alertDiv.setAttributeNode(buildAttr('role', 'alert'));
+  alertDiv.setAttribute('class', 'alert alert-dismissible alert-' + type);
+  alertDiv.setAttribute('role', 'alert');
 
   var dismissBtn = document.createElement('button');
-  dismissBtn.setAttributeNode(buildAttr('type', 'button'));
-  dismissBtn.setAttributeNode(buildAttr('class', 'close'));
-  dismissBtn.setAttributeNode(buildAttr('data-dismiss', 'alert'));
-  dismissBtn.setAttributeNode(buildAttr('aria-label', 'Close'));
+  dismissBtn.setAttribute('type', 'button');
+  dismissBtn.setAttribute('class', 'close');
+  dismissBtn.setAttribute('data-dismiss', 'alert');
+  dismissBtn.setAttribute('aria-label', 'Close');
 
   var span = document.createElement('span');
-  span.setAttributeNode(buildAttr('aria-hidden', 'true'));
+  span.setAttribute('aria-hidden', 'true');
   span.innerHTML = 'x';
 
   dismissBtn.appendChild(span);
