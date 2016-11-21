@@ -2,6 +2,7 @@
 tools/simplelogger-*
 download
 dpl.xml
+deploy/prod.properties
 deploy/dev.properties
 deploy/local.properties
 src/config/disqus-info.xml
