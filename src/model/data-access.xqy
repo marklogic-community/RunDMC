@@ -1014,4 +1014,9 @@ declare function ml:get-author-info($author-name as xs:string)
   /ml:Author[ml:name = $author-name]
 };
 
+declare function ml:list-doc-sections()
+{
+  fn:doc(api:toc-uri())//node()[@class="toc_select_option"]/fn:string()
+};
+
 (: model/data-access.xqy :)

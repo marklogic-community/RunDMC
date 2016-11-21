@@ -2919,9 +2919,7 @@ span.highlightWidget {
 }
 
 #signup-form,
-#signup-form input,
-#profile-form,
-#profile-form input {
+#signup-form input {
     font-size: 16px;
 }
 

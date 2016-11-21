@@ -1051,72 +1051,72 @@
     <xsl:variable name="user" select="users:getCurrentUser()"/>
     <div>
     <fieldset>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Email </div>
-        <input disabled="disabled" readonly="readonly" required="required" class="email" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
+      <div class="form-group">
+        <label>Email</label>
+        <input disabled="disabled" readonly="readonly" required="required" class="email form-control" id="email" name="email" value="{$user/*:email/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Full Name </div>
-        <input autofocus="autofocus" class="required" required="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input autofocus="autofocus" class="required form-control" required="required" id="name" name="name" value="{$user/*:name/string()}" type="text"/>
       </div>
       <!--
-      <div class="profile-form-row">
-        <div class="profile-form-label">Avatar</div>
+      <div class="form-group">
+        <label>Avatar</label>
         <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
         <img src="{$user/*:picture/string()}" alt="picture"/>
       </div>
       -->
-      <div class="profile-form-row">
-        <div class="profile-form-label">Website/Blog</div>
-        <input class="url" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
+      <div class="form-group">
+        <label>Website/Blog</label>
+        <input class="url form-control" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Twitter</div>
-        <input class="twitter" id="twitter" name="twitter" value="{$user/*:twitter/string()}" type="text"/>
+      <div class="form-group">
+        <label>Twitter</label>
+        <input class="twitter form-control" id="twitter" name="twitter" value="{$user/*:twitter/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Phone</div>
-        <input class="phone" id="phone" name="phone" required="required" value="{$user/*:phone/string()}" type="text"/>
+      <div class="form-group">
+        <label>Phone</label>
+        <input class="phone form-control" id="phone" name="phone" required="required" value="{$user/*:phone/string()}" type="text"/>
       </div>
       <!--
-      <div class="profile-form-row">
-        <div class="profile-form-label">Password</div>
+      <div class="form-group">
+        <label>Password</label>
         <input class="password required" id="password" name="password" value="" type="password"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Confirm password</div>
+      <div class="form-group">
+        <label>Confirm password</label>
         <input id="password_confirm" name="password_confirm" value="" type="password"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Street </div>
+      <div class="form-group">
+        <label>Street</label>
         <input class="required" id="street" name="street" required="required" value="{$user/*:street/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">City </div>
+      <div class="form-group">
+        <label>City</label>
         <input class="required" id="city" name="city" required="required" value="{$user/*:city/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">State </div>
+      <div class="form-group">
+        <label>State</label>
         <input class="required" id="state" name="state" required="required" value="{$user/*:state/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Zip/Postal Code </div>
+      <div class="form-group">
+        <label>Zip/Postal Code</label>
         <input class="required" id="zip" name="zip" required="required" value="{$user/*:zip/string()}" type="text"/>
       </div>
       -->
-      <div class="profile-form-row">
-        <div class="profile-form-label">Country </div>
-        <select class="required countrypicker country" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
+      <div class="form-group">
+        <label>Country</label>
+        <select class="required countrypicker country form-control" id="country" required="required" name="country" data-initvalue="{$user/*:country/string()}" autocorrect="off" autocomplete="off">
           <xsl:copy-of select="doc('/private/countries.xml')/*:select/*:option"/>
         </select>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Company/Organization </div>
-        <input class="required" id="organization" name="organization" required="required" value="{$user/*:organization/string()}" type="text"/>
+      <div class="form-group">
+        <label>Company/Organization</label>
+        <input class="required form-control" id="organization" name="organization" required="required" value="{$user/*:organization/string()}" type="text"/>
       </div>
-      <div class="profile-form-row">
-        <div class="profile-form-label">Industry </div>
-        <select class="required" id="industry" name="industry" required="required" data-initvalue="{$user/*:industry/string()}">
+      <div class="form-group">
+        <label>Industry</label>
+        <select class="required form-control" id="industry" name="industry" required="required" data-initvalue="{$user/*:industry/string()}">
           <option value="Aviation/Aerospace">Aviation/Aerospace</option>
           <option value="Commodity Trading">Commodity Trading</option>
           <option value="Consulting">Consulting</option>
@@ -1149,17 +1149,32 @@
     <!--
     <h3>Educational background</h3>
     <fieldset>
-        <div class="profile-form-row">
-          <div class="profile-form-label">School </div>
+        <div class="form-group">
+          <label>School</label>
           <input class="" id="school" name="school" value="{$user/*:school/string()}" type="text"/>
         </div>
-        <div class="profile-form-row">
-          <div class="profile-form-label">Year of graduation </div>
+        <div class="form-group">
+          <label>Year of graduation</label>
           <select class="yearpicker" id="yog" name="yog" data-value="{$user/*:yog/string()}"></select>
         </div>
     </fieldset>
     -->
     </div>
+  </xsl:template>
+
+  <xsl:template match="preferences">
+    <xsl:variable name="user" select="users:getCurrentUser()"/>
+    <form class="">
+      <div class="form-group">
+        <label for="doc-section" class="control-label">Documentation Section Preference</label>
+        <select class="form-control" id="doc-section" name="doc-section" data-initvalue="{$user/*:industry/string()}">
+
+          <xsl:for-each select="ml:list-doc-sections()">
+            <option><xsl:value-of select="."/></option>
+          </xsl:for-each>
+        </select>
+      </div>
+    </form>
   </xsl:template>
 
   <xsl:template match="reset-hidden-fields">

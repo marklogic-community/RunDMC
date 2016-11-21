@@ -4,20 +4,25 @@
   <script xml:space="preserve">
       if (! "<ml:user-name/>") { window.location.href = '/'; }
   </script>
-  <h1><ml:first-name/>'s Profile </h1>
+  <h1><ml:first-name/>'s Profile</h1>
 
-  <form method="post" action="#" id="profile-form" enctype="application/x-www-form-urlencoded">
-    <ml:profile/>
-    <fieldset>
-      <div class="signup-form-row">
-        <input class="button" id="profile-save" value="Save" type="submit"/>
-        <a href="/reset"><span id="change-passwd">Change password</span></a>    
-        <span id="changes-saved">Changes saved</span>
-      </div>
-      <div class="signup-form-row">
-      </div>
-    </fieldset>
-  </form>
+  <div class="row">
+    <form method="post" action="#" id="profile-form" enctype="application/x-www-form-urlencoded" class="col-md-6">
+      <ml:profile/>
+      <fieldset>
+        <div class="signup-form-row">
+          <input class="button" id="profile-save" value="Save" type="submit"/>
+          <a href="/reset"><span id="change-passwd">Change password</span></a>    
+          <span id="changes-saved">Changes saved</span>
+        </div>
+        <div class="signup-form-row">
+        </div>
+      </fieldset>
+    </form>
+    <div class="col-md-6">
+      <ml:preferences/>
+    </div>
+  </div>
 
   <script xml:space="preserve">
     $(document).ready(function() {
