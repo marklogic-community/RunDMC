@@ -55,20 +55,23 @@
     <div id="nav" class="navbar col-md-2">
       <div id="header">
         <a href="/" title="Home page">
-          <img src="/images/logo-community-white.svg" alt="Mark Logic Developer Community" title=""/>
+          <img src="/media/marklogic-community-badge.png" alt="Mark Logic Developer Community" title=""/>
         </a>
         <h1>Content Management</h1>
       </div>
       <ul class="nav nav-pills nav-stacked menu">
         <li>
-          <form class="uri_form" action="/admin/controller/edit-by-uri.xqy" method="post" enctype="application/x-www-form-urlencoded">
-            <label>URI</label>
-            <input type="edit" id="edit_uri" name="edit_uri"/>
-            <input type="submit" value="Edit" class="btn btn-default btn-xs" id="edit_uri_btn"/>
+          <form class="uri_form form-horizontal" action="/admin/controller/edit-by-uri.xqy" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+              <div class="col-md-8">
+                <input type="edit" id="edit_uri" class="form-control" name="edit_uri" placeholder="URI" />
+              </div>
+              <input type="submit" value="Edit" class="btn btn-default col-md-3" id="edit_uri_btn"/>
+            </div>
           </form>
         </li>
-        <li><a href="/author">Author</a></li>
         <li><a href="/blog">Blog</a></li>
+        <li><a href="/author">Author</a></li>
         <li><a href="/code">Code</a></li>
         <li><a href="/learn">Learn</a></li>
         <li><a href="/media">Media</a></li>

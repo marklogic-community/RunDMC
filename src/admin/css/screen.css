@@ -114,7 +114,7 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 	background: white url(../images/bg_content.gif) 597px 0 repeat-y;
 	float: left;
 	width: 100%;
-	margin: 6px 0;
+	margin: 0;
 }
 #content.sub_special {background: white url(../images/bg_sub_bottom.png) right bottom no-repeat;}
 .layout2 #content {
