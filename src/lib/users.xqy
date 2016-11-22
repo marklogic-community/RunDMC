@@ -588,3 +588,29 @@ declare function users:denied() as xs:boolean
     else
         false()
 };
+
+declare function users:valid-preference($preference)
+{
+  $preference eq ("doc-section")
+};
+
+declare function users:set-preference(
+  $user as element(person)?,
+  $preference as xs:string,
+  $value as xs:string)
+{
+  if (fn:not(users:valid-preference($preference))) then
+    fn:error(xs:QName("INVALID-PREFERENCE"), $preference || " is not a valid preference setting")
+  else (),
+  let $curr-preference := $user/preferences/element()[fn:node-name(.) = xs:QName($preference)]
+  let $new-preference := element { $preference } { $value }
+  return
+    if (fn:not($user)) then
+      fn:error(xs:QName("NO-USER"), "No user is logged in")
+    else if (fn:exists($curr-preference)) then
+      xdmp:node-replace($curr-preference, $new-preference)
+    else if (fn:exists($user/preferences)) then
+      xdmp:node-insert-child($user/preferences, $new-preference)
+    else
+      xdmp:node-insert-child($user, element preferences { $new-preference })
+};
