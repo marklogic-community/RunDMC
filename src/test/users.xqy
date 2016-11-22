@@ -169,3 +169,20 @@ declare %t:case function t:set-pref-create-first-pref()
     )
   return assert:equal($actual/preferences/doc-section/fn:string(), "new-value")
 };
+
+declare %t:case function t:get-unset-pref()
+{
+  assert:empty(
+    users:get-user-preference(users:getUserByID($user3-id), "no-such-preference")
+  )
+};
+
+declare %t:case function t:get-set-pref()
+{
+  assert:equal(
+    users:get-user-preference(
+      users:getUserByID($user3-id),
+      $users:PREF-DOC-SECTION),
+    "original value"
+  )
+};

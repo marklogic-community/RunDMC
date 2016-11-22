@@ -1163,16 +1163,12 @@
   </xsl:template>
 
   <xsl:template match="preferences">
-    <xsl:variable name="user" select="users:getCurrentUser()"/>
     <div id="textarea-msg"/>
     <form class="">
       <div class="form-group">
         <label for="doc-section" class="control-label">Documentation Section Preference</label>
-        <select class="form-control" id="doc-section" name="doc-section" data-initvalue="{$user/*:industry/string()}">
-
-          <xsl:for-each select="ml:list-doc-sections()">
-            <option><xsl:value-of select="."/></option>
-          </xsl:for-each>
+        <select class="form-control" id="doc-section" name="doc-section">
+          <xsl:copy-of select="ml:build-doc-sections-options()"/>
         </select>
       </div>
     </form>

@@ -27,6 +27,9 @@ declare namespace em="URN:ietf:params:email-xml:";
 (: If the end user selects this country, require them to select a state. :)
 declare variable $COUNTRY-REQUIRES-STATE := ("United States of America", "Canada");
 
+(: String key for user preference settings :)
+declare variable $PREF-DOC-SECTION := "doc-section";
+
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
     exists(users:getUserByEmail($email))
@@ -613,4 +616,14 @@ declare function users:set-preference(
       xdmp:node-insert-child($user/preferences, $new-preference)
     else
       xdmp:node-insert-child($user, element preferences { $new-preference })
+};
+
+declare function users:get-user-preference(
+  $user as element(person)?,
+  $preference as xs:string)
+as xs:string?
+{
+  let $qn-pref := xs:QName($preference)
+  return
+    $user/preferences/element()[fn:node-name(.) = $qn-pref]
 };

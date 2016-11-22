@@ -9,6 +9,7 @@ import module namespace draft="http://developer.marklogic.com/site/internal/filt
   at "filter-drafts.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
+import module namespace users="users" at "/lib/users.xqy";
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
@@ -1014,9 +1015,18 @@ declare function ml:get-author-info($author-name as xs:string)
   /ml:Author[ml:name = $author-name]
 };
 
-declare function ml:list-doc-sections()
+declare function ml:build-doc-sections-options()
 {
-  fn:doc(api:toc-uri())//node()[@class="toc_select_option"]/fn:string()
+  let $options := fn:doc(api:toc-uri())//node()[@class="toc_select_option"]/fn:string()
+  let $preference := users:get-user-preference(users:getCurrentUser(), $users:PREF-DOC-SECTION)
+  for $option in $options
+  return
+    element option {
+      if ($option = $preference) then
+        attribute selected { "true" }
+      else (),
+      $option
+    }
 };
 
 (: model/data-access.xqy :)
