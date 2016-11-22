@@ -1164,6 +1164,7 @@
 
   <xsl:template match="preferences">
     <xsl:variable name="user" select="users:getCurrentUser()"/>
+    <div id="textarea-msg"/>
     <form class="">
       <div class="form-group">
         <label for="doc-section" class="control-label">Documentation Section Preference</label>
