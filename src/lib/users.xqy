@@ -627,3 +627,17 @@ as xs:string?
   return
     $user/preferences/element()[fn:node-name(.) = $qn-pref]
 };
+
+declare function users:get-prefs-as-json($user as element(person)?)
+as xs:string?
+{
+  if ($user) then
+    "{" ||
+    fn:string-join(
+      for $pref in users:getCurrentUser()/preferences/element()
+      return ('"' || fn:node-name($pref) || '": "' || $pref/fn:string() || '"'),
+      ","
+    )
+    ||"}"
+  else ()
+};

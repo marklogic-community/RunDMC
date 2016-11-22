@@ -139,8 +139,7 @@ function tocInit() {
       prerendered: true,
       url: tocPartsDir }); });
 
-  // Set up the select widget
-  tocSelect.change(function(e) {
+  function changeSelection() {
     LOG.debug('TOC select option changed');
     // Hide the old TOC tree.
     $(".apidoc_tree:visible").hide();
@@ -159,6 +158,34 @@ function tocInit() {
     tree.show();
 
     tocFilterUpdate();
+  }
+
+  // Set up the select widget
+  tocSelect.change(changeSelection);
+
+  $.ajax({
+    url: '/people/preferences',
+    method: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      var preferredSection = data['doc-section'];
+      var select = document.querySelector('#toc_select');
+      var options = document.querySelectorAll('#toc_select option');
+      var initiallySelected = select.selectedIndex;
+      for (var i in options) {
+        if (options.hasOwnProperty(i)) {
+          if (options[i].text === preferredSection) {
+            select.selectedIndex = i;
+          }
+        }
+      }
+      if (initiallySelected !== select.selectedIndex) {
+        changeSelection();
+      }
+    },
+    error: function(error) {
+      console.log('error trying to get preferences: ' + JSON.stringify(error));
+    }
   });
 
   // Set up the filter
