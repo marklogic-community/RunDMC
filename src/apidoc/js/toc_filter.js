@@ -168,19 +168,29 @@ function tocInit() {
     method: 'GET',
     dataType: 'json',
     success: function(data) {
-      var preferredSection = data['doc-section'];
-      var select = document.querySelector('#toc_select');
-      var options = document.querySelectorAll('#toc_select option');
-      var initiallySelected = select.selectedIndex;
-      for (var i in options) {
-        if (options.hasOwnProperty(i)) {
-          if (options[i].text === preferredSection) {
-            select.selectedIndex = i;
+      if (data.currentUserId) {
+        // The user is logged in. Change to the preferred section of the docs.
+        var preferredSection = data['doc-section'];
+        var select = document.querySelector('#toc_select');
+        var options = document.querySelectorAll('#toc_select option');
+        var initiallySelected = select.selectedIndex;
+        for (var i in options) {
+          if (options.hasOwnProperty(i)) {
+            if (options[i].text === preferredSection) {
+              select.selectedIndex = i;
+            }
           }
         }
-      }
-      if (initiallySelected !== select.selectedIndex) {
-        changeSelection();
+        if (initiallySelected !== select.selectedIndex) {
+          changeSelection();
+        }
+      } else {
+        // The user is not logged in.
+        var saveBtn = document.getElementById('save-section-pref');
+        if (saveBtn) {
+          saveBtn.setAttribute('disabled', true);
+          saveBtn.setAttribute('title', 'Log in to save preferred section');
+        }
       }
     },
     error: function(error) {

@@ -633,11 +633,12 @@ as xs:string?
 {
   if ($user) then
     "{" ||
-    fn:string-join(
+    fn:string-join((
+      '"currentUserId":' || '"' || $user/id/fn:string() || '"',
       for $pref in users:getCurrentUser()/preferences/element()
-      return ('"' || fn:node-name($pref) || '": "' || $pref/fn:string() || '"'),
+      return ('"' || fn:node-name($pref) || '": "' || $pref/fn:string() || '"')),
       ","
     )
     ||"}"
-  else ()
+  else "{}"
 };

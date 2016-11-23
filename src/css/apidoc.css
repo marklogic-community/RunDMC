@@ -267,16 +267,14 @@ ol ol {
 
 .toc_select {
     position: inherit;
-    margin-left: 16px;
+    margin-left: 0;
 }
 
 select#toc_select {
-    width: 98%;
-    /* For browsers that support calc. */
-    width: calc(100% - 96px);
 }
 
 .scrollable_section {
+    margin-left: 0;
     position: inherit;
 }
 
@@ -315,7 +313,7 @@ h1 a,
 
 .treecontrol.top_control {
     float: right;
-    margin: 8px 24px 0 0;
+    margin: 8px 0 0 0;
     cursor: pointer;
     font-size: .9em;
 }
@@ -352,12 +350,8 @@ h1 a,
 
 /* override treeview CSS */
 .treeview {
-    position: absolute;
-    top: 78px;
-    bottom: 0;
-    width: 98%;
+    width: 100%;
     /* For browsers that support calc. */
-    width: calc(100% - 12px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
@@ -483,10 +477,11 @@ a.sectionLink:hover {
 
 .toc,
 #api_sub {
-    line-height: 100%;
 }
 
 .toc_section {
+    /* width is 100% - width of splitter - width of Bootstrap margin negative offset */
+    width: calc(100% - 42px);
 }
 
 .api_caption {

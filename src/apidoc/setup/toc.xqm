@@ -855,16 +855,22 @@ as element()
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
-    <div class="toc_select">
-      Section: <select id="toc_select">
-  {
-    (: To preserve node order, use SMO rather than XPath. :)
-    $toc/toc:node
-    ! toc:render-select-option(., . is $selected)
-  }
+    <div class="toc_select row">
+      <span class="col-sm-12 col-md-2">Section:</span>
+      <select id="toc_select" class="col-sm-10 col-md-9">
+        {
+          (: To preserve node order, use SMO rather than XPath. :)
+          $toc/toc:node
+          ! toc:render-select-option(., . is $selected)
+        }
       </select>
+      <button type="button" class="btn btn-default btn-xs col-sm-2 col-md-1"
+        id="save-section-pref"
+        title="Save section preference">
+        <span class="glyphicon glyphicon-save"></span>
+      </button>
     </div>
-    <div class="scrollable_section">
+    <div class="scrollable_section row">
       <input id="config-filter" name="config-filter" class="config-filter"/>
       <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
   class="config-filter-close-button"/>
