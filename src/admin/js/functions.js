@@ -222,15 +222,13 @@ function checkValidXhtml(action, target) {
   // No problem in the textareas, allow form submission to continue
   if(isValid) {
     var adminform = document.getElementsByClassName('adminform')[0];
-    if (action === '/admin/controller/preview.xqy') {
-      // We're going to get back a redirect. Let that take its course. The new
-      // content will be launched in a different tab.
-      adminform.action = action;
-      adminform.target = target;
-      adminform.submit();
-    } else if (action === '/admin/controller/create.xqy') {
-      // Create will give us a redirect and put us in edit mode. This includes
-      // some changes to the form.
+    var submitEndpoints = [
+      '/admin/controller/preview.xqy',
+      '/admin/controller/create.xqy',
+      '/admin/controller/ondemand.xqy'
+    ];
+    if (submitEndpoints.includes(action)) {
+      // Do the submit and let the redirect take its course.
       adminform.action = action;
       adminform.target = target;
       adminform.submit();
