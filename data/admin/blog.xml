@@ -5,7 +5,7 @@
 
   <div class="well">
     <p>DMC blog posts generally address "how" questions -- how do I use this feature? How do I accomplish this task? How do I debug this problem?</p>
-    <p>See *insert wiki link* for formatting tips.</p>
+    <p>See the <a href="https://wiki.marklogic.com/display/PM/DMC+blog+authoring">DMC blog authoring wiki</a> for formatting tips.</p>
     <p>When you're done, ask a member of the Community Team to publish your content.</p>
   </div>
 
