@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h3>Pages</h3>
+  <h3>On Demand</h3>
 
   <div class="well">
     <p>Use the On Demand form to upload PowerPoints with the scripts for MLU On Demand videos.</p>
