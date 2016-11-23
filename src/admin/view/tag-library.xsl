@@ -28,15 +28,15 @@
       </thead>
       <tbody>
         <xsl:variable name="sections" xmlns="">
-          <Code          doc-type="Project"      path="/code"/>
           <Blog          doc-type="Post"         path="/blog"/>
+          <Author        doc-type="author"       path="/author"/>
+          <Code          doc-type="Project"      path="/code"/>
           <Learn         doc-type="Article"      path="/learn"/>
+          <Media         doc-type="media"        path="/media"/>
+          <OnDemand      doc-type="ondemand"     path="/ondemand"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
           <Pages         doc-type="page"         path="/pages"/>
-          <Media         doc-type="media"        path="/media"/>
-          <Author        doc-type="author"       path="/author"/>
-          <OnDemand      doc-type="ondemand"     path="/ondemand"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
