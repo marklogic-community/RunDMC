@@ -13,8 +13,8 @@
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
     <!--[if lte IE 7]>
-		<link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
-		<![endif]-->
+    <link href="css/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
     <script type="text/javascript">
       <ml:auto-form-scripts/>
 
@@ -50,46 +50,49 @@
     </script>
   </head>
   <body ml:class="">
-		<div id="container">
-			<div id="header">
-				<a href="/" title="Home page"><img src="/media/marklogic-community-badge.png" alt="Mark Logic Developer Community" title=""/></a>
+
+  <div class="row">
+    <div id="nav" class="navbar col-md-2">
+      <div id="header">
+        <a href="/" title="Home page">
+          <img src="/media/marklogic-community-badge.png" alt="Mark Logic Developer Community" title=""/>
+        </a>
         <h1>Content Management</h1>
-				<ul id="utilnav">
-	  <!--
-	  <li class="skip"><a href="">(skip to content)</a></li>
-	  <li class="signup"><a href="signup.html">Log in</a></li>
-	  <li class="prefs"><a href="">Preferences</a></li>
-    -->
-	</ul>
-        <!--
-				<form action="" method="get">
-	  <fieldset>
-            <legend><label for="s_inp">Search</label></legend>
-            <input id="s_inp" type="text"/>
-            <input type="submit"/>
-          </fieldset>
-	</form>
-  -->
-        <ml:top-nav/>
-			</div>
-			<hr/>
-			<div id="content">
+      </div>
+      <ul class="nav nav-pills nav-stacked menu">
+        <li>
+          <form class="uri_form form-horizontal" action="/admin/controller/edit-by-uri.xqy" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+              <div class="col-md-8">
+                <input type="edit" id="edit_uri" class="form-control" name="edit_uri" placeholder="URI" />
+              </div>
+              <input type="submit" value="Edit" class="btn btn-default col-md-3" id="edit_uri_btn"/>
+            </div>
+          </form>
+        </li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/author">Author</a></li>
+        <li><a href="/code">Code</a></li>
+        <li><a href="/learn">Learn</a></li>
+        <li><a href="/media">Media</a></li>
+        <li><a href="/ondemand">On Demand</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/news">News</a></li>
+        <li><a href="/events">Events</a></li>
+      </ul>
+    </div>
+    <div class="col-md-10">
+      <div id="content">
         <ml:doc-breadcrumbs/>
-				<div id="main">
-					<ml:breadcrumbs/>
-          <ml:page-content/>
-				</div>
-        <!--
-        <div id="sub">
-          <ml:sub-nav/>
-          <ml:widgets/>
-        </div>
-        -->
-			</div>
-			<hr/>
-			<div id="footer">
-				<div id="copyright">Copyright © 2010-2011 Mark Logic Corporation. All rights reserved. | Powered by MarkLogic Server <ml:server-version/> Standard Edition  | <a href="">Contact Us</a></div>
-			</div>
-		</div>
-	</body>
+        <ml:breadcrumbs/>
+        <ml:page-content/>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+  <div id="footer">
+    <div id="copyright">Copyright © 2010-2011 MarkLogic Corporation. All rights reserved. | Powered by MarkLogic Server <ml:server-version/> Standard Edition | <a href="">Contact Us</a></div>
+  </div>
+</body>
 </html>

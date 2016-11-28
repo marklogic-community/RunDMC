@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-<h1>Blog</h1>
+  <h3>Blog Posts</h3>
 
-  <p class="intro">
-    <ul>
-      <li>Do your thing. </li>
-      <li>Write, write, write.</li>
-      <li>Remove stuff.</li>
-      <li>Use <a href="http://gist.github.com/">gists</a> for code samples and embed them.</li>
-      <li>Leave as draft and ask Eric to publish.</li>
-    </ul>
-  </p>
+  <div class="well">
+    <p>DMC blog posts generally address "how" questions -- how do I use this feature? How do I accomplish this task? How do I debug this problem?</p>
+    <p>See the <a href="https://wiki.marklogic.com/display/PM/DMC+blog+authoring">DMC blog authoring wiki</a> for formatting tips.</p>
+    <p>When you're done, ask a member of the Community Team to publish your content.</p>
+  </div>
 
   <form class="add_post" action="/blog/edit" method="get" enctype="application/x-www-form-urlencoded">
     <div>
-      <input type="submit" value="Add New"/>
+      <button type="submit" class="btn btn-default">Add New</button>
     </div>
   </form>
 
