@@ -270,7 +270,18 @@ ol ol {
     margin-left: 0;
 }
 
-select#toc_select {
+.toc_select label {
+  float: left;
+  margin-left: 16px;
+}
+
+.toc_select select#toc_select {
+  float: left;
+  margin-left: 5px;
+}
+
+.toc_select button {
+  float: right;
 }
 
 .scrollable_section {

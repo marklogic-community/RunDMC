@@ -856,15 +856,15 @@ as element()
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
     <div class="toc_select row">
-      <span class="col-sm-12 col-md-2">Section:</span>
-      <select id="toc_select" class="col-sm-10 col-md-9">
+      <label class="">Section:</label>
+      <select id="toc_select" class="">
         {
           (: To preserve node order, use SMO rather than XPath. :)
           $toc/toc:node
           ! toc:render-select-option(., . is $selected)
         }
       </select>
-      <button type="button" class="btn btn-default btn-xs col-sm-2 col-md-1"
+      <button type="button" class="btn btn-default btn-xs"
         id="save-section-pref"
         title="Save section preference">
         <span class="glyphicon glyphicon-save"></span>
