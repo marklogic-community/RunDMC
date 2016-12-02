@@ -225,12 +225,14 @@ ol ol {
 #apidoc_toc,
 #all_tocs,
 .toc {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 #toc_content {
     width: 100%;
     background: #fff;
+    height: 100%;
     padding: 16px 0 16px 0;
 }
 
@@ -267,6 +269,7 @@ ol ol {
 
 .toc_select {
     position: inherit;
+    margin-right: 5px;
     margin-left: 0;
 }
 
@@ -285,11 +288,17 @@ ol ol {
 }
 
 .scrollable_section {
+    height: 100%;
+    margin-right: 5px;
     margin-left: 0;
     position: inherit;
 }
 
-.scrollable_section > input {
+#apidoc_tree_container {
+    height: calc(100% - 44px);
+}
+
+.scrollable_section .filter input {
     border: 1px solid #ccc;
     font-size: 11px;
     margin: 8px 0 0 16px;
@@ -368,6 +377,7 @@ h1 a,
     /* android may need this so touch-scrolling works. */
     z-index: 0;
     border-top: 1px solid #ccc;
+    height: 100%;
 }
 .treeview a.toc_root {
     font-weight: bold;
@@ -488,11 +498,13 @@ a.sectionLink:hover {
 
 .toc,
 #api_sub {
+    line-height: 100%;
 }
 
 .toc_section {
+    height: 100%;
     /* width is 100% - width of splitter - width of Bootstrap margin negative offset */
-    width: calc(100% - 42px);
+    width: calc(100% - 12px);
 }
 
 .api_caption {
@@ -738,7 +750,7 @@ span.highlightWidget {
     .toc_select {
         margin-left: 4px;
     }
-    .scrollable_section > input {
+    .scrollable_section .filter input {
         margin-left: 4px;
     }
     #api_sub {
