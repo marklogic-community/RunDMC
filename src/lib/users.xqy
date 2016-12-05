@@ -27,6 +27,9 @@ declare namespace em="URN:ietf:params:email-xml:";
 (: If the end user selects this country, require them to select a state. :)
 declare variable $COUNTRY-REQUIRES-STATE := ("United States of America", "Canada");
 
+(: String key for user preference settings :)
+declare variable $PREF-DOC-SECTION := "doc-section";
+
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
     exists(users:getUserByEmail($email))
@@ -587,4 +590,55 @@ declare function users:denied() as xs:boolean
             false()
     else
         false()
+};
+
+declare function users:valid-preference($preference)
+{
+  $preference eq ("doc-section")
+};
+
+declare function users:set-preference(
+  $user as element(person)?,
+  $preference as xs:string,
+  $value as xs:string)
+{
+  if (fn:not(users:valid-preference($preference))) then
+    fn:error(xs:QName("INVALID-PREFERENCE"), $preference || " is not a valid preference setting")
+  else (),
+  let $curr-preference := $user/preferences/element()[fn:node-name(.) = xs:QName($preference)]
+  let $new-preference := element { $preference } { $value }
+  return
+    if (fn:not($user)) then
+      fn:error(xs:QName("NO-USER"), "No user is logged in")
+    else if (fn:exists($curr-preference)) then
+      xdmp:node-replace($curr-preference, $new-preference)
+    else if (fn:exists($user/preferences)) then
+      xdmp:node-insert-child($user/preferences, $new-preference)
+    else
+      xdmp:node-insert-child($user, element preferences { $new-preference })
+};
+
+declare function users:get-user-preference(
+  $user as element(person)?,
+  $preference as xs:string)
+as xs:string?
+{
+  let $qn-pref := xs:QName($preference)
+  return
+    $user/preferences/element()[fn:node-name(.) = $qn-pref]
+};
+
+declare function users:get-prefs-as-json($user as element(person)?)
+as xs:string?
+{
+  if ($user) then
+    "{" ||
+    fn:string-join((
+      '"currentUserId":' || '"' || $user/id/fn:string() || '"',
+      for $pref in users:getCurrentUser()/preferences/element()
+      return ('"' || fn:node-name($pref) || '": "' || $pref/fn:string() || '"')),
+      ","
+    )
+    ||"}"
+  else "{}"
 };

@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-    <script xml:space="preserve">
-        if (! "<ml:user-name/>") { window.location.href = '/'; }
-    </script>
-    <h1><ml:first-name/>'s Profile </h1>
+  <script xml:space="preserve">
+      if (! "<ml:user-name/>") { window.location.href = '/'; }
+  </script>
+  <h1><ml:first-name/>'s Profile</h1>
 
-    <form method="post" action="#" id="profile-form" enctype="application/x-www-form-urlencoded">
-    <ml:profile/>
-    <fieldset>
+  <div class="row">
+    <form method="post" action="#" id="profile-form" enctype="application/x-www-form-urlencoded" class="col-md-6">
+      <ml:profile/>
+      <fieldset>
         <div class="signup-form-row">
-            <input class="button" id="profile-save" value="Save" type="submit"/> 
-            <a href="/reset"><span id="change-passwd">Change password</span></a>    <span id="changes-saved">Changes saved</span>
+          <input class="button" id="profile-save" value="Save" type="submit"/>
+          <a href="/reset"><span id="change-passwd">Change password</span></a>    
+          <span id="changes-saved">Changes saved</span>
         </div>
         <div class="signup-form-row">
         </div>
-    </fieldset>
-  </form>
+      </fieldset>
+    </form>
+    <div class="col-md-6">
+      <ml:preferences/>
+    </div>
+  </div>
 
-    <script xml:space="preserve">
-        $(document).ready(function() {
-            jQuery.validator.addMethod("twitter", function(value, element) {
-                return this.optional(element) || /^@.+/.test(value); 
-            }, "Please specify a valid twitter handle");
-
-            $('#profile-form').validate({
-                "errorClass": "signup-form-error"
-            });
-        });
-
-        $('#profile-form').dirtyForms();
-    </script>
+  <script src="/js/profile.js"></script>
 
 </ml:page>

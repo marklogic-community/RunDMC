@@ -556,9 +556,19 @@ if(typeof jQuery != 'undefined') {
               $('#login-trigger').hide();
               $('#session-trigger').text(data.name);
               $('#session-trigger').show();
+              // If we're on the docs page, enable the save-section-preference button
+              var saveBtn = document.getElementById('save-section-pref');
+              if (saveBtn) {
+                saveBtn.removeAttribute('disabled');
+                saveBtn.setAttribute('title', 'Save section preference');
+              }
+
             } else {
               $('#login-error').text(data.status);
             }
+          },
+          error: function(error) {
+            console.log('problem during login');
           },
           dataType: 'json'
         });
