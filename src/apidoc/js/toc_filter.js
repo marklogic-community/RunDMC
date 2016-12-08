@@ -765,7 +765,7 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
     // clear any existing idle timer
     clearTimeout($.data(this, 'timer'));
     // TODO Is the TOC fully loaded?
-    var loading = $(".apidoc_tree:visible .startedLoading");
+    var loading = $(".apidoc_tree:visible.startedLoading:not(.fullyLoaded)");
     if (loading.length) {
       LOG.warn("[tocInitFilter]", "keyup",
                "tocSection not loaded - will retry", loading);
