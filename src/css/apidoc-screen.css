@@ -3269,10 +3269,8 @@ button.green:hover {
 }
 
 #search_suggest_container {
-    background: none repeat scroll 0% 0% #FFF;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+    /* transparent background */
+    background-color: rgba(0,0,0,0);
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
@@ -3283,16 +3281,23 @@ button.green:hover {
 }
 
 #search_suggest {
+    background-color: white;
     border: 1px solid #666;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     margin: 0;
     padding: 0;
 }
 
 li.search_suggest {
-    color: #ccc;
+    color: #555;
     line-height: 1.5em;
     padding-top: 0.25em;
     padding-left: 6px;
+}
+
+li.search_suggest:hover {
+    background-color: #eee;
 }
 
 li.search_suggest_selected {
