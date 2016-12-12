@@ -81,8 +81,7 @@ ol ol {
 }
 
 #dmc-navbar-collapse li {
-  background-color: #222;
-  z-index: 10;
+    z-index: 10;
 }
 
 #content {
