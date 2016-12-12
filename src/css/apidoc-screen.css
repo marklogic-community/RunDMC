@@ -3264,9 +3264,12 @@ button.green:hover {
     display: none;
 }
 
+#dmc-navbar-collapse .form-group {
+    position: relative;
+}
+
 #search_suggest_container {
     background: none repeat scroll 0% 0% #FFF;
-    border: 1px solid #666;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -3275,17 +3278,18 @@ button.green:hover {
     -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.3);
     cursor: pointer;
     position: absolute;
-    width: 245px;
+    width: 100%;
     z-index: 9;
 }
 
 #search_suggest {
+    border: 1px solid #666;
     margin: 0;
     padding: 0;
 }
 
 li.search_suggest {
-    color: #666;
+    color: #ccc;
     line-height: 1.5em;
     padding-top: 0.25em;
     padding-left: 6px;
