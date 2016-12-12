@@ -91,9 +91,36 @@ declare %t:case function t:render-0-empty()
       node() }
     ,
 
-<div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
-      Section: <select id="toc_select"></select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
-
+    <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
+      <div id="toc" class="toc">
+        <div id="toc_content">
+          <div id="tocs_all" class="toc_section">
+            <div class="toc_select row">
+              <label class="">Section:</label>
+              <select id="toc_select" class=""></select>
+              <button type="button" class="btn btn-default btn-xs" id="save-section-pref" title="Save section preference">
+                <span class="glyphicon glyphicon-save"></span>
+              </button>
+            </div>
+            <div class="scrollable_section row">
+              <div class="filter">
+                <input id="config-filter" name="config-filter" class="config-filter"/>
+                <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>
+                <div id="treeglobal" class="treecontrol top_control global_control">
+                  <span class="expand" title="Expand the entire tree below">
+                    <img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/>
+                    <span id="treeglobaltext">expand</span>
+                  </span>
+                </div>
+              </div>
+              <div id="apidoc_tree_container" class="pjax_enabled"></div>
+            </div>
+          </div>
+        </div>
+        <div id="splitter"></div>
+      </div>
+      <div id="tocPartsDir" style="display:none;">toc-test/</div>
+    </div>
   )
 };
 
@@ -113,13 +140,44 @@ declare %t:case function t:render-1-simple()
       node() }
     ,
 
-<div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml"><div id="toc" class="toc"><div id="toc_content"><div id="tocs_all" class="toc_section"><div class="toc_select">
-      Section: <select id="toc_select">
-            <option class="toc_select_option" value="n1" selected="true">node 1</option>
-            <option class="toc_select_option" value="n2">node 2</option>
-            <option class="toc_select_option" value="n3">node 3</option>
-          </select></div><div class="scrollable_section"><input id="config-filter" name="config-filter" class="config-filter"/><img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/><div id="treeglobal" class="treecontrol top_control global_control"><span class="expand" title="Expand the entire tree below"><img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/><span id="treeglobaltext">expand</span></span></div><div id="apidoc_tree_container" class="pjax_enabled"><ul id="n1" style="display: block;" class="treeview apidoc_tree"></ul><ul id="n2" style="display: none;" class="treeview apidoc_tree"></ul><ul id="n3" style="display: none;" class="treeview apidoc_tree"></ul></div></div></div></div><div id="splitter"></div></div><div id="tocPartsDir" style="display:none;">toc-test/</div></div>
-
+    <div id="all_tocs" xmlns="http://www.w3.org/1999/xhtml">
+      <div id="toc" class="toc">
+        <div id="toc_content">
+          <div id="tocs_all" class="toc_section">
+            <div class="toc_select row">
+              <label class="">Section:</label>
+              <select id="toc_select" class="">
+                <option class="toc_select_option" value="n1" selected="true">node 1</option>
+                <option class="toc_select_option" value="n2">node 2</option>
+                <option class="toc_select_option" value="n3">node 3</option>
+              </select>
+              <button type="button" class="btn btn-default btn-xs" id="save-section-pref" title="Save section preference">
+                <span class="glyphicon glyphicon-save"></span>
+              </button>
+            </div>
+            <div class="scrollable_section row">
+              <div class="filter">
+                <input id="config-filter" name="config-filter" class="config-filter"/>
+                <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button" class="config-filter-close-button"/>
+                <div id="treeglobal" class="treecontrol top_control global_control">
+                  <span class="expand" title="Expand the entire tree below">
+                    <img id="treeglobalimage" src="/css/apidoc/images/plus.gif"/>
+                    <span id="treeglobaltext">expand</span>
+                  </span>
+                </div>
+              </div>
+              <div id="apidoc_tree_container" class="pjax_enabled">
+                <ul id="n1" style="display: block;" class="treeview apidoc_tree"></ul>
+                <ul id="n2" style="display: none;" class="treeview apidoc_tree"></ul>
+                <ul id="n3" style="display: none;" class="treeview apidoc_tree"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="splitter"></div>
+      </div>
+      <div id="tocPartsDir" style="display:none;">toc-test/</div>
+    </div>
   )
 };
 
