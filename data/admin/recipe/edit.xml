@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+  <h1>Recipe Edit</h1>
+
+  <p></p>
+
+  <ml:auto-form template="Recipe.xml"/>
+
+</ml:page>

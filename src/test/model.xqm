@@ -40,4 +40,183 @@ declare %t:case function t:category-from-guide-cc()
     ('guide', 'guide/cc'))
 };
 
+declare %t:case function t:build-recipe()
+{
+  at:equal(
+    ml:build-recipe(
+      (),
+      (
+      <param name="~new_doc_url">/recipe/second.xml</param>,
+      <param name="~edit_form_url">/recipe/edit</param>,
+      <param name="~updated"/>,
+      <param name="~uri_prefix">/recipe/</param>,
+      <param name="~new_doc_slug">second</param>,
+      <param name="status">Draft</param>,
+      <param name="title">My Title</param>,
+      <param name="author[1]">First Author</param>,
+      <param name="author[2]">Second Author</param>,
+      <param name="last_updated"/>,
+      <param name="server_version[1]">8</param>,
+      <param name="tag[1]">tag1</param>,
+      <param name="tag[2]">tag2</param>,
+      <param name="description">here is the description</param>,
+      <param name="problem">here is the problem</param>,
+      <param name="solution">here is the solution</param>,
+      <param name="discussion">here is the discussion</param>,
+      <param name="seealso">here is the see-also</param>
+    )),
+    document {
+      <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Draft">
+        <ml:title>My Title</ml:title>
+        <ml:author>First Author</ml:author>
+        <ml:author>Second Author</ml:author>
+        <ml:created>{fn:current-dateTime()}</ml:created>
+        <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
+        <ml:server-version>8</ml:server-version>
+        <ml:tags>
+          <ml:tag>tag1</ml:tag>
+          <ml:tag>tag2</ml:tag>
+        </ml:tags>
+        <ml:description>here is the description</ml:description>
+        <ml:problem>here is the problem</ml:problem>
+        <ml:solution>here is the solution</ml:solution>
+        <ml:discussion>here is the discussion</ml:discussion>
+        <ml:see-also>here is the see-also</ml:see-also>
+      </ml:Recipe>
+    }
+  )
+};
+
+declare %t:case function t:rebuild-recipe()
+{
+  at:equal(
+    ml:build-recipe(
+      document {
+        <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Draft">
+          <ml:title>Original Title</ml:title>
+          <ml:author>Original First Author</ml:author>
+          <ml:author>Original Second Author</ml:author>
+          <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
+          <ml:last-updated>2016-12-14T16:40:35.077403-05:00</ml:last-updated>
+          <ml:server-version>8</ml:server-version>
+          <ml:tags>
+            <ml:tag>original tag1</ml:tag>
+            <ml:tag>original tag2</ml:tag>
+          </ml:tags>
+          <ml:description>here is the original description</ml:description>
+          <ml:problem>here is the original problem</ml:problem>
+          <ml:solution>here is the original solution</ml:solution>
+          <ml:discussion>here is the original discussion</ml:discussion>
+          <ml:see-also>here is the original see-also</ml:see-also>
+        </ml:Recipe>
+      },
+      (
+        <param name="~existing_doc_url">/recipe/second.xml</param>,
+        <param name="~edit_form_url">/recipe/edit</param>,
+        <param name="~updated"/>,
+        <param name="~uri_prefix">/recipe/</param>,
+        <param name="~new_doc_slug">second</param>,
+        <param name="status">Published</param>,
+        <param name="title">New Title</param>,
+        <param name="author[1]">First Author</param>,
+        <param name="author[2]">Second Author</param>,
+        <param name="last_updated">2016-12-15T16:40:35.077403-05:00</param>,
+        <param name="server_version[1]">8</param>,
+        <param name="tag[1]">tag1</param>,
+        <param name="tag[2]">tag2</param>,
+        <param name="description">here is the description</param>,
+        <param name="problem">here is the problem</param>,
+        <param name="solution">here is the solution</param>,
+        <param name="discussion">here is the discussion</param>,
+        <param name="seealso">here is the see-also</param>
+      )
+    ),
+    document {
+      <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Published">
+        <ml:title>New Title</ml:title>
+        <ml:author>First Author</ml:author>
+        <ml:author>Second Author</ml:author>
+        <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
+        <ml:last-updated>2016-12-15T16:40:35.077403-05:00</ml:last-updated>
+        <ml:server-version>8</ml:server-version>
+        <ml:tags>
+          <ml:tag>tag1</ml:tag>
+          <ml:tag>tag2</ml:tag>
+        </ml:tags>
+        <ml:description>here is the description</ml:description>
+        <ml:problem>here is the problem</ml:problem>
+        <ml:solution>here is the solution</ml:solution>
+        <ml:discussion>here is the discussion</ml:discussion>
+        <ml:see-also>here is the see-also</ml:see-also>
+      </ml:Recipe>
+    }
+  )
+};
+
+declare %t:case function t:rebuild-recipe-no-updated-timestamp()
+{
+  at:equal(
+    ml:build-recipe(
+      document {
+        <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Draft">
+          <ml:title>Original Title</ml:title>
+          <ml:author>Original First Author</ml:author>
+          <ml:author>Original Second Author</ml:author>
+          <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
+          <ml:last-updated>2016-12-14T16:40:35.077403-05:00</ml:last-updated>
+          <ml:server-version>8</ml:server-version>
+          <ml:tags>
+            <ml:tag>original tag1</ml:tag>
+            <ml:tag>original tag2</ml:tag>
+          </ml:tags>
+          <ml:description>here is the original description</ml:description>
+          <ml:problem>here is the original problem</ml:problem>
+          <ml:solution>here is the original solution</ml:solution>
+          <ml:discussion>here is the original discussion</ml:discussion>
+          <ml:see-also>here is the original see-also</ml:see-also>
+        </ml:Recipe>
+      },
+      (
+        <param name="~existing_doc_url">/recipe/second.xml</param>,
+        <param name="~edit_form_url">/recipe/edit</param>,
+        <param name="~updated"/>,
+        <param name="~uri_prefix">/recipe/</param>,
+        <param name="~new_doc_slug">second</param>,
+        <param name="status">Published</param>,
+        <param name="title">New Title</param>,
+        <param name="author[1]">First Author</param>,
+        <param name="author[2]">Second Author</param>,
+        <param name="last_updated"/>,
+        <param name="server_version[1]">8</param>,
+        <param name="tag[1]">tag1</param>,
+        <param name="tag[2]">tag2</param>,
+        <param name="description">here is the description</param>,
+        <param name="problem">here is the problem</param>,
+        <param name="solution">here is the solution</param>,
+        <param name="discussion">here is the discussion</param>,
+        <param name="seealso">here is the see-also</param>
+      )
+    ),
+    document {
+      <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Published">
+        <ml:title>New Title</ml:title>
+        <ml:author>First Author</ml:author>
+        <ml:author>Second Author</ml:author>
+        <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
+        <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
+        <ml:server-version>8</ml:server-version>
+        <ml:tags>
+          <ml:tag>tag1</ml:tag>
+          <ml:tag>tag2</ml:tag>
+        </ml:tags>
+        <ml:description>here is the description</ml:description>
+        <ml:problem>here is the problem</ml:problem>
+        <ml:solution>here is the solution</ml:solution>
+        <ml:discussion>here is the discussion</ml:discussion>
+        <ml:see-also>here is the see-also</ml:see-also>
+      </ml:Recipe>
+    }
+  )
+};
+
 (: test/model.xqm :)

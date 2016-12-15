@@ -34,9 +34,10 @@
           <Learn         doc-type="Article"      path="/learn"/>
           <Media         doc-type="media"        path="/media"/>
           <OnDemand      doc-type="ondemand"     path="/ondemand"/>
+          <Pages         doc-type="page"         path="/pages"/>
+          <Recipe        doc-type="recipe"       path="/recipe"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
-          <Pages         doc-type="page"         path="/pages"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -116,6 +117,20 @@
           <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
           <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
         </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="admin-recipe-list">
+    <table class="table table-striped table-bordered resource-list">
+      <thead>
+        <tr>
+          <th>URI</th>
+          <th>Language</th>
+        </tr>
+      </thead>
+      <tbody>
+
       </tbody>
     </table>
   </xsl:template>
@@ -285,6 +300,7 @@
                      else if ($doc-type eq 'page')         then $ml:pages
                      else if ($doc-type eq 'author')       then $ml:authors-by-name
                      else if ($doc-type eq 'OnDemand')     then $ml:ondemand
+                     else if ($doc-type eq 'recipe')       then $ml:Recipes
                      else ()"/>
   </xsl:function>
 

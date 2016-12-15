@@ -15,10 +15,18 @@ let $map     := map:map()
 
 return
 (
-  (: Create the new XML from the POST parameters :)
-  let $new-doc := xdmp:xslt-invoke("../model/form2xml.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
-
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
+
+  (: Create the new XML from the POST parameters :)
+  let $new-doc     :=
+    if ($params[@name eq "~edit_form_url"] = "/recipe/edit") then
+      ml:build-recipe(fn:doc($existing-doc-path), $params)
+    else
+      xdmp:xslt-invoke(
+        "../model/form2xml.xsl",
+        document{ <empty/> },
+        (map:put($map, "params", $params), $map)
+      )
 
   let $last-updated := $params[@name eq '~updated']
 

@@ -56,6 +56,7 @@ declare variable $Projects      := ml:docs( xs:QName("Project"));
 declare variable $pages         := ml:docs( xs:QName("page"));
 declare variable $Authors       := ml:docs( xs:QName("Author"));
 declare variable $OnDemand      := ml:docs( xs:QName("OnDemand"));
+declare variable $Recipes       := ml:docs( xs:QName("Recipe"));
 declare variable $Posts         := ml:docs-in-dir('/blog/');
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
@@ -1027,6 +1028,53 @@ declare function ml:build-doc-sections-options()
       else (),
       $option
     }
+};
+
+(:
+ : Build a recipe document base on a sequence of parameters.
+ : Combine with existing document where appropriate.
+ :)
+declare function ml:build-recipe(
+  $existing as document-node()?,
+  $params as element()*)
+as document-node()
+{
+  document {
+    element ml:Recipe {
+      attribute xmlns { "http://www.w3.org/1999/xhtml" },
+      attribute status { $params[@name eq "status"]/fn:string() },
+      element ml:title { $params[@name eq "title"]/fn:string() },
+      for $author in $params[fn:matches(@name, "author\[")]
+      return
+        element ml:author { $author/fn:string() },
+      if ($existing/ml:Recipe/ml:created ne "") then
+        $existing/ml:Recipe/ml:created
+      else
+        element ml:created {
+          fn:current-dateTime()
+        },
+      (: If <last-updated> is given a value, take that, otherwise use the current dateTime :)
+      element ml:last-updated {
+        if ($params[@name eq "last_updated"]/fn:string() = "") then
+          fn:current-dateTime()
+        else
+          $params[@name eq "last_updated"]/fn:string()
+      },
+      for $version in $params[fn:matches(@name, "server_version\[")]
+      return
+        element ml:server-version { $version/fn:string() },
+      element ml:tags {
+        for $tag in $params[fn:matches(@name, "tag\[")]
+        return
+          element ml:tag { $tag/fn:string() }
+      },
+      element ml:description { $params[@name eq "description"]/fn:string() },
+      element ml:problem { $params[@name eq "problem"]/fn:string() },
+      element ml:solution { $params[@name eq "solution"]/fn:string() },
+      element ml:discussion { $params[@name eq "discussion"]/fn:string() },
+      element ml:see-also { $params[@name eq "seealso"]/fn:string() }
+    }
+  }
 };
 
 (: model/data-access.xqy :)
