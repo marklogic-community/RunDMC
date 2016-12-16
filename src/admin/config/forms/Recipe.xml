@@ -28,16 +28,16 @@
 
   <ml:description form:label="Short description"
                   form:wide="yes"/>
-  <ml:body form:label="Problem"
+  <ml:problem form:label="Problem"
            form:name="problem"
            form:type="textarea" form:class="optional-richtext"/>
-  <ml:body form:label="Solution"
+  <ml:solution form:label="Solution"
            form:name="solution"
            form:type="textarea" form:class="optional-richtext"/>
-  <ml:body form:label="Discussion"
+  <ml:discussion form:label="Discussion"
            form:name="discussion"
            form:type="textarea" form:class="optional-richtext"/>
-  <ml:body form:label="See Also"
+  <ml:see-also form:label="See Also"
            form:name="seealso"
            form:type="textarea" form:class="optional-richtext"/>
 </ml:Recipe>
