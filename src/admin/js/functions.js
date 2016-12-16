@@ -118,6 +118,61 @@ if(typeof jQuery != 'undefined') {
       };
     }
 
+    // Remove one of a list of items, such as tags or authors
+    function removeItem(event) {
+      var repeatingDiv = event.target.parentElement.parentElement; // div class="repeating"
+      event.target.parentElement.remove();
+      // check whether optional. if not, and there's only one left, kill the
+      // remove button on the last item
+      var count = repeatingDiv.querySelectorAll('input').length;
+      if (!repeatingDiv.classList.contains('optional') && count === 1) {
+        var firstContainer = repeatingDiv.querySelector('.control-container .remove_btn');
+        firstContainer.remove();
+      }
+
+    }
+
+    function buildRemoveAuthorAnchor(entity) {
+      var remove = document.createElement('a');
+      remove.classList.add('remove_btn');
+      remove.classList.add('remove_' + entity);
+      remove.text = '- Remove ' + entity;
+      remove.addEventListener('click', removeItem);
+
+      return remove;
+    }
+
+    function addItem(event) {
+      var parentElement = event.target.parentElement;
+      var repeatingDiv = event.target.parentElement.parentElement; // div class="repeating"
+      var entity = repeatingDiv.querySelector('label').getAttribute('name');
+
+      var div = document.createElement('div');
+      div.classList.add('control-container');
+
+      var input = document.createElement('input');
+      var count = repeatingDiv.querySelectorAll('input').length;
+      input.setAttribute('name', entity + '[' + (count + 1) + ']');
+      input.setAttribute('type', 'text');
+
+      div.appendChild(input);
+      div.appendChild(buildRemoveAuthorAnchor(entity));
+
+      repeatingDiv.insertBefore(div, parentElement);
+
+      // If this entity is not optional, and we just added the second item,
+      // then the first didn't have a remove button. We can now give it one.
+      count = repeatingDiv.querySelectorAll('input').length;
+      if (!repeatingDiv.classList.contains('optional') && count === 2) {
+        var firstContainer = repeatingDiv.querySelector('.control-container');
+        firstContainer.appendChild(buildRemoveAuthorAnchor(entity));
+      }
+
+    }
+
+    $('.repeating .remove_btn').click(removeItem);
+    $('.repeating .add_btn').click(addItem);
+
 		// new functions should be added here
 	});
 }

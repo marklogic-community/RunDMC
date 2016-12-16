@@ -191,7 +191,7 @@ form .action input {margin-left: 5px;}
 
 
 #ce_link {border-color: #CCC;}
-.add_remove {
+.add_btn, .remove_btn {
 	border: none;
 	background: none;
 	font-weight: bold;
@@ -202,7 +202,10 @@ form .action input {margin-left: 5px;}
 	font-family: Verdana, Arial, Helvetica, Sans-serif;
 	cursor: pointer;
 }
-.add_remove:hover {text-decoration: underline;}
+.add_btn:hover, .remove_btn:hover {
+  text-decoration: underline;
+}
+
 input + .add_remove {margin-left: 10px;}
 div.ce_description {padding-top: 1em;}
 .adminform fieldset + fieldset legend {
