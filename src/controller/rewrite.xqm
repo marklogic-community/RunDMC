@@ -298,7 +298,7 @@ declare function m:forbidden($path as xs:string)
   and (
     (empty(users:getCurrentUser())
       and not(users:authViaParams()))
-    or users:denied())
+    or users:denied(users:getCurrentUser()))
 };
 
 (: this should make some annoyances go away :)
