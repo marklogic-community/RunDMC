@@ -38,6 +38,6 @@
            form:name="discussion"
            form:type="textarea" form:class="optional-richtext"/>
   <ml:see-also form:label="See Also"
-           form:name="seealso"
+           form:name="see-also"
            form:type="textarea" form:class="optional-richtext"/>
 </ml:Recipe>

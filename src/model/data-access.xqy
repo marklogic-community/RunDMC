@@ -38,7 +38,8 @@ declare variable $MONTHS := (
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
 
-declare variable $doc-element-names := (xs:QName("Announcement"),
+declare variable $doc-element-names := (
+  xs:QName("Announcement"),
   xs:QName("Event"),
   xs:QName("Article"),
   xs:QName("Tutorial"),
@@ -46,7 +47,8 @@ declare variable $doc-element-names := (xs:QName("Announcement"),
   xs:QName("Post"),
   xs:QName("page"),
   xs:QName("Author"),
-  xs:QName("OnDemand")
+  xs:QName("OnDemand"),
+  xs:QName("Recipe")
 );
 
 declare variable $Announcements := ml:docs( xs:QName("Announcement"));
@@ -1030,6 +1032,15 @@ declare function ml:build-doc-sections-options()
     }
 };
 
+declare private function ml:build-recipe-element($params, $name)
+{
+  xdmp:unquote(
+    '<ml:' || $name || ' xmlns:ml="http://developer.marklogic.com/site/internal">' ||
+    $params[@name eq $name]/fn:string() || "</ml:" || $name || ">", (: " :)
+    "http://www.w3.org/1999/xhtml"
+  )
+};
+
 (:
  : Build a recipe document base on a sequence of parameters.
  : Combine with existing document where appropriate.
@@ -1068,11 +1079,11 @@ as document-node()
         return
           element ml:tag { $tag/fn:string() }
       },
-      element ml:description { $params[@name eq "description"]/fn:string() },
-      element ml:problem { $params[@name eq "problem"]/fn:string() },
-      element ml:solution { $params[@name eq "solution"]/fn:string() },
-      element ml:discussion { $params[@name eq "discussion"]/fn:string() },
-      element ml:see-also { $params[@name eq "seealso"]/fn:string() }
+      ml:build-recipe-element($params, "description"),
+      ml:build-recipe-element($params, "problem"),
+      ml:build-recipe-element($params, "solution"),
+      ml:build-recipe-element($params, "discussion"),
+      ml:build-recipe-element($params, "see-also")
     }
   }
 };

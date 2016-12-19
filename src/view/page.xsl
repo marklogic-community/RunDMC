@@ -334,7 +334,7 @@
     <xsl:apply-templates select="name/node()"/>
   </xsl:template>
 
-  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial">
+  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial | Recipe">
     <xsl:apply-templates select="title/node()"/>
   </xsl:template>
 
@@ -469,6 +469,34 @@
     <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2, topic-tag)"/>
   </xsl:template>
 
+  <xsl:template mode="page-content" match="Recipe">
+    <xsl:apply-templates mode="author-date-etc" select="."/>
+
+    <div class="tags">
+      <xsl:for-each select="tags/tag">
+        <a class="tag btn btn-info btn-xs">
+          <xsl:attribute name="href">/search?q=tag%3A"<xsl:value-of select="."/>"</xsl:attribute>
+          <xsl:value-of select="."/></a>
+      </xsl:for-each>
+    </div>
+
+    <h3>Description</h3>
+    <div>
+      <xsl:value-of select="./description"/>
+    </div>
+    <h3>Problem</h3>
+    <div>
+      <xsl:value-of select="problem"/>
+    </div>
+    <h3>Solution</h3>
+    <div>
+      <xsl:apply-templates mode="post-content" select="solution"/>
+    </div>
+    <h3>See Also</h3>
+    <div>
+      <xsl:value-of select="see-also"/>
+    </div>
+  </xsl:template>
 
   <xsl:template mode="page-content" match="Post | Announcement | Event">
     <xsl:apply-templates mode="blog-post" select="."/>
@@ -574,6 +602,10 @@
     <xsl:apply-templates select="body/node()"/>
   </xsl:template>
 
+  <xsl:template mode="post-content" match="Recipe">
+    <xsl:apply-templates select="./node()"/>
+  </xsl:template>
+
   <xsl:template mode="post-content-abridged" match="Post | Announcement">
     <xsl:choose>
       <!-- Show the short-description if it exists, otherwise show the first 1000 characters but
@@ -612,9 +644,9 @@
     </article>
   </xsl:template>
 
-  <xsl:template mode="author-date-etc" match="Article | Tutorial">
+  <xsl:template mode="author-date-etc" match="Article | Tutorial | Recipe">
     <xsl:if test="last-updated|author">
-      <xsl:if test="last-updated">
+      <xsl:if test="author">
         <div class="author">
           <xsl:apply-templates mode="author-listing" select="author"/>
         </div>
@@ -622,7 +654,7 @@
       <xsl:if test="last-updated">
         <div class="date">
           <xsl:text>Last updated </xsl:text>
-          <xsl:value-of select="last-updated"/>
+          <xsl:value-of select="ml:display-date(last-updated)"/>
         </div>
       </xsl:if>
       <br/>

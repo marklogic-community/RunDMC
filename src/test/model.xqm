@@ -61,7 +61,7 @@ declare %t:case function t:build-recipe()
       <param name="tag[2]">tag2</param>,
       <param name="description">here is the description</param>,
       <param name="problem">here is the problem</param>,
-      <param name="solution">here is the solution</param>,
+      <param name="solution">here is the &lt;p xmlns="http://www.w3.org/1999/xhtml"&gt;solution&lt;/p&gt;</param>,
       <param name="discussion">here is the discussion</param>,
       <param name="seealso">here is the see-also</param>
     )),
@@ -79,7 +79,7 @@ declare %t:case function t:build-recipe()
         </ml:tags>
         <ml:description>here is the description</ml:description>
         <ml:problem>here is the problem</ml:problem>
-        <ml:solution>here is the solution</ml:solution>
+        <ml:solution>here is the <p>solution</p></ml:solution>
         <ml:discussion>here is the discussion</ml:discussion>
         <ml:see-also>here is the see-also</ml:see-also>
       </ml:Recipe>
