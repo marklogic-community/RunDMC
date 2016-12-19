@@ -186,3 +186,52 @@ declare %t:case function t:get-set-pref()
     "original value"
   )
 };
+
+declare %t:case function t:permitted-country()
+{
+  assert:false(
+    users:denied(
+      <person>
+        <id>34567890123456789012</id>
+        <email>test-3@fake-email.com</email>
+        <name>Fake User3</name>
+        <password>4O.SIJgwgtafmmvXuJryy1</password>
+        <created>2016-11-21T15:39:38.925926-05:00</created>
+        <organization>MarkLogic</organization>
+        <industry>Technology - Software</industry>
+        <phone>484-555-1212</phone>
+        <country>United States of America</country>
+        <state>PA</state>
+        <list>off</list>
+        <contact-me>off</contact-me>
+        <preferences>
+          <doc-section>original value</doc-section>
+        </preferences>
+      </person>
+    )
+  )
+};
+
+declare %t:case function t:prohibited-country()
+{
+  assert:true(
+    users:denied(
+      <person>
+        <id>45678901234567890123</id>
+        <email>test-4@fake-email.com</email>
+        <name>Fake User4</name>
+        <password>4O.SIJgwgtafmmvXuJryy1</password>
+        <created>2016-11-21T15:39:38.925926-05:00</created>
+        <organization>MarkLogic</organization>
+        <industry>Technology - Software</industry>
+        <phone>484-555-1212</phone>
+        <country>Sudan</country>
+        <list>off</list>
+        <contact-me>off</contact-me>
+        <preferences>
+          <doc-section>original value</doc-section>
+        </preferences>
+      </person>
+    )
+  )
+};
