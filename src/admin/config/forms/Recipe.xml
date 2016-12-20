@@ -1,0 +1,43 @@
+<!DOCTYPE ml:Recipe [
+<!ENTITY topic-tags SYSTEM "../topic-tags.xml">
+]>
+<ml:Recipe xmlns:ml="http://developer.marklogic.com/site/internal"
+      xmlns:form  ="http://developer.marklogic.com/site/internal/form"
+      xmlns:label ="http://developer.marklogic.com/site/internal/form/attribute-labels"
+      xmlns:values="http://developer.marklogic.com/site/internal/form/values"
+      xmlns="http://www.w3.org/1999/xhtml"
+      status="Draft" label:status="Status"      values:status="Draft Published"
+      form:uri-prefix-for-new-docs="/recipe/">
+  <ml:title form:label="Title"
+            form:wide="yes"/>
+  <ml:author form:repeating="yes"
+             form:label="Author"/>
+  <ml:created/>
+  <ml:last-updated form:label="Last Updated"/>  <!-- By putting a label on this field, we're taking manual control
+                                                  (no auto-timestamps for <ml:last-updated/> on Recipe docs, due
+                                                  to the way this field is currently being used "in the wild":
+                                                  sometimes a date, sometimes a server version number, etc.). -->
+  <ml:server-version form:label="Server Version"
+                     form:repeating="yes"
+                     form:optional="yes"/>
+
+  <ml:tags form:optional="yes">
+    <ml:tag form:label="Tag"
+            form:repeating="yes"/>
+  </ml:tags>
+
+  <ml:description form:label="Short description"
+                  form:wide="yes"/>
+  <ml:problem form:label="Problem"
+           form:name="problem"
+           form:type="textarea" form:class="optional-richtext"/>
+  <ml:solution form:label="Solution"
+           form:name="solution"
+           form:type="textarea" form:class="optional-richtext"/>
+  <ml:discussion form:label="Discussion"
+           form:name="discussion"
+           form:type="textarea" form:class="optional-richtext"/>
+  <ml:see-also form:label="See Also"
+           form:name="see-also"
+           form:type="textarea" form:class="optional-richtext"/>
+</ml:Recipe>

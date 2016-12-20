@@ -190,33 +190,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
-    <script xml:space="preserve">
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js-limitheight'), function(item) {
-        var cm = CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'javascript',
-          readOnly: true,
-          theme: 'default'
-        });
-        cm.setSize(null, 300);
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js'), function(item) {
-        CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'javascript',
-          readOnly: true,
-          theme: 'default'
-        });
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror xml'), function(item) {
-        CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'xml',
-          readOnly: true,
-          theme: 'default'
-        });
-      });
-    </script>
   </body>
 
   <ml:if href-starts-with="/try/ /learn/arch/ /products/download-via-curl /learn/semantics-exercises">

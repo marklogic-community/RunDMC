@@ -334,7 +334,7 @@
     <xsl:apply-templates select="name/node()"/>
   </xsl:template>
 
-  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial">
+  <xsl:template mode="page-specific-title" match="Announcement | Event | Article | Post | Tutorial | Recipe">
     <xsl:apply-templates select="title/node()"/>
   </xsl:template>
 
@@ -469,6 +469,93 @@
     <xsl:apply-templates select="node() except (xhtml:h1, xhtml:h2, topic-tag)"/>
   </xsl:template>
 
+  <xsl:template mode="page-content" match="Recipe">
+    <!-- Overridden when grouped with other posts in the same page (mode="paginated-list-item") -->
+    <xsl:param name="in-paginated-list" select="false()" tunnel="yes"/>
+
+    <article class="post">
+      <header>
+        <!-- If we're showing the paginated list, show title as an h3. On the post detail page,
+             title will be shown elsewhere as an h1 -->
+        <xsl:if test="$in-paginated-list">
+          <h3>
+            <a href="{ml:external-uri(.)}">
+              <xsl:apply-templates select="title/node()"/>
+            </a>
+          </h3>
+        </xsl:if>
+        <xsl:apply-templates mode="author-date-etc" select="."/>
+
+        <!-- Display the comment count widget only if we're on a list of more than one post;
+             disabled when we're just displaying one blog post, because the comment count
+             automatically appears above the comment submit form section. Suppressing it here
+             ensures we don't display it twice. -->
+        <xsl:if test="$in-paginated-list">
+          <ml:show-comments>
+            <xsl:apply-templates mode="comment-count" select="."/>
+          </ml:show-comments>
+        </xsl:if>
+
+        <xsl:apply-templates mode="tags" select="."/>
+      </header>
+
+      <div class="body">
+        <!-- Display an abridged version of a post if we're on a list with more than one;
+             otherwise, show the entire post.
+        -->
+        <xsl:choose>
+          <xsl:when test="$in-paginated-list">
+            <xsl:apply-templates mode="post-content-abridged" select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+            <h3>Description</h3>
+            <div>
+              <xsl:apply-templates select="description/node()"/>
+            </div>
+            <h3>Problem</h3>
+            <div>
+              <xsl:apply-templates select="problem/node()"/>
+            </div>
+            <h3>Solution</h3>
+            <div>
+              <xsl:apply-templates select="solution/node()"/>
+            </div>
+            <h3>Discussion</h3>
+            <div>
+              <xsl:apply-templates select="discussion/node()"/>
+            </div>
+            <h3>See Also</h3>
+            <div>
+              <xsl:apply-templates select="see-also/node()"/>
+            </div>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
+
+      <xsl:if test="not($in-paginated-list)">
+        <xsl:apply-templates mode="share-content" select="."/>
+      </xsl:if>
+
+    </article>
+  </xsl:template>
+
+  <xsl:template mode="share-content" match="Recipe | Post | Announcement | Event">
+    <div class="share">
+      <div class="share-post">
+        <div class="message">Share This Post!</div>
+        <div class="social-buttons">
+          <!-- From http://www.sharethis.com/ -->
+          <span class="st_fblike_vcount social-btn" displayText="Facebook Like"></span>
+          <span class="st_twitter_vcount social-btn" displayText="Tweet"></span>
+          <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
+          <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
+
+          <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+          <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
 
   <xsl:template mode="page-content" match="Post | Announcement | Event">
     <xsl:apply-templates mode="blog-post" select="."/>
@@ -507,13 +594,8 @@
           </ml:show-comments>
         </xsl:if>
 
-        <div class="tags">
-          <xsl:for-each select="tags/tag">
-            <a class="tag btn btn-info btn-xs">
-              <xsl:attribute name="href">/search?q=tag%3A"<xsl:value-of select="."/>"</xsl:attribute>
-              <xsl:value-of select="."/></a>
-          </xsl:for-each>
-        </div>
+        <xsl:apply-templates mode="tags" select="."/>
+
       </header>
 
       <div class="body">
@@ -530,34 +612,26 @@
         </xsl:choose>
       </div>
 
-      <div class="share">
-        <xsl:if test="not($in-paginated-list)">
-          <div class="share-post">
-            <div class="message">Share This Post!</div>
-            <div class="social-buttons">
-              <!-- From http://www.sharethis.com/ -->
-              <span class="st_fblike_vcount social-btn" displayText="Facebook Like"></span>
-              <span class="st_twitter_vcount social-btn" displayText="Tweet"></span>
-              <span class="st_plusone_vcount social-btn" displayText="Google +1"></span>
-              <span class="st_linkedin_vcount social-btn" displayText="LinkedIn"></span>
-
-              <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
-              <script type="text/javascript">stLight.options({publisher: "b557600f-2257-4587-a998-e7f232dfd8fd", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-            </div>
-          </div>
-        </xsl:if>
-      </div>
+      <xsl:if test="not($in-paginated-list)">
+        <xsl:apply-templates mode="share-content" select="."/>
+      </xsl:if>
 
     </article>
   </xsl:template>
 
-  <xsl:template match="tag">
-    <div>I'm a tag</div>
+  <xsl:template mode="tags" match="Recipe | Post | Announcement | Event">
+    <div class="tags">
+      <xsl:for-each select="tags/tag">
+        <a class="tag btn btn-info btn-xs">
+          <xsl:attribute name="href">/search?q=tag%3A"<xsl:value-of select="."/>"</xsl:attribute>
+          <xsl:value-of select="."/></a>
+      </xsl:for-each>
+    </div>
   </xsl:template>
 
   <!-- Don't display the "created" date on event pages -->
   <xsl:template mode="post-date" match="Event"/>
-  <xsl:template mode="post-date" match="Post | Announcement">
+  <xsl:template mode="post-date" match="Post | Announcement | Recipe">
     <time pubdate="true" datetime="{created}">
       <xsl:value-of select="ml:display-date(created)"/>
     </time>
@@ -570,11 +644,16 @@
     </span>
   </xsl:template>
 
-  <xsl:template mode="post-content" match="Post | Announcement">
+  <xsl:template mode="post-content" match="Post | Announcement | Recipe">
     <xsl:apply-templates select="body/node()"/>
   </xsl:template>
 
-  <xsl:template mode="post-content-abridged" match="Post | Announcement">
+<!--
+  <xsl:template mode="post-content" match="Recipe">
+    <xsl:apply-templates select="./node()"/>
+  </xsl:template>
+-->
+  <xsl:template mode="post-content-abridged" match="Post | Announcement | Recipe">
     <xsl:choose>
       <!-- Show the short-description if it exists, otherwise show the first 1000 characters but
             make sure you don't chop off a word -->
@@ -612,9 +691,9 @@
     </article>
   </xsl:template>
 
-  <xsl:template mode="author-date-etc" match="Article | Tutorial">
+  <xsl:template mode="author-date-etc" match="Article | Tutorial | Recipe">
     <xsl:if test="last-updated|author">
-      <xsl:if test="last-updated">
+      <xsl:if test="author">
         <div class="author">
           <xsl:apply-templates mode="author-listing" select="author"/>
         </div>
@@ -622,7 +701,7 @@
       <xsl:if test="last-updated">
         <div class="date">
           <xsl:text>Last updated </xsl:text>
-          <xsl:value-of select="last-updated"/>
+          <xsl:value-of select="ml:display-date(last-updated)"/>
         </div>
       </xsl:if>
       <br/>

@@ -34,9 +34,10 @@
           <Learn         doc-type="Article"      path="/learn"/>
           <Media         doc-type="media"        path="/media"/>
           <OnDemand      doc-type="ondemand"     path="/ondemand"/>
+          <Pages         doc-type="page"         path="/pages"/>
+          <Recipe        doc-type="recipe"       path="/recipe"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
-          <Pages         doc-type="page"         path="/pages"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -118,6 +119,67 @@
         </xsl:apply-templates>
       </tbody>
     </table>
+  </xsl:template>
+
+  <xsl:template match="admin-recipe-list">
+    <table class="table table-striped table-bordered resource-list">
+      <thead>
+        <tr>
+          <th>URI</th>
+          <th>Language</th>
+          <th>Last Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="docs" select="ml:docs-by-type('recipe')"/>
+        <xsl:apply-templates mode="admin-recipe-listing" select="$docs">
+          <!-- Only sort if we're listing "page" docs; otherwise, don't change the order. -->
+          <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
+          <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
+        </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template mode="admin-recipe-listing" match="*">
+    <xsl:param name="current-page-url"/>
+    <xsl:variable name="edit-path">
+      <xsl:apply-templates mode="edit-path" select="."/>
+    </xsl:variable>
+    <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
+    <tr>
+      <xsl:if test="position() mod 2 eq 0">
+        <xsl:attribute name="class">alt</xsl:attribute>
+      </xsl:if>
+      <td>
+        <a href="{$edit-link}">
+          <xsl:value-of select="base-uri(.)"/>
+        </a>
+      </td>
+      <td></td>
+      <td>
+        <xsl:value-of select="ml:display-date-with-time(last-updated)"/>
+      </td>
+
+      <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+      <td class="status {lower-case($effective-status)}">
+        <xsl:value-of select="$effective-status"/>
+      </td>
+      <td>
+        <a href="{$edit-link}" class="btn btn-default btn-sm">Edit</a>
+        <!-- TODO: make preview work -->
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank" class="btn btn-default btn-sm">Preview</a>
+        <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
+        <xsl:if test="authorize:is-admin()">
+          <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}" class="btn btn-default btn-sm">
+            <xsl:value-of select="$action"/>
+          </a>
+        </xsl:if>
+      </td>
+    </tr>
   </xsl:template>
 
   <xsl:template match="admin-author-list">
@@ -285,6 +347,7 @@
                      else if ($doc-type eq 'page')         then $ml:pages
                      else if ($doc-type eq 'author')       then $ml:authors-by-name
                      else if ($doc-type eq 'OnDemand')     then $ml:ondemand
+                     else if ($doc-type eq 'recipe')       then $ml:Recipes
                      else ()"/>
   </xsl:function>
 
@@ -377,5 +440,6 @@
   <xsl:template mode="edit-path" match="page"        >/pages/edit</xsl:template>
   <xsl:template mode="edit-path" match="Author"      >/author/edit</xsl:template>
   <xsl:template mode="edit-path" match="OnDemand"    >/ondemand/edit</xsl:template>
+  <xsl:template mode="edit-path" match="Recipe"      >/recipe/edit</xsl:template>
 
 </xsl:stylesheet>
