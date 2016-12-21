@@ -126,7 +126,7 @@
       <thead>
         <tr>
           <th>URI</th>
-          <th>Language</th>
+          <th>Tags</th>
           <th>Last Updated</th>
           <th>Status</th>
           <th></th>
@@ -158,7 +158,9 @@
           <xsl:value-of select="base-uri(.)"/>
         </a>
       </td>
-      <td></td>
+      <td>
+        <xsl:value-of select="string-join(tags/tag, ', ')"/>
+      </td>
       <td>
         <xsl:value-of select="ml:display-date-with-time(last-updated)"/>
       </td>

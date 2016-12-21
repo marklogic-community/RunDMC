@@ -254,7 +254,7 @@
       </xsl:choose>
     </xsl:variable>
     <div class="control-container">
-      <xsl:if test="fn:not((.|..)/@form:repeating eq 'yes' and (.|..)/@form:optional eq 'yes')">
+      <xsl:if test="fn:exists(text()) or fn:not((.|..)/@form:repeating eq 'yes' and (.|..)/@form:optional eq 'yes')">
         <input id ="{form:field-name(.)}_{generate-id()}"
                name="{$field-name}"
                type="{$input-type}"
