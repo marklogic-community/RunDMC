@@ -254,12 +254,14 @@
       </xsl:choose>
     </xsl:variable>
     <div class="control-container">
-      <input id ="{form:field-name(.)}_{generate-id()}"
-             name="{$field-name}"
-             type="{$input-type}"
-             value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
-        <xsl:apply-templates mode="class-att" select="."/>
-      </input>
+      <xsl:if test="fn:not((.|..)/@form:repeating eq 'yes' and (.|..)/@form:optional eq 'yes')">
+        <input id ="{form:field-name(.)}_{generate-id()}"
+               name="{$field-name}"
+               type="{$input-type}"
+               value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
+          <xsl:apply-templates mode="class-att" select="."/>
+        </input>
+      </xsl:if>
       <!-- TODO: allow removal for other types of controls, not just text fields -->
       <!-- Only insert one Remove button per group -->
       <xsl:if test="(not(../@form:group-label) and count(../*[node-name(.) eq node-name(current())]) gt 1)
