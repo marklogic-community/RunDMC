@@ -154,6 +154,7 @@ if(typeof jQuery != 'undefined') {
       var count = repeatingDiv.querySelectorAll('input').length;
       input.setAttribute('name', entity + '[' + (count + 1) + ']');
       input.setAttribute('type', 'text');
+      input.classList.add(entity);
 
       div.appendChild(input);
       div.appendChild(buildRemoveAnchor(entity));

@@ -258,6 +258,7 @@
         <input id ="{form:field-name(.)}_{generate-id()}"
                name="{$field-name}"
                type="{$input-type}"
+               class="{form:field-name(.)}"
                value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
           <xsl:apply-templates mode="class-att" select="."/>
         </input>
