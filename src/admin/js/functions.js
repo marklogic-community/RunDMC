@@ -132,7 +132,7 @@ if(typeof jQuery != 'undefined') {
 
     }
 
-    function buildRemoveAuthorAnchor(entity) {
+    function buildRemoveAnchor(entity) {
       var remove = document.createElement('a');
       remove.classList.add('remove_btn');
       remove.classList.add('remove_' + entity);
@@ -156,7 +156,7 @@ if(typeof jQuery != 'undefined') {
       input.setAttribute('type', 'text');
 
       div.appendChild(input);
-      div.appendChild(buildRemoveAuthorAnchor(entity));
+      div.appendChild(buildRemoveAnchor(entity));
 
       repeatingDiv.insertBefore(div, parentElement);
 
@@ -165,7 +165,7 @@ if(typeof jQuery != 'undefined') {
       count = repeatingDiv.querySelectorAll('input').length;
       if (!repeatingDiv.classList.contains('optional') && count === 2) {
         var firstContainer = repeatingDiv.querySelector('.control-container');
-        firstContainer.appendChild(buildRemoveAuthorAnchor(entity));
+        firstContainer.appendChild(buildRemoveAnchor(entity));
       }
 
     }
