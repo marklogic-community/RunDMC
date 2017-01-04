@@ -265,7 +265,8 @@
       <!-- TODO: allow removal for other types of controls, not just text fields -->
       <!-- Only insert one Remove button per group -->
       <xsl:if test="(not(../@form:group-label) and count(../*[node-name(.) eq node-name(current())]) gt 1)
-                  or    (../@form:group-label and not(preceding-sibling::*) and count(../../*[node-name(.) eq node-name(current()/..)]) gt 1)">
+                  or    (../@form:group-label and not(preceding-sibling::*) and count(../../*[node-name(.) eq node-name(current()/..)]) gt 1)
+                  or    (./@form:optional eq 'yes')">
         <xsl:apply-templates mode="remove-button" select="ancestor-or-self::*"/>
       </xsl:if>
     </div>

@@ -27,17 +27,27 @@
   </ml:tags>
 
   <ml:description form:label="Short description"
-                  form:wide="yes"/>
+    form:wide="yes"/>
   <ml:problem form:label="Problem"
-           form:name="problem"
-           form:type="textarea" form:class="optional-richtext"/>
+    form:name="problem"
+    form:type="textarea"
+    form:class="optional-richtext"/>
   <ml:solution form:label="Solution"
-           form:name="solution"
-           form:type="textarea" form:class="optional-richtext"/>
+    form:name="solution"
+    form:type="textarea"
+    form:class="optional-richtext"/>
+  <ml:privilege form:label="Privilege"
+    form:repeating="yes"
+    form:optional="yes"/>
+  <ml:index form:label="Index"
+    form:repeating="yes"
+    form:optional="yes"/>
   <ml:discussion form:label="Discussion"
-           form:name="discussion"
-           form:type="textarea" form:class="optional-richtext"/>
+    form:name="discussion"
+    form:type="textarea"
+    form:class="optional-richtext"/>
   <ml:see-also form:label="See Also"
-           form:name="see-also"
-           form:type="textarea" form:class="optional-richtext"/>
+    form:name="see-also"
+    form:type="textarea"
+    form:class="optional-richtext"/>
 </ml:Recipe>
