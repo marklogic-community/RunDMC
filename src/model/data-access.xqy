@@ -1082,6 +1082,14 @@ as document-node()
       ml:build-recipe-element($params, "description"),
       ml:build-recipe-element($params, "problem"),
       ml:build-recipe-element($params, "solution"),
+      (: Record the needed privileges :)
+      for $tag in $params[fn:matches(@name, "privilege[_\w]*\[")]
+      return
+        element ml:privilege { $tag/fn:string() },
+      (: Record the needed indexes :)
+      for $index in $params[fn:matches(@name, "index[_\w]*\[")]
+      return
+        element ml:index { $index/fn:string() },
       ml:build-recipe-element($params, "discussion"),
       ml:build-recipe-element($params, "see-also")
     }

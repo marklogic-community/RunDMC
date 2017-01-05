@@ -154,6 +154,10 @@ form .action input {margin-left: 5px;}
 	border: 1px solid #DFDFDF;
 	width: 166px;
 }
+.adminform .control-container .privilege {
+  width: 550px;
+}
+
 .adminform select {color: #666;}
 
 .adminform input[type=text].wideText {
