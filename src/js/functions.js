@@ -556,9 +556,19 @@ if(typeof jQuery != 'undefined') {
               $('#login-trigger').hide();
               $('#session-trigger').text(data.name);
               $('#session-trigger').show();
+              // If we're on the docs page, enable the save-section-preference button
+              var saveBtn = document.getElementById('save-section-pref');
+              if (saveBtn) {
+                saveBtn.removeAttribute('disabled');
+                saveBtn.setAttribute('title', 'Save section preference');
+              }
+
             } else {
               $('#login-error').text(data.status);
             }
+          },
+          error: function(error) {
+            console.log('problem during login');
           },
           dataType: 'json'
         });
@@ -654,6 +664,11 @@ if(typeof jQuery != 'undefined') {
       buildCodeMirror('javascript');
       buildCodeMirror('xquery');
       buildCodeMirror('shell');
+
+      displayFirstCodeTabs();
+      document.querySelectorAll('.code-tabs a[role=tab]').forEach(function(tab) {
+        tab.addEventListener('click', codeTabClickHandler);
+      });
     });
 
     var d = $('.yearpicker').attr('data-value');
@@ -732,6 +747,42 @@ function buildCodeMirror(className, options) {
   }
 }
 
+// Look through the code tabs on the page. For each one, do the CodeMirror
+// formatting for the first tab. See showLanguage() comment for why we don't do
+// this for all tabs up front.
+function displayFirstCodeTabs() {
+  var tabs = document.querySelectorAll('.code-tabs .tab-pane.active');
+  for (var i=0; i<tabs.length; i++) {
+    var textarea = tabs[i].getElementsByTagName('textarea')[0];
+    // The textarea has two classes: "code-tab" and the CodeMirror style
+    var lang = textarea.getAttribute('class').replace(/\s*code-tab\s*/, '');
+    var codeOptions = { lineNumbers: true, mode: lang, readOnly: true, theme: 'default' };
+    CodeMirror.fromTextArea(textarea, codeOptions);
+  }
+}
+
+// We can't just call CodeMirror.fromTextArea() up front for each tab, because
+// any tab not showing will get no height, therefore we won't see it when we do
+// switch to that tab. Instead, build the CodeMirror stuff the first time a tab
+// is revealed.
+function showLanguage(lang) {
+  $('.code-tabs a[aria-controls="' + lang + '"]').tab('show');
+
+  var codeOptions = { lineNumbers: true, mode: lang, readOnly: true, theme: 'default' };
+  var elements = document.getElementsByClassName('code-tab ' + lang);
+  for (var i = 0; i < elements.length; i++) {
+    if (!(elements[i].nextElementSibling &&
+          elements[i].nextElementSibling.classList.contains("CodeMirror"))) {
+      CodeMirror.fromTextArea(elements[i], codeOptions);
+    }
+  }
+}
+
+function codeTabClickHandler(event) {
+  showLanguage(event.currentTarget.getAttribute('aria-controls'));
+
+  event.preventDefault();
+}
 
 function loadRecentContent() {
   var icons = {

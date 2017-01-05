@@ -81,8 +81,7 @@ ol ol {
 }
 
 #dmc-navbar-collapse li {
-  background-color: #222;
-  z-index: 10;
+    z-index: 10;
 }
 
 #content {
@@ -126,6 +125,10 @@ ol ol {
     color: #000;
     font-weight: bold;
     padding: 8px 0 8px 16px;
+}
+
+.version select {
+    font-weight: normal;
 }
 
 #page_content > div {
@@ -221,12 +224,14 @@ ol ol {
 #apidoc_toc,
 #all_tocs,
 .toc {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 #toc_content {
     width: 100%;
     background: #fff;
+    height: 100%;
     padding: 16px 0 16px 0;
 }
 
@@ -263,20 +268,36 @@ ol ol {
 
 .toc_select {
     position: inherit;
-    margin-left: 16px;
+    margin-right: 5px;
+    margin-left: 0;
 }
 
-select#toc_select {
-    width: 98%;
-    /* For browsers that support calc. */
-    width: calc(100% - 96px);
+.toc_select label {
+  float: left;
+  margin-left: 16px;
+}
+
+.toc_select select#toc_select {
+  float: left;
+  margin-left: 5px;
+}
+
+.toc_select button {
+  float: right;
 }
 
 .scrollable_section {
+    height: 100%;
+    margin-right: 5px;
+    margin-left: 0;
     position: inherit;
 }
 
-.scrollable_section > input {
+#apidoc_tree_container {
+    height: calc(100% - 44px);
+}
+
+.scrollable_section .filter input {
     border: 1px solid #ccc;
     font-size: 11px;
     margin: 8px 0 0 16px;
@@ -311,7 +332,7 @@ h1 a,
 
 .treecontrol.top_control {
     float: right;
-    margin: 8px 24px 0 0;
+    margin: 8px 0 0 0;
     cursor: pointer;
     font-size: .9em;
 }
@@ -348,17 +369,14 @@ h1 a,
 
 /* override treeview CSS */
 .treeview {
-    position: absolute;
-    top: 78px;
-    bottom: 0;
-    width: 98%;
+    width: 100%;
     /* For browsers that support calc. */
-    width: calc(100% - 12px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* android may need this so touch-scrolling works. */
     z-index: 0;
     border-top: 1px solid #ccc;
+    height: 100%;
 }
 .treeview a.toc_root {
     font-weight: bold;
@@ -483,6 +501,9 @@ a.sectionLink:hover {
 }
 
 .toc_section {
+    height: 100%;
+    /* width is 100% - width of splitter - width of Bootstrap margin negative offset */
+    width: calc(100% - 12px);
 }
 
 .api_caption {
@@ -728,7 +749,7 @@ span.highlightWidget {
     .toc_select {
         margin-left: 4px;
     }
-    .scrollable_section > input {
+    .scrollable_section .filter input {
         margin-left: 4px;
     }
     #api_sub {

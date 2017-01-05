@@ -1,9 +1,6 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: #ECEFDA;
-	color: #666;
-	font: normal 62.5% Verdana, Arial, Helvetica, Sans-serif;
 }
 a {
 	text-decoration: none;
@@ -25,12 +22,6 @@ input[type=text], input[type=password] {
 	border: 1px solid #999;
 	color: #999;
 }
-table {border-collapse: collapse;}
-table th {
-	text-align: left;
-	font-weight: bold;
-}
-table td {vertical-align: middle;}
 ul {
 	margin: 0;
 	padding: 0;
@@ -76,15 +67,8 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 #content hr {position: static;}
 
 #container {
-	font-size: 1.2em;
 	margin: auto;
 	width: 900px;
-}
-#header {
-	background: #A4B243 url(../images/bg_header.png) no-repeat;
-	min-height: 80px;
-	position: relative;
-	padding: 15px 15px 5px 30px;
 }
 #header ul {
 	position: absolute;
@@ -130,7 +114,7 @@ a.more:hover, div.more a:hover {color: #235BAB !important;}
 	background: white url(../images/bg_content.gif) 597px 0 repeat-y;
 	float: left;
 	width: 100%;
-	margin: 6px 0;
+	margin: 0;
 }
 #content.sub_special {background: white url(../images/bg_sub_bottom.png) right bottom no-repeat;}
 .layout2 #content {
@@ -175,6 +159,7 @@ legend,
 .generic #content h1,
 .generic #content h2
 {
+  clear: both;
 	font: normal 1.25em/120% Verdana, Arial, Helvetica, Sans-serif;
 	margin-bottom: 0;
 	text-align: left;
@@ -352,7 +337,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	position:relative;
 	}
 .special_img .top {
-	height:7px; 
+	height:7px;
 	background:#FFF url(../images/bg_special_img_top.png) no-repeat top left;
 	}
 .special_img .section a.enlarge {
@@ -427,12 +412,6 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 	margin: 2em 0 1em;
 	font-style: italic;
 }
-#main table {
-	width: 100%;
-	border-bottom: 1px solid #CCC;
-	margin: 0 0;
-	clear: both;
-}
 #main table.table4 {margin-bottom:0;}
 #main p + table.table4 {margin-top: 30px;}
 #main .table1 thead th, #main .table4 thead th {
@@ -481,7 +460,7 @@ h2.main_headline,  {margin: 2em 0 1em !important;}
 .table3 thead th:first-child {background-position: left top;}
 .table3 thead th:first-child, .table3 thead th:first-child + th {text-align: left;}
 .table3 thead th:last-child {background-position: right top;}
-.table3 thead th.last {background-position: right top;} /* extra rule for IE 7 and lower as they ignore rules that are combined with selectors it doesn’t understand (like in the rule before this one) */
+.table3 thead th.last {background-position: right top;} /* extra rule for IE 7 and lower as they ignore rules that are combined with selectors it doesnâ€™t understand (like in the rule before this one) */
 .table3 thead th span {font-size: 1.1em;}
 .table3 tbody td {
 	padding: 12px 7px;
@@ -1000,4 +979,39 @@ table.table4 + .action {border:0;}
 	width: 32px;
 	height: 33px;
 	cursor: pointer;
+}
+
+#media-modal .uri-filter {
+  padding: 10px 5px;
+}
+
+#media-modal .uri-filter .uris {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+#media-modal .uri-filter .filter {
+  margin-left: 10px;
+}
+
+#media-modal .uri-filter .uri {
+  margin-left: 5px;
+}
+
+#media-modal .uri-filter .preview {
+  max-height: 300px;
+  max-width: 100%;
+}
+
+#media-modal #media-upload {
+  padding: 10px 5px;
+}
+
+#media-modal button.upload-image {
+  margin-left: 5px;
+}
+
+#media-modal .preview {
+  max-height: 500px;
+  max-width: 100%;
 }

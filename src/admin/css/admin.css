@@ -1,7 +1,6 @@
 body {background: #DADADA;}
 ::selection {background: #235BAB;}
 ::-moz-selection {background: #235BAB;}
-table {border: none !important;}
 
 table.mceLayout {
     border: 1px solid #CCC !important;
@@ -16,20 +15,7 @@ caption {
 	font-size: 1.1em;
 	padding: 1em 5px;
 }
-th, td {
-	font-size: .85em;
-	padding: 5px 10px;
-}
-thead th {
-	background: #C1C1C1;
-	color: #666;
-}
 th.last {white-space: nowrap;}
-tbody th, tbody td {
-	background: #F5F5F5;
-	xheight: 28px;
-}
-.alt th, .alt td {background: #EBECEC;}
 input {margin: 0;}
 input[type=text], input[type=password], textarea {
 	padding: 2px 3px;
@@ -37,19 +23,31 @@ input[type=text], input[type=password], textarea {
 }
 input[type=text]:focus, textarea:focus {border-color: #903 !important;}
 
-#container {font-size: 1.1em;}
+#nav {
+  background-color: #eee;
+}
+.nav > li > a:hover {
+  background-color: #ddd;
+}
+
+/*
+#nav .menu li a {
+  color: #9d9d9d;
+  text-decoration: none;
+}
+*/
+
 #header {
-	background: #A6001D url(../images/bg_header_admin.png) no-repeat;
 	min-height: 70px;
-	padding-top: 10px;
+}
+#header img {
+  display: block;
+  margin: 0 auto;
 }
 #header h1 {
-	color: white;
 	font: normal 18px Georgia, "Times New Roman", Times, Serif;
-	position: absolute;
-	right: 17px;
-	top: 30px;
-	margin: 0;
+	margin: 10px auto;
+  text-align: center;
 }
 #header ul {
 	right: 17px;
@@ -57,7 +55,7 @@ input[type=text]:focus, textarea:focus {border-color: #903 !important;}
 }
 #content {
 	background-image: none;
-	padding-bottom: 2em;
+	padding: 10px;
 }
 #footer {font-size: .9em;}
 .breadcrumb {font-size: .9em;}
@@ -74,7 +72,6 @@ input[type=text]:focus, textarea:focus {border-color: #903 !important;}
 #content h2 {font-size: 1.7em;}
 p.intro {width: 75%;}
 .add_post {
-	float: right;
 	margin-bottom: 1em;
 }
 td.status {font-weight: bold;}
@@ -96,12 +93,20 @@ form .action {
 	text-align: right;
 	margin: 1em 0;
 }
+
+#content .resource-list a.btn {
+  margin-right: 5px;
+}
+
+#tbl_status td .btn {
+  margin-right: 5px;
+}
+
 form .action input {margin-left: 5px;}
 .adminform fieldset {
 	clear: both;
 	padding: 1px 0;
 }
-#codeedit {margin-top: -3em;}
 #codeedit dl {
 	background: #EBEBEB;
 	text-align: right;
@@ -149,6 +154,10 @@ form .action input {margin-left: 5px;}
 	border: 1px solid #DFDFDF;
 	width: 166px;
 }
+.adminform .control-container .privilege {
+  width: 550px;
+}
+
 .adminform select {color: #666;}
 
 .adminform input[type=text].wideText {
@@ -186,7 +195,7 @@ form .action input {margin-left: 5px;}
 
 
 #ce_link {border-color: #CCC;}
-.add_remove {
+.add_btn, .remove_btn {
 	border: none;
 	background: none;
 	font-weight: bold;
@@ -197,7 +206,10 @@ form .action input {margin-left: 5px;}
 	font-family: Verdana, Arial, Helvetica, Sans-serif;
 	cursor: pointer;
 }
-.add_remove:hover {text-decoration: underline;}
+.add_btn:hover, .remove_btn:hover {
+  text-decoration: underline;
+}
+
 input + .add_remove {margin-left: 10px;}
 div.ce_description {padding-top: 1em;}
 .adminform fieldset + fieldset legend {
@@ -285,7 +297,7 @@ div.ce_description {padding-top: 1em;}
   cursor: pointer;
   height: 16px;
   padding: 0;
-  text-indent: -2000px;
+  text-indent: -5000px;
   width: 16px;
 }
 

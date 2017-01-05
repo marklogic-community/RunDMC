@@ -24,7 +24,13 @@ return
      in the event that a user tries to create a document that already exists at the desired URI. :)
   else if ($path eq "/admin/controller/create.xqy") then
     let $doc-slug    := string($params[@name eq '~new_doc_slug'])
-    let $new-doc-url := concat($params[@name eq '~uri_prefix'], $doc-slug, '.xml')
+    let $new-doc-url :=
+      concat(
+        $params[@name eq '~uri_prefix'],
+        $doc-slug,
+        if (fn:ends-with($doc-slug, ".xml")) then ()
+        else '.xml'
+      )
     let $slug-provided := normalize-space($doc-slug)
     return
       (: If the document doesn't already exist, we're good. Dispatch to create.xqy as intended. :)

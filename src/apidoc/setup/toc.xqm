@@ -855,24 +855,32 @@ as element()
     'toc:render-content',
     ($uri, $prefix-for-hrefs, xdmp:describe($toc))),
   <div id="tocs_all" class="toc_section" xmlns="http://www.w3.org/1999/xhtml">
-    <div class="toc_select">
-      Section: <select id="toc_select">
-  {
-    (: To preserve node order, use SMO rather than XPath. :)
-    $toc/toc:node
-    ! toc:render-select-option(., . is $selected)
-  }
+    <div class="toc_select row">
+      <label class="">Section:</label>
+      <select id="toc_select" class="">
+        {
+          (: To preserve node order, use SMO rather than XPath. :)
+          $toc/toc:node
+          ! toc:render-select-option(., . is $selected)
+        }
       </select>
+      <button type="button" class="btn btn-default btn-xs"
+        id="save-section-pref"
+        title="Save section preference">
+        <span class="glyphicon glyphicon-save"></span>
+      </button>
     </div>
-    <div class="scrollable_section">
-      <input id="config-filter" name="config-filter" class="config-filter"/>
-      <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
-  class="config-filter-close-button"/>
-      <div id="treeglobal" class="treecontrol top_control global_control">
-        <span class="expand" title="Expand the entire tree below">
-          <img id="treeglobalimage" src="/css/apidoc/images/plus.gif"></img>
-          <span id="treeglobaltext">expand</span>
-        </span>
+    <div class="scrollable_section row">
+      <div class="filter">
+        <input id="config-filter" name="config-filter" class="config-filter"/>
+        <img src="/apidoc/images/removeFilter.png" id="config-filter-close-button"
+    class="config-filter-close-button"/>
+        <div id="treeglobal" class="treecontrol top_control global_control">
+          <span class="expand" title="Expand the entire tree below">
+            <img id="treeglobalimage" src="/css/apidoc/images/plus.gif"></img>
+            <span id="treeglobaltext">expand</span>
+          </span>
+        </div>
       </div>
       <div id="apidoc_tree_container" class="pjax_enabled">
   {

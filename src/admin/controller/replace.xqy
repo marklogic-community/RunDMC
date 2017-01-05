@@ -15,10 +15,18 @@ let $map     := map:map()
 
 return
 (
-  (: Create the new XML from the POST parameters :)
-  let $new-doc := xdmp:xslt-invoke("../model/form2xml.xsl", document{ <empty/> }, (map:put($map, "params", $params),$map))
-
   let $existing-doc-path := $params[@name eq '~existing_doc_uri']
+
+  (: Create the new XML from the POST parameters :)
+  let $new-doc     :=
+    if ($params[@name eq "~edit_form_url"] = "/recipe/edit") then
+      ml:build-recipe(fn:doc($existing-doc-path), $params)
+    else
+      xdmp:xslt-invoke(
+        "../model/form2xml.xsl",
+        document{ <empty/> },
+        (map:put($map, "params", $params), $map)
+      )
 
   let $last-updated := $params[@name eq '~updated']
 
@@ -37,14 +45,10 @@ return
         (: Invalidate the navigation cache :)
         ml:invalidate-cached-navigation(),
 
-        (: Redirect right back to the Edit page for the newly replaced document :)
-        xdmp:redirect-response(concat($params[@name eq '~edit_form_url'],
-                                      "?~doc_path=",
-                                      $existing-doc-path,
-                                      "&amp;~updated=",
-                                      current-dateTime())
-                              )
-        )
+        <response>
+          <updated>{$new-doc/node()/ml:last-updated/fn:string()}</updated>
+        </response>
+      )
     )
     else error((),"You're trying to overwrite a document that doesn't exist...")
 )

@@ -16,7 +16,7 @@
   <xdmp:import-module href="/admin/controller/modules/authorize.xqy" namespace="http://marklogic.com/rundmc/authorize"/>
 
   <xsl:template match="admin-page-listings">
-    <table id="tbl_status">
+    <table id="tbl_status" class="table table-striped table-bordered">
       <caption>Page Status</caption>
       <thead>
         <tr>
@@ -28,15 +28,16 @@
       </thead>
       <tbody>
         <xsl:variable name="sections" xmlns="">
-          <Code          doc-type="Project"      path="/code"/>
           <Blog          doc-type="Post"         path="/blog"/>
+          <Author        doc-type="author"       path="/author"/>
+          <Code          doc-type="Project"      path="/code"/>
           <Learn         doc-type="Article"      path="/learn"/>
+          <Media         doc-type="media"        path="/media"/>
+          <OnDemand      doc-type="ondemand"     path="/ondemand"/>
+          <Pages         doc-type="page"         path="/pages"/>
+          <Recipe        doc-type="recipe"       path="/recipe"/>
           <News          doc-type="Announcement" path="/news"/>
           <Events        doc-type="Event"        path="/events"/>
-          <Pages         doc-type="page"         path="/pages"/>
-          <Media         doc-type="media"        path="/media"/>
-          <Author        doc-type="author"       path="/author"/>
-          <OnDemand      doc-type="ondemand"     path="/ondemand"/>
         </xsl:variable>
         <xsl:apply-templates mode="admin-page-listing" select="$sections/*"/>
       </tbody>
@@ -46,11 +47,11 @@
   <xsl:template mode="admin-page-listing" match="*">
     <xsl:variable name="docs" select="ml:docs-by-type(@doc-type)"/>
     <tr>
-      <th scope="row">
+      <td scope="row">
         <a href="{@path}">
           <xsl:value-of select="translate(local-name(.),'_',' ')"/>
         </a>
-      </th>
+      </td>
       <td>
         <xsl:choose>
           <xsl:when test="@doc-type = 'media'">
@@ -72,9 +73,8 @@
         </xsl:choose>
       </td>
       <td>
-        <a href="{@path}">List</a>
-        <xsl:text> | </xsl:text>
-        <a href="{concat(@path,'/edit')}">Add new</a>
+        <a href="{@path}" class="btn btn-default btn-sm">List</a>
+        <a href="{concat(@path,'/edit')}" class="btn btn-default btn-sm">Add new</a>
       </td>
     </tr>
   </xsl:template>
@@ -85,7 +85,7 @@
                      | admin-announcement-list
                      | admin-event-list
                      | admin-page-list">
-    <table>
+    <table class="table table-striped table-bordered resource-list">
       <thead>
         <tr>
           <th scope="col">Title</th>
@@ -121,8 +121,71 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="admin-recipe-list">
+    <table class="table table-striped table-bordered resource-list">
+      <thead>
+        <tr>
+          <th>URI</th>
+          <th>Tags</th>
+          <th>Last Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <xsl:variable name="docs" select="ml:docs-by-type('recipe')"/>
+        <xsl:apply-templates mode="admin-recipe-listing" select="$docs">
+          <!-- Only sort if we're listing "page" docs; otherwise, don't change the order. -->
+          <xsl:sort select="if (self::page) then ml:admin-doc-title(.) else ()"/>
+          <xsl:with-param name="current-page-url" select="ml:external-uri(.)"/>
+        </xsl:apply-templates>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template mode="admin-recipe-listing" match="*">
+    <xsl:param name="current-page-url"/>
+    <xsl:variable name="edit-path">
+      <xsl:apply-templates mode="edit-path" select="."/>
+    </xsl:variable>
+    <xsl:variable name="edit-link" select="concat($edit-path, '?~doc_path=', base-uri(.))"/>
+    <tr>
+      <xsl:if test="position() mod 2 eq 0">
+        <xsl:attribute name="class">alt</xsl:attribute>
+      </xsl:if>
+      <td>
+        <a href="{$edit-link}">
+          <xsl:value-of select="base-uri(.)"/>
+        </a>
+      </td>
+      <td>
+        <xsl:value-of select="string-join(tags/tag, ', ')"/>
+      </td>
+      <td>
+        <xsl:value-of select="ml:display-date-with-time(last-updated)"/>
+      </td>
+
+      <xsl:variable name="effective-status" select="if (@status) then @status else 'Published'"/>
+      <td class="status {lower-case($effective-status)}">
+        <xsl:value-of select="$effective-status"/>
+      </td>
+      <td>
+        <a href="{$edit-link}" class="btn btn-default btn-sm">Edit</a>
+        <!-- TODO: make preview work -->
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank" class="btn btn-default btn-sm">Preview</a>
+        <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
+        <xsl:if test="authorize:is-admin()">
+          <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}" class="btn btn-default btn-sm">
+            <xsl:value-of select="$action"/>
+          </a>
+        </xsl:if>
+      </td>
+    </tr>
+  </xsl:template>
+
   <xsl:template match="admin-author-list">
-    <table>
+    <table class="table table-striped table-bordered resource-list">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -170,16 +233,13 @@
         <xsl:value-of select="$effective-status"/>
       </td>
       <td>
-        <a href="{$edit-link}">Edit</a>
-        <xsl:text>&#160;|&#160;</xsl:text>
+        <a href="{$edit-link}" class="btn btn-default btn-sm">Edit</a>
         <!-- TODO: make preview work -->
-        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank" class="btn btn-default btn-sm">Preview</a>
         <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
         <xsl:if test="authorize:is-admin()">
-          <xsl:text>&#160;|&#160;</xsl:text>
-
           <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}" class="btn btn-default btn-sm">
             <xsl:value-of select="$action"/>
           </a>
         </xsl:if>
@@ -188,7 +248,7 @@
   </xsl:template>
 
   <xsl:template match="admin-ondemand-list">
-    <table>
+    <table class="table table-bordered table-striped resource-list">
       <thead>
         <tr>
           <th scope="col">Title</th>
@@ -233,16 +293,13 @@
         <xsl:value-of select="$effective-status"/>
       </td>
       <td>
-        <a href="{$edit-link}">Edit</a>
-        <xsl:text>&#160;|&#160;</xsl:text>
+        <a href="{$edit-link}" class="btn btn-default btn-sm">Edit</a>
         <!-- TODO: make preview work -->
-        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank" class="btn btn-default btn-sm">Preview</a>
         <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
         <xsl:if test="authorize:is-admin()">
-          <xsl:text>&#160;|&#160;</xsl:text>
-
           <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}" class="btn btn-default btn-sm">
             <xsl:value-of select="$action"/>
           </a>
         </xsl:if>
@@ -252,7 +309,7 @@
 
 
   <xsl:template match="admin-media-list">
-    <table class="media-list">
+    <table class="media-list table table-bordered table-striped resource-list">
       <thead>
         <tr>
           <th scope="col">URL</th>
@@ -292,6 +349,7 @@
                      else if ($doc-type eq 'page')         then $ml:pages
                      else if ($doc-type eq 'author')       then $ml:authors-by-name
                      else if ($doc-type eq 'OnDemand')     then $ml:ondemand
+                     else if ($doc-type eq 'recipe')       then $ml:Recipes
                      else ()"/>
   </xsl:function>
 
@@ -308,7 +366,8 @@
       <td>
         <form action="/admin/controller/media-remove.xqy">
           <input type="hidden" name="uri" value="{$uri}"/>
-          <button type="submit" class="image-delete" title="Delete">Delete</button>
+
+          <button type="submit" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>
         </form>
       </td>
     </tr>
@@ -354,16 +413,13 @@
         <xsl:value-of select="$effective-status"/>
       </td>
       <td>
-        <a href="{$edit-link}">Edit</a>
-        <xsl:text>&#160;|&#160;</xsl:text>
+        <a href="{$edit-link}" class="btn btn-default btn-sm">Edit</a>
         <!-- TODO: make preview work -->
-        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank">Preview</a>
+        <a href="{$srv:draft-server}{substring-before(base-uri(.), '.xml')}" target="_blank" class="btn btn-default btn-sm">Preview</a>
         <!-- Only show the Publish/Unpublish toggle if the user logged in is the proper role -->
         <xsl:if test="authorize:is-admin()">
-          <xsl:text>&#160;|&#160;</xsl:text>
-
           <xsl:variable name="action" select="if (@status eq 'Published') then 'Unpublish' else 'Publish'"/>
-          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}">
+          <a href="/admin/controller/publish-unpublish-doc.xqy?path={base-uri(.)}&amp;action={$action}&amp;redirect={$current-page-url}" class="btn btn-default btn-sm">
             <xsl:value-of select="$action"/>
           </a>
         </xsl:if>
@@ -386,5 +442,6 @@
   <xsl:template mode="edit-path" match="page"        >/pages/edit</xsl:template>
   <xsl:template mode="edit-path" match="Author"      >/author/edit</xsl:template>
   <xsl:template mode="edit-path" match="OnDemand"    >/ondemand/edit</xsl:template>
+  <xsl:template mode="edit-path" match="Recipe"      >/recipe/edit</xsl:template>
 
 </xsl:stylesheet>

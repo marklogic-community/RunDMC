@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h1>Learn</h1>
-  <p class="intro">
-    <ul>
-      <li>Do your thing. </li>
-      <li>Write, write, write.</li>
-      <li>Remove stuff.</li>
-      <li>Use
-        <a href="http://gist.github.com/">gists</a>
-        for code samples and embed them.</li>
-      <li>Leave as draft and ask Eric to publish.</li>
-    </ul>
-  </p>
-  <form action="/tutorial/edit" class="add_post" enctype="application/x-www-form-urlencoded" method="get">
-    <div>
-      <input type="submit" value="Add New Multi-page Tutorial"/>
-    </div>
-  </form>
-  <form action="/learn/edit" class="add_post" enctype="application/x-www-form-urlencoded" method="get">
-    <div>
-      <input type="submit" value="Add New Article"/>
-    </div>
-  </form>
+  <h3>Learn</h3>
+
+  <div class="well">
+    <p>Tutorials provide step-by-step instructions for how to use a feature or accomplish a goal.</p>
+
+    <p>See *wiki link* for formatting tips.</p>
+  </div>
+
+  <a class="btn btn-default" href="/tutorial/edit">Add New Multi-page Tutorial</a>
+
+  <a class="btn btn-default" href="/learn/edit">Add New Article</a>
+
   <ml:admin-learn-list/>
 </ml:page>

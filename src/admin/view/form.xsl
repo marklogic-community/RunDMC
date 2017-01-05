@@ -22,107 +22,6 @@
 
   <xsl:variable name="error-code" select="$params[@name eq '~error_code']"/>
 
-  <!-- This is for generating page-specific JS code. See the main XHTML template config file. -->
-  <xsl:template match="auto-form-scripts">
-    <xsl:for-each select="$content//auto-form">
-      <xsl:variable name="form-spec" select="form:form-template(@template)"/>
-<!-- FOR DEBUGGING ONLY
-<xsl:copy-of select="$form-spec"/>
--->
-      <xsl:apply-templates mode="form-script" select="$form-spec//*[@form:repeating eq 'yes'][not(node-name(.) eq node-name(preceding-sibling::*[1]))]"/>
-    </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template mode="form-script" match="*">
-    <!-- TODO: Is there a way I can do this inline without embedding it in a comment? -->
-    <xsl:variable name="name" select="form:field-name(.)"/>
-    <xsl:variable name="label" select="@form:label | @form:group-label"/>
-
-    <xsl:variable name="insert-command">
-      <xsl:choose>
-        <xsl:when test="@form:group-label">
-          <xsl:text>$(this).parent().siblings("fieldset.</xsl:text>
-          <xsl:value-of select="$name"/>
-          <xsl:text>").last().after('&lt;fieldset class="</xsl:text>
-          <xsl:value-of select="$name"/>
-          <xsl:text>"></xsl:text>
-          <xsl:for-each select="*">
-            <xsl:text>&lt;div>&lt;label></xsl:text>
-            <xsl:apply-templates mode="control-label" select="."/>
-            <xsl:text>&lt;/label>&lt;input name="</xsl:text>
-            <xsl:value-of select="form:field-name(.)"/>
-            <xsl:text>[' + clickCount + ']" type="text" />' + </xsl:text>
-            <xsl:if test="position() eq 1">
-              <xsl:text>remove_</xsl:text>
-              <xsl:value-of select="$name"/>
-              <xsl:text>_anchor + </xsl:text>
-            </xsl:if>
-            <xsl:text>'&lt;/div></xsl:text>
-          </xsl:for-each>
-          <xsl:text>&lt;/fieldset>');</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>$(this).parent().before('&lt;div>&lt;input name="<xsl:value-of select="$name"/>[' + clickCount + ']" type="text" />' + remove_<xsl:value-of select="$name"/>_anchor + '&lt;/div>');</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="remove-command">
-      <xsl:choose>
-        <xsl:when test="@form:group-label">$(this).closest("fieldset").remove();</xsl:when>
-        <xsl:otherwise                    >$(this).parent().remove();</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="occurrence-test-name">
-      <xsl:choose>
-        <xsl:when test="@form:group-label">
-          <!-- Test for the presence of the first field in the group -->
-          <xsl:value-of select="form:field-name(*[1])"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$name"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="remove-script">
-      $('a.remove_<xsl:value-of select="$name"/>').click(function() {
-        <xsl:value-of select="$remove-command"/>
-        if($('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]').length == 1) {
-          $('a.remove_<xsl:value-of select="$name"/>').remove();
-        }
-      });
-    </xsl:variable>
-
-    <!-- Variable is necessary as workaround for bug with <xsl:comment> instruction -->
-    <xsl:variable name="comment-content">
-      if(typeof jQuery != 'undefined') {
-        $(function() {
-          <!-- to keep track of the order of added elements -->
-          var clickCount = <xsl:value-of select="count(../*[node-name(.) eq node-name(current())])"/>;
-
-          $('input[name=add_<xsl:value-of select="$name"/>]').replaceWith('&lt;a class="add_remove add_<xsl:value-of select="$name"/>">+&#160;Add <xsl:value-of select="$label"/>&lt;/a>');
-          var remove_<xsl:value-of select="$name"/>_anchor = '&lt;a class="add_remove remove_<xsl:value-of select="$name"/>">-&#160;Remove <xsl:value-of select="$label"/>&lt;/a>';
-          $('a.add_<xsl:value-of select="$name"/>').click(function() {
-            clickCount++;
-            <xsl:value-of select="$insert-command"/>
-            if($('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]').length == 2) {
-              $('input[name^="<xsl:value-of select="$occurrence-test-name"/>\["]:first').after(remove_<xsl:value-of select="$name"/>_anchor);
-            }
-            <xsl:value-of select="$remove-script"/>
-          });
-          <!-- Duplicated here because otherwise pre-existing Remove buttons (because a document already has two authors, for example) don't work -->
-          <xsl:value-of select="$remove-script"/>
-        });
-      }
-    </xsl:variable>
-    //<xsl:comment>
-        <xsl:text>&#xA;</xsl:text>
-        <xsl:value-of select="$comment-content"/>
-        <xsl:text>&#xA;</xsl:text>
-    //</xsl:comment>
-  </xsl:template>
-
-
   <!-- For generating a form within a page. E.g., <ml:auto-form template="Article.xml"/> -->
   <xsl:template match="auto-form">
     <xsl:apply-templates mode="generate-form" select="form:form-template(@template)"/>
@@ -210,7 +109,7 @@
       <xsl:apply-templates mode="labeled-controls" select="."/>
       <xsl:choose>
         <xsl:when test="string($doc-path)">
-          <input type="submit" name="submitSave" value="Save changes"  onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
+          <input type="submit" name="submitSave" class="btn btn-default btn-sm" value="Save changes" onclick="return checkValidXhtml('/admin/controller/replace.xqy', '_self');">
             <xsl:choose>
               <xsl:when test="./@form:replace-target">
                 <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:replace-target"/>', '_self');</xsl:attribute>
@@ -222,7 +121,7 @@
           </input>
         </xsl:when>
         <xsl:otherwise>
-          <input type="submit" name="submitBtn" value="Submit document">
+          <input type="submit" name="submitBtn" class="btn btn-default btn-sm" value="Submit document">
             <xsl:choose>
               <xsl:when test="./@form:create-target">
                 <xsl:attribute name="onclick">return checkValidXhtml('<xsl:value-of select="./@form:create-target"/>', '_self');</xsl:attribute>
@@ -234,7 +133,7 @@
           </input>
         </xsl:otherwise>
       </xsl:choose>
-      <input type="submit" name="submitPreview" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
+      <input type="submit" name="submitPreview" class="btn btn-default btn-sm" value="Preview changes" onclick="return checkValidXhtml('/admin/controller/preview.xqy', '_blank');"/>
     </form>
   </xsl:template>
 
@@ -247,7 +146,15 @@
     <xsl:apply-templates mode="labeled-controls" select="*"/>
 
     <div>
+      <xsl:attribute name="class">
+        <xsl:variable name="classes">
+          <xsl:if test="@form:repeating eq 'yes'"> repeating</xsl:if>
+          <xsl:if test="@form:optional eq 'yes' or parent::*/@form:optional eq 'yes'"> optional</xsl:if>
+        </xsl:variable>
+        <xsl:value-of select="normalize-space($classes)"/>
+      </xsl:attribute>
       <label for="{form:field-name(.)}_{generate-id()}">
+        <xsl:attribute name="name"><xsl:value-of select="form:field-name(.)"/></xsl:attribute>
         <xsl:apply-templates mode="control-label" select="."/>
       </label>
       <xsl:apply-templates mode="form-control" select="."/>
@@ -276,14 +183,17 @@
   <xsl:template mode="add-more-button" match="*"/>
   <xsl:template mode="add-more-button" match="*[@form:repeating eq 'yes']">
     <div class="control-container">
-      <input class="add_remove" type="submit" name="add_{form:field-name(.)}" value="+ Add {@form:label | @form:group-label}"/>
+      <a class="add_btn add_{form:field-name(.)}">
+        <xsl:text>+ Add </xsl:text>
+        <xsl:value-of select="@form:label | @form:group-label"/>
+      </a>
     </div>
   </xsl:template>
 
 
   <xsl:template mode="remove-button" match="*"/>
   <xsl:template mode="remove-button" match="*[@form:repeating eq 'yes']">
-    <a class="add_remove remove_{form:field-name(.)}">
+    <a class="remove_btn remove_{form:field-name(.)}">
       <xsl:text>-&#160;Remove </xsl:text>
       <xsl:value-of select="@form:label | @form:group-label"/>
     </a>
@@ -344,16 +254,20 @@
       </xsl:choose>
     </xsl:variable>
     <div class="control-container">
-      <input id ="{form:field-name(.)}_{generate-id()}"
-             name="{$field-name}"
-             type="{$input-type}"
-             value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
-        <xsl:apply-templates mode="class-att" select="."/>
-      </input>
+      <xsl:if test="fn:exists(text()) or fn:not((.|..)/@form:repeating eq 'yes' and (.|..)/@form:optional eq 'yes')">
+        <input id ="{form:field-name(.)}_{generate-id()}"
+               name="{$field-name}"
+               type="{$input-type}"
+               class="{form:field-name(.)}"
+               value="{string-join(text(),'')}"> <!-- don't include attribute-cum-element fields in value -->
+          <xsl:apply-templates mode="class-att" select="."/>
+        </input>
+      </xsl:if>
       <!-- TODO: allow removal for other types of controls, not just text fields -->
       <!-- Only insert one Remove button per group -->
       <xsl:if test="(not(../@form:group-label) and count(../*[node-name(.) eq node-name(current())]) gt 1)
-                  or    (../@form:group-label and not(preceding-sibling::*) and count(../../*[node-name(.) eq node-name(current()/..)]) gt 1)">
+                  or    (../@form:group-label and not(preceding-sibling::*) and count(../../*[node-name(.) eq node-name(current()/..)]) gt 1)
+                  or    (./@form:optional eq 'yes')">
         <xsl:apply-templates mode="remove-button" select="ancestor-or-self::*"/>
       </xsl:if>
     </div>
@@ -382,7 +296,7 @@
     <br/>
     -->
     <div id="control-container" style="margin-left: 112px;">
-      <div id="textarea-error" class="error" style="display: none;"/>
+      <div id="textarea-msg"/>
       <textarea id="{form:field-name(.)}_{$textarea-id}"
                 name="{form:field-name(.)}"
                 style="width: 100%"
@@ -399,9 +313,68 @@
         <br/>
         <a href="javascript:toggleEditor('{form:field-name(.)}_{$textarea-id}');">Add/Remove WYSIWYG editor</a>
       </xsl:if>
+      <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#media-modal">Insert Image</button>
     </div>
   </xsl:template>
 
+  <xsl:template match="media-modal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="media-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+            </button>
+            <h4 class="modal-title">Insert Media</h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#media-upload" aria-controls="media-upload" role="tab" data-toggle="tab">Upload</a></li>
+                <li role="presentation"><a href="#media-library" aria-controls="media-library" role="tab" data-toggle="tab">Media Library</a></li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="media-upload">
+                  <div>
+                    <input type="file" name="content" value="Upload..."/>
+                    <label class="uri-prefix">
+                      <!--
+                        Prefix the URI with /media and the URI of the post. For
+                        instance, /media/blog/my-post/
+                      -->
+                      <xsl:text>/media</xsl:text>
+                      <xsl:variable name="external-uri" select="replace($doc-path,'.xml$','')"/>
+                      <xsl:value-of select="$external-uri"/>
+                      <xsl:text>/</xsl:text>
+                    </label>
+                    <input type="text" name="uri"/>
+                    <button class="btn btn-default btn-xs upload-image" onclick="mediaLoader.uploadImage(event);">Upload Image</button>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="media-library">
+                  <div class="uri-filter">
+                    <span>/media/</span>
+                    <input type="text" name="uri-prefix"/>
+                    <button class="btn btn-default btn-xs filter" onclick="mediaLoader.getFilteredURIs(event, 'uri-prefix')">Filter</button>
+                    <ul class="uris">
+                    </ul>
+                  </div>
+                </div>
+                <img src="" class="preview"/>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary insert" onclick="mediaLoader.insertImage()" data-dismiss="modal" disabled="disabled">Insert</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </xsl:template>
 
   <xsl:function name="form:field-name">
     <xsl:param name="node"/>

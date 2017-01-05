@@ -32,56 +32,6 @@
 
     <ml:javascript-server-config/>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xml/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xquery/xquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/shell/shell.min.js"></script>
-    <script type="text/javascript" src="/js/modernizr.js"></script>
-    <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/js/functions.js"></script>
-    <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script>
-    <script type="text/javascript" src="/js/jquery.dirtyforms.js"></script>
-    <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
-    <script type="text/javascript" src="/js/rundmc_init.js"></script>
-
-    <script type="text/javascript" src="/js/printThis.js"></script>
-    <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
-    <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
-    <script xml:space="preserve">
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js-limitheight'), function(item) {
-        var cm = CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'javascript',
-          readOnly: true,
-          theme: 'default'
-        });
-        cm.setSize(null, 300);
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror js'), function(item) {
-        CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'javascript',
-          readOnly: true,
-          theme: 'default'
-        });
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('codemirror xml'), function(item) {
-        CodeMirror.fromTextArea(item, {
-          lineNumbers: true,
-          mode: 'xml',
-          readOnly: true,
-          theme: 'default'
-        });
-      });
-    </script>
-
-
   </head>
   <body ml:class="" ml:id="">
     <!-- Google Tag Manager -->
@@ -132,7 +82,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </a>
             </div>
             <div class="collapse navbar-collapse" id="dmc-navbar-collapse">
-              <form class="navbar-form navbar-right" ml:action="/search" method="get">
+              <form class="navbar-form navbar-right search-form" ml:action="/search" method="get">
                 <div class="form-group">
                   <input type="hidden" name="v" ml:value="" />
                   <input type="hidden" name="api" ml:value="" />
@@ -219,6 +169,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       })();
       </script>
       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/xquery/xquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/shell/shell.min.js"></script>
+    <script type="text/javascript" src="/js/modernizr.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/functions.js"></script>
+    <script type="text/javascript" src="/stackunderflow/stackunderflow-1.0.3.js"></script>
+    <script type="text/javascript" src="/js/jquery.dirtyforms.js"></script>
+    <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
+    <script type="text/javascript" src="/js/rundmc_init.js"></script>
+
+    <script type="text/javascript" src="/js/printThis.js"></script>
+    <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
   </body>
 
   <ml:if href-starts-with="/try/ /learn/arch/ /products/download-via-curl /learn/semantics-exercises">
