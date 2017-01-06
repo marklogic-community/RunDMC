@@ -513,6 +513,14 @@
               <xsl:apply-templates select="problem/node()"/>
             </div>
             <h3>Solution</h3>
+            <xsl:if test="count(server-version) gt 0">
+              <div>
+                <em>
+                  Applies to MarkLogic versions
+                  <xsl:value-of select="string-join(./server-version, ', ')"/>
+                </em>
+              </div>
+            </xsl:if>
             <div>
               <xsl:apply-templates select="solution/node()"/>
             </div>
