@@ -513,18 +513,12 @@
               <xsl:apply-templates select="problem/node()"/>
             </div>
             <h3>Solution</h3>
-            <xsl:if test="count(server-version) gt 0">
-              <div>
-                <em>
-                  Applies to MarkLogic versions
-                  <xsl:value-of select="string-join(./server-version, ', ')"/>
-                </em>
-              </div>
-            </xsl:if>
+            <xsl:apply-templates mode="ml-versions" select="."/>
             <div>
               <xsl:apply-templates select="solution/node()"/>
             </div>
 
+            <br/>
             <xsl:apply-templates mode="required-privileges" select="."/>
             <xsl:apply-templates mode="required-indexes" select="."/>
 
@@ -545,6 +539,17 @@
       </xsl:if>
 
     </article>
+  </xsl:template>
+
+  <xsl:template mode="ml-versions" match="*">
+    <xsl:if test="count(./server-version) gt 0">
+      <p>
+        <em>
+          Applies to MarkLogic versions
+          <xsl:value-of select="string-join(./server-version, ', ')"/>
+        </em>
+      </p>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template mode="required-privileges" match="*">
