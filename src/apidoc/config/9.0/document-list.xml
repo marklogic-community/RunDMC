@@ -191,9 +191,6 @@
       <guide url-name="flexrep" source-name="replication">
         Provides step-by-step information on replicating MarkLogic Server
         content using Flexible Replication.</guide>
-      <guide url-name="opsdir" source-name="OpsDirector">
-        Provides procedures for setting up and using Ops Director
-        on MarkLogic Server.</guide>
       <guide url-name="monitoring" source-name="monitoring">
         Provides procedures for setting up and using monitoring applications
         on MarkLogic Server.</guide>
