@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <h1>Pages</h1>
-  <p class="intro">This is the On Demand page</p>
-  <form action="/ondemand/edit" class="add_ondemand" enctype="application/x-www-form-urlencoded" method="get">
-    <div>
-      <input type="submit" value="Add New"/>
-    </div>
-  </form>
+  <h3>On Demand</h3>
+
+  <div class="well">
+    <p>Use the On Demand form to upload PowerPoints with the scripts for MLU On Demand videos.</p>
+  </div>
+
+  <a href="/ondemand/edit" class="btn btn-default">Add New</a>
+
   <ml:admin-ondemand-list/>
 </ml:page>

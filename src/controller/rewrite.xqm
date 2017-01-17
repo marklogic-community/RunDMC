@@ -69,7 +69,7 @@ as xs:string
     else if ($path = ("/pubs/4.0", "/pubs/4.0/")) then $srv:api-server
     else if ($path = ("/pubs/3.2", "/pubs/3.2/")) then $srv:api-server
     else if ($path eq "/tools") then "/code"
-    else if (matches($path, "^/[0-9]\.[0-9]$")) 
+    else if (matches($path, "^/[0-9]\.[0-9]$"))
          then concat($srv:api-server, $path)
 
     else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
@@ -201,8 +201,10 @@ as xs:string
         "/discuss"
     else if ($path = ("/express", "/academic")) then
         "/free-developer"
+    else if ($path = ("/adventure")) then
+        "/"
     else if (starts-with($path, "/people")) then (: All people urls are gone for now :)
-        if ($path = ("/people/signup", "/people/reset", "/people/recovery", "/people/profile")) then (: except for these :)
+        if ($path = ("/people/signup", "/people/reset", "/people/recovery", "/people/profile", "/people/preferences")) then (: except for these :)
             $path
         else
             "/people/supernodes"
@@ -296,7 +298,7 @@ declare function m:forbidden($path as xs:string)
   and (
     (empty(users:getCurrentUser())
       and not(users:authViaParams()))
-    or users:denied())
+    or users:denied(users:getCurrentUser()))
 };
 
 (: this should make some annoyances go away :)
@@ -420,6 +422,7 @@ as xs:string
     else if ($path eq "/reset") then concat(
       "/controller/reset.xqy?", $query-string)
     else if ($path eq "/save-profile") then "/controller/save-profile.xqy"
+    else if ($path eq "/people/preferences") then "/controller/preferences.xqy"
     else if ($path eq "/recent") then "/controller/recent.xqy"
     else if ($path eq '/service/suggest') then concat(
       '/controller/suggest.xqy?', $query-string)

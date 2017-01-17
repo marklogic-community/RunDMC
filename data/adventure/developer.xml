@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml" show-comments="false" show-sidebar="false" title="Developers">
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
+  <div class="choose-page">
+    <div class="section-row choose-header">
+      <div class="container text-center header">
+        <div class="row adventure-title">
+          <div class="col-xs-12">
+            <img class="media-object" src="/media/adventure/developer-badge.svg" width="80"/>
+            <h2 class="text-center jones">Developers</h2>
+            <p class="margin-bottom-1">
+              We make it easy to interface with MarkLogic using your existing programming knowledge.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-row long-page">
+      <div class="container">
+<!--         <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center">Choose</h2>
+          </div>
+        </div>
+ -->        <div class="row">
+          <div class="col-md-4 col-sm-12 margin-bottom-2">
+            <a class="hero-box row" href="/adventure/developer/java/start">
+              <img src="/media/adventure/java-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Java</h3>
+                <p class="margin-bottom-1">Learn how to interface with MarkLogic from Java.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <a href="/adventure/developer/nodejs/start" class="hero-box row">
+              <img src="/media/adventure/node-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Node.js</h3>
+                <p class="margin-bottom-1">Do you work with Node.js? This path is for you.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <a href="/adventure/developer/rest/start" class="hero-box row">
+              <img src="/media/adventure/rest-api.png" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">REST</h3>
+                <p class="margin-bottom-1">Prefer something different? Talk to MarkLogic via our REST API.</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+        </div>
+  <!--
+        <div class="row">
+          <div class="col-md-offset-1 col-md-4 col-sm-12 margin-bottom-2">
+            <a class="hero-box row" href="/adventure/developer/javascript/start">
+              <img src="/media/adventure/javascript.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">Javascript</h3>
+                <p class="margin-bottom-1">Serverside Javascript</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-offset-2 col-md-4 col-sm-12">
+            <a href="/adventure/developer/xquery/start" class="hero-box row">
+              <img src="/media/adventure/xquery.svg" class="hero-box-image"/>
+              <div class="hero-box-content">
+                <h3 class="margin-top-0-5">XQuery</h3>
+                <p class="margin-bottom-1">The lingua franca of XML</p>
+                <p class="link text-uppercase">Get Started</p>
+              </div>
+            </a>
+          </div>
+        </div>
+   -->
+
+      </div>
+    </div>
+  </div>
+</ml:page>

@@ -205,7 +205,7 @@ as xs:string
   if (empty($guides)) then $href
   else stp:fix-guide-names(
     $version,
-    replace($href, $guides[1]/@source-name, $guides[1]/@url-name),
+    replace($href, "/" || $guides[1]/@source-name || "/", "/" || $guides[1]/@url-name || "/"),
     subsequence($guides, 2))
 };
 
@@ -360,7 +360,7 @@ as element(api:function-page)*
   stp:function-extract(
     $version,
     (api:module-extractable-functions(
-      stp:add-class-attr-if-needed($doc/apidoc:module), 
+      stp:add-class-attr-if-needed($doc/apidoc:module),
       ($api:MODE-REST, $api:MODE-XPATH)),
       (: create JavaScript function pages :)
       if (number($version) lt 8) then ()
@@ -405,11 +405,11 @@ declare function stp:add-class-attr-if-needed(
   $doc as element(apidoc:module))
 as element(apidoc:module)*
 {
-let $class := $doc/@class 
+let $class := $doc/@class
 return
-if ( fn:empty($class) ) then $doc 
-else element apidoc:module {$doc/@*, 
-        stp:add-class-transform($doc/node(), $class)} 
+if ( fn:empty($class) ) then $doc
+else element apidoc:module {$doc/@*,
+        stp:add-class-transform($doc/node(), $class)}
 };
 
 declare function stp:add-class-transform(
@@ -419,11 +419,11 @@ as node()*
 {
 for $n in $nodes return
 typeswitch($n)
-  case element(apidoc:function) return 
+  case element(apidoc:function) return
      element {fn:node-name($n)} {$n/@*, $class, $n/node()}
-  case element(apidoc:method) return 
+  case element(apidoc:method) return
      element {fn:node-name($n)} {$n/@*, $class, $n/node()}
-  case element(apidoc:object) return 
+  case element(apidoc:object) return
      element {fn:node-name($n)} {$n/@*, $class, $n/node()}
   case element() return
      element {fn:node-name($n)} {$n/@*, $n/node()}
@@ -1188,7 +1188,7 @@ as empty-sequence()
       let $opts := (
         if ($type = ('text/xml') or not(starts-with($type, 'text/'))) then ()
         else <options xmlns="xdmp:zip-get"><encoding>auto</encoding></options>)
-      return ml:document-insert($uri, 
+      return ml:document-insert($uri,
            (: only transform for optic apidoc :)
            if (contains($e, "/raw/apidoc/optic")) then
               stp:copy-content-from-method(xdmp:zip-get($zip, $e, $opts))
@@ -1199,31 +1199,42 @@ as empty-sequence()
     true())
 };
 
-(: copy-content-from where attribute exists, designed to be used against 
+(: copy-content-from where attribute exists, designed to be used against
    raw apidoc with @copy-content-from on apidoc:method  :)
 declare function stp:copy-content-from-method($nodes as node()*) as node()*
 {
 for $n in $nodes return
 typeswitch ($n)
-  case document-node() return 
+  case document-node() return
       document{stp:copy-content-from-method($n/node())}
   case text() return $n
   case binary() return $n
   case comment() return $n
   case processing-instruction() return $n
-  case element (apidoc:method) return 
-      if (exists($n/@copy-content-from)) 
+  case element (apidoc:method) return
+      if (exists($n/@copy-content-from))
       then let $s := tokenize($n/@copy-content-from/string(), "\.")
           (: the name can have dots in it :)
            let $object := $s[1]
-           let $name := 
+           let $name :=
                string-join($s[2 to last()], ".")
            return
-           element apidoc:method {$n/@*, 
+           element apidoc:method {$n/@*,
+               $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
+      else $n
+  case element (apidoc:function) return
+      if (exists($n/@copy-content-from))
+      then let $s := tokenize($n/@copy-content-from/string(), "\.")
+          (: the name can have dots in it :)
+           let $object := $s[1]
+           let $name :=
+               string-join($s[2 to last()], ".")
+           return
+           element apidoc:function {$n/@*,
                $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
       else $n
   default return
-      if ($n instance of element() ) then 
+      if ($n instance of element() ) then
         element {name($n)} {$n/@*, stp:copy-content-from-method($n/node())}
       else $n
 };
@@ -1382,7 +1393,7 @@ as attribute()?
     $version, $a, $context)
   case attribute(lib) return stp:fixup-attribute-lib($a)
   case attribute(name) return stp:fixup-attribute-name($a)
-  case attribute(bucket) return 
+  case attribute(bucket) return
     if ($context eq 'javascript')
     then if ($a eq 'XQuery Library Modules')
          then attribute bucket {"JavaScript Library Modules"}

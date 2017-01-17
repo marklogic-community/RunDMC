@@ -9,6 +9,7 @@ import module namespace draft="http://developer.marklogic.com/site/internal/filt
   at "filter-drafts.xqy";
 import module namespace u="http://marklogic.com/rundmc/util"
   at "/lib/util-2.xqy";
+import module namespace users="users" at "/lib/users.xqy";
 
 declare default element namespace "http://developer.marklogic.com/site/internal";
 
@@ -37,7 +38,8 @@ declare variable $MONTHS := (
 (: used by get-updated-disqus-threads.xqy :)
 declare variable $Comments := collection()/Comments; (: backed-up Disqus conversations :)
 
-declare variable $doc-element-names := (xs:QName("Announcement"),
+declare variable $doc-element-names := (
+  xs:QName("Announcement"),
   xs:QName("Event"),
   xs:QName("Article"),
   xs:QName("Tutorial"),
@@ -45,7 +47,8 @@ declare variable $doc-element-names := (xs:QName("Announcement"),
   xs:QName("Post"),
   xs:QName("page"),
   xs:QName("Author"),
-  xs:QName("OnDemand")
+  xs:QName("OnDemand"),
+  xs:QName("Recipe")
 );
 
 declare variable $Announcements := ml:docs( xs:QName("Announcement"));
@@ -55,6 +58,7 @@ declare variable $Projects      := ml:docs( xs:QName("Project"));
 declare variable $pages         := ml:docs( xs:QName("page"));
 declare variable $Authors       := ml:docs( xs:QName("Author"));
 declare variable $OnDemand      := ml:docs( xs:QName("OnDemand"));
+declare variable $Recipes       := ml:docs( xs:QName("Recipe"));
 declare variable $Posts         := ml:docs-in-dir('/blog/');
 (: "Posts" now include announcements and events, in addition to vanilla blog posts. :)
 
@@ -165,7 +169,12 @@ declare private function ml:docs($qnames) as element()* {
 
 declare private function ml:docs-in-dir($directory) as element()* {
   cts:search(fn:collection(),
-    cts:directory-query($directory, "infinity")
+    cts:and-query((
+      cts:directory-query($directory, "infinity"),
+      if ($draft:public-docs-only) then
+        cts:element-attribute-value-query(xs:QName("ml:Post"), fn:QName("", "status"), "Published")
+      else ()
+    ))
   )/*
 };
 
@@ -1007,6 +1016,84 @@ as xs:string
 declare function ml:get-author-info($author-name as xs:string)
 {
   /ml:Author[ml:name = $author-name]
+};
+
+declare function ml:build-doc-sections-options()
+{
+  let $options := fn:doc(api:toc-uri())//node()[@class="toc_select_option"]/fn:string()
+  let $preference := users:get-user-preference(users:getCurrentUser(), $users:PREF-DOC-SECTION)
+  for $option in $options
+  return
+    element option {
+      if ($option = $preference) then
+        attribute selected { "true" }
+      else (),
+      $option
+    }
+};
+
+declare private function ml:build-recipe-element($params, $name)
+{
+  xdmp:unquote(
+    '<ml:' || $name || ' xmlns:ml="http://developer.marklogic.com/site/internal">' ||
+    $params[@name eq $name]/fn:string() || "</ml:" || $name || ">", (: " :)
+    "http://www.w3.org/1999/xhtml"
+  )
+};
+
+(:
+ : Build a recipe document base on a sequence of parameters.
+ : Combine with existing document where appropriate.
+ :)
+declare function ml:build-recipe(
+  $existing as document-node()?,
+  $params as element()*)
+as document-node()
+{
+  document {
+    element ml:Recipe {
+      attribute xmlns { "http://www.w3.org/1999/xhtml" },
+      attribute status { $params[@name eq "status"]/fn:string() },
+      element ml:title { $params[@name eq "title"]/fn:string() },
+      for $author in $params[fn:matches(@name, "author\[")]
+      return
+        element ml:author { $author/fn:string() },
+      if ($existing/ml:Recipe/ml:created ne "") then
+        $existing/ml:Recipe/ml:created
+      else
+        element ml:created {
+          fn:current-dateTime()
+        },
+      (: If <last-updated> is given a value, take that, otherwise use the current dateTime :)
+      element ml:last-updated {
+        if ($params[@name eq "last_updated"]/fn:string() = "") then
+          fn:current-dateTime()
+        else
+          $params[@name eq "last_updated"]/fn:string()
+      },
+      for $version in $params[fn:matches(@name, "server_version\[")]
+      return
+        element ml:server-version { $version/fn:string() },
+      element ml:tags {
+        for $tag in $params[fn:matches(@name, "tag\[")]
+        return
+          element ml:tag { $tag/fn:string() }
+      },
+      ml:build-recipe-element($params, "description"),
+      ml:build-recipe-element($params, "problem"),
+      ml:build-recipe-element($params, "solution"),
+      (: Record the needed privileges :)
+      for $tag in $params[fn:matches(@name, "privilege[_\w]*\[")]
+      return
+        element ml:privilege { $tag/fn:string() },
+      (: Record the needed indexes :)
+      for $index in $params[fn:matches(@name, "index[_\w]*\[")]
+      return
+        element ml:index { $index/fn:string() },
+      ml:build-recipe-element($params, "discussion"),
+      ml:build-recipe-element($params, "see-also")
+    }
+  }
 };
 
 (: model/data-access.xqy :)

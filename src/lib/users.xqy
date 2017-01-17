@@ -27,6 +27,17 @@ declare namespace em="URN:ietf:params:email-xml:";
 (: If the end user selects this country, require them to select a state. :)
 declare variable $COUNTRY-REQUIRES-STATE := ("United States of America", "Canada");
 
+(: String key for user preference settings :)
+declare variable $PREF-DOC-SECTION := "doc-section";
+
+(: This is the list of countries against which the United States has sanctions,
+ : and therefore, we block downloads from. See
+ : https://www.bis.doc.gov/index.php/policy-guidance/country-guidance/sanctioned-destinations
+ :)
+declare variable $PROHIBITED-COUNTRY-LIST := (
+  "Cuba", "Iran", "North Korea", "Sudan", "Syria"
+);
+
 declare function users:emailInUse($email as xs:string) as xs:boolean
 {
     exists(users:getUserByEmail($email))
@@ -322,8 +333,6 @@ declare function users:warn-denied-person($user, $country, $country-code)
     let $address :=
         if ($hostname = ("developer.marklogic.com", "stage-developer.marklogic.com", "dmc-stage.marklogic.com")) then
             "dmc-admin@marklogic.com"
-        else if ($hostname = ("wlan31-12-236.marklogic.com", "dhcp141.marklogic.com")) then
-            "eric.bloch@marklogic.com"
         else
             ()
 
@@ -557,34 +566,89 @@ declare function users:send-email-about-download($user, $path)
     )
 };
 
-declare function users:denied() as xs:boolean
+declare function users:denied($user as element(person)?) as xs:boolean
 {
-    let $user := users:getCurrentUser()
+  if ($user) then
+    let $name := $user/name/string()
+    let $org := $user/organization/string()
+    let $country := $user/country/string()
+    let $country-code := doc("/private/countries.xml")/*:select/*:option[@*:value = $country]/@*:data-code
+
+    let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-insensitive", "punctuation-insensitive")
+    (: match on name OR organization :)
+    let $person :=
+      cts:search(
+        /denied-persons/person,
+        cts:or-query(
+          (cts:element-value-query(xs:QName("Name"), $name, $opts), cts:element-value-query(xs:QName("Name"), $org, $opts))
+        )
+      )
 
     return
-    if ($user) then
-        let $name := $user/name/string()
-        let $org := $user/organization/string()
-        let $country := $user/country/string()
-        let $country-code := doc("/private/countries.xml")/*:select/*:option[@*:value = $country]/@*:data-code
-
-        let $opts := ("case-insensitive", "diacritic-insensitive", "whitespace-insensitive", "punctuation-insensitive")
-        (: match on name OR organization :)
-        let $person := cts:search(
-            /denied-persons/person,
-            cts:or-query(
-                (cts:element-value-query(xs:QName("Name"), $name, $opts), cts:element-value-query(xs:QName("Name"), $org, $opts))
-            )
+      if ($person) then
+        if ($country-code = $person/Country/string()) then (
+          users:warn-denied-person($user, $country, $country-code),
+          true()
         )
-
-        return if ($person) then
-            if ($country-code = $person/Country/string()) then
-                let $_ := users:warn-denied-person($user, $country, $country-code)
-                return true()
-            else
-                false()
         else
-            false()
-    else
+          false()
+      else if ($country = $PROHIBITED-COUNTRY-LIST) then (
+        users:warn-denied-person($user, $country, $country-code),
+        true()
+      )
+      else
         false()
+  else
+    false()
+};
+
+declare function users:valid-preference($preference)
+{
+  $preference eq ("doc-section")
+};
+
+declare function users:set-preference(
+  $user as element(person)?,
+  $preference as xs:string,
+  $value as xs:string)
+{
+  if (fn:not(users:valid-preference($preference))) then
+    fn:error(xs:QName("INVALID-PREFERENCE"), $preference || " is not a valid preference setting")
+  else (),
+  let $curr-preference := $user/preferences/element()[fn:node-name(.) = xs:QName($preference)]
+  let $new-preference := element { $preference } { $value }
+  return
+    if (fn:not($user)) then
+      fn:error(xs:QName("NO-USER"), "No user is logged in")
+    else if (fn:exists($curr-preference)) then
+      xdmp:node-replace($curr-preference, $new-preference)
+    else if (fn:exists($user/preferences)) then
+      xdmp:node-insert-child($user/preferences, $new-preference)
+    else
+      xdmp:node-insert-child($user, element preferences { $new-preference })
+};
+
+declare function users:get-user-preference(
+  $user as element(person)?,
+  $preference as xs:string)
+as xs:string?
+{
+  let $qn-pref := xs:QName($preference)
+  return
+    $user/preferences/element()[fn:node-name(.) = $qn-pref]
+};
+
+declare function users:get-prefs-as-json($user as element(person)?)
+as xs:string?
+{
+  if ($user) then
+    "{" ||
+    fn:string-join((
+      '"currentUserId":' || '"' || $user/id/fn:string() || '"',
+      for $pref in users:getCurrentUser()/preferences/element()
+      return ('"' || fn:node-name($pref) || '": "' || $pref/fn:string() || '"')),
+      ","
+    )
+    ||"}"
+  else "{}"
 };

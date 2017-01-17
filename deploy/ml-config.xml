@@ -1,6 +1,4 @@
 <configuration>
-<!--
-  Only enable the task server section if you need to.
   <task-server xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://marklogic.com/xdmp/group" xsi:schemaLocation="http://marklogic.com/xdmp/group group.xsd">
     <threads>16</threads>
     <debug-threads>16</debug-threads>
@@ -14,6 +12,17 @@
     <debug-allow>true</debug-allow>
     <profile-allow>true</profile-allow>
     <scheduled-tasks>
+      <scheduled-task>
+        <task-path>/admin/controller/purge-previews.xqy</task-path>
+        <task-root>/</task-root>
+        <task-type>daily</task-type>
+        <task-period>1</task-period>
+        <task-start-time>00:00:00-08:00</task-start-time>
+        <task-database name="@ml.content-db"/>
+        <task-modules name="@ml.app-modules-db"/>
+        <task-user name="@ml.app-name-user"/>
+      </scheduled-task>
+      <!--
       <scheduled-task>
         <task-path>/some/daily-task.xqy</task-path>
         <task-root>/</task-root>
@@ -79,9 +88,9 @@
         <task-modules name="@ml.app-modules-db"/>
         <task-user name="@ml.app-name-user"/>
       </scheduled-task>
+      -->
     </scheduled-tasks>
   </task-server>
--->
   <http-servers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://marklogic.com/xdmp/group" xsi:schemaLocation="http://marklogic.com/xdmp/group group.xsd">
     <!--Default Application Server-->
     <http-server>
@@ -134,6 +143,9 @@
     </assignment>
     @ml.schemas-assignment
     @ml.triggers-assignment
+    <assignment>
+      <forest-name>@ml.app-name-api-rawdocs</forest-name>
+    </assignment>
   </assignments>
   <!--
     =========================================================
@@ -242,6 +254,14 @@
           <scalar-type>dateTime</scalar-type>
           <namespace-uri>http://developer.marklogic.com/site/internal</namespace-uri>
           <localname>last-updated</localname>
+          <collation></collation>
+          <range-value-positions>false</range-value-positions>
+          <invalid-values>ignore</invalid-values>
+        </range-element-index>
+        <range-element-index>
+          <scalar-type>dateTime</scalar-type>
+          <namespace-uri>http://developer.marklogic.com/site/internal</namespace-uri>
+          <localname>_ml_webinar_date</localname>
           <collation></collation>
           <range-value-positions>false</range-value-positions>
           <invalid-values>ignore</invalid-values>
@@ -734,7 +754,16 @@
           <privilege-name>xdmp:add-response-header</privilege-name>
         </privilege>
         <privilege>
+          <privilege-name>xdmp:document-get</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:filesystem-directory</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:invoke</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:plan</privilege-name>
         </privilege>
         <privilege>
           <privilege-name>xdmp:with-namespaces</privilege-name>

@@ -326,7 +326,7 @@ function searchSuggestInit() {
   $q.on('paste', widget.handlePaste);
 
   $q.attr('autocomplete', 'off');
-  $q.parent().append($container);
+  $q.parent().parent().append($container);
 }
 
 function versionSelectInit() {

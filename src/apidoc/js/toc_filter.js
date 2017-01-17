@@ -45,10 +45,10 @@ $(function() {
   // Don't use pjax on pdf, zip files, and printer-friendly links
   var selector = "#page_content .pjax_enabled" +
       " a:not(a[href$='.pdf'],a[href$='.zip'],a[target='_blank'])";
-  $(selector).pjax({
+  $(document).pjax(selector, '#page_content', {
     container: '#page_content',
     timeout: 4000,
-    success: function() {
+    success: function clickedBodyLink() {
       // Update view when the pjax call originated from a link in the body
       LOG.debug("pjax_enabled A fired ok", this);
       // The tocSectionLinkSelector may have changed.
@@ -57,10 +57,11 @@ $(function() {
       tocFilterUpdate();
       updateTocForSelection(); } });
 
-  $("#api_sub .pjax_enabled a:not(.external)").pjax({
+  selector = "#api_sub .pjax_enabled a:not(.external)";
+  $(document).pjax(selector, '#page_content', {
     container: '#page_content',
     timeout: 4000,
-    success: function() {
+    success: function clickedTocLink() {
       // Update view when a TOC link was clicked
       LOG.debug("pjax_enabled B fired ok"); } });
 
@@ -103,6 +104,27 @@ function tocInitGlobals() {
     "[tocInitGlobals] No tocSectionLinkSelector!");
 }
 
+function saveSectionPref(event) {
+  var select = document.getElementById('toc_select');
+  var preferredSection = select.options[select.selectedIndex].text;
+  var selections = {
+    setting: 'doc-section',
+    value: preferredSection
+  };
+  $.ajax({
+    url: '/people/preferences',
+    method: 'POST',
+    data: selections,
+    success: function() {
+      console.log('preference saved');
+    },
+    error: function(error) {
+      console.log('error: ' + error);
+    }
+  });
+
+}
+
 function tocInit() {
   LOG.debug("tocInit");
 
@@ -138,8 +160,7 @@ function tocInit() {
       prerendered: true,
       url: tocPartsDir }); });
 
-  // Set up the select widget
-  tocSelect.change(function(e) {
+  function changeSelection() {
     LOG.debug('TOC select option changed');
     // Hide the old TOC tree.
     $(".apidoc_tree:visible").hide();
@@ -158,7 +179,49 @@ function tocInit() {
     tree.show();
 
     tocFilterUpdate();
-  });
+  }
+
+  // Set up the select widget
+  tocSelect.change(changeSelection);
+
+  if (!tocSectionLinkSelector) {
+    $.ajax({
+      url: '/people/preferences',
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        if (data.currentUserId) {
+          // The user is logged in. Change to the preferred section of the docs.
+          var preferredSection = data['doc-section'];
+          var select = document.querySelector('#toc_select');
+          var options = document.querySelectorAll('#toc_select option');
+          var initiallySelected = select.selectedIndex;
+          for (var i in options) {
+            if (options.hasOwnProperty(i)) {
+              if (options[i].text === preferredSection) {
+                select.selectedIndex = i;
+              }
+            }
+          }
+          if (initiallySelected !== select.selectedIndex) {
+            changeSelection();
+          }
+        } else {
+          // The user is not logged in.
+          var saveBtn = document.getElementById('save-section-pref');
+          if (saveBtn) {
+            saveBtn.setAttribute('disabled', true);
+            saveBtn.setAttribute('title', 'Log in to save preferred section');
+          }
+        }
+      },
+      error: function(error) {
+        console.log('error trying to get preferences: ' + JSON.stringify(error));
+      }
+    });
+  }
+
+  $('#save-section-pref').click(saveSectionPref);
 
   // Set up the filter
   tocInitFilter($("#config-filter"),
@@ -260,7 +323,7 @@ function searchTOC(filter, tocRoot) {
 
   if (filter === '') {
     items.removeClass("hide-detail");
-    self.find(">a >.function_count").show();
+    $(">a >.function_count").show();
     return;
   }
 
@@ -702,7 +765,7 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
     // clear any existing idle timer
     clearTimeout($.data(this, 'timer'));
     // TODO Is the TOC fully loaded?
-    var loading = $(".apidoc_tree:visible .startedLoading");
+    var loading = $(".apidoc_tree:visible.startedLoading:not(.fullyLoaded)");
     if (loading.length) {
       LOG.warn("[tocInitFilter]", "keyup",
                "tocSection not loaded - will retry", loading);

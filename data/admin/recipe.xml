@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h3>Recipes</h3>
+
+  <div class="well">
+    <p>Here's the list of recipes</p>
+  </div>
+
+  <form action="/recipe/edit" class="add_recipe" enctype="application/x-www-form-urlencoded" method="get">
+    <div>
+      <button type="submit" class="btn btn-default btn-xs">Add New</button>
+    </div>
+  </form>
+  <ml:admin-recipe-list/>
+</ml:page>

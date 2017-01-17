@@ -102,7 +102,6 @@
     <group display="Tools &amp; Open Source Projects">
       <group display="Editing and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
-        <page display="XQDT for Eclipse and MarkLogic Fork" href="/code/xqdt"/>
         <page display="Oxygen" href="/code/oxygen"/>
         <page display="Vim-XQMarkLogic" href="/code/vim-xqmarklogic"/>
         <page display="XQDebug" href="/code/xqdebug"/>
@@ -144,17 +143,17 @@
         <page display="Authoring App for PowerPoint®" href="/code/marklogic-sample-authoring-app-powerpoint"/>
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
-      <group display="Connectors">
-        <page display="Go Bindings" href="/code/go-marklogic"/>
+      <group display="Connectors" href="/code/connectors">
+        <page display="New Relic" href="/code/new-relic"/>
+        <page display="MarkLogic Connect: C++, C, C#" href="/code/marklogic-connect"/>
         <page display="MarkMapper" href="/code/markmapper"/>
-        <page display="MLDotNet" href="/labs/mldotnet"/>
-        <page display="MLJAM" href="/code/mljam"/>
-        <page display="MLJS" href="/labs/mljs"/>
         <page display="MLPHP" href="/labs/mlphp"/>
-        <page display="MLSAM" href="/code/mlsam"/>
         <page display="Python" href="/code/marklogic-python"/>
         <page display="rfml" href="/code/rfml"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
+        <page display="Go Bindings" href="/code/go-marklogic"/>
+        <page display="MLJAM" href="/code/mljam"/>
+        <page display="MLSAM" href="/code/mlsam"/>
       </group>
       <group display="Visualization">
         <page display="ml-lodlive" href="/code/ml-lodlive"/>
@@ -256,28 +255,29 @@
         <page display="Supernodes" href="/people/supernodes"/>
       </group>
       <group display="MarkLogic User Groups">
-        <page display="LAxML - Los Angeles" href="/meet/laxml"/>
-        <page display="Mark-UPS - Maryland" href="/meet/markups"/>
-        <page display="MUGL - London" href="/meet/mugl"/>
-        <page display="NOVAMUG - Northern Virginia" href="/meet/novamug"/>
-        <page display="NYMUG - New York" href="/meet/nymug"/>
-        <page display="SOHMUG - Southern Ohio" href="/meet/sohmug"/>
-        <page display="BMLUG - Boston" href="/meet/bmug"/>
-        <page display="Benelux - Amsterdam" href="/meet/benelux"/>
-        <page display="BAYMUG - San Francisco Bay Area" href="/meet/baymug"/>
+        <page display="Amsterdam" href="/meet/benelux"/>
+        <page display="Baltimore" href="/meet/baltimore"/>
+        <page display="Boston" href="/meet/bmug"/>
+        <page display="Chicago" href="/meet/chicago"/>
+        <page display="Delhi" href="/meet/delhi"/>
+        <page display="Denver" href="/meet/denver"/>
+        <page display="France" href="/meet/france"/>
+        <page display="Germany" href="/meet/germany"/>
+        <page display="London" href="/meet/mugl"/>
+        <page display="London Financial Services" href="/meet/london-finserv"/>
+        <page display="Los Angeles" href="/meet/laxml"/>
+        <page display="Maryland" href="/meet/markups"/>
+        <page display="New York" href="/meet/nymug"/>
+        <page display="Northern Virginia" href="/meet/novamug"/>
+        <page display="San Francisco Bay Area" href="/meet/baymug"/>
+        <page display="Southern Ohio" href="/meet/sohmug"/>
+        <page display="Stockholm" href="/meet/stockholm"/>
+        <page display="Switzerland" href="/meet/switzerland"/>
+        <page display="Sydney" href="/meet/sydney"/>
+        <page display="Tampa Bay" href="/meet/tampa-bay"/>
+        <page display="United Kingdom" href="/meet/uk"/>
       </group>
       <generic-page display="Organize" href="/meet/organize"/>
-    </group>
-  </page>
-  <page display="Labs" href="/labs">
-    <group display="">
-        <group display="Labs">
-            <page display="MLPHP" href="/labs/mlphp"/>
-            <page display="MLJS" href="/labs/mljs"/>
-            <page display="mongo2marklogic" href="/labs/mongo2marklogic"/>
-            <page display="rxq" href="/labs/rxq"/>
-            <page display="MLDotNet" href="/labs/mldotnet"/>
-        </group>
     </group>
   </page>
 
@@ -297,6 +297,25 @@
         <page display="Samplestack" href="/features/samplestack"/>
         <page display="Incremental Backup" href="/features/inc-backup"/>
         <page display="Prescriptiving Sizing" href="/features/prescriptive-sizing"/>
+      </group>
+    </group>
+  </page>
+
+  <page display="Adventure" href="/adventure" hide="yes">
+    <group display="">
+      <group display="Adventure">
+        <group display="Install" href="/adventure/install">
+          <page display="Window" href="/adventure/install/windows"/>
+          <page display="Mac" href="/adventure/install/mac"/>
+          <page display="Linux" href="/adventure/install/linux"/>
+        </group>
+        <group display="Developer" href="/adventure/developer">
+          <page display="Java" href="/adventure/developer/java/start"/>
+          <page display="Node.js" href="/adventure/developer/nodejs/start"/>
+          <page display="REST" href="/adventure/developer/rest/start"/>
+        </group>
+        <group display="Administrator" href="/adventure/administrator">
+        </group>
       </group>
     </group>
   </page>

@@ -13,7 +13,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/v-2/apidoc/jquery.treeview.css"
           rel="stylesheet" type="text/css" media="screen" />
-    <link href="/css/v-38/screen.css"
+    <link href="/css/v-38/apidoc-screen.css"
           rel="stylesheet" type="text/css" media="screen" />
     <link href="/css/v-33/apidoc.css"
           rel="stylesheet" type="text/css" media="screen" />
@@ -30,9 +30,8 @@
     <!-- Un-minimize for debugging
          <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
          -->
-    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
 
-    <script type="text/javascript" src="/js/jquery.tooltip.min.js"></script>
     <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
     <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
     <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js"></script>
@@ -41,7 +40,7 @@
     <script type="text/javascript" src="/js/rundmc_init.js"></script>
     <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
 
-    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
     <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-autocomplete.js"></script>
     <script type="text/javascript" src="/js/jquery.select-to-autocomplete.min.js"></script>
@@ -50,6 +49,7 @@
     <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
     <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
     <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -67,44 +67,63 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <div id="header">
       <header>
-        <h1>
-          <noscript><p style="margin-left: 200px; font-size: 60%;">Warning: Your browser has disabled JavaScript and this site requires it.</p></noscript>
-          <a ml:class="" ml:href="/">MarkLogic&#174; Community</a>
-        </h1>
-        <div id="header-contents">
-
-          <div id="main-site">
-            <a href="http://www.marklogic.com">Main site &#9656;</a>
+        <nav class="navbar-top row ml-nav">
+          <div class="col-xs-5">
+            <ul class="nav-web-properties">
+              <li><a href="http://www.marklogic.com" target="_blank"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm hidden-md">Marklogic.com</span></a></li>
+              <li><a href="http://developer.marklogic.com" target="_blank"><span class="glyphicon glyphicon-console"></span><span class="hidden-xs hidden-sm hidden-md">Developers</span></a></li>
+              <li><a href="http://world.marklogic.com" target="_blank"><span class="glyphicon glyphicon-globe"></span><span class="hidden-xs hidden-sm hidden-md">MarkLogic World</span></a></li>
+              <li><a href="http://www.marklogic.com/services/training/" target="_blank"><span class="glyphicon glyphicon-apple"></span><span class="hidden-xs hidden-sm hidden-md">University</span></a></li>
+            </ul>
           </div>
-          <div class="header-separator">|</div>
-          <div id="search-header">
-            <form class="search-form" ml:action="/search" method="get">
-              <fieldset>
-                <legend>Search</legend>
-                <input type="hidden" name="v" ml:value="" />
-                <input type="hidden" name="api" ml:value="" />
-                <label for="s_inp">Search with MarkLogic</label>
-                <input id="s_inp" name="q" type="text"
-                       autocapitalize="off"
-                       placeholder="Search with MarkLogic" ml:value=""/>
-                <input type="submit" value="Search" />
-              </fieldset>
-            </form>
-          </div>
-          <div class="header-separator">|</div>
-          <div id="login-header">
+          <div class="col-xs-7">
+            <ul class="nav-resources pull-right">
+              <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
+            </ul>
             <ml:login-menu/>
           </div>
-        </div>
+        </nav>
 
-        <nav>
-          <ul>
-            <ml:top-nav/>
-          </ul>
+
+
+        <nav class="navbar navbar-inverse dmc-nav">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dmc-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" ml:class="" ml:href="/">
+                <img src="/images/logo-community-white.svg" alt="MarkLogic&#174; Community"/>
+              </a>
+            </div>
+            <div class="collapse navbar-collapse row" id="dmc-navbar-collapse">
+              <form class="navbar-form navbar-right search-form" ml:action="/search" method="get">
+                <div class="form-group">
+                  <input type="hidden" name="v" ml:value="" />
+                  <input type="hidden" name="api" ml:value="" />
+                  <div class="input-group">
+                    <input id="s_inp" name="q" type="text"
+                           class="form-control"
+                           autocapitalize="off"
+                           placeholder="Search with MarkLogic" ml:value=""/>
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-search"/>
+                    </span>
+                  </div>
+                </div>
+              </form>
+              <ul class="nav navbar-nav navbar-right">
+                <ml:top-nav/>
+              </ul>
+            </div>
+          </div>
         </nav>
       </header>
 
-      <div id="header-bottom-bar"/>
       <div id="header-below-bottom-bar">
         <div id="breadcrumb">
           <ml:breadcrumbs/>

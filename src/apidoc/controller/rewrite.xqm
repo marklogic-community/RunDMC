@@ -352,7 +352,7 @@ declare function m:rewrite()
 
   (: SCENARIO 2B: Serve content from file system :)
   (: Remove version from the URL for versioned assets :)
-  else if (matches($PATH, '^/(css|images)/v-\d*/.*')) then replace(
+  else if (matches($PATH, '^/(css|images|fonts)(/v-\d*)?/.*')) then replace(
     $PATH, '/v-\d*', '')
 
   (: If the path starts with one of the designated paths in the code base,
@@ -411,6 +411,9 @@ declare function m:rewrite()
   else if (starts-with($PATH, '/private/')) then $rw:NOTFOUND
 
   else if (starts-with($PATH, '/xray')) then m:xray()
+
+  (: Support retrieving user preferences :)
+  else if ($PATH eq "/people/preferences") then "/controller/preferences.xqy"
 
   (: Root request: "/" means "index.xml" inside the default version directory :)
   else if ($PATH eq '/') then m:transform($ROOT-DOC-URL)

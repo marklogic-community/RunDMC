@@ -1,0 +1,456 @@
+.hero-box .hero-box-image {
+  display: block;
+  float: left;
+  height: auto;
+}
+
+.hero-box .fa,
+.hero-box .glyphicon {
+  font-size: 40pt;
+  top: 20px;
+  position: relative;
+}
+
+.hero-box .glyphicon {
+  font-size: 30pt;
+}
+
+a.hero-box {
+  text-decoration: none;
+  color: #333;
+}
+
+.list-page {
+  background-image: linear-gradient(to bottom, #f0f0f0, #fff);
+}
+.list-page .hero-box {
+  padding: 5px 10px;
+}
+
+.hero-box {
+  display: flex;
+  align-items: center;
+  margin: 0 15px 15px;
+  padding: 15px 20px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+
+  background-color: rgba(111, 121, 189, 0.8);
+  border: 2px solid #333;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.hero-box.row:hover {
+  background-color: rgba(111, 121, 189, 0.6);
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.8), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.hero-box h3,
+.hero-box p {
+  color: white;
+}
+
+.hero-box .hero-box-content {
+  position: relative;
+}
+
+.hero-box .hero-box-content h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.hero-box.install {
+  background-color: rgba(128,128,128,0.15);
+  display: flex;
+  align-items: flex-start;
+}
+
+
+.subheader {
+  border: 2px solid #333;
+  border-radius: 10px;
+  font-weight: bold;
+  background-color: rgba(0,0,0,0.25);
+  display: inline-block;
+  padding: 10px;
+  color: white;
+}
+
+.adventure .hero-box.row {
+  cursor: pointer;
+  background-color: rgba(111, 121, 189, 0.8);
+  border: 2px solid #333;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.adventure .hero-box.row:hover {
+  background-color: rgba(111, 121, 189, 0.6);
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.8), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.hero-box-content .jones {
+  text-transform: uppercase;
+  font-size: 22pt;
+  text-shadow: 0.5px 0.5px 4px black;
+  letter-spacing: 2px;
+}
+
+.hero-box-content h3 {
+  font-weight: bold;
+}
+
+.variant2 {
+  font-weight: bold;
+}
+
+.adventure-title .jones {
+  text-transform: uppercase;
+  font-size: 40pt;
+  color: white;
+  text-shadow: 0.5px 0.5px 4px black;
+  margin-top: 0px;
+}
+
+@media (min-width: 768px) {
+
+  .hero-box .hero-box-image {
+    width: 75px;
+    min-width: 75px;
+    height: auto;
+  }
+
+  .hero-box .hero-box-content {
+    padding-left: 20px;
+  }
+
+  .module-page-header .media {
+    margin: 10px;
+    background-color: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 1em;
+  }
+
+  .choose-page .adventure-title {
+    margin: 2em auto;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: rgba(0,0,0,0.25);
+    padding: 10px;
+    color: white;
+  }
+
+  .choose-page .header {
+    margin-bottom: 4em;
+  }
+
+  .adventure-title .jones {
+    font-size: 40pt;
+  }
+
+  .hero-box row {
+    margin: 0px;
+  }
+
+  .hero-box {
+    min-height: 220px;
+  }
+
+  .module-page-header {
+    background: url(/media/adventure/adventure-header.jpg);
+
+    background-size: cover;
+    background-position-y: -150px;
+    border-bottom: 1px solid #090909;
+
+    color: white;
+  }
+
+  .adventure {
+    background: url(/media/adventure/adventure-header.jpg);
+
+    background-size: cover;
+    background-position-y: -150px;
+    border-bottom: 1px solid #090909;
+  }
+
+  .choose-page .choose-header{
+    background: url(/media/adventure/adventure-header.jpg);
+
+    // background-repeat: no-repeat;
+    background-position-y: -150px;
+    background-size: cover;
+  }
+
+  .choose-page .adventure-title img {
+    width: 80px;
+  }
+
+  .module-page-header img {
+    width: 140px;
+    height: 140px;
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .ml-nav .col-xs-5,
+  .ml-nav .col-xs-7 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  #header {
+    border: 0px;
+  }
+
+  .main-wrapper {
+    padding-bottom: 0px;
+  }
+
+  .adventure {
+    padding-bottom: 0px;
+  }
+
+  .start-journey.row {
+    margin-bottom: 0px;
+  }
+
+  .hero-box .hero-box-image {
+    width: 50px;
+    min-width: 50px;
+    height: auto;
+  }
+
+  .hero-box .hero-box-content {
+    padding-left: 5px;
+  }
+
+  .container-main, .section-row {
+    background-color: #f0f0f0;
+  }
+
+  .choose-page .adventure-title {
+    margin: 10px;
+  }
+
+  .module-page-header .media .media-heading {
+    color: black;
+    margin-top: 10px;
+  }
+
+  .choose-page .header {
+    margin-bottom: inherit;
+  }
+
+  a.hero-box {
+    padding: 0px 20px;
+  }
+
+  .adventure-title .jones {
+    font-size: 20pt;
+    color: black;
+    text-shadow: none;
+  }
+
+  .hero-box row {
+    margin: initial;
+  }
+
+  .choose-page .adventure-title img {
+    width: 40px;
+  }
+
+  .module-page-header img {
+    width: 70px;
+    position: relative;
+    top: -15px;
+  }
+
+}
+.adventure-title {
+  margin-bottom: 20px;
+}
+
+.long-page {
+  min-height: 500px;
+}
+
+.choose-page .adventure-title img {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+}
+
+.choose-page {
+  min-height: 100%;
+  background-color: #f0f0f0;
+}
+
+
+.training-track-course {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  color: #333;
+  width: 320px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  margin: 0 10px 20px;
+  vertical-align: top;
+  background: white;
+  text-align: left;
+}
+
+.training-track-course .course-header {
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  border-top-right-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-left-radius: 3px;
+  padding: 10px 17px;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: 200;
+  background: #44499C;
+}
+
+.training-track-course .learning-style {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  cursor: pointer;
+}
+
+.training-track-course .course-header .time {
+  float: right;
+}
+
+.training-track-course .course-info {
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 20px 17px;
+}
+
+.training-track-course .course-info h3, .training-track-course .course-info .group {
+  line-height: 1;
+  margin: 0 0 10px 0;
+}
+
+.training-track-course h3 {
+  margin: 0 0 10px 0;
+  font-weight: 200;
+  font-size: 1.4em;
+}
+
+.training-track-course p {
+  margin-bottom: 15px;
+}
+
+
+.training-track-course .learn-more {
+  color: #337ab7;
+}
+
+.training-track-course:hover {
+  text-decoration: none;
+  color: #333;
+}
+
+.install-icon {
+  height: 75px;
+}
+
+.adventure-header {
+  margin-bottom: 40px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.module-list {
+  background: rgba(255,255,255,0.75);
+  border: 1px solid #333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.12);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.12);
+}
+
+.module-list-header {
+  background-image: linear-gradient(to bottom, #777AB4, #44499c);
+  color: white;
+  padding: 15px;
+  border-radius: 4px 4px 0 0;
+}
+
+.module-list-header img {
+  width: 50px;
+}
+
+.module-title,
+.module-description {
+  padding-left: 80px;
+}
+
+.module-title {
+  margin: 0px;
+}
+.module-icon {
+  font-size: 35pt;
+}
+
+.module-list-content {
+}
+
+.module-list-content a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.module-list-content ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.module-list-content ul li {
+  border-bottom: 1px solid rgba(128,128,128,0.25);
+}
+
+.module-list-content ul li a {
+  display: block;
+  padding: 5px 15px;
+}
+
+.module-list-content ul li:last-child {
+  border-bottom: none;
+}
+
+.module-page-header .row {
+  margin-bottom: 0px;
+}
+
+.module-page-header .media {
+  display: flex;
+  align-items: center;
+}
+
+.media-heading {
+  color: white;
+  font-size: 26px;
+}
+
+.duration {
+  color: #999;
+}

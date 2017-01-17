@@ -1,6 +1,6 @@
 class Help
   def self.usage
-    <<-DOC.strip_heredoc
+    help = <<-DOC.strip_heredoc
 
       Usage:
         ml [ENVIRONMENT] COMMAND [ARGS]
@@ -20,24 +20,39 @@ class Help
 
       Bootstrapping commands (with environment):
         bootstrap     Configures your application on the given environment
-        capture       Captures the source code of an existing App Builder application
+        capture       Captures the source code and if applicable the REST configuration of an existing application
         clean         Removes all files from the cpf, modules, or content databases on the given environment
         credentials   Configures user and password for the given environment
         info          Returns settings for the given environment
         restart       Restarts the given environment
+        validate      Compare your ml-config against the given environment
         wipe          Removes your application from the given environment
 
       Deployment/Data commands (with environment):
         corb          Runs Corb against the given environment
         deploy        Loads modules, data, cpf configuration into the given environment
         load          Loads a file or folder into the given environment
+        merge         Merges a database on the given environment
         mlcp          Runs MLCP against the given environment
         recordloader  Runs RecordLoader against the given environment
+        reindex       Reindexes a database on the given environment
+        settings      Lists all supported settings for a given environment
         test          Runs xquery unit tests against the given environment
         xqsync        Runs XQSync against the given environment
+    DOC
+
+    help += app_specific || ''
+
+    help += <<-DOC.strip_heredoc
 
       All commands can be run with -h or --help for more information.
     DOC
+
+    help
+  end
+
+  def self.app_specific
+    #stub
   end
 
   def self.create
@@ -151,7 +166,8 @@ class Help
       Usage: ml {env} info [options]
 
       General options:
-        -v, [--verbose]  # Verbose output
+        --format                           # Output format can be (json | xml).
+        -v, [--verbose]                    # Verbose output
 
       Displays the properties for the given environment
     DOC
@@ -191,14 +207,15 @@ class Help
 
   def self.restart
     <<-DOC.strip_heredoc
-      Usage: ml {env} restart [group] [options]
+      Usage: ml {env} restart [{groupname}|cluster] [options]
 
       General options:
         -v, [--verbose]  # Verbose output
 
       Restart the MarkLogic process in the given environment on each host in the
       specified group. If no group is specified, restart the MarkLogic process
-      on each host in the group to which the target host belongs.
+      on each host in the group to which the target host belongs. Use 'cluster'
+      to restart all hosts within the cluster to which the target belongs.
     DOC
   end
 
@@ -208,9 +225,16 @@ class Help
 
       General options:
         -v, [--verbose]  # Verbose output
+        --apply-changes=[WHAT]
 
       Bootstraps your application to the MarkLogic server in the given
       environment.
+
+      --apply-changes allows for a granular application of changes to a given
+      environment. Multiple changes may be specified, seperated by commas.
+      Changes may include:
+        ssl, privileges, roles, users, external-security, mimetypes, groups,
+        hosts, forests, databases, amps, indexes, appservers, tasks
     DOC
   end
 
@@ -220,9 +244,16 @@ class Help
 
       General options:
         -v, [--verbose]  # Verbose output
+        --apply-changes=[WHAT]
 
       Removes all traces of your application on the MarkLogic serverin the given
       environment.
+
+      --apply-changes allows for a granular application of changes to a given
+      environment. Multiple changes may be specified, seperated by commas.
+      Changes may include:
+        ssl, privileges, roles, users, external-security, mimetypes, groups,
+        hosts, forests, databases, amps, indexes, appservers, tasks
     DOC
   end
 
@@ -231,10 +262,12 @@ class Help
       Usage: ml {env} deploy WHAT [options]
 
       General options:
-        -v, [--verbose]  # Verbose output
-        --batch=(yes|no) # enable or disable batch commit. By default
-                           batch is disabled for the local environment
-                           and enabled for all others.
+        -v, [--verbose]        # Verbose output
+        --batch=(yes|no)       # enable or disable batch commit. By default
+                                 batch is disabled for the local environment
+                                 and enabled for all others.
+        --incremental=(yes|no) # For content, only deploy files which are
+                                 newer locally than on the server
 
       Please choose a WHAT below.
 
@@ -243,11 +276,41 @@ class Help
         schemas     # deploys schemas to your schemas db in the given environment
         cpf         # deploys your cpf config to the server in the given environment
         src         # deploys the src code to your modules db in the given environment
-        rest        # deploys properties, extensions, and transforms to our modules db in the given environment
-        ext         # deploys your rest extensions to the server in the given environment
-                    if a name is specified, then only that extension will be deployed
-        transform   # deploys your rest extensions to the server in the given environment
-                    if a name is specified, then only that transform will be deployed
+        rest        # deploys properties, search options, extensions, and transforms
+                      to our modules db in the given environment
+        rest-config # deploys properties and search options to our modules db
+        ext         # deploys rest extensions to the server in the given environment
+                      if a name is specified, only that extension will be deployed
+        transform   # deploys rest transforms to the server in the given environment
+                      if a name is specified, only that transform will be deployed
+        triggers    # deploys triggers from deploy/triggers-config.xml to your
+                      triggers database
+    DOC
+  end
+
+  def self.merge
+    <<-DOC.strip_heredoc
+      Usage: ml {env} merge WHAT [options]
+
+      General options:
+        -v, [--verbose]  # Verbose output
+
+      Please choose a WHAT below.
+
+        content     # Merges your content db in the given environment
+    DOC
+  end
+
+  def self.reindex
+    <<-DOC.strip_heredoc
+      Usage: ml {env} reindex WHAT [options]
+
+      General options:
+        -v, [--verbose]  # Verbose output
+
+      Please choose a WHAT below.
+
+        content     # Reindexes your content db in the given environment
     DOC
   end
 
@@ -272,10 +335,11 @@ class Help
 
       Please choose a WHAT below.
 
-        modules # removes all data from the modules db in the given environment
-        content # removes all data from the content db in the given environment
-        schemas # removes all data from the schemas db in the given environment
-        cpf     # removes your cpf config from the server in the given environment
+        modules  # removes all data from the modules db in the given environment
+        content  # removes all data from the content db in the given environment
+        schemas  # removes all data from the schemas db in the given environment
+        cpf      # removes your cpf config from the server in the given environment
+        triggers # removes all triggers from your triggers database
     DOC
   end
 
@@ -334,22 +398,20 @@ class Help
     <<-DOC.strip_heredoc
       Usage: ml {env} corb [options]
 
-      See: http://marklogic.github.com/corb/index.html
+      Runs CoRB2 with given command-line options against the selected environment.
+      CoRB2 options may be specified on the commandline using either -- or -D prefix.
 
-      Required options:
-        --modules=/path/to/modules.xqy  # the xquery module to process the data
+      For example, the OPTIONS-FILE option can be specified as:
+        --options-file=/path/to/options.properties
+        -DOPTIONS-FILE=/path/to/options.properties
 
-        (Only one of the following is required)
-        --collection=collection-name    # the name of a collection to process
-        --uris=/path/to/uris-module.xqy # path to a uris module
+      CoRB2 supports options files natively using the --OPTIONS-FILE parameter.
 
-      Corb Options:
-        --threads=1                     # the thread count to use
-        --root=/                        # the root of the modules database
-        --install=false                 # whether or not to install (default: false)
+      See: https://github.com/marklogic/corb2
 
       General options:
         -v, [--verbose]  # Verbose output
+        -h, [--help]     # Shows this help
     DOC
   end
 
@@ -357,9 +419,10 @@ class Help
     <<-DOC.strip_heredoc
       Usage: ml {env} mlcp [options]
 
-      Runs MLCP with given command-line options agains selected environment.
-      MLCP supports options files natively using the -option_file parameter.
-      The path must a relative or absolute path to a MLCP options file.
+      Runs MLCP with given command-line options against selected environment.
+      MLCP supports options files natively using the -options_file parameter.
+      The path to the MLCP options file must be an absolute path or a relative
+      path from the root of the project directory.
       See http://docs.marklogic.com/guide/ingestion/content-pump#chapter
 
       General options:
@@ -369,7 +432,7 @@ class Help
       Roxy applies variable substitution within option files. You may use variables like:
 
       -input_file_path
-      ${ml.data.dir}/
+      ${data.dir}
     DOC
   end
 
@@ -459,11 +522,17 @@ class Help
   def self.capture
     <<-DOC.strip_heredoc
       Usage: ml {env} capture --modules-db=[name of modules database]
+		Captures the source for an existing application
+
+	  modules-db: (required)
+        The modules database of the application.
+
+	  ml {env} capture --app-builder=[name of Application Builder-based application]
         Captures the source and REST API configuration for an existing
         Application Builder-based application.
 
-      modules-db: (required)
-        The modules database of the App Builder application.
+      app-builder: (required)
+        The name of the App Builder application.
     DOC
   end
 

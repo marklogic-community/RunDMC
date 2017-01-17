@@ -60,6 +60,16 @@
       <search:finish-facet apply="finish-www" ns="http://developer.marklogic.com/site/search" at="/controller/search.xqm"/>
     </search:custom>
   </search:constraint>
+  <search:constraint name="WebinarDisplay">
+    <search:value>
+      <search:element ns="http://developer.marklogic.com/site/internal" name="_ml_webinar_display"/>
+    </search:value>
+  </search:constraint>
+  <search:constraint name="WebinarDate">
+    <search:range type="xs:dateTime" facet="false">
+      <search:element ns="http://developer.marklogic.com/site/internal" name="_ml_webinar_date"/>
+    </search:range>
+  </search:constraint>
   <search:operator name="results">
     <search:state name="compact">
       <search:transform-results apply="snippet">
