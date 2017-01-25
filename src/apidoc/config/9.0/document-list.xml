@@ -162,17 +162,14 @@
         Provides information on developing applications using MarkLogic
         bi-temporal features.
       </guide>
+      <guide url-name="entity-services" source-name="entity-services">
+        Provides information on how to use MarkLogic's Entity Services
+        to model and integrate data from disparate sources into your
+        application.</guide>
       <guide url-name="ref-arch" source-name="ref-arch">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
       </guide>
-      <guide url-name="app-builder" source-name="appbuilder">
-        Provides step-by-step information on using the Application Builder
-        to build a search application, and also provides information on
-        customizing applications built with the Application Builder.</guide>
-      <guide url-name="infostudio" source-name="info_studio">
-        Provides step-by-step information on using the Information Studio
-        to load content into MarkLogic Server.</guide>
     </entry>
 
     <entry title="Administrator's Guides">
@@ -246,10 +243,6 @@
       <guide url-name="sql" source-name="sql">
         Provides information on how to use MarkLogic's SQL interface,
         including the creation of relational schemas and views.</guide>
-      <guide url-name="entity-services" source-name="entity-services">
-        Provides information on how to use MarkLogic's Entity Services
-        to model and integrate data from disparate sources into your
-        application.</guide>
       <guide url-name="messages" source-name="messages">
         Error Messages and Codes Reference</guide>
       <guide url-name="copyright" source-name="shared">
