@@ -62,11 +62,12 @@ declare variable $threadIds := ((: ML 6.0 :)
                              | $updatedThreadList/map:map/map:entry[@key eq 'message']/map:value
                                                  /map:map/map:entry[@key eq 'id'     ]/map:value);
 
-declare variable $threadPosts := for $threadId in $threadIds return 
-                                   let $url := concat('http://disqus.com/api/get_thread_posts?exclude=spam,killed&amp;limit=10000&amp;thread_id=',
-                                                      $threadId,$commonURIParams)
-                                   return ml:get-json-xml($url);
-                                        
+declare variable $threadPosts :=
+  for $threadId in $threadIds
+  let $url := concat('http://disqus.com/api/get_thread_posts?exclude=spam,killed&amp;limit=10000&amp;thread_id=',
+                     $threadId, $commonURIParams)
+  return ml:get-json-xml($url);
+
 <results since="{$sinceDate}">
 {
   for $doc in $threadPosts
@@ -78,7 +79,7 @@ declare variable $threadPosts := for $threadId in $threadIds return
                             (:ML 5.0:)
                           | $doc/map:map/map:entry[@key eq 'message'   ]/map:value[1]
                                 /map:map/map:entry[@key eq 'thread'    ]/map:value
-                                /map:map/map:entry[@key eq 'identifier']/map:value)
+                                /map:map/map:entry[@key eq 'identifier']/map:value)[1]
 
   where not(empty($disqus-identifier))
   return
