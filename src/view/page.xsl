@@ -508,18 +508,20 @@
             <xsl:apply-templates mode="post-content-abridged" select="."/>
           </xsl:when>
           <xsl:otherwise>
-            <h3>Description</h3>
-            <div>
-              <xsl:apply-templates select="description/node()"/>
-            </div>
             <h3>Problem</h3>
             <div>
               <xsl:apply-templates select="problem/node()"/>
             </div>
             <h3>Solution</h3>
+            <xsl:apply-templates mode="ml-versions" select="."/>
             <div>
               <xsl:apply-templates select="solution/node()"/>
             </div>
+
+            <br/>
+            <xsl:apply-templates mode="required-privileges" select="."/>
+            <xsl:apply-templates mode="required-indexes" select="."/>
+
             <h3>Discussion</h3>
             <div>
               <xsl:apply-templates select="discussion/node()"/>
@@ -537,6 +539,53 @@
       </xsl:if>
 
     </article>
+  </xsl:template>
+
+  <xsl:template mode="ml-versions" match="*">
+    <xsl:if test="count(./server-version) gt 0">
+      <p>
+        <em>
+          Applies to MarkLogic versions
+          <xsl:value-of select="string-join(./server-version, ', ')"/>
+        </em>
+      </p>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template mode="required-privileges" match="*">
+    <div class="panel panel-default">
+      <div class="panel-heading">Required Privileges</div>
+      <xsl:choose>
+        <xsl:when test="./privilege">
+          <ul class="list-group">
+            <xsl:for-each select="./privilege">
+              <li class="list-group-item"><xsl:value-of select="."/></li>
+            </xsl:for-each>
+          </ul>
+        </xsl:when>
+        <xsl:otherwise>
+          <div class="panel-body">None</div>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
+  </xsl:template>
+
+  <xsl:template mode="required-indexes" match="*">
+    <div class="panel panel-default">
+      <div class="panel-heading">Required Indexes</div>
+      <xsl:choose>
+        <xsl:when test="./index">
+          <ul class="list-group">
+            <xsl:for-each select="./index">
+              <li class="list-group-item"><xsl:value-of select="."/></li>
+            </xsl:for-each>
+          </ul>
+        </xsl:when>
+        <xsl:otherwise>
+          <div class="panel-body">None</div>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
   </xsl:template>
 
   <xsl:template mode="share-content" match="Recipe | Post | Announcement | Event">

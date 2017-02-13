@@ -63,7 +63,7 @@ declare %t:case function t:build-recipe()
       <param name="problem">here is the problem</param>,
       <param name="solution">here is the &lt;p xmlns="http://www.w3.org/1999/xhtml"&gt;solution&lt;/p&gt;</param>,
       <param name="discussion">here is the discussion</param>,
-      <param name="seealso">here is the see-also</param>
+      <param name="see-also">here is the see-also</param>
     )),
     document {
       <ml:Recipe xmlns="http://www.w3.org/1999/xhtml" status="Draft">
@@ -128,7 +128,7 @@ declare %t:case function t:rebuild-recipe()
         <param name="problem">here is the problem</param>,
         <param name="solution">here is the solution</param>,
         <param name="discussion">here is the discussion</param>,
-        <param name="seealso">here is the see-also</param>
+        <param name="see-also">here is the see-also</param>
       )
     ),
     document {
@@ -194,7 +194,7 @@ declare %t:case function t:rebuild-recipe-no-updated-timestamp()
         <param name="problem">here is the problem</param>,
         <param name="solution">here is the solution</param>,
         <param name="discussion">here is the discussion</param>,
-        <param name="seealso">here is the see-also</param>
+        <param name="see-also">here is the see-also</param>
       )
     ),
     document {

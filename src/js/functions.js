@@ -723,6 +723,44 @@ if(typeof jQuery != 'undefined') {
     // e.preventDefault();
     //});
 
+    // Code for the home page
+    if ($('.home').length) {
+
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/player_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      function f(ap) {
+        $(".steps").fadeOut('slow', function() {
+          $("#nsvp").fadeIn('slow', function() {
+            var player = new YT.Player('ns-vidplayer', {
+                width: 460,
+                height: 259,
+                videoId: 'KKFpCTck_ds',
+                playerVars: { autoplay: ap, fs: 1 }
+            });
+          });
+        });
+      }
+
+      if (window.location.hash.substring(1) == 'mm-demo') {
+        f(0);
+      }
+
+      $("#next-steps-video").click(function(e) {
+        f(1);
+      });
+
+      $("#nsb").click(function() {
+        $("#nsvp").fadeOut('slow', function() {
+           $(".steps").fadeIn('slow');
+        });
+      });
+
+      loadRecentContent();
+    }
+    // End Code for home page
 
     // add new functions before this comment
   });

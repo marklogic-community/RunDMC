@@ -293,6 +293,7 @@ as element(api:suggest)*
 
 declare function stp:function-extract(
   $version as xs:string,
+  $link as xs:string?,
   $function as element(),
   $uris-seen as map:map)
 as element(api:function-page)*
@@ -347,7 +348,9 @@ as element(api:function-page)*
     api:fixup-fullname($function, $mode) ! (
       element api:function-name { . },
       stp:suggest(., true())),
-    stp:function-links($version, $mode, $function),
+    if ($link eq "none") then ()
+    else
+      stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };
 
@@ -359,6 +362,7 @@ as element(api:function-page)*
 {
   stp:function-extract(
     $version,
+    $doc/apidoc:module/@link,
     (api:module-extractable-functions(
       stp:add-class-attr-if-needed($doc/apidoc:module),
       ($api:MODE-REST, $api:MODE-XPATH)),
