@@ -1265,7 +1265,7 @@
   <xsl:template match="copyright">
     <p align="center" id="copyright">Copyright ©
       <xsl:value-of select="fn:year-from-date(fn:current-date())"/>
-      MarkLogic Corporation. All rights reserved.
+      MarkLogic Corporation. MARKLOGIC is a registered trademark of MarkLogic Corporation.
     </p>
   </xsl:template>
 
