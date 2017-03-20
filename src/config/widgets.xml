@@ -122,6 +122,14 @@
     <page href="/meet"/>
   </widget>
 
+  <widget href="/widgets/mlw-ad.xml">
+    <page href="/learn"/>
+    <page href="/code"/>
+    <page href="/blog"/>
+    <Post/>
+    <page-tree root="/products"/>
+  </widget>
+
   <widget href="/widgets/mark-logic-bloggers.xml">
     <page href="/blog"/>
     <Post/>

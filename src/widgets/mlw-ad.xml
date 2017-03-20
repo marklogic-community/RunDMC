@@ -1,5 +1,5 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <a href="http://world.marklogic.com/?type=WWW&amp;publisher=Dev">
-    <img style="width:100%" src="/media/promo/mlw-2016.jpg"/>
+  <a href="https://world.marklogic.com/?type=www&amp;publisher=DEV" target="_blank" border="0">
+    <img class="img-responsive" src="http://world.marklogic.com/wp-content/uploads/2017/03/MLW-Banner-2017-03-07.jpg" alt="MarkLogic World 2017 Pick Your City" border="0"/>
   </a>
 </ml:widget>
