@@ -126,6 +126,8 @@
     <page href="/learn"/>
     <page href="/code"/>
     <page href="/blog"/>
+    <Article/>
+    <Project/>
     <Post/>
     <page-tree root="/products"/>
   </widget>
