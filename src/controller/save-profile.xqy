@@ -13,18 +13,18 @@ return
 
         let $email := $user/*:email/string()
 
-        let $_ := users:mkto-sync-lead($email, $user, "MarkLogic Download")
+        let $_ := users:mkto-sync-lead($email, $user, "DMC Signup")
 
         return json:serialize(
             json:object((
                 "status", "ok",
                 "name", $user/name/string()
-            )) 
+            ))
         )
-    else 
+    else
         json:serialize(
             json:object((
                 "status", $valid
             ))
         )
-    
+
