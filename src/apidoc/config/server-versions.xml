@@ -12,5 +12,5 @@
            default="true"
            display="MarkLogic 8"/>
   <version number="9.0"
-           display="MarkLogic 9ea"/>
+           display="MarkLogic 9"/>
 </versions>
