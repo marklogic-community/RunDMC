@@ -113,19 +113,16 @@
         <page display="Roxy" href="/code/roxy"/>
         <page display="SonarQube XQuery Plugin" href="/code/sonar-xquery-plugin"/>
         <page display="xquery-unit" href="/code/xquery-unit"/>
-        <page display="xqut" href="/code/xqut"/>
 
       </group>
       <group display="Loading and processing">
         <page display="MarkLogic Content Pump" href="/products/mlcp"/>
-        <page display="Information Studio Plugins" href="/code/info-studio-plugins"/>
+        <page display="Corb2" href="/code/corb"/>
+        <page display="RDBMS Migration Starter" href="/code/ml-migration-starter"/>
         <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
         <page display="XQSync" href="/code/xqsync"/>
-        <page display="Corb2" href="/code/corb"/>
         <page display="Taskbot" href="/code/taskbot"/>
-        <page display="AutoLoader" href="/code/AutoLoader"/>
-        <page display="Rebalancer" href="/code/task-rebalancer"/>
       </group>
       <group display="Deployment and configuration">
         <page display="Roxy" href="/code/roxy"/>
@@ -133,7 +130,6 @@
         <page display="ML-Gradle" href="/code/ml-gradle"/>
         <page display="mlsound" href="/code/mlsound"/>
         <page display="mlvagrant" href="/code/mlvagrant"/>
-        <page display="Booster" href="/code/booster"/>
       </group>
       <group display="Microsoft Office® Integration">
         <page display="MarkLogic Toolkit for Excel®" pref="1" href="/code/marklogic-toolkit-for-excel"/>
@@ -145,6 +141,7 @@
       </group>
       <group display="Connectors" href="/code/connectors">
         <page display="New Relic" href="/code/new-relic"/>
+        <page display="App Dyanmics" href="/code/app-dynamics"/>
         <page display="MarkLogic Connect: C++, C, C#" href="/code/marklogic-connect"/>
         <page display="MarkMapper" href="/code/markmapper"/>
         <page display="MLPHP" href="/labs/mlphp"/>
@@ -164,23 +161,18 @@
         <page display="xmlsh" href="/code/xmlsh-ext"/>
       </group>
       <group display="Libraries and Frameworks">
+        <page display="Data Hub Framework" href="/code/data-hub-framework"/>
         <page display="Roxy" href="/code/roxy"/>
         <!-- <page display="XQuerrail2" href="/code/xquerrail2"/> -->
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
-        <page display="XQuery Commons" href="/code/commons"/>
         <page display="MarkLogic Workflow" href="/code/workflow"/>
         <page display="Slush generator" href="/code/slush-marklogic-node"/>
-        <page display="mustache.xq" href="/code/mustache.xq"/>
-        <page display="Feed" href="/code/feed"/>
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rxq" href="/labs/rxq"/>
-        <page display="SOAP Router" href="/code/soaprouter"/>
       </group>
       <group display="Miscellany">
-        <page display="jEdit WebDAV Plugin" href="/code/webdavjedit"/>
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
-        <page display="jEdit XQuery Plugin" href="/code/jedit"/>
       </group>
       <group display="Sample apps">
         <page display="Samplestack" href="/code/samplestack"/>
@@ -188,20 +180,8 @@
         <page display="Top Songs" href="/code/top-songs"/>
         <page display="SpringBoot Sample" href="/code/springboot-sample"/>
         <page display="SpringBoot Security Sample" href="/code/springboot-security-sample"/>
-        <page display="Boing Boing" href="/code/boing-boing"/>
-        <page display="Document Discovery" href="/code/document-discovery"/>
-        <page display="Tunage" href="/code/tunage"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
-        <page display="Shakespeare Demo Application" href="/code/bill"/>
-        <page display="Pairs" href="/code/pairs"/>
-        <page display="Heatmap" href="/code/heatmap"/>
-        <page display="Alerting" href="/code/alerting"/>
         <page display="RunDMC" href="/code/rundmc"/>
-        <!--
-        <page display="MLUser" href="/code/mluser"/>
-        -->
-        <page display="MarkLogic API Viewer" href="/code/mlapi-viewer"/>
-        <page display="Photo manager" href="/code/photoman"/>
         <!--
         <page display="MarkMail" href="/code/markmail"/>
         -->
