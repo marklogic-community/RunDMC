@@ -56,7 +56,11 @@ location of your project's src directory. Specify the absolute path.
 
 ### Bootstrapping
 
-Bootstrapping creates the app servers, databases, forests, users, and roles needed to make the application run. 
+Bootstrapping creates the app servers, databases, forests, users, and roles needed to make the application run. Before you do this, there's one customization step you need to run. RunDMC currently expects to find source code on the file system, rather than in a modules directory. That means you need to tell it where to look. Edit your deploy/local.properties file (create it if necessary) and put in a line like this:
+
+    modules-root=/Users/dcassel/Downloads/RunDMC-master/src
+    
+Edit to make the path match your filesystem. It needs to be an absolute path. Once you've done that, you can run the bootstrap command: 
 
     $ ./ml local bootstrap
 
