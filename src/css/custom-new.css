@@ -387,6 +387,10 @@ ul.new-features p {
   text-align: center;
 }
 
+#connect .action {
+  text-transform: uppercase;
+}
+
 div#content {
   padding-bottom: 0;
 }

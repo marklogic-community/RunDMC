@@ -111,33 +111,39 @@
 
       <div class="row">
         <div class="col-sm-3 method">
-          <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
-          <h2>Stack Overflow</h2>
-          <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
-          <p><a href="http://stackoverflow.com/questions/tagged/marklogic
-">View Q&amp;A </a></p>
+          <a href="http://stackoverflow.com/questions/tagged/marklogic">
+            <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
+            <h2>Stack Overflow</h2>
+            <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
+            <p class="action">View Q&amp;A &#8594;</p>
+          </a>
         </div>
 
         <div class="col-sm-3 method">
-          <span class="glyphicon glyphicon-thumbs-up"></span>
-          <h2>User Groups</h2>
-          <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
-          <p><a href="http://developer.marklogic.com/meet
-">Meetup in Your City</a></p>
+          <a href="http://developer.marklogic.com/meet">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            <h2>User Groups</h2>
+            <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
+            <p class="action">Meetup in Your City &#8594;</p>
+          </a>
         </div>
 
         <div class="col-sm-3 method">
-          <img src="/media/github-logo.png" class="glyphicon github-logo"/>
-          <h2>Github</h2>
-          <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
-          <p><a href="http://developer.marklogic.com/code">View Projects</a></p>
+          <a href="http://developer.marklogic.com/code">
+            <img src="/media/github-logo.png" class="glyphicon github-logo"/>
+            <h2>Github</h2>
+            <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
+            <p class="action">View Projects &#8594;</p>
+          </a>
         </div>
 
         <div class="col-sm-3 method">
-          <span class="glyphicon glyphicon-envelope"></span>
-          <h2>Mailing List</h2>
-          <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-          <p><a href="http://developer.marklogic.com/mailman/listinfo/general">Join the Mailing List</a></p>
+          <a href="http://developer.marklogic.com/mailman/listinfo/general">
+            <span class="glyphicon glyphicon-envelope"></span>
+            <h2>Mailing List</h2>
+            <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
+            <p class="action">Join the Mailing List &#8594;</p>
+          </a>
         </div>
       </div>
 
