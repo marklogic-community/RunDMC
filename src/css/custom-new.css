@@ -301,6 +301,19 @@ ul.new-features p {
   width: 233px;
 }
 
+.data-hub img {
+  background-color: #44499c;
+}
+
+.github-logo, .stackoverflow-logo {
+  height: 14px;
+  width: 14px;
+}
+
+#connect .method {
+  padding-left:
+}
+
 .page-cta-wrapper {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -313,4 +326,67 @@ ul.new-features p {
     background-size: cover;
     background-position: 50%;
   }
+}
+
+#hero {
+  margin-bottom: 30px;
+}
+
+#hero h1, #hero p {
+  text-align: center;
+}
+
+#hero .buttons {
+  text-align: center;
+  width: 100%;
+}
+
+#latest-release {
+  border-top: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding-top: 30px;
+}
+
+#latest-release .logo {
+  display: block;
+  margin-left: auto;
+  marigh-right: auto;
+  max-height: 350px;
+}
+
+#journey {
+  border-top: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding-top: 30px;
+}
+
+#key-resources {
+  border-top: 1px solid #ccc;
+  padding-top: 30px;
+}
+
+#connect {
+  background-color: #333;
+  border-top: 1px solid #ccc;
+  color: white;
+  overflow-y: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+#connect h1 {
+  color: white;
+  text-align: center;
+}
+
+#connect h2, #connect a {
+  color: white;
+}
+
+#connect > p {
+  text-align: center;
+}
+
+div#content {
+  padding-bottom: 0;
 }
