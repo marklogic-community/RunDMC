@@ -7,16 +7,32 @@
       <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
       <p>The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
       <div class="buttons">
-        <button class="btn btn-primary">Overview Video</button>
+        <a class="btn btn-primary iframe" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a>
         <a href="/products" class="btn btn-primary">Download Now</a>
       </div>
+    </div>
+
+    <div id="videoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                  <iframe width="640" height="360" frameborder="0" title="MarkLogic Overview"></iframe>
+                  <!--
+                    <iframe width="400" height="300" frameborder="0" allowfullscreen=""></iframe>
+                  -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="latest-release" class="row">
       <div class="col-md-offset-1 col-md-4">
         <img class="logo" src="/media/ml9.png"/>
       </div>
-      <div class="col-md-offset-2 col-md-4">
+      <div class="col-md-offset-2 col-md-4 text">
         <div>
           <label>Latest Release</label>
           <h1>MarkLogic 9</h1>
@@ -150,4 +166,18 @@
     </div>
 
   </div>
+
+  <script>
+    window.onload = function() {
+      $('#overview-video').click(function () {
+          var src = 'https://player.vimeo.com/video/190752203?autoplay=1';
+          $('#videoModal').modal('show');
+          $('#videoModal iframe').attr('src', src);
+      });
+
+      $('#videoModal button').click(function () {
+          $('#videoModal iframe').removeAttr('src');
+      });
+    }
+  </script>
 </ml:page>
