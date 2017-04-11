@@ -38,37 +38,6 @@ return (
       for $p in $posts [1 to $MAX_ENTRIES]
       order by xs:dateTime($p/ml:created/text()) descending
       return
-        <entry xmlns="http://www.w3.org/2005/Atom">
-          <id>{$p/ml:link/text()}</id>
-          <link href="{
-            let $uri := fn:base-uri($p)
-            return
-            if ( (fn:starts-with($uri, "/blog/")) and (fn:ends-with($uri, ".xml")) )
-            then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
-            else if ( (fn:starts-with($uri, "/news/")) and (fn:ends-with($uri, ".xml")) )
-            then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
-            else if ( (fn:starts-with($uri, "/events/")) and (fn:ends-with($uri, ".xml")) )
-            then fn:concat( "http://",xdmp:host-name(), fn:substring ($uri,1, string-length($uri) - string-length(".xml") ) )
-            else ()
-          }"/>
-          <title>{$p/ml:title/text()}</title>
-          <author><name>{$p/ml:author//text()}</name></author>
-          <updated> {
-            if ($p/ml:last-updated/text())
-            then $p/ml:last-updated/text()
-            else string($p/ml:created/text())
-          }
-          </updated>
-          <published>{ string($p/ml:created/text()) }</published>
-          <content type="html">
-            {
-              if ($p/ml:body)
-              then xdmp:quote($p/ml:body, <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)
-              else if ($p/ml:description)
-              then xdmp:quote($p/ml:description//text(), <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>)
-              else ()
-            }
-          </content>
-        </entry>
+        atom:entry($p)
     )
 )
