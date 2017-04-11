@@ -24,20 +24,36 @@ xdmp:set-response-content-type("application/atom+xml; charset=utf-8"),
 let $MAX_ENTRIES := 30
 let $expires := atom:expireInSeconds(60 * 60)
 let $feed := xdmp:get-request-field("feed", "")
+let $page := xs:integer(xdmp:get-request-field("page", "1"))
+let $page-size := 10
 return (
-  let $posts :=
-    for $r in (fn:doc()/ml:Post[@status="Published"],
-               fn:doc()/ml:Announcement[@status="Published"],
-               fn:doc()/ml:Event[@status="Published"])
-    where not(starts-with(base-uri($r), "/preview"))
-    order by xs:dateTime($r/ml:created/text()) descending
-    return $r
-  return
-    atom:feed(
-      "MarkLogic Community Blog",
-      for $p in $posts [1 to $MAX_ENTRIES]
-      order by xs:dateTime($p/ml:created/text()) descending
-      return
-        atom:entry($p)
-    )
+  if ($feed = "recipes") then
+    let $recipe-count := xdmp:estimate(/ml:Recipe)
+    let $start := ($page - 1) * $page-size + 1
+    let $end := $start + $page-size - 1
+    let $_ := xdmp:log("atom: feed=" || $feed || "; start=" || $start || "; end=" || $end)
+    return
+      atom:feed(
+        "MarkLogic Recipes",
+        (/ml:Recipe)[$start to $end] ! atom:entry(.),
+        $page, $recipe-count gt $end
+      )
+  else
+    (: preserve original functionality :)
+    let $posts :=
+      for $r in (fn:doc()/ml:Post[@status="Published"],
+                 fn:doc()/ml:Announcement[@status="Published"],
+                 fn:doc()/ml:Event[@status="Published"])
+      where not(starts-with(base-uri($r), "/preview"))
+      order by xs:dateTime($r/ml:created/text()) descending
+      return $r
+    return
+      atom:feed(
+        "MarkLogic Community Blog",
+        for $p in $posts [1 to $MAX_ENTRIES]
+        order by xs:dateTime($p/ml:created/text()) descending
+        return
+          atom:entry($p),
+        1, fn:false()
+      )
 )

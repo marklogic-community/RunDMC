@@ -12,21 +12,45 @@ declare option xdmp:mapping "false";
 
 declare function atom:feed(
   $title as xs:string,
-  $entries as element(w3atom:entry)*
+  $entries as element(w3atom:entry)*,
+  $page as xs:integer,
+  $more as xs:boolean (: are there more entries after these? :)
 )
 {
-  '<?xml version="1.0" encoding="UTF-8"?>',
-  <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>{$title}</title>
-    <subtitle></subtitle>
-    <link href="{ $s:main-server || xdmp:get-original-url() }" rel="self"/>
-    <updated>{ current-dateTime() }</updated>
-    <id></id>
-    <generator uri="{ $s:main-server || xdmp:get-original-url() }" version="1.0">MarkLogic Community</generator>
-    <icon>{ $s:main-server }/favicon.ico</icon>
-    <logo>{ $s:main-server }/media/marklogic-community-badge.png</logo>
-    { $entries }
-  </feed>
+  let $server-url := xdmp:get-request-protocol() || ":" || $s:main-server
+  let $base-url := $server-url || xdmp:get-original-url()
+  return (
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>{$title}</title>
+      <subtitle></subtitle>
+      <link href="{ $base-url }" rel="self"/>
+      <updated>{ current-dateTime() }</updated>
+      <id></id>
+      <generator uri="{ $base-url }" version="1.0">MarkLogic Community</generator>
+      <icon>{ $server-url }/favicon.ico</icon>
+      <logo>{ $server-url }/media/marklogic-community-badge.png</logo>
+      {
+        if ($page gt 1) then
+          element link {
+            attribute href {
+              fn:replace($base-url, "page=" || $page, "page=" || $page - 1)
+            },
+            attribute rel { "prev" }
+          }
+        else (),
+        if ($more) then
+          element link {
+            attribute href {
+              fn:replace($base-url, "page=" || $page, "page=" || $page + 1)
+            },
+            attribute rel { "next" }
+          }
+        else (),
+        $entries
+      }
+    </feed>
+  )
 };
 
 declare function atom:entry($content)
