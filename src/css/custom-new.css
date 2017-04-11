@@ -415,6 +415,11 @@ ul.new-features p {
   color: #44499c;
 }
 
+#recent {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
 #recent h2 {
   margin-bottom: 40px;
   text-align: center;
