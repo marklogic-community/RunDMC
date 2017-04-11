@@ -15,12 +15,12 @@ declare function atom:feed(
 {
   '<?xml version="1.0" encoding="UTF-8"?>',
   <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>$title</title>
+    <title>{$title}</title>
     <subtitle></subtitle>
-    <link href="{ $s:main-server }/blog/atom.xml" rel="self"/>
+    <link href="{ $s:main-server || xdmp:get-original-url() }" rel="self"/>
     <updated>{ current-dateTime() }</updated>
     <id></id>
-    <generator uri="{ $s:main-server }/blog/atom.xml" version="1.0">MarkLogic Community</generator>
+    <generator uri="{ $s:main-server || xdmp:get-original-url() }" version="1.0">MarkLogic Community</generator>
     <icon>{ $s:main-server }/favicon.ico</icon>
     <logo>{ $s:main-server }/media/marklogic-community-badge.png</logo>
     { $entries }
