@@ -4,13 +4,23 @@
   <div class="home container-fluid">
 
     <div id="hero">
-      <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
-      <div class="row">
-        <p class="col-md-offset-3 col-md-6">The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
-      </div>
-      <div class="buttons">
-        <a class="btn btn-primary iframe" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a>
-        <a href="/products" class="btn btn-primary">Download Now</a>
+      <picture>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"/>
+        <img srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
+      </picture>
+
+      <div class="content">
+        <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
+        <div class="row">
+          <p class="col-md-offset-3 col-md-6">The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
+        </div>
+        <div class="buttons">
+          <a class="btn btn-primary iframe" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a>
+          <a href="/products" class="btn btn-primary">Download Now</a>
+        </div>
       </div>
     </div>
 

@@ -332,10 +332,11 @@ ul.new-features p {
 }
 
 #hero {
-  margin-bottom: 30px;
+  position: relative;
 }
 
-#hero h1, #hero p {
+#hero .content h1, #hero .content p {
+  color: white;
   text-align: center;
 }
 
@@ -350,6 +351,13 @@ ul.new-features p {
 
 #hero a.btn:hover {
   background-color: #5e69b5;
+}
+
+#hero .content {
+  position: absolute;
+  text-align: center;
+  top: 25%;
+  width: 100%;
 }
 
 #latest-release {
