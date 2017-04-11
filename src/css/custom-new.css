@@ -302,12 +302,15 @@ ul.new-features p {
 }
 
 .data-hub img {
-  background-color: #44499c;
 }
 
-.github-logo, .stackoverflow-logo {
-  height: 14px;
-  width: 14px;
+.data-hub img path {
+  fill: red;
+}
+
+#connect .github-logo, #connect .stackoverflow-logo {
+  height: 32px;
+  width: 32px;
 }
 
 #connect .method {
@@ -355,6 +358,16 @@ ul.new-features p {
   padding-top: 30px;
 }
 
+#latest-release label {
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+#latest-release h1 {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
 #latest-release .logo {
   display: block;
   margin-left: auto;
@@ -364,6 +377,14 @@ ul.new-features p {
 
 #latest-release .text {
   transform: translateY(25%);
+}
+
+#latest-release a {
+  background-color: #6f79bd;
+}
+
+#latest-release a:hover {
+  background-color: #5e69b5;
 }
 
 #journey {
@@ -377,6 +398,20 @@ ul.new-features p {
   padding-top: 30px;
 }
 
+#key-resources h1 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+#key-resources h4 a {
+  color: #44499c;
+}
+
+#recent h2 {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
 #connect {
   background-color: #333;
   border-top: 1px solid #ccc;
@@ -388,7 +423,17 @@ ul.new-features p {
 
 #connect h1 {
   color: white;
+  margin-top: 50px;
   text-align: center;
+}
+
+#connect .description {
+  margin-bottom: 50px;
+}
+
+#connect .glyphicon {
+  font-size: xx-large;
+  margin-bottom: 5px;
 }
 
 #connect h2, #connect a {
@@ -401,6 +446,10 @@ ul.new-features p {
 
 #connect .action {
   text-transform: uppercase;
+}
+
+#connect .row {
+  margin-bottom: 70px;
 }
 
 div#content {

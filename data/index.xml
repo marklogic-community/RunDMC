@@ -5,7 +5,9 @@
 
     <div id="hero">
       <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
-      <p>The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
+      <div class="row">
+        <p class="col-md-offset-3 col-md-6">The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
+      </div>
       <div class="buttons">
         <a class="btn btn-primary iframe" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a>
         <a href="/products" class="btn btn-primary">Download Now</a>
@@ -17,6 +19,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Overview Video</h4>
                 </div>
                 <div class="modal-body">
                   <iframe width="640" height="360" frameborder="0" title="MarkLogic Overview"></iframe>
@@ -114,52 +117,54 @@
       </div>
     </div>
 
-    <div class="section-row row">
+    <div id="recent" class="section-row row">
       <div class="container">
         <h2 class="center-block">New and Updated Content</h2>
-        <div id="recent" class="list-group"></div>
+        <div class="list-group"></div>
       </div>
     </div>
 
     <div id="connect" class="">
       <h1>Community</h1>
-      <p>Connect with other MarkLogicians around the world</p>
+      <p class="description">Connect with other MarkLogicians around the world</p>
 
-      <div class="row">
-        <div class="col-sm-3 method">
-          <a href="http://stackoverflow.com/questions/tagged/marklogic">
-            <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
-            <h2>Stack Overflow</h2>
-            <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
-            <p class="action">View Q&amp;A &#8594;</p>
-          </a>
-        </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3 method">
+            <a href="http://stackoverflow.com/questions/tagged/marklogic">
+              <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
+              <h2>Stack Overflow</h2>
+              <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
+              <p class="action">View Q&amp;A &#8594;</p>
+            </a>
+          </div>
 
-        <div class="col-sm-3 method">
-          <a href="http://developer.marklogic.com/meet">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <h2>User Groups</h2>
-            <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
-            <p class="action">Meetup in Your City &#8594;</p>
-          </a>
-        </div>
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/meet">
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+              <h2>User Groups</h2>
+              <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
+              <p class="action">Meetup in Your City &#8594;</p>
+            </a>
+          </div>
 
-        <div class="col-sm-3 method">
-          <a href="http://developer.marklogic.com/code">
-            <img src="/media/github-logo.png" class="glyphicon github-logo"/>
-            <h2>Github</h2>
-            <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
-            <p class="action">View Projects &#8594;</p>
-          </a>
-        </div>
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/code">
+              <img src="/media/github-logo.png" class="glyphicon github-logo"/>
+              <h2>Github</h2>
+              <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
+              <p class="action">View Projects &#8594;</p>
+            </a>
+          </div>
 
-        <div class="col-sm-3 method">
-          <a href="http://developer.marklogic.com/mailman/listinfo/general">
-            <span class="glyphicon glyphicon-envelope"></span>
-            <h2>Mailing List</h2>
-            <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-            <p class="action">Join the Mailing List &#8594;</p>
-          </a>
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/mailman/listinfo/general">
+              <span class="glyphicon glyphicon-envelope"></span>
+              <h2>Mailing List</h2>
+              <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
+              <p class="action">Join the Mailing List &#8594;</p>
+            </a>
+          </div>
         </div>
       </div>
 
