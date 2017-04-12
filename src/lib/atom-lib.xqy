@@ -10,6 +10,36 @@ declare namespace w3atom = "http://www.w3.org/2005/Atom";
 
 declare option xdmp:mapping "false";
 
+declare function atom:next-link($base-url, $more, $page)
+{
+  if ($more) then
+    element { fn:QName("http://www.w3.org/2005/Atom", "link") } {
+      attribute href {
+        if (fn:matches($base-url, "page=")) then
+          fn:replace($base-url, "page=" || $page, "page=" || $page + 1)
+        else if (fn:matches($base-url, "\?")) then
+          $base-url || "&amp;page=" || $page + 1
+        else
+          $base-url || "?page=" || $page + 1
+
+      },
+      attribute rel { "next" }
+    }
+  else ()
+};
+
+declare function atom:prev-link($base-url, $page)
+{
+  if ($page gt 1) then
+    element { fn:QName("http://www.w3.org/2005/Atom", "link") } {
+      attribute href {
+        fn:replace($base-url, "page=" || $page, "page=" || $page - 1)
+      },
+      attribute rel { "prev" }
+    }
+  else ()
+};
+
 declare function atom:feed(
   $title as xs:string,
   $entries as element(w3atom:entry)*,
@@ -30,22 +60,8 @@ declare function atom:feed(
       <icon>{ $server-url }/favicon.ico</icon>
       <logo>{ $server-url }/media/marklogic-community-badge.png</logo>
       {
-        if ($page gt 1) then
-          element link {
-            attribute href {
-              fn:replace($base-url, "page=" || $page, "page=" || $page - 1)
-            },
-            attribute rel { "prev" }
-          }
-        else (),
-        if ($more) then
-          element link {
-            attribute href {
-              fn:replace($base-url, "page=" || $page, "page=" || $page + 1)
-            },
-            attribute rel { "next" }
-          }
-        else (),
+        atom:next-link($base-url, $more, $page),
+        atom:prev-link($base-url, $page),
         $entries
       }
     </feed>
