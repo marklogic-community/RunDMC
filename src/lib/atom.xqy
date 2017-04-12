@@ -35,7 +35,9 @@ return (
     return
       atom:feed(
         "MarkLogic Recipes",
-        (/ml:Recipe)[$start to $end] ! atom:entry(.),
+        for $recipe in (/ml:Recipe)[$start to $end]
+        order by $recipe/ml:last-updated descending
+        return atom:recipe-entry($recipe),
         $page, $recipe-count gt $end
       )
   else
