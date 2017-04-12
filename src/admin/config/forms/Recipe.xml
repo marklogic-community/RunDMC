@@ -17,9 +17,8 @@
                                                   (no auto-timestamps for <ml:last-updated/> on Recipe docs, due
                                                   to the way this field is currently being used "in the wild":
                                                   sometimes a date, sometimes a server version number, etc.). -->
-  <ml:server-version form:label="Server Version"
-                     form:repeating="yes"
-                     form:optional="yes"/>
+  <ml:min-server-version form:label="Minimum Server Version"/>
+  <ml:max-server-version form:label="Maximum Server Version"/>
 
   <ml:tags form:optional="yes">
     <ml:tag form:label="Tag"
