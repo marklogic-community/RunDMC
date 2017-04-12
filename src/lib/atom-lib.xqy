@@ -69,7 +69,9 @@ declare function atom:recipe-entry($recipe as element(ml:Recipe))
       <title>{$recipe/ml:title/fn:string()}</title>
       {
         $recipe/ml:author ! <author><name>{./fn:string()}</name></author>,
-        $recipe/ml:tags
+        $recipe/ml:tags,
+        $recipe/ml:min-server-version,
+        $recipe/ml:max-server-version
       }
       <updated>{$recipe/ml:last-updated/fn:string()}</updated>
       <content type="application/xml">
