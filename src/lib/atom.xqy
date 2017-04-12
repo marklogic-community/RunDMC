@@ -31,7 +31,6 @@ return (
     let $recipe-count := xdmp:estimate(/ml:Recipe)
     let $start := ($page - 1) * $page-size + 1
     let $end := $start + $page-size - 1
-    let $_ := xdmp:log("atom: feed=" || $feed || "; start=" || $start || "; end=" || $end)
     return
       atom:feed(
         "MarkLogic Recipes",
