@@ -542,11 +542,19 @@
   </xsl:template>
 
   <xsl:template mode="ml-versions" match="*">
-    <xsl:if test="count(./server-version) gt 0">
+    <xsl:if test="./min-server-version">
       <p>
         <em>
           Applies to MarkLogic versions
-          <xsl:value-of select="string-join(./server-version, ', ')"/>
+          <xsl:value-of select="./min-server-version"/>
+          <xsl:choose>
+            <xsl:when test="./max-server-version">
+              - <xsl:value-of select="./max-server-version"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>+</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
         </em>
       </p>
     </xsl:if>

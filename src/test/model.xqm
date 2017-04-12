@@ -56,7 +56,7 @@ declare %t:case function t:build-recipe()
       <param name="author[1]">First Author</param>,
       <param name="author[2]">Second Author</param>,
       <param name="last_updated"/>,
-      <param name="server_version[1]">8</param>,
+      <param name="min_server_version">8</param>,
       <param name="tag[1]">tag1</param>,
       <param name="tag[2]">tag2</param>,
       <param name="description">here is the description</param>,
@@ -72,7 +72,7 @@ declare %t:case function t:build-recipe()
         <ml:author>Second Author</ml:author>
         <ml:created>{fn:current-dateTime()}</ml:created>
         <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
-        <ml:server-version>8</ml:server-version>
+        <ml:min-server-version>8</ml:min-server-version>
         <ml:tags>
           <ml:tag>tag1</ml:tag>
           <ml:tag>tag2</ml:tag>
@@ -98,7 +98,7 @@ declare %t:case function t:rebuild-recipe()
           <ml:author>Original Second Author</ml:author>
           <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
           <ml:last-updated>2016-12-14T16:40:35.077403-05:00</ml:last-updated>
-          <ml:server-version>8</ml:server-version>
+          <ml:min-server-version>8</ml:min-server-version>
           <ml:tags>
             <ml:tag>original tag1</ml:tag>
             <ml:tag>original tag2</ml:tag>
@@ -121,7 +121,7 @@ declare %t:case function t:rebuild-recipe()
         <param name="author[1]">First Author</param>,
         <param name="author[2]">Second Author</param>,
         <param name="last_updated">2016-12-15T16:40:35.077403-05:00</param>,
-        <param name="server_version[1]">8</param>,
+        <param name="min_server_version">8</param>,
         <param name="tag[1]">tag1</param>,
         <param name="tag[2]">tag2</param>,
         <param name="description">here is the description</param>,
@@ -138,7 +138,7 @@ declare %t:case function t:rebuild-recipe()
         <ml:author>Second Author</ml:author>
         <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
         <ml:last-updated>2016-12-15T16:40:35.077403-05:00</ml:last-updated>
-        <ml:server-version>8</ml:server-version>
+        <ml:min-server-version>8</ml:min-server-version>
         <ml:tags>
           <ml:tag>tag1</ml:tag>
           <ml:tag>tag2</ml:tag>
@@ -164,7 +164,7 @@ declare %t:case function t:rebuild-recipe-no-updated-timestamp()
           <ml:author>Original Second Author</ml:author>
           <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
           <ml:last-updated>2016-12-14T16:40:35.077403-05:00</ml:last-updated>
-          <ml:server-version>8</ml:server-version>
+          <ml:min-server-version>8</ml:min-server-version>
           <ml:tags>
             <ml:tag>original tag1</ml:tag>
             <ml:tag>original tag2</ml:tag>
@@ -187,7 +187,8 @@ declare %t:case function t:rebuild-recipe-no-updated-timestamp()
         <param name="author[1]">First Author</param>,
         <param name="author[2]">Second Author</param>,
         <param name="last_updated"/>,
-        <param name="server_version[1]">8</param>,
+        <param name="min_server_version">8</param>,
+        <param name="max_server_version">9</param>,
         <param name="tag[1]">tag1</param>,
         <param name="tag[2]">tag2</param>,
         <param name="description">here is the description</param>,
@@ -204,7 +205,8 @@ declare %t:case function t:rebuild-recipe-no-updated-timestamp()
         <ml:author>Second Author</ml:author>
         <ml:created>2016-12-13T16:40:35.077403-05:00</ml:created>
         <ml:last-updated>{fn:current-dateTime()}</ml:last-updated>
-        <ml:server-version>8</ml:server-version>
+        <ml:min-server-version>8</ml:min-server-version>
+        <ml:max-server-version>9</ml:max-server-version>
         <ml:tags>
           <ml:tag>tag1</ml:tag>
           <ml:tag>tag2</ml:tag>
