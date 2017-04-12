@@ -21,12 +21,11 @@ declare function atom:feed(
   let $base-url := $server-url || xdmp:get-original-url()
   return (
     '<?xml version="1.0" encoding="UTF-8"?>',
-    <feed xmlns="http://www.w3.org/2005/Atom">
+    <feed xmlns="http://www.w3.org/2005/Atom" xmlns:ml="http://developer.marklogic.com/site/internal">
       <title>{$title}</title>
-      <subtitle></subtitle>
       <link href="{ $base-url }" rel="self"/>
       <updated>{ current-dateTime() }</updated>
-      <id></id>
+      <id>{$base-url}</id>
       <generator uri="{ $base-url }" version="1.0">MarkLogic Community</generator>
       <icon>{ $server-url }/favicon.ico</icon>
       <logo>{ $server-url }/media/marklogic-community-badge.png</logo>
@@ -53,6 +52,39 @@ declare function atom:feed(
   )
 };
 
+declare function atom:recipe-entry($recipe as element(ml:Recipe))
+{
+  let $server-url := "http:" || $s:main-server
+  let $uri := fn:base-uri($recipe)
+  return
+    <entry xmlns="http://www.w3.org/2005/Atom">
+      <id>{$server-url || $uri}</id>
+      <link>
+        {
+          attribute href {
+            xdmp:get-request-protocol() || ":" || $s:main-server || fn:substring-before($uri, ".xml")
+          }
+        }
+      </link>
+      <title>{$recipe/ml:title/fn:string()}</title>
+      {
+        $recipe/ml:author ! <author><name>{./fn:string()}</name></author>,
+        $recipe/ml:tags
+      }
+      <updated>{$recipe/ml:last-updated/fn:string()}</updated>
+      <content type="application/xml">
+        {
+          $recipe/ml:problem,
+          $recipe/ml:solution,
+          $recipe/ml:privilege,
+          $recipe/ml:index,
+          $recipe/ml:discussion,
+          $recipe/ml:see-also
+        }
+      </content>
+    </entry>
+};
+
 declare function atom:entry($content)
 {
   <entry xmlns="http://www.w3.org/2005/Atom">
@@ -72,7 +104,9 @@ declare function atom:entry($content)
       }
     </link>
     <title>{$content/ml:title/text()}</title>
-    <author><name>{$content/ml:author//text()}</name></author>
+    {
+      $content/ml:author ! <author><name>{./fn:string()}</name></author>
+    }
     <updated> {
       if ($content/ml:last-updated/fn:string()) then
         $content/ml:last-updated/fn:string()
