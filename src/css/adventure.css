@@ -226,7 +226,7 @@ a.hero-box {
   }
 
   .container-main, .section-row {
-    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
   }
 
   .choose-page .adventure-title {

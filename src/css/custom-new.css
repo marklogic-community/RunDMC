@@ -379,7 +379,7 @@ ul.new-features p {
 #latest-release .logo {
   display: block;
   margin-left: auto;
-  marigh-right: auto;
+  margin-right: auto;
   max-height: 350px;
 }
 
@@ -416,6 +416,7 @@ ul.new-features p {
 }
 
 #key-resources {
+  background-color: white;
   border-top: 1px solid #ccc;
   padding-top: 30px;
 }
@@ -430,6 +431,7 @@ ul.new-features p {
 }
 
 #recent {
+  background-color: white;
   border-bottom: none;
   margin-bottom: 0;
 }
