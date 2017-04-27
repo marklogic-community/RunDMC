@@ -6,6 +6,30 @@
       </p>
       <p>The MarkLogic Support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
       <p>Once you've built up your knowledge, you can go for your <a href="http://cdn.marklogic.com/wp-content/uploads/2014/11/MarkLogic-Certification-Program-Web.pdf">certification as a MarkLogic Developer or MarkLogic Administrator</a>.</p>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">MarkLogic 9 Tutorials</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/entity-services"><dt>Entity Services</dt></a>
+            <dd>Design applications around real-world concepts, or <em>entities</em>.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/optic-api"><dt>Optic API</dt></a>
+            <dd>Blends the relational world with rich NoSQL document features by providing the capability to perform joins and aggregates over documents.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/template-driven-extraction"><dt>Template Driven Extraction</dt></a>
+            <dd>Define a <em>relational</em> or <em>semantic</em> lens over your document data, specifying which parts of documents make up rows in a view or triples.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/data-movement-sdk"><dt>Data Movement SDK</dt></a>
+            <dd>Java library for applications that need to move large amounts of data into, out of, or within a MarkLogic cluster.</dd>
+          </dl>
+        </div>
+      </div>
+
     </div>
     <div class="col-md-6">
       <div class="panel panel-default">
@@ -165,6 +189,14 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
           <dl>
             <a href="/learn/data-modeling"><dt>Data Modeling Guidelines</dt></a>
             <dd>General data modeling guidelines for XML and JSON documents in MarkLogic.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/entity-services"><dt>Entity Services</dt></a>
+            <dd>Design applications around real-world concepts, or <em>entities</em>.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/data-movement-sdk"><dt>Data Movement SDK</dt></a>
+            <dd>Java library for applications that need to move large amounts of data into, out of, or within a MarkLogic cluster.</dd>
           </dl>
           <dl>
             <a href="/products/mlcp"><dt>MarkLogic Content Pump</dt></a>
