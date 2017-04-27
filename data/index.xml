@@ -68,7 +68,7 @@
       <div class="container">
         <div class="row adventure-title">
           <div class="col-xs-12">
-            <h2 class="text-center jones">Start your Journey</h2>
+            <h2 class="text-center jones">Start Your Journey</h2>
           </div>
         </div>
         <div class="row start-journey">
@@ -170,7 +170,7 @@
           <div class="col-sm-3 method">
             <a href="http://developer.marklogic.com/code">
               <img src="/media/github-logo.png" class="glyphicon github-logo"/>
-              <h2>Github</h2>
+              <h2>GitHub</h2>
               <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
               <p class="action">View Projects &#8594;</p>
             </a>
