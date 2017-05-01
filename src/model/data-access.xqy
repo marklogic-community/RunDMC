@@ -1071,9 +1071,14 @@ as document-node()
         else
           $params[@name eq "last_updated"]/fn:string()
       },
-      for $version in $params[fn:matches(@name, "server_version\[")]
-      return
-        element ml:server-version { $version/fn:string() },
+      element ml:min-server-version {
+        $params[@name eq "min_server_version"]/fn:string()
+      },
+      if ($params[@name eq "max_server_version"] ne "") then
+        element ml:max-server-version {
+          $params[@name eq "max_server_version"]/fn:string()
+        }
+      else (),
       element ml:tags {
         for $tag in $params[fn:matches(@name, "tag\[")]
         return

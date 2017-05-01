@@ -400,6 +400,8 @@ as xs:string
       and ml:doc-matches-dmc-page-or-preview(doc($doc-url))) then concat(
       "/controller/transform.xqy?src=", $path, "&amp;", $query-string)
     (: Support /blog/atom.xml and some obsolete URLs we used to use for feeds :)
+    else if ($path = "/recipe/atom.xml") then
+      "/lib/atom.xqy?feed=recipes&amp;" || $query-string
     else if ($path =
       ("/blog/atom.xml", "/newsandevents/atom.xml",
         "/news/atom.xml", "/events/atom.xml")) then "/lib/atom.xqy"
