@@ -1,171 +1,212 @@
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <h2>Tutorials</h2>
-  <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about Free <a href="http://mlu.marklogic.com/ondemand/">On Demand</a> and <a href="https://mlu.marklogic.com/registration/">Instructor-Led Training</a> offerings.
-  </p>
-  <p>The MarkLogic Support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
+  <div class="row">
+    <div class="col-md-6">
+      <p>Whether you're new to MarkLogic or a seasoned pro, there's something here for you. Be sure to also visit the <a href="//docs.marklogic.com">online product docs</a>. You may also want to learn more about Free <a href="http://mlu.marklogic.com/ondemand/">On Demand</a> and <a href="https://mlu.marklogic.com/registration/">Instructor-Led Training</a> offerings.
+      </p>
+      <p>The MarkLogic Support team also produces a very helpful <a href="http://help.marklogic.com/Knowledgebase/List">Knowledge base</a>.</p>
+      <p>Once you've built up your knowledge, you can go for your <a href="http://cdn.marklogic.com/wp-content/uploads/2014/11/MarkLogic-Certification-Program-Web.pdf">certification as a MarkLogic Developer or MarkLogic Administrator</a>.</p>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">MarkLogic 9 Tutorials</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/entity-services"><dt>Entity Services</dt></a>
+            <dd>Design applications around real-world concepts, or <em>entities</em>.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/optic-api"><dt>Optic API</dt></a>
+            <dd>Blends the relational world with rich NoSQL document features by providing the capability to perform joins and aggregates over documents.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/template-driven-extraction"><dt>Template Driven Extraction</dt></a>
+            <dd>Define a <em>relational</em> or <em>semantic</em> lens over your document data, specifying which parts of documents make up rows in a view or triples.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/data-movement-sdk"><dt>Data Movement SDK</dt></a>
+            <dd>Java library for applications that need to move large amounts of data into, out of, or within a MarkLogic cluster.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a href="http://www.marklogic.com/resource-type/whitepapers/" class="pull-right">(full list)</a>
+          <h3 class="panel-title">White Papers</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="http://www.marklogic.com/resources/inside-marklogic-server/"><dt>Inside MarkLogic Server</dt></a>
+            <dd>This eBook provides a high-level introduction in Chapter One and then dives deep into technical capabilities that developers and architects will appreciate.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/understanding-system-resources"><dt>Performance: Understanding System Resources</dt></a>
+            <dd>This guide provides details about MarkLogic core functions and operations so that DBAs, Infrastructure Architects, Developers and Engineers can configure MarkLogic for optimal success.</dd>
+          </dl>
+          <dl>
+            <a href="/media/white-paper/hardware-reference-arch-das.pdf"><dt>Hardware Reference Architecture: Direct Attached Storage</dt></a>
+            <dd>Provide details on commodity hardware recommendations, recommended hardware and RAID configurations for
+commodity hardware, and basic forest layout recommendations for Direct Attached Storage.</dd>
+          </dl>
+          <dl>
+            <a href="http://www.marklogic.com/resources/marklogic-aws/"><dt>MarkLogic On AWS</dt></a>
+            <dd>MarkLogic runs easily on Amazon Web Services (AWS), a flexible, cost-effective, easy-to-use cloud computing platform. Read about general best practices and MarkLogic implementation characteristics such as performance, durability, and security with particular attention to identifying features that support scalability, high availability, and fault-tolerance.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <a name="getting-started"></a>
   <h3>Featured tutorials</h3>
-  <table style="width: 100%">
-    <thead>
-      <tr>
-        <th style="width: 50%" rowspan="1" colspan="1" nowrap="none">Java</th>
-        <th style="width: 50%" rowspan="1" colspan="1" nowrap="none">REST</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li><a href="/try/java/index">The Java API in 5 minutes</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Get a taste of what the code looks like.
-                </li>
-              </ul>
-            </li>
-            <li><a href="/learn/java">Learning the MarkLogic Java API</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Take a hands-on deep dive.
-                </li>
-              </ul>
-            </li>
-            <li><a href="/learn/java-pojos">Writing and Searching POJOs</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Learn how MarkLogic makes persisting &amp; searching POJOs a walk in the park.
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li><a href="/try/rest/index">The REST API in 5 minutes</a>
-              <ul></ul>
-              <ul>
-                <li style="list-style-type: none">
-                </li>
-                <li style="list-style-type:none;">
-                  Get a taste of the REST API without getting your hands too dirty.
-                </li>
-              </ul>
-            </li>
-            <li><a href="/learn/rest">Learning the MarkLogic REST API</a>
-              <ul>
-                <li style="list-style-type: none">
-                  This is a hands-on deep dive into managing, searching, and querying data via MarkLogic's REST API.
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr>
-        <th rowspan="1" colspan="1" nowrap="none">XQuery</th>
-        <th rowspan="1" colspan="1" nowrap="none">JavaScript</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li><a href="/learn/get-started-apps">Developing XQuery Applications</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Construct your first simple XQuery application.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/try/ninja/index">Interactive XQuery playground</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Experiment with XQuery in MarkLogic from the comfort of your own browser.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/learn/2009-07-search-api-walkthrough">5-minute guide to the Search API</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Learn hands-on all the building blocks of a powerful search application.
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li><a href="/learn/node-client-api">Node.js Client API Getting Started</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Get started with the MarkLogic Node Client API.
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr>
-        <th rowspan="1" colspan="1" nowrap="none">Semantics</th>
-        <th rowspan="1" colspan="1" nowrap="none">Modeling and Loading Data</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li><a href="/learn/semantics-exercises">Semantics Exercises</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Learn via a series of hands-on challenges.
-                </li>
-              </ul>
-            </li>
-            <li><a href="/learn/semantic-constraint"> Improving Recall with a Semantic Constraint </a>
-              <ul>
-                <li style="list-style-type: none"> How to go beyond text-based search </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-        <td rowspan="1" colspan="1" nowrap="none">
-          <ul>
-            <li>
-              <a href="/learn/data-modeling">Data Modeling Guidelines</a>
-              <ul>
-                <li style="list-style-type: none">
-                  General data modeling guidelines for XML and JSON documents in MarkLogic.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/products/mlcp">MarkLogic Content Pump</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Download and get started using this command-line tool for moving data into and out of MarkLogic.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/learn/5-minute-infostudio-walkthrough">Information Studio walk-through</a>
-              <ul>
-                <li style="list-style-type: none">
-                  Load and transform data using MarkLogic's extensible, browser-based Information Studio.
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Java</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/try/java/index"><dt>The Java API in 5 minutes</dt></a>
+            <dd>Get a taste of what the code looks like.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/java"><dt>Learning the MarkLogic Java API</dt></a>
+            <dd>Take a hands-on deep dive.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/java-pojos"><dt>Writing and Searching POJOs</dt></a>
+            <dd>Learn how MarkLogic makes persisting &amp; searching POJOs a walk in the park.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">REST</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+      <a href="/try/rest/index"><dt>The REST API in 5 minutes</dt></a>
+            <dd>Get a taste of the REST API without getting your hands too dirty.</dd>
+          </dl>
+          <dl>
+      <a href="/learn/rest"><dt>Learning the MarkLogic REST API</dt></a>
+            <dd>This is a hands-on deep dive into managing, searching, and querying data via MarkLogic's REST API.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">XQuery</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+      <a href="/learn/get-started-apps"><dt>Developing XQuery Applications</dt></a>
+            <dd>Construct your first simple XQuery application.</dd>
+          </dl>
+          <dl>
+            <a href="/try/ninja/index"><dt>Interactive XQuery playground</dt></a>
+            <dd>Experiment with XQuery in MarkLogic from the comfort of your own browser.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/2009-07-search-api-walkthrough"><dt>5-minute guide to the Search API</dt></a>
+            <dd>Learn hands-on all the building blocks of a powerful search application.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">JavaScript</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/node-in-5-minutes"><dt>The Node.js Client API in 5-minutes</dt></a>
+            <dd>A quick taste of the Node.js Client API.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/node-client-api"><dt>Node.js Client API Getting Started</dt></a>
+            <dd>Get started with the MarkLogic Node Client API.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/jsearch-in-5-minutes"><dt>JSearch in 5 Minutes</dt></a>
+            <dd>Get a taste of the Server-side JavaScript JSearch API.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/sjs/concepts"><dt>Server-side JavaScript Getting Started</dt></a>
+            <dd>Get started with the Server-side JavaScript JSearch API.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Semantics</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/semantics-questions"><dt>Questions About Semantics</dt></a>
+            <dd>Have questions about Semantics? We've got answers.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/semantics-exercises"><dt>Semantics Exercises</dt></a>
+            <dd>Learn via a series of hands-on challenges.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/semantics-recipe-book-semantic-infobox"><dt>Semantics Recipe Book: Semantic Infobox</dt></a>
+            <dd>Present facts relevant to a search</dd>
+          </dl>
+          <dl>
+            <a href="/learn/semantic-constraint"><dt>Improving Recall with a Semantic Constraint</dt></a>
+            <dd>How to go beyond text-based search</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Modeling and Loading Data</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/data-modeling"><dt>Data Modeling Guidelines</dt></a>
+            <dd>General data modeling guidelines for XML and JSON documents in MarkLogic.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/entity-services"><dt>Entity Services</dt></a>
+            <dd>Design applications around real-world concepts, or <em>entities</em>.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/data-movement-sdk"><dt>Data Movement SDK</dt></a>
+            <dd>Java library for applications that need to move large amounts of data into, out of, or within a MarkLogic cluster.</dd>
+          </dl>
+          <dl>
+            <a href="/products/mlcp"><dt>MarkLogic Content Pump</dt></a>
+            <dd>Download and get started using this command-line tool for moving data into and out of MarkLogic.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <h3>Other tutorials</h3>
   <ml:document-list type="Tutorial"/>
   <h3>Videos</h3>

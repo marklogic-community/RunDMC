@@ -301,6 +301,22 @@ ul.new-features p {
   width: 233px;
 }
 
+.data-hub img {
+}
+
+.data-hub img path {
+  fill: red;
+}
+
+#connect .github-logo, #connect .stackoverflow-logo {
+  height: 32px;
+  width: 32px;
+}
+
+#connect .method {
+  padding-left:
+}
+
 .page-cta-wrapper {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -313,4 +329,170 @@ ul.new-features p {
     background-size: cover;
     background-position: 50%;
   }
+}
+
+#hero {
+  position: relative;
+}
+
+#hero .content h1, #hero .content p {
+  color: white;
+  text-align: center;
+}
+
+#hero .buttons {
+  text-align: center;
+  width: 100%;
+}
+
+#hero a.btn {
+  background-color: white;
+  color: #6f79bd;
+}
+
+#hero a.btn:hover {
+}
+
+#hero .content {
+  position: absolute;
+  text-align: center;
+  top: 25%;
+  width: 100%;
+}
+
+#latest-release {
+  border-top: 1px solid #ccc;
+  margin-bottom: 55px;
+  padding-top: 55px;
+}
+
+#latest-release label {
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+#latest-release h1 {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+#latest-release .logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 350px;
+}
+
+#latest-release .text {
+  /* transform: translateY(10%); */
+}
+
+#latest-release a.btn {
+  background-color: #6f79bd;
+}
+
+#latest-release a.btn:hover {
+  background-color: #5e69b5;
+}
+
+#latest-release .pointers {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  overflow-y: auto;
+}
+
+#latest-release .pointer {
+  color: #6068B2;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#journey {
+  border-top: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding-top: 30px;
+}
+
+#key-resources {
+  background-color: white;
+  border-top: 1px solid #ccc;
+  padding-top: 30px;
+}
+
+#key-resources h1 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+#key-resources h4 a {
+  color: #44499c;
+}
+
+#recent {
+  background-color: white;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+#recent .list-group-item .glyphicon {
+  color: #6068B2;
+  font-size: 24px;
+  margin-top: 5px;
+  margin-right: 15px;
+  top: 0;
+}
+
+#recent h2 {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+#connect {
+  background-color: #333;
+  border-top: 1px solid #ccc;
+  color: white;
+  overflow-y: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+#connect h1 {
+  color: white;
+  margin-top: 50px;
+  text-align: center;
+}
+
+#connect .description {
+  margin-bottom: 50px;
+}
+
+#connect .glyphicon {
+  font-size: xx-large;
+  margin-bottom: 5px;
+}
+
+#connect h2, #connect a {
+  color: white;
+}
+
+#connect > p {
+  text-align: center;
+}
+
+#connect .action {
+  text-transform: uppercase;
+}
+
+#connect .row {
+  margin-bottom: 70px;
+}
+
+div#content {
+  padding-bottom: 0;
+}
+
+#videoModal .modal-content {
+  width: 675px;
 }

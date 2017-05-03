@@ -1,12 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
-  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen" />
+  <link href="/css/v-7/adventure.css" rel="stylesheet" type="text/css" media="screen"/>
   <div class="home container-fluid">
+
+    <div id="hero">
+      <picture>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"/>
+        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"/>
+        <img srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
+      </picture>
+
+      <div class="content">
+        <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
+        <div class="row">
+          <p class="col-md-offset-3 col-md-6">The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
+        </div>
+        <div class="buttons">
+          <a class="btn btn-primary iframe" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a>
+          <a href="/products" class="btn btn-primary">Download Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="videoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Overview Video</h4>
+                </div>
+                <div class="modal-body">
+                  <iframe width="640" height="360" frameborder="0" title="MarkLogic Overview"></iframe>
+                  <!--
+                    <iframe width="400" height="300" frameborder="0" allowfullscreen=""></iframe>
+                  -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="latest-release" class="row">
+      <div class="col-md-offset-1 col-md-4 col-sm-12">
+        <img class="logo" src="/media/ml9.png"/>
+      </div>
+      <div class="col-md-offset-2 col-md-4 text col-xs-offset-1 col-xs-10">
+        <div>
+          <label>Latest Release</label>
+          <h1>MarkLogic 9</h1>
+          <p>MarkLogic 9 is our most ambitious release ever. It includes major new features to improve data integration, security, and manageability—all designed to make integrating data from silos easier and faster, and to ensure that your integrated data is well-governed and managed.</p>
+          <div class="pointers">
+            <a href="" class="pointer">
+              <span>MarkLogic 9 White Paper</span>
+              <span class="glyphicon glyphicon-download-alt"></span>
+            </a>
+            <a href="" class="pointer">Quick Tutorials &#8250;</a>
+            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes &#8250;</a>
+            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training &#8250;</a>
+          </div>
+          <a href="/products" class="btn btn-primary">Download MarkLogic 9</a>
+        </div>
+      </div>
+    </div>
+
     <div class="section-row adventure">
       <div class="container">
         <div class="row adventure-title">
           <div class="col-xs-12">
-            <h2 class="text-center jones">Start your Journey</h2>
+            <h2 class="text-center jones">Start Your Journey</h2>
           </div>
         </div>
         <div class="row start-journey">
@@ -34,108 +96,21 @@
       </div>
     </div>
 
-    <div class="section-row main-wrapper">
+    <div id="key-resources" class="section-row">
       <div class="container">
-        <div class="row">
-          <div class="col col-sm-5" rel="3mOCOrFQ_N0">
-            <div class="still" id="what-is-still">
-              <a href="http://www.youtube.com/embed/ZM9Z5agNE0k?autoplay=1&amp;rel=0&amp;vq=hd720">
-                <i class="glyphicon glyphicon-play-circle"></i>
-              </a>
-            </div>
-          </div>
-          <div class="col col-sm-offset-1 col-sm-5">
-            <h1>MarkLogic 8</h1>
-            <p class="lead">Enterprise NoSQL Database Platform</p>
-            <p>MarkLogic 8 is a new generation database built with a flexible data model to store, manage, and search JSON, XML, RDF, and more — without sacrificing any of the data resiliency and consistency features of last-generation relational databases.</p>
-            <p>
-              <a class="btn btn-default btn-sm" href="/products" id="download-button">Free Download</a>
-            </p>
-          </div>
+        <div>
+          <h1>Key Resources</h1>
         </div>
-      </div>
-    </div>
-    <style xml:space="preserve">
-      .hp-promotion-wrapper {
-        box-shadow: 0px 1px 3px 0px #878787;
-        -moz-box-shadow: 0px 1px 3px 0px #878787;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        float:left;
-        width: 460px;
-        margin-right: 50px;
-      }
-
-      .hp-promotion-wrapper .hp-promotion-inner {
-        padding:12px;
-        overflow:auto;
-      }
-
-      .hp-promotion-wrapper .promotion-thumbnail {
-        width:30%;
-        float:left;
-        text-align:center;
-      }
-
-      .hp-promotion-wrapper .promotion-excerpt {
-        width:70%;
-        float:left;
-        /*min-height:px;*/
-      }
-
-      .hp-promotion-wrapper h2 {
-
-        background:#1a1a1a url(/media/home/promotion-arrow.png) no-repeat 6px 50%;
-
-        font-size:1.2em;
-        display:block;
-        padding:4px 30px 4px 30px;
-        /*background:#1a1a1a; */
-        color:#fff;
-
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-
-        -webkit-margin-before: 0em;
-        -webkit-margin-after: 0em;
-        -webkit-border-top-left-radius: 3px;
-        -webkit-border-top-right-radius: 3px;
-        -moz-border-radius-topleft: 3px;
-        -moz-border-radius-topright: 3px;
-      }
-
-      .hp-promotion-wrapper h3 {
-        font-size:1.2em;
-        line-height:1.2em;
-        margin:0;
-        padding:0;
-      }
-
-      .hp-promotion-wrapper h3 a {
-        color:#01639D;
-      }
-
-      .hp-promotion-wrapper p  {
-        color:#666;
-        margin:0;
-      }
-
-    </style>
-
-    <div class="section-row">
-      <div class="container">
 
         <div class="row learn-more">
-          <div class="col-sm-3">
-            <img src="/media/samplestack-and-icon.png"/>
-            <h4><a href="/features/samplestack">Samplestack</a></h4>
-            <p>Build a three-tiered sample application that demostrates key
-              MarkLogic concepts using the latest features.</p>
-            <p><a href="/features/samplestack" class="btn btn-default btn-xs">Learn More ›</a></p>
+          <div class="col-sm-3 data-hub col-xs-10">
+            <img src="/media/odh.svg"/>
+            <h4><a href="/code/data-hub">Data Hub Framework</a></h4>
+            <p>Free and open source framework to quickly build an Operational Data Hub.</p>
+            <p><a href="/code/data-hub" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-10">
             <img src="/media/qconsole-notebook.png"/>
             <h4><a href="https://mlu.marklogic.com/registration/">Free Training</a></h4>
             <p>Hands-on, instructor-led training to teach everything from the
@@ -143,14 +118,14 @@
             <p><a href="https://mlu.marklogic.com/registration/" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-10">
             <img src="/media/paper/resource-consumption.png"/>
             <h4><a href="/learn/understanding-system-resources">Understanding Resource Consumption</a></h4>
             <p>Learn details about MarkLogic core functions and operations and configure MarkLogic for optimal success.</p>
             <p><a href="/learn/understanding-system-resources" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-10">
             <img src="/media/amazon.png"/>
             <h4><a href="/products/aws">Deploy on AWS</a></h4>
             <p>Get going in minutes with MarkLogic in the Amazon cloud using the
@@ -161,16 +136,72 @@
       </div>
     </div>
 
-    <div class="section-row row">
+    <div id="recent" class="section-row row">
       <div class="container">
         <h2 class="center-block">New and Updated Content</h2>
-        <div id="recent" class="list-group"></div>
+        <div class="list-group"></div>
       </div>
     </div>
 
-    <div class="row page-cta-wrapper">
-      <a href="/mailman/listinfo/general" class="btn btn-default col-md-4 col-md-offset-4 col-xs-12">Connect: Join the Developer List</a>
+    <div id="connect" class="">
+      <h1>Community</h1>
+      <p class="description">Connect with other MarkLogicians around the world</p>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3 method">
+            <a href="http://stackoverflow.com/questions/tagged/marklogic">
+              <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
+              <h2>Stack Overflow</h2>
+              <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
+              <p class="action">View Q&amp;A &#8594;</p>
+            </a>
+          </div>
+
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/meet">
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+              <h2>User Groups</h2>
+              <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
+              <p class="action">Meetup in Your City &#8594;</p>
+            </a>
+          </div>
+
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/code">
+              <img src="/media/github-logo.png" class="glyphicon github-logo"/>
+              <h2>GitHub</h2>
+              <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
+              <p class="action">View Projects &#8594;</p>
+            </a>
+          </div>
+
+          <div class="col-sm-3 method">
+            <a href="http://developer.marklogic.com/mailman/listinfo/general">
+              <span class="glyphicon glyphicon-envelope"></span>
+              <h2>Mailing List</h2>
+              <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
+              <p class="action">Join the Mailing List &#8594;</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
+
+  <script>
+    window.onload = function() {
+      $('#overview-video').click(function () {
+          var src = 'https://player.vimeo.com/video/190752203?autoplay=1';
+          $('#videoModal').modal('show');
+          $('#videoModal iframe').attr('src', src);
+      });
+
+      $('#videoModal button').click(function () {
+          $('#videoModal iframe').removeAttr('src');
+      });
+    }
+  </script>
 </ml:page>
