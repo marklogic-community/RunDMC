@@ -51,11 +51,11 @@
           <h1>MarkLogic 9</h1>
           <p>MarkLogic 9 is our most ambitious release ever. It includes major new features to improve data integration, security, and manageability—all designed to make integrating data from silos easier and faster, and to ensure that your integrated data is well-governed and managed.</p>
           <div class="pointers">
-            <a href="" class="pointer">
+            <a href="/media/white-paper/whats-new-in-marklogic-9.pdf" class="pointer">
               <span>MarkLogic 9 White Paper</span>
               <span class="glyphicon glyphicon-download-alt"></span>
             </a>
-            <a href="" class="pointer">Quick Tutorials &#8250;</a>
+            <a href="/learn" class="pointer">Quick Tutorials &#8250;</a>
             <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes &#8250;</a>
             <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training &#8250;</a>
           </div>
