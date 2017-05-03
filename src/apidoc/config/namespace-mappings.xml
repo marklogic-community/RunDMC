@@ -13,6 +13,7 @@
   <namespace lib="dom" uri="http://marklogic.com/cpf/domains"/>
   <namespace lib="ec2" uri="http://marklogic.com/ec2"/>
   <namespace lib="entity" uri="http://marklogic.com/entity"/>
+  <namespace lib="es" uri="http://marklogic.com/entity-services"/>
   <namespace lib="excel" uri="http://marklogic.com/cpf/excel"/>
   <namespace lib="exsl" uri="http://exslt.org/common"/>
   <namespace lib="flexrep" uri="http://marklogic.com/xdmp/flexible-replication"/>
