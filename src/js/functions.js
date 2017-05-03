@@ -831,7 +831,7 @@ function loadRecentContent() {
     url: '/recent',
     dataType: 'json',
     success: function(data) {
-      var recent = $('#recent');
+      var recent = $('#recent .list-group');
       if (data) {
         data.forEach(function(item) {
           recent.append(
