@@ -15,15 +15,15 @@
     </platform>
 
     <platform name="Microsoft Windows (7, 10, and Server 2012)">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-amd64.msi" size="174 MB" sha1="16998f23cd61a78f3f1478ed957a45c3e0a447c0" date="2017-05-04">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-amd64.msi" size="368 MB" sha1="f37b1476bffc0bfedf2675adc1d2a2e97361c698" date="2017-05-03">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
     </platform>
 
     <platform name="Mac OS X 10.11">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-x86_64.dmg" size="140 MB" sha1="9f7c8617f834b1717084ab3582a94f25cee3c274" date="2017-05-04">OS X disk image </download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-x86_64.dmg" size="237 MB" sha1="6daeed38ae24b5705fabf2b08e397f8d35124181" date="2017-05-03">OS X disk image </download>
     </platform>
 
     <platform name="Red Hat Enterprise Linux / CentOS, Version 7">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-RHEL7-9.0-1.x86_64.rpm" size="197 MB" sha1="f0b4eea0f0ba8c4d995e5defd7c349063d4ee656" date="2017-05-04">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1.x86_64.rpm" size="307 MB" sha1="01e5a7ce3ee07c9acc98d69a649e8dc317b84740" date="2017-05-03">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
     </platform>
 
   </product-info>

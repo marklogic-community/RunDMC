@@ -15,7 +15,7 @@
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/java-client-api-3.0.7-with-dependencies.zip" size="6.9MB" date="2017-02-15" sha1="77d7619f29c2277da95df1a697b8a42e14668e04">Release 3.0.7 zip package (compatible with MarkLogic 8)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-4.0.1.zip" size="18MB" date="2017-05-02" sha1="ed27dcb5b430888e39e176edde85402ef053fb6a">Release 4.0.1 zip package (compatible with MarkLogic 9)</ml:download>
       <!--
 
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
