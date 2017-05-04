@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page status="Published"
+  xmlns="http://developer.marklogic.com/site/internal"
+  xmlns:x="http://www.w3.org/1999/xhtml">
+
+  <x:ul class="info">
+    <x:li><x:a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</x:a></x:li>
+    <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
+    <x:li><x:a href="/products/marklogic-server/requirements-9.0">Review System Requirements  »</x:a></x:li>
+  </x:ul>
+
+  <product-info name="MarkLogic 9">
+    <platform name="Amazon Web Services">
+      <download anchor-class="" href="/products/aws" size="" md5="" date="2017-05-04">AMIs and Cloud Formation Templates</download>
+    </platform>
+
+    <platform name="Microsoft Windows (7, 10, and Server 2012)">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-amd64.msi" size="174 MB" sha1="16998f23cd61a78f3f1478ed957a45c3e0a447c0" date="2017-05-04">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
+    </platform>
+
+    <platform name="Mac OS X 10.11">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-x86_64.dmg" size="140 MB" sha1="9f7c8617f834b1717084ab3582a94f25cee3c274" date="2017-05-04">OS X disk image </download>
+    </platform>
+
+    <platform name="Red Hat Enterprise Linux / CentOS, Version 7">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-RHEL7-9.0-1.x86_64.rpm" size="197 MB" sha1="f0b4eea0f0ba8c4d995e5defd7c349063d4ee656" date="2017-05-04">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
+    </platform>
+
+  </product-info>
+
+  <product-documentation>
+    <old-doc desc="Online 9.0 product documentation" path="//docs.marklogic.com/"/>
+    <new-doc source="/guide/installation"/>
+    <new-doc source="/guide/relnotes"/>
+    <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_9_pubs.zip"/>
+  </product-documentation>
+  <x:br clear="none"/>
+  <x:hr noshade="none"/>
+  <x:h4>Older versions</x:h4>
+  <x:p>
+You can find previous releases of MarkLogic Server here
+    <x:ul>
+      <x:li><x:a href="/products/marklogic-server/8.0">8.0</x:a></x:li>
+      <x:li><x:a href="/products/marklogic-server/7.0">7.0</x:a></x:li>
+    </x:ul>
+  </x:p>
+</page>
