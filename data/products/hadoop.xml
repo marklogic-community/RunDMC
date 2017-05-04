@@ -11,12 +11,10 @@ modification.</p>
 
   <ml:product-info>
     <ml:platform name="Downloads">
-      <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.1.6.4.zip" size="1.5 MB" date="2017-04-11">Connector 2.1.6.4 zip</ml:download>
-    <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.1.6.4-src.zip" size="192 KB" date="2017-04-11">Connector 2.1.6.4 source zip</ml:download>
+      <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.2.1.zip" size="3.5 MB" date="2017-05-02">Connector 2.2.1 zip</ml:download>
+      <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.2.1-src.zip" size="270 KB" date="2017-05-02">Connector 2.2.1 source zip</ml:download>
     </ml:platform>
   </ml:product-info>
-
-  <p> </p>
 
   <p>The Connector for Hadoop is a drop-in extension to Hadoop's MapReduce framework that allows you to
 easily and efficiently communicate with a MarkLogic database from within a MapReduce job.
@@ -38,8 +36,6 @@ You can use the connector to:</p>
     <li>Rely on the connector to optimize data access (for both locality and streaming IO) across MarkLogic forests</li>
   </ul>
 
-  <p> </p>
-
   <p>The Connector's drop-in set of Java classes includes:</p>
 
   <ul>
@@ -58,12 +54,27 @@ You can use the connector to:</p>
 
   <p><a id="id_pgfId-1073568"></a>You can now download a pre-packaged Hadoop HDFS client bundle and install this bundle on your MarkLogic hosts. A bundle is available for each supported Hadoop distribution. Use of one of these bundles is required if you use HDFS for forest storage.</p>
 
+  <h3><strong>Downloads for MarkLogic 9.0-1</strong></h3>
+
+  <p><a href="/download/binaries/hadoop/hadoop-hdfs-cdh-9.0-1.tar.gz">Client Bundle for CDH 5.8</a></p>
+
+  <p><a href="/download/binaries/hadoop/hadoop-hdfs-hdp-9.0-1.tar.gz">Client Bundle for HDP 2.4</a></p>
+
+  <p><a href="/download/binaries/hadoop/hadoop-mapr-9.0-1.tar.gz">Client Bundle for MapR 5.1</a></p>
+
+
   <h3><strong>Downloads for MarkLogic 8.0-6</strong></h3>
 
   <p><a href="/download/binaries/hadoop/hadoop-hdfs-cdh-8.0-6.4.tar.gz">Client Bundle for CDH 5.8</a></p>
 
   <p><a href="/download/binaries/hadoop/hadoop-hdfs-hdp-8.0-6.4.tar.gz">Client Bundle for HDP 2.4</a></p>
 
+  <ml:product-info>
+    <ml:platform name="Downloads for MarkLogic 8.0-3+">
+      <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.1.6.4.zip" size="1.5 MB" date="2017-04-11">Connector 2.1.6.4 zip</ml:download>
+      <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.1.6.4-src.zip" size="192 KB" date="2017-04-11">Connector 2.1.6.4 source zip</ml:download>
+    </ml:platform>
+  </ml:product-info>
   <ml:product-info>
     <ml:platform name="Downloads for MarkLogic 8.0-1 and 8.0-2">
       <ml:download href="/download/binaries/hadoop/Connector-for-Hadoop2-2.1-2.zip" size="1.9 MB">Connector 2.1-2 zip for Cloudera Distribution of Hadoop 4.3</ml:download>
