@@ -6,6 +6,17 @@ The MarkLogic ODBC driver lets you add MarkLogic as a new ODBC data source to yo
 existing BI Tool installation.
 </p>
   <ml:product-info name="MarkLogic ODBC Driver">
+    <ml:platform name="MarkLogic 9, Linux (64-bit Red Hat Enterprise Linux 7)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1.x86_64.rpm" size="737 KB" date="2016-05-03" sha1="9d909d9725aabf829cd43afba966e6ae23f27ffa">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+    <ml:platform name="MarkLogic 9, Microsoft Windows (7, 10, Server 2012)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1-i686.msi" size="3.9MB" date="2016-05-03" sha1="cd53e808734c314ab61870aa527704e9ffba5343">32-bit ODBC Driver
+      </ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1-amd64.msi" size="4.6MB" date="2016-05-03" sha1="9e9d73b664fa0fc7d9e928d4fda193d890be9cac">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+
     <ml:platform name="MarkLogic 8, Linux (64-bit Red Hat Enterprise Linux 6 and 7)">
       <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.2-6.x86_64.rpm" size="632 KB" date="2016-10-14" sha1="60da4e2cc5cf7060ff61de3bf80f62fd232bb587">64-bit ODBC Driver
       </ml:download>
@@ -16,7 +27,8 @@ existing BI Tool installation.
       <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.2-6-amd64.msi" size="4.1MB" date="2016-10-14" sha1="f33313d714b21687cdcf317f53a98a9ec332f8cd">64-bit ODBC Driver
       </ml:download>
     </ml:platform>
-      <ml:platform name="MarkLogic 7, Linux (Red Hat Enterprise Linux, Versions 6)">
+
+    <ml:platform name="MarkLogic 7, Linux (Red Hat Enterprise Linux, Versions 6)">
       <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-6.x86_64.rpm" size="632 KB" sha1="419fb6b44a685a579b66b7c6583d6317fb51df05" date="2016-01-28">64-bit ODBC Driver
       </ml:download>
     </ml:platform>
@@ -29,9 +41,9 @@ existing BI Tool installation.
   </ml:product-info>
   <p>
   <ml:product-documentation>
-        <ml:new-doc source="/guide/sql/odbc-driver"/>
-        <ml:new-doc source="/guide/sql"/>
-        <ml:new-doc source="/guide/admin/odbc"/>
-      </ml:product-documentation>
+    <ml:new-doc source="/guide/sql/odbc-driver"/>
+    <ml:new-doc source="/guide/sql"/>
+    <ml:new-doc source="/guide/admin/odbc"/>
+  </ml:product-documentation>
   </p>
 </ml:page>
