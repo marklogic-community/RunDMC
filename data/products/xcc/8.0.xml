@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <p>
+The XML Contentbase Connector (XCC) is an interface to communicate with MarkLogic Server from a Java or .NET middleware application layer.
+It provides APIs for
+    <ul>
+      <li>Evaluating stored XQuery programs</li>
+      <li>Dynamic construction and evaluation of XQuery programs from Java (or .Net) code</li>
+      <li>Type marshalling</li>
+      <li>Document management and streaming inserts</li>
+    </ul>
+  </p>
+  <ml:product-info name="XCC for MarkLogic 8">
+    <ml:platform name="Java">
+      <ml:download anchor-class="track-download" href="/download/binaries/8.0/MarkXCC.Java-8.0-6.3.zip" size="2.2 MB" date="2017-02-15" sha1="a638866114816138516c722692b12e2d327fb37c">XCC Java distribution (includes javadoc)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/8.0/MarkXCC.Java-8.0-6.3-src.zip" size="280 KB" date="2017-02-15" sha1="a141540becad83e4516c8911b6a0f5fc88472d6b">XCC Java source</ml:download>
+      <ml:download href="/maven2" size="" date="2016-10-14" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+    </ml:platform>
+    <ml:maven>
+      <ml:artifact id="marklogic-xcc" version="8.0.6"/>
+      <ml:artifact id="marklogic-xcc-examples" version="8.0.6"/>
+    </ml:maven>
+    <ml:platform name=".NET">
+      <ml:download anchor-class="track-download" href="/download/binaries/8.0/MarkXCC.Net-8.0-6.3.zip" size="18MB" date="2017-02-15" sha1="4b08d2baddc3fae8366db95a448d1967d7080195">XCC .NET distribution (includes API docs)</ml:download>
+    </ml:platform>
+  </ml:product-info>
+  <ml:product-documentation>
+    <ml:new-doc type="javadoc" title="XCC Javadoc" source="/javadoc/xcc"/>
+    <ml:new-doc type="dotnet" title="XCC .NET API" source="/dotnet/xcc"/>
+    <ml:new-doc source="/guide/xcc"/>
+  </ml:product-documentation>
+  <br clear="none"/>
+  <hr noshade="none"/>
+  <h4>Older versions</h4>
+  <p>
+    You can find previous versions of XCC for previous releases of MarkLogic here
+    <ul>
+      <li><a href="/products/xcc/7.0">XCC for 7.0</a></li>
+    </ul>
+  </p>
+</ml:page>
