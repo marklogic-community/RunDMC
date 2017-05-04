@@ -10,9 +10,11 @@
   </x:ul>
 
   <product-info name="MarkLogic 9">
+    <!--
     <platform name="Amazon Web Services">
       <download anchor-class="" href="/products/aws" size="" md5="" date="2017-05-04">AMIs and Cloud Formation Templates</download>
     </platform>
+    -->
 
     <platform name="Microsoft Windows (7, 10, and Server 2012)">
       <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-1-amd64.msi" size="368 MB" sha1="f37b1476bffc0bfedf2675adc1d2a2e97361c698" date="2017-05-03">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
