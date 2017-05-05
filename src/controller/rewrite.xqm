@@ -288,7 +288,8 @@ declare function m:forbidden($path as xs:string)
 {
   not(ends-with($path, ".zip"))
   and (
-    starts-with($path,'/download/binaries/8.0')
+    starts-with($path,'/download/binaries/9.0')
+    or starts-with($path,'/download/binaries/8.0')
     or starts-with($path,'/download/binaries/7.0')
     or starts-with($path,'/download/binaries/6.0')
     or starts-with($path,'/download/binaries/5.0')
