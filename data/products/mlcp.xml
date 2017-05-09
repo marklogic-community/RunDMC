@@ -77,14 +77,40 @@ databases. It is designed for integration and automation in existing workflows a
     attached to your database (running on port 8006, for example, below). From
     the command line, run the following, substituting your particulars.
   </p>
-  <script src="https://gist.github.com/3494150.js?file=mlcp-example-1.sh" xml:space="preserve"></script>`
+
+  <textarea class="codemirror shell">
+mlcp.sh import \
+ -host localhost \
+ -port 8006 \
+ -username user \
+ -password ******* \
+ -input_file_path /data/latest</textarea>
 
   <p>To export a subset of that same database into a platform-independent archive:</p>
-  <script src="https://gist.github.com/3494150.js?file=mlcp-example-2.sh" xml:space="preserve"></script>
+
+  <textarea class="codemirror shell">
+mlcp.sh export \
+ -host localhost \
+ -port 8006 \
+ -username user \
+ -password ******* \
+ -output_type archive \
+ -output_file_path /out/collections \
+ -compress true</textarea>
+
   <p>To import all triples from an N-Triples formated file named
     <code>example.nt</code>:
   </p>
-  <script src="https://gist.github.com/3494150.js?file=mlcp-example-rdf.sh" xml:space="preserve"></script>
+
+  <textarea class="codemirror shell">
+mlcp.sh import \
+ -host localhost \
+ -port 8006 \
+ -username user \
+ -password ******* \
+ -input_file_path example.nt \
+ -mode local \
+ -input_file_type RDF</textarea>
 
   This is a small sampling of the rich set of capabilities that mlcp provides.
   For much more information, sample code, and examples in the
