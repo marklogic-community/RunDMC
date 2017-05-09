@@ -3190,13 +3190,6 @@ span.highlightWidget {
     float: left;
 }
 
-.maven-frag {
-    margin-left: 50px;
-    margin-bottom: 5px;
-    width: 480px;
-    height: 80px;
-}
-
 div.download-dialog,
 div.ui-widget-content {
     background: -moz-linear-gradient(top, #ffffff 0%, #d4d5d6 99%); /* FF3.6+ */

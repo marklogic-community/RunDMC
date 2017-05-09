@@ -27,19 +27,20 @@
   <section class="download">
     <h3>Maven</h3>
     <h4>Dependencies</h4>
-    <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
-    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;marklogic-client-api&lt;/artifactId&gt;
-    &lt;version&gt;4.0.1&lt;/version&gt;
+    <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;marklogic-client-api&lt;/artifactId&gt;
+  &lt;version&gt;4.0.1&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
   </section>
 
   <section class="download">
     <h3>Gradle</h3>
     <h4>Dependencies</h4>
-    <textarea readonly="readonly" class="maven-frag">
+    <textarea class="codemirror javascript">
 dependencies {
-    compile group: 'com.marklogic', name: 'marklogic-client-api', version: '4.0.1'
+  compile group: 'com.marklogic', name: 'marklogic-client-api', version: '4.0.1'
 }</textarea>
   </section>
 
@@ -146,19 +147,20 @@ dependencies {
       <section class="download">
         <h4>Maven</h4>
         <h5>Dependencies</h5>
-        <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
-    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
-    &lt;version&gt;3.0.6&lt;/version&gt;
+        <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
+  &lt;version&gt;3.0.6&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
       </section>
 
       <section class="download">
         <h4>Gradle</h4>
         <h5>Dependencies</h5>
-        <textarea readonly="readonly" class="maven-frag">
+        <textarea class="codemirror javascript">
 dependencies {
-    compile group: 'com.marklogic', name: 'java-client-api', version: '3.0.7'
+  compile group: 'com.marklogic', name: 'java-client-api', version: '3.0.7'
 }</textarea>
       </section>
     </div>
@@ -180,11 +182,12 @@ dependencies {
       <section class="download">
         <h4>Maven</h4>
         <h5>Dependencies</h5>
-        <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
-        &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-        &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
-        &lt;version&gt;2.0.5&lt;/version&gt;
-    &lt;/dependency&gt;</textarea>
+        <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
+  &lt;version&gt;2.0.5&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
       </section>
     </div>
   </div>
