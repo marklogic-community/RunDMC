@@ -16,6 +16,16 @@ modification.</p>
     </ml:platform>
   </ml:product-info>
 
+  <section class="download">
+    <h3>Maven</h3>
+    <h4>Dependencies</h4>
+    <textarea class="codemirror xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+    &lt;artifactId&gt;marklogic-mapreduce2&lt;/artifactId&gt;
+    &lt;version&gt;2.2.1&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+  </section>
+
   <p>The Connector for Hadoop is a drop-in extension to Hadoop's MapReduce framework that allows you to
 easily and efficiently communicate with a MarkLogic database from within a MapReduce job.
 You can use the connector to:</p>
