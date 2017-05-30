@@ -1,4 +1,5 @@
-  <ml:tutorial root="parent"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">  <ml:tutorial root="parent"/>
   <h1>Setup</h1>
 
   <h3 id="install-marklogic"><a href="#install-marklogic">Install MarkLogic</a></h3>
@@ -131,3 +132,4 @@ curl -X POST  --anyauth -u user:password --header "Content-Type:application/json
   <p>If you refresh the <a href="http://localhost:8002/manage/v2/users?format=html">http://localhost:8002/manage/v2/users?format=html</a> browser page, you should now see both users.</p>
 
   <p>Now we've got everything set up on the server side, so let's start interacting with MarkLogic via Java.</p>
+</ml:page>
