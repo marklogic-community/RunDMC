@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<h1>Recipes</h1>
+
+<div id="recipe">
+
+  <p>A recipe provides a reusable solution to a common problem. While a design pattern gives you an approach to solving a problem, a recipe will be pretty close to a copy &amp; paste solution.</p>
+
+  <recipes></recipes>
+
+
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script type="text/javascript" src="/js/recipes.js"></script>
+
+</ml:page>

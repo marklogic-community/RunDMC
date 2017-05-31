@@ -99,6 +99,7 @@
       <group display="Editing and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
         <page display="Oxygen" href="/code/oxygen"/>
+        <page display="mlxprs" href="/code/mlxprs"/>
         <page display="Vim-XQMarkLogic" href="/code/vim-xqmarklogic"/>
         <page display="XQDebug" href="/code/xqdebug"/>
         <page display="Narthex" href="/code/narthex"/>

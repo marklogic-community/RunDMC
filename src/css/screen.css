@@ -3395,4 +3395,14 @@ li.search_suggest_selected {
   max-height: 128px;
 }
 
+#main #recipe ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+#recipe .recipe {
+  border-bottom: 1px solid #666;
+  margin-bottom: 20px;
+}
+
 /* screen.css */
