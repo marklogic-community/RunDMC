@@ -3423,4 +3423,8 @@ li.search_suggest_selected {
   margin-bottom: 20px;
 }
 
+#recipe .recipe .tag {
+  margin-right: 5px;
+}
+
 /* screen.css */
