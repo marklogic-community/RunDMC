@@ -1,7 +1,7 @@
 /* jshint esversion:6 */
 
 Vue.component('search', {
-  props: ['page'],
+  props: ['page', 'criteria'],
   data: function() {
     return {
 
@@ -17,6 +17,10 @@ Vue.component('search', {
   watch: {
     page: function(newPage) {
       this.runSearch();
+    },
+    criteria: function(newCriteria) {
+      console.log('new criteria: ' + JSON.stringify(newCriteria));
+      this.runSearch();
     }
   },
   methods: {
@@ -27,7 +31,11 @@ Vue.component('search', {
         let json = JSON.parse(this.response);
         vm.$emit('searchResults', json);
       };
-      oReq.open('GET', '/service/recipe-search?p=' + this.page, true);
+      let queryString = '?p=' + this.page;
+      if (this.criteria.tag) {
+        queryString += '&tag=' + this.criteria.tag;
+      }
+      oReq.open('GET', '/service/recipe-search' + queryString, true);
       oReq.send();
 
     }
@@ -43,7 +51,8 @@ Vue.component('recipes', {
       pages: 0,
       start: 0,
       end: 0,
-      recipes: []
+      recipes: [],
+      searchCriteria: {}
     };
   },
   template:
@@ -55,7 +64,8 @@ Vue.component('recipes', {
         </div>
 
         <div class="col-md-4">
-          <search v-bind:page="current" v-on:searchResults="updateResults"/>
+          <search v-bind:page="current" v-on:searchResults="updateResults"
+            v-bind:criteria="searchCriteria"/>
         </div>
 
       </div>
@@ -79,7 +89,9 @@ Vue.component('recipes', {
       <ul class="recipes list-unstyled">
         <li v-for="recipe in recipes">
           <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
-            v-bind:min="recipe.minVersion" v-bind:max="recipe.maxVersion" v-bind:tags="recipe.tags"></recipe>
+            v-bind:min="recipe.minVersion" v-bind:max="recipe.maxVersion" v-bind:tags="recipe.tags"
+            v-on:searchCriteria="updateSearchCriteria"
+            ></recipe>
         </li>
       </ul>
      </div>`,
@@ -100,6 +112,10 @@ Vue.component('recipes', {
       this.start = results.start;
       this.end = results.end;
       this.recipes = results.recipes;
+    },
+    updateSearchCriteria: function(criteria) {
+      this.currentTarget = 1;
+      this.searchCriteria = criteria;
     }
   },
   mounted: function() {
@@ -116,13 +132,17 @@ Vue.component('recipe', {
   template:
     `<div class="recipe">
       <h4><a v-bind:href="url">{{title}}</a></h4>
-      <button v-for="tag in tags" class="btn btn-default btn-xs">{{tag}}</button>
+      <button v-for="tag in tags" class="btn btn-default btn-xs" v-on:click="onTagClick">{{tag}}</button>
       <p>{{problem}}</p>
       <em>Applies to MarkLogic versions {{min}}<span v-if="max === ''">+</span>
         <span v-else> to {{max}}</span>
-
       </em>
-    </div>`
+    </div>`,
+  methods: {
+    onTagClick: function(event) {
+      this.$emit('searchCriteria', { tag: event.currentTarget.textContent });
+    }
+  }
 });
 
 var recipe = new Vue({
@@ -131,7 +151,6 @@ var recipe = new Vue({
   },
   methods: {
     onSearchResults: function() {
-
     }
   }
 });
