@@ -4,14 +4,14 @@ Vue.component('search', {
   props: ['page', 'tags'],
   data: function() {
     return {
-
+      text: ''
     };
   },
   template:
     `<div class="input-group">
-       <input type="text" class="form-control" placeholder="Search recipes"/>
+       <input type="text" v-model="text" class="form-control" placeholder="Search recipes"/>
        <span class="input-group-btn">
-         <button class="btn btn-default" type="button">Go!</button>
+         <button class="btn btn-default" type="button" v-on:click="runSearch">Go!</button>
        </span>
      </div>`,
   watch: {
@@ -33,6 +33,9 @@ Vue.component('search', {
       let queryString = '?p=' + this.page;
       if (this.tags.length > 0) {
         queryString += '&tags=' + this.tags.join(';;');
+      }
+      if (this.text !== '') {
+        queryString += '&text=' + this.text;
       }
       oReq.open('GET', '/service/recipe-search' + queryString, true);
       oReq.send();
@@ -151,7 +154,7 @@ Vue.component('recipe', {
   template:
     `<div class="recipe">
       <h4><a v-bind:href="url">{{title}}</a></h4>
-      <button v-for="tag in tags" class="btn btn-default btn-xs" v-on:click="onTagClick">{{tag}}</button>
+      <button v-for="tag in tags" class="btn btn-default btn-xs tag" v-on:click="onTagClick">{{tag}}</button>
       <p>{{problem}}</p>
       <em>Applies to MarkLogic versions {{min}}<span v-if="max === ''">+</span>
         <span v-else> to {{max}}</span>
