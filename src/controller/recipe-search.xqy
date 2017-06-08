@@ -29,23 +29,27 @@ let $results :=
     fn:doc(),
     $query
   )[$start to $end]
-return object-node {
-  "total": $total,
-  "pages": fn:ceiling($total div $PAGE-SIZE),
-  "start": $start,
-  "end": $end,
-  "recipes": array-node {
-    for $recipe in $results
-    return
-      object-node {
-        "title": fn:normalize-space($recipe/ml:Recipe/ml:title/fn:string()),
-        "url": fn:replace(fn:base-uri($recipe), ".xml", ""),
-        "problem": fn:normalize-space($recipe/ml:Recipe/ml:problem/fn:string()),
-        "minVersion": fn:normalize-space($recipe/ml:Recipe/ml:min-server-version/fn:string()),
-        "maxVersion": fn:normalize-space($recipe/ml:Recipe/ml:max-server-version/fn:string()),
-        "tags": array-node {
-          $recipe/ml:Recipe/ml:tags/ml:tag/fn:string()
-        }
-      }
-  }
-}
+return
+  '{' ||
+    '"total":' || $total || ',' ||
+    '"pages":' || fn:ceiling($total div $PAGE-SIZE) || ',' ||
+    '"start":' || $start || ',' ||
+    '"end":' || $end || ',' ||
+    '"recipes":' || '[' ||
+      fn:string-join(
+        for $recipe in $results
+        return
+          '{' ||
+            '"title":"' || fn:normalize-space($recipe/ml:Recipe/ml:title/fn:string()) || '",' ||
+            '"url":"' || fn:replace(fn:base-uri($recipe), ".xml", "") || '",' ||
+            '"problem":"' || fn:normalize-space($recipe/ml:Recipe/ml:problem/fn:string()) || '",' ||
+            '"minVersion":"' || fn:normalize-space($recipe/ml:Recipe/ml:min-server-version/fn:string()) || '",' ||
+            '"maxVersion":"' || fn:normalize-space($recipe/ml:Recipe/ml:max-server-version/fn:string()) || '",' ||
+            '"tags":' || '[' ||
+              fn:string-join($recipe/ml:Recipe/ml:tags/ml:tag/fn:string() ! ('"' || . || '"'), ', ') ||
+            ']' ||
+          '}',
+        ', '
+      ) ||
+    ']' ||
+  '}'
