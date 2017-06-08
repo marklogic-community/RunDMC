@@ -42,6 +42,35 @@ Vue.component('search', {
   }
 });
 
+Vue.component('pagination', {
+  props: ['pages', 'current'],
+  template:
+    `<nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li v-bind:class="{disabled: current === 1 }">
+          <span aria-hidden="true" v-on:click="decrement">&laquo;</span>
+        </li>
+        <li v-for="page in pages" v-bind:class="{active: page === current }">
+          <span v-on:click="setPage">{{ page }}</span>
+        </li>
+        <li v-bind:class="{disabled: current === pages }">
+          <span aria-hidden="true" v-on:click="increment">&raquo;</span>
+        </li>
+      </ul>
+    </nav>`,
+    methods: {
+      decrement: function() {
+        this.$emit('setPage', this.current - 1);
+      },
+      increment: function() {
+        this.$emit('setPage', this.current + 1);
+      },
+      setPage: function(event) {
+        this.$emit('setPage', Number(event.currentTarget.textContent));
+      }
+    }
+});
+
 Vue.component('recipes', {
   props: [''],
   data: function() {
@@ -69,23 +98,9 @@ Vue.component('recipes', {
         </div>
 
       </div>
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li v-bind:class="{disabled: current === 1 }">
-            <a href="#" aria-label="Previous" v-on:click="decrementPage">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li v-for="page in pages" v-bind:class="{active: page === current }">
-            <span v-on:click="setPage">{{ page }}</span>
-          </li>
-          <li v-bind:class="{disabled: current === pages }">
-            <a href="#" aria-label="Next" v-on:click="incrementPage">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <pagination
+        v-bind:pages="pages" v-bind:current="current"
+        v-on:setPage="setPage"></pagination>
       <ul class="recipes list-unstyled">
         <li v-for="recipe in recipes">
           <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
@@ -96,17 +111,10 @@ Vue.component('recipes', {
       </ul>
      </div>`,
   methods: {
-    setPage: function(event) {
-      this.current = Number(event.currentTarget.textContent);
-    },
-    decrementPage: function() {
-      --this.current;
-    },
-    incrementPage: function() {
-      ++this.current;
+    setPage: function(page) {
+      this.current = page;
     },
     updateResults: function(results) {
-      console.log('got new results');
       this.total = results.total;
       this.pages = results.pages;
       this.start = results.start;
@@ -150,7 +158,5 @@ var recipe = new Vue({
   data: {
   },
   methods: {
-    onSearchResults: function() {
-    }
   }
 });
