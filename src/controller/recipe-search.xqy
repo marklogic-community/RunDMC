@@ -2,17 +2,25 @@ xquery version "1.0-ml";
 
 declare namespace ml = "http://developer.marklogic.com/site/internal";
 
+declare variable $PAGE-SIZE := 10;
+
 xdmp:set-response-content-type("application/json"),
 
+let $page := try { xs:int(xdmp:get-request-field("p", "1")) } catch ($e) { 1 }
+let $start := ($page - 1) * $PAGE-SIZE + 1
+let $end := $start + $PAGE-SIZE - 1
 let $query := cts:directory-query("/recipe/", "infinity")
 let $total := xdmp:estimate(cts:search(fn:doc(), $query))
 let $results :=
   cts:search(
     fn:doc(),
     $query
-  )[1 to 10]
+  )[$start to $end]
 return object-node {
   "total": $total,
+  "pages": fn:ceiling($total div $PAGE-SIZE),
+  "start": $start,
+  "end": $end,
   "recipes": array-node {
     for $recipe in $results
     return

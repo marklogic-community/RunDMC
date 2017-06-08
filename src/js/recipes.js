@@ -1,41 +1,109 @@
 /* jshint esversion:6 */
 
+Vue.component('search', {
+  props: ['page'],
+  data: function() {
+    return {
+
+    };
+  },
+  template:
+    `<div class="input-group">
+       <input type="text" class="form-control" placeholder="Search recipes"/>
+       <span class="input-group-btn">
+         <button class="btn btn-default" type="button">Go!</button>
+       </span>
+     </div>`,
+  watch: {
+    page: function(newPage) {
+      this.runSearch();
+    }
+  },
+  methods: {
+    runSearch: function() {
+      let vm = this;
+      var oReq = new XMLHttpRequest();
+      oReq.onload = function (e) {
+        let json = JSON.parse(this.response);
+        vm.$emit('searchResults', json);
+      };
+      oReq.open('GET', '/service/recipe-search?p=' + this.page, true);
+      oReq.send();
+
+    }
+  }
+});
+
 Vue.component('recipes', {
   props: [''],
   data: function() {
     return {
-      recipes: [
-        {
-          'title': 'Get permissions with role names',
-          'url': '/recipe/get-permissions-with-role-names',
-          'problem': 'Get the permissions on a document, decorated with the names of the roles.',
-          'minVersion': '7',
-          'maxVersion': '9',
-          'tags': ['permissions', 'security', 'xquery', 'query console']
-        },
-        {
-          'title': 'Current and effective MarkLogic versions during rolling upgrade',
-          'url': '/recipe/rolling-upgrade-versions',
-          'problem': 'During a rolling upgrade, some servers will have the original version, while others will have the new version but act as if they still had the old. Generate a report showing which servers have which actual and effective versions.',
-          'minVersion': '8.0-7',
-          'maxVersion': '',
-          'tags': ['xquery', 'rolling upgrade', 'administration', 'query console']
-        }
-      ]
+      current: 0,
+      total: 0,
+      pages: 0,
+      start: 0,
+      end: 0,
+      recipes: []
     };
   },
   template:
-    `<ul class="list-unstyled">
-       <li v-for="recipe in recipes">
-         <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
-           v-bind:min="recipe.minVersion" v-bind:max="recipe.maxVersion" v-bind:tags="recipe.tags"></recipe>
-       </li>
-     </ul>`,
+    `<div>
+      <div class="row">
+
+        <div class="col-md-8">
+          A recipe provides a reusable solution to a common problem. While a design pattern gives you an approach to solving a problem, a recipe will be pretty close to a copy &amp; paste solution.
+        </div>
+
+        <div class="col-md-4">
+          <search v-bind:page="current" v-on:searchResults="updateResults"/>
+        </div>
+
+      </div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li v-bind:class="{disabled: current === 1 }">
+            <a href="#" aria-label="Previous" v-on:click="decrementPage">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li v-for="page in pages" v-bind:class="{active: page === current }">
+            <span v-on:click="setPage">{{ page }}</span>
+          </li>
+          <li v-bind:class="{disabled: current === pages }">
+            <a href="#" aria-label="Next" v-on:click="incrementPage">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <ul class="recipes list-unstyled">
+        <li v-for="recipe in recipes">
+          <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
+            v-bind:min="recipe.minVersion" v-bind:max="recipe.maxVersion" v-bind:tags="recipe.tags"></recipe>
+        </li>
+      </ul>
+     </div>`,
+  methods: {
+    setPage: function(event) {
+      this.current = Number(event.currentTarget.textContent);
+    },
+    decrementPage: function() {
+      --this.current;
+    },
+    incrementPage: function() {
+      ++this.current;
+    },
+    updateResults: function(results) {
+      console.log('got new results');
+      this.total = results.total;
+      this.pages = results.pages;
+      this.start = results.start;
+      this.end = results.end;
+      this.recipes = results.recipes;
+    }
+  },
   mounted: function() {
-    $.ajax({
-      'method': 'GET',
-      'url': ''
-    });
+    this.current = 1;
   }
 });
 
@@ -60,5 +128,10 @@ Vue.component('recipe', {
 var recipe = new Vue({
   el: '#recipe',
   data: {
+  },
+  methods: {
+    onSearchResults: function() {
+
+    }
   }
 });
