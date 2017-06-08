@@ -3395,8 +3395,21 @@ li.search_suggest_selected {
   max-height: 128px;
 }
 
-#main #recipe .pagination {
+#main #recipe ul {
+  margin-bottom: 10px;
   padding-left: 0;
+}
+
+#main #recipe ul.tags {
+  margin-top: 0px;
+}
+
+#main #recipe ul.tags li {
+  margin-right: 5px;
+}
+
+#main #recipe ul.tags li .glyphicon-remove {
+  cursor: pointer;
 }
 
 #main #recipe ul.recipes {

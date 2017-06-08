@@ -101,6 +101,12 @@ Vue.component('recipes', {
         v-bind:pages="pages" v-bind:current="current"
         v-on:setPage="setPage"></pagination>
 
+      <ul class="tags">
+        <li class="label label-primary" v-for="tag in searchCriteria.tags">{{ tag }}
+          <i class="glyphicon glyphicon-remove" v-on:click="removeTag(tag)"></i>
+        </li>
+      </ul>
+
       <ul class="recipes list-unstyled">
         <li v-for="recipe in recipes">
           <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
@@ -126,6 +132,9 @@ Vue.component('recipes', {
       if (criteria.tag) {
         this.searchCriteria.tags.push(criteria.tag);
       }
+    },
+    removeTag: function(target) {
+      this.searchCriteria.tags = this.searchCriteria.tags.filter(tag => tag !== target);
     }
   },
   mounted: function() {
