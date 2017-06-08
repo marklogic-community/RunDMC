@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Draft" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+
+<h1>Recipes</h1>
+
+<div id="recipe">
+
+  <recipes></recipes>
+
+
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script type="text/javascript" src="/js/recipes.js"></script>
+
+</ml:page>

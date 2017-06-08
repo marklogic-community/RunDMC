@@ -429,6 +429,8 @@ as xs:string
     else if ($path eq "/recent") then "/controller/recent.xqy"
     else if ($path eq '/service/suggest') then concat(
       '/controller/suggest.xqy?', $query-string)
+    else if ($path eq '/service/recipe-search') then concat(
+      'controller/recipe-search.xqy?', $query-string)
     else if (starts-with($path, "/rex/")) then concat(
       "/controller/rex.xqy?path-and-query=",
       xdmp:url-encode(
