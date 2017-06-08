@@ -6,15 +6,18 @@ declare variable $PAGE-SIZE := 10;
 
 xdmp:set-response-content-type("application/json"),
 
-let $tag := xdmp:get-request-field("tag")
+let $tags as xs:string* := fn:tokenize(xdmp:get-request-field("tags"), ";;")
+
 let $page := try { xs:int(xdmp:get-request-field("p", "1")) } catch ($e) { 1 }
 let $start := ($page - 1) * $PAGE-SIZE + 1
 let $end := $start + $PAGE-SIZE - 1
 let $query :=
   cts:and-query((
     cts:directory-query("/recipe/", "infinity"),
-    if (fn:exists($tag)) then
-      cts:element-value-query(xs:QName("ml:tag"), $tag)
+    if (fn:exists($tags)) then
+      cts:and-query((
+        $tags ! cts:element-value-query(xs:QName("ml:tag"), .)
+      ))
     else()
   ))
 let $total := xdmp:estimate(cts:search(fn:doc(), $query))

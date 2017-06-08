@@ -1,7 +1,7 @@
 /* jshint esversion:6 */
 
 Vue.component('search', {
-  props: ['page', 'criteria'],
+  props: ['page', 'tags'],
   data: function() {
     return {
 
@@ -18,8 +18,7 @@ Vue.component('search', {
     page: function(newPage) {
       this.runSearch();
     },
-    criteria: function(newCriteria) {
-      console.log('new criteria: ' + JSON.stringify(newCriteria));
+    tags: function(newTags) {
       this.runSearch();
     }
   },
@@ -32,8 +31,8 @@ Vue.component('search', {
         vm.$emit('searchResults', json);
       };
       let queryString = '?p=' + this.page;
-      if (this.criteria.tag) {
-        queryString += '&tag=' + this.criteria.tag;
+      if (this.tags.length > 0) {
+        queryString += '&tags=' + this.tags.join(';;');
       }
       oReq.open('GET', '/service/recipe-search' + queryString, true);
       oReq.send();
@@ -81,31 +80,32 @@ Vue.component('recipes', {
       start: 0,
       end: 0,
       recipes: [],
-      searchCriteria: {}
+      searchCriteria: {
+        tags: []
+      }
     };
   },
   template:
     `<div>
       <div class="row">
-
         <div class="col-md-8">
           A recipe provides a reusable solution to a common problem. While a design pattern gives you an approach to solving a problem, a recipe will be pretty close to a copy &amp; paste solution.
         </div>
-
         <div class="col-md-4">
           <search v-bind:page="current" v-on:searchResults="updateResults"
-            v-bind:criteria="searchCriteria"/>
+            v-bind:tags="searchCriteria.tags"/>
         </div>
-
       </div>
+
       <pagination
         v-bind:pages="pages" v-bind:current="current"
         v-on:setPage="setPage"></pagination>
+
       <ul class="recipes list-unstyled">
         <li v-for="recipe in recipes">
           <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
             v-bind:min="recipe.minVersion" v-bind:max="recipe.maxVersion" v-bind:tags="recipe.tags"
-            v-on:searchCriteria="updateSearchCriteria"
+            v-on:searchCriteriaEvent="updateSearchCriteria"
             ></recipe>
         </li>
       </ul>
@@ -122,8 +122,10 @@ Vue.component('recipes', {
       this.recipes = results.recipes;
     },
     updateSearchCriteria: function(criteria) {
-      this.currentTarget = 1;
-      this.searchCriteria = criteria;
+      this.current = 1;
+      if (criteria.tag) {
+        this.searchCriteria.tags.push(criteria.tag);
+      }
     }
   },
   mounted: function() {
@@ -148,7 +150,7 @@ Vue.component('recipe', {
     </div>`,
   methods: {
     onTagClick: function(event) {
-      this.$emit('searchCriteria', { tag: event.currentTarget.textContent });
+      this.$emit('searchCriteriaEvent', { tag: event.currentTarget.textContent });
     }
   }
 });
