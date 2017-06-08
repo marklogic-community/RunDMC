@@ -4,6 +4,11 @@ declare namespace ml = "http://developer.marklogic.com/site/internal";
 
 declare variable $PAGE-SIZE := 10;
 
+declare function local:neaten($str)
+{
+  fn:replace(fn:normalize-space($str), '"', '%22')
+};
+
 xdmp:set-response-content-type("application/json"),
 
 let $tags as xs:string* := fn:tokenize(xdmp:get-request-field("tags"), ";;")
@@ -40,11 +45,11 @@ return
         for $recipe in $results
         return
           '{' ||
-            '"title":"' || fn:normalize-space($recipe/ml:Recipe/ml:title/fn:string()) || '",' ||
+            '"title":"' || local:neaten($recipe/ml:Recipe/ml:title/fn:string()) || '",' ||
             '"url":"' || fn:replace(fn:base-uri($recipe), ".xml", "") || '",' ||
-            '"problem":"' || fn:normalize-space($recipe/ml:Recipe/ml:problem/fn:string()) || '",' ||
-            '"minVersion":"' || fn:normalize-space($recipe/ml:Recipe/ml:min-server-version/fn:string()) || '",' ||
-            '"maxVersion":"' || fn:normalize-space($recipe/ml:Recipe/ml:max-server-version/fn:string()) || '",' ||
+            '"problem":"' || local:neaten($recipe/ml:Recipe/ml:problem/fn:string()) || '",' ||
+            '"minVersion":"' || local:neaten($recipe/ml:Recipe/ml:min-server-version/fn:string()) || '",' ||
+            '"maxVersion":"' || local:neaten($recipe/ml:Recipe/ml:max-server-version/fn:string()) || '",' ||
             '"tags":' || '[' ||
               fn:string-join($recipe/ml:Recipe/ml:tags/ml:tag/fn:string() ! ('"' || . || '"'), ', ') ||
             ']' ||

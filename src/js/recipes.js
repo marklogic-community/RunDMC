@@ -128,7 +128,12 @@ Vue.component('recipes', {
       this.pages = results.pages;
       this.start = results.start;
       this.end = results.end;
-      this.recipes = results.recipes;
+      // decode text fields in the recipes
+      this.recipes = results.recipes.map(function(recipe) {
+        recipe.title = decodeURIComponent(recipe.title);
+        recipe.problem = decodeURIComponent(recipe.problem);
+        return recipe;
+      });
     },
     updateSearchCriteria: function(criteria) {
       this.current = 1;
