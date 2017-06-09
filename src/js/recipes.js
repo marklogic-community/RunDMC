@@ -190,7 +190,7 @@ Vue.component('recipe', {
       <h4><a v-bind:href="url">{{title}}</a></h4>
       <button v-for="tag in tags" class="btn btn-default btn-xs tag" v-on:click="onTagClick">{{tag}}</button>
       <p>{{problem}}</p>
-      <em>Applies to MarkLogic versions {{min}}<span v-if="max === ''">+</span>
+      <em v-if="min !== ''">Applies to MarkLogic versions {{min}}<span v-if="max === ''">+</span>
         <span v-else> to {{max}}</span>
       </em>
     </div>`,
