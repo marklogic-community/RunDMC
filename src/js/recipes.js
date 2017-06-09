@@ -101,7 +101,11 @@ Vue.component('recipes', {
     `<div>
       <div class="row">
         <div class="col-md-8">
-          A recipe provides a reusable solution to a common problem. While a design pattern gives you an approach to solving a problem, a recipe will be pretty close to a copy &amp; paste solution.
+          A recipe provides a reusable solution to a common problem. While a
+          design pattern gives you an approach to solving a problem, a recipe
+          will be pretty close to a copy &amp; paste solution.
+          <p><em>Want to suggest or request a recipe? Write to
+          recipe@marklogic.com.</em></p>
         </div>
         <div class="col-md-4">
           <search v-bind:page="current" ref="search"
