@@ -3427,4 +3427,12 @@ li.search_suggest_selected {
   margin-right: 5px;
 }
 
+#recipe .pagination span {
+  cursor: default;
+}
+
+#recipe .pagination .disabled span {
+  cursor: not-allowed;
+}
+
 /* screen.css */

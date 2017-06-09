@@ -9,20 +9,25 @@ Vue.component('search', {
   },
   template:
     `<div class="input-group">
-       <input type="text" v-model="text" class="form-control" placeholder="Search recipes"/>
+       <input type="text"
+        v-model="text" v-on:keyup.enter="runSearch"
+        class="form-control" placeholder="Search recipes"/>
        <span class="input-group-btn">
-         <button class="btn btn-default" type="button" v-on:click="runSearch">Go!</button>
+         <button class="btn btn-default" type="button" v-on:click="emitSearch">Go!</button>
        </span>
      </div>`,
   watch: {
-    page: function(newPage) {
+    page: function() {
       this.runSearch();
     },
-    tags: function(newTags) {
+    tags: function() {
       this.runSearch();
     }
   },
   methods: {
+    emitSearch: function() {
+      this.$emit('textSearch', { text: this.text });
+    },
     runSearch: function() {
       let vm = this;
       var oReq = new XMLHttpRequest();
@@ -62,10 +67,14 @@ Vue.component('pagination', {
     </nav>`,
     methods: {
       decrement: function() {
-        this.$emit('setPage', this.current - 1);
+        if (this.current > 1) {
+          this.$emit('setPage', this.current - 1);
+        }
       },
       increment: function() {
-        this.$emit('setPage', this.current + 1);
+        if (this.current < this.pages) {
+          this.$emit('setPage', this.current + 1);
+        }
       },
       setPage: function(event) {
         this.$emit('setPage', Number(event.currentTarget.textContent));
@@ -77,7 +86,7 @@ Vue.component('recipes', {
   props: [''],
   data: function() {
     return {
-      current: 0,
+      current: 1,
       total: 0,
       pages: 0,
       start: 0,
@@ -95,7 +104,9 @@ Vue.component('recipes', {
           A recipe provides a reusable solution to a common problem. While a design pattern gives you an approach to solving a problem, a recipe will be pretty close to a copy &amp; paste solution.
         </div>
         <div class="col-md-4">
-          <search v-bind:page="current" v-on:searchResults="updateResults"
+          <search v-bind:page="current" ref="search"
+            v-on:searchResults="updateResults"
+            v-on:textSearch="updateSearchCriteria"
             v-bind:tags="searchCriteria.tags"/>
         </div>
       </div>
@@ -110,6 +121,9 @@ Vue.component('recipes', {
         </li>
       </ul>
 
+      <div v-if="recipes.length === 0">
+        No recipes match your query
+      </div>
       <ul class="recipes list-unstyled">
         <li v-for="recipe in recipes">
           <recipe v-bind:title="recipe.title" v-bind:url="recipe.url" v-bind:problem="recipe.problem"
@@ -118,12 +132,18 @@ Vue.component('recipes', {
             ></recipe>
         </li>
       </ul>
+
+      <pagination
+        v-bind:pages="pages" v-bind:current="current"
+        v-on:setPage="setPage"></pagination>
+
      </div>`,
   methods: {
     setPage: function(page) {
       this.current = page;
     },
     updateResults: function(results) {
+      console.log('updateResults');
       this.total = results.total;
       this.pages = results.pages;
       this.start = results.start;
@@ -140,13 +160,18 @@ Vue.component('recipes', {
       if (criteria.tag) {
         this.searchCriteria.tags.push(criteria.tag);
       }
+      if (criteria.text !== undefined) {
+        this.$refs.search.runSearch();
+      }
     },
     removeTag: function(target) {
       this.searchCriteria.tags = this.searchCriteria.tags.filter(tag => tag !== target);
+      this.$refs.search.runSearch();
     }
   },
   mounted: function() {
     this.current = 1;
+    this.$refs.search.runSearch();
   }
 });
 
