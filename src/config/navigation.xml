@@ -13,8 +13,8 @@
       <group display="Connectors">
         <page display="Java Client API"   href="/products/java"/>
         <page display="Node.js Client API" href="/products/node"/>
-        <page display="XCC Java/.NET"   href="/products/xcc"/>
-        <page display="XCC Java/.NET Connectors for 9"   href="/products/xcc/9.0" hide="yes"/>
+        <page display="XCC Java"   href="/products/xcc"/>
+        <page display="XCC Java Connectors for 9"   href="/products/xcc/9.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 8"   href="/products/xcc/8.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
 
