@@ -19,6 +19,7 @@ let $end := $start + $PAGE-SIZE - 1
 let $query :=
   cts:and-query((
     cts:directory-query("/recipe/", "infinity"),
+    cts:element-attribute-value-query(xs:QName("ml:Recipe"), xs:QName("status"), "Published"),
     if (fn:exists($tags)) then
       cts:and-query((
         $tags ! cts:element-value-query(xs:QName("ml:tag"), .)
