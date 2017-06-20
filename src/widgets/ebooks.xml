@@ -1,0 +1,10 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <h1>eBooks</h1>
+  <div class="list-group ebooks">
+    <a href="/learn/cookbook/implementing-xquery" class="list-group-item">
+      <img src="/media/learn/cookbook/implementing-xquery/front-sm.png"/>
+      <h3>MarkLogic Cookbook</h3>
+      <div>Implementing XQuery: Practical Solutions to Real-World Problems</div>
+    </a>
+  </div>
+</ml:widget>
