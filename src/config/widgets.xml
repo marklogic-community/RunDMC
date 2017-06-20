@@ -136,6 +136,10 @@
   </widget>
 -->
 
+  <widget href="/widgets/cookbook/implementing-xquery.xml">
+    <page href="/learn/cookbook/implementing-xquery"/>
+  </widget>
+
   <widget href="/widgets/mark-logic-bloggers.xml">
     <page href="/blog"/>
     <Post/>
@@ -165,10 +169,8 @@
     -->
   </widget>
 
-  <widget href="/widgets/quick-references.xml">
+  <widget href="/widgets/ebooks.xml">
     <page href="/learn"/>
-    <page href="/learn/guides"/>
-    <page href="/learn/references"/>
   </widget>
 
   <widget href="/widgets/online-training.xml">
@@ -187,6 +189,12 @@
     <page-tree root="/news-and-events"/>
     <page-tree root="/news"/>
     <page-tree root="/events"/>
+  </widget>
+
+  <widget href="/widgets/quick-references.xml">
+    <page href="/learn"/>
+    <page href="/learn/guides"/>
+    <page href="/learn/references"/>
   </widget>
 
 <!--
