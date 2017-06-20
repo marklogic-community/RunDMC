@@ -122,6 +122,7 @@
     <page href="/meet"/>
   </widget>
 
+<!--
   <widget href="/widgets/mlw-ad.xml">
     <page href="/learn"/>
     <page href="/code"/>
@@ -133,6 +134,7 @@
     <page-tree root="/products"/>
     <page-tree root="/try"/>
   </widget>
+-->
 
   <widget href="/widgets/mark-logic-bloggers.xml">
     <page href="/blog"/>
