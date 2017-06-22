@@ -55,9 +55,9 @@
               <span>MarkLogic 9 White Paper</span>
               <span class="glyphicon glyphicon-download-alt"></span>
             </a>
-            <a href="/learn" class="pointer">Quick Tutorials &#8250;</a>
-            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes &#8250;</a>
-            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training &#8250;</a>
+            <a href="/learn" class="pointer">Quick Tutorials ›</a>
+            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes ›</a>
+            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training ›</a>
           </div>
           <a href="/products" class="btn btn-primary">Download MarkLogic 9</a>
         </div>
@@ -125,12 +125,11 @@
             <p><a href="/learn/understanding-system-resources" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
-          <div class="col-sm-3 col-xs-10">
-            <img src="/media/amazon.png"/>
-            <h4><a href="/products/aws">Deploy on AWS</a></h4>
-            <p>Get going in minutes with MarkLogic in the Amazon cloud using the
-              provided AMIs and Cloud Formation templates.</p>
-            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More ›</a></p>
+          <div class="col-sm-3 col-xs-10 cloud">
+            <img src="/media/cloud/cloud-icon-purple.svg"/>
+            <h4><a href="/products/cloud">Deploy on Cloud</a></h4>
+            <p>Get going in minutes with MarkLogic in AWS and Azure using the provided AMIs and Azure Image.</p>
+            <p><a href="/products/cloud" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
         </div>
       </div>
@@ -154,7 +153,7 @@
               <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
               <h2>Stack Overflow</h2>
               <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
-              <p class="action">View Q&amp;A &#8594;</p>
+              <p class="action">View Q&amp;A →</p>
             </a>
           </div>
 
@@ -163,7 +162,7 @@
               <span class="glyphicon glyphicon-thumbs-up"></span>
               <h2>User Groups</h2>
               <p>Meetup in person with other MarkLogicians in cities around the world to network, share best practices, and discuss innovative ideas.</p>
-              <p class="action">Meetup in Your City &#8594;</p>
+              <p class="action">Meetup in Your City →</p>
             </a>
           </div>
 
@@ -172,7 +171,7 @@
               <img src="/media/github-logo.png" class="glyphicon github-logo"/>
               <h2>GitHub</h2>
               <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
-              <p class="action">View Projects &#8594;</p>
+              <p class="action">View Projects →</p>
             </a>
           </div>
 
@@ -181,7 +180,7 @@
               <span class="glyphicon glyphicon-envelope"></span>
               <h2>Mailing List</h2>
               <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-              <p class="action">Join the Mailing List &#8594;</p>
+              <p class="action">Join the Mailing List →</p>
             </a>
           </div>
         </div>
