@@ -6,19 +6,17 @@
   <page display="Downloads" href="/products">
     <group display="DOWNLOADS">
       <group display="Server">
+        <page display="MarkLogic 9" href="/products/marklogic-server/9.0" />
         <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
-        <page display="7.0" href="/products/marklogic-server/7.0" hide="yes" />
-        <page display="6.0" href="/products/marklogic-server/6.0" hide="yes" />
-        <page display="5.0" href="/products/marklogic-server/5.0" hide="yes" />
+        <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
       </group>
       <group display="Connectors">
         <page display="Java Client API"   href="/products/java"/>
         <page display="Node.js Client API" href="/products/node"/>
-        <page display="XCC Java/.NET"   href="/products/xcc"/>
+        <page display="XCC Java"   href="/products/xcc"/>
+        <page display="XCC Java Connectors for 9"   href="/products/xcc/9.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 8"   href="/products/xcc/8.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
-        <page display="XCC Java/.NET Connectors for 6"   href="/products/xcc/6.0" hide="yes"/>
-        <page display="XCC Java/.NET Connectors for 5"   href="/products/xcc/5.0" hide="yes"/>
 
         <page display="Hadoop" href="/products/hadoop"/>
         <page display="ODBC Driver" href="/products/odbc"/>
@@ -28,8 +26,6 @@
       <group display="Libraries and Tools">
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
         <page display="MarkLogic Content Pump (mlcp) for Hadoop 1.0"   href="/products/mlcp-for-hadoop-1.0" hide="yes"/>
-        <page display="MarkLogic Visualization Widgets"   href="/products/visualization-widgets"/>
-        <page display="Plug-in for Nagios" href="/products/nagios"/>
         <page display="Samplestack" href="/features/samplestack"/>
       </group>
     </group>
@@ -103,6 +99,7 @@
       <group display="Editing and exploring">
         <page display="Sublime Text Plugin" href="/code/sublime"/>
         <page display="Oxygen" href="/code/oxygen"/>
+        <page display="mlxprs" href="/code/mlxprs"/>
         <page display="Vim-XQMarkLogic" href="/code/vim-xqmarklogic"/>
         <page display="XQDebug" href="/code/xqdebug"/>
         <page display="Narthex" href="/code/narthex"/>

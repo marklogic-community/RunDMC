@@ -9,7 +9,7 @@ declare namespace html="http://www.w3.org/1999/xhtml";
 declare namespace ml="http://developer.marklogic.com/site/internal";
 
 let $params  := param:params()
-let $doc-url := concat($params[@name eq 'src'], ".xml")
+let $doc-url := concat(($params[@name eq 'src'])[1], ".xml")
 let $ext-url as xs:string? := doc($doc-url)//ml:external-link/@href
 
 return (

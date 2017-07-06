@@ -210,24 +210,26 @@
   <xsl:template mode="maven" match="maven">
     <section class="download">
       <h3>Maven</h3>
-      <h4>Repository</h4>
-      <textarea readonly="readonly" class="maven-frag"
-  >&lt;repository&gt;
-      &lt;id&gt;MarkLogic-releases&lt;/id&gt;
-      &lt;name&gt;MarkLogic Releases&lt;/name&gt;
-      &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
-  &lt;/repository&gt;</textarea>
+      <xsl:if test="not(./@repo = 'false')">
+        <h4>Repository</h4>
+        <textarea class="codemirror xml"
+    >&lt;repository&gt;
+  &lt;id&gt;MarkLogic-releases&lt;/id&gt;
+  &lt;name&gt;MarkLogic Releases&lt;/name&gt;
+  &lt;url&gt;http://developer.marklogic.com/maven2&lt;/url&gt;
+&lt;/repository&gt;</textarea>
+      </xsl:if>
       <h4>Dependencies</h4>
       <xsl:apply-templates mode="maven" select="artifact"/>
     </section>
   </xsl:template>
 
   <xsl:template mode="maven" match="artifact">
-    <textarea readonly="readonly" class="maven-frag"
+    <textarea class="codemirror xml"
 >&lt;dependency&gt;
-    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;<xsl:value-of select="@id"/>&lt;/artifactId&gt;
-    &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;<xsl:value-of select="@id"/>&lt;/artifactId&gt;
+  &lt;version&gt;<xsl:value-of select="@version"/>&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
   </xsl:template>
 

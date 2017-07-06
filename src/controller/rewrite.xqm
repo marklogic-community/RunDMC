@@ -169,8 +169,10 @@ as xs:string
         concat("/learn", substring($orig-url, 20))
     else if (ends-with($path, "/default.xqy")) then
         substring($path, 1, string-length($path)- 12)
-    else if ($path = ("/cloudcomputing", "/products/server-for-ec2")) then
-        "/products/aws"
+    else if ($path = ("/products/aws", "/products/server-for-ec2")) then
+        "/products/cloud/aws"
+    else if ($path = "/cloudcomputing") then
+        "/products/cloud"
     else if ((starts-with($path, '/blog') or starts-with($path, '/learn')) and ends-with($path, '.xqy')) then
         substring($path, 1, string-length($path) - 4)
     else if ($path = '/pubs/training/eclipse-xqdt-setup.pdf') then
@@ -288,7 +290,8 @@ declare function m:forbidden($path as xs:string)
 {
   not(ends-with($path, ".zip"))
   and (
-    starts-with($path,'/download/binaries/8.0')
+    starts-with($path,'/download/binaries/9.0')
+    or starts-with($path,'/download/binaries/8.0')
     or starts-with($path,'/download/binaries/7.0')
     or starts-with($path,'/download/binaries/6.0')
     or starts-with($path,'/download/binaries/5.0')
@@ -428,6 +431,8 @@ as xs:string
     else if ($path eq "/recent") then "/controller/recent.xqy"
     else if ($path eq '/service/suggest') then concat(
       '/controller/suggest.xqy?', $query-string)
+    else if ($path eq '/service/recipe-search') then concat(
+      'controller/recipe-search.xqy?', $query-string)
     else if (starts-with($path, "/rex/")) then concat(
       "/controller/rex.xqy?path-and-query=",
       xdmp:url-encode(

@@ -1,31 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-<p>
+  <p>
 The MarkLogic ODBC driver lets you add MarkLogic as a new ODBC data source to your
-existing <a href="http://www-01.ibm.com/software/analytics/cognos/downloads.html">Cognos</a> or
-<a href="http://www.tableausoftware.com/">Tableau</a> installation.
+existing BI Tool installation.
 </p>
+  <ml:product-info name="MarkLogic ODBC Driver">
+    <ml:platform name="MarkLogic 9, Linux (64-bit Red Hat Enterprise Linux 7)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1.x86_64.rpm" size="737 KB" date="2016-05-03" sha1="9d909d9725aabf829cd43afba966e6ae23f27ffa">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+    <ml:platform name="MarkLogic 9, Microsoft Windows (7, 10, Server 2012)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1-i686.msi" size="3.9MB" date="2016-05-03" sha1="cd53e808734c314ab61870aa527704e9ffba5343">32-bit ODBC Driver
+      </ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.3-1-amd64.msi" size="4.6MB" date="2016-05-03" sha1="9e9d73b664fa0fc7d9e928d4fda193d890be9cac">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
 
+    <ml:platform name="MarkLogic 8, Linux (64-bit Red Hat Enterprise Linux 6 and 7)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.2-6.x86_64.rpm" size="632 KB" date="2016-10-14" sha1="60da4e2cc5cf7060ff61de3bf80f62fd232bb587">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+    <ml:platform name="MarkLogic 8, Microsoft Windows (7, 8, Server 2008, Server 2012)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.2-6-i686.msi" size="3.3MB" date="2016-10-14" sha1="94dafe5d81e949ed12e82bd74f952079ccb58f4c">32-bit ODBC Driver
+      </ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.2-6-amd64.msi" size="4.1MB" date="2016-10-14" sha1="f33313d714b21687cdcf317f53a98a9ec332f8cd">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
 
-    <ml:product-info name="MarkLogic ODBC Driver">
-        <ml:platform name="MarkLogic 7, Linux (Red Hat Enterprise Linux, Versions 6)">
-            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4.x86_64.rpm" size="632 KB" date="2014-09-12">64-bit ODBC Driver
-            </ml:download>
-        </ml:platform>
-        <ml:platform name="MarkLogic 7, Microsoft Windows (7, 8, Server 2008)">
-            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4-i686.msi" size="4.2MB" date="2014-09-12">32-bit ODBC Driver
-            </ml:download>
-            <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-4-amd64.msi" size="3.9MB" date="2014-09-12">64-bit ODBC Driver
-            </ml:download>
-        </ml:platform>
-    </ml:product-info>
-
-<p>
+    <ml:platform name="MarkLogic 7, Linux (Red Hat Enterprise Linux, Versions 6)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-6.x86_64.rpm" size="632 KB" sha1="419fb6b44a685a579b66b7c6583d6317fb51df05" date="2016-01-28">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+    <ml:platform name="MarkLogic 7, Microsoft Windows (7, 8, Server 2008)">
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-6-i686.msi" size="3.2MB" sha1="bfa4b24220b0146e74070f1e7d4524aa5d00ad21" date="2016-01-28">32-bit ODBC Driver
+      </ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/odbc/mlsqlodbc-1.1-6-amd64.msi" size="3.9MB" sha1="b881822e9f8dd3ca231d5f9452fbec33c898ee7a" date="2016-01-28">64-bit ODBC Driver
+      </ml:download>
+    </ml:platform>
+  </ml:product-info>
+  <p>
   <ml:product-documentation>
     <ml:new-doc source="/guide/sql/odbc-driver"/>
     <ml:new-doc source="/guide/sql"/>
     <ml:new-doc source="/guide/admin/odbc"/>
   </ml:product-documentation>
-</p>
+  </p>
 </ml:page>

@@ -35,18 +35,24 @@
           Subject to the terms and conditions of this Agreement, MarkLogic
           grants to You a limited, non-transferable, non-exclusive, internal
           use license to install, access, start and use MarkLogic software in
-          binary executable form ("Software") and related documentation
-          (collectively, the "Product") solely for the permitted use as
-          described herein ("Developer License") and as used in conjunction
-          with the license key or keys provided to You by MarkLogic ("Keys").
-          Other than the uses permitted in this Agreement, this Developer
-          License does not grant to You any title, right, interest or license
-          in and to the Product or any modifications, enhancements, new
-          releases or updates to it.</li>
+          binary executable form ("Software"), related documentation
+          ("Documentation") and, if you are a Faculty Member or Student,
+          training manuals and materials provided to you by MarkLogic for
+          academic or training  purposes ("Training Materials"). The Software,
+          Documentation and Training Materials are sometimes collectively
+          referred to herein as "Product". The license granted in this Section
+          1(a) shall be solely for the permitted use as described herein
+          ("Developer License") and  as used in conjunction with the license
+          key or keys if and to the extent provided to You by MarkLogic
+          ("Keys"). Other than the uses permitted in this Agreement or under
+          another agreement between the parties, this Developer License does
+          not grant to You any title, right, interest or license in and to the
+          Product or any support, modifications, enhancements, new releases or
+          updates to it.</li>
         <li>(b)
           <u>Scope of Use.</u>
           The Developer License may be used solely to provide databases of
-          content ("Databases”) that You select for query only by You or Your
+          content ("Databases") that You select for query only by You or Your
           authorized employees and contractors, or Your Students (as
           hereinafter defined) in the event you are a Faculty Member (as
           hereinafter defined), and is limited to only those lawful and
@@ -56,17 +62,16 @@
               order to determine whether to purchase and license the Product
               from MarkLogic;</li>
             <li>(ii) to use the Product for the purpose of (a) authoring and
-              preparing tests and (b) prototyping and developing applications
+              preparing tests, (b) prototyping and developing applications
               that interact and operate with the Software (as developed in
               accordance with the documentation for such Software)
-              ("Applications") (c) demonstrating your Applications and (d)
-              learning how to use the Product as part of a class at a
-              degree-granting or certificate-granting educational institution,
-              and not for any other purpose;</li>
+              ("Applications"), (c) demonstrating your Applications, and (d)
+              learning how to use the Software and for related training or
+              academic purposes  as part of a class at a degree-granting or
+              certificate-granting educational institution, and not for any
+              other purpose;</li>
             <li>(iii) to use the Product for Databases with an aggregate
-              storage size of up to 1TB in capacity ("Capacity"), unless
-              otherwise set forth in a separate written agreement between You
-              and MarkLogic; and</li>
+              storage size of up to 1TB in capacity ("Capacity"); and</li>
             <li>(iv) within the License Term as set forth in Section 4 below.</li>
           </ul>
           <p>Any copies of the Product that you are permitted to make pursuant
@@ -104,10 +109,13 @@
               that enable access to the Software, distribute Keys to third
               parties or cause such third parties to create, use or distribute
               the Keys, knowingly or otherwise;</li>
-            <li>(vii) use the Product to load content on any other public Web
-              servers for use by the public or provide Databases created and/or
-              maintained by You located on a public Web server operated by You
-              for query by the public;</li>
+            <li>(vii) except with respect to the limited purpose of
+              demonstrating the functionality of the Product and so long as in
+              accordance with the other terms of this Agreement, use the
+              Product to load content on any other public Web servers for use
+              by the public or provide Databases created and/or maintained by
+              You located on a public Web server operated by You for query by
+              the public;</li>
             <li>(viii) allow access to the Product by any user other than Your
               authorized employees and contractors who have a need to such
               access and who must be bound by a nondisclosure or
@@ -129,10 +137,9 @@
           For license verification purposes, You acknowledge that the Software
           may electronically transmit to MarkLogic summary data relating to use
           of the Software including, but not limited to, the host IDs, Keys and
-          the Capacity of the Databases. Such transmittals will not contain any
-          information regarding the content of the Databases and will be used
-          solely for the purposes of license verification as described in this
-          Section 1(d).</li>
+          the Capacity of the Databases. MarkLogic takes privacy very
+          seriously. More information about our privacy practices can be found
+          here: <a href="http://marklogic.com/privacy-policy/">http://marklogic.com/privacy-policy/</a></li>
       </ul>
       <li value="2">INTELLECTUAL PROPERTY AND CONFIDENTIALITY</li>
       <ul>
@@ -181,18 +188,17 @@
           such other period as approved by MarkLogic in writing ("License
           Term"). For the avoidance of doubt, if a license term is not
           otherwise specified or agreed upon by MarkLogic, the term of the
-          license shall be limited to six (6) months.  Under no circumstances
+          license shall be limited to one (1) year.   Under no circumstances
           shall the license be granted for a perpetual term.  This Agreement
           will automatically terminate upon expiration of the License Term,
           unless earlier terminated or extended. This Agreement may be
           terminated (a) by You at any time or (b) by MarkLogic at any time.
-          Unless this Agreement is subsequently renewed or extended, upon
-          termination or expiration of this Agreement, You must immediately
-          destroy all complete and partial copies of the Product, including all
-          backup copies, and provide MarkLogic with a certificate, signed by
-          You or Your authorized officer (if applicable), certifying that You
-          have destroyed the Product and all copies thereof in compliance with
-          this Agreement.</p>
+          Upon termination or expiration of this Agreement, You must
+          immediately destroy all complete and partial copies of the Product,
+          including all backup copies, and provide MarkLogic with a
+          certificate, signed by You or Your authorized officer (if
+          applicable), certifying that You have destroyed the Product and all
+          copies thereof in compliance with this Agreement.</p>
       </li>
       <li value="5">DISCLAIMERS
         <p>THE PRODUCT IS PROVIDED "AS IS," AND MARKLOGIC HEREBY DISCLAIMS ALL
@@ -308,29 +314,26 @@
         BEHALF OF SUCH ENTITY.</li>
     </ol>
     <p>You may contact MarkLogic at: MarkLogic Corporation, 999 Skyway Road,
-      Suite 200, San Carlos, CA 94070-2722 USA, Telephone: (650) 655-2300, Fax:
-      (650) 655-2310, Email: sales@marklogic.com.
+      Suite 200, San Carlos, CA 94070-2722 USA; Telephone: (650) 655-2300; Fax:
+      (650) 655-2310; Email: sales@marklogic.com.
     </p>
-    <p>Copyright 2002-2015 MarkLogic Corporation. All rights reserved.
+    <p>Copyright © 2017 MarkLogic Corporation.
     </p>
-    <p>This technology is protected by U.S. Patent No. 7,127,469B2, U.S. Patent
-      No. 7,171,404B2, U.S. Patent No. 7,756,858 B2, and U.S. Patent No
-      7,962,474 B2.
+    <p>This technology is protected by one or more U.S. Patents 7,127,469,
+      7,171,404, 7,756,858, 7,962,474, 8,935,267, 8,892,599 and 9,092,507.
     </p>
     <p>All MarkLogic software products are protected by United States and
       international copyright, patent and other intellectual property laws, and
       incorporate certain third party libraries and components which are
-      subject to the attributions, terms, conditions and disclaimers set forth
-      below.
+      subject to the attributions, terms, conditions and disclaimers found at
+      <a href="http://docs.marklogic.com/guide/copyright/legal">http://docs.marklogic.com/guide/copyright/legal</a>.
     </p>
-    <p>TRADEMARK NOTICE
+    <p>MarkLogic and the MarkLogic logo are trademarks or registered trademarks
+      of MarkLogic Corporation in the United States and other countries. All
+      other trademarks included in the Software, this notice or the
+      documentation are the property of their respective owners.
     </p>
-    <p>The MarkLogic name and logo are registered trademarks of MarkLogic
-      Corporation in the United States and/or other countries. Any other names
-      or logos included in the Software, this notice or the documentation are
-      property of the respective trademark owners.
-    </p>
-    <p>Updated:  July 21, 2015.
+    <p>Updated:  May 3, 2017.
     </p>
   </div>
 </ml:page>

@@ -5,15 +5,15 @@
 
     <div id="hero">
       <picture>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"/>
-        <img srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"/>
+        <img srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
       </picture>
 
       <div class="content">
-        <h1><em>Operational</em> and <em>Transactional</em> Enterprise NoSQL Database</h1>
+        <h1>Operational and Transactional Enterprise NoSQL Database</h1>
         <div class="row">
           <p class="col-md-offset-3 col-md-6">The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
         </div>
@@ -42,7 +42,7 @@
     </div>
 
     <div id="latest-release" class="row">
-      <div class="col-md-offset-1 col-md-4 col-sm-12">
+      <div class="col-md-offset-2 col-md-3 col-sm-12">
         <img class="logo" src="/media/ml9.png"/>
       </div>
       <div class="col-md-offset-2 col-md-4 text col-xs-offset-1 col-xs-10">
@@ -51,13 +51,13 @@
           <h1>MarkLogic 9</h1>
           <p>MarkLogic 9 is our most ambitious release ever. It includes major new features to improve data integration, security, and manageability—all designed to make integrating data from silos easier and faster, and to ensure that your integrated data is well-governed and managed.</p>
           <div class="pointers">
-            <a href="" class="pointer">
+            <a href="/media/white-paper/whats-new-in-marklogic-9.pdf" class="pointer">
               <span>MarkLogic 9 White Paper</span>
               <span class="glyphicon glyphicon-download-alt"></span>
             </a>
-            <a href="" class="pointer">Quick Tutorials &#8250;</a>
-            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes &#8250;</a>
-            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training &#8250;</a>
+            <a href="/learn" class="pointer">Quick Tutorials ›</a>
+            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes ›</a>
+            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training ›</a>
           </div>
           <a href="/products" class="btn btn-primary">Download MarkLogic 9</a>
         </div>
@@ -105,9 +105,9 @@
         <div class="row learn-more">
           <div class="col-sm-3 data-hub col-xs-10">
             <img src="/media/odh.svg"/>
-            <h4><a href="/code/data-hub">Data Hub Framework</a></h4>
+            <h4><a href="/code/data-hub-framework">Data Hub Framework</a></h4>
             <p>Free and open source framework to quickly build an Operational Data Hub.</p>
-            <p><a href="/code/data-hub" class="btn btn-default btn-xs">Learn More ›</a></p>
+            <p><a href="/code/data-hub-framework" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
           <div class="col-sm-3 col-xs-10">
@@ -125,12 +125,11 @@
             <p><a href="/learn/understanding-system-resources" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
 
-          <div class="col-sm-3 col-xs-10">
-            <img src="/media/amazon.png"/>
-            <h4><a href="/products/aws">Deploy on AWS</a></h4>
-            <p>Get going in minutes with MarkLogic in the Amazon cloud using the
-              provided AMIs and Cloud Formation templates.</p>
-            <p><a href="/products/aws" class="btn btn-default btn-xs">Learn More ›</a></p>
+          <div class="col-sm-3 col-xs-10 cloud">
+            <img src="/media/cloud/cloud-icon-purple.svg"/>
+            <h4><a href="/products/cloud">Deploy on Cloud</a></h4>
+            <p>Get going in minutes with MarkLogic in AWS and Azure using the provided AMIs and Azure Image.</p>
+            <p><a href="/products/cloud" class="btn btn-default btn-xs">Learn More ›</a></p>
           </div>
         </div>
       </div>
@@ -154,7 +153,7 @@
               <img src="/media/stackoverflow-logo.png" class="glyphicon stackoverflow-logo"/>
               <h2>Stack Overflow</h2>
               <p>Get the most useful answers to questions from the MarkLogic community, or ask your own question.</p>
-              <p class="action">View Q&amp;A &#8594;</p>
+              <p class="action">View Q&amp;A →</p>
             </a>
           </div>
 
@@ -162,8 +161,8 @@
             <a href="http://developer.marklogic.com/meet">
               <span class="glyphicon glyphicon-thumbs-up"></span>
               <h2>User Groups</h2>
-              <p>Meetup in person with other MarkLogicians in cities around the world to network, and share best practices, and discuss innovative ideas.</p>
-              <p class="action">Meetup in Your City &#8594;</p>
+              <p>Meetup in person with other MarkLogicians in cities around the world to network, share best practices, and discuss innovative ideas.</p>
+              <p class="action">Meetup in Your City →</p>
             </a>
           </div>
 
@@ -172,7 +171,7 @@
               <img src="/media/github-logo.png" class="glyphicon github-logo"/>
               <h2>GitHub</h2>
               <p>Collaborate on community-driven projects to make MarkLogic even better. We have tons of great projects going on right now.</p>
-              <p class="action">View Projects &#8594;</p>
+              <p class="action">View Projects →</p>
             </a>
           </div>
 
@@ -181,7 +180,7 @@
               <span class="glyphicon glyphicon-envelope"></span>
               <h2>Mailing List</h2>
               <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-              <p class="action">Join the Mailing List &#8594;</p>
+              <p class="action">Join the Mailing List →</p>
             </a>
           </div>
         </div>

@@ -984,8 +984,9 @@ footer nav .current a {
     color: #535761;
     font-size: 18px;
     line-height: 24px;
-    border: 1px solid #FFF;
     background-color: #ECECEC !important;
+    margin-top: 0;
+    margin-bottom: 0;
     padding: 13px 10px;
     border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
@@ -1094,6 +1095,16 @@ footer nav .current a {
     font-size: 11px;
     font-style: italic;
 }
+
+.widget .ebooks h3 {
+  margin-top: 0;
+}
+
+.widget .ebooks img {
+  float: right;
+  max-width: 25%;
+}
+
 #hadoop h1 {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -3190,13 +3201,6 @@ span.highlightWidget {
     float: left;
 }
 
-.maven-frag {
-    margin-left: 50px;
-    margin-bottom: 5px;
-    width: 480px;
-    height: 80px;
-}
-
 div.download-dialog,
 div.ui-widget-content {
     background: -moz-linear-gradient(top, #ffffff 0%, #d4d5d6 99%); /* FF3.6+ */
@@ -3400,6 +3404,46 @@ li.search_suggest_selected {
 
 .wrapper.thumbnail > img {
   max-height: 128px;
+}
+
+#main #recipe ul {
+  margin-bottom: 10px;
+  padding-left: 0;
+}
+
+#main #recipe ul.tags {
+  margin-top: 0px;
+}
+
+#main #recipe ul.tags li {
+  margin-right: 5px;
+}
+
+#main #recipe ul.tags li .glyphicon-remove {
+  cursor: pointer;
+}
+
+#main #recipe ul.recipes {
+  list-style: none;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+#recipe .recipe {
+  border-top: 1px solid #666;
+  margin-bottom: 20px;
+}
+
+#recipe .recipe .tag {
+  margin-right: 5px;
+}
+
+#recipe .pagination span {
+  cursor: default;
+}
+
+#recipe .pagination .disabled span {
+  cursor: not-allowed;
 }
 
 /* screen.css */

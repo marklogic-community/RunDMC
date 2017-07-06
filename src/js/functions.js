@@ -664,6 +664,8 @@ if(typeof jQuery != 'undefined') {
       buildCodeMirror('javascript');
       buildCodeMirror('xquery');
       buildCodeMirror('shell');
+      buildCodeMirror('sparql');
+      buildCodeMirror('clike');
 
       displayFirstCodeTabs();
       document.querySelectorAll('.code-tabs a[role=tab]').forEach(function(tab) {

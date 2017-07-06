@@ -15,33 +15,35 @@
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-3.0.2.zip" size="6.4MB" date="2015-04-07">Release 3.0.2 zip package (compatible with MarkLogic 8)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-4.0.1.zip" size="18MB" date="2017-05-02" sha1="ed27dcb5b430888e39e176edde85402ef053fb6a">Release 4.0.1 zip package (compatible with MarkLogic 9)</ml:download>
       <!--
 
       <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
 
       -->
     </ml:platform>
-    <!--
-
-    <ml:maven>
-
-      <ml:artifact id="java-client-api" version="2.0-1"/>
-
-    </ml:maven>
-
-    -->
   </ml:product-info>
 
   <section class="download">
     <h3>Maven</h3>
     <h4>Dependencies</h4>
-    <textarea readonly="readonly" class="maven-frag">&lt;dependency&gt;
-    &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
-    &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
-    &lt;version&gt;3.0.2&lt;/version&gt;
+    <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;marklogic-client-api&lt;/artifactId&gt;
+  &lt;version&gt;4.0.1&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
   </section>
+
+  <section class="download">
+    <h3>Gradle</h3>
+    <h4>Dependencies</h4>
+    <textarea class="codemirror javascript">
+dependencies {
+  compile group: 'com.marklogic', name: 'marklogic-client-api', version: '4.0.1'
+}</textarea>
+  </section>
+
   <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
   <h3>Features</h3>
   <p>The API provides interfaces for </p>
@@ -70,6 +72,23 @@
       </ul>
     </li>
     <li>Multi-statement (and multi-document) transaction management</li>
+    <li>Semantics
+      <ul>
+        <li>MarkLogic 8.0-4 and later supports Semantic queries and updates common libraries, extending these APIs for variable bindings, combination queries and other features. </li>
+        <li><a href="https://jena.apache.org/" target="_blank">Jena</a> -- an Apache framework for Semantic Web and Linked Data applications
+          <ul>
+            <li><a href="https://github.com/marklogic/marklogic-jena" target="_blank">GitHub</a></li>
+            <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_38569">MarkLogic Documentation</a></li>
+          </ul>
+        </li>
+        <li><a href="http://rdf4j.org/" target="_blank">Sesame</a> -- a framework for processing and handling RDF data
+          <ul>
+            <li><a href="https://github.com/marklogic/marklogic-sesame" target="_blank">GitHub</a></li>
+            <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_17082">MarkLogic Documentation</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
     <li>Analytics, including values and aggregates</li>
     <li>Security, including
       <ul>
@@ -79,7 +98,7 @@
     </li>
   </ul>
 
-  <p>It is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>.</p>
+  <p>The Java Client API is built on top of the <a href="//docs.marklogic.com/guide/rest-dev">MarkLogic REST API</a>.</p>
 
 <!--
 
@@ -99,20 +118,77 @@
   </p>
 
   <h3>Requirements</h3>
-  <p>The MarkLogic Java Client API 3.0.x runs on Java 6 and later and requires MarkLogic 8.</p>
+  <p>See the <a href="http://docs.marklogic.com/guide/java/intro#id_85623">Getting Started</a> section of the Java Application Developer's Guide for an introduction, including what version of Java is required.</p>
   <p>
     <ml:product-documentation>
       <ml:new-doc type="javadoc" title="MarkLogic Java Client API - Javadoc" source="/javadoc/client"/>
       <ml:new-doc source="/guide/java"/>
     </ml:product-documentation>
   </p>
-  <h2>Older Versions</h2>
-  <ml:product-info name="MarkLogic Java API" license-page="">
-    <ml:platform name="MarkLogic 7">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.5.zip" size="4.9MB" date="2015-03-06">Release 2.0.5 zip package (compatible with MarkLogic 7)</ml:download>
-    </ml:platform>
-    <ml:maven>
-      <ml:artifact id="client-api-java" version="2.0.5"/>
-    </ml:maven>
-  </ml:product-info>
+
+  <h3>Older Versions</h3>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>MarkLogic 8</h4>
+    </div>
+    <div class="panel-body">
+      <ml:product-info name="MarkLogic Java API" license-page="">
+        <ml:platform name="Downloads">
+          <ml:download anchor-class="track-download" href="/download/binaries/java/java-client-api-3.0.7-with-dependencies.zip" size="6.9MB" date="2017-02-15" sha1="77d7619f29c2277da95df1a697b8a42e14668e04">Release 3.0.7 zip package (compatible with MarkLogic 8)</ml:download>
+          <!--
+
+          <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+
+          -->
+        </ml:platform>
+      </ml:product-info>
+
+      <section class="download">
+        <h4>Maven</h4>
+        <h5>Dependencies</h5>
+        <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
+  &lt;version&gt;3.0.6&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+      </section>
+
+      <section class="download">
+        <h4>Gradle</h4>
+        <h5>Dependencies</h5>
+        <textarea class="codemirror javascript">
+dependencies {
+  compile group: 'com.marklogic', name: 'java-client-api', version: '3.0.7'
+}</textarea>
+      </section>
+    </div>
+  </div>
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>MarkLogic 7</h4>
+    </div>
+    <div class="panel-body">
+      <ml:product-info name="MarkLogic Java API" license-page="">
+        <ml:platform name="MarkLogic 7">
+          <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-2.0.6.zip" size="4.9MB" date="2016-01-28">Release 2.0.6 zip package (compatible with MarkLogic 7)</ml:download>
+        </ml:platform>
+
+      </ml:product-info>
+
+      <section class="download">
+        <h4>Maven</h4>
+        <h5>Dependencies</h5>
+        <textarea class="codemirror xml">
+&lt;dependency&gt;
+  &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
+  &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
+  &lt;version&gt;2.0.5&lt;/version&gt;
+&lt;/dependency&gt;</textarea>
+      </section>
+    </div>
+  </div>
 </ml:page>
