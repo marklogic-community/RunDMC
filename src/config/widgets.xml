@@ -169,9 +169,11 @@
     -->
   </widget>
 
+  <!--
   <widget href="/widgets/ebooks.xml">
     <page href="/learn"/>
   </widget>
+  -->
 
   <widget href="/widgets/online-training.xml">
     <page href="/learn"/>
