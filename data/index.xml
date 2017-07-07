@@ -5,11 +5,11 @@
 
     <div id="hero">
       <picture>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"/>
-        <source srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"/>
-        <img srcset="http://www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"></source>
+        <img srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
       </picture>
 
       <div class="content">
@@ -32,7 +32,7 @@
                     <h4 class="modal-title" id="myModalLabel">Overview Video</h4>
                 </div>
                 <div class="modal-body">
-                  <iframe width="640" height="360" frameborder="0" title="MarkLogic Overview"></iframe>
+                  <iframe width="640" height="360" frameborder="0" title="MarkLogic Overview" scrolling="auto"></iframe>
                   <!--
                     <iframe width="400" height="300" frameborder="0" allowfullscreen=""></iframe>
                   -->
@@ -60,6 +60,7 @@
             <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training ›</a>
           </div>
           <a href="/products" class="btn btn-primary">Download MarkLogic 9</a>
+          <a href="//www.marklogic.com/webinars/" class="btn btn-primary">Register for a Webinar</a>
         </div>
       </div>
     </div>
@@ -190,7 +191,7 @@
 
   </div>
 
-  <script>
+  <script xml:space="preserve">
     window.onload = function() {
       $('#overview-video').click(function () {
           var src = 'https://player.vimeo.com/video/190752203?autoplay=1';
