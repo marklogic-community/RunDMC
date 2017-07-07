@@ -19,8 +19,9 @@
         <task-period>2</task-period>
         <task-start-time>13:00:00-05:00</task-start-time>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
       <scheduled-task>
         <task-path>/some/hourly-task.xqy</task-path>
@@ -29,8 +30,9 @@
         <task-period>2</task-period>
         <task-minute>15</task-minute>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
       <scheduled-task>
         <task-path>/some/minutely-task.xqy</task-path>
@@ -38,8 +40,9 @@
         <task-type>minutely</task-type>
         <task-period>3</task-period>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
       <scheduled-task>
         <task-path>/some/monthly-task.xqy</task-path>
@@ -49,8 +52,9 @@
         <task-month-day>15</task-month-day>
         <task-start-time>13:00:00-05:00</task-start-time>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
       <scheduled-task>
         <task-path>/some/once-task.xqy</task-path>
@@ -58,8 +62,9 @@
         <task-type>once</task-type>
         <task-start>2019-01-01T13:00:00-05:00</task-start>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
       <scheduled-task>
         <task-path>/some/weekly-task.xqy</task-path>
@@ -73,8 +78,9 @@
         </task-days>
         <task-start-time>13:00:00-05:00</task-start-time>
         <task-database name="@ml.content-db"/>
-        <task-modules name="@ml.app-modules-db"/>
-        <task-user name="@ml.app-name-user"/>
+        <task-modules name="@ml.modules-db"/>
+        <task-user name="${default-user}"/>
+        <task-host name="${server-name}"/>
       </scheduled-task>
     </scheduled-tasks>
   </task-server>
@@ -85,7 +91,7 @@
       <enabled>false</enabled>
       <root>/@ml.app-name/</root>
       <port>@ml.app-port</port>
-      <modules name="@ml.app-modules-db"/>
+      <modules name="@ml.modules-db"/>
       <database name="@ml.content-db"/>
       <last-login>Last-Login</last-login>
       <display-last-login>true</display-last-login>
@@ -223,7 +229,7 @@
       <enabled>false</enabled>
       <root>/@ml.app-name/</root>
       <port>1@ml.app-port</port>
-      <modules name="@ml.app-modules-db"/>
+      <modules name="@ml.modules-db"/>
       <database name="@ml.content-db"/>
       <last-login>Last-Login</last-login>
       <display-last-login>true</display-last-login>
@@ -540,10 +546,10 @@
       <s3-domain>s3.amazonaws.com</s3-domain>
       <s3-protocol>http</s3-protocol>
       <s3-server-side-encryption>none</s3-server-side-encryption>
-      
+
       <!-- Diagnostics -->
       <trace-events-activated>true</trace-events-activated>
-      
+
       <!-- Auditing -->
       <audit-enabled>true</audit-enabled>
       <rotate-audit-files>daily</rotate-audit-files>
@@ -1184,14 +1190,14 @@
       <namespace>http://marklogic.com/roxy</namespace>
       <local-name>sample</local-name>
       <doc-uri>/app/models/sample.xqy</doc-uri>
-      <db-name>@ml.app-modules-db</db-name>
+      <db-name>@ml.modules-db</db-name>
       <role-name>admin</role-name>
     </amp>
     <amp>
       <namespace>http://marklogic.com/roxy</namespace>
       <local-name>sample2</local-name>
       <doc-uri>/app/models/sample2.xqy</doc-uri>
-      <db-name>@ml.app-modules-db</db-name>
+      <db-name>@ml.modules-db</db-name>
       <role-name>admin</role-name>
     </amp>
   </amps>
