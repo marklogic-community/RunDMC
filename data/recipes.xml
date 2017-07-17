@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-<h1>Recipes</h1>
+<div id="recipe" class="row">
+  <div class="col-md-3">
+  </div>
 
-<div id="recipe">
+  <div class="col-md-9">
+    <h1>Recipes</h1>
 
-  <recipes></recipes>
-
-
+    <recipes></recipes>
+  </div>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
