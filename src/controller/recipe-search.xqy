@@ -52,6 +52,7 @@ let $options :=
     <constraint name="tag">
       <range type="xs:string" collation="http://marklogic.com/collation/en/S1" facet="true">
         <element ns="http://developer.marklogic.com/site/internal" name="tag"/>
+        <facet-option>frequency-order</facet-option>
       </range>
     </constraint>
   </options>
