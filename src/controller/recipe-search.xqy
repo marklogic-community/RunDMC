@@ -23,17 +23,6 @@ let $text as xs:string := xdmp:get-request-field("text", "")
 let $page := try { xs:int(xdmp:get-request-field("p", "1")) } catch ($e) { 1 }
 let $start := ($page - 1) * $PAGE-SIZE + 1
 let $end := $start + $PAGE-SIZE - 1
-let $query :=
-  cts:and-query((
-    if (fn:exists($tags)) then
-      cts:and-query((
-        $tags ! cts:element-value-query(xs:QName("ml:tag"), .)
-      ))
-    else(),
-    if (fn:exists($text)) then
-      cts:word-query($text)
-    else ()
-  ))
 let $options :=
   <options xmlns="http://marklogic.com/appservices/search">
     <additional-query>
@@ -57,17 +46,8 @@ let $options :=
     </constraint>
   </options>
 let $results :=
-(:
-  cts:search(
-    fn:doc(),
-    $query
-  )[$start to $end]
-:)
   search:search($text || " " || $tags, $options, $start, $end)
 return
-(:
-  $results
-:)
   '{' ||
     fn:string-join(
       (
