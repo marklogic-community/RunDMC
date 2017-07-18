@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-<div id="recipe" class="row">
-  <div class="col-md-3">
-  </div>
+<style>
+  #recipe .sidebar {
+    margin-top: 70px;
+    padding-left: 35px;
+  }
 
-  <div class="col-md-9">
-    <h1>Recipes</h1>
+  #recipe .sidebar ul {
+    margin-top: 0;
+    padding-bottom: 15px;
+  }
 
+  #recipe .sidebar .tags li {
+    margin-right: 5px;
+  }
+
+  .glyphicon-remove {
+    cursor: pointer;
+  }
+</style>
+
+  <div id="recipe">
     <recipes></recipes>
   </div>
-</div>
+
 
 <script src="https://unpkg.com/vue"></script>
 <script type="text/javascript" src="/js/recipes.js"></script>
