@@ -60,7 +60,7 @@ declare variable $TYPE-JS-PAT := '(.+[^\?\*\+])([\?\*\+])?' ;
 declare function api:version-dir($version as xs:string)
 as xs:string
 {
-  if (matches($version, '^\d+\.\d+$')) then concat("/apidoc/", $version, "/")
+  if (matches($version, '^\d+\.\d+(-\d+)?$')) then concat("/apidoc/", $version, "/")
   else error((), 'APIDOC-BADVERSION', xdmp:describe($version))
 };
 

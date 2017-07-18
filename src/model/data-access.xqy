@@ -80,7 +80,7 @@ declare variable $server-versions-available as xs:string+ := cts:uris(
   (), (),
   cts:document-query(
     $server-versions ! concat('/apidoc/', ., '/index.xml')))
-! replace(., '/apidoc/(\d+\.\d+)/index.xml', '$1') ;
+! replace(., '/apidoc/(\d+\.\d+(-\d+)?)/index.xml', '$1') ;
 declare variable $server-version-nodes-available as element()+ := (
   $server-version-nodes[@number = $server-versions-available]) ;
 
@@ -1002,7 +1002,7 @@ as xs:string?
 {
   (for $v in distinct-values($list ! normalize-space(.))
     where $v = $server-versions-available
-    order by xs:double($v) descending
+    order by $v descending
     return $v)[1]
 };
 

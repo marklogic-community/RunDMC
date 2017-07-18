@@ -352,8 +352,8 @@ function versionSelectInit() {
       var oldQuery = window.location.search;
       // Handle different positioning of version strings.
       var newQuery = oldQuery
-          .replace(/\?v=\d+\.\d+/, "?v=" + version)
-          .replace(/&v=\d+\.\d+/, "&v=" + version);
+          .replace(/\?v=\d+\.\d+(?:-\d+)?/, "?v=" + version)
+          .replace(/&v=\d+\.\d+(?:-\d+)?/, "&v=" + version);
       // Handle no version string.
       if (newQuery == oldQuery) newQuery += "&v=" + version;
 
@@ -365,11 +365,11 @@ function versionSelectInit() {
     var newPath = oldPath;
     if (version == defaultVersion) {
       LOG.debug("using default", defaultVersion);
-      newPath = oldPath.replace(/^\/\d+\.\d+/, "");
-    } else if (oldPath.match(/^\/\d+\.\d+/)) {
+      newPath = oldPath.replace(/^\/\d+\.\d+(?:-\d+)?/, "");
+    } else if (oldPath.match(/^\/\d+\.\d+(?:-\d+)?/)) {
       LOG.debug("replacing old with", version);
       newPath = oldPath.replace(
-          /^\/\d+\.\d+/, "/" + version);
+          /^\/\d+\.\d+(?:-\d+)?/, "/" + version);
     } else {
       LOG.debug("prepending", version);
       newPath = '/' + version + oldPath;

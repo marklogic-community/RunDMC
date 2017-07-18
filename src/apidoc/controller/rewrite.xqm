@@ -52,8 +52,8 @@ declare variable $QUERY-STRING := substring-after($URL-ORIG, '?');
 declare variable $QUERY-STRING-FIELDS := xdmp:get-request-field-names() ;
 
 declare variable $VERSION-SPECIFIED := (
-  if (matches($PATH, '^/\d\.\d$')) then substring-after($PATH, '/')
-  else if (matches($PATH, '^/\d\.\d/')) then substring-before(
+  if (matches($PATH, '^/\d+\.\d+(-\d+)?$')) then substring-after($PATH, '/')
+  else if (matches($PATH, '^/\d+\.\d+(-\d+)?/')) then substring-before(
     substring-after($PATH, '/'), '/')
   else "") ;
 

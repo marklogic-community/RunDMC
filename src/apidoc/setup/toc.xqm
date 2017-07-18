@@ -1272,7 +1272,7 @@ as element(toc:node)
     (: By now the JavaScript translation should already have happened. :)
     case $api:MODE-REST return api:reverse-translate-REST-resource-name(
       (: For 5.0 hide the verb. :)
-      if (xs:double($version) gt 5.0) then $function-name
+      if ($version ne "5.0") then $function-name
       else api:name-from-REST-fullname($function-name))
     default return $function-name)
   let $href as xs:string := (
