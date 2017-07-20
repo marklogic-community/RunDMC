@@ -1,0 +1,353 @@
+<!--
+
+    This file configures the TOC and the list of docs on the home page.
+
+    For the home page:
+
+    * The heading is built using @title.
+    * The section body is built using <description>.
+
+    For the TOC:
+
+    * The toc @display is built using @toc-title, falling back to @title.
+    * The toc:title is built using @toc-title, falling back to @title.
+    * The toc:intro is built using <intro>.
+
+    For guides, additional options are available.
+
+    The "url-name" is used in the URL,
+    e.g. "getting-started" => /8.0/guides/getting-started[.pdf]
+
+    The order, URLs, and descriptions of guides will be copied.
+
+    If a guide in the zip is not included in this list,
+    an error may be thrown during processing or a warning may be logged.
+    Such guides will not appear on list pages nor in the TOC.
+
+    If you want to explicitly exclude a guide, use the @exclude flag.
+
+    The @source-name attribute determines the source PDF name, unless @pdf-name
+    is provided.
+
+    The TOC can show duplicate references to a single guide.
+    All but the main reference should set @duplicate true.
+
+    Set @toc-closed="1" to tell the TOC to collapse
+    any entry initially. It is false by default: initially expanded.
+    Set @all-functions-toc-closed="1" to tell the TOC to collapse
+    the all-functions variant initially. It is false by default.
+-->
+<docs xmlns="http://marklogic.com/xdmp/apidoc"
+      title="All Documentation">
+
+  <group toc-title="Server-Side JavaScript APIs">
+    <entry title="JavaScript Function Reference"
+           toc-title="JavaScript Functions By Category (%d)"
+           toc-closed="0"
+           href="/js/all"
+           type="function-reference"
+           all-functions="true"
+           all-functions-title="JavaScript Functions by Name (%d)"
+           all-functions-toc-closed="1"
+           mode="javascript">
+      <description>
+        API documentation for the Server-Side MarkLogic built-in
+        extensions to the JavaScript standard functions.
+      </description>
+      <intro>
+        The following table lists all Server-Side JavaScript functions
+        in the MarkLogic API reference,
+        including all built-in functions available to JavaScript.
+      </intro>
+      <path>/pubs/raw/apidoc/</path>
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="jsref" toc-closed="1" duplicate="true"/>
+    </entry>
+    </group>
+
+    <group toc-title="Server-Side XQuery APIs">
+    <entry title="XQuery/XSLT Function Reference"
+           toc-title="XQuery/XSLT Functions By Category (%d)"
+           href="/all"
+           type="function-reference"
+           all-functions="true"
+           all-functions-title="XQuery/XSLT Functions by Name (%d)"
+           mode="xquery">
+      <description>
+        API documentation for the MarkLogic built-in and module extensions
+        to the XQuery and XSLT standard functions.
+        It also contains API reference information for the
+        W3C standard functions implemented in MarkLogic Server.
+      </description>
+      <intro>
+        The following table lists all XQuery/XSLT functions
+        in the MarkLogic API reference,
+        including both built-in functions
+        and functions implemented in XQuery library modules.
+      </intro>
+      <path>/pubs/raw/apidoc/</path>
+    </entry>
+    <entry toc-title="Related Guides">
+      <guide url-name="xquery" toc-closed="1" duplicate="true"/>
+    </entry>
+  </group>
+
+  <group>
+    <entry title="Zip File of All Documentation">
+    <entry title="ZIP File of All MarkLogic Product Documentation"
+           href="/MarkLogic_9_pubs.zip"
+           type="download">
+      <description>
+        A zip file containing this documentation.
+      </description>
+    </entry>
+    </entry>
+  </group>
+
+  <group toc-title="Guides"
+         id="guides">
+
+    <entry title="Getting Started Guides">
+      <guide url-name="getting-started" source-name="gs">
+        A quick, step-by-step overview of how to
+        get up and running with MarkLogic Server.
+      </guide>
+      <guide url-name="installation" source-name="install_all"
+             pdf-name="install">
+        Contains procedures for installing and upgrading MarkLogic Server
+        on all platforms.
+      </guide>
+      <guide url-name="relnotes" source-name="relnotes">
+        Contains a summary of new features, upgrade compatibility information,
+        and other information about this release.
+      </guide>
+      <guide url-name="concepts" source-name="concepts">
+        Provides an overview of MarkLogic and conceptual information about the
+        server architecture.
+      </guide> 
+    </entry>
+
+    <entry title="Developer's Guides">
+      <guide url-name="app-dev" source-name="dev_guide">
+        Provides procedures, methodologies, and conceptual information about
+        general application development tasks in MarkLogic Server.</guide>
+      <guide url-name="search-dev" source-name="search-dev-guide">
+        Provides procedures, methodologies, and conceptual information
+        about developing search-related applications in MarkLogic Server.
+        Includes information about the Search API and the built-in search
+        features of MarkLogic Server.</guide>
+      <guide url-name="node-dev" source-name="node-dev">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Node.js
+        API. </guide>
+      <guide url-name="java" source-name="java-client">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Java
+        API. </guide>
+      <guide url-name="xcc" source-name="xcc">Contains an overview of what
+        you can do with the XCC libraries, examples of how to use XCC, and an
+        overview of the sample applications included with XCC.</guide>
+      <guide url-name="mapreduce" source-name="mapreduce">How to create
+        Apache Hadoop MapReduce jobs that use MarkLogic Server as an input
+        data source or an output destination. This book includes an overview
+        of the sample applications.</guide>
+      <guide url-name="rest-dev" source-name="rest-dev">
+        Provides information on MarkLogic Server administration and application
+        development using the MarkLogic REST API.</guide>
+      <guide url-name="semantics" source-name="semantics">
+        Provides information on developing semantic applications with MarkLogic.
+      </guide>
+      <guide url-name="temporal" source-name="temporal">
+        Provides information on developing applications using MarkLogic
+        bi-temporal features.
+      </guide>
+      <guide url-name="entity-services" source-name="entity-services">
+        Provides information on how to use MarkLogic's Entity Services
+        to model and integrate data from disparate sources into your
+        application.</guide>
+      <guide url-name="ref-arch" source-name="ref-arch">
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
+      </guide>
+    </entry>
+
+    <entry title="Administrator's Guides">
+      <guide url-name="admin" source-name="admin">
+        Provides procedures for administrative tasks such as creating
+        servers, creating databases, backing up databases, creating users,
+        setting up your security policy, and so on.</guide>
+      <guide url-name="admin-api" source-name="adminAPI">
+        Provides information on writing code to script various administrative
+        tasks such as creating and modifying databases, App Servers, and
+        so on.</guide>
+      <guide url-name="database-replication"
+             source-name="database-replication">
+        Provides a thorough explanation of how to configure and use
+        MarkLogic database replication.</guide>
+      <guide url-name="flexrep" source-name="replication">
+        Provides step-by-step information on replicating MarkLogic Server
+        content using Flexible Replication.</guide>
+      <guide url-name="monitoring" source-name="monitoring">
+        Provides procedures for setting up and using monitoring applications
+        on MarkLogic Server.</guide>
+      <guide url-name="sharepoint" source-name="SharePoint-Connector">
+        Documentation for the MarkLogic Connector for
+        SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>,
+        which allows you to mirror documents from a Microsoft SharePoint
+        repository in MarkLogic Server.</guide>
+    </entry>
+
+    <entry title="Other Reference Guides">
+      <guide url-name="jsref" source-name="jsref">A condensed overview
+        of Server-Side JavaScript in MarkLogic.  Contains reference material
+        for MarkLogic-specific JavaScript objects available to server-side
+        programmers.
+      </guide>
+      <guide url-name="xquery" source-name="xquery">A condensed overview of
+        the XQuery language, including a description of the three XQuery
+        dialects supported in MarkLogic Server. This book does includes some
+        syntax information, although it is primarily intended as an
+        introduction and quick-reference to the languages, not as a
+        comprehensive reference.</guide>
+      <guide url-name="mlcp" source-name="mlcp">
+	A procedural guide that explains how to use MarkLogic Content 
+	Pump (mlcp) command line tool to load content into MarkLogic, 
+	extract content from MarkLogic, or copy content between 
+	databases. </guide>
+      <guide url-name="cpf" source-name="cpf">
+        Provides an introduction to the Content Processing Framework and
+        procedures for installing the default content processing
+        framework.</guide>
+      <guide url-name="performance" source-name="performance">
+        Provides performance-related information that is useful to
+        application developers and administrators.</guide>
+      <guide url-name="cluster" source-name="cluster">
+        Provides information on large-scale system architecture, clustering,
+        and details on setting up both local-disk failover and shared-disk
+        failover.</guide>
+      <guide url-name="security" source-name="security">
+        Provides information on the role-based security model in MarkLogic
+        Server.</guide>
+      <guide url-name="ec2" source-name="ec2">
+        Provides information on using an Amazon Machine Image (AMI) of
+        MarkLogic Server on Amazon EC2.</guide>
+      <guide url-name="qconsole" source-name="qconsole">A procedural guide
+        that describes how to use the Query Console.</guide>
+      <guide url-name="ingestion" source-name="ingestion">
+        Provides procedures, methodologies, and conceptual information
+        about loading content into MarkLogic Server. Includes an overview
+        of ingestion techniques available using XQuery, Java, REST, .NET,
+        and the MarkLogic Content Pump (mlcp).
+      </guide>
+      <guide url-name="sql" source-name="sql">
+        Provides information on how to use MarkLogic's SQL interface,
+        including the creation of relational schemas and views.</guide>
+      <guide url-name="messages" source-name="messages">
+        Error Messages and Codes Reference</guide>
+      <guide url-name="copyright" source-name="shared">
+  Includes a glossary of terms as well as copyright and support
+  information.
+      </guide>
+    </entry>
+
+  </group>
+
+  <group toc-title="REST API">
+    <entry toc-title="REST API Reference"
+           title="REST API Reference">
+      <entry title="REST API Reference"
+             toc-title="All REST Resources"
+             href="/REST"
+             type="function-reference"
+             mode="REST">
+        <description>This API reference documents the REST API for creating 
+        client applications that communicate with MarkLogic via HTTP requests,
+        as well as REST resources on port 8000 for monitoring, managing,
+        and packaging.</description>
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="rest-dev" toc-closed="1" duplicate="true"/>
+        <guide url-name="monitoring" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin" toc-closed="1" duplicate="true"/>
+        <guide url-name="admin-api" toc-closed="1" duplicate="true"/>
+      </entry>
+    </entry>
+  </group>
+
+  <group toc-title="Java Client API" title="Java Client API">
+     <entry toc-title="Java Client API Reference"
+            title="Java Client API Reference">
+        <entry toc-title="Java Client API javadoc"
+               title="Java Client API javadoc"
+               href="/javadoc/client/index.html"
+               type="external">
+        API documentation for the MarkLogic Java API.
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="java" duplicate="true"/>
+      </entry>
+    </entry>
+  </group>
+
+  <group toc-title="Node.js Client API" title="Node.js Client API">
+    <entry toc-title="Node.js Client API Reference"
+           title="Node.js Client API Reference">
+      <entry toc-title="Node.js Client API Reference"
+             title="jsdoc for Node.js Client API"
+             href="/jsdoc/index.html"
+             type="external">
+      API documentation for the MarkLogic Node.js Client API.
+      </entry>
+      <entry toc-title="Related Guides">
+        <guide url-name="node-dev" duplicate="true"/>
+      </entry>
+    </entry>
+  </group>
+
+  <group toc-title="Other Docs">
+    <entry toc-title="XCC" title="XCC API Reference">
+      <entry toc-title="XCC Javadoc"
+             title="XCC Javadoc (online)"
+             href="/javadoc/xcc/index.html"
+             type="external">
+        API documentation for the MarkLogic XML Content Connector for
+        Java (XCC/J) API.
+      </entry>
+      <entry toc-title="Developer's Guide">
+        <guide url-name="xcc" duplicate="true"/>
+      </entry>
+    </entry>
+
+    <entry toc-title="Hadoop Connector"
+           title="Hadoop Connector API Reference">
+      <entry toc-title="Hadoop Connector API Reference"
+             title="MarkLogic Connector for Hadoop javadoc"
+             href="/javadoc/hadoop/index.html"
+             type="external">
+        API documentation for the MarkLogic Connector for Hadoop.
+      </entry>
+
+      <entry toc-title="Developer's Guide">
+        <guide url-name="mapreduce" duplicate="true"/>
+      </entry>
+    </entry>
+
+    <entry title="C++ UDF">
+      <entry toc-title="C++ UDF API Reference"
+             title="C++ UDF API Reference"
+             href="/cpp/udf/index.html"
+             type="external">
+        API documentation for the C++ User Defined Function (UDF) API.
+      </entry>
+    </entry>
+
+    <entry title="Admin Interface Help">
+      <entry title="Admin Interface Help"
+             href="/admin-help"
+             type="help">
+      </entry>
+    </entry>
+  </group>
+
+</docs>
