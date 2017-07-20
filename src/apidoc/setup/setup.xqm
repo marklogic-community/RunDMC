@@ -247,7 +247,7 @@ declare function stp:function-link(
   $function as element())
 as element(api:function-link)?
 {
-  if (($mode eq $api:MODE-JAVASCRIPT and number($version) lt 8.0)
+  if (($mode eq $api:MODE-JAVASCRIPT and $version lt "8.0")
     or not(api:function-appears-in-mode($function, $mode))) then ()
   else element api:function-link {
     attribute mode { $mode },
@@ -459,22 +459,40 @@ as document-node()
    : and closes the script tags with jsdoc.
    :)
   if (ends-with($path, '/index.html')) then xdmp:zip-get($zip, $path)
-  (: Read it as text and tidy, because the HTML may be broken. :)
-  else xdmp:tidy(
-    xdmp:zip-get(
-      $zip,
-      $path,
-      <options xmlns="xdmp:zip-get">
-        <format>text</format>
-        <encoding>auto</encoding>
+  (: Read it as text and tidy, if possible, because the HTML may be broken. 
+   : The Java Client API includes a file that's too big to load as text
+   : on some systems; fall back on binary for that case.
+   :)
+  else try {
+    xdmp:tidy(
+      xdmp:zip-get(
+        $zip, $path,
+        <options xmlns="xdmp:zip-get">
+          <format>text</format>
+          <encoding>auto</encoding>
+        </options>
+      ),
+      <options xmlns="xdmp:tidy">
+        <input-encoding>utf8</input-encoding>
+        <output-encoding>utf8</output-encoding>
+        <output-xhtml>yes</output-xhtml>
       </options>
-    ),
-    <options xmlns="xdmp:tidy">
-      <input-encoding>utf8</input-encoding>
-      <output-encoding>utf8</output-encoding>
-      <output-xhtml>yes</output-xhtml>
-    </options>
-    )[2]
+      )[2]
+  } catch ($err) {
+    if ($err/*:code eq "XDMP-TOOBIG") then (
+      stp:warning(
+        'stp:zip-jdoc-get',
+        ("Text file too big (XDMP-TOOBIG). Loading as binary: '", $path)
+      ),
+      xdmp:zip-get(
+        $zip, $path,
+        <options xmlns="xdmp:zip-get">
+          <format>binary</format>
+          <encoding>auto</encoding>
+        </options>
+      )) 
+    else xdmp:rethrow()
+  }
 };
 
 declare function stp:zip-mangled-html-get(
@@ -598,7 +616,7 @@ as empty-sequence()
     catch($e) {
       stp:info(
         'stp:zip-static-file-insert',
-        ("failed tidy conversion with", $e/error:code)),
+        ("failed tidy conversion with", $e/error:code, "for", $uri)),
       $doc }
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
     let $_ := if (not($DEBUG)) then () else stp:fine(
