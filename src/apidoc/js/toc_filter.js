@@ -408,7 +408,7 @@ function waitToShowInTOC($tocSection, sleepMillis) {
   // The TOC locations are a little inconsistent,
   // so look for the href with and without a version prefix.
   var locationHrefNoVersion = locationHref.replace(
-      /\/(\d+\.\d+)\//,
+      /\/(\d+\.\d+(-\d+)?)\//,
     '/');
   if (locationHref == locationHrefNoVersion) locationHrefNoVersion = null;
 

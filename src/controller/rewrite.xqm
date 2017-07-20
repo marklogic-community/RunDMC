@@ -72,20 +72,22 @@ as xs:string
     else if (matches($path, "^/[0-9]\.[0-9]$"))
          then concat($srv:api-server, $path)
 
-    else if (matches($path, "/pubs/[\d]\.[\d]/apidocs/")) then
+    else if (matches($path, "/pubs/\d{1,2}\.\d(-\d+)?/apidocs/")) then
         m:redirect-function-url($path)
 
-    else if (matches($path, "/pubs/[\d]\.[\d]/books/")) then
+    else if (matches($path, "/pubs/\d{1,2}\.\d(-\d+)?/books/")) then
         m:redirect-guide-url($path)
 
-    else if (matches($path, "/pubs/[\d]\.[\d]/dotnet/")) then
+    else if (matches($path, "/pubs/\d{1,2}\.\d(-\d+)?/dotnet/")) then
         m:redirect-dotnet-url($path)
     (: use $orig-url in the javadoc redirects so it includes the query string :)
-    else if (matches($path, "/pubs/[\d]\.[\d]/javadoc/")) then
+    else if (matches($path, "/pubs/\d{1,2}\.\d(-\d+)?/javadoc/")) then
         m:redirect-java-url($orig-url,"/javadoc/xcc/")
     else if (starts-with($path, "/pubs/5.0/hadoop/javadoc/")) then
         m:redirect-java-url($orig-url,"/javadoc/hadoop/")
 
+    else if ($path = ("/download/9.0", "/download/9.0/")) then
+        "/products/marklogic-server"
     else if ($path = ("/download/8.0", "/download/8.0/")) then
         "/products/marklogic-server/8.0"
     else if ($path = ("/download/7.0", "/download/7.0/")) then
