@@ -374,6 +374,10 @@ declare function m:rewrite()
     let $file-uri := concat('/apidoc', $PATH-WITH-VERSION)
     return m:get-db-file($file-uri))
 
+  (: Login/logout code is in the DMC app, but is called through AJAX. :)
+  else if ($PATH eq "/login")  then "/controller/login.xqy"
+  else if ($PATH eq "/logout") then "/controller/logout.xqy"
+
   (: redirect /package to /pkg because we changed the prefix :)
   else if ($PATH eq "/package") then m:redirect("/pkg")
 
