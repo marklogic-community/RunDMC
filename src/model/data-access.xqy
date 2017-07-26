@@ -248,6 +248,7 @@ as xs:string+
   else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else if (contains($doc-uri, "/cpp/"))            then "cpp"
   else if (starts-with($doc-uri, "/ondemand/"))    then "mlu"
+  else if (starts-with($doc-uri, "/recipe/"))     then "recipe"
   else (
     let $doc as node() := if ($new-doc) then $new-doc else doc($doc-uri)
     return (

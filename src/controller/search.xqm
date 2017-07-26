@@ -319,6 +319,7 @@ declare function ss:facet-value-display($e as element())
     case 'code' return 'Open-source projects'
     case 'event' return 'Events'
     case 'rest-api' return 'REST API docs'
+    case 'recipe' return 'Recipe'
 
     case 'function' return 'Function pages'
     case 'function/javascript' return 'JavaScript'
