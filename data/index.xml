@@ -5,11 +5,11 @@
 
     <div id="hero">
       <picture>
-        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-mobile.svg" media="(max-width: 480px)"></source>
-        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet.svg" media="(max-width: 768px)"></source>
-        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-tablet-1.svg" media="(max-width: 992px)"></source>
-        <source srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" media="(min-width: 993px)"></source>
-        <img srcset="//www.marklogic.com/wp-content/uploads/2012/09/node-integration-hero-1.svg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-dev-sm-2-1.jpg" media="(max-width: 480px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-sub-md-compressor-2-2.jpg" media="(max-width: 768px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-sub-md-compressor-2-2.jpg" media="(max-width: 992px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-lg-3.jpg" media="(min-width: 993px)"></source>
+        <img srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-lg-3.jpg" alt="Operational and Transactional Enterprise NoSQL Database" title="Operational and Transactional Enterprise NoSQL Database" scale="0"/>
       </picture>
 
       <div class="content">
