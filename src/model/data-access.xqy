@@ -1021,7 +1021,7 @@ declare function ml:get-author-info($author-name as xs:string)
 
 declare function ml:build-doc-sections-options()
 {
-  let $options := fn:doc(api:toc-uri())//node()[@class="toc_select_option"]/fn:string()
+  let $options := fn:doc(api:toc-uri())//node()[@class/fn:string() = "toc_select_option"]/fn:string()
   let $preference := users:get-user-preference(users:getCurrentUser(), $users:PREF-DOC-SECTION)
   for $option in $options
   return
