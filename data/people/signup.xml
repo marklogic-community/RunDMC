@@ -324,10 +324,11 @@
           <option value="Life Sciences">Life Sciences</option>
           <option value="Logistics/Transportation">Logistics/Transportation</option>
           <option value="Manufacturing">Manufacturing</option>
+          <option value="Media/Entertainment">Media/Entertainment</option>
+          <option value="Media/Publishing">Media/Publishing</option>
           <option value="Mining/Construction/Engineering">Mining/Construction/Engineering</option>
           <option value="Non-profit/Associations">Non-profit/Associations</option>
           <option value="Other">Other</option>
-          <option value="Publishing/Media">Publishing/Media</option>
           <option value="Retail">Retail</option>
           <option value="Services">Services</option>
           <option value="State and Local Government">State and Local Government</option>
@@ -335,8 +336,8 @@
           <option value="Technology - Hardware">Technology - Hardware</option>
           <option value="Technology - Software">Technology - Software</option>
           <option value="Telecommunications">Telecommunications</option>
-          <option value="Travel/Entertainment">Travel/Entertainment</option>
-  	    </select>
+          <option value="Travel">Travel</option>
+        </select>
 
       </div>
 
