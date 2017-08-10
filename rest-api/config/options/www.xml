@@ -17,6 +17,7 @@
       <cts:uri>category/blog</cts:uri>
       <cts:uri>category/code</cts:uri>
       <cts:uri>category/mlu</cts:uri>
+      <cts:uri>category/recipe</cts:uri>
     </cts:collection-query>
   </search:additional-query>
   <search:page-length>10</search:page-length>
