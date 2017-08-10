@@ -510,7 +510,8 @@ declare function guide:consolidate-insert(
   $previous as xs:string?,
   $next as xs:string?,
   $number as xs:integer?,
-  $chapter-list as element()?)
+  $chapter-list as element()?,
+  $pdf-only as xs:boolean?)
   as empty-sequence()
 {
   if (not($stp:DEBUG)) then () else stp:debug(
@@ -522,7 +523,7 @@ declare function guide:consolidate-insert(
     element { if ($chapter-list) then "guide" else "chapter" } {
       attribute original-dir { $orig-dir },
       attribute guide-uri { $guide-uri },
-
+      if ($chapter-list) then attribute pdf-only { $pdf-only } else (),
       $previous ! attribute previous { . },
       $next ! attribute next { . },
       $number ! attribute number { . },
@@ -555,7 +556,7 @@ as element(chapter)
   let $_ := guide:consolidate-insert(
     $chapter-doc, $chapter-title, $guide-title,
     $chapter/@target-uri, $dir, $final-guide-uri,
-    $previous, $next, $chapter-num, ())
+    $previous, $next, $chapter-num, (), false())
   return element chapter {
     attribute href { $chapter/@final-uri },
     element chapter-title { $chapter-title } }
@@ -569,13 +570,19 @@ declare function guide:consolidate(
   $guide-config as element(apidoc:guide)?)
 as empty-sequence()
 {
-  let $title-doc := doc(concat($dir, 'title.xml'))
-  let $guide-title := $title-doc/XML/Title/normalize-space(.)
   let $url-name := (
     if ($guide-config) then $guide-config/@url-name
     else $dir-name)
+  let $pdf-only := (
+    if ($guide-config/@pdf-only) then true()
+    else false())
+  let $title-doc := doc(concat($dir, 'title.xml'))
+  let $guide-title := $title-doc/XML/Title/normalize-space(.)
   let $target-url   := concat("/",$version,"/guide/",$url-name,".xml")
-  let $final-guide-uri := raw:target-guide-doc-uri-for-string($target-url)
+  (: for pdf only guides final-guide-uri will be /apidoc/9.0/guide/GUIDE_NAME.pdf:)
+  let $final-guide-uri := (
+    if($pdf-only) then replace(raw:target-guide-doc-uri-for-string($target-url),'\.xml','.pdf') 
+    else raw:target-guide-doc-uri-for-string($target-url))
   let $chapters := xdmp:directory($dir)[XML] except $title-doc
   (: In two stages,
    : so we can get the next and previous chapter links in the next stage.
@@ -606,7 +613,7 @@ as empty-sequence()
     $title-doc, $guide-title, $guide-title,
     $target-url, $dir, $final-guide-uri,
     (), $first-chapter-uri, (),
-    $chapter-list)
+    $chapter-list, $pdf-only)
 };
 
 declare function guide:consolidate(

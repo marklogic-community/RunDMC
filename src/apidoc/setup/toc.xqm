@@ -528,7 +528,7 @@ as element(toc:node)
   toc:node(
     toc:id($guide),
     $guide/title treat as node(),
-    api:external-uri($guide),
+    (if ($guide/@pdf-only ne true()) then api:external-uri($guide) else api:external-uri-pdf-only-guides($guide)),
     (: If the guide node is closed, load async. Otherwise preload. :)
     $is-closed,
     'guide',
