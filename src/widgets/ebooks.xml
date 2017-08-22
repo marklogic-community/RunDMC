@@ -1,10 +1,11 @@
 <ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
   <h1>eBooks</h1>
   <div class="list-group ebooks">
-    <a href="/learn/cookbook/implementing-xquery" class="list-group-item">
-      <img src="/media/learn/cookbook/implementing-xquery/front-sm.png"/>
-      <h3>MarkLogic Cookbook</h3>
-      <div>Implementing XQuery: Practical Solutions to Real-World Problems</div>
+    <a href="http://info.marklogic.com/building-on-multimodel-databases.html" class="list-group-item">
+      <img src="//info.marklogic.com/rs/371-XVQ-609/images/building-on-multi-model-databases-cover.png"/>
+      <h3>Building on Multi-Model Databases</h3>
+      <p>How to Manage Multiple Schemas Using a Single Platform</p>
+      <p><em>Free Book</em></p>
     </a>
   </div>
 </ml:widget>
