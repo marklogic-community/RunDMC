@@ -57,7 +57,8 @@ $(function() {
       tocFilterUpdate();
       updateTocForSelection(); } });
 
-  selector = "#api_sub .pjax_enabled a:not(.external)";
+  // excluding pdf hrefs
+  selector = "#api_sub .pjax_enabled a:not(.external, [href$='.pdf'])";
   $(document).pjax(selector, '#page_content', {
     container: '#page_content',
     timeout: 4000,
