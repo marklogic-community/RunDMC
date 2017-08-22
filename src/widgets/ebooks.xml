@@ -2,7 +2,7 @@
   <h1>eBooks</h1>
   <div class="list-group ebooks">
     <a href="http://info.marklogic.com/building-on-multimodel-databases.html" class="list-group-item">
-      <img src="//info.marklogic.com/rs/371-XVQ-609/images/building-on-multi-model-databases-cover.png"/>
+      <img src="http://info.marklogic.com/rs/371-XVQ-609/images/building-on-multi-model-databases-cover.png"/>
       <h3>Building on Multi-Model Databases</h3>
       <p>How to Manage Multiple Schemas Using a Single Platform</p>
       <p><em>Free Book</em></p>
