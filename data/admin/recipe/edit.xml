@@ -7,4 +7,6 @@
 
   <ml:auto-form template="Recipe.xml"/>
 
+  <ml:media-modal/>
+
 </ml:page>

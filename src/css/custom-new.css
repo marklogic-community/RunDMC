@@ -339,6 +339,16 @@ ul.new-features p {
   position: relative;
 }
 
+#hero {
+  max-height: 462px;
+  overflow: hidden;
+}
+
+#hero img {
+  width: 100%;
+  height: auto;
+}
+
 #hero .content h1, #hero .content p {
   color: white;
   text-align: center;

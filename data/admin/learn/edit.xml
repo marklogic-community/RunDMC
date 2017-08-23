@@ -3,4 +3,7 @@
   <h1>Learn Edit</h1>
   <p style="text-transform: uppercase; color: red; font-weight: bold">WARNING: Use the rich text editor with care. If you originally authored outside it, then it's probably best to first click &quot;Add/Remove WYSIWYG editor&quot; and edit in plain text instead.</p>
   <ml:auto-form template="Article.xml"/>
+
+  <ml:media-modal/>
+
 </ml:page>
