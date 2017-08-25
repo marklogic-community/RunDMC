@@ -251,12 +251,8 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
     <ml:doc path="/learn/video/enterprise-nosql.xml"/>
     <ml:doc path="/learn/video/markmail.xml"/>
     <ml:doc path="/learn/video/arch-overview.xml"/>
-    <ml:doc path="/learn/video/social-media-demo.xml"/>
     <ml:doc path="/learn/video/getting-started-with-ec2.xml"/>
     <ml:doc path="/learn/video/getting-started-with-cf.xml"/>
-    <ml:doc path="/learn/video/rest-api-setup.xml"/>
-    <ml:doc path="/learn/video/app-services.xml"/>
-    <ml:doc path="/learn/video/app-services-pt2.xml"/>
     <ml:doc path="/learn/video/qconsole.xml"/>
     <ml:doc path="/learn/video/qconsole-v7.xml"/>
     <ml:doc path="/learn/video/nagios.xml"/>
