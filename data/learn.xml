@@ -34,6 +34,15 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
+          <h3 class="panel-title">Recipes</h3>
+        </div>
+        <div class="panel-body">
+          <p>Recipes provide easily reusable solutions to common problems. <a href="/recipes">Check out our collection</a>.</p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
           <a href="http://www.marklogic.com/resource-type/whitepapers/" class="pull-right">(full list)</a>
           <h3 class="panel-title">White Papers</h3>
         </div>
