@@ -48,8 +48,7 @@
           </dl>
           <dl>
             <a href="/media/white-paper/hardware-reference-arch-das.pdf"><dt>Hardware Reference Architecture: Direct Attached Storage</dt></a>
-            <dd>Provide details on commodity hardware recommendations, recommended hardware and RAID configurations for
-commodity hardware, and basic forest layout recommendations for Direct Attached Storage.</dd>
+            <dd>Provide details on commodity hardware recommendations, recommended hardware and RAID configurations for commodity hardware, and basic forest layout recommendations for Direct Attached Storage.</dd>
           </dl>
           <dl>
             <a href="http://www.marklogic.com/resources/marklogic-aws/"><dt>MarkLogic On AWS</dt></a>
@@ -111,7 +110,7 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
         </div>
         <div class="panel-body">
           <dl>
-      <a href="/learn/get-started-apps"><dt>Developing XQuery Applications</dt></a>
+            <a href="/learn/get-started-apps"><dt>Developing XQuery Applications</dt></a>
             <dd>Construct your first simple XQuery application.</dd>
           </dl>
           <dl>
@@ -157,24 +156,28 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Semantics</h3>
+          <h3 class="panel-title">Frequently Asked Questions</h3>
         </div>
         <div class="panel-body">
+          <dl>
+            <a href="/learn/geospatial-region-search-faq"><dt>Geospatial Region Search FAQ</dt></a>
+            <dd>Common questions about comparing regions</dd>
+          </dl>
+          <dl>
+            <a href="/learn/geospatial-double-precision-faq"><dt>Geospatial Double Precision FAQ</dt></a>
+            <dd>Common questions about double-precision geospatial indexes</dd>
+          </dl>
+          <dl>
+            <a href="/learn/hadoop-faq"><dt>Hadoop Integration FAQ</dt></a>
+            <dd>Questions about integration between Hadoop and MarkLogic</dd>
+          </dl>
           <dl>
             <a href="/learn/semantics-questions"><dt>Questions About Semantics</dt></a>
             <dd>Have questions about Semantics? We've got answers.</dd>
           </dl>
           <dl>
-            <a href="/learn/semantics-exercises"><dt>Semantics Exercises</dt></a>
-            <dd>Learn via a series of hands-on challenges.</dd>
-          </dl>
-          <dl>
-            <a href="/learn/semantics-recipe-book-semantic-infobox"><dt>Semantics Recipe Book: Semantic Infobox</dt></a>
-            <dd>Present facts relevant to a search</dd>
-          </dl>
-          <dl>
-            <a href="/learn/semantic-constraint"><dt>Improving Recall with a Semantic Constraint</dt></a>
-            <dd>How to go beyond text-based search</dd>
+            <a href="/learn/tde-faq"><dt>Template Driven Extraction (TDE) FAQ</dt></a>
+            <dd>Frequently Asked Questions about TDE</dd>
           </dl>
         </div>
       </div>
@@ -211,35 +214,25 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
     </div>
   </div>
 
+  <div class="row">
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Frequently Asked Questions</h3>
+          <h3 class="panel-title">Semantics</h3>
         </div>
         <div class="panel-body">
-          <dl>
-            <a href="/learn/geospatial-region-search-faq"><dt>Geospatial Region Searches FAQ</dt></a>
-            <dd>Common questions about comparing regions</dd>
-          </dl>
-          <dl>
-            <a href="/learn/geospatial-double-precision-faq"><dt>Geospatial Double Precision FAQ</dt></a>
-            <dd>Common questions about double-precision geospatial indexes</dd>
-          </dl>
-          <dl>
-            <a href="/learn/hadoop-faq"><dt>Hadoop Integration FAQ</dt></a>
-            <dd>Questions about integration between Hadoop and MarkLogic</dd>
-          </dl>
           <dl>
             <a href="/learn/semantics-questions"><dt>Questions About Semantics</dt></a>
             <dd>Have questions about Semantics? We've got answers.</dd>
           </dl>
           <dl>
-            <a href="/learn/tde-faq"><dt>Template Driven Extraction (TDE) FAQ</dt></a>
-            <dd>Frequently Asked Questions about TDE</dd>
+            <a href="/learn/semantics-exercises"><dt>Semantics Exercises</dt></a>
+            <dd>Learn via a series of hands-on challenges.</dd>
           </dl>
         </div>
       </div>
     </div>
+  </div>
 
   <div class="clear">
   </div>
