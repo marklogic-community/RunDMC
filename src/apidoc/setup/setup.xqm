@@ -32,7 +32,7 @@ declare variable $LEGAL-VERSIONS as xs:string+ := (
   (u:get-doc("/apidoc/config/server-versions.xml") treat as node())
   /*/version/@number) ;
 
-declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw)/(.+)$' ;
+declare variable $RAW-PAT := '^MarkLogic_\d+_pubs/pubs/(raw|pdf)/(.+)$' ;
 
 declare variable $REST-LIBS := ('manage', 'rest-client') ;
 
@@ -1185,7 +1185,7 @@ as empty-sequence()
         not(ends-with(., '/')) ][
         matches(., $RAW-PAT) ]
       let $suffix as xs:string := replace($e, $RAW-PAT, '$2')
-      let $uri as xs:string := concat('/', $version, '/', $suffix)
+      let $uri as xs:string := (if(ends-with($suffix,'.pdf')) then stp:get-uri-pdf-only-guides($version,$suffix)  else concat('/', $version,'/', $suffix) )
       let $type := xdmp:uri-content-type($uri)
       let $_ := if (not($DEBUG)) then () else stp:debug(
         'stp:zip-load-raw-docs', ($e, '=>', $uri, $type))
@@ -1196,12 +1196,43 @@ as empty-sequence()
            (: only transform for optic apidoc :)
            if (contains($e, "/raw/apidoc/optic")) then
               stp:copy-content-from-method(xdmp:zip-get($zip, $e, $opts))
+            (: assumption that pdf-only guides present at pubs/pdf and have extension .pdf :)  
+           else if (ends-with($suffix,'.pdf')) then
+              stp:content-for-pdf-only-guides($version,$suffix)
            else
               xdmp:zip-get($zip, $e, $opts))
       ,
       xdmp:commit() },
     true())
 };
+
+(: returns element node with Title  which is used by TOC and landing page to build title of pdf-only :)
+declare function stp:content-for-pdf-only-guides ($version as xs:string,$suffix as xs:string) as element (XML){
+  let $dir-name as xs:string := substring-before($suffix,'.pdf')
+  let $guide-pdf-only-title as xs:string* := stp:get-title-for-pdf-only-guides($version,$dir-name)
+  let $ele as element ()+ := element XML {
+    element TITLE {},
+    element Title { $guide-pdf-only-title }
+    } 
+    return $ele
+};
+
+(: returns title attribute for pdf-only guides from document-list.xml:)
+declare function stp:get-title-for-pdf-only-guides($version as xs:string, $dir-name as xs:string) as xs:string 
+{
+  let $guide-pdf-only-title as xs:string := api:document-list($version)//apidoc:guide[
+        @source-name eq $dir-name ]/@title
+  return $guide-pdf-only-title
+};
+
+declare function stp:get-uri-pdf-only-guides(
+  $version as xs:string,
+  $suffix as xs:string )
+  as xs:string 
+  {
+    let $uri := concat('/', $version,'/xml', '/', substring-before($suffix,'.pdf'), '/title.xml')
+    return $uri
+  };
 
 (: copy-content-from where attribute exists, designed to be used against
    raw apidoc with @copy-content-from on apidoc:method  :)

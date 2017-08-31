@@ -104,7 +104,8 @@ as element()
   {
     if (not($in-header)) then ()
     else attribute class { 'guide-pdf-link' },
-    attribute href { $href||".pdf" },
+    (: if guide is pdf-only, not adding .pdf at the end for pdf-anchor:)
+    attribute href { (if(ends-with($href,'.pdf')) then $href else $href || '.pdf' ) },
     element img {
       attribute src { "/images/i_pdf.png" },
       attribute alt { $title||' (PDF)' },

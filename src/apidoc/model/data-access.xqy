@@ -563,6 +563,19 @@ declare function api:external-uri($n as node())
   default return ml:external-uri-api($n)
 };
 
+(: Use this for pdf-only guides. :)
+declare function api:external-uri-pdf-only-guides($n as node())
+  as xs:string
+{   
+  let $doc-uri := base-uri($n)
+  let $version := substring-before(substring-after($doc-uri,'/apidoc/'),'/')
+  let $versionless-path := (
+    if ($version) then substring-after($doc-uri,concat('/apidoc/',$version))
+    else substring-after($doc-uri,'/apidoc'))
+  let $path := ml:unescape-uri($versionless-path)
+  return if (ends-with($path,'.xml')) then replace($path, '.xml','.pdf') else $path
+};
+
 (: ASSUMPTION: This is only called on version-less paths,
  : as they appear in the XML TOCs.
  :)

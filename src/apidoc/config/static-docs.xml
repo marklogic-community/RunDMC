@@ -6,4 +6,5 @@
   <include>hadoop</include>
   <include>javaclient</include>
   <include>c++</include>
+  <include>pdf</include>
 </static-docs>

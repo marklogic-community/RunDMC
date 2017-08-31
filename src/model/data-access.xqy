@@ -226,9 +226,13 @@ as xs:string+
       (: Force an error if the result is inappropriate :)
       (switch($cat)
         case 'function' return ($doc/@mode, $api:MODE-XPATH)[1]
-        case 'guide' return replace(
+        (: checking pdf-only atribute to determine category as guide-uri ends with .pdf for pdf-only guide:)
+        case 'guide' return (if($doc/@pdf-only eq true()) then replace(
           $doc/@guide-uri treat as node(),
-          '^.+/(\w[\w\-]*\w)\.xml$', '$1')
+          '^.+/(\w[\w\-]*\w)\.pdf$', '$1') else 
+        replace(
+          $doc/@guide-uri treat as node(),
+          '^.+/(\w[\w\-]*\w)\.xml$', '$1'))
         default return error((), 'ML-UNEXPECTED', ($cat, xdmp:describe($doc))))
       (: Assert that the category name is sane. :)
       ! (if (matches(., '^\w[\w\-]*\w$')) then .
