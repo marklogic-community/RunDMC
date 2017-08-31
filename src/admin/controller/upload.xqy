@@ -11,7 +11,7 @@ declare variable $uri :=
     if (fn:starts-with($uri, "/media/")) then
       $uri
     else
-      "/media" || $uri;
+      "/media/" || $uri;
 
 declare variable $overwrite := fn:boolean(xdmp:get-request-field("overwrite"));
 

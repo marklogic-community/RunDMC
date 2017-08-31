@@ -307,24 +307,31 @@
   </xsl:template>
 
   <xsl:template mode="category-image" match="*">
-    <xsl:variable name="img-src">
-      <xsl:text>/images/</xsl:text>
-      <xsl:value-of select="ss:result-img-src(@name)"/>
-      <xsl:text>.png</xsl:text>
-    </xsl:variable>
-    <xsl:variable name="img-alt">
-      <xsl:value-of select="ss:facet-value-display(.)"/>
-    </xsl:variable>
-    <xsl:variable name="img-width">
-      <xsl:value-of select="ss:result-img-width(@name)"/>
-    </xsl:variable>
-    <xsl:variable name="img-height">
-      <xsl:value-of select="ss:result-img-height(@name)"/>
-    </xsl:variable>
-    <img src   ="{$img-src}"
-         alt   ="{$img-alt}"
-         width ="{$img-width}"
-         height="{$img-height}"/>
+    <xsl:choose>
+      <xsl:when test="@name eq 'recipe'">
+        <i class="fa fa-flask result-icon" aria-hidden="true"></i>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="img-src">
+          <xsl:text>/images/</xsl:text>
+          <xsl:value-of select="ss:result-img-src(@name)"/>
+          <xsl:text>.png</xsl:text>
+        </xsl:variable>
+        <xsl:variable name="img-alt">
+          <xsl:value-of select="ss:facet-value-display(.)"/>
+        </xsl:variable>
+        <xsl:variable name="img-width">
+          <xsl:value-of select="ss:result-img-width(@name)"/>
+        </xsl:variable>
+        <xsl:variable name="img-height">
+          <xsl:value-of select="ss:result-img-height(@name)"/>
+        </xsl:variable>
+        <img src   ="{$img-src}"
+             alt   ="{$img-alt}"
+             width ="{$img-width}"
+             height="{$img-height}"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Titles for flat HTML files (API docs usually) -->

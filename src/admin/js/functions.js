@@ -197,34 +197,26 @@ function toggleEditor(id) {
   }
 }
 
-// Builds a Bootstrap dismissible alert.
-// See http://getbootstrap.com/components/#alerts
+// Builds a Bootstrap panel.
+// See http://getbootstrap.com/components/#panels
 function reportMsg(type, msg) {
   var errorDiv = document.getElementById('textarea-msg');
   errorDiv.innerHTML = '';
 
-  var alertDiv = document.createElement('div');
-  alertDiv.setAttribute('class', 'alert alert-dismissible alert-' + type);
-  alertDiv.setAttribute('role', 'alert');
+  var panelDiv = document.createElement('div');
+  panelDiv.classList.add('panel', 'panel-' + type);
 
-  var dismissBtn = document.createElement('button');
-  dismissBtn.setAttribute('type', 'button');
-  dismissBtn.setAttribute('class', 'close');
-  dismissBtn.setAttribute('data-dismiss', 'alert');
-  dismissBtn.setAttribute('aria-label', 'Close');
+  var panelTitle = document.createElement('div');
+  panelTitle.classList.add('panel-heading');
+  panelTitle.innerText = 'Save';
+  panelDiv.appendChild(panelTitle);
 
-  var span = document.createElement('span');
-  span.setAttribute('aria-hidden', 'true');
-  span.innerHTML = 'x';
+  var panelBody = document.createElement('div');
+  panelBody.classList.add('panel-body');
+  panelBody.innerText = msg;
+  panelDiv.appendChild(panelBody);
 
-  dismissBtn.appendChild(span);
-  alertDiv.appendChild(dismissBtn);
-
-  var msgElement = document.createElement('p');
-  msgElement.innerHTML = msg;
-
-  alertDiv.appendChild(msgElement);
-  errorDiv.appendChild(alertDiv);
+  errorDiv.appendChild(panelDiv);
 }
 
 // Find the ID for the textbox that the tinyMCE editor is based on

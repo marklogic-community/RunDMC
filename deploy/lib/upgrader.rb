@@ -44,7 +44,16 @@ module Roxy
     end
 
     def upgrade_base(tmp_dir)
-      FileUtils.cp tmp_dir + '/CHANGELOG.mdown', '.'
+      if File.exists?('CHANGELOG.mdown') then
+        FileUtils.rm_f 'CHANGELOG.mdown'
+      elsif File.exists?('CHANGELOG.md') then
+        FileUtils.rm_f 'CHANGELOG.md'
+      end
+      if File.exists?(tmp_dir + '/CHANGELOG.mdown') then
+        FileUtils.cp tmp_dir + '/CHANGELOG.mdown', '.'
+      elsif File.exists?(tmp_dir + '/CHANGELOG.md') then
+        FileUtils.cp tmp_dir + '/CHANGELOG.md', '.'
+      end
       FileUtils.cp tmp_dir + '/ml', '.'
       FileUtils.cp tmp_dir + '/ml.bat', '.'
       FileUtils.cp tmp_dir + '/version.txt', '.'
@@ -55,8 +64,7 @@ module Roxy
         raise ExitException.new("--no-prompt parameter prevents prompting for input")
       else
         fork = find_arg(['--fork']) || 'marklogic'
-        branch = find_arg(['--branch'])
-        raise HelpException.new("upgrade", "Missing branch name") unless branch
+        branch = find_arg(['--branch']) || 'master'
 
         print "This command will attempt to upgrade to the latest Roxy files.\n"
         print "Before running this command, you should have checked all your code\n"
