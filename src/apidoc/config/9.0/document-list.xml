@@ -259,13 +259,10 @@
   Includes a glossary of terms as well as copyright and support
   information.
       </guide>
-<!-- Comment out until we modify the build
-      <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="product-notices">
-        Includes Combined Product Notices
+      <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="CombinedProductNotices">
+        The combined product notices for MarkLogic.
       </guide>
--->
     </entry>
-
   </group>
 
   <group toc-title="REST API">
