@@ -103,50 +103,51 @@ declare function atom:recipe-entry($recipe as element(ml:Recipe))
     </entry>
 };
 
-declare function atom:entry($content)
+declare function atom:entry($uri, $content)
 {
-  <entry xmlns="http://www.w3.org/2005/Atom">
-    <id>{$content/ml:link/text()}</id>
-    <link>
-      {
-        attribute href {
-          let $uri := fn:base-uri($content)
-          return
-            if ((fn:starts-with($uri, "/blog/") or
-                 fn:starts-with($uri, "/news/") or
-                 fn:starts-with($uri, "/events/")) and
-                fn:ends-with($uri, ".xml")) then
-              "http://" || $s:main-server || fn:substring-before($uri, ".xml")
-            else ()
+  let $url :=
+    if ((fn:starts-with($uri, "/blog/") or
+         fn:starts-with($uri, "/news/") or
+         fn:starts-with($uri, "/events/")) and
+        fn:ends-with($uri, ".xml")) then
+      "http:" || $s:main-server || fn:substring-before($uri, ".xml")
+    else ()
+  return
+    <entry xmlns="http://www.w3.org/2005/Atom">
+      <id>{
+        fn:head(($content/ml:link/text(), $url))
+      }</id>
+      <link>
+        {
+          attribute href { $url }
         }
-      }
-    </link>
-    <title>{$content/ml:title/text()}</title>
-    {
-      $content/ml:author ! <author><name>{./fn:string()}</name></author>
-    }
-    <updated> {
-      if ($content/ml:last-updated/fn:string()) then
-        $content/ml:last-updated/fn:string()
-      else
-        $content/ml:created/fn:string()
-    }
-    </updated>
-    <published>{ $content/ml:created/fn:string() }</published>
-    <content type="html">
+      </link>
+      <title>{$content/ml:title/text()}</title>
       {
-        if ($content/ml:body) then
-          xdmp:quote(
-            $content/ml:body,
-            <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>
-          )
-        else if ($content/ml:description) then
-          xdmp:quote(
-            $content/ml:description//text(),
-            <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>
-          )
-        else ()
+        $content/ml:author ! <author><name>{./fn:string()}</name></author>
       }
-    </content>
-  </entry>
+      <updated> {
+        if ($content/ml:last-updated/fn:string()) then
+          $content/ml:last-updated/fn:string()
+        else
+          $content/ml:created/fn:string()
+      }
+      </updated>
+      <published>{ $content/ml:created/fn:string() }</published>
+      <content type="html">
+        {
+          if ($content/ml:body) then
+            xdmp:quote(
+              $content/ml:body,
+              <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>
+            )
+          else if ($content/ml:description) then
+            xdmp:quote(
+              $content/ml:description//text(),
+              <options xmlns="xdmp:quote"><output-encoding>utf-8</output-encoding></options>
+            )
+          else ()
+        }
+      </content>
+    </entry>
 };
