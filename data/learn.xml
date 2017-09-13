@@ -34,6 +34,15 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
+          <h3 class="panel-title">Recipes</h3>
+        </div>
+        <div class="panel-body">
+          <p>Recipes provide easily reusable solutions to common problems. <a href="/recipes">Check out our collection</a>.</p>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
           <a href="http://www.marklogic.com/resource-type/whitepapers/" class="pull-right">(full list)</a>
           <h3 class="panel-title">White Papers</h3>
         </div>
@@ -48,8 +57,7 @@
           </dl>
           <dl>
             <a href="/media/white-paper/hardware-reference-arch-das.pdf"><dt>Hardware Reference Architecture: Direct Attached Storage</dt></a>
-            <dd>Provide details on commodity hardware recommendations, recommended hardware and RAID configurations for
-commodity hardware, and basic forest layout recommendations for Direct Attached Storage.</dd>
+            <dd>Provide details on commodity hardware recommendations, recommended hardware and RAID configurations for commodity hardware, and basic forest layout recommendations for Direct Attached Storage.</dd>
           </dl>
           <dl>
             <a href="http://www.marklogic.com/resources/marklogic-aws/"><dt>MarkLogic On AWS</dt></a>
@@ -111,7 +119,7 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
         </div>
         <div class="panel-body">
           <dl>
-      <a href="/learn/get-started-apps"><dt>Developing XQuery Applications</dt></a>
+            <a href="/learn/get-started-apps"><dt>Developing XQuery Applications</dt></a>
             <dd>Construct your first simple XQuery application.</dd>
           </dl>
           <dl>
@@ -157,24 +165,28 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Semantics</h3>
+          <h3 class="panel-title">Frequently Asked Questions</h3>
         </div>
         <div class="panel-body">
+          <dl>
+            <a href="/learn/geospatial-region-search-faq"><dt>Geospatial Region Search FAQ</dt></a>
+            <dd>Common questions about comparing regions</dd>
+          </dl>
+          <dl>
+            <a href="/learn/geospatial-double-precision-faq"><dt>Geospatial Double Precision FAQ</dt></a>
+            <dd>Common questions about double-precision geospatial indexes</dd>
+          </dl>
+          <dl>
+            <a href="/learn/hadoop-faq"><dt>Hadoop Integration FAQ</dt></a>
+            <dd>Questions about integration between Hadoop and MarkLogic</dd>
+          </dl>
           <dl>
             <a href="/learn/semantics-questions"><dt>Questions About Semantics</dt></a>
             <dd>Have questions about Semantics? We've got answers.</dd>
           </dl>
           <dl>
-            <a href="/learn/semantics-exercises"><dt>Semantics Exercises</dt></a>
-            <dd>Learn via a series of hands-on challenges.</dd>
-          </dl>
-          <dl>
-            <a href="/learn/semantics-recipe-book-semantic-infobox"><dt>Semantics Recipe Book: Semantic Infobox</dt></a>
-            <dd>Present facts relevant to a search</dd>
-          </dl>
-          <dl>
-            <a href="/learn/semantic-constraint"><dt>Improving Recall with a Semantic Constraint</dt></a>
-            <dd>How to go beyond text-based search</dd>
+            <a href="/learn/tde-faq"><dt>Template Driven Extraction (TDE) FAQ</dt></a>
+            <dd>Frequently Asked Questions about TDE</dd>
           </dl>
         </div>
       </div>
@@ -199,12 +211,39 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
             <dd>Java library for applications that need to move large amounts of data into, out of, or within a MarkLogic cluster.</dd>
           </dl>
           <dl>
+            <a href="/learn/tde-faq"><dt>Template Driven Extraction (TDE) FAQ</dt></a>
+            <dd>Frequently Asked Questions about TDE</dd>
+          </dl>
+          <dl>
             <a href="/products/mlcp"><dt>MarkLogic Content Pump</dt></a>
             <dd>Download and get started using this command-line tool for moving data into and out of MarkLogic.</dd>
           </dl>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Semantics</h3>
+        </div>
+        <div class="panel-body">
+          <dl>
+            <a href="/learn/semantics-questions"><dt>Questions About Semantics</dt></a>
+            <dd>Have questions about Semantics? We've got answers.</dd>
+          </dl>
+          <dl>
+            <a href="/learn/semantics-exercises"><dt>Semantics Exercises</dt></a>
+            <dd>Learn via a series of hands-on challenges.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clear">
   </div>
 
   <h3>Other tutorials</h3>
@@ -214,12 +253,8 @@ commodity hardware, and basic forest layout recommendations for Direct Attached 
     <ml:doc path="/learn/video/enterprise-nosql.xml"/>
     <ml:doc path="/learn/video/markmail.xml"/>
     <ml:doc path="/learn/video/arch-overview.xml"/>
-    <ml:doc path="/learn/video/social-media-demo.xml"/>
     <ml:doc path="/learn/video/getting-started-with-ec2.xml"/>
     <ml:doc path="/learn/video/getting-started-with-cf.xml"/>
-    <ml:doc path="/learn/video/rest-api-setup.xml"/>
-    <ml:doc path="/learn/video/app-services.xml"/>
-    <ml:doc path="/learn/video/app-services-pt2.xml"/>
     <ml:doc path="/learn/video/qconsole.xml"/>
     <ml:doc path="/learn/video/qconsole-v7.xml"/>
     <ml:doc path="/learn/video/nagios.xml"/>

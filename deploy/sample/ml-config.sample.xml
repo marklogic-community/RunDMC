@@ -30,8 +30,9 @@
             <task-period>2</task-period>
             <task-start-time>13:00:00-05:00</task-start-time>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
           <scheduled-task>
             <task-path>/some/hourly-task.xqy</task-path>
@@ -40,8 +41,9 @@
             <task-period>2</task-period>
             <task-minute>15</task-minute>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
           <scheduled-task>
             <task-path>/some/minutely-task.xqy</task-path>
@@ -49,8 +51,9 @@
             <task-type>minutely</task-type>
             <task-period>3</task-period>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
           <scheduled-task>
             <task-path>/some/monthly-task.xqy</task-path>
@@ -60,18 +63,19 @@
             <task-month-day>15</task-month-day>
             <task-start-time>13:00:00-05:00</task-start-time>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
           <scheduled-task>
             <task-path>/some/once-task.xqy</task-path>
             <task-root>/</task-root>
             <task-type>once</task-type>
-            <task-period>1</task-period>
             <task-start>2019-01-01T13:00:00-05:00</task-start>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
           <scheduled-task>
             <task-path>/some/weekly-task.xqy</task-path>
@@ -85,8 +89,9 @@
             </task-days>
             <task-start-time>13:00:00-05:00</task-start-time>
             <task-database name="${content-db}"/>
-            <task-modules name="${app-modules-db}"/>
-            <task-user name="${app-name}-user"/>
+            <task-modules name="${modules-db}"/>
+            <task-user name="${default-user}"/>
+            <task-host name="${server-name}"/>
           </scheduled-task>
         </scheduled-tasks>
       </task-server>
@@ -97,7 +102,7 @@
           <http-server-name>${app-name}</http-server-name>
           <port>${app-port}</port>
           <database name="${content-db}"/>
-          <modules name="${app-modules-db}"/>
+          <modules name="${modules-db}"/>
           <root>${modules-root}</root>
           <authentication>${authentication-method}</authentication>
           <default-user name="${default-user}"/>
@@ -275,6 +280,7 @@
           <field-name>sample</field-name>
           <collation/>
           <range-value-positions>false</range-value-positions>
+          <invalid-values>ignore</invalid-values>
         </range-field-index>
 -->
       </range-field-indexes>
@@ -458,6 +464,9 @@
       </collections>
       <privileges>
         <privilege>
+          <privilege-name>rest-reader</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:value</privilege-name>
         </privilege>
         <privilege>
@@ -469,13 +478,65 @@
         <privilege>
           <privilege-name>xdmp:with-namespaces</privilege-name>
         </privilege>
+        <!-- START: required to run Roxy's rewriter-lib -->
+        <privilege>
+          <privilege-name>xdmp:get-server-field</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:set-server-field</privilege-name>
+        </privilege>
+        <!-- END: required to run Roxy's rewriter-lib -->
+      </privileges>
+    </role>
+    <role>
+      <role-name>${app-role}-unit-test</role-name>
+      <description>A role for unit testing the ${app-name} application</description>
+      <role-names>
+        <role-name>${app-role}</role-name>
+      </role-names>
+      <privileges>
+        <!-- START: privileges needed for unit testing while running on filesystem -->
+        <privilege>
+          <privilege-name>xdmp:document-get</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:filesystem-directory</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:save</privilege-name>
+        </privilege>
+        <!-- END: privileges needed for unit testing while running on filesystem -->
+        <privilege>
+          <privilege-name>any-uri</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:eval</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:eval-in</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:http-delete</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:http-get</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:http-head</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:http-post</privilege-name>
+        </privilege>
+        <privilege>
+          <privilege-name>xdmp:http-put</privilege-name>
+        </privilege>
       </privileges>
     </role>
   </roles>
   <users xmlns="http://marklogic.com/xdmp/security">
     <user>
-      <user-name>${app-name}-user</user-name>
-      <description>A user for the ${app-name} application</description>
+      <user-name>${default-user}</user-name>
+      <description>The default user for the ${app-name} application</description>
       <password>${appuser-password}</password>
       <role-names>
         <role-name>${app-role}</role-name>
@@ -483,20 +544,21 @@
       <permissions/>
       <collections/>
     </user>
+    @ml.test-user-xml
   </users>
   <amps xmlns="http://marklogic.com/xdmp/security">
-<!--
-  Sample amp. See the Understanding and Using Security Guide section 5.2 for
-  information about amps.
-  http://community.marklogic.com/pubs/5.0/books/security.pdf
+    <!--
+      Sample amp. See the Understanding and Using Security Guide section 5.2 for
+      information about amps.
+      http://community.marklogic.com/pubs/5.0/books/security.pdf
     <amp>
       <namespace>http://marklogic.com/roxy</namespace>
       <local-name>sample</local-name>
       <doc-uri>/app/models/sample.xqy</doc-uri>
-      <db-name>${app-modules-db}</db-name>
+      <db-name>${modules-db}</db-name>
       <role-name>a-privileged-role</role-name>
     </amp>
--->
+    -->
   </amps>
   <privileges xmlns="http://marklogic.com/xdmp/security">
 <!--

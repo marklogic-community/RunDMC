@@ -339,6 +339,16 @@ ul.new-features p {
   position: relative;
 }
 
+#hero {
+  max-height: 462px;
+  overflow: hidden;
+}
+
+#hero img {
+  width: 100%;
+  height: auto;
+}
+
 #hero .content h1, #hero .content p {
   color: white;
   text-align: center;
@@ -360,8 +370,15 @@ ul.new-features p {
 #hero .content {
   position: absolute;
   text-align: center;
-  top: 25%;
+  /* sg: top: 25%; */
+  top: 30%;
   width: 100%;
+}
+
+@media (max-width: 379px) {
+  #hero .content {
+    top: 25%;
+  }
 }
 
 #latest-release {

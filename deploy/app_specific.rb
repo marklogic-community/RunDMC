@@ -1,7 +1,10 @@
 #
 # Put your custom functions in this class in order to keep the files under lib untainted
 #
-# This class has access to all of the stuff in deploy/lib/server_config.rb
+# This class has access to all of the private variables in deploy/lib/server_config.rb
+#
+# any public method you create here can be called from the command line. See
+# the examples below for more information.
 #
 require 'net/http'
 

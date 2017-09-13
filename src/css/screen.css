@@ -1828,6 +1828,11 @@ section#documentation:before {
 #results .text .highlight {
     color: #01639D;
 }
+
+#results .result-icon {
+    font-size: 30px;
+}
+
 form.pagination {
     font-size: 13px;
     color: #999;

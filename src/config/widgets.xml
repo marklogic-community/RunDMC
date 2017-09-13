@@ -140,10 +140,12 @@
     <page href="/learn/cookbook/implementing-xquery"/>
   </widget>
 
+<!--
   <widget href="/widgets/mark-logic-bloggers.xml">
     <page href="/blog"/>
     <Post/>
   </widget>
+-->
 
  <!--
   <widget href="/widgets/mark-logic-products.xml">
@@ -169,11 +171,10 @@
     -->
   </widget>
 
-  <!--
   <widget href="/widgets/ebooks.xml">
     <page href="/learn"/>
+    <page href="/blog"/>
   </widget>
-  -->
 
   <widget href="/widgets/online-training.xml">
     <page href="/learn"/>

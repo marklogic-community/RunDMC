@@ -91,7 +91,15 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/people/profile">Edit Profile</a></li>
+            <li>
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:value-of select="$srv:main-server"/>
+                  <xsl:text>/people/profile</xsl:text>
+                </xsl:attribute>
+                <xsl:text>Edit Profile</xsl:text>
+              </a>
+            </li>
             <li><a href="#" id="logout">Log out</a></li>
           </ul>
         </li>

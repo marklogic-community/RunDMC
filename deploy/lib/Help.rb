@@ -24,8 +24,10 @@ class Help
         clean         Removes all files from the cpf, modules, or content databases on the given environment
         credentials   Configures user and password for the given environment
         info          Returns settings for the given environment
+        install       Bootstraps and deploys all components of a Roxy application
         restart       Restarts the given environment
         validate      Compare your ml-config against the given environment
+        uninstall     An alias of wipe
         wipe          Removes your application from the given environment
 
       Deployment/Data commands (with environment):
@@ -211,11 +213,14 @@ class Help
 
       General options:
         -v, [--verbose]  # Verbose output
+        --no-verify      # Skip verifying the restart
+        --legacy         # Don't use Management REST api
 
       Restart the MarkLogic process in the given environment on each host in the
       specified group. If no group is specified, restart the MarkLogic process
       on each host in the group to which the target host belongs. Use 'cluster'
-      to restart all hosts within the cluster to which the target belongs.
+      to restart all hosts within the cluster to which the target belongs. Restart
+      is verified by default, Management REST api is used if available.
     DOC
   end
 
