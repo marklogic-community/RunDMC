@@ -69,6 +69,8 @@ $(function() {
   // Ensure that non-fragment TOC links highlight appropriate TOC links.
   $(document).on('pjax:end', function(event, options) {
     var target = $(event.relatedTarget);
+    // scroll to page content, fix for #576
+    scrollToPageContent(event.relatedTarget);
     //LOG.debug("pjax:end", event, options, target);
     if (target.parents("#api_sub").length) {
       LOG.debug("Calling showInTOC via pjax:end handler.", target[0]);
@@ -82,6 +84,18 @@ $(function() {
 
   tocInitGlobals();
 });
+
+// scroll to page content
+function scrollToPageContent(targetURL) {
+    var scrollTo = 0;
+    var hash = targetURL.toString().split("#")[1] || "";
+    // if target contains hash value e.g. /guide/search-dev/search-api#id_39268, calculate offsetTop
+    if (hash) {
+      var target = document.getElementById(hash) || document.getElementsByName(hash)[0];
+      scrollTo = $(target)[0].offsetTop;
+    }
+    $('#page_content').scrollTop(scrollTo);
+}
 
 function tocInitGlobals() {
   LOG.debug("tocInitGlobals");
