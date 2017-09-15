@@ -72,7 +72,7 @@ $(function() {
     // scroll to page content, fix for #576 - added timeout to take care for pages with images.
     setTimeout(function() {
       scrollToPageContent();
-    }, 50)
+    }, 100)
     //LOG.debug("pjax:end", event, options, target);
     if (target.parents("#api_sub").length) {
       LOG.debug("Calling showInTOC via pjax:end handler.", target[0]);
@@ -94,10 +94,10 @@ function scrollToPageContent() {
   // if target contains hash value e.g. /guide/search-dev/search-api#id_39268, calculate offsetTop
   if (hash) {
     var target = document.getElementById(hash) || document.getElementsByName(hash)[0];
-    scrollTo = $(target)[0].offsetTop;
+    scrollTo = $(target)[0] ? $(target)[0].offsetTop : 0;
   }
   $('#page_content').scrollTop(scrollTo);
-}
+};
 
 function tocInitGlobals() {
   LOG.debug("tocInitGlobals");
@@ -254,7 +254,7 @@ function tocInit() {
   // scroll to page content on page refresh, timeout is intentional for pages with images.
   setTimeout(function() {
     scrollToPageContent();
-    }, 50)
+    }, 100)
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
