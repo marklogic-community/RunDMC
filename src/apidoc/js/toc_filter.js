@@ -69,8 +69,10 @@ $(function() {
   // Ensure that non-fragment TOC links highlight appropriate TOC links.
   $(document).on('pjax:end', function(event, options) {
     var target = $(event.relatedTarget);
-    // scroll to page content, fix for #576
-    scrollToPageContent(event.relatedTarget);
+    // scroll to page content, fix for #576 - added timeout to take care for pages with images.
+    setTimeout(function() {
+      scrollToPageContent();
+    }, 50)
     //LOG.debug("pjax:end", event, options, target);
     if (target.parents("#api_sub").length) {
       LOG.debug("Calling showInTOC via pjax:end handler.", target[0]);
@@ -86,15 +88,15 @@ $(function() {
 });
 
 // scroll to page content
-function scrollToPageContent(targetURL) {
-    var scrollTo = 0;
-    var hash = targetURL.toString().split("#")[1] || "";
-    // if target contains hash value e.g. /guide/search-dev/search-api#id_39268, calculate offsetTop
-    if (hash) {
-      var target = document.getElementById(hash) || document.getElementsByName(hash)[0];
-      scrollTo = $(target)[0].offsetTop;
-    }
-    $('#page_content').scrollTop(scrollTo);
+function scrollToPageContent() {
+  var scrollTo = 0;
+  var hash = window.location.hash.slice(1) || "";
+  // if target contains hash value e.g. /guide/search-dev/search-api#id_39268, calculate offsetTop
+  if (hash) {
+    var target = document.getElementById(hash) || document.getElementsByName(hash)[0];
+    scrollTo = $(target)[0].offsetTop;
+  }
+  $('#page_content').scrollTop(scrollTo);
 }
 
 function tocInitGlobals() {
@@ -248,6 +250,11 @@ function tocInit() {
 
   // If this was a deep link, load and scroll.
   updateTocForSelection();
+
+  // scroll to page content on page refresh, timeout is intentional for pages with images.
+  setTimeout(function() {
+    scrollToPageContent();
+    }, 50)
 }
 
 // This logic is essentially duplicated from the treeview plugin...bad, I know
