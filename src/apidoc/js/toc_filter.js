@@ -99,6 +99,7 @@ function scrollToPageContent() {
   $('#page_content').scrollTop(scrollTo);
 };
 
+
 function tocInitGlobals() {
   LOG.debug("tocInitGlobals");
 
