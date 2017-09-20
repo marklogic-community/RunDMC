@@ -5,7 +5,7 @@
 
     <div id="hero">
       <picture>
-        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-dev-sm-2-1.jpg" media="(max-width: 568px)"></source>
+        <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-dev-sm-2-1.jpg" media="(max-width: 540px)"></source>
         <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-sub-md-compressor-2-2.jpg" media="(max-width: 768px)"></source>
         <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-sub-md-compressor-2-2.jpg" media="(max-width: 992px)"></source>
         <source srcset="//www.marklogic.com/wp-content/uploads/2017/07/hero-hp-lg-3.jpg" media="(min-width: 993px)"></source>
