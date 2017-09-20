@@ -254,7 +254,7 @@ function checkValidXhtml(action, target) {
           if(response)  {
             // Bad XHTML or another problem.  Display this error:error node back to the user.
             reportMsg('danger', "There was a problem with your content. Error from the Server: " +
-              $(response).find('format-string').text());
+              response.getElementsByTagNameNS("http://marklogic.com/xdmp/error", "format-string")[0].innerHTML);
             isValid = false;
           }
 
