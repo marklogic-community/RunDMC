@@ -352,6 +352,7 @@ ul.new-features p {
 #hero .content h1, #hero .content p {
   color: white;
   text-align: center;
+  text-shadow: 0px 2px 4px rgba(19, 20, 46, 0.7);
 }
 
 #hero .buttons {
