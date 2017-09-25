@@ -54,7 +54,7 @@ return (
         for $p in $posts [1 to $MAX_ENTRIES]
         order by xs:dateTime($p/ml:created/text()) descending
         return
-          atom:entry($p),
+          atom:entry(fn:base-uri($p), $p),
         1, fn:false()
       )
 )
