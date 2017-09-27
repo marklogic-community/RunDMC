@@ -232,9 +232,11 @@
       <guide url-name="security" source-name="security">
         Provides information on the role-based security model in MarkLogic
         Server.</guide>
+<!-- Comment out for 9.0-3
       <guide url-name="azure" source-name="azure">
         Provides information on running MarkLogic in a Microsoft Azure
         environment.</guide>
+-->
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
         MarkLogic Server on Amazon EC2.</guide>
