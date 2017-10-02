@@ -336,49 +336,66 @@ ul.new-features p {
 }
 
 #hero {
+  align-items: center;
+  background: url('http://cdn.marklogic.com/wp-content/uploads/2017/08/hero-hp-lg-compressor.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  height: 462px;
+  min-height: 462px;
+  overflow: hidden;
   position: relative;
 }
-
-#hero {
-  max-height: 462px;
-  overflow: hidden;
-}
-
-#hero img {
-  width: 100%;
-  height: auto;
-}
-
-#hero .content h1, #hero .content p {
-  color: white;
-  text-align: center;
-  text-shadow: 0px 2px 4px rgba(19, 20, 46, 0.7);
-}
-
-#hero .buttons {
-  text-align: center;
-  width: 100%;
-}
-
-#hero a.btn {
-  background-color: white;
-  color: #6f79bd;
-}
-
-#hero a.btn:hover {
-}
-
 #hero .content {
-  position: absolute;
+  margin: 0 auto;
+  overflow: hidden;
   text-align: center;
-  /* sg: top: 25%; */
-  top: 30%;
-  width: 100%;
 }
-
-@media (max-width: 379px) {
-  #hero .content {
-    top: 25%;
+#hero .hero-data {
+  background-color: rgba(64,75,154,0);
+  color: #fff;
+  margin-top: 70px;
+  padding: 3em;
+}
+#hero h1 {
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: .02em;
+  margin: 0;
+  text-shadow: 0px 2px 4px rgba(19,20,46,.5);
+}
+#hero p {
+  font-size: 1.2em;
+  margin: 15px auto;
+  text-shadow: 0px 2px 4px rgba(26,26,28,.5);
+  width: 80%;
+}
+#hero a.btn {
+  background-color: #fff;
+  color: #44499c;
+  border-color: #fff;
+  margin: 10px;
+  text-shadow: none;
+}
+#hero a.btn:hover {
+  border-color: #ccc;
+  color: #2a2d64;
+}
+@media screen and (max-width: 768px) {
+  #hero {
+    background-image: url('http://cdn.marklogic.com/wp-content/uploads/2017/07/hero-sub-md-compressor-2-2.jpg');
+  }
+}
+@media screen and (max-width: 550px) {
+  #hero .hero-data {
+    margin-top: 0;
+    padding: 1em;
+  }
+  #hero h1 {
+    font-size: 2em;
+  }
+  #hero p {
+    font-size: 1.1em;
+    width: 90%;
   }
 }
 
