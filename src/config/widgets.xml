@@ -136,6 +136,18 @@
   </widget>
 -->
 
+  <widget href="/widgets/workshop-ad.xml">
+    <page href="/learn"/>
+    <page href="/code"/>
+    <page href="/blog"/>
+    <Article/>
+    <Project/>
+    <Post/>
+    <Tutorial/>
+    <page-tree root="/products"/>
+    <page-tree root="/try"/>
+  </widget>
+
   <widget href="/widgets/cookbook/implementing-xquery.xml">
     <page href="/learn/cookbook/implementing-xquery"/>
   </widget>
