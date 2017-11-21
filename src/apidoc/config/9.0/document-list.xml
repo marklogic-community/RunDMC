@@ -169,6 +169,8 @@
       <guide url-name="ref-arch" source-name="ref-arch">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
+	<br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
     </entry>
 
@@ -237,7 +239,10 @@
         environment.</guide>
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon EC2.</guide>
+        MarkLogic Server on Amazon EC2.
+	<br/><a href="/9.0/guide/ec2-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
+      </guide>
       <guide url-name="qconsole" source-name="qconsole">A procedural guide
         that describes how to use the Query Console.</guide>
       <guide url-name="ingestion" source-name="ingestion">
@@ -261,6 +266,17 @@
       </guide>
       <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="CombinedProductNotices">
         The combined product notices for MarkLogic.
+      </guide>
+    </entry>
+
+    <entry title="Japanese Guides">
+      <guide pdf-only="true" title="Reference Application Architecture Guide (Japanese)" url-name="ref-arch-jp" source-name="ref-arch_JP">
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
+      </guide>
+      <guide pdf-only="true" title="MarkLogic Server on Amazon EC2 Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
+        Provides information on using an Amazon Machine Image (AMI) of
+        MarkLogic Server on Amazon EC2.
       </guide>
     </entry>
   </group>
