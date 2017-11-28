@@ -178,7 +178,9 @@
       <guide url-name="admin" source-name="admin">
         Provides procedures for administrative tasks such as creating
         servers, creating databases, backing up databases, creating users,
-        setting up your security policy, and so on.</guide>
+        setting up your security policy, and so on.
+	<br/><a href="/9.0/guide/admin-jp.pdf" target="_blank">Japanese Translation of this guide</a>
+      </guide>
       <guide url-name="admin-api" source-name="adminAPI">
         Provides information on writing code to script various administrative
         tasks such as creating and modifying databases, App Servers, and
@@ -270,6 +272,11 @@
     </entry>
 
     <entry title="Japanese Guides">
+      <guide pdf-only="true" title="Administrator's Guide (Japanese)" 
+          url-name="admin-jp" source-name="admin_JP">
+        Provides procedures for administrative tasks such as creating
+        servers, creating databases, backing up databases, creating users,
+        setting up your security policy, and so on.</guide>
       <guide pdf-only="true" title="Reference Application Architecture Guide (Japanese)" url-name="ref-arch-jp" source-name="ref-arch_JP">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
