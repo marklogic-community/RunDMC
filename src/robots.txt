@@ -1,5 +1,7 @@
 User-agent: rogerbot
 Disallow: /
+User-agent: SemrushBot
+Disallow: /
 User-agent: *
 Disallow: /media/apiTOC/
 Disallow: /search
