@@ -281,7 +281,7 @@
         setting up your security policy, and so on.</guide>
       <guide pdf-only="true" 
           title="Node.js Application Developer's Guide (Japanese)" 
-          url-name="node-dev" source-name="node-dev_JP">
+          url-name="node-dev-jp" source-name="node-dev_JP">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Node.js Client
         API. </guide>
