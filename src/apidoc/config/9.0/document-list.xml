@@ -139,8 +139,10 @@
         features of MarkLogic Server.</guide>
       <guide url-name="node-dev" source-name="node-dev">
         Provides procedures, methodologies, and conceptual information
-        about developing MarkLogic Server applications using the Node.js
-        API. </guide>
+        about developing MarkLogic Server applications using the Node.js Client
+        API. <br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
+      </guide>
       <guide url-name="java" source-name="java-client">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Java
@@ -277,6 +279,12 @@
         Provides procedures for administrative tasks such as creating
         servers, creating databases, backing up databases, creating users,
         setting up your security policy, and so on.</guide>
+      <guide pdf-only="true" 
+          title="Node.js Application Developer's Guide (Japanese)" 
+          url-name="node-dev" source-name="node-dev_JP">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Node.js Client
+        API. </guide>
       <guide pdf-only="true" title="Reference Application Architecture Guide (Japanese)" url-name="ref-arch-jp" source-name="ref-arch_JP">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
