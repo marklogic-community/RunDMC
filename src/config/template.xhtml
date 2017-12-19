@@ -24,14 +24,18 @@
       <ml:try-link/>
     </ml:if>
     <link href="/css/anythingslider.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- START ORBIT CSS -->
     <ml:common-nav-css/>
+    <!-- END ORBIT CSS -->
     <ml:if href="/">
       <link href="/css/v-7/custom-new.css" rel="stylesheet" type="text/css" media="screen" />
     </ml:if>
 
     <script type="text/javascript" src="/js/modernizr.js"></script>
     <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+    <!-- START ORBIT JS -->
     <ml:common-nav-js/>
+    <!-- END ORBIT JS -->
 
     <ml:javascript-server-config/>
 
@@ -51,19 +55,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <div id="container">
       <header>
+        <!-- START ORBIT HEADER -->
         <ml:common-nav-header/>
+        <!-- END ORBIT HEADER -->
       </header>
       <header>
+        <div class="row">
+        </div>
         <nav class="navbar-top row ml-nav">
-          <div class="col-xs-5">
-            <ul class="nav-web-properties">
-              <li><a href="http://www.marklogic.com" target="_blank"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm hidden-md">Marklogic.com</span></a></li>
-              <li><a href="http://developer.marklogic.com" target="_blank"><span class="glyphicon glyphicon-console"></span><span class="hidden-xs hidden-sm hidden-md">Developers</span></a></li>
-              <li><a href="http://world.marklogic.com" target="_blank"><span class="glyphicon glyphicon-globe"></span><span class="hidden-xs hidden-sm hidden-md">MarkLogic World</span></a></li>
-              <li><a href="http://www.marklogic.com/services/training/" target="_blank"><span class="glyphicon glyphicon-apple"></span><span class="hidden-xs hidden-sm hidden-md">University</span></a></li>
-            </ul>
-          </div>
-          <div class="col-xs-7">
+          <div class="offset-xs-5 col-xs-7">
             <ul class="nav-resources pull-right">
               <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
             </ul>
@@ -88,21 +88,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </a>
             </div>
             <div class="collapse navbar-collapse" id="dmc-navbar-collapse">
-              <form class="navbar-form navbar-right search-form" ml:action="/search" method="get">
-                <div class="form-group">
-                  <input type="hidden" name="v" ml:value="" />
-                  <input type="hidden" name="api" ml:value="" />
-                  <div class="input-group">
-                    <input id="s_inp" name="q" type="text"
-                           class="form-control"
-                           autocapitalize="off"
-                           placeholder="Search with MarkLogic" ml:value=""/>
-                    <span class="input-group-addon">
-                      <i class="glyphicon glyphicon-search"/>
-                    </span>
-                  </div>
-                </div>
-              </form>
               <ul class="nav navbar-nav navbar-right">
                 <ml:top-nav/>
               </ul>
@@ -147,7 +132,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </ml:show-comments>
       <hr />
       <footer>
+        <!-- START ORBIT FOOTER -->
         <ml:common-nav-footer/>
+        <!-- END ORBIT FOOTER -->
       </footer>
     </div>
     <!--
