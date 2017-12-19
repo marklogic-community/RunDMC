@@ -788,6 +788,9 @@
           <privilege-name>xdmp:invoke</privilege-name>
         </privilege>
         <privilege>
+          <privilege-name>xdmp:http-get</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:plan</privilege-name>
         </privilege>
         <privilege>
@@ -905,6 +908,11 @@
     <mimetype>
       <name>application/vnd.marklogic-xqm</name>
       <extension>xqm</extension>
+      <format>text</format>
+    </mimetype>
+    <mimetype>
+      <name>application/json</name>
+      <extension>json</extension>
       <format>text</format>
     </mimetype>
   </mimetypes>
