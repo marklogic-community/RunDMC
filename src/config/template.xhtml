@@ -14,10 +14,8 @@
     <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MarkLogic Developer Community Blog" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.css"/>
-    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/v-39/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="/css/overcast/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="screen" />
     <!--[if lte IE 8]>
     <link href="/css/v-2/screen_ie.css" rel="stylesheet" type="text/css" media="screen" />
     <![endif]-->
@@ -26,12 +24,14 @@
       <ml:try-link/>
     </ml:if>
     <link href="/css/anythingslider.css" rel="stylesheet" type="text/css" media="screen" />
+    <ml:common-nav-css/>
     <ml:if href="/">
       <link href="/css/v-7/custom-new.css" rel="stylesheet" type="text/css" media="screen" />
     </ml:if>
 
     <script type="text/javascript" src="/js/modernizr.js"></script>
     <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+    <ml:common-nav-js/>
 
     <ml:javascript-server-config/>
 
@@ -50,6 +50,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
     <div id="container">
+      <header>
+        <ml:common-nav-header/>
+      </header>
       <header>
         <nav class="navbar-top row ml-nav">
           <div class="col-xs-5">
@@ -144,16 +147,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </ml:show-comments>
       <hr />
       <footer>
-        <nav>
-          <ul style="inline">
-            <ml:top-nav/>
-            <li><a href="//www.marklogic.com/privacy-policy">Privacy</a></li>
-            <li><a href="http://www.marklogic.com/terms-of-use">Terms of Use</a></li>
-            <li style="float: right">Powered by <a href="/products">MarkLogic Server <ml:server-version/></a> and <a href="/code/rundmc">rundmc</a>.</li>
-          </ul>
-        </nav>
-        <ml:copyright/>
-        <ml:edit-link/>
+        <ml:common-nav-footer/>
       </footer>
     </div>
     <!--
