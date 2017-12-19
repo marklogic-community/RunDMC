@@ -211,7 +211,8 @@
       <guide url-name="jsref" source-name="jsref">A condensed overview
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
-        programmers.
+        programmers. 
+        <br/><a href="/9.0/guide/admin-jp.pdf" target="_blank">Japanese Translation of this guide</a>
       </guide>
       <guide url-name="xquery" source-name="xquery">A condensed overview of
         the XQuery language, including a description of the three XQuery
@@ -279,6 +280,11 @@
         Provides procedures for administrative tasks such as creating
         servers, creating databases, backing up databases, creating users,
         setting up your security policy, and so on.</guide>
+      <guide pdf-only="true" title="JavaScript Reference Guide (Japanese)"
+          url-name="jsref-jp" source-name="jsref_JP">
+        A overview of Server-Side JavaScript in MarkLogic. Contains reference 
+        material for MarkLogic-specific JavaScript objects available to 
+        server-side programmers.</guide>
       <guide pdf-only="true" 
           title="Node.js Application Developer's Guide (Japanese)" 
           url-name="node-dev-jp" source-name="node-dev_JP">
