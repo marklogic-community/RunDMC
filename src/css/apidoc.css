@@ -830,4 +830,11 @@ span.highlightWidget {
         padding: 4px;
     }
 }
+
+#footer {
+  position: absolute;
+  top: 609px;
+  width: 100%;
+}
+
 /* apidoc.css */
