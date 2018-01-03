@@ -342,8 +342,7 @@ hr {
 header nav.navbar-top{
   background: #44499c;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  height: 34px;
+  height: 40px;
   line-height: 14px;
   margin: 0
 }
@@ -385,6 +384,7 @@ header nav.navbar-top ul li a{
 }
 
 header nav.navbar-top ul li a:hover{
+  background-color: #44499c;
   text-decoration: none
 }
 
@@ -921,7 +921,7 @@ ul.subcategories li {
     top: -5px;
 }
 
-.widget {
+#content .widget {
     border: 1px solid #CCC;
     background: #FFF;
     border-radius: 5px;
@@ -929,7 +929,7 @@ ul.subcategories li {
     width: 97%;
     padding-top: 0 !important;
 }
-.widget:before {
+#content .widget:before {
     content: none !important;
 }
 #main .widget {
@@ -937,7 +937,7 @@ ul.subcategories li {
     margin-left: 60px;
     border-top-color: #CCC;
 }
-.widget h1 {
+#content .widget h1 {
     color: #535761;
     font-size: 18px;
     line-height: 24px;
@@ -949,69 +949,69 @@ ul.subcategories li {
     -moz-border-radius: 4px 4px 0 0;
     -webkit-border-radius: 4px 4px 0 0;
 }
-.widget h1 + * {
+#content .widget h1 + * {
     border-top: 1px solid #D1D1D1;
 }
-.widget h2 {
+#content .widget h2 {
     text-transform: none !important;
     font-size: 1em !important;
     font-weight: normal !important;
     margin: 0 !important;
     line-height: 114%;
 }
-.widget section {
+#content .widget section {
     margin-bottom: 15px;
     border-top: 1px solid #D1D1D1;
     padding-top: 15px;
 }
-.widget section:first-child {
+#content .widget section:first-child {
     border-top: none;
     padding-top: 0;
 }
-.widget section:last-child {
+#content .widget section:last-child {
     margin-bottom: 0;
 }
-.widget > div {
+#content .widget > div {
     padding: 20px 17px;
     border-top: 1px solid #CCC;
 }
-.widget > div + div {
+#content .widget > div + div {
     margin-top: -15px;
     padding-top: 5px;
     padding-bottom: 10px;
 }
-.widget > div + div + div {
+#content .widget > div + div + div {
     margin-top: 0;
 }
-.widget p {
+#content .widget p {
     margin-top: 0;
 }
-.widget ul {
+#content .widget ul {
     margin-bottom: 0 !important;
 }
-.widget li {
+#content .widget li {
     margin: 12px 0;
     line-height: 100%;
 }
-.widget div li:first-child {
+#content .widget div li:first-child {
     margin-top: 0;
 }
-.widget div li:last-child {
+#content .widget div li:last-child {
     margin-bottom: 0;
 }
-.widget div li.last {
+#content .widget div li.last {
     margin-bottom: 0;
 }
-.widget .date,
-.widget .location {
+#content .widget .date,
+#content .widget .location {
     font-size: 11px;
     line-height: 127%;
 }
-.widget .more {
+#content .widget .more {
     font-weight: bold;
     font-size: 12px;
 }
-.widget section b {
+#content .widget section b {
     font-weight: normal;
     font-style: italic;
     font-size: 12px;
@@ -1019,45 +1019,45 @@ ul.subcategories li {
     display: block;
     margin-bottom: 10px;
 }
-.widget div div {
+#content .widget div div {
     line-height: 114%;
 }
-.widget .code,
-.widget .download {
+#content .widget .code,
+#content .widget .download {
     font-size: 12px;
     list-style: none !important;
     padding: 0 !important;
     margin: 0 !important;
 }
-.widget .code li {
+#content .widget .code li {
     padding: 10px;
     border-bottom: 1px solid #D1D1D1;
     margin: 0;
 }
-.widget .code a {
+#content .widget .code a {
     font-weight: bold;
 }
-.widget .code a img {
+#content .widget .code a img {
     background: #FFF;
     padding-right: 5px;
 }
-.widget .download {
+#content .widget .download {
     padding-bottom: 10px !important;
 }
-.widget .download li {
+#content .widget .download li {
     padding: 10px 10px 10px 50px;
     background: url(/images/i_arrow_down.png) 18px 10px no-repeat;
 }
-.widget .download li div {
+#content .widget .download li div {
     font-size: 11px;
     font-style: italic;
 }
 
-.widget .ebooks h3 {
+#content .widget .ebooks h3 {
   margin-top: 0;
 }
 
-.widget .ebooks img {
+#content .widget .ebooks img {
   float: right;
   max-width: 25%;
 }
@@ -2730,6 +2730,7 @@ span.highlightWidget {
 }
 
 #login-menu-nav {
+    font-size: 1rem;
     margin-right: 3px;
 }
 
