@@ -8,7 +8,6 @@
       <group display="Server">
         <page display="MarkLogic 9" href="/products/marklogic-server/9.0" />
         <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
-        <page display="MarkLogic 7" href="/products/marklogic-server/7.0" />
       </group>
       <group display="Connectors">
         <page display="Java Client API"   href="/products/java"/>

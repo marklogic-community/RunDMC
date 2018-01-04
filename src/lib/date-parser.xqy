@@ -208,14 +208,17 @@ define function dates:_dashParse(
 	(: 25-oct-2004 17:06:46 -0500 :)
 	let $raw := replace($i, ".*(0\d| \d|\d\d)-(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)", "$1 $2")
 	let $bits := tokenize(normalize-space($raw), " ")
-	let $dateBits := tokenize($bits[2], "-")
-	let $year := dates:_processYear($dateBits[2])
-	let $month := dates:_monthNameToNumber($dateBits[1])
-	let $day := dates:_processDay($bits[1])
-	let $zone := dates:_processZone($bits[4])
-	let $date := concat($year, "-", $month, "-", $day, "T", dates:_processTime($bits[3]), $zone)
-	where $date castable as xs:dateTime
-	return xs:dateTime($date)
+	return
+		if (fn:count($bits) > 1) then
+			let $dateBits := tokenize($bits[2], "-")
+			let $year := dates:_processYear($dateBits[2])
+			let $month := dates:_monthNameToNumber($dateBits[1])
+			let $day := dates:_processDay($bits[1])
+			let $zone := dates:_processZone($bits[4])
+			let $date := concat($year, "-", $month, "-", $day, "T", dates:_processTime($bits[3]), $zone)
+			where $date castable as xs:dateTime
+			return xs:dateTime($date)
+		else ()
 }
 
 define function dates:_processYear(
