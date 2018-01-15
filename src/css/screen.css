@@ -1,5 +1,9 @@
 /* screen.css */
 
+html {
+  font-size: 100%;
+}
+
 article,
 aside,
 details,
@@ -347,6 +351,16 @@ header nav.navbar-top{
   margin: 0
 }
 
+header #login-menu-nav ul.login-menu {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+header #login-menu-nav ul.login-menu li {
+  display: inline-block;
+  height: 16px;
+}
+
 header nav.navbar-top #login-menu-nav ul.dropdown-menu {
   min-width: auto;
 }
@@ -516,7 +530,7 @@ header .dmc-nav a.navbar-brand {
 }
 
 nav a {
-    color: #CCC;
+    color: #272f38;
 }
 nav ul {
     margin: 0;

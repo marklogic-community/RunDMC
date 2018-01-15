@@ -61,54 +61,71 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- END ORBIT HEADER -->
       </header>
       <header>
-        <nav class="navbar-top row ml-nav">
-          <div class="col-xs-7">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dmc-navbar-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-            </div>
-            <div class="collapse navbar-collapse" id="dmc-navbar-collapse">
-              <ul class="nav navbar-nav">
-                <ml:top-nav/>
-              </ul>
+        <nav style="background: #f3f6f8; width: 100%; min-height: 44px;">
+          <div class="hidden-xs hidden-sm col-md-8">
+            <div id="mlbs4-megamenu--submenu" class="mlbs4-row submenu--show-depth--1">
+              <div class="mlbs4-col">
+                <div class="menu-primary-menu-container">
+                  <ul id="menu-primary-menu-1" class="menu">
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-8688 depth-0" data-depth="0">
+                      <a href="https://www.marklogic.orbit-websites.com/community/">Community</a>
+                      <ul role="menu">
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page page_item page-item-8775 menu-item-8776 depth-1" data-depth="1"><a href="https://www.marklogic.orbit-websites.com/support/">Support</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-has-children menu-item-11802 depth-1 active" data-depth="1"><a target="_blank" href="https://developer.marklogic.com/">Developer</a>
+                          <ul role="menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-001 depth-2" data-depth="2"><a href="https://docs.marklogic.com/" target="_blank" rel="noopener">Documentation</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-002 depth-2" data-depth="2"><a href="/products">Downloads</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-002 depth-2" data-depth="2"><a href="/recipes">Recipes</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-003 depth-2" data-depth="2"><a href="/code">Tools</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-003 depth-2" data-depth="2"><a href="/blog">Blog</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-004 depth-2" data-depth="2"><a href="/learn">Tutorials</a></li>
+                          </ul>
+                        </li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8773 depth-1" data-depth="1"><a href="/partners/">Partners</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div><!-- /.col -->
             </div>
           </div>
-          <div class="col-xs-5">
-            <ul class="nav-resources pull-right">
-              <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
-            </ul>
-            <ml:login-menu/>
-          </div>
-        </nav>
-
-
-<!--
-        <nav class="navbar navbar-inverse dmc-nav">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dmc-navbar-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-            </div>
-            <div class="collapse navbar-collapse" id="dmc-navbar-collapse">
-              <ul class="nav navbar-nav">
-                <ml:top-nav/>
-              </ul>
+          <div class="col-xs-12 col-sm-12 col-md-4" style="background: #f3f6f8; text-align: right; padding: 12px;">
+            <nav id="login-menu-nav">
               <ml:login-menu/>
-              <ul class="nav-resources">
+              <!--
+              <ul>
+                <li class="btn-group" style="padding: 0 10px;">
+                  <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" style="font-size: .94rem;">Log in</a>
+                  <form id="local-login-form" class="dropdown-menu" method="post" action="//dmc-stage-draft.marklogic.com/login">
+                    <div style="clear: both" id="login-error"></div>
+                    <div class="form-group">
+                      <label class="control-label" for="email">Email:</label>
+                      <input class="required email form-control input-sm" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"></input>
+                    </div>
+                    <div class="form-group"><label class="control-label" for="password">Password:</label><input class="password required form-control input-sm" required="required" id="password" name="password" title="password" value="" type="password"></input></div>
+                    <div class="form-group"><button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button></div>
+                    <div class="form-group"><button onclick="return false;" data-url="//dmc-stage-draft.marklogic.com/people/recovery" class="btn btn-xs btn-default" id="recovery">Forgot password?</button></div>
+                  </form>
+                </li>
+                <li class="btn-group">
+                  <a href="/people/signup" class="drop-down-trigger navbar-top" id="signup-trigger" data-url="//dmc-stage-draft.marklogic.com/people/signup" style="font-size: .94rem;">Sign up</a>
+                </li>
+                <li class="btn-group">
+                  <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown" style="display: none;" aria-expanded="false"><span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="//dmc-stage.marklogic.com/people/profile">Edit Profile</a></li>
+                    <li><a href="#" id="logout">Log out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            -->
+              <ul class="nav-resources pull-right">
                 <li><a href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
               </ul>
-            </div>
+            </nav>
           </div>
         </nav>
--->
+        <div style="clear: both;height: 0;">&amp;nbsp;</div>
       </header>
       <div id="content">
         <ml:choose>
@@ -192,7 +209,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
     <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
+    <script>$("#menu-item-8688").addClass('current_page')</script>
   </body>
 
   <ml:if href-starts-with="/try/ /learn/arch/ /products/download-via-curl /learn/semantics-exercises">
