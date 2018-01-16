@@ -249,6 +249,7 @@ as xs:string+
   if (contains($doc-uri, "/dotnet/xcc/"))     then "xccn"
   else if (contains($doc-uri, "/javadoc/xcc/"))    then "xcc"
   else if (contains($doc-uri, "/javadoc/client/")) then "java-api"
+  else if (contains($doc-uri, "/jsdoc/"))          then "nodejs-api"
   else if (contains($doc-uri, "/javadoc/hadoop/")) then "hadoop"
   else if (contains($doc-uri, "/cpp/"))            then "cpp"
   else if (starts-with($doc-uri, "/ondemand/"))    then "mlu"
@@ -416,7 +417,7 @@ as cts:query
             (if ($is-api) then () else '/pubs/code/',
               (: See apidoc/setup/load-static-docs.xqy :)
               for $v in $versions
-              for $location in ('/cpp/', '/dotnet/', '/javadoc/')
+              for $location in ('/cpp/', '/dotnet/', '/javadoc/', '/jsdoc/')
               return concat('/apidoc/', $v, $location)),
             'infinity'))),
       cts:not-query(

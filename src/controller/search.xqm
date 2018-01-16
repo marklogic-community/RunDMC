@@ -369,6 +369,7 @@ declare function ss:facet-value-display($e as element())
     case 'tutorial' return 'Tutorials'
     case 'xcc' return 'XCC Connector API docs'
     case 'java-api' return 'Java Client API docs'
+    case 'nodejs-api' return 'Node.js Client API docs'
     case 'hadoop' return 'Hadoop Connector API docs'
     case 'xccn' return 'XCC Connector .Net docs'
     case 'other' return 'Miscellaneous pages'
@@ -431,6 +432,7 @@ declare function ss:result-img-height($name as xs:string)
   case 'tutorial' return 21
   case 'xcc' return 26
   case 'java-api' return 26
+  case 'nodejs-api' return 19
   case 'hadoop' return 26
   case 'xccn' return 24
   case 'other' return 19
