@@ -370,7 +370,7 @@ as xs:string
    :)
   else concat(
     replace(
-      $uri, '^/apidoc/(\d+\.\d+)/guide/(messages/[A-Z]+-[a-z]+).xml$',
+      $uri, '^/apidoc/(\d+\.\d+)/guide/(messages/[A-Z,0-9]+-[a-z]+).xml$',
       '/$2'),
     '/', $id)
 };

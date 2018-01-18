@@ -339,6 +339,7 @@ declare function ss:facet-value-display($e as element())
     case 'guide/cpf' return 'CPF'
     case 'guide/database-replication' return 'Database Replication'
     case 'guide/ec2' return 'EC2'
+    case 'guide/entity-services' return 'Entity Services'
     case 'guide/flexrep' return 'Flexible Replication'
     case 'guide/getting-started' return 'Getting Started'
     case 'guide/infostudio' return 'Info Studio'
@@ -351,6 +352,7 @@ declare function ss:facet-value-display($e as element())
     case 'guide/messages' return 'Messages'
     case 'guide/monitoring' return 'Monitoring'
     case 'guide/node-dev' return 'Node.js'
+    case 'guide/opsdir' return 'Ops Director'
     case 'guide/performance' return 'Performance'
     case 'guide/qconsole' return 'Query Console'
     case 'guide/ref-arch' return 'Reference Architecture'
@@ -369,6 +371,7 @@ declare function ss:facet-value-display($e as element())
     case 'tutorial' return 'Tutorials'
     case 'xcc' return 'XCC Connector API docs'
     case 'java-api' return 'Java Client API docs'
+    case 'nodejs-api' return 'Node.js Client API docs'
     case 'hadoop' return 'Hadoop Connector API docs'
     case 'xccn' return 'XCC Connector .Net docs'
     case 'other' return 'Miscellaneous pages'
@@ -431,6 +434,7 @@ declare function ss:result-img-height($name as xs:string)
   case 'tutorial' return 21
   case 'xcc' return 26
   case 'java-api' return 26
+  case 'nodejs-api' return 19
   case 'hadoop' return 26
   case 'xccn' return 24
   case 'other' return 19

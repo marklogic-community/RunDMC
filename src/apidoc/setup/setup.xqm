@@ -449,14 +449,18 @@ as empty-sequence()
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
 };
 
+(: Read in java doc. The Java Client API javadoc includes a
+ : file that's too big to be a text file (throws XDMP-TOOBIG).
+ : If that happens, punt to loading it as a binary document.
+ :)
 declare function stp:zip-jdoc-get(
   $zip as binary(),
   $path as xs:string)
 as document-node()
 {
-  (: Don't tidy index.html, because tidy
-   : throws away the frameset with javadoc
-   : and closes the script tags with jsdoc.
+  try {
+  (: Don't tidy index.html, because tidy throws away the 
+   : frameset with javadoc and closes the script tags with jsdoc.
    :)
   if (ends-with($path, '/index.html')) then xdmp:zip-get($zip, $path)
   (: Read it as text and tidy, because the HTML may be broken. :)
@@ -475,6 +479,19 @@ as document-node()
       <output-xhtml>yes</output-xhtml>
     </options>
     )[2]
+  } catch ($err) {
+    if ($err/*:code eq "XDMP-TOOBIG") then (
+      xdmp:log(fn:concat("File '", $path, "' too big. Loading as binary."), "warning"),
+      xdmp:zip-get(
+        $zip,
+        $path,
+        <options xmlns="xdmp:zip-get">
+          <format>binary</format>
+          <encoding>auto</encoding>
+        </options>
+      )) 
+    else xdmp:rethrow()
+  }
 };
 
 declare function stp:zip-mangled-html-get(

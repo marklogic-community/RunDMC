@@ -139,8 +139,10 @@
         features of MarkLogic Server.</guide>
       <guide url-name="node-dev" source-name="node-dev">
         Provides procedures, methodologies, and conceptual information
-        about developing MarkLogic Server applications using the Node.js
-        API. </guide>
+        about developing MarkLogic Server applications using the Node.js Client
+        API. <br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
+      </guide>
       <guide url-name="java" source-name="java-client">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Java
@@ -169,6 +171,8 @@
       <guide url-name="ref-arch" source-name="ref-arch">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
+	<br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
     </entry>
 
@@ -176,7 +180,9 @@
       <guide url-name="admin" source-name="admin">
         Provides procedures for administrative tasks such as creating
         servers, creating databases, backing up databases, creating users,
-        setting up your security policy, and so on.</guide>
+        setting up your security policy, and so on.
+	<br/><a href="/9.0/guide/admin-jp.pdf" target="_blank">Japanese Translation of this guide</a>
+      </guide>
       <guide url-name="admin-api" source-name="adminAPI">
         Provides information on writing code to script various administrative
         tasks such as creating and modifying databases, App Servers, and
@@ -205,7 +211,8 @@
       <guide url-name="jsref" source-name="jsref">A condensed overview
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
-        programmers.
+        programmers. 
+        <br/><a href="/9.0/guide/admin-jp.pdf" target="_blank">Japanese Translation of this guide</a>
       </guide>
       <guide url-name="xquery" source-name="xquery">A condensed overview of
         the XQuery language, including a description of the three XQuery
@@ -232,14 +239,15 @@
       <guide url-name="security" source-name="security">
         Provides information on the role-based security model in MarkLogic
         Server.</guide>
-<!-- Comment out for 9.0-3
       <guide url-name="azure" source-name="azure">
         Provides information on running MarkLogic in a Microsoft Azure
         environment.</guide>
--->
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon EC2.</guide>
+        MarkLogic Server on Amazon EC2.
+	<br/><a href="/9.0/guide/ec2-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
+      </guide>
       <guide url-name="qconsole" source-name="qconsole">A procedural guide
         that describes how to use the Query Console.</guide>
       <guide url-name="ingestion" source-name="ingestion">
@@ -263,6 +271,33 @@
       </guide>
       <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="CombinedProductNotices">
         The combined product notices for MarkLogic.
+      </guide>
+    </entry>
+
+    <entry title="Japanese Guides">
+      <guide pdf-only="true" title="Administrator's Guide (Japanese)" 
+          url-name="admin-jp" source-name="admin_JP">
+        Provides procedures for administrative tasks such as creating
+        servers, creating databases, backing up databases, creating users,
+        setting up your security policy, and so on.</guide>
+      <guide pdf-only="true" title="JavaScript Reference Guide (Japanese)"
+          url-name="jsref-jp" source-name="jsref_JP">
+        A overview of Server-Side JavaScript in MarkLogic. Contains reference 
+        material for MarkLogic-specific JavaScript objects available to 
+        server-side programmers.</guide>
+      <guide pdf-only="true" 
+          title="Node.js Application Developer's Guide (Japanese)" 
+          url-name="node-dev-jp" source-name="node-dev_JP">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Node.js Client
+        API. </guide>
+      <guide pdf-only="true" title="Reference Application Architecture Guide (Japanese)" url-name="ref-arch-jp" source-name="ref-arch_JP">
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
+      </guide>
+      <guide pdf-only="true" title="MarkLogic Server on Amazon EC2 Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
+        Provides information on using an Amazon Machine Image (AMI) of
+        MarkLogic Server on Amazon EC2.
       </guide>
     </entry>
   </group>
