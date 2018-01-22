@@ -185,10 +185,9 @@ if(typeof jQuery != 'undefined') {
     });
 
     var download_iframe;
-    var $confirmDialog;
 
     if(jQuery().dialog) {
-      $confirmDialog = $("#confirm-dialog").dialog({
+      $("#confirm-dialog").dialog({
         resizable: false,
         autoOpen: false,
         closeOnEscape: true,
@@ -329,7 +328,7 @@ if(typeof jQuery != 'undefined') {
         $("#iaccept").removeAttr('checked');
         $("#confirm-dialog").dialog.href = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
-        $confirmDialog.dialog('open');
+        $("#confirm-dialog").dialog('open');
         $("#iemail").focus();
         return false;
       });
@@ -338,7 +337,7 @@ if(typeof jQuery != 'undefined') {
         $("#iaccept").removeAttr('checked');
         $("#confirm-dialog").dialog.href = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
-        $confirmDialog.dialog('open');
+        $("#confirm-dialog").dialog('open');
         $("#iemail").focus();
       }
     });
@@ -906,7 +905,7 @@ function doDownload(u) {
 
 function showDownloadURL(me, u) {
 
-  var $downloadCurlDialog = $('#download-curl-dialog').dialog({
+  $('#download-curl-dialog').dialog({
     modal: true,
     width: 630,
     resizable: false,
@@ -963,11 +962,11 @@ function showDownloadURL(me, u) {
     },
     buttons: {
       'OK': function() {
-        $downloadCurlDialog.dialog('close');
-        $confirmDialog.dialog('close');
+        $('#download-curl-dialog').dialog('close');
+        $('#confirm-dialog').dialog('close');
       },
       'Cancel': function() {
-        $downloadCurlDialog.dialog('close');
+        $('#download-curl-dialog').dialog('close');
       }
     }
   });
