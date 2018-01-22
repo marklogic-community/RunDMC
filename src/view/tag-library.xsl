@@ -156,7 +156,7 @@
               data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
     </div>
 
-    <div class="download-confirmation" id="confirm-dialog" style="display: none">
+    <div class="download-confirmation confirm-dialogbox" style="display: none">
       <p style="line-height: 140%">
       In order to download and use this MarkLogic software you are required to accept the <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and install a license key.
       </p>
@@ -171,8 +171,8 @@
             <p id="ifail"/>
           </div>
           <div class="download-form-row">
-            <label style="width: 160px; float: left; text-align: right" for="iemail">Email:&#160;&#160;&#160;</label>
-            <input autofocus="autofocus" class="" size="30" type="text" id="iemail" name="iemail">
+            <label style="width: 160px; float: left; text-align: right">Email:&#160;&#160;&#160;</label>
+            <input autofocus="autofocus" class="iemail" size="30" type="text" name="iemail">
               <xsl:attribute name="value">
                 <xsl:value-of select="users:getCurrentUser()/*:email"/>
               </xsl:attribute>
@@ -180,8 +180,8 @@
           </div>
           <br/>
           <div class="download-form-row">
-            <label style="width: 160px; float: left; text-align: right" for="ipass">Community&#160;Password:&#160;&#160;&#160;</label>
-            <input class="" size="30" type="password" id="ipass" name="ipass"/>
+            <label style="width: 160px; float: left; text-align: right">Community&#160;Password:&#160;&#160;&#160;</label>
+            <input class="ipass" size="30" type="password" name="ipass"/>
           </div>
         </xsl:if>
        <br/>

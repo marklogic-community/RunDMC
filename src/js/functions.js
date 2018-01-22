@@ -159,14 +159,14 @@ if(typeof jQuery != 'undefined') {
 
     // $("#s_download").attr("v
 
-    $("#iemail,#ipass").keyup(function() {
+    $(".iemail,.ipass").keyup(function() {
       var b = $(":button:contains('Download')");
-      var email = $("#iemail").val();
-      var pass = $("#ipass").val();
+      var email = $(".iemail").val();
+      var pass = $(".ipass").val();
       if ($("#iaccept").is(":checked") && isValidEmailAddress(email)) {
         b.prop("disabled", false);
-        $("#confirm-dialog").dialog.email = email;
-        $("#confirm-dialog").dialog.pw = pass;
+        $(".confirm-dialogbox").dialog.email = email;
+        $(".confirm-dialogbox").dialog.pw = pass;
       } else {
         b.prop("disabled", true);
       }
@@ -175,10 +175,10 @@ if(typeof jQuery != 'undefined') {
     $("#iaccept").click(function() {
       var b = $(":button:contains('Download')");
       if ($("#iaccept").is(":checked") &&
-        ( $('#iemail').length === 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
+        ( $('.iemail').length === 0|| $(".iemail").is(":hidden") || isValidEmailAddress($(".iemail").val()))) {
         b.prop("disabled", false);
-        $("#confirm-dialog").dialog.email = $("#iemail").val();
-        $("#confirm-dialog").dialog.pw = $("#ipass").val();
+        $(".confirm-dialogbox").dialog.email = $(".iemail").val();
+        $(".confirm-dialogbox").dialog.pw = $(".ipass").val();
       } else {
         b.prop("disabled", true);
       }
@@ -188,7 +188,7 @@ if(typeof jQuery != 'undefined') {
     var $confirmDialog;
 
     if(jQuery().dialog) {
-      $confirmDialog = $("#confirm-dialog").dialog({
+      $confirmDialog = $(".confirm-dialogbox").dialog({
         resizable: false,
         autoOpen: false,
         closeOnEscape: true,
@@ -199,14 +199,14 @@ if(typeof jQuery != 'undefined') {
           Download: function() {
             var u = $(this).dialog.href;
 
-            if ($("#confirm-dialog").dialog.email) {
+            if ($(".confirm-dialogbox").dialog.email) {
               $.ajax({
                 type: 'POST',
                 url: "/login",
                 context: $(this),
                 data: {
-                  email: $("#confirm-dialog").dialog.email,
-                  password: $("#confirm-dialog").dialog.pw,
+                  email: $(".confirm-dialogbox").dialog.email,
+                  password: $(".confirm-dialogbox").dialog.pw,
                   asset: u
                 },
                 success: function( data ) {
@@ -247,14 +247,14 @@ if(typeof jQuery != 'undefined') {
           "Download Via Curl": function() {
             var u = $(this).dialog.href;
 
-            if ($("#confirm-dialog").dialog.email) {
+            if ($(".confirm-dialogbox").dialog.email) {
               $.ajax({
                 type: 'POST',
                 url: "/login",
                 context: $(this),
                 data: {
-                  email: $("#confirm-dialog").dialog.email,
-                  password: $("#confirm-dialog").dialog.pw,
+                  email: $(".confirm-dialogbox").dialog.email,
+                  password: $(".confirm-dialogbox").dialog.pw,
                   asset: u
                 },
                 success: function( data ) {
@@ -327,19 +327,19 @@ if(typeof jQuery != 'undefined') {
       $(this).click(function() {
         $(":button:contains('Download')").prop("disabled", true);
         $("#iaccept").removeAttr('checked');
-        $("#confirm-dialog").dialog.href = href;
+        $(".confirm-dialogbox").dialog.href = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
         $confirmDialog.dialog('open');
-        $("#iemail").focus();
+        $(".iemail").focus();
         return false;
       });
       var dp = getParameterByName('d'); // e.g. '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
       if (href == dp) {
         $("#iaccept").removeAttr('checked');
-        $("#confirm-dialog").dialog.href = href;
+        $(".confirm-dialogbox").dialog.href = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
         $confirmDialog.dialog('open');
-        $("#iemail").focus();
+        $(".iemail").focus();
       }
     });
 
