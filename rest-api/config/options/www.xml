@@ -3,16 +3,7 @@
   <search:search-option>unfiltered</search:search-option>
   <search:additional-query>
     <cts:collection-query xmlns:cts="http://marklogic.com/cts">
-      <cts:uri>www.marklogic.com/post</cts:uri>
-      <cts:uri>www.marklogic.com/page</cts:uri>
-      <cts:uri>www.marklogic.com/ml_customer</cts:uri>
-      <cts:uri>www.marklogic.com/ml_resource</cts:uri>
-      <cts:uri>www.marklogic.com/ml_press_release</cts:uri>
-      <cts:uri>www.marklogic.com/ml_news</cts:uri>
-      <cts:uri>www.marklogic.com/ml_solution</cts:uri>
-      <cts:uri>www.marklogic.com/ml_training_course</cts:uri>
-      <cts:uri>www.marklogic.com/ml_webinars</cts:uri>
-      <cts:uri>www.marklogic.com/pmg_event</cts:uri>
+      <cts:uri>mlc</cts:uri>
       <cts:uri>category/tutorial</cts:uri>
       <cts:uri>category/blog</cts:uri>
       <cts:uri>category/code</cts:uri>

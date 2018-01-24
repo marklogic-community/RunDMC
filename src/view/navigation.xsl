@@ -46,16 +46,16 @@
     <xsl:if test="not(users:signupsEnabled())">
       <xsl:attribute name="style">display:none</xsl:attribute>
     </xsl:if>
-    <ul class="login-menu">
+    <ul>
       <li class="btn-group" style="padding: 0 10px;">
-        <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown">
+        <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown" style="font-size: .94rem;">
           <xsl:if test="users:getCurrentUserName()">
             <xsl:attribute name="style">display:none</xsl:attribute>
           </xsl:if>
           Log in
         </a>
-        <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login">
-          <div style="clear: both" id="login-error"/>
+        <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login" style="background: #2a333d;color: #fff; padding: 8px;">
+          <div style="clear: both; font-size: .8rem; height: 100%; margin: 0;" id="login-error"/>
           <div class="form-group">
             <label class="control-label" for="email">Email:</label>
             <input class="required email form-control input-sm" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
@@ -67,22 +67,12 @@
           <div class="form-group">
             <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
           </div>
-          <div class="form-group">
-            <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-xs btn-default" id="recovery">Forgot password?</button>
-          </div>
+          <p style="text-align: center; margin-bottom: 15px;"><a href="/people/recovery" data-url="{$srv:primary-server}/people/recovery" id="recovery" style="color: #fff;">Forgot Password?</a></p>
+          <p style="text-align: center; margin-bottom: 0;"><a href="/people/signup" data-url="{$srv:primary-server}/people/signup" id="signup-trigger" style="color: #fff;">Create New Account</a></p>
         </form>
       </li>
       <li class="btn-group">
-        <a href="/people/signup" class="drop-down-trigger navbar-top" id="signup-trigger"
-                data-url="{$srv:primary-server}/people/signup">
-          <xsl:if test="users:getCurrentUserName()">
-            <xsl:attribute name="style">display:none</xsl:attribute>
-          </xsl:if>
-          Sign up
-        </a>
-      </li>
-      <li class="btn-group">
-        <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown">
+        <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown" style="font-size: .94rem;">
           <xsl:if test="empty(users:getCurrentUserName())">
             <xsl:attribute name="style">display:none</xsl:attribute>
           </xsl:if>
