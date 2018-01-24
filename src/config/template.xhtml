@@ -60,7 +60,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <ml:common-nav-header/>
         <!-- END ORBIT HEADER -->
         <nav style="background: #f3f6f8; width: 100%; min-height: 44px;">
-          <div class="hidden-xs hidden-sm col-md-8">
+          <div class="hidden-xs hidden-sm col-md-7">
             <div id="mlbs4-megamenu--submenu" class="mlbs4-row submenu--show-depth--1">
               <div class="mlbs4-col">
                 <div class="menu-primary-menu-container">
@@ -71,7 +71,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <li class="menu-item menu-item-type-post_type menu-item-object-page page_item page-item-8775 menu-item-8776 depth-1" data-depth="1"><a href="https://www.marklogic.orbit-websites.com/support/">Support</a></li>
                         <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-has-children menu-item-11802 depth-1 active" data-depth="1"><a target="_blank" href="https://developer.marklogic.com/">Developer</a>
                           <ul role="menu">
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-001 depth-2" data-depth="2"><a href="https://docs.marklogic.com/" target="_blank" rel="noopener">Documentation</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-001 depth-2" data-depth="2"><a href="https://docs.marklogic.com/">Documentation</a></li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-002 depth-2" data-depth="2"><a href="/recipes">Recipes</a></li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-003 depth-2" data-depth="2"><a href="/code">Tools</a></li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-004 depth-2" data-depth="2"><a href="/learn">Tutorials</a></li>
@@ -85,13 +85,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </div><!-- /.col -->
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-4" style="background: #f3f6f8; text-align: right; padding: 12px;">
-            <nav id="login-menu-nav">
+          <div class="col-xs-12 col-sm-12 col-md-5" style="background: #f3f6f8; text-align: right;">
+            <nav id="login-menu-nav" style="display: inline-block;">
               <ml:login-menu/>
-              <ul class="nav-resources pull-right">
-                <li><a href="https://stackoverflow.com/questions/ask?tags=marklogic" target="_blank" rel="noopener"><span class="glyphicon glyphicon-question-sign"></span><span class="hidden-xs hidden-sm">Ask a Question</span></a></li>
-              </ul>
             </nav>
+            <p style="display:inline;"><a href="https://stackoverflow.com/questions/ask?tags=marklogic" title="Ask a Questions" target="_blank" rel="noopener"><span class="glyphicon glyphicon-question-sign">&nbsp;</span></a></p>
+            <form style="display: inline-block; height: 28px; max-width: 230px; padding: 5px 00 15px;" ml:action="/search" method="get">
+              <div>
+                <input type="hidden" name="v" ml:value="" />
+                <input type="hidden" name="api" ml:value="" />
+                <div class="input-group">
+                  <input id="s_inp" name="q" type="text"
+                          class="form-control"
+                          autocapitalize="off"
+                          placeholder="Search with MarkLogic" ml:value=""/>
+                  <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-search"/>
+                  </span>
+                </div>
+              </div>
+            </form>
           </div>
         </nav>
         <div style="clear: both;height: 0;">&amp;nbsp;</div>
