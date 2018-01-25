@@ -339,8 +339,7 @@ hr {
 header nav.navbar-top{
   background: #44499c;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  height: 34px;
+  height: 40px;
   line-height: 14px;
   margin: 0
 }
@@ -382,6 +381,7 @@ header nav.navbar-top ul li a{
 }
 
 header nav.navbar-top ul li a:hover{
+background-color: #44499c;
   text-decoration: none
 }
 
@@ -513,8 +513,9 @@ header .dmc-nav a.navbar-brand {
 }
 
 nav a {
-    color: #CCC;
+    color: #272f38;
 }
+
 nav ul {
     margin: 0;
 }
@@ -526,7 +527,7 @@ nav ul {
     border-width: 0 7px 7px;
     border-color: #1479B2 transparent;
     border-style: solid;
-    display: block;
+    display: none;
     width: 0;
     margin: auto;
 }
@@ -572,10 +573,10 @@ nav ul {
   line-height: 100%;
   margin: 0 auto;
   position: relative;
-  width: 97%
+  /*width: 97%*/
 }
 #breadcrumb a {
-    color: #666;
+    color: #01639D;
 }
 #breadcrumb + section > h2 {
     background: #FFF;
@@ -964,7 +965,7 @@ footer nav .current a {
     top: -5px;
 }
 
-.widget {
+#content .widget {
     border: 1px solid #CCC;
     background: #FFF;
     border-radius: 5px;
@@ -972,7 +973,7 @@ footer nav .current a {
     width: 97%;
     padding-top: 0 !important;
 }
-.widget:before {
+#content .widget:before {
     content: none !important;
 }
 #main .widget {
@@ -980,7 +981,7 @@ footer nav .current a {
     margin-left: 60px;
     border-top-color: #CCC;
 }
-.widget h1 {
+#content .widget h1 {
     color: #535761;
     font-size: 18px;
     line-height: 24px;
@@ -991,69 +992,69 @@ footer nav .current a {
     -moz-border-radius: 4px 4px 0 0;
     -webkit-border-radius: 4px 4px 0 0;
 }
-.widget h1 + * {
+#content .widget h1 + * {
     border-top: 1px solid #D1D1D1;
 }
-.widget h2 {
+#content .widget h2 {
     text-transform: none !important;
     font-size: 1em !important;
     font-weight: normal !important;
     margin: 0 !important;
     line-height: 114%;
 }
-.widget section {
+#content .widget section {
     margin-bottom: 15px;
     border-top: 1px solid #D1D1D1;
     padding-top: 15px;
 }
-.widget section:first-child {
+#content .widget section:first-child {
     border-top: none;
     padding-top: 0;
 }
-.widget section:last-child {
+#content .widget section:last-child {
     margin-bottom: 0;
 }
-.widget > div {
+#content .widget > div {
     padding: 20px 17px;
     border-top: 1px solid #CCC;
 }
-.widget > div + div {
+#content .widget > div + div {
     margin-top: -15px;
     padding-top: 5px;
     padding-bottom: 10px;
 }
-.widget > div + div + div {
+#content .widget > div + div + div {
     margin-top: 0;
 }
-.widget p {
+#content .widget p {
     margin-top: 0;
 }
-.widget ul {
+#content .widget ul {
     margin-bottom: 0 !important;
 }
-.widget li {
+#content .widget li {
     margin: 12px 0;
     line-height: 100%;
 }
-.widget div li:first-child {
+#content .widget div li:first-child {
     margin-top: 0;
 }
-.widget div li:last-child {
+#content .widget div li:last-child {
     margin-bottom: 0;
 }
-.widget div li.last {
+#content .widget div li.last {
     margin-bottom: 0;
 }
-.widget .date,
-.widget .location {
+#content .widget .date,
+#content .widget .location {
     font-size: 11px;
     line-height: 127%;
 }
-.widget .more {
+#content .widget .more {
     font-weight: bold;
     font-size: 12px;
 }
-.widget section b {
+#content .widget section b {
     font-weight: normal;
     font-style: italic;
     font-size: 12px;
@@ -1061,39 +1062,40 @@ footer nav .current a {
     display: block;
     margin-bottom: 10px;
 }
-.widget div div {
+#content .widget div div {
     line-height: 114%;
 }
-.widget .code,
-.widget .download {
+#content .widget .code,
+#content .widget .download {
     font-size: 12px;
     list-style: none !important;
     padding: 0 !important;
     margin: 0 !important;
 }
-.widget .code li {
+#content .widget .code li {
     padding: 10px;
     border-bottom: 1px solid #D1D1D1;
     margin: 0;
 }
-.widget .code a {
+#content .widget .code a {
     font-weight: bold;
 }
-.widget .code a img {
+#content .widget .code a img {
     background: #FFF;
     padding-right: 5px;
 }
-.widget .download {
+#content .widget .download {
     padding-bottom: 10px !important;
 }
-.widget .download li {
+#content .widget .download li {
     padding: 10px 10px 10px 50px;
     background: url(/images/i_arrow_down.png) 18px 10px no-repeat;
 }
-.widget .download li div {
+#content .widget .download li div {
     font-size: 11px;
     font-style: italic;
 }
+
 #hadoop h1 {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -2758,6 +2760,7 @@ span.highlightWidget {
 
 #login-menu-nav {
     margin-right: 3px;
+    padding-right: 5px;
 }
 
 .drop-down-menu {
@@ -3268,6 +3271,11 @@ button.green:hover {
     position: relative;
 }
 
+#header .form-group {
+    position: relative;
+}
+
+
 #search_suggest_container {
     /* transparent background */
     background-color: rgba(0,0,0,0);
@@ -3278,6 +3286,7 @@ button.green:hover {
     position: absolute;
     width: 100%;
     z-index: 9;
+    text-align: left;
 }
 
 #search_suggest {
@@ -3293,7 +3302,7 @@ li.search_suggest {
     color: #555;
     line-height: 1.5em;
     padding-top: 0.25em;
-    padding-left: 6px;
+    padding-left: 6px;    
 }
 
 li.search_suggest:hover {
@@ -3406,6 +3415,65 @@ li.search_suggest_selected {
 
 .wrapper.thumbnail > img {
   max-height: 128px;
+}
+
+#mlbs4-megamenu--submenu li>a:hover {
+    text-decoration: none;
+}
+
+#mlbs4-megamenu--submenu li > a {
+    padding: 13px 15px;
+}
+
+header #login-menu-nav li>a:hover {
+    text-decoration: none;
+    color: #586ad6;
+}
+
+header #login-menu-nav li>a {
+    color:#272f38;
+}
+
+header #login-menu-nav ul.login-menu {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+header #login-menu-nav ul.login-menu li {
+  display: inline-block;
+  height: 16px;
+}
+
+.search-form {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    max-width: 230px;
+    padding: 0px 0px;
+}
+
+.search-form .form-group {
+    margin-bottom: 0px;
+}
+
+header nav #login-menu-nav ul.dropdown-menu {
+  min-width: auto;
+}
+
+header nav #login-menu-nav form.dropdown-menu {
+  padding: 5px;
+}
+
+header nav #login-menu-nav ul.dropdown-menu a:hover {
+  background-color: #44499c;
+  color: #ccc;
+}
+
+header nav #login-menu-nav ul li #login-trigger {
+    font-size: 15px !important;
+}
+
+.custom-padding {
+    padding: 14px 4px 0 0;
 }
 
 /* screen.css */

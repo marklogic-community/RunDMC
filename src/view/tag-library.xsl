@@ -1283,19 +1283,19 @@
   </xsl:template>
 
   <xsl:template match="common-nav-css">
-    <xsl:copy-of select="mn:get-css()"/>
+    <xsl:copy-of select="mn:mega-nav-controller('stylesheets')"/>
   </xsl:template>
 
   <xsl:template match="common-nav-js">
-    <xsl:copy-of select="mn:get-javascript()"/>
+    <xsl:copy-of select="mn:mega-nav-controller('scripts')"/>
   </xsl:template>
 
   <xsl:template match="common-nav-header">
-    <xsl:copy-of select="mn:get-header()"/>
+    <xsl:copy-of select="mn:mega-nav-controller('header')"/>
   </xsl:template>
 
   <xsl:template match="common-nav-footer">
-    <xsl:copy-of select="mn:get-footer()"/>
+    <xsl:copy-of select="mn:mega-nav-controller('footer')"/>
   </xsl:template>
 
 </xsl:stylesheet>

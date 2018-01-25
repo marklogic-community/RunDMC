@@ -54,7 +54,7 @@
           </xsl:if>
           Log in
         </a>
-        <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login" style="background: #2a333d;color: #fff; padding: 8px;">
+        <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login" style="background: #2a333d;color: #fff; padding: 8px;font-size: 12px;">
           <div style="clear: both; font-size: .8rem; height: 100%; margin: 0;" id="login-error"/>
           <div class="form-group">
             <label class="control-label" for="email">Email:</label>
