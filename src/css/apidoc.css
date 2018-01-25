@@ -795,9 +795,9 @@ span.highlightWidget {
     #search-header form input[type="text"]:focus {
         width: 144px;
     }
-    #search_suggest_container {
+    /*#search_suggest_container {
         width: 144px;
-    }
+    }*/
     #search-header form {
         margin-right: 4px;
     }
