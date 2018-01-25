@@ -339,7 +339,8 @@ hr {
 header nav.navbar-top{
   background: #44499c;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  height: 40px;
+  font-size: 1rem;
+  height: 34px;
   line-height: 14px;
   margin: 0
 }
@@ -381,7 +382,6 @@ header nav.navbar-top ul li a{
 }
 
 header nav.navbar-top ul li a:hover{
-background-color: #44499c;
   text-decoration: none
 }
 
@@ -3275,7 +3275,6 @@ button.green:hover {
     position: relative;
 }
 
-
 #search_suggest_container {
     /* transparent background */
     background-color: rgba(0,0,0,0);
@@ -3302,7 +3301,7 @@ li.search_suggest {
     color: #555;
     line-height: 1.5em;
     padding-top: 0.25em;
-    padding-left: 6px;    
+    padding-left: 6px;
 }
 
 li.search_suggest:hover {
