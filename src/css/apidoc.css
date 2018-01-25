@@ -844,7 +844,9 @@ span.highlightWidget {
     list-style: none;
 }
 
+/* this hides the 'FREE MARKLOGIC' in docs footer */
 #menu-button-menu-free-ml-2 {
     display: none !important;
 }
-    /* apidoc.css */
+
+/* apidoc.css */
