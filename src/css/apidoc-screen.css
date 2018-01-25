@@ -3421,7 +3421,8 @@ li.search_suggest_selected {
     text-decoration: none;
 }
 
-#mlbs4-megamenu--submenu li > a {
+/* reduced padding from 20px to 15px only for depth-2 list items e.g. Documentation, Recipes */
+#mlbs4-megamenu--submenu  li.depth-2 > a {
     padding: 13px 15px;
 }
 
