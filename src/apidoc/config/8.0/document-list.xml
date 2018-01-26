@@ -117,15 +117,8 @@
              pdf-name="install">
         Contains procedures for installing and upgrading MarkLogic Server
 	on all platforms.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/InstallationGuideforAllPlatforms_JP.pdf" 
-	target="_blank">Japanese 
-		Translation of Installation Guide</a> | 
-	<a href="/media/jp/guide/8.0/InstallationGuideforAllPlatforms_JP.pdf" 
-	 	    target="_blank"><img src="/images/i_pdf.png" 
-			alt="Installation Guide (PDF, Japanese)" 
-			height="26" width="25"/></a>
+        <br/><a href="/8.0/guide/installation-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="relnotes" source-name="relnotes">
         Contains a summary of new features, upgrade compatibility information,
@@ -145,30 +138,15 @@
         Provides procedures, methodologies, and conceptual information
         about developing search-related applications in MarkLogic Server.
         Includes information about the Search API and the built-in search
-	features of MarkLogic Server.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/SearchDevelopersGuide_JP.pdf" 
-	target="_blank">Japanese 
-	     Translation of Search Developer's Guide</a> | 
-     <a href="/media/jp/guide/8.0/SearchDevelopersGuide_JP.pdf" 
- 	   target="_blank"><img src="/images/i_pdf.png" 
-	   alt="Search Developer's Guide (PDF, Japanese)" 
-	   height="26" width="25"/></a>
+        features of MarkLogic Server.
+        <br/><a href="/8.0/guide/search-dev-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="node-dev" source-name="node-dev">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Node.js
-	API. 
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/NodeJsAppDevGuide_JP.pdf" 
-	target="_blank">Japanese 
-	     Translation of Node.js Application Developer's Guide</a> | 
-	<a href="/media/jp/guide/8.0/NodeJsAppDevGuide_JP.pdf" 
- 	   target="_blank"><img src="/images/i_pdf.png" 
-	   alt="Node.js Application Developer's Guide (PDF, Japanese)" 
-	   height="26" width="25"/></a>
+        API. <br/><a href="/8.0/guide/node-dev-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="java" source-name="java-client">
         Provides procedures, methodologies, and conceptual information
@@ -186,15 +164,8 @@
         development using the MarkLogic REST API.</guide>
       <guide url-name="semantics" source-name="semantics">
         Provides information on developing semantic applications with MarkLogic.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/SemanticsDevGuide_JP.pdf" 
-	target="_blank">Japanese 
-	     Translation of Semantics Developer's Guide</a> | 
-     <a href="/media/jp/guide/8.0/SemanticsDevGuide_JP.pdf" 
- 	   target="_blank"><img src="/images/i_pdf.png" 
-	   alt="Semantics Developer's Guide (PDF, Japanese)" 
-	   height="26" width="25"/></a>
+        <br/><a href="/8.0/guide/semantics-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="temporal" source-name="temporal">
         Provides information on developing applications using MarkLogic
@@ -203,15 +174,8 @@
       <guide url-name="ref-arch" source-name="ref-arch">
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/ReferenceApplicationArchitectureGuide_JP.pdf" 
-	target="_blank">Japanese 
-	     Translation of Reference Application Architecture Guide</a> | 
-     <a href="/media/jp/guide/8.0/ReferenceApplicationArchitectureGuide_JP.pdf" 
- 	   target="_blank"><img src="/images/i_pdf.png" 
-	   alt="Reference Application Architecture Guide (PDF, Japanese)" 
-	   height="26" width="25"/></a>
+        <br/><a href="/8.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="app-builder" source-name="appbuilder">
         Provides step-by-step information on using the Application Builder
@@ -253,15 +217,8 @@
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
         programmers.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/JavaScriptReferenceGuide_JP.pdf" 
-	target="_blank">Japanese 
-		Translation of JavaScript Reference Guide</a> | 
-	<a href="/media/jp/guide/8.0/JavaScriptReferenceGuide_JP.pdf" 
-	 	    target="_blank"><img src="/images/i_pdf.png" 
-			alt="JavaScript Reference Guide (PDF, Japanese)" 
-			height="26" width="25"/></a>
+        <br/><a href="/8.0/guide/jsref-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="xquery" source-name="xquery">A condensed overview of
         the XQuery language, including a description of the three XQuery
@@ -290,16 +247,9 @@
         Server.</guide>
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-	MarkLogic Server on Amazon EC2.
-	<br/>
-&#160;&#160;&#160;&#160;&#160;<a 
-	href="/media/jp/guide/8.0/MLOnAmazonEC2Guide_JP.pdf" 
-	target="_blank">Japanese 
-		Translation of MarkLogic on Amazon EC2 Guide</a> | 
-	<a href="/media/jp/guide/8.0/MLOnAmazonEC2Guide_JP.pdf" 
-	 	    target="_blank"><img src="/images/i_pdf.png" 
-			alt="MarkLogic On Amazon EC2 Guide (PDF, Japanese)" 
-			height="26" width="25"/></a>
+        MarkLogic Server on Amazon EC2.
+        <br/><a href="/8.0/guide/ec2-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="qconsole" source-name="qconsole">A procedural guide
         that describes how to use the Query Console.</guide>
@@ -322,13 +272,44 @@
   Includes a glossary of terms as well as copyright and support
   information.
       </guide>
-<!-- Comment out until we modify the build
-      <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="product-notices">
+      <guide pdf-only="true" title="Combined Product Notices" url-name="product-notices" source-name="CombinedProductNotices">
         Includes Combined Product Notices
       </guide>
--->
     </entry>
 
+    <entry title="Japanese Guides">
+      <guide pdf-only="true" title="Installation Guide for All Platforms (Japanese)"
+          url-name="installation-jp" 
+          source-name="installation_JP">
+        Contains procedures for installing and upgrading MarkLogic Server on all platforms.</guide>
+      <guide pdf-only="true" title="Search Developer's Guide (Japanese)"
+          url-name="search-dev-jp" source-name="search-dev_JP">
+        Provides procedures, methodologies, and conceptual information about developing 
+        search-related applications in MarkLogic Server. Includes information about the 
+        Search API and the built-in search features of MarkLogic Server.</guide>
+      <guide pdf-only="true" title="Semantics Developer's Guide (Japanese)"
+          url-name="semantics-jp" source-name="semantics_JP">
+        Provides information on developing semantic applications with MarkLogic.</guide>
+      <guide pdf-only="true" title="JavaScript Reference Guide (Japanese)"
+          url-name="jsref-jp" source-name="jsref_JP">
+        A overview of Server-Side JavaScript in MarkLogic. Contains reference 
+        material for MarkLogic-specific JavaScript objects available to 
+        server-side programmers.</guide>
+      <guide pdf-only="true" 
+          title="Node.js Application Developer's Guide (Japanese)" 
+          url-name="node-dev-jp" source-name="node-dev_JP">
+        Provides procedures, methodologies, and conceptual information
+        about developing MarkLogic Server applications using the Node.js Client
+        API. </guide>
+      <guide pdf-only="true" title="Reference Application Architecture Guide (Japanese)" url-name="ref-arch-jp" source-name="ref-arch_JP">
+        Provides an overview of reference application architectures for
+        multi-tiered applications build using MarkLogic as the database.
+      </guide>
+      <guide pdf-only="true" title="MarkLogic Server on Amazon EC2 Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
+        Provides information on using an Amazon Machine Image (AMI) of
+        MarkLogic Server on Amazon EC2.
+      </guide>
+    </entry>
   </group>
 
   <group toc-title="REST API">
