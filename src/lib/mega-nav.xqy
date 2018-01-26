@@ -13,10 +13,10 @@ declare namespace mnm = "http://mlu.marklogic.com/mega-nav/markup";
 declare variable $url := "https://www.marklogic.orbit-websites.com/wp-json/mlapi/v1/json/";
 
 (: enter the role name associated with your default user :)
-declare variable $default-user-role := "RunDMC-role";
+declare variable $default-user-role := "dmc-user";
 
 (: enter the role name associated with an authenticated user :)
-declare variable $authenticated-user-role := "RunDMC-role";
+declare variable $authenticated-user-role := "dmc-user";
 
 declare function mn:mega-nav-controller($key){
     (: 
