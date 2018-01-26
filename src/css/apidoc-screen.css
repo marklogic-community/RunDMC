@@ -3425,6 +3425,13 @@ li.search_suggest_selected {
     padding: 13px 15px;
 }
 
+/* This is a hack to remove extra whitespace coming in mega-nav due to display:inline-block
+   https://stackoverflow.com/questions/5256533/a-space-between-inline-block-list-items
+*/
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li {
+    margin-right: 0.25em;
+}
+
 header #login-menu-nav li>a:hover {
     text-decoration: none;
     color: #586ad6;
