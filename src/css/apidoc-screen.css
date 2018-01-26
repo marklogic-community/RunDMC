@@ -3428,8 +3428,22 @@ li.search_suggest_selected {
 /* This is a hack to remove extra whitespace coming in mega-nav due to display:inline-block
    https://stackoverflow.com/questions/5256533/a-space-between-inline-block-list-items
 */
-#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li {
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li#menu-item-8665{
     margin-right: 0.25em;
+}
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li#menu-item-8667{
+    margin-right: 0.25em;
+}
+
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li#menu-item-8668{
+    margin-right: 0.4em;
+}
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li#menu-item-8688{
+    margin-right: 0.25em;
+}
+
+#mlbs4-megamenu .megamenu--menu ul#menu-primary-menu li#menu-item-8686{
+    margin-right: 0.1em;
 }
 
 header #login-menu-nav li>a:hover {
