@@ -253,7 +253,7 @@ ol ol {
 /* This needs some non-standard properties,
  * or else the user will accidentally select adjoining text.
  */
- #splitter {
+#splitter {
     position: absolute;
     top: 4px;
     bottom: 4px;
