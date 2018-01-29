@@ -848,6 +848,19 @@
       <privileges>
       </privileges>
     </role>
+    <role>
+      <role-name>dmc-user</role-name>
+      <description>A role for users of the RunDMC application</description>
+      <role-names>
+        <role-name>admin</role-name>
+      </role-names>
+      <permissions>
+      </permissions>
+      <collections>
+      </collections>
+      <privileges>
+      </privileges>
+    </role>
   </roles>
   <users xmlns="http://marklogic.com/xdmp/security">
     <user>
@@ -866,6 +879,16 @@
       <password>${reviewer-password}</password>
       <role-names>
         <role-name>${app-role}</role-name>
+      </role-names>
+      <permissions/>
+      <collections/>
+    </user>
+    <user>
+      <user-name>dmc-user</user-name>
+      <description>A user for the RunDMC application</description>
+      <password>${appuser-password}</password>
+      <role-names>
+        <role-name>dmc-user</role-name>
       </role-names>
       <permissions/>
       <collections/>

@@ -3259,6 +3259,7 @@ button.green:hover {
     position: absolute;
     width: 100%;
     z-index: 9;
+    text-align: left;
 }
 
 #search_suggest {
