@@ -195,54 +195,60 @@ ol ol {
 }
 
 .underline {
-    text-decoration: underline }
+    text-decoration: underline 
+}
 
-    #page_content ul {
-        padding-left: 20px;
-        list-style: disc;
-    }
-    #page_content .shadow {
-        position: fixed;
-        left: 50%;
-        top: 70px;
-        bottom: 16px;
-        margin-left: -224px;
-        width: 5px;
-        background: url(/images/bg_shadow_vert.png) top left repeat-y;
-        display: none;
-    }
-    #page_content.scroll {
-        border-left: 1px solid #ccc;
-    }
-    #page_content table pre {
-    }
-    #page_content dd pre {
-        background-color: #fff;
-        padding-top: 5px;
-        border-radius: 4px;
-    }
-    #page_content dd pre:first-child {
-        background-color: transparent;
-        padding: 0;
-    }
-    #api_sub {
-        color: #333333;
-        font-size: 0.9em;
-    }
+#page_content ul {
+    padding-left: 20px;
+    list-style: disc;
+}
 
-    #apidoc_toc,
-    #all_tocs,
-    .toc {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    #toc_content {
-        width: 100%;
-        background: #fff;
-        height: 100%;
-        padding: 16px 0 16px 0;
-    }
+#page_content .shadow {
+    position: fixed;
+    left: 50%;
+    top: 70px;
+    bottom: 16px;
+    margin-left: -224px;
+    width: 5px;
+    background: url(/images/bg_shadow_vert.png) top left repeat-y;
+    display: none;
+}
+
+#page_content.scroll {
+    border-left: 1px solid #ccc;
+}
+
+#page_content table pre {
+}
+
+#page_content dd pre {
+    background-color: #fff;
+    padding-top: 5px;
+    border-radius: 4px;
+}
+
+#page_content dd pre:first-child {
+    background-color: transparent;
+    padding: 0;
+}
+
+#api_sub {
+    color: #333333;
+    font-size: 0.9em;
+}
+
+#apidoc_toc, #all_tocs, .toc {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#toc_content {
+    width: 100%;
+    background: #fff;
+    height: 100%;
+    padding: 16px 0 16px 0;
+}
 
 /* This needs some non-standard properties,
  * or else the user will accidentally select adjoining text.
@@ -680,100 +686,111 @@ span.highlightWidget {
 
 /* On small screens, hide TOC and make other adjustments.
 */
-@media (max-width: 764px) {
+@media (max-width:764px) {
     .pjax_enabled > .api_caption {
-      display: none;
-  }
+        display: none;
+    }
 
-  #header h1 {
-    margin-bottom: 4px;
-}
+    #header h1 {
+        margin-bottom: 4px;
+    }
 
-#header {
-  width: 100%;
-  top: 0px;
-  // border: 0px;
-}
-#breadcrumb {
-  display: none;
-}
+    #header {
+        width: 100%;
+        top: 0px;
+        // border: 0px;
+    }
 
-.navbar-header {
-  padding: 10px 0px;
-}
+    #breadcrumb {
+        display: none;
+    }
 
-.navbar-top.ml-nav {
-  display: none;
-}
+    .navbar-header {
+        padding: 10px 0px;
+    }
 
-#header nav .current:after {
-    content: none;
-}
+    .navbar-top.ml-nav {
+        display: none;
+    }
 
-#dmc-navbar-collapse {
-  position: absolute;
-  background-color: #222;
-  left: 0px;
-  right: 0px;
-  padding: 0px 15px;
-  margin: 0px -1px;
-}
+    #header nav .current:after {
+        content: none;
+    }
 
-#dmc-navbar-collapse .navbar-nav {
-  margin-bottom: 0px;
-}
+    #dmc-navbar-collapse {
+        position: absolute;
+        background-color: #222;
+        left: 0px;
+        right: 0px;
+        padding: 0px 15px;
+        margin: 0px -1px;
+    }
 
-#dmc-navbar-collapse li {
-  padding: 2px 0px;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
-}
+    #dmc-navbar-collapse .navbar-nav {
+        margin-bottom: 0px;
+    }
 
-#dmc-navbar-collapse li:hover {
-  background-color: #333;
-}
+    #dmc-navbar-collapse li {
+        padding: 2px 0px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
 
-#header nav .current {
-  padding-bottom: 2px;
-}
+    #dmc-navbar-collapse li:hover {
+        background-color: #333;
+    }
 
-#version_list option {
-  font-size: initial;
-}
+    #header nav .current {
+        padding-bottom: 2px;
+    }
 
-#header h1 a {
-    background: url(/images/logo-community-white-89x22.png) no-repeat;
-    width: 89px;
-    height: 22px;
-    margin-bottom: 20px;
-}
-#breadcrumb {
-    padding: 4px;
-}
-#breadcrumb > div:first-child {
-    margin-bottom: 4px;
-}
-.version {
-    padding: 12px 0px 12px 12px;
-}
-.toc_select {
-    margin-left: 4px;
-}
-.scrollable_section .filter input {
-    margin-left: 4px;
-}
-#api_sub {
-    display: none;
-}
-#page_content {
-    left: 0px;
-    padding: 0px 5px;
-}
-#page_content h1 {
-    margin: 24px 0 24px 0;
-}
-#copyright {
-    padding: 4px;
-}
+    #version_list option {
+        font-size: initial;
+    }
+
+    #header h1 a {
+        background: url(/images/logo-community-white-89x22.png) no-repeat;
+        width: 89px;
+        height: 22px;
+        margin-bottom: 20px;
+    }
+
+    #breadcrumb {
+        padding: 4px;
+    }
+
+    #breadcrumb > div:first-child {
+        margin-bottom: 4px;
+    }
+
+    .version {
+        padding: 12px 0px 12px 12px;
+    }
+
+    .toc_select {
+        margin-left: 4px;
+    }
+
+    .scrollable_section .filter input {
+        margin-left: 4px;
+    }
+
+    #api_sub {
+        display: none;
+    }
+
+    #page_content {
+        left: 0px;
+        padding: 0px 5px;
+    }
+
+    #page_content h1 {
+        margin: 24px 0 24px 0;
+    }
+
+    #copyright {
+        padding: 4px;
+    }
+
 }
 
 /* Anything smaller than an iphone 5 landscape. */
@@ -795,9 +812,6 @@ span.highlightWidget {
     #search-header form input[type="text"]:focus {
         width: 144px;
     }
-    /*#search_suggest_container {
-        width: 144px;
-    }*/
     #search-header form {
         margin-right: 4px;
     }

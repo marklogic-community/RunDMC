@@ -1,163 +1,158 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ml="http://developer.marklogic.com/site/internal"
-xml:lang="en" lang="en">
-<head>
-  <title><ml:page-title/></title>
-  <meta charset="utf-8" />
-  <meta name="description"
-  content="MarkLogic is the only Enterprise NoSQL Database" />
-  <meta name="keywords"
-  content="marklogic, enterprise nosql database, enterprise nosql, database, nosql, nosql database, nosql db, xml, xml database, json, enterprise, bigdata, big data, xquery, xslt, petabyte, java db, java database, content, content store, content database, content db, content management system, CMS, document, document-oriented databases, document database, document db, document store, DB, xml database, xml db, json db, nonrelational, nonrelational database, nonrelational db" />
-  <meta name="viewport" content="initial-scale=1.0" />
-  <link href="/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="/css/v-2/apidoc/jquery.treeview.css"
-  rel="stylesheet" type="text/css" media="screen" />
-  <!-- START ORBIT CSS -->
-  <ml:common-nav-css/>
-  <!-- END ORBIT CSS -->
-  <link href="/css/v-38/apidoc-screen.css"
-  rel="stylesheet" type="text/css" media="screen" />
-  <link href="/css/v-33/apidoc.css"
-  rel="stylesheet" type="text/css" media="screen" />
-  <link href="/css/v-1/apidoc_print.css"
-  rel="stylesheet" type="text/css" media="print" />
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" xml:lang="en" lang="en">
+  <head>
+    <title><ml:page-title/></title>
+    <meta charset="utf-8" />
+    <meta name="description" content="MarkLogic is the only Enterprise NoSQL Database" />
+    <meta name="keywords" content="marklogic, enterprise nosql database, enterprise nosql, database, nosql, nosql database, nosql db, xml, xml database, json, enterprise, bigdata, big data, xquery, xslt, petabyte, java db, java database, content, content store, content database, content db, content management system, CMS, document, document-oriented databases, document database, document db, document store, DB, xml database, xml db, json db, nonrelational, nonrelational database, nonrelational db" />
+    <meta name="viewport" content="initial-scale=1.0" />
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/v-2/apidoc/jquery.treeview.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- START ORBIT CSS -->
+    <ml:common-nav-css/>
+    <!-- END ORBIT CSS -->
+    <link href="/css/v-38/apidoc-screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-33/apidoc.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/css/v-1/apidoc_print.css" rel="stylesheet" type="text/css" media="print" />
     <!--[if lte IE 8]>
-        <link href="/css/v-2/screen_ie.css"
-          rel="stylesheet" type="text/css" media="screen" />
-        <![endif]-->
-
-        <ml:javascript-server-config/>
-        <!-- START ORBIT JS -->
-        <ml:common-nav-js/>
-        <!-- END ORBIT JS -->
-        <script type="text/javascript" src="/js/modernizr.js"></script>
-
+          <link href="/css/v-2/screen_ie.css"
+            rel="stylesheet" type="text/css" media="screen" />
+          <![endif]-->
+    <ml:javascript-server-config/>
+    <!-- START ORBIT JS -->
+    <ml:common-nav-js/>
+    <!-- END ORBIT JS -->
+    <script type="text/javascript" src="/js/modernizr.js"></script>
     <!-- Un-minimize for debugging
-         <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
-       -->
-       <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+           <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+         -->
+    <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
+    <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
+    <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
+    <script type="text/javascript" src="/js/rundmc_init.js"></script>
+    <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-autocomplete.js"></script>
+    <script type="text/javascript" src="/js/jquery.select-to-autocomplete.min.js"></script>
+    <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
+    <script type="text/javascript" src="/js/functions.js"></script>
+    <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
+    <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
+    <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </head>
 
-       <script type="text/javascript" src="/apidoc/js/jquery.treeview.js"></script>
-       <script type="text/javascript" src="/js/jquerydefaultvalue.js"></script>
-       <script type="text/javascript" src="/js/CodeMirror-0.94/js/codemirror.js"></script>
-       <script type="text/javascript" src="/apidoc/js/jquery.treeview.edit.js"></script>
-       <script type="text/javascript" src="/apidoc/js/jquery.treeview.async.js"></script>
-       <script type="text/javascript" src="/js/rundmc_init.js"></script>
-       <script type="text/javascript" src="/apidoc/js/toc_filter.js"></script>
-       <script type="text/javascript" src="/js/jquery-ui-1.11.2.min.js"></script>
-       <script type="text/javascript" src="/js/jquery.anythingslider.min.js"></script>
-       <script type="text/javascript" src="/js/jquery-ui-autocomplete.js"></script>
-       <script type="text/javascript" src="/js/jquery.select-to-autocomplete.min.js"></script>
-       <script type="text/javascript" src="/apidoc/js/jquery.pjax.js"></script>
-       <script type="text/javascript" src="/js/functions.js"></script>
-       <script type="text/javascript" src="/js/jquery.qtip-1.0.0-rc3.js"></script>
-       <script type="text/javascript" src="/js/ZeroClipboard.min.js"></script>
-       <script type="text/javascript" src="/js/react-0.12.2/react.min.js"></script>
-       <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-     </head>
+  <body>
+    <!-- Google Tag Manager -->
+    <noscript>
+      <iframe src="//www.googletagmanager.com/ns.html?id=GTM-MBC6N2" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+    < ![CDATA[
+      if (document.location.hostname == 'docs.marklogic.com') {
+        (function(w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+          });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src =
+            '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MBC6N2');
+      }]] >
 
-     <body>
-
-      <!-- Google Tag Manager -->
-      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MBC6N2"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <script><![CDATA[if ( document.location.hostname == 'docs.marklogic.com') {
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MBC6N2'); } ]]> </script>
-        <!-- End Google Tag Manager -->
-
-        <!-- style="position: fixed;width:100%" -->
-        <div id="header">
-          <header>
-            <!-- START ORBIT HEADER -->
-            <ml:common-nav-header/>
-            <nav style="background: #f3f6f8; width: 100%; min-height: 44px;">
-              <div class="hidden-xs hidden-sm col-md-7">
-                <div id="mlbs4-megamenu--submenu" class="mlbs4-row submenu--show-depth--1">
-                  <div class="mlbs4-col">
-                    <div class="menu-primary-menu-container">
-                      <ul id="menu-primary-menu-1" class="menu">
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-8688 depth-0" data-depth="0">
-                          <a href="https://www.marklogic.orbit-websites.com/community/">Community</a>
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- style="position: fixed;width:100%" -->
+    <div id="header">
+      <header>
+        <!-- START ORBIT HEADER -->
+        <ml:common-nav-header/>
+        <nav style="background: #f3f6f8; width: 100%; min-height: 44px;">
+          <div class="hidden-xs hidden-sm col-md-7">
+            <div id="mlbs4-megamenu--submenu" class="mlbs4-row submenu--show-depth--1">
+              <div class="mlbs4-col">
+                <div class="menu-primary-menu-container">
+                  <ul id="menu-primary-menu-1" class="menu">
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-8688 depth-0" data-depth="0">
+                      <a href="https://www.marklogic.orbit-websites.com/community/">Community</a>
+                      <ul role="menu">
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page page_item page-item-8775 menu-item-8776 depth-1" data-depth="1"><a href="https://www.marklogic.orbit-websites.com/support/">Support</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-has-children menu-item-11802 depth-1 active" data-depth="1"><a href="https://developer.marklogic.com/">Developer</a>
                           <ul role="menu">
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page page_item page-item-8775 menu-item-8776 depth-1" data-depth="1"><a href="https://www.marklogic.orbit-websites.com/support/">Support</a></li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-has-children menu-item-11802 depth-1 active" data-depth="1"><a href="https://developer.marklogic.com/">Developer</a>
-                              <ul role="menu">
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-001 depth-2" data-depth="2"><a href="/">Documentation</a></li>
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-002 depth-2" data-depth="2"><a href="https://developer.marklogic.com/recipes">Recipes</a></li>
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-003 depth-2" data-depth="2"><a href="https://developer.marklogic.com/code">Tools</a></li>
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-004 depth-2" data-depth="2"><a href="https://developer.marklogic.com/learn">Tutorials</a></li>
-                              </ul>
-                            </li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8773 depth-1" data-depth="1"><a href="/partners/">Partners</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-001 depth-2" data-depth="2"><a href="/">Documentation</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-002 depth-2" data-depth="2"><a href="https://developer.marklogic.com/recipes">Recipes</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-003 depth-2" data-depth="2"><a href="https://developer.marklogic.com/code">Tools</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-004 depth-2" data-depth="2"><a href="https://developer.marklogic.com/learn">Tutorials</a></li>
                           </ul>
                         </li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8773 depth-1" data-depth="1"><a href="/partners/">Partners</a></li>
                       </ul>
-                    </div>
-                  </div><!-- /.col -->
+                    </li>
+                  </ul>
                 </div>
               </div>
-
-              <div class="col-xs-12 col-sm-12 col-md-5" style="background: #f3f6f8; ">
-                <form class="search-form pull-right" ml:action="/search" method="get">
-                  <div class="form-group">
-                    <input type="hidden" name="v" ml:value="" />
-                    <input type="hidden" name="api" ml:value="" />
-                    <div class="input-group">
-                      <input id="s_inp" name="q" type="text"
-                      class="form-control"
-                      autocapitalize="off"
-                      placeholder="Search with MarkLogic" ml:value=""/>
-                      <span class="input-group-addon">
+              <!-- /.col -->
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-5" style="background: #f3f6f8; ">
+            <form class="search-form pull-right" ml:action="/search" method="get">
+              <div class="form-group">
+                <input type="hidden" name="v" ml:value="" />
+                <input type="hidden" name="api" ml:value="" />
+                <div class="input-group">
+                  <input id="s_inp" name="q" type="text" class="form-control" autocapitalize="off" placeholder="Search with MarkLogic" ml:value="" />
+                  <span class="input-group-addon">
                         <i class="glyphicon glyphicon-search"/>
                       </span>
-                    </div>
-                  </div>
-                </form>
-                <div class="pull-right custom-padding" >       
-                  <nav id="login-menu-nav" style="display: inline-block;">
-                    <ml:login-menu/>
-                  </nav>
-                  <p style="display: inline;">
-                   <a style="color:#272f38" data-toggle="tooltip" data-placement="top" title="Ask a Question" target="_blank" rel="noopener" href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span></a></p>
-                 </div>
-               </div>
-             </nav>
-             <!-- END ORBIT HEADER -->
-           </header>
-           <div id="header-below-bottom-bar">
-            <div id="breadcrumb">
-              <ml:breadcrumbs/>
+                </div>
+              </div>
+            </form>
+            <div class="pull-right custom-padding">
+              <nav id="login-menu-nav" style="display: inline-block;">
+                <ml:login-menu/>
+              </nav>
+              <p style="display: inline;">
+                <a style="color:#272f38" data-toggle="tooltip" data-placement="top" title="Ask a Question" target="_blank" rel="noopener" href="http://stackoverflow.com/questions/ask?tags=marklogic"><span class="glyphicon glyphicon-question-sign"></span></a></p>
             </div>
-            <ml:versions/>
           </div>
+        </nav>
+        <!-- END ORBIT HEADER -->
+      </header>
+      <div id="header-below-bottom-bar">
+        <div id="breadcrumb">
+          <ml:breadcrumbs/>
         </div>
-        <div id="api_sub">
-          <ml:api-toc/>
-        </div>
-        <section id="page_content">
-          <ml:toc-state/>
-          <ml:page-content/>
-          <ml:comment-section/>
-
-          <!-- START ORBIT FOOTER -->
-          <ml:common-nav-footer/> 
-          <!-- END ORBIT FOOTER --> 
-          <!-- <ml:apidoc-copyright/>-->
-        </section>
-
-        <!-- ml:elapsed-time/ -->
-
-        <!--  <footer class="docs-custom-footer" id="mlbs4-footer">  -->
-
-          <!-- START ORBIT FOOTER -->
-          <!--    <ml:common-nav-footer/>  -->
-          <!-- END ORBIT FOOTER -->
-          <!--  </footer>  -->
-        </body>
-        <script>$("#menu-item-8688").addClass('current_page')</script>
-      </html>
+        <ml:versions/>
+      </div>
+    </div>
+    <div id="api_sub">
+      <ml:api-toc/>
+    </div>
+    <section id="page_content">
+      <ml:toc-state/>
+      <ml:page-content/>
+      <ml:comment-section/>
+      <!-- START ORBIT FOOTER -->
+      <ml:common-nav-footer/>
+      <!-- END ORBIT FOOTER -->
+      <!-- <ml:apidoc-copyright/>-->
+    </section>
+    <!-- ml:elapsed-time/ -->
+    <!--  <footer class="docs-custom-footer" id="mlbs4-footer">  -->
+    <!-- START ORBIT FOOTER -->
+    <!--    <ml:common-nav-footer/>  -->
+    <!-- END ORBIT FOOTER -->
+    <!--  </footer>  -->
+    <script>$("#menu-item-8688").addClass('current_page')</script>
+  </body>
+</html>

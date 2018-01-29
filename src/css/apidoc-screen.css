@@ -573,7 +573,6 @@ nav ul {
   line-height: 100%;
   margin: 0 auto;
   position: relative;
-  /*width: 97%*/
 }
 #breadcrumb a {
     color: #01639D;
@@ -3490,11 +3489,11 @@ header nav #login-menu-nav ul.dropdown-menu a:hover {
 }
 
 header nav #login-menu-nav ul li #login-trigger {
-    font-size: 15px !important;
+  font-size: 15px !important;
 }
 
 .custom-padding {
-    padding: 14px 4px 0 0;
+  padding: 14px 4px 0 0;
 }
 
 /* screen.css */
