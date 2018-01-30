@@ -38,7 +38,10 @@
       namespace="http://marklogic.com/rundmc/api/guide"
       href="/apidoc/setup/guide.xqm"/>
 
-  <xsl:output indent="no"/>
+
+  <!-- commented this to resolve issue in menu-items alignment
+    https://stackoverflow.com/questions/5256533/a-space-between-inline-block-list-items -->    
+  <!-- <xsl:output indent="no"/> -->
 
   <!-- This may be empty. -->
   <xsl:variable name="VERSION" as="xs:string?"
