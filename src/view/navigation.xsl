@@ -67,8 +67,12 @@
           <div class="form-group">
             <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
           </div>
-          <p style="text-align: center; margin-bottom: 15px;"><a href="/people/recovery" data-url="{$srv:primary-server}/people/recovery" id="recovery" style="color: #fff;">Forgot Password?</a></p>
-          <p style="text-align: center; margin-bottom: 0;"><a href="/people/signup" data-url="{$srv:primary-server}/people/signup" id="signup-trigger" style="color: #fff;">Create New Account</a></p>
+          <div class="form-group">
+              <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-link" id="recovery" style="color: #fff;padding: 0px 0px;font-size:12px;" type="button">Forgot Password?</button>
+          </div>
+          <div class="form-group" style="margin-bottom:0px;">
+              <button onclick="return false;" data-url="{$srv:primary-server}/people/signup" class="btn btn-link" id="signup-trigger" style="color: #fff;padding: 0px 0px 0px;font-size:12px;" type="button">Create New Account</button>
+          </div>            
         </form>
       </li>
       <li class="btn-group">
