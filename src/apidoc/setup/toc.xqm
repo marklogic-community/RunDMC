@@ -157,27 +157,46 @@ as xs:string
     else translate(lower-case(toc:display-category($cat)), ' ', '-'))
 };
 
+
+
 declare function toc:category-page-title(
   $cat as xs:string,
   $lib as xs:string?,
   $secondary-lib as xs:string?)
 as element()
 {
-  element toc:title {
-    (: Children will be in the default element namespace,
-     : which is empty.
-     :)
-    element a {
-      attribute href { "/"||$lib },
-      toc:prefix-for-lib($lib) },
-    if (not($secondary-lib)) then (
-    ' functions ('||toc:display-category($cat)||')'
-    ) else (
-      ' and ',
+  let $prefix := toc:prefix-for-lib($lib)
+  let $secondary-prefix :=
+    if ($secondary-lib) then
+      toc:prefix-for-lib($secondary-lib)
+    else ()
+  return
+    element toc:title {
+      (: Children will be in the default element namespace,
+       : which is empty.
+       :)
       element a {
-        attribute href { "/"||$secondary-lib },
-        toc:prefix-for-lib($secondary-lib) },
-      ' functions ('||toc:display-category($cat)||')') }
+        attribute href { "/" || $lib },
+        $prefix
+      },
+      if (not($secondary-lib)) then (
+        if ($prefix) then
+          ' functions ('|| toc:display-category($cat) || ')'
+        else
+          toc:display-category($cat)
+      )
+      else (
+        ' and ',
+        element a {
+          attribute href { "/" || $secondary-lib },
+          $secondary-prefix
+        },
+        if ($secondary-prefix) then
+          ' functions (' || toc:display-category($cat) ||' )'
+        else
+          toc:display-category($cat)
+      )
+    }
 };
 
 declare function toc:REST-page-title(
@@ -210,12 +229,8 @@ declare function toc:lib-for-all(
 as xs:string?
 {
   let $libs := distinct-values(($functions/@lib, $functions/@object))
-  (: This is a hack to make the semantics library work.
-   : It has multiple namespace.
-   :)
   return (
     if (count($libs) eq 1) then ($functions/(@lib | @object))[1]
-    else if (($functions/@category)[1] eq 'Semantics') then 'sem'
     else ())
 };
 
@@ -241,6 +256,12 @@ declare function toc:lib-for-most($functions as element()*)
     return $name)[1]
 };
 
+(:
+ : Exhaustive means that all the category functions are in one lib
+ : (ie, XQuery namespace or SJS object). For instance (as of writing this),
+ : all the MathBuiltins are in math: and all functions in math: are in
+ : MathBuiltins.
+ :)
 declare function toc:category-is-exhaustive(
   $m-mode-functions as map:map,
   $category as xs:string,
@@ -281,6 +302,30 @@ as element(apidoc:module)+
   raw:api-docs($version)/apidoc:module
 };
 
+(: Just grab the first summary. If we have a category with subcategories,
+ : the following line of code can return multiple summaries.
+ :)
+declare function toc:find-primary-summary(
+  $raw-modules as element()+,
+  $cat as xs:string,
+  $subcat as xs:string?,
+  $mode as xs:string)
+  as element(apidoc:summary)*
+{
+  let $summary :=
+    ($raw-modules/apidoc:summary
+      [@category eq $cat]
+      [not($subcat) and not(@subcategory) or @subcategory eq $subcat]
+      [not(@class) or @class eq $mode]
+    )[1]
+  return
+    if ($summary) then $summary
+    else
+      $raw-modules
+        [@category eq $cat]
+        [not($subcat) or @subcategory eq $subcat]/apidoc:summary
+};
+
 declare function toc:get-summary-for-category(
   $version as xs:string,
   $mode as xs:string,
@@ -291,62 +336,61 @@ declare function toc:get-summary-for-category(
   as element(apidoc:summary)*
 {
   let $raw-modules as element()+ := toc:modules-raw($version)
-  let $summaries-with-category := $raw-modules/apidoc:summary[
-    @category eq $cat][not($subcat) or @subcategory eq $subcat]
+  let $summaries-with-category :=
+    toc:find-primary-summary($raw-modules, $cat, $subcat, $mode)
   return (
     if ($summaries-with-category) then $summaries-with-category
     else (
-      let $modules-with-category := $raw-modules[
-        @category eq $cat][not($subcat) or @subcategory eq $subcat]
-      return (
-        if ($modules-with-category/apidoc:summary)
-        then $modules-with-category/apidoc:summary
-        else (
-          (: Fallback boilerplate is different for library modules
-           : than for built-ins.
-           :
-           : The admin library sub-pages don't have their own descriptions.
-           : So use this boilerplate instead
-           :)
-          if ($lib = $prefixes-not-builtin) then element apidoc:summary {
-            <p>
-            For information on how to import the functions in this module,
-            refer to the main
-            <a href="{
-            concat(
-            switch($mode)
-            case $api:MODE-JAVASCRIPT return 'js/'
-            default return '',
-            $lib)
-            }">{ toc:prefix-for-lib($lib) } library page</a>.
-            </p> }
+      (: Fallback boilerplate is different for library modules
+       : than for built-ins.
+       :
+       : The admin library sub-pages don't have their own descriptions.
+       : So use this boilerplate instead
+       :)
+      if ($lib = $prefixes-not-builtin) then element apidoc:summary {
+        <p>
+        For information on how to import the functions in this module,
+        refer to the main
+        <a href="{
+        concat(
+        switch($mode)
+        case $api:MODE-JAVASCRIPT return 'js/'
+        default return '',
+        $lib)
+        }">{ toc:prefix-for-lib($lib) } library page</a>.
+        </p>
+      }
 
-          (: ASSUMPTION Only REST sub-categories may need this fallback
-           : all main categories (e.g., Client API and Management API)
-           : already have summaries written
-           :)
-          else if ($lib eq $api:MODE-REST) then element apidoc:summary {
-            <p>
-            For the complete list of REST resources in this category,
-            refer to the main <a href="/REST/{toc:path-for-category($cat)}">{
-              toc:display-category($cat) } page</a>.
-            </p> }
+      (: ASSUMPTION Only REST sub-categories may need this fallback
+       : all main categories (e.g., Client API and Management API)
+       : already have summaries written
+       :)
+      else if ($lib eq $api:MODE-REST) then element apidoc:summary {
+        <p>
+        For the complete list of REST resources in this category,
+        refer to the main <a href="/REST/{toc:path-for-category($cat)}">{
+          toc:display-category($cat) } page</a>.
+        </p>
+      }
 
-          (: Some of the xdmp sub-pages don't have descriptions either,
-           : so use this.
-           :)
-          else element apidoc:summary {
-            <p>
-            For the complete list of functions and categories in this namespace,
-            refer to the main <a href="{
-            concat(
-            switch($mode)
-            case $api:MODE-JAVASCRIPT return 'js/'
-            default return '',
-            $lib)
-            }">{ toc:prefix-for-lib($lib) }
-            functions page</a>.
-            </p> }))))
+      (: Some of the xdmp sub-pages don't have descriptions either,
+       : so use this.
+       :)
+      else element apidoc:summary {
+        <p>
+        For the complete list of functions and categories in this namespace,
+        refer to the main <a href="{
+        concat(
+        switch($mode)
+        case $api:MODE-JAVASCRIPT return 'js/'
+        default return '',
+        $lib)
+        }">{ toc:prefix-for-lib($lib) }
+        functions page</a>.
+        </p>
+      }
+    )
+  )
 };
 
 (: We only want to see one summary :)
@@ -376,52 +420,64 @@ as element()?
     not(@subcategory)]
   let $summaries-by-object :=
     element apidoc:summary {
-       let $obj := $raw-modules/apidoc:object[@name eq $lib]
-       return (
-       if ($obj/@subtype-of)
-       then (
-       element xhtml:p { element xhtml:code {$lib},
-         " is a subtype of ",
-         let $count := fn:count(fn:tokenize(fn:normalize-space(
+      let $obj := $raw-modules/apidoc:object[@name eq $lib]
+      return (
+        if ($obj/@subtype-of) then (
+          element xhtml:p {
+            element xhtml:code {$lib},
+            " is a subtype of ",
+            let $count := fn:count(fn:tokenize(fn:normalize-space(
                      $obj/@subtype-of/fn:string()), " "))
-         return
-         (: is there more than one subtype? :)
-         if ($count eq 1)
-         then (
-         element xhtml:a {
-          attribute href {
-                           toc:category-href(
-                               $obj/@subtype-of/fn:string(), "",
-                               fn:true(), fn:true(), "javascript",
-                               $obj/@subtype-of/fn:string(), "") },
-            $obj/@subtype-of/fn:string() || "." } )
-         else
-         for $subtype at $i in fn:tokenize(fn:normalize-space(
-                     $obj/@subtype-of/fn:string()), " ")
-         return
-         (  element xhtml:a {
-          attribute href {
-                           toc:category-href(
-                               $subtype, "",
-                               fn:true(), fn:true(), "javascript",
-                               $subtype, "") },
-            $subtype }, if ($i eq $count) then "." else " and "
-         ) } )
-       else ()    ,
-       stp:node-to-xhtml($obj/apidoc:summary/node())
-       )}
+            return
+              (: is there more than one subtype? :)
+              if ($count eq 1) then (
+                element xhtml:a {
+                  attribute href {
+                    toc:category-href(
+                      $obj/@subtype-of/fn:string(), "",
+                      fn:true(), fn:true(), $api:MODE-JAVASCRIPT,
+                      $obj/@subtype-of/fn:string(), ""
+                    )
+                  },
+                  $obj/@subtype-of/fn:string() || "."
+                }
+              )
+              else
+                for $subtype at $i in
+                  fn:tokenize(fn:normalize-space($obj/@subtype-of/fn:string()), " ")
+                return (
+                  element xhtml:a {
+                    attribute href {
+                      toc:category-href(
+                        $subtype, "",
+                        fn:true(), fn:true(), $api:MODE-JAVASCRIPT,
+                        $subtype, ""
+                      )
+                    },
+                    $subtype
+                  },
+                  if ($i eq $count) then "." else " and "
+                )
+          }
+        )
+        else (),
+        stp:node-to-xhtml($obj/apidoc:summary/node())
+      )
+    }
   return (
-   if ($lib = $api:M-OBJECTS)
-   then $summaries-by-object
-    else if (count($summaries-by-summary-subcat) eq 1)
-    then $summaries-by-summary-subcat
-    else if (count($summaries-by-module-lib) eq 1)
-         then $summaries-by-module-lib
-         else if (count($summaries-by-summary-lib) eq 1)
-              then $summaries-by-summary-lib
-              else if (count($summaries-by-module-lib-no-subcat) eq 1)
-                   then $summaries-by-module-lib-no-subcat
-                   else ())
+    if ($lib = $api:M-OBJECTS) then
+      $summaries-by-object
+    else if (count($summaries-by-summary-subcat) eq 1) then
+      $summaries-by-summary-subcat
+    else if (count($summaries-by-module-lib) eq 1) then
+      $summaries-by-module-lib
+    else if (count($summaries-by-summary-lib) eq 1) then
+      $summaries-by-summary-lib
+    else if (count($summaries-by-module-lib-no-subcat) eq 1) then
+      $summaries-by-module-lib-no-subcat
+    else ()
+  )
+
 
 
 };
@@ -1184,20 +1240,37 @@ declare function toc:category-href(
   $main-subcategory-lib as xs:string?)
 as xs:string
 {
-  if (not($stp:DEBUG)) then () else stp:fine(
-    'toc:category-href',
-    ('category', $category, 'subcat', $subcategory,
-      'is-exhaustive', $is-exhaustive, 'use-category', $use-category,
-      'mode', $mode,
-      'one-subcat', xdmp:describe($one-subcategory-lib),
-      'main-subcat', xdmp:describe($main-subcategory-lib))),
+  if (not($stp:DEBUG)) then ()
+  else
+    stp:fine(
+      'toc:category-href:',
+      (
+        'category', $category,
+        'subcat', $subcategory,
+        'is-exhaustive', $is-exhaustive,
+        'use-category', $use-category,
+        'mode', $mode,
+        'one-subcat', xdmp:describe($one-subcategory-lib),
+        'main-subcat', xdmp:describe($main-subcategory-lib)
+      )
+    ),
   (: The initial empty string ensures a leading '/'. :)
   string-join(
     ('',
       switch($mode)
       case $api:MODE-JAVASCRIPT return 'js'
       default return (),
-      if ($is-exhaustive) then ($one-subcategory-lib treat as item())
+      (:
+       : On the one hand, I hate myself for writing a special case for the
+       : Search library. On the other hand, I've spent enough time trying to
+       : coax a non-duplicating URL out of this code. The problem is that the
+       : word "search" just shows up in too many parts of our API. This
+       : function was generating the URL "/search" for both the Search Builtins
+       : and the Search API Library. I'm moving on. -- Dave Cassel.
+       :)
+      if ($category eq "Search") then
+        $one-subcategory-lib || "-library"
+      else if ($is-exhaustive) then ($one-subcategory-lib treat as item())
       (: Include category in path - eg usually for REST :)
       else if ($use-category) then (
         $one-subcategory-lib treat as item(),
@@ -1417,8 +1490,7 @@ as element(toc:node)+
    : (e.g., for Client API).
    :)
   let $href := (
-    if (not($is-exhaustive or (not($sub-categories) or $is-REST))) then ()
-    else toc:category-href(
+    toc:category-href(
       $cat, $cat, $is-exhaustive,
       false(), $mode,
       if ($is-exhaustive) then $single-lib-for-category else (),
@@ -1427,10 +1499,11 @@ as element(toc:node)+
     $bucket-id||'_'||translate(
         translate(translate($cat, ' ' , ''), '(', ''), ')', ''),
     toc:display-category($cat)
-    ||toc:display-suffix($single-lib-for-category, $mode),
+      || toc:display-suffix($single-lib-for-category, $mode),
     $href,
     (), (), ('function-list-page'),
-    (attribute mode { $mode },
+    (
+      attribute mode { $mode },
 
       (: ASSUMPTION
        : $single-lib-for-category is supplied/applicable
@@ -1449,7 +1522,9 @@ as element(toc:node)+
             $version, $mode,
             toc:get-summary-for-category(
               $version, $mode, $prefixes-not-builtin,
-              $cat, (), $single-lib-for-category)) }),
+              $cat, (), $single-lib-for-category))
+        }
+      ),
 
       (: ASSUMPTION
        : A category has either functions as children or sub-categories,
@@ -1461,7 +1536,9 @@ as element(toc:node)+
       else toc:functions-by-category-subcat(
         $version, $mode, $m-mode-functions,
         $prefixes-not-builtin, $cat, $is-REST,
-        $in-this-category, $single-lib-for-category, $sub-categories)))
+        $in-this-category, $single-lib-for-category, $sub-categories)
+    )
+  )
 };
 
 (: Build toc nodes for functions by category.

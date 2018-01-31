@@ -24,13 +24,200 @@ declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
 declare variable $VERSION := '8.0' ;
 
+declare variable $RAW-MODULES := (
+  <apidoc:module name="SearchBuiltins" category="SearchBuiltins" lib="cts">
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Search" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="cts:query Constructors" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Lexicon" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Geospatial Lexicon" lib="cts"/>
+    <apidoc:summary access="public" category="SearchBuiltins" subcategory="Math Lexicon" lib="cts"/>
+  </apidoc:module>,
+  <apidoc:module name="AdminModule" category="Admin Library" lib="admin"
+    bucket="XQuery Library Modules" class="xquery">
+    <apidoc:summary/>
+  </apidoc:module>,
+  <apidoc:module name="jsearch" category="JavaScript Search (jsearch)"
+    lib="jsearch" bucket="JavaScript Library Modules" class="javascript">
+    <apidoc:summary category="JavaScript Search (jsearch)" bucket="JavaScript Library Modules"/>
+    <apidoc:summary category="JavaScript Search (jsearch)" bucket="JavaScript Library Modules" subcategory="jsearch"/>
+  </apidoc:module>,
+  <apidoc:module name="JavaScriptBuiltins" category="JavaScript Global Object">
+    <apidoc:summary access="public" bucket="MarkLogic Built-In Functions" category="JavaScript Global Object">
+      Summary text for the JS global object
+    </apidoc:summary>
+  </apidoc:module>
+);
+
 declare %t:case function t:category-href-xquery()
 {
-  toc:category-href(
-    'Library Services', 'Library Services',
-    true(), false(),
-    $api:MODE-XPATH, 'dls', '')
-  ! at:equal(., '/dls')
+  at:equal(
+    toc:category-href(
+      'Library Services',
+      'Library Services',
+      true(),
+      false(),
+      $api:MODE-XPATH,
+      'dls',
+      ''),
+    '/dls'
+  )
+};
+
+declare %t:case function t:category-href-dls-lib()
+{
+  at:equal(
+    toc:category-href(
+      'Library Services',
+      'Library Services',
+      false(),
+      false(),
+      $api:MODE-XPATH,
+      (),
+      'dls'),
+    '/dls/library-services'
+  )
+};
+
+(:
+ : The href for a built-in should be different from a library of the same name.
+ : For example: search has both built-ins and a search library.
+ :)
+declare %t:case function t:category-href()
+{
+  at:equal(
+    toc:category-href(
+      'SearchBuiltins',
+      'SearchBuiltins',
+      fn:false(),
+      fn:false(),
+      $api:MODE-XPATH,
+      (),
+      ()),
+    '/search'
+  )
+};
+
+declare %t:case function t:category-href-lib()
+{
+  at:equal(
+    toc:category-href(
+      'Search',
+      '',
+      fn:true(),
+      fn:false(),
+      $api:MODE-XPATH,
+      'search',
+      ()),
+    '/search-library'
+  )
+};
+
+declare %t:case function t:category-href-js()
+{
+  at:equal(
+    toc:category-href(
+      'JavaScript Search (jsearch)',
+      'DocumentsSearch',
+      fn:true(),
+      fn:false(),
+      $api:MODE-JAVASCRIPT,
+      'DocumentsSearch',
+      'DocumentsSearch'),
+    '/js/DocumentsSearch'
+  )
+};
+
+declare %t:case function t:category-href-subcat()
+{
+  at:equal(
+    toc:category-href(
+      'SearchBuiltins',
+      'Geospatial Lexicon',
+      fn:false(),
+      fn:false(),
+      $api:MODE-XPATH,
+      'cts',
+      'cts'),
+    '/cts/geospatial-lexicon'
+  )
+};
+
+declare %t:case function t:category-href-use-cat()
+{
+  at:equal(
+    toc:category-href(
+      'Client API',
+      'Transaction Management',
+      fn:false(),
+      fn:true(),
+      $api:MODE-REST,
+      'REST',
+      'REST'),
+    '/REST/client/transaction-management'
+  )
+};
+
+declare %t:case function t:find-primary-summary-1()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      "Search",
+      $api:MODE-XPATH),
+    $RAW-MODULES[1]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-2()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      "Geospatial Lexicon",
+      $api:MODE-XPATH),
+    $RAW-MODULES[1]/apidoc:summary[4]
+  )
+};
+
+declare %t:case function t:find-primary-summary-3()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "Admin Library",
+      (),
+      $api:MODE-XPATH),
+    $RAW-MODULES[2]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-4()
+{
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "JavaScript Search (jsearch)",
+      (),
+      $api:MODE-XPATH),
+    $RAW-MODULES[3]/apidoc:summary[1]
+  )
+};
+
+declare %t:case function t:find-primary-summary-5()
+{
+  (:
+   : This one returns multiple summaries. Is that the right thing to do?
+   :)
+  at:equal(
+    toc:find-primary-summary(
+      $RAW-MODULES,
+      "SearchBuiltins",
+      (),
+      $api:MODE-JAVASCRIPT),
+    $RAW-MODULES[1]/apidoc:summary
+  )
 };
 
 declare %t:case function t:guide-toc-closed()
@@ -333,7 +520,7 @@ declare %t:case function t:lib-for-all-sem()
   let $functions := (
     <apidoc:function name="datatype" type="builtin" lib="sem"
       category="Semantics"/>,
-    <apidoc:function name="langString" type="builtin" lib="rdf"
+    <apidoc:function name="langString" type="builtin" lib="sem"
       category="Semantics"/>
   )
   return
