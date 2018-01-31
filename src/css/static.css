@@ -1,0 +1,32 @@
+/* Style for static versions of function docs */
+
+#static_content {
+   margin-left: 1rem;
+}
+
+div.prefix {
+   border-top-width: 2px;
+   border-top-color: black;
+   border-top-style: solid;
+   margin-bottom: 8rem;
+   padding-top: 1rem;
+}
+
+div.function {
+   border-top-width: 1px;
+   border-top-color: black;
+   border-top-style: dashed;
+   margin-top: 4rem;
+   padding-top: 2rem;
+}
+
+p.quicktoc {
+   padding-left: 5em;
+   text-indent: -5em;
+}
+
+span.qth {
+   display: inline-block;
+   width: 5em;
+   text-indent: 0;
+}
