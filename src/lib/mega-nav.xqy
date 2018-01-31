@@ -31,8 +31,14 @@ declare function mn:mega-nav-controller($key){
         mn:get-markup($key)
     else
         (: markup HAS NOT been stored in the database today, update the database with the latest markup and then return the markup :)
-        mn:create-markup($key)
-
+        try {
+            mn:create-markup($key)
+        }
+        catch ($e) {
+            xdmp:log("Failed to get updated mega-nav! " || xdmp:quote($e), "error"),
+            (: old stuff is better than no stuff :)
+            mn:get-markup($key)
+        }
 };
 
 declare function mn:date-check($today, $key){
