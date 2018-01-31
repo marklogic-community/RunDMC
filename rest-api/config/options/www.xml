@@ -62,6 +62,11 @@
       <search:element ns="http://developer.marklogic.com/site/internal" name="_ml_webinar_date"/>
     </search:range>
   </search:constraint>
+  <search:constraint name="EventDate">
+    <search:range type="xs:dateTime" facet="false">
+      <search:element ns="http://developer.marklogic.com/site/internal" name="end_date"/>
+    </search:range>
+  </search:constraint>
   <search:operator name="results">
     <search:state name="compact">
       <search:transform-results apply="snippet">
