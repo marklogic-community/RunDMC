@@ -8,6 +8,7 @@
     xmlns:apidoc="http://marklogic.com/xdmp/apidoc"
     xmlns:guide="http://marklogic.com/rundmc/api/guide"
     xmlns:ml="http://developer.marklogic.com/site/internal"
+    xmlns:mn="http://mlu.marklogic.com/mega-nav"
     xmlns:srv="http://marklogic.com/rundmc/server-urls"
     xmlns:ss="http://developer.marklogic.com/site/search"
     xmlns:u="http://marklogic.com/rundmc/util"
@@ -37,7 +38,10 @@
       namespace="http://marklogic.com/rundmc/api/guide"
       href="/apidoc/setup/guide.xqm"/>
 
-  <xsl:output indent="no"/>
+
+  <!-- commented this to resolve issue in menu-items alignment
+    https://stackoverflow.com/questions/5256533/a-space-between-inline-block-list-items -->    
+  <!-- <xsl:output indent="no"/> -->
 
   <!-- This may be empty. -->
   <xsl:variable name="VERSION" as="xs:string?"
@@ -116,7 +120,7 @@
                       $VERSION-FINAL, $VERSION, $VERSION-PREFIX, .)"/>
           <xsl:call-template name="page-content"/>
           <xsl:call-template name="comment-section"/>
-          <xsl:call-template name="apidoc-copyright"/>
+          <xsl:call-template name="common-nav-footer"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
@@ -129,6 +133,10 @@
     <xsl:copy-of
         select="v:toc-references(
                 $VERSION-FINAL, $VERSION, $VERSION-PREFIX, $content)"/>
+  </xsl:template>
+
+   <xsl:template match="ml:common-nav-footer" name="common-nav-footer">
+     <xsl:copy-of select="mn:mega-nav-controller('footer')"/>
   </xsl:template>
 
   <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
