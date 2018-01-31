@@ -120,7 +120,7 @@ return $e;
 declare variable $code-dir       := xdmp:modules-root();
 declare variable $config-file    := "navigation.xml";
 declare variable $config-dir     := concat($code-dir,'config/');
-declare variable $raw-navigation := xdmp:document-get(concat($config-dir,$config-file));
+declare variable $raw-navigation := u:get-doc(concat($config-dir,$config-file)) ;
 declare variable $public-nav-location := "/private/public-navigation.xml";
 declare variable $draft-nav-location  := "/private/draft-navigation.xml";
 declare variable $pre-generated-location := if ($draft:public-docs-only)
@@ -741,44 +741,29 @@ declare function ml:xslt-widget($module as xs:string)
  public-navigation.xml and draft-navigation.xml
  :)
 declare function ml:get-cached-navigation()
+  as document-node()?
 {
-  let $pre-generated-navigation := doc($pre-generated-location),
-
-  $last-generated := xdmp:document-properties($pre-generated-location)/*/prop:last-modified,
-
-  $last-update :=
-
-  let $config-last-updated := xdmp:filesystem-directory($config-dir)
-  /dir:entry [dir:filename eq $config-file]
-  /dir:last-modified,
-
-  (: A happy side effect of using git is that any time we push
-   code, the .git directory should show a new last-modified date;
-   this should ensure that any and all code updates will invalidate
-   the navigation cache :)
-  $code-last-updated := xdmp:filesystem-directory($code-dir)
-  /dir:entry
-  /dir:last-modified
-
-  (: Let the admin controller code explicitly invalidate the cache rather than
-   checking the document properties all the time, which is expensive. It's also
-   insufficient, because this approach doesn't detect new documents, e.g., a new blog post.
-   ,$doc-uris := distinct-values($pre-generated-navigation//page/@href/concat(.,'.xml')),
-
-   $docs-last-updated := max(xdmp:document-properties($doc-uris)/*/prop:last-modified)
-   :)
-
-  return
-  max(($config-last-updated,
-      $code-last-updated
-      (:,
-       $docs-last-updated):)
-      ))
-
-  return
-  if (exists($pre-generated-navigation) and $last-generated gt $last-update)
-  then $pre-generated-navigation
-  else ()
+  let $pre-generated-navigation := doc($pre-generated-location)
+  let $last-generated := xdmp:document-properties(
+    $pre-generated-location)/*/prop:last-modified
+  let $last-update := max(
+    if (xdmp:modules-database() gt 0) then xdmp:invoke-function(
+      function() {
+        cts:max(
+          cts:element-reference(
+            xs:QName('prop:last-modified'), 'type=dateTime')) },
+      $u:OPTS-MODULES-DB)
+    else (
+      (: A happy side effect of using git is that any time we push
+       : code, the .git directory should show a new last-modified date.
+       : This should ensure that any and all code updates will invalidate
+       : the navigation cache.
+       :)
+      xdmp:filesystem-directory($code-dir)/dir:entry/dir:last-modified,
+      xdmp:filesystem-directory($config-dir)/dir:entry[
+        dir:filename eq $config-file]/dir:last-modified))
+  where exists($pre-generated-navigation) and $last-generated gt $last-update
+  return $pre-generated-navigation
 };
 
 (: When first populating the navigation, cache it in the database :)
