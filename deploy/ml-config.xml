@@ -788,6 +788,9 @@
           <privilege-name>xdmp:invoke</privilege-name>
         </privilege>
         <privilege>
+          <privilege-name>xdmp:http-get</privilege-name>
+        </privilege>
+        <privilege>
           <privilege-name>xdmp:plan</privilege-name>
         </privilege>
         <privilege>
@@ -845,6 +848,19 @@
       <privileges>
       </privileges>
     </role>
+    <role>
+      <role-name>dmc-user</role-name>
+      <description>A role for users of the RunDMC application</description>
+      <role-names>
+        <role-name>admin</role-name>
+      </role-names>
+      <permissions>
+      </permissions>
+      <collections>
+      </collections>
+      <privileges>
+      </privileges>
+    </role>
   </roles>
   <users xmlns="http://marklogic.com/xdmp/security">
     <user>
@@ -863,6 +879,16 @@
       <password>${reviewer-password}</password>
       <role-names>
         <role-name>${app-role}</role-name>
+      </role-names>
+      <permissions/>
+      <collections/>
+    </user>
+    <user>
+      <user-name>dmc-user</user-name>
+      <description>A user for the RunDMC application</description>
+      <password>${appuser-password}</password>
+      <role-names>
+        <role-name>dmc-user</role-name>
       </role-names>
       <permissions/>
       <collections/>
@@ -905,6 +931,11 @@
     <mimetype>
       <name>application/vnd.marklogic-xqm</name>
       <extension>xqm</extension>
+      <format>text</format>
+    </mimetype>
+    <mimetype>
+      <name>application/json</name>
+      <extension>json</extension>
       <format>text</format>
     </mimetype>
   </mimetypes>

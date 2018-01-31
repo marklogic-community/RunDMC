@@ -10,7 +10,7 @@ body {
 
 #api_sub {
     position: absolute;
-    top: 158px;
+    top: 188px;
     bottom: 0;
     left: 0;
     right: 70%;
@@ -19,7 +19,7 @@ body {
 
 #page_content {
     position: absolute;
-    top: 158px;
+    top: 188px;
     bottom: 0;
     left: 30%;
     right: 0;
@@ -81,7 +81,7 @@ ol ol {
 }
 
 #dmc-navbar-collapse li {
-    z-index: 10;
+    z-index: 9;
 }
 
 #content {
@@ -148,6 +148,7 @@ ol ol {
     line-height: 110%;
     color: #000;
     font-size: 27px;
+    font-family: inherit !important;
 }
 
 #page_content .userguide h2 {
@@ -163,6 +164,7 @@ ol ol {
     margin-bottom: .5em;
     margin-top: 0;
     line-height: 110%;
+    font-family: inherit !important;
 }
 
 .userguide h2 {
@@ -193,12 +195,14 @@ ol ol {
 }
 
 .underline {
-    text-decoration: underline }
+    text-decoration: underline 
+}
 
 #page_content ul {
     padding-left: 20px;
     list-style: disc;
 }
+
 #page_content .shadow {
     position: fixed;
     left: 50%;
@@ -209,32 +213,36 @@ ol ol {
     background: url(/images/bg_shadow_vert.png) top left repeat-y;
     display: none;
 }
+
 #page_content.scroll {
     border-left: 1px solid #ccc;
 }
+
 #page_content table pre {
 }
+
 #page_content dd pre {
     background-color: #fff;
     padding-top: 5px;
     border-radius: 4px;
 }
+
 #page_content dd pre:first-child {
     background-color: transparent;
     padding: 0;
 }
+
 #api_sub {
     color: #333333;
     font-size: 0.9em;
 }
 
-#apidoc_toc,
-#all_tocs,
-.toc {
+#apidoc_toc, #all_tocs, .toc {
     height: 100%;
     margin: 0;
     padding: 0;
 }
+
 #toc_content {
     width: 100%;
     background: #fff;
@@ -257,7 +265,7 @@ ol ol {
     background: #ddd;
     width: 12px;
     overflow: visible;
-    z-index: 100;
+    z-index: 9;
 }
 
 .tab_link {
@@ -677,10 +685,10 @@ span.highlightWidget {
 }
 
 /* On small screens, hide TOC and make other adjustments.
- */
-@media (max-width: 764px) {
+*/
+@media (max-width:764px) {
     .pjax_enabled > .api_caption {
-      display: none;
+        display: none;
     }
 
     #header h1 {
@@ -688,20 +696,21 @@ span.highlightWidget {
     }
 
     #header {
-      width: 100%;
-      top: 0px;
-      // border: 0px;
+        width: 100%;
+        top: 0px;
+        // border: 0px;
     }
+
     #breadcrumb {
-      display: none;
+        display: none;
     }
 
     .navbar-header {
-      padding: 10px 0px;
+        padding: 10px 0px;
     }
 
     .navbar-top.ml-nav {
-      display: none;
+        display: none;
     }
 
     #header nav .current:after {
@@ -709,33 +718,33 @@ span.highlightWidget {
     }
 
     #dmc-navbar-collapse {
-      position: absolute;
-      background-color: #222;
-      left: 0px;
-      right: 0px;
-      padding: 0px 15px;
-      margin: 0px -1px;
+        position: absolute;
+        background-color: #222;
+        left: 0px;
+        right: 0px;
+        padding: 0px 15px;
+        margin: 0px -1px;
     }
 
     #dmc-navbar-collapse .navbar-nav {
-      margin-bottom: 0px;
+        margin-bottom: 0px;
     }
 
     #dmc-navbar-collapse li {
-      padding: 2px 0px;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
+        padding: 2px 0px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25);
     }
 
     #dmc-navbar-collapse li:hover {
-      background-color: #333;
+        background-color: #333;
     }
 
     #header nav .current {
-      padding-bottom: 2px;
+        padding-bottom: 2px;
     }
 
     #version_list option {
-      font-size: initial;
+        font-size: initial;
     }
 
     #header h1 a {
@@ -744,34 +753,44 @@ span.highlightWidget {
         height: 22px;
         margin-bottom: 20px;
     }
+
     #breadcrumb {
         padding: 4px;
     }
+
     #breadcrumb > div:first-child {
         margin-bottom: 4px;
     }
+
     .version {
         padding: 12px 0px 12px 12px;
     }
+
     .toc_select {
         margin-left: 4px;
     }
+
     .scrollable_section .filter input {
         margin-left: 4px;
     }
+
     #api_sub {
         display: none;
     }
+
     #page_content {
         left: 0px;
         padding: 0px 5px;
     }
+
     #page_content h1 {
         margin: 24px 0 24px 0;
     }
+
     #copyright {
         padding: 4px;
     }
+
 }
 
 /* Anything smaller than an iphone 5 landscape. */
@@ -791,9 +810,6 @@ span.highlightWidget {
         width: 144px;
     }
     #search-header form input[type="text"]:focus {
-        width: 144px;
-    }
-    #search_suggest_container {
         width: 144px;
     }
     #search-header form {
@@ -830,4 +846,21 @@ span.highlightWidget {
         padding: 4px;
     }
 }
+
+#footer {
+  position: absolute;
+  top: 609px;
+  width: 100%;
+}
+
+#mlbs4-footer ul {
+    padding-left: 20px;
+    list-style: none;
+}
+
+/* this hides the 'FREE MARKLOGIC' in docs footer */
+#menu-button-menu-free-ml-2 {
+    display: none !important;
+}
+
 /* apidoc.css */

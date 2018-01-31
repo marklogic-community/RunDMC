@@ -2,6 +2,7 @@ xquery version "1.0-ml";
 module namespace trns = "http://marklogic.com/rest-api/transform/www";
 
 import module namespace ml="http://developer.marklogic.com/site/internal" at "/model/data-access.xqy" ;
+import module namespace s = "http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
 
 declare namespace html = "http://www.w3.org/1999/xhtml";
 
@@ -47,7 +48,7 @@ declare function trns:change($node)
             else if (fn:starts-with($uri, '/apidoc/')) then
               "//docs.marklogic.com" || $uri
             else
-              "//developer.marklogic.com" || $uri
+              $s:main-server || $uri
         },
         element ml:title {
           let $doc := fn:doc($node/@uri)/node()

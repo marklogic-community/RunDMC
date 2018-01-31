@@ -34,6 +34,9 @@
     <div id="comments">
       <div>
         <section>
+          <div class="col-xs-12 col-sm-12"><p><img src="/images/stackoverflow-logo.png" alt="Stack Overflow icon" style="background: #999; height: 20px; margin-right: 5px;"></img> <strong>Stack Overflow</strong>: Get the most useful answers to questions from the MarkLogic community, or <a href="https://stackoverflow.com/questions/tagged/marklogic" target="_blank">ask your own question</a>.</p></div>
+          <div style="clear: both;height: 0;"></div>
+
           <h2>Comments <img src="/images/i_speechbubble.png" alt="" width="30" height="28"/></h2>
 
           <xsl:apply-templates mode="comment-count" select="."/>

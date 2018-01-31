@@ -12,6 +12,7 @@
   xmlns:search="http://marklogic.com/appservices/search"
   xmlns:cts   ="http://marklogic.com/cts"
   xmlns:u    ="http://marklogic.com/rundmc/util"
+  xmlns:mn   ="http://mlu.marklogic.com/mega-nav"
   xmlns:qp   ="http://www.marklogic.com/ps/lib/queryparams"
   xmlns:so   ="http://marklogic.com/stackoverflow"
   xmlns:ml               ="http://developer.marklogic.com/site/internal"
@@ -1279,6 +1280,22 @@
       <xsl:value-of select="fn:year-from-date(fn:current-date())"/>
       MarkLogic Corporation. MARKLOGIC is a registered trademark of MarkLogic Corporation.
     </p>
+  </xsl:template>
+
+  <xsl:template match="common-nav-css">
+    <xsl:copy-of select="mn:mega-nav-controller('stylesheets')"/>
+  </xsl:template>
+
+  <xsl:template match="common-nav-js">
+    <xsl:copy-of select="mn:mega-nav-controller('scripts')"/>
+  </xsl:template>
+
+  <xsl:template match="common-nav-header">
+    <xsl:copy-of select="mn:mega-nav-controller('header')"/>
+  </xsl:template>
+
+  <xsl:template match="common-nav-footer">
+    <xsl:copy-of select="mn:mega-nav-controller('footer')"/>
   </xsl:template>
 
 </xsl:stylesheet>

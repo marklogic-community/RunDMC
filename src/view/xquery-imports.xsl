@@ -13,6 +13,7 @@
   <xdmp:import-module href="/model/filter-drafts.xqy" namespace="http://developer.marklogic.com/site/internal/filter-drafts"/>
   <xdmp:import-module href="/MarkLogic/appservices/search/search.xqy" namespace="http://marklogic.com/appservices/search"/>
   <xdmp:import-module href="/lib/util-2.xqy" namespace="http://marklogic.com/rundmc/util"/>
+  <xdmp:import-module href="/lib/mega-nav.xqy" namespace="http://mlu.marklogic.com/mega-nav"/>
   <xdmp:import-module href="/controller/disqus-info.xqy" namespace="http://marklogic.com/disqus"/>
   <xdmp:import-module href="/controller/server-urls.xqy" namespace="http://marklogic.com/rundmc/server-urls"/>
   <xdmp:import-module href="/lib/cookies.xqy" namespace="http://parthcomp.com/cookies"/>
