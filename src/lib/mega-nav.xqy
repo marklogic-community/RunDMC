@@ -10,7 +10,7 @@ declare namespace mnt = "http://mlu.marklogic.com/mega-nav/tracking";
 declare namespace mnm = "http://mlu.marklogic.com/mega-nav/markup";
 
 (: the service (minus the last part, the key) that we hit to return the markup :)
-declare variable $url := "https://www.marklogic.orbit-websites.com/wp-json/mlapi/v1/json/";
+declare variable $url := "https://www.marklogic.com/wp-json/mlapi/v1/json/";
 
 (: enter the role name associated with your default user :)
 declare variable $default-user-role := "dmc-user";
