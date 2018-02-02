@@ -1067,6 +1067,15 @@ ul.subcategories li {
     font-style: italic;
 }
 
+#content .confirm-download {
+  color: #01639D;
+  cursor: pointer;
+}
+
+#content .confirm-download:hover {
+  text-decoration: underline;
+}
+
 #content .widget .ebooks h3 {
   margin-top: 0;
 }
