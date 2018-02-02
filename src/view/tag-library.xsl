@@ -246,10 +246,10 @@
           class="{('extraWideDownloadColumn',
                         'wideDownloadColumn',
                                           '')[$num-cols]}">
-        <a href="{@href}" class="{@anchor-class}">
+        <span href="{@href}" class="{@anchor-class}">
           <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
           <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
-        </a>
+        </span>
       </th>
       <xsl:if test="$num-cols eq 3">
         <td>
