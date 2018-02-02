@@ -246,10 +246,20 @@
           class="{('extraWideDownloadColumn',
                         'wideDownloadColumn',
                                           '')[$num-cols]}">
-        <span href="{@href}" class="{@anchor-class}">
-          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-          <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
-        </span>
+        <xsl:choose>
+          <xsl:when test="@anchor-class = 'confirm-download'">
+            <span href="{@href}" class="{@anchor-class}">
+              <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+              <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
+            </span>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{@href}" class="{@anchor-class}">
+              <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+              <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
       </th>
       <xsl:if test="$num-cols eq 3">
         <td>
