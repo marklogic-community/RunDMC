@@ -321,7 +321,7 @@ if(typeof jQuery != 'undefined') {
       $(".ui-dialog-titlebar").hide();
     });
 
-    $('a.confirm-download').each(function() {
+    $('span.confirm-download').each(function() {
       var href = $(this).attr("href");
       $(this).click(function() {
         $(":button:contains('Download')").prop("disabled", true);

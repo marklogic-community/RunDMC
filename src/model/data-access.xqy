@@ -128,7 +128,7 @@ then $public-nav-location
 else $draft-nav-location;
 
 (: Content from www.marklogic.com is in this collection :)
-declare variable $WWW-COLLECTION := "www.marklogic.com";
+declare variable $WWW-COLLECTION := "mlc";
 
 declare variable $EXTERNAL-CONTENT-COLLECTIONS := (
   $WWW-COLLECTION,
@@ -140,18 +140,16 @@ declare variable $WWW-TYPE-MAPPINGS :=
   <type-mappings>
     <type label="Business Blogs">{$WWW-COLLECTION}/post</type>
     <type label="Technical Blogs">category/blog</type>
+    <type label="Customers">{$WWW-COLLECTION}/customer</type>
+    <type label="Events">{$WWW-COLLECTION}/event</type>
+    <type label="MarkLogic Leadership">{$WWW-COLLECTION}/bio</type>
     <type label="MarkLogic Overview">{$WWW-COLLECTION}/page</type>
-    <type label="Customers">{$WWW-COLLECTION}/ml_customer</type>
-    <type label="Resources">{$WWW-COLLECTION}/ml_resource</type>
-    <type label="Press Releases">{$WWW-COLLECTION}/ml_press_release</type>
-    <type label="News">{$WWW-COLLECTION}/ml_news</type>
-    <type label="Solutions">{$WWW-COLLECTION}/ml_solution</type>
-    <type label="Training Courses">{$WWW-COLLECTION}/ml_training_course</type>
-    <type label="Webinars">{$WWW-COLLECTION}/ml_webinars</type>
-    <type label="Events">{$WWW-COLLECTION}/pmg_event</type>
-    <type label="Tutorials">category/tutorial</type>
-    <type label="Projects">category/code</type>
+    <type label="News">{$WWW-COLLECTION}/article</type>
     <type label="On Demand">category/mlu</type>
+    <type label="Projects">category/code</type>
+    <type label="Resources">{$WWW-COLLECTION}/resource</type>
+    <type label="Security Bulletins">{$WWW-COLLECTION}/bulletin</type>
+    <type label="Tutorials">category/tutorial</type>
   </type-mappings>;
 
 declare variable $USER-ROLE := "RunDMC-role";

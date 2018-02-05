@@ -43,68 +43,60 @@
   <xsl:template match="login-menu[$srv:viewing-standalone-api]"/>
 
   <xsl:template match="login-menu">
-    <nav id="login-menu-nav">
-      <xsl:if test="not(users:signupsEnabled())">
-        <xsl:attribute name="style">display:none</xsl:attribute>
-      </xsl:if>
-      <ul class="pull-right">
-        <li class="btn-group">
-          <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown">
-            <xsl:if test="users:getCurrentUserName()">
-              <xsl:attribute name="style">display:none</xsl:attribute>
-            </xsl:if>
-            Log in
-          </a>
-          <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login">
-            <div style="clear: both" id="login-error"/>
-            <div class="form-group">
-              <label class="control-label" for="email">Email:</label>
-              <input class="required email form-control input-sm" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
-            </div>
-            <div class="form-group">
-              <label class="control-label" for="password">Password:</label>
-              <input class="password required form-control input-sm" required="required" id="password" name="password" title="password" value="" type="password"/>
-            </div>
-            <div class="form-group">
-              <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
-            </div>
-            <div class="form-group">
-              <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-xs btn-default" id="recovery">Forgot password?</button>
-            </div>
-          </form>
-        </li>
-        <li>
-          <a href="/people/signup" class="drop-down-trigger navbar-top" id="signup-trigger"
-                  data-url="{$srv:primary-server}/people/signup">
-            <xsl:if test="users:getCurrentUserName()">
-              <xsl:attribute name="style">display:none</xsl:attribute>
-            </xsl:if>
-            Sign up
-          </a>
-        </li>
-        <li class="btn-group">
-          <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown">
-            <xsl:if test="empty(users:getCurrentUserName())">
-              <xsl:attribute name="style">display:none</xsl:attribute>
-            </xsl:if>
-            <xsl:value-of select="users:getCurrentUserName()"/>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a>
-                <xsl:attribute name="href">
-                  <xsl:value-of select="$srv:main-server"/>
-                  <xsl:text>/people/profile</xsl:text>
-                </xsl:attribute>
-                <xsl:text>Edit Profile</xsl:text>
-              </a>
-            </li>
-            <li><a href="#" id="logout">Log out</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+    <xsl:if test="not(users:signupsEnabled())">
+      <xsl:attribute name="style">display:none</xsl:attribute>
+    </xsl:if>
+    <ul>
+      <li class="btn-group" style="padding: 0 10px;">
+        <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown" style="font-size: .94rem;">
+          <xsl:if test="users:getCurrentUserName()">
+            <xsl:attribute name="style">display:none</xsl:attribute>
+          </xsl:if>
+          Log in
+        </a>
+        <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login" style="background: #2a333d;color: #fff; padding: 8px;font-size: 12px;">
+          <div style="clear: both; font-size: .8rem; height: 100%; margin: 0;" id="login-error"/>
+          <div class="form-group">
+            <label class="control-label" for="email">Email:</label>
+            <input class="required email form-control input-sm" autofocus="autofocus" required="required" id="email" name="email" title="password" value="" type="text"/>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="password">Password:</label>
+            <input class="password required form-control input-sm" required="required" id="password" name="password" title="password" value="" type="password"/>
+          </div>
+          <div class="form-group">
+            <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
+          </div>
+          <div class="form-group">
+              <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-link" id="recovery" style="color: #fff;padding: 0px 0px;font-size:12px;" type="button">Forgot Password?</button>
+          </div>
+          <div class="form-group" style="margin-bottom:0px;">
+              <button onclick="return false;" data-url="{$srv:primary-server}/people/signup" class="btn btn-link" id="signup-trigger" style="color: #fff;padding: 0px 0px 0px;font-size:12px;" type="button">Create New Account</button>
+          </div>            
+        </form>
+      </li>
+      <li class="btn-group">
+        <a href="#" class="drop-down-trigger" id="session-trigger" aria-haspopup="true" data-toggle="dropdown" style="font-size: .94rem;">
+          <xsl:if test="empty(users:getCurrentUserName())">
+            <xsl:attribute name="style">display:none</xsl:attribute>
+          </xsl:if>
+          <xsl:value-of select="users:getCurrentUserName()"/>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a>
+              <xsl:attribute name="href">
+                <xsl:value-of select="$srv:main-server"/>
+                <xsl:text>/people/profile</xsl:text>
+              </xsl:attribute>
+              <xsl:text>Edit Profile</xsl:text>
+            </a>
+          </li>
+          <li><a href="#" id="logout">Log out</a></li>
+        </ul>
+      </li>
+    </ul>
   </xsl:template>
 
   <xsl:template match="top-nav">
