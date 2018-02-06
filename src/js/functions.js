@@ -310,6 +310,10 @@ if(typeof jQuery != 'undefined') {
         $("#iaccept").prop('checked', false);
         downloadHref = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
+        // do some cleanup in case we're opening the dialog for the second (or later) time
+        $("#downloadModal .download-curl-display").css("display", "none");
+        $("#downloadModal .download-url").val("")
+
         $('#downloadModal').modal({});
         $("#iemail").focus();
         return false;
