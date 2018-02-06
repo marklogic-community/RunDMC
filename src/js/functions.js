@@ -188,7 +188,8 @@ if(typeof jQuery != 'undefined') {
     if ($("#downloadModal")) {
       $("#downloadModal .download").click(function() {
 
-        if ($("#iemail")) {
+        // The #iemail will only be placed in the DOM if no user is logged in.
+        if ($("#iemail").length > 0) {
           $.ajax({
             type: 'POST',
             url: "/login",
@@ -238,7 +239,8 @@ if(typeof jQuery != 'undefined') {
       $("#downloadModal .download-curl").click(function() {
         $("#downloadModal .download-curl-display").css("display", "block");
 
-        if ($("#iemail")) {
+        // The #iemail will only be placed in the DOM if no user is logged in.
+        if ($("#iemail").length > 0) {
           $.ajax({
             type: 'POST',
             url: "/login",
