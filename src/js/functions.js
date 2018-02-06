@@ -281,6 +281,11 @@ if(typeof jQuery != 'undefined') {
 
       });
 
+      $('#downloadModal .copy-button').click(function() {
+        var btn = $(this).prev()[0];
+        btn.select();
+        document.execCommand("copy");
+      });
     }
 
     $('a.license-popup').click(function() {
@@ -938,11 +943,4 @@ function showDownloadURL(me, u) {
     $('.download-url').mouseup(function(e) {
       e.preventDefault();
     });
-
-  ZeroClipboard.setDefaults({
-    moviePath: "/images/ZeroClipboard.swf"
-  });
-
-  new ZeroClipboard($("#copy-url-button"));
-  new ZeroClipboard($("#copy-secure-url-button"));
 }

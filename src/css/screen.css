@@ -3180,14 +3180,6 @@ span.highlightWidget {
     padding: 10px 8px;
 }
 
-.copy-button.zeroclipboard-is-hover {
-    background-color: #666;
-}
-
-.copy-button.zeroclipboard-is-active {
-    background-color: #333;
-}
-
 .download-url-label {
     clear: left;
     float: left;
