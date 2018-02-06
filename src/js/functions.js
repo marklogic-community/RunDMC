@@ -915,7 +915,7 @@ function showDownloadURL(me, u) {
 
         // If current URL is secure, we don't need this
         if (window.location.protocol == "https:") {
-          $('#download-curl-dialog .secure').hide();
+          $('.download-curl-display .secure').hide();
         }
       },
       dataType: 'json'
