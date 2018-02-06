@@ -250,8 +250,8 @@ if(typeof jQuery != 'undefined') {
               asset: downloadHref
             },
             success: function( data ) {
-              $("#downloadModal .download-curl-display").css("display", "block");
               if (data.status && data.status === 'ok') {
+                $("#downloadModal .download-curl-display").css("display", "block");
                 $("#ifail").text("");
                 $('#signup-trigger').hide();
                 $('#login-trigger').hide();
