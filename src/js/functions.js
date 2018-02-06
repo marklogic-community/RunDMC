@@ -237,7 +237,6 @@ if(typeof jQuery != 'undefined') {
       });
 
       $("#downloadModal .download-curl").click(function() {
-        $("#downloadModal .download-curl-display").css("display", "block");
 
         // The #iemail will only be placed in the DOM if no user is logged in.
         if ($("#iemail").length > 0) {
@@ -251,6 +250,7 @@ if(typeof jQuery != 'undefined') {
               asset: downloadHref
             },
             success: function( data ) {
+              $("#downloadModal .download-curl-display").css("display", "block");
               if (data.status && data.status === 'ok') {
                 $("#ifail").text("");
                 $('#signup-trigger').hide();
@@ -275,6 +275,7 @@ if(typeof jQuery != 'undefined') {
             alert('Failed'); // XXX
           });
         } else {
+          $("#downloadModal .download-curl-display").css("display", "block");
           showDownloadURL(this, downloadHref);
         }
 
