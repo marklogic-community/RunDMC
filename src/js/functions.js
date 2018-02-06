@@ -1,3 +1,6 @@
+
+var downloadHref;
+
 if(typeof jQuery != 'undefined') {
   $(function() {
     // cache selectors
@@ -165,8 +168,6 @@ if(typeof jQuery != 'undefined') {
       var pass = $("#ipass").val();
       if ($("#iaccept").is(":checked") && isValidEmailAddress(email)) {
         b.prop("disabled", false);
-        $("#confirm-dialog").dialog.email = email;
-        $("#confirm-dialog").dialog.pw = pass;
       } else {
         b.prop("disabled", true);
       }
@@ -177,8 +178,6 @@ if(typeof jQuery != 'undefined') {
       if ($("#iaccept").is(":checked") &&
         ( $('#iemail').length === 0|| $("#iemail").is(":hidden") || isValidEmailAddress($("#iemail").val()))) {
         b.prop("disabled", false);
-        $("#confirm-dialog").dialog.email = $("#iemail").val();
-        $("#confirm-dialog").dialog.pw = $("#ipass").val();
       } else {
         b.prop("disabled", true);
       }
@@ -186,119 +185,99 @@ if(typeof jQuery != 'undefined') {
 
     var download_iframe;
 
-    if(jQuery().dialog) {
-      $("#confirm-dialog").dialog({
-        resizable: false,
-        autoOpen: false,
-        closeOnEscape: true,
-        title: 'MarkLogic Download Confirmation',
-        width: 550,
-        modal: true,
-        buttons: {
-          Download: function() {
-            var u = $(this).dialog.href;
+    if ($("#downloadModal")) {
+      $("#downloadModal .download").click(function() {
 
-            if ($("#confirm-dialog").dialog.email) {
-              $.ajax({
-                type: 'POST',
-                url: "/login",
-                context: $(this),
-                data: {
-                  email: $("#confirm-dialog").dialog.email,
-                  password: $("#confirm-dialog").dialog.pw,
-                  asset: u
-                },
-                success: function( data ) {
-                  if (data.status && data.status === 'ok') {
+        if ($("#iemail")) {
+          $.ajax({
+            type: 'POST',
+            url: "/login",
+            context: $(this),
+            data: {
+              email: $("#iemail").val(),
+              password: $("#ipass").val(),
+              asset: downloadHref
+            },
+            success: function( data ) {
+              if (data.status && data.status === 'ok') {
 
-                    $("#ifail").text("");
-                    $('#signup-trigger').hide();
-                    $('#login-trigger').hide();
-                    $('#session-trigger').text(data.name);
-                    $('#session-trigger').show();
+                $("#ifail").text("");
+                $('#signup-trigger').hide();
+                $('#login-trigger').hide();
+                $('#session-trigger').text(data.name);
+                $('#session-trigger').show();
 
-                    $(this).dialog('close');
+                $("#downloadModal").modal('hide');
 
-                   //  _gaq.push(['_trackEvent', 'success-login-for-download', u]);
+                //  _gaq.push(['_trackEvent', 'success-login-for-download', u]);
 
-                    doDownload(u);
+                doDownload(downloadHref);
 
-                  } else {
-                    if (data.status) {
-                      $("#ifail").text(data.status);
-                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
-                    } else {
-                      $("#ifail").text("Unknown failure"); // XXX
-                      //  _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
-                    }
-                  }
+              } else {
+                if (data.status) {
+                  $("#ifail").text(data.status);
+                  //  _gaq.push(['_trackEvent', 'failed-login-for-download', data.status, u]);
+                } else {
+                  $("#ifail").text("Unknown failure"); // XXX
+                  //  _gaq.push(['_trackEvent', 'failed-login-for-download', "Unknown failure", u]);
                 }
-              }).fail(function( jqXHR, textStatus, errorThrown ) {
-                alert( "Failed: " + textStatus ); // FIXME
-              });
-
-            } else {
-              $(this).dialog('close');
-
-              doDownload(u);
+              }
             }
-          },
-          "Download Via Curl": function() {
-            var u = $(this).dialog.href;
+          }).fail(function( jqXHR, textStatus, errorThrown ) {
+            alert( "Failed: " + textStatus ); // FIXME
+          });
 
-            if ($("#confirm-dialog").dialog.email) {
-              $.ajax({
-                type: 'POST',
-                url: "/login",
-                context: $(this),
-                data: {
-                  email: $("#confirm-dialog").dialog.email,
-                  password: $("#confirm-dialog").dialog.pw,
-                  asset: u
-                },
-                success: function( data ) {
-                  if (data.status && data.status === 'ok') {
-                    $("#ifail").text("");
-                    $('#signup-trigger').hide();
-                    $('#login-trigger').hide();
-                    $('#session-trigger').text(data.name);
-                    $('#session-trigger').show();
+        } else {
+          $("#downloadModal").modal('hide');
 
-                    // _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
-                    showDownloadURL(this, u);
-
-                  } else {
-                    if (data.status) {
-                      $("#ifail").text(data.status);
-                      // _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
-                    } else {
-                      $("#ifail").text("Unknown failure"); // XXX
-                      // _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
-                    }
-                  }
-                }
-              }).fail(function() {
-                alert('Failed'); // XXX
-              });
-            } else {
-              showDownloadURL(this, u);
-            }
-          },
-          Cancel: function() {
-            var u = $(this).dialog.href;
-            // _gaq.push(['_trackEvent', 'cancel-download', u]);
-            /* try {
-                var s = '/cancel-download' + u.replace(/\?., "");
-                mktoMunchkinFunction('clickLink', { href: s } );
-            } catch (err) {}
-            */
-            $(this).dialog('close');
-          }
+          doDownload(downloadHref);
         }
+
       });
-      $(".ui-dialog-titlebar").hide();
-      // $(".ui-dialog-buttonpane")
-      $(".ui-dialog").addClass("download-dialog");
+
+      $("#downloadModal .download-curl").click(function() {
+        $("#downloadModal .download-curl-display").css("display", "block");
+
+        if ($("#iemail")) {
+          $.ajax({
+            type: 'POST',
+            url: "/login",
+            context: $(this),
+            data: {
+              email: $("#iemail").val(),
+              password: $("#ipass").val(),
+              asset: downloadHref
+            },
+            success: function( data ) {
+              if (data.status && data.status === 'ok') {
+                $("#ifail").text("");
+                $('#signup-trigger').hide();
+                $('#login-trigger').hide();
+                $('#session-trigger').text(data.name);
+                $('#session-trigger').show();
+
+                // _gaq.push(['_trackEvent', 'success-login-for-download-url', u]);
+                showDownloadURL(this, downloadHref);
+
+              } else {
+                if (data.status) {
+                  $("#ifail").text(data.status);
+                  // _gaq.push(['_trackEvent', 'failed-login-for-download-url', data.status, u]);
+                } else {
+                  $("#ifail").text("Unknown failure"); // XXX
+                  // _gaq.push(['_trackEvent', 'failed-login-for-download-url', "Unknown failure", u]);
+                }
+              }
+            }
+          }).fail(function() {
+            alert('Failed'); // XXX
+          });
+        } else {
+          showDownloadURL(this, downloadHref);
+        }
+
+      });
+
     }
 
     $('a.license-popup').click(function() {
@@ -325,19 +304,19 @@ if(typeof jQuery != 'undefined') {
       var href = $(this).attr("href");
       $(this).click(function() {
         $(":button:contains('Download')").prop("disabled", true);
-        $("#iaccept").removeAttr('checked');
-        $("#confirm-dialog").dialog.href = href;
+        $("#iaccept").prop('checked', false);
+        downloadHref = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
-        $("#confirm-dialog").dialog('open');
+        $('#downloadModal').modal({});
         $("#iemail").focus();
         return false;
       });
       var dp = getParameterByName('d'); // e.g. '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
       if (href == dp) {
         $("#iaccept").removeAttr('checked');
-        $("#confirm-dialog").dialog.href = href;
+        downloadHref = href;
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
-        $("#confirm-dialog").dialog('open');
+        $('#downloadModal').modal({});
         $("#iemail").focus();
       }
     });
@@ -905,72 +884,53 @@ function doDownload(u) {
 
 function showDownloadURL(me, u) {
 
-  $('#download-curl-dialog').dialog({
-    modal: true,
-    width: 630,
-    resizable: false,
-    closeOnEscape: true,
-    title: 'MarkLogic Download URL',
-    open: function(event, ui) {
-      $.ajax({
-        type: 'POST',
-        url: "/get-download-url",
-        data: {
-            download: u
-        },
-        context: $(me),
-        success: function(data) {
+  $.ajax({
+      type: 'POST',
+      url: "/get-download-url",
+      data: {
+          download: u
+      },
+      context: $(me),
+      success: function(data) {
 
-          //  _gaq.push(['_trackPageview', u],
-          //      ['_trackEvent', 'show-url-for-download', u]
-          //  );
+        //  _gaq.push(['_trackPageview', u],
+        //      ['_trackEvent', 'show-url-for-download', u]
+        //  );
 
 /*
-            try {
-                mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?., "") } );
-            } catch (err) {
-            }
+          try {
+              mktoMunchkinFunction('clickLink', { href: '/show-download-url' + u.replace(/\?., "") } );
+          } catch (err) {
+          }
 */
 
-          var port = (window.location.port === "") ? "" : ":" + window.location.port;
-          var host = window.location.hostname + port;
-          var sechost = (window.location.port === "") ? host : window.location.hostname;
-          $('#curl-url').text(window.location.protocol + '//' + host + data.path);
-          $('#secure-curl-url').text('https:' + '//' + sechost + data.path);
+        var port = (window.location.port === "") ? "" : ":" + window.location.port;
+        var host = window.location.hostname + port;
+        var sechost = (window.location.port === "") ? host : window.location.hostname;
+        $('.curl-url').text(window.location.protocol + '//' + host + data.path);
+        $('.secure-curl-url').text('https:' + '//' + sechost + data.path);
 
-          // If current URL is secure, we don't need this
-          if (window.location.protocol == "https:") {
-            $('#download-curl-dialog .secure').hide();
-          }
-        },
-        dataType: 'json'
-      }).fail(function( jqXHR, textStatus, errorThrown ) {
-        alert( "Failed: " + textStatus ); // FIXME
-      });
-
-      $('.download-url').click(function() {
-        $(this).select();
-      });
-
-      $('.download-url').focus(function() {
-        $(this).select();
-      });
-
-      $('.download-url').mouseup(function(e) {
-        e.preventDefault();
-      });
-    },
-    buttons: {
-      'OK': function() {
-        $('#download-curl-dialog').dialog('close');
-        $('#confirm-dialog').dialog('close');
+        // If current URL is secure, we don't need this
+        if (window.location.protocol == "https:") {
+          $('#download-curl-dialog .secure').hide();
+        }
       },
-      'Cancel': function() {
-        $('#download-curl-dialog').dialog('close');
-      }
-    }
-  });
-  $(".ui-dialog-titlebar").hide();
+      dataType: 'json'
+    }).fail(function( jqXHR, textStatus, errorThrown ) {
+      alert( "Failed: " + textStatus ); // FIXME
+    });
+
+    $('.download-url').click(function() {
+      $(this).select();
+    });
+
+    $('.download-url').focus(function() {
+      $(this).select();
+    });
+
+    $('.download-url').mouseup(function(e) {
+      e.preventDefault();
+    });
 
   ZeroClipboard.setDefaults({
     moviePath: "/images/ZeroClipboard.swf"

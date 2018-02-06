@@ -144,54 +144,77 @@
       <xsl:copy-of select="doc('/eula.xml')"/>
     </div>
 
-    <div id="download-curl-dialog" style="display: none">
-
-      <div class="download-url-label" >Please use the following, one-time-use URL to fetch the download:</div>
-      <textarea readonly="readonly" class="download-url" id="curl-url"/>
-      <button class="copy-button" id="copy-url-button"
-              data-clipboard-target="curl-url" title="Click to copy">Copy to Clipboard</button>
-
-      <div class="secure download-url-label" >Or use the secure version here instead:</div>
-      <textarea readonly="readonly" class="secure download-url" id="secure-curl-url"/>
-      <button class="secure copy-button" id="copy-secure-url-button"
-              data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
-    </div>
-
-    <div class="download-confirmation" id="confirm-dialog" style="display: none">
-      <p style="line-height: 140%">
-      In order to download and use this MarkLogic software you are required to accept the <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and install a license key.
-      </p>
-
-      <xsl:if test="empty(users:getCurrentUser())">
-        <p>Sign in with your MarkLogic Community credentials or <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
-      </xsl:if>
-
-      <div style="display: block" id="download-confirm-email">
-        <xsl:if test="empty(users:getCurrentUser())">
-          <div class="download-form-row">
-            <p id="ifail"/>
+    <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
+            <h4 class="modal-title" id="myModalLabel">Download MarkLogic</h4>
           </div>
-          <div class="download-form-row">
-            <label style="width: 160px; float: left; text-align: right" for="iemail">Email:&#160;&#160;&#160;</label>
-            <input autofocus="autofocus" class="" size="30" type="text" id="iemail" name="iemail">
-              <xsl:attribute name="value">
-                <xsl:value-of select="users:getCurrentUser()/*:email"/>
-              </xsl:attribute>
-            </input>
+          <div class="modal-body">
+            <p style="line-height: 140%">
+              In order to download and use this MarkLogic software you are required to accept the
+              <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and
+              install a license key.
+            </p>
+
+            <xsl:if test="empty(users:getCurrentUser())">
+              <p>Sign in with your MarkLogic Community credentials or
+                <a id="confirm-dialog-signup" style="color: #01639D" href="/people/signup">Sign up</a> for free:</p>
+            </xsl:if>
+
+            <div style="display: block" id="download-confirm-email">
+              <xsl:if test="empty(users:getCurrentUser())">
+                <div class="download-form-row">
+                  <p id="ifail"/>
+                </div>
+                <div class="download-form-row">
+                  <label style="width: 160px; float: left; text-align: right" for="iemail">Email:&#160;&#160;&#160;</label>
+                  <input autofocus="autofocus" class="" size="30" type="text" id="iemail" name="iemail">
+                    <xsl:attribute name="value">
+                      <xsl:value-of select="users:getCurrentUser()/*:email"/>
+                    </xsl:attribute>
+                  </input>
+                </div>
+                <br/>
+                <div class="download-form-row">
+                  <label style="width: 160px; float: left; text-align: right" for="ipass">Community&#160;Password:&#160;&#160;&#160;</label>
+                  <input class="" size="30" type="password" id="ipass" name="ipass"/>
+                </div>
+              </xsl:if>
+
+              <br/>
+
+              <div class="download-form-row">
+                <input type="checkbox" id="iaccept" name="iaccept" value="true"/>
+                <label for="iaccept">&#160;&#160;I accept the terms in the
+                  <a style="color: #01639D;" href="#" class="license-popup" >MarkLogic Developer License Agreement</a>.
+                </label>
+              </div>
+            </div>
+
+            <div class="download-curl-display" style="display: none">
+
+              <div class="download-url-label" >Please use the following, one-time-use URL to fetch the download:</div>
+              <textarea readonly="readonly" class="download-url curl-url"/>
+              <button class="copy-button" id="copy-url-button"
+                      data-clipboard-target="curl-url" title="Click to copy">Copy to Clipboard</button>
+
+              <div class="secure download-url-label" >Or use the secure version here instead:</div>
+              <textarea readonly="readonly" class="secure download-url secure-curl-url"/>
+              <button class="secure copy-button" id="copy-secure-url-button"
+                      data-clipboard-target="secure-curl-url" title="Click to copy.">Copy to Clipboard</button>
+            </div>
+
           </div>
-          <br/>
-          <div class="download-form-row">
-            <label style="width: 160px; float: left; text-align: right" for="ipass">Community&#160;Password:&#160;&#160;&#160;</label>
-            <input class="" size="30" type="password" id="ipass" name="ipass"/>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary download">Download</button>
+            <button type="button" class="btn btn-primary download-curl">Download via CURL</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           </div>
-        </xsl:if>
-       <br/>
-       <div class="download-form-row">
-         <input type="checkbox" id="iaccept" name="iaccept" value="true"/><label for="iaccept">&#160;&#160;I accept the terms in the <a style="color: #01639D;" href="#" class="license-popup" >MarkLogic Developer License Agreement</a>.</label>
-       </div>
+        </div>
       </div>
     </div>
-
 
     <xsl:apply-templates mode="product-platform" select="platform"/>
     <xsl:apply-templates mode="maven" select="maven"/>
@@ -248,7 +271,7 @@
                                           '')[$num-cols]}">
         <xsl:choose>
           <xsl:when test="@anchor-class = 'confirm-download'">
-            <span href="{@href}" class="{@anchor-class}">
+            <span href="{@href}" class="{@anchor-class}" data-toggle="modal" data-target="#downloadModal">
               <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
               <span class="arch"><xsl:apply-templates select="if ($num-cols eq 3) then architecture else node()"/></span>
             </span>
