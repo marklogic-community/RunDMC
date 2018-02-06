@@ -312,7 +312,7 @@ if(typeof jQuery != 'undefined') {
         $("#confirm-dialog-signup").attr("href", "/people/signup?d=" + href + "&p=" + window.location.pathname);
         // do some cleanup in case we're opening the dialog for the second (or later) time
         $("#downloadModal .download-curl-display").css("display", "none");
-        $("#downloadModal .download-url").val("")
+        $("#downloadModal .download-url").text("")
 
         $('#downloadModal').modal({});
         $("#iemail").focus();
