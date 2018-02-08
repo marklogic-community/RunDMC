@@ -119,8 +119,9 @@ declare function mn:create-markup($key){
     let $endpoint := fn:concat($url, $key, "/")
     let $response := json:transform-from-json(
       if (xs:int(fn:substring-before(xdmp:version(),".")) > 7)
-      then xdmp:from-json-string(xdmp:http-get($endpoint)[2])
-      else xdmp:from-json(xdmp:http-get($endpoint)[2]))
+      then xdmp:http-get($endpoint)[2]
+      else xdmp:from-json(xdmp:http-get($endpoint)[2])
+    )
     let $response-result := $response//mljson:flag/string()
     let $processed-markup :=
         if ($response-result eq "SUCCESS")
