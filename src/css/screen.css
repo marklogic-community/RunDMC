@@ -1076,6 +1076,10 @@ ul.subcategories li {
   text-decoration: underline;
 }
 
+#downloadModal .download-curl-display {
+  overflow-y: auto;
+}
+
 #content .widget .ebooks h3 {
   margin-top: 0;
 }
@@ -3153,12 +3157,13 @@ span.highlightWidget {
     padding: 20px;
 }
 
-#curl-url,
-#secure-curl-url,
+.curl-url,
+.secure-curl-url,
 .download-url {
+    clear: left;
     font-size: 13px;
     font-family: monospace;
-    width: 400px;
+    width: 75%;
     display: inline;
     float: left;
     padding: 3px;
@@ -3175,15 +3180,8 @@ span.highlightWidget {
     padding: 10px 8px;
 }
 
-.copy-button.zeroclipboard-is-hover {
-    background-color: #666;
-}
-
-.copy-button.zeroclipboard-is-active {
-    background-color: #333;
-}
-
 .download-url-label {
+    clear: left;
     float: left;
 }
 

@@ -3157,40 +3157,6 @@ span.highlightWidget {
     padding: 20px;
 }
 
-#curl-url,
-#secure-curl-url,
-.download-url {
-    font-size: 13px;
-    font-family: monospace;
-    width: 400px;
-    display: inline;
-    float: left;
-    padding: 3px;
-    background: #DDD;
-    border: 1px solid gray;
-    margin: 10px 10px 10px 20px;
-    resize: none;
-}
-
-.copy-button {
-    float: left;
-    border: 1px solid gray;
-    margin: 10px 0 10px 10px;
-    padding: 10px 8px;
-}
-
-.copy-button.zeroclipboard-is-hover {
-    background-color: #666;
-}
-
-.copy-button.zeroclipboard-is-active {
-    background-color: #333;
-}
-
-.download-url-label {
-    float: left;
-}
-
 .maven-frag {
     margin-left: 50px;
     margin-bottom: 5px;
