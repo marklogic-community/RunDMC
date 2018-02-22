@@ -24,11 +24,16 @@ declare namespace x="http://www.w3.org/1999/xhtml";
 declare variable $DEBUG as xs:boolean? := xs:boolean(
   xdmp:get-request-field('debug')[. castable as xs:boolean]) ;
 
-(: $PATH is just the original path, unless this is a REST doc, in which
- case we also might have to look at the query string (translating
+(: $PATH is the original path, except in these cases:
+ : * For a REST doc, we might also have to look at the query string
+ :   (tranlsating "?" to "@")
+ : * Historical links to the latest product notices (before we made 
+ :   them PDF) used /copyright/legal, and that must continue to work
+ :)
  "?" to "@") :)
 declare variable $PATH := (
   if (contains($PATH-ORIG, '/REST/') and $QUERY-STRING) then $REST-DOC-PATH
+  else if ($PATH-ORIG = "/copyright/legal") then "/guide/product-notices.pdf"
   else $PATH-ORIG ) ;
 
 declare variable $PATH-ORIG := try {
