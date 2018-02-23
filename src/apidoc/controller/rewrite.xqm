@@ -24,9 +24,10 @@ declare namespace x="http://www.w3.org/1999/xhtml";
 declare variable $DEBUG as xs:boolean? := xs:boolean(
   xdmp:get-request-field('debug')[. castable as xs:boolean]) ;
 
-(: $PATH is just the original path, unless this is a REST doc, in which
- case we also might have to look at the query string (translating
- "?" to "@") :)
+(: $PATH is the original path, except in these cases:
+ : * For a REST doc, we might also have to look at the query string
+ :   (tranlsating "?" to "@")
+ :)
 declare variable $PATH := (
   if (contains($PATH-ORIG, '/REST/') and $QUERY-STRING) then $REST-DOC-PATH
   else $PATH-ORIG ) ;
@@ -333,6 +334,10 @@ declare function m:rewrite()
       "javadoc/xcc",
       "dotnet/xcc",
       "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
+
+  (: Redirect old style product notice URLs to the PDF-only notices :)
+  else if ($PATH-TAIL = "guide/copyright/legal") then
+    m:get-db-file(fn:concat("/apidoc/", $VERSION, "/guide/product-notices.pdf"))
 
   (: Redirect requests for older versions 301 and go to latest :)
   else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
