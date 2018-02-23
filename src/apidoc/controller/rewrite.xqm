@@ -27,13 +27,9 @@ declare variable $DEBUG as xs:boolean? := xs:boolean(
 (: $PATH is the original path, except in these cases:
  : * For a REST doc, we might also have to look at the query string
  :   (tranlsating "?" to "@")
- : * Historical links to the latest product notices (before we made 
- :   them PDF) used /copyright/legal, and that must continue to work
  :)
- "?" to "@") :)
 declare variable $PATH := (
   if (contains($PATH-ORIG, '/REST/') and $QUERY-STRING) then $REST-DOC-PATH
-  else if ($PATH-ORIG = "/copyright/legal") then "/guide/product-notices.pdf"
   else $PATH-ORIG ) ;
 
 declare variable $PATH-ORIG := try {
@@ -338,6 +334,10 @@ declare function m:rewrite()
       "javadoc/xcc",
       "dotnet/xcc",
       "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
+
+  (: Redirect old style product notice URLs to the PDF-only notices :)
+  else if ($PATH-TAIL = "guide/copyright/legal") then
+    m:get-db-file(fn:concat("/apidoc/", $VERSION, "/guide/product-notices.pdf"))
 
   (: Redirect requests for older versions 301 and go to latest :)
   else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
