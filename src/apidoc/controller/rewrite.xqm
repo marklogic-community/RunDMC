@@ -336,7 +336,7 @@ declare function m:rewrite()
       "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
 
   (: Redirect old style product notice URLs to the PDF-only notices :)
-  else if ($PATH-TAIL = "guide/copyright/legal") then
+  else if ($PATH-TAIL = ("guide/copyright/legal", "copyright/legal")) then
     m:get-db-file(fn:concat("/apidoc/", $VERSION, "/guide/product-notices.pdf"))
 
   (: Redirect requests for older versions 301 and go to latest :)
