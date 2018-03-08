@@ -244,7 +244,7 @@
         environment.</guide>
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon EC2.
+        MarkLogic Server on Amazon Web Services (AWS).
 	<br/><a href="/9.0/guide/ec2-jp.pdf" target="_blank">Japanese 
          Translation of this guide</a>
       </guide>
@@ -295,9 +295,9 @@
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
       </guide>
-      <guide pdf-only="true" title="MarkLogic Server on Amazon EC2 Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
+      <guide pdf-only="true" title="MarkLogic Server on Amazon Web Services (AWS) Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon EC2.
+        MarkLogic Server on Amazon Web Services (AWS).
       </guide>
     </entry>
   </group>
