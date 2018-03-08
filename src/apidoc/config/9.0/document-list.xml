@@ -1,37 +1,24 @@
 <!--
-
     This file configures the TOC and the list of docs on the home page.
-
     For the home page:
-
     * The heading is built using @title.
     * The section body is built using <description>.
-
     For the TOC:
-
     * The toc @display is built using @toc-title, falling back to @title.
     * The toc:title is built using @toc-title, falling back to @title.
     * The toc:intro is built using <intro>.
-
     For guides, additional options are available.
-
     The "url-name" is used in the URL,
     e.g. "getting-started" => /8.0/guides/getting-started[.pdf]
-
     The order, URLs, and descriptions of guides will be copied.
-
     If a guide in the zip is not included in this list,
     an error may be thrown during processing or a warning may be logged.
     Such guides will not appear on list pages nor in the TOC.
-
     If you want to explicitly exclude a guide, use the @exclude flag.
-
     The @source-name attribute determines the source PDF name, unless @pdf-name
     is provided.
-
     The TOC can show duplicate references to a single guide.
     All but the main reference should set @duplicate true.
-
     Set @toc-closed="1" to tell the TOC to collapse
     any entry initially. It is false by default: initially expanded.
     Set @all-functions-toc-closed="1" to tell the TOC to collapse
@@ -244,7 +231,7 @@
         environment.</guide>
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon Web Services (AWS).
+        MarkLogic Server on Amazon EC2.
 	<br/><a href="/9.0/guide/ec2-jp.pdf" target="_blank">Japanese 
          Translation of this guide</a>
       </guide>
@@ -295,9 +282,9 @@
         Provides an overview of reference application architectures for
         multi-tiered applications build using MarkLogic as the database.
       </guide>
-      <guide pdf-only="true" title="MarkLogic Server on Amazon Web Services (AWS) Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
+      <guide pdf-only="true" title="MarkLogic Server on Amazon EC2 Guide (Japanese)" url-name="ec2-jp" source-name="ec2_JP">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon Web Services (AWS).
+        MarkLogic Server on Amazon EC2.
       </guide>
     </entry>
   </group>
