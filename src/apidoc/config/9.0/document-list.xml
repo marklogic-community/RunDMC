@@ -244,7 +244,7 @@
         environment.</guide>
       <guide url-name="ec2" source-name="ec2">
         Provides information on using an Amazon Machine Image (AMI) of
-        MarkLogic Server on Amazon EC2.
+        MarkLogic Server on Amazon Web Services (AWS).
 	<br/><a href="/9.0/guide/ec2-jp.pdf" target="_blank">Japanese 
          Translation of this guide</a>
       </guide>
