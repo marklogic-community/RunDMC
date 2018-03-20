@@ -117,6 +117,8 @@
              pdf-name="install">
         Contains procedures for installing and upgrading MarkLogic Server
         on all platforms.
+        <br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="relnotes" source-name="relnotes">
         Contains a summary of new features, upgrade compatibility information,
@@ -275,6 +277,11 @@
     </entry>
 
     <entry title="Japanese Guides">
+      <guide pdf-only="true" title="Installation Guide for All Platforms (Japanese)"
+             url-name="installation-jp" source-name="install_all_JP"
+             pdf-name="install">
+        Contains procedures for installing and upgrading MarkLogic Server
+        on all platforms.</guide>
       <guide pdf-only="true" title="Administrator's Guide (Japanese)" 
           url-name="admin-jp" source-name="admin_JP">
         Provides procedures for administrative tasks such as creating
