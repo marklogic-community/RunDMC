@@ -360,7 +360,7 @@ ul.new-features p {
   margin: 0 auto;
   overflow: hidden;
   text-align: center;
-  z-index: 100;
+  z-index: 5;
 }
 #hero .hero-data {
   background-color: rgba(64,75,154,0);
