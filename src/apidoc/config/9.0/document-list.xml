@@ -278,8 +278,7 @@
 
     <entry title="Japanese Guides">
       <guide pdf-only="true" title="Installation Guide for All Platforms (Japanese)"
-             url-name="installation-jp" source-name="install_all_JP"
-             pdf-name="install">
+          url-name="installation-jp" source-name="install_JP">
         Contains procedures for installing and upgrading MarkLogic Server
         on all platforms.</guide>
       <guide pdf-only="true" title="Administrator's Guide (Japanese)" 
