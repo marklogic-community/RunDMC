@@ -6,9 +6,10 @@
     <div id="hero">
       <div class="content">
         <div class="hero-data">
-          <h1>Operational and Transactional Enterprise NoSQL Database</h1>
-          <p>The MarkLogic database platform has everything you need to integrate, store, manage, and search all of your data, and is 100% percent trusted to run critical business operations.</p>
-          <p><a class="btn" id="overview-video" src="http://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a> <a href="/products" class="btn">Download Now</a></p>
+          <p>MAY 7-10 | SAN FRANCISCO</p>
+          <h1>MarkLogic World 2018</h1>
+          <p>Join us for hands-on training, real world customer use cases, technical deep-dive classes and executive keynotes. Four days of insight and inspiration to integrate your data – and spur innovation in your organization.</p>
+          <p><a class="btn" href="https://www.cvent.com/d/4tq5tr/12K?RefID=mlhero" target="_blank" rel="noopener">Register Now</a></p>
         </div>
       </div>
     </div>
