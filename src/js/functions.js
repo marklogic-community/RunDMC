@@ -892,6 +892,14 @@ function doDownload(u) {
     document.body.appendChild(download_iframe);
   }
   download_iframe.src = u;
+
+  try {
+    Munchkin.munchkinFunction('clickLink', {
+        'href': u
+    });
+  } catch (err) {
+    console.log('mkto: unable to track download');
+  }
 }
 
 function showDownloadURL(me, u) {
