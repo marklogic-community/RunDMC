@@ -117,7 +117,7 @@
              pdf-name="install">
         Contains procedures for installing and upgrading MarkLogic Server
         on all platforms.
-        <br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+        <br/><a href="/9.0/guide/installation-jp.pdf" target="_blank">Japanese 
          Translation of this guide</a>
       </guide>
       <guide url-name="relnotes" source-name="relnotes">
@@ -142,7 +142,7 @@
       <guide url-name="node-dev" source-name="node-dev">
         Provides procedures, methodologies, and conceptual information
         about developing MarkLogic Server applications using the Node.js Client
-        API. <br/><a href="/9.0/guide/ref-arch-jp.pdf" target="_blank">Japanese 
+        API. <br/><a href="/9.0/guide/node-dev-jp.pdf" target="_blank">Japanese 
          Translation of this guide</a>
       </guide>
       <guide url-name="java" source-name="java-client">
@@ -161,6 +161,8 @@
         development using the MarkLogic REST API.</guide>
       <guide url-name="semantics" source-name="semantics">
         Provides information on developing semantic applications with MarkLogic.
+        <br/><a href="/9.0/guide/semantics-jp.pdf" target="_blank">Japanese 
+         Translation of this guide</a>
       </guide>
       <guide url-name="temporal" source-name="temporal">
         Provides information on developing applications using MarkLogic
@@ -291,6 +293,10 @@
         A overview of Server-Side JavaScript in MarkLogic. Contains reference 
         material for MarkLogic-specific JavaScript objects available to 
         server-side programmers.</guide>
+      <guide pdf-only="true" title="Semantics Developer's Guide (Japanese)"
+          url-name="semantics-jp" source-name="semantics_JP">
+        Provides information on developing semantic applications with MarkLogic.
+      </guide>
       <guide pdf-only="true" 
           title="Node.js Application Developer's Guide (Japanese)" 
           url-name="node-dev-jp" source-name="node-dev_JP">
