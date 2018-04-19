@@ -39,19 +39,44 @@
   </form>
     <script xml:space="preserve">
         
-        $(document).ready(function() {
-
+          $(document).ready(function() {
+  
+            $.validator.addMethod(
+              "regex",
+              function(value, element, regexps) {
+                var result = true;
+                regexps.forEach(function(regexp){
+                  var re = new RegExp(regexp);
+                  result = re.test(value);
+                });
+                
+                //because a single regex execution with this pattern doesn't cut it
+                //^.*(?=.{6,255})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\da-zA-Z0-9]).*$
+                //rejected value: Aa1@aa
+                
+                return this.optional(element) || result;
+              },
+              "Value does not match the required format."
+            );
+            
             $('#signup-form').validate({
 
                 "errorClass": "signup-form-error",
 
                 "rules": {
                     s_password: {
-                        minlength: 6
+                        minlength: 6,
+                        maxlength: 255,
+                        regex: ["\d", "[a-z]", "[A-Z]", "[^\da-zA-Z0-9\s]"]
                     },
                     s_password_confirm: {
                         equalTo: "#s_password"
                     }
+                },
+                "messages" : {
+                  s_password : {
+                    regex: "Must contain 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol."
+                  }
                 }
             });
         });
