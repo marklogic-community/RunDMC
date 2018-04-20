@@ -84,7 +84,8 @@ declare function mn:invoke-create-tracking-document(
             xdmp:permission($default-user-role, "read"), 
             xdmp:permission($default-user-role, "update"), 
             xdmp:permission($authenticated-user-role, "read"), 
-            xdmp:permission($authenticated-user-role, "update")
+            xdmp:permission($authenticated-user-role, "update"),
+            xdmp:default-permissions()
         ),
         ("mega-nav")
     )
@@ -207,7 +208,8 @@ declare function mn:create-markup-and-tracking-docs($markup-doc, $markup-doc-uri
             xdmp:permission($default-user-role, "read"), 
             xdmp:permission($default-user-role, "update"), 
             xdmp:permission($authenticated-user-role, "read"), 
-            xdmp:permission($authenticated-user-role, "update")
+            xdmp:permission($authenticated-user-role, "update"),
+            xdmp:default-permissions()
         ),
         ("mega-nav")
     ),
@@ -218,7 +220,8 @@ declare function mn:create-markup-and-tracking-docs($markup-doc, $markup-doc-uri
             xdmp:permission($default-user-role, "read"), 
             xdmp:permission($default-user-role, "update"), 
             xdmp:permission($authenticated-user-role, "read"), 
-            xdmp:permission($authenticated-user-role, "update")
+            xdmp:permission($authenticated-user-role, "update"),
+            xdmp:default-permissions()
         ),
         ("mega-nav")
     )
