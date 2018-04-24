@@ -319,20 +319,13 @@
         <div id="signup-form-separator"></div>
       </div>
       <div class="signup-form-row">
-        <label class="signup-form-label" for="list"></label>
-        <input id="list" name="list" checked="yes" type="checkbox"/>  Join the developer mailing list?
-      </div>
-      <div class="signup-form-row">
-        <label class="signup-form-label" for="list"></label>
-        <input id="s_contactme" name="s_contactme" type="checkbox"/>  Please contact me
-      </div>
-      <div class="signup-form-row">
         <label class="signup-form-label" for="signup-submit"> </label>
         <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
       </div>
       <label class="signup-form-label" for="signup-submit"> </label>
-      We value your <a target="_blank" href="http://www.marklogic.com/privacy-policy">privacy</a>.
-
+      <div class="signup-form-row">       
+        <label style="font-weight:normal">We're committed to processing your personal data in compliance with our <a target="_blank" href="http://www.marklogic.com/privacy-policy">Privacy Statement</a> while providing you with transparent notice about our practices.</label>
+      </div>
       <ml:signup-form-hidden-fields/>
     </fieldset>
   </form>
@@ -344,6 +337,24 @@
 
     $(document).ready(function() {
 
+      $.validator.addMethod(
+        "regex",
+        function(value, element, regexps) {
+          var result = true;
+          regexps.forEach(function(regexp){
+            var re = new RegExp(regexp);
+            result = re.test(value);
+          });
+          
+          //because a single regex execution with this pattern doesn't cut it
+          //^.*(?=.{6,255})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\da-zA-Z0-9]).*$
+          //rejected value: Aa1@aa
+          
+          return this.optional(element) || result;
+        },
+        "Value does not match the required format."
+      );
+    
       var e = getParameterByName("e");
       if (e != "") alert(e);
 
@@ -357,14 +368,20 @@
           },
           s_password: {
             minlength: 6,
-            maxlength: 255
+            maxlength: 255,
+            regex: ["\d", "[a-z]", "[A-Z]", "[^\da-zA-Z0-9\s]"]
           },
           s_password_confirm: {
             equalTo: "#s_password"
           }
-
+        },
+        "messages" : {
+          s_password : {
+            regex: "Must contain 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol."
+          }
         }
       });
+      
       if (/[?&amp;]d=/.test(location.href)) {
         $("#signup-submit").text("Sign up and Download");
       }
