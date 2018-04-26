@@ -216,7 +216,7 @@
         of Server-Side JavaScript in MarkLogic.  Contains reference material
         for MarkLogic-specific JavaScript objects available to server-side
         programmers. 
-        <br/><a href="/9.0/guide/admin-jp.pdf" target="_blank">Japanese Translation of this guide</a>
+        <br/><a href="/9.0/guide/jsref-jp.pdf" target="_blank">Japanese Translation of this guide</a>
       </guide>
       <guide url-name="xquery" source-name="xquery">A condensed overview of
         the XQuery language, including a description of the three XQuery
