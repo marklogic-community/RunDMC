@@ -166,6 +166,11 @@
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rxq" href="/labs/rxq"/>
       </group>
+      <group display="Data Orchestration">
+        <!-- 
+        <page display="Apache Nifi" href="/code/nifi"/>
+         -->
+      </group>
       <group display="Miscellany">
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
         <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>

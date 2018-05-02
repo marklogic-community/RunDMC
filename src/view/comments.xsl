@@ -38,6 +38,7 @@
           <div style="clear: both;height: 0;"></div>
 
           <h2>Comments <img src="/images/i_speechbubble.png" alt="" width="30" height="28"/></h2>
+          <span>The commenting feature on this page is enabled by a third party. Comments posted to this page are publicly visible.</span>
 
           <xsl:apply-templates mode="comment-count" select="."/>
 
