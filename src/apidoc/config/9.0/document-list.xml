@@ -133,7 +133,9 @@
     <entry title="Developer's Guides">
       <guide url-name="app-dev" source-name="dev_guide">
         Provides procedures, methodologies, and conceptual information about
-        general application development tasks in MarkLogic Server.</guide>
+        general application development tasks in MarkLogic Server.
+        <br/><a href="/9.0/guide/app-dev-jp.pdf" target="_blank">Japanese 
+        Translation of this guide</a></guide>
       <guide url-name="search-dev" source-name="search-dev-guide">
         Provides procedures, methodologies, and conceptual information
         about developing search-related applications in MarkLogic Server.
@@ -283,6 +285,10 @@
           url-name="installation-jp" source-name="install_JP">
         Contains procedures for installing and upgrading MarkLogic Server
         on all platforms.</guide>
+      <guide pdf-only="true" title="Application Developer's Guide (Japanese)" 
+          url-name="app-dev-jp" source-name="dev_guide_JP">
+        Provides procedures, methodologies, and conceptual information about
+        general application development tasks in MarkLogic Server.</guide>
       <guide pdf-only="true" title="Administrator's Guide (Japanese)" 
           url-name="admin-jp" source-name="admin_JP">
         Provides procedures for administrative tasks such as creating
