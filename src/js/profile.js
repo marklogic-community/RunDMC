@@ -1,7 +1,7 @@
 $(document).ready(function() {
   jQuery.validator.addMethod("twitter", function(value, element) {
     return this.optional(element) || /^@.+/.test(value);
-  }, "Please specify a valid twitter handle");
+  }, "Please specify a valid twitter handle. Twitter handles start with '@', e.g. @MarkLogic.");
 
   $('#profile-form').validate({
     "errorClass": "signup-form-error"
