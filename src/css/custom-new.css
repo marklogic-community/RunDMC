@@ -337,7 +337,7 @@ ul.new-features p {
 
 #hero {
   align-items: center;
-  background: url('https://cdn1.marklogic.com/wp-content/uploads/2018/03/mlw-hero-dmc.jpg') no-repeat center center;
+  background: url('https://cdn1.marklogic.com/wp-content/uploads/2018/05/hero-dmc-code-blue.jpeg') no-repeat center center;
   background-size: cover;
   display: flex;
   height: 462px;
@@ -359,6 +359,7 @@ ul.new-features p {
 #hero .content {
   margin: 0 auto;
   overflow: hidden;
+  position: relative;
   text-align: center;
   z-index: 5;
 }
@@ -370,10 +371,16 @@ ul.new-features p {
 }
 #hero h1 {
   color: #fff;
+  font-size: 1rem;
+  letter-spacing: .1rem;
+  margin: 15px auto;
+  text-transform: uppercase;
+}
+#hero h2 {
+  color: #fff;
+  font-size: 2.2rem;
   font-weight: bold;
-  letter-spacing: .02em;
-  margin: 0;
-  text-shadow: 0px 2px 4px rgba(19,20,46,.5);
+  letter-spacing: .02rem;
 }
 #hero p {
   font-size: 1.2em;
@@ -386,23 +393,41 @@ ul.new-features p {
   background-color: #fb3449;
   color: #ffffff;
   border: none;
+  font-family: "HelveticaNeueW01-65Medi", sans-serif;
   margin: 10px;
+  padding: 10px;
   text-shadow: none;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+#hero a.btn-ghost {
+  background: none;
+  box-shadow: inset 0 0 0 2px #fff;
+  box-sizing: border-box;
+  transition: none;
 }
 #hero a.btn:hover {
   background-color: #fb4d5f;
+}
+#hero a.btn-ghost:hover {
+  background: white;
+  color: #333e48;
 }
 @media screen and (max-width: 550px) {
   #hero .hero-data {
     margin-top: 0;
     padding: 1em;
   }
-  #hero h1 {
-    font-size: 2em;
+  #hero h2 {
+    font-size: 2rem;
   }
   #hero p {
     font-size: 1.1em;
     width: 90%;
+  }
+  #hero a.btn {
+    display: block;
+    margin-top: 20px;
   }
 }
 
