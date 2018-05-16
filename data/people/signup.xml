@@ -292,7 +292,7 @@
           <option value="Yemen" data-alternative-spellings="YE اليمن">Yemen</option>
           <option value="Zambia" data-alternative-spellings="ZM">Zambia</option>
           <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
-  	    </select>
+        </select>
       </div>
       <div class="signup-form-row state-row">
         <label class="signup-form-label" for="s_state">State</label>
@@ -319,12 +319,21 @@
         <div id="signup-form-separator"></div>
       </div>
       <div class="signup-form-row">
+        <label class="signup-form-label" for="list"></label>
+        <input id="list" name="list" checked="yes" type="checkbox"/> <label for="list" style="font-weight:normal">Join the developer mailing list?</label>
+      </div>
+      <div class="signup-form-row" id="s_opt_in_div">
+        <label class="signup-form-label" for="s_opt_in"></label>
+        <input id="s_opt_in" name="s_opt_in" type="checkbox"/> <label for="s_opt_in" style="font-weight:normal">Yes, I'd like to receive emails about MarkLogic news, events, and promotions. I agree that data I provide may be stored in MarkLogic's marketing database for the purposes above.</label>
+        <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
+      </div>
+      <div class="signup-form-row">
         <label class="signup-form-label" for="signup-submit"> </label>
         <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
       </div>
-      <label class="signup-form-label" for="signup-submit"> </label>
+      <label class="signup-form-label" > </label>
       <div class="signup-form-row">       
-        <label style="font-weight:normal">We're committed to processing your personal data in compliance with our <a target="_blank" href="http://www.marklogic.com/privacy-policy">Privacy Statement</a> while providing you with transparent notice about our practices.</label>
+        <label style="font-weight:normal">Clicking the button above indicates that I have read and agree to MarkLogic's <a target="_blank" href="http://www.marklogic.com/privacy-policy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
       </div>
       <ml:signup-form-hidden-fields/>
     </fieldset>
@@ -334,8 +343,17 @@
   <a id="fb-signup-link" href="/people/fb-signup"><div>Sign up via Facebook</div></a>
   -->
   <script xml:space="preserve">
+    var GPDR_LIST = [
+      "Austria", "Belgium", "Bulgaria", "Cyprus", "Czech Republic"
+      , "Denmark", "Germany", "Greece", "Iceland", "Italy"
+      , "Latvia", "Liechtenstein", "Lithuania", "Malta", "Netherlands"
+      , "Norway", "Poland", "Romania", "Slovakia", "Slovenia"
+      , "Spain"    
+      ];
 
     $(document).ready(function() {
+      $('#s_opt_in_div').hide();
+      $("#s_opt_in_url").attr("value", $(location).attr('href'));
 
       $.validator.addMethod(
         "regex",
@@ -354,7 +372,7 @@
         },
         "Value does not match the required format."
       );
-    
+
       var e = getParameterByName("e");
       if (e != "") alert(e);
 
@@ -473,6 +491,13 @@
         } else {
           setStates([]);
           $('.state-row').hide();
+        }
+        
+        //GPDR stuff
+        if (GPDR_LIST.indexOf(country) === -1) {
+          $('#s_opt_in_div').hide();
+        } else {
+          $('#s_opt_in_div').show();
         }
       });
     });
