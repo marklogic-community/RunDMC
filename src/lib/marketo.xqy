@@ -93,6 +93,9 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
         <marketoCookie>{$cookie}</marketoCookie>
     else
         ()
+    let $optin := $user/opt-in/string() eq "on"
+    let $optin-url := $user/opt-in-url/string()
+    let $optin-date := fn:current-dateTime()
 
     (: First check to see if lead exists :)
     let $body :=
@@ -108,7 +111,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
     let $leadExists := $soap[2]/SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:successGetLead
 
     (: if lead exists, leave it's source details alone, otherwise it's from the Community Site :)
-    let $leadSourceAttrs :=
+    let $leadSourceAttrs := (
         if ($leadExists) then
             ()
         else
@@ -122,6 +125,27 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                 <attrName>Specific_Lead_Source__c</attrName>
                 <attrValue>{$source}</attrValue>
             </attribute>
+            ,
+            <attribute>
+                <attrName>Opt_in__c</attrName>
+                <attrValue>{$optin}</attrValue>
+            </attribute>
+            )
+        ,
+        if ($optin) then
+        (: basically do not send these info if option is set to false. :)
+            (
+            <attribute>
+                <attrName>Opt_in_URL__c</attrName>
+                <attrValue>{$optin-url}</attrValue>
+            </attribute>
+            ,
+            <attribute>
+                <attrName>Opt_in_Date__c</attrName>
+                <attrValue>{$optin-date}</attrValue>
+            </attribute>
+            )
+        else ()
             )
 
     let $body :=
