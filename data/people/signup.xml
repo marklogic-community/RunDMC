@@ -320,7 +320,7 @@
       </div>
       <div class="signup-form-row">
         <label class="signup-form-label" for="list"></label>
-        <input id="list" name="list" checked="yes" type="checkbox"/> <label for="list" style="font-weight:normal">Join the developer mailing list?</label>
+        <input id="list" name="list" checked="yes" type="checkbox"/> <label for="list" style="font-weight:normal">Stay on top of everything MarkLogic</label>
       </div>
       <div class="signup-form-row" id="s_opt_in_div">
         <label class="signup-form-label" for="s_opt_in"></label>

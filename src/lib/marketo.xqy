@@ -125,16 +125,16 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                 <attrName>Specific_Lead_Source__c</attrName>
                 <attrValue>{$source}</attrValue>
             </attribute>
+            )
             ,
+        if ($optin) then
+        (: basically do not send these info if option is set to false. :)
+            (
             <attribute>
                 <attrName>Opt_in__c</attrName>
                 <attrValue>{$optin}</attrValue>
             </attribute>
-            )
         ,
-        if ($optin) then
-        (: basically do not send these info if option is set to false. :)
-            (
             <attribute>
                 <attrName>Opt_in_URL__c</attrName>
                 <attrValue>{$optin-url}</attrValue>
@@ -188,10 +188,6 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                   <attribute>
                       <attrName>Contact_me__c</attrName>
                       <attrValue>{$contact-me}</attrValue>
-                  </attribute>
-                  <attribute>
-                      <attrName>Role__c</attrName>
-                      <attrValue></attrValue>
                   </attribute>
                   {$leadSourceAttrs}
               </leadAttributeList>
