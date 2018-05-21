@@ -7,8 +7,8 @@
       <div class="content">
         <div class="hero-data">
           <h1>Developer Community</h1>
-          <h2>We Speak Your Language</h2>
-          <p><a class="btn" href="https://developer.marklogic.com/products">Download Now</a> <a class="btn btn-ghost" id="overview-video" src="https://www.youtube.com/embed/dP15zlyra3c?html5=1">Overview Video</a></p>
+          <h2>MarkLogic 9.0-5 Now Available</h2>
+          <p><a class="btn" href="https://developer.marklogic.com/products">Free Download</a> <a class="btn btn-ghost" href="https://www.marklogic.com/product/marklogic-database-overview/">Database Overview</a></p>
         </div>
       </div>
     </div>
