@@ -35,10 +35,6 @@
         <input id="s_password_confirm" required="required" name="s_password_confirm" value="" type="password"/>
       </div>
       <div class="signup-form-row">
-        <label class="signup-form-label" for="s_company">Phone</label>
-        <input id="s_phone" required="required" name="s_phone" value="" type="text"/>
-      </div>
-      <div class="signup-form-row">
         <label class="signup-form-label" for="s_country">Country</label>
 
         <select name="s_country" id="s_country" class="required countrypicker" autocorrect="off" autocomplete="off">
@@ -318,13 +314,9 @@
       <div class="signup-form-row">
         <div id="signup-form-separator"></div>
       </div>
-      <div class="signup-form-row">
-        <label class="signup-form-label" for="list"></label>
-        <input id="list" name="list" checked="yes" type="checkbox"/> <label for="list" style="font-weight:normal">Stay on top of everything MarkLogic</label>
-      </div>
       <div class="signup-form-row" id="s_opt_in_div">
         <label class="signup-form-label" for="s_opt_in"></label>
-        <input id="s_opt_in" name="s_opt_in" type="checkbox"/> <label for="s_opt_in" style="font-weight:normal">Yes, I'd like to receive emails about MarkLogic news, events, and promotions. I agree that data I provide may be stored in MarkLogic's marketing database for the purposes above.</label>
+        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you'd like to receive emails about MarkLogic news, events, and promotions. You may withdraw your consent at any time by clicking the <a target="_blank" href="//info.marklogic.com/unsubscribe">unsubscribe</a> link in email footers.</label>
         <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
       </div>
       <div class="signup-form-row">
@@ -333,7 +325,7 @@
       </div>
       <label class="signup-form-label" > </label>
       <div class="signup-form-row">       
-        <label style="font-weight:normal">Clicking the button above indicates that I have read and agree to MarkLogic's <a target="_blank" href="http://www.marklogic.com/privacy-policy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
+        <label style="font-weight:normal">Clicking the button above indicates that I have read and agree to MarkLogic's <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
       </div>
       <ml:signup-form-hidden-fields/>
     </fieldset>
@@ -496,6 +488,7 @@
         //GPDR stuff
         if (GPDR_LIST.indexOf(country) === -1) {
           $('#s_opt_in_div').hide();
+          $('#s_opt_in').prop('checked', false);
         } else {
           $('#s_opt_in_div').show();
         }

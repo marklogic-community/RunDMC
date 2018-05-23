@@ -34,7 +34,6 @@ let $valid := util:validateEmail($email) and
     ($name and not($name eq "")) and
     (fn:string-length($name) gt 0 and fn:string-length($name) le 255) and
     (fn:string-length($company) gt 0 and fn:string-length($company) le 255) and
-    (fn:string-length($phone) gt 0 and fn:string-length($phone) le 255) and
     (fn:string-length($country) gt 0 and fn:string-length($country) le 255) and
     ($country ne $users:COUNTRY-REQUIRES-STATE or fn:string-length($state) gt 0 and fn:string-length($state) le 255) and
     (fn:string-length($industry) gt 0 and fn:string-length($industry) le 255) and
