@@ -156,8 +156,8 @@
           <option value="Kazakhstan" data-alternative-spellings="KZ Қазақстан Казахстан">Kazakhstan</option>
           <option value="Kenya" data-alternative-spellings="KE">Kenya</option>
           <option value="Kiribati" data-alternative-spellings="KI">Kiribati</option>
-          <option value="Korea, Democratic People's Republic of" data-alternative-spellings="KP North Korea">Korea, Democratic People's Republic of</option>
-          <option value="Korea, Republic of" data-alternative-spellings="KR South Korea" data-relevancy-booster="1.5">Korea, Republic of</option>
+          <option value="Korea North" data-alternative-spellings="KP North Korea">Korea North</option>
+          <option value="Korea South" data-alternative-spellings="KR South Korea" data-relevancy-booster="1.5">Korea South</option>
           <option value="Kuwait" data-alternative-spellings="KW الكويت">Kuwait</option>
           <option value="Kyrgyzstan" data-alternative-spellings="KG Кыргызстан">Kyrgyzstan</option>
           <option value="Lao People's Democratic Republic" data-alternative-spellings="LA">Lao People's Democratic Republic</option>
@@ -274,8 +274,7 @@
           <option value="Ukraine" data-alternative-spellings="UA Ukrayina Україна">Ukraine</option>
           <option value="United Arab Emirates" data-alternative-spellings="AE UAE الإمارات">United Arab Emirates</option>
           <option value="United Kingdom" data-alternative-spellings="GB Great Britain England UK Wales Scotland Northern Ireland" data-relevancy-booster="2.5">United Kingdom</option>
-          <option value="United States of America" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States</option>
-          <option value="United States Minor Outlying Islands" data-alternative-spellings="UM">United States Minor Outlying Islands</option>
+          <option value="United States of America" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States of America</option>
           <option value="Uruguay" data-alternative-spellings="UY">Uruguay</option>
           <option value="Uzbekistan" data-alternative-spellings="UZ Ўзбекистон O'zbekstan O‘zbekiston">Uzbekistan</option>
           <option value="Vanuatu" data-alternative-spellings="VU">Vanuatu</option>
@@ -316,20 +315,16 @@
       </div>
       <div class="signup-form-row" id="s_opt_out_div">
         <label class="signup-form-label"></label>
-        <label style="font-weight:normal">We are committed to processing your personal data in compliance with our <a target="_blank" href="https://www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices</label>
+        <label style="font-weight:normal">We are committed to processing your personal data in compliance with our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices</label>
       </div>
       <div class="signup-form-row" id="s_opt_in_div">
         <label class="signup-form-label" for="s_opt_in"></label>
-        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries. If you consent, our <a target="_blank" href="https://www.marklogic.com/privacy">Privacy Statement</a>, emails, and <a target="_blank" href="//info.marklogic.com/unsubscribe">Unsubscribe Page</a> allow you to easily unsubscribe at any time.</label>
+        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries. If you consent, our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a>, emails, and <a target="_blank" href="//info.marklogic.com/unsubscribe">Unsubscribe Page</a> allow you to easily unsubscribe at any time.</label>
         <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
       </div>
       <div class="signup-form-row">
         <label class="signup-form-label" for="signup-submit"> </label>
         <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
-      </div>
-      <label class="signup-form-label" > </label>
-      <div class="signup-form-row">       
-        <label style="font-weight:normal">Clicking the button above indicates that I have read and agree to MarkLogic's <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
       </div>
       <ml:signup-form-hidden-fields/>
     </fieldset>
@@ -423,6 +418,7 @@
             {name: 'Colorado', value: 'CO'},
             {name: 'Connecticut', value: 'CT'},
             {name: 'Delaware', value: 'DE'},
+            {name: 'District of Columbia', value: 'DC'},
             {name: 'Florida', value: 'FL'},
             {name: 'Georgia', value: 'GA'},
             {name: 'Hawaii', value: 'HI'},
