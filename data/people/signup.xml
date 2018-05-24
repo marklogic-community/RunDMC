@@ -313,16 +313,15 @@
       <div class="signup-form-row">
         <div id="signup-form-separator"></div>
       </div>
+      <div class="signup-form-row" id="s_opt_out_div">
+        <label class="signup-form-label"></label>
+        <label style="font-weight:normal">We are committed to processing your personal data in compliance with our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices</label>
+      </div>
       <div class="signup-form-row" id="s_opt_in_div">
         <label class="signup-form-label" for="s_opt_in"></label>
-        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive emails about MarkLogic news, events, and promotions. You may withdraw your consent at any time by clicking the <a target="_blank" href="//info.marklogic.com/unsubscribe">unsubscribe</a> link in email footers.</label>
+        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries. If you consent, our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a>, emails, and <a target="_blank" href="//info.marklogic.com/unsubscribe">Unsubscribe Page</a> allow you to easily unsubscribe at any time.</label>
         <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
       </div>
-      <div class="signup-form-row">       
-        <label class="signup-form-label"></label>
-        <label style="font-weight:normal">Clicking the button below indicates that I have read and agree to MarkLogic's <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
-      </div>
-      <label class="signup-form-label" > </label>
       <div class="signup-form-row">
         <label class="signup-form-label" for="signup-submit"> </label>
         <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
@@ -488,10 +487,12 @@
         
         //GPDR stuff
         if (GPDR_LIST.indexOf(country) === -1) {
+          $('#s_opt_out_div').show();
           $('#s_opt_in_div').hide();
           $('#s_opt_in').prop('checked', false);
         } else {
           $('#s_opt_in_div').show();
+          $('#s_opt_out_div').hide();
         }
       });
     });
