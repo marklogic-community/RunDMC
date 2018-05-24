@@ -408,7 +408,7 @@
 
       $('#s_country').change(function() {
         var country = $(this).find('option:selected').text();
-        if (country === 'United States') {
+        if (country === 'United States of America') {
           var states = [
             {name: 'Alabama', value: 'AL'},
             {name: 'Alaska', value: 'AK'},
