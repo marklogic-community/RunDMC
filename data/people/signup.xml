@@ -319,6 +319,7 @@
         <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
       </div>
       <div class="signup-form-row">       
+        <label class="signup-form-label"></label>
         <label style="font-weight:normal">Clicking the button below indicates that I have read and agree to MarkLogic's <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> and that any use of my personal data will take place in compliance with relevant and applicable data privacy laws.</label>
       </div>
       <label class="signup-form-label" > </label>
