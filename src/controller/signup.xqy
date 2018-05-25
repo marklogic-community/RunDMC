@@ -20,6 +20,8 @@ let $phone := functx:trim(xdmp:get-request-field("s_phone"))
 let $country := functx:trim(xdmp:get-request-field("s_country"))
 let $state := functx:trim(xdmp:get-request-field("s_state"))
 let $contactme := xdmp:get-request-field("s_contactme", "off")
+let $optin := xdmp:get-request-field("s_opt_in", "off")
+let $optin-url := xdmp:get-request-field("s_opt_in_url", "http://developer.marklogic.com/people/signup")
 
 (: TODO validate industry picklists :)
 
@@ -32,7 +34,6 @@ let $valid := util:validateEmail($email) and
     ($name and not($name eq "")) and
     (fn:string-length($name) gt 0 and fn:string-length($name) le 255) and
     (fn:string-length($company) gt 0 and fn:string-length($company) le 255) and
-    (fn:string-length($phone) gt 0 and fn:string-length($phone) le 255) and
     (fn:string-length($country) gt 0 and fn:string-length($country) le 255) and
     ($country ne $users:COUNTRY-REQUIRES-STATE or fn:string-length($state) gt 0 and fn:string-length($state) le 255) and
     (fn:string-length($industry) gt 0 and fn:string-length($industry) le 255) and
@@ -48,6 +49,8 @@ let $_ :=
         "state: ", $state, " ",
         "contactme: ", $contactme, " ",
         "industry: ", $industry, " ",
+        "opt-in: ", $optin, " ",
+        "opt-in-url: ", $optin-url, " ",
         ""
     ))
 
@@ -61,6 +64,8 @@ let $others := (
     else (),
     <list>{$signup}</list>,
     <contact-me>{$contactme}</contact-me>,
+    <opt-in>{$optin}</opt-in>,
+    <opt-in-url>{$optin-url}</opt-in-url>,
     ()
 )
 

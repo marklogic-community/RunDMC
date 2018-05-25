@@ -11,7 +11,7 @@
         <div style="height:24px; font-size: 75%">Already a member? Just <a href="#" onclick="$('#login-menu').toggle();return false;" id="">log in</a>. Otherwise, all fields below are required.</div>
       </div>
       <div class="signup-form-row">
-        <label class="signup-form-label" for="email">Email </label>
+        <label class="signup-form-label" for="email">Business Email </label>
         <input class="required email" autofocus="autofocus" required="required" id="s_email" name="s_email" value="" type="text"/>
       </div>
       <div class="signup-form-row">
@@ -33,10 +33,6 @@
       <div class="signup-form-row">
         <label class="signup-form-label" for="s_password_confirm">Confirm password</label>
         <input id="s_password_confirm" required="required" name="s_password_confirm" value="" type="password"/>
-      </div>
-      <div class="signup-form-row">
-        <label class="signup-form-label" for="s_company">Phone</label>
-        <input id="s_phone" required="required" name="s_phone" value="" type="text"/>
       </div>
       <div class="signup-form-row">
         <label class="signup-form-label" for="s_country">Country</label>
@@ -160,8 +156,8 @@
           <option value="Kazakhstan" data-alternative-spellings="KZ Қазақстан Казахстан">Kazakhstan</option>
           <option value="Kenya" data-alternative-spellings="KE">Kenya</option>
           <option value="Kiribati" data-alternative-spellings="KI">Kiribati</option>
-          <option value="Korea, Democratic People's Republic of" data-alternative-spellings="KP North Korea">Korea, Democratic People's Republic of</option>
-          <option value="Korea, Republic of" data-alternative-spellings="KR South Korea" data-relevancy-booster="1.5">Korea, Republic of</option>
+          <option value="Korea North" data-alternative-spellings="KP North Korea">Korea North</option>
+          <option value="Korea South" data-alternative-spellings="KR South Korea" data-relevancy-booster="1.5">Korea South</option>
           <option value="Kuwait" data-alternative-spellings="KW الكويت">Kuwait</option>
           <option value="Kyrgyzstan" data-alternative-spellings="KG Кыргызстан">Kyrgyzstan</option>
           <option value="Lao People's Democratic Republic" data-alternative-spellings="LA">Lao People's Democratic Republic</option>
@@ -278,8 +274,7 @@
           <option value="Ukraine" data-alternative-spellings="UA Ukrayina Україна">Ukraine</option>
           <option value="United Arab Emirates" data-alternative-spellings="AE UAE الإمارات">United Arab Emirates</option>
           <option value="United Kingdom" data-alternative-spellings="GB Great Britain England UK Wales Scotland Northern Ireland" data-relevancy-booster="2.5">United Kingdom</option>
-          <option value="United States of America" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States</option>
-          <option value="United States Minor Outlying Islands" data-alternative-spellings="UM">United States Minor Outlying Islands</option>
+          <option value="United States of America" data-relevancy-booster="3.5" data-alternative-spellings="US USA United States of America">United States of America</option>
           <option value="Uruguay" data-alternative-spellings="UY">Uruguay</option>
           <option value="Uzbekistan" data-alternative-spellings="UZ Ўзбекистон O'zbekstan O‘zbekiston">Uzbekistan</option>
           <option value="Vanuatu" data-alternative-spellings="VU">Vanuatu</option>
@@ -292,7 +287,7 @@
           <option value="Yemen" data-alternative-spellings="YE اليمن">Yemen</option>
           <option value="Zambia" data-alternative-spellings="ZM">Zambia</option>
           <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
-  	    </select>
+        </select>
       </div>
       <div class="signup-form-row state-row">
         <label class="signup-form-label" for="s_state">State</label>
@@ -318,13 +313,18 @@
       <div class="signup-form-row">
         <div id="signup-form-separator"></div>
       </div>
+      <div class="signup-form-row" id="s_opt_out_div">
+        <label class="signup-form-label"></label>
+        <label style="font-weight:normal">We are committed to processing your personal data in compliance with our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices</label>
+      </div>
+      <div class="signup-form-row" id="s_opt_in_div">
+        <label class="signup-form-label" for="s_opt_in"></label>
+        <label for="s_opt_in" style="font-weight:normal"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries. If you consent, our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a>, emails, and <a target="_blank" href="//info.marklogic.com/unsubscribe">Unsubscribe Page</a> allow you to easily unsubscribe at any time.</label>
+        <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
+      </div>
       <div class="signup-form-row">
         <label class="signup-form-label" for="signup-submit"> </label>
         <button id="signup-submit" class="btn btn-default" type="submit">Sign up</button>
-      </div>
-      <label class="signup-form-label" for="signup-submit"> </label>
-      <div class="signup-form-row">       
-        <label style="font-weight:normal">We're committed to processing your personal data in compliance with our <a target="_blank" href="http://www.marklogic.com/privacy-policy">Privacy Statement</a> while providing you with transparent notice about our practices.</label>
       </div>
       <ml:signup-form-hidden-fields/>
     </fieldset>
@@ -334,8 +334,17 @@
   <a id="fb-signup-link" href="/people/fb-signup"><div>Sign up via Facebook</div></a>
   -->
   <script xml:space="preserve">
+    var GPDR_LIST = [
+      "Austria", "Belgium", "Bulgaria", "Cyprus", "Czech Republic"
+      , "Denmark", "Germany", "Greece", "Iceland", "Italy"
+      , "Latvia", "Liechtenstein", "Lithuania", "Malta", "Netherlands"
+      , "Norway", "Poland", "Romania", "Slovakia", "Slovenia"
+      , "Spain"    
+      ];
 
     $(document).ready(function() {
+      $('#s_opt_in_div').hide();
+      $("#s_opt_in_url").attr("value", $(location).attr('href'));
 
       $.validator.addMethod(
         "regex",
@@ -354,7 +363,7 @@
         },
         "Value does not match the required format."
       );
-    
+
       var e = getParameterByName("e");
       if (e != "") alert(e);
 
@@ -399,7 +408,7 @@
 
       $('#s_country').change(function() {
         var country = $(this).find('option:selected').text();
-        if (country === 'United States') {
+        if (country === 'United States of America') {
           var states = [
             {name: 'Alabama', value: 'AL'},
             {name: 'Alaska', value: 'AK'},
@@ -409,6 +418,7 @@
             {name: 'Colorado', value: 'CO'},
             {name: 'Connecticut', value: 'CT'},
             {name: 'Delaware', value: 'DE'},
+            {name: 'District of Columbia', value: 'DC'},
             {name: 'Florida', value: 'FL'},
             {name: 'Georgia', value: 'GA'},
             {name: 'Hawaii', value: 'HI'},
@@ -473,6 +483,16 @@
         } else {
           setStates([]);
           $('.state-row').hide();
+        }
+        
+        //GPDR stuff
+        if (GPDR_LIST.indexOf(country) === -1) {
+          $('#s_opt_out_div').show();
+          $('#s_opt_in_div').hide();
+          $('#s_opt_in').prop('checked', false);
+        } else {
+          $('#s_opt_in_div').show();
+          $('#s_opt_out_div').hide();
         }
       });
     });
