@@ -166,11 +166,11 @@
           </div>
 
           <div class="col-sm-3 method">
-            <a href="http://developer.marklogic.com/mailman/listinfo/general">
+            <a href="//info.marklogic.com/opt-in-eu.html">
               <span class="glyphicon glyphicon-envelope"></span>
-              <h2>Mailing List</h2>
-              <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-              <p class="action">Join the Mailing List →</p>
+              <h2>Stay Current with MarkLogic</h2>
+              <p>Be the first to know! News, product information, and events delivered straight to your inbox.</p>
+              <p class="action">SIGN ME UP! →</p>
             </a>
           </div>
         </div>
