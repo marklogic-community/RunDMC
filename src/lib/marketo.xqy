@@ -95,7 +95,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
         ()
     let $optin := $user/opt-in/string() eq "on"
     let $optin-url := $user/opt-in-url/string()
-    let $optin-date := fn:current-dateTime()
+    let $optin-date := fn:current-date()
 
     (: First check to see if lead exists :)
     let $body :=
@@ -131,7 +131,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
         (: basically do not send these info if option is set to false. :)
             (
             <attribute>
-                <attrName>Opt_in__c</attrName>
+                <attrName>opt_in__c</attrName>
                 <attrValue>{$optin}</attrValue>
             </attribute>
         ,
@@ -141,7 +141,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
             </attribute>
             ,
             <attribute>
-                <attrName>Opt_in_Date__c</attrName>
+                <attrName>opt_in_date__c</attrName>
                 <attrValue>{$optin-date}</attrValue>
             </attribute>
             )
