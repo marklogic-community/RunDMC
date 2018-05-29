@@ -132,7 +132,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
             (
             <attribute>
                 <attrName>opt_in__c</attrName>
-                <attrValue>{$optin}</attrValue>
+                <attrValue>True</attrValue>
             </attribute>
         ,
             <attribute>
