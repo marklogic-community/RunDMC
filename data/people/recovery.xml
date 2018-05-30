@@ -10,7 +10,7 @@
     <input autofocus="autofocus" style="display: inline" id="email" name="email" value="" title="email" tabindex="1" type="text"/>
     <input class="button" id="reset-submit" value="Send mail" type="submit" tabindex="2"/>
     <br />
-    We're committed to processing your personal data in compliance with our <a target="_blank" href="http://www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices.
+    We're committed to processing your personal data in compliance with our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices.
   </form>
 
 </ml:page>

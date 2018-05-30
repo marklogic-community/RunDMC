@@ -1101,20 +1101,20 @@
         <input class="url" id="picture" name="picture" value="{$user/*:picture/string()}" type="text"/>
         <img src="{$user/*:picture/string()}" alt="picture"/>
       </div>
-      -->
       <div class="form-group">
         <label>Website/Blog</label>
         <input class="url form-control" id="url" name="url" value="{$user/*:url/string()}" type="text"/>
       </div>
+      -->
       <div class="form-group">
         <label>Twitter</label>
         <input class="twitter form-control" id="twitter" name="twitter" value="{$user/*:twitter/string()}" type="text"/>
       </div>
+      <!-- 
       <div class="form-group">
         <label>Phone</label>
         <input class="phone form-control" id="phone" name="phone" required="required" value="{$user/*:phone/string()}" type="text"/>
       </div>
-      <!--
       <div class="form-group">
         <label>Password</label>
         <input class="password required" id="password" name="password" value="" type="password"/>
