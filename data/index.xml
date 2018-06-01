@@ -168,9 +168,9 @@
           <div class="col-sm-3 method">
             <a href="https://www.marklogic.com/community/mailing-list/">
               <span class="glyphicon glyphicon-envelope"></span>
-              <h2>Stay Current with MarkLogic</h2>
-              <p>Be the first to know! News, product information, and events delivered straight to your inbox.</p>
-              <p class="action">SIGN ME UP! →</p>
+              <h2>Stay Current</h2>
+              <p>Be the first to know! MarkLogic news, product information, and events delivered straight to your inbox.</p>
+              <p class="action">Sign Me Up! →</p>
             </a>
           </div>
         </div>
