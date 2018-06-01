@@ -319,7 +319,7 @@
       </div>
       <div class="signup-form-row" id="s_opt_in_div">
         <label class="signup-form-label" for="s_opt_in"></label>
-        <label for="s_opt_in" style="font-weight:normal;border-bottom:1px solid silver;padding-bottom:5px"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries.</label>
+        <label for="s_opt_in" style="font-weight:normal;padding-bottom:5px"><input id="s_opt_in" name="s_opt_in" type="checkbox"/> Check here if you would like to receive regular emails about MarkLogic news, events, and promotions from MarkLogic and its subsidiaries.</label>
         <input id="s_opt_in_url" name="s_opt_in_url" type="hidden" value=""/>
         <br />
         <label class="signup-form-label" for="s_opt_in"></label>
