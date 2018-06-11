@@ -168,9 +168,7 @@
         <page display="rxq" href="/labs/rxq"/>
       </group>
       <group display="Data Orchestration">
-        <!--
-        <page display="Apache Nifi" href="/code/nifi"/>
-         -->
+        <page display="Apache Nifi" href="/code/apache-nifi"/>
       </group>
       <group display="Miscellany">
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
