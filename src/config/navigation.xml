@@ -167,7 +167,7 @@
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rxq" href="/labs/rxq"/>
       </group>
-      <group display="Data Orchestration">
+      <group display="Data Flow Orchestration">
         <page display="Apache Nifi" href="/code/apache-nifi"/>
       </group>
       <group display="Miscellany">
