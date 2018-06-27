@@ -1,0 +1,13 @@
+1. depending on the version of ml-roxy you are using, you may have to create an empty file with the following path:
+  - src/app/config/config.xqy
+  
+2. discuss on comments will only appear if it is locally configured (/config/disqus-info.xml)
+  - copying the values from the server may allow direct integration
+  - if this is not available, edit 'src/view/comments.xsl' with the following values:
+    + var disqus_shortname = 'marklogicdev';
+    
+3. if you would not have an apache to do redirects on your local, the cookies would not get registered properly. your login will not last.
+  - modify 'src/lib/cookies.xqy', disable the domain restriction, i.e. comment out this:   let $cookie := if(fn:exists($domain)) then fn:concat($cookie, "; domain=", $domain) else $cookie
+
+4. if you changed the default ports (main: 8012, draft: 8014, etc.) make sure to update 'src/config/server-urls.xml' accordingly.
+     

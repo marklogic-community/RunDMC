@@ -15,11 +15,7 @@
     </p>
     <a class="button" href="http://stackoverflow.com/questions/ask?tags=marklogic">Ask a Question</a>
     <p/>
-    <p>MarkLogic also runs an active
-      <a href="/discuss">developer mailing list</a>.  You must <a href="/mailman/listinfo/general">subscribe</a> to ask
-      questions on that list.  You can browse and search the list at
-      <a href="http://marklogic.markmail.org">MarkMail</a>.
-    </p>
+    <p>MarkLogic ran a developer mailing list until May 24, 2018. You can browse and search the list archives at <a href="http://marklogic.markmail.org">MarkMail</a>.</p>
   </div>
   <ml:stackoverflow-reflector/>
 </ml:page>

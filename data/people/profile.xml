@@ -10,6 +10,12 @@
     <form method="post" action="#" id="profile-form" enctype="application/x-www-form-urlencoded" class="col-md-6">
       <ml:profile/>
       <fieldset>
+        <div class="signup-form-row" id="s_opt_out_div">
+          <label class="signup-form-label"></label>
+          <label style="font-weight:normal">We are committed to processing your personal data in compliance with our <a target="_blank" href="//www.marklogic.com/privacy">Privacy Statement</a> while providing you with transparent notice about our practices</label>
+        </div>
+      </fieldset>
+      <fieldset>
         <div class="signup-form-row">
           <input class="button" id="profile-save" value="Save" type="submit"/>
           <a href="/reset"><span id="change-passwd">Change password</span></a>    

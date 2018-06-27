@@ -158,6 +158,7 @@
       </group>
       <group display="Libraries and Frameworks">
         <page display="Data Hub Framework" href="/code/data-hub-framework"/>
+        <page display="Smart Mastering Core" href="/code/smart-mastering-core"/>
         <page display="Roxy" href="/code/roxy"/>
         <!-- <page display="XQuerrail2" href="/code/xquerrail2"/> -->
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
@@ -166,10 +167,8 @@
         <page display="OAuth" href="/code/oauth2"/>
         <page display="rxq" href="/labs/rxq"/>
       </group>
-      <group display="Data Orchestration">
-        <!-- 
-        <page display="Apache Nifi" href="/code/nifi"/>
-         -->
+      <group display="Data Flow Orchestration">
+        <page display="Apache Nifi" href="/code/apache-nifi"/>
       </group>
       <group display="Miscellany">
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>

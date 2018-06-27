@@ -6,10 +6,9 @@
     <div id="hero">
       <div class="content">
         <div class="hero-data">
-          <p>MAY 7-10 | SAN FRANCISCO</p>
-          <h1>MarkLogic World 2018</h1>
-          <p>Join us for hands-on training, real world customer use cases, technical deep-dive classes and executive keynotes. Four days of insight and inspiration to integrate your data – and spur innovation in your organization.</p>
-          <p><a class="btn" href="https://www.cvent.com/d/4tq5tr/12K?RefID=devhero" target="_blank" rel="noopener">Register Now</a></p>
+          <h1>Developer Community</h1>
+          <h2>MarkLogic 9.0-5 Now Available</h2>
+          <p><a class="btn" href="https://developer.marklogic.com/products">Free Download</a> <a class="btn btn-ghost" href="https://www.marklogic.com/product/marklogic-database-overview/">Database Overview</a></p>
         </div>
       </div>
     </div>
@@ -167,11 +166,11 @@
           </div>
 
           <div class="col-sm-3 method">
-            <a href="http://developer.marklogic.com/mailman/listinfo/general">
+            <a href="https://www.marklogic.com/community/mailing-list/">
               <span class="glyphicon glyphicon-envelope"></span>
-              <h2>Mailing List</h2>
-              <p>Stay in the loop and connect with other community members on our public mailing list where you will get all the latest updates.</p>
-              <p class="action">Join the Mailing List →</p>
+              <h2>Stay Current</h2>
+              <p>Be the first to know! MarkLogic news, product information, and events delivered straight to your inbox.</p>
+              <p class="action">Sign Me Up! →</p>
             </a>
           </div>
         </div>
