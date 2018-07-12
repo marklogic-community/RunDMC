@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
 
-  <h1>MarkLogic 8 System Requirements </h1>
+  <h1>MarkLogic 9 System Requirements </h1>
   <p>This document lists the supported platforms, memory requirements,
 and disk space requirements to install MarkLogic Server. For full details, see the
  <a href="//docs.marklogic.com/guide/installation">Installation Guide</a></p>
@@ -33,7 +33,7 @@ and disk space requirements to install MarkLogic Server. For full details, see t
     <li>512 MB of system memory, minimum. 2 GB or more recommended, depending on database size.
       <p>The first time it runs, MarkLogic Server automatically configures itself to the amount of memory on the system, reserving as much as it can for its own use. If you need to change the default configuration, you can manually override these defaults at a later time using the Admin Interface.</p></li>
     <li>1.5 times the disk space of the total forest size. Specifically, each forest on a filesystem requires its filesystem to have at least 1.5 times the forest size in disk space (or , for each forest less than 32GB, 3 times the forest size) when the merge max size database merge setting is set to the default of 32GB. This translates to 1.5 times the disk space of the source content after it is loaded.
-      <p>For example, if you plan on loading content that will result in a 100 GB database, reserve at least 150 GB of disk space. The disk space reserve is required for merges. </p></li>
+      <p>For example, if you plan on loading content that will result in a 100 GB database, reserve at least 150 GB of disk space. The disk space reserve is required for merges. </p></li>
     <li>On Linux systems, swap space equal to the amount of physical memory on the machine or 32GB, whichever is lower. MarkLogic also recommends setting Linux Huge Pages on Red Hat Enterprise Linux 7 systems to 3/8 the size of your physical memory.  For details on setting up Huge Pages, see <a href="https://access.redhat.com/solutions/46111">https://access.redhat.com/solutions/46111</a>.
       <p>If you have Huge Pages set up on a Linux system, your swap space on that machine should be equal to the size of your physical memory minus the size of your Huge Page (because Linux Huge Pages are not swapped), or 32GB, whichever is lower. For example, if you have 48GB of physical memory, and if you have Huge Pages set to 18 GB, then you need swap space of 30 GB (48 - 18).</p>
       <p>At system startup on Linux machines, MarkLogic Server logs a message to the <code>ErrorLog.txt</code> file showing the Huge Page size, and the message indicates if the size is below the recommended level.</p>

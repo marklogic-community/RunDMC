@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  
+<h1>MarkLogic Node.js Client API</h1>
+
+<p>The MarkLogic Node.js Client API is an open-source JavaScript library that allows developers to quickly, easily, and reliably access MarkLogic from their Node applications. </p>
+
+<p>The Node.js API is developed in the open on <a href="https://github.com/marklogic/node-client-api">GitHub</a>. Submit <a href="https://github.com/marklogic/node-client-api/issues">issues</a> and <a href="https://github.com/marklogic/node-client-api/pulls">pull requests</a> there to contribute.</p>
+
+<p style="padding-bottom:10px;">
+  <a class="btn btn-default btn-sm" href="https://github.com/marklogic/node-client-api">Node.js Client API on GitHub ›</a></p>
+
+
+  <section class="download">
+    <h3>Installation</h3>
+    <h4>npm</h4>
+    <p>The Node.js Client API is available from <a href="https://www.npmjs.com/package/marklogic">npm</a>. From within your project directory run the following at the commandline:</p>
+    <pre xml:space="preserve">npm install marklogic --save</pre>
+    <p>Learn more about <a href="https://docs.npmjs.com/getting-started/what-is-npm">installing and using npm</a>.</p>
+    <p>Additional <a href="https://github.com/marklogic/node-client-api/releases">releases</a> and the <a href="https://github.com/marklogic/node-client-api/tree/develop">latest development branch</a> are available on <a href="https://github.com/marklogic/node-client-api">GitHub</a>.</p>
+  </section>
+
+<p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
+<h3>Features</h3>
+<p>For developers using—or looking to use—<a href="http://nodejs.org">Node.js</a> in their application stack, the Node.js Client API is the fastest, easiest, and most reliable way to communicate with a MarkLogic database.</p>
+<p>The API provides an asynchronous JavaScript interface for key MarkLogic capabilities, such as </p>
+<ul>
+    <li>search</li>
+    <li>document management</li>
+    <li>batch loading</li>
+    <li>transactions</li>
+    <li>aggregates</li>
+  </ul>
+<p>Combined with MarkLogic's ability to index and manage JSON documents natively, the Node.js Client API is an ideal tool for full-stack JavaScript development.</p>
+
+<p>The Node.js Client API is written in JavaScript specifically for Node. It encapsulates best practices on both the Node and MarkLogic ends, for example, enforcing entirely asynchronous I/O and providing conveniences for building complex queries that leverage MarkLogic’s rich indexes. </p>
+<p>Its interface is designed to be familiar and comfortable to Node developers. For performance-critical or resource-intensive operations, the Node.js Client API provides an <strong>extension mechanism that executes JavaScript on Server</strong>, where it runs close to the data. </p>
+
+<h3> Tutorials and Samples </h3>
+<p></p>
+<ul>
+    <li><a href="http://developer.marklogic.com/learn/node-client-api">Node.js Client API Getting Started</a></li>
+  </ul>
+
+
+<h3>Requirements</h3>
+<p><a href="https://docs.marklogic.com/guide/node-dev/intro#id_64936">Required Software</a> is listed in the Node.js Application Developer's Guide, including supported versions of Node.js.</p>
+
+
+<h3>See Also</h3>
+<p>
+  MarkLogic also provides supported APIs for Java and generic REST/HTTP clients.
+</p>
+<ul>
+    <li><a href="/products/java">MarkLogic Java Client API</a></li>
+    <li><a href="http://docs.marklogic.com/guide/rest-dev/intro">MarkLogic Client REST API</a></li>
+  </ul>
+<p>
+  <ml:product-documentation>
+    <ml:new-doc title="MarkLogic Node.js Client API Reference" source="/jsdoc/index.html"/>
+    <ml:new-doc source="/guide/node-dev"/>
+  </ml:product-documentation>
+</p>
+
+</ml:page>

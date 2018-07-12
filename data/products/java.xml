@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
-
   <p>
   <img src="/media/duke-java-mascot.png" width="38" height="67" alt="Duke" style="float:right; padding: 2px"/>
   The MarkLogic Java Client API provides access to core MarkLogic database and search functionality.  It allows Java developers to get going quickly,
@@ -15,10 +14,10 @@
 
   <ml:product-info name="MarkLogic Java API" license-page="">
     <ml:platform name="Downloads">
-      <ml:download anchor-class="track-download" href="/download/binaries/java/MarkLogic-Java-API-4.0.1.zip" size="18MB" date="2017-05-02" sha1="ed27dcb5b430888e39e176edde85402ef053fb6a">Release 4.0.1 zip package (compatible with MarkLogic 9)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/java/marklogic-client-api-4.0.4-with-dependencies.zip" size="14MB" date="2018-05-03" sha1="ea61d90103cbe94ca8c295e14c4fd5269345c250">Release 4.0.4 zip package (compatible with MarkLogic 9)</ml:download>
       <!--
 
-      <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+      <ml:download href="/maven2" size="" date="2018-05-03" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
 
       -->
     </ml:platform>
@@ -31,8 +30,15 @@
 &lt;dependency&gt;
   &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
   &lt;artifactId&gt;marklogic-client-api&lt;/artifactId&gt;
-  &lt;version&gt;4.0.1&lt;/version&gt;
+  &lt;version&gt;4.0.4&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
+    <h4>Add this repository to your pom.xml repositories section:</h4>
+    <textarea class="codemirror xml">
+        &lt;repository&gt;
+          &lt;id&gt;jcenter&lt;/id&gt;
+          &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
+        &lt;/repository&gt;
+    </textarea>
   </section>
 
   <section class="download">
@@ -40,8 +46,12 @@
     <h4>Dependencies</h4>
     <textarea class="codemirror javascript">
 dependencies {
-  compile group: 'com.marklogic', name: 'marklogic-client-api', version: '4.0.1'
+  compile group: 'com.marklogic', name: 'marklogic-client-api', version: '4.0.4'
 }</textarea>
+    <h5>Use gradle 1.7+ and add this to your build.gradle repositories section:</h5>
+    <textarea class="codemirror javascript">
+        jcenter()
+    </textarea>        
   </section>
 
   <p style="padding-top: 5px; border-top: 1px solid #E3E3E3"> </p>
@@ -50,50 +60,50 @@ dependencies {
   <ul>
     <li>Document <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> and management, including support for
       <ul>
-        <li>JSON, XML, Binary, and text documents</li>
-        <li>Organization via <a href="//docs.marklogic.com/guide/app-dev/properties#id_91048">Collections and Directories</a></li>
-        <li>Metadata (<a href="//docs.marklogic.com/guide/app-dev/properties">properties</a>, <a href="//docs.marklogic.com/guide/security/permissions#id_85471">permissions</a>, <a href="//docs.marklogic.com/guide/search-dev/relevance#id_68032">quality</a>, and last-modified time)</li>
+  <li>JSON, XML, Binary, and text documents</li>
+  <li>Organization via <a href="//docs.marklogic.com/guide/app-dev/properties#id_91048">Collections and Directories</a></li>
+  <li>Metadata (<a href="//docs.marklogic.com/guide/app-dev/properties">properties</a>, <a href="//docs.marklogic.com/guide/security/permissions#id_85471">permissions</a>, <a href="//docs.marklogic.com/guide/search-dev/relevance#id_68032">quality</a>, and last-modified time)</li>
       </ul>
     </li>
     <li>Query by Example</li>
     <li>Full-text search, including
       <ul>
-        <li>Result snippeting, paging, and facets</li>
-        <li>Configurable search input string parsing</li>
-        <li>Advanced search specification and configuration, including support for
+  <li>Result snippeting, paging, and facets</li>
+  <li>Configurable search input string parsing</li>
+  <li>Advanced search specification and configuration, including support for
           <ul>
-            <li>Keyword, phrase, value, near, and boolean searches</li>
-            <li>Control of stemming, case-sensitivity, collation, and decompounding</li>
-            <li>Control of diacritics and punctuation handling</li>
-          </ul>
+      <li>Keyword, phrase, value, near, and boolean searches</li>
+      <li>Control of stemming, case-sensitivity, collation, and decompounding</li>
+      <li>Control of diacritics and punctuation handling</li>
+    </ul>
         </li>
-        <li>Tokenization and stemming for 13 languages</li>
-        <li>Spelling dictionaries and thesauri</li>
+  <li>Tokenization and stemming for 13 languages</li>
+  <li>Spelling dictionaries and thesauri</li>
       </ul>
     </li>
     <li>Multi-statement (and multi-document) transaction management</li>
     <li>Semantics
       <ul>
-        <li>MarkLogic 8.0-4 and later supports Semantic queries and updates common libraries, extending these APIs for variable bindings, combination queries and other features. </li>
-        <li><a href="https://jena.apache.org/" target="_blank">Jena</a> -- an Apache framework for Semantic Web and Linked Data applications
+  <li>MarkLogic 8.0-4 and later supports Semantic queries and updates common libraries, extending these APIs for variable bindings, combination queries and other features. </li>
+  <li><a href="https://jena.apache.org/" target="_blank">Jena</a> -- an Apache framework for Semantic Web and Linked Data applications
           <ul>
-            <li><a href="https://github.com/marklogic/marklogic-jena" target="_blank">GitHub</a></li>
-            <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_38569">MarkLogic Documentation</a></li>
-          </ul>
+      <li><a href="https://github.com/marklogic/marklogic-jena" target="_blank">GitHub</a></li>
+      <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_38569">MarkLogic Documentation</a></li>
+    </ul>
         </li>
-        <li><a href="http://rdf4j.org/" target="_blank">Sesame</a> -- a framework for processing and handling RDF data
+  <li><a href="http://rdf4j.org/" target="_blank">Sesame</a> -- a framework for processing and handling RDF data
           <ul>
-            <li><a href="https://github.com/marklogic/marklogic-sesame" target="_blank">GitHub</a></li>
-            <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_17082">MarkLogic Documentation</a></li>
-          </ul>
+      <li><a href="https://github.com/marklogic/marklogic-sesame" target="_blank">GitHub</a></li>
+      <li><a href="http://docs.marklogic.com/guide/semantics/clientAPIs#id_17082">MarkLogic Documentation</a></li>
+    </ul>
         </li>
       </ul>
     </li>
     <li>Analytics, including values and aggregates</li>
     <li>Security, including
       <ul>
-        <li>API-level security via seperate read, write, and administrative access control</li>
-        <li>Management of document-level (and collection/directory?) privileges</li>
+  <li>API-level security via seperate read, write, and administrative access control</li>
+  <li>Management of document-level (and collection/directory?) privileges</li>
       </ul>
     </li>
   </ul>
@@ -135,10 +145,10 @@ dependencies {
     <div class="panel-body">
       <ml:product-info name="MarkLogic Java API" license-page="">
         <ml:platform name="Downloads">
-          <ml:download anchor-class="track-download" href="/download/binaries/java/java-client-api-3.0.7-with-dependencies.zip" size="6.9MB" date="2017-02-15" sha1="77d7619f29c2277da95df1a697b8a42e14668e04">Release 3.0.7 zip package (compatible with MarkLogic 8)</ml:download>
+          <ml:download anchor-class="track-download" href="/download/binaries/java/java-client-api-3.0.8-with-dependencies.zip" size="7.0MB" date="2017-08-17" sha1="e60969ae507f7a6fd647cd6380eb76d519a8723e">Release 3.0.8 zip package (compatible with MarkLogic 8)</ml:download>
           <!--
 
-          <ml:download href="/maven2" size="" date="2012-09-07" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
+          <ml:download href="/maven2" size="" date="2017-08-17" url-to-copy="http://developer.marklogic.com/maven2">Maven repository</ml:download>
 
           -->
         </ml:platform>
@@ -151,8 +161,14 @@ dependencies {
 &lt;dependency&gt;
   &lt;groupId&gt;com.marklogic&lt;/groupId&gt;
   &lt;artifactId&gt;java-client-api&lt;/artifactId&gt;
-  &lt;version&gt;3.0.6&lt;/version&gt;
+  &lt;version&gt;3.0.8&lt;/version&gt;
 &lt;/dependency&gt;</textarea>
+        <h5>Add this repository to your pom.xml repostories section:</h5>
+        <textarea class="codemirror xml">
+&lt;repository&gt;
+  &lt;id&gt;jcenter&lt;/id&gt;
+  &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
+&lt;/repository&gt;</textarea>
       </section>
 
       <section class="download">
@@ -160,13 +176,17 @@ dependencies {
         <h5>Dependencies</h5>
         <textarea class="codemirror javascript">
 dependencies {
-  compile group: 'com.marklogic', name: 'java-client-api', version: '3.0.7'
+  compile group: 'com.marklogic', name: 'java-client-api', version: '3.0.8'
 }</textarea>
+        <h5>Use gradle 1.7+ and add this to your build.gradle repositories section:</h5>
+        <textarea class="codemirror javascript">
+jcenter()
+</textarea>
       </section>
     </div>
   </div>
 
-
+<!--
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4>MarkLogic 7</h4>
@@ -191,4 +211,6 @@ dependencies {
       </section>
     </div>
   </div>
+ -->
+
 </ml:page>

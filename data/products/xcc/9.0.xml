@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <p>
-The XML Contentbase Connector (XCC) is an interface to communicate with MarkLogic Server from a Java or .NET middleware application layer.
+The XML Contentbase Connector (XCC) is an interface to communicate with MarkLogic Server from a Java middleware application layer.
 It provides APIs for
-    <ul>
+<ul>
       <li>Evaluating stored XQuery programs</li>
-      <li>Dynamic construction and evaluation of XQuery programs from Java (or .Net) code</li>
+      <li>Dynamic construction and evaluation of XQuery programs from Java code</li>
       <li>Type marshalling</li>
       <li>Document management and streaming inserts</li>
     </ul>
-  </p>
+</p>
   <ml:product-info name="XCC for MarkLogic 9">
     <ml:platform name="Java">
-      <ml:download anchor-class="track-download" href="/download/binaries/9.0/MarkXCC.Java-9.0.1.zip" size="2.3 MB" date="2017-05-02" sha1="61f64d6205221e66a0b90ddb662d90cf6eb2701c">XCC Java distribution (includes javadoc)</ml:download>
-      <ml:download anchor-class="track-download" href="/download/binaries/9.0/MarkXCC.Java-9.0.1-src.zip" size="355 KB" date="2017-05-02" sha1="7417d8b6c95bede7c366b3f42a2642e307fb84c2">XCC Java source</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/9.0/MarkXCC.Java-9.0.6.zip" size="2.6 MB" date="2018-06-26" sha1="3bb7f5e695cb5249b2ced5fd9bacc0363848dc6d">XCC Java distribution (includes javadoc)</ml:download>
+      <ml:download anchor-class="track-download" href="/download/binaries/9.0/MarkXCC.Java-9.0.6-src.zip" size="669 KB" date="2018-06-26" sha1="3eaed482736441b9dc0747d91a16ed409dd83fbf">XCC Java source</ml:download>
     </ml:platform>
     <ml:maven repo="false">
-      <ml:artifact id="marklogic-xcc" version="9.0.1"/>
+      <ml:artifact id="marklogic-xcc" version="9.0.6"/>
     </ml:maven>
   </ml:product-info>
   <ml:product-documentation>
@@ -27,10 +27,11 @@ It provides APIs for
   <hr noshade="none"/>
   <h4>Older versions</h4>
   <p>
-    You can find previous versions of XCC for previous releases of MarkLogic here
-    <ul>
+You can find previous versions of XCC for previous releases of MarkLogic here
+<ul>
       <li><a href="/products/xcc/8.0">XCC for 8.0</a></li>
-      <li><a href="/products/xcc/7.0">XCC for 7.0</a></li>
-    </ul>
-  </p>
+      <!--<li><a href="/products/xcc/7.0">XCC for 7.0</a></li>-->
+    </ul></p>
+
+
 </ml:page>
