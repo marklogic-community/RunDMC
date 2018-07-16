@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<page status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
   <ul class="info" xmlns:x="http://www.w3.org/1999/xhtml">
     <li><a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</a></li>
     <li><a href="/free-developer">Read about the Free Developer License  »</a></li>
@@ -85,4 +85,4 @@ You can find previous releases of MarkLogic Server here
   -->
   
   
-</page>
+</ml:page>
