@@ -1,0 +1,5 @@
+<ml:widget xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal">
+  <a href="https://www.marklogic.com/escape-the-matrix/" target="_blank" border="0">
+    <img class="img-responsive" src="/media/escape-the-matrix.jpg" alt="Escape the Matrix" border="0"/>
+  </a>
+</ml:widget>
