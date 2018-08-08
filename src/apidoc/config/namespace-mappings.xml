@@ -79,6 +79,8 @@
   <namespace lib="xhtml" uri="http://marklogic.com/cpf/xhtml"/>
   <namespace lib="xinc" uri="http://marklogic.com/xinclude"/>
   <namespace lib="xp" uri="http://marklogic.com/xinclude/xpointer"/>
+  <namespace lib="schematron" uri="http://marklogic.com/schematron/schematron"/>
+
 
  <!-- javascript objects (uri the same as object name) -->
   <namespace object="Attr" uri="Attr"/>
