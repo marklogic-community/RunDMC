@@ -52,6 +52,10 @@
             <dd>This eBook provides a high-level introduction in Chapter One and then dives deep into technical capabilities that developers and architects will appreciate.</dd>
           </dl>
           <dl>
+            <a href="/learn/integration-with-sso"><dt>Integrating with Single Sign-On</dt></a>
+            <dd>This guide explains how applications built on MarkLogic can be integrated with SSO solutions at the database layer in order to prevent passwords from being directly sent to MarkLogic. </dd>
+          </dl>          
+          <dl>
             <a href="/learn/understanding-system-resources"><dt>Performance: Understanding System Resources</dt></a>
             <dd>This guide provides details about MarkLogic core functions and operations so that DBAs, Infrastructure Architects, Developers and Engineers can configure MarkLogic for optimal success.</dd>
           </dl>
