@@ -82,6 +82,7 @@
   <namespace lib="schematron" uri="http://marklogic.com/schematron/schematron"/>
 
 
+
  <!-- javascript objects (uri the same as object name) -->
   <namespace object="Attr" uri="Attr"/>
   <namespace object="CharacterData" uri="CharacterData"/>

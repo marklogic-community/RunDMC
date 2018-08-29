@@ -3,78 +3,78 @@
   xmlns="http://developer.marklogic.com/site/internal"
   xmlns:x="http://www.w3.org/1999/xhtml">
 
-  <x:ul class="info">
+  <x:ul class="info" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
     <x:li><x:a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</x:a></x:li>
     <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
     <x:li><x:a href="/products/marklogic-server/requirements-9.0">Review System Requirements  »</x:a></x:li>
   </x:ul>
 
-  <product-info name="MarkLogic 9">
+  <product-info name="MarkLogic 9" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
     <platform name="Cloud Platform">
       <download anchor-class="" href="/products/cloud" size="" md5="" date="2017-09-25">Deploying on the Cloud</download>
     </platform>
 
     <platform name="Microsoft Windows (7, 10, and Server 2012)">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-4-amd64.msi" size="327 MB" sha1="132593b07a86c9a6db9c138faf817d1a7a154862" date="2018-01-19">MarkLogic Server x64 (AMD64, Intel EM64T) 64-bit Windows Installer</download>
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4-amd64.msi" size="49 MB" sha1="e8870184f3a72619a33b7289abd4497185c667cc" date="2018-01-19">Converters &amp; Filters for Microsoft Windows</download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-6-amd64.msi" size="287 MB" sha1="1abdd20d948df709de6f26e41e9f83a9e284bfe5" date="2018-06-26">MarkLogic Server x64 (AMD64, Intel EM64T) 64-bit Windows Installer</download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-6-amd64.msi" size="48 MB" sha1="98fd843a9d5ff86531321f5385e8f33664f57912" date="2018-06-26">Converters &amp; Filters for Microsoft Windows</download>
     </platform>
 
     <platform name="Mac OS X">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-4-x86_64.dmg" size="204 MB" sha1="87fdb9e684a85a1a50e435a1b5b139e1756e9017" date="2017-01-19">MarkLogic Server OS X disk image </download>
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4-x86_64.dmg" size="38 MB" sha1="a653b4ac729979ba31561b142731eede67ed0e46" date="2017-01-19">Filters for OS X</download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-6-x86_64.dmg" size="167 MB" sha1="cf7f9f9af77580a8923f3a918d22abc8343f1052" date="2018-06-26">MarkLogic Server OS X disk image </download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-6-x86_64.dmg" size="38 MB" sha1="105edb422b3e88fd696dd9914b359b9090a5199f" date="2018-06-26">Filters for OS X</download>
     </platform>
 
     <platform name="Red Hat Enterprise Linux / CentOS, Version 7">
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-4.x86_64.rpm" size="254 MB" sha1="53ea42c4f427fd45f1f263f351784a540125f959" date="2017-01-19">MarkLogic Server x64 (AMD64, Intel EM64T) 64-bit Linux RPM</download>
-      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4.x86_64.rpm" size="48 MB" sha1="61e0058878d5227a57bdff3132b2a795577946f9" date="2017-01-19">Converters &amp; Filters for Linux </download>
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogic-9.0-6.x86_64.rpm" size="171 MB" sha1="2d27d91bfec7af58876d7554760d2154079c0269" date="2018-06-26">MarkLogic Server x64 (AMD64, Intel EM64T) 64-bit Linux RPM</download>
+    <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-6.x86_64.rpm" size="47 MB" sha1="a88a5b92e4be12a1973c4d6084eaf442e0bb7e34" date="2018-06-08">Converters &amp; Filters for Linux </download>
     </platform>
 
   </product-info>
 
-  <header>
-    <h4>Converters &amp; Filters</h4>
-    <p>
-      Prior to <b>MarkLogic Server</b> release <b>9.0-4</b>, converters/filters were bundled and automatically installed with MarkLogic Server. Starting at <b>MarkLogic Server</b> release <b>9.0-4</b>, converters/filters are offered as a separate package.
-    </p>
-    <p>
-      This change affects the following XQuery API functions:
-    </p> <ul>
-    <li><a href="http://docs.marklogic.com/xdmp:word-convert">xdmp:word-convert</a></li>
-    <li><a href="http://docs.marklogic.com/xdmp:excel-convert">xdmp:excel-convert</a></li>
-    <li><a href="http://docs.marklogic.com/xdmp:powerpoint-convert">xdmp:powerpoint-convert</a></li>
-    <li><a href="http://docs.marklogic.com/xdmp:pdf-convert">xdmp:pdf-convert</a></li>
-    <li><a href="http://docs.marklogic.com/xdmp:document-filter">xdmp:document-filter</a></li>
-  </ul>
-    <p>
-      Additional details regarding the <a href="https://docs.marklogic.com/guide/installation/intro#id_34694">MarkLogic Converters Installation Changes Starting at Release 9.0-4</a> are available in our <a href="https://docs.marklogic.com/guide/installation/intro#id_34694">Installation Guide</a>.
-      <p>
+<header xmlns:x="http://www.w3.org/1999/xhtml">
+<h4>Converters &amp; Filters</h4>
+<p>
+Prior to <b>MarkLogic Server</b> release <b>9.0-4</b>, converters/filters were bundled and automatically installed with MarkLogic Server. Starting at <b>MarkLogic Server</b> release <b>9.0-4</b>, converters/filters are offered as a separate package.
+</p>
+<p>
+This change affects the following XQuery API functions:
+</p> <ul>
+      <li><a href="http://docs.marklogic.com/xdmp:word-convert">xdmp:word-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:excel-convert">xdmp:excel-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:powerpoint-convert">xdmp:powerpoint-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:pdf-convert">xdmp:pdf-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:document-filter">xdmp:document-filter</a></li>
+    </ul>
+<p>
+Additional details regarding the <a href="https://docs.marklogic.com/guide/installation/intro#id_34694">MarkLogic Converters Installation Changes Starting at Release 9.0-4</a> are available in our <a href="https://docs.marklogic.com/guide/installation/intro#id_34694">Installation Guide</a>.
+<p>
 
-      </p></p>
+</p></p>
   </header>
-  <!--
-    <product-info name="MarkLogic 9 Converters &amp; Filters">
-      <platform name="Converters &amp; Filters for Microsoft Windows">
-        <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4-amd64.msi" size="49 MB" sha1="e8870184f3a72619a33b7289abd4497185c667cc" date="2018-01-19">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
-      </platform>
-      <platform name="Filters for Mac OS X (Converters are not supported on OSX)">
-        <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4-x86_64.dmg" size="38 MB" sha1="a653b4ac729979ba31561b142731eede67ed0e46" date="2017-01-19">Filters for OS X disk image </download>
-      </platform>
-      <platform name="Converters &amp; Filters for Red Hat Enterprise Linux / CentOS, Version 7">
-        <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-4.x86_64.rpm" size="48 MB" sha1="61e0058878d5227a57bdff3132b2a795577946f9" date="2017-01-19">x64 (AMD64, Intel EM64T)Converters & Filters for Linux </download>
-      </platform>
-    </product-info>
-  -->
-  <product-documentation>
+<!--
+  <product-info name="MarkLogic 9 Converters &amp; Filters">
+  <platform name="Converters &amp; Filters for Microsoft Windows">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-5-amd64.msi" size="48 MB" sha1="25a2a5d25b65784116f98817cbf0e8c8ef106996" date="2018-05-03">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
+    </platform>
+    <platform name="Filters for Mac OS X (Converters are not supported on OSX)">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-5-x86_64.dmg" size="38 MB" sha1="3d9fb6f2b4543732cb049df5de0ce41f07ff5826" date="2017-05-03">Filters for OS X disk image </download>
+  </platform>
+    <platform name="Converters &amp; Filters for Red Hat Enterprise Linux / CentOS, Version 7">
+      <download anchor-class="confirm-download" href="/download/binaries/9.0/MarkLogicConverters-9.0-5.x86_64.rpm" size="47 MB" sha1="d151550f2d8fb598e0540934084ed1f1f59f0254" date="2017-05-03">x64 (AMD64, Intel EM64T)Converters & Filters for Linux </download>
+    </platform>
+  </product-info>
+-->
+  <product-documentation xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
     <old-doc desc="Online 9.0 product documentation" path="//docs.marklogic.com/"/>
     <new-doc source="/guide/installation"/>
     <new-doc source="/guide/relnotes"/>
     <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_9_pubs.zip"/>
   </product-documentation>
-  <x:br clear="none"/>
-  <x:hr noshade="none"/>
-  <x:h4>Older versions</x:h4>
-  <x:p>
-    You can find previous releases of MarkLogic Server here
+  <x:br clear="none" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml"/>
+  <x:hr noshade="none" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml"/>
+  <x:h4 xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">Older versions</x:h4>
+  <x:p xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
+You can find previous releases of MarkLogic Server here
     <x:ul>
       <x:li><x:a href="/products/marklogic-server/8.0">8.0</x:a></x:li>
     </x:ul>

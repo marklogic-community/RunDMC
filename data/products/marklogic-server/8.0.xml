@@ -1,53 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<page status="Published" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
-  <x:ul class="info">
-    <x:li><x:a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</x:a></x:li>
-    <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
-    <x:li><x:a href="/products/marklogic-server/requirements-8.0">Review System Requirements  »</x:a></x:li>
-  </x:ul>
+<ml:page status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
+  <ul class="info" xmlns:x="http://www.w3.org/1999/xhtml">
+    <li><a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</a></li>
+    <li><a href="/free-developer">Read about the Free Developer License  »</a></li>
+    <li><a href="/products/marklogic-server/requirements-8.0">Review System Requirements  »</a></li>
+  </ul>
+  
+  <ml:product-info name="MarkLogic 8" xmlns:x="http://www.w3.org/1999/xhtml">
+    <ml:platform name="Amazon Web Services">
+      <ml:download anchor-class="" href="/products/aws" size="" md5="" date="2017-10-04">AMIs and Cloud Formation Templates</ml:download>
+    </ml:platform>
+    
+  <ml:platform name="Microsoft Windows (7, 8, Server 2008, and Server 2012)">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-8.1-amd64.msi" size="127 MB" sha1="f2a05b7363e1c823a2333e2120865c28b0b25d17" date="2018-03-29">x64 (AMD64, Intel EM64T) 64-bit Installer</ml:download>
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogicConverters-8.0-8.1-amd64.msi" size="49 MB" sha1="2aaa63502c78e4c2ec7b0fc486c4cc20b6ad70bf" date="2018-03-29">Converters &amp; Filters for Microsoft Windows</ml:download>
+    </ml:platform>
+    
+  <ml:platform name="Mac OS X 10.8, 10.9">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-8.1-x86_64.dmg" size="103 MB" sha1="c715b98d06438d10bfde0007dac45f330c7a679a" date="2018-03-29">OS X disk image </ml:download>
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogicConverters-8.0-8.1-x86_64.dmg" size="38 MB" sha1="e9c59c8014c4cb6b2487e8583b3af0e82eabeab7" date="2018-03-29">Filters for OS X</ml:download>
+    </ml:platform>
+    
+  <ml:platform name="Red Hat Enterprise Linux / CentOS, Version 6">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL6-8.0-8.1.x86_64.rpm" size="148 MB" sha1="8878a03795b99ad11eff05f7ba9840f258ea4887" date="2018-03-29">x64 (AMD64, Intel EM64T) 64-bit RPM</ml:download>
+    <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogicConverters-RHEL6-8.0-8.1.x86_64.rpm" size="50 MB" sha1="c37a2294108485aab969302179718037a2a55c6d" date="2018-03-29">Converters &amp; Filters for Linux Version 6 </ml:download>
 
-  <product-info name="MarkLogic 8">
-    <platform name="Amazon Web Services">
-      <download anchor-class="" href="/products/aws" size="" md5="" date="2017-04-11">AMIs and Cloud Formation Templates</download>
-    </platform>
+    </ml:platform>
+  
+        <ml:platform name="Red Hat Enterprise Linux / CentOS, Version 7">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL7-8.0-8.1.x86_64.rpm" size="142 MB" sha1="54d9aaa63f76e53e9414654ccfb68cec1bedfbcc" date="2018-03-29">x64 (AMD64, Intel EM64T) 64-bit RPM</ml:download>
+    <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogicConverters-RHEL7-8.0-8.1.x86_64.rpm" size="48 MB" sha1="83352b2024a12d1ed8e68af026130cc3ab7859ce" date="2018-03-29">Converters &amp; Filters for Linux Version 7</ml:download>
 
-    <platform name="Microsoft Windows (7, 8, Server 2008, and Server 2012)">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-6.4-amd64.msi" size="174 MB" sha1="16998f23cd61a78f3f1478ed957a45c3e0a447c0" date="2017-04-11">x64 (AMD64, Intel EM64T) 64-bit Installer</download>
-    </platform>
+    </ml:platform>
 
-    <platform name="Mac OS X 10.8, 10.9">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-8.0-6.4-x86_64.dmg" size="140 MB" sha1="9f7c8617f834b1717084ab3582a94f25cee3c274" date="2017-04-11">OS X disk image </download>
-    </platform>
+  <ml:platform name="SUSE Linux Enterprise Server 11">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL6-8.0-8.1.x86_64.rpm" size="148 MB" sha1="8878a03795b99ad11eff05f7ba9840f258ea4887" date="2018-03-29">x64 (AMD64, Intel EM64T) 64-bit RPM</ml:download>
+    <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogicConverters-RHEL6-8.0-8.1.x86_64.rpm" size="50 MB" sha1="c37a2294108485aab969302179718037a2a55c6d" date="2018-03-29">Converters &amp; Filters for SUSE Linux </ml:download>
 
-    <platform name="Red Hat Enterprise Linux / CentOS, Version 6">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL6-8.0-6.4.x86_64.rpm" size="205 MB" sha1="ce8ebd2f101a2dbaf38740527a0f5a1fbfe88994" date="2017-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
-    </platform>
+    </ml:platform>
+    
+  <ml:platform name="Sun Solaris 10">
+      <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MARKlogic-8.0-8.1-amd64.tar.Z" size="179 MB" sha1="5e3c9a5392e223a56238236122332fa3187a885c" date="2018-03-29">x64 (AMD64, Intel EM64T) pkgadd </ml:download>
+    <ml:download anchor-class="confirm-download" href="/download/binaries/8.0/MARKlogicConverters-8.0-8.1-amd64.tar.Z" size="103 MB" sha1="a76eb379a9fd225cb0bf98fcb2e119fea8bfc132" date="2018-03-29">Converters &amp; Filters for Solaris </ml:download>
+    </ml:platform>
+  </ml:product-info>
 
-    <platform name="Red Hat Enterprise Linux / CentOS, Version 7">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL7-8.0-6.4.x86_64.rpm" size="197 MB" sha1="f0b4eea0f0ba8c4d995e5defd7c349063d4ee656" date="2017-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
-    </platform>
+<header xmlns:x="http://www.w3.org/1999/xhtml">
+<h4>Converters &amp; Filters</h4>
+<p>
+Prior to <b>MarkLogic Server</b> release <b>8.0-8</b>, converters/filters were bundled and automatically installed with MarkLogic Server. Starting at <b>MarkLogic Server</b> release <b>8.0-8</b>, converters/filters are offered as a separate package.
+</p>
+<p>
+This change affects the following XQuery API functions:
+</p> <ul>
+      <li><a href="http://docs.marklogic.com/xdmp:word-convert">xdmp:word-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:excel-convert">xdmp:excel-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:powerpoint-convert">xdmp:powerpoint-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:pdf-convert">xdmp:pdf-convert</a></li>
+      <li><a href="http://docs.marklogic.com/xdmp:document-filter">xdmp:document-filter</a></li>
+    </ul>
+<p>
+Additional details regarding the <a href="https://docs.marklogic.com/8.0/guide/installation/intro#id_49326">MarkLogic Converters Installation Changes Starting at Release 8.0-8</a> are available in our <a href="https://docs.marklogic.com/8.0/guide/installation/intro#id_49326">Installation Guide</a>.
+<p>
 
-    <platform name="SUSE Linux Enterprise Server 11">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MarkLogic-RHEL6-8.0-6.4.x86_64.rpm" size="205 MB" sha1="ce8ebd2f101a2dbaf38740527a0f5a1fbfe88994" date="2017-04-11">x64 (AMD64, Intel EM64T) 64-bit RPM</download>
-    </platform>
+</p></p>
+  </header>
 
-    <platform name="Sun Solaris 10">
-      <download anchor-class="confirm-download" href="/download/binaries/8.0/MARKlogic-8.0-6.4-amd64.tar.Z" size="280 MB" sha1="525d31379e0f811e313730b9cc1ded349cabe344" date="2017-04-11">x64 (AMD64, Intel EM64T) pkgadd </download>
-    </platform>
-  </product-info>
-  <product-documentation>
-    <old-doc desc="Online 8.0 product documentation" path="//docs.marklogic.com/"/>
-    <new-doc source="/guide/installation"/>
-    <new-doc source="/guide/relnotes"/>
-    <new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_8_pubs.zip"/>
-  </product-documentation>
-  <x:br clear="none"/>
-  <x:hr noshade="none"/>
-  <x:h4>Older versions</x:h4>
-  <x:p>
-    You can find previous releases of MarkLogic Server here
-    <x:ul>
-      <x:li><x:a href="/products/marklogic-server/7.0">7.0</x:a> </x:li>
-    </x:ul>
-  </x:p>
-</page>
+  <ml:product-documentation xmlns:x="http://www.w3.org/1999/xhtml">
+    <ml:old-doc desc="Online 8.0 product documentation" path="//docs.marklogic.com/"/>
+    <ml:new-doc source="/guide/installation"/>
+    <ml:new-doc source="/guide/relnotes"/>
+    <ml:new-doc type="zip" title="Zip File of All MarkLogic Product Documentation" source="/MarkLogic_8_pubs.zip"/>
+  </ml:product-documentation>
+  <br clear="none" xmlns:x="http://www.w3.org/1999/xhtml"/>
+  <hr noshade="none" xmlns:x="http://www.w3.org/1999/xhtml"/>
+   <!-- 
+   <h4 xmlns:x="http://www.w3.org/1999/xhtml">Older versions</h4>
+   <p xmlns:x="http://www.w3.org/1999/xhtml">
+You can find previous releases of MarkLogic Server here
+    <ul>
+      <li><a href="/products/marklogic-server/7.0">7.0</a></li>
+    </ul>
+  </p>
+  -->
+  
+  
+</ml:page>
