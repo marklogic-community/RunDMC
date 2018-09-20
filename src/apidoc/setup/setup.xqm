@@ -24,7 +24,7 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
-declare variable $DEBUG := true() ;
+declare variable $DEBUG := false() ;
 
 declare variable $FIXUP-HREF-PAT := '^#([\w-]+[:\.]\w.+)$' ;
 
@@ -83,7 +83,7 @@ declare function stp:fine(
   $list as xs:anyAtomicType*)
 as empty-sequence()
 {
-  if ($DEBUG) then stp:log($label, $list, 'info')
+  if ($DEBUG) then stp:log($label, $list, 'fine')
   else stp:error('BADDEBUG', 'Modify the caller to check $stp:DEBUG')
 };
 
@@ -670,7 +670,6 @@ as empty-sequence()
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
     let $tidied-docs := stp:tidy-jdoc($doc, $uri)
     return (
-xdmp:log(("KIM: ", $uri, " -- ", xdmp:describe($tidied-docs[1]), "-- ", xdmp:describe($tidied-docs[2]))),
       ml:document-insert(
         $uri, stp:static-add-scripts($tidied-docs[1]), $is-hidden),
       ml:document-insert($xhtml-uri, stp:static-add-scripts($tidied-docs[2]))
