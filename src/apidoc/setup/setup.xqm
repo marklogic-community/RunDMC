@@ -24,7 +24,7 @@ declare namespace apidoc="http://marklogic.com/xdmp/apidoc";
 
 declare namespace xh="http://www.w3.org/1999/xhtml" ;
 
-declare variable $DEBUG := false() ;
+declare variable $DEBUG := true() ;
 
 declare variable $FIXUP-HREF-PAT := '^#([\w-]+[:\.]\w.+)$' ;
 
@@ -83,7 +83,7 @@ declare function stp:fine(
   $list as xs:anyAtomicType*)
 as empty-sequence()
 {
-  if ($DEBUG) then stp:log($label, $list, 'fine')
+  if ($DEBUG) then stp:log($label, $list, 'info')
   else stp:error('BADDEBUG', 'Modify the caller to check $stp:DEBUG')
 };
 
@@ -449,9 +449,84 @@ as empty-sequence()
   stp:info('stp:search-results-page-insert', ('ok', xdmp:elapsed-time()))
 };
 
+(: Create a tidied original document and an tidied XHTML document.
+ :
+ : The binary node possibility arises because the Java Client API 
+ : includes a file that's too big to handle as text; see zip-jdoc-get.
+ :
+ : This function attempts to ensure javadoc/jsdoc input only gets
+ : tidied once, while preserving the old behavior motivated by 
+ : these (old) comments:
+ :
+ :   If the document is HTML, then store an additional copy,
+ :   converted to XHTML using Tidy.
+ :
+ :   This is using the same mechanism as the CPF "convert-html" action,
+ :   except that this is done synchronously. This XHTML copy is
+ :   used for search, snippeting, etc.
+ :
+ :   Don't tidy index.html, because tidy throws away the frameset
+ :   with javadoc and closes the script tags with jsdoc. [This comment
+ :   was part of the zip-get flow, originally.]
+ :
+ : Disclaimer: The doc app attempts to distinguish between the 
+ : original input (blah.html) and a tidied XHTML version (blah_html.xhtml)
+ : for "purposes of search". I couldn't find a case where there's a
+ : difference, but I didn't check every file. Probably was motivated by
+ : some bad HTML produced by javadoc in the past. Better safe than sorry.
+ :)
+declare function stp:tidy-jdoc(
+  $doc as document-node(),
+  $uri as xs:string)
+as document-node()+
+{
+  let $tidy-options-noclean :=
+    <options xmlns="xdmp:tidy">
+      <input-encoding>utf8</input-encoding>
+      <output-encoding>utf8</output-encoding>
+      <output-xhtml>yes</output-xhtml>
+    </options>
+  let $tidy-options-clean :=
+    <options xmlns="xdmp:tidy">
+      <input-encoding>utf8</input-encoding>
+      <output-encoding>utf8</output-encoding>
+      <clean>yes</clean>
+    </options>
+  return (
+  if (not($DEBUG)) then () 
+  else stp:fine('stp:tidy-jdoc', ("tidying", $uri)),
+  if (xdmp:node-kind($doc/node()) eq "binary") then
+    ($doc, $doc)
+  else if (fn:ends-with($uri, "/index.html")) then
+    try {
+    ($doc, xhtml:clean(xdmp:tidy($doc, $tidy-options-clean)[2]))
+    } catch ($e) {
+      stp:info('stp:zip-static-file-insert',
+        ("failed tidy conversion of ", $uri, " with", $e/error:code)),
+      ($doc, $doc)
+    }
+  else (
+    try {
+      xdmp:tidy($doc, $tidy-options-noclean)[2]
+    } catch ($e) {
+      stp:info('stp:zip-static-file-insert',
+        ("failed first tidy conversion of ", $uri, " with", $e/error:code)),
+      $doc
+    },
+    try {
+      xhtml:clean(xdmp:tidy($doc, $tidy-options-clean)[2])
+    } catch ($e) {
+      stp:info('stp:zip-static-file-insert',
+        ("failed XHTML tidy conversion of ", $uri, " with", $e/error:code)),
+      $doc
+    }
+  ))
+};
+
 (: Read in java doc. The Java Client API javadoc includes a
  : file that's too big to be a text file (throws XDMP-TOOBIG).
  : If that happens, punt to loading it as a binary document.
+ : DO NOT TIDY HERE. stp:tidy-jdoc will do it just before insertion.
  :)
 declare function stp:zip-jdoc-get(
   $zip as binary(),
@@ -459,37 +534,26 @@ declare function stp:zip-jdoc-get(
 as document-node()
 {
   try {
-  (: Don't tidy index.html, because tidy throws away the 
+  (: Don't tidy index.html, because tidy throws away the
    : frameset with javadoc and closes the script tags with jsdoc.
    :)
   if (ends-with($path, '/index.html')) then xdmp:zip-get($zip, $path)
   (: Read it as text and tidy, because the HTML may be broken. :)
-  else xdmp:tidy(
-    xdmp:zip-get(
-      $zip,
-      $path,
+  else xdmp:zip-get($zip, $path,
       <options xmlns="xdmp:zip-get">
         <format>text</format>
         <encoding>auto</encoding>
       </options>
-    ),
-    <options xmlns="xdmp:tidy">
-      <input-encoding>utf8</input-encoding>
-      <output-encoding>utf8</output-encoding>
-      <output-xhtml>yes</output-xhtml>
-    </options>
-    )[2]
+    )
   } catch ($err) {
     if ($err/*:code eq "XDMP-TOOBIG") then (
       xdmp:log(fn:concat("File '", $path, "' too big. Loading as binary."), "warning"),
-      xdmp:zip-get(
-        $zip,
-        $path,
+      xdmp:zip-get($zip, $path,
         <options xmlns="xdmp:zip-get">
           <format>binary</format>
           <encoding>auto</encoding>
         </options>
-      )) 
+      ))
     else xdmp:rethrow()
   }
 };
@@ -587,41 +651,33 @@ as empty-sequence()
 {
   if (not($DEBUG)) then () else stp:debug(
     "stp:zip-static-file-insert",
-    (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)),
-  ml:document-insert(
-    $uri,
-    stp:static-add-scripts($doc),
-    $is-hidden),
-
-  (: If the document is HTML, then store an additional copy,
-   : converted to XHTML using Tidy.
-   : This is using the same mechanism as the CPF "convert-html" action,
-   : except that this is done synchronously. This XHTML copy is
-   : used for search, snippeting, etc.
-   :)
-  if (not($is-jdoc)) then () else (
+    (xdmp:describe($doc), $uri, 'hidden', $is-hidden, 'jdoc', $is-jdoc)
+  ),
+  if (not($is-jdoc)) then (
+    ml:document-insert(
+      $uri,
+      stp:static-add-scripts($doc),
+      $is-hidden)
+  ) else (
+    (: If the document is javadoc/jsdoc HTML, then store an additional,
+     : copy, converted to XHTML using Tidy. CPF "convert-html" action, 
+     : except that this is done synchronously. This XHTML copy is used for 
+     : search, snippeting, etc. [Is it really?]
+     :)
     if (not($DEBUG)) then () else stp:fine(
       'stp:zip-static-file-insert',
       ($uri, "trying xdmp:tidy with xhtml:clean")),
-    let $tidy-options := (
-      <options xmlns="xdmp:tidy">
-        <input-encoding>utf8</input-encoding>
-        <output-encoding>utf8</output-encoding>
-        <clean>true</clean>
-      </options>
-    )
-    let $xhtml := try {
-      xhtml:clean(xdmp:tidy($doc, $tidy-options)[2]) }
-    catch($e) {
-      stp:info(
-        'stp:zip-static-file-insert',
-        ("failed tidy conversion with", $e/error:code)),
-      $doc }
     let $xhtml-uri := replace($uri, "\.html$", "_html.xhtml")
-    let $_ := if (not($DEBUG)) then () else stp:fine(
-      'stp:zip-static-file-insert', ('Tidying', $uri, 'to', $xhtml-uri))
-    return ml:document-insert($xhtml-uri, stp:static-add-scripts($xhtml)))
+    let $tidied-docs := stp:tidy-jdoc($doc, $uri)
+    return (
+xdmp:log(("KIM: ", $uri, " -- ", xdmp:describe($tidied-docs[1]), "-- ", xdmp:describe($tidied-docs[2]))),
+      ml:document-insert(
+        $uri, stp:static-add-scripts($tidied-docs[1]), $is-hidden),
+      ml:document-insert($xhtml-uri, stp:static-add-scripts($tidied-docs[2]))
+    )
+  )
 };
+
 
 declare function stp:zip-static-doc-insert(
   $version as xs:string,
