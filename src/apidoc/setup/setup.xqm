@@ -538,6 +538,15 @@ as document-node()
    : frameset with javadoc and closes the script tags with jsdoc.
    :)
   if (ends-with($path, '/index.html')) then xdmp:zip-get($zip, $path)
+  (: This file is much too large to ingest as text. Waiting for it trips
+   :  XDMP-TOOBIG causes a timeout, so hardcode. Blah. :)
+  else if (ends-with($path, 'javaclient/javadoc/overview-tree.html')) then
+      xdmp:zip-get($zip, $path,
+        <options xmlns="xdmp:zip-get">
+          <format>binary</format>
+          <encoding>auto</encoding>
+        </options>
+      )
   (: Read it as text and tidy, because the HTML may be broken. :)
   else xdmp:zip-get($zip, $path,
       <options xmlns="xdmp:zip-get">
