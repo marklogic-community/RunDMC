@@ -567,3 +567,207 @@ div#content {
 #videoModal .modal-content {
   width: 675px;
 }
+
+/* sub nav tweak */
+
+nav a[title="Ask a Question"] {
+    position:relative;
+    top:2px;
+    padding-right: 10px;
+}
+
+nav a[title="Ask a Question"] span.glyphicon.glyphicon-question-sign:hover {
+  color: rgb(69, 72, 155);
+}
+
+/* hero css */
+
+#hero {
+    align-items: center;
+    background: url(https://cdn1.marklogic.com/wp-content/uploads/2018/09/home-hero-marklogic-data-hub-service-v1-1600x700.jpg) no-repeat center center;
+    background-size: cover;
+    display: flex;
+    height: 540px;
+    min-height: 540px;
+    overflow: hidden;
+    position: relative;
+}
+
+#hero:before {
+  background-color: #000000;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  display:none;
+}
+
+#hero .hero-data {
+  background-color: rgba(64,75,154,0);
+  color: #fff;
+  margin-top: 0px;
+  padding: 3em;
+  text-align: left;
+}
+
+#hero h1 {
+    color: #fff;
+    font-size: .77778rem;
+    letter-spacing: .1rem;
+    margin: 15px auto;
+    text-transform: uppercase;
+    font-weight: 100!important;
+}
+
+#hero h2 {
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0 0 30px;
+    letter-spacing: .02rem;
+    letter-spacing: .11111rem;
+}
+
+
+#hero p {
+    font-size: 1.2em;
+    margin: 15px 0; 
+    text-shadow: 0px 2px 4px rgba(26,26,28,.5);
+  width: auto;
+    max-width: initial;
+    line-height: 1.55556;
+    font-family: "HelveticaNeueW01-55Roma", sans-serif;
+    font-weight: normal;
+}
+
+#hero a.btn:first-child {
+    margin-left: 0;
+}
+
+
+#hero a.btn {
+  background-color: #fb3449;
+  color: #ffffff;
+  border: none;
+  font-family: "HelveticaNeueW01-65Medi", sans-serif;
+  margin: 10px;
+  padding: 10px;
+  text-shadow: none;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+#hero a.btn:active, 
+#hero a.btn:focus,
+#hero a.btn:hover {
+  background: #fb4d5f;
+  border: none;
+  color: white;
+}
+
+
+#hero a.btn-ghost {
+  background: none;!important
+  box-shadow: inset 0 0 0 2px #fff!important;
+  box-sizing: border-box!important;
+  transition: none!important;
+}
+
+
+#hero a.btn-ghost:active, 
+#hero a.btn-ghost:focus, 
+#hero a.btn-ghost:hover {
+  background: white!important;
+  color: #333e48;
+}
+
+
+@media (max-width: 767px) {
+  #hero h1, 
+  #hero h2, 
+  #hero p {
+    text-align: center;
+  }
+
+  .btn {
+    display:block;
+    width: 100%;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+}
+
+/* cards css */
+.adventure {
+  background:none; */
+  background-size: cover;
+  background-position-y: -150px;
+  border-bottom: none!important;
+  border-top: none!important;
+  background: #f3f6f8!important;
+}
+
+.adventure:nth-child(even) {
+  background: #fff!important;
+}
+
+.adventure h2,
+.adventure h2.jones,
+.adventure-title .jones {
+  font-size: 2rem!important;
+  line-height: 2.77778rem!important;
+  font-weight: 500!important;
+  margin-bottom: 20px!important;
+  font-family: "HelveticaNeueW01-65Medi", sans-serif;
+  color: #333e48;
+  text-shadow: none;
+}
+
+.adventure .hero-box {  
+  height: 320px;
+  cursor: pointer;
+  background: #fff!important;
+  border: none!important;
+  box-shadow: 0 0 60px 0 rgba(0,0,0,0.2)!important;
+  margin-bottom: 20px;
+   padding: 12px!important;
+}
+
+.hero-box .pageblock--cards-result--header {
+  padding-left: 0;
+  padding-right: 0;
+  color: #333e48;
+  font-size: 1.55556rem;
+  font-weight: 400;
+  line-height: 1.88889rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: "HelveticaNeueW01-65Medi", sans-serif;
+}
+
+.hero-box p {
+  color: #5c6770!important;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.55556;
+  font-family: "HelveticaNeueW01-55Roma", sans-serif;
+}
+
+.hero-box .btn {
+  background-color: #fb3449;
+  color: #fff;
+  font-family: "HelveticaNeueW01-55Roma", sans-serif;
+  display: inline-block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+#learn-more .hero-box { 
+  height: 357px;
+}

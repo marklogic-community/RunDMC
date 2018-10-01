@@ -4,11 +4,20 @@
   <div class="home container-fluid">
 
     <div id="hero">
-      <div class="content">
+      <div class="col-sm-8 col-lg-6">
         <div class="hero-data">
-          <h1>Developer Community</h1>
-          <h2>MarkLogic 9.0-7 Now Available</h2>
-          <p><a class="btn" href="https://developer.marklogic.com/products">Free Download</a> <a class="btn btn-ghost" href="https://www.marklogic.com/product/marklogic-database-overview/">Database Overview</a></p>
+
+          <h1>DATA HUB + CLOUD SERVICE</h1>
+          <h2>MarkLogic Data Dub Service</h2>
+
+          <p>The easiest, fastest way to integrate data with all the benefits of a MarkLogic Data Hub, delivered as a 
+            fully automated cloud service with no infrastructure to buy or managed.</p>
+
+          <p>
+            <a class="btn" href="https://www.marklogic.com/blog/introducing-marklogic-data-hub-service/">READ THE ANNOUNCEMENT</a> 
+            <a class="btn btn-ghost" href="https://cloudservices.marklogic.com/login">Already a customer? Login</a>
+          </p>
+
         </div>
       </div>
     </div>
@@ -30,96 +39,118 @@
         </div>
     </div>
 
-    <div id="latest-release" class="row">
-      <div class="col-md-offset-2 col-md-3 col-sm-12">
-        <img class="logo" src="/media/ml9.png"/>
-      </div>
-      <div class="col-md-offset-2 col-md-4 text col-xs-offset-1 col-xs-10">
-        <div>
-          <label>Latest Release</label>
-          <h1>MarkLogic 9</h1>
-          <p>MarkLogic 9 is our most ambitious release ever. It includes major new features to improve data integration, security, and manageability—all designed to make integrating data from silos easier and faster, and to ensure that your integrated data is well-governed and managed.</p>
-          <div class="pointers">
-            <a href="/media/white-paper/whats-new-in-marklogic-9.pdf" class="pointer">
-              <span>MarkLogic 9 White Paper</span>
-              <span class="glyphicon glyphicon-download-alt"></span>
-            </a>
-            <a href="/learn" class="pointer">Quick Tutorials ›</a>
-            <a href="//docs.marklogic.com/guide/relnotes" class="pointer">Release Notes ›</a>
-            <a href="http://www.marklogic.com/training" class="pointer">MarkLogic University Training ›</a>
-          </div>
-          <a href="/products" class="btn btn-primary">Download MarkLogic 9</a>
-          <a href="//www.marklogic.com/webinars/" class="btn btn-primary">Register for a Webinar</a>
-        </div>
-      </div>
-    </div>
 
-    <div class="section-row adventure">
+    <div id="free-downloads" class="section-row adventure">
       <div class="container">
         <div class="row adventure-title">
           <div class="col-xs-12">
-            <h2 class="text-center jones">Start Your Journey</h2>
+            <h2 class="text-center jones">Free Downloads</h2>
           </div>
         </div>
         <div class="row start-journey">
-          <div class="col-md-5 col-sm-12 col-md-offset-1 margin-bottom-2">
-            <a class="hero-box row" href="/adventure/developer">
-              <img src="/media/adventure/developer-badge.svg" class="hero-box-image"/>
+          <div class="col-md-6 col-sm-12">
+            <div class="hero-box row">
               <div class="hero-box-content">
-                <h3 class="margin-top-0-5">Developer</h3>
-                <p class="margin-bottom-1">Need to build an app? Quickly become a MarkLogic Pro.</p>
-                <p class="link text-uppercase">Get Started</p>
+                  <div class="pageblock--cards-result--header">MarkLogic</div>
+                  <hr class="pageblock--cards-result--hairline" />
+                  <p>MarkLogic is a database designed for NoSQL speed and scale, without sacrificing the enterprise features. With a free developer license, you can start using MarkLogic in minutes.</p>
+                  <p><a href="https://developer.marklogic.com/products" class="btn">DOWNLOAD MARKLOGIC SERVER</a></p>
               </div>
-            </a>
+            </div>
           </div>
-          <div class="col-md-5 col-sm-12">
-            <a href="/adventure/administrator" class="hero-box row">
-              <img src="/media/adventure/administrator-badge.svg" class="hero-box-image"/>
+          <div class="col-md-6 col-sm-12">
+            <div class="hero-box row">
               <div class="hero-box-content">
-                <h3 class="margin-top-0-5">Administrator</h3>
-                <p class="margin-bottom-1">Need to manage your environment? Quickly learn how to monitor, deploy, and maintain.</p>
-                <p class="link text-uppercase">Get Started</p>
+                  <div class="pageblock--cards-result--header">Data Hub Framework</div>
+                  <hr class="pageblock--cards-result--hairline" />
+                  <p>The MarkLogic Data Hub Framework runs on top of MarkLogic, and provides everything you need to build a production-ready Data Hub for ingesting, harmonizing, and curating data.</p>
+                  <p><a href="https://github.com/marklogic/marklogic-data-hub" target="_blank" class="btn">DOWNLOAD DATA HUB FRAMEWORK</a></p>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div id="key-resources" class="section-row">
+    
+    <div id="free-training" class="section-row adventure">
       <div class="container">
-        <div>
-          <h1>Key Resources</h1>
+        <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center jones">Free Training</h2>
+          </div>
         </div>
-
-        <div class="row learn-more">
-          <div class="col-sm-3 data-hub col-xs-10">
-            <img src="/media/odh.svg"/>
-            <h4><a href="/code/data-hub-framework">Data Hub Framework</a></h4>
-            <p>Free and open source framework to quickly build an Operational Data Hub.</p>
-            <p><a href="/code/data-hub-framework" class="btn btn-default btn-xs">Learn More ›</a></p>
+        <div class="row start-journey" style="">
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">Developers</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>No prior knowledge of MarkLogic to get started, but it does help if you know some JavaScript.</p>
+                <p><a href="https://www.marklogic.com/learn/university/developer-track/" class="btn">FREE DEVELOPER TRAINING</a></p>
+              </div>
+            </div>
           </div>
-
-          <div class="col-sm-3 col-xs-10">
-            <img src="/media/qconsole-notebook.png"/>
-            <h4><a href="https://mlu.marklogic.com/registration/">Free Training</a></h4>
-            <p>Hands-on, instructor-led training to teach everything from the
-              basics to advanced application development.</p>
-            <p><a href="https://mlu.marklogic.com/registration/" class="btn btn-default btn-xs">Learn More ›</a></p>
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">Admins</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>Need to manage your environment? Learn to deploy, monitor, and manage MarkLogic.</p>
+                <p><a href="https://www.marklogic.com/learn/university/administrator-track/" class="btn">FREE ADMIN TRAINING</a></p> 
+              </div>
+            </div>
           </div>
-
-          <div class="col-sm-3 col-xs-10">
-            <img src="/media/paper/resource-consumption.png"/>
-            <h4><a href="/learn/understanding-system-resources">Understanding Resource Consumption</a></h4>
-            <p>Learn details about MarkLogic core functions and operations and configure MarkLogic for optimal success.</p>
-            <p><a href="/learn/understanding-system-resources" class="btn btn-default btn-xs">Learn More ›</a></p>
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">Data Architects</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>Need to design and manage your data architecture? Learn how to use MarkLogic to integrate your&amp;nbsp;data.</p>
+                <p><a href="https://www.marklogic.com/learn/university/data-architect-track/" class="btn">FREE ARCHITECT TRAINING</a></p> 
+              </div>
+            </div>
           </div>
-
-          <div class="col-sm-3 col-xs-10 cloud">
-            <img src="/media/cloud/cloud-icon-purple.svg"/>
-            <h4><a href="/products/cloud">Deploy on Cloud</a></h4>
-            <p>Get going in minutes with MarkLogic in AWS and Azure using the provided AMIs and Azure Image.</p>
-            <p><a href="/products/cloud" class="btn btn-default btn-xs">Learn More ›</a></p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="learn-more" class="section-row adventure">
+      <div class="container">
+        <div class="row adventure-title">
+          <div class="col-xs-12">
+            <h2 class="text-center jones">Learn More</h2>
+          </div>
+        </div>
+        <div class="row start-journey" style="">
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">Database Overview</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>Technically, it’s a multi-model database with ACID transactions. But, as the world’s best database for integrating data from silos, it’s much more than that. Click below to learn what makes MarkLogic so unique.</p>
+                <p><a href="https://www.marklogic.com/product/marklogic-database-overview/" class="btn">LEARN MORE</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">MarkLogic Data Hub Service</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>It’s much more than just a Database as a Service (DBaaS). It comes packaged with our Data Hub, and you can skip buying or managing any infrastructure. This means more agile, more automated data integration</p>
+                <p><a href="https://www.marklogic.com/product/marklogic-database-overview/data-hub-service/" class="btn">LEARN MORE</a></p> 
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <div class="hero-box row">
+              <div class="hero-box-content">
+                <div class="pageblock--cards-result--header">Data Hub Framework</div>
+                <hr class="pageblock--cards-result--hairline" />
+                <p>The Data Hub Framework runs on top of MarkLogic as open source software. It provides all the components to help you ingest, harmonized, and curate data without writing code.</p>
+                <p><a href="https://marklogic.github.io/marklogic-data-hub/" target="_blank" class="btn">LEARN MORE</a></p> 
+              </div>
+            </div>
           </div>
         </div>
       </div>
