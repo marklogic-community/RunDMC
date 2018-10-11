@@ -243,12 +243,14 @@
         <page display="Denver" href="/meet/denver"/>
         <page display="France" href="/meet/france"/>
         <page display="Germany" href="/meet/germany"/>
+        <page display="Hartford" href="/meet/hartford"/>
         <page display="London" href="/meet/mugl"/>
         <page display="London Financial Services" href="/meet/london-finserv"/>
         <page display="Los Angeles" href="/meet/laxml"/>
         <page display="Maryland" href="/meet/markups"/>
         <page display="New York" href="/meet/nymug"/>
         <page display="Northern Virginia" href="/meet/novamug"/>
+        <page display="Pittsburgh" href="/meet/pittsburgh"/>
         <page display="San Francisco Bay Area" href="/meet/baymug"/>
         <page display="Southern Ohio" href="/meet/sohmug"/>
         <page display="Stockholm" href="/meet/stockholm"/>
