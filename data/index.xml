@@ -8,10 +8,10 @@
         <div class="hero-data">
 
           <h1>DATA HUB + CLOUD SERVICE</h1>
-          <h2>MarkLogic Data Dub Service</h2>
+          <h2>MarkLogic Data Hub Service</h2>
 
           <p>The easiest, fastest way to integrate data with all the benefits of a MarkLogic Data Hub, delivered as a 
-            fully automated cloud service with no infrastructure to buy or managed.</p>
+            fully automated cloud service, with no infrastructure to buy or manage.</p>
 
           <p>
             <a class="btn" href="https://www.marklogic.com/blog/introducing-marklogic-data-hub-service/">READ THE ANNOUNCEMENT</a> 
@@ -105,7 +105,7 @@
               <div class="hero-box-content">
                 <div class="pageblock--cards-result--header">Data Architects</div>
                 <hr class="pageblock--cards-result--hairline" />
-                <p>Need to design and manage your data architecture? Learn how to use MarkLogic to integrate your&amp;nbsp;data.</p>
+                <p>Need to design and manage your data architecture? Learn how to use MarkLogic to integrate your data.</p>
                 <p><a href="https://www.marklogic.com/learn/university/data-architect-track/" class="btn">FREE ARCHITECT TRAINING</a></p> 
               </div>
             </div>
