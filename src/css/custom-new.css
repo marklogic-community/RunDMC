@@ -769,5 +769,10 @@ nav a[title="Ask a Question"] span.glyphicon.glyphicon-question-sign:hover {
 }
 
 #learn-more .hero-box { 
-  height: 400px;
+  height: 375px;
+}
+
+.hero-box .hero-box-content {
+    padding-left: 20px;
+    padding-right: 20px;
 }
