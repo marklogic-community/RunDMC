@@ -135,7 +135,7 @@
           <div class="col-md-4 col-sm-12">
             <div class="hero-box row">
               <div class="hero-box-content">
-                <div class="pageblock--cards-result--header">MarkLogic Data Hub Service</div>
+                <div class="pageblock--cards-result--header">Data Hub Service</div>
                 <hr class="pageblock--cards-result--hairline" />
                 <p>It’s much more than just a Database as a Service (DBaaS). It comes packaged with our Data Hub, and you can skip buying or managing any infrastructure. This means more agile, more automated data integration</p>
                 <p><a href="https://www.marklogic.com/product/marklogic-database-overview/data-hub-service/" class="btn">LEARN MORE</a></p> 
