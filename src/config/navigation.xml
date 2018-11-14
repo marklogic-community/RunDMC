@@ -23,6 +23,7 @@
         <page display="Hadoop 1.0" href="/products/hadoop-1.0" hide="yes"/>
       </group>
       <group display="Libraries and Tools">
+        <page display="Ops Director"   href="/products/opsdirector"/>
         <page display="MarkLogic Content Pump (mlcp)"   href="/products/mlcp"/>
         <page display="MarkLogic Content Pump (mlcp) for Hadoop 1.0"   href="/products/mlcp-for-hadoop-1.0" hide="yes"/>
         <page display="Samplestack" href="/features/samplestack"/>
