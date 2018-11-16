@@ -137,6 +137,7 @@
         <page display="Authoring App for Word®" pref="1" href="/code/marklogic-sample-authoring"/>
       </group>
       <group display="Connectors" href="/code/connectors">
+        <page display="JDBC" href="/code/jdbc"/>
         <page display="New Relic" href="/code/new-relic"/>
         <page display="App Dyanmics" href="/code/app-dynamics"/>
         <page display="MarkLogic Connect: C++, C, C#" href="/code/marklogic-connect"/>
