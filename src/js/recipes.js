@@ -116,7 +116,7 @@ Vue.component('recipes', {
           design pattern gives you an approach to solving a problem, a recipe
           will be pretty close to a copy &amp; paste solution.
           <p><em>Want to suggest or request a recipe? Write to
-          <a href="mailto:recipe@marklogic.com">recipe@marklogic.com</a>.</em></p>
+          <a href="mailto:recipes@marklogic.com">recipes@marklogic.com</a>.</em></p>
         </div>
         <div class="col-md-4">
           <search v-bind:page="current" ref="search"
