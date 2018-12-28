@@ -102,24 +102,24 @@
         <page display="mlxprs" href="/code/mlxprs"/>
         <page display="Vim-XQMarkLogic" href="/code/vim-xqmarklogic"/>
         <page display="XQDebug" href="/code/xqdebug"/>
-        <page display="Narthex" href="/code/narthex"/>
+        <!-- <page display="Narthex" href="/code/narthex"/> -->
       </group>
       <group display="Testing">
-        <page display="xray" href="/code/xray"/>
-        <page display="PerformanceMeters" href="/code/performance-meters"/>
         <page display="Roxy" href="/code/roxy"/>
         <page display="SonarQube XQuery Plugin" href="/code/sonar-xquery-plugin"/>
-        <page display="xquery-unit" href="/code/xquery-unit"/>
-
+        <!--<page display="xquery-unit" href="/code/xquery-unit"/>
+        <page display="xray" href="/code/xray"/>
+        <page display="PerformanceMeters" href="/code/performance-meters"/> -->
       </group>
       <group display="Loading and processing">
         <page display="MarkLogic Content Pump" href="/products/mlcp"/>
+        <page display="Processors for Apache NiFi" href="/code/apache-nifi"/>
         <page display="Corb2" href="/code/corb"/>
         <page display="RDBMS Migration Starter" href="/code/ml-migration-starter"/>
-        <page display="RecordLoader" href="/code/recordloader"/>
         <page display="Converter for MongoDB®" href="/labs/mongo2marklogic"/>
-        <page display="XQSync" href="/code/xqsync"/>
         <page display="Taskbot" href="/code/taskbot"/>
+        <!-- <page display="RecordLoader" href="/code/recordloader"/> 
+        <page display="XQSync" href="/code/xqsync"/> -->
       </group>
       <group display="Deployment and configuration">
         <page display="Roxy" href="/code/roxy"/>
@@ -147,34 +147,31 @@
         <page display="rfml" href="/code/rfml"/>
         <page display="Scala Bindings for XCC" href="/code/xcc-scala"/>
         <page display="Go Bindings" href="/code/go-marklogic"/>
-        <page display="MLJAM" href="/code/mljam"/>
-        <page display="MLSAM" href="/code/mlsam"/>
+        <!-- <page display="MLJAM" href="/code/mljam"/>
+        <page display="MLSAM" href="/code/mlsam"/> -->
       </group>
       <group display="Visualization">
         <page display="ml-lodlive" href="/code/ml-lodlive"/>
         <page display="ml-lodlive-ng" href="/code/ml-lodlive-ng"/>
       </group>
       <group display="Command-line interfaces">
-        <page display="Ant tasks" href="/code/ant-tasks"/>
         <page display="xmlsh" href="/code/xmlsh-ext"/>
+        <!-- <page display="Ant tasks" href="/code/ant-tasks"/> -->
       </group>
       <group display="Libraries and Frameworks">
         <page display="Data Hub Framework" href="/code/data-hub-framework"/>
         <page display="Smart Mastering Core" href="/code/smart-mastering-core"/>
         <page display="Roxy" href="/code/roxy"/>
-        <!-- <page display="XQuerrail2" href="/code/xquerrail2"/> -->
         <page display="XQuery XML Memory Operations" href="/code/xquery-xml-memory-operations"/>
         <page display="MarkLogic Workflow" href="/code/workflow"/>
         <page display="Slush generator" href="/code/slush-marklogic-node"/>
-        <page display="OAuth" href="/code/oauth2"/>
-        <page display="rxq" href="/labs/rxq"/>
-      </group>
-      <group display="Data Flow Orchestration">
-        <page display="Apache Nifi" href="/code/apache-nifi"/>
+        <!-- <page display="OAuth" href="/code/oauth2"/>
+        <page display="XQuerrail2" href="/code/xquerrail2"/>
+        <page display="rxq" href="/labs/rxq"/> -->
       </group>
       <group display="Miscellany">
         <page display="Dictionaries and Thesauri" href="/code/dictionaries"/>
-        <page display="xqDoc Web Services" href="/code/xqdoc-ws"/>
+        <!-- <page display="xqDoc Web Services" href="/code/xqdoc-ws"/> -->
       </group>
       <group display="Sample apps">
         <page display="Samplestack" href="/code/samplestack"/>
@@ -183,8 +180,7 @@
         <page display="SpringBoot Sample" href="/code/springboot-sample"/>
         <page display="SpringBoot Security Sample" href="/code/springboot-security-sample"/>
         <page display="AtomPub Server" href="/code/atompub-server"/>
-        <page display="RunDMC" href="/code/rundmc"/>
-        <!--
+        <!-- <page display="RunDMC" href="/code/rundmc"/>
         <page display="MarkMail" href="/code/markmail"/>
         -->
       </group>
