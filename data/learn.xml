@@ -12,7 +12,7 @@
         </div>
         <div class="panel-body">
           <dl>
-            <a href="/learn/data-hub-service-aws"><dt>Data Hub Service (DHS) on AWS</dt></a>
+            <a href="/learn/data-hub-service-aws"><dt>MarkLogic Data Hub Service on AWS</dt></a>
             <dd>Leverage the MarkLogic Data Hub as a fully automated cloud service. Get started using it in AWS.</dd>
           </dl>
           <dl>
