@@ -6,7 +6,7 @@
   <x:ul class="info" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
     <x:li><x:a href="//docs.marklogic.com/guide/relnotes/chap3">What's New? »</x:a></x:li>
     <x:li><x:a href="/free-developer">Read about the Free Developer License  »</x:a></x:li>
-    <x:li><x:a href="/products/marklogic-server/requirements-9.0">Review System Requirements  »</x:a></x:li>
+    <x:li><x:a href="//docs.marklogic.com/guide/installation/intro#id_32669">Review System Requirements  »</x:a></x:li>
   </x:ul>
 
   <product-info name="MarkLogic 9" xmlns="http://developer.marklogic.com/site/internal" xmlns:x="http://www.w3.org/1999/xhtml">
