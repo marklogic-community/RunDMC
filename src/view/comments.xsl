@@ -36,6 +36,50 @@
         <section>
           <div class="col-xs-12 col-sm-12"><p><img src="/images/stackoverflow-logo.png" alt="Stack Overflow icon" style="background: #999; height: 20px; margin-right: 5px;"></img> <strong>Stack Overflow</strong>: Get the most useful answers to questions from the MarkLogic community, or <a href="https://stackoverflow.com/questions/tagged/marklogic" target="_blank">ask your own question</a>.</p></div>
           <div style="clear: both;height: 0;"></div>
+
+          <h2>Comments <img src="/images/i_speechbubble.png" alt="" width="30" height="28"/></h2>
+          <span>The commenting feature on this page is enabled by a third party. Comments posted to this page are publicly visible.</span>
+
+          <xsl:apply-templates mode="comment-count" select="."/>
+
+          <a id="post_comment"/>
+          <!-- This will get replaced in the browser by Disqus's widget -->
+          <div id="disqus_thread">
+            <div id="dsq-content">
+              <ul id="dsq-comments">
+                <xsl:apply-templates select="ml:comments-for-doc-uri(ml:uri-for-commenting-purposes(.))/dq:reply"/>
+              </ul>
+            </div>
+          </div>
+
+          <!-- See http://docs.disqus.com/developers/universal/ -->
+          <script type="text/javascript">
+              var disqus_shortname = '<xsl:value-of select="$dq:shortname"/>';
+
+              var disqus_developer = <xsl:value-of select="$dq:developer_0_or_1"/>;
+
+              // The following are highly recommended additional parameters. Remove the slashes in front to use.
+              var disqus_identifier = '<xsl:value-of select="ml:disqus-identifier(ml:uri-for-commenting-purposes(.))"/>';
+              var disqus_url = '<xsl:value-of select="$site-url-for-disqus"/><xsl:value-of select="ml:external-uri(.)"/>';
+
+              function disqus_config() {
+                  this.callbacks.onNewComment = [function() { setTimeout(
+                                                                function(){ $.ajax({ type: "POST",
+                                                                                     url: "/updateDisqusThreads" });},
+                                                                10000); } ];
+                                                                <!-- It takes a while before the API makes it available -->
+                                                                <!-- No sweat if this doesn't get called, as the scheduled
+                                                                     task will pick it up. -->
+              }
+
+              (function() {
+                  if (!disqus_shortname) return;
+                  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         </section>
       </div>
     </div>
