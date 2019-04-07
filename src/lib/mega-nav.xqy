@@ -13,7 +13,7 @@ declare namespace mnm = "http://mlu.marklogic.com/mega-nav/markup";
 (: the service (minus the last part, the key) that we hit to return the markup :)
 declare variable $url := (
     (: if hosted via modules db, then this should get filled up via roxy deployer :)
-    if ($config:MLAPI-SRC = "") then ()
+    if (fn:contains($config:MLAPI-SRC, "${")) then ()
     else $config:MLAPI-SRC
     ,
     (: if hosted via filesystem, then this would have to be adjusted manually 
@@ -23,7 +23,7 @@ declare variable $url := (
   )[1];
 declare variable $search-flag := (
     (: if hosted via modules db, then this should get filled up via roxy deployer :)
-    if ($config:MLAPI-FLAG = "") then ()
+    if (fn:contains($config:MLAPI-FLAG, "${")) then ()
     else $config:MLAPI-FLAG
     ,
     (: if hosted via filesystem, then this would have to be adjusted manually 
