@@ -43,6 +43,8 @@ to respond to this email.
 
           { $url }
 
+Please be aware that the above link can only be used once.
+
 Best,
 The MarkLogic Community
 </em:content>)
@@ -52,7 +54,4 @@ The MarkLogic Community
 else 
     let $_ := xdmp:log(concat("Ignoring reset request for ", $email))
     return ()
-
-return <html><script type="text/javascript"><![CDATA[
-                   window.location = "/";
-            ]]></script></html>
+return xdmp:xslt-invoke("/view/page.xsl", doc('/people/reset-email.xml'), map:new((map:entry('email', $email))))
