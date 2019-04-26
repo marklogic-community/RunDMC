@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ml:page disable-comments="yes" status="Published" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns="http://www.w3.org/1999/xhtml">
-  <p>An email has been sent to <ml:email/>. Please follow the instructions attached therein.</p>
+  <p>You will receive an email with instructions on how to reset your password. Please be sure to check your spam folder if you don't receive the email within a few minutes.</p>
 </ml:page>

@@ -37,13 +37,14 @@ let $_ := if ($name) then
         "community-requests@marklogic.com",
         "MarkLogic Community Password Reset",
 <em:content>
-You can use the URL below to reset the MarkLogic Community password associated with your email address.  If you
-did not request this email, please ignore it.  And if you believe this is a malicious attempt, please feel free
-to respond to this email.
+You can use the URL below to reset the MarkLogic Community password associated with your email address.  
+Please note that this URL can only be accessed once; you may need to request another password reset email 
+if you have already clicked on the link below.
 
           { $url }
 
-Please be aware that the above link can only be used once.
+If you did not request this email, please ignore it.  And if you believe this is a malicious attempt,
+please feel free to respond to this email.
 
 Best,
 The MarkLogic Community
