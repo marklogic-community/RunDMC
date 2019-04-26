@@ -541,9 +541,7 @@ if(typeof jQuery != 'undefined') {
           success: function( data ) {
             if (data.status === 'ok') {
               $('#login-error').text("");
-              //the button action is removing the "open" class as part of the UI framework
-              //so this is technically not needed anymore.
-              $('#login-menu').hide();
+              $('#login-trigger').click();
 
               $('#signup-trigger').hide();
               $('#login-trigger').hide();
@@ -558,9 +556,6 @@ if(typeof jQuery != 'undefined') {
 
             } else {
               $('#login-error').text(data.status);
-              //the button action is removing the "open" class as part of the UI framework
-              //the quick fix right now is to re-open the modal if an error occurs 
-              $('#login-menu-nav').find('.btn-group').first().addClass('open')
             }
           },
           error: function(error) {
