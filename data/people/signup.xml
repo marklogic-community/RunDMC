@@ -8,7 +8,7 @@
     <fieldset>
       <div class="signup-form-row" style="">
         <label class="signup-form-label" for="nothing"> </label>
-        <div style="height:24px; font-size: 75%">Already a member? Just <a href="#" onclick="$('#login-trigger').click();return false;" id="">log in</a>. Otherwise, all fields below are required.</div>
+        <div style="height:24px; font-size: 75%">Already a member? Just <a href="#" onclick="$('#login-trigger').click();this.stopPropagation();" id="">log in</a>. Otherwise, all fields below are required.</div>
       </div>
       <div class="signup-form-row">
         <label class="signup-form-label" for="email">Business Email </label>
