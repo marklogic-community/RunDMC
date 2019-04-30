@@ -3,6 +3,7 @@ xquery version "1.0-ml";
 module namespace mn = "http://mlu.marklogic.com/mega-nav";
 
 import module namespace json = "http://marklogic.com/xdmp/json" at "/MarkLogic/json/json.xqy";
+import module namespace config = "http://developer.marklogic.com/roxy/config" at "/app/config/config.xqy";
 
 declare namespace mljson = "http://marklogic.com/xdmp/json/basic";
 declare namespace xhtml = "http://www.w3.org/1999/xhtml";
@@ -10,7 +11,26 @@ declare namespace mnt = "http://mlu.marklogic.com/mega-nav/tracking";
 declare namespace mnm = "http://mlu.marklogic.com/mega-nav/markup";
 
 (: the service (minus the last part, the key) that we hit to return the markup :)
-declare variable $url := "https://www.marklogic.com/wp-json/mlapi/v1/json/";
+declare variable $url := (
+    (: if hosted via modules db, then this should get filled up via roxy deployer :)
+    if (fn:contains($config:MLAPI-SRC, "${")) then ()
+    else $config:MLAPI-SRC
+    ,
+    (: if hosted via filesystem, then this would have to be adjusted manually 
+     : if needed to be pointed to another instance 
+     :)
+    "https://www.marklogic.com/wp-json/mlapi/v1/json/"
+  )[1];
+declare variable $search-flag := (
+    (: if hosted via modules db, then this should get filled up via roxy deployer :)
+    if (fn:contains($config:MLAPI-FLAG, "${")) then ()
+    else $config:MLAPI-FLAG
+    ,
+    (: if hosted via filesystem, then this would have to be adjusted manually 
+     : if needed to be pointed to another instance 
+     :)
+    "search=true"
+  )[1];
 
 (: enter the role name associated with your default user :)
 declare variable $default-user-role := "dmc-user";
@@ -130,7 +150,7 @@ declare function mn:create-markup(
   (:
    : This function will build the markup for the key type and then invoke a function that will write that markup to the database.
    :)
-  let $endpoint := fn:concat($url, $key, "/")
+  let $endpoint := fn:concat($url, $key, "?", $search-flag)
   let $response := json:transform-from-json(xdmp:from-json(xdmp:http-get($endpoint)[2]))
   let $response-result := $response//mljson:flag/string()
   let $processed-markup := 
