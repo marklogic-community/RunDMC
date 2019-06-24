@@ -10,8 +10,6 @@
   <version number="8.0"
            display="MarkLogic 8"/>
   <version number="9.0"
-           display="MarkLogic 9"/>
-   <version number="10.0"
            default="true"
-           display="MarkLogic 10"/>
+           display="MarkLogic 9"/>
 </versions>
