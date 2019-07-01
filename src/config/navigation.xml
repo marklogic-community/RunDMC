@@ -6,6 +6,7 @@
   <page display="Downloads" href="/products">
     <group display="DOWNLOADS">
       <group display="Server">
+        <page display="MarkLogic 10" href="/products/marklogic-server/10.0" />
         <page display="MarkLogic 9" href="/products/marklogic-server/9.0" />
         <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
       </group>
@@ -13,6 +14,7 @@
         <page display="Java Client API"   href="/products/java"/>
         <page display="Node.js Client API" href="/products/node"/>
         <page display="XCC Java"   href="/products/xcc"/>
+        <page display="XCC Java Connectors for 10"   href="/products/xcc/10.0" hide="yes"/>
         <page display="XCC Java Connectors for 9"   href="/products/xcc/9.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 8"   href="/products/xcc/8.0" hide="yes"/>
         <page display="XCC Java/.NET Connectors for 7"   href="/products/xcc/7.0" hide="yes"/>
