@@ -221,7 +221,7 @@
           <option value="Qatar" data-alternative-spellings="QA قطر">Qatar</option>
           <option value="Réunion" data-alternative-spellings="RE Reunion">Réunion</option>
           <option value="Romania" data-alternative-spellings="RO Rumania Roumania România">Romania</option>
-          <option value="Russian Federation" data-alternative-spellings="RU Rossiya Российская Россия" data-relevancy-booster="2.5">Russian Federation</option>
+          <option value="Russian" data-alternative-spellings="RU Rossiya Российская Россия" data-relevancy-booster="2.5">Russian</option>
           <option value="Rwanda" data-alternative-spellings="RW">Rwanda</option>
           <option value="Saint Barthélemy" data-alternative-spellings="BL St. Barthelemy">Saint Barthélemy</option>
           <option value="Saint Helena" data-alternative-spellings="SH St.">Saint Helena</option>
