@@ -884,14 +884,12 @@ function doDownload(u) {
     }
 */
 
-  download_iframe = document.getElementById("hiddenDownloader");
-  if (download_iframe === null) {
-    download_iframe = document.createElement('iframe');
-    download_iframe.id = "hiddenDownloader";
-    download_iframe.style.visibility = 'hidden';
-    document.body.appendChild(download_iframe);
-  }
-  download_iframe.src = u;
+  let downloadLink = document.createElement('a');
+  downloadLink.href = u;
+  let path = u.split('/');
+  downloadLink.download = path[path.length - 1];
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
 
   try {
     Munchkin.munchkinFunction('clickLink', {
