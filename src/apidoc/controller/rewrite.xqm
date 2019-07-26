@@ -53,8 +53,8 @@ declare variable $QUERY-STRING := substring-after($URL-ORIG, '?');
 declare variable $QUERY-STRING-FIELDS := xdmp:get-request-field-names() ;
 
 declare variable $VERSION-SPECIFIED := (
-  if (matches($PATH, '^/\d\.\d$')) then substring-after($PATH, '/')
-  else if (matches($PATH, '^/\d\.\d/')) then substring-before(
+  if (matches($PATH, '^/\d+\.\d+$')) then substring-after($PATH, '/')
+  else if (matches($PATH, '^/\d+\.\d+/')) then substring-before(
     substring-after($PATH, '/'), '/')
   else "") ;
 
@@ -109,7 +109,7 @@ declare variable $MESSAGE-PAT := (
   '^/messages/([A-Z])+\-[a-z][a-z]/([A-Z]+-[A-Z]+)$') ;
 
 declare variable $MESSAGE-SHORT-PAT := (
-  '^/(\d+\.\d/)?messages/([A-Z]+-[A-Z]+)$') ;
+  '^/(\d+\.\d+/)?messages/([A-Z]+-[A-Z]+)$') ;
 
 declare function m:log(
   $label as xs:string,
