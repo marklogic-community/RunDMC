@@ -10,7 +10,7 @@
         <page display="MarkLogic 9" href="/products/marklogic-server/9.0" />
         <page display="MarkLogic 8" href="/products/marklogic-server/8.0" />
       </group>
-      <!-- OLD Products Below
+      <!-- OLD Products Below -->
       <group display="Connectors">
         <page display="Java Client API"   href="/products/java"/>
         <page display="Node.js Client API" href="/products/node"/>
@@ -31,7 +31,7 @@
         <page display="MarkLogic Content Pump (mlcp) for Hadoop 1.0"   href="/products/mlcp-for-hadoop-1.0" hide="yes"/>
         <page display="Samplestack" href="/features/samplestack"/>
       </group>
-      -->
+      
     </group>
     <generic-page display="MarkLogic and Amazon Web Services" href="/products/aws"/>
     <generic-page display="Licensing" href="/licensing"/>
