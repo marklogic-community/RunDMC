@@ -964,7 +964,7 @@ as xs:string
 
   case 'empty-sequence()' return 'null'
 
-  case 'item()'
+  case 'item()' return 'Item'
   case 'xs:anyURI'
   case 'xs:string'
   case 'xs:time'
