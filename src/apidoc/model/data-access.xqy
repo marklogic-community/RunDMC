@@ -968,9 +968,9 @@ as xs:string
   case 'xs:anyURI'
   case 'xs:string'
   case 'xs:time'
-  (: we map unsignedLong to String because Number can lose precision for some
+  (: we map unsignedLong to Number|String because Number can lose precision for some
      unsignedLong values (gotta love javascript) :)
-  case 'xs:unsignedLong' return 'String'
+  case 'xs:unsignedLong' return 'Number|String'
 
   case 'json:array' return 'Array'
 
