@@ -970,7 +970,7 @@ as xs:string
   case 'xs:time'
   (: we map unsignedLong to Number|String because Number can lose precision for some
      unsignedLong values (gotta love javascript) :)
-  case 'xs:unsignedLong' return 'Number|String'
+  case 'xs:unsignedLong' return '(Number|String)'
 
   case 'json:array' return 'Array'
 
