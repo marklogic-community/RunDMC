@@ -966,7 +966,7 @@ as xs:string
 
   case 'item()' return 'Item'
   case 'xs:anyURI'
-  case 'xs:string'
+  case 'xs:string' return 'String'
   case 'xs:time'
   (: we map unsignedLong to Number|String because Number can lose precision for some
      unsignedLong values (gotta love javascript) :)
