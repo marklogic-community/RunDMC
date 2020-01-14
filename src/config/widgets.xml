@@ -22,12 +22,12 @@
     <page href="/events/mluc11-labs-and-lounge-schedule"/>
     <page href="/people/supernodes"/>
   </widget>
-
+  <!--
   <widget href="/widgets/signup.xml">
     <page href="/people/signup"/>
     <page href="/people/fb-signup"/>
   </widget>
-
+  -->
   <widget xquery="twitter.xqy"> <!-- See the "widgets" directory at the top level of the code tree -->
     <page href="/"/>
     <page-tree root="/news-and-events"/> <!-- i.e. every page including and beneath this one in the navigational hierarchy -->
