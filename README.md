@@ -14,9 +14,8 @@ for your use via an Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2
 
 Configuration and deployment are managed through [Roxy](https://github.com/marklogic/roxy).
 
-You have the option of installing just the Docs application (as seen at
-http://docs.markklogic.com) or the entire RunDMC application, including Docs (as
-seen at http://developer.marklogic.com).
+You have the option of installing just the Docs application (as seen at http://docs.marklogic.com) or the entire RunDMC
+application, including Docs (as seen at http://developer.marklogic.com).
 
 ### Configuration
 
@@ -27,50 +26,65 @@ seen at http://developer.marklogic.com).
 
 #### Ports
 
-To set up the application, first check whether the default ports work for you. You can see the default ports by
-viewing deploy/build.properties or by asking Roxy:
+To set up the application, first check whether the default ports work for you. You can see the default ports by viewing
+deploy/build.properties or by asking Roxy:
 
     $ ./ml local info | grep port
 
 The info command shows you the properties as Roxy sees them.
 
-If you want to change the ports, the admin password, or other properties
-for your local environment, do so by creating a `deploy/local.properties` file.
-You can create this file directly, or by setting the login credentials:
-
+If you want to change the ports, the admin password, or other properties for your local environment, do so by creating a
+`deploy/local.properties` file. You can create this file directly, or by setting the login credentials:
+```
     $ ./ml local credentials
+```
+Once you have a `deploy/local.properties` file you can edit it as needed. Copy any properties you wish to change from
+`deploy/build.properties` into `deploy/local.properties`, and set the values as needed. Do not check this file in:
+this file is used for local configuration changes only. This file is already ignored by default as part of the
+`.gitignore` file.
 
-Once you have a `deploy/local.properties` file you can edit it as needed.
-Copy any properties you wish to change from `deploy/build.properties`
-into `deploy/local.properties`, and set the values as needed.
-Do not check this file in: this file is used for local configuration changes only.
+#### Local configuration
 
-If you change the ports, you will also need to create src/config/server-urls-local.xml. This file is also not to be 
-checked in. You can copy the host/@type="local" example from server-urls.xml. Both files will be loaded (if present), 
+A typical `local.properties` would contain the following entries:
+
+    app-modules-db=filesystem
+    modules-root=${basedir}\src
+    mlcp-home=C:\mlcp-9.0.4
+    
+    build-zip-path=${basedir}\\MarkLogic_9_pubs.zip
+    build-version=10.0
+    build-clean=0
+    server-version=9
+
+  * `mlcp-home` should match the extract location of [MLCP](https://developer.marklogic.com/products/mlcp/)
+  * `server-version` should match the MarkLogic version you have available.
+  * `modules-root` should match your project's `src` directory. Use of `${basedir}` allows us to assume the project 
+     directory. If you wish to use a database for `app-modules-db`, then you would have to adjust this to just `/`
+
+If you change the ports, you will also need to create src/config/server-urls-local.xml. This file is also not to be
+checked in. You can copy the host/@type="local" example from server-urls.xml. Both files will be loaded (if present),
 and the -local version will take precedence if present.
 
-#### Root path
+As a side note, the included `ml.bat` is outdated and may not work with MarkLogic 10. you would need to invoke a self
+upgrade of ml-roxy first: `ml.bat upgrade`
 
-In deploy/build.properties, change the modules-root property to point to the 
-location of your project's src directory. Specify the absolute path. 
+#### Referenced files/folders
+
+`src/download` is meant to be a link to a server folder that contains the binaries available for download. This has
+been known to cause issues in a Windows environment. Replace the link with an actual folder or update the reference
+to point to an existing location.
+
+`src/config/disqus-info.xml` is expected to contain disqus integration related information. You may use 
+`src/config/disqus-info.SAMPLE.xml` as reference on what this file should contain.
 
 ### Bootstrapping
 
-Bootstrapping creates the app servers, databases, forests, users, and roles needed to make the application run. Before you do this, there's one customization step you need to run. RunDMC currently expects to find source code on the file system, rather than in a modules directory. That means you need to tell it where to look. Edit your deploy/local.properties file (create it if necessary) and put in a line like this:
-
-    modules-root=/Users/dcassel/Downloads/RunDMC-master/src
-    
-Edit to make the path match your filesystem. It needs to be an absolute path. Once you've done that, you can run the bootstrap command: 
+Run the bootstrap command: 
 
     $ ./ml local bootstrap
 
 You may append "dmc" or "docs" to the command; if you do not, it will prompt
 you to specify which application it should set up.
-
-### Deploying
-
-Roxy-deployed applications typically use a modules database and deploy code using
-"./ml local deploy modules", but this application uses the file system.
 
 To use the full RunDMC application, you do need to get some initial files into
 the content database. This step is not necessary if you are only setting up the
@@ -96,12 +110,11 @@ These properties can also be supplied as part of a command.
 
     $ ./ml local deploy_docs --ml.build-zip-path=/tmp/MarkLogic_8_pubs.zip
 
-If the build version or zip path are not defined,
-you will be prompted to supply them.
+`build-zip-path` is required to be accessible by the MarkLogic system role, e.g. daemon. It is also required to be an
+absolute path.
 
-If you don't want to rebuild the entire doc set,
-specific actions can also be supplied via another property.
-For example this command will rebuild the TOC.
+If you don't want to rebuild the entire doc set, specific actions can also be supplied via another property. For
+example this command will rebuild the TOC.
 
     $ ./ml local deploy_docs --ml.build-actions=setup
 
