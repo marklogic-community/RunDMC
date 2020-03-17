@@ -541,7 +541,7 @@ if(typeof jQuery != 'undefined') {
           success: function( data ) {
             if (data.status === 'ok') {
               $('#login-error').text("");
-              $('#login-menu').hide();
+              $('#login-trigger').click();
 
               $('#signup-trigger').hide();
               $('#login-trigger').hide();
@@ -593,6 +593,10 @@ if(typeof jQuery != 'undefined') {
         $('#signup-form').cleanDirty(); // could do in success I spose
         $('#signup-form').submit();
       });
+      
+      $('#profile-form').change(function(e){
+        $('#changes-saved').removeClass("successful-save").fadeOut('fast');
+      });
 
       $("#profile-save").click(function(e) {
         e.preventDefault();
@@ -611,7 +615,7 @@ if(typeof jQuery != 'undefined') {
           success: function( data ) {
             $('#session-trigger').text(data.name);
             $('#changes-saved').text('Changes saved').removeClass("failed-save").addClass("successful-save").fadeIn('slow', function() {
-                $(this).fadeOut('slow');
+                //do not hide the text on success.
             });
           },
           error: function( ) {

@@ -1078,6 +1078,10 @@
   <xsl:template match="first-name">
     <xsl:value-of select="fn:tokenize(users:getCurrentUser()/*:name/string(), ' ')[1]"/>
   </xsl:template>
+  
+  <xsl:template match="email">
+    <span><xsl:value-of select="xdmp:get-request-field('email')"/></span>
+  </xsl:template>
 
   <xsl:template match="last-name">
     <xsl:value-of select="users:getCurrentUser()/*:name/string()"/>

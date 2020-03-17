@@ -15,4 +15,4 @@ else
     xdmp:log(concat("Bad validation for password reset for ", $id))
 
 return
-  xdmp:xslt-invoke("/view/page.xsl", doc('/index.xml'), map:map())
+  xdmp:xslt-invoke("/view/page.xsl", doc('/people/set-password.xml'), map:map())

@@ -35,7 +35,7 @@ declare variable $PREF-DOC-SECTION := "doc-section";
  : https://www.bis.doc.gov/index.php/policy-guidance/country-guidance/sanctioned-destinations
  :)
 declare variable $PROHIBITED-COUNTRY-LIST := (
-  "Cuba", "Iran", "North Korea", "Sudan", "Syria"
+  "Cuba", "Iran", "North Korea", "Sudan", "Syria", "Crimea"
 );
 
 declare function users:emailInUse($email as xs:string) as xs:boolean
