@@ -65,7 +65,7 @@
             <input class="password required form-control input-sm" required="required" id="password" name="password" title="password" value="" type="password"/>
           </div>
           <div class="form-group">
-            <button onclick="return false;" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
+            <button onclick="event.stopPropagation();" class="btn btn-xs btn-default" id="login_submit" type="button">Log in</button>
           </div>
           <div class="form-group">
               <button onclick="return false;" data-url="{$srv:primary-server}/people/recovery" class="btn btn-link" id="recovery" style="color: #fff;padding: 0px 0px;font-size:12px;" type="button">Forgot Password?</button>
