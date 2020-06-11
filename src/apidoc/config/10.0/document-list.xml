@@ -369,16 +369,6 @@
       </entry>
     </entry>
 
-    <entry toc-title="Hadoop Connector"
-           title="Hadoop Connector API Reference">
-      <entry toc-title="Hadoop Connector API Reference"
-             title="MarkLogic Connector for Hadoop javadoc"
-             href="/javadoc/hadoop/index.html"
-             type="external">
-        API documentation for the MarkLogic Connector for Hadoop.
-      </entry>
-    </entry>
-
     <entry title="C++ UDF">
       <entry toc-title="C++ UDF API Reference"
              title="C++ UDF API Reference"
