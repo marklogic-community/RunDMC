@@ -81,7 +81,7 @@
   </xsl:template>
 
   <xsl:template mode="matches-current-page" match="page-tree">
-    <xsl:sequence select="@root = $current-page/ancestor-or-self::page/@href"/>
+    <xsl:sequence select="starts-with($external-uri, @root)"/>
   </xsl:template>
 
   <xsl:template mode="matches-current-page" match="page-children">
