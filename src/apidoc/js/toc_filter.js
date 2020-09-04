@@ -804,10 +804,16 @@ function tocInitFilter($configFilter, $input, $closeButton, filterDelay)
                 new Date(), currentFilterText);
 
       // TODO what about a confirmation alert?
-      if (e.which == 13) // Enter key pressed
-        window.location = "/do-do-search?api=1" +
-        "&v=" + $input.val() +
-        "&q=" + currentFilterText;
+      if (e.which == 13) {
+        // Enter key pressed
+        var gs = "https://globalsearch.marklogic.com/?" + 
+          [
+            "q=" + currentFilterText,
+            "facets=Source%3A%22docs.marklogic.com%22"
+          ].join("&")
+        
+        window.location = gs;
+      }
 
       if (currentFilterText === "") $closeButton.hide();
       else $closeButton.show();
