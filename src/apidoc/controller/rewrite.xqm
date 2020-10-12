@@ -424,8 +424,8 @@ declare function m:rewrite()
   (: Support retrieving user preferences :)
   else if ($PATH eq "/people/preferences") then "/controller/preferences.xqy"
 
-  (: Root request: "/" means "index.xml" inside the default version directory :)
-  else if ($PATH eq '/') then m:transform($ROOT-DOC-URL)
+  (: Root request: "/" means "index.xml" now meant to use a custom landing page :)
+  else if ($PATH eq '/') then  m:transform("/apidoc/index.xml", "")
 
   (: If the version-specific doc path requested, e.g., /4.2/foo, is available,
    : then serve it

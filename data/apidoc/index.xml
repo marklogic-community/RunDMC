@@ -1,0 +1,85 @@
+<api:docs-page disable-comments="yes" hide-from-search="yes" status="Published" xmlns="http://www.w3.org/1999/xhtml" xmlns:ml="http://developer.marklogic.com/site/internal" xmlns:api="http://marklogic.com/rundmc/api">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  <div>
+    <div class="jumbotron jumbotron-fluid" >
+      <h2 style="text-align:center;padding:0;margin-bottom:1.5em">Documentation</h2>
+      <form action="https://globalsearch.marklogic.com" id="searchForm">
+        <div class="input-group offset-sm-3 col-sm-6">
+          <input type="text" name="q" class="form-control" placeholder="Search MarkLogic" style="text-align:center"/>
+          <div class="input-group-append">
+            <i class="input-group-text fa fa-search" id="searchIcon"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+    <style>
+    a, a:hover, a:active {
+      text-decoration:none
+    }
+    h5 {
+      text-align:center
+    }
+    a:hover .card-text {
+      text-decoration:underline
+    }
+    </style>
+    <div class="container-lg" id="headingDHF">
+      <div class="row row-cols-1 row-cols-md-3">
+        <div class="col mb-4">
+          <a href="https://docs.marklogic.com/cloudservices/" style="color:inherit;text-decoration-none">
+            <div class="card h-100">
+              <img src="https://cdn1.marklogic.com/wp-content/uploads/2019/08/ml-feature-data-hub-service-white-background.svg" class="card-img-top" alt="..." style="height:40%" />
+              <div class="card-body">
+                <h5 class="card-title">Data Hub Service</h5>
+                <p class="card-text">Get an on-demand, fully-managed cloud data hub at a predictable cost. MarkLogic delivers a high-performance enterprise solution with built-in governance and security for all of your data. Available on AWS and Azure.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col mb-4">
+          <a href="https://docs.marklogic.com/datahub/" style="color:inherit;text-decoration-none">
+            <div class="card h-100">
+              <img src="https://cdn1.marklogic.com/wp-content/uploads/2020/10/data-hub-software-illustration-wbg.svg" class="card-img-top" alt="..." style="height:40%;" />
+              <div class="card-body">
+                <h5 class="card-title">Data Hub</h5>
+                <p class="card-text">The Data Hub empowers architects and developers to leverage the power of the MarkLogic multi-model database to create data flows from a multitude of source systems, harmonize that data, and serve the data using open APIs faster than ever.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col mb-4">
+          <a href="https://docs.marklogic.com/10.0/" style="color:inherit;text-decoration-none">
+            <div class="card h-100">
+              <img src="images/ML-core-database-wh-3.svg" class="card-img-top" alt="..." style="height:40%;" />
+              <div class="card-body">
+                <h5 class="card-title">MarkLogic Server</h5>
+                <p class="card-text">MarkLogic Server is a powerful software solution for harnessing your digital content all in a single database. The unique architecture of MarkLogic ensures that your applications are both scalable and high-performance, delivering query results at search-engine speeds while providing transactional integrity over the underlying database.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script>
+    //to enable all tooltips.
+    $(function () {
+      $('#header').find('#header-below-bottom-bar').remove()
+      $('#api_sub').remove()
+      $('#page_content').find('h1').first().remove()
+      $('#page_content').css('position','unset')
+      $('.pjax_enabled').css('margin','unset')
+      $('.menu-item').find('a:contains(Documentation)').css('background', 'lightgrey')
+      
+      $('#searchIcon').css('cursor', 'pointer')
+      $('#searchIcon').on("click", function(){
+        $("#searchForm").submit()
+      })
+    })
+  </script>
+</api:docs-page>

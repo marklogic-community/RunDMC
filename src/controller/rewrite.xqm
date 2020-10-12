@@ -210,6 +210,8 @@ as xs:string
             $path
         else
             "/people/supernodes"
+    else if (starts-with($path, "/download/download") and ends-with($path, ".xqy")) then
+        "/products/marklogic-server"
     else
         $path
 };
