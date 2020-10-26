@@ -300,6 +300,17 @@ as xs:string
     $QUERY-STRING)
 };
 
+declare function m:check-old-path(
+  $PATH as xs:string
+) as xs:string? {
+  let $detected-version := fn:substring-before(fn:substring-after($PATH, "/"), "/")
+  return try {
+    if (xs:decimal($detected-version) lt 8) then
+      $detected-version
+    else ()
+  } catch ($e) {()}
+};
+
 (: TODO figure out a way to break this up. :)
 declare function m:rewrite()
   as xs:string
@@ -340,11 +351,7 @@ declare function m:rewrite()
     m:get-db-file(fn:concat("/apidoc/", $VERSION, "/guide/product-notices.pdf"))
 
   (: Redirect requests for older versions 301 and go to latest :)
-  else if (starts-with($PATH, "/4.2")) then m:redirect-for-version('4.2')
-  else if (starts-with($PATH, "/4.1")) then m:redirect-for-version('4.1')
-  else if (starts-with($PATH, "/4.0")) then m:redirect-for-version('4.0')
-  else if (starts-with($PATH, "/3.2")) then m:redirect-for-version('3.2')
-  else if (starts-with($PATH, "/3.1")) then m:redirect-for-version('3.1')
+  else if (fn:not(fn:empty(m:check-old-path($PATH)))) then m:redirect-for-version(m:check-old-path($PATH))
 
   (: SCENARIO 2: Internal rewrite :)
 
