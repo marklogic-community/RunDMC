@@ -363,10 +363,7 @@ function versionSelectInit() {
     }
 
     var newPath = oldPath;
-    if (version == defaultVersion) {
-      LOG.debug("using default", defaultVersion);
-      newPath = oldPath.replace(/^\/\d+\.\d+/, "");
-    } else if (oldPath.match(/^\/\d+\.\d+/)) {
+    if (oldPath.match(/^\/\d+\.\d+/)) {
       LOG.debug("replacing old with", version);
       newPath = oldPath.replace(
           /^\/\d+\.\d+/, "/" + version);
