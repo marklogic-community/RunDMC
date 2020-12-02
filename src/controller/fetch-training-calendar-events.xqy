@@ -12,7 +12,7 @@ declare variable $EVENT-COUNT := 7;
 
 declare variable $MLU-URI := "https://mlu.marklogic.com/registration/";
 
-declare function local:fail ($e) {
+declare function local:fail ($e, $item) {
 
   let $_ := xdmp:log("#training-agenda not fetched")
 
@@ -33,7 +33,11 @@ declare function local:fail ($e) {
           <em:adrs>dmc-admin@marklogic.com</em:adrs>
         </em:Address>
       </rf:to>
-      <em:content>{$e}</em:content>
+      <em:content>
+        {$e}
+        <div>item being processed: </div>
+        {xdmp:quote($item)}
+      </em:content>
     </em:Message>
   )
 };
@@ -84,9 +88,18 @@ declare function local:build-event(
   </xhtml:div>
 };
 
-try {
-  let $uri := $MLU-URI || "api/course-sessions?future=true&amp;pageLength="
-      || $EVENT-COUNT || "&amp;start=1&amp;status=Open&amp;type=course"
+declare function local:retrieve-sessions(){
+  for $page-number in (1 to $EVENT-COUNT)
+  let $uri := fn:concat($MLU-URI, "api/course-sessions?", 
+      fn:string-join(
+        (
+          "future=true",
+          "pageLength=1",
+          "start=" || $page-number,
+          "status=Open",
+          "type=course"
+        )
+        , "&amp;"))
   let $response :=
     xdmp:http-get(
       $uri,
@@ -94,26 +107,24 @@ try {
         <verify-cert>false</verify-cert>
       </options>
     )
+  return try {
+    let $json := json:transform-from-json(xdmp:quote($response[2]))
+    let $sessions := $json/jbasic:results/jbasic:json
+    for $session in $sessions
+    return $session
+  } catch ($e) {
+    local:fail(("Stack trace: ", $e), $response[2])
+  }
+};
 
-  return
-    if ($response[1]/http:code/fn:string() = "200") then
-      let $sessions := json:transform-from-json($response[2])/jbasic:results/jbasic:json
-      return
-        if (fn:exists($sessions)) then
-          xdmp:document-insert("/private/training-events.xml",
-            <xhtml:div id="events_listing" class="events_listing">
-              {
-                for $session at $index in $sessions
-                return
-                  local:build-event($session, $index)
-              }
-            </xhtml:div>
-          )
-        else
-          local:fail("Got no stories from " || $uri)
-    else
-      local:fail("Failed to reach " || $uri)
-}
-catch($e) {
-  local:fail(("Stack trace: ", $e))
+try {
+  let $document := <xhtml:div id="events_listing" class="events_listing">{
+      let $sessions := local:retrieve-sessions()
+      for $session at $index in $sessions
+      return local:build-event($session, $index)
+    }</xhtml:div>
+  let $uri := "/private/training-events.xml"
+  return xdmp:document-insert($uri, $document)
+} catch ($e) {
+  local:fail(("Stack trace: ", $e), ())
 }
