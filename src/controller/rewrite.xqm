@@ -423,6 +423,7 @@ as xs:string
     else if ($path eq "/get-download-url") then concat(
       "/controller/get-download-url.xqy?", $query-string)
     else if ($path eq "/login") then "/controller/login.xqy"
+    else if ($path eq "/remote-login") then fn:concat("/controller/remote-login.xqy?", $query-string)
     else if ($path eq "/logout") then "/controller/logout.xqy"
     else if ($path eq "/set-password") then "/controller/set-password.xqy"
     else if ($path eq "/reset-email") then "/controller/reset-email.xqy"

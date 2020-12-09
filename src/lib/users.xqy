@@ -19,6 +19,7 @@ import module namespace cookies = "http://parthcomp.com/cookies" at "cookies.xqy
 import module namespace srv="http://marklogic.com/rundmc/server-urls" at "/controller/server-urls.xqy";
 import module namespace util="http://markmail.org/util" at "/lib/util.xqy";
 import module namespace u="http://marklogic.com/rundmc/util" at "/lib/util-2.xqy";
+import module namespace jwt = "http://developer.marklogic.com/lib/jwt" at "/lib/jwt.xqy";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
@@ -385,7 +386,11 @@ declare function users:getCurrentUser() as element(*)?
 {
     let $session := cookies:get-cookie("RUNDMC-SESSION")[1]
     let $id := /session[session-id eq $session]/id/string()
-    return users:getUserByID($id)
+    let $user := if (fn:starts-with($id, 'remote-')) then
+        xdmp:get-session-field('current-user')
+      else
+        users:getUserByID($id)
+    return $user
 };
 
 declare function users:getDownloadToken($email as xs:string) as xs:string
@@ -651,4 +656,38 @@ as xs:string?
     )
     ||"}"
   else "{}"
+};
+
+(: TODO: here :)
+declare function users:get-jwt-profile(
+  $token as xs:string 
+) as element(person)? {
+  let $content := jwt:get-content($token, $jwt:JWT_KEY)
+  where jwt:validate-claims($content)
+  return
+  let $emailAddressesArr := map:get($content, "emailAddresses") 
+  let $emailAddresses := 
+    for $add in json:array-values($emailAddressesArr)
+    return fn:string($add)
+  let $user-id := map:get($content, "uid")
+  let $profiles := cts:search(/person, cts:element-value-query(xs:QName('email'), $emailAddresses))
+  let $profile := fn:head((
+      for $item in $profiles
+      order by fn:count($item/download) descending
+      return $item
+      ,
+      (: default :)
+      <person>
+        <name>{fn:string-join((map:get($content, "given_name"), map:get($content, "family_name")), " ")}</name>
+        <id>remote-{$user-id}</id>
+        <email>{fn:head($emailAddresses)}</email>
+      </person>
+    ))
+  let $profile-uri := fn:head((
+    fn:base-uri($profile),
+    fn:concat("/private/people/", $user-id, ".xml")
+  ))
+  let $_ := if (fn:count(fn:base-uri($profile)) gt 0) then ()
+    else xdmp:document-insert($profile-uri, $profile)
+  return $profile
 };
