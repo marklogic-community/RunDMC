@@ -5,6 +5,7 @@ import module namespace json="http://marklogic.com/json" at "/lib/mljson/lib/jso
 import module namespace jwt = "http://developer.marklogic.com/lib/jwt" at "/lib/jwt.xqy";
 
 let $token := xdmp:get-request-field('token')
+let $target := fn:head((xdmp:get-request-field('target'), "/"))
 (: WARN: creates a new person document if needed :)
 let $user := users:get-jwt-profile($token)
 let $_ := xdmp:set-session-field('current-user', $user)
@@ -17,6 +18,6 @@ let $data :=
   else
     '{"status": "Invalid token received"}'
 return (
-  xdmp:add-response-header("Location", "/"),
+  xdmp:add-response-header("Location", $target),
   xdmp:set-response-code(301, xdmp:quote($data))
 )

@@ -48,10 +48,17 @@
     </xsl:if>
     <ul>
       <li class="btn-group" style="padding: 0 10px;">
-        <a href="#" class="drop-down-trigger navbar-top" id="login-trigger" aria-haspopup="true" data-toggle="dropdown" style="font-size: .94rem;">
+        <a class="navbar-top" style="font-size: .94rem;">
           <xsl:if test="users:getCurrentUserName()">
             <xsl:attribute name="style">display:none</xsl:attribute>
           </xsl:if>
+          <xsl:attribute name="href">
+            <xsl:variable name="target" select="xdmp:get-original-url()" />
+            <xsl:variable name="currentServer" select="if ($currently-on-api-server) then $srv:api-server
+                                                      else $srv:main-server"/>
+            <xsl:variable name="serviceUrl" select="encode-for-uri(concat($currentServer, '/remote-login?target=', $target))" />
+            <xsl:value-of select="concat($srv:sso-server, '/login-redirect?serviceUrl=', $serviceUrl)"/>
+          </xsl:attribute>
           Log in
         </a>
         <form id="local-login-form" class="dropdown-menu" method="post" action="{$srv:primary-server}/login" style="background: #2a333d;color: #fff; padding: 8px;font-size: 12px;">
@@ -87,8 +94,8 @@
           <li>
             <a>
               <xsl:attribute name="href">
-                <xsl:value-of select="$srv:main-server"/>
-                <xsl:text>/people/profile</xsl:text>
+                <xsl:value-of select="$srv:sso-server"/>
+                <xsl:text>/profile</xsl:text>
               </xsl:attribute>
               <xsl:text>Edit Profile</xsl:text>
             </a>

@@ -35,6 +35,7 @@ declare variable $s:api-server    := s:server-url("api");
 declare variable $s:standalone-api-server    := s:server-url("standalone-api");
 declare variable $s:rapi-server   := s:server-url("rapi");
 declare variable $s:try-server   := s:server-url("try");
+declare variable $s:sso-server   := s:server-url("sso");
 
 declare variable $s:effective-api-server := if ($s:viewing-standalone-api) then $s:standalone-api-server
                                                                            else $s:api-server;

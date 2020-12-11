@@ -11,6 +11,7 @@
     <rapi-server url="//dmc-stage-admin.marklogic.com:4446"/>
     <api-server url="//docs-stage.marklogic.com"/>
     <try-server url="//try.demo.marklogic.com"/>
+    <sso-server url="http://sso-idp-stage.marklogic.com:9070"/>
   </host>
 
   <host type="production"
@@ -37,6 +38,7 @@
     <standalone-api-server/>
     <rapi-server port="8016"/>
     <try-server url="//localhost:8017"/>
+    <sso-server url="http://sso-idp-stage.marklogic.com:9070"/>
   </host>
 
 <!--
