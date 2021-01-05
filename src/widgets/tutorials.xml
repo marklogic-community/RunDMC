@@ -3,8 +3,8 @@
   <h1><img src="/images/i_monitor.png" alt="" width="24" height="22" />&#160; Tutorials &amp; Videos</h1>
   <div>
     <ul>
-    <li><a title="tutorials" href="/learn/tutorials">Tutorials</a></li>
-    <li><a title="videos" href="/learn/videos">Videos</a></li>
+    <li><a title="tutorials" href="/learn">Tutorials</a></li>
+    <li><a title="videos" href="/video">Videos</a></li>
     <li><a title="arch" href="/inside-marklogic">MarkLogic Architecture</a></li>
     </ul>
   </div>
