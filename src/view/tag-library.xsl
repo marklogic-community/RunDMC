@@ -1160,6 +1160,12 @@
           <xsl:call-template name="industry-options"/>
         </select>
       </div>
+      <div class="form-group">
+        <label>Job Function</label>
+        <select class="required form-control" id="persona" name="persona" required="required" data-initvalue="{$user/*:persona/string()}">
+          <xsl:call-template name="persona-options"/>
+        </select>
+      </div>
     </fieldset>
     <!--
     <h3>Educational background</h3>
@@ -1209,6 +1215,29 @@
     <option value="Technology/Software">Technology/Software</option>
     <option value="Telecommunications">Telecommunications</option>
     <option value="Travel">Travel</option>
+    <option value="Other">Other</option>
+  </xsl:template>
+  
+  <xsl:template match="persona-options" name="persona-options">
+    <option value="IT Executive (CIO, CTO, VP Engineering, etc.)">IT Executive (CIO, CTO, VP Engineering, etc.)</option>
+    <option value="Architect">Architect</option>
+    <option value="Developer">Developer</option>
+    <option value="Engineer">Engineer</option>
+    <option value="IT-Other">IT-Other</option>
+    <option value="Business Analyst">Business Analyst</option>
+    <option value="Business Executive (CEO, COO, CMO, etc.)">Business Executive (CEO, COO, CMO, etc.)</option>
+    <option value="Consulting">Consulting</option>
+    <option value="Contracting/Procurement">Contracting/Procurement</option>
+    <option value="Director/Deputy Director (Public Sector)">Director/Deputy Director (Public Sector)</option>
+    <option value="Finance">Finance</option>
+    <option value="Human Resources">Human Resources</option>
+    <option value="Legal">Legal</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Operations">Operations</option>
+    <option value="Product Management">Product Management</option>
+    <option value="Program Management">Program Management</option>
+    <option value="Sales/Business Development">Sales/Business Development</option>
+    <option value="Student">Student</option>
     <option value="Other">Other</option>
   </xsl:template>
 

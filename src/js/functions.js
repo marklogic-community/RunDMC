@@ -636,6 +636,8 @@ if(typeof jQuery != 'undefined') {
 
       $('#s_industry').val([]);
       $('#industry').val($('#industry').data('initvalue'));
+      $('#s_persona').val([]);
+      $('#persona').val($('#persona').data('initvalue'));
 
       // $('#country').val($('#country').data('initvalue'));
       var v =

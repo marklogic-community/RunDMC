@@ -16,6 +16,7 @@ let $signup := xdmp:get-request-field("list", "off")
 
 let $company := functx:trim(xdmp:get-request-field("s_company"))
 let $industry := functx:trim(xdmp:get-request-field("s_industry"))
+let $persona := functx:trim(xdmp:get-request-field("s_persona"))
 let $phone := functx:trim(xdmp:get-request-field("s_phone"))
 let $country := functx:trim(xdmp:get-request-field("s_country"))
 let $state := functx:trim(xdmp:get-request-field("s_state"))
@@ -57,6 +58,7 @@ let $_ :=
 let $others := (
     <organization>{$company}</organization>,
     <industry>{$industry}</industry>,
+    <persona>{$persona}</persona>,
     <phone>{$phone}</phone>,
     <country>{$country}</country>,
     if (fn:string-length($state) > 0) then

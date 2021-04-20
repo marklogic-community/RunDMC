@@ -459,7 +459,7 @@ declare function users:saveProfile($user as element(*), $params as element(*)*) 
 
     (: trim params from input to only the ones we support for now, todo: generate from/share with profile-form in tag-lib :)
     let $fields := ('organization', 'name', 'url', 'picture', 'location', 'country', 'twitter', 'school', 'yog',
-                    'country', 'industry', 'phone' )
+                    'country', 'industry', 'phone', 'persona' )
     let $params := for $p in $params where $p/@name = $fields return $p
 
     let $doc := <person>

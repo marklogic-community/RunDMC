@@ -79,6 +79,7 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
     let $last-name := mkto:last-name($names)
     let $company := $user/organization/string()
     let $industry := $user/industry/string()
+    let $persona := $user/persona/string()
     let $country := $user/country/string()
     let $state :=
       if ($country = $users:COUNTRY-REQUIRES-STATE) then
@@ -184,6 +185,10 @@ declare function mkto:sync-lead($email, $user, $cookie, $source)
                   <attribute>
                       <attrName>Main_Industry__c</attrName>
                       <attrValue>{$industry}</attrValue>
+                  </attribute>
+                  <attribute>
+                      <attrName>Persona__c</attrName>
+                      <attrValue>{$persona}</attrValue>
                   </attribute>
                   <attribute>
                       <attrName>Contact_me__c</attrName>

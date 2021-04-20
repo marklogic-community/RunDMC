@@ -308,7 +308,12 @@
         <select id="s_industry" required="required" name="s_industry" value="">
           <ml:industry-options/>
         </select>
-
+      </div>
+      <div class="signup-form-row">
+        <label class="signup-form-label" for="s_persona">Job Function</label>
+        <select id="s_persona" required="required" name="s_persona" value="">
+          <ml:persona-options/>
+        </select>
       </div>
 
       <div class="signup-form-row">
