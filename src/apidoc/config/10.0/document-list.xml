@@ -186,11 +186,6 @@
       <guide url-name="monitoring" source-name="monitoring">
         Provides procedures for setting up and using monitoring applications
         on MarkLogic Server.</guide>
-      <guide url-name="sharepoint" source-name="SharePoint-Connector">
-        Documentation for the MarkLogic Connector for
-        SharePoint<sup xmlns="http://www.w3.org/1999/xhtml">&#174;</sup>,
-        which allows you to mirror documents from a Microsoft SharePoint
-        repository in MarkLogic Server.</guide>
     </entry>
 
     <entry title="Other Reference Guides">
