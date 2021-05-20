@@ -983,9 +983,20 @@ declare function stp:list-page-help-items(
 as element(xh:li)*
 {
   (: TODO removed some weird-looking dedup code here. Did it matter? :)
-  for $n in $toc-node//toc:node[@href]
-  let $href as xs:string := $n/@href
-  let $title as xs:string := $n/toc:title
+  (: yes it did. :)
+  let $pairs := 
+    for $n in $toc-node//toc:node[@href]
+    let $href as xs:string := $n/@href
+    let $title as xs:string := $n/toc:title
+    return fn:concat($href, '---', $title)
+  (: alternative is to run distinct on the element generated, but that
+   : only compares the /string() equivalent. If there are different links
+   : for the same text, one gets dropped. 
+   :)
+  for $pair in fn:distinct-values($pairs)
+  let $parts := fn:tokenize($pair, '---')
+  let $href := $parts[1]
+  let $title := $parts[2]
   order by $title
   return <li xmlns="http://www.w3.org/1999/xhtml">
   {
