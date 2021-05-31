@@ -80,6 +80,8 @@
         $("#searchForm").submit()
       })
       $(document).prop('title', 'MarkLogic Product Documentation');
+      
+      $('#login-menu-nav').parent().remove()
     })
   </script>
 </api:docs-page>
