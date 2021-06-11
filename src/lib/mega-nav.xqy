@@ -151,8 +151,23 @@ declare function mn:create-markup(
    : This function will build the markup for the key type and then invoke a function that will write that markup to the database.
    :)
   let $endpoint := fn:concat($url, $key, "?", $search-flag)
-  let $response := json:transform-from-json(xdmp:from-json(xdmp:http-get($endpoint)[2]))
-  let $response-result := $response//mljson:flag/string()
+  let $raw-response := xdmp:http-get(
+      $endpoint,
+      (: not sure why, but adding this resolves the issue where the response is "cut-off" mid-way :)
+      <options xmlns="xdmp:http">
+        <verify-cert>false</verify-cert>
+      </options>
+    )
+  let $response := try {
+      json:transform-from-json(xdmp:from-json($raw-response[2]))
+    } catch ($e) {
+      xdmp:log(fn:concat('unable to transform: ', $endpoint, ': ', xdmp:quote($e), ', with data: ', xdmp:quote($raw-response)))
+    }
+  let $response-result := try {
+      $response//mljson:flag/string()
+    } catch ($e) {
+      xdmp:log(fn:concat('unable to get flag: ', $endpoint, ': ', xdmp:quote($e), ', with data: ', xdmp:quote($response)))
+    }
   let $processed-markup := 
     if ($response-result eq "SUCCESS") then
       if ($key eq "scripts") then 

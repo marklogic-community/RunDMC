@@ -142,9 +142,7 @@
   <xsl:template match="ml:apidoc-copyright" name="apidoc-copyright">
     <xsl:copy-of select="v:apidoc-copyright()"/>
     <div id="terms">
-      Powered by <a href="//developer.marklogic.com/products">MarkLogic Server
-      <span class="server-version"><xsl:copy-of select="xdmp:version()"/></span></a> and
-      <a href="//developer.marklogic.com/code/rundmc">rundmc</a> |
+      Powered by <a href="//developer.marklogic.com/products">MarkLogic Server</a> |
       <a href="http://www.marklogic.com/terms-of-use/">Terms of Use</a> |
       <a href="http://www.marklogic.com/privacy-policy/">Privacy Policy</a>
     </div>
