@@ -34,7 +34,9 @@ $(function() {
     // Stop listening to events
     $(window).off('resize', fn);
     // Load the TOC into the TOC div and then finish with tocInit.
-    $('#apidoc_toc').load($("#toc_url").val(), null, tocInit);
+    if ($('#apidoc_toc').load){
+      $('#apidoc_toc').load($("#toc_url").val(), null, tocInit);
+    }
   };
   $(window).on('resize', fn);
   // In case we are *not* on a small screen, init the TOC.
