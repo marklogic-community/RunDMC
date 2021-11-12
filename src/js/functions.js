@@ -329,6 +329,12 @@ if(typeof jQuery != 'undefined') {
           if (!$("#downloadModal #iaccept").prop('checked')){
             $("#downloadModal #iaccept").click()
           }
+        } else {
+          $("#downloadModal #licenseRequiredText").show()
+          $("#downloadModal #confirmLicenseRow").show()
+          if ($("#downloadModal #iaccept").prop('checked')){
+            $("#downloadModal #iaccept").click()
+          }
         }
 
         return false;
