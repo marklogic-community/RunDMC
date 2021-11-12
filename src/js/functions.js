@@ -321,6 +321,16 @@ if(typeof jQuery != 'undefined') {
 
         $('#downloadModal').modal({});
         $("#iemail").focus();
+
+        var text = $(this).find("span.arch").text();
+        if (text.indexOf("MarkLogic Server")) {
+          $("#downloadModal #licenseRequiredText").hide()
+          $("#downloadModal #confirmLicenseRow").hide()
+          if (!$("#downloadModal #iaccept").prop('checked')){
+            $("#downloadModal #iaccept").click()
+          }
+        }
+
         return false;
       });
       var dp = getParameterByName('d'); // e.g. '/download/binaries/6.0/MarkLogic-6.0-2-x86_64.dmg';
