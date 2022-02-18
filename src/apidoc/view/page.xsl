@@ -618,7 +618,9 @@
     <xsl:variable name="anchor" as="xs:string*"
                   select="v:anchor-id(.)"/>
     <a href="#{$anchor}" class="paramLink">
-      <xsl:text>$</xsl:text>
+      <xsl:if test="@class eq 'xquery'">
+        <xsl:text>$</xsl:text>
+      </xsl:if>
       <xsl:value-of select="api:param-name/string()"/>
     </a>
     <xsl:text> as </xsl:text>
@@ -687,7 +689,9 @@
                       select="v:anchor-id(.)"/>
         <a name="{$anchor}"/>
         <xsl:if test="not(../../@lib eq $api:MODE-REST)">
-          <xsl:text>$</xsl:text>
+          <xsl:if test="@class eq 'xquery'">
+            <xsl:text>$</xsl:text>
+          </xsl:if>
         </xsl:if>
         <xsl:value-of select="(@name|api:param-name)[1]/string()"/>
       </td>
