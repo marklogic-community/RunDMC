@@ -422,21 +422,37 @@ declare function users:useDownloadToken($email as xs:string) as xs:string
         ""
 };
 
-
-declare function users:getResetToken($email as xs:string) as xs:string
+declare function users:generateResetToken($email as xs:string) as xs:string
 {
     let $user := users:getUserByEmail($email)
     let $now := fn:string(fn:current-time())
     let $token := xdmp:crypt($email, $now)
+    let $expiry := fn:current-dateTime() + xs:dayTimeDuration('PT1H')
     let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('reset-token')) return $field }
-            <reset-token>{$token}</reset-token>
+            <reset-token expiry="{$expiry}">{$token}</reset-token>
         </person>
     let $_ := xdmp:document-insert(base-uri($user), $doc)
 
     return $token
 };
+
+declare function users:getResetToken($email as xs:string) as xs:string
+{
+    let $user := users:getUserByEmail($email)
+    let $token := $user/reset-token
+    let $expiry := $token/@expiry/data()
+    let $now := fn:current-dateTime()
+    return
+      if (fn:empty($expiry)) then 
+        fn:error(xs:QName("TOKEN-NA"), "No Token.")
+      else if ($expiry gt $now) then
+        $token/string()
+      else 
+        fn:error(xs:QName("TOKEN-EXPIRED"), "Token is expired.")
+};
+
 
 declare function users:setPassword($user as element(*)?, $password as xs:string)
 {
