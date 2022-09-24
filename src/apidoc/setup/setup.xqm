@@ -1398,7 +1398,7 @@ declare function stp:fixup-attribute-href-fragment(
   $context as xs:string*)
 as xs:string?
 {
-  switch($context)
+  switch(fn:head($context))
   case $api:MODE-REST return (
     (: Format should be #VERB:PATH or #VERB:PATH#FRAGMENT,
      : but this code allows any mix of colon and hash.
