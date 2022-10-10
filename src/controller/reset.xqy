@@ -21,7 +21,8 @@ return if ($has-session or ($token eq $user/reset-token/string())) then
 
     (: make a new reset token, expiring the current one :)
     let $id := $user/id/string()
-    let $token := users:getResetToken($user/email/string())
+    let $token := if ($has-session) then ()
+      else users:getResetToken($user/email/string())
     let $params  := (
                        <param name="token">{ $token }</param>,
                        <param name="id">{ $id }</param>,
