@@ -618,7 +618,7 @@
     <xsl:variable name="anchor" as="xs:string*"
                   select="v:anchor-id(.)"/>
     <a href="#{$anchor}" class="paramLink">
-      <xsl:if test="@class eq 'xquery'">
+      <xsl:if test="../../@mode eq 'xquery'">
         <xsl:text>$</xsl:text>
       </xsl:if>
       <xsl:value-of select="api:param-name/string()"/>
