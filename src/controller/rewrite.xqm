@@ -290,20 +290,16 @@ declare function m:gone($path as xs:string) as xs:boolean {
 declare function m:forbidden($path as xs:string)
   as xs:boolean
 {
-  not(ends-with($path, ".zip"))
-  and (
-    starts-with($path,'/download/binaries/9.0')
-    or starts-with($path,'/download/binaries/8.0')
-    or starts-with($path,'/download/binaries/7.0')
-    or starts-with($path,'/download/binaries/6.0')
-    or starts-with($path,'/download/binaries/5.0')
-    or starts-with($path,'/download/binaries/4.2')
-    or starts-with($path,'/download/binaries/4.1')
-    or false())
-  and (
-    (empty(users:getCurrentUser())
-      and not(users:authViaParams()))
-    or users:denied(users:getCurrentUser()))
+  let $path-restricted :=
+    fn:not(ends-with($path, ".zip"))
+    and fn:matches($path, '/download/binaries/[0-9]+\.0.*')
+  let $user := fn:head((users:getCurrentUser(), users:authViaParams()))
+  let $user-restricted :=
+    if ($path-restricted) then
+      fn:empty($user) or users:denied($user)
+    else
+      fn:false()
+  return $path-restricted and $user-restricted
 };
 
 (: this should make some annoyances go away :)

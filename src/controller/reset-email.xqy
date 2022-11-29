@@ -23,8 +23,8 @@ let $_ := xdmp:set-response-content-type("text/html")
 
 let $_ := if ($name) then
 
-    let $token := users:getResetToken($email)
-    let $url := concat("http://", $hostname, "/reset?t=", xdmp:url-encode($token), "&amp;email=", xdmp:url-encode($email))
+    let $token := users:generateResetToken($email)
+    let $url := concat("https://", $hostname, "/reset?t=", xdmp:url-encode($token), "&amp;email=", xdmp:url-encode($email))
     let $_ := xdmp:log(concat("Sending a reset email to ", $email, " with token ", $token))
 
     let $_ := util:sendEmail(

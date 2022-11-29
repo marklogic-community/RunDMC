@@ -487,10 +487,10 @@ else if ($function instance of element(apidoc:method))
   case $MODE-REST return api:REST-fullname($function, $prefix)
   case $MODE-JAVASCRIPT return concat(
     (: should have exactly one of @lib or @object :)
-    $function/@lib, $function/@object,  '.', api:javascript-name($function))
+    fn:head(($function/@object, $function/@lib)),  '.', api:javascript-name($function))
   (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
-    $function/@lib, ':', $function/@name)
+    $function/@lib, ':', fn:lower-case($function/@name))
 };
 
 declare function api:fixup-fullname(

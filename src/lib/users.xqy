@@ -85,20 +85,20 @@ declare function users:getCurrentUserName()
     return if ($n eq "") then () else $n
 };
 
-declare function users:authViaParams() as xs:boolean
+declare function users:authViaParams() as element(*)?
 {
     let $email := xdmp:get-request-field("email")
     let $user := users:getUserByEmail($email)
     let $hash := xdmp:crypt(xdmp:get-request-field("pass"), $user/email)
     let $token := xdmp:get-request-field("t")
-    return
+    where
         if (not(empty(xdmp:get-request-field("pass")))) then
             ($user and ($user/password/string() = $hash))
         else if (not(empty($token))) then
             (($token eq users:useDownloadToken($email)) and not($token eq ""))
         else
             false()
-
+    return $user
 };
 
 declare function users:createOrUpdateUser($name, $email, $password, $others)
@@ -422,21 +422,37 @@ declare function users:useDownloadToken($email as xs:string) as xs:string
         ""
 };
 
-
-declare function users:getResetToken($email as xs:string) as xs:string
+declare function users:generateResetToken($email as xs:string) as xs:string
 {
     let $user := users:getUserByEmail($email)
     let $now := fn:string(fn:current-time())
     let $token := xdmp:crypt($email, $now)
+    let $expiry := fn:current-dateTime() + xs:dayTimeDuration('PT1H')
     let $doc :=
         <person>
             { for $field in $user/* where not($field/local-name() = ('reset-token')) return $field }
-            <reset-token>{$token}</reset-token>
+            <reset-token expiry="{$expiry}">{$token}</reset-token>
         </person>
     let $_ := xdmp:document-insert(base-uri($user), $doc)
 
     return $token
 };
+
+declare function users:getResetToken($email as xs:string) as xs:string
+{
+    let $user := users:getUserByEmail($email)
+    let $token := $user/reset-token
+    let $expiry := $token/@expiry/data()
+    let $now := fn:current-dateTime()
+    return
+      if (fn:empty($expiry)) then 
+        fn:error(xs:QName("TOKEN-NA"), "No Token.")
+      else if ($expiry gt $now) then
+        $token/string()
+      else 
+        fn:error(xs:QName("TOKEN-EXPIRED"), "Token is expired.")
+};
+
 
 declare function users:setPassword($user as element(*)?, $password as xs:string)
 {

@@ -261,16 +261,51 @@ declare function stp:function-links(
   $function as element())
 as element(api:function-link)*
 {
-  switch($mode)
-  (: REST endpoints never have equivalents in other modes. :)
-  case $api:MODE-REST return ()
-  (: JavaScript functions usually have an XPath equivalent. :)
-  case $api:MODE-JAVASCRIPT return stp:function-link(
-    $version, $api:MODE-XPATH, $function)
-  (: XPath functions sometimes have a JavaScript equivalent. :)
-  case $api:MODE-XPATH return stp:function-link(
-    $version, $api:MODE-JAVASCRIPT, $function)
-  default return stp:error('UNEXPECTED', $mode)
+  fn:head((
+    stp:function-link($version, $function)
+    ,
+    switch($mode)
+    (: REST endpoints never have equivalents in other modes. :)
+    case $api:MODE-REST return ()
+    (: JavaScript functions usually have an XPath equivalent. :)
+    case $api:MODE-JAVASCRIPT return stp:function-link(
+      $version, $api:MODE-XPATH, $function)
+    (: XPath functions sometimes have a JavaScript equivalent. :)
+    case $api:MODE-XPATH return stp:function-link(
+      $version, $api:MODE-JAVASCRIPT, $function)
+    default return stp:error('UNEXPECTED', $mode)
+  ))
+};
+
+declare function stp:function-link(
+  $version as xs:string,
+  $function as element())
+{
+  let $module := fn:root($function)/apidoc:module
+  let $doc-uri := fn:base-uri($module)
+  let $module := raw:get-doc($doc-uri)/apidoc:module
+  let $pair := fn:head((
+    if ($function instance of element(apidoc:function) and $function/@class eq $api:MODE-XPATH) then (
+      $module/apidoc:method[@copy-content-from eq fn:concat($function/@object, ".", $function/@name)],
+      let $copy-from := $function/@copy-content-from/string()
+      let $parts := fn:tokenize($copy-from, "\.")
+      let $object := $parts[1]
+      let $name := fn:string-join($parts[2 to last()], ".")
+      return $module/apidoc:method[@name eq $name][@object eq $object]
+    ) else (
+      $module/apidoc:function[@copy-content-from eq fn:concat($function/@object, ".", $function/@name)],
+      $module/apidoc:function[@copy-content-from eq $function/@copy-content-from]
+    )
+  ))
+  let $mode := if ($pair instance of element(apidoc:function)) then "xquery"
+    else if ($pair instance of element(apidoc:method)) then "javascript"
+    else ""
+  where fn:not(fn:empty($pair))
+  return element api:function-link {
+    attribute mode { $mode },
+    attribute fullname { api:fixup-fullname($pair, $mode) },
+    api:internal-uri($version, api:external-uri($pair, $mode))
+  }
 };
 
 declare function stp:suggest(
@@ -1398,7 +1433,7 @@ declare function stp:fixup-attribute-href-fragment(
   $context as xs:string*)
 as xs:string?
 {
-  switch($context)
+  switch(fn:head($context))
   case $api:MODE-REST return (
     (: Format should be #VERB:PATH or #VERB:PATH#FRAGMENT,
      : but this code allows any mix of colon and hash.
