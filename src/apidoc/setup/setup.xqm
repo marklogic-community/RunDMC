@@ -383,9 +383,7 @@ as element(api:function-page)*
     api:fixup-fullname($function, $mode) ! (
       element api:function-name { . },
       stp:suggest(., true())),
-    if ($link eq "none") then ()
-    else
-      stp:function-links($version, $mode, $function),
+    stp:function-links($version, $mode, $function),
     stp:fixup($version, $children, $mode) }
 };
 
