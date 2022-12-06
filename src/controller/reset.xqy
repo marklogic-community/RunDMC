@@ -13,7 +13,13 @@ let $has-session := if ($user) then true() else false()
 
 let $user := if ($has-session) then $user else users:getUserByEmail($email)
 
-return if ($has-session or ($token eq $user/reset-token/string())) then
+return if (
+    $has-session 
+    or (
+      $token eq $user/reset-token/string() 
+      and $user/reset-token/@expiry gt fn:current-dateTime()
+    )
+  ) then
     let $_ := if ($has-session) then
         xdmp:log(concat("Reset password for email (", $email, ") with token ", $token))
     else
@@ -21,8 +27,6 @@ return if ($has-session or ($token eq $user/reset-token/string())) then
 
     (: make a new reset token, expiring the current one :)
     let $id := $user/id/string()
-    let $token := if ($has-session) then ()
-      else users:getResetToken($user/email/string())
     let $params  := (
                        <param name="token">{ $token }</param>,
                        <param name="id">{ $id }</param>,
