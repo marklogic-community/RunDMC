@@ -1376,22 +1376,32 @@ typeswitch ($n)
       then let $s := tokenize($n/@copy-content-from/string(), "\.")
           (: the name can have dots in it :)
            let $object := $s[1]
-           let $name :=
-               string-join($s[2 to last()], ".")
+           let $name := string-join($s[2 to last()], ".")
+           let $source := $n/../apidoc:method[@name eq $name][@object eq $object]
            return
-           element apidoc:method {$n/@*,
-               $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
+           element apidoc:method {
+               (
+                 fn:head(($n/@subcategory, $source/@subcategory)), 
+                 $n/@*[fn:name(.) ne 'subcategory']
+               ),
+               $source/node()
+           }
       else $n
   case element (apidoc:function) return
       if (exists($n/@copy-content-from))
       then let $s := tokenize($n/@copy-content-from/string(), "\.")
           (: the name can have dots in it :)
            let $object := $s[1]
-           let $name :=
-               string-join($s[2 to last()], ".")
+           let $name := string-join($s[2 to last()], ".")
+           let $source := $n/../apidoc:method[@name eq $name][@object eq $object]
            return
-           element apidoc:function {$n/@*,
-               $n/../apidoc:method[@name eq $name][@object eq $object]/node()}
+           element apidoc:function {
+               (
+                 fn:head(($n/@subcategory, $source/@subcategory)), 
+                 $n/@*[fn:name(.) ne 'subcategory']
+               ),
+               $source/node()
+           }
       else $n
   default return
       if ($n instance of element() ) then
