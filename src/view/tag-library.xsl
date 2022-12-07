@@ -154,7 +154,7 @@
           <div class="modal-body">
             <p style="line-height: 140%" id="licenseRequiredText">
               In order to download and use this MarkLogic software you are required to accept the
-              <a class="license-popup" style="color: #01639D" href="#">MarkLogic Developer License Agreement</a> and
+              <a target="_blank" style="color: #01639D" href="https://developer.marklogic.com/eula/">MarkLogic Developer License Agreement</a> and
               install a license key.
             </p>
 
@@ -188,7 +188,7 @@
               <div class="download-form-row" id="confirmLicenseRow">
                 <input type="checkbox" id="iaccept" name="iaccept" value="true"/>
                 <label for="iaccept">&#160;&#160;I accept the terms in the
-                  <a style="color: #01639D;" href="#" class="license-popup" >MarkLogic Developer License Agreement</a>.
+                  <a target="_blank" style="color: #01639D" href="https://developer.marklogic.com/eula/">MarkLogic Developer License Agreement</a>.
                 </label>
               </div>
             </div>

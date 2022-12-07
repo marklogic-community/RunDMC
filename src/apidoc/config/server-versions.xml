@@ -2,9 +2,15 @@
 <!-- When you change the default version, you'll need to re-generate the
      TOC for the new default version. -->
 <versions>
+  <version number="7.0"
+           display="MarkLogic 7"/>
+  <version number="8.0"
+           display="MarkLogic 8"/>
   <version number="9.0"
            display="MarkLogic 9"/>
   <version number="10.0"
            default="true"
            display="MarkLogic 10"/>
+  <version number="11.0"
+           display="MarkLogic 11"/>
 </versions>
