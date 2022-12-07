@@ -31,7 +31,7 @@
     </style>
     <div class="container-lg" id="headingDHF">
       <div class="card-deck">
-        <a class="card" href="https://docs.marklogic.com/10.0/" style="color:inherit;text-decoration-none">
+        <a class="card" href="/11.0/" style="color:inherit;text-decoration-none">
           <div class="card-header">
             <img src="images/ML-core-database-wh-3.svg" class="card-img-top" alt="..."/>
           </div>
@@ -40,7 +40,7 @@
             <p class="card-text">MarkLogic Server is a powerful software solution for harnessing your digital content all in a single database. The unique architecture of MarkLogic ensures that your applications are both scalable and high-performance, delivering query results at search-engine speeds while providing transactional integrity over the underlying database.</p>
           </div>
         </a>
-        <a class="card" href="https://docs.marklogic.com/datahub/" style="color:inherit;text-decoration-none">
+        <a class="card" href="/datahub/" style="color:inherit;text-decoration-none">
           <div class="card-header">
             <img src="https://www.marklogic.com/wp-content/uploads/2020/10/data-hub-software-illustration-wbg.svg" class="card-img-top" alt="..."/>
           </div>
@@ -49,7 +49,7 @@
             <p class="card-text">The Data Hub empowers architects and developers to leverage the power of the MarkLogic multi-model database to create data flows from a multitude of source systems, harmonize that data, and serve the data using open APIs faster than ever.</p>
           </div>
         </a>
-        <a class="card" href="https://docs.marklogic.com/cloudservices/" style="color:inherit;text-decoration-none">
+        <a class="card" href="/cloudservices/" style="color:inherit;text-decoration-none">
           <div class="card-header">
             <img src="https://www.marklogic.com/wp-content/uploads/2019/08/ml-feature-data-hub-service-white-background.svg" class="card-img-top" alt="..."/>
           </div>
