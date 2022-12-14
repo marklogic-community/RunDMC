@@ -291,7 +291,10 @@ declare function m:forbidden($path as xs:string)
   as xs:boolean
 {
   let $path-restricted :=
-    fn:not(ends-with($path, ".zip"))
+    fn:not(
+      ends-with($path, ".zip")
+      or ends-with($path, ".txt")
+    )
     and fn:matches($path, '/download/binaries/[0-9]+\.0.*')
   let $user := fn:head((users:getCurrentUser(), users:authViaParams()))
   let $user-restricted :=
