@@ -159,7 +159,7 @@ declare function mn:create-markup(
       </options>
     )
   let $response := try {
-      json:transform-from-json(xdmp:from-json($raw-response[2]))
+      json:transform-from-json(xdmp:from-json(xdmp:unquote(xdmp:quote($raw-response[2]))))
     } catch ($e) {
       xdmp:log(fn:concat('unable to transform: ', $endpoint, ': ', xdmp:quote($e), ', with data: ', xdmp:quote($raw-response)))
     }

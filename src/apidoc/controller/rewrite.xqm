@@ -345,7 +345,8 @@ declare function m:rewrite()
       "javadoc/xcc",
       "dotnet/xcc",
       "cpp/udf")) then m:redirect(concat($PATH, '/index.html'))
-
+  else if (fn:ends-with($PATH, "/js") and fn:count(fn:tokenize($PATH, "/")) le 4) then m:redirect($PATH || '/all')
+  else if (fn:ends-with($PATH, "/js/") and fn:count(fn:tokenize($PATH, "/")) le 4) then m:redirect($PATH || 'all')
   (: Redirect old style product notice URLs to the PDF-only notices :)
   else if ($PATH-TAIL = ("guide/copyright/legal", "copyright/legal")) then
     m:get-db-file(fn:concat("/apidoc/", $VERSION, "/guide/product-notices.pdf"))
