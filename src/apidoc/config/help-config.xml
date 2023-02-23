@@ -23,17 +23,17 @@
           <g:namespace display="Namespaces"/>
           <g:schema display="Schemas"/>
           <g:request-blackouts display="Request Blackouts"/>
-          <g:http-server display="Output Options" starting-with="output-" id="oo" url-name="output-options" content-title="Output Options Configuration Help" show-only-the-list="yes" added-in="5.0"/>
+          <g:output-options display="Output Options" />
         </g:http-server>
         <g:http-server help-position="2" url-name="webdav" display="[WebDAV]" exclude="modules" auto-exclude="yes">
           <repeat name="g:request-blackouts"/>
-          <repeat idref="oo"/>
+          <repeat name="g:output-options"/>
         </g:http-server>
         <g:xdbc-server display="[XDBC]" exclude="authentication" auto-exclude="yes">
           <repeat name="g:namespace"/>
           <repeat name="g:schema"/>
           <repeat name="g:request-blackouts"/>
-          <repeat idref="oo"/>
+          <repeat name="g:output-options"/>
         </g:xdbc-server>
       </g:app-servers>
       <g:task-server display="Task Server"/>

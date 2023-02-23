@@ -1001,7 +1001,12 @@ as xs:string?
    : e.g., x509.xsd
    :)
   normalize-space(
-    ($content//*:span[@class eq 'help-text'])[1])[.]
+    (
+      $content//*:div[@class eq "header2"],
+      $content//*:span[@class eq "header2"],
+      $content//*:span[@class eq 'help-text']
+    )[1]
+  )[.]
 };
 
 declare function toc:help-resolve-repeat(
@@ -1533,7 +1538,7 @@ declare function toc:help-content-element(
   $version-number as xs:double,
   $xsd-docs as document-node()*,
   $e as element())
-as node()+
+as node()*
 {
   let $exclusion-list := (
     tokenize($e/@exclude, '\s+'),
@@ -1549,17 +1554,23 @@ as node()+
       $exclusion-list,
       tokenize($e/@line-after, '\s+'),
       not($e/@append) (: $print-buttons :) ) }
-  let $title as xs:string+ := (
+  let $title as xs:string+ := fn:head((
     if ($e/@content-title) then $e/@content-title
-    else toc:help-extract-title($help-content)[1])
+    else toc:help-extract-title($help-content)[1]
+    ,
+    "No title available"
+  ))
   (: ASSUMPTION The title of the page appears at the beginning,
    : between two hr elements.
    : But the page for flexrep-domain is missing the second hr.
    :)
   let $body as node()+ := toc:help-fixup(
     $help-content/(
-      if (*:hr[2]) then *:hr[2]/following-sibling::node()
-      else *:span[1]/following-sibling::node()))
+      if (*:div[@class eq "header2"]) then *:div[@class eq "header2"]/following-sibling::node()
+      else if (*:span[@class eq "header2"]) then *:span[@class eq "header2"]/following-sibling::node()
+      else if (*:hr[2]) then *:hr[2]/following-sibling::node()
+      else *:span[1]/following-sibling::node())
+    )
   return toc:node(
     toc:id($e), $e/@display, toc:help-path($HELP-ROOT-HREF, $e),
     (), (), 'admin-help-page',
@@ -1995,14 +2006,22 @@ as node()*
     ,
     <ul>
       {
-        for $elname in $complex/(xs:all | xs:sequence)//xs:element
+        let $elements := (
+            $complex/(xs:all | xs:sequence)//xs:element
+            ,
+            let $choice := $complex/xs:choice//xs:element/@ref/string()
+            let $ref := $schemaroot/xs:complexType[@name eq $choice]
+            return $ref/(xs:all | xs:sequence)//xs:element
+          )
+        for $elname in $elements
         (: Filter out anything that is hidden or has no help element.
          : The value of @ref is a QName, but we can only do string comparison.
          :)
         let $ref as xs:string := $elname/@ref/string()
         let $n := ($schemaroot/xs:element[@name eq $ref])[1]
+        let $admin-help := fn:string-join(($n/xs:annotation/xs:appinfo/admin:help/string()), "")
         where (fn:not($n/xs:annotation/xs:appinfo/admin:hidden)
-          and $n/xs:annotation/xs:appinfo/admin:help
+          and fn:normalize-space($admin-help) ne ""
           and fn:not($n/@name = $excluded))
         return
           (: special cases for role-ids and uri (collections page) :)
