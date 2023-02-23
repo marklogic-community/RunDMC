@@ -2009,9 +2009,11 @@ as node()*
         let $elements := (
             $complex/(xs:all | xs:sequence)//xs:element
             ,
-            let $choice := $complex/xs:choice//xs:element/@ref/string()
-            let $ref := $schemaroot/xs:complexType[@name eq $choice]
-            return $ref/(xs:all | xs:sequence)//xs:element
+            if ($name ne "groups") then
+              let $choice := $complex/xs:choice//xs:element/@ref/string()
+              let $ref := $schemaroot/xs:complexType[@name eq $choice]
+              return $ref/(xs:all | xs:sequence)//xs:element
+            else ()
           )
         for $elname in $elements
         (: Filter out anything that is hidden or has no help element.
