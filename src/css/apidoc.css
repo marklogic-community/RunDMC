@@ -68,7 +68,6 @@ ol ol {
 
 #header {
   border: none;
-  border-bottom: 1px solid #ccc;
   z-index: 100;
 }
 
@@ -864,3 +863,12 @@ span.highlightWidget {
 }
 
 /* apidoc.css */
+.marklogic-v2-nav .dropdown-menu.show {
+  display: flex !important;
+}
+.marklogic-v2-nav .dropdown-menu>li>a {
+  white-space: unset;
+}
+.marklogic-v2-nav .dropdown-menu.show .dropdown-menu-image img{
+  width:-webkit-fill-available !important;
+}

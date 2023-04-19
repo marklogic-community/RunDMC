@@ -19,7 +19,7 @@ declare variable $url := (
     (: if hosted via filesystem, then this would have to be adjusted manually 
      : if needed to be pointed to another instance 
      :)
-    "https://www.marklogic.com/wp-json/mlapi/v1/json/"
+    "https://mlwebdevel.wpengine.com/wp-json/mlapi/v2/json/"
   )[1];
 declare variable $search-flag := (
     (: if hosted via modules db, then this should get filled up via roxy deployer :)
@@ -179,10 +179,10 @@ declare function mn:create-markup(
         let $path := $item/string()
         return <link xmlns="http://www.w3.org/1999/xhtml" href="{$path}" type="text/css" media="all" rel="stylesheet" /> 
       else if ($key eq "header") then
-        xdmp:tidy($response//*:markup/text())[2]//*:body/*:div 
+        xdmp:unquote($response//*:markup/text(), ("http://www.w3.org/1999/xhtml"), ("repair-full"))/*:div  
       else if ($key eq "footer") then
-        <footer id="mlbs4-footer">
-          { xdmp:tidy($response//*:markup/text())[2]//*:body/*:div }
+        <footer id="mlbs4-footer" xmlns="http://www.w3.org/1999/xhtml">
+          { xdmp:unquote($response//*:markup/text(), ("http://www.w3.org/1999/xhtml"), ("repair-full"))/*:div  }
         </footer> 
       else
         ()
