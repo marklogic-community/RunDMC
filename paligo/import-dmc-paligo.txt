@@ -17,3 +17,9 @@ localhost
 paligoContent
 -output_uri_replace
 "/space/rundmc/,'/paligo/'"
+-document_type
+XML
+-input_file_pattern
+.*html
+-xml_repair_level
+full
