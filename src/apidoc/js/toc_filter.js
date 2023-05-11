@@ -79,6 +79,15 @@ $(function() {
     if (target.parents("#api_sub").length) {
       LOG.debug("Calling showInTOC via pjax:end handler.", target[0]);
       showInTOC(target); }});
+      
+  // Goal is to check for new guide
+  $(document).on('pjax:click', function(event, options) {
+    var target = event.target;
+    var href = target.attributes.href.nodeValue;
+    var pathname = href.substring(0, href.indexOf("#"));
+    var hash = href.substring(href.indexOf("#"));
+    checkForNewGuide(location.pathname, location.hash)
+  });
 
   breadcrumbNode = $("#breadcrumbDynamic");
   if (!breadcrumbNode.length) LOG.warn("No breadcrumb!");

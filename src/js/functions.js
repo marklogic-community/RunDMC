@@ -3,6 +3,8 @@ var downloadHref;
 
 if(typeof jQuery != 'undefined') {
   $(function() {
+    checkForNewGuide(location.pathname, location.hash)
+    
     // cache selectors
     var body = $('body');
     var main = $('#main');
@@ -872,6 +874,29 @@ function loadRecentContent() {
       }
     }
   });
+}
+
+function checkForNewGuide(
+  pathname,
+  hash
+) {
+  $.ajax({
+    type: 'POST',
+    url: '/checkForNewGuide', /* could get from form */
+    data: {
+      'pathname': pathname,
+      'hash': hash
+    },
+    success: function( data ) {
+      if (data.redirect) {
+        window.location.assign(data.target);
+      }
+    },
+    error: function(error) {
+      console.log('problem during login');
+    },
+    dataType: 'json'
+  });  
 }
 
 function getParameterByName(name)

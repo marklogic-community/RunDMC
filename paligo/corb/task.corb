@@ -1,0 +1,13 @@
+THREAD-COUNT=8
+# you can include the code inline in the properties file, rather that creating a module file or loading into the modules DB
+URIS-MODULE=uris.xqy|ADHOC
+PROCESS-MODULE=delete.xqy|ADHOC
+
+ERROR-FILE-NAME=clean_up.log
+FAIL-ON-ERROR=false
+
+# currently set to use the same ports as dmc-stage and dmc-internal.
+XCC-HOSTNAME=localhost
+XCC-PORT=10000
+XCC-USERNAME=
+XCC-PASSWORD=
