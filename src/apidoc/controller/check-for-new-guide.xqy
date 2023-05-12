@@ -104,6 +104,7 @@ declare variable $HARDCODED := map:map()
   => map:with("/10.0/guide/admin/rolling-upgrades#id_93421", "/10.0/guide/admin-guide/en/rolling-upgrades/understanding-rolling-upgrades/rolling-upgrade-status-in-the-admin-interface.html")
   => map:with("/10.0/guide/admin/logfiles#id_42187", "/10.0/guide/admin-guide/en/log-files/viewing-access-log-files.html")
   => map:with("/10.0/guide/admin/config_manager#id_62060", "/10.0/guide/admin-guide/en/using-the-configuration-manager/exporting-and-importing-configurations/comparing-the-imported-configuration-with-the-current-configuration.html")
+  => map:with("/10.0/guide/admin/merges#id_55008", "/10.0/guide/admin-guide/en/understanding-and-controlling-database-merges/setting-merge-policy/configuring-the-merge-policy.html")
 ;
 
 declare function local:check-hard-coded(
