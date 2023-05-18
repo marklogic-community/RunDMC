@@ -86,7 +86,7 @@ $(function() {
     var href = target.attributes.href.nodeValue;
     var pathname = href.substring(0, href.indexOf("#"));
     var hash = href.substring(href.indexOf("#"));
-    checkForNewGuide(location.pathname, location.hash)
+    checkForNewGuide(pathname, hash)
   });
 
   breadcrumbNode = $("#breadcrumbDynamic");
