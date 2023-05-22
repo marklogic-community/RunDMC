@@ -490,7 +490,7 @@ else if ($function instance of element(apidoc:method))
     fn:head(($function/@object, $function/@lib)),  '.', api:javascript-name($function))
   (: Covers MODE-XPATH and any unknown values. :)
   default return concat(
-    $function/@lib, ':', fn:lower-case($function/@name))
+    $function/@lib, ':', $function/@name)
 };
 
 declare function api:fixup-fullname(
