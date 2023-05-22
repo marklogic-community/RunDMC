@@ -173,14 +173,16 @@ a:hover {
   display: table;
   width: 100%;
   background: #ccc;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
   background: #f9f9f9;
   border-bottom: 1px solid #ccc;
 }
 .main-wrapper .row {
   display: table-cell;
   vertical-align: middle;
+}
+.marklogic-v2-nav .row {
+  display: flex;
+  margin-bottom: 0;
 }
 .main-wrapper .row .col {
   text-align: left;
