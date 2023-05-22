@@ -98,7 +98,7 @@ declare variable $REST-DOC-PATH := (
 ;
 
 declare variable $MATCHING-FUNCTIONS := ml:get-matching-functions(
-  $PATH-TAIL, $VERSION) ;
+  $PATH-TAIL, $VERSION, "case-insensitive") ;
 
 declare variable $MATCHING-FUNCTION-COUNT := count($MATCHING-FUNCTIONS) ;
 

@@ -472,9 +472,16 @@ declare private function ml:live-document-query(
 
 declare function ml:get-matching-functions(
   $name as xs:string,
-  $version as xs:string)
-as document-node()*
-{
+  $version as xs:string
+) as document-node()* {
+  ml:get-matching-functions($name, $version, "exact")
+};
+
+declare function ml:get-matching-functions(
+  $name as xs:string,
+  $version as xs:string,
+  $cts-flag as xs:string
+) as document-node()* {
   (: The input may be empty or all whitespace,
    : or may be impossible as a function name.
    : XQuery function names are always castable as xs:QName,
@@ -491,7 +498,7 @@ as document-node()*
       cts:element-attribute-value-query(
         xs:QName("api:function"),
         (QName('', "name"), QName('', 'fullname')),
-        $name, "exact")))
+        $name, $cts-flag)))
   let $results := $query ! cts:search(collection(), $query, 'unfiltered')
   let $preferred := ("fn","xdmp")
   for $f in $results
