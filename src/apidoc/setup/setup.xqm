@@ -286,15 +286,15 @@ declare function stp:function-link(
   let $module := raw:get-doc($doc-uri)/apidoc:module
   let $pair := fn:head((
     if ($function instance of element(apidoc:function) and $function/@class eq $api:MODE-XPATH) then (
-      $module/apidoc:method[fn:lower-case(@copy-content-from) eq fn:lower-case(fn:concat($function/@object, ".", $function/@name))],
+      $module/apidoc:method[@copy-content-from eq fn:concat($function/@object, ".", $function/@name)],
       let $copy-from := $function/@copy-content-from/string()
       let $parts := fn:tokenize($copy-from, "\.")
       let $object := $parts[1]
       let $name := fn:string-join($parts[2 to last()], ".")
-      return $module/apidoc:method[fn:lower-case(@name) eq fn:lower-case($name)][fn:lower-case(@object) eq fn:lower-case($object)]
+      return $module/apidoc:method[@name eq $name][@object eq $object]
     ) else (
-      $module/apidoc:function[fn:lower-case(@copy-content-from) eq fn:lower-case(fn:concat($function/@object, ".", $function/@name))],
-      $module/apidoc:function[fn:lower-case(@copy-content-from) eq fn:lower-case($function/@copy-content-from)]
+      $module/apidoc:function[@copy-content-from eq fn:concat($function/@object, ".", $function/@name)],
+      $module/apidoc:function[@copy-content-from eq $function/@copy-content-from]
     )
   ))
   let $mode := if ($pair instance of element(apidoc:function)) then "xquery"
