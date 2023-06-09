@@ -1053,7 +1053,7 @@ declare function toc:help-path(
 declare function toc:help-element-decl(
   $xsd-docs as document-node()*,
   $e as element())
-as element()
+as element()*
 {
   let $ns := namespace-uri($e)
   let $local-name := local-name($e)
