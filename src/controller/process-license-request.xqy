@@ -45,6 +45,7 @@ let $cpus := xdmp:get-request-field("cpus")
 let $platform := xdmp:get-request-field("platform")
 let $target := xdmp:get-request-field("target") 
 let $hostname := xdmp:get-request-field("hostname")
+let $basepath := xdmp:get-request-field("basepath")
 
 (: in staging, add somehting to the hostname so we can identify easily :)
 let $host := xdmp:host-name(xdmp:host())
@@ -78,6 +79,7 @@ let $valid-url := fn:concat($valid-url, "?",
            "&amp;hostname=", xdmp:url-encode($hostname),
            "&amp;cpus=", xdmp:url-encode($cpus),            
            "&amp;platform=", xdmp:url-encode($platform),
+           "&amp;basepath=", xdmp:url-encode($basepath),
            "&amp;target=", xdmp:url-encode($target),
            "&amp;type=", xdmp:url-encode(local:mint-type($type)),
            "&amp;country=", xdmp:url-encode($country),
@@ -154,6 +156,7 @@ let $invalid-url := concat($invalid-url, $error)
 let $meta := (
     <cpus>{$cpus}</cpus>,
     <platform>{$platform}</platform>,
+    <basepath>{$basepath}</basepath>,
     <hostname>{$hostname}</hostname>
 )
 
