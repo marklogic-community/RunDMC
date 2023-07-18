@@ -19,7 +19,7 @@ declare variable $url := (
     (: if hosted via filesystem, then this would have to be adjusted manually 
      : if needed to be pointed to another instance 
      :)
-    "https://mlwebdevel.wpengine.com/wp-json/mlapi/v2/json/"
+    "https://www.marklogic.com/wp-json/mlapi/v2/json/"
   )[1];
 declare variable $search-flag := (
     (: if hosted via modules db, then this should get filled up via roxy deployer :)
