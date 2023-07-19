@@ -414,7 +414,7 @@ declare function users:useDownloadToken($email as xs:string) as xs:string
         <person>
             { for $field in $user/* where not($field/local-name() = ('download-token')) return $field }
         </person>
-    let $_ := xdmp:document-insert(base-uri($user), $doc)
+    let $_ := xdmp:node-delete($token)
 
     return if (not(empty($token))) then
         $token/string()
