@@ -150,7 +150,7 @@ declare function mn:create-markup(
   (:
    : This function will build the markup for the key type and then invoke a function that will write that markup to the database.
    :)
-  let $endpoint := fn:concat($url, $key, "?", $search-flag)
+  let $endpoint := fn:concat($url, $key)
   let $raw-response := xdmp:http-get(
       $endpoint,
       (: not sure why, but adding this resolves the issue where the response is "cut-off" mid-way :)
