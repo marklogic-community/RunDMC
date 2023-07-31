@@ -173,6 +173,7 @@ declare function mn:create-markup(
       if ($key eq "scripts") then 
         for $item in $response//mljson:scripts/* 
         let $path := $item/string() 
+        where fn:not(fn:contains(fn:lower-case($path), 'jquery'))
         return <script xmlns="http://www.w3.org/1999/xhtml" src="{$path}"></script> 
       else if ($key eq "stylesheets") then
         for $item in $response//mljson:stylesheets/*
