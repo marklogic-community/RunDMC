@@ -38,6 +38,7 @@ declare function local:find-candidate-by-title(
     if (fn:matches($pathname, "/guide/installation(/|$)")) then "guide/installation-guide"
     else if (fn:matches($pathname, "/guide/relnotes(/|$)")) then "guide/release-notes"
     else if (fn:matches($pathname, "/guide/admin(/|$)")) then "guide/admin-guide"
+    else if (fn:matches($pathname, "/guide/security(/|$)")) then "guide/security-guide"
     else "path/that/does/not/exist"
   let $parts := ("", "paligo", $version, $guide-restriction, "")
   let $query := cts:and-query((

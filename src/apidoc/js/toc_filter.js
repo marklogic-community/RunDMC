@@ -86,6 +86,10 @@ $(function() {
     var href = target.attributes.href.nodeValue;
     var pathname = href.substring(0, href.indexOf("#"));
     var hash = href.substring(href.indexOf("#"));
+    if (href.indexOf('#') < 0) {
+      pathname = href;
+      hash = "";
+    }
     checkForNewGuide(pathname, hash)
   });
 
