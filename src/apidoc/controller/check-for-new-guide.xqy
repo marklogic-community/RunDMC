@@ -132,6 +132,8 @@ declare variable $HARDCODED := map:map()
   => map:with("/guide/admin/merges#id_55008", "/11.0/guide/admin-guide/en/understanding-and-controlling-database-merges/setting-merge-policy/configuring-the-merge-policy.html")
   => map:with("/guide/admin/admin_inter", "/11.0/guide/admin-guide/en/administrative--admin--interface.html")
   => map:with("/guide/admin", "/11.0/guide/admin-guide/en/administrating-marklogic-server.html")
+  
+  => map:with("/10.0/guide/security", "/10.0/guide/security-guide/en/securing-marklogic-server.html")
 ;
 
 declare function local:check-hard-coded(
