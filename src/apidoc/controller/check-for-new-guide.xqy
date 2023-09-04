@@ -38,6 +38,7 @@ declare function local:find-candidate-by-title(
     if (fn:matches($pathname, "/guide/installation(/|$)")) then "guide/installation-guide"
     else if (fn:matches($pathname, "/guide/relnotes(/|$)")) then "guide/release-notes"
     else if (fn:matches($pathname, "/guide/admin(/|$)")) then "guide/admin-guide"
+    else if (fn:matches($pathname, "/guide/security(/|$)")) then "guide/security-guide"
     else "path/that/does/not/exist"
   let $parts := ("", "paligo", $version, $guide-restriction, "")
   let $query := cts:and-query((
@@ -105,7 +106,34 @@ declare variable $HARDCODED := map:map()
   => map:with("/10.0/guide/admin/logfiles#id_42187", "/10.0/guide/admin-guide/en/log-files/viewing-access-log-files.html")
   => map:with("/10.0/guide/admin/config_manager#id_62060", "/10.0/guide/admin-guide/en/using-the-configuration-manager/exporting-and-importing-configurations/comparing-the-imported-configuration-with-the-current-configuration.html")
   => map:with("/10.0/guide/admin/merges#id_55008", "/10.0/guide/admin-guide/en/understanding-and-controlling-database-merges/setting-merge-policy/configuring-the-merge-policy.html")
+  => map:with("/10.0/guide/admin/admin_inter", "/10.0/guide/admin-guide/en/administrative--admin--interface.html")
   => map:with("/10.0/guide/admin", "/10.0/guide/admin-guide/en/administrating-marklogic-server.html")
+  
+  (: list is used as key-value so repeat for 11 :)
+  => map:with("/11.0/guide/admin/groups#id_marker-1042797", "/11.0/guide/admin-guide/en/groups/procedures-for-configuring-and-managing-groups/configuring-an-smtp-server.html")
+  => map:with("/11.0/guide/admin/webdav#id_81091", "/11.0/guide/admin-guide/en/webdav-servers/example--setting-up-a-webdav-server-to-add-or-modify-documents-used-by-another-server.html")
+  => map:with("/11.0/guide/admin/session-login#id_60460", "/11.0/guide/admin-guide/en/managing-user-requests-and-monitoring-login-attempts/storing-and-monitoring-the-last-user-login-attempt/displaying-the-last-login-information.html")
+  => map:with("/11.0/guide/admin/backup_restore#id_96977", "/11.0/guide/admin-guide/en/backing-up-and-restoring-a-database/incremental-backup/including-new-forests-in-incremental-backups.html")
+  => map:with("/11.0/guide/admin/backup_restore#id_70233", "/11.0/guide/admin-guide/en/backing-up-and-restoring-a-database/using-journal-archiving-with-incremental-backups.html")
+  => map:with("/11.0/guide/admin/rolling-upgrades#id_93421", "/11.0/guide/admin-guide/en/rolling-upgrades/understanding-rolling-upgrades/rolling-upgrade-status-in-the-admin-interface.html")
+  => map:with("/11.0/guide/admin/logfiles#id_42187", "/11.0/guide/admin-guide/en/log-files/viewing-access-log-files.html")
+  => map:with("/11.0/guide/admin/merges#id_55008", "/11.0/guide/admin-guide/en/understanding-and-controlling-database-merges/setting-merge-policy/configuring-the-merge-policy.html")
+  => map:with("/11.0/guide/admin/admin_inter", "/11.0/guide/admin-guide/en/administrative--admin--interface.html")
+  => map:with("/11.0/guide/admin", "/11.0/guide/admin-guide/en/administrating-marklogic-server.html")
+  
+  (: list is used as key-value so repeat for no version that is currently 11 :)
+  => map:with("/guide/admin/groups#id_marker-1042797", "/11.0/guide/admin-guide/en/groups/procedures-for-configuring-and-managing-groups/configuring-an-smtp-server.html")
+  => map:with("/guide/admin/webdav#id_81091", "/11.0/guide/admin-guide/en/webdav-servers/example--setting-up-a-webdav-server-to-add-or-modify-documents-used-by-another-server.html")
+  => map:with("/guide/admin/session-login#id_60460", "/11.0/guide/admin-guide/en/managing-user-requests-and-monitoring-login-attempts/storing-and-monitoring-the-last-user-login-attempt/displaying-the-last-login-information.html")
+  => map:with("/guide/admin/backup_restore#id_96977", "/11.0/guide/admin-guide/en/backing-up-and-restoring-a-database/incremental-backup/including-new-forests-in-incremental-backups.html")
+  => map:with("/guide/admin/backup_restore#id_70233", "/11.0/guide/admin-guide/en/backing-up-and-restoring-a-database/using-journal-archiving-with-incremental-backups.html")
+  => map:with("/guide/admin/rolling-upgrades#id_93421", "/11.0/guide/admin-guide/en/rolling-upgrades/understanding-rolling-upgrades/rolling-upgrade-status-in-the-admin-interface.html")
+  => map:with("/guide/admin/logfiles#id_42187", "/11.0/guide/admin-guide/en/log-files/viewing-access-log-files.html")
+  => map:with("/guide/admin/merges#id_55008", "/11.0/guide/admin-guide/en/understanding-and-controlling-database-merges/setting-merge-policy/configuring-the-merge-policy.html")
+  => map:with("/guide/admin/admin_inter", "/11.0/guide/admin-guide/en/administrative--admin--interface.html")
+  => map:with("/guide/admin", "/11.0/guide/admin-guide/en/administrating-marklogic-server.html")
+  
+  => map:with("/10.0/guide/security", "/10.0/guide/security-guide/en/securing-marklogic-server.html")
 ;
 
 declare function local:check-hard-coded(

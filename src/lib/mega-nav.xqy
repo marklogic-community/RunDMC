@@ -19,7 +19,7 @@ declare variable $url := (
     (: if hosted via filesystem, then this would have to be adjusted manually 
      : if needed to be pointed to another instance 
      :)
-    "https://mlwebdevel.wpengine.com/wp-json/mlapi/v2/json/"
+    "https://www.marklogic.com/wp-json/mlapi/v2/json/"
   )[1];
 declare variable $search-flag := (
     (: if hosted via modules db, then this should get filled up via roxy deployer :)
@@ -150,7 +150,7 @@ declare function mn:create-markup(
   (:
    : This function will build the markup for the key type and then invoke a function that will write that markup to the database.
    :)
-  let $endpoint := fn:concat($url, $key, "?", $search-flag)
+  let $endpoint := fn:concat($url, $key)
   let $raw-response := xdmp:http-get(
       $endpoint,
       (: not sure why, but adding this resolves the issue where the response is "cut-off" mid-way :)
@@ -173,6 +173,7 @@ declare function mn:create-markup(
       if ($key eq "scripts") then 
         for $item in $response//mljson:scripts/* 
         let $path := $item/string() 
+        where fn:not(fn:contains(fn:lower-case($path), 'jquery'))
         return <script xmlns="http://www.w3.org/1999/xhtml" src="{$path}"></script> 
       else if ($key eq "stylesheets") then
         for $item in $response//mljson:stylesheets/*
