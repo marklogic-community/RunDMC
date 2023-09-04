@@ -54,12 +54,12 @@ declare variable $VARS := (
   xs:QName('VERSION'), $VERSION,
   if (not($ACTIONS = $ACTIONS-NEEDING-ZIP)) then ()
   else (xs:QName('ZIP'), $ZIP)) ;
-
+(:
 if ($VERSION = $stp:LEGAL-VERSIONS) then () else stp:error(
   "ERROR",
   ("You must specify a 'version' param with one of these values:",
     string-join($stp:LEGAL-VERSIONS,", "))),
-
+:)
 if (xdmp:filesystem-file-exists($HELP-XSD-DIR)) then () else stp:error(
   "ERROR",
   ('help-xsd-dir does not exist', xdmp:describe($HELP-XSD-DIR))),

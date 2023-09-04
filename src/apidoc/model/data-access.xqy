@@ -398,10 +398,15 @@ declare function api:javascript-name(
   $override as xs:string?)
 as xs:string
 {
-  if ($override) then $override
-  else translate(
-    api:camel-case(tokenize($name, '[\-]+')[.]),
-    ':', '.')
+  try {
+    if ($override) then $override
+    else translate(
+      api:camel-case(tokenize($name, '[\-]+')[.]),
+      ':', '.')
+  } catch ($e) {
+    xdmp:log('Unable to convert to js name: ' || xdmp:quote($name)),
+    ''
+  }
 };
 
 declare function api:javascript-name(
@@ -944,10 +949,11 @@ as element(apidoc:docs)
     (: Prefer database document if present.
      : Fall back to version-specific copy from filesystem.
      :)
-    let $v := doc('/apidoc/'||$version||'/document-list.xml')
+    let $major := fn:floor(xs:double($version)) || ".0"
+    let $v := doc('/apidoc/'||$major||'/document-list.xml')
     let $v as element(apidoc:docs) := (
       if ($v) then $v/* else u:get-doc(
-        '/apidoc/config/'||$version||'/document-list.xml')/apidoc:docs)
+        '/apidoc/config/'||$major||'/document-list.xml')/apidoc:docs)
     let $_ := xdmp:set($DOCUMENT-LIST-CACHED, $v)
     return $v)
 };
